@@ -1,456 +1,456 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>%d times</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@times@</string>
-		<key>times</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>de %u de ori</string>
-			<key>one</key>
-			<string>%u dată</string>
-			<key>few</key>
-			<string>de %u ori</string>
-		</dict>
-	</dict>
-	<key>%u participants</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@participants@</string>
-		<key>participants</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%u de participanți</string>
-			<key>one</key>
-			<string>%u participant</string>
-			<key>few</key>
-			<string>%u participanți</string>
-		</dict>
-	</dict>
-	<key>You have %d new emails!</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@newemails@</string>
-		<key>newemails</key>
-		<dict>
-			<key>one</key>
-			<string>Aveți %d mesaj nou!</string>
-			<key>few</key>
-			<string>Aveți %d mesaje noi!</string>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>Aveți %d de mesaje noi!</string>
-		</dict>
-	</dict>
-	<key>%d email trackers blocked</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>A fost blocat %d instrument de urmărire din e-mail.</string>
-			<key>few</key>
-			<string>Au fost blocate %d instrumente de urmărire din e-mail.</string>
-			<key>other</key>
-			<string>Au fost blocate %d de instrumente de urmărire din e-mail.</string>
-		</dict>
-	</dict>
-	<key>%d selected</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@selected@</string>
-		<key>selected</key>
-		<dict>
-			<key>one</key>
-			<string>%d selectat</string>
-			<key>few</key>
-			<string>%d selectate</string>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d selectate</string>
-		</dict>
-	</dict>
-	<key>%d email trackers found</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>S-a găsit %d instrument de urmărire în e-mail.</string>
-			<key>few</key>
-			<string>S-au găsit %d instrumente de urmărire în e-mail.</string>
-			<key>other</key>
-			<string>S-au găsit %d de instrumente de urmărire în e-mail.</string>
-		</dict>
-	</dict>
-	<key>Proton found %d trackers on this message.</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
-			<key>few</key>
-			<string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
-			<key>other</key>
-			<string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
-		</dict>
-	</dict>
-	<key>+%d others</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@OTHER@</string>
-		<key>OTHER</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>încă %d</string>
-			<key>few</key>
-			<string>încă %d</string>
-			<key>other</key>
-			<string>încă %d</string>
-		</dict>
-	</dict>
-	<key>Updated %d min ago</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>Actualizat în urmă cu %d minut</string>
-			<key>few</key>
-			<string>Actualizat în urmă cu %d minute</string>
-			<key>other</key>
-			<string>Actualizat în urmă cu %d de minute</string>
-		</dict>
-	</dict>
-	<key>%u message</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>one</key>
-			<string>Un mesaj</string>
-			<key>few</key>
-			<string>%u mesaje</string>
-			<key>other</key>
-			<string>%u de mesaje</string>
-		</dict>
-	</dict>
-	<key>%u conversation</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
-		<key>CONVERSATION</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>O conversație</string>
-			<key>few</key>
-			<string>%u conversații</string>
-			<key>other</key>
-			<string>%u de conversații</string>
-		</dict>
-	</dict>
-	<key>%d attempt remaining</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ATTEMPT@</string>
-		<key>ATTEMPT</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Încercări rămase: %d</string>
-			<key>few</key>
-			<string>Au mai rămas %d încercări</string>
-			<key>other</key>
-			<string>Au mai rămas %d de încercări</string>
-		</dict>
-	</dict>
-	<key>%d attempt remaining until secure data wipe!</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ATTEMPT@</string>
-		<key>ATTEMPT</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Încercări rămase până la ștergerea definitivă a datelor: %d!</string>
-			<key>few</key>
-			<string>Au mai rămas %d încercări până la ștergerea definitivă a datelor!</string>
-			<key>other</key>
-			<string>Au mai rămas %d de încercări până la ștergerea definitivă a datelor!</string>
-		</dict>
-	</dict>
-	<key>%1$d message moved to %2$@</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%1$d mesaj a fost mutat în «%2$@».</string>
-			<key>few</key>
-			<string>S-au mutat %1$d mesaje în «%2$@».</string>
-			<key>other</key>
-			<string>S-au mutat %1$d de mesaje în «%2$@».</string>
-		</dict>
-	</dict>
-	<key>%1$d conversation moved to %2$@</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%1$d conversație a fost mutată în «%2$@».</string>
-			<key>few</key>
-			<string>S-au mutat %1$d conversații în «%2$@».</string>
-			<key>other</key>
-			<string>S-au mutat %1$d de conversații în «%2$@».</string>
-		</dict>
-	</dict>
-	<key>%d message labeled</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@</string>
-		<key>Message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d mesaj a fost etichetat.</string>
-			<key>few</key>
-			<string>S-au etichetat %d mesaje.</string>
-			<key>other</key>
-			<string>S-au etichetat %d de mesaje.</string>
-		</dict>
-	</dict>
-	<key>%d conversation labeled</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversație a fost etichetată.</string>
-			<key>few</key>
-			<string>%d conversații au fost etichetate.</string>
-			<key>other</key>
-			<string>%d de conversații au fost etichetate.</string>
-		</dict>
-	</dict>
-	<key>%d member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d membru</string>
-			<key>few</key>
-			<string>%d membri</string>
-			<key>other</key>
-			<string>%d de membri</string>
-		</dict>
-	</dict>
-	<key>In %d minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@minute@</string>
-		<key>minute</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Peste %d minut</string>
-			<key>few</key>
-			<string>Peste %d minute</string>
-			<key>other</key>
-			<string>Peste %d de minute</string>
-		</dict>
-	</dict>
-	<key>These %d messages will move to Drafts and have their schedule removed.</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@</string>
-		<key>alertMessage</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Se va muta în «Ciorne» %d mesaj și i se va elimina programarea.</string>
-			<key>few</key>
-			<string>Aceste %d mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
-			<key>other</key>
-			<string>Aceste %d de mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
-		</dict>
-	</dict>
-	<key>%d message moved to Drafts</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@</string>
-		<key>alertMessage</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d mesaj a fost mutat în «Ciorne».</string>
-			<key>few</key>
-			<string>S-au mutat %d mesaje în «Ciorne».</string>
-			<key>other</key>
-			<string>S-au mutat %d de mesaje în «Ciorne».</string>
-		</dict>
-	</dict>
-	<key>%d seconds</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@second@</string>
-		<key>second</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d secundă</string>
-			<key>few</key>
-			<string>%d secunde</string>
-			<key>other</key>
-			<string>%d de secunde</string>
-		</dict>
-	</dict>
-	<key>%d attachment</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@attachment@</string>
-		<key>attachment</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d fișier atașat</string>
-			<key>few</key>
-			<string>%d fișiere atașate</string>
-			<key>other</key>
-			<string>%d de fișiere atașate</string>
-		</dict>
-	</dict>
-	<key>%d Minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@minutes@</string>
-		<key>minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d minut</string>
-			<key>few</key>
-			<string>%d minute</string>
-			<key>other</key>
-			<string>%d de minute</string>
-		</dict>
-	</dict>
-	<key>Are you sure you want to delete these %d messages permanently?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Sigur doriți să ștergeți definitiv acest mesaj?</string>
-			<key>few</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
-			<key>other</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
-		</dict>
-	</dict>
-</dict>
+  <dict>
+    <key>%d times</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@times@</string>
+      <key>times</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>de %u de ori</string>
+        <key>one</key>
+        <string>%u dată</string>
+        <key>few</key>
+        <string>de %u ori</string>
+      </dict>
+    </dict>
+    <key>%u participants</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@participants@</string>
+      <key>participants</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%u de participanți</string>
+        <key>one</key>
+        <string>%u participant</string>
+        <key>few</key>
+        <string>%u participanți</string>
+      </dict>
+    </dict>
+    <key>You have %d new emails!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@newemails@</string>
+      <key>newemails</key>
+      <dict>
+        <key>one</key>
+        <string>Aveți %d mesaj nou!</string>
+        <key>few</key>
+        <string>Aveți %d mesaje noi!</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>Aveți %d de mesaje noi!</string>
+      </dict>
+    </dict>
+    <key>%d email trackers blocked</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>A fost blocat %d instrument de urmărire din e-mail.</string>
+        <key>few</key>
+        <string>Au fost blocate %d instrumente de urmărire din e-mail.</string>
+        <key>other</key>
+        <string>Au fost blocate %d de instrumente de urmărire din e-mail.</string>
+      </dict>
+    </dict>
+    <key>%d selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>one</key>
+        <string>%d selectat</string>
+        <key>few</key>
+        <string>%d selectate</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>other</key>
+        <string>%d selectate</string>
+      </dict>
+    </dict>
+    <key>%d email trackers found</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>S-a găsit %d instrument de urmărire în e-mail.</string>
+        <key>few</key>
+        <string>S-au găsit %d instrumente de urmărire în e-mail.</string>
+        <key>other</key>
+        <string>S-au găsit %d de instrumente de urmărire în e-mail.</string>
+      </dict>
+    </dict>
+    <key>Proton found %d trackers on this message.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
+        <key>few</key>
+        <string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
+        <key>other</key>
+        <string>Instrumente de urmărire găsite și blocate în acest mesaj: %d.</string>
+      </dict>
+    </dict>
+    <key>+%d others</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@OTHER@</string>
+      <key>OTHER</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>încă %d</string>
+        <key>few</key>
+        <string>încă %d</string>
+        <key>other</key>
+        <string>încă %d</string>
+      </dict>
+    </dict>
+    <key>Updated %d min ago</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MINUTE@</string>
+      <key>MINUTE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Actualizat în urmă cu %d minut</string>
+        <key>few</key>
+        <string>Actualizat în urmă cu %d minute</string>
+        <key>other</key>
+        <string>Actualizat în urmă cu %d de minute</string>
+      </dict>
+    </dict>
+    <key>%u message</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>one</key>
+        <string>Un mesaj</string>
+        <key>few</key>
+        <string>%u mesaje</string>
+        <key>other</key>
+        <string>%u de mesaje</string>
+      </dict>
+    </dict>
+    <key>%u conversation</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@CONVERSATION@</string>
+      <key>CONVERSATION</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>O conversație</string>
+        <key>few</key>
+        <string>%u conversații</string>
+        <key>other</key>
+        <string>%u de conversații</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Încercări rămase: %d</string>
+        <key>few</key>
+        <string>Au mai rămas %d încercări</string>
+        <key>other</key>
+        <string>Au mai rămas %d de încercări</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining until secure data wipe!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Încercări rămase până la ștergerea definitivă a datelor: %d!</string>
+        <key>few</key>
+        <string>Au mai rămas %d încercări până la ștergerea definitivă a datelor!</string>
+        <key>other</key>
+        <string>Au mai rămas %d de încercări până la ștergerea definitivă a datelor!</string>
+      </dict>
+    </dict>
+    <key>%1$d message moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MSG@</string>
+      <key>MSG</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%1$d mesaj a fost mutat în «%2$@».</string>
+        <key>few</key>
+        <string>S-au mutat %1$d mesaje în «%2$@».</string>
+        <key>other</key>
+        <string>S-au mutat %1$d de mesaje în «%2$@».</string>
+      </dict>
+    </dict>
+    <key>%1$d conversation moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%1$d conversație a fost mutată în «%2$@».</string>
+        <key>few</key>
+        <string>S-au mutat %1$d conversații în «%2$@».</string>
+        <key>other</key>
+        <string>S-au mutat %1$d de conversații în «%2$@».</string>
+      </dict>
+    </dict>
+    <key>%d message labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Message@</string>
+      <key>Message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d mesaj a fost etichetat.</string>
+        <key>few</key>
+        <string>S-au etichetat %d mesaje.</string>
+        <key>other</key>
+        <string>S-au etichetat %d de mesaje.</string>
+      </dict>
+    </dict>
+    <key>%d conversation labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d conversație a fost etichetată.</string>
+        <key>few</key>
+        <string>%d conversații au fost etichetate.</string>
+        <key>other</key>
+        <string>%d de conversații au fost etichetate.</string>
+      </dict>
+    </dict>
+    <key>%d member</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@member@</string>
+      <key>member</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d membru</string>
+        <key>few</key>
+        <string>%d membri</string>
+        <key>other</key>
+        <string>%d de membri</string>
+      </dict>
+    </dict>
+    <key>In %d minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minute@</string>
+      <key>minute</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Peste %d minut</string>
+        <key>few</key>
+        <string>Peste %d minute</string>
+        <key>other</key>
+        <string>Peste %d de minute</string>
+      </dict>
+    </dict>
+    <key>These %d messages will move to Drafts and have their schedule removed.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Se va muta în «Ciorne» %d mesaj și i se va elimina programarea.</string>
+        <key>few</key>
+        <string>Aceste %d mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
+        <key>other</key>
+        <string>Aceste %d de mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
+      </dict>
+    </dict>
+    <key>%d message moved to Drafts</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d mesaj a fost mutat în «Ciorne».</string>
+        <key>few</key>
+        <string>S-au mutat %d mesaje în «Ciorne».</string>
+        <key>other</key>
+        <string>S-au mutat %d de mesaje în «Ciorne».</string>
+      </dict>
+    </dict>
+    <key>%d seconds</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@second@</string>
+      <key>second</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d secundă</string>
+        <key>few</key>
+        <string>%d secunde</string>
+        <key>other</key>
+        <string>%d de secunde</string>
+      </dict>
+    </dict>
+    <key>%d attachment</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@attachment@</string>
+      <key>attachment</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d fișier atașat</string>
+        <key>few</key>
+        <string>%d fișiere atașate</string>
+        <key>other</key>
+        <string>%d de fișiere atașate</string>
+      </dict>
+    </dict>
+    <key>%d Minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minutes@</string>
+      <key>minutes</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d minut</string>
+        <key>few</key>
+        <string>%d minute</string>
+        <key>other</key>
+        <string>%d de minute</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to delete these %d messages permanently?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Sigur doriți să ștergeți definitiv acest mesaj?</string>
+        <key>few</key>
+        <string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
+        <key>other</key>
+        <string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
+      </dict>
+    </dict>
+  </dict>
 </plist>
