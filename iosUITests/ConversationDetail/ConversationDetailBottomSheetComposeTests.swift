@@ -47,7 +47,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
         )
 
         withActionBottomSheetDisplayed {
-            $0.hasComposeButtons(withReplyAll: false)
+            $0.hasComposeButtons()
         }
     }
     
@@ -75,7 +75,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
         )
 
         withActionBottomSheetDisplayed {
-            $0.hasComposeButtons(withReplyAll: true)
+            $0.hasComposeButtons()
         }
     }
     
@@ -103,7 +103,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
         )
 
         withActionBottomSheetDisplayed {
-            $0.hasComposeButtons(withReplyAll: false)
+            $0.hasComposeButtons()
         }
     }
     
@@ -131,7 +131,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
         )
 
         withActionBottomSheetDisplayed(destination: .sent) {
-            $0.hasComposeButtons(withReplyAll: true)
+            $0.hasComposeButtons()
         }
     }
     

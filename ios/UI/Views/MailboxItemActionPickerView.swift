@@ -22,19 +22,16 @@ struct MailboxItemActionPickerView: View {
     @State private(set) var highlightedAction: Action? = nil
 
     private let mailboxItemIdentifier: MailboxItemIdentifier
-    private let isSingleRecipient: Bool
     private let resolver: MailboxItemActionResolver
 
     var onActionTap: (_ action: Action, _ item: MailboxItemIdentifier) -> ()
 
     init(
         mailboxItemIdentifier: MailboxItemIdentifier,
-        isSingleRecipient: Bool,
         actionResolverParams: ConditionalActionResolverParams,
         onActionTap: @escaping (_ action: Action, _ item: MailboxItemIdentifier) -> ()
     ) {
         self.mailboxItemIdentifier = mailboxItemIdentifier
-        self.isSingleRecipient = isSingleRecipient
         self.resolver = MailboxItemActionResolver(params: actionResolverParams)
         self.onActionTap = onActionTap
     }
@@ -70,7 +67,6 @@ struct MailboxItemActionPickerView: View {
                 replyActionButton(name: LocalizationTemp.MessageAction.reply, icon: DS.Icon.icReplay)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReply)
                 replyActionButton(name: LocalizationTemp.MessageAction.replyAll, icon: DS.Icon.icReplayAll)
-                    .removeViewIf(isSingleRecipient)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReplyAll)
                 replyActionButton(name: LocalizationTemp.MessageAction.forward, icon: DS.Icon.icForward)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionForward)
@@ -83,7 +79,7 @@ struct MailboxItemActionPickerView: View {
         Button {
 
         } label: {
-            SendActionButtonStack(isSingleRecipient: isSingleRecipient) {
+            SendActionButtonStack() {
                 Image(uiImage: icon)
                     .actionSheetIconModifier()
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionIcon)
@@ -170,34 +166,13 @@ private extension SystemFolderIdentifier? {
 }
 
 private struct SendActionButtonStack<Content: View>: View {
-    let isSingleRecipient: Bool
     @ViewBuilder var content: () -> Content
 
     var body: some View {
-        if isSingleRecipient {
-            HStack(spacing: DS.Spacing.medium, content: content)
-                .frame(maxWidth: .infinity)
-                .frame(height: 52)
-        } else {
-            VStack(spacing: DS.Spacing.standard, content: content)
-                .frame(maxWidth: .infinity)
-                .frame(height: 80)
-        }
+        VStack(spacing: DS.Spacing.standard, content: content)
+            .frame(maxWidth: .infinity)
+            .frame(height: 80)
     }
-}
-
-#Preview("Message and single recipient") {
-    let params = ConditionalActionResolverParams(
-        selectionReadStatus: .allRead,
-        selectionStarStatus: .allStarred,
-        systemFolder: nil
-    )
-    return MailboxItemActionPickerView(
-        mailboxItemIdentifier: .message(1),
-        isSingleRecipient: true,
-        actionResolverParams: params,
-        onActionTap: { _, _ in }
-    )
 }
 
 #Preview("Message and multiple recipients") {
@@ -208,7 +183,6 @@ private struct SendActionButtonStack<Content: View>: View {
     )
     return MailboxItemActionPickerView(
         mailboxItemIdentifier: .message(1),
-        isSingleRecipient: false,
         actionResolverParams: params,
         onActionTap: { _, _ in }
     )
@@ -222,7 +196,6 @@ private struct SendActionButtonStack<Content: View>: View {
     )
     return MailboxItemActionPickerView(
         mailboxItemIdentifier: .conversation(1),
-        isSingleRecipient: false,
         actionResolverParams: params,
         onActionTap: { _, _ in }
     )

@@ -64,7 +64,6 @@ struct ConversationDetailListView: View {
 
         return MailboxItemActionPickerView(
             mailboxItemIdentifier: .message(target.messageId),
-            isSingleRecipient: target.messageDetails.isSingleRecipient,
             actionResolverParams: conditionalParams,
             onActionTap: { action, item in
                 print("action \(action) for item \(item)")

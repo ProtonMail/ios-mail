@@ -36,10 +36,10 @@ extension ActionBottomSheetRobot {
     
     // MARK: Assertions
     
-    func hasComposeButtons(withReplyAll hasReplyAll: Bool) {
+    func hasComposeButtons() {
         XCTAssert(replyButton.exists)
+        XCTAssert(replyAllButton.exists)
         XCTAssert(forwardButton.exists)
-        XCTAssertEqual(replyAllButton.exists, hasReplyAll)
     }
 }
 
