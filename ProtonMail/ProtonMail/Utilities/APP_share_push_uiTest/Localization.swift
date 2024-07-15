@@ -1266,6 +1266,20 @@ enum L10n {
         static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
         static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
     }
+    struct LockedStateAlertBox {
+        static let alertBoxMailFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")
+        static let alertBoxStorageFullText = NSLocalizedString("Your storage is full", comment: "Title of the banner alert")
+        static let alertBoxSubscriptionEndedText = NSLocalizedString("Your subscription has ended", comment: "Title of the banner alert")
+        static let alertBoxAccountAtRiskText = NSLocalizedString("Your account is at risk of deletion", comment: "Title of the banner alert")
+        static let alertBoxMailFullDescription = NSLocalizedString("To send or receive emails, free up space or upgrade for more storage.", comment: "Description of the banner alert")
+        static let alertBoxDriveFullDescription = NSLocalizedString("To upload files, free up space or upgrade for more storage.", comment: "Description of the banner alert")
+        static let alertBoxDescriptionForPrimaryAdmin = NSLocalizedString("Upgrade to restore full access and to avoid data loss.", comment: "Description of the banner alert")
+        static let alertBoxDescriptionForOrgMember = NSLocalizedString("To avoid data loss, ask your admin to upgrade.", comment: "Description of the banner alert")
+        static let alertBoxDefaultButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
+        static let alertBoxButtonTitleForPrimaryAdmin = NSLocalizedString("Upgrade", comment: "Upgrade button action")
+        static let alertBoxButtonTitleForOrgMember = NSLocalizedString("Learn more", comment: "Learn more storage button action")
+    }
     struct BlockSender {
         static let blockActionTitleLong = NSLocalizedString("Block messages from this sender", comment: "Button to block a sender")
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
