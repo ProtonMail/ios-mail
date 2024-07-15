@@ -18,7 +18,7 @@
 import Groot
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 @testable import ProtonMail
 

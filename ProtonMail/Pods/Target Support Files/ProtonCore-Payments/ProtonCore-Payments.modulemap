@@ -1,6 +1,0 @@
-framework module ProtonCorePayments {
-  umbrella header "ProtonCore-Payments-umbrella.h"
-
-  export *
-  module * { export * }
-}

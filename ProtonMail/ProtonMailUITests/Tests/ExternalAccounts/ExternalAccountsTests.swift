@@ -18,7 +18,7 @@
 import XCTest
 import fusion
 import ProtonCoreEnvironment
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 import ProtonCoreQuarkCommands
 
 final class ExternalAccountsTests: BaseTestCase {

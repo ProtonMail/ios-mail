@@ -55,6 +55,10 @@ final class UploadDraft: UploadDraftUseCase {
             } else if error is UploadDraftError {
                 SystemLogger.log(message: "UploadDraftError: \(error)", isError: true)
             } else {
+                if error.localizedDescription.isEmpty {
+                    let code = error.bestShotAtReasonableErrorCode
+                    PMAssertionFailure("Attempting to display error with empty description, code \(code)")
+                }
                 SystemLogger.log(error: error, category: .emptyAlert)
                 await NSError.alertSavingDraftError(details: error.localizedDescription)
             }

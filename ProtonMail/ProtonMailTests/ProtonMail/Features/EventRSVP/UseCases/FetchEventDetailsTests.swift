@@ -17,7 +17,7 @@
 
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 @testable import ProtonMail

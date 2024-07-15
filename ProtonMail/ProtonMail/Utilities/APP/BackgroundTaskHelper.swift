@@ -69,8 +69,7 @@ final class BackgroundTaskHelper {
         }
     }
 
-    // MARK: - class functions
-    class func register(
+    static func register(
         scheduler: BGTaskSchedulerProtocol = BGTaskScheduler.shared,
         task: Task,
         handler: @escaping (BGTask) -> Void
@@ -84,7 +83,7 @@ final class BackgroundTaskHelper {
         }
     }
 
-    class func submit(
+    static func submit(
         scheduler: BGTaskSchedulerProtocol = BGTaskScheduler.shared,
         task: Task
     ) -> Bool {
@@ -102,7 +101,7 @@ final class BackgroundTaskHelper {
         }
     }
 
-    private class func makeRequest(for task: Task) -> BGTaskRequest {
+    private static func makeRequest(for task: Task) -> BGTaskRequest {
         switch task {
         case .eventLoop:
             let request = BGAppRefreshTaskRequest(identifier: task.identifier)
@@ -111,14 +110,14 @@ final class BackgroundTaskHelper {
         }
     }
 
-    class func cancel(
+    static func cancel(
         scheduler: BGTaskSchedulerProtocol = BGTaskScheduler.shared,
         task: Task
     ) {
         scheduler.cancel(taskRequestWithIdentifier: task.identifier)
     }
 
-    private class func log(message: String, isError: Bool = false) {
+    private static func log(message: String, isError: Bool = false) {
         SystemLogger.log(message: message, category: .backgroundTask, isError: isError)
     }
 }

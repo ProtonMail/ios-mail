@@ -18,7 +18,7 @@
 import XCTest
 @testable import ProtonMail
 import CoreMedia
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 class BannerViewModelTests: XCTestCase {
     var sut: BannerViewModel!

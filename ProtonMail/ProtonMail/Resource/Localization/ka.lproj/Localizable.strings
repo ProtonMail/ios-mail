@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "საქაღალდის დაცარიელება ახლა შეუძლებელია.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[სრული შეტყობინების ჩვენება]";
 
@@ -2031,7 +2034,7 @@
 "Easily RSVP to events" = "ადვილი პასუხი მოვლენებზე";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "ახლა შეგიძლიათ უპასუხოთ მოსაწვევს, ან ნახოთ მოვლენა Proton Calendar-ში, მხოლოდ, ერთი დატყაპუნებით. ";
 
 /* Menu title */
 "Max Storage" = "მაქს საცავი";

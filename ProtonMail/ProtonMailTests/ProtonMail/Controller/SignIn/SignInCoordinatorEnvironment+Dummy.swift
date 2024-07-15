@@ -14,7 +14,8 @@ import ProtonCoreDoh
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 
 @testable import ProtonMail
 

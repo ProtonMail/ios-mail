@@ -250,7 +250,7 @@
 "From" = "보낸 사람";
 
 /* Title */
-"Bcc" = "숨은 참조";
+"Bcc" = "숨은참조";
 
 /* Placeholder */
 "Subject" = "제목";
@@ -454,7 +454,7 @@
 "Cc" = "참조";
 
 /* message Bcc: feild */
-"Bcc:" = "숨은 참조:";
+"Bcc:" = "숨은참조:";
 
 /*
  general delete action
@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "지금은 폴더를 비울 수 없습니다.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[모든 메시지 보기]";
 
@@ -1660,10 +1663,10 @@
 "Do you want to send your message anyway?" = "메시지를 그대로 전송하시겠습니까?";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "참조와 부참조 추가";
+"Add CC and BCC" = "참조와 숨은참조 추가";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "CC와 BCC 닫기";
+"Close CC and BCC" = "참조와 숨은참조 닫기";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "다른 발신자 주소를 선택하세요.";

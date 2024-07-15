@@ -17,7 +17,7 @@
 
 import CoreData
 import ProtonCoreCrypto
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 @testable import ProtonMail
 
 final class MessageDecrypterMock: MessageDecrypter {

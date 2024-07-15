@@ -20,7 +20,7 @@ import Groot
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 

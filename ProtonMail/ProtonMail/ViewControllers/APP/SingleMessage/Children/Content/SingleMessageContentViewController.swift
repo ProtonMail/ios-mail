@@ -499,13 +499,18 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged() {
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        SystemLogger.log(
+            message: "\(notification.name.rawValue) \(notification.userInfo?[UIContentSizeCategory.newValueUserInfoKey] ?? "")",
+            category: .dynamicFontSize
+        )
         customView.preferredContentSizeChanged()
         if let expandedVC = headerViewController as? ExpandedHeaderViewController {
             expandedVC.preferredContentSizeChanged()
         } else if let nonExpandedVC = headerViewController as? NonExpandedHeaderViewController {
             nonExpandedVC.preferredContentSizeChanged()
         }
+        messageBodyViewController.preferredContentSizeChanged()
     }
 }
 

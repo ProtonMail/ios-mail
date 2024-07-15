@@ -19,7 +19,7 @@ import Combine
 @testable import ProtonMail
 import ProtonCoreDataModel
 import ProtonCoreKeymaker
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class AppAccessResolverTests: XCTestCase {

@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCoreCrypto
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MockPrepareSendRequest: UseCase<SendMessageRequest, PrepareSendRequest.Params> {
 

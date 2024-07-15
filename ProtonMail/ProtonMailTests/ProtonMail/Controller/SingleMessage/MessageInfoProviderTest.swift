@@ -18,7 +18,9 @@
 import Groot
 import ProtonCoreCrypto
 import ProtonCoreDataModel
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 import XCTest
 

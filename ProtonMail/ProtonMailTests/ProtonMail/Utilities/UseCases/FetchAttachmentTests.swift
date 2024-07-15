@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import ProtonCoreCrypto
 import ProtonCoreDataModel
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class FetchAttachmentTests: XCTestCase {

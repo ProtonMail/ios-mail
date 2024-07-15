@@ -24,6 +24,7 @@ import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
+import ProtonCoreFeatureFlags
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
@@ -78,6 +79,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         view.backgroundColor = ColorProvider.BackgroundSecondary
         generateAccessibilityIdentifiers()
+        refreshUserInfo()
     }
 
     private func updateTitle() {
@@ -93,6 +95,16 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
             isAccountDeletionPending = false
         } else {
             self.tableView.reloadData()
+        }
+    }
+
+    func refreshUserInfo() {
+        guard viewModel.isAccountRecoveryEnabled else { return }
+        Task {
+            await viewModel.refreshUserInfo()
+            await MainActor.run {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -261,7 +273,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.accountItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData:
+            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData, .securityKeys:
                 break
             case .recovery:
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
@@ -351,6 +363,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .loginPwd)
         case .mailboxPassword:
             self.coordinator.go(to: .mailboxPwd)
+        case .securityKeys:
+            self.coordinator.go(to: .securityKeys)
         case .recovery:
             self.coordinator.go(to: .recoveryEmail)
         case .privacyAndData:

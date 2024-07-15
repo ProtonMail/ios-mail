@@ -6,9 +6,11 @@
 //
 
 CLANG_CXX_LANGUAGE_STANDARD = gnu++14
+CODE_SIGN_ENTITLEMENTS = Siri/Siri.entitlements
 GCC_C_LANGUAGE_STANDARD = gnu11
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
 OTHER_SWIFT_FLAGS = $(inherited) -DAPP_EXTENSION
+PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri
 SKIP_INSTALL = YES
 SWIFT_OBJC_BRIDGING_HEADER =
 TARGETED_DEVICE_FAMILY = 1,2

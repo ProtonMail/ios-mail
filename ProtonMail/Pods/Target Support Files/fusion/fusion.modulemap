@@ -1,6 +1,0 @@
-framework module fusion {
-  umbrella header "fusion-umbrella.h"
-
-  export *
-  module * { export * }
-}

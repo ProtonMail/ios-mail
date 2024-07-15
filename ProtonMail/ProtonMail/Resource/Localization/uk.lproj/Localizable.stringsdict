@@ -342,46 +342,6 @@
         <string>%d розмов позначено міткою</string>
       </dict>
     </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Ви дійсно хочете остаточно видалити %d повідомлення?</string>
-        <key>few</key>
-        <string>Ви дійсно хочете остаточно видалити %d повідомлення?</string>
-        <key>many</key>
-        <string>Ви дійсно хочете остаточно видалити %d повідомлень?</string>
-        <key>other</key>
-        <string>Ви дійсно хочете остаточно видалити %d повідомлень?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Ви дійсно хочете остаточно видалити %d розмову?</string>
-        <key>few</key>
-        <string>Ви дійсно хочете остаточно видалити %d розмови?</string>
-        <key>many</key>
-        <string>Ви дійсно хочете остаточно видалити %d розмов?</string>
-        <key>other</key>
-        <string>Ви дійсно хочете остаточно видалити %d розмов?</string>
-      </dict>
-    </dict>
     <key>%d member</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>

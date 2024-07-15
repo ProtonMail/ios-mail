@@ -19,7 +19,7 @@ import Combine
 import ProtonCorePayments
 
 final class UpsellOfferProvider {
-    typealias Dependencies = AnyObject & HasPayments
+    typealias Dependencies = AnyObject & HasPlanService
 
     @Published var availablePlan: AvailablePlans.AvailablePlan?
 
@@ -35,7 +35,7 @@ final class UpsellOfferProvider {
 
     private func findPlanToOffer() async throws -> AvailablePlans.AvailablePlan? {
         let plansDataSource: PlansDataSourceProtocol
-        switch dependencies.payments.planService {
+        switch dependencies.planService {
         case .left:
             return nil
         case .right(let pdsp):

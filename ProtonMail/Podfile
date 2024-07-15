@@ -1,17 +1,5 @@
 source 'https://cdn.cocoapods.org/'
 
-def proton_core_path
-  return "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-end
-
-def proton_test_path
-  return "git@gitlab.protontech.ch:tpe/apple-fusion.git"
-end
-
-def proton_test_commit
-  "0e0b1903"
-end
-
 def monkey_path
   'git@gitlab.protontech.ch:tpe/ios-monkey.git'
 end
@@ -19,11 +7,6 @@ end
 def monkey_commit
   "d11605f4"
 end
-
-
-# proton url is set to env variable because the core module podspecs expect it.
-# it's part of transition into open sourced core modules and it will not be necessary when they are on github
-ENV['PROTON_CORE_GIT_URL'] = proton_core_path
 
 def minimum_deployment_target
   '15.0'
@@ -33,74 +16,15 @@ platform :ios, minimum_deployment_target
 inhibit_all_warnings!
 use_frameworks!
 
-def proton_core_version
-  '25.2.3'
-end
-
-def crypto_variant
-  "Crypto-Go"
-end
-
-def app_share_push_siri_pods
-  pod "ProtonCore-Keymaker", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
-end
-
-def app_share_push_pods
-  app_share_push_siri_pods
-
-  pod "ProtonCore-Crypto", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-CryptoGoImplementation/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-CryptoGoInterface", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-GoLibs", :git => proton_core_path, :tag => proton_core_version
-end
-
 def app_share_pods
-  app_share_push_pods
-
   pod 'Groot', '3.0.1'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'PromiseKit', '6.13.1'
-  pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Authentication-KeyGeneration", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-FeatureFlags', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Authentication", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Telemetry", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-VCard', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
-  pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
 end
 
 def app_pods
   app_share_pods
-  pod 'SDWebImage', '~> 5.15'
-  pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-AccountRecovery', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-PushNotifications', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Features', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-KeyManager", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-MissingScopes", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PasswordChange", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PasswordRequest", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
-  pod 'ProtonInboxRSVP', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxrsvp.git'
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'
@@ -110,57 +34,19 @@ target 'ProtonMail' do
   app_pods
 end
 
-target 'PushService' do
-  app_share_push_pods
-end
-
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
-  pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/Login", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/LoginUI", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/Authentication", :git => proton_core_path, :tag => proton_core_version
-  pod 'fusion', :git => proton_test_path, :commit => proton_test_commit
   app_pods
 end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'fusion', :git => proton_test_path, :commit => proton_test_commit
   pod 'iosMonkey', :git => monkey_path, :commit => monkey_commit
-  pod 'ProtonCore-TestingToolkit/UITests/Core', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'
-  pod 'ProtonInboxICal', :git => 'git@gitlab.protontech.ch:apple/inbox/protoninboxical.git'
 end
 
 target 'Share' do
   app_share_pods
-end
-
-target 'Siri' do
-  app_share_push_siri_pods
-end
-
-target 'ProtonMailAnalytics' do
-  pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '8.9.3.fork'
-end
-
-target 'ProtonMailUI' do
-  pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
 end
 
 post_install do | installer |

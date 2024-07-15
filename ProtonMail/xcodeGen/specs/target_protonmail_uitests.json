@@ -3,6 +3,19 @@
       "ProtonMailUITests": {
          "type": "bundle.ui-testing",
          "platform": "iOS",
+         "dependencies": [
+            {
+               "package": "ProtonCore",
+               "products": [
+                  "ProtonCoreQuarkCommands",
+                  "ProtonCoreTestingToolkitUITestsAccountDeletion",
+                  "ProtonCoreTestingToolkitUITestsCore",
+                  "ProtonCoreTestingToolkitUITestsHumanVerification",
+                  "ProtonCoreTestingToolkitUITestsLogin",
+                  "ProtonCoreTestingToolkitUITestsPaymentsUI"
+               ]
+            }
+         ],
          "sources": [
             {
                "path": "ProtonMailUITests",

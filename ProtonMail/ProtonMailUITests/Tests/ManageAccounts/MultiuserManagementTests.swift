@@ -7,7 +7,7 @@
 //
 
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 class MultiuserManagementTests : FixtureAuthenticatedTestCase {
 

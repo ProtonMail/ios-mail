@@ -10,8 +10,6 @@
 #include "../../Pods/Target Support Files/Pods-Share/Pods-Share.adhoc.xcconfig"
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev
-CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/Share/Share.entitlements
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE
-PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share
 PROVISIONING_PROFILE_SPECIFIER = Protonmail share release
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =

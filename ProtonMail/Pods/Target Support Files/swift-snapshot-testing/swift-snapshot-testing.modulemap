@@ -1,6 +1,0 @@
-framework module SnapshotTesting {
-  umbrella header "swift-snapshot-testing-umbrella.h"
-
-  export *
-  module * { export * }
-}
