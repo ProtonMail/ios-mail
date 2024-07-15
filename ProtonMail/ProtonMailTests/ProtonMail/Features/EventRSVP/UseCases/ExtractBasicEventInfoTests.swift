@@ -37,6 +37,7 @@ final class ExtractBasicEventInfoTests: XCTestCase {
     func testBasicInfoExtraction_withRecurrenceID() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
+METHOD:REQUEST
 BEGIN:VEVENT
 UID:FOO
 RECURRENCE-ID;VALUE=DATE:19960401
@@ -52,6 +53,7 @@ END:VCALENDAR
     func testBasicInfoExtraction_withoutRecurrenceID() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
+METHOD:REQUEST
 BEGIN:VEVENT
 UID:FOO
 END:VEVENT
@@ -66,6 +68,7 @@ END:VCALENDAR
     func testBasicInfoExtraction_withRecurrenceID_inSpecificTimezone() throws {
         let basicICS = #"""
 BEGIN:VCALENDAR
+METHOD:CANCEL
 BEGIN:VEVENT
 UID:FOO
 RECURRENCE-ID;TZID=Europe/Warsaw:20240508T120000
@@ -76,5 +79,43 @@ END:VCALENDAR
         let icsData = Data(basicICS.utf8)
         let basicEventInfo = try sut.execute(icsData: icsData)
         XCTAssertEqual(basicEventInfo, .inviteDataFromICS(eventUID: "FOO", recurrenceID: 1715162400))
+    }
+
+    func testWhenMethodIsMissing_thenThrowsError() {
+        let basicICS = #"""
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:FOO
+RECURRENCE-ID;TZID=Europe/Warsaw:20240508T120000
+END:VEVENT
+END:VCALENDAR
+"""#
+
+        attemptExtraction(from: basicICS, expecting: .icsDoesNotContainSupportedMethod)
+    }
+
+    func testWhenMethodIsPublish_thenThrowsError() {
+        let basicICS = #"""
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:FOO
+RECURRENCE-ID;TZID=Europe/Warsaw:20240508T120000
+END:VEVENT
+END:VCALENDAR
+"""#
+
+        attemptExtraction(from: basicICS, expecting: .icsDoesNotContainSupportedMethod)
+    }
+
+    private func attemptExtraction(from ics: String, expecting expectedError: EventRSVPError) {
+        let icsData = Data(ics.utf8)
+
+        XCTAssertThrowsError(try sut.execute(icsData: icsData)) { error in
+            guard let receivedError = error as? EventRSVPError, receivedError == expectedError else {
+                XCTFail("Unexpected error: \(error)")
+                return
+            }
+        }
     }
 }

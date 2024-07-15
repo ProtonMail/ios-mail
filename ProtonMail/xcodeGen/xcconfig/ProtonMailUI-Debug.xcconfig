@@ -6,7 +6,6 @@
 //
 
 #include "ProtonMailUI-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailUI/Pods-ProtonMailUI.debug.xcconfig"
 
 ENABLE_TESTABILITY = YES
 GCC_OPTIMIZATION_LEVEL = 0

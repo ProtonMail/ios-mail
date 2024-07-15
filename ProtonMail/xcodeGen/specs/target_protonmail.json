@@ -73,13 +73,26 @@
                "package": "LifetimeTracker"
             },
             {
-               "package": "OHHTTPStubs",
+               "package": "ProtonCore",
                "products": [
-                  "OHHTTPStubsSwift"
+                  "OHHTTPStubs",
+                  "OHHTTPStubsSwift",
+                  "ProtonCoreAccountDeletion",
+                  "ProtonCoreAccountRecovery",
+                  "ProtonCoreAccountSwitcher",
+                  "ProtonCoreCryptoGoImplementation",
+                  "ProtonCoreForceUpgrade",
+                  "ProtonCoreLoginUI",
+                  "ProtonCoreHumanVerification",
+                  "ProtonCorePasswordChange",
+                  "ProtonCoreVCard"
                ]
             },
             {
                "package": "ProtonCoreEventsLoop"
+            },
+            {
+               "package": "ProtonInboxRSVP"
             },
             {
                "package": "SwiftCSSParser"

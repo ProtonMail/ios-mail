@@ -17,7 +17,7 @@
 
 import Foundation
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 class MockSaveToolbarActionSettingsForUsersUseCase: SaveToolbarActionSettingsForUsersUseCase {
     @FuncStub(MockSaveToolbarActionSettingsForUsersUseCase.executionBlock) var callExecute

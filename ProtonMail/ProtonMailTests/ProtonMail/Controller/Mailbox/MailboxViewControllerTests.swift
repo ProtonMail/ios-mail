@@ -19,7 +19,8 @@ import CoreData
 import Groot
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 @testable import ProtonMail
 import protocol ProtonCoreServices.APIService

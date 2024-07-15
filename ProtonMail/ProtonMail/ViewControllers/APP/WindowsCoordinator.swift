@@ -478,8 +478,8 @@ extension WindowsCoordinator {
         }
     }
 
-    private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
-        self.deepLink = deepLink
+    private func handleSwitchViewDeepLinkIfNeeded(_ deepLinkInNotification: DeepLink?) {
+        let deepLink = deepLinkInNotification ?? self.deepLink
         if let url = shouldOpenURL(deepLink: deepLink) {
             self.deepLink = nil
             handleWebUrl(url: url)

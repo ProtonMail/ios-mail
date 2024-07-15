@@ -18,7 +18,7 @@
 import Groot
 import XCTest
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class FetchMessageDetailTests: XCTestCase {
     private var queueManager: MockQueueManager!

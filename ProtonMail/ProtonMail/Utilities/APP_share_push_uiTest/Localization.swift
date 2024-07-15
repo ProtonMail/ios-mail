@@ -1155,8 +1155,7 @@ class LocalizedString {
     lazy var _empty_spam = NSLocalizedString("Empty Spam", comment: "An action title shows in ellipsis menu")
     lazy var _empty_spam_folder = NSLocalizedString("Empty spam folder", comment: "Alert title")
     lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
-    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete %d message?", comment: "Warning message when users try to empty messages in the folder")
-    lazy var _clean_conversation_warning = NSLocalizedString("Are you sure you want to permanently delete %d conversation?", comment: "Warning message when users try to empty conversations in the folder")
+    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete all messages within '%@'?", comment: "Warning message when users try to empty messages in the folder")
     lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 
     lazy var _token_revoke_noti_title = NSLocalizedString("Signed out of %@", comment: "The title of notification that will show when the token of one account is revoked")
@@ -1210,6 +1209,7 @@ class LocalizedString {
     lazy var _pgp_encrypted_signed_of_received = NSLocalizedString("PGP-encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verified_of_received = NSLocalizedString("PGP-signed message from verified sender", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_encrypted_of_received = NSLocalizedString("PGP-encrypted message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_signed_of_received = NSLocalizedString("PGP-signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verification_failed_of_received = NSLocalizedString("PGP-signed message. Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
 
     lazy var _end_to_end_encrypted_to_verified_recipient = NSLocalizedString("End-to-end encrypted to verified recipient", comment: "The message after tapping the encryption icon of recipient in composer.")
@@ -1635,6 +1635,7 @@ enum L10n {
         static let loginPassword = NSLocalizedString("Change account password", comment: "settings general section title")
         static let mailboxPassword = NSLocalizedString("Change mailbox password", comment: "settings general section title")
         static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
+        static let securityKeys = NSLocalizedString("Security keys", comment: "settings general section title")
     }
 
     enum PremiumPerks {

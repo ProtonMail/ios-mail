@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest

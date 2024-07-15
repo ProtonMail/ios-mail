@@ -6,6 +6,3 @@
 //
 
 #include "ProtonMailAnalytics-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.adhoc.xcconfig"
-
-

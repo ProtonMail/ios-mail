@@ -17,7 +17,7 @@
 
 import Foundation
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MockSendMessageUseCase: SendMessageUseCase {
     var result: Result<Void, Error>

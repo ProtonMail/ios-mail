@@ -26,8 +26,7 @@ protocol CoreDataContextProviderProtocol {
     func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func performAndWaitOnRootSavingContext<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T
-    func read<T>(block: (NSManagedObjectContext) -> T) -> T
-    func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
+    func read<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T
 
     @available(*, deprecated, message: "This method violates the runtime contract that the threads do not block, which is required by Swift concurrency. Use `writeAsync` instead.")
     func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T

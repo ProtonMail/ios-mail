@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ICalKitWrapper
 import ProtonInboxICal
 
 // sourcery: mock
@@ -36,12 +37,18 @@ struct ExtractBasicEventInfoImpl: ExtractBasicEventInfo {
             icalcomponent_free(calendarComponent)
         }
 
+        let method = icalcomponent_get_method(calendarComponent)
+
+        guard [ICAL_METHOD_REQUEST, ICAL_METHOD_CANCEL].contains(method) else {
+            throw EventRSVPError.icsDoesNotContainSupportedMethod
+        }
+
         guard let eventComponent = icalcomponent_get_first_component(calendarComponent, ICAL_VEVENT_COMPONENT) else {
             throw EventRSVPError.icsDoesNotContainEvents
         }
 
         guard let uidComponent = icalcomponent_get_uid(eventComponent) else {
-            throw EventRSVPError.icsDataDoesNotContainUID
+            throw EventRSVPError.icsDoesNotContainUID
         }
 
         let uid = String(cString: uidComponent)
@@ -59,8 +66,7 @@ struct ExtractBasicEventInfoImpl: ExtractBasicEventInfo {
         let timeZoneIdentifier: String
         if
             let timeZoneParameter = icalproperty_get_first_parameter(recurrenceIDProperty, ICAL_TZID_PARAMETER),
-            let timeZoneCString = icalparameter_get_tzid(timeZoneParameter)
-        {
+            let timeZoneCString = icalparameter_get_tzid(timeZoneParameter) {
             timeZoneIdentifier = String(cString: timeZoneCString)
         } else {
             timeZoneIdentifier = "GMT"

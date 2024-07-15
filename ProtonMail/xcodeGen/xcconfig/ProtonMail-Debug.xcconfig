@@ -10,8 +10,6 @@
 #include "../../Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIcon
-CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/ProtonMail/Supporting Files/ProtonMail.entitlements
 OTHER_SWIFT_FLAGS = $(inherited) -DDEBUG_ENTERPRISE
-PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail
 PROVISIONING_PROFILE_SPECIFIER = ProtonMail Dev
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG

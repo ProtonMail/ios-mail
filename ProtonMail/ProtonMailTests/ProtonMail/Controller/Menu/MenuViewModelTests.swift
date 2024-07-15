@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 
 class MenuViewModelTests: XCTestCase {

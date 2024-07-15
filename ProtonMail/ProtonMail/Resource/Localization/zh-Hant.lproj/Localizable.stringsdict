@@ -240,34 +240,6 @@
         <string>%d 則往來對話已上標籤</string>
       </dict>
     </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>您確定要永久刪除 %d 封郵件嗎？</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>other</key>
-        <string>您確定要永久刪除 %d 則往來對話嗎？</string>
-      </dict>
-    </dict>
     <key>%d member</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>

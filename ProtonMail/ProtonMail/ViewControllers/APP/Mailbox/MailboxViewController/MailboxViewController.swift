@@ -681,15 +681,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     func clickEmptyFolderAction() {
-        self.viewModel.updateListAndCounter { [weak self] count in
-            guard let count = count else {
-                if let self = self {
-                    LocalString._cannot_empty_folder_now.toast(at: self.view)
-                }
-                return
-            }
-            self?.showEmptyFolderAlert(total: Int(count.total))
-        }
+        showEmptyFolderAlert()
     }
 
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -1819,11 +1811,16 @@ extension MailboxViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    private func showEmptyFolderAlert(total: Int) {
+    private func showEmptyFolderAlert() {
         let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
         let title = isTrashFolder ? LocalString._empty_trash_folder: LocalString._empty_spam_folder
-        let message = self.viewModel.getEmptyFolderCheckMessage(count: total)
-        let alert = UIAlertController(title: "\(title)?", message: message, preferredStyle: .alert)
+
+        guard let labelLocation = LabelLocation.allCases.first(where: { $0.labelID == viewModel.labelID }) else {
+            return
+        }
+
+        let message = viewModel.getEmptyFolderCheckMessage(folder: labelLocation)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
             self?.viewModel.emptyFolder()
         }

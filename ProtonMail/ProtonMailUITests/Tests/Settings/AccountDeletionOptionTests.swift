@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsAccountDeletion
+import ProtonCoreTestingToolkitUITestsLogin
 
 // Validates account deletion option in the app without actual deletion.
 class AccountDeletionOptionTests: FixtureAuthenticatedTestCase {

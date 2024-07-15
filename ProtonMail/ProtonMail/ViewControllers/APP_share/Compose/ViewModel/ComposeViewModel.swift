@@ -56,18 +56,10 @@ class ComposeViewModel: NSObject {
     }
 
     var contacts: [ContactPickerModelProtocol] {
-        /**
-         We use `contactTitle` and `displayEmail` combined to determine the unique contacts because:
-         1. The same name could be used in 2 different contacts, but each contact has a different email.
-         2. The same email could be in 2 different contacts using the same name, but one contact card could have specific send preferences.
-         */
-        protonContacts
-            .appending(protonGroupContacts)
-            .appending(phoneContacts)
-            .unique { "\($0.contactTitle)-\($0.displayEmail ?? "")" }
-            .sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+        // sort the contact group and phone address together
+        let sortedContacts = phoneContacts.appending(protonGroupContacts).sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+        return protonContacts + sortedContacts
     }
-
     private var phoneContacts: [ContactPickerModelProtocol] = [] {
         didSet {
             contactsDidChangePublisher.send()

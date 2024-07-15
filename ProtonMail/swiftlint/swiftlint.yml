@@ -3,6 +3,7 @@ disabled_rules:
   - file_length
   - file_name
   - nesting
+  - non_optional_string_data_conversion
 
 opt_in_rules:
   - attributes
@@ -443,7 +444,7 @@ type_name:
 identifier_name:
   min_length: 3
   max_length:
-    warning: 40
+    warning: 50
   excluded:
     - id
     - ID

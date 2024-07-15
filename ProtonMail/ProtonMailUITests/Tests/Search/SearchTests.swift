@@ -8,7 +8,7 @@
 
 import XCTest
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 class SearchTests: FixtureAuthenticatedTestCase {
     

@@ -28,7 +28,9 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDataModel
+import ProtonCoreTestingToolkitUnitTestsLogin
+import ProtonCoreTestingToolkitUnitTestsLoginUI
 
 @testable import ProtonMail
 

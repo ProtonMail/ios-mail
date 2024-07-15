@@ -24,6 +24,7 @@ import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreLog
+import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
 import ProtonCoreFeatureFlags
@@ -73,6 +74,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case autoDeleteSpamTrash
         case privacyAndData
         case accountRecovery
+        case securityKeys
     }
 
     init(navigationController: UINavigationController?, dependencies: Dependencies) {
@@ -139,6 +141,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             openPrivacyAndDataSetting()
         case .accountRecovery:
             openAccountRecovery()
+        case .securityKeys:
+            openSecurityKeys()
         }
     }
 
@@ -313,5 +317,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             self?.user.userInfo.accountRecovery = newAccountRecovery
         }
         navigationController?.show(accountRecoveryVC, sender: nil)
+    }
+
+    private func openSecurityKeys() {
+        let securityKeysVC = LoginUIModule.makeSecurityKeysViewController(apiService: user.apiService, clientApp: .mail)
+        navigationController?.show(securityKeysVC, sender: nil)
     }
 }

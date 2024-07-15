@@ -1,6 +1,0 @@
-framework module ProtonCorePushNotifications {
-  umbrella header "ProtonCore-PushNotifications-umbrella.h"
-
-  export *
-  module * { export * }
-}

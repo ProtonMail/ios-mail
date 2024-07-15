@@ -274,38 +274,6 @@
         <string>%d Unterhaltungen kategorisiert</string>
       </dict>
     </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Möchtest du %d Nachricht wirklich dauerhaft löschen?</string>
-        <key>other</key>
-        <string>Möchtest du %d Nachrichten wirklich dauerhaft löschen?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Bist du sicher, dass du %d Unterhaltung dauerhaft löschen möchtest?</string>
-        <key>other</key>
-        <string>Bist du sicher, dass du %d Unterhaltungen dauerhaft löschen möchtest?</string>
-      </dict>
-    </dict>
     <key>%d member</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>

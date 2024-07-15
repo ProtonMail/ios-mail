@@ -6,7 +6,9 @@
 //
 
 APPLICATION_EXTENSION_API_ONLY = YES
+CODE_SIGN_ENTITLEMENTS = ${SRCROOT}/Share/Share.entitlements
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share
 OTHER_SWIFT_FLAGS = $(inherited) -DAPP_EXTENSION
 SKIP_INSTALL = YES
 SWIFT_OBJC_INTERFACE_HEADER_NAME = ProtonMail-Swift.h

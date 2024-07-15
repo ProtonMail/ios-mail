@@ -7,11 +7,10 @@ include:
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
-  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.1
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.2
     inputs:
       allowed-to-fail: false
       run-gitleaks-no-git-scan: false
-      runner-tag: shared-medium
       stage: scan
 
 variables:
@@ -35,6 +34,8 @@ stages:
   - bot
 
 .setup_project: &setup_project
+  - echo -e "machine gitlab.protontech.ch\n  login gitlab-ci-token\n  password $CI_JOB_TOKEN\n\n" > ~/.netrc
+  - chmod 0600 ~/.netrc
   - mint bootstrap
   - cd ProtonMail
   - bundle install

@@ -1,8 +1,0 @@
-{
-  "Version" : 4,
-  "ServerEphemeral" : "ServerEphemeral",
-  "Modulus" : "Modulus",
-  "Salt" : "Salt",
-  "Code" : 1000,
-  "SRPSession" : "SRPSession"
-}

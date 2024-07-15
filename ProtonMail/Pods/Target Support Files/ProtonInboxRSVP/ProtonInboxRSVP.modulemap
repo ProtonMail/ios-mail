@@ -1,6 +1,0 @@
-framework module ProtonInboxRSVP {
-  umbrella header "ProtonInboxRSVP-umbrella.h"
-
-  export *
-  module * { export * }
-}
