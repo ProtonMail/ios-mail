@@ -311,14 +311,6 @@ class HtmlEditorBehaviour: NSObject {
         }
     }
 
-    func getOrignalCIDs() -> Promise<String> {
-        return self.run(with: "html_editor.removeEmbedImage('');")
-    }
-
-    func getEditedCIDs() -> Promise<String> {
-        return self.run(with: "html_editor.removeEmbedImage('');")
-    }
-
     func removeStyleFromSelection() {
         firstly { () -> Promise<Void> in
             return self.run(with: "html_editor.removeStyleFromSelection();")

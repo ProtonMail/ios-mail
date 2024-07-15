@@ -259,7 +259,7 @@ extension ComposerAttachmentVC {
         else { return }
         let uploadingData = self.datas.filter { $0.objectID == attachmentURI }
         let isTooManyAttachments = error.responseCode == APIErrorCode.tooManyAttachments
-        displayErrorAlert(isTooManyAttachments: isTooManyAttachments, uploadingData: uploadingData)
+        displayErrorAlert(isTooManyAttachments: isTooManyAttachments, uploadingData: uploadingData, error: error)
         SystemLogger.log(error: error, category: .draft)
 
         uploadingData.map { $0.objectID }.forEach(delete(objectID:))
@@ -268,12 +268,16 @@ extension ComposerAttachmentVC {
         }
     }
 
-    private func displayErrorAlert(isTooManyAttachments: Bool, uploadingData: [AttachInfo]) {
+    private func displayErrorAlert(isTooManyAttachments: Bool, uploadingData: [AttachInfo], error: Error) {
         DispatchQueue.main.async {
-            if uploadingData.isEmpty { return }
-            let names = uploadingData.map { $0.name }.joined(separator: "\n")
+            let message: String
+            if uploadingData.isEmpty {
+                message = error.localizedDescription
+            } else {
+                let names = uploadingData.map { $0.name }.joined(separator: "\n")
+                message = "\(LocalString._attachment_upload_failed_body) \(names)"
+            }
 
-            let message = "\(LocalString._attachment_upload_failed_body) \(names)"
             let title = isTooManyAttachments
             ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
 

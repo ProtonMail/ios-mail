@@ -44,7 +44,8 @@ final class UploadDraft: UploadDraftUseCase {
             if let responseError = error as? ResponseError,
                let underlyingError = responseError.underlyingError {
                 if underlyingError.code != APIErrorCode.updateDraftHasBeenSent {
-                    // Doesn't need to show message has sent message to user 
+                    SystemLogger.log(error: error, category: .emptyAlert)
+                    // Doesn't need to show message has sent message to user
                     await NSError.alertSavingDraftError(details: underlyingError.localizedDescription)
                 }
 
@@ -58,6 +59,7 @@ final class UploadDraft: UploadDraftUseCase {
                     let code = error.bestShotAtReasonableErrorCode
                     PMAssertionFailure("Attempting to display error with empty description, code \(code)")
                 }
+                SystemLogger.log(error: error, category: .emptyAlert)
                 await NSError.alertSavingDraftError(details: error.localizedDescription)
             }
             throw error

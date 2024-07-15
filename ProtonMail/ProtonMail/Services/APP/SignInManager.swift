@@ -187,9 +187,9 @@ extension SignInManager: LifetimeTrackable {
 private extension SpotlightableFeatureKey {
     var isFeatureEnabledLocallyByDefault: Bool {
         switch self {
-        case .scheduledSend, .toolbarCustomization, .jumpToNextMessage:
+        case .scheduledSend, .toolbarCustomization, .jumpToNextMessage, .answerInvitation:
             return true
-        case .answerInvitation, .messageSwipeNavigationAnimation, .autoImportContacts:
+        case .messageSwipeNavigationAnimation, .autoImportContacts:
             return false
         }
     }
