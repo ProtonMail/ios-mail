@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreUIFoundations
 
 struct ColorManager {
-    static let forLabel = [
+    static let forLabel: [String] = [
         ColorProvider.PurpleBase.toHex(),
         ColorProvider.PinkBase.toHex(),
         ColorProvider.StrawberryBase.toHex(),
@@ -37,7 +37,7 @@ struct ColorManager {
         ColorProvider.OliveBase.toHex()
     ]
 
-    static let intenseColors = [
+    static let intenseColors: [String] = [
         ColorProvider.PurpleBase.computedIntenseVariant.toHex(),
         ColorProvider.PinkBase.computedIntenseVariant.toHex(),
         ColorProvider.StrawberryBase.computedIntenseVariant.toHex(),
