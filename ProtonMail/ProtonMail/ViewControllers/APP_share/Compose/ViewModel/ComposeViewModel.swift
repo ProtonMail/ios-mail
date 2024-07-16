@@ -260,7 +260,7 @@ class ComposeViewModel: NSObject {
 
         switch messageAction {
         case .openDraft:
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
             let supplementCSS = supplementCSS(from: body)
             return .init(
                 body: body,
@@ -271,7 +271,7 @@ class ComposeViewModel: NSObject {
             )
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
 
             let clockFormat: String = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
@@ -321,7 +321,7 @@ class ComposeViewModel: NSObject {
             if !msg.ccList.isEmpty {
                 forwardHeader.append(contentsOf: "\(c) \(msg.ccList.formatJsonContact(true))<br>")
             }
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
@@ -382,6 +382,22 @@ class ComposeViewModel: NSObject {
                 messageDisplayMode: .expanded,
                 contentLoadingType: contentLoadingType
             )
+        }
+    }
+
+    private func decryptedBody() -> String {
+        let rawHTML = composerMessageHelper.decryptBody()
+
+        do {
+            let document = try SwiftSoup.parse(rawHTML)
+            if let body = document.body() {
+                return try body.html()
+            } else {
+                return try document.html()
+            }
+        } catch {
+            SystemLogger.log(error: error)
+            return rawHTML
         }
     }
 

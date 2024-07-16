@@ -164,17 +164,6 @@ html_editor.addSupplementCSS = function (css) {
     document.head.appendChild(style);
 };
 
-/// update view port width. set to the content size otherwise the text selection will not work
-html_editor.setWidth = function (width) {
-    var mvp = document.getElementById('myViewport');
-    mvp.setAttribute('content', 'user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
-};
-
-/// we don't use it for now.
-html_editor.setPlaceholderText = function (text) {
-    html_editor.editor.setAttribute("placeholder", text);
-};
-
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function () { // input and not keydown/keyup/keypress cuz need to move caret when inserting text via autocomplete too
     html_editor.getCaretYPosition();
