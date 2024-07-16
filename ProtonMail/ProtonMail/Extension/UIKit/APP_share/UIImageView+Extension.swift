@@ -27,7 +27,7 @@ extension UIImageView {
     class func make(
         icon iconKeyPath: KeyPath<ProtonIconSet, ProtonIcon>,
         contentMode: UIView.ContentMode = .scaleAspectFit,
-        tintColor tintColorKeyPath: KeyPath<ProtonColorPaletteiOS, ProtonColor>
+        tintColor tintColorKeyPath: KeyPath<any ColorPaletteiOS, ProtonColor>
     ) -> UIImageView {
         make(image: IconProvider[dynamicMember: iconKeyPath], contentMode: contentMode, tintColor: tintColorKeyPath)
     }
@@ -35,7 +35,7 @@ extension UIImageView {
     class func make(
         image: UIImage,
         contentMode: UIView.ContentMode = .scaleAspectFit,
-        tintColor tintColorKeyPath: KeyPath<ProtonColorPaletteiOS, ProtonColor>
+        tintColor tintColorKeyPath: KeyPath<any ColorPaletteiOS, ProtonColor>
     ) -> UIImageView {
         let imageView = UIImageView(image: image)
         imageView.contentMode = contentMode
