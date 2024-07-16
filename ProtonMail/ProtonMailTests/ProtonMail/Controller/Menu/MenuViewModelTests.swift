@@ -76,7 +76,6 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
         let baseInfo = MenuViewModel.MoreItemsInfo(userIsMember: nil,
-                                                   subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true,
                                                    isReferralEligible: false)
@@ -90,7 +89,6 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: true,
-                                                   subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true,
                                                    isReferralEligible: false)
@@ -105,21 +103,6 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: true,
-                                                   isPinCodeEnabled: true,
-                                                   isTouchIDEnabled: true,
-                                                   isReferralEligible: false)
-        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
-    }
-
-    func testMoreItemsForNonMemberWithUnavailableSubscriptionAreTheExpectedOnes() {
-        let expectedItems = [MenuLabel(location: .settings),
-                             MenuLabel(location: .contacts),
-                             MenuLabel(location: .bugs),
-                             MenuLabel(location: .lockapp),
-                             MenuLabel(location: .signout)]
-        let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true,
                                                    isReferralEligible: false)
@@ -127,13 +110,13 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testMoreItemsWithDisabledPINCodeAreTheExpectedOnes() {
-        let expectedItems = [MenuLabel(location: .settings),
+        let expectedItems = [MenuLabel(location: .subscription),
+                             MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: true,
                                                    isReferralEligible: false)
@@ -141,13 +124,13 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testMoreItemsWithDisabledTouchIDAreTheExpectedOnes() {
-        let expectedItems = [MenuLabel(location: .settings),
+        let expectedItems = [MenuLabel(location: .subscription),
+                             MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: false,
                                                    isReferralEligible: false)
@@ -155,12 +138,12 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testMoreItemsWithDisabledPINCodeAndTouchIDAreTheExpectedOnes() {
-        let expectedItems = [MenuLabel(location: .settings),
+        let expectedItems = [MenuLabel(location: .subscription),
+                             MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: false,
                                                    isReferralEligible: false)
@@ -168,13 +151,13 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testMoreItems_withReferralEligibleTrue_containsReferAFriend() {
-        let expectedItems = [MenuLabel(location: .settings),
+        let expectedItems = [MenuLabel(location: .subscription),
+                             MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .referAFriend),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,
-                                                   subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: false,
                                                    isReferralEligible: true)
