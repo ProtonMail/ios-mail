@@ -89,15 +89,9 @@ extension AppContext {
 
     struct Dependencies {
         let fileManager: FileManager = .default
-        let keychain: OsKeyChain = Keychain.shared
+        let keychain: OsKeyChain = KeychainSDKWrapper()
         let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
         let appConfigService: AppConfigService = AppConfigService.shared
-    }
-}
-
-extension AppContext {
-    enum Keys: String {
-        case session
     }
 }
 
@@ -105,29 +99,6 @@ enum AppContextError: Error {
     case applicationSupportDirectoryNotAccessible
     case cacheDirectoryNotAccessible
     case appConfigNotDefined
-}
-
-final class Keychain: OsKeyChain, Sendable {
-    static let shared = Keychain()
-
-    // TODO: use the keychain
-
-    func store(key: String) throws {
-        AppLogger.logTemporarily(message: "KeychainWrapper.store key:\(key)")
-        UserDefaults.standard.setValue(key, forKey: AppContext.Keys.session.rawValue)
-    }
-
-    func delete() throws {
-        let existingKey: String = (try? get()) ?? ""
-        AppLogger.logTemporarily(message: "KeychainWrapper.delete, existing value: \(existingKey)")
-        UserDefaults.standard.removeObject(forKey: AppContext.Keys.session.rawValue)
-    }
-
-    func get() throws -> String? {
-        let value = UserDefaults.standard.string(forKey: AppContext.Keys.session.rawValue)
-        AppLogger.logTemporarily(message: "KeychainWrapper.get \(value ?? "-")")
-        return value
-    }
 }
 
 final class NetworkStatusManager: NetworkStatusChanged, Sendable {

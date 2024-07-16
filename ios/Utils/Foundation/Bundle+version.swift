@@ -19,21 +19,21 @@ import Foundation
 
 extension Bundle {
 
-    /// the default identifier matches the one used in Mail production
+    /// the default identifier is the one used for Mail 4.x.x in production
     static let defaultIdentifier = "ch.protonmail.protonmail"
 
     /// Returns the app version in a nice to read format
     var appVersion: String {
-        return "\(bundleShortVersion) (\(buildVersion))"
+        "\(bundleShortVersion) (\(buildVersion))"
     }
 
     /// Returns the build version of the app.
     var buildVersion: String {
-        return infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+        infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
     }
 
     /// Returns the major version of the app.
     var bundleShortVersion: String {
-        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
     }
 }

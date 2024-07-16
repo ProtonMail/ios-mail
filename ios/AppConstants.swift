@@ -25,3 +25,9 @@ enum AppConstants {
     /// selection mode animation duration
     static let selectionModeStartDuration = 0.2
 }
+
+enum AppGroup {
+
+    /// Mail app group identifier to access shared resources
+    static let mail = "group.ch.protonmail.protonmail"
+}

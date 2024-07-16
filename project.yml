@@ -12,6 +12,8 @@ options:
 packages:
   DesignSystem:
     path: localPackages/DesignSystem
+  Keychain:
+    path: localPackages/Keychain
   proton_mail_uniffi:
     path: localPackages/proton_mail_uniffi
   SwiftNIO:
@@ -54,6 +56,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_STRICT_CONCURRENCY: "complete"
+        CODE_SIGN_ENTITLEMENTS: "ProtonMail.entitlements"
       configs:
         UITests:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
@@ -90,6 +93,7 @@ targets:
           - UIInterfaceOrientationLandscapeRight  
     dependencies:
       - package: DesignSystem
+      - package: Keychain
       - package: SwiftUIIntrospect
       - package: proton_mail_uniffi
 
