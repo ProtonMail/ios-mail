@@ -72,8 +72,7 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
     }
     
     /// TestId 435091
-    /// To be re-enabled when ET-785 is addressed.
-    func skip_testConversationDetailAutoExpandMessagesAllUnreadNoDrafts() async {
+    func testConversationDetailAutoExpandMessagesAllUnreadNoDrafts() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -89,28 +88,13 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/messages/DUtKnnR2QSGRfPTqza8fUOdm-DTYfgAfjvQz3WCIeCKMFzutcRBTCtxIPe0p0xTbbXuP4wfGGl66lwwRg91RHQ==",
+                remotePath: "/mail/v4/messages/UwwpjlNH-ttoDnzIp8-4mtRzcNC3nzzv3wrMnHs37VSIypTKawf6pjjDs6s82qzoLY1odtLT_JYJqTyLIwl3-w==",
                 localPath: "message-id_435091.json"
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/messages/UwwpjlNH-ttoDnzIp8-4mtRzcNC3nzzv3wrMnHs37VSIypTKawf6pjjDs6s82qzoLY1odtLT_JYJqTyLIwl3-w==",
-                localPath: "message-id_435091_2.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/DWnWL7bA5ZE2vuvUzAxz_AoJQURQS7OgXGMecb13JOi3UlzzrZ-5Chw9z5LbP_69o-zWUA92L5Jwb4zVImAeNQ==",
-                localPath: "message-id_435091_3.json"
-            ),
-            NetworkRequest(
-                method: .get,
                 remotePath: "/mail/v4/messages/XCEqUvpthaRB8FOI7vorSyKtHF93V8krSGSXy9KAJrSbxViEqDHIWYQDRhHzbJnaTu0kMryHLOEB4ReM7rZU1A==",
-                localPath: "message-id_435091_4.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/pVrYdtltx3AbvhiHlbNMRWIC6nlm2EunRfzT0z55H0QEdMeZP2uOSc42utyTb20p9LfQi4oFLMVQbruwaFE1og==",
-                localPath: "message-id_435091_5.json"
+                localPath: "message-id_435091_2.json"
             )
         )
         
@@ -125,14 +109,13 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
             
-            $0.hasCollapsedEntries(indexes: 0, 2, 3)
-            $0.hasExpandedEntries(indexes: 1, 4)
+            $0.hasCollapsedEntries(indexes: 1, 2)
+            $0.hasExpandedEntries(indexes: 0, 3)
         }
     }
     
     /// TestId 435092
-    /// To be re-enabled when ET-785 is addressed.
-    func skip_testConversationDetailAutoExpandMessagesAllUnreadWithDraft() async {
+    func testConversationDetailAutoExpandMessagesAllUnreadWithDraft() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -148,33 +131,13 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/messages/DUtKnnR2QSGRfPTqza8fUOdm-DTYfgAfjvQz3WCIeCKMFzutcRBTCtxIPe0p0xTbbXuP4wfGGl66lwwRg91RHQ==",
+                remotePath: "/mail/v4/messages/UwwpjlNH-ttoDnzIp8-4mtRzcNC3nzzv3wrMnHs37VSIypTKawf6pjjDs6s82qzoLY1odtLT_JYJqTyLIwl3-w==",
                 localPath: "message-id_435092.json"
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/mail/v4/messages/UwwpjlNH-ttoDnzIp8-4mtRzcNC3nzzv3wrMnHs37VSIypTKawf6pjjDs6s82qzoLY1odtLT_JYJqTyLIwl3-w==",
+                remotePath: "/mail/v4/messages/wx94UssTrPcSnn3aAFCT56COS7FyxNVknLZ5EKmf-ap6qtaEl5zN89XDeQGNy01GmTooVWI0apUvLPBhKXwYnA==",
                 localPath: "message-id_435092_2.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/DWnWL7bA5ZE2vuvUzAxz_AoJQURQS7OgXGMecb13JOi3UlzzrZ-5Chw9z5LbP_69o-zWUA92L5Jwb4zVImAeNQ==",
-                localPath: "message-id_435092_3.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/XCEqUvpthaRB8FOI7vorSyKtHF93V8krSGSXy9KAJrSbxViEqDHIWYQDRhHzbJnaTu0kMryHLOEB4ReM7rZU1A==",
-                localPath: "message-id_435092_4.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/pVrYdtltx3AbvhiHlbNMRWIC6nlm2EunRfzT0z55H0QEdMeZP2uOSc42utyTb20p9LfQi4oFLMVQbruwaFE1og==",
-                localPath: "message-id_435092_5.json"
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/_U1g2VJTaVS9W8Cf2nEWjClUIoLYVeGBW5w01PCpYMK1HtceOCs9OGSlyB7XQFFoFMFDxBQndc1bK857x3Nr4w==",
-                localPath: "message-id_435092_6.json"
             )
         )
         
@@ -189,13 +152,13 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
             
-            $0.hasCollapsedEntries(indexes: 0, 2, 3, 4)
-            $0.hasExpandedEntries(indexes: 1, 5)
+            $0.hasCollapsedEntries(indexes: 1, 2, 3)
+            $0.hasExpandedEntries(indexes: 0, 4)
         }
     }
     
     /// TestId 435093
-    /// To be re-enabled when ET-785 is addressed.
+    /// To be re-enabled when ET-856 is addressed.
     func skip_testConversationDetailAutoExpandMessagesAllReadWithDraft() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
