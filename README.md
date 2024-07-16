@@ -6,7 +6,7 @@ Copyright (c) 2024 Proton Technologies AG
 1. Install Xcode (>=15.2)
 2. Clone the repository
 3. Add a `.env` file with necessary secrets. The file is stored in a shared Pass vault. Request access to the team.
-4. Run `./scripts/setup.sh` to generate the xcodeproj file
+4. Run `./scripts/setup.sh` to generate the xcodeproj file (run `./scripts/setup.sh help` for all options)
 5. Open `ProtonMail.xcodeproj`
 
 ## UI Tests setup instructions
