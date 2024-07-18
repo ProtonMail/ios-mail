@@ -71,7 +71,7 @@ platform :ios do
   end
 
   desc "Build the release app"
-  lane: build_release_app do
+  lane :build_release_app do
     build_app(
       scheme: "ProtonMail",
       clean: true,
