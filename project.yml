@@ -25,6 +25,9 @@ packages:
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
     minorVersion: "1.1.0"
+  Nimble:
+    url: https://github.com/Quick/Nimble.git
+    minorVersion: "13.3.0"
 
 configs:
   Debug: debug
@@ -106,6 +109,7 @@ targets:
       - path: iosTests
     dependencies:
       - target: ProtonMail
+      - package: Nimble
     scheme:
       gatherCoverageData: true
       testTargets:

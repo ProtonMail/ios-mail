@@ -15,26 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
+import XCTest
+import Nimble
 
-extension Bundle {
+class ForceCastTests: XCTestCase {
 
-    /// the default identifier is the one used for Mail 4.x.x in production
-    static let defaultIdentifier = "ch.protonmail.protonmail"
-
-    /// Returns the app version in a nice to read format
-    var appVersion: String {
-        "\(bundleShortVersion) (\(buildVersion))"
+    func testWhenValueIsCastableToString() {
+        let value: Any? = "castable_value"
+        XCTAssertEqual(forceCast(value, String.self), "castable_value")
     }
 
-    /// Returns the build version of the app.
-    var buildVersion: String {
-        forceCast(infoDictionary?["CFBundleVersion"], String.self)
-    }
-
-    /// Returns the major version of the app.
-    var bundleShortVersion: String {
-        forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)
+    func testWhenValueIsNotCastableToString() {
+        let value: Any? = 7
+        expect { forceCast(value, String.self) }.to(throwAssertion())
     }
 
 }

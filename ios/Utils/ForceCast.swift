@@ -17,24 +17,15 @@
 
 import Foundation
 
-extension Bundle {
-
-    /// the default identifier is the one used for Mail 4.x.x in production
-    static let defaultIdentifier = "ch.protonmail.protonmail"
-
-    /// Returns the app version in a nice to read format
-    var appVersion: String {
-        "\(bundleShortVersion) (\(buildVersion))"
+@discardableResult
+func forceCast<Value, ExpectedType>(_ value: Value, _ type: ExpectedType.Type) -> ExpectedType {
+    guard let castedValue = value as? ExpectedType else {
+        let message = """
+        Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
+        """
+        AppLogger.log(message: message)
+        fatalError(message)
     }
 
-    /// Returns the build version of the app.
-    var buildVersion: String {
-        forceCast(infoDictionary?["CFBundleVersion"], String.self)
-    }
-
-    /// Returns the major version of the app.
-    var bundleShortVersion: String {
-        forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)
-    }
-
+    return castedValue
 }
