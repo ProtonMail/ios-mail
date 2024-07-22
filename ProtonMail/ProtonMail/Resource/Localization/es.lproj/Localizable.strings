@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "Obtener más almacenamiento";
 
+/* Title of the banner alert */
+"Your storage is full" = "El almacenamiento está lleno.";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Tu suscripción ha terminado.";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Tu cuenta está en riesgo de ser eliminada.";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Para enviar o recibir correos, libera espacio o mejora tu cuenta para obtener más almacenamiento.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Para cargar archivos, libera espacio o mejora tu cuenta para obtener más almacenamiento.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Mejora tu cuenta para recuperar el acceso y evitar la perdida de datos.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Actualizar";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Bloquear mensajes de este remitente";
 
@@ -2052,7 +2076,7 @@
 "Link copied." = "Enlace copiado.";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Invita a tus amigos a Proton,\n ¡y consigue hasta 90 € en crédito!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "¡Invita a tus amigos a Proton\ny consigue hasta 90 € en crédito!";
 
 /* The article content of the referral share view. */
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invita a tus amigos a Proton: probarán gratis Mail Plus y tú ganarás créditos cuando se suscriban a un plan de pago.";
@@ -2316,7 +2340,7 @@
 "Select all" = "Seleccionar todo";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Deseleccionar todo";
+"Unselect all" = "Desmarcar todo";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "La selección máxima ha sido alcanzada.";

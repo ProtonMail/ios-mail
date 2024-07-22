@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "Få mer lagringskapasitet";
 
+/* Title of the banner alert */
+"Your storage is full" = "Lagringsplassen din er full";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Abonnementet ditt er avsluttet";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Kontoen din står i fare for å bli slettet";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "For å sende eller motta e-post, frigjør plass eller oppgrader for mer lagringsplass.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "For å laste opp filer, frigjør plass eller oppgrader for mer lagringsplass.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Oppgrader for å gjenopprette full tilgang og unngå tap av data.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "For å unngå tap av data kan du be administratoren om å oppgradere.";
+
+/* Upgrade button action */
+"Upgrade" = "Oppgrader";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Blokkér meldinger fra denne avsenderen";
 

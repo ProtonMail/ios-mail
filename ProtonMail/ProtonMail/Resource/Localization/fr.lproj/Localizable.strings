@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Impossible de vider le dossier maintenant";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Voulez-vous vraiment supprimer définitivement tous les messages qui se trouvent dans le dossier %@ ?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[afficher le message complet]";
@@ -1856,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Obtenir plus d'espace de stockage";
+
+/* Title of the banner alert */
+"Your storage is full" = "Votre espace de stockage est plein.";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Votre abonnement est terminé.";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Votre compte risque d'être supprimé.";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Pour envoyer ou recevoir des messages, veuillez libérer de l'espace de stockage ou améliorer votre abonnement pour augmenter l'espace de stockage.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Pour importer des fichiers, libérez de l'espace ou améliorez votre abonnement pour plus d'espace de stockage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Améliorez votre abonnement pour restaurer l'accès complet et éviter la perte de données.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Pour éviter la perte de données, demandez à votre administrateur d'améliorer votre abonnement.";
+
+/* Upgrade button action */
+"Upgrade" = "Changer d'abonnement";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bloquer les messages de cet expéditeur";

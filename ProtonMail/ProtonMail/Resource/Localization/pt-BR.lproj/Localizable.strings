@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Tem certeza de que deseja excluir permanentemente todas as mensagens de \"%@\"?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostrar mensagem completa]";
@@ -1856,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Obter mais armazenamento";
+
+/* Title of the banner alert */
+"Your storage is full" = "Seu armazenamento está cheio";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Sua assinatura terminou";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Sua conta está em risco de ser excluída";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Para enviar ou receber e-mails, libere espaço ou atualize para obter mais armazenamento.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Para enviar arquivos, libere espaço ou atualize para obter mais armazenamento.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Faça upgrade para restaurar o acesso completo e evitar perder os dados.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Para evitar perder os dados, pergunte ao seu administrador para fazer o upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Fazer upgrade";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bloquear mensagens deste remetente";

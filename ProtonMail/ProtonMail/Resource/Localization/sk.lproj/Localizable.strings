@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Priečinok momentálne nie je možné vyprázdniť.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Skutočne chcete natrvalo vymazať všetky správy v rámci '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Zobraziť celú správu]";
@@ -1856,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Získať viac úložného priestoru";
+
+/* Title of the banner alert */
+"Your storage is full" = "Vaše úložisko je plné";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Vaše predplatné skončilo";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Vášmu účtu hrozí vymazanie";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Ak chcete odosielať alebo prijímať emaily, uvoľnite miesto alebo aktualizujte úložisko.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Ak chcete nahrať súbory, uvoľniť miesto alebo upgradujte a získajte viac úložného priestoru.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Aktualizujte, aby ste obnovili úplný prístup a zabránili strate údajov.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Ak chcete zabrániť strate údajov, požiadajte správcu o aktualizáciu.";
+
+/* Upgrade button action */
+"Upgrade" = "Upgradovať";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blokovať správy od tohto odosielateľa";

@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Klasör şu anda boşaltılamıyor.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "'%@' içindeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[İletinin tümünü görüntüle]";
@@ -1856,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Daha fazla depolama alanı edinin";
+
+/* Title of the banner alert */
+"Your storage is full" = "Depolama alanınız dolu";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Aboneliğiniz sona ermiş";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Hesabınızın silinme riski var";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "E-postaları alabilmek ya da gönderebilmek için boş yer açın ya da daha fazla depolama alanı edinmek için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Dosya yüklemek, depolama alanı boşaltın ya da daha fazla depolama alanı almak için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Tam erişim kazanmak ve veri kaybını önlemek için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Veri kaybını önlemek için yöneticinizden tarifenizi yükseltmesini isteyin.";
+
+/* Upgrade button action */
+"Upgrade" = "Yükselt";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bu göndericiden gelen iletileri engelle";
