@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "Атрымаць больш месца ў сховішчы";
 
+/* Title of the banner alert */
+"Your storage is full" = "Ваша сховішча запоўнена";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Ваша падпіска завяршылася";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Ваш уліковы запіс знаходзіцца пад пагрозай выдалення";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Калі вы хочаце і далей адпраўляць і прымаць лісты, вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы і запампаваць файлы.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Палепшыце свой уліковы запіс, каб аднавіць поўны доступ і пазбегнуць страты даных.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Папрасіце свайго адміністратара палепшыць ваш уліковы запіс, каб пазбегнуць страты даных.";
+
+/* Upgrade button action */
+"Upgrade" = "Палепшыць";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Блакіраваць паведамленні ад гэтага адпраўніка";
 

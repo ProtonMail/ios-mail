@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "获得更多存储空间";
 
+/* Title of the banner alert */
+"Your storage is full" = "您的存储空间已满";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "若要发送或接收电子邮件，请释放存储空间或升级以获取更多存储空间。";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "升级账户";
+
 /* Button to block a sender */
 "Block messages from this sender" = "屏蔽来自此发件人的所有邮件";
 

@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "Obter mais espaço de armazenamento";
 
+/* Title of the banner alert */
+"Your storage is full" = "O seu armazenamento está cheio";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Para enviar ou receber e-mails, liberte espaço ou atualize para obter mais espaço de armazenamento.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Alterar a subscrição";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Bloquear mensagens deste remetente";
 

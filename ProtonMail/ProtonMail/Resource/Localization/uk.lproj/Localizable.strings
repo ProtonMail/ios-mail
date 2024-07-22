@@ -1857,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "Збільшити сховище";
 
+/* Title of the banner alert */
+"Your storage is full" = "Ваше сховище заповнене";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Щоб надсилати й отримувати листи, звільніть місце або передплатіть тарифний план, щоб збільшити сховище.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Покращити";
+
 /* Button to block a sender */
 "Block messages from this sender" = "Заблокувати повідомлення від цього відправника";
 
