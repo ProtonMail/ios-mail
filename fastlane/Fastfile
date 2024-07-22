@@ -14,60 +14,60 @@ UI_TESTS_SCHEME = "ProtonMailUITest"
 UI_TESTS_DEVICE = "iPhone 15 Pro"
 UNIT_TESTS_DEVICE = "iPhone 15 Pro"
 
-def set_up_keychain
-  create_keychain(
-      name: DEVELOPER_KEYCHAIN_NAME,
-      password: DEVELOPER_KEYCHAIN_PASSWORD,
-      default_keychain: false,
-      add_to_search_list: true,
-      unlock: true,
-      timeout: 3600
-  )
-  import_certificate(
-      keychain_name: DEVELOPER_KEYCHAIN_NAME,
-      keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
-      certificate_path: CERTIFICATE_PATH,
-      certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
-  )
-end
-
-def set_up_app_store_api_key
-  app_store_connect_api_key(
-    key_id: ENV["APPSTORE_API_KEY_ID"],
-    issuer_id: ENV["APPSTORE_API_KEY_ISSUER"],
-    key_content: ENV["APPSTORE_API_KEY"],
-    duration: API_KEY_DURATION,
-    in_house: false
-  )
-end
-
-def get_xcode_profile(api_key)
-  ids = [
-    APP_IDENTIFIER,
-  ]
-
-  ids.each do |id|
-    get_provisioning_profile(
-      app_identifier: id,
-      api_key: api_key,
-      readonly: true,
+platform :ios do
+  def set_up_keychain
+    create_keychain(
+        name: DEVELOPER_KEYCHAIN_NAME,
+        password: DEVELOPER_KEYCHAIN_PASSWORD,
+        default_keychain: false,
+        add_to_search_list: true,
+        unlock: true,
+        timeout: 3600
+    )
+    import_certificate(
+        keychain_name: DEVELOPER_KEYCHAIN_NAME,
+        keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
+        certificate_path: CERTIFICATE_PATH,
+        certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
     )
   end
-end
 
-def get_latest_build_number(api_key)
-  latest_testflight_build_number(
-    api_key: api_key, 
-    app_identifier: APP_IDENTIFIER,
-    version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET)
-  )
-end 
+  def set_up_app_store_api_key
+    app_store_connect_api_key(
+      key_id: ENV["APPSTORE_API_KEY_ID"],
+      issuer_id: ENV["APPSTORE_API_KEY_ISSUER"],
+      key_content: ENV["APPSTORE_API_KEY"],
+      duration: API_KEY_DURATION,
+      in_house: false
+    )
+  end
 
-def generate_new_build_number(latest_build_number)
-  latest_build_number == 1 ? latest_build_number : latest_build_number + 1
-end
+  def get_xcode_profile(api_key)
+    ids = [
+      APP_IDENTIFIER,
+    ]
 
-platform :ios do
+    ids.each do |id|
+      get_provisioning_profile(
+        app_identifier: id,
+        api_key: api_key,
+        readonly: true,
+      )
+    end
+  end
+
+  def get_latest_build_number(api_key)
+    latest_testflight_build_number(
+      api_key: api_key, 
+      app_identifier: APP_IDENTIFIER,
+      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET)
+    )
+  end 
+
+  def generate_new_build_number(latest_build_number)
+    latest_build_number == 1 ? latest_build_number : latest_build_number + 1
+  end
+
   desc "Build the app"
   # Skip archiving and codesigning, until provisioning is properly set.
   lane :build do
