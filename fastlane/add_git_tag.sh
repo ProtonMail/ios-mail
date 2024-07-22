@@ -1,7 +1,8 @@
 #!/bin/bash
 
-VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ios/Info/Info.plist)
-BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" ios/Info/Info.plist)
+BUILD_SETTINGS=$(xcodebuild -showBuildSettings)
+VERSION_NUMBER=$(echo "$BUILD_SETTINGS" | grep MARKETING_VERSION | awk '{print $3}')
+BUILD_NUMBER=$(echo "$BUILD_SETTINGS" | grep CURRENT_PROJECT_VERSION | awk '{print $3}')
 GIT_TAG_NAME="v${VERSION_NUMBER}_${BUILD_NUMBER}"
 echo $GIT_TAG_NAME
 
