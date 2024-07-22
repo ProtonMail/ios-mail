@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Modules/App/Sources/Info.plist)
-BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" Modules/App/Sources/Info.plist)
+VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ios/Info/Info.plist)
+BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" ios/Info/Info.plist)
 GIT_TAG_NAME="v${VERSION_NUMBER}_${BUILD_NUMBER}"
 echo $GIT_TAG_NAME
 
