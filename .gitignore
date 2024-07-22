@@ -71,3 +71,9 @@ tmp/
 # UITest Mocks
 iosUITests/NetworkMocks/*
 
+# Bundler
+.bundle
+
+# XcodeGen Local Installation
+.xcodegen
+xcodegen
