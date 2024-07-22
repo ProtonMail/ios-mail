@@ -258,7 +258,6 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
         navigator.navigateTo(destination)
         
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         

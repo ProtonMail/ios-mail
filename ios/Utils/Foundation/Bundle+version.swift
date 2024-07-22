@@ -29,11 +29,12 @@ extension Bundle {
 
     /// Returns the build version of the app.
     var buildVersion: String {
-        infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+        forceCast(infoDictionary?["CFBundleVersion"], String.self)
     }
 
     /// Returns the major version of the app.
     var bundleShortVersion: String {
-        infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)
     }
+
 }

@@ -15,19 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
 import XCTest
+import Nimble
 
-final class LoginFlowFreeUserTest: PMUIUnmockedNetworkTestCase {
+class ForceCastTests: XCTestCase {
 
-    override var loginType: UITestLoginType {
-        UITestLoginType.Unmocked.Black.Free.Free
+    func testWhenValueIsCastableToString() {
+        let value: Any? = "castable_value"
+        XCTAssertEqual(forceCast(value, String.self), "castable_value")
     }
 
-    /// TestId 428584
-    func testLoginFlowFreeUser() {
-        navigator.navigateTo(UITestDestination.inbox)
-
-        MailboxRobot { _ in }
+    func testWhenValueIsNotCastableToString() {
+        let value: Any? = 7
+        expect { forceCast(value, String.self) }.to(throwAssertion())
     }
+
 }

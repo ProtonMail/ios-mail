@@ -16,18 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class LoginFlowFreeUserTest: PMUIUnmockedNetworkTestCase {
-
-    override var loginType: UITestLoginType {
-        UITestLoginType.Unmocked.Black.Free.Free
+@discardableResult
+func forceCast<Value, ExpectedType>(_ value: Value, _ type: ExpectedType.Type) -> ExpectedType {
+    guard let castedValue = value as? ExpectedType else {
+        let message = """
+        Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
+        """
+        AppLogger.log(message: message)
+        fatalError(message)
     }
 
-    /// TestId 428584
-    func testLoginFlowFreeUser() {
-        navigator.navigateTo(UITestDestination.inbox)
-
-        MailboxRobot { _ in }
-    }
+    return castedValue
 }

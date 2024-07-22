@@ -81,8 +81,6 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyShown()
-
             $0.verifyMailboxTitle(folder: UITestFolder.system(.inbox))
             $0.hasEntries(entries: expectedInboxEntry)
             $0.openSidebarMenu()

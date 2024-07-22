@@ -1,0 +1,43 @@
+{
+  "configurations" : [
+    {
+      "id" : "0B8806CE-CD41-49B6-A30E-039E1810329B",
+      "name" : "SmokeTests",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "ConversationDetailAutoExpandMessageTests\/testConversationDetailAutoExpandMessagesAllUnreadNoDrafts()",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsMultipleRecipients()",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsSingleRecipient()",
+        "ConversationDetailBottomSheetParticipantTests\/testSenderBottomSheetFromSentFolder()",
+        "ConversationDetailBottomSheetParticipantTests\/testSenderBottomSheetWhenNotAContact()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInInbox()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInTrash()",
+        "ConversationDetailMessageItemsTests\/testConversationDetailExpandCollapsedItem()",
+        "ConversationDetailNavigationTests\/testMailboxToConversationDetailsNavigation()",
+        "ConversationDetailNavigationTests\/testMessageModeToConversationDetailsNavigationFromInbox()",
+        "LoginFlowFreeUserTest\/testLoginFlowFreeUser()",
+        "LoginFlowPaidUserTest\/testLoginFlowPaidUser()",
+        "MailboxSelectionModeActionBarTests\/testExitSelectionModeDismissesActionBar()",
+        "MailboxSelectionModeActionBarTests\/testSelectionModeShowsActionBar()",
+        "MailboxSidebarTests\/testSidebarNavigation()",
+        "SubscriptionNavigationTests\/testSubscriptionNavigationFreeUser()",
+        "SubscriptionPaidUserTests\/testSubscriptionNavigationPaidUser()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "F10B9F81555EBE694D795ECF",
+        "name" : "ProtonMailUITest"
+      }
+    }
+  ],
+  "version" : 1
+}

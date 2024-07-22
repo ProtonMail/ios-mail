@@ -37,7 +37,7 @@ struct UITestNavigator: ApplicationHolder {
 
         switch destination {
         case .inbox:
-            // Inbox is the landing label, nothing to do.
+            MailboxRobot { $0.verifyShown() }
             break
         case .trash:
             MailboxRobot { $0.verifyShown().openSidebarMenu() }

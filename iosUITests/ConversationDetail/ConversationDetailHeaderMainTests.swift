@@ -66,7 +66,6 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
@@ -101,7 +100,6 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
@@ -137,7 +135,6 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
