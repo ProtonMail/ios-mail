@@ -150,6 +150,10 @@ schemes:
       config: UITests
       targets:
         - ProtonMailUITest
+      testPlans:
+        - path: iosUITests/Plans/SmokeTests.xctestplan
+          defaultPlan: true
+        - path: iosUITests/Plans/RegressionTests.xctestplan
       gatherCoverageData: true
       parallelizable: true
       randomExecutionOrder: true

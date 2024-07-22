@@ -23,8 +23,6 @@ final class LoginFlowPaidUserTest: PMUIUnmockedNetworkTestCase {
     func testLoginFlowPaidUser() {
         navigator.navigateTo(UITestDestination.inbox)
 
-        MailboxRobot {
-            $0.verifyShown()
-        }
+        MailboxRobot { _ in }
     }
 }

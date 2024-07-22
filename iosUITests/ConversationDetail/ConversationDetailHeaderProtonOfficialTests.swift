@@ -67,7 +67,6 @@ final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCa
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         

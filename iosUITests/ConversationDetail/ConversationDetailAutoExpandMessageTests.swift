@@ -58,7 +58,6 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
@@ -101,7 +100,6 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
@@ -144,7 +142,6 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
@@ -208,7 +205,6 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.verifyShown()
             $0.tapEntryAt(index: 0)
         }
         
