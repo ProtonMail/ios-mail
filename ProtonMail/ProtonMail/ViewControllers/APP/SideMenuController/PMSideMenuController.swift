@@ -7,8 +7,8 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
 
     private var isMenuPresented = false
 
-    convenience init(isUserInfoAlreadyFetched: Bool) {
-        let skeletonVC = SkeletonViewController(isUserInfoAlreadyFetched: isUserInfoAlreadyFetched)
+    convenience init() {
+        let skeletonVC = SkeletonViewController()
         let contentViewController = UINavigationController(rootViewController: skeletonVC)
         self.init(contentViewController: contentViewController, menuViewController: UIViewController())
         delegate = self
