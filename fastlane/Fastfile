@@ -37,6 +37,12 @@ platform :ios do
     )
   end
 
+  def tear_down_keychain
+    delete_keychain(
+        name: DEVELOPER_KEYCHAIN_NAME
+    )
+  end
+
   def set_up_app_store_api_key
     app_store_connect_api_key(
       key_id: ENV["APPSTORE_API_KEY_ID"],
@@ -149,21 +155,25 @@ platform :ios do
 
   desc "Deploy to Test Flight"
   lane :deploy do 
-    set_up_keychain
+    begin
+      set_up_keychain
 
-    api_key = set_up_app_store_api_key
-    get_xcode_profile(api_key)
+      api_key = set_up_app_store_api_key
+      get_xcode_profile(api_key)
 
-    latest_build_number = get_latest_build_number(api_key)
-    new_build_number = generate_new_build_number(latest_build_number)
-    increment_build_number(build_number: new_build_number)
+      latest_build_number = get_latest_build_number(api_key)
+      new_build_number = generate_new_build_number(latest_build_number)
+      increment_build_number(build_number: new_build_number)
 
-    build_release_app
+      build_release_app
 
-    upload_to_testflight(
-      api_key: api_key,
-      team_name: "Proton Technologies AG",
-      skip_waiting_for_build_processing: true
-    )
+      upload_to_testflight(
+        api_key: api_key,
+        team_name: "Proton Technologies AG",
+        skip_waiting_for_build_processing: true
+      )
+    ensure
+      tear_down_keychain
+    end
   end
 end
