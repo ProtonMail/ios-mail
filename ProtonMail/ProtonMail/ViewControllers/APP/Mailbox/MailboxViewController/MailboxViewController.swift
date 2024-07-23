@@ -203,7 +203,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         if viewModel.reloadTable() {
             resetTableView()
         }
-        self.updateTheUpdateTimeLabel()
+        self.updateLastUpdateTimeLabel()
         self.updateUnreadButton(count: viewModel.unreadCount)
 
         refetchAllIfNeeded()
@@ -284,7 +284,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         setupAlertBox()
 
         self.updateUnreadButton(count: viewModel.unreadCount)
-        self.updateTheUpdateTimeLabel()
+        self.updateLastUpdateTimeLabel()
 
         generateAccessibilityIdentifiers()
         configureBannerContainer()
@@ -1187,7 +1187,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         }
     }
 
-	private func updateLastUpdateTimeLabel() {
+    private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .notConnected {
             updateTimeLabel.set(text: LocalString._mailbox_offline_text,
                                 preferredFont: .footnote,
@@ -2396,7 +2396,7 @@ extension MailboxViewController {
         }
         lastNetworkStatus = connectionStatus
 
-        updateTheUpdateTimeLabel()
+        updateLastUpdateTimeLabel()
     }
 
     private func afterNetworkChange(status: ConnectionStatus) {
@@ -2998,22 +2998,6 @@ extension MailboxViewController: ConnectionStatusReceiver {
 extension MailboxViewController: MailboxViewModelUIProtocol {
     func updateTitle() {
         setupNavigationTitle(showSelected: viewModel.listEditing)
-    }
-
-    func updateTheUpdateTimeLabel() {
-        if let status = self.lastNetworkStatus, status == .notConnected {
-            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
-                                preferredFont: .footnote,
-                                weight: .regular,
-                                textColor: ColorProvider.NotificationError)
-            return
-        }
-
-        let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.set(text: timeText,
-                            preferredFont: .footnote,
-                            weight: .regular,
-                            textColor: ColorProvider.TextHint)
     }
 
     func updateUnreadButton(count: Int) {
