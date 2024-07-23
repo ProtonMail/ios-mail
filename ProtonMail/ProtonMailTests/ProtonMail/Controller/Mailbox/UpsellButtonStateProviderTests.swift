@@ -24,7 +24,9 @@ import XCTest
 final class UpsellButtonStateProviderTests: XCTestCase {
     private var sut: UpsellButtonStateProvider!
     private var testContainer: TestContainer!
+    private var featureFlagProvider: MockFeatureFlagProvider!
     private var user: UserManager!
+    private var alwaysShowUpsellButton: Bool!
     private var stubbedDate: Date!
 
     private let testDate: (start: Date, shortlyAfter: Date, longAfter: Date) = (
@@ -37,6 +39,7 @@ final class UpsellButtonStateProviderTests: XCTestCase {
         try super.setUpWithError()
 
         testContainer = .init()
+        featureFlagProvider = .init()
 
         user = UserManager(
             api: APIServiceMock(),
@@ -46,15 +49,29 @@ final class UpsellButtonStateProviderTests: XCTestCase {
             globalContainer: testContainer
         )
 
+        user.container.featureFlagProviderFactory.register { self.featureFlagProvider }
+
         sut = .init(dependencies: user.container) { [unowned self] in self.stubbedDate }
 
+        alwaysShowUpsellButton = false
         stubbedDate = testDate.start
+
+        featureFlagProvider.isEnabledStub.bodyIs { [unowned self] _, flag in
+            switch flag {
+            case .alwaysShowUpsellButton:
+                return self.alwaysShowUpsellButton
+            default:
+                return true
+            }
+        }
     }
 
     override func tearDownWithError() throws {
         sut = nil
         testContainer = nil
+        featureFlagProvider = nil
         user = nil
+        alwaysShowUpsellButton = nil
         stubbedDate = nil
 
         try super.tearDownWithError()
@@ -77,6 +94,15 @@ final class UpsellButtonStateProviderTests: XCTestCase {
         stubbedDate = testDate.shortlyAfter
 
         XCTAssertFalse(sut.shouldShowUpsellButton)
+    }
+
+    func testShowsButtonEarlierIfAlwaysShowFeatureFlagIsEnabled() {
+        sut.upsellButtonWasTapped()
+
+        alwaysShowUpsellButton = true
+        stubbedDate = testDate.shortlyAfter
+
+        XCTAssert(sut.shouldShowUpsellButton)
     }
 
     func testShowsButtonIfEnoughTimeHasPassedSinceShowingItBefore() {

@@ -56,10 +56,14 @@ struct UpsellButtonStateProvider {
 
     var shouldShowUpsellButton: Bool {
         guard
-            dependencies.featureFlagProvider.isEnabled(.upsellButton, reloadValue: true),
+            dependencies.featureFlagProvider.isEnabled(.upsellButton),
             dependencies.user.userInfo.subscribed.isEmpty
         else {
             return false
+        }
+
+        if dependencies.featureFlagProvider.isEnabled(.alwaysShowUpsellButton) {
+            return true
         }
 
         let upsellButtonDismissalDatesPerUserID = dependencies.userDefaults[.upsellButtonDismissalDatesPerUserID]

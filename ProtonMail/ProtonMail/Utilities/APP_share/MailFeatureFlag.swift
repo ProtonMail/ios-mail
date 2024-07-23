@@ -18,6 +18,7 @@
 import ProtonCoreFeatureFlags
 
 enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
+    case alwaysShowUpsellButton = "MailiosAlwaysShowUpsellButton"
     case answerInvitation = "MailiosAnswerInvitation"
     case autoImportContacts = "MailiosAutoImportContacts"
     case calendarMiniLandingPage = "MailiosCalendarMiniLandingPage"

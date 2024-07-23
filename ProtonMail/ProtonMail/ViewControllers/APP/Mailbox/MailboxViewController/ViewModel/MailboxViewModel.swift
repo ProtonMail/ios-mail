@@ -397,7 +397,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         if 
             let remoteFeatureFlag = featureKey.correspondingRemoteFeatureFlag,
-            !dependencies.featureFlagProvider.isEnabled(remoteFeatureFlag, reloadValue: true)
+            !dependencies.featureFlagProvider.isEnabled(remoteFeatureFlag)
         {
             return false
         }
