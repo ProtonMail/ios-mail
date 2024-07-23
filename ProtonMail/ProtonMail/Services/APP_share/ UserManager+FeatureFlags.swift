@@ -26,7 +26,7 @@ extension UserManager {
     }
 
     var isMessageSwipeNavigationSettingEnabled: Bool {
-        container.featureFlagProvider.isEnabled(.nextMessageAfterMove, reloadValue: true)
+        container.featureFlagProvider.isEnabled(.nextMessageAfterMove)
     }
 
     var isAccountRecoveryEnabled: Bool {

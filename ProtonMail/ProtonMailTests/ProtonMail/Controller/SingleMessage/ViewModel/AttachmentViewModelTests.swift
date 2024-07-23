@@ -57,7 +57,7 @@ class AttachmentViewModelTests: XCTestCase {
         }
 
         featureFlagProvider = .init()
-        featureFlagProvider.isEnabledStub.bodyIs { [unowned self] _, flag, _ in
+        featureFlagProvider.isEnabledStub.bodyIs { [unowned self] _, flag in
             switch flag {
             case .calendarMiniLandingPage:
                 return self.isCalendarLandingPageEnabled

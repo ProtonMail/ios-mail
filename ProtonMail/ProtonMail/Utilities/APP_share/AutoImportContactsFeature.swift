@@ -56,7 +56,7 @@ final class AutoImportContactsFeature {
     /// This is a value for telemetry.
     /// Returns `nil` if the feature flag is off, otherwise it returns the user setting value.
     var isFeatureEnabledTelemetryValue: Bool? {
-        guard dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts, reloadValue: true) else {
+        guard dependencies.featureFlagProvider.isEnabled(MailFeatureFlag.autoImportContacts) else {
             return nil
         }
         return isSettingEnabledForUser
