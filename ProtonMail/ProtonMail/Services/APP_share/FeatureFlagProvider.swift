@@ -19,7 +19,7 @@ import ProtonCoreFeatureFlags
 
 // sourcery: mock
 protocol FeatureFlagProvider {
-    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool
+    func isEnabled(_ featureFlag: MailFeatureFlag) -> Bool
 }
 
 struct FeatureFlagProviderImpl: FeatureFlagProvider {
@@ -31,11 +31,11 @@ struct FeatureFlagProviderImpl: FeatureFlagProvider {
         self.userID = userID
     }
 
-    func isEnabled(_ featureFlag: MailFeatureFlag, reloadValue: Bool) -> Bool {
+    func isEnabled(_ featureFlag: MailFeatureFlag) -> Bool {
         if ProcessInfo.isRunningUnitTests {
             return true
         } else {
-            return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue, reloadValue: reloadValue)
+            return featureFlagsRepository.isEnabled(featureFlag, for: userID.rawValue, reloadValue: true)
         }
     }
 }
