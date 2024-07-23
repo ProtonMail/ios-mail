@@ -34,7 +34,7 @@ final class MenuCoordinatorTests: XCTestCase {
         testContainer.usersManager.add(newUser: user)
         sut = .init(
             dependencies: testContainer,
-            sideMenu: PMSideMenuController(isUserInfoAlreadyFetched: true),
+            sideMenu: PMSideMenuController(),
             menuWidth: 300
         )
         apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in

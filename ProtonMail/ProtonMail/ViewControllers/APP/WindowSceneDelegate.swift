@@ -98,7 +98,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        self.coordinator.start(launchedByNotification: notificationInfo != nil) {
+        self.coordinator.start() {
 
             DispatchQueue.main.async {
                 // For default mail function
