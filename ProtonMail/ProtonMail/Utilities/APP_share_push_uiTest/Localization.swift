@@ -1526,7 +1526,7 @@ enum L10n {
         static let freeUpsell = NSLocalizedString("Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.", comment: "Text to advertise the auto delete feature to free users")
         static let learnMore = NSLocalizedString("Learn more", comment: "Title of button to learn more about upgrading for auto delete")
 
-        static let paidPrompt = NSLocalizedString("Automatically delete messages that have been in trash for more than 30 days.", comment: "Text to prompt paid users to enable the auto delete feature")
+        static let paidPrompt = NSLocalizedString("Automatically delete messages that have been in trash and spam for more than 30 days.", comment: "Text to prompt paid users to enable the auto delete feature")
         static let enableButtonTitle = NSLocalizedString("Enable", comment: "Title of button to enable auto delete option")
         static let noThanksButtonTitle = NSLocalizedString("No, thanks", comment: "Title of button to discard auto delete option")
 
