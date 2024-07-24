@@ -2,6 +2,13 @@ opt_out_usage
 
 default_platform(:ios)
 
+APP_IDENTIFIER = "me.proton.mail.ios"
+DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
+DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
+API_KEY_DURATION = 20 * 60 # 20 mins
+CERTIFICATE_PATH = "fastlane/Certificates.p12"
+XCODEPROJ = "ProtonMail.xcodeproj"
+APP_TARGET = "ProtonMail"
 UNIT_TESTS_SCHEME = "ProtonMailTest"
 UI_TESTS_SCHEME = "ProtonMailUITest"
 UI_TESTS_DEVICE = "iPhone 15 Pro"
@@ -13,6 +20,69 @@ SMOKE_PLAN_NAME="SmokeTests"
 REGRESSION_PLAN_NAME="RegressionTests"
 
 platform :ios do
+  def set_up_keychain
+    create_keychain(
+        name: DEVELOPER_KEYCHAIN_NAME,
+        password: DEVELOPER_KEYCHAIN_PASSWORD,
+        default_keychain: false,
+        add_to_search_list: true,
+        unlock: true,
+        timeout: 3600
+    )
+    import_certificate(
+        keychain_name: DEVELOPER_KEYCHAIN_NAME,
+        keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
+        certificate_path: CERTIFICATE_PATH,
+        certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
+    )
+  end
+
+  def tear_down_keychain
+    delete_keychain(
+        name: DEVELOPER_KEYCHAIN_NAME
+    )
+  end
+
+  def set_up_app_store_api_key
+    app_store_connect_api_key(
+      key_id: ENV["APPSTORE_API_KEY_ID"],
+      issuer_id: ENV["APPSTORE_API_KEY_ISSUER"],
+      key_content: ENV["APPSTORE_API_KEY"],
+      duration: API_KEY_DURATION,
+      in_house: false
+    )
+  end
+
+  def get_xcode_profile(api_key)
+    ids = [
+      APP_IDENTIFIER,
+    ]
+
+    ids.each do |id|
+      get_provisioning_profile(
+        app_identifier: id,
+        api_key: api_key,
+        readonly: true,
+      )
+    end
+  end
+
+  def get_latest_build_number(api_key)
+    latest_testflight_build_number(
+      api_key: api_key, 
+      app_identifier: APP_IDENTIFIER,
+      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET)
+    )
+  end 
+
+  def generate_new_build_number(latest_build_number)
+    latest_build_number == 1 ? latest_build_number : latest_build_number + 1
+  end
+
+  lane :decode_distribution_certificate do
+    sh "base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE"
+  end
+
   desc "Build the app"
   # Skip archiving and codesigning, until provisioning is properly set.
   lane :build do
@@ -25,6 +95,21 @@ platform :ios do
     )
   end
 
+  desc "Build the release app"
+  lane :build_release_app do
+    build_app(
+      scheme: "ProtonMail",
+      clean: true,
+      output_directory: "outputs/",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "me.proton.mail.ios" => "Mail - Engineering Transformation Distribution",
+        }
+      }
+    )
+  end
+
   desc "Run unit tests"
   lane :tests do
     run_tests(
@@ -33,7 +118,7 @@ platform :ios do
       prelaunch_simulator: true,
       reset_simulator: true,
       result_bundle: true
-      )
+    )
   end
 
   desc "Setup UI Tests assets"
@@ -70,5 +155,30 @@ platform :ios do
         result_bundle: true,
         testplan: REGRESSION_PLAN_NAME
       )
+  end
+
+  desc "Deploy to Test Flight"
+  lane :deploy do 
+    begin
+      decode_distribution_certificate
+      set_up_keychain
+
+      api_key = set_up_app_store_api_key
+      get_xcode_profile(api_key)
+
+      latest_build_number = get_latest_build_number(api_key)
+      new_build_number = generate_new_build_number(latest_build_number)
+      increment_build_number(build_number: new_build_number)
+
+      build_release_app
+
+      upload_to_testflight(
+        api_key: api_key,
+        team_name: "Proton Technologies AG",
+        skip_waiting_for_build_processing: true
+      )
+    ensure
+      tear_down_keychain
+    end
   end
 end

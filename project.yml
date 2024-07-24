@@ -69,7 +69,7 @@ targets:
         Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
-          PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation - Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Distribution"
           PM_API_HOST: "proton.me"
     info: 
       path: ios/Info/Info.plist  
