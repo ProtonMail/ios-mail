@@ -57,6 +57,11 @@ extension MailboxListView {
 
     private func mailboxItemsListView(mailboxItems: [MailboxItemCellUIModel]) -> some View {
         List {
+            UnreadFilterBarView(isSelected: $model.isUnreadSelected, unread: model.unreadItemsCount)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets())
+                .removeViewIf(model.unreadItemsCount < 1)
+
             ForEach(Array(mailboxItems.enumerated()), id: \.1.id) { index, item in
                 VStack {
                     MailboxItemCell(

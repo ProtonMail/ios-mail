@@ -26,8 +26,11 @@ import class UIKit.UIImage
  */
 final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
-
     @Published private(set) var state: MailboxModel.State
+    
+    // Filter
+    @Published var unreadItemsCount: UInt64 = 0
+    @Published var isUnreadSelected: Bool = false
 
     // Navigation properties
     @Published var attachmentPresented: AttachmentViewConfig?
@@ -43,6 +46,7 @@ final class MailboxModel: ObservableObject {
     private let mailSettings: PMMailSettingsProtocol
     private(set) var selectedMailbox: SelectedMailbox
     private var mailbox: Mailbox?
+    private var itemCountLiveQuery: MailboxItemCountLiveQuery?
     private var conversationLiveQuery: MailboxConversationLiveQuery?
     private var messageLiveQuery: MailboxMessageLiveQuery?
     private let dependencies: Dependencies
@@ -133,17 +137,20 @@ extension MailboxModel {
     }
 
     private func initialiseLiveQuery() async throws {
+        let callback = PMMailboxLiveQueryUpdatedCallback(delegate: self)
+        itemCountLiveQuery = try mailbox?.newItemLiveQuery(cb: callback)
         switch viewMode {
         case .conversations:
-            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: PMMailboxLiveQueryUpdatedCallback(delegate: self))
+            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: callback)
 
         case .messages:
-            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: PMMailboxLiveQueryUpdatedCallback(delegate: self))
+            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: callback)
         }
     }
 
     private func readLiveQueryValues() async {
         do {
+            unreadItemsCount = try await liveQueryItemUnreadCount()
             let mailboxItems = try await liveQueryMailboxItems()
             let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
             await updateState(newState)
@@ -159,7 +166,14 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
             return
         }
+    }
 
+    private func liveQueryItemUnreadCount() async throws -> UInt64 {
+        guard let itemCountLiveQuery else {
+            AppLogger.log(message: "no item count live query found", category: .mailbox, isError: true)
+            return 0
+        }
+        return try itemCountLiveQuery.value().unread
     }
 
     private func liveQueryMailboxItems() async throws -> [MailboxItemCellUIModel] {

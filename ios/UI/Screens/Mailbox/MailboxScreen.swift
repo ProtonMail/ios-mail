@@ -96,11 +96,13 @@ extension MailboxScreen {
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
+    let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
     let dummySettings = EmptyPMMailSettings()
 
     return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
         .environmentObject(appUIState)
+        .environmentObject(userSettings)
 }
 
 private struct MailboxScreenIdentifiers {
