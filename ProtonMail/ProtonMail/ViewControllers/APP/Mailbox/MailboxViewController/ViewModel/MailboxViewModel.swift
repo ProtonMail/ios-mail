@@ -44,7 +44,6 @@ struct LabelInfo {
 protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
     func updateUnreadButton(count: Int)
-    func updateTheUpdateTimeLabel()
     func selectionDidChange()
     func clickSnoozeActionButton()
 }
@@ -77,8 +76,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     var lockedStateAlertVisibility: LockedStateAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
-    /// This field stores the latest update time of the user event.
-    private var latestEventUpdateTime: Date?
     var messageLocation: Message.Location? {
         return Message.Location(rawValue: labelID.rawValue)
     }
@@ -89,10 +86,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
-    private var eventUpdatePublisher: EventUpdatePublisher?
     private var unreadCounterPublisher: UnreadCounterPublisher?
     var unreadCount: Int {
         unreadCounterPublisher?.unreadCount ?? 0
+    }
+
+    private var mailboxLastUpdateTime: Date? {
+        let key = UserSpecificLabelKey(labelID: labelID, userID: user.userID)
+        return dependencies.userDefaults[.mailboxLastUpdateTimes][key.userDefaultsKey]
     }
 
     private(set) var selectedIDs: Set<String> = Set()
@@ -532,18 +533,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         )
     }
 
-	private func makeEventPublisher() {
-        eventUpdatePublisher = .init(contextProvider: coreDataContextProvider)
-        eventUpdatePublisher?.startObserve(
-            userID: user.userID,
-            onContentChanged: { [weak self] events in
-                DispatchQueue.main.async {
-                    self?.latestEventUpdateTime = events.first?.updateTime
-                    self?.uiDelegate?.updateTheUpdateTimeLabel()
-                }
-            })
-	}
-
     /// Setup fetch controller to fetch message of specific labelID
     ///
     /// - Parameter delegate: delegate from viewcontroller
@@ -562,7 +551,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
 
         makeLabelPublisherIfNeeded()
-        makeEventPublisher()
         makeUnreadCounterPublisher()
     }
 
@@ -667,7 +655,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = latestEventUpdateTime {
+        if let updateTime = mailboxLastUpdateTime {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 
@@ -979,7 +967,8 @@ extension MailboxViewModel {
                 isCleanFetch: isCleanFetch,
                 time: time,
                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
-                errorHandler: errorHandler
+                errorHandler: errorHandler,
+                userID: user.userID
             )
         ) { _ in
             completion()

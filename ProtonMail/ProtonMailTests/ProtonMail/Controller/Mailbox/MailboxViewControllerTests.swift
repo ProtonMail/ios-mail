@@ -159,12 +159,9 @@ final class MailboxViewControllerTests: XCTestCase {
 
     func testLastUpdateLabel_eventUpdateTimeIsNow_titleIsUpdateJustNow() {
         let labelID = Message.Location.inbox.labelID
-        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let event = UserEvent(context: context)
-            event.userID = self.userManagerMock.userID.rawValue
-            event.updateTime = Date()
-            event.eventID = String.randomString(10)
-        }
+        let lastUpdateKey = UserSpecificLabelKey(labelID: labelID, userID: userID)
+        testContainer.userDefaults[.mailboxLastUpdateTimes][lastUpdateKey.userDefaultsKey] = Date()
+
         makeSUT(
             labelID: labelID,
             labelType: .label,
@@ -173,53 +170,41 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        wait(self.sut.updateTimeLabel.text == LocalString._mailblox_last_update_time_just_now)
+        XCTAssertEqual(sut.updateTimeLabel.text, "Updated just now")
     }
 
     func testLastUpdateLabel_eventUpdateTimeIs30MinsBefore_titleIsLastUpdateIn30Mins() {
         let labelID = Message.Location.inbox.labelID
-        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let event = UserEvent(context: context)
-            event.userID = self.userManagerMock.userID.rawValue
-            let date = Date().add(.minute, value: -30)
-            event.updateTime = date
-            event.eventID = String.randomString(10)
-        }
+        let lastUpdateKey = UserSpecificLabelKey(labelID: labelID, userID: userID)
+        testContainer.userDefaults[.mailboxLastUpdateTimes][lastUpdateKey.userDefaultsKey] = Date().add(.minute, value: -30)
+
         makeSUT(
             labelID: labelID,
             labelType: .label,
             isCustom: false,
             labelName: nil
         )
+
         sut.loadViewIfNeeded()
 
-        wait(
-            self.sut.updateTimeLabel.text ==
-            String.localizedStringWithFormat(LocalString._mailblox_last_update_time, 30)
-        )
+        XCTAssertEqual(sut.updateTimeLabel.text, "Updated 30 mins ago")
     }
 
     func testLastUpdateLabel_eventUpdateTimeIs1HourBefore_titleIsUpdateMoreThan1Hour() {
         let labelID = Message.Location.inbox.labelID
-        testContainer.contextProvider.performAndWaitOnRootSavingContext { context in
-            let event = UserEvent(context: context)
-            event.userID = self.userManagerMock.userID.rawValue
-            let date = Date().add(.hour, value: -1)
-            event.updateTime = date
-            event.eventID = String.randomString(10)
-        }
+        let lastUpdateKey = UserSpecificLabelKey(labelID: labelID, userID: userID)
+        testContainer.userDefaults[.mailboxLastUpdateTimes][lastUpdateKey.userDefaultsKey] = Date().add(.hour, value: -1)
+
         makeSUT(
             labelID: labelID,
             labelType: .label,
             isCustom: false,
             labelName: nil
         )
+
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(
-            sut.updateTimeLabel.text,
-            LocalString._mailblox_last_update_time_more_than_1_hour
-        )
+        XCTAssertEqual(sut.updateTimeLabel.text, "Updated >1 hour ago")
     }
 
     func testSelectionMode_whenPullToRefresh_selectionModeWillBeDisable() {
