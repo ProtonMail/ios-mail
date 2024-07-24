@@ -77,3 +77,6 @@ iosUITests/NetworkMocks/*
 # XcodeGen Local Installation
 .xcodegen
 xcodegen
+
+# Testmo
+testmo-resources.json
