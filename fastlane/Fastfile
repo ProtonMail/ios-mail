@@ -79,6 +79,10 @@ platform :ios do
     latest_build_number == 1 ? latest_build_number : latest_build_number + 1
   end
 
+  lane :decode_distribution_certificate do
+    sh "base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE"
+  end
+
   desc "Build the app"
   # Skip archiving and codesigning, until provisioning is properly set.
   lane :build do
@@ -156,6 +160,7 @@ platform :ios do
   desc "Deploy to Test Flight"
   lane :deploy do 
     begin
+      decode_distribution_certificate
       set_up_keychain
 
       api_key = set_up_app_store_api_key
