@@ -581,7 +581,7 @@
 "Reading device contacts data…" = "Az eszköz névjegyeinek olvasása…";
 
 /* title for the contact import indicator */
-"Importing contacts..." = "Importing contacts...";
+"Importing contacts..." = "Névjegyek importálása...";
 
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP titkosított üzenet";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP aláírt üzenet";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP aláírt üzenet. Feladó ellenőrzése sikertelen";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2391,7 +2394,7 @@
 "Next week" = "Next week";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "Kérjük, válasszon egy jövőbeli időpontot";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Want to snooze any time?";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "E-mail titkosítási jelszó módosítása";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB storage";

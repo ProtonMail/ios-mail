@@ -22,6 +22,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
     fileprivate var email: ContactEditEmail!

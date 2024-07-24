@@ -36,7 +36,7 @@
 
 "Adblocker (NetShield)" = "Bloquejador d'anuncis (NetShield)";
 
-"Streaming service support" = "Suport de serveis de reproducció en línia";
+"Streaming service support" = "Suport de serveis d'estríming";
 
 "High speed" = "Alta velocitat";
 
@@ -59,6 +59,8 @@
 "The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "La configuració del compte no s'ha pogut finalitzar a causa d'un error inesperat.\nTorneu a prova-ho.";
 
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "El procés de compra de IAP ha començat. Seguiu les instruccions d'Apple per completar o cancel·lar la compra.";
+
+"In app payments are temporarily unavailable." = "Els pagaments a l'aplicació no estan disponibles temporalment.";
 
 "One plan for all Proton services" = "Un pla per a tots els serveis de Proton";
 
@@ -86,7 +88,7 @@
 
 "Built-in ad-blocker (NetShield)" = "Blocador d'anuncis integrat (NetShield)";
 
-"Access to streaming services globally" = "Accediu a serveis de streaming globalment";
+"Access to streaming services globally" = "Accediu a serveis d'estríming globalment";
 
 "Secure Core servers" = "Servidors Secure Core";
 

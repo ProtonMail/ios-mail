@@ -17,6 +17,7 @@
 
 import Foundation
 import ProtonCoreUIFoundations
+import UIKit
 
 final class ContactGroupSubSelectionActionSheetPresenter {
     private var actionSheet: PMActionSheet?

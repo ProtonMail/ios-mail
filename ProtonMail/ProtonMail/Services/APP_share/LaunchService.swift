@@ -99,6 +99,12 @@ extension Launch: LaunchService {
         loadUsersIfMainKeyAvailable()
 
         setUpPrimaryUser()
+
+        #if !APP_EXTENSION
+        if let hasPushNotificationService = dependencies as? HasPushNotificationService {
+            hasPushNotificationService.pushService.resumePendingTasks()
+        }
+        #endif
     }
 
     func loadUserDataAfterUnlock() {

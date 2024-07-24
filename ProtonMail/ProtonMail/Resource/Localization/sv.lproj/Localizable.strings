@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-krypterat meddelande";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-signerat meddelande";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-signerat meddelande. Avsändarverifieringen misslyckades";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2025,7 +2028,7 @@
 "last" = "sista";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "Enkelt OSA till händelser";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Nu kan du svara på en inbjudan eller visa händelsen i Proton Calendar med bara ett tryck. ";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
+
+/* settings general section title */
+"Security keys" = "Säkerhetsnycklar";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB lagringsutrymme";

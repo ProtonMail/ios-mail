@@ -1,7 +1,7 @@
 {
    "targets": {
       "ProtonMailTests": {
-         "deploymentTarget": "16",
+         "deploymentTarget": "17",
          "type": "bundle.unit-test",
          "platform": "iOS",
          "dependencies": [
@@ -14,8 +14,8 @@
          ],
          "sources": [
             {
-               "path":"ProtonMailTests/ProtonMail/Extensions/ProtonCore/Data+OpenPGP_TestSamples",
-               "buildPhase":"resources"
+               "path": "ProtonMailTests/ProtonMail/Extensions/ProtonCore/Data+OpenPGP_TestSamples",
+               "buildPhase": "resources"
             },
             {
                "path": "ProtonMailTests",

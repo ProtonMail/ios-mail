@@ -46,11 +46,21 @@ public struct CreateAddressData {
     }
 }
 
+/// Status after providing correct username and password
 public enum LoginStatus {
+    /// Login is complete
     case finished(UserData)
-    case ask2FA
+    /// Need TOTP code
+    case askTOTP
+    /// Need either TOTP or FIDO2 key
+    case askAny2FA(AuthenticationOptions)
+    /// Need FIDO2 key
+    case askFIDO2(AuthenticationOptions)
+    /// Need second password
     case askSecondPassword
+    /// Need username to transform external into internal account
     case chooseInternalUsernameAndCreateInternalAddress(CreateAddressData)
+    /// Need to complete SSO challenge
     case ssoChallenge(SSOChallengeResponse)
 }
 
@@ -58,6 +68,7 @@ public enum LoginError: Error, CustomStringConvertible {
     case invalidSecondPassword
     case invalidCredentials(message: String)
     case invalid2FACode(message: String)
+    case invalid2FAKey
     case invalidAccessToken(message: String)
     case initialError(message: String)
     case generic(message: String, code: Int, originalError: Error)
@@ -110,7 +121,8 @@ public extension LoginError {
              .missingKeys,
              .needsFirstTimePasswordChange,
              .emailAddressAlreadyUsed,
-             .missingSubUserConfiguration:
+             .missingSubUserConfiguration,
+             .invalid2FAKey:
             return localizedDescription
         }
     }
@@ -335,7 +347,10 @@ public protocol Login {
     func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void)
 
     func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    /// Sends the TOTP code
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    /// Sends the FIDO2 challenge signed to login
+    func provideFido2Signature(_ signature: Fido2Signature, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)
 

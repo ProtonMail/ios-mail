@@ -9,8 +9,6 @@
 import Foundation
 import XCTest
 import fusion
-@testable import ProtonMail
-import ProtonCoreEnvironment
 import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkit
@@ -46,8 +44,6 @@ class BaseTestCase: ProtonCoreBaseTestCase {
         "-disableInAppFeedbackPromptAutoShow"
     ]
     private let loginRobot = LoginRobot()
-
-    private static var didTryToDisableAutoFillPassword = false
 
 
     func terminateApp() {
@@ -210,13 +206,5 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }
-}
-
-private extension XCUIElement {
-
-    var isSwitchOn: Bool {
-        let switchValue = value as? String
-        return switchValue == "1"
     }
 }

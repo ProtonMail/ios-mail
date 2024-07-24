@@ -71,7 +71,7 @@ public class DefaultLocalFeatureFlagsDatasource: LocalFeatureFlagsDataSourceProt
 
     public func cleanFlags(for userId: String) {
         serialAccessQueue.sync {
-            var flagsToClean: [String: FeatureFlags]? = 
+            var flagsToClean: [String: FeatureFlags]? =
                 userDefaults.decodableValue(forKey: Self.featureFlagsKey)
             flagsToClean?[userId] = nil
             userDefaults.setEncodableValue(flagsToClean, forKey: Self.featureFlagsKey)

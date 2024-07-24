@@ -25,4 +25,5 @@ public protocol IdentifiableEvent {
 
 public protocol EventStorage {
     func calendarEvent(for event: IdentifiableEvent) -> CalendarEvent?
+    func mainEvent(for event: IdentifiableEvent) -> ICalEvent?
 }

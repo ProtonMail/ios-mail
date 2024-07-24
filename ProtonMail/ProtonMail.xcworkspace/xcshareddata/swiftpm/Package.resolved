@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/hmlongco/Factory.git",
         "state": {
           "branch": null,
-          "revision": "8ca11a7bd1ede031e8e6d7a912bb116e2e43961b",
-          "version": "2.3.1"
+          "revision": "587995f7d5cc667951d635fbf6b4252324ba0439",
+          "version": "2.3.2"
         }
       },
       {
@@ -24,8 +24,17 @@
         "repositoryURL": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
         "state": {
           "branch": null,
-          "revision": "0f62a7bcf15168517e4b7e3bf61c1a5e45cab56b",
-          "version": "1.8.2"
+          "revision": "1cc54d84d87ac4f5010027d0f115757636256c5c",
+          "version": "1.8.3"
+        }
+      },
+      {
+        "package": "OHHTTPStubs",
+        "repositoryURL": "https://github.com/AliSoftware/OHHTTPStubs",
+        "state": {
+          "branch": null,
+          "revision": "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+          "version": "9.1.0"
         }
       },
       {

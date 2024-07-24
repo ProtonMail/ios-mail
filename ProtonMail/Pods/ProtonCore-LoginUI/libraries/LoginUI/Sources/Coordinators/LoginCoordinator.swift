@@ -38,6 +38,7 @@ protocol LoginCoordinatorDelegate: AnyObject {
     func userSelectedSignup(navigationController: LoginNavigationViewController)
 }
 
+/// Orchestrates the view controllers needed during the Sign in sequence
 final class LoginCoordinator {
     enum ChildCoordinators {
         case createAddress
@@ -101,6 +102,7 @@ final class LoginCoordinator {
     func createLoginViewController(username: String?) -> UIViewController {
         let loginViewController = UIStoryboard.instantiateInLogin(LoginViewController.self, inAppTheme: customization.inAppTheme)
         loginViewController.viewModel = container.makeLoginViewModel()
+        loginViewController.viewModel.navigationDelegate = self
         loginViewController.customErrorPresenter = customization.customErrorPresenter
         loginViewController.initialUsername = username
         loginViewController.delegate = self
@@ -172,6 +174,32 @@ final class LoginCoordinator {
         navigationController?.pushViewController(twoFactorViewController, animated: true)
     }
 
+    @available(iOS 15.0, *)
+    func showKeySignature(authenticationOptions: AuthenticationOptions, providerDelegate: TwoFAProviderDelegate?) {
+        let viewModel = container.makeFido2ViewModel(authenticationOptions: authenticationOptions)
+        viewModel.delegate = providerDelegate
+        let fido2View = Fido2View(viewModel: viewModel)
+        let fido2ViewController = Fido2ViewController(rootView: fido2View)
+        navigationController?.pushViewController(fido2ViewController, animated: true)
+    }
+
+    @available(iOS 15.0, *)
+    @MainActor
+    func showTwoFactorChoice(username: String,
+                             password: String,
+                             authenticationOptions: AuthenticationOptions,
+                             providerDelegate: TwoFAProviderDelegate?) {
+        let fido2ViewModel = container.makeFido2ViewModel(authenticationOptions: authenticationOptions)
+        fido2ViewModel.delegate = providerDelegate
+        let totpViewModel = container.makeTOTPViewModel()
+        totpViewModel.delegate = providerDelegate
+
+        let choose2FAView = Choose2FAView(totpViewModel: totpViewModel, fido2ViewModel: fido2ViewModel)
+        let choose2FAViewController = Choose2FAViewController(rootView: choose2FAView)
+
+        navigationController?.pushViewController(choose2FAViewController, animated: true)
+    }
+
     private func showMailboxPassword() {
         let mailboxPasswordViewController = UIStoryboard.instantiateInLogin(MailboxPasswordViewController.self,
                                                                      inAppTheme: customization.inAppTheme)
@@ -205,6 +233,7 @@ final class LoginCoordinator {
         coordinator.start()
     }
 
+    /// Completes Login flow with the obtained
     private func finish(endLoading: @escaping () -> Void, data: LoginData) {
         guard let performBeforeFlow = customization.performBeforeFlow else {
             completeLoginFlow(data: data)
@@ -256,12 +285,31 @@ final class LoginCoordinator {
 // MARK: - Login steps delegate
 
 extension LoginCoordinator: LoginStepsDelegate {
+
     func firstPasswordChangeNeeded() {
         UIApplication.openURLIfPossible(externalLinks.accountSetup)
     }
 
-    func requestTwoFactorCode(username: String, password: String) {
+    func requestTOTPCode(username: String, password: String, providerDelegate: TwoFAProviderDelegate? = nil) {
         showTwoFactorCode(username: username, password: password)
+    }
+
+    @available(iOS 15.0, *)
+    func requestKeySignature(authenticationOptions: AuthenticationOptions, providerDelegate: TwoFAProviderDelegate? = nil) {
+        showKeySignature(authenticationOptions: authenticationOptions, providerDelegate: providerDelegate)
+    }
+
+    @available(iOS 15.0, *)
+    func requestTOTPOrKeySignature(username: String, password: String,
+                                   authenticationOptions: AuthenticationOptions,
+                                   providerDelegate: TwoFAProviderDelegate? = nil) {
+        Task {
+            await MainActor.run {  showTwoFactorChoice(username: username,
+                                                       password: password,
+                                                       authenticationOptions: authenticationOptions,
+                                                       providerDelegate: providerDelegate)
+            }
+        }
     }
 
     func mailboxPasswordNeeded() {
@@ -357,6 +405,7 @@ extension LoginCoordinator: NavigationDelegate {
             // Once we do it, the user auth session on the backend is past the 2FA step and doesn't allow sending another 2FA code again.
             // The technical details are: the access token contains `twofactor` scope before `POST /auth/v4/2fa` and doesn't contain it after.
             // It makes navigating back to two factor screen useless (user cannot send another code), so we navigate back to root screen instead.
+                // TODO: support FIDO2 use case
                 navigationController.viewControllers.contains(where: { $0 is TwoFactorViewController }) {
 
             // this flag prevents the unnecessary showing of the "session invalidated" message to the user
@@ -419,14 +468,14 @@ extension LoginCoordinator: MailboxPasswordViewControllerDelegate {
     }
 }
 
-// MARK: - TwoFactor delegate
+// MARK: - TwoFactor VC delegate
 
 extension LoginCoordinator: TwoFactorViewControllerDelegate {
-    func twoFactorViewControllerDidFail(error: LoginError) {
+      func twoFactorViewControllerDidFail(error: LoginError) {
         popAndShowError(error: error)
     }
 
-    func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData) {
+    func twoFactorViewControllerDidFinish(data: ProtonCoreLogin.LoginData, endLoading: @escaping () -> Void) {
         finish(endLoading: endLoading, data: data)
     }
 }

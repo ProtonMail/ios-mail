@@ -148,7 +148,7 @@
 
 "Skip" = "Preskoči";
 
-"Skip recovery method?" = "Preskoči metodo obnovitve?";
+"Skip recovery method?" = "Preskoči način za obnovitev?";
 
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Način obnovitve vam pomaga pri dostopu do računa, če pozabite geslo ali če je vaš račun zaklenjen.";
 
@@ -176,7 +176,7 @@
 
 "Did not receive a code?" = "Niste prejeli kode?";
 
-"Terms and Conditions" = "Pogoji storitve";
+"Terms and Conditions" = "Pravila in pogoji";
 
 "Invalid token request" = "Neveljavna zahteva žetona";
 
@@ -215,3 +215,39 @@
 "Sign in" = "Prijava";
 
 "Troubleshoot" = "Odpravljanje težave";
+
+"Please choose how you want to confirm your identity." = "Izberite, kako želite potrditi svojo identiteto.";
+
+"One-time code" = "Enkratno geslo";
+
+"Security key" = "Varnostni ključ";
+
+"Two-Factor Authentication" = "Dvojno preverjanja pristnosti";
+
+"Present a security key linked to your Proton Account." = "Predložite varnostni ključ, povezan z vašim računom Proton.";
+
+"Learn more" = "Več o tem";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Nepravilno stanje. Zapustite aplikacijo in poskusite znova čez nekaj minut.";
+
+"There was a problem reading your security key." = "Pri branju varnostnega ključa je prišlo do težav.";
+
+"We received an authorization from a type we don't support yet." = "Prejeli smo tip avtorizacije, kakršne še ne podpiramo.";
+
+"Fetching your security keys details" = "Pridobivanje podatkov o varnostnih ključih";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "S svojim računom nimate povezanih varnostnih ključev. Prijavite se preko spleta in v nastavitvah računa dodajte varnostne ključe.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Med pridobivanjem varnostnih ključev je prišlo do napake. Preverite jih lahko tudi na spletni strani Proton %@.";
+
+"These are the security keys registered to your account" = "Ti varnostni ključi so registrirani v vašem računu";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "S svojim računom nimate povezanih varnostnih ključev. Za dodajanje ključev uporabite Proton %@ spletno aplikacijo.";
+
+"Security Keys" = "Varnostni ključi";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Za upravljanje, dodajanje in odstranjevanje varnostnih ključev uporabite Proton %@ spletno aplikacijo.";
+
+"Unexpected FIDO2 signature." = "Nepričakovan FIDO2 podpis.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Povezave za posodobitev varnega gesla nismo mogli vzpostaviti. Poskusite znova.";

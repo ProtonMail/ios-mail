@@ -44,7 +44,7 @@ public struct PCButton: View {
                 }
             }
         }
-        .buttonStyle(PCButtonModeStyle(mode: style.mode))
+        .buttonStyle(PCButtonModeStyle(brand: style.brand, mode: style.mode))
         .disabled(!content.isEnabled || content.isAnimating)
     }
 }

@@ -26,6 +26,7 @@ import ProtonCoreHumanVerification
 import ProtonCoreServices
 #if DEBUG
 import OHHTTPStubs
+import OHHTTPStubsSwift
 #endif
 
 class HumanVerificationManager: LifetimeTrackable {

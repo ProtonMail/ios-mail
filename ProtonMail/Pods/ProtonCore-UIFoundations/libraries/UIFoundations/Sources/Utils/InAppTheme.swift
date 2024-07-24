@@ -44,7 +44,7 @@ public enum InAppTheme {
             return .unspecified
         }
     }
-    #elseif canImport(AppKit)
+    #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
     public var appearance: NSAppearance.Name {
         switch self {
         case .light:

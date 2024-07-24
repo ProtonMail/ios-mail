@@ -24,6 +24,7 @@
 import SwiftUI
 import ProtonCoreUIFoundations
 import ProtonCoreObservability
+import ProtonCoreServices
 
 struct PasswordChange2FAView: View {
     @ObservedObject public var viewModel: ViewModel
@@ -64,7 +65,7 @@ struct PasswordChange2FAView: View {
         .onChange(of: viewModel.tfaFieldContent.text) { _ in
             authenticateButtonIsEnabled = !viewModel.tfaFieldContent.text.isEmpty
         }
-        .onAppear() {
+        .onAppear {
             viewModel.tfaFieldContent.focus()
             ObservabilityEnv.report(.screenLoadCountTotal(screenName: .changePassword2FA))
         }
@@ -76,7 +77,8 @@ struct PasswordChange2FAView_Previews: PreviewProvider {
     static var viewModel = {
         return PasswordChange2FAView.ViewModel(
             mode: .loginPassword,
-            loginPassword: "", 
+            twoFA: AuthInfoResponse.TwoFA(enabled: .both),
+            loginPassword: "",
             newPassword: "",
             passwordChangeCompletion: nil
         )

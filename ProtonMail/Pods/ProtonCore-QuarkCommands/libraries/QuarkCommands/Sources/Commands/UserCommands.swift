@@ -38,10 +38,11 @@ public extension Quark {
             createAddress == .noKey ? "--create-address=true" : nil,
             createAddress == .withKey(genKeys: .Curve25519) ? "--gen-keys=\(GenKeys.Curve25519.rawValue)" : nil,
             user.mailboxPassword.isEmpty ? nil : "--mailbox-pass=\(user.mailboxPassword)",
-            user.twoFASecurityKey.isEmpty ? nil : "--totp-secret=\(user.twoFASecurityKey)",
+            user.totpSecurityKey.isEmpty ? nil : "--totp-secret=\(user.totpSecurityKey)",
             user.recoveryEmail.isEmpty ? nil : "--recovery=\(user.recoveryEmail)",
             user.isExternal ? "--external=true" : nil,
             user.isExternal ? "--external-email=\(user.email)" : nil,
+            user.recoveryVerified ? "--recovery-verified=true" : nil,
             "--format=json"
         ].compactMap { $0 }
 
@@ -73,13 +74,15 @@ public extension Quark {
         return try parseQuarkCommandJsonResponse(jsonData: data, type: CreateUserQuarkResponse.self)
     }
 
-    func userCreateAddress(decryptedUserId: Int, password: String, email: String, genKeys: GenKeys = .Curve25519) throws -> CreateUserAddressQuarkResponse? {
+    @discardableResult
+    func userCreateAddress(decryptedUserId: Int, password: String, email: String, genKeys: GenKeys = .Curve25519, isPrimary: Bool = false) throws -> CreateUserAddressQuarkResponse? {
         let args = [
             "userID=\(decryptedUserId)",
             "password=\(password)",
             "email=\(email)",
             "--gen-keys=\(genKeys.rawValue)",
-            "--format=json"
+            "--format=json",
+            "--primary=\(isPrimary ? "1": "0")"
         ]
 
         let request = try route(usersCreateAddress)
@@ -91,6 +94,7 @@ public extension Quark {
         return try parseQuarkCommandJsonResponse(jsonData: data, type: CreateUserAddressQuarkResponse.self)
     }
 
+    @discardableResult
     func userExpireSession(username: String, expireRefreshToken: Bool = false) throws -> (data: Data, response: URLResponse) {
         let args = [
             "User=\(username)",

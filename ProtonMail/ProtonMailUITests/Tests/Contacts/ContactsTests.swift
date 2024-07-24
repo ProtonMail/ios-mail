@@ -6,7 +6,6 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCoreTestingToolkit
 
 class ContactsTests : FixtureAuthenticatedTestCase {
 

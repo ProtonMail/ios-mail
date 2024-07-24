@@ -42,32 +42,56 @@ final class UpsellTelemetryReporter {
     }
 
     func upsellButtonTapped() async {
-        let event = makeEvent(name: .upsellButtonTapped, dimensions: commonDimensions())
+        let dimensions = makeDimensions()
+        let event = makeEvent(name: .upsellButtonTapped, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
     func upgradeAttempt(storeKitProductId: InAppPurchasePlan.ProductId) async {
-        var dimensions = commonDimensions()
-
-        if let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
-            dimensions.selectedPlan = selectedPlan
-            dimensions.selectedCycle = selectedCycle
-        }
-
+        let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
         let event = makeEvent(name: .upgradeAttempt, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
     func upgradeSuccess(storeKitProductId: InAppPurchasePlan.ProductId) async {
-        var dimensions = commonDimensions()
+        let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
+        let event = makeEvent(name: .upgradeSuccess, dimensions: dimensions)
+        await dependencies.telemetryService.sendEvent(event)
+    }
 
-        if let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
+    func upgradeFailed(storeKitProductId: InAppPurchasePlan.ProductId) async {
+        let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
+        let event = makeEvent(name: .upgradeFailed, dimensions: dimensions)
+        await dependencies.telemetryService.sendEvent(event)
+    }
+
+    func upgradeCancelled(storeKitProductId: InAppPurchasePlan.ProductId) async {
+        let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
+        let event = makeEvent(name: .upgradeCancelled, dimensions: dimensions)
+        await dependencies.telemetryService.sendEvent(event)
+    }
+
+    private func makeDimensions(storeKitProductId: String? = nil) -> Dimensions {
+        if !ProcessInfo.isRunningUnitTests {
+            assert(
+                planBeforeUpgrade != nil,
+                "current plan name must be stored to accurately report it after the upgrade"
+            )
+        }
+
+        var dimensions = Dimensions(
+            planBeforeUpgrade: planBeforeUpgrade ?? "unknown",
+            daysSinceAccountCreation: accountAgeBracket(),
+            upsellModalVersion: upsellModalVersion,
+            selectedPlan: nil
+        )
+
+        if let storeKitProductId, let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
             dimensions.selectedPlan = selectedPlan
             dimensions.selectedCycle = selectedCycle
         }
 
-        let event = makeEvent(name: .upgradeSuccess, dimensions: dimensions)
-        await dependencies.telemetryService.sendEvent(event)
+        return dimensions
     }
 
     private func parsePlanNameAndCycle(
@@ -94,6 +118,13 @@ final class UpsellTelemetryReporter {
         return (captureGroupAtIndex(1), captureGroupAtIndex(3))
     }
 
+    private func accountAgeBracket() -> String {
+        let accountCreationDate = Date(timeIntervalSince1970: TimeInterval(dependencies.user.userInfo.createTime))
+        let now = Date()
+        let accountAgeInDays = Calendar.autoupdatingCurrent.numberOfDays(between: accountCreationDate, and: now)
+        return accountAgeBracket(for: accountAgeInDays)
+    }
+
     private func makeEvent(name: EventName, dimensions: Dimensions) -> TelemetryEvent {
         .init(
             measurementGroup: measurementGroup,
@@ -103,26 +134,6 @@ final class UpsellTelemetryReporter {
             frequency: .always
         )
     }
-
-    private func commonDimensions() -> Dimensions {
-        if !ProcessInfo.isRunningUnitTests {
-            assert(planBeforeUpgrade != nil, "current plan name must be stored to accurately report it after the upgrade")
-        }
-
-        return .init(
-            planBeforeUpgrade: planBeforeUpgrade ?? "unknown",
-            daysSinceAccountCreation: accountAgeBracket(),
-            upsellModalVersion: upsellModalVersion,
-            selectedPlan: nil
-        )
-    }
-
-    private func accountAgeBracket() -> String {
-        let accountCreationDate = Date(timeIntervalSince1970: TimeInterval(dependencies.user.userInfo.createTime))
-        let now = Date()
-        let accountAgeInDays = Calendar.autoupdatingCurrent.numberOfDays(between: accountCreationDate, and: now)
-        return accountAgeBracket(for: accountAgeInDays)
-    }
 }
 
 private extension UpsellTelemetryReporter {
@@ -130,6 +141,8 @@ private extension UpsellTelemetryReporter {
         case upsellButtonTapped = "upsell_button_tapped"
         case upgradeAttempt = "upgrade_attempt"
         case upgradeSuccess = "upgrade_success"
+        case upgradeFailed = "upgrade_error"
+        case upgradeCancelled = "upgrade_cancelled_by_user"
     }
 
     struct Dimensions {

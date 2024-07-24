@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
@@ -43,11 +44,10 @@ final class UpdatePrivateKeyRequest: Request {
     let clientEphemeral: String // base64 encoded
     let clientProof: String // base64 encoded
     let SRPSession: String // hex encoded session id
-    let tfaCode: String? // optional
+    let twoFAParams: TwoFAParams? // optional
     let keySalt: String // base64 encoded need random value
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
-    let orgKey: String?
     let userKeys: [Key]?
     let auth: PasswordAuth?
 
@@ -57,8 +57,7 @@ final class UpdatePrivateKeyRequest: Request {
          keySalt: String,
          userlevelKeys: [Key] = [],
          addressKeys: [Key] = [],
-         tfaCode: String? = nil,
-         orgKey: String? = nil,
+         twoFAParams: TwoFAParams? = nil,
          userKeys: [Key]?,
          auth: PasswordAuth?,
          authCredential: AuthCredential?) {
@@ -72,8 +71,7 @@ final class UpdatePrivateKeyRequest: Request {
         self.userKeys = userKeys
 
         // optional values
-        self.orgKey = orgKey
-        self.tfaCode = tfaCode
+        self.twoFAParams = twoFAParams
         self.auth = auth
 
         self.credential = authCredential
@@ -117,12 +115,10 @@ final class UpdatePrivateKeyRequest: Request {
             }
         }
 
-        if let code = tfaCode {
-            out["TwoFactorCode"] = code
+        if let twoFAParamsDictionary = twoFAParams?.asParameterDictionary {
+            out.merge(twoFAParamsDictionary, uniquingKeysWith: { a, _ in a })
         }
-        if let org_key = orgKey {
-             out["OrganizationKey"] = org_key
-        }
+
         if let auth_obj = self.auth {
             out["Auth"] = auth_obj.parameters
         }
@@ -138,4 +134,3 @@ final class UpdatePrivateKeyRequest: Request {
         return KeysAPI.path + "/private"
     }
 }
-

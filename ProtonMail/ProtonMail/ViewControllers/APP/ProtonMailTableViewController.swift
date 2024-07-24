@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreFoundations
+import UIKit
 
 class ProtonMailTableViewController: UITableViewController, AccessibleView {
 

@@ -60,6 +60,8 @@
 
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "La compra en la aplicación ha comenzado. Sigue las instrucciones de Apple para terminar o cancelar la compra.";
 
+"In app payments are temporarily unavailable." = "Los pagos en la aplicación están indisponible temporalmente.";
+
 "One plan for all Proton services" = "Un plan para todos los servicios de Proton";
 
 "The no-cost starter account designed to empower everyone with privacy by default." = "La cuenta inicial sin coste ofrece privacidad por defecto a todo el mundo.";

@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCoreServices
+import UIKit
 import UserNotifications
 
 final class PushNotificationService: NSObject {

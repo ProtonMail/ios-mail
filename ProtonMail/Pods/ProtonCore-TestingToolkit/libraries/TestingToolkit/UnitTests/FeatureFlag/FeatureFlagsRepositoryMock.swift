@@ -48,7 +48,7 @@ public final class FeatureFlagsRepositoryMock: FeatureFlagsRepositoryProtocol {
         self.setApiServiceWasCalled = true
     }
 
-    public func fetchFlags(for userId: String?, using apiService: ProtonCoreServices.APIService?) async throws {
+    public func fetchFlags() async throws {
         self.fetchFlagsWasCalled = true
     }
 

@@ -142,7 +142,7 @@
 
 "Recovery phone number" = "복구 전화번호";
 
-"By clicking Next, you agree with Proton's Terms and Conditions" = "다음을 클릭하면, Proton의 이용 약관에 동의하는 것입니다";
+"By clicking Next, you agree with Proton's Terms and Conditions" = "다음을 클릭하면, Proton 이용 약관에 동의하는 것으로 간주합니다.";
 
 "Terms and Conditions" = "이용 약관";
 
@@ -160,7 +160,7 @@
 
 "Creating your account" = "계정을 생성하는 중";
 
-"Generating your address" = "당신의 주소 생성하기";
+"Generating your address" = "내 주소를 생성하는 중";
 
 "Securing your account" = "계정을 보호하는 중";
 
@@ -215,3 +215,39 @@
 "Sign in" = "로그인";
 
 "Troubleshoot" = "문제 해결";
+
+"Please choose how you want to confirm your identity." = "신원을 확인하고자 하는 방법을 선택해 주세요.";
+
+"One-time code" = "일회용 코드";
+
+"Security key" = "보안 키";
+
+"Two-Factor Authentication" = "2단계 인증";
+
+"Present a security key linked to your Proton Account." = "Proton 계정에 연결된 보안 키를 제시해 주세요.";
+
+"Learn more" = "더 알아보기";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "잘못된 상태입니다. 앱을 종료한 다음 몇 분 후에 다시 시도해 주세요.";
+
+"There was a problem reading your security key." = "보안 키를 읽는 중에 문제가 발생했습니다.";
+
+"We received an authorization from a type we don't support yet." = "아직 지원하지 않는 유형의 인증을 수신했습니다.";
+
+"Fetching your security keys details" = "보안 키의 세부사항을 가져오고 있습니다";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "아직 계정에 등록된 보안 키가 없습니다. 보안 키를 추가하려면 웹사이트의 설정 영역을 방문해 주세요.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "보안 키를 가져오던 중 오류가 발생했습니다. Proton %@ 웹사이트에서도 확인하실 수 있습니다.";
+
+"These are the security keys registered to your account" = "이것들이 당신의 계정에 등록된 보안 키입니다";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "아직 계정에 등록된 보안 키가 없습니다. 보안 키를 추가하려면 Proton %@ 웹 앱을 사용해 주세요.";
+
+"Security Keys" = "보안 키";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "보안 키를 관리, 추가하거나 제거하려면 Proton %@ 웹 앱을 사용해 주세요.";
+
+"Unexpected FIDO2 signature." = "알 수 없는 FIDO2 서명";
+
+"We could not initiate the Secure Password update connection. Please try again." = "보안 비밀번호 업데이트 연결을 초기화하지 못했습니다. 다시 시도하십시오.";

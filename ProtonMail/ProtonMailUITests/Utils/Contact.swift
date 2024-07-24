@@ -17,13 +17,13 @@
 
 struct Contact: Hashable {
 
-    public let name: String
-    public let email: String
-    public let phoneNumber: String
-    public let displayText: String
-    public let otherInformation: String
+    let name: String
+    let email: String
+    let phoneNumber: String
+    let displayText: String
+    let otherInformation: String
 
-    public init(name: String, email: String, phoneNumber: String = "", displayText: String = "", otherInformation: String = "") {
+    init(name: String, email: String, phoneNumber: String = "", displayText: String = "", otherInformation: String = "") {
         self.name = name
         self.email = email
         self.phoneNumber = phoneNumber

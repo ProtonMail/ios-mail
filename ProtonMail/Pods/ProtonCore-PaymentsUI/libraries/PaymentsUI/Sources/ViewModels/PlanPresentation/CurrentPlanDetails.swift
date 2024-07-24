@@ -309,6 +309,17 @@ extension CurrentPlanDetails {
                             (.eye, details.prioritySupportDescription)
                           ])
 
+        case "640b81c4ab4521097696f5526da2605a3f5d8ce10669bf760e1384aaccb71d4e":
+            strDetails = (name: "Essentials",
+                          shouldShowUsedSpace: false,
+                          optDetails: [
+                            (.infinity, details.unlimitedLoginsAndNotesDescription),
+                            (.infinity, details.unlimitedDevicesDescription),
+                            (.alias, details.unlimitedEmailAliasesDescription),
+                            (.lock, details.integrated2FADescription),
+                            (.eye, details.prioritySupportDescription)
+                          ])
+
         default:
             // default description, used for no plan (aka free) or for plans with unknown ID
             switch clientApp {

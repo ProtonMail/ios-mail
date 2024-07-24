@@ -17,6 +17,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 class HeaderView: UIView, AccessibleView {
     let initialsContainer = SubviewsFactory.container

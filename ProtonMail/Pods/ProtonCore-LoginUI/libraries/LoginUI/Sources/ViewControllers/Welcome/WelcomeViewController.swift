@@ -85,7 +85,7 @@ public final class WelcomeViewController: UIViewController, AccessibleView, Prod
         generateAccessibilityIdentifiers()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         measureOnViewDisplayed()
     }

@@ -23,6 +23,18 @@
 import UIKit
 
 extension UIStackView {
+    static func stackView(axis: NSLayoutConstraint.Axis = .horizontal,
+                          distribution: Distribution = .fill,
+                          alignment: Alignment = .fill,
+                          spacing: CGFloat = 0) -> UIStackView {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = axis
+        stackView.distribution = distribution
+        stackView.alignment = alignment
+        stackView.spacing = spacing
+        return stackView
+    }
+
     func clearAllViews() {
         arrangedSubviews.forEach {
             $0.removeFromSuperview()

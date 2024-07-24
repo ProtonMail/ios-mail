@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP 加密郵件";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP 簽署郵件";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "經 PGP 簽署的郵件。寄件人驗證失敗";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB 儲存空間";

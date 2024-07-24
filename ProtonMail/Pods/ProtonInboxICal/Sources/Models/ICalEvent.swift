@@ -84,8 +84,8 @@ public struct ICalEvent {
     public var recurringRulesLibical: icalrecurrencetype?
     public var invitationState: EKParticipantStatus
     public var mainEventRecurrence: ICalRecurrence?
-    public var isFirstOccurrence: Bool = false
-    public var isLastOccurrence: Bool = false
+    public var isFirstOccurrence: Bool
+    public var isLastOccurrence: Bool
     public var numOfSelectedWeeklyOn: Int = 0
     public var ics: String
     public internal(set) var color: String?
@@ -131,8 +131,8 @@ public struct ICalEvent {
         invitationState: EKParticipantStatus = .unknown,
         isOrphanSingleEdit: Bool = false,
         mainEventRecurrence: ICalRecurrence? = nil,
-        isFirstOccurrence _: Bool = false,
-        isLastOccurrence _: Bool = false,
+        isFirstOccurrence: Bool = false,
+        isLastOccurrence: Bool = false,
         numOfSelectedWeeklyOn: Int = 0,
         ics: String = "",
         color: String?
@@ -177,6 +177,8 @@ public struct ICalEvent {
         self.invitationState = invitationState
         self.isOrphanSingleEdit = isOrphanSingleEdit
         self.mainEventRecurrence = mainEventRecurrence
+        self.isFirstOccurrence = isFirstOccurrence
+        self.isLastOccurrence = isLastOccurrence
         self.numOfSelectedWeeklyOn = numOfSelectedWeeklyOn
         self.ics = ics
         self.color = color

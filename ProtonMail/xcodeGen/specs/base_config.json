@@ -3,7 +3,7 @@
    "options": {
       "createIntermediateGroups": true,
       "deploymentTarget": {
-         "iOS": "14.7"
+         "iOS": "15.0"
       },
       "postGenCommand": "xcodeGen/post_gen.sh"
    },
@@ -32,6 +32,10 @@
       "LifetimeTracker": {
          "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
          "from": "1.0.0"
+      },
+      "OHHTTPStubs": {
+         "url": "https://github.com/AliSoftware/OHHTTPStubs",
+         "from": "9.1.0"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"

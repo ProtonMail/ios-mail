@@ -39,7 +39,6 @@ final class MenuViewModel: NSObject {
     & HasUnlockManager
     & HasUsersManager
     & HasMailEventsPeriodicScheduler
-    & HasFeatureFlagsRepository
 
     private let dependencies: Dependencies
     private var scheduleSendLocationStatusObserver: MessagesAssignedToLabelIDObserver?

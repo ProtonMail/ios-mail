@@ -178,7 +178,7 @@
 
 "Terms and Conditions" = "Termeni și condiții";
 
-"Invalid token request" = "Token solicitare nevalid";
+"Invalid token request" = "Co de acces solicitare nevalid.";
 
 "Invalid token error" = "Cod de autorizare nevalid";
 
@@ -215,3 +215,39 @@
 "Sign in" = "Autentificare";
 
 "Troubleshoot" = "Depanare";
+
+"Please choose how you want to confirm your identity." = "Alegeți cum doriți să vă confirmați identitatea.";
+
+"One-time code" = "Cod de unică folosință";
+
+"Security key" = "Cheie de securitate";
+
+"Two-Factor Authentication" = "Autentificare cu doi factori";
+
+"Present a security key linked to your Proton Account." = "Prezentați o cheie de securitate conectată la contul Proton.";
+
+"Learn more" = "Detalii";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Stare nevalidă. Închideți aplicația și reîncercați peste câteva minute.";
+
+"There was a problem reading your security key." = "A apărut o problemă la citirea cheii de securitate.";
+
+"We received an authorization from a type we don't support yet." = "Am primit o autorizație de la un tip pe care încă nu îl acceptăm.";
+
+"Fetching your security keys details" = "Se preiau detaliile cheilor de securitate";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Încă nu aveți chei de securitate înregistrate în cont. Vizitați secțiunea de setări de pe site-ul nostru pentru a adăuga chei de securitate.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "A apărut o eroare la preluarea cheilor de securitate. Le puteți verifica și pe site-ul web Proton %@.";
+
+"These are the security keys registered to your account" = "Acestea sunt cheile de securitate înregistrate în cont.";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Încă nu aveți chei de securitate înregistrate în cont. Utilizați aplicația web Proton %@ pentru a adăuga chei de securitate.";
+
+"Security Keys" = "Chei de securitate";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Pentru a gestiona, adăuga sau elimina cheile de securitate, utilizați aplicația web Proton %@.";
+
+"Unexpected FIDO2 signature." = "Semnătură FIDO2 neașteptată.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Nu s-a putut iniția conexiunea de actualizare a Secure Password. Mai încercați.";

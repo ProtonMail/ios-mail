@@ -22,6 +22,7 @@
 
 import LifetimeTracker
 import ProtonCoreUIFoundations
+import UIKit
 
 final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     typealias Dependencies = HasPinCodeVerifier & HasUserDefaults

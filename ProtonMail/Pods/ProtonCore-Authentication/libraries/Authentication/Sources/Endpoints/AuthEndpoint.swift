@@ -39,17 +39,10 @@ extension AuthService {
         var serverProof: String?
         var passwordMode: PasswordMode
 
-        var _2FA: TwoFA
+        var _2FA: AuthInfoResponse.TwoFA
     }
 
     struct AuthEndpoint: Request {
-        struct AuthEndpointData {
-            let username: String
-            let ephemeral: Data
-            let proof: Data
-            let srpSession: String
-            let challenge: ChallengeProperties?
-        }
 
         struct SSOEndpointData {
             let ssoResponseToken: String
@@ -102,5 +95,21 @@ extension AuthService {
         var isAuth: Bool {
             false
         }
+    }
+}
+
+public struct AuthEndpointData {
+    public let username: String
+    public let ephemeral: Data
+    public let proof: Data
+    public let srpSession: String
+    public let challenge: ChallengeProperties?
+
+    public init(username: String, ephemeral: Data, proof: Data, srpSession: String, challenge: ChallengeProperties? = nil) {
+        self.username = username
+        self.ephemeral = ephemeral
+        self.proof = proof
+        self.srpSession = srpSession
+        self.challenge = challenge
     }
 }

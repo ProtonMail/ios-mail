@@ -24,6 +24,7 @@ import class ProtonCoreDataModel.UserInfo
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUIFoundations
+import UIKit
 
 final class LabelManagerViewModel: LabelManagerViewModelProtocol {
     var input: LabelManagerViewModelInput { self }

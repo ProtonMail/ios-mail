@@ -2,6 +2,7 @@ import CoreData
 import ProtonCoreUIFoundations
 import ProtonCoreDataModel
 import ProtonMailAnalytics
+import UIKit
 
 enum MessageDisplayRule {
     case showNonTrashedOnly

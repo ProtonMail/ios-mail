@@ -215,3 +215,39 @@
 "Sign in" = "Log ind";
 
 "Troubleshoot" = "Fejlfind";
+
+"Please choose how you want to confirm your identity." = "Vælg, hvordan du vil bekræfte din identitet.";
+
+"One-time code" = "Engangs-kode";
+
+"Security key" = "Sikkerhedsnøgle";
+
+"Two-Factor Authentication" = "To-faktor-godkendelse";
+
+"Present a security key linked to your Proton Account." = "Fremvis en sikkerhedsnøgle, der er tilknyttet din Proton-konto.";
+
+"Learn more" = "Få mere at vide";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Ugyldig status. Afslut appen, og prøv igen om et par minutter.";
+
+"There was a problem reading your security key." = "Der opstod et problem med at læse din sikkerhedsnøgle.";
+
+"We received an authorization from a type we don't support yet." = "Vi modtog en godkendelse fra en type, som vi ikke understøtter endnu.";
+
+"Fetching your security keys details" = "Henter detaljer om dine sikkerhedsnøgler";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Din konto er endnu ikke påført nogen sikkerhedsnøgler. Se afsnittet om indstillinger på vores hjemmeside for at tilføje sikkerhedsnøgler.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "En fejl opstod ved hentning af dine sikkerhedsnøgler. Du kan også tjekke dem på Proton %@-hjemmesiden.";
+
+"These are the security keys registered to your account" = "Disse sikkerhedsnøgler er registreret til din konto";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Din konto er endnu ikke påført nogen sikkerhedsnøgler. Brug Proton %@-webprogrammet til at tilføje sikkerhedsnøgler.";
+
+"Security Keys" = "Sikkerhedsnøgler";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Benyt Proton %@-webprogrammet til at håndtere, tilføje eller fjerne sikkerhedsnøgler.";
+
+"Unexpected FIDO2 signature." = "Uventet FIDO2-signatur.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Vi kunne ikke starte forbindelsen til opdatering af Secure Password. Prøv igen.";

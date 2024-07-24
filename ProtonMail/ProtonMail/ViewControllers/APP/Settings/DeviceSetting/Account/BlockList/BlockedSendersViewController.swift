@@ -17,6 +17,7 @@
 
 import LifetimeTracker
 import ProtonCoreUIFoundations
+import UIKit
 
 final class BlockedSendersViewController: ProtonMailTableViewController {
     private let viewModel: BlockedSendersViewModelProtocol

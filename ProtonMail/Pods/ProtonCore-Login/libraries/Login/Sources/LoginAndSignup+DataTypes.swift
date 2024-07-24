@@ -33,7 +33,20 @@ public typealias LoginData = UserData
 
 public extension UserData {
 
-    var getCredential: Credential { Credential(credential, scopes: scopes) }
+    var getCredential: Credential {
+        var credential = Credential(credential, scopes: scopes)
+        if let getMailboxPassword {
+            credential.mailboxPassword = getMailboxPassword
+        }
+        return credential
+    }
+
+    var getMailboxPassword: String? {
+        return passphrases.first { (key, _) in
+            key == user.keys
+                .first { $0.keyID == key && $0.primary == 1 }?.keyID
+        }?.value
+    }
 
     func updated(credential: Credential) -> UserData {
         UserData(credential: self.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),

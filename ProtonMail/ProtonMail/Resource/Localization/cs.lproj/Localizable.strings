@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-šifrovaná zpráva";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-podepsaná zpráva";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-podepsaná zpráva. Ověření odesílatele se nepodařilo";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2025,7 +2028,7 @@
 "last" = "poslední";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Snadné přihlašování na události";
+"Easily RSVP to events" = "Snadné RSVP událostí";
 
 /* Body of the spotlight view */
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Nyní můžete na pozvánku odpovědět nebo zobrazit událost v kalendáři Proton Calendar jediným klepnutím. ";
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Změnit heslo poštovní schránky";
+
+/* settings general section title */
+"Security keys" = "Bezpečnostní klíče";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB úložiště";

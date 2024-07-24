@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "Message chiffré par PGP";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "Message signé avec PGP";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Message signé par PGP. L'expéditeur n'a pas pu être vérifié.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -1953,7 +1956,7 @@
 "Every %@" = "Chaque %@";
 
 /* As in: on Saturday */
-"on %@" = "les %@";
+"on %@" = "le %@";
 
 /* As in: on the last Saturday */
 "on the %@" = "le %@";
@@ -2028,7 +2031,7 @@
 "Easily RSVP to events" = "Confirmer facilement votre participation à des événements";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Vous pouvez maintenant répondre à une invitation ou afficher l'événement dans Proton Calendar avec simple pression. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Vous pouvez maintenant répondre à une invitation ou afficher l'événement dans Proton Calendar avec une simple pression. ";
 
 /* Menu title */
 "Max Storage" = "Espace de stockage maximum";
@@ -2079,16 +2082,16 @@
 "Auto-import device contacts" = "Importation automatique des contacts de l'appareil";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activez cette fonctionnalité pour ajouter automatiquement des contacts depuis votre appareil vers l'application Proton Mail.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activez cette fonctionnalité pour ajouter automatiquement les nouveaux contacts de votre appareil à l'application Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "L'importation automatique a été activée.";
+"Auto-import enabled" = "Importation automatique activée";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "La première importation peut prendre plus de temps et s'effectuera uniquement lorsque l'application est en arrière-plan.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "La première importation peut prendre un certain temps et a lieu uniquement quand l'application est au premier plan.";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "L'accès aux contacts a été désactivé. Pour activer l'importation automatique, vous devez aller dans les paramètres et permettre l'importation des contacts.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "L'accès aux contacts a été désactivé. Pour activer l'importation automatique, rendez-vous dans les paramètres et activez l'autorisation d'accès aux contacts.";
 
 /* Settings lock protection section */
 "Protection" = "Protection";
@@ -2391,7 +2394,7 @@
 "Next week" = "La semaine prochaine";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Veuillez sélectionner une heure dans le futur.";
+"Please select a time in the future" = "Sélectionnez une période dans le futur.";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Vous voulez personnaliser les périodes de mise en attente ?";
@@ -2424,7 +2427,7 @@
 "Enable auto-import" = "Activer l'importation automatique";
 
 /* The title for no contact hint view */
-"No contacts yet" = "Il n'y a pas encore de contacts.";
+"No contacts yet" = "Il n'y a aucun contact pour l'instant.";
 
 /* The description for no contact hint view */
 "Import contacts from your device to send emails and invites with ease." = "Importez vos contacts depuis votre appareil pour envoyer facilement vos e-mails et invitations.";
@@ -2439,7 +2442,7 @@
 "Your contacts will appear here shortly." = "Vos contacts apparaîtront ici dans quelques instants.";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Vous pouvez ajouter automatiquement des contacts depuis votre appareil.";
+"Automatically add new contacts from your device." = "Ajoutez automatiquement de nouveaux contacts depuis votre appareil.";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "Confidentialité et données";
@@ -2453,6 +2456,9 @@
 /* settings general section title */
 "Change mailbox password" = "Changer le mot de passe de messagerie";
 
+/* settings general section title */
+"Security keys" = "Clés de sécurité";
+
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 Go d'espace de stockage";
 
@@ -2460,7 +2466,7 @@
 "%u email addresses" = "%u adresses e-mail";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Support de domaine de messagerie personnalisé";
+"Custom email domain support" = "Prise en charge du domaine de messagerie personnalisé";
 
 /* Description of a feature of a paid subscription */
 "New Proton Mail desktop app" = "Nouvelle application de bureau Proton Mail";
@@ -2481,7 +2487,7 @@
 "Upgrade to %@" = "Passer à %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "Pour débloquer plus d'espace de stockage et des fonctionnalités premium.";
+"To unlock more storage and premium features." = "Pour disposer de plus d'espace de stockage et de fonctionnalités premium.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mois";

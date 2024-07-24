@@ -41,7 +41,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
-    & HasFeatureFlagsRepository
     & HasUpsellTelemetryReporter
     & HasUserManager
     & HasUserDefaults
@@ -174,7 +173,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-    private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
 
     override var title: String? {
         didSet {

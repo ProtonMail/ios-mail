@@ -1753,6 +1753,9 @@
 "PGP-encrypted message" = "PGP-versleuteld bericht";
 
 /* The message after tapping the encryption icon of message received. */
+"PGP-signed message" = "PGP-ondertekend bericht";
+
+/* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "PGP-ondertekend bericht. Verificatie afzender mislukt";
 
 /* The message after tapping the encryption icon of recipient in composer. */
@@ -2452,6 +2455,9 @@
 
 /* settings general section title */
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
+
+/* settings general section title */
+"Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB opslagruimte";

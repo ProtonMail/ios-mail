@@ -24,14 +24,31 @@ public enum EventType {
     case encrypted
 
     public enum SingleEdit: Equatable {
-        case regular
+        case regular(editInfo: EditInfo)
         case orphan
+
+        public enum EditCount: Equatable {
+            case one
+            case moreThanOne
+        }
+
+        public struct EditInfo: Equatable {
+            public let editCount: EditCount
+            public let deletionCount: UInt
+
+            public init(editCount: EditCount, deletionCount: UInt) {
+                self.editCount = editCount
+                self.deletionCount = deletionCount
+            }
+        }
     }
 
     public struct RecurrenceDetails {
+        public let mainOccurrence: ICalEvent
         public let singleEdits: [ICalEvent]
 
-        public init(singleEdits: [ICalEvent]) {
+        public init(mainOccurrence: ICalEvent, singleEdits: [ICalEvent]) {
+            self.mainOccurrence = mainOccurrence
             self.singleEdits = singleEdits
         }
     }

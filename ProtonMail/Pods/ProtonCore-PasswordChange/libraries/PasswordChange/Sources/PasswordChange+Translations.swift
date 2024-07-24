@@ -35,12 +35,13 @@ public enum PCTranslation: TranslationsExposing {
     }
 
     public static var prefixForMissingValue: String = ""
-    
+
     case settingsItem
     case accountPassword
     case currentPassword
-    case newSignInPassword
-    case confirmNewSignInPassword
+    case currentSignInPassword
+    case newPassword
+    case confirmNewPassword
     case newMailboxPassword
     case confirmNewMailboxPassword
     case passwordEmptyErrorDescription
@@ -49,6 +50,7 @@ public enum PCTranslation: TranslationsExposing {
     case savePassword
     case passwordRecoveryButton
     case protonPasswordDescription
+    case learnMore
 
     case tfaTitle
     case tfaCode
@@ -63,6 +65,8 @@ public enum PCTranslation: TranslationsExposing {
     case errorCantGenerateSRPClient
     case errorKeyUpdateFailed
     case errorUpdatePasswordDefault
+    case errorMissingAuthInfo
+    case errorMissingUserInfo
 
     public var l10n: String {
         switch self {
@@ -71,11 +75,13 @@ public enum PCTranslation: TranslationsExposing {
         case .accountPassword:
             return localized(key: "Account password", comment: "Screen title")
         case .currentPassword:
+            return localized(key: "Current password", comment: "TextField title")
+        case .currentSignInPassword:
             return localized(key: "Current sign-in password", comment: "TextField title")
-        case .newSignInPassword:
-            return localized(key: "New sign-in password", comment: "TextField title")
-        case .confirmNewSignInPassword:
-            return localized(key: "Confirm new sign-in password", comment: "TextField title")
+        case .newPassword:
+            return localized(key: "New password", comment: "TextField title")
+        case .confirmNewPassword:
+            return localized(key: "Confirm new password", comment: "TextField title")
         case .newMailboxPassword:
             return localized(key: "New mailbox password", comment: "TextField title")
         case .confirmNewMailboxPassword:
@@ -91,7 +97,9 @@ public enum PCTranslation: TranslationsExposing {
         case .passwordRecoveryButton:
             return localized(key: "Don't know your current password?", comment: "Action button")
         case .protonPasswordDescription:
-            return localized(key: "Proton's encryption technology means that nobody can access your password - not even us. Make sure you add a recovery method so that you can get back into your account if you forget your password. [Learn more](https://proton.me)", comment: "Password view description")
+            return localized(key: "Proton's encryption technology means that nobody can access your password - not even us. Make sure you add a recovery method so that you can get back into your account if you forget your password.", comment: "Password view description")
+        case .learnMore:
+            return localized(key: "Learn more", comment: "Hyperlink text")
         case .tfaTitle:
             return localized(key: "Two-factor authentication", comment: "Screen title")
         case .tfaCode:
@@ -116,6 +124,11 @@ public enum PCTranslation: TranslationsExposing {
             return localized(key: "The private key update failed.", comment: "Error message")
         case .errorUpdatePasswordDefault:
             return localized(key: "Password update failed", comment: "Error message")
+        case .errorMissingAuthInfo:
+            return localized(key: "Missing AuthInfo", comment: "Error message")
+        case .errorMissingUserInfo:
+            return localized(key: "Missing UserInfo", comment: "Error message")
+
         }
     }
 }

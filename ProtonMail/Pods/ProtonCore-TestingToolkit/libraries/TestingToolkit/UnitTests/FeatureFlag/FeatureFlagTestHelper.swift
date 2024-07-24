@@ -78,12 +78,20 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
         .init(name: "SignedInAccountRecovery", enabled: true, variant: nil)
     }
 
+    static var changePassword: Self {
+        .init(name: "IOSChangePassword", enabled: true, variant: nil)
+    }
+
     static var dynamicPlans: Self {
         .init(name: "DynamicPlan", enabled: true, variant: nil)
     }
 
     static var externalSSO: Self {
         .init(name: "ExternalSSO", enabled: true, variant: nil)
+    }
+
+    static var fidoKeys: Self {
+        .init(name: "FIDO2Mobile", enabled: true, variant: nil)
     }
 
     static var pushNotifications: Self {
@@ -96,9 +104,5 @@ public extension ProtonCoreFeatureFlags.FeatureFlag {
 
     static var telemetrySignUpMetrics: Self {
         .init(name: "IOSTelemetrySignUpMetrics", enabled: true, variant: nil)
-    }
-
-    static var changePassword: Self {
-        .init(name: "IOSChangePassword", enabled: true, variant: nil)
     }
 }

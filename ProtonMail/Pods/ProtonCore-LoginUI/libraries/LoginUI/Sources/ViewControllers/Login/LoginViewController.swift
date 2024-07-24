@@ -31,8 +31,16 @@ import ProtonCoreObservability
 import ProtonCoreServices
 import ProtonCoreTelemetry
 
+// Notify delegate of next steps to present to the user
 protocol LoginStepsDelegate: AnyObject {
-    func requestTwoFactorCode(username: String, password: String)
+    /// informs delegate that it should present UI to request a TOTP code from the user
+    func requestTOTPCode(username: String, password: String, providerDelegate: TwoFAProviderDelegate?)
+    @available(iOS 15.0, *)
+    /// informs delegate that it should present UI to request a Security Key from the user
+    func requestKeySignature(authenticationOptions: AuthenticationOptions, providerDelegate: TwoFAProviderDelegate?)
+    @available(iOS 15.0, *)
+    /// informs delegate that it should present UI to request either a TOTP code or a Security Key from the user
+    func requestTOTPOrKeySignature(username: String, password: String, authenticationOptions: AuthenticationOptions, providerDelegate: TwoFAProviderDelegate?)
     func mailboxPasswordNeeded()
     func createAddressNeeded(data: CreateAddressData, defaultUsername: String?)
     func userAccountSetupNeeded()
@@ -40,10 +48,12 @@ protocol LoginStepsDelegate: AnyObject {
     func learnMoreAboutExternalAccountsNotSupported()
 }
 
+/// Notify delegate of Login related events
 protocol LoginViewControllerDelegate: LoginStepsDelegate {
     func userDidDismissLoginViewController()
     func userDidRequestSignup()
     func userDidRequestHelp()
+    /// informs the caller the login process has concluded and provides it with the UserData corresponding to the logged-in user
     func loginViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
 }
 
@@ -158,7 +168,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable, Pr
 
         signUpButton.setMode(mode: .text)
         signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
-        signUpButton.isHidden = !isSignupAvailable || isSSOEnabled
+        signUpButton.isHidden = !isSignupAvailable
         signUpButton.setTitle(viewModel.signUpButtonTitle, for: .normal)
 
         loginTextField.autocorrectionType = .no
@@ -201,6 +211,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable, Pr
         passwordTextField.delegate = self
     }
 
+    /// Starts listening to the viewModel publishers and launches actions to handle the values sent
     private func setupBinding() {
         viewModel.error.bind { [weak self] error in
             guard let self else { return }
@@ -219,7 +230,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable, Pr
             case let .done(data):
                 self?.delegate?.loginViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
                 self?.measureLoginSuccess()
-            case .twoFactorCodeNeeded:
+            case .totpCodeNeeded:
                 guard
                     let username = self?.loginTextField.value,
                     let password = self?.passwordTextField.value
@@ -227,8 +238,41 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable, Pr
                 // Clean username and password before leaving this page
                 // To eliminate KeyChain auto remember prompt
                 self?.clearAccount()
-                self?.delegate?.requestTwoFactorCode(username: username, password: password)
+                self?.delegate?.requestTOTPCode(username: username, password: password, providerDelegate: self?.viewModel)
                 self?.measureLoginSuccess()
+            case let .fido2KeyNeeded(authenticationOptions):
+                self?.clearAccount()
+                guard #available(iOS 15.0, *) else {
+                    self?.showBanner(message: "FIDO2 security keys are not supported in iOS versions prior to 15.0", style: .error)
+                    self?.measureLoginFailure(httpCode: 426)
+                    return
+                }
+
+                self?.delegate?.requestKeySignature(authenticationOptions: authenticationOptions,
+                                                    providerDelegate: self?.viewModel)
+            case let .anyOfFido2TotpNeeded(authenticationOptions):
+                self?.clearAccount()
+                guard #available(iOS 15.0, *) else {
+                    if let username = self?.loginTextField.value,
+                       let password = self?.passwordTextField.value {
+                        self?.delegate?.requestTOTPCode(username: username, password: password, providerDelegate: self?.viewModel)
+                        self?.measureLoginSuccess()
+                    }
+                    return
+                }
+
+                guard let username = self?.loginTextField.value,
+                      let password = self?.passwordTextField.value
+                else {
+                    self?.delegate?.requestKeySignature(authenticationOptions: authenticationOptions,
+                                                        providerDelegate: self?.viewModel)
+                    return
+                }
+
+                self?.delegate?.requestTOTPOrKeySignature(username: username,
+                                                          password: password,
+                                                          authenticationOptions: authenticationOptions,
+                                                          providerDelegate: self?.viewModel)
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
                 self?.measureLoginSuccess()
@@ -258,6 +302,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable, Pr
             self?.view.isUserInteractionEnabled = !isLoading
             self?.signInButton.isSelected = isLoading
         }
+        viewModel.challenge.reset()
         try? self.loginTextField.setUpChallenge(viewModel.challenge, type: .username)
 
         NotificationCenter.default

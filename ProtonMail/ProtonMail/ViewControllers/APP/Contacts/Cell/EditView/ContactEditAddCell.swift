@@ -22,6 +22,7 @@
 
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import UIKit
 
 final class ContactEditAddCell: UITableViewCell, AccessibleCell {
     @IBOutlet var valueLabel: UILabel!

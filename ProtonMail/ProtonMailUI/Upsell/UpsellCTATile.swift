@@ -45,7 +45,7 @@ struct UpsellCTATile: View {
             VStack(spacing: 14) {
                 VStack(spacing: 12) {
                     Text(DateComponents(month: purchasingOption.cycleInMonths), formatter: Self.planDurationFormatter)
-                        .font(.caption2)
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .caption2)))
                         .foregroundColor(.white)
 
                     Text(purchasingOption.monthlyPrice)
@@ -53,13 +53,16 @@ struct UpsellCTATile: View {
                         .foregroundColor(.white)
                     +
                     Text(L10n.Upsell.perMonth)
-                        .font(.caption2)
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .caption2)))
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
 
                 Button(String(format: L10n.Upsell.getPlan, planName)) {
                     onTap()
                 }
+                .lineLimit(1)
+                .fixedSize()
+                .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 20)
                 .background(purchasingOption.isHighlighted ? ColorProvider.InteractionNorm : Color.white.opacity(0.16))

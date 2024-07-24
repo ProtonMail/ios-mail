@@ -20,7 +20,6 @@ import ProtonCoreTestingToolkit
 // Validates account deletion option in the app without actual deletion.
 class AccountDeletionOptionTests: FixtureAuthenticatedTestCase {
     
-    let loginRobot = LoginRobot()
     let accountDeletionRobot = AccountDeletionButtonRobot()
     
     func testDeleteAccountOptionExists() {

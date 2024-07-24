@@ -7,9 +7,12 @@ include:
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
-  - project: 'apple/inbox/security-scanners'
-    file:
-      - 'jobs/gitleaks.yaml'
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.1
+    inputs:
+      allowed-to-fail: false
+      run-gitleaks-no-git-scan: false
+      runner-tag: shared-medium
+      stage: scan
 
 variables:
   LANG: "en_US.UTF-8"
@@ -55,7 +58,7 @@ stages:
       when: always
     - key:
         files:
-          - ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolve
+          - ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolved
       paths:
         - ci-cache/spm
       when: always
@@ -280,7 +283,7 @@ report:testmo:sanity:
   variables:
     NAME: "SanityTests"
 
-.distribute:
+.testflight:
   extends: .macos_job
   dependencies: []
   needs: []
@@ -289,38 +292,21 @@ report:testmo:sanity:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
       allow_failure: true
-  artifacts:
-    paths:
-      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
-    name: "iOS mail app builds"
-    expire_in: 90 days
   script:
     - brew bundle --force
     - cd ProtonMail
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - |
-        if [ "$IS_QA_BUILD" = "true" ] ; then
-          bundle exec fastlane ios adhoc
-        else
-          bundle exec fastlane ios build
-          ./fastlane/add_git_tag.sh
-        fi
+    - bundle exec fastlane distribute scheme:"$SCHEME"
+    - ./fastlane/add_git_tag.sh
   tags:
     - iOS_RELEASE_BUILD
 
-testflight:alpha:
-  extends: .distribute
+testflight:qa:
+  extends: .testflight
   variables:
-    GIT_STRATEGY: clone
-    GIT_DEPTH: "0"
-    IS_QA_BUILD: "false"
+    SCHEME: "Adhoc"
 
-firebase:adhoc:qa:
-  extends: .distribute
+testflight:release:
+  extends: .testflight
   variables:
-    IS_QA_BUILD: "true"
-
-gitleaks-scan-repository:
-  variables:
-    GIT_STRATEGY: clone
-    GIT_SUBMODULE_STRATEGY: none
+    SCHEME: "ProtonMail"

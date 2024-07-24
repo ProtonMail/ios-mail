@@ -24,11 +24,15 @@ import Foundation
 import UIKit
 import SwiftUI
 import ProtonCoreDataModel
+import ProtonCoreFeatureFlags
 import ProtonCoreLog
+import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreUIFoundations
 import ProtonCoreUtilities
+import ProtonCoreServices
+import ProtonCoreAuthentication
 
 public enum PasswordChangeViewError: Error {
     case passwordMinimumLength
@@ -39,14 +43,16 @@ extension PasswordChangeView {
 
     /// The `ObservableObject` that holds the model data for this View
     @MainActor
-    public final class ViewModel: ObservableObject, PasswordValidator {
+    public final class ViewModel: ObservableObject, PasswordValidator, PasswordChangeObservability {
 
         private let passwordChangeService: PasswordChangeService?
         private let authCredential: AuthCredential?
         private let userInfo: UserInfo?
+        private var authInfo: AuthInfoResponse?
         private var passwordChangeCompletion: PasswordChangeCompletion?
         private let mode: PasswordChangeModule.PasswordChangeMode
 
+        let showingDismissButton: Bool
         @Published var currentPasswordFieldContent: PCTextFieldContent!
         @Published var newPasswordFieldContent: PCTextFieldContent!
         @Published var confirmNewPasswordFieldContent: PCTextFieldContent!
@@ -59,7 +65,8 @@ extension PasswordChangeView {
 
         var needs2FA: Bool {
             guard let userInfo else { return false }
-            return userInfo.twoFactor > 0
+            return userInfo.twoFactor > 0 &&
+            authInfo?._2FA != nil
         }
 
         public init(
@@ -67,30 +74,35 @@ extension PasswordChangeView {
             passwordChangeService: PasswordChangeService? = nil,
             authCredential: AuthCredential? = AuthCredential.none,
             userInfo: UserInfo? = .getDefault(),
+            showingDismissButton: Bool,
             passwordChangeCompletion: PasswordChangeCompletion?
         ) {
             self.mode = mode
             self.passwordChangeService = passwordChangeService
             self.authCredential = authCredential
             self.userInfo = userInfo
+            self.showingDismissButton = showingDismissButton
             self.passwordChangeCompletion = passwordChangeCompletion
             self.setupViews()
         }
 
         func setupViews() {
             currentPasswordFieldContent = .init(
-                title: PCTranslation.currentPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.currentSignInPassword.l10n : PCTranslation.currentPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .password
             )
 
             newPasswordFieldContent = .init(
-                title: mode == .mailboxPassword ? PCTranslation.newMailboxPassword.l10n : PCTranslation.newSignInPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.newMailboxPassword.l10n : PCTranslation.newPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .newPassword
             )
 
             confirmNewPasswordFieldContent = .init(
-                title: mode == .mailboxPassword ? PCTranslation.confirmNewMailboxPassword.l10n : PCTranslation.confirmNewSignInPassword.l10n,
-                isSecureEntry: true
+                title: mode == .mailboxPassword ? PCTranslation.confirmNewMailboxPassword.l10n : PCTranslation.confirmNewPassword.l10n,
+                isSecureEntry: true,
+                textContentType: .newPassword
             )
 
             newPasswordFieldStyle = .init(mode: .idle)
@@ -105,34 +117,65 @@ extension PasswordChangeView {
             }
         }
 
+        func dismissView() {
+            PasswordChangeModule.initialViewController?.dismiss(animated: true)
+        }
+
         func savePasswordTapped() {
-            do {
-                try validate(
-                    for: .default,
-                    password: newPasswordFieldContent.text,
-                    confirmPassword: confirmNewPasswordFieldContent.text
-                )
-                if needs2FA {
-                    present2FA()
-                } else {
-                    updatePassword()
+            Task { @MainActor in
+                guard let authInfo = try? await self.passwordChangeService?.fetchAuthInfo() else {
+                    bannerState = .error(content: .init(message: LUITranslation.unavailable_authinfo.l10n))
+                    return
                 }
-            } catch let error as PasswordValidationError {
-                displayPasswordError(error: error)
-            } catch {
-                PMLog.error(error)
-                bannerState = .error(content: .init(message: error.localizedDescription))
+                self.authInfo = authInfo
+                do {
+                    resetTextFieldsErrors()
+                    try validate(
+                        for: .default,
+                        password: newPasswordFieldContent.text,
+                        confirmPassword: confirmNewPasswordFieldContent.text
+                    )
+                    if needs2FA {
+                        present2FAAndUpdatePassword()
+                    } else {
+                        updatePassword()
+                    }
+                } catch let error as PasswordValidationError {
+                    displayPasswordError(error: error)
+                } catch {
+                    PMLog.error(error)
+                    bannerState = .error(content: .init(message: error.localizedDescription))
+                }
             }
         }
 
-        private func present2FA() {
+        private func present2FAAndUpdatePassword() {
+            guard let twoFA = authInfo?._2FA else {
+                PMLog.error("2FA mutated from under us.")
+                return
+            }
+            let canUseFIDO2 = FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.fidoKeys) && twoFA.enabled.contains(.webAuthn)
+            if twoFA.enabled.contains(.totp) && !canUseFIDO2 {
+                showTOTP(twoFA: twoFA)
+            } else if twoFA.enabled.contains(.totp) && canUseFIDO2, #available(iOS 15.0, *),
+                      let authOptions = twoFA.FIDO2?.authenticationOptions  {
+                showTwoFactorChoice(authenticationOptions: authOptions)
+
+            } else if twoFA.enabled == .webAuthn && canUseFIDO2, #available(iOS 15.0, *),
+                      let authOptions = twoFA.FIDO2?.authenticationOptions {
+                showKeySignature(authenticationOptions: authOptions)
+            }
+        }
+
+        private func showTOTP(twoFA: AuthInfoResponse.TwoFA) {
             let viewModel = PasswordChange2FAView.ViewModel(
                 mode: mode,
                 passwordChangeService: passwordChangeService,
                 authCredential: authCredential,
                 userInfo: userInfo,
+                twoFA: twoFA,
                 loginPassword: currentPasswordFieldContent.text,
-                newPassword: newPasswordFieldContent.text, 
+                newPassword: newPasswordFieldContent.text,
                 passwordChangeCompletion: passwordChangeCompletion
             )
             let viewController = UIHostingController(rootView: PasswordChange2FAView(viewModel: viewModel))
@@ -140,7 +183,30 @@ extension PasswordChangeView {
             PasswordChangeModule.initialViewController?.navigationController?.show(viewController, sender: self)
         }
 
-        private func updatePassword() {
+        @available(iOS 15.0, *)
+        private func showKeySignature(authenticationOptions: AuthenticationOptions) {
+            let viewModel = makeFido2ViewModel(authenticationOptions: authenticationOptions)
+            viewModel.delegate = self
+            let fido2View = Fido2View(viewModel: viewModel)
+            let fido2ViewController = Fido2ViewController(rootView: fido2View)
+            PasswordChangeModule.initialViewController?.navigationController?.pushViewController(fido2ViewController, animated: true)
+        }
+
+        @available(iOS 15.0, *)
+        func showTwoFactorChoice(authenticationOptions: AuthenticationOptions) {
+            let fido2ViewModel = makeFido2ViewModel(authenticationOptions: authenticationOptions)
+            fido2ViewModel.delegate = self
+            let totpViewModel = TOTPView.ViewModel()
+            totpViewModel.delegate = self
+
+            let choose2FAView = Choose2FAView(totpViewModel: totpViewModel, fido2ViewModel: fido2ViewModel)
+            let choose2FAViewController = Choose2FAViewController(rootView: choose2FAView)
+
+            PasswordChangeModule.initialViewController?.navigationController?.pushViewController(choose2FAViewController, animated: true)
+        }
+
+        private func updatePassword(existingAuthInfo: AuthInfoResponse? = nil,
+                                    twoFAParams: TwoFAParams? = nil) {
             guard let passwordChangeService, let authCredential, let userInfo else {
                 PMLog.error("PasswordChangeService, AuthCredential and UserInfo are required")
                 assertionFailure()
@@ -149,19 +215,20 @@ extension PasswordChangeView {
             Task { @MainActor in
                 PasswordChangeModule.initialViewController?.lockUI()
                 savePasswordIsLoading.toggle()
-                resetTextFieldsErrors()
                 do {
                     try await updatePasswordRequest(
                         passwordChangeService: passwordChangeService,
                         authCredential: authCredential,
-                        userInfo: userInfo
+                        userInfo: userInfo,
+                        authInfo: existingAuthInfo,
+                        twoFAParams: twoFAParams
                     )
-                    observabilityPasswordChangeSuccess()
+                    observabilityPasswordChangeSuccess(mode: mode, twoFAMode: twoFAParams?.observabilityMode ?? .disabled)
                     passwordChangeCompletion?(authCredential, userInfo)
                 } catch {
                     PMLog.error(error)
                     bannerState = .error(content: .init(message: error.localizedDescription))
-                    observabilityPasswordChangeError(error: error)
+                    observabilityPasswordChangeError(mode: mode, error: error, twoFAMode: twoFAParams?.observabilityMode ?? .disabled)
                 }
                 PasswordChangeModule.initialViewController?.unlockUI()
                 savePasswordIsLoading = false
@@ -171,7 +238,9 @@ extension PasswordChangeView {
         private func updatePasswordRequest(
             passwordChangeService: PasswordChangeService,
             authCredential: AuthCredential,
-            userInfo: UserInfo
+            userInfo: UserInfo,
+            authInfo: AuthInfoResponse? = nil,
+            twoFAParams: TwoFAParams? = nil
         ) async throws {
             switch mode {
             case .loginPassword:
@@ -186,9 +255,10 @@ extension PasswordChangeView {
                 try await passwordChangeService.updateUserPassword(
                     auth: authCredential,
                     userInfo: userInfo,
+                    authInfo: authInfo,
                     loginPassword: currentPasswordFieldContent.text,
                     newPassword: .init(value: newPasswordFieldContent.text),
-                    twoFACode: nil,
+                    twoFAParams: twoFAParams,
                     buildAuth: mode == .singlePassword ? true : false
                 )
             }
@@ -217,23 +287,37 @@ extension PasswordChangeView {
             }
         }
 
-        private func observabilityPasswordChangeSuccess() {
-            switch mode {
-            case .singlePassword, .loginPassword:
-                ObservabilityEnv.report(.updateLoginPassword(status: .http2xx, twoFactorMode: .disabled))
-            case .mailboxPassword:
-                ObservabilityEnv.report(.updateMailboxPassword(status: .http2xx, twoFactorMode: .disabled))
-            }
-        }
-
-        private func observabilityPasswordChangeError(error: Error) {
-            switch mode {
-            case .singlePassword, .loginPassword:
-                ObservabilityEnv.report(.updateLoginPassword(status: .http2xx, twoFactorMode: .disabled))
-            case .mailboxPassword:
-                ObservabilityEnv.report(.updateMailboxPassword(status: .http2xx, twoFactorMode: .disabled))
-            }
+        @available(iOS 15.0, *)
+        func makeFido2ViewModel(authenticationOptions: AuthenticationOptions) -> Fido2View.ViewModel {
+            .init(authenticationOptions: authenticationOptions)
         }
     }
+}
+
+extension PasswordChangeView.ViewModel: TwoFAProviderDelegate {
+    public func userDidGoBack() {
+        dismissView()
+    }
+
+    public func providerDidObtain(factor: String) async throws {
+        try await updatePasswordWith(twoFAParams: .totp(factor))
+    }
+
+    public func providerDidObtain(factor: ProtonCoreAuthentication.Fido2Signature) async throws {
+        try await updatePasswordWith(twoFAParams: .fido2(factor))
+    }
+
+    private func updatePasswordWith(twoFAParams: TwoFAParams) async throws {
+        await MainActor.run {
+            PasswordChangeModule.initialViewController?.navigationController?.popViewController(animated: true)
+        }
+        guard let authInfo else {
+            PMLog.error("Attempted to change password without authInfo.")
+            throw UpdatePasswordError.missingAuthInfo
+        }
+
+        updatePassword(existingAuthInfo: authInfo, twoFAParams: twoFAParams)
+    }
+
 }
 #endif

@@ -103,24 +103,6 @@ public extension StoreKitManagerProtocol {
         retryProcessingAllPendingTransactions(finishHandler: finishHandler)
     }
 
-    @available(*, deprecated, message: "Please use SuccessCallback")
-    typealias OldDeprecatedSuccessCallback = (PaymentToken?) -> Void
-
-    @available(*, deprecated, message: "Switch to variant using the SuccessCallback")
-    func purchaseProduct(plan: InAppPurchasePlan,
-                         amountDue: Int,
-                         successCompletion: @escaping OldDeprecatedSuccessCallback,
-                         errorCompletion: @escaping ErrorCallback,
-                         deferredCompletion: FinishCallback?) {
-        purchaseProduct(plan: plan, amountDue: amountDue, successCompletion: { result in
-            switch result {
-            case .withoutExchangingToken(let token):
-                successCompletion(token)
-            case .cancelled, .withoutIAP, .withoutObtainingToken, .withPurchaseAlreadyProcessed, .resolvingIAPToSubscription, .resolvingIAPToCredits, .resolvingIAPToCreditsCausedByError, .autoRenewal:
-                successCompletion(nil)
-            }
-        }, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
-    }
 }
 
 protocol PaymentQueueProtocol {
@@ -158,7 +140,8 @@ struct PlanToBeProcessed {
     let protonIdentifier: String
     let planName: String
     let amount: Int
-    let amountDue: Int
+    let currencyCode: String
+    let amountDue: Int // v4
     let cycle: Int
 }
 
@@ -211,6 +194,7 @@ extension InAppPurchasePlan {
         return .init(protonIdentifier: storeKitProductId,
                      planName: self.protonName,
                      amount: 0,
+                     currencyCode: "USD",
                      amountDue: 0,
                      cycle: cycle)
     }

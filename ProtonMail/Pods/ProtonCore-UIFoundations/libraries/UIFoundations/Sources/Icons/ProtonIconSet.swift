@@ -272,7 +272,7 @@ public struct ProtonIconSet {
 
     public let fileShapes = ProtonIcon(name: "ic-file-shapes")
 
-    public let file = ProtonIcon(name: "ic-file")
+    public let fileEmpty = ProtonIcon(name: "ic-file-empty")
 
     public let filingCabinet = ProtonIcon(name: "ic-filing-cabinet")
 
@@ -373,6 +373,8 @@ public struct ProtonIconSet {
     public let lockOpenCheckFilled = ProtonIcon(name: "ic-lock-open-check-filled")
 
     public let lockOpenExclamationFilled = ProtonIcon(name: "ic-lock-open-exclamation-filled")
+
+    public let lockOpenFilled = ProtonIcon(name: "ic-lock-open-filled")
 
     public let lockOpenFilled2 = ProtonIcon(name: "ic-lock-open-filled-2")
 
@@ -640,6 +642,8 @@ public struct ProtonIconSet {
     public let passWordmarkNoBackground = ProtonIcon(name: "PassWordmarkNoBackground",
                                                      vpnFallbackName: "PassWordmarkNoBackgroundAlwaysDark")
 
+    public let walletWordmarkNoBackground = ProtonIcon(name: "WalletWordmarkNoBackground")
+
     // LoginUI-specific
 
     public let calendarTopImage = ProtonIcon(name: "CalendarTopImage")
@@ -651,6 +655,8 @@ public struct ProtonIconSet {
     public let vpnTopImage = ProtonIcon(name: "VPNTopImage")
 
     public let passTopImage = ProtonIcon(name: "PassTopImage")
+
+    public let walletTopImage = ProtonIcon(name: "WalletTopImage")
 
     public let calendarWordmarkNoIcon = ProtonIcon(name: "CalendarWordmarkNoIcon")
 

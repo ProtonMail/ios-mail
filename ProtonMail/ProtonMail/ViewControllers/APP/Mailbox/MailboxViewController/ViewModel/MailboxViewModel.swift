@@ -31,6 +31,7 @@ import ProtonCoreUIFoundations
 import ProtonCoreUtilities
 import ProtonMailAnalytics
 import ProtonMailUI
+import UIKit
 
 struct LabelInfo {
     let name: String
@@ -1534,25 +1535,18 @@ extension MailboxViewModel {
     }
 
     func purchasePlan(storeKitProductId: String) async -> Bool {
-        SystemLogger.log(message: "Will purchase \(storeKitProductId)", category: .iap)
-
         let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
 
         switch result {
         case .planPurchased:
-            SystemLogger.log(message: "Purchase complete", category: .iap)
-
             await user.fetchUserInfo()
 
             return true
         case .error(let error):
-            SystemLogger.log(error: error, category: .iap)
-
             errorSubject.send(error)
 
             return false
         case .cancelled:
-            SystemLogger.log(message: "Purchase cancelled", category: .iap)
             return false
         }
     }

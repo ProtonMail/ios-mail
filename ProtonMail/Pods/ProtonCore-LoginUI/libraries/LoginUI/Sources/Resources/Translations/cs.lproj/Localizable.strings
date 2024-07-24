@@ -215,3 +215,39 @@
 "Sign in" = "Přihlásit se";
 
 "Troubleshoot" = "Poradce při potížích";
+
+"Please choose how you want to confirm your identity." = "Zvolte, jakým způsobem chcete potvrdit svou identitu.";
+
+"One-time code" = "Jednorázový kód";
+
+"Security key" = "Bezpečnostní klíč";
+
+"Two-Factor Authentication" = "Dvoufázové ověření";
+
+"Present a security key linked to your Proton Account." = "Předložte bezpečnostní klíč spojený s vaším účtem Proton.";
+
+"Learn more" = "Zjistěte více";
+
+"Invalid state. Please quit the app and try again in a few minutes." = "Neplatný stav. Ukončete prosím aplikaci a zkuste to za několik minut znovu.";
+
+"There was a problem reading your security key." = "Došlo k potížím při čtení vašeho bezpečnostního klíče.";
+
+"We received an authorization from a type we don't support yet." = "Obdrželi jsme autorizaci typu, který zatím nepodporujeme.";
+
+"Fetching your security keys details" = "Získávání detailů o bezpečnostních klíčích";
+
+"You don't yet have any security keys enrolled in your account. Please visit the settings section on our website to add security keys." = "Ve svém účtu zatím nemáte zapsány žádné bezpečnostní klíče. Chcete-li přidat bezpečnostní klíče, navštivte sekci nastavení na našich webových stránkách.";
+
+"An error occurred fetching your security keys. You can also check them on the Proton %@ website." = "Načítání bezpečnostních klíčů selhalo. Můžete si je také prohlédnout na webových stránkách Proton %@.";
+
+"These are the security keys registered to your account" = "Toto jsou bezpečnostní klíče registrované k vašemu účtu";
+
+"You don't yet have any security keys enrolled in your account. Please use the Proton %@ web application to add security keys." = "Ve svém účtu zatím nemáte zapsány žádné bezpečnostní klíče. K přidání bezpečnostních klíčů použijte webovou aplikaci Proton %@.";
+
+"Security Keys" = "Bezpečnostní klíče";
+
+"To manage, add, or remove security keys, please use the Proton %@ web application." = "Chcete-li spravovat, přidávat nebo odebírat bezpečnostní klíče, použijte webovou aplikaci Proton %@.";
+
+"Unexpected FIDO2 signature." = "Neočekávaný podpis FIDO2.";
+
+"We could not initiate the Secure Password update connection. Please try again." = "Nepodařilo se nám zahájit spojení pro bezpečnou aktualizaci hesla. Zkuste to prosím znovu.";

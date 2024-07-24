@@ -21,6 +21,7 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Removing this unused enum")
 public enum LoginBasicStatus: String {
     case loggedIn, ask2FA, askSecondPassword
 }

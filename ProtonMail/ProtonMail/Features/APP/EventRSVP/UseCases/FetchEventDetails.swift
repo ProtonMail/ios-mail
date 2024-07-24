@@ -247,7 +247,9 @@ struct FetchEventDetailsImpl: FetchEventDetails {
     }
 
     private func parseICS(_ ics: String, withAuxilliaryInfo apiEvent: FullEventTransformer) -> ICalEvent {
-        let canonizedUserEmailAddresses = dependencies.user.addresses.map { $0.email.canonicalizeEmail() }
+        let addresses: [ICalAddress] = dependencies.emailAddressStorage.currentUserAddresses().map {
+            .init(id: $0.id, email: $0.email, order: $0.order, send: $0.send)
+        }
 
         let dependecies = ICalReaderDependecies(
             startDate: Date(timeIntervalSince1970: apiEvent.startTime),
@@ -258,7 +260,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
             endDateTimeZone: timeZoneProvider.timeZone(identifier: apiEvent.endTimezone),
             calendarID: apiEvent.calendarID,
             localEventID: "",
-            allEmailsCanonized: canonizedUserEmailAddresses,
+            addresses: addresses,
             ics: ics,
             apiEventID: apiEvent.ID,
             startDateCalendar: .autoupdatingCurrent,
@@ -333,14 +335,15 @@ struct FetchEventDetailsImpl: FetchEventDetails {
 
         if isSingleEdit {
             let mainOccurrenceExists = apiEvents.contains { $0.recurrenceID == nil }
-            return .singleEdit(mainOccurrenceExists ? .regular : .orphan)
+            let unusedEditInfo = EventType.SingleEdit.EditInfo(editCount: .one, deletionCount: 0)
+            return .singleEdit(mainOccurrenceExists ? .regular(editInfo: unusedEditInfo) : .orphan)
         } else {
             if iCalEvent.recurrence.doesRepeat {
                 let singleEdits = try apiEvents
                     .filter { $0.recurrenceID != nil }
                     .map { try decrypt(apiEvent: $0, decryptionKit: decryptionKit) }
 
-                return .recurring(.init(singleEdits: singleEdits))
+                return .recurring(.init(mainOccurrence: iCalEvent, singleEdits: singleEdits))
             } else {
                 return .nonRecurring
             }

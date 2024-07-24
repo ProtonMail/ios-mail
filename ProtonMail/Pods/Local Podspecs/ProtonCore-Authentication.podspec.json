@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-Authentication",
   "module_name": "ProtonCoreAuthentication",
-  "version": "22.0.0",
+  "version": "25.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "22.0.0"
+    "tag": "25.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,19 +31,22 @@
   },
   "dependencies": {
     "ProtonCore-Crypto": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-APIClient": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-FeatureFlags": [
-      "22.0.0"
+      "25.0.0"
+    ],
+    "ProtonCore-Observability": [
+      "25.0.0"
     ],
     "ProtonCore-Services": [
-      "22.0.0"
+      "25.0.0"
     ]
   },
   "source_files": [
@@ -59,13 +62,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
 
@@ -81,13 +84,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
 
@@ -103,13 +106,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
 
@@ -125,13 +128,13 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication": [
-          "22.0.0"
+          "25.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
 

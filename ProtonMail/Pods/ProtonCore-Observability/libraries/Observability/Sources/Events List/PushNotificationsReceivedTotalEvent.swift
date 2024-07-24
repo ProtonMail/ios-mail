@@ -34,7 +34,7 @@ public struct PushNotificationsReceivedTotalLabels: Encodable, Equatable {
 extension ObservabilityEvent where Payload == PayloadWithLabels<PushNotificationsReceivedTotalLabels> {
     public static func pushNotificationsReceived(result: PushNotificationsReceivedResult,
                                                  applicationStatus: ApplicationStatus) -> Self {
-        .init(name: "ios_core_pushNotifications_received_total", 
+        .init(name: "ios_core_pushNotifications_received_total",
               labels: .init(result: result, applicationStatus: applicationStatus))
     }
 }

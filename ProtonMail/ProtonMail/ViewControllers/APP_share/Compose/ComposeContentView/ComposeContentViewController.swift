@@ -273,6 +273,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     @objc
     func willResignActiveNotification(_ notify: Notification) {
+        SystemLogger.log(message: "willResignActiveNotification", category: .draft)
         self.autoSaveTimer()
     }
 
@@ -400,6 +401,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     private func setupAutoSave() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { [weak self] _ in
+            SystemLogger.log(message: "autosave timer triggered", category: .draft)
             self?.autoSaveTimer()
         }
     }
@@ -413,27 +415,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     @objc
     func autoSaveTimer() {
-        _ = self.updateCIDs().then { [weak self] () -> Promise<(String, String)?> in
-            guard let self = self else {
-                return Promise.value(nil)
+        _ = collectDraftDataAndSaveToDB()
+            .done { [weak self] _ in
+                self?.viewModel.updateDraft()
             }
-            return self.collectDraftDataAndSaveToDB()
-        }.done { [weak self] _ in
-            self?.viewModel.updateDraft()
-        }
-    }
-
-    private func updateCIDs() -> Promise<Void> {
-        return Promise { seal in
-            let orignalPromise = self.htmlEditor.getOrignalCIDs()
-            let editedPromise = self.htmlEditor.getEditedCIDs()
-            when(fulfilled: orignalPromise, editedPromise).done { orignal, edited in
-                self.checkEmbedImageEdit(orignal, edited: edited)
-            }.catch { _ in
-            }.finally {
-                seal.fulfill_()
-            }
-        }
     }
 
     func collectDraftBody() -> Promise<String?> {
@@ -487,21 +472,6 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         )
     }
 
-    private func checkEmbedImageEdit(_ original: String, edited: String) {
-        let atts = viewModel.getAttachments()
-        for att in atts {
-            guard
-                let contentID = att.getContentID(),
-                !contentID.isEmpty && att.isInline,
-                original.contains(contentID),
-                !edited.contains(contentID) else {
-                continue
-            }
-
-            viewModel.deleteAttachment(att).cauterize()
-        }
-    }
-
     // MARK: - HtmlEditorBehaviourDelegate
 
     func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?) {
@@ -540,6 +510,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     }
 
     func selectedInlineAttachment(_ cid: String) {
+        SystemLogger.log(message: "selected inline attachment, cid:\(cid)", category: .draft)
         guard let targetView = parent?.navigationController else {
             return
         }
@@ -556,10 +527,12 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                 icon: nil,
                 textColor: ColorProvider.NotificationError
             ) { [weak self] _ in
+                SystemLogger.log(message: "removing inline attachment through alert", category: .draft)
                 self?.htmlEditor.remove(embedImage: "cid:\(cid)")
             },
             PMActionSheetItem(title: L10n.InlineAttachment.addAsAttachment, icon: nil) { [weak self] _ in
                 MBProgressHUD.showAdded(to: targetView.view, animated: true)
+                SystemLogger.log(message: "will convert inline image to attachment", category: .draft)
                 self?.viewModel.attachInlineAttachment(
                     inlineAttachment: attachment
                 ) { shouldRemoveInline in
@@ -567,6 +540,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                         self?.delegate?.updateAttachmentView()
                         self?.htmlEditor.remove(embedImage: "cid:\(cid)")
                     }
+                    SystemLogger.log(
+                        message: "did convert inline image to attachment, shouldRemoveInline:\(shouldRemoveInline)",
+                        category: .draft
+                    )
                     MBProgressHUD.hide(for: targetView.view, animated: true)
                 }
             }

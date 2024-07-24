@@ -529,6 +529,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                                                    errorCompletion: @escaping ErrorCallback,
                                                    deferredCompletion: (() -> Void)? = nil) {
 
+        subscribeToPaymentQueue()
         let callbackCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier,
                                                           hashedUserId: hashedUserId)
         threadSafeCache.set(value: successCompletion, for: callbackCacheKey, in: \.successCompletion)
@@ -657,7 +658,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 // but we found this holds true as well for .purchased. So far. Proceed with caution.
                 finishTransaction(transaction, nil)
                 callSuccessCompletion(for: cacheKey, with: .autoRenewal)
-                PMLog.debug("Ignoring and finishing transaction corresponding to renewal cycle.")
+                PMLog.debug("Ignoring and finishing transaction corresponding to renewal cycle. Current transaction: \(transaction.transactionIdentifier ?? "nil"). Original transaction: \(transaction.original?.transactionIdentifier ?? "nil"). Original transaction date: \(transaction.original?.transactionDate?.description ?? "nil")")
                 group.leave()
                 return
             }
@@ -685,11 +686,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             // reappearing on every run
             callSuccessCompletion(for: cacheKey, with: .withPurchaseAlreadyProcessed)
         @unknown default:
-            break
+            PMLog.error("Unexpected unknown transaction state: \(transaction.transactionState)", sendToExternal: true)
         }
     }
 
     private func processFailedStoreKitTransaction(_ transaction: SKPaymentTransaction, cacheKey: UserInitiatedPurchaseCache) {
+        PMLog.debug("Processing failed transaction")
         finishTransaction(transaction, nil)
         let error = transaction.error as NSError?
         let refreshHandler = refreshHandler
@@ -743,6 +745,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             try informProtonBackendAboutPurchasedTransaction(transaction, cacheKey: cacheKey, completion: completion)
 
         } catch Errors.haveTransactionOfAnotherUser { // user login error
+            PMLog.error("Error: transaction is from another account", sendToExternal: true)
             confirmUserValidationBypass(cacheKey, Errors.haveTransactionOfAnotherUser) { [weak self] in
                 self?.transactionsQueue.addOperation { [weak self] in
                     self?.processStoreKitTransaction(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: false)
@@ -751,16 +754,19 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             }
 
         } catch Errors.receiptLost { // receipt error
+            PMLog.error("Error: lost receipt", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.receiptLost)
             finishTransaction(transaction, nil)
             group.leave()
 
         } catch Errors.noNewSubscriptionInSuccessfulResponse { // error on BE
+            PMLog.error("Error: no new subscription in success response", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.noNewSubscriptionInSuccessfulResponse)
             finishTransaction(transaction, nil)
             group.leave()
 
         } catch Errors.alreadyPurchasedPlanDoesNotMatchBackend {
+            PMLog.error("Error: Already purchased plan does not match backend", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: Errors.alreadyPurchasedPlanDoesNotMatchBackend)
 
             if featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) &&
@@ -772,6 +778,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
 
             group.leave()
         } catch let error { // other errors
+            PMLog.error("Error: \(error)", sendToExternal: true)
             callErrorCompletion(for: cacheKey, with: error)
             // should we call finishTransaction here, to avoid leaving transactions for the next run?
             group.leave()
@@ -793,6 +800,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         let planName: String
         let planAmount: Int
         let planIdentifier: String
+        let currencyCode: String
         let cycle: Int
         switch planService {
         case .left(let planService):
@@ -811,27 +819,32 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             planAmount = amount
             planIdentifier = protonIdentifier
             cycle = 12
+            currencyCode = "USD"
 
         case .right(let planDataSource):
+            let productIdentifier = transaction.payment.productIdentifier
             guard let details = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
                   let instance = planDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan),
-                  let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() }),
+                  let product = planDataSource.lastFetchedProducts.first(where: {$0.productIdentifier == productIdentifier}),
+                  let productCurrencyCode = product.priceLocale.currencyCode,
                   let name = details.name,
                   let id = details.ID
             else {
                 throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
             }
-
+            planAmount = Int(product.price.doubleValue * 100.0)
+            currencyCode = productCurrencyCode
             planName = name
-            planAmount = price.current
             planIdentifier = id
             cycle = instance.cycle
         }
 
         let amountDue: Int
         if let cachedAmountDue = threadSafeCache.removeValueSynchronously(for: cacheKey, in: \.amountDue) {
+            PMLog.debug("Using cached amount \(cachedAmountDue)")
             amountDue = cachedAmountDue
         } else {
+            PMLog.debug("No amount cached, validating subscription request")
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
                 api: apiService,
                 protonPlanName: planName,
@@ -842,14 +855,23 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             let fetchedAmountDue = isDynamic ? response?.validateSubscription?.amount : response?.validateSubscription?.amountDue
             amountDue = fetchedAmountDue ?? planAmount
         }
+        PMLog.debug("final amount \(amountDue)")
 
-        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, planName: planName, amount: planAmount, amountDue: amountDue, cycle: cycle)
+
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier,
+                                                  planName: planName,
+                                                  amount: planAmount,
+                                                  currencyCode:  currencyCode,
+                                                  amountDue: amountDue,
+                                                  cycle: cycle)
 
         do {
             let customCompletion: ProcessCompletionCallback = { result in
                 switch result {
-                case .finished:
-                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful, isDynamic: isDynamic))
+                case let .finished(result):
+                    if case .withoutExchangingToken = result { } else {
+                        ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful, isDynamic: isDynamic))
+                    }
                 case .errored, .erroredWithUnspecifiedError:
                     ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
                 }
@@ -877,6 +899,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             }
         } catch {
             ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed, isDynamic: isDynamic))
+            PMLog.error(error)
             throw error
         }
     }
@@ -962,7 +985,6 @@ extension StoreKitManager: ProcessDependencies {
 
     /// Refreshes the current subscription details from BE
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        // TODO: test purchase process with PlansDataSource object
         switch planService {
         case .left(let planService):
             planService.updateCurrentSubscription(success: success, failure: failure)

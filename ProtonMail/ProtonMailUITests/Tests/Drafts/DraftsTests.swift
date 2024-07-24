@@ -6,15 +6,13 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCoreTestingToolkit
-
+import Foundation
 
 class DraftsTests: FixtureAuthenticatedTestCase {
 
     private var subject = String()
     private var body = String()
     private var to = String()
-    private var composerRobot: ComposerRobot = ComposerRobot()
 
     override func setUp() {
         super.setUp()

@@ -23,6 +23,7 @@ extension AnswerInvitationUseCase {
     & HasEmailAddressStorage
     & HasFetchAndVerifyContactsUseCase
     & HasUserManager
+    & RecipientProvider.Dependencies
 
     init(dependencies: Dependencies, answeringContext: AnsweringContext) {
         let calendarAPIService = CalendarAPIService(apiService: dependencies.apiService)
@@ -48,7 +49,8 @@ extension AnswerInvitationUseCase {
                 fetchAndVerifyContacts: dependencies.fetchAndVerifyContacts,
                 user: dependencies.user
             ),
-            vTimeZonesInfoProvider: calendarAPIService
+            vTimeZonesInfoProvider: calendarAPIService,
+            recipientProvider: RecipientProvider(dependencies: dependencies)
         )
     }
 }

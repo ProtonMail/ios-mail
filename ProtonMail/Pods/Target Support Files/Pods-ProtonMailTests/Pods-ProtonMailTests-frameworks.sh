@@ -239,7 +239,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Groot/Groot.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCoreAPIClient.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion/ProtonCoreAccountDeletion.framework"

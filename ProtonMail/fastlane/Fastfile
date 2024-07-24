@@ -56,7 +56,7 @@ def tear_down_keychain
   )
 end
 
-def get_xcode_profile(isAdhoc)
+def get_xcode_profile()
   ids = [
     "ch.protonmail.protonmail",
     "ch.protonmail.protonmail.Share",
@@ -78,20 +78,7 @@ def get_latest_build_number()
   )
 end
 
-def set_up_changelog(latest_build_number)
-  hash = sh("./get_commit_hash.sh #{latest_build_number}")
-  changelog_from_git_commits(
-    between: [hash.strip, "HEAD"],  # Optional, lets you specify a revision/tag range between which to collect commit info
-    path: "../",
-    pretty: "%ad: %s",
-    date_format: "short",# Optional, lets you provide an additional date format to dates within the pretty-formatted string
-    match_lightweight_tag: false,  # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
-    merge_commit_filtering: "exclude_merges" # Optional, lets you filter out merge commits
-  )
-end
-
-def build_release_app(isRelease)
-  scheme = isRelease ? "ProtonMail" : "Adhoc"
+def build_release_app(scheme)
   build_app(
     scheme: scheme,
     clean: true,
@@ -108,88 +95,27 @@ def build_release_app(isRelease)
   )
 end
 
-def send_to_slack(success, changelog, exception, bundle_version)
-  version = get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail", configuration: "Debug")
-
-  pipeline = "https://gitlab.protontech.ch/ProtonMail/protonmail-ios/-/pipelines/#{ENV["CI_PIPELINE_ID"]}"
-  payload = success ? {"Changelog" => changelog} : {"Error" => exception}
-  payload.store("pipeline", pipeline)
-
-  message = ""
-  if success
-    message = "CI BOT: iOS mail app v#{version}(#{bundle_version})"
-  else
-    message = "CI BOT: iOS mail app build failed"
-  end
-
-  slack(
-    message: message,
-    channel: "@Jacek Krasiukianis",
-    use_webhook_configured_username_and_icon: true,
-    slack_url: ENV["SLACK_CI_BOT_URL"],
-    payload: payload,
-    success: success
-  )
-end
-
 platform :ios do
   desc "Build the app and upload to testflight"
-  lane :build do |options|
+  lane :distribute do |options|
     select_xcode
     set_up_keychain()
 
     app_store_connect_api_key
 
-    # Download profile
-    get_xcode_profile(false)
-
-    # Collect change logs
-    latest_build_number = get_latest_build_number()
-    changelog = set_up_changelog(latest_build_number)
-
-    next_build_number = latest_build_number + 1
-    bundle_version = sh("./setup_bundle_version.sh " + next_build_number.to_s)
-
-    build_release_app(true)
-
-    sentry_debug_files_upload
-
-    upload_to_testflight(
-      team_name: "Proton Technologies AG",
-      skip_waiting_for_build_processing: true,
-      changelog: changelog
-    )
-
-    tear_down_keychain
-
-    send_to_slack(true, changelog, "", bundle_version.strip)
-  end
-
-  lane :adhoc do |options|
-    select_xcode
-    set_up_keychain()
-
-    app_store_connect_api_key
-
-    # Download profile
-    get_xcode_profile(true)
+    get_xcode_profile()
 
     latest_build_number = get_latest_build_number()
     next_build_number = latest_build_number + 1
     bundle_version = sh("./setup_bundle_version.sh " + next_build_number.to_s)
 
-    branchName = git_branch
-    lastGitCommitHash = last_git_commit[:commit_hash]
-    releaseNote = "Built on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
-
-    build_release_app(false)
+    build_release_app(options[:scheme])
 
     sentry_debug_files_upload
 
     upload_to_testflight(
       team_name: "Proton Technologies AG",
-      skip_waiting_for_build_processing: true,
-      changelog: releaseNote
+      skip_waiting_for_build_processing: true
     )
 
     tear_down_keychain
@@ -223,6 +149,7 @@ platform :ios do
       scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
+      skip_package_dependencies_resolution: true,
       test_without_building: true,
       output_directory: "../test_output/"
     )
@@ -234,7 +161,7 @@ platform :ios do
 
     run_tests(
       scheme: UI_TEST_SCHEME,
-      skip_build: true,
+      skip_package_dependencies_resolution: true,
       prelaunch_simulator: true,
       test_without_building: true,
       parallel_testing: true,

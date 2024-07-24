@@ -24,19 +24,40 @@ import Foundation
 public struct ProtonColor {
     let name: String
     let vpnFallbackRgb: Int?
+    let alternativeDarkName: String?
 
-    init(name: String, vpnFallbackRgb: Int? = nil) {
+    init(
+        name: String,
+        vpnFallbackRgb: Int? = nil,
+        alternativeDarkName: String? = nil
+    ) {
         self.name = name
         self.vpnFallbackRgb = vpnFallbackRgb
+        self.alternativeDarkName = alternativeDarkName
     }
 }
 
+public let ColorProvider = ColorProviderBase()
+
+@available(*, deprecated, renamed: "ColorProvider")
+public let UIColorManager = ColorProviderBase()
+
 @dynamicMemberLookup
 public final class ColorProviderBase {
+    public var iOSPalette: any ColorPaletteiOS {
+        switch brand {
+        case .proton, .vpn, .pass:
+            return ProtonColorPaletteiOS.instance
+        case .wallet:
+            return WalletColorPaletteiOS.instance
+        }
+    }
+
     public var brand: Brand {
         get { Brand.currentBrand }
         set { Brand.currentBrand = newValue }
     }
+
     fileprivate init() {}
 }
 
@@ -44,10 +65,20 @@ public final class ColorProviderBase {
 import UIKit
 
 extension ColorProviderBase {
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> UIColor {
+        iOSPalette[keyPath: keypath].uiColor
+    }
+
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> CGColor {
+        iOSPalette[keyPath: keypath].uiColor.cgColor
+    }
+
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> UIColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor
     }
 
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> CGColor {
         ProtonColorPaletteiOS.instance[keyPath: keypath].uiColor.cgColor
     }
@@ -55,7 +86,13 @@ extension ColorProviderBase {
 
 extension ProtonColor {
     var uiColor: UIColor {
-        darkModeAwareValue { color(name: name) } protonFallback: { color(name: name) } vpnFallback: {
+        if let alternativeDarkName {
+            return UIColor { (traits) -> UIColor in
+                traits.userInterfaceStyle == .dark ?
+                color(name: alternativeDarkName) : color(name: name)
+            }
+        }
+        return darkModeAwareValue { color(name: name) } protonFallback: { color(name: name) } vpnFallback: {
             vpnFallbackRgb.map { UIColor(rgb: $0) } ?? color(name: name)
         }
     }
@@ -102,7 +139,7 @@ public extension CGColor {
 
 #endif
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 import ProtonCoreUtilities
 
@@ -268,18 +305,23 @@ public extension CGColor {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension ColorProviderBase {
 
     #if canImport(UIKit)
 
+    public subscript(dynamicMember keypath: KeyPath<any ColorPaletteiOS, ProtonColor>) -> Color {
+        iOSPalette[keyPath: keypath].color
+    }
+
+    @available(*, deprecated, message: "Use the version using protocol ColorPaletteiOS")
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPaletteiOS, ProtonColor>) -> Color {
         ProtonColorPaletteiOS.instance[keyPath: keypath].color
     }
 
     #endif
 
-    #if canImport(AppKit)
+    #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 
     public subscript(dynamicMember keypath: KeyPath<ProtonColorPalettemacOS, ProtonColor>) -> Color {
         ProtonColorPalettemacOS.instance[keyPath: keypath].color
@@ -289,9 +331,19 @@ extension ColorProviderBase {
 
 }
 
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, OSX 10.15, tvOS 15.0, watchOS 6.0, *)
 extension ProtonColor {
-    var color: Color { Color(name, bundle: PMUIFoundations.bundle) }
+    var color: Color {
+#if canImport(UIKit)
+        if #available(iOS 15.0, *) {
+            Color(uiColor: uiColor)
+        } else {
+            Color(name, bundle: PMUIFoundations.bundle)
+        }
+#else
+        Color(name, bundle: PMUIFoundations.bundle)
+#endif
+    }
 }
 
 #if canImport(UIKit)
@@ -311,11 +363,6 @@ public extension Color {
     }
 }
 #endif
-
-public let ColorProvider = ColorProviderBase()
-
-@available(*, deprecated, renamed: "ColorProvider")
-public let UIColorManager = ColorProviderBase()
 
 struct HSBA: Equatable { let hue: CGFloat; let saturation: CGFloat; let brightness: CGFloat; let alpha: CGFloat }
 struct HSLA: Equatable { let hue: CGFloat; let saturation: CGFloat; let lightness: CGFloat; let alpha: CGFloat }

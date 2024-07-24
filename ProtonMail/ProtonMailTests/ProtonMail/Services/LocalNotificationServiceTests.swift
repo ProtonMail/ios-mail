@@ -43,8 +43,8 @@ class LocalNotificationServiceTests: XCTestCase {
     func testShowSessionRevokeNotification() throws {
         sut.showSessionRevokeNotification(email: "test@test.com")
 
-        XCTAssertTrue(notificationHandlerMock.callAdd.wasCalledExactlyOnce)
-        let argument = try XCTUnwrap(notificationHandlerMock.callAdd.lastArguments)
+        XCTAssertTrue(notificationHandlerMock.addStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(notificationHandlerMock.addStub.lastArguments)
         let content = argument.first.content
         XCTAssertEqual(content.title, String(format: LocalString._token_revoke_noti_title, "test@test.com"))
         XCTAssertEqual(content.body, LocalString._token_revoke_noti_body)
@@ -56,8 +56,8 @@ class LocalNotificationServiceTests: XCTestCase {
         let detail = LocalNotificationService.MessageSendingDetails(messageID: messageID, subtitle: String.randomString(20))
         sut.scheduleMessageSendingFailedNotification(detail)
 
-        XCTAssertTrue(notificationHandlerMock.callAdd.wasCalledExactlyOnce)
-        let argument = try XCTUnwrap(notificationHandlerMock.callAdd.lastArguments)
+        XCTAssertTrue(notificationHandlerMock.addStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(notificationHandlerMock.addStub.lastArguments)
         let content = argument.first.content
         XCTAssertEqual(content.title, "⚠️ " + LocalString._message_not_sent_title)
         XCTAssertEqual(content.subtitle, detail.subtitle)
@@ -76,9 +76,9 @@ class LocalNotificationServiceTests: XCTestCase {
         let detail = LocalNotificationService.MessageSendingDetails(messageID: messageID, subtitle: String.randomString(20))
         sut.unscheduleMessageSendingFailedNotification(detail)
 
-        XCTAssertTrue(notificationHandlerMock.callRemovePendingNoti.wasCalledExactlyOnce)
+        XCTAssertTrue(notificationHandlerMock.removePendingNotificationRequestsStub.wasCalledExactlyOnce)
 
-        let argument = try XCTUnwrap(notificationHandlerMock.callRemovePendingNoti.lastArguments)
+        let argument = try XCTUnwrap(notificationHandlerMock.removePendingNotificationRequestsStub.lastArguments)
         XCTAssertEqual(argument.a1, [detail.messageID.rawValue])
     }
 
@@ -87,19 +87,19 @@ class LocalNotificationServiceTests: XCTestCase {
         content.userInfo = ["user_id": self.userID]
         let id = UUID().uuidString
         let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
-        notificationHandlerMock.callGetPendingReqs.bodyIs { _, callBack in
+        notificationHandlerMock.getPendingNotificationRequestsStub.bodyIs { _, callBack in
             callBack([request])
         }
-        notificationHandlerMock.callGetDelivered.bodyIs { _, callBack in
+        notificationHandlerMock.getDeliveredNotificationsStub.bodyIs { _, callBack in
             callBack([])
         }
         let expectation1 = expectation(description: "Closure is called")
 
         sut.cleanUp {
-            XCTAssertTrue(self.notificationHandlerMock.callGetPendingReqs.wasCalledExactlyOnce)
-            XCTAssertTrue(self.notificationHandlerMock.callRemovePendingNoti.wasCalledExactlyOnce)
-            XCTAssertTrue(self.notificationHandlerMock.callGetDelivered.wasCalledExactlyOnce)
-            XCTAssertTrue(self.notificationHandlerMock.callRemoveDelivered.wasCalledExactlyOnce)
+            XCTAssertTrue(self.notificationHandlerMock.getPendingNotificationRequestsStub.wasCalledExactlyOnce)
+            XCTAssertTrue(self.notificationHandlerMock.removePendingNotificationRequestsStub.wasCalledExactlyOnce)
+            XCTAssertTrue(self.notificationHandlerMock.getDeliveredNotificationsStub.wasCalledExactlyOnce)
+            XCTAssertTrue(self.notificationHandlerMock.removeDeliveredNotificationsStub.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)

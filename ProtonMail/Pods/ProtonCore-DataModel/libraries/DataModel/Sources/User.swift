@@ -42,9 +42,10 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
     public let orgPrivateKey: String?
     public let email: String?
     public let displayName: String?
-    public let keys: [Key]
+    public var keys: [Key]
 
     public let accountRecovery: AccountRecovery?
+    public let lockedFlags: LockedFlags?
     // public let driveEarlyAccess: Int
     // public let mailSettings: MailSetting
     // public let addresses: [Address]
@@ -89,7 +90,8 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
                 email: String?,
                 displayName: String?,
                 keys: [Key],
-                accountRecovery: AccountRecovery? = nil) {
+                accountRecovery: AccountRecovery? = nil,
+                lockedFlags: LockedFlags? = nil) {
         self.ID = ID
         self.name = name
         self.usedSpace = usedSpace
@@ -112,6 +114,7 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
         self.displayName = displayName
         self.keys = keys
         self.accountRecovery = accountRecovery
+        self.lockedFlags = lockedFlags
     }
 
     public var description: String {
@@ -138,6 +141,10 @@ public struct User: Codable, Equatable, CustomDebugStringConvertible {
 
     public var debugDescription: String {
         return description
+    }
+
+    public mutating func setNewKeys(_ newKeys: [Key]) {
+        self.keys = newKeys
     }
 }
 
@@ -189,7 +196,7 @@ public final class UserInfo: NSObject, Codable {
     public var userId: String
     public var userKeys: [Key]
     public var weekStart: Int
-    public let lockedFlags: LockedFlags?
+    public var lockedFlags: LockedFlags?
 
     public static func getDefault() -> UserInfo {
         return .init(maxSpace: 0, maxBaseSpace: 0, maxDriveSpace: 0, usedSpace: 0,
@@ -452,12 +459,19 @@ extension UserInfo {
 }
 
 // MARK: LockedFlags
-public enum LockedFlags: Int8, Codable {
-    case mailStorageExceeded = 1
-    case driveStorageExceeded = 2
-    case storageExceeded = 3
-    case orgIssueForPrimaryAdmin = 4
-    case orgIssueForMember = 8
+public struct LockedFlags: OptionSet, Codable {
+
+    public let rawValue: Int
+
+    public static let mailStorageExceeded = LockedFlags(rawValue: 1 << 0)
+    public static let driveStorageExceeded = LockedFlags(rawValue: 1 << 1)
+    public static let storageExceeded: LockedFlags = [.mailStorageExceeded, .driveStorageExceeded]
+    public static let orgIssueForPrimaryAdmin = LockedFlags(rawValue: 1 << 2)
+    public static let orgIssueForMember = LockedFlags(rawValue: 1 << 3)
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 }
 
 // MARK: Account Recovery

@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-MissingScopes",
   "module_name": "ProtonCoreMissingScopes",
-  "version": "22.0.0",
+  "version": "25.0.0",
   "summary": "The MissingScopes pod contains the logic to handle missing scopes in network request",
   "description": "The MissingScopes pod contains the logic to handle missing scopes such as `password`, `LOCKED`\nor others.",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "22.0.0"
+    "tag": "25.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -31,19 +31,19 @@
   },
   "dependencies": {
     "ProtonCore-APIClient": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Authentication": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-Services": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "22.0.0"
+      "25.0.0"
     ],
     "ProtonCore-PasswordRequest": [
-      "22.0.0"
+      "25.0.0"
     ]
   },
   "source_files": "libraries/MissingScopes/Sources/**/*.swift",
@@ -56,7 +56,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "22.0.0"
+          "25.0.0"
         ]
       },
       "source_files": "libraries/MissingScopes/Tests/**/*.swift"

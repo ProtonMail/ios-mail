@@ -3,20 +3,6 @@
       "ProtonMailUITests": {
          "type": "bundle.ui-testing",
          "platform": "iOS",
-         "dependencies": [
-            {
-               "target": "ProtonMail"
-            },
-            {
-               "target": "ProtonMailTests"
-            },
-            {
-               "package": "Difference"
-            },
-            {
-               "package": "SwiftCSSParser"
-            }
-         ],
          "sources": [
             {
                "path": "ProtonMailUITests",

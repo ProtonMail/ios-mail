@@ -20,10 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import WebKit
 import ProtonCoreLog
 
-public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHandler, URLSessionDelegate {
+public final class AlternativeRoutingRequestInterceptor: NSObject, URLSessionDelegate {
 
     public static let schemeMapping: [(String, String)] = [("coreioss", "https"), ("coreios", "http")]
 
@@ -46,6 +45,13 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
         self.cookiesStorage = cookiesStorage
         self.onAuthenticationChallengeContinuation = onAuthenticationChallengeContinuation
     }
+
+}
+
+#if canImport(WebKit)
+import WebKit
+
+extension AlternativeRoutingRequestInterceptor: WKURLSchemeHandler {
 
     public func setup(webViewConfiguration: WKWebViewConfiguration) {
         for (custom, _) in AlternativeRoutingRequestInterceptor.schemeMapping {
@@ -224,3 +230,5 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
         onAuthenticationChallengeContinuation(challenge, completionHandler)
     }
 }
+
+#endif

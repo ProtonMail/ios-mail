@@ -29,6 +29,36 @@
         }
       },
       "idiom" : "universal"
+    },
+    {
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0xDB",
+          "green" : "0xD3",
+          "red" : "0xD4"
+        }
+      },
+      "idiom" : "tv"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "107",
+          "green" : "87",
+          "red" : "91"
+        }
+      },
+      "idiom" : "tv"
     }
   ],
   "info" : {

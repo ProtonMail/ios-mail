@@ -79,7 +79,6 @@ final class EventsService: EventsFetching {
     & HasUserDefaults
     & HasContactDataService
     & HasMailEventsPeriodicScheduler
-    & HasFeatureFlagsRepository
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])

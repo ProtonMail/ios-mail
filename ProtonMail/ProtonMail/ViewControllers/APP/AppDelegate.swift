@@ -352,14 +352,11 @@ extension AppDelegate {
     private func configureAppearance() {
         UINavigationBar.appearance().backIndicatorImage = IconProvider.arrowLeft.withRenderingMode(.alwaysTemplate)
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = IconProvider.arrowLeft.withRenderingMode(.alwaysTemplate)
-        if #available(iOS 15.0, *) {
-            setupNavigationBarAppearance()
-            UITableView.appearance().sectionHeaderTopPadding = .zero
-        }
+        setupNavigationBarAppearance()
+        UITableView.appearance().sectionHeaderTopPadding = .zero
         UIStackView.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).spacing = -4
     }
 
-    @available(iOS 15.0, *)
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()

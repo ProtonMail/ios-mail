@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCoreEnvironment
+import UIKit
 
 protocol TrustKitUIDelegate: TrustKitDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController)

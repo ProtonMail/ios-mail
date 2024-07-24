@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCoreObservability
 
 enum UpdatePasswordError: Int, Error {
     case invalidUserName
@@ -29,6 +30,8 @@ enum UpdatePasswordError: Int, Error {
     case cantGenerateVerifier
     case cantGenerateSRPClient
     case keyUpdateFailed
+    case missingUserInfo
+    case missingAuthInfo
 
     case `default`
 }
@@ -50,8 +53,28 @@ extension UpdatePasswordError: LocalizedError {
             return PCTranslation.errorCantGenerateSRPClient.l10n
         case .keyUpdateFailed:
             return PCTranslation.errorKeyUpdateFailed.l10n
+        case .missingUserInfo:
+            return PCTranslation.errorMissingUserInfo.l10n
+        case .missingAuthInfo:
+            return PCTranslation.errorMissingAuthInfo.l10n
         case .default:
             return PCTranslation.errorUpdatePasswordDefault.l10n
+
+        }
+    }
+}
+
+extension UpdatePasswordError {
+    var passwordChangeObservabilityStatus: PasswordChangeHTTPResponseCodeStatus {
+        switch self {
+        case .invalidUserName: return .invalidUserName
+        case .invalidModulusID: return .invalidModulusID
+        case .invalidModulus: return .invalidModulus
+        case .cantHashPassword: return .cantHashPassword
+        case .cantGenerateVerifier: return .cantGenerateVerifier
+        case .cantGenerateSRPClient: return .cantGenerateSRPClient
+        case .keyUpdateFailed: return .keyUpdateFailed
+        @unknown default: return .unknown
         }
     }
 }

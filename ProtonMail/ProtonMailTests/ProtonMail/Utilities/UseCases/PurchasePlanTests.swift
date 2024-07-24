@@ -70,7 +70,7 @@ final class PurchasePlanTests: XCTestCase {
         let purchaseResultsLeadingToCancellation: [PurchaseResult] = [.purchaseCancelled, .toppedUpCredits]
 
         for purchaseResult in purchaseResultsLeadingToCancellation {
-            let output = await executeSUT(stubbedPurchaseResult: .purchaseCancelled)
+            let output = await executeSUT(stubbedPurchaseResult: purchaseResult)
 
             switch output {
             case .cancelled:
@@ -112,9 +112,28 @@ final class PurchasePlanTests: XCTestCase {
         }
     }
 
+    func testSkipsOverRenewalNotificationAndForwardsAnotherResult() async {
+        let output = await executeSUT(
+            stubbedPurchaseResults: [.renewalNotification, .purchasedPlan(accountPlan: plan)]
+        )
+
+        switch output {
+        case .planPurchased:
+            break
+        default:
+            XCTFail("Unexpected output: \(output)")
+        }
+    }
+
     private func executeSUT(stubbedPurchaseResult: PurchaseResult) async -> PurchasePlan.Output {
+        await executeSUT(stubbedPurchaseResults: [stubbedPurchaseResult])
+    }
+
+    private func executeSUT(stubbedPurchaseResults: [PurchaseResult]) async -> PurchasePlan.Output {
         purchaseManager.buyPlanStub.bodyIs { _, _, _, _, completion in
-            completion(stubbedPurchaseResult)
+            for stubbedPurchaseResult in stubbedPurchaseResults {
+                completion(stubbedPurchaseResult)
+            }
         }
 
         return await withFeatureFlags([.dynamicPlans]) {

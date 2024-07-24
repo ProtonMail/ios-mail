@@ -353,7 +353,6 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
     }
 }
 
-@available(iOS 13, *)
 extension UITraitCollection {
     func updated(to style: UIUserInterfaceStyle) -> UITraitCollection {
         UITraitCollection(traitsFrom: [self, UITraitCollection.init(userInterfaceStyle: style)])

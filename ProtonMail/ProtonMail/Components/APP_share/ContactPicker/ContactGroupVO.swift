@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCoreServices
+import UIKit
 
 // contact group sub-selection
 struct DraftEmailData: Hashable {

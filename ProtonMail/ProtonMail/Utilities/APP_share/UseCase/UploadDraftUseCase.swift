@@ -44,7 +44,8 @@ final class UploadDraft: UploadDraftUseCase {
             if let responseError = error as? ResponseError,
                let underlyingError = responseError.underlyingError {
                 if underlyingError.code != APIErrorCode.updateDraftHasBeenSent {
-                    // Doesn't need to show message has sent message to user 
+                    SystemLogger.log(error: error, category: .emptyAlert)
+                    // Doesn't need to show message has sent message to user
                     await NSError.alertSavingDraftError(details: underlyingError.localizedDescription)
                 }
 
@@ -54,6 +55,7 @@ final class UploadDraft: UploadDraftUseCase {
             } else if error is UploadDraftError {
                 SystemLogger.log(message: "UploadDraftError: \(error)", isError: true)
             } else {
+                SystemLogger.log(error: error, category: .emptyAlert)
                 await NSError.alertSavingDraftError(details: error.localizedDescription)
             }
             throw error

@@ -31,13 +31,11 @@ final class SystemLogger {
 
     static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool, caller: Caller) {
         // log the message in the unified logging system
-        if #available(iOS 15, *) {
-            let osLog = shared.osLog(for: category)
-            if isError {
-                osLog.error("\(message, privacy: .public)")
-            } else {
-                osLog.log("\(message, privacy: .public)")
-            }
+        let osLog = shared.osLog(for: category)
+        if isError {
+            osLog.error("\(message, privacy: .public)")
+        } else {
+            osLog.log("\(message, privacy: .public)")
         }
 
         // log the message in the log file
@@ -51,7 +49,6 @@ final class SystemLogger {
         }
     }
 
-    @available(iOS 15, *)
     private func osLog(for category: Category?) -> Logger {
         let category = "[Proton] \(category?.rawValue ?? "")"
         var logger: Logger?

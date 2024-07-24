@@ -18,6 +18,7 @@
 import ProtonCoreCrypto
 import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
+import UIKit
 import VCard
 
 struct ContactDecryptionResult {

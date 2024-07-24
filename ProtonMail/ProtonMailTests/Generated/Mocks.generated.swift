@@ -11,6 +11,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
 import ProtonInboxRSVP
+import UIKit
 
 import class ProtonCoreDataModel.Address
 import class ProtonCoreDataModel.UserInfo
@@ -104,6 +105,14 @@ class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
     @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
     func readEnvironment() -> Environment? {
         readEnvironmentStub()
+    }
+
+}
+
+class MockBiometricStatusProvider: BiometricStatusProvider {
+    @PropertyStub(\MockBiometricStatusProvider.biometricType, initialGet: .none) var biometricTypeStub
+    var biometricType: BiometricType {
+        biometricTypeStub()
     }
 
 }
@@ -581,11 +590,6 @@ class MockLAContextProtocol: LAContextProtocol {
         canEvaluatePolicyStub(policy, error)
     }
 
-    @FuncStub(MockLAContextProtocol.evaluatePolicy) var evaluatePolicyStub
-    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
-        evaluatePolicyStub(policy, localizedReason, reply)
-    }
-
 }
 
 class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
@@ -780,22 +784,9 @@ class MockLockCacheStatus: LockCacheStatus {
         isAppKeyEnabledStub()
     }
 
-    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
-    var isAppLockedAndAppKeyDisabled: Bool {
-        isAppLockedAndAppKeyDisabledStub()
-    }
-
     @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
     var isAppLockedAndAppKeyEnabled: Bool {
         isAppLockedAndAppKeyEnabledStub()
-    }
-
-}
-
-class MockLockPreferences: LockPreferences {
-    @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
-    func setLockTime(value: AutolockTimeout) {
-        setLockTimeStub(value)
     }
 
 }
@@ -945,6 +936,34 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
         set {
             shouldMoveToNextMessageAfterMoveStub(newValue)
         }
+    }
+
+}
+
+class MockNotificationHandler: NotificationHandler {
+    @FuncStub(MockNotificationHandler.add) var addStub
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+        addStub(request, completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.removePendingNotificationRequests) var removePendingNotificationRequestsStub
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
+        removePendingNotificationRequestsStub(identifiers)
+    }
+
+    @FuncStub(MockNotificationHandler.getPendingNotificationRequests) var getPendingNotificationRequestsStub
+    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void) {
+        getPendingNotificationRequestsStub(completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.getDeliveredNotifications) var getDeliveredNotificationsStub
+    func getDeliveredNotifications(completionHandler: @escaping ([UNNotification]) -> Void) {
+        getDeliveredNotificationsStub(completionHandler)
+    }
+
+    @FuncStub(MockNotificationHandler.removeDeliveredNotifications) var removeDeliveredNotificationsStub
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {
+        removeDeliveredNotificationsStub(identifiers)
     }
 
 }
@@ -1256,6 +1275,44 @@ class MockURLSessionProtocol: URLSessionProtocol {
     @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
     func data(for request: URLRequest) throws -> (Data, URLResponse) {
         try dataStub(request)
+    }
+
+}
+
+class MockUndoActionManagerProtocol: UndoActionManagerProtocol {
+    @FuncStub(MockUndoActionManagerProtocol.addUndoToken) var addUndoTokenStub
+    func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?) {
+        addUndoTokenStub(token, undoActionType)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.addUndoTokens) var addUndoTokensStub
+    func addUndoTokens(_ tokens: [String], undoActionType: UndoAction?) {
+        addUndoTokensStub(tokens, undoActionType)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.showUndoSendBanner) var showUndoSendBannerStub
+    func showUndoSendBanner(for messageID: MessageID) {
+        showUndoSendBannerStub(messageID)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.register) var registerStub
+    func register(handler: UndoActionHandlerBase) {
+        registerStub(handler)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.requestUndoAction) var requestUndoActionStub
+    func requestUndoAction(undoTokens: [String], completion: ((Bool) -> Void)?) {
+        requestUndoActionStub(undoTokens, completion)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.calculateUndoActionBy, initialReturn: nil) var calculateUndoActionByStub
+    func calculateUndoActionBy(labelID: LabelID) -> UndoAction? {
+        calculateUndoActionByStub(labelID)
+    }
+
+    @FuncStub(MockUndoActionManagerProtocol.addTitleWithAction) var addTitleWithActionStub
+    func addTitleWithAction(title: String, action: UndoAction) {
+        addTitleWithActionStub(title, action)
     }
 
 }

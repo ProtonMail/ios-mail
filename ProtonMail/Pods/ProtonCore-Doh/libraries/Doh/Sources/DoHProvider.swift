@@ -75,7 +75,7 @@ extension DoHProviderInternal {
             .init(name: "name", value: query)
         ]
 
-        guard #available(macOS 13.0, iOS 16.0, *) else {
+        guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, *) else {
             return queryUrl.appendingQueryItemsLegacy(queryItems).absoluteString
         }
 

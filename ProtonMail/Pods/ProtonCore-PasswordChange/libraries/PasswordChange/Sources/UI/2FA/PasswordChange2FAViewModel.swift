@@ -26,13 +26,14 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreObservability
 import ProtonCoreUIFoundations
+import ProtonCoreServices
 import UIKit
 
 extension PasswordChange2FAView {
 
     /// The `ObservableObject` that holds the model data for this View
     @MainActor
-    public final class ViewModel: ObservableObject {
+    public final class ViewModel: ObservableObject, PasswordChangeObservability {
 
         private let passwordChangeService: PasswordChangeService?
         private let authCredential: AuthCredential?
@@ -42,6 +43,7 @@ extension PasswordChange2FAView {
 
         private let loginPassword: String
         private let newPassword: String
+        private let twoFA: AuthInfoResponse.TwoFA?
 
         @Published var tfaFieldContent: PCTextFieldContent!
         @Published var authenticateIsLoading = false
@@ -53,6 +55,7 @@ extension PasswordChange2FAView {
             passwordChangeService: PasswordChangeService? = nil,
             authCredential: AuthCredential? = AuthCredential.none,
             userInfo: UserInfo? = .getDefault(),
+            twoFA: AuthInfoResponse.TwoFA?,
             loginPassword: String,
             newPassword: String,
             passwordChangeCompletion: PasswordChangeCompletion?
@@ -64,6 +67,7 @@ extension PasswordChange2FAView {
             self.loginPassword = loginPassword
             self.newPassword = newPassword
             self.passwordChangeCompletion = passwordChangeCompletion
+            self.twoFA = twoFA
             self.setupViews()
         }
 
@@ -71,7 +75,8 @@ extension PasswordChange2FAView {
             tfaFieldContent = .init(
                 title: PCTranslation.tfaCode.l10n,
                 footnote: PCTranslation.enterDigitsCode.l10n,
-                keyboardType: .numberPad
+                keyboardType: .numberPad,
+                textContentType: .oneTimeCode
             )
         }
 
@@ -90,10 +95,12 @@ extension PasswordChange2FAView {
                         authCredential: authCredential,
                         userInfo: userInfo
                     )
+                    observabilityPasswordChangeSuccess(mode: mode, twoFAMode: .totp)
                     passwordChangeCompletion?(authCredential, userInfo)
                 } catch {
                     PMLog.error(error)
                     bannerState = .error(content: .init(message: error.localizedDescription))
+                    observabilityPasswordChangeError(mode: mode, error: error, twoFAMode: .totp)
                 }
                 PasswordChangeModule.initialViewController?.unlockUI()
                 authenticateIsLoading = false
@@ -120,7 +127,7 @@ extension PasswordChange2FAView {
                     userInfo: userInfo,
                     loginPassword: loginPassword,
                     newPassword: .init(value: newPassword),
-                    twoFACode: tfaFieldContent.text,
+                    twoFAParams: .totp(tfaFieldContent.text),
                     buildAuth: mode == .singlePassword ? true : false
                 )
             }
