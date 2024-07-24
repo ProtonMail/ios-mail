@@ -22,8 +22,14 @@ import class SwiftUI.UIImage
 
 extension LocalMessageMetadata {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<PMMailboxItemId>) async -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<PMMailboxItemId>, mapRecipientsAsSender: Bool) async -> MailboxItemCellUIModel {
         let senderImage: UIImage? = await Caches.senderImageCache.object(for: sender.address)
+        var recipientsUIRepresentation: String {
+            let recipients = (to + cc + bcc).map(\.uiRepresentation).joined(separator: ", ")
+            return recipients.isEmpty ? LocalizationTemp.MailboxCell.noRecipient : recipients
+        }
+
+        let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
 
         return MailboxItemCellUIModel(
             id: id,
@@ -39,8 +45,8 @@ extension LocalMessageMetadata {
                     displaySenderImage: sender.displaySenderImage
                 ))
             ),
-            senders: sender.uiRepresentation,
-            subject: subject,
+            senders: mappedSender,
+            subject: subject.isEmpty ? LocalizationTemp.MailboxCell.noSubject : subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: !unread,
             isStarred: starred,
