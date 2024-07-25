@@ -322,12 +322,6 @@ class LabelsDataService {
         }
     }
 
-    func lastUpdate(by labelID: LabelID, userID: UserID? = nil) -> LabelCountEntity? {
-        let viewMode = dependencies.conversationStateService.viewMode
-        let id = userID ?? self.userID
-        return dependencies.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
-    }
-
     func unreadCount(by labelID: LabelID) -> Int {
         let viewMode = dependencies.conversationStateService.viewMode
         return dependencies.lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
