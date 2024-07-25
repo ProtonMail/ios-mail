@@ -34,6 +34,10 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     private var avatarCheckedElement: XCUIElement {
         rootItem.images[Identifiers.avatarChecked]
     }
+    
+    private var avatarImageElement: XCUIElement {
+        rootItem.images[Identifiers.avatarImage]
+    }
 
     private var senderElement: XCUIElement {
         rootItem.staticTexts[Identifiers.senderText]
@@ -92,12 +96,24 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
         XCTAssertTrue(avatarTextElement.exists)
         XCTAssertFalse(avatarCheckedElement.exists)
     }
+    
+    func hasAvatarImage() {
+        XCTAssertTrue(avatarImageElement.exists)
+    }
+    
+    func hasNoAvatarImage() {
+        XCTAssertFalse(avatarImageElement.exists)
+    }
 
     func hasInitials(_ value: String) {
         XCTAssertEqual(value, avatarTextElement.label)
     }
+    
+    func hasNoInitials() {
+        XCTAssertFalse(avatarTextElement.exists)
+    }
 
-    func hasSenders(_ value: String) {
+    func hasParticipants(_ value: String) {
         XCTAssertEqual(value, senderElement.label)
     }
 
@@ -122,6 +138,7 @@ private struct Identifiers {
     static let cell = "mailbox.list.cell"
     static let avatarText = "avatar.text"
     static let avatarChecked = "avatar.checked"
+    static let avatarImage = "avatar.image"
     static let senderText = "cell.senderText"
     static let subjectText = "cell.subjectText"
     static let countText = "count.text"

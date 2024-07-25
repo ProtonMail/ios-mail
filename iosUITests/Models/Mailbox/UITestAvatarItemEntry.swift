@@ -17,11 +17,7 @@
 
 import Foundation
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
+enum UITestAvatarItemEntry {
+    case initials(String)
+    case image
 }

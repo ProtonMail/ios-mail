@@ -61,16 +61,16 @@ final class RequestsHandler: ChannelInboundHandler, RemovableChannelHandler, Sen
                 print("⚠️ No matching request found for '\(header.uri)'.")
 
                 let body = generateUnhandledRemoteRequestResponse(header: header)
-                await serveResponse(context: context, statusCode: 404, body: body)
+                await serveResponse(context: context, statusCode: 404, body: body, mimeType: .json)
 
                 return
             }
 
-            guard let responseBody = bundle.getJsonData(fileName: request.localPath) else {
+            guard let responseBody = bundle.getDataFor(fileName: request.localPath) else {
                 print("⚠️ Unable to parse response body for '\(header.uri)'.")
 
                 let body = generateAssetNotFoundResponse(localPath: request.localPath)
-                await serveResponse(context: context, statusCode: 404, body: body)
+                await serveResponse(context: context, statusCode: 404, body: body, mimeType: request.mimeType)
 
                 return
             }
@@ -87,7 +87,7 @@ final class RequestsHandler: ChannelInboundHandler, RemovableChannelHandler, Sen
 
             print("➡️ Serving \(header.method) - \(header.uri) with \(request)")
 
-            await serveResponse(context: context, statusCode: request.status, body: responseBody)
+            await serveResponse(context: context, statusCode: request.status, body: responseBody, mimeType: request.mimeType)
         }
     }
 }
@@ -96,12 +96,12 @@ extension RequestsHandler {
     @Sendable private func serveResponse(
         context: ChannelHandlerContext,
         statusCode: Int,
-        body: Data
+        body: Data,
+        mimeType: NetworkMockMimeType
     ) async {
         var headers = HTTPHeaders()
 
-        // Hardcoded for now, will be dynamic in future iterations.
-        headers.add(name: "Content-Type", value: "application/json")
+        headers.add(name: "Content-Type", value: mimeType.rawValue)
         headers.add(name: "Content-Length", value: "\(body.count)")
 
         let responseHead = HTTPResponseHead(

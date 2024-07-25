@@ -27,6 +27,7 @@ struct NetworkRequest: Equatable, Sendable {
             && lhs.ignoreQueryParams == rhs.ignoreQueryParams
             && lhs.wildcardMatch == rhs.wildcardMatch
             && lhs.serveOnce == rhs.serveOnce
+            && lhs.mimeType == rhs.mimeType
             && lhs.priority == rhs.priority
     }
 
@@ -37,6 +38,7 @@ struct NetworkRequest: Equatable, Sendable {
     let ignoreQueryParams: Bool
     let wildcardMatch: Bool
     let serveOnce: Bool
+    let mimeType: NetworkMockMimeType
     let priority: NetworkMockPriority
 
     init(
@@ -48,6 +50,7 @@ struct NetworkRequest: Equatable, Sendable {
         ignoreQueryParams: Bool = false,
         wildcardMatch: Bool = false,
         serveOnce: Bool = false,
+        mimeType: NetworkMockMimeType = .json,
         priority: NetworkMockPriority = .standard
     ) {
         self.remoteRequest = RemoteRequest(method: method, path: remotePath)
@@ -57,6 +60,7 @@ struct NetworkRequest: Equatable, Sendable {
         self.ignoreQueryParams = ignoreQueryParams
         self.wildcardMatch = wildcardMatch
         self.serveOnce = serveOnce
+        self.mimeType = mimeType
         self.priority = priority
     }
 }

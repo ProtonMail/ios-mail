@@ -23,7 +23,7 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     
     private let firstEntry = UITestMailboxListItemEntry(
         index: 0,
-        initials: "F",
+        avatar: UITestAvatarItemEntry.initials("F"),
         sender: "Fancy Capybara, Another Address",
         subject: "Test",
         date: "Feb 2",
@@ -32,7 +32,7 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     
     private let secondEntry = UITestMailboxListItemEntry(
         index: 1,
-        initials: "F",
+        avatar: UITestAvatarItemEntry.initials("F"),
         sender: "Fancy Capybara, Sleepy Koala",
         subject: "Test 2",
         date: "Dec 20, 2023",

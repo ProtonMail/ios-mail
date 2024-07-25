@@ -28,6 +28,7 @@
         "LoginFlowPaidUserTest\/testLoginFlowPaidUser()",
         "MailboxSelectionModeActionBarTests\/testExitSelectionModeDismissesActionBar()",
         "MailboxSelectionModeActionBarTests\/testSelectionModeShowsActionBar()",
+        "MailboxSenderImageTests\/testSenderImageIsShownInPlaceOfAvatar()",
         "MailboxSidebarTests\/testSidebarNavigation()",
         "SubscriptionNavigationTests\/testSubscriptionNavigationFreeUser()",
         "SubscriptionPaidUserTests\/testSubscriptionNavigationPaidUser()"

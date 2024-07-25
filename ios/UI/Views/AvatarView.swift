@@ -64,6 +64,7 @@ struct AvatarView: View {
     private func senderImageView(uiImage: UIImage) -> some View {
         Image(uiImage: uiImage)
             .resizable()
+            .accessibilityIdentifier(AvatarViewIdentifiers.avatarImage)
     }
 
     private var initialsView: some View {
@@ -79,6 +80,7 @@ struct AvatarView: View {
 
 private struct AvatarViewIdentifiers {
     static let avatarText = "avatar.text"
+    static let avatarImage = "avatar.image"
 }
 
 

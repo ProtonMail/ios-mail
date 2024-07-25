@@ -17,11 +17,9 @@
 
 import Foundation
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
+enum NetworkMockMimeType: String {
+    case json = "application/json"
+    case imageSvg = "image/svg+xml"
+    case imagePng = "image/png"
+    case octetStream = "application/octet-stream"
 }

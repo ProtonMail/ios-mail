@@ -53,6 +53,10 @@ extension UITestLoginType {
             static let SleepyKoala = UITestLoginType.loggedIn(
                 UITestUser(id: "slpkla", username: "sleepykoala", password: "password")
             )
+            
+            static let ChirpyFlamingo = UITestLoginType.loggedIn(
+                UITestUser(id: "crpfgo", username: "chirpyflamingo", password: "password")
+            )
         }
 
         enum Paid {

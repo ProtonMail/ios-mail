@@ -62,7 +62,7 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
 
         let expectedInboxEntry = UITestMailboxListItemEntry(
             index: 0,
-            initials: "M",
+            avatar: UITestAvatarItemEntry.initials("M"),
             sender: "mobileappsuitesting2",
             subject: "Test message",
             date: "Mar 6, 2023",
@@ -71,7 +71,7 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
 
         let expectedArchiveEntry = UITestMailboxListItemEntry(
             index: 0,
-            initials: "M",
+            avatar: UITestAvatarItemEntry.initials("M"),
             sender: "mobileappsuitesting3",
             subject: "Base subject",
             date: "Mar 28, 2023",

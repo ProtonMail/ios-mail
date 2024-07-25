@@ -21,24 +21,22 @@ extension Bundle {
 
     /// Gets the JSON data from the `Bundle` and returns is as `Data?`.
     /// - Parameter fileName: The filename with the extension.
-    /// - Returns: A `Data?` containing the JSON file content. Value is `nil` in case an error occurs.
-    @Sendable func getJsonData(fileName: String) -> Data? {
+    /// - Returns: A `Data?` containing the file content. Value is `nil` in case an error occurs.
+    @Sendable func getDataFor(fileName: String) -> Data? {
         let file = fileName.components(separatedBy: ".")
 
         if let filepath = self.path(forResource: file.first, ofType: file.last) {
             do {
                 let url = URL(fileURLWithPath: filepath)
-                let data = try Data(contentsOf: url)
-                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
-                return try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+                return try Data(contentsOf: url)
             }
             catch {
-                print("An error occurred while parsing JSON file \(fileName).")
+                print("An error occurred while parsing file \(fileName).")
                 return nil
             }
         }
         else {
-            print("Could not find file \(fileName), unable to retrieve JSON contents.")
+            print("Could not find file \(fileName), unable to retrieve file contents.")
             return nil
         }
     }

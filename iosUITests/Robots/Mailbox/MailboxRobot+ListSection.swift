@@ -88,24 +88,36 @@ extension MailboxRobot {
 
     func hasEntries(entries: UITestMailboxListItemEntry...) {
         entries.forEach { entry in
-            let model = UITestMailboxListItemEntryModel(index: entry.index)
-
-            model.hasInitials(entry.initials)
-            model.hasSenders(entry.sender)
-            model.hasSubject(entry.subject)
-            model.hasDate(entry.date)
-
-            if let count = entry.count {
-                model.hasCount(count)
-            }
-            else {
-                model.hasNoCount()
-            }
+            hasEntry(entry: entry)
         }
     }
     
     func hasNoEntries() {
         let model = UITestMailboxListItemEntryModel(index: 0)
         model.doesNotExist()
+    }
+    
+    private func hasEntry(entry: UITestMailboxListItemEntry) {
+        let model = UITestMailboxListItemEntryModel(index: entry.index)
+
+        switch entry.avatar {
+        case .initials(let value):
+            model.hasInitials(value)
+            model.hasNoAvatarImage()
+        case .image:
+            model.hasAvatarImage()
+            model.hasNoInitials()
+        }
+        
+        model.hasParticipants(entry.sender)
+        model.hasSubject(entry.subject)
+        model.hasDate(entry.date)
+
+        if let count = entry.count {
+            model.hasCount(count)
+        }
+        else {
+            model.hasNoCount()
+        }
     }
 }
