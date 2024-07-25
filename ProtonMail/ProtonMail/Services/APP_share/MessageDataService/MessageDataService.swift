@@ -303,36 +303,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             )
     }
 
-    func updateMessageCount(completion: (() -> Void)? = nil) {
-        self.queueManager?.queue {
-            let viewMode = self.dependencies.viewModeDataSource.viewMode
-
-            switch viewMode {
-            case .singleMessage:
-                let counterApi = MessageCountRequest()
-                self.apiService.perform(request: counterApi, response: MessageCountResponse()) { _, response in
-                    guard response.error == nil else {
-                        completion?()
-                        return
-                    }
-                    self.parent?.eventsService.processEvents(messageCounts: response.counts)
-                    completion?()
-                }
-            case .conversation:
-                let conversationCountApi = ConversationCountRequest(addressID: nil)
-                self.apiService.perform(request: conversationCountApi, response: ConversationCountResponse()) { _, response in
-                    guard response.error == nil else {
-                        completion?()
-                        return
-                    }
-                    let countDict = response.responseDict?["Counts"] as? [[String: Any]]
-                    self.parent?.eventsService.processEvents(conversationCounts: countDict)
-                    completion?()
-                }
-            }
-        }
-    }
-
     // TODO: fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
@@ -1258,6 +1228,5 @@ extension MessageDataService {
     struct Dependencies {
         let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
         let pushUpdater: PushUpdater
-        let viewModeDataSource: ViewModeDataSource
     }
 }
