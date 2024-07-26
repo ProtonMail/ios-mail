@@ -75,6 +75,7 @@ final class AppContext: Sendable, ObservableObject {
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
         )
+        AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
         if let storedSession = try mailSession.storedSessions().first {
             activeUserSession = try mailSession.userContextFromSession(

@@ -41,6 +41,7 @@ extension AppLifeCycle: UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        AppLogger.log(message: "\(#function)", category: .appLifeCycle)
         applicationServices.terminate()
     }
 }
@@ -50,10 +51,12 @@ extension AppLifeCycle: UIApplicationDelegate {
 extension AppLifeCycle {
 
     func allScenesDidBecomeActive() {
+        AppLogger.log(message: "\(#function)", category: .appLifeCycle)
         applicationServices.becomeActive()
     }
 
     func allScenesDidEnterBackground() {
+        AppLogger.log(message: "\(#function)", category: .appLifeCycle)
         applicationServices.enterBackground()
     }
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OSLog
+import proton_mail_uniffi
 
 final class AppLogger: @unchecked Sendable {
     private static let shared = AppLogger()
@@ -29,12 +30,52 @@ final class AppLogger: @unchecked Sendable {
     // MARK: Private methods
 
     static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool, caller: Caller) {
-        // log the message in the unified logging system
+        logToUnifiedLoggingSystem(message: message, category: category, isError: isError, isDebug: isDebug, caller: caller)
+        logToMailSDK(message: message, category: category, isError: isError, isDebug: isDebug, caller: caller)
+    }
+
+    /**
+     It will log in the OS logging system. This logs are good for real time monitor in combination with relevant system logs 
+     like app extension, push notifications, background tasks, ...
+     */
+    static private func logToUnifiedLoggingSystem(
+        message: String,
+        category: Category?,
+        isError: Bool,
+        isDebug: Bool,
+        caller: Caller
+    ) {
         let osLog = shared.osLog(for: category)
         if isError {
             osLog.error("\(message, privacy: .public)")
         } else {
             osLog.log("\(message, privacy: .public)")
+        }
+    }
+
+    /**
+     Adds the client logs to the SDK logfile
+     */
+    static private func logToMailSDK(
+        message: String,
+        category: Category?,
+        isError: Bool,
+        isDebug: Bool,
+        caller: Caller
+    ) {
+        var categorySection = "[App]"
+        if let category {
+            categorySection += " \(category.rawValue)"
+        }
+        categorySection += ": "
+        let fileMessage = "\(categorySection)\(message)"
+
+        if isError {
+            rustLogError(line: fileMessage)
+        } else if isDebug {
+            rustLogDebug(line: fileMessage)
+        } else {
+            rustLogInfo(line: fileMessage)
         }
     }
 
