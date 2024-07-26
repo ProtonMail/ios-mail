@@ -42,6 +42,13 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     /// TestId 433907
     func testSelectionModeMoveToArchiveConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
+            useDefaultConversationCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations/count",
+                localPath: "conversations-count_433907.json",
+                serveOnce: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
@@ -79,6 +86,13 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     /// TestId 433908
     func testSelectionModeMultipleMoveToArchiveConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
+            useDefaultConversationCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations/count",
+                localPath: "conversations-count_433908.json",
+                serveOnce: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
@@ -116,6 +130,13 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     /// TestId 433911
     func testSelectionModeMoveToArchiveConversationModeWithBeError() async {
         await environment.mockServer.addRequestsWithDefaults(
+            useDefaultConversationCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations/count",
+                localPath: "conversations-count_433911.json",
+                serveOnce: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
