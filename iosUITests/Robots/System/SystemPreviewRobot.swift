@@ -16,23 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import XCTest
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
-    let attachmentPreviews: UITestAttachmentPreviewItemEntry?
-    
-    init(index: Int, avatar: UITestAvatarItemEntry, sender: String, subject: String, date: String, count: Int? = nil, attachmentPreviews: UITestAttachmentPreviewItemEntry? = nil) {
-        self.index = index
-        self.avatar = avatar
-        self.sender = sender
-        self.subject = subject
-        self.date = date
-        self.count = count
-        self.attachmentPreviews = attachmentPreviews
-    }
-}
+final class SystemPreviewRobot: SystemRobot {}

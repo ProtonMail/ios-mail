@@ -57,6 +57,11 @@ extension MailboxRobot {
         }
     }
     
+    func tapAttachmentCapsuleAt(forItem item: Int, atIndex index: Int) {
+        let model = UITestMailboxListItemEntryModel(index: item)
+        model.tapAttachmentCapsuleAt(index)
+    }
+    
     func waitForEntry(atIndex index: Int) {
         let model = UITestMailboxListItemEntryModel(index: index)
         model.waitForExistence(timeout: 30)
@@ -115,9 +120,14 @@ extension MailboxRobot {
 
         if let count = entry.count {
             model.hasCount(count)
-        }
-        else {
+        } else {
             model.hasNoCount()
+        }
+        
+        if let attachmentPreviews = entry.attachmentPreviews {
+            model.hasAttachmentPreviews(entry: attachmentPreviews)
+        } else {
+            model.hasNoAttachmentPreviews()
         }
     }
 }

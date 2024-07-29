@@ -186,6 +186,8 @@ extension MailboxItemCell {
         )
         .padding(.top, DS.Spacing.standard)
         .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
     }
 }
 
@@ -390,4 +392,5 @@ private struct MailboxItemCellIdentifiers {
     static let subjectText = "cell.subjectText"
     static let starIcon = "cell.starIcon"
     static let dateText = "cell.dateText"
+    static let attachments = "cell.attachments"
 }

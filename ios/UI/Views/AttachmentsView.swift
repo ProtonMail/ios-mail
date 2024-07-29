@@ -64,13 +64,14 @@ struct AttachmentsView: View {
         HStack(spacing: 0) {
             HStack(spacing: Layout.spacingBetweenCapsules) {
                 let items = uiModel.prefix(limit)
-                ForEach(items) { item in
+                ForEach(Array(items.enumerated()), id: \.1.id) { index, item in
                     AttachmentCapsuleView(
                         uiModel: item,
                         maxWidth: capsuleMaxWidth,
                         isAttachmentHighlightEnabled: isAttachmentHighlightEnabled,
                         onTapEvent: onTapEvent
                     )
+                    .accessibilityIdentifier(AttachmentsViewIdentifiers.attachmentCapsule(forIndex: index))
                 }
             }
             let extraAttachments = min(99, uiModel.count - limit)
@@ -81,6 +82,7 @@ struct AttachmentsView: View {
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.leading, DS.Spacing.small)
+                .accessibilityIdentifier(AttachmentsViewIdentifiers.extraAttachments)
                 .removeViewIf(extraAttachments < 1 )
         }
     }
@@ -201,4 +203,12 @@ fileprivate enum Layout {
         .frame(width: 300)
         .border(.red)
     }
+}
+
+private struct AttachmentsViewIdentifiers {
+    static func attachmentCapsule(forIndex index: Int) -> String {
+        "attachment.capsule#\(index)"
+    }
+    
+    static let extraAttachments = "attachment.extraIndicator"
 }

@@ -17,22 +17,13 @@
 
 import Foundation
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
-    let attachmentPreviews: UITestAttachmentPreviewItemEntry?
-    
-    init(index: Int, avatar: UITestAvatarItemEntry, sender: String, subject: String, date: String, count: Int? = nil, attachmentPreviews: UITestAttachmentPreviewItemEntry? = nil) {
-        self.index = index
-        self.avatar = avatar
-        self.sender = sender
-        self.subject = subject
-        self.date = date
-        self.count = count
-        self.attachmentPreviews = attachmentPreviews
+protocol SystemRobot: ApplicationHolder {
+    init()
+}
+
+extension SystemRobot {
+    @discardableResult init(_ block: (Self) -> Void) {
+        self.init()
+        block(self)
     }
 }

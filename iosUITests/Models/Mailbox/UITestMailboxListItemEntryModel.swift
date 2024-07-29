@@ -58,6 +58,14 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     private var starElement: XCUIElement {
         rootItem.staticTexts[Identifiers.starIcon]
     }
+    
+    private func attachmentCapsule(atIndex index: Int) -> XCUIElement {
+        rootItem.buttons["\(Identifiers.attachmentCapsule)#\(index)"]
+    }
+    
+    private var extraAttachmentsIndicator: XCUIElement {
+        rootItem.staticTexts[Identifiers.extraAttachments]
+    }
 
     // MARK: Actions
 
@@ -75,6 +83,10 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
 
     func tapCheckedAvatar() {
         avatarCheckedElement.tap()
+    }
+    
+    func tapAttachmentCapsuleAt(_ index: Int) {
+        attachmentCapsule(atIndex: index).tap()
     }
     
     func waitForExistence(timeout: TimeInterval) {
@@ -132,6 +144,24 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func hasNoCount() {
         XCTAssertFalse(countElement.exists)
     }
+    
+    func hasAttachmentPreviews(entry: UITestAttachmentPreviewItemEntry) {
+        for item in entry.items {
+            let capsule = attachmentCapsule(atIndex: item.index)
+            XCTAssertEqual(capsule.label, item.attachmentName)
+        }
+        
+        if let extraItemsCount = entry.extraItemsCount {
+            XCTAssertEqual("+\(extraItemsCount)", extraAttachmentsIndicator.label)
+        } else {
+            XCTAssertFalse(extraAttachmentsIndicator.exists)
+        }
+    }
+    
+    func hasNoAttachmentPreviews() {
+        XCTAssertFalse(attachmentCapsule(atIndex: 0).exists)
+        XCTAssertFalse(extraAttachmentsIndicator.exists)
+    }
 }
 
 private struct Identifiers {
@@ -144,4 +174,6 @@ private struct Identifiers {
     static let countText = "count.text"
     static let starIcon = "cell.starIcon"
     static let dateText = "cell.dateText"
+    static let attachmentCapsule = "attachment.capsule"
+    static let extraAttachments = "attachment.extraIndicator"
 }

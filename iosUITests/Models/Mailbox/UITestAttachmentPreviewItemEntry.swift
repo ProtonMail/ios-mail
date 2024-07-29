@@ -17,22 +17,17 @@
 
 import Foundation
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
-    let attachmentPreviews: UITestAttachmentPreviewItemEntry?
+struct UITestAttachmentPreviewItemEntry {
+    let items: [UITestAttachmentPreviewCapsuleItemEntry]
+    let extraItemsCount: Int?
     
-    init(index: Int, avatar: UITestAvatarItemEntry, sender: String, subject: String, date: String, count: Int? = nil, attachmentPreviews: UITestAttachmentPreviewItemEntry? = nil) {
-        self.index = index
-        self.avatar = avatar
-        self.sender = sender
-        self.subject = subject
-        self.date = date
-        self.count = count
-        self.attachmentPreviews = attachmentPreviews
+    init(items: [UITestAttachmentPreviewCapsuleItemEntry], extraItemsCount: Int? = nil) {
+        self.items = items
+        self.extraItemsCount = extraItemsCount
     }
+}
+
+struct UITestAttachmentPreviewCapsuleItemEntry {
+    let index: Int
+    let attachmentName: String
 }

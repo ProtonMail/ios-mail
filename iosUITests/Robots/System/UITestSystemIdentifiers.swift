@@ -17,22 +17,7 @@
 
 import Foundation
 
-struct UITestMailboxListItemEntry {
-    let index: Int
-    let avatar: UITestAvatarItemEntry
-    let sender: String
-    let subject: String
-    let date: String
-    let count: Int?
-    let attachmentPreviews: UITestAttachmentPreviewItemEntry?
-    
-    init(index: Int, avatar: UITestAvatarItemEntry, sender: String, subject: String, date: String, count: Int? = nil, attachmentPreviews: UITestAttachmentPreviewItemEntry? = nil) {
-        self.index = index
-        self.avatar = avatar
-        self.sender = sender
-        self.subject = subject
-        self.date = date
-        self.count = count
-        self.attachmentPreviews = attachmentPreviews
-    }
+struct UITestSystemIdentifiers {
+    static let shareButton = "QLOverlayDefaultActionButtonAccessibilityIdentifier"
+    static let markupButton = "QLOverlayMarkupButtonAccessibilityIdentifier"
 }

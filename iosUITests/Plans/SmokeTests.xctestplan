@@ -26,6 +26,7 @@
         "ConversationDetailNavigationTests\/testMessageModeToConversationDetailsNavigationFromInbox()",
         "LoginFlowFreeUserTest\/testLoginFlowFreeUser()",
         "LoginFlowPaidUserTest\/testLoginFlowPaidUser()",
+        "MailboxAttachmentPreviewsTests\/testAttachmentPreviewLoading()",
         "MailboxSelectionModeActionBarTests\/testExitSelectionModeDismissesActionBar()",
         "MailboxSelectionModeActionBarTests\/testSelectionModeShowsActionBar()",
         "MailboxSenderImageTests\/testSenderImageIsShownInPlaceOfAvatar()",
