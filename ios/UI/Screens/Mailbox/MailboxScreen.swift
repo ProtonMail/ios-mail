@@ -20,7 +20,7 @@ import SwiftUI
 
 struct MailboxScreen: View {
     @StateObject private var mailboxModel: MailboxModel
-
+    @State private var isComposeButtonExpanded: Bool = true
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: String {
@@ -56,14 +56,25 @@ struct MailboxScreen: View {
 extension MailboxScreen {
 
     private var mailboxScreen: some View {
-        ZStack(alignment: .bottom) {
-            MailboxListView(model: mailboxModel)
+        ZStack(alignment: .bottomTrailing) {
+            MailboxListView(isListAtTop: $isComposeButtonExpanded, model: mailboxModel)
+            composeButtonView
             mailboxActionBarView
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
         .mainToolbar(title: navigationTitle, selectionMode: mailboxModel.selectionMode)
         .accessibilityElement(children: .contain)
+    }
+
+    private var composeButtonView: some View {
+        ComposeButtonView(text: LocalizationTemp.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
+
+        }
+        .padding(.trailing, DS.Spacing.large)
+        .padding(.bottom, DS.Spacing.standard)
+        .opacity(mailboxModel.selectionMode.hasSelectedItems ? 0 : 1)
+        .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
     }
 
     private var mailboxActionBarView: some View {
@@ -75,10 +86,7 @@ extension MailboxScreen {
         )
         .opacity(mailboxModel.selectionMode.hasSelectedItems ? 1 : 0)
         .offset(y: mailboxModel.selectionMode.hasSelectedItems ? 0 : 45 + 100)
-        .animation(
-            .easeInOut(duration: AppConstants.selectionModeStartDuration),
-            value: mailboxModel.selectionMode.hasSelectedItems
-        )
+        .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
     }
 
     @ViewBuilder
@@ -93,6 +101,11 @@ extension MailboxScreen {
         )
     }
 }
+
+private extension Animation {
+    static let selectModeAnimation = Animation.easeInOut(duration: AppConstants.selectionModeStartDuration)
+}
+
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)

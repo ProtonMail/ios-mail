@@ -44,6 +44,7 @@ enum LocalizationTemp {
         static let noEmailsYet = "No emails yet"
         static let emptyMailbox = "Why not take a breather or check back later?"
         static let unread = "Unread"
+        static let compose = "Compose"
     }
 
     enum Selection {

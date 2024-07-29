@@ -24,7 +24,7 @@ packages:
     minorVersion: "1.30.0"
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
-    minorVersion: "1.1.0"
+    minorVersion: "1.3.0"
   Nimble:
     url: https://github.com/Quick/Nimble.git
     minorVersion: "13.3.0"

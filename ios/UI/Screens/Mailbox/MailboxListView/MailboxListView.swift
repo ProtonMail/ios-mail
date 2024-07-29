@@ -21,8 +21,10 @@ import SwiftUI
 struct MailboxListView: View {
     @ObservedObject private var model: MailboxModel
     @State private var didAppearBefore = false
+    @Binding private var isListAtTop: Bool
 
-    init(model: MailboxModel) {
+    init(isListAtTop: Binding<Bool>, model: MailboxModel) {
+        self._isListAtTop = isListAtTop
         self.model = model
     }
 
@@ -40,6 +42,9 @@ struct MailboxListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
+        }
+        .onChange(of: model.selectedMailbox) { _, _ in
+            self.isListAtTop = true
         }
         .task {
             guard !didAppearBefore else { return }
@@ -111,6 +116,9 @@ extension MailboxListView {
             }
         }
         .listStyle(.plain)
+        .listScrollObservation(onEventAtTopChange: { newValue in
+            isListAtTop = newValue
+        })
     }
 }
 
@@ -118,11 +126,14 @@ extension MailboxListView {
     let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
     let dummySettings = EmptyPMMailSettings()
 
-    return MailboxListView(model: .init(
-        state: .empty, // .data(PreviewData.mailboxConversations)
-        mailSettings: dummySettings,
-        appRoute: route
-    ))
+    return MailboxListView(
+        isListAtTop: .constant(true),
+        model: .init(
+            state: .empty,
+            mailSettings: dummySettings,
+            appRoute: route
+        )
+    )
 }
 
 private struct MailboxListViewIdentifiers {

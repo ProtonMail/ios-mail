@@ -21,7 +21,7 @@ struct CustomListRemoveTopInset: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .introspect(.list, on: .iOS(.v17)) { collectionView in
+            .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
                 // fixing the default top content inset
                 collectionView.contentInset.top = -34
             }
