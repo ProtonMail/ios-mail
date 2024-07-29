@@ -24,12 +24,60 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
     }
     
     /// TestId 441678
-    func testSenderImageIsShownInPlaceOfAvatar() async {
+    func testSenderImageIsNotShownOnHideSenderImagesFeatureEnabled() async {
         await environment.mockServer.addRequestsWithDefaults(
+            useDefaultMailSettings: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/settings",
+                localPath: "mail-v4-settings_441678.json",
+                serveOnce: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
                 localPath: "conversations_441678.json",
+                ignoreQueryParams: true
+            ),
+            // Keep the request since if it loads, the test is expected to fail.
+            NetworkRequest(
+                method: .get,
+                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Size=128&Mode=light&Format=png",
+                localPath: "proton_logo.png",
+                mimeType: .imagePng
+            )
+        )
+        
+        let mailboxEntry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "Proton",
+            subject: "Set up automatic forwarding from Gmail in one click",
+            date: "Mar 6, 2023",
+            count: nil
+        )
+
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: mailboxEntry)
+        }
+    }
+    
+    /// TestId 448445
+    func testSenderImageIsShownOnHideSenderImagesFeatureNotEnabledAndImageAvailable() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            useDefaultMailSettings: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/settings",
+                localPath: "mail-v4-settings_448445.json",
+                serveOnce: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448445.json",
                 ignoreQueryParams: true
             ),
             NetworkRequest(
@@ -56,13 +104,20 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
         }
     }
     
-    /// TestId 441678/2, 441679
-    func testSenderImageIsNotShownInPlaceOfAvatarWhenBeErrorOccurs() async {
+    /// TestId 448445/2, 448446
+    func testSenderImageIsNotShownOnHideSenderImagesFeatureNotEnabledAndBeErrorOccurs() async {
         await environment.mockServer.addRequestsWithDefaults(
+            useDefaultMailSettings: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/settings",
+                localPath: "mail-v4-settings_448445.json",
+                serveOnce: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
-                localPath: "conversations_441678.json",
+                localPath: "conversations_448445.json",
                 ignoreQueryParams: true
             ),
             NetworkRequest(
@@ -70,6 +125,40 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
                 remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Size=128&Mode=light&Format=png",
                 localPath: "error_mock.json",
                 status: 500
+            )
+        )
+        
+        let mailboxEntry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "Proton",
+            subject: "Set up automatic forwarding from Gmail in one click",
+            date: "Mar 6, 2023",
+            count: nil
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: mailboxEntry)
+        }
+    }
+    
+    /// TestId 448445/3, 448447
+    func testSenderImageIsNotShownOnHideSenderImagesFeatureNotEnabledButNoImageAvailable() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            useDefaultMailSettings: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/settings",
+                localPath: "mail-v4-settings_448445.json",
+                serveOnce: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448447.json",
+                ignoreQueryParams: true
             )
         )
         

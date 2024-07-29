@@ -110,7 +110,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     }
     
     func hasAvatarImage() {
-        XCTAssertTrue(avatarImageElement.exists)
+        XCTAssertTrue(avatarImageElement.waitForExistence(timeout: 5))
     }
     
     func hasNoAvatarImage() {

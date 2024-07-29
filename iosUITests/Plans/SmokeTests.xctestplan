@@ -30,6 +30,7 @@
         "MailboxSelectionModeActionBarTests\/testExitSelectionModeDismissesActionBar()",
         "MailboxSelectionModeActionBarTests\/testSelectionModeShowsActionBar()",
         "MailboxSenderImageTests\/testSenderImageIsShownInPlaceOfAvatar()",
+        "MailboxSenderImageTests\/testSenderImageIsShownOnHideSenderImagesFeatureNotEnabledAndImageAvailable()",
         "MailboxSidebarTests\/testSidebarNavigation()",
         "SubscriptionNavigationTests\/testSubscriptionNavigationFreeUser()",
         "SubscriptionPaidUserTests\/testSubscriptionNavigationPaidUser()"
