@@ -250,6 +250,12 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
     }
 
     override func cancel() {
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            // no point in waiting for queue to be empty, it won't be processed while we're offline
+            dismissAnimation()
+            return
+        }
+
         stepUpdateQueue.sync {
             self.step = [.composingCanceled, .resultAcknowledged]
             let alert = UIAlertController(
@@ -275,10 +281,6 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
     }
 
     override func dismiss() {
-        [self.headerView.toContactPicker,
-         self.headerView.ccContactPicker,
-         self.headerView.bccContactPicker].forEach { $0.prepareForDesctruction() }
-
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateStepWhenTheQueueIsEmpty), name: .queueIsEmpty, object: nil)
     }
 

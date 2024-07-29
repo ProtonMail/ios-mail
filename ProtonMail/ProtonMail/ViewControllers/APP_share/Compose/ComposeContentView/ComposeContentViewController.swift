@@ -40,7 +40,10 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
 
 // swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
-    typealias Dependencies = HasImageProxy & HasUserCachedStatus & HasUserDefaults
+    typealias Dependencies = HasImageProxy
+    & HasInternetConnectionStatusProviderProtocol
+    & HasUserCachedStatus
+    & HasUserDefaults
 
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
