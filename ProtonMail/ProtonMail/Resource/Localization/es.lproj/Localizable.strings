@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en las carpetas Papelera o Spam durante más de 30 días.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Elimina mensajes automáticamente que han estado en la carpeta Papelera por más de 30 días.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimina automáticamente mensajes que han estado en la Papelera y en Spam por más de 30 días.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, gracias";

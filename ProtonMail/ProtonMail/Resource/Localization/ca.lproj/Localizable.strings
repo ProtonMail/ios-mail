@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Suprimeix automàticament els missatges que han estat a la paperera durant més de 30 dies.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimineu automàticament els missatges que han estat a la paperera i al correu brossa durant més de 30 dies.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, gràcies";

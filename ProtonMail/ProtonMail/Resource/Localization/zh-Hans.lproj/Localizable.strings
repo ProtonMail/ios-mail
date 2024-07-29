@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "当前无法清空文件夹。";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "您确定要永久删除“%@”内的所有邮件吗？";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[显示完整邮件]";
@@ -1861,22 +1861,22 @@
 "Your storage is full" = "您的存储空间已满";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "您的订阅已结束";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "您的账户面临删除风险";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "若要发送或接收电子邮件，请释放存储空间或升级以获取更多存储空间。";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "要上传文件，请释放空间或升级以获得更多存储空间。";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "升级以恢复完全访问权限并避免数据丢失。";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "为了避免数据丢失，请要求您的管理员升级。";
 
 /* Upgrade button action */
 "Upgrade" = "升级账户";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升级账户即可自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "自动删除废件箱内超过 30 天的邮件。";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "不用了，谢谢";

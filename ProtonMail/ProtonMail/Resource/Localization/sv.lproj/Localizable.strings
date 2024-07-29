@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nej tack";

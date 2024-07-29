@@ -2205,7 +2205,7 @@
 "Read emails faster" = "Czytaj wiadomości szybciej";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem.\n%@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem technicznym.\n%@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Niewystarczającą pamięć wewnętrzna";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Automatycznie usuwaj wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nie, dziękuję";

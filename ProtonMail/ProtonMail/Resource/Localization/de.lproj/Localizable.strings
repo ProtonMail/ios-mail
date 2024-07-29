@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Leeren des Ordners ist derzeit nicht möglich.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Bist du sicher, dass du alle Nachrichten in '%@' dauerhaft löschen möchtest?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
@@ -1861,22 +1861,22 @@
 "Your storage is full" = "Dein Speicherplatz ist voll.";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "Dein Abonnement ist abgelaufen.";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "Dein Konto ist von der Löschung bedroht.";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "Um weiterhin E-Mails zu senden oder zu empfangen, räume etwas Speicherplatz frei oder führe ein Upgrade durch für zusätzlichen Speicherplatz.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "Um Dateien hochladen zu können, räume etwas Platz frei oder upgrade für mehr Speicherplatz.";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "Upgrade, um den vollständigen Zugriff wiederherzustellen und Datenverluste zu vermeiden.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "Um Datenverlust zu vermeiden, bitte deinen Administrator um ein Upgrade.";
 
 /* Upgrade button action */
 "Upgrade" = "Upgrade durchführen";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Führe ein Upgrade durch, um Nachrichten, die sich seit mehr als 30 Tagen im Papierkorb oder Spam befinden automatisch zu löschen.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Nachrichten, die länger als 30 Tage im Papierkorb liegen, automatisch löschen.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Nachrichten, die länger als 30 Tage im Papierkorb und Spam liegen, automatisch löschen.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nein, danke";

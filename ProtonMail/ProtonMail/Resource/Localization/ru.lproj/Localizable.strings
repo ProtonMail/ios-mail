@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Улучшите тариф для автоматического удаления сообщений, находящихся в Корзине или Спаме более 30 дней.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Автоматически удалять сообщения, находящиеся в корзине более 30 дней.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Автоматически удалять сообщения, находящиеся в корзине и спаме более 30 дней.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Нет, спасибо";

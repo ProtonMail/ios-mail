@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Nadgradite naročniški paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Samodejno izbriši sporočila, ki so bila v smetnjaku in neželeni pošti več kot 30 dni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Ne, hvala";
@@ -2484,7 +2484,7 @@
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "Varnostni ključi";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB prostora za shranjevanje";

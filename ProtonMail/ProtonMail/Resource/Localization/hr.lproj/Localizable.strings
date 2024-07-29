@@ -569,7 +569,7 @@
 "Sending Message" = "Slanje poruke";
 
 /* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Offline, message queued for sending";
+"Offline, message queued for sending" = "Izvan mreže, poruka čeka na slanje";
 
 /* Description */
 "Message sending failed. Please try again." = "Neuspješno slanje poruke. Pokušajte ponovno.";
@@ -1624,7 +1624,7 @@
 "1 Message moved to spam" = "1 Message moved to spam";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
+"Action reverted" = "Radnja je vraćena";
 
 /* An action title shows in ellipsis menu */
 "Compose message" = "Sastavite poruku";
@@ -1980,19 +1980,19 @@
 "(Attendance optional)" = "(Attendance optional)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Svakih %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "na %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "na %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "na %u dan";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "do %@";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ u %2@ %3@";
@@ -2037,7 +2037,7 @@
 "Monthly" = "Mjesečno";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "Godišnje";
 
 /* \"1st\" spelled out */
 "first" = "prvi";
@@ -2052,7 +2052,7 @@
 "fourth" = "četvrti";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "zadnji";
 
 /* Title of the spotlight view */
 "Easily RSVP to events" = "Easily RSVP to events";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Automatically delete messages that have been in trash and spam for more than 30 days.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Ne, hvala";
@@ -2301,7 +2301,7 @@
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "Do 3 TB prostora za pohranu";
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Prilagođene domene";
@@ -2346,7 +2346,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Nema primatelja";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Disable PIN code";
@@ -2394,7 +2394,7 @@
 "Unable to preview this attachment" = "Unable to preview this attachment";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
-"Downloading attachment" = "Downloading attachment";
+"Downloading attachment" = "Preuzmi privitak";
 
 /* The banner title that is shown in the message detail view. */
 "Snoozed until %@" = "Snoozed until %@";
@@ -2412,7 +2412,7 @@
 "Snooze until..." = "Snooze until...";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "Kasnije ovaj tjedan";
 
 /* One of snooze option shows in action sheet */
 "This weekend" = "Ovaj vikend";
@@ -2517,7 +2517,7 @@
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/mjesec";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Nabavite %@";

@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Opgradér for automatisk at slette beskeder, der har været i papirkurven eller spam i mere end 30 dage.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Slet automatisk beskeder, der har været i papirkurven i mere end 30 dage.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Slet automatisk beskeder, der har ligget i papirkurven og spam i mere end 30 dage.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nej tak";

@@ -1055,7 +1055,7 @@
 "Sender Verification Failed" = "Bekreftelse av avsender mislyktes";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Ende-til-ende kryptert melding";
+"End-to-end encrypted message" = "Ende-til-ende-kryptert melding";
 
 /* alert title */
 "Expiration not supported" = "Utløpstid er ikke støttet";
@@ -1738,10 +1738,10 @@
 "Stored with zero-access encryption" = "Lagret med nulltilgangskryptering";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Ende-til-ende kryptert melding fra verifisert avsender";
+"End-to-end encrypted message from verified sender" = "Ende-til-ende-kryptert melding fra verifisert avsender";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Ende-til-ende kryptert og signert melding";
+"End-to-end encrypted and signed message" = "Ende-til-ende-kryptert og signert melding";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "PGP-kryptert melding fra bekreftet avsender";
@@ -1762,10 +1762,10 @@
 "PGP-signed message. Sender verification failed" = "PGP-signert melding. Bekreftelse av avsender mislyktes";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "Ende-til-ende kryptert til bekreftet mottaker";
+"End-to-end encrypted to verified recipient" = "Ende-til-ende-kryptert til bekreftet mottaker";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Ende-til-ende kryptert";
+"End-to-end encrypted" = "Ende-til-ende-kryptert";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "PGP-kryptert til verifisert mottaker";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatisk sletting av meldinger som har ligget i papirkurven i mer enn 30 dager.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Slett automatisk meldinger som har ligget i papirkurven og søppelposten i mer enn 30 dager.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nei, takk";
