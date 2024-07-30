@@ -28,10 +28,7 @@ struct MailboxLabelView: View {
         min(uiModel.numExtraLabels, 99)
     }
     private var minWidth: CGFloat? {
-        uiModel.text.isEmpty ? nil : 30
-    }
-    private var maxWidth: CGFloat? {
-        uiModel.isEmpty ? nil : 100
+        uiModel.text.isEmpty ? nil : 40
     }
     private var padding: EdgeInsets {
         uiModel.text.isEmpty
@@ -62,8 +59,7 @@ struct MailboxLabelView: View {
                 .fontWeight(.regular)
                 .frame(width: showExtraLabels ? nil : 0)
         }
-        .frame(maxWidth: maxWidth, maxHeight: 21, alignment: .leading)
-        .fixedSize()
+        .frame(maxHeight: 21, alignment: .leading)
     }
 }
 
