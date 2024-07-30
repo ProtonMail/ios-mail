@@ -38,6 +38,6 @@ struct AvatarUIModel {
 }
 
 struct ExpirationDateUIModel {
-    let text: String
+    let text: LocalizedStringResource
     let color: Color
 }

@@ -173,6 +173,10 @@ enum L10n {
                     comment: "Message indicating when email is gonna be expired."
                 )
             }
+            static let expiresInLessThanOneMinute = LocalizedStringResource(
+                "Expires in less than 1 minute",
+                comment: "Message indicating the item will expire shortly"
+            )
             static func snoozedTill(value: String) -> LocalizedStringResource {
                 .init(
                     "Snoozed till \(value)",

@@ -153,15 +153,18 @@ extension MailboxItemCell {
             .foregroundColor(DS.Color.Text.weak)
     }
 
+    @ViewBuilder
     private var expirationRowView: some View {
-
-        Text(uiModel.expirationDate ?? "")
-            .font(.footnote)
-            .fontWeight(.semibold)
-            .foregroundStyle(DS.Color.Text.weak)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, DS.Spacing.small)
-            .removeViewIf(uiModel.expirationDate == nil)
+        if let uiModel = uiModel.expirationDate?.toExpirationDateUIModel {
+            TimelineView(.everyMinute) { context in
+                Text(uiModel.text)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(uiModel.color)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, DS.Spacing.small)
+            }
+        }
     }
 
     private var snoozedRowView: some View {
@@ -211,7 +214,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
     let replyIcons: ReplyIconsUIModel
 
-    let expirationDate: String?
+    let expirationDate: Date?
     let snoozeDate: String?
 
     init(
@@ -248,12 +251,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.labelUIModel = labelUIModel
         self.attachmentsUIModel = attachmentsUIModel
         self.replyIcons = replyIcons
-
-        var expiration: String? = nil
-        if let expirationDate, expirationDate > .now {
-            expiration = L10n.Mailbox.Item.expiresIn(value: expirationDate.localisedRemainingTimeFromNow()).string
-        }
-        self.expirationDate = expiration
+        self.expirationDate = expirationDate
 
         var snoozeTime: String? = nil
         if let snoozeDate {

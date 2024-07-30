@@ -93,6 +93,9 @@
     "Expires in %@" : {
       "comment" : "Message indicating when email is gonna be expired."
     },
+    "Expires in less than 1 minute" : {
+      "comment" : "Message indicating the item will expire shortly"
+    },
     "Forward" : {
       "comment" : "Action title for forwarding given message in the action sheet."
     },
