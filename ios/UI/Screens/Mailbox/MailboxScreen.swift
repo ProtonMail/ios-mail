@@ -23,10 +23,13 @@ struct MailboxScreen: View {
     @State private var isComposeButtonExpanded: Bool = true
     private var customLabelModel: CustomLabelModel
 
-    private var navigationTitle: String {
-        mailboxModel.selectionMode.hasSelectedItems
-        ? LocalizationTemp.Selection.title(value: mailboxModel.selectionMode.selectedItems.count)
-        : mailboxModel.selectedMailbox.name
+    private var navigationTitle: LocalizedStringResource {
+        let selectionMode = mailboxModel.selectionMode
+        let hasSelectedItems = selectionMode.hasSelectedItems
+        let selectedItemsCount = selectionMode.selectedItems.count
+        let selectedMailboxName = mailboxModel.selectedMailbox.name
+
+        return hasSelectedItems ? L10n.Mailbox.selected(emailsCount: selectedItemsCount) : selectedMailboxName
     }
 
     init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: MailboxMessageSeed? = nil) {
@@ -68,7 +71,7 @@ extension MailboxScreen {
     }
 
     private var composeButtonView: some View {
-        ComposeButtonView(text: LocalizationTemp.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
+        ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
 
         }
         .padding(.trailing, DS.Spacing.large)

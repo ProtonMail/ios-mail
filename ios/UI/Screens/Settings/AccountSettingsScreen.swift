@@ -27,6 +27,6 @@ struct AccountSettingsScreen : View {
                 .edgesIgnoringSafeArea(.bottom)
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationToolbar(purpose: .simpleNavigation(title: LocalizationTemp.Settings.accountSettings))
+        .navigationToolbar(purpose: .simpleNavigation(title: L10n.Settings.accountSettings.string))
     }
 }

@@ -88,7 +88,7 @@ struct ConversationDetailScreen: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .center, spacing: DS.Spacing.small) {
                     CapsuleView(
-                        text: "\(model.seed.numAttachments) \(LocalizationTemp.Plurals.file)",
+                        text: L10n.files(attachmentsCount: model.seed.numAttachments),
                         color: DS.Color.Background.secondary,
                         icon: DS.Icon.icPaperClip,
                         style: .attachment
@@ -96,7 +96,7 @@ struct ConversationDetailScreen: View {
                     .removeViewIf(model.seed.hasNoAttachments)
 
                     ForEach(Array(model.seed.labels.enumerated()), id: \.element.labelId) { _, element in
-                        CapsuleView(text: element.text, color: element.color, style: .label)
+                        CapsuleView(text: element.text.stringResource, color: element.color, style: .label)
                     }
                     .removeViewIf(model.seed.labels.isEmpty)
 

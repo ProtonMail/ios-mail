@@ -1,0 +1,307 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import Foundation
+
+/// Once you define `LocalizedStringResource` below Xcode puts related string in `Localizable.xcstrings` file.
+/// The generation happens automatically when adding/removing string below. All keys are added in alphabetical order.
+enum L10n {
+    enum Action {
+        enum Address {
+            static let addToContacts = LocalizedStringResource(
+                "Add to contacts",
+                comment: "Action title for adding email address to contacts in the address action sheet."
+            )
+            static let blockContact = LocalizedStringResource(
+                "Block this contact",
+                comment: "Action title for blocking email address in the address action sheet."
+            )
+            static let call = LocalizedStringResource(
+                "Call",
+                comment: "Action title for calling phone number in the address action sheet."
+            )
+            static let copyAddress = LocalizedStringResource(
+                "Copy address",
+                comment: "Action title for copying email address to clipboard in the address action sheet."
+            )
+            static let copyName = LocalizedStringResource(
+                "Copy name",
+                comment: "Action title for copying address name to clipboard in the address action sheet."
+            )
+            static let newMessage = LocalizedStringResource(
+                "Message",
+                comment: "Action title for creating new message in the address action sheet."
+            )
+        }
+
+        enum Send {
+            static let forward = LocalizedStringResource(
+                "Forward",
+                comment: "Action title for forwarding given message in the action sheet."
+            )
+            static let reply = LocalizedStringResource(
+                "Reply",
+                comment: "Action title for replying to a sender of given message in the action sheet."
+            )
+            static let replyAll = LocalizedStringResource(
+                "Reply all",
+                comment: "Action title for replying to a sender and all receipients of given message in the action sheet."
+            )
+        }
+
+        static let deletePermanently = LocalizedStringResource(
+            "Delete permanently",
+            comment: "Action title for permanent deletion of message/conversation in the action sheet."
+        )
+        static let labelAs = LocalizedStringResource(
+            "Label as…",
+            comment: "Action title for labeling message/conversation in the action sheet."
+        )
+        static let markAsRead = LocalizedStringResource(
+            "Mark as read",
+            comment: "Action title for marking message/conversation as read in the action sheet."
+        )
+        static let markAsUnread = LocalizedStringResource(
+            "Mark as unread",
+            comment: "Action title for marking message/conversation as unread in the action sheet."
+        )
+        static let moveTo = LocalizedStringResource(
+            "Move to…",
+            comment: "Action title for moving message/conversation in the action sheet."
+        )
+        static let moveToArchive = LocalizedStringResource(
+            "Archive",
+            comment: "Action title for moving message/conversation to the `Archive` folder in the action sheet."
+        )
+        static let moveToInbox = LocalizedStringResource(
+            "Move to inbox",
+            comment: "Action title for moving message/conversation to the `Inbox` folder in the action sheet."
+        )
+        static let moveToInboxFromSpam = LocalizedStringResource(
+            "Not spam",
+            comment: "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet."
+        )
+        static let moveToSpam = LocalizedStringResource(
+            "Move to spam",
+            comment: "Action title for moving message/conversation to the `Spam` folder in the action sheet."
+        )
+        static let moveToTrash = LocalizedStringResource(
+            "Move to trash",
+            comment: "Action title for moving message/conversation to the `Trash` folder in the action sheet."
+        )
+        static let print = LocalizedStringResource(
+            "Print",
+            comment: "Action title for printing given message in the action sheet."
+        )
+        static let renderInLightMode = LocalizedStringResource(
+            "View message in light mode",
+            comment: "Action title for viewing given message in light mode in the action sheet."
+        )
+        static let reportPhishing = LocalizedStringResource(
+            "Report phishing",
+            comment: "Action title for reporting phishing message in the action sheet."
+        )
+        static let saveAsPDF = LocalizedStringResource(
+            "Save as PDF",
+            comment: "Action title for saving message as PDF file in the action sheet."
+        )
+        static let snooze = LocalizedStringResource(
+            "Snooze",
+            comment: "Action title for marking message as snoozed in the action sheet."
+        )
+        static let star = LocalizedStringResource(
+            "Star",
+            comment: "Action title for marking message/conversation as starred in the action sheet."
+        )
+        static let unstar = LocalizedStringResource(
+            "Unstar",
+            comment: "Action title for removing message/conversation from starred items in the action sheet."
+        )
+        static let viewHeaders = LocalizedStringResource(
+            "View headers",
+            comment: "Action title for viewing given message's headers in the action sheet."
+        )
+        static let viewHTML = LocalizedStringResource(
+            "View HTML",
+            comment: "Action title for viewing given message's HTML in the action sheet."
+        )
+    }
+
+    enum Common {
+        static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
+    }
+
+    enum Labels {
+        static let alsoArchive = LocalizedStringResource(
+            "Also archive?",
+            comment: "Switch title for moving message to `Archive` folder."
+        )
+        static let newLabel = LocalizedStringResource(
+            "Create new label",
+            comment: "Action title for creating new label."
+        )
+        static let title = LocalizedStringResource("Labels", comment: "Labels screen title.")
+    }
+
+    enum Mailbox {
+        enum EmptyState {
+            static let message = LocalizedStringResource(
+                "Why not take a breather or check back later?",
+                comment: "Mailbox empty state message."
+            )
+            static let title = LocalizedStringResource("No emails yet", comment: "Mailbox empty state title.")
+        }
+
+        enum Item {
+            static func expiresIn(value: String) -> LocalizedStringResource {
+                .init(
+                    "Expires in \(value)",
+                    comment: "Message indicating when email is gonna be expired."
+                )
+            }
+            static func snoozedTill(value: String) -> LocalizedStringResource {
+                .init(
+                    "Snoozed till \(value)",
+                    comment: "Message indicating till when email is snoozed."
+                )
+            }
+            static let noRecipient = LocalizedStringResource("(No Recipient)", comment: "No recipent placeholder.")
+            static let noSubject = LocalizedStringResource("(No Subject)", comment: "No subject placeholder.")
+        }
+
+        enum SystemFolder {
+            static let allDrafts = LocalizedStringResource(
+                "All Drafts",
+                comment: "Menu title of all drafts in the sidebar."
+            )
+            static let allMail = LocalizedStringResource(
+                "All Mail",
+                comment: "`Menu title of all emails in the sidebar."
+            )
+            static let allScheduled = LocalizedStringResource(
+                "Scheduled",
+                comment: "Menu title of all scheduled emails in the sidebar."
+            )
+            static let archive = LocalizedStringResource(
+                "Archive",
+                comment: "Menu title of all archived emails in the sidebar."
+            )
+            static let draft = LocalizedStringResource(
+                "Draft",
+                comment: "Menu title of drafts in the sidebar."
+            )
+            static let inbox = LocalizedStringResource(
+                "Inbox",
+                comment: "Menu title of all received emails in the sidebar."
+            )
+            static let outbox = LocalizedStringResource(
+                "Outbox",
+                comment: "Menu title of all outbox emails in the sidebar."
+            )
+            static let sent = LocalizedStringResource(
+                "Sent",
+                comment: "Menu title of sent emails in the sidebar."
+            )
+            static let snoozed = LocalizedStringResource(
+                "Snoozed",
+                comment: "Menu title of all snoozed emails in the sidebar."
+            )
+            static let spam = LocalizedStringResource(
+                "Spam",
+                comment: "Menu title of all emails marked as spam in the sidebar."
+            )
+            static let starred = LocalizedStringResource(
+                "Starred",
+                comment: "Menu title of all emails marked as starred in the sidebar."
+            )
+            static let trash = LocalizedStringResource(
+                "Trash",
+                comment: "Menu title of all deleted emails in the sidebar."
+            )
+        }
+
+        static let compose = LocalizedStringResource(
+            "Compose",
+            comment: "The compose button title for creating new email."
+        )
+        static func selected(emailsCount: Int) -> LocalizedStringResource {
+            .init(
+                "\(emailsCount) Selected",
+                comment: "Header indicating number of selected emails in given system folder."
+            )
+        }
+        static let unread = LocalizedStringResource(
+            "Unread",
+            comment: "Badge title indicating how many emails are unread in given system folder."
+        )
+    }
+
+    enum MessageDetails {
+        static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")
+        static let cc = LocalizedStringResource("Cc", comment: "`CC` in the messsage details.")
+        static let date = LocalizedStringResource("Date", comment: "`Date` in the message details.")
+        static let from = LocalizedStringResource("From", comment: "`From` in the message details.")
+        static let label = LocalizedStringResource("Label", comment: "`Label` in the message details.")
+        static let location = LocalizedStringResource("Location",comment: "`Location` in the message details.")
+        static let other = LocalizedStringResource(
+            "Other",
+            comment: "`Other` in the message details (e.g. starred, pinned messages)."
+        )
+        static let to = LocalizedStringResource("To", comment: "`To` in the message details.")
+    }
+
+    enum Folders {
+        static let newFolder = LocalizedStringResource(
+            "Create new folder",
+            comment: "Action title for creating new folder."
+        )
+        static let title = LocalizedStringResource("Move to..", comment: "Folders title screen.")
+    }
+
+    enum Settings {
+        static let accountSettings = LocalizedStringResource(
+            "Account Settings",
+            comment: "Account settings title in the settings."
+        )
+        static let subscription = LocalizedStringResource(
+            "Subscription",
+            comment: "Subscription menu title in the settings."
+        )
+        static let title = LocalizedStringResource("Settings", comment: "Settings menu title.")
+    }
+
+    static func files(attachmentsCount: Int) -> LocalizedStringResource {
+        .init("\(attachmentsCount) files", comment: "The number of attachments on conversation details screen.")
+    }
+    static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
+}
+
+extension LocalizedStringResource {
+    var string: String {
+        String(localized: self)
+    }
+}
+
+extension String {
+    var notLocalized: String {
+        String(self)
+    }
+
+    var stringResource: LocalizedStringResource {
+        .init(stringLiteral: self)
+    }
+}

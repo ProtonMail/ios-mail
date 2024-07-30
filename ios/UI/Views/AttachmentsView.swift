@@ -75,7 +75,7 @@ struct AttachmentsView: View {
                 }
             }
             let extraAttachments = min(99, uiModel.count - limit)
-            Text("+\(extraAttachments)")
+            Text("+\(extraAttachments)".notLocalized)
                 .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()
                 .font(.caption2)

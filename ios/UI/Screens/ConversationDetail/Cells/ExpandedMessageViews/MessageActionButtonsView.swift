@@ -23,19 +23,10 @@ struct MessageActionButtonsView: View {
 
     var body: some View {
         HStack() {
-            MessageActionButtonView(
-                image: DS.Icon.icReplay,
-                text: LocalizationTemp.MessageAction.reply
-            )
-            MessageActionButtonView(
-                image: DS.Icon.icReplayAll,
-                text: LocalizationTemp.MessageAction.replyAll
-            )
-            .removeViewIf(isSingleRecipient)
-            MessageActionButtonView(
-                image: DS.Icon.icForward,
-                text: LocalizationTemp.MessageAction.forward
-            )
+            MessageActionButtonView(image: DS.Icon.icReplay, text: L10n.Action.Send.reply)
+            MessageActionButtonView(image: DS.Icon.icReplayAll, text: L10n.Action.Send.replyAll)
+                .removeViewIf(isSingleRecipient)
+            MessageActionButtonView(image: DS.Icon.icForward, text: L10n.Action.Send.forward)
         }
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.large)
@@ -44,7 +35,7 @@ struct MessageActionButtonsView: View {
 
 private struct MessageActionButtonView: View {
     let image: UIImage
-    let text: String
+    let text: LocalizedStringResource
 
     var body: some View {
         Button(action: {

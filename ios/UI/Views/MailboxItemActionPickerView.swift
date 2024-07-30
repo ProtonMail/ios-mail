@@ -64,18 +64,18 @@ struct MailboxItemActionPickerView: View {
         } else {
 
             HStack {
-                replyActionButton(name: LocalizationTemp.MessageAction.reply, icon: DS.Icon.icReplay)
+                replyActionButton(name: L10n.Action.Send.reply, icon: DS.Icon.icReplay)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReply)
-                replyActionButton(name: LocalizationTemp.MessageAction.replyAll, icon: DS.Icon.icReplayAll)
+                replyActionButton(name: L10n.Action.Send.replyAll, icon: DS.Icon.icReplayAll)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReplyAll)
-                replyActionButton(name: LocalizationTemp.MessageAction.forward, icon: DS.Icon.icForward)
+                replyActionButton(name: L10n.Action.Send.forward, icon: DS.Icon.icForward)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionForward)
             }
             .clipped()
         }
     }
 
-    private func replyActionButton(name: String, icon: UIImage) -> some View {
+    private func replyActionButton(name: LocalizedStringResource, icon: UIImage) -> some View {
         Button {
 
         } label: {

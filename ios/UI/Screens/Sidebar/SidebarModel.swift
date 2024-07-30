@@ -67,7 +67,7 @@ final class SidebarModel: ObservableObject, Sendable {
         }
         let selectedMailbox = SelectedMailbox.label(
             localLabelId: firstSystemFolders.id,
-            name: firstSystemFolders.name,
+            name: firstSystemFolders.name.stringResource,
             systemFolder: systemFolder
         )
         appRoute.updateRoute(to: .mailbox(selectedMailbox: selectedMailbox))

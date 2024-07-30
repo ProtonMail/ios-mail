@@ -30,35 +30,35 @@ enum MessageAddressAction: ActionPickerListElement {
     case copyAddress
     case copyName
 
-    var name: String {
+    var name: LocalizedStringResource {
         switch self {
         case .newMessage:
-            return LocalizationTemp.MessageAddressAction.newMessage
+            L10n.Action.Address.newMessage
         case .call:
-            return LocalizationTemp.MessageAddressAction.call
+            L10n.Action.Address.call
         case .addToContacts:
-            return LocalizationTemp.MessageAddressAction.addToContacts
+            L10n.Action.Address.addToContacts
         case .blockContact:
-            return LocalizationTemp.MessageAddressAction.blockContact
+            L10n.Action.Address.blockContact
         case .copyAddress:
-            return LocalizationTemp.MessageAddressAction.copyAddress
+            L10n.Action.Address.copyAddress
         case .copyName:
-            return LocalizationTemp.MessageAddressAction.copyName
+            L10n.Action.Address.copyName
         }
     }
 
     var icon: UIImage {
         switch self {
         case .newMessage:
-            return DS.Icon.icPenSquare
+            DS.Icon.icPenSquare
         case .call:
-            return DS.Icon.icPhone
+            DS.Icon.icPhone
         case .addToContacts:
-            return DS.Icon.icUserPlus
+            DS.Icon.icUserPlus
         case .blockContact:
-            return DS.Icon.icCircleSlash
+            DS.Icon.icCircleSlash
         case .copyAddress, .copyName:
-            return DS.Icon.icSquares
+            DS.Icon.icSquares
         }
     }
 }

@@ -28,13 +28,13 @@ extension LocalLabelWithCount {
         }
         return SidebarCellUIModel(
             id: id,
-            name: systemFolderId.localisedName,
+            name: systemFolderId.humanReadable,
             icon: systemFolderId.icon,
             badge: unreadCount > 0 ? unreadCount.toBadgeCapped() : "",
             route: .mailbox(
                 selectedMailbox: .label(
                     localLabelId: id,
-                    name: systemFolderId.localisedName,
+                    name: systemFolderId.humanReadable,
                     systemFolder: systemFolderId
                 )
             )

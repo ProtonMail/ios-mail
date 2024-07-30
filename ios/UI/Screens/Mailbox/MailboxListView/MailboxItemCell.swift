@@ -251,17 +251,13 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
         var expiration: String? = nil
         if let expirationDate, expirationDate > .now {
-            expiration = LocalizationTemp
-                .MailboxCell
-                .expiresIn(value: expirationDate.localisedRemainingTimeFromNow())
+            expiration = L10n.Mailbox.Item.expiresIn(value: expirationDate.localisedRemainingTimeFromNow()).string
         }
         self.expirationDate = expiration
 
         var snoozeTime: String? = nil
         if let snoozeDate {
-            snoozeTime = LocalizationTemp
-                .MailboxCell
-                .snoozedTill(value: snoozeDate.mailboxSnoozeFormat())
+            snoozeTime = L10n.Mailbox.Item.snoozedTill(value: snoozeDate.mailboxSnoozeFormat()).string
         }
         self.snoozeDate = snoozeTime
     }

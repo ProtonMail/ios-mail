@@ -162,7 +162,7 @@ extension MessageDetailsView {
             onEvent(.onSenderTap)
         }, label: {
             HStack(alignment: .top, spacing: DS.Spacing.small) {
-                Text(LocalizationTemp.MessageDetails.from)
+                Text(L10n.MessageDetails.from)
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.weak)
                     .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
@@ -189,7 +189,7 @@ extension MessageDetailsView {
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(group.localisedText)
+            Text(group.humanReadable)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
@@ -221,7 +221,7 @@ extension MessageDetailsView {
 
     private var dateRow: some View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(LocalizationTemp.MessageDetails.date)
+            Text(L10n.MessageDetails.date)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
@@ -238,24 +238,28 @@ extension MessageDetailsView {
 
     private var locationRow: some View {
         HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(LocalizationTemp.MessageDetails.location)
+            Text(L10n.MessageDetails.location)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
 
-            CapsuleView(text: SystemFolderIdentifier.inbox.localisedName, color: DS.Color.Background.secondary, icon: SystemFolderIdentifier.inbox.icon, style: .attachment)
-
+            CapsuleView(
+                text: SystemFolderIdentifier.inbox.humanReadable,
+                color: DS.Color.Background.secondary, 
+                icon: SystemFolderIdentifier.inbox.icon,
+                style: .attachment
+            )
             Spacer()
         }
     }
 
     private var labelRow: some View {
-        let capsules = uiModel.labels.map {
-            CapsuleView(text: $0.text, color: $0.color, style: .label)
+        let capsules = uiModel.labels.map { label in
+            CapsuleView(text: label.text.stringResource, color: label.color, style: .label)
         }
 
         return HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(LocalizationTemp.MessageDetails.label)
+            Text(L10n.MessageDetails.label)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
@@ -268,7 +272,7 @@ extension MessageDetailsView {
 
     private var otherRow: some View {
         HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(LocalizationTemp.MessageDetails.other)
+            Text(L10n.MessageDetails.other)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
@@ -281,7 +285,7 @@ extension MessageDetailsView {
 
     private var starCapsule: some View {
         CapsuleView(
-            text: LocalizationTemp.Mailbox.starred,
+            text: L10n.Mailbox.SystemFolder.starred,
             color: DS.Color.Background.secondary,
             icon: DS.Icon.icStarFilled,
             iconColor: DS.Color.Star.selected,
@@ -295,14 +299,14 @@ private enum RecipientGroup {
     case cc
     case bcc
 
-    var localisedText: String {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .to:
-            LocalizationTemp.MessageDetails.to
+            L10n.MessageDetails.to
         case .cc:
-            LocalizationTemp.MessageDetails.cc
+            L10n.MessageDetails.cc
         case .bcc:
-            LocalizationTemp.MessageDetails.bcc
+            L10n.MessageDetails.bcc
         }
     }
     
@@ -375,7 +379,7 @@ extension Array where Element == MessageDetail.Recipient {
 
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
-        return "\(LocalizationTemp.MessageDetails.to.lowercased()) \(recipients)"
+        return "\(L10n.MessageDetails.to.string.lowercased()) \(recipients)"
     }
 }
 

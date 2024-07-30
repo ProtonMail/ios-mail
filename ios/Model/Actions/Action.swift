@@ -45,46 +45,46 @@ enum Action: ActionPickerListElement {
     case viewHeaders
     case viewHTML
 
-    var name: String {
+    var name: LocalizedStringResource {
         switch self {
         case .deletePermanently:
-            return LocalizationTemp.Action.deletePermanently
+            L10n.Action.deletePermanently
         case .labelAs:
-            return LocalizationTemp.Action.labelAs
+            L10n.Action.labelAs
         case .markAsRead:
-            return LocalizationTemp.Action.markAsRead
+            L10n.Action.markAsRead
         case .markAsUnread:
-            return LocalizationTemp.Action.markAsUnread
+            L10n.Action.markAsUnread
         case .moveTo:
-            return LocalizationTemp.Action.moveTo
+            L10n.Action.moveTo
         case .moveToArchive:
-            return LocalizationTemp.Action.moveToArchive
+            L10n.Action.moveToArchive
         case .moveToInbox:
-            return LocalizationTemp.Action.moveToInbox
+            L10n.Action.moveToInbox
         case .moveToInboxFromSpam:
-            return LocalizationTemp.Action.moveToInboxNotSpam
+            L10n.Action.moveToInboxFromSpam
         case .moveToSpam:
-            return LocalizationTemp.Action.moveToSpam
+            L10n.Action.moveToSpam
         case .moveToTrash:
-            return LocalizationTemp.Action.moveToTrash
+            L10n.Action.moveToTrash
         case .print:
-            return LocalizationTemp.Action.print
+            L10n.Action.print
         case .renderInLightMode:
-            return LocalizationTemp.Action.renderInLightMode
+            L10n.Action.renderInLightMode
         case .reportPhishing:
-            return LocalizationTemp.Action.reportPhishing
+            L10n.Action.reportPhishing
         case .saveAsPDF:
-            return LocalizationTemp.Action.saveAsPDF
+            L10n.Action.saveAsPDF
         case .snooze:
-            return LocalizationTemp.Action.snooze
+            L10n.Action.snooze
         case .star:
-            return LocalizationTemp.Action.star
+            L10n.Action.star
         case .unstar:
-            return LocalizationTemp.Action.unstar
+            L10n.Action.unstar
         case .viewHeaders:
-            return LocalizationTemp.Action.viewHeaders
+            L10n.Action.viewHeaders
         case .viewHTML:
-            return LocalizationTemp.Action.viewHTML
+            L10n.Action.viewHTML
         }
     }
 

@@ -29,7 +29,7 @@ struct DebugOverlaySize: ViewModifier {
             .overlay {
                 GeometryReader { proxy in
                     Text(
-                        "\(proxy.size.width) x \(proxy.size.height)"
+                        "\(proxy.size.width) x \(proxy.size.height)".notLocalized
                     )
                     .font(.caption)
                     .foregroundStyle(.white)

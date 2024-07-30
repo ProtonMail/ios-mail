@@ -129,23 +129,26 @@ struct MailboxActionBarView: View {
         )
     )
 
+    func selectedMailbox(systemFolder: SystemFolderIdentifier) -> SelectedMailbox {
+        .label(localLabelId: 0, name: "".notLocalized.stringResource, systemFolder: systemFolder)
+    }
+
     return VStack {
         MailboxActionBarView(
             selectionMode:.init(selectedItems: Set([.init(id: 1, isRead: false, isStarred: true)])),
-            selectedMailbox: .label(localLabelId: 0, name: "", systemFolder: .archive),
+            selectedMailbox: selectedMailbox(systemFolder: .archive),
             mailboxActionable: EmptyMailboxActionable(),
             customLabelModel: .init()
         )
 
         MailboxActionBarView(
             selectionMode: .init(selectedItems: Set([.init(id: 1, isRead: true, isStarred: false)])),
-            selectedMailbox: .label(localLabelId: 0, name: "", systemFolder: .trash),
+            selectedMailbox: selectedMailbox(systemFolder: .trash),
             mailboxActionable: EmptyMailboxActionable(),
             customLabelModel: .init()
         )
     }
     .environmentObject(userSettings)
-
 }
 
 // MARK: Accessibility

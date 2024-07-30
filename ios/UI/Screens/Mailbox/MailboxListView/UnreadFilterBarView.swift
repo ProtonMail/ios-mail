@@ -29,7 +29,7 @@ struct UnreadFilterBarView: View {
                 isSelected.toggle()
             } label: {
                 HStack(spacing: DS.Spacing.small) {
-                    Text(LocalizationTemp.Mailbox.unread)
+                    Text(L10n.Mailbox.unread)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
 

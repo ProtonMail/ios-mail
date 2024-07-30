@@ -19,7 +19,7 @@ import UIKit
 
 enum SelectedMailbox: Equatable {
     case inbox
-    case label(localLabelId: PMLocalLabelId, name: String, systemFolder: SystemFolderIdentifier?)
+    case label(localLabelId: PMLocalLabelId, name: LocalizedStringResource, systemFolder: SystemFolderIdentifier?)
 
     var isInbox: Bool {
         switch self {
@@ -39,10 +39,10 @@ enum SelectedMailbox: Equatable {
         }
     }
 
-    var name: String {
+    var name: LocalizedStringResource {
         switch self {
         case .inbox:
-            return SystemFolderIdentifier.inbox.localisedName
+            return SystemFolderIdentifier.inbox.humanReadable
         case .label(_, let name, _):
             return name
         }
@@ -64,6 +64,6 @@ enum SelectedMailbox: Equatable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(localId)
-        hasher.combine(name)
+        hasher.combine(name.string)
     }
 }

@@ -1,0 +1,227 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "(No Recipient)" : {
+      "comment" : "No recipent placeholder."
+    },
+    "(No Subject)" : {
+      "comment" : "No subject placeholder."
+    },
+    "%lld files" : {
+      "comment" : "The number of attachments on conversation details screen.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld files"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Selected" : {
+      "comment" : "Header indicating number of selected emails in given system folder."
+    },
+    "Account Settings" : {
+      "comment" : "Account settings title in the settings."
+    },
+    "Add to contacts" : {
+      "comment" : "Action title for adding email address to contacts in the address action sheet."
+    },
+    "All Drafts" : {
+      "comment" : "Menu title of all drafts in the sidebar."
+    },
+    "All Mail" : {
+      "comment" : "`Menu title of all emails in the sidebar."
+    },
+    "Also archive?" : {
+      "comment" : "Switch title for moving message to `Archive` folder."
+    },
+    "Archive" : {
+      "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet."
+    },
+    "Bcc" : {
+      "comment" : "`BCC` in the messsage details."
+    },
+    "Block this contact" : {
+      "comment" : "Action title for blocking email address in the address action sheet."
+    },
+    "Call" : {
+      "comment" : "Action title for calling phone number in the address action sheet."
+    },
+    "Cc" : {
+      "comment" : "`CC` in the messsage details."
+    },
+    "Compose" : {
+      "comment" : "The compose button title for creating new email."
+    },
+    "Copy address" : {
+      "comment" : "Action title for copying email address to clipboard in the address action sheet."
+    },
+    "Copy name" : {
+      "comment" : "Action title for copying address name to clipboard in the address action sheet."
+    },
+    "Create new folder" : {
+      "comment" : "Action title for creating new folder."
+    },
+    "Create new label" : {
+      "comment" : "Action title for creating new label."
+    },
+    "Date" : {
+      "comment" : "`Date` in the message details."
+    },
+    "Delete permanently" : {
+      "comment" : "Action title for permanent deletion of message/conversation in the action sheet."
+    },
+    "Done" : {
+      "comment" : "`Done` action title."
+    },
+    "Draft" : {
+      "comment" : "Menu title of drafts in the sidebar."
+    },
+    "Expires in %@" : {
+      "comment" : "Message indicating when email is gonna be expired."
+    },
+    "Forward" : {
+      "comment" : "Action title for forwarding given message in the action sheet."
+    },
+    "From" : {
+      "comment" : "`From` in the message details."
+    },
+    "Inbox" : {
+      "comment" : "Menu title of all received emails in the sidebar."
+    },
+    "Label" : {
+      "comment" : "`Label` in the message details."
+    },
+    "Label as…" : {
+      "comment" : "Action title for labeling message/conversation in the action sheet."
+    },
+    "Labels" : {
+      "comment" : "Labels screen title."
+    },
+    "Location" : {
+      "comment" : "`Location` in the message details."
+    },
+    "Mark as read" : {
+      "comment" : "Action title for marking message/conversation as read in the action sheet."
+    },
+    "Mark as unread" : {
+      "comment" : "Action title for marking message/conversation as unread in the action sheet."
+    },
+    "Message" : {
+      "comment" : "Action title for creating new message in the address action sheet."
+    },
+    "Move to inbox" : {
+      "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet."
+    },
+    "Move to spam" : {
+      "comment" : "Action title for moving message/conversation to the `Spam` folder in the action sheet."
+    },
+    "Move to trash" : {
+      "comment" : "Action title for moving message/conversation to the `Trash` folder in the action sheet."
+    },
+    "Move to.." : {
+      "comment" : "Folders title screen."
+    },
+    "Move to…" : {
+      "comment" : "Action title for moving message/conversation in the action sheet."
+    },
+    "No emails yet" : {
+      "comment" : "Mailbox empty state title."
+    },
+    "Not spam" : {
+      "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet."
+    },
+    "Official" : {
+      "comment" : "Proton official badge title."
+    },
+    "Other" : {
+      "comment" : "`Other` in the message details (e.g. starred, pinned messages)."
+    },
+    "Outbox" : {
+      "comment" : "Menu title of all outbox emails in the sidebar."
+    },
+    "Print" : {
+      "comment" : "Action title for printing given message in the action sheet."
+    },
+    "Reply" : {
+      "comment" : "Action title for replying to a sender of given message in the action sheet."
+    },
+    "Reply all" : {
+      "comment" : "Action title for replying to a sender and all receipients of given message in the action sheet."
+    },
+    "Report phishing" : {
+      "comment" : "Action title for reporting phishing message in the action sheet."
+    },
+    "Save as PDF" : {
+      "comment" : "Action title for saving message as PDF file in the action sheet."
+    },
+    "Scheduled" : {
+      "comment" : "Menu title of all scheduled emails in the sidebar."
+    },
+    "Sent" : {
+      "comment" : "Menu title of sent emails in the sidebar."
+    },
+    "Settings" : {
+      "comment" : "Settings menu title."
+    },
+    "Snooze" : {
+      "comment" : "Action title for marking message as snoozed in the action sheet."
+    },
+    "Snoozed" : {
+      "comment" : "Menu title of all snoozed emails in the sidebar."
+    },
+    "Snoozed till %@" : {
+      "comment" : "Message indicating till when email is snoozed."
+    },
+    "Spam" : {
+      "comment" : "Menu title of all emails marked as spam in the sidebar."
+    },
+    "Star" : {
+      "comment" : "Action title for marking message/conversation as starred in the action sheet."
+    },
+    "Starred" : {
+      "comment" : "Menu title of all emails marked as starred in the sidebar."
+    },
+    "Subscription" : {
+      "comment" : "Subscription menu title in the settings."
+    },
+    "To" : {
+      "comment" : "`To` in the message details."
+    },
+    "Trash" : {
+      "comment" : "Menu title of all deleted emails in the sidebar."
+    },
+    "Unread" : {
+      "comment" : "Badge title indicating how many emails are unread in given system folder."
+    },
+    "Unstar" : {
+      "comment" : "Action title for removing message/conversation from starred items in the action sheet."
+    },
+    "View headers" : {
+      "comment" : "Action title for viewing given message's headers in the action sheet."
+    },
+    "View HTML" : {
+      "comment" : "Action title for viewing given message's HTML in the action sheet."
+    },
+    "View message in light mode" : {
+      "comment" : "Action title for viewing given message in light mode in the action sheet."
+    },
+    "Why not take a breather or check back later?" : {
+      "comment" : "Mailbox empty state message."
+    }
+  },
+  "version" : "1.0"
+}

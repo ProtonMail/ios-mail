@@ -30,12 +30,12 @@ struct SignIn: View {
             Spacer()
 
             VStack(alignment: .leading, spacing: 11) {
-                Text("Email")
+                Text("Email".notLocalized)
                     .font(.system(size: 13, weight: .light))
                     .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 15, alignment: .leading)
 
-                TextField("", text: $email)
+                TextField("".notLocalized, text: $email)
                     .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 44)
                     .padding(.horizontal, 12)
@@ -47,12 +47,12 @@ struct SignIn: View {
             .accessibilityElement(children: .contain)
 
             VStack(alignment: .leading, spacing: 11) {
-                Text("Password")
+                Text("Password".notLocalized)
                     .font(.system(size: 13, weight: .light))
                     .foregroundColor(DS.Color.Text.norm)
                     .frame(height: 15, alignment: .leading)
 
-                SecureField("", text: $password)
+                SecureField("".notLocalized, text: $password)
                     .frame(height: 44)
                     .foregroundColor(DS.Color.Text.norm)
                     .padding(.horizontal, 12)
@@ -76,7 +76,7 @@ struct SignIn: View {
                         await screenModel.login(email: email, password: password)
                     }
                 } label: {
-                    Text("Sign In")
+                    Text("Sign In".notLocalized)
                         .foregroundColor(DS.Color.Text.norm)
                         .frame(width: 215, height: 44, alignment: .center)
                 }
@@ -84,7 +84,7 @@ struct SignIn: View {
                 .cornerRadius(4)
                 .padding(.top, 36)
                 .alert(screenModel.errorMessage, isPresented: screenModel.isErrorPresented) {
-                    Button("OK") {
+                    Button("OK".notLocalized) {
                         screenModel.showError = false
                     }
                 }

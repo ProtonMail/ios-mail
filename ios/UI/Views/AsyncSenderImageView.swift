@@ -80,7 +80,7 @@ final class SenderImageLoader: ObservableObject {
     return AsyncSenderImageView(loader: loader, senderImageParams: .init()) { image in
         switch image {
         case .empty:
-            Text("EMPTY")
+            Text("EMPTY".notLocalized)
         case .image(let img):
             Image(uiImage: img)
         }

@@ -58,6 +58,7 @@ targets:
         CURRENT_PROJECT_VERSION: 5
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
         PROVISIONING_PROFILE_SPECIFIER: ""
+        SWIFT_EMIT_LOC_STRINGS: YES
         SWIFT_STRICT_CONCURRENCY: "complete"
         CODE_SIGN_ENTITLEMENTS: "ProtonMail.entitlements"
       configs:

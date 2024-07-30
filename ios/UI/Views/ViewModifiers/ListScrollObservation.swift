@@ -82,7 +82,7 @@ extension View {
         var body: some View {
             ZStack(alignment: .bottomTrailing) {
                 List(0..<60) {
-                    Text("item \($0)")
+                    Text("item \($0)".notLocalized)
                 }
                 .listScrollObservation {
                     expand = $0

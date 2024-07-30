@@ -85,7 +85,7 @@ struct UITestBottomSheetDefaultEntries {
         ]
         
         static let defaultSenderActions = [
-            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "New message"),
+            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Message"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),
             UITestBottomSheetDynamicEntry(section: 1, index: 0, text: "Copy address"),
             UITestBottomSheetDynamicEntry(section: 1, index: 1, text: "Copy name"),
@@ -93,7 +93,7 @@ struct UITestBottomSheetDefaultEntries {
         ]
         
         static let defaultRecipientActions = [
-            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "New message"),
+            UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Message"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),
             UITestBottomSheetDynamicEntry(section: 1, index: 0, text: "Copy address"),
             UITestBottomSheetDynamicEntry(section: 1, index: 1, text: "Copy name")

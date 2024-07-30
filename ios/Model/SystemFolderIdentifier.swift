@@ -22,7 +22,7 @@ import class SwiftUI.UIImage
 /// List of remote identifiers for system folders. These values are not to be used for PMLocalLabelId
 enum SystemFolderIdentifier: UInt64, CaseIterable {
     case inbox = 0
-    case allDraft = 1
+    case allDrafts = 1
     case allSent = 2
     case trash = 3
     case spam = 4
@@ -38,37 +38,34 @@ enum SystemFolderIdentifier: UInt64, CaseIterable {
 }
 
 extension SystemFolderIdentifier {
-
-    var localisedName: String {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .inbox:
-            LocalizationTemp.Mailbox.inbox
-        case .allDraft:
-            LocalizationTemp.Mailbox.allDraft
-        case .allSent:
-            LocalizationTemp.Mailbox.allSent
+            L10n.Mailbox.SystemFolder.inbox
+        case .allDrafts:
+            L10n.Mailbox.SystemFolder.allDrafts
+        case .allSent, .sent:
+            L10n.Mailbox.SystemFolder.sent
         case .trash:
-            LocalizationTemp.Mailbox.trash
+            L10n.Mailbox.SystemFolder.trash
         case .spam:
-            LocalizationTemp.Mailbox.spam
+            L10n.Mailbox.SystemFolder.spam
         case .allMail:
-            LocalizationTemp.Mailbox.allMail
+            L10n.Mailbox.SystemFolder.allMail
         case .archive:
-            LocalizationTemp.Mailbox.archive
-        case .sent:
-            LocalizationTemp.Mailbox.sent
+            L10n.Mailbox.SystemFolder.archive
         case .draft:
-            LocalizationTemp.Mailbox.draft
+            L10n.Mailbox.SystemFolder.draft
         case .outbox:
-            LocalizationTemp.Mailbox.outbox
+            L10n.Mailbox.SystemFolder.outbox
         case .starred:
-            LocalizationTemp.Mailbox.starred
+            L10n.Mailbox.SystemFolder.starred
         case .allScheduled:
-            LocalizationTemp.Mailbox.allScheduled
+            L10n.Mailbox.SystemFolder.allScheduled
         case .almostAllMail:
-            LocalizationTemp.Mailbox.allMail
+            L10n.Mailbox.SystemFolder.allMail
         case .snoozed:
-            LocalizationTemp.Mailbox.snoozed
+            L10n.Mailbox.SystemFolder.snoozed
         }
     }
 
@@ -76,7 +73,7 @@ extension SystemFolderIdentifier {
         switch self {
         case .inbox:
             DS.Icon.icInbox
-        case .allDraft, .draft, .outbox:
+        case .allDrafts, .draft, .outbox:
             DS.Icon.icFile
         case .allSent, .sent:
             DS.Icon.icPaperPlane

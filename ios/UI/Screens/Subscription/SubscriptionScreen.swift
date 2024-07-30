@@ -26,7 +26,7 @@ struct SubscriptionScreen: View {
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
-                .mainToolbar(title: LocalizationTemp.Settings.subscription)
+                .mainToolbar(title: L10n.Settings.subscription)
         }
     }
 }

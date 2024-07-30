@@ -187,7 +187,7 @@ extension MailboxModel {
             }
         case .messages:
             guard let messageLiveQuery else { break  }
-            let mapRecipientsAsSender = [.draft, .allDraft, .sent, .allSent, .allScheduled]
+            let mapRecipientsAsSender = [.draft, .allDrafts, .sent, .allSent, .allScheduled]
                 .contains(selectedMailbox.systemFolder)
             mailboxItems = try await messageLiveQuery.value().asyncMap { @Sendable in
                 await $0.toMailboxItemCellUIModel(selectedIds: selectedIds, mapRecipientsAsSender: mapRecipientsAsSender)

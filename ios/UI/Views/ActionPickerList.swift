@@ -20,7 +20,7 @@ import SwiftUI
 
 protocol ActionPickerListElement: Equatable {
     var icon: UIImage { get }
-    var name: String { get }
+    var name: LocalizedStringResource { get }
 }
 
 struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
@@ -106,11 +106,11 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 #Preview {
     struct Item: ActionPickerListElement {
         let icon: UIImage = PreviewData.senderImage
-        let name = "Item"
+        let name: LocalizedStringResource = "Item".notLocalized.stringResource
     }
 
     return ActionPickerList(headerContent: {
-        Text("Header")
+        Text("Header".notLocalized)
     }, sections: [[Item()]]) { _ in }
         .border(.purple)
 }

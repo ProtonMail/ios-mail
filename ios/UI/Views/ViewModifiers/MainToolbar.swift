@@ -22,14 +22,14 @@ struct MainToolbar: ViewModifier {
     @EnvironmentObject private var appUIState: AppUIState
     @ObservedObject private var selectionMode: SelectionModeState
 
-    private let title: String
+    private let title: LocalizedStringResource
     private var sessionProvider: SessionProvider
 
     private var state: ToolbarState {
         selectionMode.hasSelectedItems ? .selection : .noSelection
     }
 
-    init(title: String, selectionMode: SelectionModeState, sessionProvider: SessionProvider) {
+    init(title: LocalizedStringResource, selectionMode: SelectionModeState, sessionProvider: SessionProvider) {
         self.title = title
         self.selectionMode = selectionMode
         self.sessionProvider = sessionProvider
@@ -82,7 +82,7 @@ struct MainToolbar: ViewModifier {
                             }
                         }
                     }, label: {
-                        Text("sign out")
+                        Text("sign out".notLocalized)
                             .font(.footnote)
                             .opacity(selectionMode.hasSelectedItems ? 0 : 1)
                             .animation(
@@ -98,7 +98,7 @@ struct MainToolbar: ViewModifier {
 
 extension View {
     @MainActor 
-    func mainToolbar(title: String, selectionMode: SelectionModeState? = nil) -> some View {
+    func mainToolbar(title: LocalizedStringResource, selectionMode: SelectionModeState? = nil) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
         return self.modifier(
             MainToolbar(title: title, selectionMode: selectionMode, sessionProvider: AppContext.shared)

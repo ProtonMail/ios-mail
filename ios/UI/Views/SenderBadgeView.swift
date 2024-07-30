@@ -23,7 +23,7 @@ struct ProtonOfficialBadgeView: View {
     var body: some View {
         SenderBadgeView(
             color: DS.Color.Brand.lighten30,
-            text: LocalizationTemp.official,
+            text: L10n.official,
             textColor: DS.Color.Brand.darken10
         )
     }
@@ -31,7 +31,7 @@ struct ProtonOfficialBadgeView: View {
 
 struct SenderBadgeView: View {
     let color: Color
-    let text: String
+    let text: LocalizedStringResource
     let textColor: Color
 
     var body: some View {

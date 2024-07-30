@@ -19,14 +19,14 @@ import DesignSystem
 import SwiftUI
 
 struct CapsuleView: View {
-    let text: String
+    let text: LocalizedStringResource
     let color: Color
     let icon: UIImage?
     let iconColor: Color?
     let style: CapsuleStyle
 
     init(
-        text: String,
+        text: LocalizedStringResource,
         color: Color,
         icon: UIImage? = nil,
         iconColor: Color? = nil,
@@ -40,11 +40,11 @@ struct CapsuleView: View {
     }
 
     private var minWidth: CGFloat? {
-        text.isEmpty ? nil : 30
+        text.string.isEmpty ? nil : 30
     }
 
     private var padding: EdgeInsets {
-        text.isEmpty
+        text.string.isEmpty
         ? .init(.zero)
         : .init(
             top: DS.Spacing.small,
@@ -95,10 +95,10 @@ struct CapsuleStyle {
 
 #Preview {
     VStack {
-        CapsuleView(text: "", color: DS.Color.Background.secondary, style: .attachment)
-        CapsuleView(text: "2 files", color: DS.Color.Background.secondary, icon: DS.Icon.icPaperClip, style: .attachment)
-        CapsuleView(text: "games", color: DS.Color.Background.secondary, icon: UIImage(systemName: "gamecontroller"), style: .attachment)
-        CapsuleView(text: "Work", color: .blue, style: .label)
-        CapsuleView(text: "Friends & Fam", color: .pink, style: .label)
+        CapsuleView(text: "".notLocalized.stringResource, color: DS.Color.Background.secondary, style: .attachment)
+        CapsuleView(text: "2 files".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: DS.Icon.icPaperClip, style: .attachment)
+        CapsuleView(text: "games".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: UIImage(systemName: "gamecontroller"), style: .attachment)
+        CapsuleView(text: "Work".notLocalized.stringResource, color: .blue, style: .label)
+        CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink, style: .label)
     }
 }

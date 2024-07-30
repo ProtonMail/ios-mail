@@ -57,7 +57,7 @@ struct MailboxLabelView: View {
                     Capsule()
                         .foregroundColor(uiModel.color)
                 )
-            Text("+\(normalisedNumExtraLabels)")
+            Text("+\(normalisedNumExtraLabels)".notLocalized)
                 .font(.caption2)
                 .fontWeight(.regular)
                 .frame(width: showExtraLabels ? nil : 0)

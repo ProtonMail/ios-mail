@@ -56,7 +56,7 @@ struct FolderPickerView: View {
 extension FolderPickerView {
 
     private var titleView: some View {
-        Text(LocalizationTemp.FolderPicker.title)
+        Text(L10n.Folders.title)
             .fontBody3()
             .fontWeight(.bold)
             .accessibilityIdentifier(FolderPickerViewIdentifiers.titleText)
@@ -109,7 +109,7 @@ private struct AddNewFolder: View {
         HStack() {
             Image(uiImage: DS.Icon.icPlus)
                 .foregroundStyle(DS.Color.Text.weak)
-            Text(LocalizationTemp.FolderPicker.newFolder)
+            Text(L10n.Folders.newFolder)
                 .fontBody3()
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.leading, DS.Spacing.moderatelyLarge)

@@ -97,12 +97,12 @@ struct SidebarScreen: View {
         VStack(spacing: 24) {
             let uiModel = SidebarCellUIModel(
                 id: UInt64.max,
-                name: LocalizationTemp.Settings.settings,
+                name: L10n.Settings.title,
                 icon: DS.Icon.icCogWheel,
                 badge: "",
                 route: .settings
             )
-            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .settings ) {
+            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .settings) {
                 screenModel.updateRoute(newRoute: uiModel.route)
                 appUIState.isSidebarOpen = false
             }
@@ -114,7 +114,7 @@ struct SidebarScreen: View {
         VStack(spacing: 24) {
             let uiModel = SidebarCellUIModel(
                 id: UInt64.max,
-                name: LocalizationTemp.Settings.subscription,
+                name: L10n.Settings.subscription,
                 icon: DS.Icon.icPencil,
                 badge: "",
                 route: .subscription
@@ -130,7 +130,16 @@ struct SidebarScreen: View {
     var appVersionView: some View {
         VStack {
 //            // temporary hacky share logs cell
-            SidebarCell(uiModel: .init(id: UInt64.max, name: "[DEV] Share logs", icon: DS.Icon.icBug , badge: "", route: .mailbox(selectedMailbox: .inbox)), isSelected: false) {
+            SidebarCell(
+                uiModel: .init(
+                    id: UInt64.max, 
+                    name: "[DEV] Share logs".notLocalized.stringResource,
+                    icon: DS.Icon.icBug,
+                    badge: "", 
+                    route: .mailbox(selectedMailbox: .inbox)
+                ),
+                isSelected: false
+            ) {
                 screenModel.onShareLogsTap()
             }
             .padding(.init(top: 44.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
@@ -138,7 +147,7 @@ struct SidebarScreen: View {
             Divider()
                 .background(DS.Color.Global.white)
             Spacer()
-            Text("Proton Mail \(Bundle.main.appVersion)")
+            Text("Proton Mail \(Bundle.main.appVersion)".notLocalized)
                 .font(.footnote)
                 .foregroundStyle(DS.Color.Sidebar.textNorm)
         }
@@ -147,7 +156,7 @@ struct SidebarScreen: View {
 
 struct SidebarCellUIModel: Identifiable {
     let id: PMLocalLabelId
-    let name: String
+    let name: LocalizedStringResource
     let icon: UIImage
     let badge: String
     let route: Route

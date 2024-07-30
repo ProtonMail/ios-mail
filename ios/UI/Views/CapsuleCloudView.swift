@@ -100,19 +100,19 @@ private struct HeightReader: ViewModifier {
 
 #Preview {
     VStack {
-        Text("Labels").font(.largeTitle)
+        Text("Labels".notLocalized).font(.largeTitle)
         CapsuleCloudView(
             subviews: [
-                CapsuleView(text: "Work", color: .green, style: .label),
-                CapsuleView(text: "People", color: .yellow, icon: UIImage(systemName: "person.crop.circle"), style: .attachment),
-                CapsuleView(text: "Friends & Family and Fools Around the World!", color: .cyan, style: .label),
-                CapsuleView(text: "Holidays ", color: .pink, style: .label),
-                CapsuleView(text: "Greece meetup", color: .blue, style: .label),
-                CapsuleView(text: "Reminders", color: .red, style: .label),
-                CapsuleView(text: "Shopping", color: .indigo, style: .label),
-                CapsuleView(text: "Games & Fun", color: .mint, icon: UIImage(systemName: "gamecontroller"), style: .attachment),
-                CapsuleView(text: "Sports", color: .orange, icon: UIImage(systemName: "volleyball.fill"), style: .attachment),
-                CapsuleView(text: "Shopping", color: .purple, style: .label)
+                CapsuleView(text: "Work".notLocalized.stringResource, color: .green, style: .label),
+                CapsuleView(text: "People".notLocalized.stringResource, color: .yellow, icon: UIImage(systemName: "person.crop.circle"), style: .attachment),
+                CapsuleView(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan, style: .label),
+                CapsuleView(text: "Holidays ".notLocalized.stringResource, color: .pink, style: .label),
+                CapsuleView(text: "Greece meetup".notLocalized.stringResource, color: .blue, style: .label),
+                CapsuleView(text: "Reminders".notLocalized.stringResource, color: .red, style: .label),
+                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo, style: .label),
+                CapsuleView(text: "Games & Fun".notLocalized.stringResource, color: .mint, icon: UIImage(systemName: "gamecontroller"), style: .attachment),
+                CapsuleView(text: "Sports".notLocalized.stringResource, color: .orange, icon: UIImage(systemName: "volleyball.fill"), style: .attachment),
+                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple, style: .label)
             ],
             innerPadding: 2
         )

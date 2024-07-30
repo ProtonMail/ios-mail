@@ -27,11 +27,11 @@ struct SettingsScreen: View {
                 Section(
                     header: EmptyView(),
                     content: {
-                        NavigationLink(LocalizationTemp.Settings.accountSettings){
+                        NavigationLink(L10n.Settings.accountSettings.string) {
                             AccountSettingsScreen()
                         }
                         .navigationBarTitleDisplayMode(.inline)
-                        .mainToolbar(title: LocalizationTemp.Settings.settings)
+                        .mainToolbar(title: L10n.Settings.title)
                         .toolbarBackground(.visible, for: .navigationBar)
                     })
             }

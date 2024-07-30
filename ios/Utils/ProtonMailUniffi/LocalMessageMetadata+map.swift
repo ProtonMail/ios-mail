@@ -26,7 +26,7 @@ extension LocalMessageMetadata {
         let senderImage: UIImage? = await Caches.senderImageCache.object(for: sender.address)
         var recipientsUIRepresentation: String {
             let recipients = (to + cc + bcc).map(\.uiRepresentation).joined(separator: ", ")
-            return recipients.isEmpty ? LocalizationTemp.MailboxCell.noRecipient : recipients
+            return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
         }
 
         let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
@@ -46,7 +46,7 @@ extension LocalMessageMetadata {
                 ))
             ),
             senders: mappedSender,
-            subject: subject.isEmpty ? LocalizationTemp.MailboxCell.noSubject : subject,
+            subject: subject.isEmpty ? L10n.Mailbox.Item.noSubject.string : subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: !unread,
             isStarred: starred,

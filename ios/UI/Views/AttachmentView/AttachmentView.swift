@@ -67,7 +67,7 @@ private struct ShowDoneNavBarButton: ViewModifier {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }, label: {
-                        Text(LocalizationTemp.Common.done)
+                        Text(L10n.Common.done)
                             .fontWeight(.semibold)
                     })
             )

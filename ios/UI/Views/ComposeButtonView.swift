@@ -21,7 +21,7 @@ import SwiftUI
 struct ComposeButtonView: View {
     private let animation: Animation = .easeInOut(duration: 0.2)
     
-    let text: String
+    let text: LocalizedStringResource
     @Binding private(set) var isExpanded: Bool
     let onTap: () -> Void
 
