@@ -53,6 +53,7 @@ struct UnreadFilterBarView: View {
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.standard)
+        .background(DS.Color.Background.norm)
     }
 }
 

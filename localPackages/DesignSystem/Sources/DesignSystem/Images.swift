@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-public extension DS.Images {
-    static let emptyMailbox = image(named: "empty-mailbox")
-}
+public extension DS.Images {}
 
 private extension DS.Images {
     static func image(named: String) -> UIImage {

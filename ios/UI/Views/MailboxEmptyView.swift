@@ -22,8 +22,6 @@ struct MailboxEmptyView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Image(uiImage: DS.Images.emptyMailbox)
-                .accessibilityIdentifier(MailboxEmptyViewIdentifiers.emptyIcon)
             Text(L10n.Mailbox.EmptyState.title)
                 .font(.title2)
                 .fontWeight(.semibold)

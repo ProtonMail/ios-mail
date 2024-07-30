@@ -63,6 +63,8 @@ extension MailboxListView {
     private func mailboxItemsListView(mailboxItems: [MailboxItemCellUIModel]) -> some View {
         List {
             UnreadFilterBarView(isSelected: $model.isUnreadSelected, unread: model.unreadItemsCount)
+                .buttonStyle(PlainButtonStyle())
+                .listRowBackground(DS.Color.Background.norm)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
                 .removeViewIf(model.unreadItemsCount < 1)
@@ -99,6 +101,7 @@ extension MailboxListView {
 
                     Spacer().frame(height: DS.Spacing.tiny)
                 }
+                .listRowBackground(Color.clear)
                 .listRowInsets(
                     .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
                 )
