@@ -34,8 +34,9 @@ final class UploadAttachment: UploadAttachmentUseCase {
 
     func execute(attachmentURI: String) async throws {
         guard let attachment = try dependencies.messageDataService.getAttachmentEntity(for: attachmentURI) else {
-            postNotification(error: UploadAttachmentError.resourceDoesNotExist, attachmentURI: attachmentURI)
-            throw UploadAttachmentError.resourceDoesNotExist
+            let error = UploadAttachmentError.attachmentDoesNotExist(attachmentURI)
+            postNotification(error: error, attachmentURI: attachmentURI)
+            throw error
         }
 
         let messageEntity = try dependencies.messageDataService.getMessageEntity(for: attachment.messageID)
@@ -94,7 +95,7 @@ final class UploadAttachment: UploadAttachmentUseCase {
         ]
         let messageURI = message.objectID.rawValue.uriRepresentation().absoluteString
         guard let sendingData = dependencies.messageDataService.getMessageSendingData(for: messageURI) else {
-            throw UploadAttachmentError.resourceDoesNotExist
+            throw UploadAttachmentError.messageDoesNotExist(messageURI)
         }
         guard
             let addressID = sendingData.cachedSenderAddress?.addressID ??
@@ -203,15 +204,18 @@ extension UploadAttachment {
 
     typealias UploadingResponse = (response: JSONDictionary, keyPacket: Data)
 
-    enum UploadAttachmentError: LocalizedError {
-        case resourceDoesNotExist
+    enum UploadAttachmentError: LocalizedError, Equatable {
+        case attachmentDoesNotExist(String)
+        case messageDoesNotExist(String)
         case duplicatedUploading
         case encryptionError
 
         var errorDescription: String? {
             switch self {
-            case .resourceDoesNotExist:
-                return "resource doesn't exist"
+            case .attachmentDoesNotExist(let uri):
+                return "attachment doesn't exist (\(uri))"
+            case .messageDoesNotExist(let uri):
+                return "message doesn't exist (\(uri))"
             case .duplicatedUploading:
                 return "duplicated uploading"
             case .encryptionError:

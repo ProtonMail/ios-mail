@@ -63,7 +63,7 @@ final class UploadDraftUseCaseTest: XCTestCase {
             XCTFail("Should throw error")
         } catch {
             let receivedError = try XCTUnwrap(error as? UploadDraft.UploadDraftError)
-            XCTAssertEqual(receivedError, .resourceDoesNotExist)
+            XCTAssertEqual(receivedError, .messageNotFoundForURI(fakeID))
         }
     }
 
