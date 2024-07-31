@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Ștergere automată mesaje din gunoi mai vechi de 30 de zile.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Ștergere automată mesaje din folderul «Gunoi» și «Nedorite» mai vechi de 30 de zile.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nu, mulțumesc";

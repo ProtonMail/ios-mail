@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade om automatisch berichten te verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatisch berichten verwijderen die al 30 of meer dagen in de prullenbak zitten.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Automatisch berichten verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nee, bedankt";

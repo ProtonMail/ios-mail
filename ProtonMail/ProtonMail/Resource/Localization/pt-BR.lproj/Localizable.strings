@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Faça upgrade para eliminar automaticamente as mensagens que se encontram na lixeira ou no spam há mais de 30 dias.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Exclua automaticamente as mensagens que estão na lixeira há mais de 30 dias.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Exclua automaticamente as mensagens que estão na lixeira e no spam há mais de 30 dias.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Não, obrigado";

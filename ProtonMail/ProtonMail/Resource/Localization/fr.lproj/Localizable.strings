@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Changez d'abonnement pour supprimer automatiquement les messages qui sont dans les dossiers Corbeille ou Indésirables/spam depuis plus de 30 jours.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Supprimez automatiquement les messages qui sont dans le dossier Corbeille depuis plus de 30 jours.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Supprimez automatiquement les messages qui sont dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Non merci";

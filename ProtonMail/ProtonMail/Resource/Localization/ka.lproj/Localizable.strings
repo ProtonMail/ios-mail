@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "ნაგვის საქაღალდეში მყოფი შეტყობინებების და სპამის ავტომატური წაშლა 30 დღეში.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "არა, მადლობა";

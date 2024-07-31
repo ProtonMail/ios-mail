@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "휴지통 및 스팸함에 30일 이상 방치된 메시지들을 자동으로 삭제하려면 업그레이드 하세요.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "30일 이상 휴지통에 있는 메시지를 자동으로 삭제합니다.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "30일 이상 휴지통 및 스팸함에 있던 메시지를 자동으로 삭제합니다.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "아니요, 괜찮아요";

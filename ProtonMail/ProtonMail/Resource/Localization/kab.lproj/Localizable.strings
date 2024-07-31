@@ -1941,13 +1941,13 @@
 "Load" = "Sali";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(ulac azwel)";
 
 /* As in: event organizer */
-"Organizer" = "Organizer";
+"Organizer" = "Amsuddes";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "Sken-d drus";
 
 /* Text shown when opening an invitation for a past event */
 "This event already ended" = "This event already ended";
@@ -1956,16 +1956,16 @@
 "This event has been cancelled" = "This event has been cancelled";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "Attekki?";
 
 /* Part of a yes/no/maybe prompt */
 "Yes" = "Ih";
 
 /* Part of a yes/no/maybe prompt */
-"No" = "No";
+"No" = "Uhu";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "Ahat";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "Ih, ad ttikkiɣ";
@@ -1980,28 +1980,28 @@
 "(Attendance optional)" = "(Tihawt d tafrayant)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "Yal %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "deg %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "deg %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "deg wass %u";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "alamma d %@";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ at %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "yettwaqbel";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "yettwagi";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "yettwaqbel s wudem askudan";
@@ -2028,31 +2028,31 @@
 "Re: Invitation for an event starting on %@" = "Re: Tinubga ɣer tedyant ara yebdun deg %@";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "Yal ass";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "Yal dduṛt";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "S waggur";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "S useggas";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "amezwaru";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "tasnint";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "wis kraḍ";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "wis ukkuz";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "aneggaru";
 
 /* Title of the spotlight view */
 "Easily RSVP to events" = "Easily RSVP to events";
@@ -2184,7 +2184,7 @@
 "Application logs" = "Iɣmisen n usnas";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "Amynut!";
 
 /* Got it action */
 "Got it" = "Gziɣ";
@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Uhu, tanemmirt";
@@ -2346,7 +2346,7 @@
 "Maximum selection reached" = "Maximum selection reached";
 
 /* Placeholder if message sender is empty */
-"No Recipient" = "No Recipient";
+"No Recipient" = "Ulac iɣerwaḍen";
 
 /* The title of PIN code disable view */
 "Disable PIN code" = "Disable PIN code";
@@ -2418,7 +2418,7 @@
 "This weekend" = "This weekend";
 
 /* One of snooze option shows in action sheet */
-"Next week" = "Next week";
+"Next week" = "Ddurt d-iteddun";
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
@@ -2487,7 +2487,7 @@
 "Security keys" = "Security keys";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GAṬ n uḥraz";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u n tansiwin imayl";
@@ -2517,7 +2517,7 @@
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/ayyur";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "Awi-d %@";

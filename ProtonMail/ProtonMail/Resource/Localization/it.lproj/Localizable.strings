@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Aggiorna il piano per eliminare automaticamente gli elementi presenti nel cestino o in spam dopo 30 giorni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino per più di 30 giorni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino e in spam per più di 30 giorni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, grazie";

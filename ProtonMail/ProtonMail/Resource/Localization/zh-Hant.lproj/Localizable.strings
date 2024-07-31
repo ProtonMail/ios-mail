@@ -2271,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升級以自動刪除在垃圾桶和垃圾郵件中超過30天的訊息。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "將會把於垃圾桶超過30天的訊息刪除";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "自動刪除在垃圾桶與垃圾郵件中超過30天的訊息。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "不用了，謝謝";
@@ -2484,7 +2484,7 @@
 "Change mailbox password" = "變更郵箱密碼";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "安全性密鑰";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB 儲存空間";
