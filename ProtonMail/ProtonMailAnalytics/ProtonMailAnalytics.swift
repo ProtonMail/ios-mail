@@ -197,16 +197,13 @@ public enum MailAnalyticsErrorEvent: Error {
     // send message
     case sendMessageFail(error: String)
     case sendMessageResponseError(responseCode: Int?)
-    case sendMessageInvalidSignature
 
     // contacts
     case contactCreateFailInBatch(error: NSError)
     case contactUpdateFail(error: NSError)
 
-    case conversationViewEndUpdatesCrash
     case userObjectsJsonEncodingError(Error, String)
     case userObjectsJsonDecodingError(Error, String)
-    case userObjectsCouldNotBeSavedError(Error, String)
 
     case appLockInconsistency(error: String)
 
@@ -232,22 +229,16 @@ public enum MailAnalyticsErrorEvent: Error {
         case .sendMessageResponseError(let responseCode):
             let code = "\(responseCode?.description ?? "n/a" )"
             return "Send response error - responseCode: \(code)"
-        case .sendMessageInvalidSignature:
-            return "Send invalid signature"
         case .contactCreateFailInBatch(let error):
             return "Create contact fail in batch - code: \(error.code)"
         case .contactUpdateFail(let error):
             return "Update contact fail - code: \(error.code)"
-        case .conversationViewEndUpdatesCrash:
-            return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
             return "Assertion failure: \(message)"
         case .userObjectsJsonDecodingError(_, let type):
             return "Error while decoding user object: \(type)"
         case .userObjectsJsonEncodingError(_, let type):
             return "Error while encoding user object: \(type)"
-        case .userObjectsCouldNotBeSavedError(_, let type):
-            return "Error while saving user object: \(type)"
         case .appLockInconsistency(let error):
             return "Unlock inconsistency: \(error)"
         }
@@ -260,8 +251,8 @@ public enum MailAnalyticsErrorEvent: Error {
             info = [
                 "Custom Error": error
             ]
-        case .abortedConversationRequest, .conversationViewEndUpdatesCrash,
-                .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature,
+        case .abortedConversationRequest,
+                .sendMessageFail, .sendMessageResponseError,
                 .appLockInconsistency:
             info = nil
         case let .invalidMenuItemRequested(section, row, itemCount, caller):
@@ -293,11 +284,6 @@ public enum MailAnalyticsErrorEvent: Error {
                 "Type": type
             ]
         case let .userObjectsJsonEncodingError(error, type):
-            info = [
-                "Error": error,
-                "Type": type
-            ]
-        case let .userObjectsCouldNotBeSavedError(error, type):
             info = [
                 "Error": error,
                 "Type": type
