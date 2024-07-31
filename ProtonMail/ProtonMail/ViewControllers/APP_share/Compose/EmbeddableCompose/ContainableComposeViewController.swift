@@ -31,7 +31,10 @@ import WebKit
 /// HtmlEditorBehavior only adds some functionality to HorizontallyScrollableWebViewContainer's webView, is not a UIView or webView's delegate any more. ComposeViewController is tightly coupled with ComposeHeaderViewController and needs separate refactor, while ContainableComposeViewController and HorizontallyScrollableWebViewContainer contain absolute minimum of logic they need: logic allowing to embed composer into tableView cell and logic allowing 2D scroll in fullsize webView.
 ///
 class ContainableComposeViewController: ComposeContentViewController, BannerRequester {
-    typealias Dependencies = ComposeContentViewController.Dependencies & HasKeyMakerProtocol
+    typealias Dependencies = ComposeContentViewController.Dependencies
+    & HasInternetConnectionStatusProviderProtocol
+    & HasKeyMakerProtocol
+    & HasQueueManager
 
     private let dependencies: Dependencies
     private var latestErrorBanner: BannerView?
@@ -268,6 +271,26 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
     }
 
     override func startSendingMessage() {
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            collectDraftDataAndSaveToDB()
+                .done { [weak self] _ in
+                    let alert = UIAlertController(
+                        title: L10n.Compose.sendingWithShareExtensionWhileOfflineIsNotSupported,
+                        message: L10n.Compose.messageSavedAsDraft,
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(.okAction() { [weak self] _ in
+                        self?.dismissAnimation()
+                    })
+                    self?.stepAlert = alert
+                }
+                .catch { error in
+                    PMAssertionFailure(error)
+                }
+
+            return
+        }
+
         stepUpdateQueue.sync {
             self.step = .sendingStarted
             let alert = UIAlertController(
@@ -290,18 +313,15 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
     }
 
     private func dismissAnimation() {
-        DispatchQueue.main.async {
-            let animationBlock: () -> Void = { [weak self] in
-                if let view = self?.navigationController?.view {
-                    view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
-                }
-            }
-            self.stepAlert = nil
-            self.dependencies.keyMaker.lockTheApp()
-            UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
-                SystemLogger.log(message: "Share extension is dismissing...", category: .appLifeCycle)
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-            }
+        dependencies.keyMaker.lockTheApp()
+
+        SystemLogger.log(message: "Share extension is dismissing...", category: .appLifeCycle)
+
+        dependencies.queueManager.unregisterHandler(for: viewModel.user.userID) {
+            self.viewModel.user.container.reset()
+            self.viewModel.user.container.globalContainer.reset()
+
+            self.extensionContext?.completeRequest(returningItems: nil)
         }
     }
 
