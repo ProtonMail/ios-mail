@@ -26,10 +26,6 @@ extension MailboxRobot {
         application.otherElements[Identifiers.rootItem]
     }
 
-    private var emptyIcon: XCUIElement {
-        container.images[Identifiers.emptyIcon]
-    }
-
     private var emptyTitle: XCUIElement {
         container.staticTexts[Identifiers.emptyTitle]
     }
@@ -41,7 +37,6 @@ extension MailboxRobot {
     // MARK: Assertions
 
     func verifyEmptyMailboxState() {
-        XCTAssertTrue(emptyIcon.isHittable)
         XCTAssertTrue(emptyTitle.isHittable)
         XCTAssertTrue(emptyDescription.isHittable)
     }
@@ -49,7 +44,6 @@ extension MailboxRobot {
 
 private struct Identifiers {
     static let rootItem = "mailbox.empty.rootItem"
-    static let emptyIcon = "mailbox.empty.icon"
     static let emptyTitle = "mailbox.empty.title"
     static let emptyDescription = "mailbox.empty.description"
 }

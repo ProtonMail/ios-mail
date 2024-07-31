@@ -44,7 +44,9 @@ extension SystemFolderIdentifier {
             L10n.Mailbox.SystemFolder.inbox
         case .allDrafts:
             L10n.Mailbox.SystemFolder.allDrafts
-        case .allSent, .sent:
+        case .allSent:
+            L10n.Mailbox.SystemFolder.allSent
+        case .sent:
             L10n.Mailbox.SystemFolder.sent
         case .trash:
             L10n.Mailbox.SystemFolder.trash

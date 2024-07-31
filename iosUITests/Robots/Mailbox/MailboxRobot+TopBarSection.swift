@@ -49,7 +49,7 @@ extension MailboxRobot {
     func verifySelectionState(withCount count: Int) {
         XCTAssertTrue(backButton.exists)
         XCTAssertFalse(hamburgerButton.exists)
-        XCTAssertEqual(toolbarTitle.label, "\(count) selected")
+        XCTAssertEqual(toolbarTitle.label, "\(count) Selected")
     }
 
     func verifyMailboxTitle(folder: UITestFolder) {

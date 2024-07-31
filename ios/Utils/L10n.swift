@@ -200,6 +200,10 @@ enum L10n {
                 "Scheduled",
                 comment: "Menu title of all scheduled emails in the sidebar."
             )
+            static let allSent = LocalizedStringResource(
+                "All Sent",
+                comment: "Menu title of all sent emails in the sidebar."
+            )
             static let archive = LocalizedStringResource(
                 "Archive",
                 comment: "Menu title of all archived emails in the sidebar."

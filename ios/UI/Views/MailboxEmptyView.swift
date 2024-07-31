@@ -46,7 +46,6 @@ struct MailboxEmptyView: View {
 
 private struct MailboxEmptyViewIdentifiers {
     static let rootItem = "mailbox.empty.rootItem"
-    static let emptyIcon = "mailbox.empty.icon"
     static let emptyTitle = "mailbox.empty.title"
     static let emptyDescription = "mailbox.empty.description"
 }
