@@ -59,6 +59,28 @@ extension Date {
     }
 
     /**
+     Mailbox date format for voice over support
+
+     The date will support the current locale which migth bring some differences to the following examples:
+     ```
+     Today:       11:24
+     This year:   February 24
+     Past years:  October 17, 2020
+     ```
+     */
+    func mailboxVoiceOverSupport(calendar: Calendar = .current) -> String {
+        if calendar.isDateInToday(self) {
+            return formatted(.dateTime.hour().minute())
+        }
+        else if calendar.isDate(self, equalTo: .now, toGranularity: .year) {
+            return formatted(.dateTime.month(.wide).day())
+        }
+        else {
+            return formatted(date: .long, time: .omitted)
+        }
+    }
+
+    /**
      Returns the time remaining to a future date.
 
      The returned values will be positive if the given date is in the future or negative if the date is in the past.

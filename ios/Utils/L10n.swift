@@ -242,6 +242,22 @@ enum L10n {
             )
         }
 
+        enum VoiceOver {
+            static func attachments(count: Int) -> LocalizedStringResource {
+                .init(
+                    "mailbox.systemFolder.voiceOver.attachments",
+                    defaultValue: "\(count) attachments",
+                    comment: "Voice over reads the number of attachments on an item."
+                )
+            }
+
+            static let unread = LocalizedStringResource(
+                "mailbox.systemFolder.voiceOver.unread",
+                defaultValue: "Unread",
+                comment: "Voice over reads out loud when an item is unread"
+            )
+        }
+
         static let compose = LocalizedStringResource(
             "Compose",
             comment: "The compose button title for creating new email."

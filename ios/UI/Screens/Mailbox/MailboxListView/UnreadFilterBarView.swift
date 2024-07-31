@@ -39,6 +39,7 @@ struct UnreadFilterBarView: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
             }
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
             .padding(.vertical, DS.Spacing.standard)
             .padding(.horizontal, DS.Spacing.medium*scale)
             .background(

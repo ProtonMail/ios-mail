@@ -89,8 +89,9 @@ extension MailboxListView {
                             }
                         }
                     )
-                    .accessibilityElement(children: .contain)
+                    .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
                     .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
+
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
                         itemId: item.id,
@@ -122,6 +123,24 @@ extension MailboxListView {
         .listScrollObservation(onEventAtTopChange: { newValue in
             isListAtTop = newValue
         })
+    }
+
+    private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
+        let unread = item.isRead ? "" : L10n.Mailbox.VoiceOver.unread.string
+        let expiration = item.expirationDate?.toExpirationDateUIModel?.text.string ?? ""
+        let attachments = item.attachmentsUIModel.count > 0
+        ? L10n.Mailbox.VoiceOver.attachments(count: item.attachmentsUIModel.count).string
+        : ""
+        let value: String = """
+        \(unread)
+        \(item.senders).
+        \(item.subject).
+        \(item.date.mailboxVoiceOverSupport()).
+        \(expiration).
+        \(item.snoozeDate ?? "").
+        \(attachments)
+        """
+        return value
     }
 }
 

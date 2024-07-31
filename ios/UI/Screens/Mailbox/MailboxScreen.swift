@@ -62,6 +62,7 @@ extension MailboxScreen {
         ZStack(alignment: .bottomTrailing) {
             MailboxListView(isListAtTop: $isComposeButtonExpanded, model: mailboxModel)
             composeButtonView
+                .accessibilitySortPriority(1)
             mailboxActionBarView
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar

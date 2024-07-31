@@ -117,6 +117,41 @@
     "Location" : {
       "comment" : "`Location` in the message details."
     },
+    "mailbox.systemFolder.voiceOver.attachments" : {
+      "comment" : "Voice over reads the number of attachments on an item.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld attachment"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld attachments"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mailbox.systemFolder.voiceOver.unread" : {
+      "comment" : "Voice over reads out loud when an item is unread",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unread"
+          }
+        }
+      }
+    },
     "Mark as read" : {
       "comment" : "Action title for marking message/conversation as read in the action sheet."
     },
