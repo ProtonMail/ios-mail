@@ -20,15 +20,18 @@ import SwiftUI
 
 struct MailboxLabelView: View {
     let uiModel: MailboxLabelUIModel
+    let extraLabelsTextColor: Color
+
+    init(uiModel: MailboxLabelUIModel, extraLabelsTextColor: Color = DS.Color.Text.norm) {
+        self.uiModel = uiModel
+        self.extraLabelsTextColor = extraLabelsTextColor
+    }
 
     private var showExtraLabels: Bool {
         !uiModel.isEmpty && uiModel.numExtraLabels > 0
     }
     private var normalisedNumExtraLabels: Int {
         min(uiModel.numExtraLabels, 99)
-    }
-    private var minWidth: CGFloat? {
-        uiModel.text.isEmpty ? nil : 40
     }
     private var padding: EdgeInsets {
         uiModel.text.isEmpty
@@ -49,14 +52,14 @@ struct MailboxLabelView: View {
                 .foregroundColor(.white)
                 .padding(padding)
                 .lineLimit(1)
-                .frame(minWidth: minWidth)
                 .background(
                     Capsule()
-                        .foregroundColor(uiModel.color)
+                        .foregroundStyle(uiModel.color)
                 )
             Text("+\(normalisedNumExtraLabels)".notLocalized)
                 .font(.caption2)
                 .fontWeight(.regular)
+                .foregroundStyle(extraLabelsTextColor)
                 .frame(width: showExtraLabels ? nil : 0)
         }
         .frame(maxHeight: 21, alignment: .leading)
@@ -117,6 +120,16 @@ struct LabelUIModel {
                         color: .red
                     )
                 ])
+            ).border(.red)
+            MailboxLabelView(
+                uiModel: MailboxLabelUIModel(labelModels: [
+                    .init(
+                        labelId: PMLocalLabelId.random(),
+                        text: "Work",
+                        color: .red
+                    )
+                ] + LabelUIModel.random(num: 25)
+                )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(

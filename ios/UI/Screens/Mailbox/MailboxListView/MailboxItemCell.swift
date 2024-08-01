@@ -110,9 +110,11 @@ extension MailboxItemCell {
                 .foregroundColor(textColor)
                 .layoutPriority(1)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.subjectText)
-            MailboxLabelView(uiModel: uiModel.labelUIModel)
+            MailboxLabelView(uiModel: uiModel.labelUIModel, extraLabelsTextColor: textColor)
                 .padding(.leading, labelLeadingPadding)
+                .frame(minWidth: 70)
                 .removeViewIf(uiModel.labelUIModel.isEmpty)
+
             Spacer()
             Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                 .resizable()
@@ -302,21 +304,21 @@ enum MailboxItemCellEvent {
 }
 
 #Preview {
-    var model: MailboxItemCellUIModel {
+    func model(subject: String) -> MailboxItemCellUIModel {
         MailboxItemCellUIModel(
             id: 0,
             conversationId: 0,
             type: .conversation,
             avatar: .init(initials: "P", type: .sender(params: .init())),
             senders: "Proton",
-            subject: "30% discount on all our products",
+            subject: subject,
             date: Date(),
             isRead: false,
             isStarred: false,
             isSelected: true,
             isSenderProtonOfficial: true,
             numMessages: 0,
-            labelUIModel: .init(labelModels: [.init(labelId: 0, text: "New", color: .brown)]),
+            labelUIModel: .init(labelModels: [.init(labelId: 0, text: "Working", color: .brown)] + LabelUIModel.random(num: 3)),
             expirationDate: nil,
             snoozeDate: nil
         )
@@ -324,7 +326,9 @@ enum MailboxItemCellEvent {
 
     return VStack {
 
-        MailboxItemCell(uiModel: model, isParentListSelectionEmpty: true, onEvent: { _ in })
+        MailboxItemCell(uiModel: model(subject: "30% discount on all our products"), isParentListSelectionEmpty: true, onEvent: { _ in })
+
+        MailboxItemCell(uiModel: model(subject: "sales up to 50%"), isParentListSelectionEmpty: true, onEvent: { _ in })
 
         MailboxItemCell(
             uiModel: .init(
