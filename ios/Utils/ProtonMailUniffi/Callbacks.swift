@@ -25,16 +25,15 @@ import proton_mail_uniffi
  This could change in the future, but in the meantime we replicate any callback declared in the Rust SDK
  with a proxy callback retaining a weak reference to the Swift object.
  */
-
 final class PMMailboxLiveQueryUpdatedCallback: @unchecked Sendable, MailboxLiveQueryUpdatedCallback {
-    weak var delegate: MailboxLiveQueryUpdatedCallback?
+    var delegate: () -> Void
 
-    init(delegate: MailboxLiveQueryUpdatedCallback? = nil) {
+    init(delegate: @escaping () -> Void) {
         self.delegate = delegate
     }
 
     func onUpdated() {
-        delegate?.onUpdated()
+        delegate()
     }
 }
 

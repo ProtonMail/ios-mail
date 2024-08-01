@@ -30,11 +30,22 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var messagesLiveQuery: ConversationMessagesLiveQueryResult?
     private var expandedMessages: Set<PMLocalMessageId>
     private let dependencies: Dependencies
+    private let messageListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
 
     init(seed: ConversationDetailSeed, dependencies: Dependencies = .init()) {
         self.seed = seed
         self.expandedMessages = .init()
         self.dependencies = dependencies
+
+    }
+
+    private func setUpCallback() {
+        messageListCallback.delegate = { [weak self] in
+            guard let self else { return }
+            Task {
+                await self.readLiveQueryValues()
+            }
+        }
     }
 
     func fetchInitialData() async {
@@ -108,7 +119,7 @@ extension ConversationDetailModel {
     ) async throws -> [MessageCellUIModel] {
         messagesLiveQuery = try await mailbox.newConversationMessagesLiveQuery(
             id: conversationId,
-            cb: PMMailboxLiveQueryUpdatedCallback(delegate: self)
+            cb: messageListCallback
         )
         /// We want to set the state to expanded before rendering the list to scroll to the correct position
         await setRelevantMessageStateAsExpanded()
@@ -217,15 +228,6 @@ extension ConversationDetailModel {
     private func updateState(_ newState: State) async {
         AppLogger.log(message: "conversation detail state \(newState.debugDescription)", category: .conversationDetail)
         state = newState
-    }
-}
-
-extension ConversationDetailModel: MailboxLiveQueryUpdatedCallback {
-
-    func onUpdated() {
-        Task {
-            await readLiveQueryValues()
-        }
     }
 }
 

@@ -51,6 +51,8 @@ final class MailboxModel: ObservableObject {
     private var messageLiveQuery: MailboxMessageLiveQuery?
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
+    private let itemCountCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
+    private let itemListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
 
     init(
         state: State = .loading,
@@ -68,6 +70,7 @@ final class MailboxModel: ObservableObject {
         self.dependencies = dependencies
 
         setUpBindings()
+        setLiveQueryCallbacks()
 
         if let openedItem = openedItem {
             navigationPath.append(openedItem)
@@ -114,10 +117,25 @@ extension MailboxModel {
             .$hasSelectedItems
             .sink { [weak self] hasItems in
                 Task {
-                    await self?.readLiveQueryValues()
+                    await self?.readItemsLiveQueryValues()
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func setLiveQueryCallbacks() {
+        itemListCallback.delegate = { [weak self] in
+            guard let self else { return }
+            Task {
+                await self.readItemsLiveQueryValues()
+            }
+        }
+        itemCountCallback.delegate = { [weak self] in
+            guard let self else { return }
+            Task {
+                self.unreadItemsCount = try await self.liveQueryItemUnreadCount()
+            }
+        }
     }
 
     /// Call this function to reset the Mailbox object with a new label id and fetch its mailbox items
@@ -137,20 +155,18 @@ extension MailboxModel {
     }
 
     private func initialiseLiveQuery() async throws {
-        let callback = PMMailboxLiveQueryUpdatedCallback(delegate: self)
-        itemCountLiveQuery = try mailbox?.newItemLiveQuery(cb: callback)
+        itemCountLiveQuery = try mailbox?.newItemLiveQuery(cb: itemCountCallback)
         switch viewMode {
         case .conversations:
-            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: callback)
+            self.conversationLiveQuery = try mailbox?.newConversationLiveQuery(limit: pageSize, cb: itemListCallback)
 
         case .messages:
-            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: callback)
+            self.messageLiveQuery = try mailbox?.newMessageLiveQuery(limit: pageSize, cb: itemListCallback)
         }
     }
 
-    private func readLiveQueryValues() async {
+    private func readItemsLiveQueryValues() async {
         do {
-            unreadItemsCount = try await liveQueryItemUnreadCount()
             let mailboxItems = try await liveQueryMailboxItems()
             let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
             await updateState(newState)
@@ -275,17 +291,6 @@ extension MailboxModel {
             actionUnstar(ids: itemIds)
         default:
             break
-        }
-    }
-}
-
-// MARK: MailboxLiveQueryUpdatedCallback
-
-extension MailboxModel: MailboxLiveQueryUpdatedCallback {
-
-    func onUpdated() {
-        Task {
-            await readLiveQueryValues()
         }
     }
 }

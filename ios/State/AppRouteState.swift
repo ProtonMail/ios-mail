@@ -74,7 +74,7 @@ enum Route: Equatable, CustomStringConvertible {
     var description: String {
         switch self {
         case .mailbox(let label):
-            "mailbox \(label.name)"
+            "mailbox \(label.name.string)"
         case .settings:
             "settings"
         case .subscription:
