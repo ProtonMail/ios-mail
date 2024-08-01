@@ -58,8 +58,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
-    & HasPurchasePlan
-    & HasUpsellPageFactory
     & HasUpsellOfferProvider
     & HasUpdateMailbox
     & HasUpsellButtonStateProvider
@@ -118,12 +116,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.updateMailbox.isFetching
     }
     private(set) var isFirstFetch: Bool = true
-
-    var error: AnyPublisher<Error, Never> {
-        errorSubject.eraseToAnyPublisher()
-    }
-
-    private let errorSubject = PassthroughSubject<Error, Never>()
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
 
@@ -216,11 +208,11 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     func viewDidLoad() {
         if !hasPreloadedPlanToUpsell && shouldShowUpsellButton {
-            Task {
+            Task { [unowned self] in
                 do {
                     try await dependencies.upsellOfferProvider.update()
                 } catch {
-                    PMLog.error(error)
+                    SystemLogger.log(error: error, category: .iap)
                 }
             }
         }
@@ -1485,7 +1477,7 @@ extension MailboxViewModel {
     private var upsellButtonVisibilityHasChanged: AnyPublisher<Void, Never> {
         dependencies
             .upsellOfferProvider
-            .$availablePlan
+            .availablePlanPublisher
             .map { [unowned self] plan in
                 /**
                  We can't use `isUpsellButtonVisible` here: $availablePlan publishes on willSet,
@@ -1504,27 +1496,6 @@ extension MailboxViewModel {
 
     func upsellButtonWasTapped() {
         dependencies.upsellButtonStateProvider.upsellButtonWasTapped()
-    }
-
-    func makeUpsellPageModel() -> UpsellPageModel? {
-        dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
-    }
-
-    func purchasePlan(storeKitProductId: String) async -> Bool {
-        let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
-
-        switch result {
-        case .planPurchased:
-            await user.fetchUserInfo()
-
-            return true
-        case .error(let error):
-            errorSubject.send(error)
-
-            return false
-        case .cancelled:
-            return false
-        }
     }
 }
 

@@ -42,6 +42,7 @@ struct UpsellPageFactory {
         self.dependencies = dependencies
     }
 
+    @MainActor
     func makeUpsellPageModel(for plan: AvailablePlans.AvailablePlan) -> UpsellPageModel {
         let storeKitManager = dependencies.storeKitManager
 

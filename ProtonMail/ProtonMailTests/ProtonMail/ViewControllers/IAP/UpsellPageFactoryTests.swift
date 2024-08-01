@@ -55,6 +55,7 @@ final class UpsellPageFactoryTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    @MainActor
     func testGeneratedPlan() throws {
         let planJSON = AvailablePlansTestData.availablePlan(named: "mail2022")
         let planData = try JSONSerialization.data(withJSONObject: planJSON)

@@ -17,6 +17,7 @@
 
 import ProtonCoreUIFoundations
 
+@MainActor
 public final class UpsellPageModel: ObservableObject {
     public struct Plan: Equatable {
         public let name: String
