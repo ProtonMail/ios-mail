@@ -272,22 +272,13 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
 
     override func startSendingMessage() {
         guard dependencies.internetConnectionStatusProvider.status.isConnected else {
-            collectDraftDataAndSaveToDB()
-                .done { [weak self] _ in
-                    let alert = UIAlertController(
-                        title: L10n.Compose.sendingWithShareExtensionWhileOfflineIsNotSupported,
-                        message: L10n.Compose.messageSavedAsDraft,
-                        preferredStyle: .alert
-                    )
-                    alert.addAction(.okAction() { [weak self] _ in
-                        self?.dismissAnimation()
-                    })
-                    self?.stepAlert = alert
-                }
-                .catch { error in
-                    PMAssertionFailure(error)
-                }
-
+            let alert = UIAlertController(
+                title: L10n.Compose.sendingWithShareExtensionWhileOfflineIsNotSupported,
+                message: nil,
+                preferredStyle: .alert
+            )
+            alert.addAction(.okAction())
+            stepAlert = alert
             return
         }
 
@@ -300,6 +291,7 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
             )
             self.stepAlert = alert
         }
+
         super.startSendingMessage()
     }
 
