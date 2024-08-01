@@ -150,17 +150,17 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
         "state": {
           "branch": null,
-          "revision": "63d3b45dd249878a41c56274a748ca2c1c9c5230",
-          "version": "1.17.1"
+          "revision": "c097f955b4e724690f0fc8ffb7a6d4b881c9c4e3",
+          "version": "1.17.2"
         }
       },
       {
         "package": "swift-syntax",
-        "repositoryURL": "https://github.com/apple/swift-syntax",
+        "repositoryURL": "https://github.com/swiftlang/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "4c6cc0a3b9e8f14b3ae2307c5ccae4de6167ac2c",
-          "version": "600.0.0-prerelease-2024-06-12"
+          "revision": "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
+          "version": "600.0.0-prerelease-2024-07-30"
         }
       },
       {
