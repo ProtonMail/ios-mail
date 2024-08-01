@@ -24,7 +24,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
     }
     
     /// TestId 443740
-    func testAttachmentPreviewLoading() async {
+    func testAttachmentPreviewOpening() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -36,12 +36,6 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 method: .get,
                 remotePath: "/mail/v4/conversations/*",
                 localPath: "conversation-id_443740.json",
-                wildcardMatch: true
-            ),
-            NetworkRequest(
-                method: .get,
-                remotePath: "/mail/v4/messages/*",
-                localPath: "message-id_443740.json",
                 wildcardMatch: true
             ),
             NetworkRequest(
@@ -68,13 +62,110 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         }
     }
     
+    /// TestId 448448
+    func testAttachmentPreviewLoadingOnMetadataLoading() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448448.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/attachments/-jN59ymYxAjO0iukRxotifr4-xTqQe6-fyJ5KiUEoyp6CIICgRdV1amqy2SWmVnBw2_g9XyFo7MS0e_qpaacIw==/metadata",
+                localPath: "attachments-metadata_448448.json",
+                latency: 100
+            )
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+
+        MailboxRobot {
+            $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
+        }
+        
+        SystemPreviewRobot {
+            $0.verifyLoading()
+        }
+    }
+    
+    /// TestId 448448/2
+    func testAttachmentPreviewLoadingOnBlobLoading() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448448.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/attachments/-jN59ymYxAjO0iukRxotifr4-xTqQe6-fyJ5KiUEoyp6CIICgRdV1amqy2SWmVnBw2_g9XyFo7MS0e_qpaacIw==/metadata",
+                localPath: "attachments-metadata_448448.json"
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/attachments/-jN59ymYxAjO0iukRxotifr4-xTqQe6-fyJ5KiUEoyp6CIICgRdV1amqy2SWmVnBw2_g9XyFo7MS0e_qpaacIw==",
+                localPath: "attachment_448448.zyx",
+                latency: 100,
+                mimeType: .octetStream
+            )
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+
+        MailboxRobot {
+            $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
+        }
+        
+        SystemPreviewRobot {
+            $0.verifyLoading()
+        }
+    }
+    
+    /// TestId 448448/3, 448449
+    func testAttachmentPreviewLoadingDismissal() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448448.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/attachments/-jN59ymYxAjO0iukRxotifr4-xTqQe6-fyJ5KiUEoyp6CIICgRdV1amqy2SWmVnBw2_g9XyFo7MS0e_qpaacIw==/metadata",
+                localPath: "attachments-metadata_448448.json",
+                latency: 100
+            )
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+
+        MailboxRobot {
+            $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
+        }
+        
+        SystemPreviewRobot {
+            $0.verifyLoading()
+            
+            $0.tapDoneButton()
+            $0.verifyGone()
+        }
+        
+        MailboxRobot {
+            $0.verifyShown()
+        }
+    }
+    
     /// TestId 443741
     func testAttachmentCapsulePreview() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
-                localPath: "conversations_443740.json",
+                localPath: "conversations_443741.json",
                 ignoreQueryParams: true
             )
         )
@@ -98,13 +189,49 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         }
     }
     
-    /// TestId 443742
+    /// TestId 443741/2
+    func testAttachmentCapsulePreviewInSentFolder() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/messages",
+                localPath: "messages_443741_2.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile_reply.zip")]
+        let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules)
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "Re: Multiple attachments and embedded images",
+            date: "Jul 29",
+            attachmentPreviews: attachmentPreviews
+        )
+        
+        navigator.navigateTo(UITestDestination.sent)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 443743
     func testMultipleAttachmentCapsulePreviews() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
-                localPath: "conversations_443742.json",
+                localPath: "conversations_443743.json",
                 ignoreQueryParams: true
             )
         )
@@ -121,6 +248,220 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
             sender: "proton898",
             subject: "Multiple attachments",
             date: "Jul 25",
+            attachmentPreviews: attachmentPreviews
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448452
+    func testNoAttachmentCapsuleShownOnEmbeddedImagesOnly() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448452.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "Test only embedded image",
+            date: "Jul 29"
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448453
+    /// To be re-enabled when ET-927 is addressed.
+    func skip_testNoAttachmentCapsuleOnICSFileAttached() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448453.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "Multiple attachments",
+            date: "Jul 29"
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448454
+    /// To be re-enabled when ET-927 is addressed.
+    func skip_testNoAttachmentCapsuleOnASCFileAttached() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448454.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "Multiple attachments",
+            date: "Jul 29"
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448455
+    func testAttachmentCapsuleOnlyShownOnStandardAttachment() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448455.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "image.png")]
+        let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: nil)
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "One embedded, one standard",
+            date: "Jul 29",
+            attachmentPreviews: attachmentPreviews
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448456
+    func testAttachmentPreviewCountFiltersOutInlineImages() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448456.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        let capsules = [
+            UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile.zip"),
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "fifth.png")
+        ]
+        let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 5)
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898",
+            subject: "Multiple attachments and embedded images",
+            date: "Jul 29",
+            attachmentPreviews: attachmentPreviews
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448457
+    func testAttachmentPreviewCountOnConversationWithMultipleMessages() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448457.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        let capsules = [
+            UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
+        ]
+        let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 7)
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898, chirpyflamingo",
+            subject: "Multiple attachments and embedded images",
+            date: "Jul 29",
+            count: 3,
+            attachmentPreviews: attachmentPreviews
+        )
+        
+        navigator.navigateTo(UITestDestination.inbox)
+        
+        MailboxRobot {
+            $0.hasEntries(entries: entry)
+        }
+    }
+    
+    /// TestId 448458
+    /// To be re-enabled when ET-927 is addressed.
+    func skip_testAttachmentPreviewMultipleCountFiltersASCAndICSFiles() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448458.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        let capsules = [
+            UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
+        ]
+        let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 1)
+        
+        let entry = UITestMailboxListItemEntry(
+            index: 0,
+            avatar: .initials("P"),
+            sender: "proton898, chirpyflamingo",
+            subject: "Test multiple + ICS/ASC",
+            date: "Jul 29",
             attachmentPreviews: attachmentPreviews
         )
         

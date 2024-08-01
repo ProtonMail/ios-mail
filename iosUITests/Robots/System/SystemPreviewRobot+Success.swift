@@ -35,10 +35,36 @@ extension SystemPreviewRobot {
         application.switches[UITestSystemIdentifiers.markupButton]
     }
     
+    private var doneButton: XCUIElement {
+        application.navigationBars.buttons.firstMatch
+    }
+    
+    private var loadingIndicator: XCUIElement {
+        application.activityIndicators.firstMatch
+    }
+    
+    // MARK: Actions
+    
+    func tapDoneButton() {
+        doneButton.tap()
+    }
+    
     // MARK: Assertions
+    
+    func verifyLoading() {
+        XCTAssertTrue(loadingIndicator.exists)
+    }
+    
+    func verifyGone() {
+        XCTAssertTrue(topLabel.waitUntilGone())
+        XCTAssertTrue(shareButton.waitUntilGone())
+        XCTAssertTrue(markupButton.waitUntilGone())
+    }
     
     /// Since it's a system component, we assume that it is shown if top label, share and markup buttons are shown.
     @discardableResult func verifyShown(withAttachmentName name: String) -> Self {
+        XCTAssertTrue(loadingIndicator.waitUntilGone())
+        
         XCTAssertTrue(topLabel.waitForExistence(timeout: buttonsTimeout))
         XCTAssertTrue(topLabel.label.contains(name))
         
@@ -47,6 +73,8 @@ extension SystemPreviewRobot {
         
         XCTAssertTrue(markupButton.waitForExistence(timeout: buttonsTimeout))
         XCTAssertTrue(markupButton.exists)
+        
+        XCTAssertTrue(doneButton.exists)
         
         return self
     }
