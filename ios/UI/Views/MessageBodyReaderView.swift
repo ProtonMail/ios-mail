@@ -19,20 +19,50 @@ import DesignSystem
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable {
-    let url: URL
+struct MessageBodyReaderView: UIViewRepresentable {
+    @Binding var bodyContentHeight: CGFloat
+    let html: String
 
     func makeUIView(context: Context) -> WKWebView  {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
+
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.bounces = false
+
+        webView.loadHTMLString(html, baseURL: nil)
+
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-        webView.load(URLRequest(url: url))
         return webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+}
+
+extension MessageBodyReaderView {
+
+    class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
+        let parent: MessageBodyReaderView
+
+        init(_ parent: MessageBodyReaderView) {
+            self.parent = parent
+        }
+
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            Task { @MainActor in
+                try await webView.evaluateJavaScript("document.readyState")
+                let scrollHeight = try await webView.evaluateJavaScript("document.documentElement.scrollHeight")
+                parent.bodyContentHeight = scrollHeight as! CGFloat
+            }
+        }
+    }
 }

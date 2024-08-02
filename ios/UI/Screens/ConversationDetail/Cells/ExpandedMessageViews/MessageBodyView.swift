@@ -19,6 +19,8 @@ import DesignSystem
 import SwiftUI
 
 struct MessageBodyView: View {
+    @State var bodyContentHeight: CGFloat = 0.0
+
     let messageBody: String?
     let messageId: PMLocalMessageId
     let uiModel: ExpandedMessageCellUIModel
@@ -47,18 +49,8 @@ struct MessageBodyView: View {
     }
 
     private func messageBodyView(body: String) -> some View {
-        /**
-         Using `Text` for large body messages could choke the main thread and also arndomly
-         cap the amount of rendered characters.
-         TextEditor performs really well, but selection by double tap scrolls to the bottom ??!!
-         To be reviewed when working on rendering the message body.
-         */
-        TextEditor(text: .constant(String(body.prefix(5000))))
-            .scrollDisabled(true)
-            .fixedSize(horizontal: false, vertical: true)
-            .font(.subheadline)
-            .foregroundStyle(DS.Color.Text.norm)
-            .frame(maxWidth: .infinity, alignment: .leading)
+        MessageBodyReaderView(bodyContentHeight: $bodyContentHeight, html: body)
+            .frame(height: bodyContentHeight)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
