@@ -612,7 +612,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     @objc
     func upsellButtonTapped() {
         upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
-        upsellCoordinator?.start()
+        upsellCoordinator?.start(entryPoint: .header)
 
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)

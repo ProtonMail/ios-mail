@@ -39,6 +39,8 @@ final class UpsellCoordinatorTests: XCTestCase {
         decorations: []
     )
 
+    private var entryPoint = UpsellPageEntryPoint.header
+
     override func setUp() async throws {
         try await super.setUp()
 
@@ -74,14 +76,14 @@ final class UpsellCoordinatorTests: XCTestCase {
     func testGivenNoPlansAreReturnedByAPI_whenStarting_thenFallsBackToCorePaymentUI() async throws {
         upsellOfferProvider.updateStub.bodyIs { _ in }
 
-        await sut.start()
+        await sut.start(entryPoint: entryPoint)
 
         let topMostViewController = await UIApplication.firstKeyWindow?.topMostViewController
         XCTAssertNotNil(topMostViewController as? PaymentsUIViewController)
     }
 
     func testGivenThePlanIsNotYetFetched_whenStarting_thenFetchesThePlan() async {
-        await sut.start()
+        await sut.start(entryPoint: entryPoint)
 
         XCTAssertEqual(upsellOfferProvider.updateStub.callCounter, 1)
     }
@@ -89,13 +91,13 @@ final class UpsellCoordinatorTests: XCTestCase {
     func testGivenThePlanIsAlreadyFetched_whenStarting_thenDoesNotRefetchThePlan() async {
         upsellOfferProvider.availablePlan = mockedAvailablePlan
 
-        await sut.start()
+        await sut.start(entryPoint: entryPoint)
 
         XCTAssertEqual(upsellOfferProvider.updateStub.callCounter, 0)
     }
 
     func testPresentsTheUpsellPage() async {
-        await sut.start()
+        await sut.start(entryPoint: entryPoint)
 
         let presentedViewController = await rootViewController.presentedViewController
         XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<UpsellPage>)

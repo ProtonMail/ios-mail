@@ -22,7 +22,6 @@
 
 import Contacts
 import ProtonCoreDataModel
-import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -33,8 +32,8 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     var navigationItemLeftNotEditing: [UIBarButtonItem]?
     private let dependencies: Dependencies
     private var addBarButtonItem: UIBarButtonItem!
-    private var paymentsUI: PaymentsUI?
     private let store: CNContactStore = CNContactStore()
+    private var upsellCoordinator: UpsellCoordinator?
 
     var isOnMainView = true {
         didSet {
@@ -156,8 +155,12 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     func presentPlanUpgrade() {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+        guard let tabBarController else {
+            return
+        }
+
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: tabBarController)
+        upsellCoordinator?.start(entryPoint: .contactGroups)
     }
 
     private func requestContactPermission() {

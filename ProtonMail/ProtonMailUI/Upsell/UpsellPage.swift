@@ -20,6 +20,7 @@ import SwiftUI
 
 public struct UpsellPage: View {
     @ObservedObject private var model: UpsellPageModel
+    private let entryPoint: UpsellPageEntryPoint
     private let onPurchaseTapped: (String) -> Void
 
     @Environment(\.verticalSizeClass)
@@ -59,8 +60,13 @@ public struct UpsellPage: View {
         verticalSizeClass == .compact || enforceVerticalTiles.value
     }
 
-    public init(model: UpsellPageModel, onPurchaseTapped: @escaping (String) -> Void) {
+    public init(
+        model: UpsellPageModel,
+        entryPoint: UpsellPageEntryPoint,
+        onPurchaseTapped: @escaping (String) -> Void
+    ) {
         self.model = model
+        self.entryPoint = entryPoint
         self.onPurchaseTapped = onPurchaseTapped
     }
 
@@ -113,21 +119,22 @@ public struct UpsellPage: View {
         VStack(spacing: 8) {
             VStack(spacing: infoSectionSpacing) {
                 if hideLogo.value {
-                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
+                    Text(entryPoint.title(planName: model.plan.name))
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title3, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
                         .titleFix()
                 } else {
-                    Image(.mailUpsell)
-                        .padding(-20)
+                    Image(entryPoint.logo)
+                        .padding(entryPoint.logoPadding)
 
-                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
+                    Text(entryPoint.title(planName: model.plan.name))
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
                 }
 
-                Text(L10n.Upsell.mailPlusDescription)
+                Text(entryPoint.subtitle(planName: model.plan.name))
                     .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                    .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(ColorProvider.SidebarTextWeak)
             }
@@ -262,6 +269,7 @@ private extension View {
                 ]
             )
         ),
+        entryPoint: .header,
         onPurchaseTapped: { _ in }
     )
 }
