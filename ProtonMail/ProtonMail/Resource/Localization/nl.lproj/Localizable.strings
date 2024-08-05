@@ -1645,7 +1645,7 @@
 "Cannot empty folder right now." = "Kan de map momenteel niet leegmaken.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Weet u zeker dat u alle berichten binnen '%@' permanent wilt verwijderen?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Toon volledig bericht]";
@@ -1861,22 +1861,22 @@
 "Your storage is full" = "Uw opslagruimte is vol";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "Uw abonnement is verlopen";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "Uw account loopt het risico verwijderd te worden";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "Maak ruimte vrij of upgrade voor meer opslag om mail te blijven verzenden of te ontvangen.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "Maak ruimte vrij of upgrade voor meer opslag om bestanden te kunnen uploaden.";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "Upgrade om volledige toegang te herstellen en gegevensverlies te voorkomen.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "Vraag uw admin om te upgraden om gegevensverlies te voorkomen.";
 
 /* Upgrade button action */
 "Upgrade" = "Upgraden";
@@ -2484,7 +2484,7 @@
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "Beveiligingssleutels";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB opslagruimte";

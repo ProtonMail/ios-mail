@@ -649,7 +649,7 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Esta preferencia se revertirá a Safari si el navegador elegido es desinstalado.";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y es posible que no se cargue correctamente. ¿Quieres abrirla utilizando el navegador por defecto de tu dispositivo?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "La URL a la que intentas acceder no es estándar y es posible que no se cargue correctamente. ¿Quieres abrirla usando el navegador por defecto de tu dispositivo?";
 
 /* Title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
@@ -1876,7 +1876,7 @@
 "Upgrade to restore full access and to avoid data loss." = "Mejora tu cuenta para recuperar el acceso y evitar la perdida de datos.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "Para evitar pérdida de datos, pregunta a tu administrador para mejorar.";
 
 /* Upgrade button action */
 "Upgrade" = "Actualizar";
@@ -2094,7 +2094,7 @@
 "Terms & conditions" = "Términos y condiciones";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado utilizando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones premium gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado usando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones premium gratis:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también utilizan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios premium gratis.";
@@ -2103,7 +2103,7 @@
 "Maybe later" = "Quizás más tarde";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activa esta función para completar automáticamente las direcciones utilizando los contactos de todas tus cuentas conectadas.";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activa esta función para completar automáticamente las direcciones usando los contactos de todas tus cuentas conectadas.";
 
 /* contacts auto import title in settings */
 "Auto-import device contacts" = "Importar automáticamente los contactos del dispositivo";
@@ -2178,7 +2178,7 @@
 "Archive (verb)" = "Archivar";
 
 /* Message to show to user after updating password. */
-"Password updated" = "La contraseña ha sido actualizada.";
+"Password updated" = "Se ha actualizado la contraseña.";
 
 /* Title for application logs settings option */
 "Application logs" = "Registros de la aplicación";
@@ -2259,7 +2259,7 @@
 "Delete messages?" = "¿Eliminar los mensajes?";
 
 /* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esto eliminará todos los mensajes que están en la carpeta Papelera o Spam de más de 30 días. incluye también mensajes actualmente en esas carpetas.";
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esto eliminará todos los mensajes que están en la papelera o spam de más de 30 días, incluyendo mensajes actualmente en esas carpetas.";
 
 /*
  Button to enable encrypted search
@@ -2268,7 +2268,7 @@
 "Enable" = "Activar";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en las carpetas Papelera o Spam durante más de 30 días.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Mejora tu plan para eliminar automáticamente los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimina automáticamente mensajes que han estado en la Papelera y en Spam por más de 30 días.";
@@ -2280,7 +2280,7 @@
 "Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días serán eliminados automáticamente.";
 
 /* Title of button to empty spam folder */
-"Empty spam" = "Vaciar Spam";
+"Empty spam" = "Vaciar la carpeta de spam";
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Vaciar la papelera";
@@ -2295,7 +2295,7 @@
 "Open in Proton Calendar" = "Abrir en Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "¡Deshazte de los mensajes innecesarios!";
+"Clear out the junk" = "¡Elimina los mensajes innecesarios!";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Elimina automáticamente los mensajes de más de 30 días de las carpetas Papelera y Spam. Disfruta de este y otros beneficios al mejorar tu plan.";
