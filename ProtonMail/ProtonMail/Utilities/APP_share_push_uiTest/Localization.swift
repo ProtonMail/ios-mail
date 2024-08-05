@@ -1674,5 +1674,7 @@ enum L10n {
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
         static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
+        static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
+        static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
     }
 }

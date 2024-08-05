@@ -42,15 +42,15 @@ final class UpsellCoordinator {
         self.rootViewController = rootViewController
     }
 
-    func start() {
+    func start(entryPoint: UpsellPageEntryPoint) {
         Task {
-            await start()
+            await start(entryPoint: entryPoint)
         }
     }
 
-    func start() async {
+    func start(entryPoint: UpsellPageEntryPoint) async {
         if let availablePlan = await prepareAvailablePlan() {
-            await presentUpsellPage(availablePlan: availablePlan)
+            await presentUpsellPage(availablePlan: availablePlan, entryPoint: entryPoint)
         } else {
             await fallBackToCorePaymentsUI()
         }
@@ -78,12 +78,15 @@ final class UpsellCoordinator {
 
     // MARK: modern upsell flow
 
-    private func presentUpsellPage(availablePlan: AvailablePlans.AvailablePlan) async {
+    private func presentUpsellPage(
+        availablePlan: AvailablePlans.AvailablePlan,
+        entryPoint: UpsellPageEntryPoint
+    ) async {
         dependencies.upsellTelemetryReporter.prepare()
 
         let upsellPageModel = dependencies.upsellPageFactory.makeUpsellPageModel(for: availablePlan)
 
-        let upsellPage = UpsellPage(model: upsellPageModel) { [weak self] selectedProductId in
+        let upsellPage = UpsellPage(model: upsellPageModel, entryPoint: entryPoint) { [weak self] selectedProductId in
             self?.purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)
         }
 
@@ -144,7 +147,7 @@ final class UpsellCoordinator {
 
         await withCheckedContinuation { continuation in
             // this is necessary because showUpgradePlan completion handler is called several times
-            var nullableContinuation: Atomic<CheckedContinuation<Void, Never>?> = .init(continuation)
+            let nullableContinuation: Atomic<CheckedContinuation<Void, Never>?> = .init(continuation)
 
             paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in
                 nullableContinuation.mutate {
