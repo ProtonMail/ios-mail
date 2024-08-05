@@ -41,7 +41,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
-    & HasUpsellTelemetryReporter
     & HasUserManager
     & HasUserDefaults
     & HasAddressBookService
@@ -150,6 +149,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
     private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
 
     private var isSwipingCell = false {
         didSet {
@@ -325,14 +325,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 self.setupAlertBox()
             }
         }
-
-        viewModel
-            .error
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned self] error in
-                showErrorMessage(error as NSError)
-            }
-            .store(in: &cancellables)
 
         viewModel
             .reloadRightBarButtons
@@ -619,41 +611,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     @objc
     func upsellButtonTapped() {
-        guard let upsellPageModel = viewModel.makeUpsellPageModel() else {
-            return
-        }
-
-        dependencies.upsellTelemetryReporter.prepare()
-
-        Task { [weak self] in
-            await self?.dependencies.upsellTelemetryReporter.upsellButtonTapped()
-        }
-
-        let upsellPage = UpsellPage(model: upsellPageModel) { [unowned self] selectedProductId in
-            purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)
-        }
-        let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
-        hostingController.modalTransitionStyle = .crossDissolve
-        present(hostingController, animated: false)
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start()
 
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
-    }
-
-    private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
-        Task { [weak self] in
-            guard let self else { return }
-
-            lockUI()
-            upsellPageModel.isBusy = true
-            let planPurchased = await self.viewModel.purchasePlan(storeKitProductId: storeKitProductId)
-            upsellPageModel.isBusy = false
-            unlockUI()
-
-            if planPurchased {
-                await presentedViewController?.dismiss(animated: true)
-            }
-        }
     }
 
     @objc func composeButtonTapped() {

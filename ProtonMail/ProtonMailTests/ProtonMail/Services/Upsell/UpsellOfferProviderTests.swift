@@ -23,7 +23,7 @@ import XCTest
 @testable import ProtonMail
 
 final class UpsellOfferProviderTests: XCTestCase {
-    private var sut: UpsellOfferProvider!
+    private var sut: UpsellOfferProviderImpl!
     private var apiService: APIServiceMock!
     private var user: UserManager!
 
