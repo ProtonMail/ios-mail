@@ -66,7 +66,7 @@ struct UITestSidebarListItemEntryModel: ApplicationHolder {
     }
 
     func isBadgeNotShown() {
-        XCTAssertEqual("", badgeElement.label)
+        XCTAssertFalse(badgeElement.exists)
     }
 }
 

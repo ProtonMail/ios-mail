@@ -19,25 +19,15 @@ import proton_mail_uniffi
 
 extension LocalLabelWithCount {
 
-    func systemFolderToSidebarCellUIModel() -> SidebarCellUIModel? {
-        guard let rid,
-              let remoteId = UInt64(rid),
-              let systemFolderId = SystemFolderIdentifier(rawValue: remoteId)
-        else {
-            return nil
-        }
-        return SidebarCellUIModel(
-            id: id,
-            name: systemFolderId.humanReadable,
-            icon: systemFolderId.icon,
-            badge: unreadCount > 0 ? unreadCount.toBadgeCapped() : "",
-            route: .mailbox(
-                selectedMailbox: .label(
-                    localLabelId: id,
-                    name: systemFolderId.humanReadable,
-                    systemFolder: systemFolderId
-                )
-            )
+    var systemFolder: SidebarSystemFolderUIModel? {
+        let id = rid.unsafelyUnwrapped
+        guard let systemFolder = SystemFolderIdentifier(rawValue: UInt64(id).unsafelyUnwrapped) else { return nil }
+        return .init(
+            isSelected: false, 
+            localID: self.id,
+            identifier: systemFolder,
+            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped()
         )
     }
+
 }

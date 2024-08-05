@@ -16,14 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[SidebarScreenIdentifiers.rootItem]
-    }
-}
-
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
+struct SidebarState {
+    var system: [SidebarSystemFolderUIModel]
+    var other: [SidebarOtherItemUIModel]
 }

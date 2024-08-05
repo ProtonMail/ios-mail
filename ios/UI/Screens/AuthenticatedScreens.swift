@@ -41,7 +41,25 @@ struct AuthenticatedScreens: View {
             case .subscription:
                 SubscriptionScreen()
             }
-            SidebarScreen(screenModel: .init(appRoute: appRoute))
+            SidebarScreen() { selectedItem in
+                switch selectedItem {
+                case .system(let systemFolder):
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                        localLabelId: systemFolder.localID,
+                        name: systemFolder.identifier.humanReadable,
+                        systemFolder: systemFolder.identifier
+                    )))
+                case .other(let otherItem):
+                    switch otherItem.type {
+                    case .settings:
+                        appRoute.updateRoute(to: .settings)
+                    case .subscriptions:
+                        appRoute.updateRoute(to: .subscription)
+                    case .shareLogs:
+                        break
+                    }
+                }
+            }
         }
     }
 }

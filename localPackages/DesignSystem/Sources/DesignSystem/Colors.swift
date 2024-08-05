@@ -85,8 +85,10 @@ public extension DS.Color {
         public static let separator = Color(.sidebarSeparator)
         public static let textNorm = Color(.sidebarTextNorm)
         public static let textWeak = Color(.sidebarTextWeak)
+        public static let textSelected = Color(.sidebarTextSelected)
         public static let iconNorm = Color(.sidebarIconNorm)
         public static let iconWeak = Color(.sidebarIconWeak)
+        public static let iconSelected = Color(.sidebarIconSelected)
     }
 
     enum Star {

@@ -21,207 +21,222 @@ import SwiftUI
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
     @State private var screenModel: SidebarModel
+    @State private var headerHeight: CGFloat = .zero
+    private let sidebarWidth: CGFloat = 320
+    private let widthOfDragableSpaceOnTheMailbox: CGFloat = 35
+    private let animationDuration = 0.2
+    private let selectedItem: (SidebarItem) -> Void
+    private let mainBundle: Bundle
 
-    private let animation: Animation = .easeInOut(duration: 0.2)
+    private var dragOffset: CGFloat {
+        appUIState.isSidebarOpen ? sidebarWidth : .zero
+    }
 
-    init(screenModel: SidebarModel) {
+    init(
+        screenModel: SidebarModel = .init(),
+        mainBundle: Bundle = Bundle.main,
+        selectedItem: @escaping (SidebarItem) -> Void
+    ) {
         self.screenModel = screenModel
+        self.mainBundle = mainBundle
+        self.selectedItem = selectedItem
     }
 
     var body: some View {
-        ZStack {
-            GeometryReader { geometry in
-                translucidBackground
-                sidebarContent
-                    .frame(width: geometry.size.width * 0.9)
-                    .frame(maxHeight: .infinity)
-                    .offset(x: appUIState.isSidebarOpen ? 0 : -geometry.size.width)
-                    .animation(animation, value: appUIState.isSidebarOpen)
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                opacityBackground
+                    .gesture(closeSidebarTapGesture)
+                    .frame(width: 2 * geometry.size.width)
+
+                Color.clear
+                    .contentShape(Rectangle())
+                    .frame(width: sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
+                    .gesture(sidebarDragGesture)
+                    .gesture(appUIState.isSidebarOpen ? closeSidebarTapGesture : nil)
+
+                HStack(spacing: 0) {
+                    sideBarBackground
+                        .frame(width: geometry.safeAreaInsets.leading)
+                    ZStack(alignment: .topLeading) {
+                        sideBarBackground
+                        sideBarItemsList
+                            .safeAreaPadding(.top, headerHeight)
+                            .padding(.top, DS.Spacing.standard)
+                        header
+                    }
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
+                }
+                .frame(width: sidebarWidth)
+                .highPriorityGesture(sidebarDragGesture)
             }
+            .animation(.easeOut(duration: animationDuration), value: appUIState.isSidebarOpen)
+            .offset(x: dragOffset - sidebarWidth - geometry.safeAreaInsets.leading)
         }
         .task {
             await screenModel.onViewWillAppear()
         }
     }
 
-    var translucidBackground: some View {
-        GeometryReader { _ in
-            EmptyView()
-        }
-        .background(.black.opacity(0.6))
-        .opacity(appUIState.isSidebarOpen ? 1 : 0)
-        .animation(animation, value: appUIState.isSidebarOpen)
-        .onTapGesture {
-            appUIState.isSidebarOpen = false
-        }
-        .edgesIgnoringSafeArea(.all)
+    private var header: some View {
+        VStack(alignment: .leading) {
+            Image(uiImage: DS.Images.mailProductLogo)
+                .padding(.leading, DS.Spacing.extraLarge)
+                .padding(.vertical, DS.Spacing.small)
+            separator
+        }.background(
+            GeometryReader { geometry in
+                TransparentBlur()
+                    .edgesIgnoringSafeArea(.all)
+                    .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
+                    .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
+                        headerHeight = value
+                    }
+            }
+        )
     }
 
-    var sidebarContent: some View {
-        HStack {
-            ZStack {
-
+    private var sidebarDragGesture: some Gesture {
+        DragGesture()
+            .onEnded { value in
+                appUIState.isSidebarOpen = value.velocity.width > 100
             }
-            .frame(width: 56)
-            .frame(maxHeight: .infinity)
-
-            ScrollView(showsIndicators: false) {
-                foldersAndLabelsView
-                settingsView
-                subscriptionView
-                appVersionView
-            }
-            Spacer()
-        }
-        .background(DS.Color.Sidebar.background)
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
     }
 
-    var foldersAndLabelsView: some View {
-        VStack(spacing: 24) {
-            ForEach(screenModel.systemFolders) { systemFolder in
-                SidebarCell(
-                    uiModel: systemFolder,
-                    isSelected: systemFolder.id == screenModel.route.selectedMailbox?.localId
-                ) {
-                    screenModel.updateRoute(newRoute: systemFolder.route)
-                    appUIState.isSidebarOpen = false
-                }
-            }
-        }
-        .padding(.init(top: 24.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
+    private var closeSidebarTapGesture: some Gesture {
+        TapGesture()
+            .onEnded { appUIState.isSidebarOpen = false }
     }
 
-    var settingsView: some View {
-        VStack(spacing: 24) {
-            let uiModel = SidebarCellUIModel(
-                id: UInt64.max,
-                name: L10n.Settings.title,
-                icon: DS.Icon.icCogWheel,
-                badge: "",
-                route: .settings
-            )
-            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .settings) {
-                screenModel.updateRoute(newRoute: uiModel.route)
-                appUIState.isSidebarOpen = false
-            }
-        }
-        .padding(.init(top: 44.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
+    private var opacityBackground: some View {
+        DS.Color.Shade.shade80
+            .animation(.linear(duration: animationDuration), value: appUIState.isSidebarOpen)
+            .opacity(0.5 * (dragOffset / sidebarWidth))
+            .ignoresSafeArea(.all)
     }
 
-    var subscriptionView: some View {
-        VStack(spacing: 24) {
-            let uiModel = SidebarCellUIModel(
-                id: UInt64.max,
-                name: L10n.Settings.subscription,
-                icon: DS.Icon.icPencil,
-                badge: "",
-                route: .subscription
-            )
-            SidebarCell(uiModel: uiModel, isSelected: screenModel.route == .subscription) {
-                screenModel.updateRoute(newRoute: uiModel.route)
-                appUIState.isSidebarOpen = false
+    private var sideBarBackground: some View {
+        DS.Color.Sidebar.background
+            .edgesIgnoringSafeArea(.all)
+    }
+
+    private var sideBarItemsList: some View {
+        VStack(alignment: .leading, spacing: .zero) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    list(for: screenModel.sidebarState.system)
+                    separator
+                    list(for: screenModel.sidebarState.other)
+                    separator
+                    appVersionNote
+                }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
+                    if isSidebarOpen, let first = screenModel.sidebarState.first {
+                        proxy.scrollTo(first.id, anchor: .zero)
+                    }
+                }.accessibilityElement(children: .contain)
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    private func list(for items: [SidebarItem]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(items) { item in
+                sidebarItemButton(for: item)
             }
         }
-        .padding(.init(top: 8.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
     }
 
-    var appVersionView: some View {
-        VStack {
-//            // temporary hacky share logs cell
-            SidebarCell(
-                uiModel: .init(
-                    id: UInt64.max, 
-                    name: "[DEV] Share logs".notLocalized.stringResource,
-                    icon: DS.Icon.icBug,
-                    badge: "", 
-                    route: .mailbox(selectedMailbox: .inbox)
-                ),
-                isSelected: false
-            ) {
-                screenModel.onShareLogsTap()
-            }
-            .padding(.init(top: 44.0, leading: 16.0, bottom: 24.0, trailing: 16.0))
-
-            Divider()
-                .background(DS.Color.Global.white)
-            Spacer()
-            Text("Proton Mail \(Bundle.main.appVersion)".notLocalized)
-                .font(.footnote)
-                .foregroundStyle(DS.Color.Sidebar.textNorm)
-        }
-    }
-}
-
-struct SidebarCellUIModel: Identifiable {
-    let id: PMLocalLabelId
-    let name: LocalizedStringResource
-    let icon: UIImage
-    let badge: String
-    let route: Route
-}
-
-struct SidebarCell: View {
-    private let uiModel: SidebarCellUIModel
-    private let isSelected: Bool
-    private var onSelection: () -> Void
-
-    init(uiModel: SidebarCellUIModel, isSelected: Bool, onSelection: @escaping () -> Void) {
-        self.uiModel = uiModel
-        self.isSelected = isSelected
-        self.onSelection = onSelection
-    }
-
-    var textColor: Color {
-        isSelected ? DS.Color.Sidebar.textWeak : DS.Color.Sidebar.textNorm
-    }
-
-    var body: some View {
-
-        Button(action: {
-            onSelection()
-        }, label: {
+    private func sidebarItemButton(for item: SidebarItem) -> some View {
+        Button(action: { select(item: item) }) {
             HStack {
-                Image(uiImage: uiModel.icon)
+                Image(uiImage: item.icon)
                     .renderingMode(.template)
-                    .foregroundColor(textColor)
+                    .frame(width: 20, height: 20)
+                    .tint(item.isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
+                    .padding(.trailing, DS.Spacing.extraLarge)
                     .accessibilityIdentifier(SidebarScreenIdentifiers.folderIcon)
-                Text(uiModel.name)
-                    .font(.body)
-                    .fontWeight(.regular)
-                    .foregroundStyle(textColor)
-                    .padding(.leading, 16)
+                Text(item.name)
+                    .font(.subheadline)
+                    .fontWeight(item.isSelected ? .bold : .regular)
+                    .foregroundStyle(item.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
+                    .lineLimit(1)
                     .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
                 Spacer()
-                Text(uiModel.badge)
-                    .foregroundStyle(textColor)
-                    .opacity(uiModel.badge.isEmpty ? 0 : 1)
-                    .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
+                if let unreadCount = item.unreadCount {
+                    Text("\(unreadCount)")
+                        .foregroundStyle(item.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+                        .font(.caption)
+                        .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
+                }
             }
-            .accessibilityElement(children: .contain)
-        })
-    }
-}
-
-#Preview {
-    let appUIState = AppUIState(isSidebarOpen: true)
-    let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
-
-    struct PreviewWrapper: View {
-        @State var appRoute: AppRouteState
-
-        var body: some View {
-            SidebarScreen(screenModel: .init(appRoute: appRoute, systemFolders: PreviewData.systemFolders))
+            .padding(.vertical, DS.Spacing.medium)
+            .padding(.horizontal, DS.Spacing.extraLarge)
+            .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
         }
     }
-    return PreviewWrapper(appRoute: route).environmentObject(appUIState)
+
+    private var separator: some View {
+        Divider()
+            .frame(height: 1)
+            .background(DS.Color.Sidebar.separator)
+    }
+
+    private var appVersionNote: some View {
+        Text("Version number \(mainBundle.appVersion)".notLocalized)
+            .font(.footnote)
+            .foregroundStyle(DS.Color.Sidebar.textWeak)
+            .padding(.top, DS.Spacing.jumbo)
+            .padding(.bottom, DS.Spacing.extraLarge)
+    }
+
+    private func closeSidebarAction() {
+        appUIState.isSidebarOpen = false
+    }
+
+    private func select(item: SidebarItem) {
+        screenModel.select(sidebarItem: item)
+        selectedItem(item)
+        appUIState.isSidebarOpen = !item.isSelectable
+
+        if item.isShareLogsItem {
+            onShareLogsTap()
+        }
+    }
+
+    private func onShareLogsTap() {
+        let fileManager = FileManager.default
+        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
+        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
+        let activityVC = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(activityVC, animated: true)
+    }
+
 }
 
 private struct SidebarScreenIdentifiers {
     static let rootItem = "sidebar.rootItem"
-    static let button = "sidebar.button"
     static let folderIcon = "sidebar.button.folderIcon"
     static let labelText = "sidebar.button.labelText"
     static let badgeIcon = "sidebar.button.badgeIcon"
+}
+
+private struct HeaderHeightPreferenceKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+private extension SidebarItem {
+
+    var isShareLogsItem: Bool {
+        guard case .other(let otherItem) = self else {
+            return false
+        }
+        return otherItem.type == .shareLogs
+    }
+
 }

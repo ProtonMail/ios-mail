@@ -45,6 +45,9 @@
     "All Mail" : {
       "comment" : "`Menu title of all emails in the sidebar."
     },
+    "All Sent" : {
+      "comment" : "Menu title of all sent emails in the sidebar."
+    },
     "Also archive?" : {
       "comment" : "Switch title for moving message to `Archive` folder."
     },

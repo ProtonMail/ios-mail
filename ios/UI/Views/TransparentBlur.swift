@@ -15,15 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import XCTest
+import SwiftUI
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[SidebarScreenIdentifiers.rootItem]
+struct TransparentBlur: UIViewRepresentable {
+
+    func makeUIView(context: Context) -> some UIView {
+        TransparentBlurView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
     }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
+
 }
 
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
+private class TransparentBlurView: UIVisualEffectView {
+
+    override func layoutSublayers(of layer: CALayer) {
+        layer.sublayers?.first?.filters?.removeAll(where: { filter in
+            String(describing: filter) != "gaussianBlur"
+        })
+    }
+
 }

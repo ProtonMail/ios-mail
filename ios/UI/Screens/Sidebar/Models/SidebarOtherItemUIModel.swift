@@ -15,15 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import XCTest
+import SwiftUI
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[SidebarScreenIdentifiers.rootItem]
+struct SidebarOtherItemUIModel: Equatable {
+    enum ItemType: String, Equatable {
+        case settings
+        case subscriptions
+        case shareLogs
+
+        var isSelectable: Bool {
+            switch self {
+            case .settings, .subscriptions:
+                return true
+            case .shareLogs:
+                return false
+            }
+        }
     }
-}
 
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
+    let isSelected: Bool
+    let type: ItemType
+    let icon: UIImage
+    let name: String
 }

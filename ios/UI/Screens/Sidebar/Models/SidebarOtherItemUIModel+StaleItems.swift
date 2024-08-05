@@ -15,15 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import XCTest
+import DesignSystem
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[SidebarScreenIdentifiers.rootItem]
+extension Array where Element == SidebarOtherItemUIModel {
+
+    static var staleItems: [Element] {
+        [
+            .init(
+                isSelected: false,
+                type: .subscriptions,
+                icon: DS.Icon.icPencil,
+                name: L10n.Settings.subscription.string
+            ),
+            .init(
+                isSelected: false,
+                type: .settings,
+                icon: DS.Icon.icCogWheel,
+                name: L10n.Settings.accountSettings.string
+            ),
+            .init(
+                isSelected: false,
+                type: .shareLogs,
+                icon: DS.Icon.icBug,
+                name: "Share logs".notLocalized
+            )
+        ]
     }
-}
 
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
 }

@@ -18,20 +18,19 @@
 import proton_mail_uniffi
 import SwiftUI
 
-final class SidebarModel: ObservableObject, Sendable {
-    @ObservedObject private var appRoute: AppRouteState
+@Observable
+final class SidebarModel: ObservableObject {
+    var state: SidebarState
 
-    private(set) var systemFolders: [SidebarCellUIModel]
+    var sidebarState: [SidebarItem] {
+        state.system.map(SidebarItem.system) + state.other.map(SidebarItem.other)
+    }
+
     private var systemFolderQuery: MailLabelsLiveQuery?
     private let dependencies: Dependencies
 
-    var route: Route {
-        appRoute.route
-    }
-
-    init(appRoute: AppRouteState, systemFolders: [SidebarCellUIModel] = [], dependencies: Dependencies = .init()) {
-        self.appRoute = appRoute
-        self.systemFolders = systemFolders
+    init(state: SidebarState = .init(system: [], other: .staleItems), dependencies: Dependencies = .init()) {
+        self.state = state
         self.dependencies = dependencies
     }
 
@@ -39,62 +38,68 @@ final class SidebarModel: ObservableObject, Sendable {
         await initLiveQuery()
     }
 
+    func select(sidebarItem: SidebarItem) {
+        guard sidebarItem.isSelectable else { return }
+        unselect()
+        switch sidebarItem {
+        case .system(let systemFolder):
+            select(item: systemFolder, keyPath: \.system)
+        case .other(let otherItem):
+            select(item: otherItem, keyPath: \.other)
+        }
+    }
+
+    // MARK: - Private
+
     private func initLiveQuery() async {
         guard let userContext = dependencies.appContext.activeUserSession else { return }
         systemFolderQuery = userContext.newSystemLabelsObservedQuery(cb: self)
     }
 
-    @MainActor
     private func updateData() {
         guard let systemFolderQuery else { return }
         do {
-            let folders = try systemFolderQuery.value()
-            setInitialMailboxByLabelIfNeeded(from: folders)
-            systemFolders = folders.compactMap { $0.systemFolderToSidebarCellUIModel() }
+            let selectedSystemItem = state.system.first(where: { $0.isSelected })
+            let systemFolders = try systemFolderQuery.value()
+                .compactMap(\.systemFolder)
+                .map { $0.copy(isSelected: $0.selectionIdentifier == selectedSystemItem?.selectionIdentifier) }
+
+            state.system = systemFolders
+            selectFirstIfNeeded()
         } catch {
             AppLogger.log(error: error)
         }
     }
-    
-    /// If we we still have `inbox` as a hardcoded mailbox, we update the route with the local label id
-    private func setInitialMailboxByLabelIfNeeded(from folders: [LocalLabelWithCount]) {
-        guard appRoute.route.isInboxHardcoded, let firstSystemFolders = folders.first else {
-            return
-        }
-        var systemFolder: SystemFolderIdentifier? = nil
-        if let rid = firstSystemFolders.rid, let remoteId = UInt64(rid) {
-            systemFolder = SystemFolderIdentifier(rawValue: remoteId)
-        }
-        let selectedMailbox = SelectedMailbox.label(
-            localLabelId: firstSystemFolders.id,
-            name: firstSystemFolders.name.stringResource,
-            systemFolder: systemFolder
-        )
-        appRoute.updateRoute(to: .mailbox(selectedMailbox: selectedMailbox))
+
+    private func select<Item: SelectableItem>(
+        item: Item,
+        keyPath: WritableKeyPath<SidebarState, [Item]>
+    ) where Item.SelectableItemType == Item {
+        state[keyPath: keyPath] = state[keyPath: keyPath]
+            .map { $0.copy(isSelected: item.selectionIdentifier == $0.selectionIdentifier) }
     }
 
-    @MainActor
-    func updateRoute(newRoute: Route) {
-        appRoute.updateRoute(to: newRoute)
+    private func unselect() {
+        state.system = state.system.map { $0.copy(isSelected: false) }
+        state.other = state.other.map { $0.copy(isSelected: false) }
     }
 
-    @MainActor
-    func onShareLogsTap() {
-        let fileManager = FileManager.default
-        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
-        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
-        let activityVC = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
-        UIApplication.shared.keyWindow?.rootViewController?.present(activityVC, animated: true)
+    private func selectFirstIfNeeded() {
+        if sidebarState.filter(\.isSelected).isEmpty, let first = sidebarState.first(where: { $0.isSelectable }) {
+            select(sidebarItem: first)
+        }
     }
+
 }
 
-extension SidebarModel: MailboxLiveQueryUpdatedCallback {
-    
+extension SidebarModel: MailboxLiveQueryUpdatedCallback, Sendable {
+
     func onUpdated() {
-        Task {
+        Task { @MainActor in
             updateData()
         }
     }
+
 }
 
 extension SidebarModel {
@@ -102,4 +107,5 @@ extension SidebarModel {
     struct Dependencies {
         let appContext: AppContext = .shared
     }
+
 }

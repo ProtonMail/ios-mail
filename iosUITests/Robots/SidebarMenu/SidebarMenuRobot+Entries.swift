@@ -47,6 +47,10 @@ extension SidebarMenuRobot {
         
         model.findElement()
         model.tap()
+    
+        // We wait for the root to disappear here because we don't expect a use case
+        // where tapping an entry would not collapse the Sidebar Menu.
+        rootElement.waitUntilGone()
     }
 
     func hasEntries(_ entries: UITestSidebarListItemEntry...) {

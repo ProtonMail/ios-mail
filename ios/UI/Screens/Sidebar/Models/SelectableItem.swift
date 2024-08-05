@@ -16,14 +16,39 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 
-final class SidebarMenuRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[SidebarScreenIdentifiers.rootItem]
-    }
+protocol SelectableItem {
+    associatedtype SelectableItemType
+
+    var selectionIdentifier: String { get }
+    func copy(isSelected: Bool) -> SelectableItemType
 }
 
-private struct SidebarScreenIdentifiers {
-    static let rootItem = "sidebar.rootItem"
+extension SidebarSystemFolderUIModel: SelectableItem {
+
+    var selectionIdentifier: String {
+        "\(identifier.rawValue)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            isSelected: isSelected,
+            localID: localID,
+            identifier: identifier,
+            unreadCount: unreadCount
+        )
+    }
+
+}
+
+extension SidebarOtherItemUIModel: SelectableItem {
+
+    var selectionIdentifier: String {
+        type.rawValue
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(isSelected: isSelected, type: type, icon: icon, name: name)
+    }
+
 }

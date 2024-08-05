@@ -20,13 +20,6 @@ import SwiftUI
 
 enum PreviewData {
 
-    static var systemFolders: [SidebarCellUIModel] { 
-        [
-            .init(id: 1, name: "Inbox", icon: DS.Icon.icInbox, badge: "3", route: .mailbox(selectedMailbox: .label(localLabelId: 4, name: "Inbox", systemFolder: .inbox))),
-            .init(id: 2, name: "Settings", icon: DS.Icon.icCogWheel, badge: "", route: .settings)
-        ]
-    }
-
     static var mailboxConversations: [MailboxItemCellUIModel] {
 
         let conversations: [MailboxItemCellUIModel] = (1..<100).map { value in
