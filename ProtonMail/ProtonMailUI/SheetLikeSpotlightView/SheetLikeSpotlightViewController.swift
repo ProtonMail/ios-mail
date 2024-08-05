@@ -24,6 +24,7 @@ public final class HostingProvider {
 }
 
 public final class SheetLikeSpotlightViewController<Content>: UIHostingController<Content> where Content: View {
+    public var onDismiss: (@MainActor () -> Void)?
 
     public override init(rootView: Content) {
         super.init(rootView: rootView)
@@ -43,6 +44,14 @@ public final class SheetLikeSpotlightViewController<Content>: UIHostingControlle
         coordinator.animate { _ in
             let newFrame = self.presentingViewController?.view.bounds ?? .zero
             self.view.frame = newFrame
+        }
+    }
+
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if isBeingDismissed {
+            onDismiss?()
         }
     }
 }

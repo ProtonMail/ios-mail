@@ -102,4 +102,34 @@ final class UpsellCoordinatorTests: XCTestCase {
         let presentedViewController = await rootViewController.presentedViewController
         XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<UpsellPage>)
     }
+
+    @MainActor
+    func testOnDismissCallback_inModernFlow() async {
+        var onDismissCalled = false
+
+        await sut.start(entryPoint: entryPoint) {
+            onDismissCalled = true
+        }
+
+        let presentedViewController = rootViewController.presentedViewController
+        await presentedViewController?.dismiss(animated: false)
+
+        XCTAssert(onDismissCalled)
+    }
+
+    @MainActor
+    func testOnDismissCallback_inLegacyFlow() async {
+        upsellOfferProvider.updateStub.bodyIs { _ in }
+
+        var onDismissCalled = false
+
+        await sut.start(entryPoint: entryPoint) {
+            onDismissCalled = true
+        }
+
+        let topMostViewController = UIApplication.firstKeyWindow?.topMostViewController
+        await topMostViewController?.dismiss(animated: false)
+
+        XCTAssert(onDismissCalled)
+    }
 }

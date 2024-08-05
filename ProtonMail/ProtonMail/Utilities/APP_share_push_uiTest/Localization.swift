@@ -1610,11 +1610,7 @@ enum L10n {
         static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")
         static let nextWeek = NSLocalizedString("Next week", comment: "One of snooze option shows in action sheet")
         static let selectTimeInFuture = NSLocalizedString("Please select a time in the future", comment: "An error message will be shown to user when user select past snooze time")
-        static let promotionTitle = NSLocalizedString("Want to snooze any time?", comment: "The title of snooze promotion view")
-        static let promotionDesc = NSLocalizedString("Unlock custom snooze times when you upgrade", comment: "The content description of snooze promotion view")
-        static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
         static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
-        static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
     }
 
 	struct InlineAttachment {
@@ -1676,5 +1672,7 @@ enum L10n {
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
         static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
         static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let snoozeTitle = NSLocalizedString("Bad time for this email?", comment: "Title of the upsell page")
+        static let snoozeDescription = NSLocalizedString("Snooze it for a time of your choosing. Get custom snooze and more with %@.", comment: "Subtitle of the upsell page")
     }
 }

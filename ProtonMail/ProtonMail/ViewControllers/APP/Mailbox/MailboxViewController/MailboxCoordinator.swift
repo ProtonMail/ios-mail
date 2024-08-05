@@ -708,6 +708,12 @@ extension MailboxCoordinator: SnoozeSupport {
     }
 
     func presentPaymentView() {
-        viewController?.presentPayments(paidFeature: .snooze)
+        viewController?.presentUpsellPage(entryPoint: .snooze) { [unowned self] in
+            guard let viewController else {
+                return
+            }
+
+            presentSnoozeConfigSheet(on: viewController, current: Date())
+        }
     }
 }

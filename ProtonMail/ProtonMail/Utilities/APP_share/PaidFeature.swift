@@ -18,5 +18,5 @@
 import Foundation
 
 enum PaidFeature {
-    case snooze, autoDelete
+    case autoDelete
 }

@@ -33,6 +33,8 @@ final class UpsellCoordinator {
     & HasUpsellTelemetryReporter
     & HasUserManager
 
+    typealias OnDismissCallback = @MainActor () -> Void
+
     private let dependencies: Dependencies
     private weak var rootViewController: UIViewController?
     private var paymentsUI: PaymentsUI?
@@ -42,17 +44,17 @@ final class UpsellCoordinator {
         self.rootViewController = rootViewController
     }
 
-    func start(entryPoint: UpsellPageEntryPoint) {
+    func start(entryPoint: UpsellPageEntryPoint, onDismiss: OnDismissCallback? = nil) {
         Task {
-            await start(entryPoint: entryPoint)
+            await start(entryPoint: entryPoint, onDismiss: onDismiss)
         }
     }
 
-    func start(entryPoint: UpsellPageEntryPoint) async {
+    func start(entryPoint: UpsellPageEntryPoint, onDismiss: OnDismissCallback? = nil) async {
         if let availablePlan = await prepareAvailablePlan() {
-            await presentUpsellPage(availablePlan: availablePlan, entryPoint: entryPoint)
+            await presentUpsellPage(availablePlan: availablePlan, entryPoint: entryPoint, onDismiss: onDismiss)
         } else {
-            await fallBackToCorePaymentsUI()
+            await fallBackToCorePaymentsUI(onDismiss: onDismiss)
         }
     }
 
@@ -80,7 +82,8 @@ final class UpsellCoordinator {
 
     private func presentUpsellPage(
         availablePlan: AvailablePlans.AvailablePlan,
-        entryPoint: UpsellPageEntryPoint
+        entryPoint: UpsellPageEntryPoint,
+        onDismiss: OnDismissCallback?
     ) async {
         dependencies.upsellTelemetryReporter.prepare()
 
@@ -92,6 +95,7 @@ final class UpsellCoordinator {
 
         let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
         hostingController.modalTransitionStyle = .crossDissolve
+        hostingController.onDismiss = onDismiss
         rootViewController?.present(hostingController, animated: false)
 
         await dependencies.upsellTelemetryReporter.upsellButtonTapped()
@@ -142,17 +146,28 @@ final class UpsellCoordinator {
 
     // MARK: legacy Core flow
 
-    private func fallBackToCorePaymentsUI() async {
+    private func fallBackToCorePaymentsUI(onDismiss: OnDismissCallback?) async {
         let paymentsUI = dependencies.paymentsUIFactory.makeView()
 
         await withCheckedContinuation { continuation in
             // this is necessary because showUpgradePlan completion handler is called several times
             let nullableContinuation: Atomic<CheckedContinuation<Void, Never>?> = .init(continuation)
 
-            paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in
+            paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { resultReason in
                 nullableContinuation.mutate {
                     $0?.resume()
                     $0 = nil
+                }
+
+                switch resultReason {
+                case .close:
+                    onDismiss?()
+                case .purchasedPlan:
+                    Task {
+                        await self.dependencies.user.fetchUserInfo()
+                    }
+                default:
+                    break
                 }
             }
         }

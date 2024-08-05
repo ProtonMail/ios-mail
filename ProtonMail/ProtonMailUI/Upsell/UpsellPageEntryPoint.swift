@@ -15,45 +15,52 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
 public enum UpsellPageEntryPoint: Sendable {
-    case header
     case contactGroups
+    case header
+    case snooze
 
     var logo: ImageResource {
         switch self {
-        case .header:
-            return .upsellDefaultLogo
         case .contactGroups:
             return .upsellContactGroupsLogo
+        case .header:
+            return .upsellDefaultLogo
+        case .snooze:
+            return .upsellSnoozeLogo
         }
     }
 
-    var logoPadding: CGFloat {
+    var logoPadding: EdgeInsets {
         switch self {
+        case .contactGroups, .snooze:
+            return .init(top: -20, leading: 0, bottom: 20, trailing: 0)
         case .header:
-            -20
-        case .contactGroups:
-            0
+            return .init(top: -40, leading: 0, bottom: -20, trailing: 0)
         }
     }
 
     func title(planName: String) -> String {
         switch self {
-        case .header:
-            return String(format: L10n.Upsell.upgradeToPlan, planName)
         case .contactGroups:
             return L10n.Upsell.contactGroupsTitle
+        case .header:
+            return String(format: L10n.Upsell.upgradeToPlan, planName)
+        case .snooze:
+            return L10n.Upsell.snoozeTitle
         }
     }
 
     func subtitle(planName: String) -> String {
         switch self {
-        case .header:
-            return L10n.Upsell.mailPlusDescription
         case .contactGroups:
             return String(format: L10n.Upsell.contactGroupsDescription, planName)
+        case .header:
+            return L10n.Upsell.mailPlusDescription
+        case .snooze:
+            return String(format: L10n.Upsell.snoozeDescription, planName)
         }
     }
 }
