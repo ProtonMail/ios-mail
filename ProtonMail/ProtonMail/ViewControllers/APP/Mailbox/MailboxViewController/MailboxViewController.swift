@@ -607,13 +607,16 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         handleShadow(isScrolled: scrollView.contentOffset.y > 0)
     }
 
+    func presentUpsellPage(entryPoint: UpsellPageEntryPoint, onDismiss: UpsellCoordinator.OnDismissCallback? = nil) {
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: entryPoint, onDismiss: onDismiss)
+    }
+
     // MARK: - Button Targets
 
     @objc
     func upsellButtonTapped() {
-        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
-        upsellCoordinator?.start(entryPoint: .header)
-
+        presentUpsellPage(entryPoint: .header)
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
     }
@@ -2920,18 +2923,7 @@ extension MailboxViewController {
         paymentsUI?.showUpgradePlan(
             presentationType: .modal,
             backendFetch: true,
-            completionHandler: { [weak self] reason in
-                switch reason {
-                case .purchasedPlan:
-                    if paidFeature == .snooze {
-                        Task {
-                            await self?.viewModel.user.fetchUserInfo()
-                            self?.clickSnoozeActionButton()
-                        }
-                    }
-                default:
-                    break
-                }
+            completionHandler: { _ in
             })
     }
 }

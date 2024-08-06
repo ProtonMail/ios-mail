@@ -231,14 +231,12 @@ extension PromotionView: UIGestureRecognizerDelegate {
 
 extension PromotionView {
     enum PromotionType {
-        case scheduleSend, snooze
+        case scheduleSend
 
         var title: String {
             switch self {
             case .scheduleSend:
                 return L10n.ScheduledSend.upSellTitle
-            case .snooze:
-                return L10n.Snooze.promotionTitle
             }
         }
 
@@ -246,8 +244,6 @@ extension PromotionView {
             switch self {
             case .scheduleSend:
                 return L10n.ScheduledSend.upSellContent
-            case .snooze:
-                return L10n.Snooze.promotionDesc
             }
         }
 
@@ -255,8 +251,6 @@ extension PromotionView {
             switch self {
             case .scheduleSend:
                 return [.schedule, .folder, .storage, .addresses, .domains, .aliases]
-            case .snooze:
-                return [.storage, .snoozeAddresses, .snoozeFolder, .snoozeDomains]
             }
         }
     }
@@ -271,21 +265,18 @@ extension PromotionView {
             case addresses
             case domains
             case aliases
-            case snoozeAddresses
-            case snoozeDomains
-            case snoozeFolder
 
             var icon: UIImage {
                 switch self {
                 case .schedule:
                     return IconProvider.clockPaperPlane
-                case .folder, .snoozeFolder:
+                case .folder:
                     return IconProvider.folders
                 case .storage:
                     return IconProvider.storage
-                case .addresses, .snoozeAddresses:
+                case .addresses:
                     return IconProvider.envelopes
-                case .domains, .snoozeDomains:
+                case .domains:
                     return IconProvider.globe
                 case .aliases:
                     return IconProvider.eyeSlash
@@ -306,12 +297,6 @@ extension PromotionView {
                     return L10n.ScheduledSend.itemDomain
                 case .aliases:
                     return L10n.ScheduledSend.itemAliases
-                case .snoozeAddresses:
-                    return L10n.Snooze.addressBenefit
-                case .snoozeFolder:
-                    return L10n.Snooze.folderBenefit
-                case .snoozeDomains:
-                    return L10n.Snooze.domainBenefit
                 }
             }
         }

@@ -62,7 +62,8 @@ class ConversationViewControllerTests: XCTestCase {
                                                   goToDraft: { _, _  in },
                                                   dependencies: userContainer)
         applicationStateMock = MockApplicationStateProvider(state: .background)
-        sut = ConversationViewController(viewModel: viewModelMock,
+        sut = ConversationViewController(dependencies: userContainer,
+                                         viewModel: viewModelMock,
                                          applicationStateProvider: applicationStateMock)
     }
 

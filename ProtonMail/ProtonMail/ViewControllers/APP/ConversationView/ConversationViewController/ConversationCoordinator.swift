@@ -9,7 +9,8 @@ protocol ConversationCoordinatorProtocol: AnyObject {
 }
 
 class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordinatorProtocol {
-    typealias Dependencies = HasComposerViewFactory
+    typealias Dependencies = ConversationViewController.Dependencies
+    & HasComposerViewFactory
     & HasContactViewsFactory
     & HasToolbarSettingViewFactory
     & HasSaveToolbarActionSettings
@@ -73,7 +74,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 self?.goToDraft?(msgID, originalScheduledTime)
             },
             dependencies: dependencies)
-        let viewController = ConversationViewController(viewModel: viewModel)
+        let viewController = ConversationViewController(dependencies: dependencies, viewModel: viewModel)
         self.viewController = viewController
         return viewController
     }

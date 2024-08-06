@@ -23,7 +23,6 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreDataModel
-import ProtonCorePaymentsUI
 import protocol ProtonCoreServices.APIService
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
@@ -32,12 +31,15 @@ import UIKit
 // swiftlint:disable:next type_body_length
 final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     LifetimeTrackable, ScheduledAlertPresenter {
+    typealias Dependencies = HasPaymentsUIFactory
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
     }
 
     let viewModel: ConversationViewModel
 
+    private let dependencies: Dependencies
     private let applicationStateProvider: ApplicationStateProvider
     private(set) lazy var customView = ConversationView()
     private var selectedMessageID: MessageID?
@@ -51,7 +53,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
-    private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
 
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
@@ -65,9 +67,11 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     }
 
     init(
+        dependencies: Dependencies,
         viewModel: ConversationViewModel,
         applicationStateProvider: ApplicationStateProvider = UIApplication.shared
     ) {
+        self.dependencies = dependencies
         self.viewModel = viewModel
         self.applicationStateProvider = applicationStateProvider
 
@@ -1599,28 +1603,9 @@ extension ConversationViewController: SnoozeSupport {
     }
 
     func presentPaymentView() {
-        paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        paymentsUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true
-        ) { [weak self] reason in
-            switch reason {
-            case .purchasedPlan:
-                guard let self else { return }
-                Task {
-                    await self.viewModel.user.fetchUserInfo()
-                    await MainActor.run {
-                        self.presentSnoozeConfigSheet(on: self, current: Date())
-                    }
-                }
-            default:
-                break
-            }
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: .snooze) { [unowned self] in
+            self.presentSnoozeConfigSheet(on: self, current: Date())
         }
     }
 
