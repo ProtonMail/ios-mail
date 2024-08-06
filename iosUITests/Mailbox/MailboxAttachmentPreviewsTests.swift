@@ -172,20 +172,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "image.png")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules)
-            
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Attachments Test 1",
-            date: "Jul 25",
-            attachmentPreviews: attachmentPreviews
-        )
         
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -208,20 +199,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile_reply.zip")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules)
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Re: Multiple attachments and embedded images",
-            date: "Jul 29",
-            attachmentPreviews: attachmentPreviews
-        )
-        
+
         navigator.navigateTo(UITestDestination.sent)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -241,20 +223,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "first.png")
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 4)
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Multiple attachments",
-            date: "Jul 25",
-            attachmentPreviews: attachmentPreviews
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -268,20 +241,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Test only embedded image",
-            date: "Jul 29"
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
     
@@ -296,20 +260,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Multiple attachments",
-            date: "Jul 29"
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
     
@@ -324,20 +279,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Multiple attachments",
-            date: "Jul 29"
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
     
@@ -354,20 +300,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "image.png")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: nil)
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "One embedded, one standard",
-            date: "Jul 29",
-            attachmentPreviews: attachmentPreviews
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -388,19 +325,10 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 5)
         
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898",
-            subject: "Multiple attachments and embedded images",
-            date: "Jul 29",
-            attachmentPreviews: attachmentPreviews
-        )
-        
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -421,20 +349,10 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 7)
         
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898, chirpyflamingo",
-            subject: "Multiple attachments and embedded images",
-            date: "Jul 29",
-            count: 3,
-            attachmentPreviews: attachmentPreviews
-        )
-        
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
     
@@ -455,20 +373,11 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 1)
-        
-        let entry = UITestMailboxListItemEntry(
-            index: 0,
-            avatar: .initials("P"),
-            sender: "proton898, chirpyflamingo",
-            subject: "Test multiple + ICS/ASC",
-            date: "Jul 29",
-            attachmentPreviews: attachmentPreviews
-        )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
         
         MailboxRobot {
-            $0.hasEntries(entries: entry)
+            $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
 }

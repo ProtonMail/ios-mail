@@ -96,10 +96,19 @@ extension MailboxRobot {
             hasEntry(entry: entry)
         }
     }
-    
     func hasNoEntries() {
         let model = UITestMailboxListItemEntryModel(index: 0)
         model.doesNotExist()
+    }
+    
+    func hasAttachmentPreviewEntries(index: Int, entries: UITestAttachmentPreviewItemEntry) {
+        let model = UITestMailboxListItemEntryModel(index: index)
+        model.hasAttachmentPreviews(entry: entries)
+    }
+    
+    func hasNoAttachmentPreviewEntries(index: Int) {
+        let model = UITestMailboxListItemEntryModel(index: index)
+        model.hasNoAttachmentPreviews()
     }
     
     private func hasEntry(entry: UITestMailboxListItemEntry) {
