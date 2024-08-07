@@ -20,6 +20,7 @@ import SwiftUI
 public enum UpsellPageEntryPoint: Sendable {
     case contactGroups
     case header
+    case scheduleSend
     case snooze
 
     var logo: ImageResource {
@@ -28,6 +29,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return .upsellContactGroupsLogo
         case .header:
             return .upsellDefaultLogo
+        case .scheduleSend:
+            return .upsellScheduleSendLogo
         case .snooze:
             return .upsellSnoozeLogo
         }
@@ -38,7 +41,9 @@ public enum UpsellPageEntryPoint: Sendable {
         case .contactGroups, .snooze:
             return .init(top: -20, leading: 0, bottom: 20, trailing: 0)
         case .header:
-            return .init(top: -40, leading: 0, bottom: -20, trailing: 0)
+            return .init(top: -50, leading: 0, bottom: -10, trailing: 0)
+        case .scheduleSend:
+            return .init(top: -20, leading: 0, bottom: 10, trailing: 0)
         }
     }
 
@@ -48,6 +53,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return L10n.Upsell.contactGroupsTitle
         case .header:
             return String(format: L10n.Upsell.upgradeToPlan, planName)
+        case .scheduleSend:
+            return L10n.Upsell.scheduleSendTitle
         case .snooze:
             return L10n.Upsell.snoozeTitle
         }
@@ -59,6 +66,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return String(format: L10n.Upsell.contactGroupsDescription, planName)
         case .header:
             return L10n.Upsell.mailPlusDescription
+        case .scheduleSend:
+            return String(format: L10n.Upsell.scheduleSendDescription, planName)
         case .snooze:
             return String(format: L10n.Upsell.snoozeDescription, planName)
         }

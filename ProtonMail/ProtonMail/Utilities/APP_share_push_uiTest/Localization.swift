@@ -1438,15 +1438,6 @@ enum L10n {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
         static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
         static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
-        static let upSellTitle = NSLocalizedString("Set your own schedule", comment: "The title of the up sell content of the scheduled send.")
-        static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
-        static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
-        static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
         static let inTheMorning = NSLocalizedString("In the morning", comment: "One of schedule time options")
     }
 
@@ -1672,6 +1663,8 @@ enum L10n {
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
         static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
         static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let scheduleSendTitle = NSLocalizedString("Schedule now, send later", comment: "Title of the upsell page")
+        static let scheduleSendDescription = NSLocalizedString("Enjoy custom schedule send and other premium features with %@.", comment: "Subtitle of the upsell page")
         static let snoozeTitle = NSLocalizedString("Bad time for this email?", comment: "Title of the upsell page")
         static let snoozeDescription = NSLocalizedString("Snooze it for a time of your choosing. Get custom snooze and more with %@.", comment: "Subtitle of the upsell page")
     }

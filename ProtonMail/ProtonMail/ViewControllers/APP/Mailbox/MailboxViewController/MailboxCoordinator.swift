@@ -24,6 +24,7 @@ import class ProtonCoreDataModel.UserInfo
 import ProtonCoreTroubleShooting
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import SideMenuSwift
 import protocol ProtonCoreServices.APIService
 
@@ -200,7 +201,14 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 nav.present(composer, animated: true)
             }
         case .composeMailto where path.value != nil:
-            followToComposeMailTo(path: path.value)
+            let upsellPageEntryPoint: UpsellPageEntryPoint?
+            if deeplink.first?.name == "toUpsellPage", deeplink.first?.value == "scheduleSend" {
+                upsellPageEntryPoint = .scheduleSend
+            } else {
+                upsellPageEntryPoint = nil
+            }
+
+            followToComposeMailTo(path: path.value, upsellPageEntryPoint: upsellPageEntryPoint)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
                   let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
@@ -249,7 +257,8 @@ extension MailboxCoordinator {
     private func navigateToComposer(
         existingMessage: MessageEntity?,
         isEditingScheduleMsg: Bool = false,
-        originalScheduledTime: Date? = nil
+        originalScheduledTime: Date? = nil,
+        upsellPageEntryPoint: UpsellPageEntryPoint? = nil
     ) {
         guard let navigationVC = navigation else {
             return
@@ -261,7 +270,13 @@ extension MailboxCoordinator {
             originalScheduledTime: originalScheduledTime,
             composerDelegate: viewController
         )
-        navigationVC.present(composer, animated: true)
+
+        navigationVC.present(composer, animated: true) {
+            if let upsellPageEntryPoint {
+                let actualComposer = composer.viewControllers.first as? ComposeContainerViewController
+                actualComposer?.presentUpsellPage(entryPoint: upsellPageEntryPoint)
+            }
+        }
     }
 
     private func presentSearch() {
@@ -289,10 +304,10 @@ extension MailboxCoordinator {
         }
     }
 
-    private func followToComposeMailTo(path: String?) {
+    private func followToComposeMailTo(path: String?, upsellPageEntryPoint: UpsellPageEntryPoint?) {
         if let msgID = path,
            let msg = fetchMessage(by: .init(msgID)) {
-            navigateToComposer(existingMessage: msg)
+            navigateToComposer(existingMessage: msg, upsellPageEntryPoint: upsellPageEntryPoint)
             return
         }
 
