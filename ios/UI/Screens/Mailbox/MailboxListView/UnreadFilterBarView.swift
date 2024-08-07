@@ -32,11 +32,13 @@ struct UnreadFilterBarView: View {
                     Text(L10n.Mailbox.unread)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
+                        .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
 
                     Text(unread.magnitude.toBadgeCapped(at: 99))
                         .font(.caption)
                         .fontWeight(.bold)
                         .foregroundStyle(DS.Color.Text.norm)
+                        .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
                 }
             }
             .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -55,6 +57,7 @@ struct UnreadFilterBarView: View {
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.standard)
         .background(DS.Color.Background.norm)
+        .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
     }
 }
 
@@ -68,4 +71,10 @@ struct UnreadFilterBarView: View {
     }
 
     return Preview()
+}
+
+private struct UnreadFilterIdentifiers {
+    static let rootElement = "unread.filter.button"
+    static let countLabel = "unread.filter.label"
+    static let countValue = "unread.filter.value"
 }
