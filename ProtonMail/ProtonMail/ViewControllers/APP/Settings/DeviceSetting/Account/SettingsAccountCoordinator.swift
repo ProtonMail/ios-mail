@@ -28,6 +28,7 @@ import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
 import ProtonCoreFeatureFlags
+import ProtonMailUI
 import UIKit
 
 // sourcery: mock
@@ -115,7 +116,11 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .signature:
             openSettingDetail(ofType: ChangeSignatureViewModel.self)
         case .mobileSignature:
-            openSettingDetail(ofType: ChangeMobileSignatureViewModel.self)
+            if user.hasPaidMailPlan {
+                openSettingDetail(ofType: ChangeMobileSignatureViewModel.self)
+            } else {
+                presentUpsellView(entryPoint: .mobileSignature)
+            }
         case .privacy:
             openPrivacy()
         case .labels:
@@ -134,7 +139,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             if user.hasPaidMailPlan {
                 openAutoDeleteSettings()
             } else {
-                presentAutoDeleteUpsellView()
+                presentUpsellView(entryPoint: .autoDelete)
             }
         case .privacyAndData:
             openPrivacyAndDataSetting()
@@ -190,7 +195,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
         let viewModel = viewModelType.init(user: user, coreKeyMaker: dependencies.keyMaker)
-        let sdvc = SettingDetailViewController(viewModel: viewModel, dependencies: dependencies)
+        let sdvc = SettingDetailViewController(viewModel: viewModel)
         self.navigationController?.show(sdvc, sender: nil)
     }
 
@@ -291,14 +296,14 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         navigationController?.show(viewController, sender: nil)
     }
 
-    private func presentAutoDeleteUpsellView() {
+    private func presentUpsellView(entryPoint: UpsellPageEntryPoint) {
         Task { @MainActor in
             guard let navigationController else {
                 return
             }
 
             upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: navigationController)
-            upsellCoordinator?.start(entryPoint: .autoDelete)
+            upsellCoordinator?.start(entryPoint: entryPoint)
         }
     }
 

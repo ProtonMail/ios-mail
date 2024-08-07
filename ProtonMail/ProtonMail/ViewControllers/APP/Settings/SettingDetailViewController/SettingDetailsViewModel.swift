@@ -35,7 +35,6 @@ protocol SettingDetailsViewModel {
     func getCurrentValue() -> String
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void)
     func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void)
-    func isSwitchEnabled() -> Bool
     func getNotes() -> String
     func needAsk2FA() -> Bool
 }
@@ -110,10 +109,6 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
 
     func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void) {
         complete(true, nil)
-    }
-
-    func isSwitchEnabled() -> Bool {
-        return true
     }
 
     func getNotes() -> String {
@@ -206,10 +201,6 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
         complete(true, nil)
     }
 
-    func isSwitchEnabled() -> Bool {
-        return true
-    }
-
     func getNotes() -> String {
         return ""
     }
@@ -299,10 +290,6 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
             userManager.showMobileSignature = isOn
             complete(true, nil)
         }
-    }
-
-    func isSwitchEnabled() -> Bool {
-        return userManager.hasPaidMailPlan
     }
 
     func getNotes() -> String {
@@ -398,10 +385,6 @@ class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
                 }
             )
         }
-    }
-
-    func isSwitchEnabled() -> Bool {
-        return true
     }
 
     func getNotes() -> String {

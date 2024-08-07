@@ -1660,6 +1660,8 @@ enum L10n {
         static let autoDeleteDescription = NSLocalizedString("Enjoy a tidier mailbox and benefit from other premium features with %@.", comment: "Subtitle of the upsell page")
         static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
         static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let mobileSignatureTitle = NSLocalizedString("Customize your signature", comment: "Title of the upsell page")
+        static let mobileSignatureDescription = NSLocalizedString("Use your own mobile signature and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
         static let scheduleSendTitle = NSLocalizedString("Schedule now, send later", comment: "Title of the upsell page")
         static let scheduleSendDescription = NSLocalizedString("Enjoy custom schedule send and other premium features with %@.", comment: "Subtitle of the upsell page")
         static let snoozeTitle = NSLocalizedString("Bad time for this email?", comment: "Title of the upsell page")
