@@ -7,7 +7,7 @@ enum Keyframes {
 
   // MARK: Internal
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T>(
@@ -24,7 +24,7 @@ enum Keyframes {
       })
   }
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T1, T2, CombinedResult>(
@@ -49,7 +49,7 @@ enum Keyframes {
       })
   }
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T1, T2, T3, CombinedResult>(
@@ -75,7 +75,7 @@ enum Keyframes {
       })
   }
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T1, T2, T3, T4, T5, T6, T7, CombinedResult>(
@@ -110,7 +110,7 @@ enum Keyframes {
       })
   }
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T1, T2, T3, T4, T5, T6, T7, T8, CombinedResult>(
@@ -147,7 +147,7 @@ enum Keyframes {
       })
   }
 
-  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of of `Keyframe<[T]>`s
+  /// Combines the given keyframe groups of `Keyframe<T>`s into a single keyframe group of `Keyframe<[T]>`s
   ///  - If all of the `KeyframeGroup`s have the exact same animation timing, the keyframes are merged
   ///  - Otherwise, the keyframes are manually interpolated at each frame in the animation
   static func combined<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, CombinedResult>(

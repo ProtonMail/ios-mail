@@ -449,7 +449,7 @@ open class Node: Equatable, Hashable {
 
     /**
      * Replace this node in the DOM with the supplied node.
-     * @param in the node that will will replace the existing node.
+     * @param in the node that will replace the existing node.
      */
     public func replaceWith(_ input: Node)throws {
         try Validate.notNull(obj: input)
