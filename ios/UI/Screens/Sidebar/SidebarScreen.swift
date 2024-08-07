@@ -81,7 +81,7 @@ struct SidebarScreen: View {
 
     private var header: some View {
         VStack(alignment: .leading) {
-            Image(uiImage: DS.Images.mailProductLogo)
+            Image(DS.Images.mailProductLogo)
                 .padding(.leading, DS.Spacing.extraLarge)
                 .padding(.vertical, DS.Spacing.small)
             separator
@@ -151,7 +151,7 @@ struct SidebarScreen: View {
     private func sidebarItemButton(for item: SidebarItem) -> some View {
         Button(action: { select(item: item) }) {
             HStack {
-                Image(uiImage: item.icon)
+                Image(item.icon)
                     .renderingMode(.template)
                     .frame(width: 20, height: 20)
                     .tint(item.isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)

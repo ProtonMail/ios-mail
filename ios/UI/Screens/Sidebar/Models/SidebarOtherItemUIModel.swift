@@ -35,6 +35,6 @@ struct SidebarOtherItemUIModel: Equatable {
 
     let isSelected: Bool
     let type: ItemType
-    let icon: UIImage
+    let icon: ImageResource
     let name: String
 }

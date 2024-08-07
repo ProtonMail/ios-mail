@@ -46,14 +46,14 @@ struct AvatarView: View {
 
     var body: some View {
         if let senderImage = avatar.senderImage {
-            senderImageView(uiImage: senderImage)
+            senderImageView(image: Image(uiImage: senderImage))
         } else if let senderParams = avatar.type.senderImageDataParameters {
             AsyncSenderImageView(senderImageParams: senderParams) { senderImage in
                 switch senderImage {
                 case .empty:
                     initialsView
                 case .image(let uiImage):
-                    senderImageView(uiImage: uiImage)
+                    senderImageView(image: Image(uiImage: uiImage))
                 }
             }
         } else {
@@ -61,8 +61,8 @@ struct AvatarView: View {
         }
     }
 
-    private func senderImageView(uiImage: UIImage) -> some View {
-        Image(uiImage: uiImage)
+    private func senderImageView(image: Image) -> some View {
+        image
             .resizable()
             .accessibilityIdentifier(AvatarViewIdentifiers.avatarImage)
     }
@@ -98,7 +98,7 @@ private struct AvatarViewIdentifiers {
     )
     let avatarUIModel3 = AvatarUIModel(
         initials: "Aa",
-        senderImage: PreviewData.senderImage,
+        senderImage: UIImage(resource: PreviewData.senderImage),
         backgroundColor: DS.Color.Brand.norm,
         type: .sender(params: senderParams)
     )

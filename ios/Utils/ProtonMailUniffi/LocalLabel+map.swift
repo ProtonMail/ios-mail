@@ -28,7 +28,7 @@ extension LocalLabel {
     
     /// - Parameter parentIds: collection of folder ids that have a subfolder
     func toFolderPickerCellUIModel(parentIds: Set<PMLocalLabelId>) -> FolderPickerCellUIModel {
-        let icon: UIImage
+        let icon: ImageResource
         if let systemFolderIcon = systemFolderIdentifier?.icon {
             icon = systemFolderIcon
         } else {

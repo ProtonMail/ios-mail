@@ -93,7 +93,7 @@ struct AttachmentCapsuleUIModel: Identifiable, Hashable {
         attachmentId
     }
     let attachmentId: PMLocalAttachmentId
-    let icon: UIImage
+    let icon: ImageResource
     let name: String
 }
 
@@ -112,7 +112,7 @@ struct AttachmentCapsuleView: View {
             onTapEvent?(uiModel.attachmentId)
         }) {
             HStack(spacing: Layout.capsuleSpacing) {
-                Image(uiImage: uiModel.icon)
+                Image(uiModel.icon)
                     .resizable()
                     .renderingMode(.original)
                     .aspectRatio(contentMode: .fill)

@@ -79,7 +79,7 @@ extension LabelPickerView {
 
     private var alsoArchiveView: some View {
         HStack(spacing: 0) {
-            Image(uiImage: DS.Icon.icArchiveBox)
+            Image(DS.Icon.icArchiveBox)
                 .foregroundStyle(DS.Color.Text.weak)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.alsoArchiveIcon)
             Toggle(isOn: $isArchiveSelected, label: {
@@ -206,7 +206,7 @@ struct LabelPickerCellUIModel: Identifiable {
 private struct LabelPickerCell: View {
     let uiModel: LabelPickerCellUIModel
 
-    private var selectionImage: UIImage {
+    private var selectionImage: ImageResource {
         if uiModel.itemsWithLabel.some {
             return DS.Icon.icMinus
         }
@@ -232,7 +232,7 @@ private struct LabelPickerCell: View {
             Spacer()
                 .frame(width: DS.Spacing.large)
 
-            Image(uiImage: selectionImage)
+            Image(selectionImage)
                 .opacity(uiModel.itemsWithLabel.atLeastOne ? 1 : 0)
                 .foregroundStyle(DS.Color.Brand.norm)
                 .accessibilityIdentifier(
@@ -249,7 +249,7 @@ private struct AddNewLabel: View {
 
     var body: some View {
         HStack() {
-            Image(uiImage: DS.Icon.icPlus)
+            Image(DS.Icon.icPlus)
                 .foregroundStyle(DS.Color.Text.weak)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.cellIcon)
             Text(L10n.Labels.newLabel)

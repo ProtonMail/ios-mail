@@ -55,7 +55,7 @@ struct MailboxActionBarView: View {
             button(for: mailboxActions.action4)
                 .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
             Button(action: {}, label: {
-                Image(uiImage: DS.Icon.icThreeDotsHorizontal)
+                Image(DS.Icon.icThreeDotsHorizontal)
             })
             .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
         }
@@ -91,7 +91,7 @@ struct MailboxActionBarView: View {
                     mailboxActionable.onActionTap(action)
                 }
             }, label: {
-                Image(uiImage: action.icon)
+                Image(action.icon)
             })
         } else {
             EmptyView()

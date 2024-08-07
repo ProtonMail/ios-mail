@@ -32,7 +32,7 @@ struct MailboxItemDetailToolbar: ViewModifier {
                     }, label: {
                         HStack {
                             Spacer()
-                            Image(uiImage: DS.Icon.icChevronLeft)
+                            Image(DS.Icon.icChevronLeft)
                         }
                         .padding(10)
                     })
@@ -89,7 +89,7 @@ extension MailboxItemDetailToolbar {
                     Button(action: {
                         // TODO:
                     }, label: {
-                        Image(uiImage: isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                        Image(isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                             .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                     })
                     .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.starButton)

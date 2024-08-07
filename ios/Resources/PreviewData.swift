@@ -98,9 +98,7 @@ enum PreviewData {
         ].randomElement()!
     }
 
-    static let senderImage: UIImage = {
-        UIImage(named: "avatar-fedex", in: .main, with: nil)!
-    }()
+    static let senderImage = ImageResource.avatarFedex
 }
 
 extension LabelUIModel {

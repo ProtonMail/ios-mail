@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DeveloperToolsSupport
 import Foundation
-import class SwiftUI.UIImage
 
 /**
  List of all actions that can take place over an email address (e.g. the sender or a recipient of a message
@@ -47,7 +47,7 @@ enum MessageAddressAction: ActionPickerListElement {
         }
     }
 
-    var icon: UIImage {
+    var icon: ImageResource {
         switch self {
         case .newMessage:
             DS.Icon.icPenSquare

@@ -102,7 +102,7 @@ extension MessageDetailsView {
                     .lineLimit(1)
                     .foregroundColor(DS.Color.Text.weak)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                Image(uiImage: isHeaderCollapsed ?  DS.Icon.icChevronTinyDown : DS.Icon.icChevronTinyUp)
+                Image(isHeaderCollapsed ?  DS.Icon.icChevronTinyDown : DS.Icon.icChevronTinyUp)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16)
@@ -116,12 +116,12 @@ extension MessageDetailsView {
             Button(action: {
                 onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll)
             }, label: {
-                Image(uiImage: uiModel.isSingleRecipient ? DS.Icon.icReplay : DS.Icon.icReplayAll)
+                Image(uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll)
             })
             Button(action: {
                 onEvent(.onMoreActions)
             }, label: {
-                Image(uiImage: DS.Icon.icThreeDotsHorizontal)
+                Image(DS.Icon.icThreeDotsHorizontal)
             })
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
@@ -246,7 +246,7 @@ extension MessageDetailsView {
             CapsuleView(
                 text: SystemFolderIdentifier.inbox.humanReadable,
                 color: DS.Color.Background.secondary, 
-                icon: SystemFolderIdentifier.inbox.icon,
+                icon: Image(SystemFolderIdentifier.inbox.icon),
                 style: .attachment
             )
             Spacer()
@@ -287,7 +287,7 @@ extension MessageDetailsView {
         CapsuleView(
             text: L10n.Mailbox.SystemFolder.starred,
             color: DS.Color.Background.secondary,
-            icon: DS.Icon.icStarFilled,
+            icon: Image(DS.Icon.icStarFilled),
             iconColor: DS.Color.Star.selected,
             style: .attachment
         )

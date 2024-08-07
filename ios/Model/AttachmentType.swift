@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import class UIKit.UIImage
+import DeveloperToolsSupport
 
 enum AttachmentType: CaseIterable, Equatable {
     case audio
@@ -210,7 +210,7 @@ enum AttachmentType: CaseIterable, Equatable {
     }
 
     /// Icon for composer
-    var icon: UIImage {
+    var icon: ImageResource {
         switch self {
         case .audio:
             return DS.Icon.icFileTypeIconAudio

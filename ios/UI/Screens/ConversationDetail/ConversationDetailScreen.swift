@@ -90,7 +90,7 @@ struct ConversationDetailScreen: View {
                     CapsuleView(
                         text: L10n.files(attachmentsCount: model.seed.numAttachments),
                         color: DS.Color.Background.secondary,
-                        icon: DS.Icon.icPaperClip,
+                        icon: Image(DS.Icon.icPaperClip),
                         style: .attachment
                     )
                     .removeViewIf(model.seed.hasNoAttachments)

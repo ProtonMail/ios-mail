@@ -59,7 +59,7 @@ struct MainToolbar: ViewModifier {
                     }, label: {
                         HStack {
                             Spacer()
-                            Image(uiImage: state.icon)
+                            Image(state.icon)
                                 .id(state.rawValue)
                                 .transition(.scale.animation(.easeOut(duration: AppConstants.selectionModeStartDuration)))
                         }
@@ -112,7 +112,7 @@ extension MainToolbar {
         case noSelection
         case selection
 
-        var icon: UIImage {
+        var icon: ImageResource {
             switch self {
             case .noSelection:
                 return DS.Icon.icHamburguer

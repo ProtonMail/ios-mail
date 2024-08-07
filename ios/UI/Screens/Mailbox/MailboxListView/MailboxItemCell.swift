@@ -116,7 +116,7 @@ extension MailboxItemCell {
                 .removeViewIf(uiModel.labelUIModel.isEmpty)
 
             Spacer()
-            Image(uiImage: uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+            Image(uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                 .resizable()
                 .frame(width: 16, height: 16)
                 .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
@@ -134,13 +134,13 @@ extension MailboxItemCell {
         if uiModel.replyIcons.shouldShowIcon {
             HStack(spacing: DS.Spacing.tiny) {
                 if uiModel.replyIcons.shouldShowRepliedIcon {
-                    imageForReplyIcon(icon: DS.Icon.icReplay)
+                    imageForReplyIcon(imageResource: DS.Icon.icReply)
                 }
                 if uiModel.replyIcons.shouldShowRepliedAllIcon {
-                    imageForReplyIcon(icon: DS.Icon.icReplayAll)
+                    imageForReplyIcon(imageResource: DS.Icon.icReplyAll)
                 }
                 if uiModel.replyIcons.shouldShowForwardedIcon {
-                    imageForReplyIcon(icon: DS.Icon.icForward)
+                    imageForReplyIcon(imageResource: DS.Icon.icForward)
                 }
             }
         } else {
@@ -148,8 +148,8 @@ extension MailboxItemCell {
         }
     }
 
-    private func imageForReplyIcon(icon: UIImage) -> some View {
-        Image(uiImage: icon)
+    private func imageForReplyIcon(imageResource: ImageResource) -> some View {
+        Image(imageResource)
             .resizable()
             .frame(width: 16, height: 16)
             .foregroundColor(DS.Color.Text.weak)

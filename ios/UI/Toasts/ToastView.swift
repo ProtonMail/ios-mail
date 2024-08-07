@@ -140,7 +140,7 @@ enum ToastViewPreviewProvider {
         Toast(
             title: nil,
             message: "Longer system message with the icon action button.",
-            button: .init(type: .smallTrailing(content: .image(DS.Icon.icArrowRotateRight)), action: {}),
+            button: .init(type: .smallTrailing(content: .image(Image(DS.Icon.icArrowRotateRight))), action: {}),
             style: .information
         )
     }

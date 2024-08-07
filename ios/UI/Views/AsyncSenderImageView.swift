@@ -72,7 +72,7 @@ final class SenderImageLoader: ObservableObject {
 #Preview {
     class DummyDataSource: SenderImageDataSource {
         func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
-            return PreviewData.senderImage
+            UIImage(resource: PreviewData.senderImage)
         }        
     }
     let loader = SenderImageLoader(provider: DummyDataSource())

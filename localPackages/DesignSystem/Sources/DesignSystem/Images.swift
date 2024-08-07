@@ -8,11 +8,5 @@
 import SwiftUI
 
 public extension DS.Images {
-    static let mailProductLogo = image(named: "mail-product-logo")
-}
-
-private extension DS.Images {
-    static func image(named: String) -> UIImage {
-        UIImage(named: named, in: .module, with: nil)!
-    }
+    static let mailProductLogo = ImageResource.mailProductLogo
 }

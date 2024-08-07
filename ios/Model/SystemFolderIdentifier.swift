@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DeveloperToolsSupport
 import Foundation
-import class SwiftUI.UIImage
 
 /// List of remote identifiers for system folders. These values are not to be used for PMLocalLabelId
 enum SystemFolderIdentifier: UInt64, CaseIterable {
@@ -71,7 +71,7 @@ extension SystemFolderIdentifier {
         }
     }
 
-    var icon: UIImage {
+    var icon: ImageResource {
         switch self {
         case .inbox:
             DS.Icon.icInbox

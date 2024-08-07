@@ -28,7 +28,7 @@ struct ComposeButtonView: View {
     var body: some View {
         Button(action: onTap, label: {
             HStack(spacing: DS.Spacing.standard) {
-                Image(uiImage: DS.Icon.icPenSquare)
+                Image(DS.Icon.icPenSquare)
                     .foregroundStyle(DS.Color.Brand.lighten30)
                 if isExpanded {
                     Text(text)

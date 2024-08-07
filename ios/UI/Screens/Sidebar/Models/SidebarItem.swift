@@ -48,7 +48,7 @@ enum SidebarItem: Equatable, Identifiable {
         }
     }
 
-    var icon: UIImage {
+    var icon: ImageResource {
         switch self {
         case .system(let systemFolder):
             return systemFolder.identifier.icon

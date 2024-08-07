@@ -107,7 +107,7 @@ private struct AddNewFolder: View {
 
     var body: some View {
         HStack() {
-            Image(uiImage: DS.Icon.icPlus)
+            Image(DS.Icon.icPlus)
                 .foregroundStyle(DS.Color.Text.weak)
             Text(L10n.Folders.newFolder)
                 .fontBody3()
@@ -125,7 +125,7 @@ private struct AddNewFolder: View {
 struct FolderPickerCellUIModel: Identifiable {
     let id: PMLocalLabelId
     let name: String
-    let icon: UIImage
+    let icon: ImageResource
     let level: UInt
 }
 
@@ -134,7 +134,7 @@ private struct FolderPickerCell: View {
 
     var body: some View {
         HStack() {
-            Image(uiImage: uiModel.icon)
+            Image(uiModel.icon)
                 .foregroundStyle(DS.Color.Icon.weak)
                 .padding(.leading, CGFloat(20 * uiModel.level))
                 .accessibilityIdentifier(FolderPickerViewIdentifiers.cellIcon)

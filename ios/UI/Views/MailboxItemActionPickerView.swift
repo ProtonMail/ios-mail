@@ -64,9 +64,9 @@ struct MailboxItemActionPickerView: View {
         } else {
 
             HStack {
-                replyActionButton(name: L10n.Action.Send.reply, icon: DS.Icon.icReplay)
+                replyActionButton(name: L10n.Action.Send.reply, icon: DS.Icon.icReply)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReply)
-                replyActionButton(name: L10n.Action.Send.replyAll, icon: DS.Icon.icReplayAll)
+                replyActionButton(name: L10n.Action.Send.replyAll, icon: DS.Icon.icReplyAll)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReplyAll)
                 replyActionButton(name: L10n.Action.Send.forward, icon: DS.Icon.icForward)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionForward)
@@ -75,12 +75,12 @@ struct MailboxItemActionPickerView: View {
         }
     }
 
-    private func replyActionButton(name: LocalizedStringResource, icon: UIImage) -> some View {
+    private func replyActionButton(name: LocalizedStringResource, icon: ImageResource) -> some View {
         Button {
 
         } label: {
             SendActionButtonStack() {
-                Image(uiImage: icon)
+                Image(icon)
                     .actionSheetIconModifier()
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionIcon)
 

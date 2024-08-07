@@ -16,12 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import class SwiftUI.UIImage
+import DeveloperToolsSupport
 
 extension CustomFolder {
 
     func toFolderPickerCellUIModel() -> FolderPickerCellUIModel {
-        let icon: UIImage
+        let icon: ImageResource
         if let systemFolderIcon = folder.systemFolderIdentifier?.icon {
             icon = systemFolderIcon
         } else {

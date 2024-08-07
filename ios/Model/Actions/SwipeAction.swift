@@ -50,11 +50,11 @@ enum SwipeAction {
         case .none:
             return UIImage()
         case .toggleReadStatus:
-            return Action.toggleReadStatusAction(when: readStatus).icon
+            return UIImage(resource: Action.toggleReadStatusAction(when: readStatus).icon)
         case .delete:
-            return Action.deletePermanently.icon
+            return UIImage(resource: Action.deletePermanently.icon)
         case .moveToTrash:
-            return Action.moveToTrash.icon
+            return UIImage(resource: Action.moveToTrash.icon)
         }
     }
 

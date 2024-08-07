@@ -104,14 +104,14 @@ private struct HeightReader: ViewModifier {
         CapsuleCloudView(
             subviews: [
                 CapsuleView(text: "Work".notLocalized.stringResource, color: .green, style: .label),
-                CapsuleView(text: "People".notLocalized.stringResource, color: .yellow, icon: UIImage(systemName: "person.crop.circle"), style: .attachment),
+                CapsuleView(text: "People".notLocalized.stringResource, color: .yellow, icon: Image(systemName: "person.crop.circle"), style: .attachment),
                 CapsuleView(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan, style: .label),
                 CapsuleView(text: "Holidays ".notLocalized.stringResource, color: .pink, style: .label),
                 CapsuleView(text: "Greece meetup".notLocalized.stringResource, color: .blue, style: .label),
                 CapsuleView(text: "Reminders".notLocalized.stringResource, color: .red, style: .label),
                 CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo, style: .label),
-                CapsuleView(text: "Games & Fun".notLocalized.stringResource, color: .mint, icon: UIImage(systemName: "gamecontroller"), style: .attachment),
-                CapsuleView(text: "Sports".notLocalized.stringResource, color: .orange, icon: UIImage(systemName: "volleyball.fill"), style: .attachment),
+                CapsuleView(text: "Games & Fun".notLocalized.stringResource, color: .mint, icon: Image(systemName: "gamecontroller"), style: .attachment),
+                CapsuleView(text: "Sports".notLocalized.stringResource, color: .orange, icon: Image(systemName: "volleyball.fill"), style: .attachment),
                 CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple, style: .label)
             ],
             innerPadding: 2

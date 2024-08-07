@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 protocol ActionPickerListElement: Equatable {
-    var icon: UIImage { get }
+    var icon: ImageResource { get }
     var name: LocalizedStringResource { get }
 }
 
@@ -89,7 +89,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 
     private func cell(for element: Element) -> some View {
         HStack(spacing: DS.Spacing.large) {
-            Image(uiImage: element.icon)
+            Image(element.icon)
                 .actionSheetIconModifier()
                 .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIcon)
 
@@ -105,7 +105,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 
 #Preview {
     struct Item: ActionPickerListElement {
-        let icon: UIImage = PreviewData.senderImage
+        let icon: ImageResource = PreviewData.senderImage
         let name: LocalizedStringResource = "Item".notLocalized.stringResource
     }
 

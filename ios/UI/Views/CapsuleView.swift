@@ -21,14 +21,14 @@ import SwiftUI
 struct CapsuleView: View {
     let text: LocalizedStringResource
     let color: Color
-    let icon: UIImage?
+    let icon: Image?
     let iconColor: Color?
     let style: CapsuleStyle
 
     init(
         text: LocalizedStringResource,
         color: Color,
-        icon: UIImage? = nil,
+        icon: Image? = nil,
         iconColor: Color? = nil,
         style: CapsuleStyle
     ) {
@@ -57,7 +57,7 @@ struct CapsuleView: View {
     var body: some View {
         HStack(spacing: DS.Spacing.small) {
             if let icon {
-                Image(uiImage: icon)
+                icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 14, height: 14)
@@ -96,8 +96,8 @@ struct CapsuleStyle {
 #Preview {
     VStack {
         CapsuleView(text: "".notLocalized.stringResource, color: DS.Color.Background.secondary, style: .attachment)
-        CapsuleView(text: "2 files".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: DS.Icon.icPaperClip, style: .attachment)
-        CapsuleView(text: "games".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: UIImage(systemName: "gamecontroller"), style: .attachment)
+        CapsuleView(text: "2 files".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: Image(DS.Icon.icPaperClip), style: .attachment)
+        CapsuleView(text: "games".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: Image(systemName: "gamecontroller"), style: .attachment)
         CapsuleView(text: "Work".notLocalized.stringResource, color: .blue, style: .label)
         CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink, style: .label)
     }

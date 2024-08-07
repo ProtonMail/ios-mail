@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DeveloperToolsSupport
 import Foundation
-import class UIKit.UIImage
 
 /**
  List of all the actions that can take place over a message or a conversation.
@@ -88,7 +88,7 @@ enum Action: ActionPickerListElement {
         }
     }
 
-    var icon: UIImage {
+    var icon: ImageResource {
         switch self {
         case .deletePermanently:
             return DS.Icon.icTrashCross

@@ -33,7 +33,7 @@ struct AvatarCheckboxView: View {
                         .fill(DS.Color.Background.norm)
                         .stroke(DS.Color.Border.strong, lineWidth: 1)
                         .overlay {
-                            Image(uiImage: DS.Icon.icCheckmark)
+                            Image(DS.Icon.icCheckmark)
                                 .resizable()
                                 .foregroundColor(DS.Color.Icon.norm)
                                 .padding(10)
