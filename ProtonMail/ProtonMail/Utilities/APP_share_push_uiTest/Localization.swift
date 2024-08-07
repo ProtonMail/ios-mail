@@ -1533,13 +1533,6 @@ enum L10n {
 	}
 
     struct AutoDeleteUpsellSheet {
-        static let title = NSLocalizedString("Clear out the junk", comment: "Title of the sheet to advertise the auto delete feature to free users")
-        static let description = NSLocalizedString("Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.", comment: "Text content of the sheet to advertise the auto delete feature to free users")
-
-        static let upsellLineOne = NSLocalizedString("Up to 3 TB of storage", comment: "Text to advertise what upgrading will provide")
-        static let upsellLineTwo = NSLocalizedString("Up to 15 email addresses", comment: "Text to advertise what upgrading will provide")
-        static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
-        static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
     }
 
@@ -1661,6 +1654,10 @@ enum L10n {
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
         static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
+
+        // pages
+        static let autoDeleteTitle = NSLocalizedString("Clear out old trash and spam", comment: "Title of the upsell page")
+        static let autoDeleteDescription = NSLocalizedString("Enjoy a tidier mailbox and benefit from other premium features with %@.", comment: "Subtitle of the upsell page")
         static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
         static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
         static let scheduleSendTitle = NSLocalizedString("Schedule now, send later", comment: "Title of the upsell page")

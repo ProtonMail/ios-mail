@@ -26,7 +26,6 @@ import CoreData
 import LifetimeTracker
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
@@ -148,7 +147,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
-    private var paymentsUI: PaymentsUI?
     private var upsellCoordinator: UpsellCoordinator?
 
     private var isSwipingCell = false {
@@ -2862,11 +2860,9 @@ extension MailboxViewController {
             let headerView = AutoDeleteUpsellHeaderView()
             headerView.learnMoreButtonAction = { [weak self] in
                 guard let self else { return }
-                let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
-                    guard let self else { return }
-                    self.presentPayments(paidFeature: .autoDelete)
+                presentUpsellPage(entryPoint: .autoDelete) { [weak self] in
+                    self?.reloadTableViewDataSource(forceReload: true)
                 }
-                upsellSheet.present(on: self.navigationController!.view)
             }
             return headerView
         case .promptBanner:
@@ -2916,15 +2912,6 @@ extension MailboxViewController {
         case .none:
             return nil
         }
-    }
-
-    func presentPayments(paidFeature: PaidFeature) {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true,
-            completionHandler: { _ in
-            })
     }
 }
 

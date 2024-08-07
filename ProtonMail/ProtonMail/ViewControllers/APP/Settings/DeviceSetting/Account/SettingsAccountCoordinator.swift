@@ -28,7 +28,6 @@ import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
 import ProtonCoreFeatureFlags
-import ProtonCorePaymentsUI
 import UIKit
 
 // sourcery: mock
@@ -47,7 +46,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
     private let dependencies: Dependencies
-    private var paymentsUI: PaymentsUI?
+    @MainActor private var upsellCoordinator: UpsellCoordinator?
 
     private var user: UserManager {
         users.firstUser!
@@ -293,17 +292,14 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func presentAutoDeleteUpsellView() {
-        guard let navController = navigationController else { return }
-        let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
-            guard let self else { return }
-            self.presentPayments()
-        }
-        upsellSheet.present(on: navController.view)
-    }
+        Task { @MainActor in
+            guard let navigationController else {
+                return
+            }
 
-    private func presentPayments() {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+            upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: navigationController)
+            upsellCoordinator?.start(entryPoint: .autoDelete)
+        }
     }
 
     private func openPrivacyAndDataSetting() {

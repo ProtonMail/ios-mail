@@ -18,6 +18,7 @@
 import SwiftUI
 
 public enum UpsellPageEntryPoint: Sendable {
+    case autoDelete
     case contactGroups
     case header
     case scheduleSend
@@ -25,6 +26,8 @@ public enum UpsellPageEntryPoint: Sendable {
 
     var logo: ImageResource {
         switch self {
+        case .autoDelete:
+            return .upsellAutoDeleteLogo
         case .contactGroups:
             return .upsellContactGroupsLogo
         case .header:
@@ -38,17 +41,17 @@ public enum UpsellPageEntryPoint: Sendable {
 
     var logoPadding: EdgeInsets {
         switch self {
-        case .contactGroups, .snooze:
-            return .init(top: -20, leading: 0, bottom: 20, trailing: 0)
+        case .autoDelete, .contactGroups, .scheduleSend, .snooze:
+            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         case .header:
-            return .init(top: -50, leading: 0, bottom: -10, trailing: 0)
-        case .scheduleSend:
-            return .init(top: -20, leading: 0, bottom: 10, trailing: 0)
+            return .init(top: -40, leading: 0, bottom: -40, trailing: 0)
         }
     }
 
     func title(planName: String) -> String {
         switch self {
+        case .autoDelete:
+            return L10n.Upsell.autoDeleteTitle
         case .contactGroups:
             return L10n.Upsell.contactGroupsTitle
         case .header:
@@ -62,6 +65,8 @@ public enum UpsellPageEntryPoint: Sendable {
 
     func subtitle(planName: String) -> String {
         switch self {
+        case .autoDelete:
+            return String(format: L10n.Upsell.autoDeleteDescription, planName)
         case .contactGroups:
             return String(format: L10n.Upsell.contactGroupsDescription, planName)
         case .header:
