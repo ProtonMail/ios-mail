@@ -18,12 +18,15 @@
 import SwiftUI
 
 enum SidebarItem: Equatable, Identifiable {
-    case system(SidebarSystemFolderUIModel)
-    case other(SidebarOtherItemUIModel)
+    case system(SidebarSystemFolder)
+    case label(SidebarLabel)
+    case other(SidebarOtherItem)
 
     var isSelected: Bool {
         switch self {
         case .system(let item):
+            return item.isSelected
+        case .label(let item):
             return item.isSelected
         case .other(let item):
             return item.isSelected
@@ -32,46 +35,21 @@ enum SidebarItem: Equatable, Identifiable {
 
     var isSelectable: Bool {
         switch self {
-        case .system:
+        case .system, .label:
             return true
-        case .other(let otherItem):
-            return otherItem.type.isSelectable
-        }
-    }
-
-    var unreadCount: String? {
-        switch self {
-        case .other:
-            return nil
-        case .system(let item):
-            return item.unreadCount
-        }
-    }
-
-    var icon: ImageResource {
-        switch self {
-        case .system(let systemFolder):
-            return systemFolder.identifier.icon
-        case .other(let otherItem):
-            return otherItem.icon
-        }
-    }
-
-    var name: String {
-        switch self {
-        case .system(let systemFolder):
-            return systemFolder.identifier.humanReadable.string
-        case .other(let otherItem):
-            return otherItem.name
+        case .other(let item):
+            return item.type.isSelectable
         }
     }
 
     func copy(isSelected: Bool) -> SidebarItem {
         switch self {
-        case .system(let systemFolder):
-            return .system(systemFolder.copy(isSelected: isSelected))
-        case .other(let otherItem):
-            return .other(otherItem.copy(isSelected: isSelected))
+        case .system(let item):
+            return .system(item.copy(isSelected: isSelected))
+        case .label(let item):
+            return .label(item.copy(isSelected: isSelected))
+        case .other(let item):
+            return .other(item.copy(isSelected: isSelected))
         }
     }
 
@@ -79,10 +57,12 @@ enum SidebarItem: Equatable, Identifiable {
 
     var id: String {
         switch self {
-        case .system(let systemFolder):
-            return "\(systemFolder.localID)"
-        case .other(let otherItem):
-            return otherItem.name
+        case .system(let item):
+            return "\(item.localID)"
+        case .label(let item):
+            return "\(item.localID)"
+        case .other(let item):
+            return item.name
         }
     }
 
@@ -95,7 +75,18 @@ extension Array where Element == SidebarItem {
             switch item {
             case .system:
                 return true
-            case .other:
+            default:
+                return false
+            }
+        }
+    }
+
+    var labels: [SidebarItem] {
+        filter { item in
+            switch item {
+            case .label:
+                return true
+            default:
                 return false
             }
         }
@@ -104,10 +95,10 @@ extension Array where Element == SidebarItem {
     var other: [SidebarItem] {
         filter { item in
             switch item {
-            case .system:
-                return false
             case .other:
                 return true
+            default:
+                return false
             }
         }
     }

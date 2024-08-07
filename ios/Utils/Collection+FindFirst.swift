@@ -17,11 +17,13 @@
 
 import Foundation
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+extension Collection where Element: Equatable {
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    public func findFirst<Property: Equatable>(
+        for value: Property,
+        by keyPath: KeyPath<Element, Property>
+    ) -> Element? {
+        first { $0[keyPath: keyPath] == value }
+    }
 
-    func copy(isSelected: Bool) -> SelectableItemType
 }

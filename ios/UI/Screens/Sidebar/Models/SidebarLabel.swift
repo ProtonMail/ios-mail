@@ -17,11 +17,27 @@
 
 import Foundation
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+struct SidebarLabel: Equatable, SelectableItem {
+    let localID: PMLocalLabelId
+    let color: String
+    let name: String
+    let unreadCount: String?
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    // MARK: - SelectableItem
 
-    func copy(isSelected: Bool) -> SelectableItemType
+    let isSelected: Bool
+
+    var selectionIdentifier: String {
+        "\(localID)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            localID: localID,
+            color: color,
+            name: name,
+            unreadCount: unreadCount,
+            isSelected: isSelected
+        )
+    }
 }

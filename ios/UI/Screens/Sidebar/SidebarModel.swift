@@ -18,85 +18,128 @@
 import proton_mail_uniffi
 import SwiftUI
 
+enum SidebarAction {
+    case viewAppear
+    case select(item: SidebarItem)
+}
+
 @Observable
-final class SidebarModel: ObservableObject {
+final class SidebarModel: Sendable {
     var state: SidebarState
 
-    var sidebarState: [SidebarItem] {
-        state.system.map(SidebarItem.system) + state.other.map(SidebarItem.other)
-    }
-
-    private var systemFolderQuery: MailLabelsLiveQuery?
+    private var systemFolderQuery: SidebarLiveQuery?
+    private var labelsQuery: SidebarLiveQuery?
     private let dependencies: Dependencies
 
-    init(state: SidebarState = .init(system: [], other: .staleItems), dependencies: Dependencies = .init()) {
+    init(state: SidebarState = .initial, dependencies: Dependencies = .init()) {
         self.state = state
         self.dependencies = dependencies
     }
 
-    func onViewWillAppear() async {
-        await initLiveQuery()
-    }
-
-    func select(sidebarItem: SidebarItem) {
-        guard sidebarItem.isSelectable else { return }
-        unselect()
-        switch sidebarItem {
-        case .system(let systemFolder):
-            select(item: systemFolder, keyPath: \.system)
-        case .other(let otherItem):
-            select(item: otherItem, keyPath: \.other)
+    func handle(action: SidebarAction) {
+        switch action {
+        case .viewAppear:
+            initLiveQuery()
+        case .select(let item):
+            select(item: item)
         }
     }
 
     // MARK: - Private
 
-    private func initLiveQuery() async {
-        guard let userContext = dependencies.appContext.activeUserSession else { return }
-        systemFolderQuery = userContext.newSystemLabelsObservedQuery(cb: self)
-    }
-
-    private func updateData() {
-        guard let systemFolderQuery else { return }
-        do {
-            let selectedSystemItem = state.system.first(where: { $0.isSelected })
-            let systemFolders = try systemFolderQuery.value()
-                .compactMap(\.systemFolder)
-                .map { $0.copy(isSelected: $0.selectionIdentifier == selectedSystemItem?.selectionIdentifier) }
-
-            state.system = systemFolders
-            selectFirstIfNeeded()
-        } catch {
-            AppLogger.log(error: error)
+    private func select(item: SidebarItem) {
+        guard item.isSelectable else { return }
+        unselectAll()
+        switch item {
+        case .system(let item):
+            state = state.copy(system: selected(item: item, keyPath: \.system))
+        case .label(let item):
+            state = state.copy(labels: selected(item: item, keyPath: \.labels))
+        case .other(let item):
+            state = state.copy(other: selected(item: item, keyPath: \.other))
         }
     }
 
-    private func select<Item: SelectableItem>(
+    private func initLiveQuery() {
+        guard let userContext = dependencies.activeUserSession else { return }
+        systemFolderQuery = SidebarLiveQuery(
+            queryFactory: userContext.newSystemLabelsObservedQuery,
+            dataUpdate: { newFolders in
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.updateSystemFolders(with: newFolders)
+                }))
+            }
+        )
+        labelsQuery = SidebarLiveQuery(
+            queryFactory: userContext.newLabelLabelsObservedQuery,
+            dataUpdate: { newLabels in
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.updateLabels(with: newLabels)
+                }))
+            }
+        )
+    }
+
+    private func updateSystemFolders(with newSystemFolders: [LocalLabelWithCount]) {
+        state = state.copy(
+            system: updated(
+                newItems: newSystemFolders,
+                stateKeyPath: \.system,
+                transformation: \.sidebarSystemFolder
+            )
+        )
+        selectFirstSystemItemIfNeeded()
+    }
+
+    private func updateLabels(with newLabels: [LocalLabelWithCount]) {
+        state = state.copy(
+            labels: updated(
+                newItems: newLabels,
+                stateKeyPath: \.labels,
+                transformation: { label in label.sidebarLabel }
+            )
+        )
+    }
+
+    private func updated<Item: SelectableItem>(
+        newItems: [LocalLabelWithCount],
+        stateKeyPath: KeyPath<SidebarState, [Item]>,
+        transformation: (LocalLabelWithCount) -> Item?
+    ) -> [Item] where Item.SelectableItemType == Item {
+        let selectedItem = state[keyPath: stateKeyPath].first(where: \.isSelected)
+        let newItems = newItems
+            .compactMap(transformation)
+            .map { item in item.copy(isSelected: item.selectionIdentifier == selectedItem?.selectionIdentifier) }
+        return newItems
+    }
+
+    private func unselectAll() {
+        state = .init(
+            system: unselected(keyPath: \.system),
+            labels: unselected(keyPath: \.labels),
+            other: unselected(keyPath: \.other)
+        )
+    }
+
+    private func unselected<Item: SelectableItem>(
+        keyPath: KeyPath<SidebarState, [Item]>
+    ) -> [Item] where Item.SelectableItemType == Item{
+        state[keyPath: keyPath].map { item in item.copy(isSelected: false) }
+    }
+
+    private func selected<Item: SelectableItem>(
         item: Item,
-        keyPath: WritableKeyPath<SidebarState, [Item]>
-    ) where Item.SelectableItemType == Item {
-        state[keyPath: keyPath] = state[keyPath: keyPath]
-            .map { $0.copy(isSelected: item.selectionIdentifier == $0.selectionIdentifier) }
+        keyPath: KeyPath<SidebarState, [Item]>
+    ) -> [Item] where Item.SelectableItemType == Item {
+        state[keyPath: keyPath]
+            .map { currentItem in
+                currentItem.copy(isSelected: item.selectionIdentifier == currentItem.selectionIdentifier)
+            }
     }
 
-    private func unselect() {
-        state.system = state.system.map { $0.copy(isSelected: false) }
-        state.other = state.other.map { $0.copy(isSelected: false) }
-    }
-
-    private func selectFirstIfNeeded() {
-        if sidebarState.filter(\.isSelected).isEmpty, let first = sidebarState.first(where: { $0.isSelectable }) {
-            select(sidebarItem: first)
-        }
-    }
-
-}
-
-extension SidebarModel: MailboxLiveQueryUpdatedCallback, Sendable {
-
-    func onUpdated() {
-        Task { @MainActor in
-            updateData()
+    private func selectFirstSystemItemIfNeeded() {
+        if state.items.filter(\.isSelected).isEmpty, let first = state.items.first(where: \.isSelectable) {
+            select(item: first)
         }
     }
 
@@ -105,7 +148,37 @@ extension SidebarModel: MailboxLiveQueryUpdatedCallback, Sendable {
 extension SidebarModel {
 
     struct Dependencies {
-        let appContext: AppContext = .shared
+        let activeUserSession: MailUserSessionProtocol?
+
+        init(activeUserSession: MailUserSessionProtocol? = AppContext.shared.activeUserSession) {
+            self.activeUserSession = activeUserSession
+        }
+    }
+
+}
+
+private class SidebarLiveQuery: MailboxLiveQueryUpdatedCallback {
+
+    private let dataUpdate: ([LocalLabelWithCount]) -> Void
+    private var query: MailLabelsLiveQuery?
+
+    init(
+        queryFactory: @escaping (MailboxLiveQueryUpdatedCallback) -> MailLabelsLiveQuery,
+        dataUpdate: @escaping ([LocalLabelWithCount]) -> Void
+    ) {
+        self.dataUpdate = dataUpdate
+        self.query = queryFactory(self)
+    }
+
+    // MARK: - MailboxLiveQueryUpdatedCallback
+
+    func onUpdated() {
+        do {
+            let newItems = try query.unsafelyUnwrapped.value()
+            dataUpdate(newItems)
+        } catch {
+            AppLogger.log(error: error)
+        }
     }
 
 }

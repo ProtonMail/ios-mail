@@ -15,13 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
+import XCTest
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+class BaseTestCase: XCTestCase {
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
 
-    func copy(isSelected: Bool) -> SelectableItemType
+    override func setUp() {
+        super.setUp()
+
+        originalDispatchOnMain = Dispatcher.dispatchOnMain
+
+        Dispatcher.dispatchOnMain = { $0.perform() }
+    }
+
+    override func tearDown() {
+        super.tearDown()
+
+        Dispatcher.dispatchOnMain = originalDispatchOnMain
+
+        originalDispatchOnMain = nil
+    }
+
 }

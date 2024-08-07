@@ -15,31 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
+import proton_mail_uniffi
 
-extension Array where Element == SidebarOtherItemUIModel {
+extension LocalLabelWithCount {
 
-    static var staleItems: [Element] {
-        [
-            .init(
-                isSelected: false,
-                type: .subscriptions,
-                icon: DS.Icon.icPencil,
-                name: L10n.Settings.subscription.string
-            ),
-            .init(
-                isSelected: false,
-                type: .settings,
-                icon: DS.Icon.icCogWheel,
-                name: L10n.Settings.accountSettings.string
-            ),
-            .init(
-                isSelected: false,
-                type: .shareLogs,
-                icon: DS.Icon.icBug,
-                name: "Share logs".notLocalized
-            )
-        ]
+    var sidebarLabel: SidebarLabel {
+        .init(
+            localID: id,
+            color: color,
+            name: name,
+            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped(),
+            isSelected: false
+        )
     }
 
 }

@@ -20,25 +20,20 @@ import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
+    @Environment(\.mainBundle) var mainBundle: Bundle
     @State private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     private let sidebarWidth: CGFloat = 320
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 35
     private let animationDuration = 0.2
     private let selectedItem: (SidebarItem) -> Void
-    private let mainBundle: Bundle
 
     private var dragOffset: CGFloat {
         appUIState.isSidebarOpen ? sidebarWidth : .zero
     }
 
-    init(
-        screenModel: SidebarModel = .init(),
-        mainBundle: Bundle = Bundle.main,
-        selectedItem: @escaping (SidebarItem) -> Void
-    ) {
+    init(screenModel: SidebarModel = .init(), selectedItem: @escaping (SidebarItem) -> Void) {
         self.screenModel = screenModel
-        self.mainBundle = mainBundle
         self.selectedItem = selectedItem
     }
 
@@ -74,9 +69,7 @@ struct SidebarScreen: View {
             .animation(.easeOut(duration: animationDuration), value: appUIState.isSidebarOpen)
             .offset(x: dragOffset - sidebarWidth - geometry.safeAreaInsets.leading)
         }
-        .task {
-            await screenModel.onViewWillAppear()
-        }
+        .onAppear { screenModel.handle(action: .viewAppear) }
     }
 
     private var header: some View {
@@ -125,13 +118,15 @@ struct SidebarScreen: View {
         VStack(alignment: .leading, spacing: .zero) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    list(for: screenModel.sidebarState.system)
+                    list(for: screenModel.state.items.system)
                     separator
-                    list(for: screenModel.sidebarState.other)
+                    list(for: screenModel.state.items.labels)
+                    separator
+                    list(for: screenModel.state.items.other)
                     separator
                     appVersionNote
                 }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.sidebarState.first {
+                    if isSidebarOpen, let first = screenModel.state.items.first {
                         proxy.scrollTo(first.id, anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
@@ -150,31 +145,77 @@ struct SidebarScreen: View {
 
     private func sidebarItemButton(for item: SidebarItem) -> some View {
         Button(action: { select(item: item) }) {
-            HStack {
-                Image(item.icon)
-                    .renderingMode(.template)
-                    .frame(width: 20, height: 20)
-                    .tint(item.isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
-                    .padding(.trailing, DS.Spacing.extraLarge)
-                    .accessibilityIdentifier(SidebarScreenIdentifiers.folderIcon)
-                Text(item.name)
-                    .font(.subheadline)
-                    .fontWeight(item.isSelected ? .bold : .regular)
-                    .foregroundStyle(item.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
-                    .lineLimit(1)
-                    .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
-                Spacer()
-                if let unreadCount = item.unreadCount {
-                    Text(unreadCount)
-                        .foregroundStyle(item.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
-                        .font(.caption)
-                        .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
-                }
+            switch item {
+            case .system(let model):
+                systemItemContent(model: model)
+            case .label(let model):
+                labelItemContent(model: model)
+            case .other(let model):
+                otherItemCotent(model: model)
             }
-            .padding(.vertical, DS.Spacing.medium)
-            .padding(.horizontal, DS.Spacing.extraLarge)
-            .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
         }
+        .padding(.vertical, DS.Spacing.medium)
+        .padding(.horizontal, DS.Spacing.extraLarge)
+        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+    }
+
+    private func systemItemContent(model: SidebarSystemFolder) -> some View {
+        HStack {
+            sidebarItemImage(icon: model.identifier.icon, isSelected: model.isSelected)
+            itemNameLabel(name: model.identifier.humanReadable.string, isSelected: model.isSelected)
+            Spacer()
+            if let unreadCount = model.unreadCount {
+                unreadLabel(unreadCount: unreadCount, isSelected: model.isSelected)
+            }
+        }
+    }
+
+    private func otherItemCotent(model: SidebarOtherItem) -> some View {
+        HStack {
+            sidebarItemImage(icon: model.icon, isSelected: model.isSelected)
+            itemNameLabel(name: model.name, isSelected: model.isSelected)
+            Spacer()
+        }
+    }
+
+    private func sidebarItemImage(icon: ImageResource, isSelected: Bool) -> some View {
+        Image(icon)
+            .renderingMode(.template)
+            .square(size: 20)
+            .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
+            .padding(.trailing, DS.Spacing.extraLarge)
+            .accessibilityIdentifier(SidebarScreenIdentifiers.folderIcon)
+    }
+
+    private func labelItemContent(model: SidebarLabel) -> some View {
+        HStack {
+            Color(hex: model.color)
+                .square(size: 13)
+                .clipShape(Circle())
+                .square(size: 20)
+                .padding(.trailing, DS.Spacing.extraLarge)
+            itemNameLabel(name: model.name, isSelected: model.isSelected)
+            Spacer()
+            if let unreadCount = model.unreadCount {
+                unreadLabel(unreadCount: unreadCount, isSelected: model.isSelected)
+            }
+        }
+    }
+
+    private func unreadLabel(unreadCount: String, isSelected: Bool) -> some View {
+        Text(unreadCount)
+            .foregroundStyle(isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+            .font(.caption)
+            .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
+    }
+
+    private func itemNameLabel(name: String, isSelected: Bool) -> some View {
+        Text(name)
+            .font(.subheadline)
+            .fontWeight(isSelected ? .bold : .regular)
+            .foregroundStyle(isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
+            .lineLimit(1)
+            .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
     }
 
     private var separator: some View {
@@ -196,7 +237,7 @@ struct SidebarScreen: View {
     }
 
     private func select(item: SidebarItem) {
-        screenModel.select(sidebarItem: item)
+        screenModel.handle(action: .select(item: item))
         selectedItem(item)
         appUIState.isSidebarOpen = !item.isSelectable
 

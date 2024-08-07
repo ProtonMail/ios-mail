@@ -15,13 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_mail_uniffi
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+class MailLabelsLiveQueryStub: MailLabelsLiveQuery {
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    init() {
+        super.init(noPointer: .init())
+    }
 
-    func copy(isSelected: Bool) -> SelectableItemType
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
+
+    var stubbedValue: [LocalLabelWithCount] = []
+
+    // MARK: - MailLabelsLiveQuery
+
+    override func value() throws -> [LocalLabelWithCount] {
+        stubbedValue
+    }
+
 }

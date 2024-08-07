@@ -15,26 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+@testable import ProtonMail
 
-struct SidebarOtherItemUIModel: Equatable {
-    enum ItemType: String, Equatable {
-        case settings
-        case subscriptions
-        case shareLogs
+extension Array where Element == SidebarSystemFolder {
 
-        var isSelectable: Bool {
-            switch self {
-            case .settings, .subscriptions:
-                return true
-            case .shareLogs:
-                return false
-            }
-        }
+    static var systemFolders: [Element] {
+        [
+            .init(localID: 1, identifier: .allMail, unreadCount: "5", isSelected: false),
+            .init(localID: 2, identifier: .sent, unreadCount: "+999", isSelected: false)
+        ]
     }
 
-    let isSelected: Bool
-    let type: ItemType
-    let icon: ImageResource
-    let name: String
 }

@@ -15,11 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-struct SidebarSystemFolderUIModel: Equatable {
-    let isSelected: Bool
-    let localID: PMLocalLabelId
-    let identifier: SystemFolderIdentifier
-    let unreadCount: String?
+class Dispatcher {
+    static var dispatchOnMain: (DispatchWorkItem) -> Void = DispatchQueue.main.async(execute:)
 }

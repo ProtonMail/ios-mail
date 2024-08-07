@@ -24,21 +24,23 @@ class SidebarScreenSnapshotTests: XCTestCase {
 
     func testSidebarLayoutsCorrectOnIphoneX() {
         let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
-        let screenModel = SidebarModel(state: .init(system: .testItems, other: .staleItems))
-        let sidebarScreen = SidebarScreen(screenModel: screenModel, mainBundle: bundleStub) { _ in }
+        let screenModel = SidebarModel(
+            state: .init(system: .systemFolders.selectFirst(), labels: .labels, other: .staleItems),
+            dependencies: .init(activeUserSession: MailUserSessionSpy())
+        )
+        let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
             .environmentObject(AppUIState(isSidebarOpen: true))
+            .environment(\.mainBundle, bundleStub)
         assertSnapshot(of: UIHostingController(rootView: sidebarScreen), as: .image(on: .iPhoneX))
     }
 
 }
 
-private extension Array where Element == SidebarSystemFolderUIModel {
+private extension Array where Element == SidebarSystemFolder {
 
-    static var testItems: [Element] {
-        [
-            .init(isSelected: true, localID: 1, identifier: .allMail, unreadCount: "5"),
-            .init(isSelected: false, localID: 2, identifier: .sent, unreadCount: "+999")
-        ]
+    func selectFirst() -> [Element] {
+        enumerated()
+            .map { index, element in element.copy(isSelected: index == 0) }
     }
 
 }

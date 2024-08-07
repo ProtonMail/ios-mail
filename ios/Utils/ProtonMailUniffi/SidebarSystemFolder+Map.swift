@@ -19,14 +19,14 @@ import proton_mail_uniffi
 
 extension LocalLabelWithCount {
 
-    var systemFolder: SidebarSystemFolderUIModel? {
+    var sidebarSystemFolder: SidebarSystemFolder? {
         let id = rid.unsafelyUnwrapped
         guard let systemFolder = SystemFolderIdentifier(rawValue: UInt64(id).unsafelyUnwrapped) else { return nil }
         return .init(
-            isSelected: false, 
             localID: self.id,
             identifier: systemFolder,
-            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped()
+            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped(), // FIXME: - Not here
+            isSelected: false
         )
     }
 

@@ -82,7 +82,6 @@ public extension DS.Color {
     enum Sidebar {
         public static let background = Color(.sidebarBackground)
         public static let interactionPressed = Color(.sidebarInteractionPressed)
-        public static let interactionSelected = Color(.sidebarInteractionSelected)
         public static let separator = Color(.sidebarSeparator)
         public static let textNorm = Color(.sidebarTextNorm)
         public static let textWeak = Color(.sidebarTextWeak)

@@ -15,13 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+struct SidebarSystemFolder: Equatable, SelectableItem {
+    let localID: PMLocalLabelId
+    let identifier: SystemFolderIdentifier
+    let unreadCount: String?
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    // MARK: - SelectableItem
 
-    func copy(isSelected: Bool) -> SelectableItemType
+    let isSelected: Bool
+
+    var selectionIdentifier: String {
+        "\(identifier.rawValue)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            localID: localID,
+            identifier: identifier,
+            unreadCount: unreadCount,
+            isSelected: isSelected
+        )
+    }
 }

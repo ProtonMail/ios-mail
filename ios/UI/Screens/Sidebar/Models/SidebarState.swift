@@ -18,6 +18,31 @@
 import Foundation
 
 struct SidebarState {
-    var system: [SidebarSystemFolderUIModel]
-    var other: [SidebarOtherItemUIModel]
+    let system: [SidebarSystemFolder]
+    let labels: [SidebarLabel]
+    let other: [SidebarOtherItem]
+}
+
+extension SidebarState {
+
+    var items: [SidebarItem] {
+        system.map(SidebarItem.system) + labels.map(SidebarItem.label) + other.map(SidebarItem.other)
+    }
+
+    static var initial: Self {
+        .init(system: [], labels: [], other: .staleItems)
+    }
+
+    func copy(system: [SidebarSystemFolder]) -> Self {
+        .init(system: system, labels: labels, other: other)
+    }
+
+    func copy(labels: [SidebarLabel]) -> Self {
+        .init(system: system, labels: labels, other: other)
+    }
+
+    func copy(other: [SidebarOtherItem]) -> Self {
+        .init(system: system, labels: labels, other: other)
+    }
+
 }

@@ -15,13 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
-
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
-
-    func copy(isSelected: Bool) -> SelectableItemType
+extension View {
+    func square(size: CGFloat, alignment: Alignment = .center) -> some View {
+        frame(width: size, height: size, alignment: alignment)
+    }
 }

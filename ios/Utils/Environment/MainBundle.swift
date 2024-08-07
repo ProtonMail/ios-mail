@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+struct MainBundle: EnvironmentKey {
+    static let defaultValue = Bundle.main
+}
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
-
-    func copy(isSelected: Bool) -> SelectableItemType
+extension EnvironmentValues {
+    var mainBundle: Bundle {
+        get { self[MainBundle.self] }
+        set { self[MainBundle.self] = newValue }
+    }
 }

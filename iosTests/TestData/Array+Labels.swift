@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+extension Array where Element == SidebarLabel {
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    static var labels: [Element] {
+        [
+            .init(localID: 3, color: "#A4A4AB", name: "Important", unreadCount: "10", isSelected: false),
+            .init(localID: 4, color: "#9292F9", name: "Work", unreadCount: "1", isSelected: false)
+        ]
+    }
 
-    func copy(isSelected: Bool) -> SelectableItemType
 }

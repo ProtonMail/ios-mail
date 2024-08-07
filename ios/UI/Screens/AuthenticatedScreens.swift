@@ -58,6 +58,12 @@ struct AuthenticatedScreens: View {
                     case .shareLogs:
                         break
                     }
+                case .label(let label):
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                        localLabelId: label.localID,
+                        name: label.name.stringResource,
+                        systemFolder: nil
+                    )))
                 }
             }
         }

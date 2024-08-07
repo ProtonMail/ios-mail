@@ -15,13 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import DesignSystem
 
-protocol SelectableItem {
-    associatedtype SelectableItemType
+extension Array where Element == SidebarOtherItem {
 
-    var selectionIdentifier: String { get }
-    var isSelected: Bool { get }
+    static var staleItems: [Element] {
+        [
+            .init(
+                type: .subscriptions,
+                icon: DS.Icon.icPencil,
+                name: L10n.Settings.subscription.string,
+                isSelected: false
+            ),
+            .init(
+                type: .settings,
+                icon: DS.Icon.icCogWheel,
+                name: L10n.Settings.accountSettings.string,
+                isSelected: false
+            ),
+            .init(
+                type: .shareLogs,
+                icon: DS.Icon.icBug,
+                name: "Share logs".notLocalized,
+                isSelected: false
+            )
+        ]
+    }
 
-    func copy(isSelected: Bool) -> SelectableItemType
 }
