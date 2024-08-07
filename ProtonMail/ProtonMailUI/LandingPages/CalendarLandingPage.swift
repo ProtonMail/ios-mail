@@ -69,3 +69,7 @@ public struct CalendarLandingPage: View {
         }
     }
 }
+
+#Preview {
+    CalendarLandingPage()
+}
