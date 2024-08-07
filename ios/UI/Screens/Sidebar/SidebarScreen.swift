@@ -165,7 +165,7 @@ struct SidebarScreen: View {
                     .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
                 Spacer()
                 if let unreadCount = item.unreadCount {
-                    Text("\(unreadCount)")
+                    Text(unreadCount)
                         .foregroundStyle(item.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
                         .font(.caption)
                         .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)

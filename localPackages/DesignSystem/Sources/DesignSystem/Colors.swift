@@ -31,6 +31,7 @@ public extension DS.Color {
     }
 
     enum Global {
+        public static let black = Color(.globalBlack)
         public static let white = Color(.globalWhite)
     }
 
