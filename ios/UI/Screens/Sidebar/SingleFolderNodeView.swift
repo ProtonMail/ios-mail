@@ -57,7 +57,6 @@ struct SingleFolderNodeView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
                         .square(size: 16)
-                        .background(.red)
                         .animation(.default, value: isExpanded)
                     }
                     VStack {

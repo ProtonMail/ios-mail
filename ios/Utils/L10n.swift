@@ -308,6 +308,17 @@ enum L10n {
         static let title = LocalizedStringResource("Settings", comment: "Settings menu title.")
     }
 
+    enum Sidebar {
+        static let createLabel = LocalizedStringResource(
+            "Create a label",
+            comment: "Button in the sidebar menu that redirects a user to the create label screen"
+        )
+        static let createFolder = LocalizedStringResource(
+            "Create a folder",
+            comment: "Button in the sidebar menu that redirects a user to the create folder screen"
+        )
+    }
+
     static func files(attachmentsCount: Int) -> LocalizedStringResource {
         .init("\(attachmentsCount) files", comment: "The number of attachments on conversation details screen.")
     }

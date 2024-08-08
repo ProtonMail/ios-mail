@@ -75,6 +75,12 @@
     "Copy name" : {
       "comment" : "Action title for copying address name to clipboard in the address action sheet."
     },
+    "Create a folder" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the create folder screen"
+    },
+    "Create a label" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the create label screen"
+    },
     "Create new folder" : {
       "comment" : "Action title for creating new folder."
     },

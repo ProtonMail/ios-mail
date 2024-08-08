@@ -55,7 +55,7 @@ struct AuthenticatedScreens: View {
                         appRoute.updateRoute(to: .settings)
                     case .subscriptions:
                         appRoute.updateRoute(to: .subscription)
-                    case .shareLogs:
+                    case .shareLogs, .createLabel, .createFolder:
                         break
                     }
                 case .label(let label):

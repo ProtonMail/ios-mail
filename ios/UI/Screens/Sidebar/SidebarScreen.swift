@@ -121,10 +121,18 @@ struct SidebarScreen: View {
                     list(for: screenModel.state.system.map(SidebarItem.system))
                     separator
                     list(for: screenModel.state.labels.map(SidebarItem.label))
+                    createButton(
+                        for: screenModel.state.createLabel,
+                        isListEmpty: screenModel.state.labels.isEmpty
+                    )
                     separator
                     FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes) { folder in
                         select(item: .folder(folder))
                     }
+                    createButton(
+                        for: screenModel.state.createFolder,
+                        isListEmpty: screenModel.state.folders.isEmpty
+                    )
                     separator
                     list(for: screenModel.state.other.map(SidebarItem.other))
                     separator
@@ -164,6 +172,27 @@ struct SidebarScreen: View {
                 )) // FIXME: -
             case .other(let model):
                 otherItemCotent(model: model)
+            }
+        }
+        .padding(.vertical, DS.Spacing.medium)
+        .padding(.horizontal, DS.Spacing.extraLarge)
+        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+    }
+
+    private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
+        Button(action: { select(item: .other(item)) }) {
+            HStack {
+                Image(item.icon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 20, height: 20)
+                    .tint(DS.Color.Sidebar.iconWeak)
+                    .padding(.trailing, DS.Spacing.extraLarge)
+                Text(item.name)
+                    .font(.subheadline)
+                    .foregroundStyle(isListEmpty ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+                    .lineLimit(1)
+                Spacer()
             }
         }
         .padding(.vertical, DS.Spacing.medium)

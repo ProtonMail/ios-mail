@@ -22,6 +22,9 @@ struct SidebarState {
     let labels: [SidebarLabel]
     let folders: [SidebarFolder]
     let other: [SidebarOtherItem]
+
+    let createLabel: SidebarOtherItem = .createLabel
+    let createFolder: SidebarOtherItem = .createFolder
 }
 
 extension SidebarState {

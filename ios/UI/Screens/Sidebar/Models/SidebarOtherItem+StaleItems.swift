@@ -43,3 +43,25 @@ extension Array where Element == SidebarOtherItem {
     }
 
 }
+
+extension SidebarOtherItem {
+
+    static var createLabel: Self {
+        .init(
+            type: .createLabel,
+            icon: DS.Icon.icPlus,
+            name: L10n.Sidebar.createLabel.string,
+            isSelected: false
+        )
+    }
+
+    static var createFolder: Self {
+        .init(
+            type: .createFolder,
+            icon: DS.Icon.icPlus,
+            name: L10n.Sidebar.createFolder.string,
+            isSelected: false
+        )
+    }
+
+}
