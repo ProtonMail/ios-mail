@@ -102,8 +102,10 @@ struct SidebarScreen: View {
             .onEnded { appUIState.isSidebarOpen = false }
     }
 
+    @Environment(\.colorScheme) var colorScheme
+
     private var opacityBackground: some View {
-        DS.Color.Shade.shade80
+        (colorScheme == .light ? DS.Color.Shade.shade80 : Color(hex: "#535964"))
             .animation(.linear(duration: animationDuration), value: appUIState.isSidebarOpen)
             .opacity(0.5 * (dragOffset / sidebarWidth))
             .ignoresSafeArea(.all)
