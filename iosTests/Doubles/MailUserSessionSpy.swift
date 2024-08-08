@@ -22,9 +22,11 @@ class MailUserSessionSpy: MailUserSessionProtocol {
 
     private(set) var newSystemLabelsObservedQueryCallback: MailboxLiveQueryUpdatedCallback?
     private(set) var newLabelLabelsObservedQueryCallback: MailboxLiveQueryUpdatedCallback?
+    private(set) var newFolderLabelsObservedQuery: MailboxLiveQueryUpdatedCallback?
 
     let systemFoldersQueryStub = MailLabelsLiveQueryStub()
     let labelsQueryStub = MailLabelsLiveQueryStub()
+    let foldersQueryStub = MailLabelsLiveQueryStub()
 
     // MARK: - MailUserSessionProtocol
 
@@ -97,7 +99,9 @@ class MailUserSessionSpy: MailUserSessionProtocol {
     }
 
     func newFolderLabelsObservedQuery(cb: MailboxLiveQueryUpdatedCallback) -> MailLabelsLiveQuery {
-        fatalError("Not implemeted")
+        newFolderLabelsObservedQuery = cb
+
+        return foldersQueryStub
     }
 
     func newLabelLabelsObservedQuery(cb: MailboxLiveQueryUpdatedCallback) -> MailLabelsLiveQuery {

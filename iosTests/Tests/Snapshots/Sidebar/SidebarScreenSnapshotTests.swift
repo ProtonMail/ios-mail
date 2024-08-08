@@ -25,7 +25,12 @@ class SidebarScreenSnapshotTests: XCTestCase {
     func testSidebarLayoutsCorrectOnIphoneX() {
         let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
         let screenModel = SidebarModel(
-            state: .init(system: .systemFolders.selectFirst(), labels: .labels, other: .staleItems),
+            state: .init(
+                system: .systemFolders.selectFirst(),
+                labels: .labels, 
+                folders: [],
+                other: .staleItems
+            ),
             dependencies: .init(activeUserSession: MailUserSessionSpy())
         )
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }

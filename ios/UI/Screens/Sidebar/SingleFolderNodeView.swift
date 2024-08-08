@@ -87,26 +87,6 @@ struct SingleFolderNodeView: View {
 
 }
 
-private struct FolderNodeView: View {
-
-    private let folders: [SidebarFolderNode]
-    private let selected: (SidebarFolder) -> Void
-    private let padding: CGFloat
-
-    init(folders: [SidebarFolderNode], padding: CGFloat = 0, selected: @escaping (SidebarFolder) -> Void) {
-        self.folders = folders
-        self.padding = padding
-        self.selected = selected
-    }
-
-    var body: some View {
-        ForEach(folders) { folderNode in
-            SingleFolderNodeView(folderNode: folderNode, padding: padding, selected: selected)
-        }
-    }
-
-}
-
 private extension SidebarFolder {
 
     var unreadBadge: String? {
