@@ -25,7 +25,7 @@ enum SidebarAction {
 
 @Observable
 final class SidebarModel: Sendable {
-    var state: SidebarState
+    private(set) var state: SidebarState
 
     private var systemFolderQuery: SidebarLiveQuery?
     private var labelsQuery: SidebarLiveQuery?

@@ -54,3 +54,20 @@ extension SidebarState {
     }
 
 }
+
+extension Array where Element == SidebarFolder {
+
+    var sidebarFolderNodes: [SidebarFolderNode] {
+        let foldersByParentId = Dictionary(grouping: self, by: { $0.parentID })
+
+        func buildTree(parentId: UInt64?) -> [SidebarFolderNode] {
+            guard let folders = foldersByParentId[parentId] else { return [] }
+            return folders.map { folder in
+                SidebarFolderNode(folder: folder, children: buildTree(parentId: folder.id))
+            }
+        }
+
+        return buildTree(parentId: nil)
+    }
+
+}

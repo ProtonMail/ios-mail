@@ -75,8 +75,3 @@ struct SidebarFolder: Equatable, SelectableItem {
         )
     }
 }
-
-struct SidebarFolderNode {
-    let folder: SidebarFolder
-    let children: [SidebarFolderNode]
-}

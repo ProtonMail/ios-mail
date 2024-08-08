@@ -22,6 +22,7 @@ enum SidebarItem: Equatable, Identifiable {
     case label(SidebarLabel)
     case folder(SidebarFolder)
     case other(SidebarOtherItem)
+    
 
     var isSelected: Bool {
         switch self {
@@ -70,54 +71,6 @@ enum SidebarItem: Equatable, Identifiable {
             return "\(item.id)"
         case .other(let item):
             return item.name
-        }
-    }
-
-}
-
-extension Array where Element == SidebarItem {
-
-    var system: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .system:
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    var labels: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .label:
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    var folders: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .folder:
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    var other: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .other:
-                return true
-            default:
-                return false
-            }
         }
     }
 

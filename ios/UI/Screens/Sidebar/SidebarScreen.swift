@@ -118,18 +118,20 @@ struct SidebarScreen: View {
         VStack(alignment: .leading, spacing: .zero) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    list(for: screenModel.state.items.system)
+                    list(for: screenModel.state.system.map(SidebarItem.system))
                     separator
-                    list(for: screenModel.state.items.labels)
+                    list(for: screenModel.state.labels.map(SidebarItem.label))
                     separator
-                    list(for: screenModel.state.items.folders)
+                    FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes) { folder in
+                        select(item: .folder(folder))
+                    }
                     separator
-                    list(for: screenModel.state.items.other)
+                    list(for: screenModel.state.other.map(SidebarItem.other))
                     separator
                     appVersionNote
                 }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.state.items.first {
-                        proxy.scrollTo(first.id, anchor: .zero)
+                    if isSidebarOpen, let first = screenModel.state.system.first {
+                        proxy.scrollTo("\(first.localID)", anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
             }

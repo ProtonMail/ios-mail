@@ -18,6 +18,8 @@ public extension DS.Icon {
     static let icChevronUp = ImageResource.icChevronUp
     static let icChevronTinyDown = ImageResource.icChevronTinyDown
     static let icChevronTinyUp = ImageResource.icChevronTinyUp
+    static let icChevronDownFilled = ImageResource.icChevronDownFilled
+    static let icChevronUpFilled = ImageResource.icChevronUpFilled
     static let icCircleFilled = ImageResource.icCircleFilled
     static let icClock = ImageResource.icClock
     static let icCogWheel = ImageResource.icCogWheel
