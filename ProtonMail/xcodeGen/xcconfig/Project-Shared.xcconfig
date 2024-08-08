@@ -7,6 +7,7 @@
 
 CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES
 CLANG_CXX_LANGUAGE_STANDARD = gnu++0x
+CODE_SIGN_STYLE = Manual
 GCC_C_LANGUAGE_STANDARD = gnu99
 HEADER_SEARCH_PATHS = $(inherited) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
 LIBRARY_SEARCH_PATHS =

@@ -342,46 +342,6 @@
         <string>%d konverzácií označených</string>
       </dict>
     </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Naozaj chcete natrvalo vymazať %d správu?</string>
-        <key>few</key>
-        <string>Naozaj chcete natrvalo vymazať %d správy?</string>
-        <key>many</key>
-        <string>Naozaj chcete natrvalo vymazať %d správ?</string>
-        <key>other</key>
-        <string>Naozaj chcete natrvalo vymazať %d správ?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzáciu?</string>
-        <key>few</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácie?</string>
-        <key>many</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácií?</string>
-        <key>other</key>
-        <string>Naozaj chcete natrvalo vymazať %d konverzácií?</string>
-      </dict>
-    </dict>
     <key>%d member</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>

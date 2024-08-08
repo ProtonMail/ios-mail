@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "У дадзены момант немагчыма ачысціць папку.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі ’%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Паказаць паведамленне цалкам]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Атрымаць больш месца ў сховішчы";
+
+/* Title of the banner alert */
+"Your storage is full" = "Ваша сховішча запоўнена";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Ваша падпіска завяршылася";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Ваш уліковы запіс знаходзіцца пад пагрозай выдалення";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Калі вы хочаце і далей адпраўляць і прымаць лісты, вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы і запампаваць файлы.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Палепшыце свой уліковы запіс, каб аднавіць поўны доступ і пазбегнуць страты даных.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Папрасіце свайго адміністратара палепшыць ваш уліковы запіс, каб пазбегнуць страты даных.";
+
+/* Upgrade button action */
+"Upgrade" = "Палепшыць";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Блакіраваць паведамленні ад гэтага адпраўніка";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Палепшыце свой тарыфны план, каб аўтаматычна выдаляць паведамленні, якія былі ў папках сметніца або спам больш за 30 дзён.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Не, дзякуй";

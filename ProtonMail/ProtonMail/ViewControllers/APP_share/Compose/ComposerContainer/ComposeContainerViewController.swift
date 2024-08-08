@@ -22,13 +22,13 @@
 
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCorePaymentsUI
 #endif
 import MBProgressHUD
 import PromiseKit
 import ProtonCoreDataModel
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import ProtonMailUI
 import UIKit
 
 protocol ComposeContainerViewControllerDelegate: AnyObject {
@@ -36,13 +36,18 @@ protocol ComposeContainerViewControllerDelegate: AnyObject {
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel> {
-    typealias Dependencies = HasCoreDataContextProviderProtocol & ContainableComposeViewController.Dependencies
+    typealias BaseDependencies = ContainableComposeViewController.Dependencies & HasCoreDataContextProviderProtocol
+#if APP_EXTENSION
+    typealias Dependencies = BaseDependencies
+#else
+    typealias Dependencies = BaseDependencies & HasPaymentsUIFactory
+#endif
 
     #if !APP_EXTENSION
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
-    private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
     #endif
 
     enum Constant {
@@ -292,6 +297,21 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.isAddingAttachment = true
     }
     #endif
+
+#if !APP_EXTENSION
+    func presentUpsellPage(entryPoint: UpsellPageEntryPoint) {
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+
+        upsellCoordinator?.start(entryPoint: entryPoint) { [weak self] in
+            switch entryPoint {
+            case .scheduleSend:
+                self?.showScheduleSendActionSheet()
+            default:
+                break
+            }
+        }
+    }
+#endif
 }
 
 // MARK: UI related
@@ -748,49 +768,25 @@ extension ComposeContainerViewController: LifetimeTrackable {
 
 extension ComposeContainerViewController: ScheduledSendHelperDelegate {
     func showScheduleSendPromotionView() {
+#if !APP_EXTENSION
+        presentUpsellPage(entryPoint: .scheduleSend)
+#else
+        // Close the share extension and open the draft in main app.
         editor.collectDraftDataAndSaveToDB().ensure { [weak self] in
             self?.viewModel.childViewModel.updateDraft()
-            guard let nav = self?.navigationController?.view else {
-                return
+
+            if let msgID = self?.viewModel.childViewModel.composerMessageHelper.draft?.messageID,
+               let url = URL(string: "protonmail://\(msgID)?upsell=scheduleSend") {
+                self?.editor.cancelAction()
+                _ = self?.editor.openURL(url)
             }
-            let promotion = PromotionView()
-            promotion.presentPaymentUpgradeView = { [weak self] in
-                #if !APP_EXTENSION
-                self?.presentPaymentView()
-                #else
-                // Close the share extension and open the draft in main app.
-                if let msgID = self?.viewModel.childViewModel.composerMessageHelper.draft?.messageID,
-                   let url = URL(string: "protonmail://\(msgID)") {
-                    self?.editor.cancelAction()
-                    _ = self?.editor.openURL(url)
-                }
-                #endif
-            }
-            promotion.viewWasDismissed = { [weak self] in
-                self?.showScheduleSendActionSheet()
-            }
-            promotion.present(on: nav, type: .scheduleSend)
         }.cauterize()
+#endif
     }
 
     func isItAPaidUser() -> Bool {
         return viewModel.user.hasPaidMailPlan
     }
-
-#if !APP_EXTENSION
-    private func presentPaymentView() {
-        paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        paymentsUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true
-        ) { _ in }
-    }
-#endif
 
     func showSendInTheFutureAlert() {
         let alert = LocalString._schedule_send_future_warning.alertController()

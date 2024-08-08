@@ -250,7 +250,7 @@
 "From" = "보낸 사람";
 
 /* Title */
-"Bcc" = "숨은 참조";
+"Bcc" = "숨은참조";
 
 /* Placeholder */
 "Subject" = "제목";
@@ -454,7 +454,7 @@
 "Cc" = "참조";
 
 /* message Bcc: feild */
-"Bcc:" = "숨은 참조:";
+"Bcc:" = "숨은참조:";
 
 /*
  general delete action
@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "지금은 폴더를 비울 수 없습니다.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "'%@' 내에 있는 전체 메시지를 완전히 삭제하시겠어요?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[모든 메시지 보기]";
 
@@ -1660,10 +1663,10 @@
 "Do you want to send your message anyway?" = "메시지를 그대로 전송하시겠습니까?";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "참조와 부참조 추가";
+"Add CC and BCC" = "참조와 숨은참조 추가";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "CC와 BCC 닫기";
+"Close CC and BCC" = "참조와 숨은참조 닫기";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "다른 발신자 주소를 선택하세요.";
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "더 많은 저장공간 확보하기";
+
+/* Title of the banner alert */
+"Your storage is full" = "저장공간이 꽉 찼습니다";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "구독이 만료되었습니다";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "계정이 삭제될 수 있습니다";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "이메일을 주고 받으려면, 저장 공간을 비우거나 저장 공간 확보를 위해 업그레이드 하세요.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "파일을 업로드하려면, 공간을 비우거나 스토리지를 추가하기 위해 업그레이드하세요.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "전체 접근 권한을 복원하고 데이터 손실을 방지하려면 업그레이드하세요.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "데이터 손실을 방지하려면, 관리자에게 업그레이드를 요청하세요.";
+
+/* Upgrade button action */
+"Upgrade" = "업그레이드";
 
 /* Button to block a sender */
 "Block messages from this sender" = "이 전송자의 메시지 차단";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "휴지통 및 스팸함에 30일 이상 방치된 메시지들을 자동으로 삭제하려면 업그레이드 하세요.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "30일 이상 휴지통에 있는 메시지를 자동으로 삭제합니다.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "30일 이상 휴지통 및 스팸함에 있던 메시지를 자동으로 삭제합니다.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "아니요, 괜찮아요";

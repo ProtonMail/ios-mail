@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Nie można opróżnić folderu.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Czy na pewno chcesz trwale usunąć wszystkie wiadomości z folderu '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Pokaż pełną wiadomość]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Uzyskaj więcej przestrzeni dyskowej";
+
+/* Title of the banner alert */
+"Your storage is full" = "Przestrzeń dyskowa jest pełna";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Subskrypcja zakończyła się";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Konto może zostać usunięte";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Zwolnij część miejsca lub ulepsz konto, aby uzyskać większą przestrzeń dyskową.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Zwolnij część miejsca lub ulepsz konto, aby uzyskać większą przestrzeń dyskową.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Ulepsz konto, aby przywrócić pełny dostęp i uniknąć utraty danych.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Poproś administratora o ulepszenie konta, aby uniknąć utraty danych.";
+
+/* Upgrade button action */
+"Upgrade" = "Ulepsz";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Zablokuj wiadomości od tego nadawcy";
@@ -2178,7 +2205,7 @@
 "Read emails faster" = "Czytaj wiadomości szybciej";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem.\n%@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Wystąpił nieoczekiwany błąd. Skontaktuj się ze wsparciem technicznym.\n%@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Niewystarczającą pamięć wewnętrzna";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Automatycznie usuwaj wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nie, dziękuję";

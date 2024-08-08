@@ -17,7 +17,7 @@
 
 import CoreData
 import PromiseKit
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 @testable import ProtonMail
 

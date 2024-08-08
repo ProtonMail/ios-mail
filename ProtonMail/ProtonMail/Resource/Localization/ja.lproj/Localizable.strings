@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "現在、フォルダーを空にできません。";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[全文を表示]";
 
@@ -1854,6 +1857,30 @@
 /* Get more storage button action */
 "Get more storage" = "ストレージを増やす";
 
+/* Title of the banner alert */
+"Your storage is full" = "ストレージがいっぱいです";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "To send or receive emails, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "アップグレード";
+
 /* Button to block a sender */
 "Block messages from this sender" = "この送信者からのメッセージをブロックする";
 
@@ -1914,13 +1941,13 @@
 "Load" = "読み込む";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(タイトルなし)";
 
 /* As in: event organizer */
 "Organizer" = "主催者";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "詳細を非表示";
 
 /* Text shown when opening an invitation for a past event */
 "This event already ended" = "This event already ended";
@@ -1953,28 +1980,28 @@
 "(Attendance optional)" = "(参加は任意です)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "%@ごと";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@まで";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "%u日";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "%@まで";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ の %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "承諾";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "辞退";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "仮承諾";
@@ -2007,25 +2034,25 @@
 "Weekly" = "Weekly";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "毎月";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "年払い";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "第一";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "第二";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "第三";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "第四";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "最終";
 
 /* Title of the spotlight view */
 "Easily RSVP to events" = "Easily RSVP to events";
@@ -2157,7 +2184,7 @@
 "Application logs" = "アプリケーションのログ";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "新規!";
 
 /* Got it action */
 "Got it" = "はい";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ごみ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ごみ箱に入ってから30日以上経過したメッセージを自動的に削除。";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "30 日以上経過したごみ箱のメールと迷惑メールを自動で削除します。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "いいえ、結構です";
@@ -2457,10 +2484,10 @@
 "Change mailbox password" = "メールボックスのパスワードを変更";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "セキュリティキー";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB のストレージ";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u メールアドレス";
@@ -2490,7 +2517,7 @@
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/月";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "%@ を入手";

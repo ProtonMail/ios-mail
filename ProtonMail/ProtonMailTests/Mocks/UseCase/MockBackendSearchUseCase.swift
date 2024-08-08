@@ -17,7 +17,7 @@
 
 @testable import ProtonMail
 import Foundation
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MockBackendSearchUseCase: BackendSearchUseCase {
 

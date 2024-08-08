@@ -113,25 +113,19 @@ struct WebContents: Equatable {
         (try? ProtonCSS.viewerLightOnly.content()) ?? .empty
     }()
 
-    static var domPurifyConstructor: WKUserScript = {
-        // swiftlint:disable:next force_try force_unwrapping
-        let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
-        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    static let domPurifyConstructor: WKUserScript = {
+        loadScript(named: "purify.min")
     }()
 
-    static var escapeJS: WKUserScript = {
-        // swiftlint:disable:next force_try force_unwrapping
-        let raw = try! String(contentsOf: Bundle.main.url(forResource: "Escape", withExtension: "js")!)
-        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    static let escapeJS: WKUserScript = {
+        loadScript(named: "Escape")
     }()
 
-    static var loaderJS: WKUserScript = {
-        // swiftlint:disable:next force_try force_unwrapping
-        let raw = try! String(contentsOf: Bundle.main.url(forResource: "Loader", withExtension: "js")!)
-        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    static let loaderJS: WKUserScript = {
+        loadScript(named: "Loader")
     }()
 
-    static var blockQuoteJS: WKUserScript = {
+    static let blockQuoteJS: WKUserScript = {
         // swiftlint:disable:next force_try force_unwrapping
         var raw = try! String(contentsOf: Bundle.main.url(forResource: "Blockquote", withExtension: "js")!)
         let blockQuoteSelectors = String.quoteElements
@@ -143,4 +137,21 @@ struct WebContents: Equatable {
         )
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
+
+    static let dynamicFontSize: WKUserScript = {
+        loadScript(named: "DynamicFontSize")
+    }()
+
+    private static func loadScript(named scriptName: String) -> WKUserScript {
+        guard let url = Bundle.main.url(forResource: scriptName, withExtension: "js") else {
+            fatalError("Script named \(scriptName) not found!")
+        }
+
+        do {
+            let raw = try String(contentsOf: url)
+            return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        } catch {
+            fatalError("\(error)")
+        }
+    }
 }

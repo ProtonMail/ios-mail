@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Impossibile svuotare ora la cartella.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nella cartella '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra messaggio completo]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Ottieni più spazio di archiviazione";
+
+/* Title of the banner alert */
+"Your storage is full" = "Spazio di archiviazione pieno";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Il tuo abbonamento è terminato";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Il tuo account è a rischio eliminazione";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Per inviare e ricevere le email, libera spazio o effettua l'upgrade per più spazio di archiviazione.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Per caricare file, libera spazio o esegui l'upgrade per avere più spazio di archiviazione.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Effettua l'upgrade per ripristinare l'accesso completo ed evitare la perdita di dati.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Per evitare la perdita dei dati, chiedi all'amministratore di effettuare l'upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Aggiorna";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blocca i messaggi da questo mittente";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Aggiorna il piano per eliminare automaticamente gli elementi presenti nel cestino o in spam dopo 30 giorni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino per più di 30 giorni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino e in spam per più di 30 giorni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, grazie";

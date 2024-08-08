@@ -116,9 +116,9 @@ private extension String {
                 break
             }
 
-            let charset = output[match.range(withName: "charset")]
-            let encoding = output[match.range(withName: "encoding")]
-            let encodedText = output[match.range(withName: "encodedText")]
+            let charset = output.substring(with: match.range(withName: "charset"))
+            let encoding = output.substring(with: match.range(withName: "encoding"))
+            let encodedText = output.substring(with: match.range(withName: "encodedText"))
 
             let decodedText: String?
 

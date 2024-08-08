@@ -36,4 +36,12 @@ extension UserManager {
             reloadValue: false
         )
     }
+
+    var isFido2Enabled: Bool {
+        return container.featureFlagsRepository.isEnabled(
+            CoreFeatureFlagType.fidoKeys,
+            for: userID.rawValue,
+            reloadValue: false
+        )
+    }
 }

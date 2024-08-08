@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 @testable import ProtonMail
 
 class MockMailBoxViewModel: MailboxViewModel {

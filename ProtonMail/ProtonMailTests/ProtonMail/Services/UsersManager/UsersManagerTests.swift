@@ -19,7 +19,7 @@ import ProtonCoreDataModel
 import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 

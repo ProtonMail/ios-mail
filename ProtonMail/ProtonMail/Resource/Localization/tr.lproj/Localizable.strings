@@ -1082,7 +1082,7 @@
 "Is this bug report about an in-app purchase?" = "Bu hata bildirimi uygulama içi satın alma işlemiyle mi ilgili?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Satın alma sırasında App Store tarafından uygulamaya sağlanan teknik verileri eklemeyi kabul ederseniz, Müşteri destek ekibimiz hizmet tarifenizi el ile kullanıma almaya çalışır. Bu verilerde iTunes hesabınız, Apple kimliğiniz, bağlı ödeme kartlarınız veya diğer kullanıcı bilgileriniz hakkında herhangi bir ayrıntı bulunmaz. Teknik veriler yalnızca App Store sunucularında işlemin gerçekleştirildiğini denetlememize ve doğrulamamıza yardımcı olur.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Satın alma sırasında App Store tarafından uygulamaya sağlanan teknik verileri eklemeyi kabul ederseniz, Müşteri destek ekibimiz hizmet tarifenizi el ile kullanıma almaya çalışır. Bu verilerde iTunes hesabınız, Apple kimliğiniz, bağlı ödeme kartlarınız veya diğer kullanıcı bilgileriniz hakkında herhangi bir ayrıntı bulunmaz. Teknik veriler yalnızca App Store sunucularında hesap işleminin gerçekleştirildiğini denetlememize ve doğrulamamıza yardımcı olur.";
 
 /* Error message */
 "Yes, attach details of payment" = "Evet, ödeme ayrıntıları eklensin";
@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Klasör şu anda boşaltılamıyor.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "'%@' içindeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[İletinin tümünü görüntüle]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Daha fazla depolama alanı edinin";
+
+/* Title of the banner alert */
+"Your storage is full" = "Depolama alanınız dolu";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Aboneliğiniz sona ermiş";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Hesabınızın silinme riski var";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "E-postaları alabilmek ya da gönderebilmek için boş yer açın ya da daha fazla depolama alanı edinmek için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Dosya yüklemek, depolama alanı boşaltın ya da daha fazla depolama alanı almak için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Tam erişim kazanmak ve veri kaybını önlemek için tarifenizi yükseltin.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Veri kaybını önlemek için yöneticinizden tarifenizi yükseltmesini isteyin.";
+
+/* Upgrade button action */
+"Upgrade" = "Yükselt";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bu göndericiden gelen iletileri engelle";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Çöp veya istenmeyen kutularında 30 günden uzun süredir duran iletilerin otomatik olarak silinmesi için tarifenizi yükseltin.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Çöp kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Çöp ve istenmeyen kutularında 30 günden uzun süredir duran iletileri otomatik olarak silebilirsiniz.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Hayır, teşekkürler";

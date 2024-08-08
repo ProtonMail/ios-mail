@@ -133,8 +133,8 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
             let match = regex.firstMatch(in: text, range: NSRange(location: 0, length: (text as NSString).length)),
             match.numberOfRanges == 3
         else { return (text, text) }
-        let name = text[match.range(at: 1)]
-        let address = text[match.range(at: 2)]
+        let name = text.substring(with: match.range(at: 1))
+        let address = text.substring(with: match.range(at: 2))
 
         if address.isValidEmail() {
             return (name.trim(), address.trim())

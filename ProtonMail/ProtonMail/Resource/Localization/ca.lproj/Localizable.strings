@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra el missatge complet]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Aconseguiu més emmagatzematge";
+
+/* Title of the banner alert */
+"Your storage is full" = "L'emmagatzematge és ple.";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu per a obtenir més emmagatzematge.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Millora";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bloqueja els missatges d'aquest remitent";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Suprimeix automàticament els missatges que han estat a la paperera durant més de 30 dies.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimineu automàticament els missatges que han estat a la paperera i al correu brossa durant més de 30 dies.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, gràcies";
@@ -2361,7 +2388,7 @@
 "Unsubscribe?" = "Voleu anul·lar la subscripció?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de descarrega de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de baixa de la llista de correu. Es notificarà al remitent que ja no enviï correus electrònics a aquesta adreça.";
 
 /* Alert telling the user that we are unable to preview this attachment */
 "Unable to preview this attachment" = "No s'ha pogut previsualitzar aquest adjunt";

@@ -24,6 +24,7 @@ import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
+import ProtonCoreFeatureFlags
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import UIKit
@@ -66,7 +67,6 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         tableView.register(SettingsGeneralCell.self)
-        tableView.register(SettingsTwoLinesCell.self)
         tableView.register(SettingsGeneralImageCell.self)
 
         tableView.rowHeight = CellKey.cellHeight
@@ -78,6 +78,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
 
         view.backgroundColor = ColorProvider.BackgroundSecondary
         generateAccessibilityIdentifiers()
+        refreshUserInfo()
     }
 
     private func updateTitle() {
@@ -93,6 +94,16 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
             isAccountDeletionPending = false
         } else {
             self.tableView.reloadData()
+        }
+    }
+
+    func refreshUserInfo() {
+        guard viewModel.isAccountRecoveryEnabled else { return }
+        Task {
+            await viewModel.refreshUserInfo()
+            await MainActor.run {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -130,7 +141,15 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         case .account:
             configureCellInAccountSection(cell, row)
         case .addresses:
-            configureCellInAddressSection(cell, row)
+            if row == SettingsAddressItem.allCases.firstIndex(of: .mobileSignature), let pfc = premiumFeatureCell(
+                for: indexPath,
+                description: SettingsAddressItem.mobileSignature.description,
+                isFeatureCurrentlyOn: viewModel.showMobileSignature
+            ) {
+                return pfc
+            } else {
+                configureCellInAddressSection(cell, row)
+            }
         case .snooze:
             if let cellToUpdate = cell as? SettingsGeneralCell {
                 cellToUpdate.configure(left: "AppVersion")
@@ -261,7 +280,7 @@ extension SettingsAccountViewController {
             let item = self.viewModel.accountItems[row]
             cellToUpdate.configure(left: item.description)
             switch item {
-            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData:
+            case .singlePassword, .loginPassword, .mailboxPassword, .privacyAndData, .securityKeys:
                 break
             case .recovery:
                 cellToUpdate.configure(right: viewModel.recoveryEmail)
@@ -294,7 +313,11 @@ extension SettingsAccountViewController {
         let item = self.viewModel.mailboxItems[indexPath.row]
         switch item {
         case .autoDeleteSpamTrash:
-            return imageCell(for: indexPath, item: item)
+            return premiumFeatureCell(
+                for: indexPath,
+                description: item.description,
+                isFeatureCurrentlyOn: viewModel.isAutoDeleteSpamAndTrashEnabled
+            )
         case .storage:
             return generalCell(for: indexPath, item: item, rightLabel: "100 MB (disabled)")
         case .nextMsgAfterMove:
@@ -318,19 +341,23 @@ extension SettingsAccountViewController {
         return cell
     }
 
-    private func imageCell(for indexPath: IndexPath, item: SettingsMailboxItem) -> UITableViewCell? {
+    private func premiumFeatureCell(
+        for indexPath: IndexPath,
+        description: String,
+        isFeatureCurrentlyOn: Bool
+    ) -> UITableViewCell? {
         guard let imageCell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralImageCell.CellID,
                                                             for: indexPath) as? SettingsGeneralImageCell else {
             return nil
         }
         let onOffTitle: String
-        if self.viewModel.isAutoDeleteSpamAndTrashEnabled {
+        if isFeatureCurrentlyOn {
             onOffTitle = LocalString._settings_On_title
         } else {
             onOffTitle = LocalString._settings_Off_title
         }
         let image = self.viewModel.isPaidUser ? nil : Asset.upgradeIcon.image
-        imageCell.configure(left: item.description, right: onOffTitle, leftImage: image)
+        imageCell.configure(left: description, right: onOffTitle, leftImage: image)
         return imageCell
     }
 
@@ -351,6 +378,8 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .loginPwd)
         case .mailboxPassword:
             self.coordinator.go(to: .mailboxPwd)
+        case .securityKeys:
+            self.coordinator.go(to: .securityKeys)
         case .recovery:
             self.coordinator.go(to: .recoveryEmail)
         case .privacyAndData:

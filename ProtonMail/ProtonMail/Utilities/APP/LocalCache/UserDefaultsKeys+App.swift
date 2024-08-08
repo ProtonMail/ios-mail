@@ -15,12 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CryptoKit
 import ProtonCorePayments
 
 extension UserDefaultsKeys {
     static let firstRunDate = plainKey(named: "firstRunDate", ofType: Date.self)
 
     static let lastBugReport = plainKey(named: "BugReportCache_LastBugReport", defaultValue: "")
+
+    /// Keys need to take both UserID and LabelID into account; use `UserSpecificLabelKey.userDefaultsKey`.
+    static let mailboxLastUpdateTimes = plainKey(named: "mailboxLastUpdateTimes", defaultValue: [String: Date]())
 
     static let referralProgramPromptWasShown = plainKey(named: "referralProgramPromptWasShown", defaultValue: false)
 
@@ -58,4 +62,16 @@ extension UserDefaultsKeys {
     static let isIAPAvailableOnBE = plainKey(named: "isIAPAvailableOnBE", defaultValue: false)
     static let paymentMethods = codableKey(named: "paymentMethods", ofType: [PaymentMethod].self)
     static let servicePlans = codableKey(named: "servicePlans", ofType: [Plan].self)
+}
+
+struct UserSpecificLabelKey {
+    let labelID: LabelID
+    let userID: UserID
+
+    var userDefaultsKey: String {
+        SHA256
+            .hash(data: Data("\(userID.rawValue):\(labelID.rawValue)".utf8))
+            .compactMap { String(format: "%02x", $0) }
+            .joined()
+    }
 }

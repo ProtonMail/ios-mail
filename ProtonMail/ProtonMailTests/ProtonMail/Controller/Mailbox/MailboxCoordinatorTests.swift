@@ -17,7 +17,9 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUnitTestsServices
+import ProtonMailUI
 
 class MailboxCoordinatorTests: XCTestCase {
 
@@ -26,14 +28,16 @@ class MailboxCoordinatorTests: XCTestCase {
     var connectionStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
     var applicationStateStub: UIApplication.State = .active
 
+    private var testContainer: TestContainer!
     private var conversationStateProviderMock: MockConversationStateProviderProtocol!
     private var dummyAPIService: APIServiceMock!
     private var uiNavigationControllerMock: NavigationControllerSpy!
+    private var upsellOfferProvider: MockUpsellOfferProvider!
 
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let testContainer = TestContainer()
+        testContainer = TestContainer()
         testContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
         let dummyUser = UserManager(api: dummyAPIService, globalContainer: testContainer)
         testContainer.usersManager.add(newUser: dummyUser)
@@ -70,6 +74,12 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let userContainer = dummyUser.container
 
+        upsellOfferProvider = .init()
+
+        userContainer.upsellOfferProviderFactory.register {
+            self.upsellOfferProvider
+        }
+
         let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
         uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
 
@@ -89,11 +99,13 @@ class MailboxCoordinatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        testContainer = nil
         conversationStateProviderMock = nil
         dummyAPIService = nil
         uiNavigationControllerMock = nil
         connectionStatusProviderMock = nil
         uiNavigationControllerMock = nil
+        upsellOfferProvider = nil
         viewModelMock = nil
     }
 
@@ -173,6 +185,45 @@ class MailboxCoordinatorTests: XCTestCase {
             // one call for showing the actual message details
             XCTAssertEqual(uiNavigationControllerMock.setViewControllersStub.callCounter, 1)
         }
+    }
+
+    @MainActor
+    func testFollowDeepLinkWithComposerAndUpsell() async throws {
+        let messageID = "someMessageID"
+
+        try await testContainer.contextProvider.writeAsync { context in
+            let message = Message(context: context)
+            message.messageID = messageID
+        }
+
+        upsellOfferProvider.availablePlan = .init(
+            ID: nil,
+            type: nil,
+            name: nil,
+            title: "",
+            instances: [],
+            entitlements: [],
+            decorations: []
+        )
+
+        let deepLink = DeepLink("toComposeMailto", sender: messageID)
+        deepLink.append(DeepLink.Node(name: "toUpsellPage", value: "scheduleSend"))
+
+        let window = UIWindow(root: uiNavigationControllerMock, scene: nil)
+        window.makeKeyAndVisible()
+
+        sut.follow(deepLink)
+
+        try await Task.sleep(for: .milliseconds(500))
+
+        let presentedViewController = try XCTUnwrap(
+            uiNavigationControllerMock.presentedViewController as? UINavigationController
+        )
+
+        let composer = try XCTUnwrap(presentedViewController.viewControllers.first as? ComposeContainerViewController)
+        let viewPresentedByComposer = try XCTUnwrap(composer.presentedViewController)
+
+        XCTAssertNotNil(viewPresentedByComposer as? SheetLikeSpotlightViewController<UpsellPage>)
     }
 }
 

@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Trenutno ni mogoče izprazniti mape";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "… [Prikaži celotno sporočilo]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Pridobite več prostora";
+
+/* Title of the banner alert */
+"Your storage is full" = "Vaša shramba je polna";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Za pošiljanje in prejemanje sporočil sprostite nekaj prostora ali dokupite prostor za shranjevanje.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Nadgradi";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blokiraj sporočila tega pošiljatelja";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Nadgradite naročniški paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Samodejno izbriši sporočila, ki so bila v smetnjaku in neželeni pošti več kot 30 dni.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Ne, hvala";
@@ -2457,7 +2484,7 @@
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "Varnostni ključi";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB prostora za shranjevanje";

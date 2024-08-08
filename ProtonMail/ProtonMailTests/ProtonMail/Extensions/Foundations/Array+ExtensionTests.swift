@@ -20,8 +20,6 @@ import XCTest
 
 final class Array_ExtensionTests: XCTestCase {
 
-    // MARK: chunked
-
     func testChunked() {
         let array = Array(0...20)
         let chunk1 = array.chunked(into: 3)
@@ -37,39 +35,4 @@ final class Array_ExtensionTests: XCTestCase {
         XCTAssertEqual(chunk2[safe: 2]?.count, 1)
     }
 
-    // MARK: unique
-
-    func testUnique_whenDuplicateElements_itRemovesDuplicates() {
-        let inputArray = [1, 2, 3, 1, 4, 5, 2]
-        let expectedArray = [1, 2, 3, 4, 5]
-
-        XCTAssertEqual(inputArray.unique { $0 }, expectedArray)
-    }
-
-    func testUnique_whenNoDuplicateElements_itReturnsTheSameArray() {
-        let inputArray = [1, 2, 3, 4, 5]
-        let expectedArray = [1, 2, 3, 4, 5]
-
-        XCTAssertEqual(inputArray.unique { $0 }, expectedArray)
-    }
-
-    func testUnique_whenDuplicateElementsInCustomAttribute_itRemovesDuplicates() {
-        struct CustomObject: Hashable {
-            let name: String
-            let age: Int
-        }
-
-        let object1 = CustomObject(name: "Mike", age: 20)
-        let object2 = CustomObject(name: "Anna", age: 24)
-        let object3 = CustomObject(name: "Sarah", age: 24)
-        let object4 = CustomObject(name: "Mike", age: 30)
-        
-        let inputArray = [object1, object2, object3, object4]
-
-        let expectedArrayByName = [object1, object2, object3]
-        XCTAssertEqual(inputArray.unique { $0.name }, expectedArrayByName)
-
-        let expectedArrayByAge = [object1, object2, object4]
-        XCTAssertEqual(inputArray.unique { $0.age }, expectedArrayByAge)
-    }
 }

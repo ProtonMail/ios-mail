@@ -235,8 +235,7 @@ final class UserContainer: ManagedContainer {
                             pushUpdater: self.pushUpdater
                         )
                     ),
-                    pushUpdater: self.pushUpdater,
-                    viewModeDataSource: self.conversationStateService
+                    pushUpdater: self.pushUpdater
                 )
             )
         }

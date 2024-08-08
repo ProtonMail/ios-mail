@@ -23,7 +23,6 @@
 import LifetimeTracker
 import PromiseKit
 import ProtonCoreFoundations
-import ProtonCorePaymentsUI
 import ProtonCoreUIFoundations
 import UIKit
 
@@ -45,7 +44,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     private var editBarItem: UIBarButtonItem!
-    private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
 
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
 
@@ -172,8 +171,12 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
     }
 
     private func presentPlanUpgrade() {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+        guard let tabBarController else {
+            return
+        }
+
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: tabBarController)
+        upsellCoordinator?.start(entryPoint: .contactGroups)
     }
 }
 

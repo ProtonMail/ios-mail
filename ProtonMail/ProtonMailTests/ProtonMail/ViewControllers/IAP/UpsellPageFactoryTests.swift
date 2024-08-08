@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 import XCTest
 
@@ -55,6 +55,7 @@ final class UpsellPageFactoryTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    @MainActor
     func testGeneratedPlan() throws {
         let planJSON = AvailablePlansTestData.availablePlan(named: "mail2022")
         let planData = try JSONSerialization.data(withJSONObject: planJSON)

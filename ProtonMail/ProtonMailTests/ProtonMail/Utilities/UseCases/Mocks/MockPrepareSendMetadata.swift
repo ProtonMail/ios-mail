@@ -19,7 +19,7 @@ import Foundation
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MockPrepareSendMetadata: UseCase<SendMessageMetadata, PrepareSendMetadata.Params> {
 

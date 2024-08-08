@@ -41,24 +41,6 @@ class ConversationCountRequest: Request {
     }
 }
 
-class ConversationCountResponse: Response {
-    var responseDict: [String: Any]?
-
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
-        responseDict = response
-
-        guard let jsonObject = response["Counts"],
-                let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
-            return false
-        }
-
-        guard (try? JSONDecoder().decode([CountData].self, from: data)) != nil else {
-            return false
-        }
-        return true
-    }
-}
-
 struct CountData: Parsable {
     let labelID: LabelID
     let total: Int

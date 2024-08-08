@@ -20,7 +20,7 @@ import fusion
 import iosMonkey
 import ProtonCoreEnvironment
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 class MonkeyTests : BaseMonkey  {
 

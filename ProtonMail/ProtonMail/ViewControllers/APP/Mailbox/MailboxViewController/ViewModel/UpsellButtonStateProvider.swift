@@ -56,6 +56,7 @@ struct UpsellButtonStateProvider {
 
     var shouldShowUpsellButton: Bool {
         guard
+            Application.arePaymentsEnabled,
             dependencies.featureFlagProvider.isEnabled(.upsellButton),
             dependencies.user.userInfo.subscribed.isEmpty
         else {

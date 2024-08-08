@@ -24,10 +24,11 @@ import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreLog
+import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
 import ProtonCoreFeatureFlags
-import ProtonCorePaymentsUI
+import ProtonMailUI
 import UIKit
 
 // sourcery: mock
@@ -46,7 +47,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
     private let dependencies: Dependencies
-    private var paymentsUI: PaymentsUI?
+    @MainActor private var upsellCoordinator: UpsellCoordinator?
 
     private var user: UserManager {
         users.firstUser!
@@ -73,6 +74,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case autoDeleteSpamTrash
         case privacyAndData
         case accountRecovery
+        case securityKeys
     }
 
     init(navigationController: UINavigationController?, dependencies: Dependencies) {
@@ -114,7 +116,11 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .signature:
             openSettingDetail(ofType: ChangeSignatureViewModel.self)
         case .mobileSignature:
-            openSettingDetail(ofType: ChangeMobileSignatureViewModel.self)
+            if user.hasPaidMailPlan {
+                openSettingDetail(ofType: ChangeMobileSignatureViewModel.self)
+            } else {
+                presentUpsellView(entryPoint: .mobileSignature)
+            }
         case .privacy:
             openPrivacy()
         case .labels:
@@ -133,12 +139,14 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             if user.hasPaidMailPlan {
                 openAutoDeleteSettings()
             } else {
-                presentAutoDeleteUpsellView()
+                presentUpsellView(entryPoint: .autoDelete)
             }
         case .privacyAndData:
             openPrivacyAndDataSetting()
         case .accountRecovery:
             openAccountRecovery()
+        case .securityKeys:
+            openSecurityKeys()
         }
     }
 
@@ -187,7 +195,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
         let viewModel = viewModelType.init(user: user, coreKeyMaker: dependencies.keyMaker)
-        let sdvc = SettingDetailViewController(viewModel: viewModel, dependencies: dependencies)
+        let sdvc = SettingDetailViewController(viewModel: viewModel)
         self.navigationController?.show(sdvc, sender: nil)
     }
 
@@ -288,18 +296,15 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         navigationController?.show(viewController, sender: nil)
     }
 
-    private func presentAutoDeleteUpsellView() {
-        guard let navController = navigationController else { return }
-        let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
-            guard let self else { return }
-            self.presentPayments()
-        }
-        upsellSheet.present(on: navController.view)
-    }
+    private func presentUpsellView(entryPoint: UpsellPageEntryPoint) {
+        Task { @MainActor in
+            guard let navigationController else {
+                return
+            }
 
-    private func presentPayments() {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
+            upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: navigationController)
+            upsellCoordinator?.start(entryPoint: entryPoint)
+        }
     }
 
     private func openPrivacyAndDataSetting() {
@@ -313,5 +318,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             self?.user.userInfo.accountRecovery = newAccountRecovery
         }
         navigationController?.show(accountRecoveryVC, sender: nil)
+    }
+
+    private func openSecurityKeys() {
+        let securityKeysVC = LoginUIModule.makeSecurityKeysViewController(apiService: user.apiService, clientApp: .mail)
+        navigationController?.show(securityKeysVC, sender: nil)
     }
 }

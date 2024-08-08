@@ -293,7 +293,7 @@ extension UserContainer {
 
     var upsellOfferProviderFactory: Factory<UpsellOfferProvider> {
         self {
-            UpsellOfferProvider(dependencies: self)
+            UpsellOfferProviderImpl(dependencies: self)
         }
     }
 

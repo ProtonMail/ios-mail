@@ -9,7 +9,7 @@ import ProtonCoreEnvironment
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonInboxRSVP
 import UIKit
 
@@ -1260,8 +1260,8 @@ class MockURLOpener: URLOpener {
     }
 
     @FuncStub(MockURLOpener.open) var openStub
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
-        openStub(url, options, completion)
+    func open(_ url: URL) {
+        openStub(url)
     }
 
     @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub

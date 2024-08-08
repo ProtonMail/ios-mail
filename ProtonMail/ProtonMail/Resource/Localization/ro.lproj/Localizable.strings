@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Nu se poate goli folderul în acest moment.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Sigur doriți să ștergeți definitiv toate mesajele din „%@”?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "...[Afișare mesaj complet]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Obțineți mai mult spațiu";
+
+/* Title of the banner alert */
+"Your storage is full" = "Spațiul de stocare este plin.";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Abonamentul s-a încheiat";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Contul riscă să fie șters";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Pentru a trimite sau primi mesaje, eliberați spațiu sau treceți la alt tip de plan pentru mai mult spațiu de stocare.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Pentru a încărca fișiere, eliberați spațiu sau modificați tipul de abonament pentru mai mult spațiu de stocare.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Modificați tipul de abonament pentru a vă restabili accesul complet și pentru a evita pierderea datelor.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Pentru a evita pierderea datelor, solicitați administratorului să îmbunătățească tipul de abonament.";
+
+/* Upgrade button action */
+"Upgrade" = "Modificare";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blocare mesaje de la acest expeditor";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Ștergere automată mesaje din gunoi mai vechi de 30 de zile.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Ștergere automată mesaje din folderul «Gunoi» și «Nedorite» mai vechi de 30 de zile.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nu, mulțumesc";

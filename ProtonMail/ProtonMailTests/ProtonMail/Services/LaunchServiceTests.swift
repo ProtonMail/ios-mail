@@ -20,7 +20,7 @@ import Foundation
 import ProtonCoreDataModel
 import ProtonCoreKeymaker
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 

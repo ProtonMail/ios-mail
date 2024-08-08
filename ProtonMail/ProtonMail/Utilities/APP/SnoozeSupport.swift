@@ -48,7 +48,7 @@ extension SnoozeSupport {
             )
             picker.present(on: presentingView)
         } else {
-            presentUpsellView()
+            presentPaymentView()
         }
     }
 
@@ -82,14 +82,6 @@ extension SnoozeSupport {
         Task {
             await showSnoozeSuccessBanner(on: date)
         }
-    }
-
-    private func presentUpsellView() {
-        let promotion = PromotionView()
-        promotion.presentPaymentUpgradeView = { [weak self] in
-            self?.presentPaymentView()
-        }
-        promotion.present(on: presentingView, type: .snooze)
     }
 
     func willSnooze() {

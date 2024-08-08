@@ -20,6 +20,7 @@ import SwiftUI
 
 public struct UpsellPage: View {
     @ObservedObject private var model: UpsellPageModel
+    private let entryPoint: UpsellPageEntryPoint
     private let onPurchaseTapped: (String) -> Void
 
     @Environment(\.verticalSizeClass)
@@ -44,12 +45,7 @@ public struct UpsellPage: View {
 
     private var infoSectionSpacing: CGFloat {
         if hideLogo.value {
-            if #available(iOS 16, *) {
-                return 0
-            } else {
-                // this value is intended to work along titleFix()
-                return -24
-            }
+            return 16
         } else {
             return 8
         }
@@ -59,8 +55,13 @@ public struct UpsellPage: View {
         verticalSizeClass == .compact || enforceVerticalTiles.value
     }
 
-    public init(model: UpsellPageModel, onPurchaseTapped: @escaping (String) -> Void) {
+    public init(
+        model: UpsellPageModel,
+        entryPoint: UpsellPageEntryPoint,
+        onPurchaseTapped: @escaping (String) -> Void
+    ) {
         self.model = model
+        self.entryPoint = entryPoint
         self.onPurchaseTapped = onPurchaseTapped
     }
 
@@ -95,15 +96,19 @@ public struct UpsellPage: View {
                 previousVerticalSizeClass = verticalSizeClass
             }
 
-            guard let keyWindowSize = keyWindow?.frame.size else {
+            guard let keyWindow else {
                 return
             }
+
+            let keyWindowSize = keyWindow.frame.size
 
             if $0.width > keyWindowSize.width && !enforceVerticalTiles.isActivated {
                 enforceVerticalTiles.activate()
             }
 
-            if $0.height > keyWindowSize.height && !hideLogo.isActivated {
+            let effectiveHeight = keyWindowSize.height - keyWindow.safeAreaInsets.top
+
+            if $0.height > effectiveHeight && !hideLogo.isActivated {
                 hideLogo.activate()
             }
         }
@@ -113,21 +118,23 @@ public struct UpsellPage: View {
         VStack(spacing: 8) {
             VStack(spacing: infoSectionSpacing) {
                 if hideLogo.value {
-                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
-                        .font(Font(UIFont.adjustedFont(forTextStyle: .title3, weight: .bold)))
+                    Text(entryPoint.title(planName: model.plan.name))
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
-                        .titleFix()
                 } else {
-                    Image(.mailUpsell)
-                        .padding(-20)
+                    VStack(spacing: 20) {
+                        Image(entryPoint.logo)
+                            .padding(entryPoint.logoPadding)
 
-                    Text(String(format: L10n.Upsell.upgradeToPlan, model.plan.name))
-                        .font(Font(UIFont.adjustedFont(forTextStyle: .title1, weight: .bold)))
-                        .foregroundColor(ColorProvider.SidebarTextNorm)
+                        Text(entryPoint.title(planName: model.plan.name))
+                            .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
+                            .foregroundColor(ColorProvider.SidebarTextNorm)
+                    }
                 }
 
-                Text(L10n.Upsell.mailPlusDescription)
+                Text(entryPoint.subtitle(planName: model.plan.name))
                     .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                    .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(ColorProvider.SidebarTextWeak)
             }
@@ -232,18 +239,6 @@ extension UpsellPage {
     }
 }
 
-private extension View {
-    // negative padding does not seem to work correctly on iOS 15.5
-    func titleFix() -> some View {
-        if #available(iOS 16, *) {
-            return padding(-34)
-        } else {
-            // this is intended to work with a particular infoSectionSpacing
-            return offset(y: -34)
-        }
-    }
-}
-
 #Preview {
     UpsellPage(
         model: .init(
@@ -262,6 +257,7 @@ private extension View {
                 ]
             )
         ),
+        entryPoint: .header,
         onPurchaseTapped: { _ in }
     )
 }

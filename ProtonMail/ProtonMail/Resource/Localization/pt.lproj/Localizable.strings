@@ -1644,6 +1644,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[mostrar mensagem completa]";
 
@@ -1853,6 +1856,30 @@
 
 /* Get more storage button action */
 "Get more storage" = "Obter mais espaço de armazenamento";
+
+/* Title of the banner alert */
+"Your storage is full" = "O seu armazenamento está cheio";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Para enviar ou receber e-mails, liberte espaço ou atualize para obter mais espaço de armazenamento.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Alterar a subscrição";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bloquear mensagens deste remetente";
@@ -2244,7 +2271,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualize para eliminar automaticamente as mensagens que se encontram na lixeira ou no spam há mais de 30 dias.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Elimina automaticamente as mensagens que estão na lixeira há mais de 30 dias.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimine automaticamente as mensagens que se encontram na lixeira e no spam há mais de 30 dias.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Não, obrigado";
@@ -2457,7 +2484,7 @@
 "Change mailbox password" = "Alterar a palavra-passe da caixa de correio";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "Chaves de segurança";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB de armazenamento";

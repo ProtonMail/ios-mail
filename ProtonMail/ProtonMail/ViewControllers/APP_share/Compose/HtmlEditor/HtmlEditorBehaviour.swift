@@ -245,14 +245,6 @@ class HtmlEditorBehaviour: NSObject {
                 with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(self.isImageProxyEnabled));"
             )
         }.then { _ -> Promise<CGFloat> in
-            self.run(with: "document.body.scrollWidth")
-        }.then { width -> Promise<Void> in
-            if width > webView.bounds.width {
-                return self.run(with: "html_editor.setWidth('\(width)')")
-            } else {
-                return Promise.value(())
-            }
-        }.then { _ -> Promise<CGFloat> in
             self.run(with: "html_editor.getContentsHeight()")
         }.done { height in
             self.contentHeight = height

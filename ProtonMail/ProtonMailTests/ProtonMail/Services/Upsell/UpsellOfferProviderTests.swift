@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsFeatureFlag
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 @testable import ProtonMail
 
 final class UpsellOfferProviderTests: XCTestCase {
-    private var sut: UpsellOfferProvider!
+    private var sut: UpsellOfferProviderImpl!
     private var apiService: APIServiceMock!
     private var user: UserManager!
 

@@ -8,7 +8,15 @@
             "Debug": "xcodeGen/xcconfig/ProtonMailAnalytics-Debug.xcconfig",
             "Release": "xcodeGen/xcconfig/ProtonMailAnalytics-Release.xcconfig",
             "Adhoc": "xcodeGen/xcconfig/ProtonMailAnalytics-Adhoc.xcconfig"
-         }
+         },
+         "dependencies": [
+            {
+               "package": "ProtonCore",
+               "products": [
+                  "Sentry"
+               ]
+            }
+         ]
       }
    }
 }

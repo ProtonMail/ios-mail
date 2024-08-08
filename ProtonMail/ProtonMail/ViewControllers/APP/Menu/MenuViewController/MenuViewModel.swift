@@ -75,8 +75,7 @@ final class MenuViewModel: NSObject {
     private(set) var folderItems: [MenuLabel] = []
     private(set) var labelItems: [MenuLabel] = []
     private(set) var moreItems: [MenuLabel]
-    /// When BE has issue, BE will disable subscription functionality
-    private var subscriptionAvailable = true
+
     private var selectedItem: MenuLabel? {
         let items = inboxItems + folderItems + labelItems + moreItems
         return items.first(where: { $0.isSelected })
@@ -103,7 +102,6 @@ final class MenuViewModel: NSObject {
         )
         let defaultInfo = MoreItemsInfo(
             userIsMember: nil,
-            subscriptionAvailable: subscriptionAvailable,
             isPinCodeEnabled: dependencies.lockCacheStatus.isPinCodeEnabled,
             isTouchIDEnabled: dependencies.lockCacheStatus.isTouchIDEnabled,
             isReferralEligible: dependencies.usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false
@@ -629,7 +627,6 @@ extension MenuViewModel {
 
     private func updateMoreItems(shouldReload: Bool = true) {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
-                                          subscriptionAvailable: self.subscriptionAvailable,
                                           isPinCodeEnabled: dependencies.lockCacheStatus.isPinCodeEnabled,
                                           isTouchIDEnabled: dependencies.lockCacheStatus.isTouchIDEnabled,
                                           isReferralEligible: currentUser?.userInfo.referralProgram?.eligible ?? false)
@@ -785,7 +782,6 @@ extension MenuViewModel {
 extension MenuViewModel {
     struct MoreItemsInfo {
         var userIsMember: Bool?
-        var subscriptionAvailable: Bool
         var isPinCodeEnabled: Bool
         var isTouchIDEnabled: Bool
         var isReferralEligible: Bool
@@ -817,12 +813,8 @@ extension MenuViewModel {
                        MenuLabel(location: .referAFriend),
                        MenuLabel(location: .signout)]
 
-        if info.userIsMember == false {
+        if info.userIsMember == false, Application.arePaymentsEnabled {
             newMore.insert(MenuLabel(location: .subscription), at: 0)
-        }
-
-        if info.subscriptionAvailable == false {
-            newMore = newMore.filter { $0.location != .subscription }
         }
 
         if !info.isPinCodeEnabled, !info.isTouchIDEnabled {

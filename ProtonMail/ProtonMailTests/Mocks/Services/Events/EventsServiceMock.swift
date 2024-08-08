@@ -1,5 +1,5 @@
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 @testable import ProtonMail
 
 class EventsServiceMock: EventsFetching {

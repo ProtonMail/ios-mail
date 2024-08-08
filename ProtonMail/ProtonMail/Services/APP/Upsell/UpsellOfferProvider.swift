@@ -18,10 +18,23 @@
 import Combine
 import ProtonCorePayments
 
-final class UpsellOfferProvider {
-    typealias Dependencies = AnyObject & HasPayments
+protocol UpsellOfferProvider {
+    var availablePlan: AvailablePlans.AvailablePlan? { get }
 
-    @Published var availablePlan: AvailablePlans.AvailablePlan?
+    // remove this if Swift ever supports property wrappers in protocols
+    var availablePlanPublisher: Published<AvailablePlans.AvailablePlan?>.Publisher { get }
+
+    func update() async throws
+}
+
+final class UpsellOfferProviderImpl: UpsellOfferProvider {
+    typealias Dependencies = AnyObject & HasPlanService
+
+    @Published private(set) var availablePlan: AvailablePlans.AvailablePlan?
+
+    var availablePlanPublisher: Published<AvailablePlans.AvailablePlan?>.Publisher {
+        $availablePlan
+    }
 
     private unowned let dependencies: Dependencies
 
@@ -35,7 +48,7 @@ final class UpsellOfferProvider {
 
     private func findPlanToOffer() async throws -> AvailablePlans.AvailablePlan? {
         let plansDataSource: PlansDataSourceProtocol
-        switch dependencies.payments.planService {
+        switch dependencies.planService {
         case .left:
             return nil
         case .right(let pdsp):

@@ -342,46 +342,6 @@
         <string>%d цепочек помечены</string>
       </dict>
     </dict>
-    <key>Are you sure you want to permanently delete %d message?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@message@</string>
-      <key>message</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d сообщение?</string>
-        <key>few</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d сообщения?</string>
-        <key>many</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d сообщений?</string>
-        <key>other</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d сообщений?</string>
-      </dict>
-    </dict>
-    <key>Are you sure you want to permanently delete %d conversation?</key>
-    <dict>
-      <key>NSStringLocalizedFormatKey</key>
-      <string>%#@conversation@</string>
-      <key>conversation</key>
-      <dict>
-        <key>NSStringFormatSpecTypeKey</key>
-        <string>NSStringPluralRuleType</string>
-        <key>NSStringFormatValueTypeKey</key>
-        <string>u</string>
-        <key>one</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d цепочку писем?</string>
-        <key>few</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d цепочки писем?</string>
-        <key>many</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d цепочек писем?</string>
-        <key>other</key>
-        <string>Вы уверены, что хотите безвозвратно удалить %d цепочек писем?</string>
-      </dict>
-    </dict>
     <key>%d member</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>

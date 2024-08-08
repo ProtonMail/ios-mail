@@ -98,7 +98,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        self.coordinator.start(launchedByNotification: notificationInfo != nil) {
+        self.coordinator.start() {
 
             DispatchQueue.main.async {
                 // For default mail function
@@ -141,7 +141,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
-            var path = url.absoluteString
+            var path = urlComponents.host ?? url.absoluteString
             if urlComponents.scheme == "protonmail" {
                 path = path.preg_replace("protonmail://", replaceto: "")
             }
@@ -149,6 +149,11 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
+
+            if let upsellQueryItem = urlComponents.queryItems?.first(where: { $0.name == "upsell" }) {
+                deeplink.append(.init(name: "toUpsellPage", value: upsellQueryItem.value))
+            }
+
             self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
             return true
         }
