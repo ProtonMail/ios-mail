@@ -64,6 +64,12 @@ struct AuthenticatedScreens: View {
                         name: label.name.stringResource,
                         systemFolder: nil
                     )))
+                case .folder(let folder):
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                        localLabelId: folder.id,
+                        name: folder.name.stringResource,
+                        systemFolder: nil
+                    )))
                 }
             }
         }

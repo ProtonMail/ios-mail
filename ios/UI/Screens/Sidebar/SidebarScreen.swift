@@ -122,6 +122,8 @@ struct SidebarScreen: View {
                     separator
                     list(for: screenModel.state.items.labels)
                     separator
+                    list(for: screenModel.state.items.folders)
+                    separator
                     list(for: screenModel.state.items.other)
                     separator
                     appVersionNote
@@ -150,6 +152,14 @@ struct SidebarScreen: View {
                 systemItemContent(model: model)
             case .label(let model):
                 labelItemContent(model: model)
+            case .folder(let model):
+                labelItemContent(model: .init(
+                    localID: model.id,
+                    color: model.color,
+                    name: model.name,
+                    unreadCount: model.unreadCount == 0 ? nil : model.unreadCount.toBadgeCapped(),
+                    isSelected: model.isSelected
+                )) // FIXME: -
             case .other(let model):
                 otherItemCotent(model: model)
             }

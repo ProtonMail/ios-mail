@@ -20,29 +20,37 @@ import Foundation
 struct SidebarState {
     let system: [SidebarSystemFolder]
     let labels: [SidebarLabel]
+    let folders: [SidebarFolder]
     let other: [SidebarOtherItem]
 }
 
 extension SidebarState {
 
     var items: [SidebarItem] {
-        system.map(SidebarItem.system) + labels.map(SidebarItem.label) + other.map(SidebarItem.other)
+        system.map(SidebarItem.system) +
+        labels.map(SidebarItem.label) +
+        folders.map(SidebarItem.folder) +
+        other.map(SidebarItem.other)
     }
 
     static var initial: Self {
-        .init(system: [], labels: [], other: .staleItems)
+        .init(system: [], labels: [], folders: [], other: .staleItems)
     }
 
     func copy(system: [SidebarSystemFolder]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(system: system, labels: labels, folders: folders, other: other)
     }
 
     func copy(labels: [SidebarLabel]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(system: system, labels: labels, folders: folders, other: other)
+    }
+
+    func copy(folders: [SidebarFolder]) -> Self {
+        .init(system: system, labels: labels, folders: folders, other: other)
     }
 
     func copy(other: [SidebarOtherItem]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(system: system, labels: labels, folders: folders, other: other)
     }
 
 }

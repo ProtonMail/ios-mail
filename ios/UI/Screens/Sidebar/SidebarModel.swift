@@ -29,6 +29,7 @@ final class SidebarModel: Sendable {
 
     private var systemFolderQuery: SidebarLiveQuery?
     private var labelsQuery: SidebarLiveQuery?
+    private var foldersQuery: SidebarLiveQuery?
     private let dependencies: Dependencies
 
     init(state: SidebarState = .initial, dependencies: Dependencies = .init()) {
@@ -55,6 +56,8 @@ final class SidebarModel: Sendable {
             state = state.copy(system: selected(item: item, keyPath: \.system))
         case .label(let item):
             state = state.copy(labels: selected(item: item, keyPath: \.labels))
+        case .folder(let item):
+            state = state.copy(folders: selected(item: item, keyPath: \.folders))
         case .other(let item):
             state = state.copy(other: selected(item: item, keyPath: \.other))
         }
@@ -75,6 +78,14 @@ final class SidebarModel: Sendable {
             dataUpdate: { newLabels in
                 Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                     self?.updateLabels(with: newLabels)
+                }))
+            }
+        )
+        foldersQuery = SidebarLiveQuery(
+            queryFactory: userContext.newFolderLabelsObservedQuery,
+            dataUpdate: { newFolders in
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.updateFolders(with: newFolders)
                 }))
             }
         )
@@ -101,6 +112,16 @@ final class SidebarModel: Sendable {
         )
     }
 
+    private func updateFolders(with newFolders: [LocalLabelWithCount]) {
+        state = state.copy(
+            folders: updated(
+                newItems: newFolders,
+                stateKeyPath: \.folders,
+                transformation: { folder in folder.sidebarFolder }
+            )
+        )
+    }
+
     private func updated<Item: SelectableItem>(
         newItems: [LocalLabelWithCount],
         stateKeyPath: KeyPath<SidebarState, [Item]>,
@@ -116,7 +137,8 @@ final class SidebarModel: Sendable {
     private func unselectAll() {
         state = .init(
             system: unselected(keyPath: \.system),
-            labels: unselected(keyPath: \.labels),
+            labels: unselected(keyPath: \.labels), 
+            folders: unselected(keyPath: \.folders),
             other: unselected(keyPath: \.other)
         )
     }
