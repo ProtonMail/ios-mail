@@ -68,7 +68,7 @@ final class SidebarModel: Sendable {
         case .createLabel:
             state = state.copy(createLabel: .createLabel.copy(isSelected: true))
         case .createFolder:
-            state = state.copy(createFolder: .createLabel.copy(isSelected: true))
+            state = state.copy(createFolder: .createFolder.copy(isSelected: true))
         default:
             state = state.copy(other: selected(item: item, keyPath: \.other))
         }
