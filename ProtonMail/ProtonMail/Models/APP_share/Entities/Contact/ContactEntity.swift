@@ -59,15 +59,6 @@ extension ContactEntity {
             .asCommaSeparatedList(trailingSpace: false)
     }
 
-    var sectionName: String {
-        let temp = self.name.lowercased()
-        if temp.isEmpty || temp.count == 1 {
-            return temp
-        }
-        let index = temp.index(after: temp.startIndex)
-        return String(temp.prefix(upTo: index))
-    }
-
     var cardDatas: [CardData] {
         guard let vCards = self.cardData.parseJson() else {
             return []

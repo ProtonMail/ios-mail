@@ -119,15 +119,4 @@ final class BackgroundTaskHelperTests: XCTestCase {
         wait(for: [expectation1], timeout: 5)
         XCTAssertEqual(scheduler.registerStub.callCounter, 1)
     }
-
-    func testCancelFunction() {
-        let expectation1 = expectation(description: "Handler is called")
-        scheduler.cancelStub.bodyIs { _, identifier in
-            XCTAssertEqual(identifier, self.task.identifier)
-            expectation1.fulfill()
-        }
-        BackgroundTaskHelper.cancel(scheduler: scheduler, task: task)
-        wait(for: [expectation1], timeout: 5)
-        XCTAssertEqual(scheduler.cancelStub.callCounter, 1)
-    }
 }

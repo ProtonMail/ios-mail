@@ -94,11 +94,6 @@ class MockBGTaskSchedulerProtocol: BGTaskSchedulerProtocol {
         registerStub(identifier, queue, launchHandler)
     }
 
-    @FuncStub(MockBGTaskSchedulerProtocol.cancel) var cancelStub
-    func cancel(taskRequestWithIdentifier identifier: String) {
-        cancelStub(identifier)
-    }
-
 }
 
 class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
