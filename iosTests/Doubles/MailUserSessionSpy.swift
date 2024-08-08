@@ -22,7 +22,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
 
     private(set) var newSystemLabelsObservedQueryCallback: MailboxLiveQueryUpdatedCallback?
     private(set) var newLabelLabelsObservedQueryCallback: MailboxLiveQueryUpdatedCallback?
-    private(set) var newFolderLabelsObservedQuery: MailboxLiveQueryUpdatedCallback?
+    private(set) var newFolderLabelsObservedQueryCallback: MailboxLiveQueryUpdatedCallback?
 
     let systemFoldersQueryStub = MailLabelsLiveQueryStub()
     let labelsQueryStub = MailLabelsLiveQueryStub()
@@ -99,7 +99,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
     }
 
     func newFolderLabelsObservedQuery(cb: MailboxLiveQueryUpdatedCallback) -> MailLabelsLiveQuery {
-        newFolderLabelsObservedQuery = cb
+        newFolderLabelsObservedQueryCallback = cb
 
         return foldersQueryStub
     }
