@@ -80,7 +80,7 @@ enum SettingsAccountItem: Int, CustomStringConvertible {
     }
 }
 
-enum SettingsAddressItem: Int, CustomStringConvertible {
+enum SettingsAddressItem: Int, CaseIterable, CustomStringConvertible {
     case addr
     case displayName
     case signature
@@ -191,6 +191,10 @@ final class SettingsAccountViewModel {
 
     var isAccountRecoveryEnabled: Bool {
         userManager.isAccountRecoveryEnabled
+    }
+
+    var showMobileSignature: Bool {
+        userManager.showMobileSignature
     }
 
     var accountRecoveryText: String {

@@ -21,6 +21,7 @@ public enum UpsellPageEntryPoint: Sendable {
     case autoDelete
     case contactGroups
     case header
+    case mobileSignature
     case scheduleSend
     case snooze
 
@@ -32,6 +33,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return .upsellContactGroupsLogo
         case .header:
             return .upsellDefaultLogo
+        case .mobileSignature:
+            return .upsellMobileSignatureLogo
         case .scheduleSend:
             return .upsellScheduleSendLogo
         case .snooze:
@@ -41,7 +44,7 @@ public enum UpsellPageEntryPoint: Sendable {
 
     var logoPadding: EdgeInsets {
         switch self {
-        case .autoDelete, .contactGroups, .scheduleSend, .snooze:
+        case .autoDelete, .contactGroups, .mobileSignature, .scheduleSend, .snooze:
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         case .header:
             return .init(top: -40, leading: 0, bottom: -40, trailing: 0)
@@ -56,6 +59,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return L10n.Upsell.contactGroupsTitle
         case .header:
             return String(format: L10n.Upsell.upgradeToPlan, planName)
+        case .mobileSignature:
+            return L10n.Upsell.mobileSignatureTitle
         case .scheduleSend:
             return L10n.Upsell.scheduleSendTitle
         case .snooze:
@@ -71,6 +76,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return String(format: L10n.Upsell.contactGroupsDescription, planName)
         case .header:
             return L10n.Upsell.mailPlusDescription
+        case .mobileSignature:
+            return String(format: L10n.Upsell.mobileSignatureDescription, planName)
         case .scheduleSend:
             return String(format: L10n.Upsell.scheduleSendDescription, planName)
         case .snooze:
