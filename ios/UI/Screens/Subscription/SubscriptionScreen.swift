@@ -103,7 +103,7 @@ private extension ProtonAuthenticatedWebPage {
         case .subscriptionDetails:
             L10n.Settings.subscription
         case .createFolder:
-            L10n.Sidebar.createLabel
+            L10n.Sidebar.createFolder
         case .createLabel:
             L10n.Sidebar.createLabel
         }
