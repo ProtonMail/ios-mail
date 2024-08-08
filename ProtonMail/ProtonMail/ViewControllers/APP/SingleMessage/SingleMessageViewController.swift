@@ -496,7 +496,7 @@ extension SingleMessageViewController {
                         }
                         self.viewModel.navigate(to: .addNewLabel)
                     } else {
-                        self.showAlertLabelCreationNotAllowed()
+                        self.viewModel.navigate(to: .upsellPage(entryPoint: .labels))
                     }
                 },
                 selected: { [weak self] menuLabel, isOn in
@@ -537,18 +537,6 @@ extension SingleMessageViewController {
             return existingLabels < Constants.FreePlan.maxNumberOfLabels
         }
         return true
-    }
-
-    private func showAlertLabelCreationNotAllowed() {
-        let title = LocalString._creating_label_not_allowed
-        let message = LocalString._upgrade_to_create_label
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
@@ -595,7 +583,7 @@ extension SingleMessageViewController {
                     }
                     self.viewModel.navigate(to: .addNewFolder)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.viewModel.navigate(to: .upsellPage(entryPoint: .folders))
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -648,12 +636,6 @@ extension SingleMessageViewController {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }
         return true
-    }
-
-    private func showAlertFolderCreationNotAllowed() {
-        let title = LocalString._creating_folder_not_allowed
-        let message = LocalString._upgrade_to_create_folder
-        showAlert(title: title, message: message)
     }
 }
 

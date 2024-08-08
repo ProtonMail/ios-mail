@@ -1043,10 +1043,6 @@ class LocalizedString {
     lazy var _delete_label_message = NSLocalizedString("This action cannot be undone.", comment: "Alert message when user tries to delete label")
     lazy var _discard_change_message = NSLocalizedString("Any unsaved changes will be lost.", comment: "Alert message when user tries to discard unsaved changes")
     lazy var _color_inherited_from_parent_folder = NSLocalizedString("Inherited from parent folder", comment: "A label message")
-    lazy var _creating_folder_not_allowed = NSLocalizedString("Creating folder not allowed", comment: "Alert title")
-    lazy var _creating_label_not_allowed = NSLocalizedString("Creating label not allowed", comment: "Alert title")
-    lazy var _upgrade_to_create_folder = NSLocalizedString("Please upgrade to a paid plan to use more than 3 folders", comment: "Alert message")
-    lazy var _upgrade_to_create_label = NSLocalizedString("Please upgrade to a paid plan to use more than 3 labels", comment: "Alert message")
     lazy var _please_connect_and_retry = NSLocalizedString("Please connect and retry", comment: "Alert message is shown when the device doesn't have network connection")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")
     lazy var _inherit_parent_color = NSLocalizedString("Inherit color from parent folder", comment: "Option title")
@@ -1595,7 +1591,6 @@ enum L10n {
         static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")
         static let nextWeek = NSLocalizedString("Next week", comment: "One of snooze option shows in action sheet")
         static let selectTimeInFuture = NSLocalizedString("Please select a time in the future", comment: "An error message will be shown to user when user select past snooze time")
-        static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
     }
 
 	struct InlineAttachment {
@@ -1637,7 +1632,7 @@ enum L10n {
         static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
         static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
         static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
-        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+        static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
     }
 
     struct PrivacyAndDataSettings {
@@ -1661,6 +1656,8 @@ enum L10n {
         static let autoDeleteDescription = NSLocalizedString("Enjoy a tidier mailbox and benefit from other premium features with %@.", comment: "Subtitle of the upsell page")
         static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
         static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let labelsTitle = NSLocalizedString("Need more labels or folders?", comment: "Title of the upsell page")
+        static let labelsDescription = NSLocalizedString("Get them and other premium features when you upgrade to %@.", comment: "Subtitle of the upsell page")
         static let mobileSignatureTitle = NSLocalizedString("Customize your signature", comment: "Title of the upsell page")
         static let mobileSignatureDescription = NSLocalizedString("Use your own mobile signature and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
         static let scheduleSendTitle = NSLocalizedString("Schedule now, send later", comment: "Title of the upsell page")

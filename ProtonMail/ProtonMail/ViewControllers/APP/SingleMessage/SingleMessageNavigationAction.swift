@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonMailUI
+
 enum SingleMessageNavigationAction: Equatable {
     case contacts(contact: ContactVO)
     case compose(contact: ContactVO)
@@ -51,6 +53,7 @@ enum SingleMessageNavigationAction: Equatable {
     case toolbarCustomization(currentActions: [MessageViewActionSheetAction],
                               allActions: [MessageViewActionSheetAction])
     case toolbarSettingView
+    case upsellPage(entryPoint: UpsellPageEntryPoint)
 }
 
 extension SingleMessageNavigationAction {

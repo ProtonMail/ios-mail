@@ -1850,7 +1850,9 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheet(messages: messages, isFromSwipeAction: isFromSwipeAction)
+                    }
                 }
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1900,7 +1902,9 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheet(conversations: conversations, isFromSwipeAction: isFromSwipeAction)
+                    }
                 }
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1942,18 +1946,6 @@ extension MailboxViewController {
             return existingLabels < Constants.FreePlan.maxNumberOfLabels
         }
         return true
-    }
-
-    private func showAlertLabelCreationNotAllowed() {
-        let title = LocalString._creating_label_not_allowed
-        let message = LocalString._upgrade_to_create_label
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -2013,7 +2005,14 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(
+                            messages: messages,
+                            isEnableColor: isEnableColor,
+                            isInherit: isInherit,
+                            isFromSwipeAction: isFromSwipeAction
+                        )
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -2093,7 +2092,14 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(
+                            conversations: conversations,
+                            isEnableColor: isEnableColor,
+                            isInherit: isInherit,
+                            isFromSwipeAction: isFromSwipeAction
+                        )
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -2162,12 +2168,6 @@ extension MailboxViewController {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }
         return true
-    }
-
-    private func showAlertFolderCreationNotAllowed() {
-        let title = LocalString._creating_folder_not_allowed
-        let message = LocalString._upgrade_to_create_folder
-        showAlert(title: title, message: message)
     }
 }
 

@@ -24,6 +24,7 @@ import UIKit
 import ProtonCoreAccountSwitcher
 import ProtonCoreFoundations
 import ProtonCoreUIFoundations
+import ProtonMailUI
 
 final class MenuViewController: UIViewController, AccessibleView {
 
@@ -38,6 +39,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private(set) var tableView: UITableView!
 
     let viewModel: MenuVMProtocol
+    private var upsellCoordinator: UpsellCoordinator?
 
     init(viewModel: MenuVMProtocol) {
         self.viewModel = viewModel
@@ -255,9 +257,7 @@ extension MenuViewController {
 
     private func checkAddLabelAbility(label: MenuLabel) {
         guard self.viewModel.allowToCreate(type: .label) else {
-            let title = LocalString._creating_label_not_allowed
-            let message = LocalString._upgrade_to_create_label
-            self.showAlert(title: title, message: message)
+            presentUpsellPage(entryPoint: .labels)
             return
         }
         self.viewModel.go(to: label)
@@ -265,12 +265,19 @@ extension MenuViewController {
 
     private func checkAddFolderAbility(label: MenuLabel) {
         guard self.viewModel.allowToCreate(type: .folder) else {
-            let title = LocalString._creating_folder_not_allowed
-            let message = LocalString._upgrade_to_create_folder
-            self.showAlert(title: title, message: message)
+            presentUpsellPage(entryPoint: .folders)
             return
         }
         self.viewModel.go(to: label)
+    }
+
+    private func presentUpsellPage(entryPoint: UpsellPageEntryPoint) {
+        guard let user = viewModel.currentUser else {
+            return
+        }
+
+        upsellCoordinator = user.container.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: entryPoint)
     }
 
     @objc
@@ -349,12 +356,6 @@ extension MenuViewController: MenuUIProtocol {
 
     func showToast(message: String) {
         message.alertToastBottom()
-    }
-
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 }
 

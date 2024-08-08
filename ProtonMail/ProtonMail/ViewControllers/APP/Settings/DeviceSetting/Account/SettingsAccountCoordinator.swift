@@ -38,9 +38,9 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     typealias Dependencies = BlockedSendersViewModel.Dependencies
+    & LabelManagerRouter.Dependencies
     & HasKeychain
     & HasKeyMakerProtocol
-    & HasPaymentsUIFactory
     & HasUsersManager
     & HasAPIService
 
@@ -207,7 +207,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     private func openFolderManagement(type: PMLabelType) {
         guard let navigationController = navigationController else { return }
-        let router = LabelManagerRouter(navigationController: navigationController)
+        let router = LabelManagerRouter(dependencies: dependencies, navigationController: navigationController)
         let dependencies = LabelManagerViewModel.Dependencies(userManager: user)
         let viewModel = LabelManagerViewModel(router: router, type: type, dependencies: dependencies)
         let vc = LabelManagerViewController(viewModel: viewModel)
