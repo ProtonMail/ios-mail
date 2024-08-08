@@ -19,11 +19,18 @@ import proton_mail_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
+    private let sessionProvider: SessionProvider
     @StateObject var mailSettings: PMMailSettings
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
 
-    init(appRoute: AppRouteState, customLabelModel: CustomLabelModel, userSession: MailUserSession) {
+    init(
+        appRoute: AppRouteState,
+        customLabelModel: CustomLabelModel,
+        userSession: MailUserSession,
+        sessionProvider: SessionProvider = AppContext.shared
+    ) {
+        self.sessionProvider = sessionProvider
         self._mailSettings = StateObject(wrappedValue: PMMailSettings(userSession: userSession))
         self.appRoute = appRoute
         self.customLabelModel = customLabelModel
@@ -39,7 +46,11 @@ struct AuthenticatedScreens: View {
             case .settings:
                 SettingsScreen()
             case .subscription:
-                SubscriptionScreen()
+                SidebarWebViewScreen(webViewPage: .subscriptionDetails)
+            case .createFolder:
+                SidebarWebViewScreen(webViewPage: .createFolder)
+            case .createLabel:
+                SidebarWebViewScreen(webViewPage: .createLabel)
             }
             SidebarScreen() { selectedItem in
                 switch selectedItem {
@@ -55,7 +66,13 @@ struct AuthenticatedScreens: View {
                         appRoute.updateRoute(to: .settings)
                     case .subscriptions:
                         appRoute.updateRoute(to: .subscription)
-                    case .shareLogs, .createLabel, .createFolder:
+                    case .createLabel:
+                        appRoute.updateRoute(to: .createLabel)
+                    case .createFolder:
+                        appRoute.updateRoute(to: .createFolder)
+                    case .signOut:
+                        signOut()
+                    case .shareLogs, .bugReport, .contacts:
                         break
                     }
                 case .label(let label):
@@ -74,4 +91,15 @@ struct AuthenticatedScreens: View {
             }
         }
     }
+
+    private func signOut() {
+        Task {
+            do {
+                try await sessionProvider.logoutActiveUserSession()
+            } catch {
+                AppLogger.log(error: error, category: .userSessions)
+            }
+        }
+    }
+
 }

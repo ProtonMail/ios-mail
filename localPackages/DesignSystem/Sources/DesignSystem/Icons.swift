@@ -41,6 +41,8 @@ public extension DS.Icon {
     static let icStarFilled = ImageResource.icStarFilled
     static let icTrash = ImageResource.icTrash
     static let icTrashCross = ImageResource.icTrashCross
+    static let icUsers = ImageResource.icUsers
+    static let icSignOut = ImageResource.icArrowOutFromRectangle
 }
 
 // MARK: mailbox messages

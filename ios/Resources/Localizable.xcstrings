@@ -60,6 +60,9 @@
     "Block this contact" : {
       "comment" : "Action title for blocking email address in the address action sheet."
     },
+    "Bug report" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen"
+    },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet."
     },
@@ -68,6 +71,9 @@
     },
     "Compose" : {
       "comment" : "The compose button title for creating new email."
+    },
+    "Contacts" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the contacts screen"
     },
     "Copy address" : {
       "comment" : "Action title for copying email address to clipboard in the address action sheet."

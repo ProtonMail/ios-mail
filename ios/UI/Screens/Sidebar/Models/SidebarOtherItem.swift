@@ -22,14 +22,17 @@ struct SidebarOtherItem: Equatable, SelectableItem {
         case settings
         case subscriptions
         case shareLogs
+        case contacts
+        case bugReport
+        case signOut
         case createLabel
         case createFolder
 
         var isSelectable: Bool {
             switch self {
-            case .settings, .subscriptions:
+            case .settings, .subscriptions, .createLabel, .createFolder:
                 return true
-            case .shareLogs, .createLabel, .createFolder:
+            case .shareLogs, .signOut, .bugReport, .contacts:
                 return false
             }
         }

@@ -18,15 +18,39 @@
 import DesignSystem
 import SwiftUI
 
-struct SubscriptionScreen: View {
-    
+struct SidebarWebViewScreen: View {
+
+    private let webViewPage: ProtonAuthenticatedWebPage
+
+    init(webViewPage: ProtonAuthenticatedWebPage) {
+        self.webViewPage = webViewPage
+    }
+
     var body: some View {
         NavigationStack {
-            ProtonAuthenticatedWebView(webViewPage: .subscriptionDetails)
+            ProtonAuthenticatedWebView(webViewPage: webViewPage)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
-                .mainToolbar(title: L10n.Settings.subscription)
+                .mainToolbar(title: webViewPage.title)
         }
     }
+
+}
+
+private extension ProtonAuthenticatedWebPage {
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .mailSettings:
+            L10n.Settings.accountSettings
+        case .subscriptionDetails:
+            L10n.Settings.subscription
+        case .createFolder:
+            L10n.Sidebar.createLabel
+        case .createLabel:
+            L10n.Sidebar.createLabel
+        }
+    }
+
 }

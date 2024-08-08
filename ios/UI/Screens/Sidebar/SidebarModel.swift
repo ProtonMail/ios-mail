@@ -59,6 +59,17 @@ final class SidebarModel: Sendable {
         case .folder(let item):
             state = state.copy(folders: selected(item: item, keyPath: \.folders))
         case .other(let item):
+            select(item: item)
+        }
+    }
+
+    private func select(item: SidebarOtherItem) {
+        switch item.type {
+        case .createLabel:
+            state = state.copy(createLabel: .createLabel.copy(isSelected: true))
+        case .createFolder:
+            state = state.copy(createFolder: .createLabel.copy(isSelected: true))
+        default:
             state = state.copy(other: selected(item: item, keyPath: \.other))
         }
     }
@@ -139,7 +150,9 @@ final class SidebarModel: Sendable {
             system: unselected(keyPath: \.system),
             labels: unselected(keyPath: \.labels), 
             folders: unselected(keyPath: \.folders),
-            other: unselected(keyPath: \.other)
+            other: unselected(keyPath: \.other),
+            createLabel: .createLabel.copy(isSelected: false),
+            createFolder: .createFolder.copy(isSelected: false)
         )
     }
 

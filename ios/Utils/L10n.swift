@@ -317,6 +317,14 @@ enum L10n {
             "Create a folder",
             comment: "Button in the sidebar menu that redirects a user to the create folder screen"
         )
+        static let contacts = LocalizedStringResource(
+            "Contacts",
+            comment: "Button in the sidebar menu that redirects a user to the contacts screen"
+        )
+        static let bugReport = LocalizedStringResource(
+            "Bug report",
+            comment: "Button in the sidebar menu that redirects a user to the bug report screen"
+        )
     }
 
     static func files(attachmentsCount: Int) -> LocalizedStringResource {

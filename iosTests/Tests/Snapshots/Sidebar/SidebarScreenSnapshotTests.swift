@@ -29,7 +29,9 @@ class SidebarScreenSnapshotTests: XCTestCase {
                 system: .systemFolders.selectFirst(),
                 labels: .labels, 
                 folders: .folders,
-                other: .staleItems
+                other: .staleItems,
+                createLabel: .createLabel,
+                createFolder: .createFolder
             ),
             dependencies: .init(activeUserSession: MailUserSessionSpy())
         )
@@ -42,7 +44,14 @@ class SidebarScreenSnapshotTests: XCTestCase {
     func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX() {
         let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
         let screenModel = SidebarModel(
-            state: .init(system: .systemFolders.selectFirst(), labels: [], folders: [], other: .staleItems),
+            state: .init(
+                system: .systemFolders.selectFirst(),
+                labels: [],
+                folders: [],
+                other: .staleItems,
+                createLabel: .createLabel,
+                createFolder: .createFolder
+            ),
             dependencies: .init(activeUserSession: MailUserSessionSpy())
         )
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
