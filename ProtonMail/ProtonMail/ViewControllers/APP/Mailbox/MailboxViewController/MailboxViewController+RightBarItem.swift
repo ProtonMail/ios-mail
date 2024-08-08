@@ -137,7 +137,7 @@ extension MailboxViewController {
 
     private func setupUpsellBarButtonItem() -> UIBarButtonItem {
         let item = UIBarButtonItem(
-            image: Asset.upsellButton.image.withRenderingMode(.alwaysOriginal),
+            image: Asset.upsellButton.image,
             style: .plain,
             target: self,
             action: #selector(upsellButtonTapped)

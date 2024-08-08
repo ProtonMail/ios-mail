@@ -877,7 +877,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             ]
             let messages = try fetchRequest.execute()
             guard let first = messages.first else {
-                throw NSError(domain: "proton.ch", code: APIErrorCode.resourceDoesNotExist)
+                throw MessageDataServiceError.messageNotFoundForMessageID(messageID)
             }
             return first
         }
@@ -1228,5 +1228,16 @@ extension MessageDataService {
     struct Dependencies {
         let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
         let pushUpdater: PushUpdater
+    }
+}
+
+enum MessageDataServiceError: LocalizedError {
+    case messageNotFoundForMessageID(MessageID)
+
+    var errorDescription: String? {
+        switch self {
+        case .messageNotFoundForMessageID(let messageID):
+            return "Message not found for MessageID \(messageID.rawValue)"
+        }
     }
 }

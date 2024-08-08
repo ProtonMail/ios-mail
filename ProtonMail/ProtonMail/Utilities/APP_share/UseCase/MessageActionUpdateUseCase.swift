@@ -57,7 +57,7 @@ final class MessageActionUpdate: MessageActionUpdateUseCase {
         }
         if rawMessageIDs.isEmpty {
             if !ProcessInfo.isRunningUnitTests {
-                PMAssertionFailure("Raw messageIDs is empty")
+                PMAssertionFailure("Raw messageIDs is empty, executing action: \(action)")
             }
             return
         }

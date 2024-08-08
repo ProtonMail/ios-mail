@@ -52,7 +52,7 @@ final class UploadAttachmentUseCaseTest: XCTestCase {
             XCTFail("Shouldn't success")
         } catch {
             let uploadError = try XCTUnwrap(error as? UploadAttachment.UploadAttachmentError)
-            XCTAssertEqual(uploadError, .resourceDoesNotExist)
+            XCTAssertEqual(uploadError, .attachmentDoesNotExist("123"))
         }
     }
 

@@ -36,7 +36,7 @@ final class UploadDraft: UploadDraftUseCase {
     func execute(messageObjectID: String) async throws {
         do {
             guard let messageData = dependencies.messageDataService.getMessageSendingData(for: messageObjectID) else {
-                throw UploadDraftError.resourceDoesNotExist
+                throw UploadDraftError.messageNotFoundForURI(messageObjectID)
             }
             let jsonResponse = try await sendUploadRequest(messageData: messageData)
             try apply(response: jsonResponse, to: messageObjectID)
@@ -44,8 +44,12 @@ final class UploadDraft: UploadDraftUseCase {
             if let responseError = error as? ResponseError,
                let underlyingError = responseError.underlyingError {
                 if underlyingError.code != APIErrorCode.updateDraftHasBeenSent {
-                    SystemLogger.log(error: error, category: .emptyAlert)
-                    // Doesn't need to show message has sent message to user
+                    if underlyingError.localizedDescription.isEmpty {
+                        let code = underlyingError.bestShotAtReasonableErrorCode
+                        PMAssertionFailure("Attempting to display error with empty description, code \(code)")
+                    } else {
+                        SystemLogger.log(error: error, category: .emptyAlert)
+                    }
                     await NSError.alertSavingDraftError(details: underlyingError.localizedDescription)
                 }
 
@@ -58,8 +62,9 @@ final class UploadDraft: UploadDraftUseCase {
                 if error.localizedDescription.isEmpty {
                     let code = error.bestShotAtReasonableErrorCode
                     PMAssertionFailure("Attempting to display error with empty description, code \(code)")
+                } else {
+                    SystemLogger.log(error: error, category: .emptyAlert)
                 }
-                SystemLogger.log(error: error, category: .emptyAlert)
                 await NSError.alertSavingDraftError(details: error.localizedDescription)
             }
             throw error
@@ -169,7 +174,14 @@ extension UploadDraft {
         }
     }
 
-    enum UploadDraftError: Error, Equatable {
-        case resourceDoesNotExist
+    enum UploadDraftError: LocalizedError, Equatable {
+        case messageNotFoundForURI(String)
+
+        var errorDescription: String? {
+            switch self {
+            case .messageNotFoundForURI(let uri):
+                return "Message not found for URI: \(uri)"
+            }
+        }
     }
 }
