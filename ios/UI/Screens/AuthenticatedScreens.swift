@@ -23,6 +23,7 @@ struct AuthenticatedScreens: View {
     @StateObject var mailSettings: PMMailSettings
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
+    @State var comingSoon: Bool = false
 
     init(
         appRoute: AppRouteState,
@@ -73,7 +74,7 @@ struct AuthenticatedScreens: View {
                     case .signOut:
                         signOut()
                     case .shareLogs, .bugReport, .contacts:
-                        break
+                        comingSoon = true
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
@@ -89,7 +90,7 @@ struct AuthenticatedScreens: View {
                     )))
                 }
             }
-        }
+        }.alert("Coming soon ...".notLocalized, isPresented: $comingSoon) {}
     }
 
     private func signOut() {
