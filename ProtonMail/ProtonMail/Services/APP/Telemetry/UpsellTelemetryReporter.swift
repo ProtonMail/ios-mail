@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
+import ProtonMailUI
 
 final class UpsellTelemetryReporter {
     typealias Dependencies = AnyObject & HasPlanService & HasTelemetryServiceProtocol & HasUserManager
@@ -32,16 +33,18 @@ final class UpsellTelemetryReporter {
     }
 
     private var planBeforeUpgrade: String?
+    private var entryPoint: UpsellPageEntryPoint?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func prepare() {
+    func prepare(entryPoint: UpsellPageEntryPoint) {
+        self.entryPoint = entryPoint
         planBeforeUpgrade = plansDataSource?.currentPlan?.subscriptions.compactMap(\.name).first ?? "free"
     }
 
-    func upsellButtonTapped() async {
+    func upsellPageDisplayed() async {
         let dimensions = makeDimensions()
         let event = makeEvent(name: .upsellButtonTapped, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
@@ -80,6 +83,7 @@ final class UpsellTelemetryReporter {
         }
 
         var dimensions = Dimensions(
+            entryPoint: entryPoint?.dimensionName,
             planBeforeUpgrade: planBeforeUpgrade ?? "unknown",
             daysSinceAccountCreation: accountAgeBracket(),
             upsellModalVersion: upsellModalVersion,
@@ -146,6 +150,7 @@ private extension UpsellTelemetryReporter {
     }
 
     struct Dimensions {
+        let entryPoint: String?
         let planBeforeUpgrade: String
         let daysSinceAccountCreation: String
         let upsellModalVersion: String
@@ -154,6 +159,7 @@ private extension UpsellTelemetryReporter {
 
         var asDictionary: [String: String] {
             [
+                "upsell_entry_point": entryPoint,
                 "plan_before_upgrade": planBeforeUpgrade,
                 "days_since_account_creation": daysSinceAccountCreation,
                 "upsell_modal_version": upsellModalVersion,
@@ -197,5 +203,28 @@ private extension Calendar {
         let toDate = startOfDay(for: endDate)
         let numberOfDays = dateComponents([.day], from: fromDate, to: toDate)
         return numberOfDays.day ?? 0
+    }
+}
+
+private extension UpsellPageEntryPoint {
+    var dimensionName: String {
+        switch self {
+        case .autoDelete:
+            return "auto_delete_messages"
+        case .contactGroups:
+            return "contact_groups"
+        case .folders:
+            return "folders_creation"
+        case .header:
+            return "mailbox_top_bar"
+        case .labels:
+            return "labels_creation"
+        case .mobileSignature:
+            return "mobile_signature_edit"
+        case .scheduleSend:
+            return "schedule_send"
+        case .snooze:
+            return "snooze"
+        }
     }
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCoreTestingToolkitUnitTestsServices
+import ProtonMailUI
 import XCTest
 
 @testable import ProtonMail
@@ -25,6 +26,8 @@ final class UpsellTelemetryReporterTests: XCTestCase {
     private var plansDataSource: MockPlansDataSourceProtocol!
     private var telemetryService: MockTelemetryServiceProtocol!
     private var user: UserManager!
+
+    private let entryPoint = UpsellPageEntryPoint.autoDelete
 
     override func setUp() {
         super.setUp()
@@ -45,7 +48,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
 
         sut = .init(dependencies: container)
 
-        sut.prepare()
+        sut.prepare(entryPoint: entryPoint)
     }
 
     override func tearDown() {
@@ -56,8 +59,8 @@ final class UpsellTelemetryReporterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testUpsellButtonTapped() async throws {
-        await sut.upsellButtonTapped()
+    func testUpsellPageDisplayed() async throws {
+        await sut.upsellPageDisplayed()
 
         let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
 
@@ -66,6 +69,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             name: "upsell_button_tapped",
             values: [:],
             dimensions: [
+                "upsell_entry_point": "auto_delete_messages",
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1"
@@ -86,6 +90,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             name: "upgrade_attempt",
             values: [:],
             dimensions: [
+                "upsell_entry_point": "auto_delete_messages",
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
@@ -108,6 +113,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             name: "upgrade_success",
             values: [:],
             dimensions: [
+                "upsell_entry_point": "auto_delete_messages",
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
@@ -130,6 +136,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             name: "upgrade_error",
             values: [:],
             dimensions: [
+                "upsell_entry_point": "auto_delete_messages",
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
@@ -152,6 +159,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             name: "upgrade_cancelled_by_user",
             values: [:],
             dimensions: [
+                "upsell_entry_point": "auto_delete_messages",
                 "plan_before_upgrade": "free",
                 "days_since_account_creation": ">60",
                 "upsell_modal_version": "A.1",
@@ -169,8 +177,8 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             subscriptions: [.init(title: "", name: "foo2024", description: "", entitlements: [])]
         )
 
-        sut.prepare()
-        await sut.upsellButtonTapped()
+        sut.prepare(entryPoint: entryPoint)
+        await sut.upsellPageDisplayed()
 
         let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
         XCTAssertEqual(transmittedEvent.dimensions["plan_before_upgrade"], "foo2024")
@@ -202,7 +210,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
 
             user.userInfo.createTime = Int64(try XCTUnwrap(mockedAccountCreationDate).timeIntervalSince1970)
 
-            await sut.upsellButtonTapped()
+            await sut.upsellPageDisplayed()
 
             let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
             XCTAssertEqual(transmittedEvent.dimensions["days_since_account_creation"], expectedBracket)

@@ -85,7 +85,7 @@ final class UpsellCoordinator {
         entryPoint: UpsellPageEntryPoint,
         onDismiss: OnDismissCallback?
     ) async {
-        dependencies.upsellTelemetryReporter.prepare()
+        dependencies.upsellTelemetryReporter.prepare(entryPoint: entryPoint)
 
         let upsellPageModel = dependencies.upsellPageFactory.makeUpsellPageModel(for: availablePlan)
 
@@ -98,7 +98,7 @@ final class UpsellCoordinator {
         hostingController.onDismiss = onDismiss
         rootViewController?.present(hostingController, animated: false)
 
-        await dependencies.upsellTelemetryReporter.upsellButtonTapped()
+        await dependencies.upsellTelemetryReporter.upsellPageDisplayed()
     }
 
     private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
