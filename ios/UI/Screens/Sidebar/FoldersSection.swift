@@ -18,15 +18,6 @@
 import SwiftUI
 import DesignSystem
 
-struct SidebarFolderNode: Identifiable {
-    let folder: SidebarFolder
-    let children: [SidebarFolderNode]
-
-    var id: UInt64 {
-        folder.id
-    }
-}
-
 struct SingleFolderNodeView: View {
 
     private let folderNode: SidebarFolderNode
@@ -96,7 +87,7 @@ struct SingleFolderNodeView: View {
 
 }
 
-struct FolderNodeView: View {
+private struct FolderNodeView: View {
 
     private let folders: [SidebarFolderNode]
     private let selected: (SidebarFolder) -> Void
