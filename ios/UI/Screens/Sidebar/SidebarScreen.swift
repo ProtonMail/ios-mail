@@ -282,7 +282,19 @@ struct SidebarScreen: View {
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
-        appUIState.isSidebarOpen = !item.isSelectable
+
+        switch item {
+
+        case .other(let sidebarOtherItem):
+            switch sidebarOtherItem.type {
+            case .subscriptions, .createLabel, .createFolder:
+                appUIState.isSidebarOpen = false
+            default:
+                break
+            }
+        default:
+            appUIState.isSidebarOpen = !item.isSelectable
+        }
 
         if item.isShareLogsItem {
             onShareLogsTap()

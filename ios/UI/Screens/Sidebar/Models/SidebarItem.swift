@@ -22,7 +22,6 @@ enum SidebarItem: Equatable, Identifiable {
     case label(SidebarLabel)
     case folder(SidebarFolder)
     case other(SidebarOtherItem)
-    
 
     var isSelected: Bool {
         switch self {

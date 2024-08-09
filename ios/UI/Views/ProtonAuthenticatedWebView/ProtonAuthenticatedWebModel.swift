@@ -88,7 +88,20 @@ extension ProtonAuthenticatedWebModel {
     }
 }
 
-enum ProtonAuthenticatedWebPage {
+enum ProtonAuthenticatedWebPage: Identifiable {
+    var id: Int {
+        switch self {
+        case .mailSettings:
+            1
+        case .subscriptionDetails:
+            2
+        case .createFolder:
+            3
+        case .createLabel:
+            4
+        }
+    }
+
     case mailSettings
     case subscriptionDetails
     case createFolder

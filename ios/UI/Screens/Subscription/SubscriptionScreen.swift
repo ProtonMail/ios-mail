@@ -68,7 +68,7 @@ private struct SubscriptionScreenIdentifiers {
 
 struct SidebarWebViewScreen: View {
 
-    @EnvironmentObject var appUIState: AppUIState
+    @Environment(\.dismiss) var dismiss
     private let webViewPage: ProtonAuthenticatedWebPage
     private let webViewModel: ProtonAuthenticatedWebModel
 
@@ -83,10 +83,20 @@ struct SidebarWebViewScreen: View {
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
-                .mainToolbar(title: webViewPage.title)
-                .onChange(of: appUIState.isSidebarOpen) {
-                    if appUIState.isSidebarOpen {
-                        webViewModel.pollEvents()
+                .navigationTitle(webViewPage.title.string)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            dismiss.callAsFunction()
+                        }, label: {
+                            Image(DS.Icon.icCrossBig)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .tint(DS.Color.Sidebar.iconNorm)
+                        })
+//                        Button("Help") {
+//                            print("Help tapped!")
+//                        }
                     }
                 }
         }

@@ -24,6 +24,7 @@ struct AuthenticatedScreens: View {
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
     @State var comingSoon: Bool = false
+    @State var webViewSheet: ProtonAuthenticatedWebPage?
 
     init(
         appRoute: AppRouteState,
@@ -46,12 +47,6 @@ struct AuthenticatedScreens: View {
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings, openedItem: item)
             case .settings:
                 SettingsScreen()
-            case .subscription:
-                SidebarWebViewScreen(webViewPage: .subscriptionDetails)
-            case .createFolder:
-                SidebarWebViewScreen(webViewPage: .createFolder)
-            case .createLabel:
-                SidebarWebViewScreen(webViewPage: .createLabel)
             }
             SidebarScreen() { selectedItem in
                 switch selectedItem {
@@ -66,11 +61,11 @@ struct AuthenticatedScreens: View {
                     case .settings:
                         appRoute.updateRoute(to: .settings)
                     case .subscriptions:
-                        appRoute.updateRoute(to: .subscription)
+                        webViewSheet = .subscriptionDetails
                     case .createLabel:
-                        appRoute.updateRoute(to: .createLabel)
+                        webViewSheet = .createLabel
                     case .createFolder:
-                        appRoute.updateRoute(to: .createFolder)
+                        webViewSheet = .createFolder
                     case .signOut:
                         signOut()
                     case .shareLogs, .bugReport, .contacts:
@@ -90,7 +85,12 @@ struct AuthenticatedScreens: View {
                     )))
                 }
             }
-        }.alert("Coming soon ...".notLocalized, isPresented: $comingSoon) {}
+        }
+        .alert("Coming soon ...".notLocalized, isPresented: $comingSoon) {}
+        .sheet(item: $webViewSheet) { webViewSheet in
+            SidebarWebViewScreen(webViewPage: webViewSheet)
+        }
+
     }
 
     private func signOut() {

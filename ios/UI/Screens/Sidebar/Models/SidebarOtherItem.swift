@@ -30,9 +30,9 @@ struct SidebarOtherItem: Equatable, SelectableItem {
 
         var isSelectable: Bool {
             switch self {
-            case .settings, .subscriptions, .createLabel, .createFolder:
+            case .settings:
                 return true
-            case .shareLogs, .signOut, .bugReport, .contacts:
+            case .shareLogs, .signOut, .bugReport, .contacts, .subscriptions, .createLabel, .createFolder:
                 return false
             }
         }
