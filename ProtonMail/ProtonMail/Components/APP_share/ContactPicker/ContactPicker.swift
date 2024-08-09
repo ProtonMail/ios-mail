@@ -124,11 +124,6 @@ class ContactPicker: UIView, AccessibleView {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // this can not be done in deinit cuz Share Extension freaks out when subwindow is deinitialized after host window
-    func prepareForDesctruction() {
-        // nothing
-    }
-
     private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
         self.setupPromptLabel()

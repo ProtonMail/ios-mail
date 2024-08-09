@@ -117,7 +117,7 @@ final class AttachmentViewModel {
     }
 
     private func fetchEventDetails(initialInfo: Either<AttachmentInfo, BasicEventInfo>) {
-        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget, reloadValue: true) else {
+        guard dependencies.featureFlagProvider.isEnabled(.rsvpWidget) else {
             return
         }
 
@@ -205,7 +205,7 @@ final class AttachmentViewModel {
             return .openDeepLink(deepLink)
         } else if dependencies.urlOpener.canOpenURL(.ProtonCalendar.legacyScheme) {
             return .promptToUpdateCalendarApp
-        } else if dependencies.featureFlagProvider.isEnabled(.calendarMiniLandingPage, reloadValue: true) {
+        } else if dependencies.featureFlagProvider.isEnabled(.calendarMiniLandingPage) {
             return .presentCalendarLandingPage
         } else {
             return .goToAppStoreDirectly
@@ -214,7 +214,7 @@ final class AttachmentViewModel {
 
     private func updateRespondingOptions(eventDetails: EventDetails) {
         guard
-            dependencies.featureFlagProvider.isEnabled(.answerInvitation, reloadValue: true),
+            dependencies.featureFlagProvider.isEnabled(.answerInvitation),
             eventDetails.status != .cancelled,
             let currentUserAmongInvitees = eventDetails.currentUserAmongInvitees
         else {
