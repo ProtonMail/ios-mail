@@ -34,12 +34,52 @@ extension Array where Element == SidebarOtherItem {
                 isSelected: false
             ),
             .init(
+                type: .contacts,
+                icon: DS.Icon.icUsers,
+                name: L10n.Sidebar.contacts.string,
+                isSelected: false
+            ),
+            .init(
+                type: .bugReport,
+                icon: DS.Icon.icBug,
+                name: L10n.Sidebar.bugReport.string,
+                isSelected: false
+            ),
+            .init(
                 type: .shareLogs,
                 icon: DS.Icon.icBug,
                 name: "Share logs".notLocalized,
                 isSelected: false
+            ),
+            .init(
+                type: .signOut,
+                icon: DS.Icon.icSignOut,
+                name: "Sign Out".notLocalized,
+                isSelected: false
             )
         ]
+    }
+
+}
+
+extension SidebarOtherItem {
+
+    static var createLabel: Self {
+        .init(
+            type: .createLabel,
+            icon: DS.Icon.icPlus,
+            name: L10n.Sidebar.createLabel.string,
+            isSelected: false
+        )
+    }
+
+    static var createFolder: Self {
+        .init(
+            type: .createFolder,
+            icon: DS.Icon.icPlus,
+            name: L10n.Sidebar.createFolder.string,
+            isSelected: false
+        )
     }
 
 }

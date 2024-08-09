@@ -52,8 +52,7 @@ enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
     case settings
-    case subscription
-    
+
     /// Determines if the route has a selected mailbox with inbox instead of a local label
     var isInboxHardcoded: Bool {
         switch selectedMailbox {
@@ -77,8 +76,6 @@ enum Route: Equatable, CustomStringConvertible {
             "mailbox \(label.name.string)"
         case .settings:
             "settings"
-        case .subscription:
-            "subscription"
         case .mailboxOpenMessage:
             "mailboxOpenMessage"
         }

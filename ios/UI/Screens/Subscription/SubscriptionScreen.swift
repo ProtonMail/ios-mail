@@ -18,15 +18,105 @@
 import DesignSystem
 import SwiftUI
 
-struct SubscriptionScreen: View {
-    
+struct ProtonAuthenticatedWebView_v2: View {
+    @Environment (\.colorScheme) var colorScheme: ColorScheme
+    @StateObject private var model: ProtonAuthenticatedWebModel
+
+    init(model: ProtonAuthenticatedWebModel) {
+        self._model = .init(wrappedValue: model)
+    }
+
+    var body: some View {
+        viewForState
+            .task {
+                model.generateSubscriptionUrl(colorScheme: colorScheme)
+            }
+            .onChange(of: colorScheme) { _, newValue in
+                model.generateSubscriptionUrl(colorScheme: newValue)
+            }
+            .onDisappear {
+                model.pollEvents()
+            }
+    }
+}
+
+extension ProtonAuthenticatedWebView_v2 {
+
+    @ViewBuilder
+    private var viewForState: some View {
+        switch model.state {
+        case .forkingSession:
+            ProgressView()
+        case .urlReady(let url):
+            VStack(alignment: .leading, spacing: 11) {
+                WebView(url: url)
+                    .accessibilityIdentifier(SubscriptionScreenIdentifiers.webView)
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(SubscriptionScreenIdentifiers.rootItem)
+        case .error(let error):
+            Text(String(describing: error))
+        }
+    }
+}
+
+private struct SubscriptionScreenIdentifiers {
+    static let rootItem = "subscription.rootItem"
+    static let webView = "subscription.webView"
+}
+
+
+struct SidebarWebViewScreen: View {
+
+    @Environment(\.dismiss) var dismiss
+    private let webViewPage: ProtonAuthenticatedWebPage
+    private let webViewModel: ProtonAuthenticatedWebModel
+
+    init(webViewPage: ProtonAuthenticatedWebPage) {
+        self.webViewPage = webViewPage
+        self.webViewModel = .init(webViewPage: webViewPage)
+    }
+
     var body: some View {
         NavigationStack {
-            ProtonAuthenticatedWebView(webViewPage: .subscriptionDetails)
+            ProtonAuthenticatedWebView_v2(model: webViewModel)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
-                .mainToolbar(title: L10n.Settings.subscription)
+                .navigationTitle(webViewPage.title.string)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            dismiss.callAsFunction()
+                        }, label: {
+                            Image(DS.Icon.icCrossBig)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .tint(DS.Color.Sidebar.iconNorm)
+                        })
+//                        Button("Help") {
+//                            print("Help tapped!")
+//                        }
+                    }
+                }
         }
     }
+
+}
+
+private extension ProtonAuthenticatedWebPage {
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .mailSettings:
+            L10n.Settings.accountSettings
+        case .subscriptionDetails:
+            L10n.Settings.subscription
+        case .createFolder:
+            L10n.Sidebar.createFolder
+        case .createLabel:
+            L10n.Sidebar.createLabel
+        }
+    }
+
 }

@@ -60,6 +60,9 @@
     "Block this contact" : {
       "comment" : "Action title for blocking email address in the address action sheet."
     },
+    "Bug report" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen"
+    },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet."
     },
@@ -69,11 +72,20 @@
     "Compose" : {
       "comment" : "The compose button title for creating new email."
     },
+    "Contacts" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the contacts screen"
+    },
     "Copy address" : {
       "comment" : "Action title for copying email address to clipboard in the address action sheet."
     },
     "Copy name" : {
       "comment" : "Action title for copying address name to clipboard in the address action sheet."
+    },
+    "Create a folder" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the create folder screen"
+    },
+    "Create a label" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the create label screen"
     },
     "Create new folder" : {
       "comment" : "Action title for creating new folder."

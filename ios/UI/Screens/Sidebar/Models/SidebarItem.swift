@@ -20,6 +20,7 @@ import SwiftUI
 enum SidebarItem: Equatable, Identifiable {
     case system(SidebarSystemFolder)
     case label(SidebarLabel)
+    case folder(SidebarFolder)
     case other(SidebarOtherItem)
 
     var isSelected: Bool {
@@ -30,12 +31,14 @@ enum SidebarItem: Equatable, Identifiable {
             return item.isSelected
         case .other(let item):
             return item.isSelected
+        case .folder(let item):
+            return item.isSelected
         }
     }
 
     var isSelectable: Bool {
         switch self {
-        case .system, .label:
+        case .system, .label, .folder:
             return true
         case .other(let item):
             return item.type.isSelectable
@@ -48,6 +51,8 @@ enum SidebarItem: Equatable, Identifiable {
             return .system(item.copy(isSelected: isSelected))
         case .label(let item):
             return .label(item.copy(isSelected: isSelected))
+        case .folder(let item):
+            return .folder(item.copy(isSelected: isSelected))
         case .other(let item):
             return .other(item.copy(isSelected: isSelected))
         }
@@ -61,45 +66,10 @@ enum SidebarItem: Equatable, Identifiable {
             return "\(item.localID)"
         case .label(let item):
             return "\(item.localID)"
+        case .folder(let item):
+            return "\(item.id)"
         case .other(let item):
             return item.name
-        }
-    }
-
-}
-
-extension Array where Element == SidebarItem {
-
-    var system: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .system:
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    var labels: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .label:
-                return true
-            default:
-                return false
-            }
-        }
-    }
-
-    var other: [SidebarItem] {
-        filter { item in
-            switch item {
-            case .other:
-                return true
-            default:
-                return false
-            }
         }
     }
 

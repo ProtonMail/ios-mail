@@ -105,7 +105,8 @@ platform :ios do
       export_options: {
         provisioningProfiles: {
           "me.proton.mail.ios" => "Mail - Engineering Transformation Distribution",
-        }
+        },
+        testFlightInternalTestingOnly: true
       }
     )
   end

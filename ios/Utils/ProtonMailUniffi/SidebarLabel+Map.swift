@@ -30,3 +30,48 @@ extension LocalLabelWithCount {
     }
 
 }
+
+extension LocalLabelWithCount {
+
+    var sidebarFolder: SidebarFolder {
+        .init(
+            id: id,
+            parentID: parentId,
+            name: name,
+            color: color,
+            unreadCount: unreadCount,
+            expanded: expanded, 
+            isSelected: false
+        )
+    }
+
+}
+
+struct SidebarFolder: Equatable, SelectableItem {
+    let id: LocalLabelId
+    let parentID: LocalLabelId?
+    let name: String
+    let color: String
+    let unreadCount: UInt64
+    let expanded: Bool
+
+    // MARK: - SelectableItem
+
+    let isSelected: Bool
+
+    var selectionIdentifier: String {
+        "\(id)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            id: id,
+            parentID: parentID,
+            name: name,
+            color: color,
+            unreadCount: unreadCount,
+            expanded: expanded,
+            isSelected: isSelected
+        )
+    }
+}

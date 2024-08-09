@@ -103,7 +103,7 @@ struct SidebarScreen: View {
     }
 
     private var opacityBackground: some View {
-        DS.Color.Shade.shade80
+        DS.Color.Sidebar.overlay
             .animation(.linear(duration: animationDuration), value: appUIState.isSidebarOpen)
             .opacity(0.5 * (dragOffset / sidebarWidth))
             .ignoresSafeArea(.all)
@@ -118,16 +118,28 @@ struct SidebarScreen: View {
         VStack(alignment: .leading, spacing: .zero) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    list(for: screenModel.state.items.system)
+                    list(for: screenModel.state.system.map(SidebarItem.system))
                     separator
-                    list(for: screenModel.state.items.labels)
+                    FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes) { folder in
+                        select(item: .folder(folder))
+                    }
+                    createButton(
+                        for: screenModel.state.createFolder,
+                        isListEmpty: screenModel.state.folders.isEmpty
+                    )
                     separator
-                    list(for: screenModel.state.items.other)
+                    list(for: screenModel.state.labels.map(SidebarItem.label))
+                    createButton(
+                        for: screenModel.state.createLabel,
+                        isListEmpty: screenModel.state.labels.isEmpty
+                    )
+                    separator
+                    list(for: screenModel.state.other.map(SidebarItem.other))
                     separator
                     appVersionNote
                 }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.state.items.first {
-                        proxy.scrollTo(first.id, anchor: .zero)
+                    if isSidebarOpen, let first = screenModel.state.system.first {
+                        proxy.scrollTo("\(first.localID)", anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
             }
@@ -150,8 +162,37 @@ struct SidebarScreen: View {
                 systemItemContent(model: model)
             case .label(let model):
                 labelItemContent(model: model)
+            case .folder(let model):
+                labelItemContent(model: .init(
+                    localID: model.id,
+                    color: model.color,
+                    name: model.name,
+                    unreadCount: model.unreadCount == 0 ? nil : model.unreadCount.toBadgeCapped(),
+                    isSelected: model.isSelected
+                )) // FIXME: -
             case .other(let model):
                 otherItemCotent(model: model)
+            }
+        }
+        .padding(.vertical, DS.Spacing.medium)
+        .padding(.horizontal, DS.Spacing.extraLarge)
+        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+    }
+
+    private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
+        Button(action: { select(item: .other(item)) }) {
+            HStack {
+                Image(item.icon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 20, height: 20)
+                    .tint(DS.Color.Sidebar.iconWeak)
+                    .padding(.trailing, DS.Spacing.extraLarge)
+                Text(item.name)
+                    .font(.subheadline)
+                    .foregroundStyle(isListEmpty ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+                    .lineLimit(1)
+                Spacer()
             }
         }
         .padding(.vertical, DS.Spacing.medium)
@@ -239,7 +280,19 @@ struct SidebarScreen: View {
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
-        appUIState.isSidebarOpen = !item.isSelectable
+
+        switch item {
+
+        case .other(let sidebarOtherItem):
+            switch sidebarOtherItem.type {
+            case .subscriptions, .createLabel, .createFolder:
+                appUIState.isSidebarOpen = false
+            default:
+                break
+            }
+        default:
+            appUIState.isSidebarOpen = !item.isSelectable
+        }
 
         if item.isShareLogsItem {
             onShareLogsTap()

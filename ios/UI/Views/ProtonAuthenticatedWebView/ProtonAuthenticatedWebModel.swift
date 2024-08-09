@@ -88,9 +88,24 @@ extension ProtonAuthenticatedWebModel {
     }
 }
 
-enum ProtonAuthenticatedWebPage {
+enum ProtonAuthenticatedWebPage: Identifiable {
+    var id: Int {
+        switch self {
+        case .mailSettings:
+            1
+        case .subscriptionDetails:
+            2
+        case .createFolder:
+            3
+        case .createLabel:
+            4
+        }
+    }
+
     case mailSettings
     case subscriptionDetails
+    case createFolder
+    case createLabel
 
     var action: String {
         switch self {
@@ -98,6 +113,8 @@ enum ProtonAuthenticatedWebPage {
             "mail-settings"
         case .subscriptionDetails:
             "subscription-details"
+        case .createFolder, .createLabel:
+            "labels-settings"
         }
     }
 }
