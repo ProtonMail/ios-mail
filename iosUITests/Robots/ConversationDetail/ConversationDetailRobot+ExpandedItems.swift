@@ -57,6 +57,7 @@ extension ConversationDetailRobot {
             index: entry.index
         )
 
+        model.isDisplayed()
         model.hasSenderName(entry.senderName)
         model.hasSenderAddress(entry.senderAddress)
         model.hasDate(entry.date)

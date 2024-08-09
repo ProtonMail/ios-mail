@@ -60,7 +60,7 @@ struct UITestConversationExpandedItemEntryModel: ApplicationHolder {
     // MARK: - Assertions
     
     func isDisplayed() {
-        XCTAssertTrue(rootItem.exists)
+        XCTAssertTrue(rootItem.waitUntilShown())
     }
     
     func hasSenderName(_ name: String) {

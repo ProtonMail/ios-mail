@@ -169,6 +169,8 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
 
         ConversationDetailRobot {
             $0.tapCollapsedEntry(at: 0)
+            $0.hasExpandedEntries(indexes: 0)
+
             $0.tapCollapsedEntry(at: 1)
             $0.verifyExpandedEntries(expectedExpandedEntries)
         }
