@@ -110,13 +110,6 @@ final class BackgroundTaskHelper {
         }
     }
 
-    static func cancel(
-        scheduler: BGTaskSchedulerProtocol = BGTaskScheduler.shared,
-        task: Task
-    ) {
-        scheduler.cancel(taskRequestWithIdentifier: task.identifier)
-    }
-
     private static func log(message: String, isError: Bool = false) {
         SystemLogger.log(message: message, category: .backgroundTask, isError: isError)
     }
@@ -155,7 +148,6 @@ protocol BGTaskSchedulerProtocol {
         using queue: DispatchQueue?,
         launchHandler: @escaping (BGTask) -> Void
     ) -> Bool
-    func cancel(taskRequestWithIdentifier identifier: String)
 }
 
 extension BGTaskScheduler: BGTaskSchedulerProtocol {}

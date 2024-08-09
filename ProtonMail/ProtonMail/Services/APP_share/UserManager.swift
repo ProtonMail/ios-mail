@@ -389,14 +389,6 @@ extension UserManager: UserDataSource {
         }
     }
 
-    func updateFromEvents(userSettings: UserSettingsResponse?) {
-        guard let userSettings = userSettings else {
-            return
-        }
-        userInfo.update(from: userSettings)
-        save()
-    }
-
     func updateFromEvents(mailSettingsRes: [String: Any]?) {
         if let settings = mailSettingsRes {
             userInfo.parse(mailSettings: settings)

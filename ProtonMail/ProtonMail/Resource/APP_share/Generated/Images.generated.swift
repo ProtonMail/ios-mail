@@ -63,7 +63,6 @@ internal enum Asset {
   internal static let upgradeIconBig = ImageAsset(name: "upgrade-icon-big")
   internal static let upgradeIcon = ImageAsset(name: "upgrade_Icon")
   internal static let upsellButton = ImageAsset(name: "upsell_button")
-  internal static let upsellPromotion = ImageAsset(name: "upsell_promotion")
   internal static let referralLogo = ImageAsset(name: "ReferralLogo")
   internal static let searchNoResult = ImageAsset(name: "search_no_result")
   internal static let icMagnifier = ImageAsset(name: "ic-magnifier")
