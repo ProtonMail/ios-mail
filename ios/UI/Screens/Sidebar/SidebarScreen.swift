@@ -122,18 +122,18 @@ struct SidebarScreen: View {
                 ScrollView {
                     list(for: screenModel.state.system.map(SidebarItem.system))
                     separator
-                    list(for: screenModel.state.labels.map(SidebarItem.label))
-                    createButton(
-                        for: screenModel.state.createLabel,
-                        isListEmpty: screenModel.state.labels.isEmpty
-                    )
-                    separator
                     FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes) { folder in
                         select(item: .folder(folder))
                     }
                     createButton(
                         for: screenModel.state.createFolder,
                         isListEmpty: screenModel.state.folders.isEmpty
+                    )
+                    separator
+                    list(for: screenModel.state.labels.map(SidebarItem.label))
+                    createButton(
+                        for: screenModel.state.createLabel,
+                        isListEmpty: screenModel.state.labels.isEmpty
                     )
                     separator
                     list(for: screenModel.state.other.map(SidebarItem.other))
