@@ -84,7 +84,6 @@ targets:
         CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
-        testFlightInternalTestingOnly: YES
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
