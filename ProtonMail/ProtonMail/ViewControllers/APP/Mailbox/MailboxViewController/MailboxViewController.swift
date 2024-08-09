@@ -2377,40 +2377,6 @@ extension MailboxViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
-extension MailboxViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if self.shouldAnimateSkeletonLoading {
-            return 1
-        } else {
-            return self.viewModel.sectionCount()
-        }
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.shouldAnimateSkeletonLoading {
-            return 10
-        } else {
-            return self.viewModel.rowCount(section: section)
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = self.shouldAnimateSkeletonLoading ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        if self.shouldAnimateSkeletonLoading {
-            self.configure(cell: cell, rowItem: .skeleton(indexPath.row))
-        } else if let mailboxItem = viewModel.mailboxItem(at: indexPath) {
-            self.configure(cell: cell, rowItem: .real(mailboxItem))
-        } else {
-            assertionFailure("Should be either showing skeleton cells or receive a real MailboxItem")
-        }
-        return cell
-
-    }
-}
-
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
@@ -2749,12 +2715,6 @@ extension MailboxViewController {
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapSelectAllButton))
         selectAllButton.addGestureRecognizer(tapGesture)
-    }
-}
-
-extension MailboxViewController: SkeletonTableViewDataSource {
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return MailBoxSkeletonLoadingCell.Constant.identifier
     }
 }
 

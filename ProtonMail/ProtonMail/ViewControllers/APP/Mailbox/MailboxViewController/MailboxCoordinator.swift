@@ -52,9 +52,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private weak var sideMenu: SideMenuController?
-    private var isMessageSwipeNavigationEnabled: Bool {
-        true
-    }
     var pendingActionAfterDismissal: (() -> Void)?
     private var timeOfLastNavigationToMessageDetails: Date?
 
@@ -389,30 +386,20 @@ extension MailboxCoordinator {
             messageToShow(isNotification: false, node: nil) { [weak self] message in
                 guard let self = self,
                       let message = message else { return }
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(message: message)
-                } else {
-                    self.present(message: message)
-                }
+                self.presentPageViewsFor(message: message)
             }
         case .conversation:
             conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
                 guard let self = self,
                       let conversation = conversation else { return }
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(conversation: conversation, targetID: nil)
-                } else {
-                    self.present(conversation: conversation, targetID: nil)
-                }
+                self.presentPageViewsFor(conversation: conversation, targetID: nil)
             }
         }
     }
 
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
-        if
-            let timeOfLastNavigationToMessageDetails,
-            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3
-        {
+        if let timeOfLastNavigationToMessageDetails,
+            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3 {
             return
         }
 
@@ -430,8 +417,7 @@ extension MailboxCoordinator {
                 message: "Finished fetching msg: message id is: \(message?.messageID.rawValue ?? "Nil")",
                 category: .notificationDebug
             )
-            guard let self = self,
-                  let message = message else {
+            guard let self, let message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
                 L10n.Error.cant_open_message.alertToastBottom()
                 return
@@ -443,11 +429,7 @@ extension MailboxCoordinator {
                     message: "Display notification in single message mode. id: \(messageID)",
                     category: .notificationDebug
                 )
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(message: message)
-                } else {
-                    self.present(message: message)
-                }
+                self.presentPageViewsFor(message: message)
             case .conversation:
                 SystemLogger.log(
                     message: "Start fetching conversation for msg id: \(messageID)",
@@ -468,11 +450,7 @@ extension MailboxCoordinator {
                         message: "Display notification in conversation mode. msg id: \(messageID), conv id: \(conversation.conversationID.rawValue)",
                         category: .notificationDebug
                     )
-                    if self?.isMessageSwipeNavigationEnabled ?? false {
-                        self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
-                    } else {
-                        self?.present(conversation: conversation, targetID: messageID)
-                    }
+                    self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                 }
             }
         }
@@ -547,46 +525,6 @@ extension MailboxCoordinator {
                 completion(nil)
             }
         }
-    }
-
-    private func present(message: MessageEntity) {
-        guard let navigationController = viewController?.navigationController else {
-            SystemLogger.log(
-                message: "Can not find the navigation view to show the message detail view.",
-                category: .notificationDebug
-            )
-            return
-        }
-        let coordinator = SingleMessageCoordinator(
-            navigationController: navigationController,
-            labelId: viewModel.labelID,
-            dependencies: dependencies
-        )
-        coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
-            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
-        }
-        coordinator.start(message: message)
-    }
-
-    private func present(conversation: ConversationEntity, targetID: MessageID?) {
-        guard let navigationController = viewController?.navigationController else {
-            SystemLogger.log(
-                message: "Can not find the navigation view to show the conversation view.",
-                category: .notificationDebug
-            )
-            return
-        }
-        let coordinator = ConversationCoordinator(
-            labelId: viewModel.labelID,
-            navigationController: navigationController,
-            conversation: conversation,
-            dependencies: dependencies,
-            targetID: targetID
-        )
-        coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
-            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
-        }
-        coordinator.start()
     }
 
     private func presentPageViewsFor(message: MessageEntity) {
