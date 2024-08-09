@@ -34,12 +34,19 @@ protocol LabelManagerRouterProtocol {
         userInfo: UserInfo,
         labelService: LabelsDataService
     )
+
+    func presentUpsellPage(labelType: PMLabelType)
 }
 
 final class LabelManagerRouter: LabelManagerRouterProtocol {
-    private let navigationController: UINavigationController
+    typealias Dependencies = HasPaymentsUIFactory
 
-    init(navigationController: UINavigationController) {
+    private let dependencies: Dependencies
+    private let navigationController: UINavigationController
+    @MainActor private var upsellCoordinator: UpsellCoordinator?
+
+    init(dependencies: Dependencies, navigationController: UINavigationController) {
+        self.dependencies = dependencies
         self.navigationController = navigationController
     }
 
@@ -61,5 +68,14 @@ final class LabelManagerRouter: LabelManagerRouterProtocol {
         )
 
         navigationController.present(labelEditNavigationController, animated: true)
+    }
+
+    func presentUpsellPage(labelType: PMLabelType) {
+        Task { @MainActor in
+            upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(
+                rootViewController: navigationController
+            )
+            upsellCoordinator?.start(entryPoint: labelType.isFolder ? .folders : .labels)
+        }
     }
 }

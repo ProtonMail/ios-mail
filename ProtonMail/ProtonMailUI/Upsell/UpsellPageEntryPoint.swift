@@ -20,7 +20,9 @@ import SwiftUI
 public enum UpsellPageEntryPoint: Sendable {
     case autoDelete
     case contactGroups
+    case folders
     case header
+    case labels
     case mobileSignature
     case scheduleSend
     case snooze
@@ -31,6 +33,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return .upsellAutoDeleteLogo
         case .contactGroups:
             return .upsellContactGroupsLogo
+        case .folders, .labels:
+            return .upsellLabelsLogo
         case .header:
             return .upsellDefaultLogo
         case .mobileSignature:
@@ -44,10 +48,10 @@ public enum UpsellPageEntryPoint: Sendable {
 
     var logoPadding: EdgeInsets {
         switch self {
-        case .autoDelete, .contactGroups, .mobileSignature, .scheduleSend, .snooze:
-            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         case .header:
             return .init(top: -40, leading: 0, bottom: -40, trailing: 0)
+        default:
+            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
     }
 
@@ -57,6 +61,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return L10n.Upsell.autoDeleteTitle
         case .contactGroups:
             return L10n.Upsell.contactGroupsTitle
+        case .folders, .labels:
+            return L10n.Upsell.labelsTitle
         case .header:
             return String(format: L10n.Upsell.upgradeToPlan, planName)
         case .mobileSignature:
@@ -74,6 +80,8 @@ public enum UpsellPageEntryPoint: Sendable {
             return String(format: L10n.Upsell.autoDeleteDescription, planName)
         case .contactGroups:
             return String(format: L10n.Upsell.contactGroupsDescription, planName)
+        case .folders, .labels:
+            return String(format: L10n.Upsell.labelsDescription, planName)
         case .header:
             return L10n.Upsell.mailPlusDescription
         case .mobileSignature:

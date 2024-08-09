@@ -66,14 +66,14 @@ class LabelManagerViewModelTests: XCTestCase {
         sut = makeSUT(labelType: .label)
         sut.didSelectItem(at: indexToCreateNewLabel)
         XCTAssertEqual(mockLabelManagerRouter.navigateToLabelEditStub.callCounter, 1)
-        XCTAssertEqual(mockUIDelegate.showAlertMaxItemsReachedStub.callCounter, 0)
+        XCTAssertEqual(mockLabelManagerRouter.presentUpsellPageStub.callCounter, 0)
     }
 
     func testDidSelectItem_toCreateNewItem_whenItemMaxReached() {
         sut = makeSUT(labelType: .label, dependencies: makeSUTDependencies(numLabelsToReturn: 3))
         sut.didSelectItem(at: indexToCreateNewLabel)
         XCTAssertEqual(mockLabelManagerRouter.navigateToLabelEditStub.callCounter, 0)
-        XCTAssertEqual(mockUIDelegate.showAlertMaxItemsReachedStub.callCounter, 1)
+        XCTAssertEqual(mockLabelManagerRouter.presentUpsellPageStub.callCounter, 1)
     }
 
     func testDidSelectItem_toViewDetail() {

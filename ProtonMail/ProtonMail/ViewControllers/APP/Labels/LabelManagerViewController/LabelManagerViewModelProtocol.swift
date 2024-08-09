@@ -59,6 +59,5 @@ protocol LabelManagerUIProtocol: AnyObject {
     func reloadData()
     func reload(section: Int)
     func showToast(message: String)
-    func showAlertMaxItemsReached()
     func showNoInternetConnectionToast()
 }

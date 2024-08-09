@@ -248,8 +248,7 @@ extension UpsellPage {
                     .init(icon: \.storage, description: L10n.PremiumPerks.storage),
                     .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
                     .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
-                    .init(icon: \.rocket, description: L10n.PremiumPerks.desktopApp),
-                    .init(icon: \.tag, description: L10n.Snooze.folderBenefit)
+                    .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
                 ],
                 purchasingOptions: [
                     .init(identifier: "a", cycleInMonths: 1, monthlyPrice: "CHF 4.99", isHighlighted: false, discount: nil),

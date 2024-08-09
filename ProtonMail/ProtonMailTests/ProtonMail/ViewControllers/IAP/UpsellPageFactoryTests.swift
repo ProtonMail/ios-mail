@@ -69,8 +69,7 @@ final class UpsellPageFactoryTests: XCTestCase {
                 .init(icon: \.storage, description: "15 GB storage"),
                 .init(icon: \.inbox, description: "10 email addresses"),
                 .init(icon: \.globe, description: "Custom email domain support"),
-                .init(icon: \.rocket, description: "New Proton Mail desktop app"),
-                .init(icon: \.tag, description: "Unlimited folders, labels, and filters")
+                .init(icon: \.gift, description: "+7 premium features")
             ],
             purchasingOptions: [
                 .init(

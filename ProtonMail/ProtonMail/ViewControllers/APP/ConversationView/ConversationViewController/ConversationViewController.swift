@@ -26,6 +26,7 @@ import ProtonCoreDataModel
 import protocol ProtonCoreServices.APIService
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import UIKit
 
 // swiftlint:disable:next type_body_length
@@ -407,6 +408,14 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
                 self.customView.tableView.alpha = 1
             }
         }
+    }
+
+    private func presentUpsellPage(
+        entryPoint: UpsellPageEntryPoint,
+        onDismiss: @escaping UpsellCoordinator.OnDismissCallback
+    ) {
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: entryPoint, onDismiss: onDismiss)
     }
 }
 
@@ -1226,7 +1235,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewLabel)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheetForConversation()
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isOn in
@@ -1275,7 +1286,9 @@ extension ConversationViewController {
                              }
                              self.viewModel.handleNavigationAction(.addNewLabel)
                          } else {
-                             self.showAlertLabelCreationNotAllowed()
+                             self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                                 self?.showLabelAsActionSheet(for: message)
+                             }
                          }
                      },
                      selected: { [weak self] menuLabel, isOn in
@@ -1320,24 +1333,6 @@ extension ConversationViewController {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }
         return true
-    }
-
-    private func showAlertLabelCreationNotAllowed() {
-        let title = LocalString._creating_label_not_allowed
-        let message = LocalString._upgrade_to_create_label
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlertFolderCreationNotAllowed() {
-        let title = LocalString._creating_folder_not_allowed
-        let message = LocalString._upgrade_to_create_folder
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 
     func showLabelAsActionSheet(dataSource: ActionSheetDataSource) {
@@ -1385,7 +1380,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewFolder)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(for: message)
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -1430,7 +1427,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewFolder)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheetForConversation()
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -1599,12 +1598,12 @@ extension ConversationViewController: SnoozeSupport {
             navigationController?.popViewController(animated: true)
             banner.show(at: .bottom, on: viewController)
         }
-
     }
 
     func presentPaymentView() {
-        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
-        upsellCoordinator?.start(entryPoint: .snooze) { [unowned self] in
+        presentUpsellPage(entryPoint: .snooze) { [weak self] in
+            guard let self else { return }
+
             self.presentSnoozeConfigSheet(on: self, current: Date())
         }
     }

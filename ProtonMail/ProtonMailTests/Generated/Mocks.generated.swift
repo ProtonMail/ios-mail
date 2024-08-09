@@ -598,6 +598,11 @@ class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
         navigateToLabelEditStub(editMode, labels, type, userInfo, labelService)
     }
 
+    @FuncStub(MockLabelManagerRouterProtocol.presentUpsellPage) var presentUpsellPageStub
+    func presentUpsellPage(labelType: PMLabelType) {
+        presentUpsellPageStub(labelType)
+    }
+
 }
 
 class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
@@ -629,11 +634,6 @@ class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
     @FuncStub(MockLabelManagerUIProtocol.showToast) var showToastStub
     func showToast(message: String) {
         showToastStub(message)
-    }
-
-    @FuncStub(MockLabelManagerUIProtocol.showAlertMaxItemsReached) var showAlertMaxItemsReachedStub
-    func showAlertMaxItemsReached() {
-        showAlertMaxItemsReachedStub()
     }
 
     @FuncStub(MockLabelManagerUIProtocol.showNoInternetConnectionToast) var showNoInternetConnectionToastStub

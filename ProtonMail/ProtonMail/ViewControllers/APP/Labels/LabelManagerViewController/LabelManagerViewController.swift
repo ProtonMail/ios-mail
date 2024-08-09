@@ -139,15 +139,6 @@ extension LabelManagerViewController: LabelManagerUIProtocol {
         message.alertToastBottom()
     }
 
-    func showAlertMaxItemsReached() {
-        let isFolder = viewModel.output.labelType.isFolder
-        let title = isFolder ? LocalString._creating_folder_not_allowed : LocalString._creating_label_not_allowed
-        let message = isFolder ? LocalString._upgrade_to_create_folder : LocalString._upgrade_to_create_label
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        present(alert, animated: true)
-    }
-
     func showNoInternetConnectionToast() {
         LocalString._general_pm_offline.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
     }

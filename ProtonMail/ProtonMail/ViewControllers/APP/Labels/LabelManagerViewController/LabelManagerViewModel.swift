@@ -87,7 +87,7 @@ extension LabelManagerViewModel: LabelManagerViewModelInput {
             return
         case .create:
             guard allowToCreate() else {
-                uiDelegate?.showAlertMaxItemsReached()
+                router.presentUpsellPage(labelType: labelType)
                 return
             }
             createNewLabel()
