@@ -226,6 +226,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return location.localizedTitle
     }
 
+    var isConversationModeEnabled: Bool {
+        conversationStateProvider.viewMode == .conversation
+    }
+
     var locationViewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent, .scheduled]
         if let location = Message.Location(labelID),

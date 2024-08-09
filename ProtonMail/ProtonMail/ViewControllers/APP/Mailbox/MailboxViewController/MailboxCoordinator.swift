@@ -386,7 +386,13 @@ extension MailboxCoordinator {
             messageToShow(isNotification: false, node: nil) { [weak self] message in
                 guard let self = self,
                       let message = message else { return }
-                self.presentPageViewsFor(message: message)
+                if viewModel.messageLocation == .sent,
+                   viewModel.isConversationModeEnabled,
+                   let conversation = findConversation(for: message) {
+                    self.presentPageViewsFor(conversation: conversation, targetID: message.messageID)
+                } else {
+                    self.presentPageViewsFor(message: message)
+                }
             }
         case .conversation:
             conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
@@ -394,6 +400,19 @@ extension MailboxCoordinator {
                       let conversation = conversation else { return }
                 self.presentPageViewsFor(conversation: conversation, targetID: nil)
             }
+        }
+    }
+
+    private func findConversation(for message: MessageEntity) -> ConversationEntity? {
+        let conversationID = message.conversationID
+
+        return contextProvider.read { context in
+            let conversations = self.conversationDataService.fetchLocalConversations(
+                withIDs: [conversationID],
+                in: context
+            )
+
+            return conversations.first.map(ConversationEntity.init)
         }
     }
 
