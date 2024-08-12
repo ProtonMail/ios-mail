@@ -39,7 +39,14 @@ var mutationObserver = new MutationObserver(function (events) {
             } else if (removedNode.getAttribute('src-original-pm-cid')) {
                 var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
                 var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
-                window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
+                console.log("Trying to remove image with cid " + cid);
+
+                const imgsContainingThisImage = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+                console.log("Image is referenced by " + imgsContainingThisImage.length + " nodes");
+
+                if (imgsContainingThisImage.length == 0) {
+                    window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
+                }
             }
         }
 
