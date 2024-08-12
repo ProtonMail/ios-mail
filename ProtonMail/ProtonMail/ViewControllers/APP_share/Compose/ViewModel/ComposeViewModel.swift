@@ -389,7 +389,7 @@ class ComposeViewModel: NSObject {
         let rawHTML = composerMessageHelper.decryptBody()
 
         do {
-            let document = try SwiftSoup.parse(rawHTML)
+            let document: Document = try Parser.parseAndLogErrors(rawHTML)
             if let body = document.body() {
                 return try body.html()
             } else {
@@ -479,7 +479,7 @@ extension ComposeViewModel {
     // Exact base64 image from body and upload it, if has any
     func extractAndUploadBase64ImagesFromSendingBody(body: String) -> String {
         guard
-            let document = try? SwiftSoup.parse(body),
+            let document = Parser.parseAndLogErrors(body),
             let base64Images = try? document.select(#"img[src^="data"]"#)
         else {
             return body

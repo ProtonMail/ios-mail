@@ -84,7 +84,7 @@ extension MIMEEMLBuilder {
 
     private func buildQuotedPrintableEML(for cleanBody: String) -> String? {
         var eml: [String] = []
-        guard let document = try? SwiftSoup.parse(cleanBody) else { return nil }
+        guard let document = Parser.parseAndLogErrors(cleanBody) else { return nil }
         document.outputSettings().prettyPrint(pretty: false)
         guard let html = try? document.body()?.html() else { return nil }
         let plainText = html
@@ -191,7 +191,7 @@ extension MIMEEMLBuilder {
     /// - inlineDict: inline image dataURI
     private func extractInlines(from messageBody: String) -> (body: String, inlineDict: [String: String]) {
         guard
-            let document = try? SwiftSoup.parse(messageBody),
+            let document = Parser.parseAndLogErrors(messageBody),
             let inlines = try? document.select(#"img[src^="data"]"#).array(),
             !inlines.isEmpty
         else { return (messageBody, [:]) }

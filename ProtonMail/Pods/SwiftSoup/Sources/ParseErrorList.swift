@@ -12,7 +12,7 @@ public class ParseErrorList {
     private static let INITIAL_CAPACITY: Int = 16
     private let maxSize: Int
     private let initialCapacity: Int
-    private var array: Array<ParseError?> = Array<ParseError>()
+    private(set) public var array: Array<ParseError?> = Array<ParseError>()
 
     init(_ initialCapacity: Int, _ maxSize: Int) {
         self.maxSize = maxSize
