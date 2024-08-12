@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Üst klasörden devralındı";
 
-/* Alert title */
-"Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
-
-/* Alert title */
-"Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Lütfen 3 klasörden fazlasını kullanabilmek için ücretli bir tarifeye geçin";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Lütfen 3 etiketten fazlasını kullanabilmek için ücretli bir tarifeye geçin";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Zamanlandığı gibi";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Kendi zamanlamanızı yapın";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve ek faydalara erişebilirsiniz.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Şimdi yükselt";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Sınırsız sayıda klasör ve etiket";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "500 GB depolama alanına kadar";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "15 e-posta adresine kadar";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "3 özel e-posta etki alanına kadar";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email takma adları";
-
 /* One of schedule time options */
 "In the morning" = "Sabahları";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar ile aç";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Çöpleri temizleyin";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Çöp ve istenmeyen kutularındaki 30 günden eski iletileri otomatik olarak temizleyin. Tarifenizi yükselterek bunun gibi başka ek faydalardan yararlanın.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "3 TB depolama alanına kadar";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Özel e-posta etki alanları";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Şimdi yükselt";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Gönderici değiştirildi";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Lütfen tüm ek dosyalar yüklendikten sonra yeniden deneyin.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Çevrim dışıyken paylaşım eklentisi ile gönderim desteklenmiyor";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Görüntülenecek ad";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Lütfen gelecekte bir zaman seçin";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "İstediğiniz zamana ertelemek ister misiniz?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Özel erteleme zamanları ayarlayabilmek için tarifenizi yükseltin";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "15 e-posta adresi veya takma adına kadar";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dosya olarak ekle";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Özel e-posta etki alanı desteği";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Yeni Proton Mail masaüstü uygulaması";
+"+%u premium features" = "+%u ücretli özellikler";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonim kullanım verileri";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Satın alma işleminiz zaten sürüyor";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Çöp ve istenmeyen kutularındaki eski iletiler temizleyin";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "%@ ile daha düzenli bir posta kutusunun tadını çıkarın ve diğer ücretli özelliklerden faydalanın.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Kişilerinizi gruplayın";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "%@ ile bir gruba kolayca e-posta gönderin ve diğer ücretli özelliklerin tadını çıkarın.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Daha fazla etiket veya klasör mü gerekiyor?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "%@ tarifesine yükselttiğinizde bunları ve diğer ücretli özellikleri kullanabilirsiniz.";
+
+/* Title of the upsell page */
+"Customize your signature" = "İmzanızı özelleştirin";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Kendi mobil imzanızı kullanın ve %@ ile diğer ücretli özelliklerin tadını çıkarın.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Şimdi zamanlayın, daha sonra gönderin";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "%@ ile özel gönderme zamanlamasının ve diğer ücretli özelliklerin tadını çıkarın.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bu e-posta için uygun bir zaman değil mi?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "İstediğiniz bir zamana erteleyin. %@ ile özel erteleme ve diğer özellikleri edinin.";

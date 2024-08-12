@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Moştenit de la folderul părinte";
 
-/* Alert title */
-"Creating folder not allowed" = "Crearea folderului nu este permisă";
-
-/* Alert title */
-"Creating label not allowed" = "Crearea etichetei nu este permisă";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 foldere.";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 etichete.";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conectați-vă și reîncercați.";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Ca programat";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Setați programări personale";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Deblocați programarea personalizată a mesajelor și alte avantaje trecând la un plan superior.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Modificare";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Programați mesajele oricând";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Foldere și etichete nelimitate";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Până la 500 GiB spațiu de stocare";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Până la 15 adrese de e-mail";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Până la 3 domenii de e-mail personale";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Ascundere aliasuri e-mail";
-
 /* One of schedule time options */
 "In the morning" = "Dimineața";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Deschidere în Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Eliminare mesaje din gunoi";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Ștergeți automat mesajele mai vechi de 30 de zile din gunoi și cel nedorite. Bucurați-vă de aceste opțiuni și altele dacă vă modernizați contul.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Până la 3 TiB spațiu de stocare";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Domenii personale e-mail";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Modificare";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Expeditor schimbat";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Reîncercați după ce au fost încărcate toate atașamentele.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Trimiterea cu extensia de partajare fără a avea conexiune nu este acceptată";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Selectare o dată disponibilă";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Doriți să modificați perioada de amânare?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Deblocați amânări personalizate când treceți la un plan cu plată";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Până la 15 de adrese de e-mail/aliasuri";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Adăugare ca atașament";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "✓ Aplicație nouă Proton Mail pentru desktop";
+"+%u premium features" = "Peste %u funcții premium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Achiziția este deja în desfășurare.";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Golire date vechi din folderul gunoi și nedorite";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Bucurați-vă de o interfață mai ordonată și beneficiați de alte funcții premium cu %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Grupați-vă contactele";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Trimiteți cu ușurință mesaje unui grup și bucurați-vă de alte funcții premium cu %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Doriți mai multe etichete sau foldere?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Obțineți-le alături de alte funcții premium când treceți la %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Personalizați-vă semnătura";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Utilizați propria semnătură mobilă și bucurați-vă de alte funcții premium cu %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Programați acum, trimiteți mai târziu";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Bucurați-vă de trimiteri programate personale și alte funcții premium cu %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Moment nepotrivit pentru acest mesaj?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Amânați-l pentru un alt moment pe care îl stabiliți. Obțineți amânare personalizată și multe altele cu %@.";

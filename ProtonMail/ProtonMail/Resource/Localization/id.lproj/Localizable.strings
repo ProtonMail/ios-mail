@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Diwariskan dari folder induk";
 
-/* Alert title */
-"Creating folder not allowed" = "Pembuatan folder tidak diizinkan";
-
-/* Alert title */
-"Creating label not allowed" = "Pembuatan label tidak diizinkan";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 folder";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 label";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Silakan hubungkan dan coba lagi";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Sebagaimana terjadwal";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Tentukan jadwal Anda sendiri";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Dapatkan fitur penjadwalan pesan khusus dan berbagai kelebihan lainnya dengan meningkatkan akun Anda.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Tingkatkan sekarang";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Jadwalkan pesan sesuai keinginan Anda";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Ruang penyimpanan hingga 500 GB";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Hingga 15 alamat email";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
-
 /* One of schedule time options */
 "In the morning" = "Di pagi hari";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Buka di Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Hapus sampah yang ada";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Hapus pesan yang telah berusia lebih dari 30 hari dari spam dan sampah secara otomatis. Nikmati fitur ini dan berbagai kelebihan lainnya pada saat Anda meningkatkan akun.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Ruang penyimpanan hingga 3 TB";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Domain email khusus";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Tingkatkan sekarang";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Pengirim diubah";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Silakan coba lagi setelah seluruh lampiran selesai terunggah.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nama tampilan";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Silakan pilih waktu yang akan datang";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Ingin menunda sesuai keinginan Anda?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Dapatkan waktu tunda yang dapat disesuaikan pada saat Anda meningkatkan akun";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Hingga 15 alamat/alias email";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tambah sebagai lampiran";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Dukungan domain email khusus";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Aplikasi desktop Proton Mail baru";
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Pembelian sedang berlangsung";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Bersihkan sampah dan spam yang telah lama menumpuk";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Nikmati kotak surat yang lebih rapi dan dapatkan manfaat dari berbagai fitur premium lainnya dengan %@";
+
+/* Title of the upsell page */
+"Group your contacts" = "Kelompokkan kontak Anda";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
