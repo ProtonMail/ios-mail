@@ -42,6 +42,8 @@ struct LabelInfo {
 }
 
 protocol MailboxViewModelUIProtocol: AnyObject {
+    var isUsingDefaultSizeCategory: Bool { get }
+
     func updateTitle()
     func updateUnreadButton(count: Int)
     func selectionDidChange()
@@ -393,6 +395,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     func shouldShowAutoImportContactsSpotlight() -> Bool {
         user.container.autoImportContactsFeature.isFeatureEnabled && shouldShowSpotlight(for: .autoImportContacts)
+    }
+
+    func shouldShowDynamicFontSizeSpotlight() -> Bool {
+        uiDelegate?.isUsingDefaultSizeCategory == false && shouldShowSpotlight(for: .dynamicFontSize)
     }
 
     func shouldShowSpotlight(for featureKey: SpotlightableFeatureKey) -> Bool {

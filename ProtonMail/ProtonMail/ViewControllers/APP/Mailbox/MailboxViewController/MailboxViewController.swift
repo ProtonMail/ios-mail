@@ -1285,13 +1285,23 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-        if viewModel.shouldShowSpotlight(for: .answerInvitation) {
+        if viewModel.shouldShowDynamicFontSizeSpotlight() {
+            showDynamicFontSizeSpotlight()
+        } else if viewModel.shouldShowSpotlight(for: .answerInvitation) {
             showAnswerInvitationSpotlight()
         } else if viewModel.shouldShowAutoImportContactsSpotlight() {
             showAutoImportContactsSpotlight()
         } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
         }
+    }
+
+    private func showDynamicFontSizeSpotlight() {
+        let spotlightView = DynamicFontSizeSpotlightView()
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSpotlight(for: .dynamicFontSize)
     }
 
     private func showAnswerInvitationSpotlight() {
@@ -2897,6 +2907,10 @@ extension MailboxViewController: ConnectionStatusReceiver {
 }
 
 extension MailboxViewController: MailboxViewModelUIProtocol {
+    var isUsingDefaultSizeCategory: Bool {
+        view.traitCollection.preferredContentSizeCategory == .large
+    }
+
     func updateTitle() {
         setupNavigationTitle(showSelected: viewModel.listEditing)
     }

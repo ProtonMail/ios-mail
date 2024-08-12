@@ -30,7 +30,7 @@ public struct AnswerInvitationSpotlightView: View {
                 hostingVC?.dismiss(animated: false)
             },
             message: L10n.RSVP.Spotlight.body,
-            spotlightImage: ImageAsset.rsvpSpotlight,
+            spotlightImage: .rsvpSpotlight,
             title: L10n.RSVP.Spotlight.title,
             imageAlignBottom: true,
             maxHeightOfTheImage: 145,
