@@ -130,7 +130,7 @@
 "Add attachment" = "Melléklet hozzáadása";
 
 /* menu title */
-"Refer a friend" = "Ajánlja egy barátnak";
+"Refer a friend" = "Ajánlja egy ismerősének";
 
 /* mail location title */
 "Scheduled" = "Ütemezett";
@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Örökölve a tartalmazó mappáról";
 
-/* Alert title */
-"Creating folder not allowed" = "Mappa létrehozása nincs engedélyezve";
-
-/* Alert title */
-"Creating label not allowed" = "Címke létrehozása nincs engedélyezve";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Váltson előfizetéses csomagra, 3-nál több mappa használatához";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Váltson előfizetéses csomagra, 3-nál több címke használatához";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Kérjük, csatlakozzon és próbálja meg újra";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Terv szerint";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Állítson be saját ütemezést";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Használja az üzenet ütemezési lehetőséget és tegyen szert további előnyökre, nagyobb csomagra váltással.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Váltás nagyobb csomagra";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Üzenetek ütemezése bármikor";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Korlátlan mappa és címke";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "500 GB tárhely";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Akár 15 e-mail cím";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Akár 3 saját e-mail domain név";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Az e-mail álnevek elrejtése";
-
 /* One of schedule time options */
 "In the morning" = "Reggel";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Megnyitás a Proton Calendarban";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Szabaduljon meg a szeméttől";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Törölje automatikusan a 30 napnál régebben a lomtárba vagy a levélszemét mappába került leveleket. Ehhez a lehetőséghez és további előnyökhöz, váltson nagyobb csomagra.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Akár 3 TB tárhely";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Saját domain nevek";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Váltás nagyobb csomagra";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Feladó megváltoztatva";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Megjelenített név";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Kérjük, válasszon egy jövőbeli időpontot";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Custom email domain support";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Névtelen adatgyűjtés";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Purchase already in progress";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";

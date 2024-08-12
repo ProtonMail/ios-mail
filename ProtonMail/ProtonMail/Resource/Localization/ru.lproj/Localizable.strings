@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Унаследовано от родительской папки";
 
-/* Alert title */
-"Creating folder not allowed" = "Создание папки запрещено";
-
-/* Alert title */
-"Creating label not allowed" = "Создание ярлыка невозможно";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Пожалуйста, перейдите на платный тариф, чтобы использовать более 3 папок";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Пожалуйста, обновитесь до платного тарифа для использования более 3 ярлыков";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Пожалуйста, подключитесь и попробуйте снова";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Как запланировано";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Установить собственное расписание";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблокируйте возможность планирования пользовательских сообщений и другие преимущества при улучшении тарифа.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Улучшить сейчас";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Планируйте сообщения в любое время";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Неограниченное количество папок / ярлыков";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "До 500 ГБ хранилища";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "До 15 адресов электронной почты";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "До 3 пользовательских доменов электронной почты";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псевдонимы Hide-my-email";
-
 /* One of schedule time options */
 "In the morning" = "Утром";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Открыть в Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Очистить от спама";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматически удалять сообщения старше 30 дней из Корзины и Спама. Воспользуйтесь этими и другими функциями после обновления.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "До 3 ТБ хранилища";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Пользовательские домены электронной почты";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Улучшить сейчас";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Отправитель изменен";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Повторите попытку, когда все вложения будут загружены.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Отображаемое имя";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Выберите время в будущем";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Хотите отложить в любое время?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Разблокируйте пользовательское время отложения после улучшения";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "До 15 адесов электронной почты или псевдонимов";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Добавить как вложение";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Поддержка пользовательских доменов электронной почты";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Новое приложение для настольных компьютеров Proton Mail";
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонимная телеметрия";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Покупка уже выполняется";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";

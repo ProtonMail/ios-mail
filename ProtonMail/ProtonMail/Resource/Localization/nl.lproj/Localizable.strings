@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Overgenomen van bovenliggende map";
 
-/* Alert title */
-"Creating folder not allowed" = "Maken van map niet toegestaan";
-
-/* Alert title */
-"Creating label not allowed" = "Label aanmaken is niet toegestaan";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 mappen te gebruiken";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 labels te gebruiken";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Maak verbinding en probeer het opnieuw";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Zoals gepland";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Maak uw eigen planning";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ontgrendel aangepaste berichten inplannen en andere voordelen als u uw abonnement upgrade.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Upgrade nu";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Plan berichten in op ieder moment";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Onbeperkte mappen en labels";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Tot wel 500 GB Opslag";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Tot wel 15 e-mailadressen";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Tot wel 3 aangepaste e-mail domeinen";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email-aliassen";
-
 /* One of schedule time options */
 "In the morning" = "'s Ochtends";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Openen in Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Spam opruimen";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Verwijder automatisch berichten van de prullenbak of spam die ouder zijn dan 30 dagen. Geniet hiervan en van andere voordelen wanneer u upgrade.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Tot wel 3 TB opslag";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Aangepaste e-maildomeinen";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Upgrade nu";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Afzender gewijzigd";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Probeer opnieuw nadat alle bijlagen zijn geüpload.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Weergavenaam";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Selecteer een tijd in de toekomst";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Voor enige tijd snoozen?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Krijg toegang tot aanpasbare snoozetijden wanneer u uw abonnement upgradet";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Tot 15 e-mailadressen/aliassen";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Voeg toe als bijlage";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nieuwe Proton Mail desktop app";
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonieme telemetrie";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Aankoop wordt al uitgevoerd";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Verwijder oude berichten in de prullenbak en spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Geniet van een opgeschoonde mailbox en profiteer van andere premium functies met %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Groepeer uw contacten";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Stuur gemakkelijk e-mails naar een groep en geniet van andere premium functies met %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Pas uw handtekening aan";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Gebruik uw eigen mobiele handtekening en geniet van andere premium functies met %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Nu inplannen, later verzenden";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Geniet van aangepaste ingeplande verzendingen en andere premium functies met %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Slechte tijd voor deze e-mail?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Sluimer het voor een tijd van uw keuze. Krijg aangepaste snooze en meer met %@.";

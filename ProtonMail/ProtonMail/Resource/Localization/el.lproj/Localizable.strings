@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Κληρονoμήθηκαν από το γονικό φάκελο";
 
-/* Alert title */
-"Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
-
-/* Alert title */
-"Creating label not allowed" = "Δεν επιτρέπεται η δημιουργία ετικέτας";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Για χρήση άνω των 3 ετικετών, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Παρακαλούμε συνδεθήτε και ξαναπροσπαθήσετε";
 
@@ -2144,33 +2132,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Όπως έχει προγραμματιστεί";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Ορίστε το δικό σας πρόγραμμα";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ξεκλειδώστε προσαρμοσμένο προγραμματισμό μηνυμάτων και άλλα οφέλη όταν αναβαθμίζετε το πρόγραμμά σας.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Αναβάθμιση τώρα";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Προγραμματισμός μηνυμάτων ανά πάσα στιγμή";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Απεριόριστοι φάκελοι και ετικέτες";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Έως 500 GB αποθηκευτικού χώρου";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Έως 15 ηλ. διευθύνσεις";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Έως 3 προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Απόκρυψη των ψευδωνύμων ηλεκτρονικού ταχυδρομείου μου";
-
 /* One of schedule time options */
 "In the morning" = "Το πρωί";
 
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Άνοιγμα στο Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Ξεφορτωθείτε τη σαβούρα";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Αυτόματη εκκαθάριση μηνυμάτων παλαιότερων των 30 ημερών από τα Διαγραμμένα και τα Ενοχλητικά. Απολαύστε αυτό και άλλα πλεονεκτήματα όταν αναβαθμίσετε.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Έως 3 TB αποθηκευτικού χώρου";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Αναβάθμιση τώρα";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Ο αποστολέας άλλαξε";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Δοκιμάστε ξανά μετά τη μεταφόρτωση όλων των συνημμένων.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Η αποστολή με την επέκταση Κοινοποίησης χωρίς σύνδεση δεν υποστηρίζεται";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Εμφανιζόμενο Όνομα";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Επιλέξτε μια μελλοντική ώρα";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Θέλετε να κάνετε αναβολή ανά πάσα στιγμή;";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Ξεκλειδώστε προσαρμοσμένους χρόνους αναβολής όταν αναβαθμίσετε";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Έως 15 διευθύνσεις ηλεκτρονικού ταχυδρομείου/ψευδώνυμα";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Προσθήκη ως συνημμένο";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Νέα Proton Mail εφαρμογή για υπολογιστές";
+"+%u premium features" = "+%u premium χαρακτηριστικά";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Αγορά ήδη σε εξέλιξη";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Καθαρίστε τα παλιά διαγραμμένα και τα ανεπιθύμητα μηνύματα";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Απολαύστε ένα πιο τακτοποιημένο γραμματοκιβώτιο και επωφεληθείτε από άλλες premium δυνατότητες με το %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Ομαδοποίηση των επαφών σας";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Στείλτε εύκολα μηνύματα ηλεκτρονικού ταχυδρομείου σε μια ομάδα και απολαύστε άλλες premium δυνατότητες με το %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Χρειάζεστε περισσότερες ετικέτες ή φακέλους;";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Αποκτήστε τα και άλλες premium δυνατότητες κατά την αναβάθμιση στο %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Προσαρμόστε την υπογραφή σας";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Χρησιμοποιήστε τη δική σας υπογραφή για κινητά και απολαύστε άλλες premium λειτουργίες με το %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Προγραμματίστε τώρα, στείλτε αργότερα";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Απολαύστε προσαρμοσμένη προγραμματισμένη αποστολή και άλλες premium λειτουργίες με το %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Κακή στιγμή για αυτό το email;";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Αναβάλλετέ το για μια στιγμή της επιλογής σας. Αποκτήστε προσαρμοσμένη αναβολή και πολλά άλλα με το %@.";

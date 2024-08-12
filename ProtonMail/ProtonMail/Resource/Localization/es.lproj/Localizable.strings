@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Heredado de la carpeta principal";
 
-/* Alert title */
-"Creating folder not allowed" = "No se permite crear la carpeta.";
-
-/* Alert title */
-"Creating label not allowed" = "No se permite crear la etiqueta.";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Mejora a un plan de pago para utilizar más de 3 carpetas.";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Mejora a un plan de pago para utilizar más de 3 etiquetas.";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conéctate y vuelve a intentarlo.";
 
@@ -2019,7 +2007,7 @@
 "DESCRIPTION:\n%@" = "DESCRIPCIÓN:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ se ha cancelado.";
+"%@ was cancelled." = "Se ha cancelado %@.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Invitación para un evento el %@";
@@ -2112,7 +2100,7 @@
 "Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activa esta función para añadir contactos nuevos de tu dispositivo automáticamente a la aplicación de Proton Mail.";
 
 /* Auto import alert title */
-"Auto-import enabled" = "La importación automática ha sido activada.";
+"Auto-import enabled" = "Se ha activado la importación automática.";
 
 /* Auto import alert message */
 "The initial import may take some time and will only occur when the app is in the foreground." = "La importación inicial puede tomar algún tiempo y solo se producirá cuando la aplicación esté en primer plano.";
@@ -2143,33 +2131,6 @@
 
 /* One of the schedule time options */
 "As scheduled" = "Como programado";
-
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Establece tu propia programación";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquea la programación personalizada de mensajes y otros beneficios al pasar a un plan superior.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Mejorar ahora";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Programa mensajes en cualquier momento";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Etiquetas y carpetas ilimitadas";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Hasta 500 GB de almacenamiento";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Hasta 15 direcciones de correo electrónico";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Hasta 3 dominios de correo electrónico personalizados";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias de Hide-my-email";
 
 /* One of schedule time options */
 "In the morning" = "Por la mañana";
@@ -2280,7 +2241,7 @@
 "Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días serán eliminados automáticamente.";
 
 /* Title of button to empty spam folder */
-"Empty spam" = "Vaciar la carpeta de spam";
+"Empty spam" = "Vaciar spam";
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Vaciar la papelera";
@@ -2294,17 +2255,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Abrir en Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "¡Elimina los mensajes innecesarios!";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Elimina automáticamente los mensajes de más de 30 días de las carpetas Papelera y Spam. Disfruta de este y otros beneficios al mejorar tu plan.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Hasta 3 TB de almacenamiento";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Dominios de correo personalizados";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Mejorar ahora";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "El remitente ha cambiado.";
@@ -2314,6 +2266,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Reintenta después de que todos los adjuntos estén cargados.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "No es posible enviar con la extensión Compartir mientras estás desconectado.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nombre a mostrar";
@@ -2423,18 +2378,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Selecciona una hora en el futuro.";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "¿Quieres pausar tus mensajes cuando quieras?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Desbloquea las pausas personalizadas al mejorar tu plan.";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Hasta 15 direcciones/alias de correo";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Añadir como adjunto";
 
@@ -2496,7 +2439,7 @@
 "Custom email domain support" = "Soporte de dominio de correo personalizado";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nueva aplicación de escritorio para Proton Mail";
+"+%u premium features" = "+%u funciones prémium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetría anónima";
@@ -2530,3 +2473,39 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "La compra ya está en progreso.";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Borrar la papelera y spam antiguos";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Disfruta de un buzón ordenado y del beneficio de otras funciones premium con %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Agrupa tus contactos";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Envía correos electrónicos a un grupo fácilmente y disfruta de otras funciones premium con %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "¿Necesitas más etiquetas o carpetas?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Consíguelas junto con otras funciones prémium al actualizar a %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Personaliza tu firma";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Utiliza tu propia firma de móvil y disfruta de otras funciones prémium con %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Programa ahora, envía después";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Disfruta del envío programado y otras funciones premium con %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "¿Mal momento para este correo?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Páusalo durante el tiempo que elige. Disfrute de una posposición personalizada y más con %@.";
