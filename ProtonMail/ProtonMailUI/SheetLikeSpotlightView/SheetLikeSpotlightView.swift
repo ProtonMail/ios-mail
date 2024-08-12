@@ -27,19 +27,19 @@ public struct SheetLikeSpotlightView: View {
     // iPhone 15 Plus
     let maxWidthForIPhone: CGFloat = 430
     let message: String
-    let spotlightImage: UIImage
+    let spotlightImage: ImageResource
     let title: String
     @State var isVisible = false
     private let imageAlignBottom: Bool
     private let maxHeightOfTheImage: CGFloat?
     private let showNewBadge: Bool
 
-    public init(
+    init(
         config: HostingProvider,
         buttonTitle: String,
         closeAction: ((UIViewController?, Bool) -> Void)? = nil,
         message: String,
-        spotlightImage: UIImage,
+        spotlightImage: ImageResource,
         title: String,
         isVisible: Bool = false,
         imageAlignBottom: Bool = false,
@@ -109,7 +109,7 @@ public struct SheetLikeSpotlightView: View {
                     if imageAlignBottom {
                         Spacer()
                     }
-                    Image(uiImage: spotlightImage)
+                    Image(spotlightImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .padding(.horizontal, 28)
@@ -185,7 +185,7 @@ public struct SheetLikeSpotlightView: View {
         config: HostingProvider(),
         buttonTitle: "Got it",
         message: "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.",
-        spotlightImage: ImageAsset.jumpToNextSpotlight,
+        spotlightImage: .jumpToNextSpotlight,
         title: "Snooze it for later",
         imageAlignBottom: true
     )

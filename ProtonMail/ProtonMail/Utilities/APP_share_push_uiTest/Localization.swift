@@ -1262,6 +1262,14 @@ enum L10n {
         static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
         static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
     }
+
+    struct DynamicFontSize {
+        struct Spotlight {
+            static let title = NSLocalizedString("Sized for reading", comment: "Spotlight title")
+            static let body = NSLocalizedString("Now the body text of your emails will also be shown in your preferred reading size.", comment: "Spotlight body")
+        }
+    }
+
     struct LockedStateAlertBox {
         static let alertBoxMailFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
         static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")

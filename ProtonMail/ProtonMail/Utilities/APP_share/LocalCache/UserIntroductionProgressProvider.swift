@@ -19,6 +19,7 @@ import Foundation
 
 enum SpotlightableFeatureKey: String, CaseIterable {
     case answerInvitation
+    case dynamicFontSize
     case scheduledSend
     case toolbarCustomization
     case messageSwipeNavigationAnimation

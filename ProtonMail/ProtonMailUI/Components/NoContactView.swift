@@ -53,7 +53,7 @@ public struct NoContactView: View {
 
     public var body: some View {
         VStack(spacing: verticalPadding) {
-            Image(uiImage: ImageAsset.autoImportContactsNoContact)
+            Image(.autoImportContactsNoContact)
             Text(displayedTitle(isImporting: model.isAutoImportContactsEnabled))
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
             Text(displayedDesc(isImporting: model.isAutoImportContactsEnabled))

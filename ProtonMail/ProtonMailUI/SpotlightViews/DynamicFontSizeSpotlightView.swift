@@ -17,42 +17,26 @@
 
 import SwiftUI
 
-public struct JumpToNextSpotlightView: View {
+public struct DynamicFontSizeSpotlightView: View {
     public let config = HostingProvider()
-    let buttonTitle: String
-    let message: String
-    let title: String
-    var closeAction: ((UIViewController?, Bool) -> Void)?
 
-    public init(
-        buttonTitle: String,
-        message: String,
-        title: String,
-        closeAction: ((UIViewController?, Bool) -> Void)? = nil
-    ) {
-        self.buttonTitle = buttonTitle
-        self.message = message
-        self.title = title
-        self.closeAction = closeAction
-    }
+    public init() {}
 
     public var body: some View {
         SheetLikeSpotlightView(
             config: config,
-            buttonTitle: buttonTitle,
-            closeAction: closeAction,
-            message: message,
-            spotlightImage: .jumpToNextSpotlight,
-            title: title,
-            imageAlignBottom: true
+            buttonTitle: L10n.Spotlight.gotIt,
+            closeAction: { hostingVC, _ in
+                hostingVC?.dismiss(animated: false)
+            },
+            message: L10n.DynamicFontSize.Spotlight.body,
+            spotlightImage: .dfsSpotlight,
+            title: L10n.DynamicFontSize.Spotlight.title,
+            maxHeightOfTheImage: 96
         )
     }
 }
 
 #Preview {
-    JumpToNextSpotlightView(
-        buttonTitle: "Turn on feature",
-        message: "View the next email in your inbox when you delete or move the current email. ",
-        title: "Read emails faster"
-    )
+    DynamicFontSizeSpotlightView()
 }
