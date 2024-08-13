@@ -23,7 +23,7 @@ extension Parser {
             let document: Document = try parseAndLogErrors(html)
             return document
         } catch {
-            SystemLogger.log(error: error, category: .draft)
+            SystemLogger.log(error: error, category: .webView)
             return nil
         }
     }
@@ -33,7 +33,7 @@ extension Parser {
         let document = try parser.parseInput(html, "")
 
         for parseError in parser.getErrors().array.compactMap({ $0 }) {
-            SystemLogger.log(message: parseError.toString(), category: .draft, isError: true)
+            SystemLogger.log(message: parseError.toString(), category: .webView, isError: true)
         }
 
         return document

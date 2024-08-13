@@ -153,6 +153,7 @@ extension SystemLogger {
         case notificationDebug = "NotificationDebug"
         case menuDebug = "MenuDebug"
         case emptyAlert = "EmptyAlert"
+        case webView = "WebView"
     }
 
     struct Caller {
