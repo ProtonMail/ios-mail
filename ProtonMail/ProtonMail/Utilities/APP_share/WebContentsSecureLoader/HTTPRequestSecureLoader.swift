@@ -282,7 +282,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             assertionFailure("Unexpected message sent from JS")
             return
         }
-        print("WebView log:\(body)")
+        SystemLogger.log(message: "WebView log:\(body)", category: .webView)
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
