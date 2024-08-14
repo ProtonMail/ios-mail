@@ -20,6 +20,7 @@ import SwiftUI
 
 /// dummy sign in screen to be able to start a rust session
 struct SignIn: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @State private var email: String = ""
     @State private var password: String = ""
 
@@ -69,13 +70,7 @@ struct SignIn: View {
                     Spacer()
                 }
             } else {
-
-                Button {
-                    hideKeyboard()
-                    Task {
-                        await screenModel.login(email: email, password: password)
-                    }
-                } label: {
+                Button(action: { signIn() }) {
                     Text("Sign In".notLocalized)
                         .foregroundColor(DS.Color.Text.norm)
                         .frame(width: 215, height: 44, alignment: .center)
@@ -83,11 +78,6 @@ struct SignIn: View {
                 .background(DS.Color.Background.deep)
                 .cornerRadius(4)
                 .padding(.top, 36)
-                .alert(screenModel.errorMessage, isPresented: screenModel.isErrorPresented) {
-                    Button("OK".notLocalized) {
-                        screenModel.showError = false
-                    }
-                }
                 .accessibilityIdentifier(SignInIdentifiers.signInButton)
             }
 
@@ -97,6 +87,17 @@ struct SignIn: View {
         .background(DS.Color.Background.norm)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(SignInIdentifiers.rootItem)
+    }
+
+    private func signIn() {
+        hideKeyboard()
+        Task {
+            do {
+                try await screenModel.login(email: email, password: password)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        }
     }
 }
 

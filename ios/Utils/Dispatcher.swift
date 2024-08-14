@@ -18,5 +18,9 @@
 import Foundation
 
 class Dispatcher {
-    static var dispatchOnMain: (DispatchWorkItem) -> Void = DispatchQueue.main.async(execute:)
+    typealias DispatchAfterType = (DispatchTime, DispatchWorkItem) -> Void
+    typealias Queue = DispatchQueue
+
+    static var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
+    static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }

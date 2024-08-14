@@ -15,15 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+final class PassThroughWindow: UIWindow {
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard let hitView = super.hitTest(point, with: event) else {
+            return nil
+        }
+
+        return rootViewController?.view == hitView ? nil : hitView
     }
+
 }

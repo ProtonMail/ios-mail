@@ -15,15 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+#ifndef ProtonMailTest-Bridging-Header_h
+#define ProtonMailTest-Bridging-Header_h
+#include "InstanceHelper.h"
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
-
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
-    }
-}
+#endif

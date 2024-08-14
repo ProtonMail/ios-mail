@@ -18,18 +18,23 @@
 import DesignSystem
 import SwiftUI
 
-struct Toast: Equatable {
+struct Toast: Hashable {
     let title: String?
     let message: String
     let button: Button?
     let style: Style
+    let duration: TimeInterval
 
-    struct Button: Equatable {
+    struct Button: Hashable {
         let type: ButtonType
         let action: () -> Void
 
         static func == (lhs: Toast.Button, rhs: Toast.Button) -> Bool {
             lhs.type == rhs.type
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(type)
         }
     }
 
@@ -40,18 +45,30 @@ struct Toast: Equatable {
         case warning
     }
 
-    enum ButtonType: Equatable {
+    enum ButtonType: Hashable {
         case largeBottom(buttonTitle: String)
         case smallTrailing(content: ContentType)
 
-        enum ContentType: Equatable {
-            case image(Image)
+        enum ContentType: Hashable {
+            case image(ImageResource)
             case title(String)
         }
     }
 }
 
 extension Toast {
+
+    static var comingSoon: Self {
+        .information(message: "Coming soon")
+    }
+
+    static func error(message: String) -> Self {
+        .noButtonDefaultDuration(message: message, style: .error)
+    }
+
+    static func information(message: String) -> Self {
+        .noButtonDefaultDuration(message: message, style: .information)
+    }
 
     var shadowOpacity: CGFloat {
         let smallToastOpacity: CGFloat = 0.4
@@ -68,6 +85,12 @@ extension Toast {
                 return bigToastOpacity
             }
         }
+    }
+
+    // MARK: - Private
+
+    private static func noButtonDefaultDuration(message: String, style: Toast.Style) -> Self {
+        .init(title: nil, message: message, button: nil, style: style, duration: 4.0)
     }
 
 }

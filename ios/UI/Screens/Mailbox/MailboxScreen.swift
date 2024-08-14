@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     private var customLabelModel: CustomLabelModel
@@ -73,12 +74,13 @@ extension MailboxScreen {
 
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
-
+            toastStateStore.present(toast: .comingSoon)
         }
         .padding(.trailing, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.standard)
+        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxToastHeight)
         .opacity(mailboxModel.selectionMode.hasSelectedItems ? 0 : 1)
         .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
+        .animation(.toastAnimation, value: toastStateStore.state.maxToastHeight)
     }
 
     private var mailboxActionBarView: some View {

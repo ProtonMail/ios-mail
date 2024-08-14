@@ -17,16 +17,6 @@
 
 import SwiftUI
 
-final class AppDelegate: NSObject, UIApplicationDelegate {
-
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
-    ) -> Bool {
-        AppLifeCycle.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        AppLifeCycle.shared.applicationWillTerminate(application)
-    }
+extension Animation {
+    static let toastAnimation = Animation.easeInOut(duration: 0.4)
 }

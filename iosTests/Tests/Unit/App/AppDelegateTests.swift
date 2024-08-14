@@ -17,30 +17,28 @@
 
 @testable import ProtonMail
 import XCTest
+import Nimble
 
-class BaseTestCase: XCTestCase {
+final class AppDelegateTests: XCTestCase {
 
-    private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
-    private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
+    func testSceneConfiguration_WhenConnectingSceneSession_HasCustomSceneDelegateConfigured() throws {
+        let sceneConfiguration = AppDelegate().application(
+            .shared,
+            configurationForConnecting: try scene(),
+            options: try connectionOptions()
+        )
 
-    override func setUp() {
-        super.setUp()
-
-        originalDispatchOnMain = Dispatcher.dispatchOnMain
-        originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
-
-        Dispatcher.dispatchOnMain = { task in task.perform() }
-        Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
+        expect(sceneConfiguration.delegateClass) === SceneDelegate.self
     }
 
-    override func tearDown() {
-        Dispatcher.dispatchOnMain = originalDispatchOnMain
-        Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
+    // MARK: - Private
 
-        originalDispatchOnMain = nil
-        originalDispatchOnMainAfter = nil
+    private func scene() throws -> UISceneSession {
+        try InstanceHelper.create(UISceneSession.self)
+    }
 
-        super.tearDown()
+    private func connectionOptions() throws -> UIScene.ConnectionOptions {
+        try InstanceHelper.create(UIScene.ConnectionOptions.self)
     }
 
 }

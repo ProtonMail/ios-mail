@@ -22,33 +22,20 @@ import SwiftUI
 final class SignInScreenModel {
     private let dependencies: Dependencies
     private(set) var isLoading = false
-    private(set) var errorMessage: String = "" {
-        didSet {
-            showError = !errorMessage.isEmpty
-        }
-    }
-    var showError: Bool = false
-
-    var isErrorPresented: Binding<Bool> {
-        Binding(get: {
-            self.showError
-        }, set: {
-            self.showError = $0
-        })
-    }
 
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
     }
 
     @MainActor
-    func login(email: String, password: String) async {
+    func login(email: String, password: String) async throws {
         isLoading = true
         do {
             try await dependencies.sessionProvider.login(email: email, password: password)
         } catch {
-            errorMessage = error.localizedDescription
+            throw error
         }
+
         isLoading = false
     }
 }

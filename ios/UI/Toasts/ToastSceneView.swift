@@ -1,0 +1,104 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import OrderedCollections
+import SwiftUI
+
+struct ToastSceneView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
+
+    var body: some View {
+        Color.clear
+            .ignoresSafeArea(.all)
+            .toastView(state: $toastStateStore.state)
+    }
+}
+
+private extension View {
+
+    func toastView(state: Binding<ToastStateStore.State>) -> some View {
+        modifier(ToastModifier(state: state))
+    }
+
+}
+
+private struct ToastModifier: ViewModifier {
+    @Binding var state: ToastStateStore.State
+    @State private var automaticDismissalTasks: OrderedDictionary<Toast, DispatchWorkItem> = [:]
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                ZStack {
+                    ForEach(Array(zip(state.toasts.indices, state.toasts)), id: \.1) { index, toast in
+                        toastView(toast: toast).zIndex(Double(-index))
+                    }
+                }
+                .animation(.toastAnimation, value: state.toasts)
+            )
+            .onChange(of: state.toasts, initial: true) { _, new in
+                if new.isEmpty {
+                    state.maxToastHeight = 0
+                }
+
+                new.forEach { toast in
+                    if automaticDismissalTasks[toast] == nil && toast.duration > 0 {
+                        let automaticDismissalTask = DispatchWorkItem {
+                            dismissToast(toast: toast)
+                        }
+
+                        automaticDismissalTasks[toast] = automaticDismissalTask
+
+                        Dispatcher.dispatchOnMainAfter(.now() + toast.duration, automaticDismissalTask)
+                    }
+                }
+            }
+    }
+
+    @ViewBuilder 
+    private func toastView(toast: Toast) -> some View {
+        VStack {
+            Spacer()
+            ToastView(model: toast, didSwipeDown: { dismissToast(toast: toast) })
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear
+                            .preference(key: ToastHeightPreferenceKey.self, value: geometry.size.height)
+                            .onPreferenceChange(ToastHeightPreferenceKey.self) { value in
+                                state.maxToastHeight = max(geometry.size.height, state.maxToastHeight)
+                            }
+                    }
+                }
+        }
+        .transition(.move(edge: .bottom))
+    }
+
+    private func dismissToast(toast: Toast) {
+        state.toasts = state.toasts.filter { $0 != toast }
+
+        automaticDismissalTasks[toast]?.cancel()
+        automaticDismissalTasks[toast] = nil
+    }
+}
+
+private struct ToastHeightPreferenceKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}

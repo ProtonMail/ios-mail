@@ -10,6 +10,9 @@ options:
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
 
 packages:
+  Collections:
+    url: https://github.com/apple/swift-collections.git
+    minorVersion: "1.1.2"
   DesignSystem:
     path: localPackages/DesignSystem
   Keychain:
@@ -101,8 +104,9 @@ targets:
     dependencies:
       - package: DesignSystem
       - package: Keychain
-      - package: SwiftUIIntrospect
+      - package: Collections
       - package: proton_mail_uniffi
+      - package: SwiftUIIntrospect
 
   ProtonMailTest:
     type: bundle.unit-test
@@ -111,6 +115,8 @@ targets:
       path: iosTests/Info/Info.plist  
     sources:
       - path: iosTests
+        excludes:
+          - "Tests/**/__Snapshots__"
     dependencies:
       - target: ProtonMail
       - package: Nimble
@@ -122,6 +128,8 @@ targets:
         - name: ProtonMailTest
           parallelizable: true
           randomExecutionOrder: true
+    settings:
+       SWIFT_OBJC_BRIDGING_HEADER: iosTests/Utils/ProtonMailTest-Bridging-Header.h
 
   ProtonMailUITest:
     type: bundle.ui-testing

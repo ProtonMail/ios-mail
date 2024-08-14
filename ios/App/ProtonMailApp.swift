@@ -18,12 +18,13 @@
 import SwiftUI
 
 @main
-struct ProtonMail: App {
+struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
 
     // declaration of state objects
     private let appUIState = AppUIState()
+    private let toastStateStore = ToastStateStore(initialState: .initial)
     private let userSettings = UserSettings(
         mailboxActions: .init()
     )
@@ -31,8 +32,9 @@ struct ProtonMail: App {
 
     var body: some Scene {
         WindowGroup {
-            Root(appContext: .shared, appRoute: .shared, customLabelModel: customLabelModel)
+            RootView(appContext: .shared, appRoute: .shared, customLabelModel: customLabelModel)
                 .environmentObject(appUIState)
+                .environmentObject(toastStateStore)
                 .environmentObject(userSettings)
         }
         .onChange(of: scenePhase, { oldValue, newValue in
@@ -46,8 +48,9 @@ struct ProtonMail: App {
     }
 }
 
-struct Root: View {
-    @EnvironmentObject private var appUIState: AppUIState
+private struct RootView: View {
+    @EnvironmentObject private var sceneDelegate: SceneDelegate
+    @EnvironmentObject private var toastStateStore: ToastStateStore
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
@@ -65,6 +68,16 @@ struct Root: View {
     }
 
     var body: some View {
+        mainView()
+            .onAppear {
+                sceneDelegate.toastStateStore = toastStateStore
+            }
+    }
+
+    // MARK: - Private
+
+    @ViewBuilder
+    private func mainView() -> some View {
         if let activerUser = appContext.activeUserSession {
             AuthenticatedScreens(
                 appRoute: appRoute,

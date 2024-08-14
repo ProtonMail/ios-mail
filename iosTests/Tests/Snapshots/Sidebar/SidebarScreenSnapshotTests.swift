@@ -16,8 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import SnapshotTesting
-import SwiftUI
 import XCTest
 
 class SidebarScreenSnapshotTests: XCTestCase {
@@ -38,7 +36,7 @@ class SidebarScreenSnapshotTests: XCTestCase {
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
             .environmentObject(AppUIState(isSidebarOpen: true))
             .environment(\.mainBundle, bundleStub)
-        assertSnapshot(of: UIHostingController(rootView: sidebarScreen), as: .image(on: .iPhoneX))
+        assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
     func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX() {
@@ -57,7 +55,7 @@ class SidebarScreenSnapshotTests: XCTestCase {
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
             .environmentObject(AppUIState(isSidebarOpen: true))
             .environment(\.mainBundle, bundleStub)
-        assertSnapshot(of: UIHostingController(rootView: sidebarScreen), as: .image(on: .iPhoneX))
+        assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
 }

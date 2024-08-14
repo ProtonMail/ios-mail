@@ -15,15 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+extension InstanceHelper {
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+    static func create<Object: AnyObject>(_ class: Object.Type, properties: [String: Any] = [:]) throws -> Object {
+        guard let instance = InstanceHelper.createInstance(`class`, properties: properties) as? Object else {
+            throw NSError(
+                domain: "InstanceHelper",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Cannot create instance of \(`class`)"]
+            )
+        }
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
+        return instance
     }
+
 }

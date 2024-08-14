@@ -31,11 +31,13 @@ extension View {
 
      Before using this conditional view modifier take into account that any internal @State of the view can be lost
      */
-    @ViewBuilder func removeViewIf(_ condition: Bool) -> some View {
+    @ViewBuilder 
+    func removeViewIf(_ condition: Bool) -> some View {
         if condition {
             EmptyView()
         } else {
             self
         }
     }
+
 }

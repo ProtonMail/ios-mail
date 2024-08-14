@@ -16,14 +16,33 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import OrderedCollections
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
-
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
+final class ToastStateStore: ObservableObject {
+    struct State {
+        var toasts: OrderedSet<Toast>
+        var maxToastHeight: CGFloat
     }
+
+    @Published var state: State
+
+    init(initialState: State) {
+        self.state = initialState
+    }
+
+    func present(toast: Toast) {
+        state.toasts.append(toast)
+    }
+
+    func dismiss(toast: Toast) {
+        state.toasts.remove(toast)
+    }
+}
+
+extension ToastStateStore.State {
+
+    static var initial: Self {
+        .init(toasts: [], maxToastHeight: .zero)
+    }
+
 }

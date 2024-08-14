@@ -15,15 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+#import <Foundation/Foundation.h>
+#import "InstanceHelper.h"
 
-/**
- Keeps the state for UI components
- */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
+@implementation InstanceHelper
 
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
-    }
++ (id)createInstance:(Class)class {
+    return [[class alloc] init];
 }
+
++ (id)createInstance:(Class)class properties:(NSDictionary *)properties {
+    id object = [self createInstance:class];
+    if ([object isKindOfClass:[NSObject class]]) {
+        NSObject *nsObject = object;
+        [properties enumerateKeysAndObjectsUsingBlock:^(id key, id valueObject, BOOL *stop) {
+            [nsObject setValue:valueObject forKey:key];
+        }];
+    }
+    return object;
+}
+
+@end

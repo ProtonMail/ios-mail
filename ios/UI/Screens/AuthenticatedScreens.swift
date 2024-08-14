@@ -19,11 +19,11 @@ import proton_mail_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
+    @EnvironmentObject private var toastStateStore: ToastStateStore
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
     @StateObject var mailSettings: PMMailSettings
 
-    @State var comingSoon: Bool = false
     @State var webViewSheet: ProtonAuthenticatedWebPage?
 
     init(
@@ -67,7 +67,7 @@ struct AuthenticatedScreens: View {
                     case .signOut:
                         signOut()
                     case .shareLogs, .bugReport, .contacts:
-                        comingSoon = true
+                        toastStateStore.present(toast: .comingSoon)
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
@@ -84,7 +84,6 @@ struct AuthenticatedScreens: View {
                 }
             }
         }
-        .alert("Coming soon ...".notLocalized, isPresented: $comingSoon) {}
         .sheet(item: $webViewSheet) { webViewSheet in
             SidebarWebViewScreen(webViewPage: webViewSheet)
         }
