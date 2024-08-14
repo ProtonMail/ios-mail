@@ -17,17 +17,17 @@
 
 import SwiftUI
 
-struct ZIndexUpdateContainer<ContentView: View>: View {
-    @Binding var zIndex: Double
+struct SidebarZIndexUpdateContainer<ContentView: View>: View {
+    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     let content: () -> ContentView
 
     var body: some View {
         content()
             .onAppear {
-                zIndex = -1
+                appUIStateStore.sidebarState.zIndex = -1
             }
             .onDisappear {
-                zIndex = 0
+                appUIStateStore.sidebarState.zIndex = 0
             }
     }
 }

@@ -19,8 +19,6 @@ import DesignSystem
 import SwiftUI
 
 struct SettingsScreen: View {
-    @EnvironmentObject private var appUIStateStore: AppUIStateStore
-
     var body: some View {
         NavigationStack {
             Form {
@@ -28,7 +26,7 @@ struct SettingsScreen: View {
                     header: EmptyView(),
                     content: {
                         NavigationLink(L10n.Settings.accountSettings.string) {
-                            ZIndexUpdateContainer(zIndex: $appUIStateStore.sidebarState.zIndex) {
+                            SidebarZIndexUpdateContainer {
                                 AccountSettingsScreen()
                             }
                         }

@@ -19,7 +19,6 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @EnvironmentObject var appUIStateStore: AppUIStateStore
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
@@ -98,22 +97,18 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        zIndexUpdateContainer {
+        SidebarZIndexUpdateContainer {
             ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
         }
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
-        zIndexUpdateContainer {
+        SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
                 seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
             )
         }
-    }
-
-    private func zIndexUpdateContainer(content: @escaping () -> some View) -> some View {
-        ZIndexUpdateContainer(zIndex: $appUIStateStore.sidebarState.zIndex, content: content)
     }
 }
 
