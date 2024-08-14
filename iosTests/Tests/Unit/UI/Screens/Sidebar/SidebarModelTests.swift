@@ -67,13 +67,22 @@ class SidebarModelTests: BaseTestCase {
         XCTAssertEqual(firstSelectedLabel.isSelected, true)
     }
 
-    func test_WhenTappingOnSubscriptionItem_ItSelectsIt() throws {
+    func test_WhenTappingOnFirstFolder_ItSelectsIt() throws {
+        let firstUnselectedFolder = try XCTUnwrap(sut.state.folders.first)
+        XCTAssertEqual(firstUnselectedFolder.isSelected, false)
+
+        sut.handle(action: .select(item: .folder(firstUnselectedFolder)))
+        let firstSelectedFolder = try XCTUnwrap(sut.state.folders.first)
+        XCTAssertEqual(firstSelectedFolder.isSelected, true)
+    }
+
+    func test_WhenTappingOnSubscriptionItem_ItDoesNotSelectIt() throws {
         let subscriptionUnselected = try XCTUnwrap(sut.state.other.findFirst(for: .subscriptions, by: \.type))
         XCTAssertEqual(subscriptionUnselected.isSelected, false)
 
         sut.handle(action: .select(item: .other(subscriptionUnselected)))
         let subscriptionSelected = try XCTUnwrap(sut.state.other.findFirst(for: .subscriptions, by: \.type))
-        XCTAssertEqual(subscriptionSelected.isSelected, true)
+        XCTAssertEqual(subscriptionSelected.isSelected, false)
     }
 
     func test_WhenTappingOnShareLogsItem_ItDoesNotSelectIt() throws {
@@ -104,6 +113,9 @@ class SidebarModelTests: BaseTestCase {
     private func emitData() {
         activeUserSessionSpy.systemFoldersQueryStub.stubbedValue = [.inbox, .sent]
         activeUserSessionSpy.newSystemLabelsObservedQueryCallback?.onUpdated()
+
+        activeUserSessionSpy.foldersQueryStub.stubbedValue = [.topSecretFolder, .hiddenFolder]
+        activeUserSessionSpy.newFolderLabelsObservedQueryCallback?.onUpdated()
 
         emit(labels: [.importantLabel, .topSecretLabel])
     }

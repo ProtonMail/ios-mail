@@ -19,11 +19,18 @@ import proton_mail_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
-    @StateObject var mailSettings: PMMailSettings
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
+    @StateObject var mailSettings: PMMailSettings
 
-    init(appRoute: AppRouteState, customLabelModel: CustomLabelModel, userSession: MailUserSession) {
+    @State var comingSoon: Bool = false
+    @State var webViewSheet: ProtonAuthenticatedWebPage?
+
+    init(
+        appRoute: AppRouteState,
+        customLabelModel: CustomLabelModel,
+        userSession: MailUserSession
+    ) {
         self._mailSettings = StateObject(wrappedValue: PMMailSettings(userSession: userSession))
         self.appRoute = appRoute
         self.customLabelModel = customLabelModel
@@ -38,8 +45,6 @@ struct AuthenticatedScreens: View {
                 MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings, openedItem: item)
             case .settings:
                 SettingsScreen()
-            case .subscription:
-                SubscriptionScreen()
             }
             SidebarScreen() { selectedItem in
                 switch selectedItem {
@@ -54,9 +59,15 @@ struct AuthenticatedScreens: View {
                     case .settings:
                         appRoute.updateRoute(to: .settings)
                     case .subscriptions:
-                        appRoute.updateRoute(to: .subscription)
-                    case .shareLogs:
-                        break
+                        webViewSheet = .subscriptionDetails
+                    case .createLabel:
+                        webViewSheet = .createLabel
+                    case .createFolder:
+                        webViewSheet = .createFolder
+                    case .signOut:
+                        signOut()
+                    case .shareLogs, .bugReport, .contacts:
+                        comingSoon = true
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
@@ -64,8 +75,30 @@ struct AuthenticatedScreens: View {
                         name: label.name.stringResource,
                         systemFolder: nil
                     )))
+                case .folder(let folder):
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                        localLabelId: folder.id,
+                        name: folder.name.stringResource,
+                        systemFolder: nil
+                    )))
                 }
             }
         }
+        .alert("Coming soon ...".notLocalized, isPresented: $comingSoon) {}
+        .sheet(item: $webViewSheet) { webViewSheet in
+            SidebarWebViewScreen(webViewPage: webViewSheet)
+        }
+
     }
+
+    private func signOut() {
+        Task {
+            do {
+                try await AppContext.shared.logoutActiveUserSession()
+            } catch {
+                AppLogger.log(error: error, category: .userSessions)
+            }
+        }
+    }
+
 }

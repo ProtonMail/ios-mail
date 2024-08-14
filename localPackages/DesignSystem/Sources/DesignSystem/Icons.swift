@@ -18,6 +18,8 @@ public extension DS.Icon {
     static let icChevronUp = ImageResource.icChevronUp
     static let icChevronTinyDown = ImageResource.icChevronTinyDown
     static let icChevronTinyUp = ImageResource.icChevronTinyUp
+    static let icChevronDownFilled = ImageResource.icChevronDownFilled
+    static let icChevronUpFilled = ImageResource.icChevronUpFilled
     static let icCircleFilled = ImageResource.icCircleFilled
     static let icClock = ImageResource.icClock
     static let icCogWheel = ImageResource.icCogWheel
@@ -39,6 +41,9 @@ public extension DS.Icon {
     static let icStarFilled = ImageResource.icStarFilled
     static let icTrash = ImageResource.icTrash
     static let icTrashCross = ImageResource.icTrashCross
+    static let icUsers = ImageResource.icUsers
+    static let icSignOut = ImageResource.icArrowOutFromRectangle
+    static let icCrossBig = ImageResource.icCrossBig
 }
 
 // MARK: mailbox messages

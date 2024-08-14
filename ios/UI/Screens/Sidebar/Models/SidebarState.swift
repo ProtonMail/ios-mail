@@ -20,29 +20,115 @@ import Foundation
 struct SidebarState {
     let system: [SidebarSystemFolder]
     let labels: [SidebarLabel]
+    let folders: [SidebarFolder]
     let other: [SidebarOtherItem]
+    let createLabel: SidebarOtherItem
+    let createFolder: SidebarOtherItem
 }
 
 extension SidebarState {
 
     var items: [SidebarItem] {
-        system.map(SidebarItem.system) + labels.map(SidebarItem.label) + other.map(SidebarItem.other)
+        let systemItems = system.map(SidebarItem.system)
+        let labelItems = labels.map(SidebarItem.label)
+        let folderItems = folders.map(SidebarItem.folder)
+        let otherItems = (other + [createLabel, createFolder]).map(SidebarItem.other)
+
+        return systemItems + labelItems + folderItems + otherItems
     }
 
     static var initial: Self {
-        .init(system: [], labels: [], other: .staleItems)
+        .init(
+            system: [],
+            labels: [],
+            folders: [], 
+            other: .staleItems,
+            createLabel: .createLabel,
+            createFolder: .createFolder
+        )
     }
 
     func copy(system: [SidebarSystemFolder]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(
+            system: system,
+            labels: labels, 
+            folders: folders,
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
     }
 
     func copy(labels: [SidebarLabel]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(
+            system: system,
+            labels: labels,
+            folders: folders, 
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
+    }
+
+    func copy(folders: [SidebarFolder]) -> Self {
+        .init(
+            system: system, 
+            labels: labels,
+            folders: folders,
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
     }
 
     func copy(other: [SidebarOtherItem]) -> Self {
-        .init(system: system, labels: labels, other: other)
+        .init(
+            system: system,
+            labels: labels,
+            folders: folders,
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
+    }
+
+    func copy(createLabel: SidebarOtherItem) -> Self {
+        .init(
+            system: system,
+            labels: labels,
+            folders: folders,
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
+    }
+
+    func copy(createFolder: SidebarOtherItem) -> Self {
+        .init(
+            system: system,
+            labels: labels,
+            folders: folders,
+            other: other,
+            createLabel: createLabel,
+            createFolder: createFolder
+        )
+    }
+
+}
+
+extension Array where Element == SidebarFolder {
+
+    var sidebarFolderNodes: [SidebarFolderNode] {
+        let foldersByParentId = Dictionary(grouping: self, by: \.parentID)
+
+        func buildTree(parentId: UInt64?) -> [SidebarFolderNode] {
+            guard let folders = foldersByParentId[parentId] else { return [] }
+            return folders.map { folder in
+                SidebarFolderNode(folder: folder, children: buildTree(parentId: folder.id))
+            }
+        }
+
+        return buildTree(parentId: nil)
     }
 
 }

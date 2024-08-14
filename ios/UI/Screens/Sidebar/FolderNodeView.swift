@@ -15,36 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-struct SidebarLabel: Identifiable, Equatable, SelectableItem {
+struct FolderNodeView: View {
+    private let folders: [SidebarFolderNode]
+    private let padding: CGFloat
+    private let selected: (SidebarFolder) -> Void
 
-    let localID: PMLocalLabelId
-    let color: String
-    let name: String
-    let unreadCount: String?
-
-    // MARK: - Identifiable
-
-    var id: UInt64 {
-        localID
+    init(folders: [SidebarFolderNode], padding: CGFloat, selected: @escaping (SidebarFolder) -> Void) {
+        self.folders = folders
+        self.padding = padding
+        self.selected = selected
     }
 
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var selectionIdentifier: String {
-        "\(localID)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
-        .init(
-            localID: localID,
-            color: color,
-            name: name,
-            unreadCount: unreadCount,
-            isSelected: isSelected
-        )
+    var body: some View {
+        ForEach(folders) { folderNode in
+            SingleFolderNodeView(folderNode: folderNode, padding: padding, selected: selected)
+        }
     }
 }

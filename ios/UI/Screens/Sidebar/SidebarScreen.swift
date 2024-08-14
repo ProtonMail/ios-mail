@@ -50,14 +50,13 @@ struct SidebarScreen: View {
                     .gesture(sidebarDragGesture)
                     .gesture(appUIState.isSidebarOpen ? closeSidebarTapGesture : nil)
 
-                HStack(spacing: 0) {
+                HStack(spacing: .zero) {
                     sideBarBackground
                         .frame(width: geometry.safeAreaInsets.leading)
                     ZStack(alignment: .topLeading) {
                         sideBarBackground
                         sideBarItemsList
                             .safeAreaPadding(.top, headerHeight)
-                            .padding(.top, DS.Spacing.standard)
                         header
                     }
                     .accessibilityElement(children: .contain)
@@ -103,7 +102,7 @@ struct SidebarScreen: View {
     }
 
     private var opacityBackground: some View {
-        DS.Color.Shade.shade80
+        DS.Color.Sidebar.overlay
             .animation(.linear(duration: animationDuration), value: appUIState.isSidebarOpen)
             .opacity(0.5 * (dragOffset / sidebarWidth))
             .ignoresSafeArea(.all)
@@ -115,19 +114,25 @@ struct SidebarScreen: View {
     }
 
     private var sideBarItemsList: some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            ScrollViewReader { proxy in
-                ScrollView {
-                    list(for: screenModel.state.items.system)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: .zero) {
+                    systemFoldersList()
+                        .padding(.vertical, DS.Spacing.standard)
                     separator
-                    list(for: screenModel.state.items.labels)
+                    customFoldersList()
+                        .padding(.vertical, DS.Spacing.standard)
                     separator
-                    list(for: screenModel.state.items.other)
+                    labelsList()
+                        .padding(.vertical, DS.Spacing.standard)
+                    separator
+                    otherItemsList()
+                        .padding(.vertical, DS.Spacing.standard)
                     separator
                     appVersionNote
                 }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.state.items.first {
-                        proxy.scrollTo(first.id, anchor: .zero)
+                    if isSidebarOpen, let first = screenModel.state.system.first {
+                        proxy.scrollTo("\(first.localID)", anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
             }
@@ -135,23 +140,72 @@ struct SidebarScreen: View {
         }
     }
 
-    private func list(for items: [SidebarItem]) -> some View {
-        VStack(spacing: 0) {
-            ForEach(items) { item in
-                sidebarItemButton(for: item)
+    private func systemFoldersList() -> some View {
+        VStack(spacing: .zero) {
+            ForEach(screenModel.state.system) { item in
+                SidebarItemButton(
+                    item: .system(item),
+                    action: { select(item: .system(item)) }, 
+                    content: { systemItemContent(model: item) }
+                )
             }
         }
     }
 
-    private func sidebarItemButton(for item: SidebarItem) -> some View {
-        Button(action: { select(item: item) }) {
-            switch item {
-            case .system(let model):
-                systemItemContent(model: model)
-            case .label(let model):
-                labelItemContent(model: model)
-            case .other(let model):
-                otherItemCotent(model: model)
+    private func customFoldersList() -> some View {
+        VStack(spacing: .zero) {
+            FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes, padding: .zero) { folder in
+                select(item: .folder(folder))
+            }
+            createButton(
+                for: screenModel.state.createFolder,
+                isListEmpty: screenModel.state.folders.isEmpty
+            )
+        }
+    }
+
+    private func labelsList() -> some View {
+        VStack(spacing: .zero) {
+            ForEach(screenModel.state.labels) { item in
+                SidebarItemButton(
+                    item: .label(item),
+                    action: { select(item: .label(item)) }, 
+                    content: { labelItemContent(model: item) }
+                )
+            }
+            createButton(
+                for: screenModel.state.createLabel,
+                isListEmpty: screenModel.state.labels.isEmpty
+            )
+        }
+    }
+
+    private func otherItemsList() -> some View {
+        VStack(spacing: .zero) {
+            ForEach(screenModel.state.other) { item in
+                SidebarItemButton(
+                    item: .other(item),
+                    action: { select(item: .other(item)) }, 
+                    content: { otherItemCotent(model: item) }
+                )
+            }
+        }
+    }
+
+    private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
+        Button(action: { select(item: .other(item)) }) {
+            HStack {
+                Image(item.icon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .square(size: 20)
+                    .tint(DS.Color.Sidebar.iconWeak)
+                    .padding(.trailing, DS.Spacing.extraLarge)
+                Text(item.name)
+                    .font(.subheadline)
+                    .foregroundStyle(isListEmpty ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+                    .lineLimit(1)
+                Spacer()
             }
         }
         .padding(.vertical, DS.Spacing.medium)
@@ -228,6 +282,7 @@ struct SidebarScreen: View {
         Text("Version number \(mainBundle.appVersion)".notLocalized)
             .font(.footnote)
             .foregroundStyle(DS.Color.Sidebar.textWeak)
+            .frame(maxWidth: .infinity)
             .padding(.top, DS.Spacing.jumbo)
             .padding(.bottom, DS.Spacing.extraLarge)
     }
@@ -239,7 +294,7 @@ struct SidebarScreen: View {
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
-        appUIState.isSidebarOpen = !item.isSelectable
+        appUIState.isSidebarOpen = !item.hideSidebar
 
         if item.isShareLogsItem {
             onShareLogsTap()
@@ -278,6 +333,32 @@ private extension SidebarItem {
             return false
         }
         return otherItem.type == .shareLogs
+    }
+
+}
+
+private extension SidebarItem {
+
+    var hideSidebar: Bool {
+        switch self {
+        case .system, .label, .folder:
+            true
+        case .other(let item):
+            item.hideSidebar
+        }
+    }
+
+}
+
+private extension SidebarOtherItem {
+
+    var hideSidebar: Bool {
+        switch type {
+        case .createFolder, .createLabel, .settings, .signOut, .subscriptions:
+            true
+        case .shareLogs, .contacts, .bugReport:
+            false
+        }
     }
 
 }

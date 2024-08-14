@@ -35,9 +35,13 @@ extension LocalLabelWithCount {
     static let importantLabel: Self = .testData(id: 3, name: "Important", color: "#111111", type: .label)
     static let topSecretLabel: Self = .testData(id: 4, name: "Top Secret", color: "#222222", type: .label)
 
+    static let topSecretFolder: Self = .testData(id: 5, name: "Top Secret", color: "#333333", type: .folder)
+    static let hiddenFolder: Self = .testData(id: 6, parentId: 5, name: "Hidden", color: "#444444", type: .folder)
+
     static func testData(
         id: UInt64,
         rid: String? = nil,
+        parentId: UInt64? = nil,
         name: String,
         color: String = "#000000",
         type: LabelType
@@ -45,7 +49,7 @@ extension LocalLabelWithCount {
         .init(
             id: id,
             rid: rid,
-            parentId: nil,
+            parentId: parentId,
             name: name,
             path: nil,
             color: color,

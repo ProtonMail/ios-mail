@@ -15,36 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_mail_uniffi
 
-struct SidebarLabel: Identifiable, Equatable, SelectableItem {
+extension LocalLabelWithCount {
 
-    let localID: PMLocalLabelId
-    let color: String
-    let name: String
-    let unreadCount: String?
-
-    // MARK: - Identifiable
-
-    var id: UInt64 {
-        localID
-    }
-
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var selectionIdentifier: String {
-        "\(localID)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
+    var sidebarFolder: SidebarFolder {
         .init(
-            localID: localID,
-            color: color,
+            id: id,
+            parentID: parentId,
             name: name,
+            color: color,
             unreadCount: unreadCount,
-            isSelected: isSelected
+            expanded: expanded,
+            isSelected: false
         )
     }
+
 }

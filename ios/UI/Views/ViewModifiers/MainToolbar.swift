@@ -23,16 +23,14 @@ struct MainToolbar: ViewModifier {
     @ObservedObject private var selectionMode: SelectionModeState
 
     private let title: LocalizedStringResource
-    private var sessionProvider: SessionProvider
 
     private var state: ToolbarState {
         selectionMode.hasSelectedItems ? .selection : .noSelection
     }
 
-    init(title: LocalizedStringResource, selectionMode: SelectionModeState, sessionProvider: SessionProvider) {
+    init(title: LocalizedStringResource, selectionMode: SelectionModeState) {
         self.title = title
         self.selectionMode = selectionMode
-        self.sessionProvider = sessionProvider
     }
 
     func body(content: Content) -> some View {
@@ -72,25 +70,6 @@ struct MainToolbar: ViewModifier {
                     }
                     .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        Task {
-                            do {
-                                try await sessionProvider.logoutActiveUserSession()
-                            } catch {
-                                AppLogger.log(error: error, category: .userSessions)
-                            }
-                        }
-                    }, label: {
-                        Text("sign out".notLocalized)
-                            .font(.footnote)
-                            .opacity(selectionMode.hasSelectedItems ? 0 : 1)
-                            .animation(
-                                .easeInOut(duration: AppConstants.selectionModeStartDuration),
-                                value: selectionMode.hasSelectedItems
-                            )
-                    })
-                }
             }
             .tint(DS.Color.Text.norm)
     }
@@ -101,7 +80,7 @@ extension View {
     func mainToolbar(title: LocalizedStringResource, selectionMode: SelectionModeState? = nil) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
         return self.modifier(
-            MainToolbar(title: title, selectionMode: selectionMode, sessionProvider: AppContext.shared)
+            MainToolbar(title: title, selectionMode: selectionMode)
         )
     }
 }

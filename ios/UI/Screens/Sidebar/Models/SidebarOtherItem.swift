@@ -17,17 +17,22 @@
 
 import SwiftUI
 
-struct SidebarOtherItem: Equatable, SelectableItem {
+struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
     enum ItemType: String, Equatable {
         case settings
         case subscriptions
         case shareLogs
+        case contacts
+        case bugReport
+        case signOut
+        case createLabel
+        case createFolder
 
         var isSelectable: Bool {
             switch self {
-            case .settings, .subscriptions:
+            case .settings:
                 return true
-            case .shareLogs:
+            case .shareLogs, .signOut, .bugReport, .contacts, .subscriptions, .createLabel, .createFolder:
                 return false
             }
         }
@@ -36,6 +41,12 @@ struct SidebarOtherItem: Equatable, SelectableItem {
     let type: ItemType
     let icon: ImageResource
     let name: String
+
+    // MARK: - Identifiable
+
+    var id: String {
+        selectionIdentifier
+    }
 
     // MARK: - SelectableItem
 

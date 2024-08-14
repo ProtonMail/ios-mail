@@ -66,7 +66,11 @@ struct Root: View {
 
     var body: some View {
         if let activerUser = appContext.activeUserSession {
-            AuthenticatedScreens(appRoute: appRoute, customLabelModel: customLabelModel, userSession: activerUser)
+            AuthenticatedScreens(
+                appRoute: appRoute,
+                customLabelModel: customLabelModel,
+                userSession: activerUser
+            )
         } else {
             SignIn()
         }

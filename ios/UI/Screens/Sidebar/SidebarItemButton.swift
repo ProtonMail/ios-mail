@@ -15,36 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import DesignSystem
+import SwiftUI
 
-struct SidebarLabel: Identifiable, Equatable, SelectableItem {
+struct SidebarItemButton<Content: View>: View {
+    private let item: SidebarItem
+    private let action: () -> Void
+    @ViewBuilder private let content: () -> Content
 
-    let localID: PMLocalLabelId
-    let color: String
-    let name: String
-    let unreadCount: String?
-
-    // MARK: - Identifiable
-
-    var id: UInt64 {
-        localID
+    init(item: SidebarItem, action: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
+        self.item = item
+        self.action = action
+        self.content = content
     }
 
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var selectionIdentifier: String {
-        "\(localID)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
-        .init(
-            localID: localID,
-            color: color,
-            name: name,
-            unreadCount: unreadCount,
-            isSelected: isSelected
-        )
+    var body: some View {
+        Button(action: action) {
+            content()
+        }
+        .padding(.vertical, DS.Spacing.medium)
+        .padding(.horizontal, DS.Spacing.extraLarge)
+        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
     }
 }

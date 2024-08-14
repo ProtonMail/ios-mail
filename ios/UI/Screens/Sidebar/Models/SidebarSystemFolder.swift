@@ -17,10 +17,16 @@
 
 import SwiftUI
 
-struct SidebarSystemFolder: Equatable, SelectableItem {
+struct SidebarSystemFolder: Identifiable, Equatable, SelectableItem {
     let localID: PMLocalLabelId
     let identifier: SystemFolderIdentifier
     let unreadCount: String?
+
+    // MARK: - Identifiable
+
+    var id: UInt64 {
+        localID
+    }
 
     // MARK: - SelectableItem
 

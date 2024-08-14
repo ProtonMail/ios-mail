@@ -15,18 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import SwiftUI
+import proton_mail_uniffi
 
-struct SubscriptionScreen: View {
-    
-    var body: some View {
-        NavigationStack {
-            ProtonAuthenticatedWebView(webViewPage: .subscriptionDetails)
-                .background(DS.Color.Background.norm)
-                .edgesIgnoringSafeArea(.bottom)
-                .navigationBarTitleDisplayMode(.inline)
-                .mainToolbar(title: L10n.Settings.subscription)
-        }
+struct SidebarFolder: Equatable, SelectableItem {
+    let id: LocalLabelId
+    let parentID: LocalLabelId?
+    let name: String
+    let color: String
+    let unreadCount: UInt64
+    let expanded: Bool
+
+    // MARK: - SelectableItem
+
+    let isSelected: Bool
+
+    var selectionIdentifier: String {
+        "\(id)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            id: id,
+            parentID: parentID,
+            name: name,
+            color: color,
+            unreadCount: unreadCount,
+            expanded: expanded,
+            isSelected: isSelected
+        )
     }
 }
