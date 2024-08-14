@@ -67,7 +67,9 @@ struct AuthenticatedScreens: View {
                         webViewSheet = .createFolder
                     case .signOut:
                         signOut()
-                    case .shareLogs, .bugReport, .contacts:
+                    case .shareLogs:
+                        presentShareFileController()
+                    case .bugReport, .contacts:
                         toastStateStore.present(toast: .comingSoon)
                     }
                 case .label(let label):
@@ -89,7 +91,6 @@ struct AuthenticatedScreens: View {
         .sheet(item: $webViewSheet) { webViewSheet in
             SidebarWebViewScreen(webViewPage: webViewSheet)
         }
-
     }
 
     private func signOut() {
@@ -102,4 +103,11 @@ struct AuthenticatedScreens: View {
         }
     }
 
+    private func presentShareFileController() {
+        let fileManager = FileManager.default
+        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
+        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
+        let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+    }
 }

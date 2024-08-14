@@ -295,20 +295,7 @@ struct SidebarScreen: View {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
         appUIStateStore.sidebarState.isOpen = !item.hideSidebar
-
-        if item.isShareLogsItem {
-            onShareLogsTap()
-        }
     }
-
-    private func onShareLogsTap() {
-        let fileManager = FileManager.default
-        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
-        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
-        let activityVC = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
-        UIApplication.shared.keyWindow?.rootViewController?.present(activityVC, animated: true)
-    }
-
 }
 
 private struct SidebarScreenIdentifiers {
@@ -324,17 +311,6 @@ private struct HeaderHeightPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
-}
-
-private extension SidebarItem {
-
-    var isShareLogsItem: Bool {
-        guard case .other(let otherItem) = self else {
-            return false
-        }
-        return otherItem.type == .shareLogs
-    }
-
 }
 
 private extension SidebarItem {
