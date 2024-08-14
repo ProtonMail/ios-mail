@@ -22,13 +22,15 @@ struct SettingsScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
 
     var body: some View {
-        NavigationStack {
+        ZIndexedNavigationStack(zIndex: $appUIState.navigationStackZIndex) {
             Form {
                 Section(
                     header: EmptyView(),
                     content: {
                         NavigationLink(L10n.Settings.accountSettings.string) {
-                            AccountSettingsScreen()
+                            ZIndexUpdateContainer(zIndex: $appUIState.navigationStackZIndex) {
+                                AccountSettingsScreen()
+                            }
                         }
                         .navigationBarTitleDisplayMode(.inline)
                         .mainToolbar(title: L10n.Settings.title)

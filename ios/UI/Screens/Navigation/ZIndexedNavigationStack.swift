@@ -22,14 +22,20 @@ struct ZIndexedNavigationStack<Data, Root>: View where Root: View {
     let zIndex: Binding<Double>
     let navigationStack: NavigationStack<Data, Root>
 
+    @MainActor 
+    public init(zIndex: Binding<Double>, @ViewBuilder root: () -> Root) where Data == NavigationPath {
+        self.zIndex = zIndex
+        self.navigationStack = .init(root: root)
+    }
+
     @MainActor
     public init(
         zIndex: Binding<Double>,
         path: Binding<NavigationPath>,
         @ViewBuilder root: () -> Root
     ) where Data == NavigationPath {
-        self.navigationStack = .init(path: path, root: root)
         self.zIndex = zIndex
+        self.navigationStack = .init(path: path, root: root)
     }
 
     var body: some View {
