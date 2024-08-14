@@ -19,10 +19,10 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
+    @EnvironmentObject var appUIState: AppUIState
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
-    @State private var zIndex: Double = 0
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: LocalizedStringResource {
@@ -40,7 +40,7 @@ struct MailboxScreen: View {
     }
 
     var body: some View {
-        ZIndexedNavigationStack(zIndex: $zIndex, path: $mailboxModel.navigationPath) {
+        ZIndexedNavigationStack(zIndex: $appUIState.navigationStackZIndex, path: $mailboxModel.navigationPath) {
             mailboxScreen
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -98,18 +98,22 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        ZIndexUpdateContainer<ConversationDetailScreen>(zIndex: $zIndex) {
+        zIndexUpdateContainer {
             ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
         }
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
-        ZIndexUpdateContainer<ConversationDetailScreen>(zIndex: $zIndex) {
+        zIndexUpdateContainer {
             ConversationDetailScreen(
                 seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
             )
         }
+    }
+
+    private func zIndexUpdateContainer(content: @escaping () -> some View) -> some View {
+        ZIndexUpdateContainer(zIndex: $appUIState.navigationStackZIndex, content: content)
     }
 }
 
