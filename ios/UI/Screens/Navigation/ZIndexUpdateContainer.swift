@@ -24,7 +24,7 @@ struct ZIndexUpdateContainer<ContentView: View>: View {
     var body: some View {
         content()
             .onAppear {
-                zIndex = 1
+                zIndex = -1
             }
             .onDisappear {
                 zIndex = 0

@@ -22,10 +22,10 @@ import Foundation
  */
 final class AppUIState: ObservableObject {
     @Published var isSidebarOpen: Bool
-    @Published var navigationStackZIndex: Double
+    @Published var sidebarZIndex: Double
 
     init(isSidebarOpen: Bool = false) {
         self.isSidebarOpen = isSidebarOpen
-        self.navigationStackZIndex = 0
+        self.sidebarZIndex = 0
     }
 }

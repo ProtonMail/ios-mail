@@ -40,7 +40,7 @@ struct MailboxScreen: View {
     }
 
     var body: some View {
-        ZIndexedNavigationStack(zIndex: $appUIState.navigationStackZIndex, path: $mailboxModel.navigationPath) {
+        NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -113,7 +113,7 @@ extension MailboxScreen {
     }
 
     private func zIndexUpdateContainer(content: @escaping () -> some View) -> some View {
-        ZIndexUpdateContainer(zIndex: $appUIState.navigationStackZIndex, content: content)
+        ZIndexUpdateContainer(zIndex: $appUIState.sidebarZIndex, content: content)
     }
 }
 

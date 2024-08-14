@@ -22,13 +22,13 @@ struct SettingsScreen: View {
     @EnvironmentObject private var appUIState: AppUIState
 
     var body: some View {
-        ZIndexedNavigationStack(zIndex: $appUIState.navigationStackZIndex) {
+        NavigationStack {
             Form {
                 Section(
                     header: EmptyView(),
                     content: {
                         NavigationLink(L10n.Settings.accountSettings.string) {
-                            ZIndexUpdateContainer(zIndex: $appUIState.navigationStackZIndex) {
+                            ZIndexUpdateContainer(zIndex: $appUIState.sidebarZIndex) {
                                 AccountSettingsScreen()
                             }
                         }
