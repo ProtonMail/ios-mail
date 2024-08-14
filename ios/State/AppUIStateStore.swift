@@ -20,12 +20,23 @@ import Foundation
 /**
  Keeps the state for UI components
  */
-final class AppUIState: ObservableObject {
-    @Published var isSidebarOpen: Bool
-    @Published var sidebarZIndex: Double
-
-    init(isSidebarOpen: Bool = false) {
-        self.isSidebarOpen = isSidebarOpen
-        self.sidebarZIndex = 0
+final class AppUIStateStore: ObservableObject {
+    struct SidebarState {
+        var isOpen: Bool
+        var zIndex: Double
     }
+
+    @Published var sidebarState: SidebarState
+
+    init(sidebarState: SidebarState = .initial) {
+        self.sidebarState = sidebarState
+    }
+}
+
+extension AppUIStateStore.SidebarState {
+
+    static var initial: Self {
+        .init(isOpen: false, zIndex: .zero)
+    }
+
 }

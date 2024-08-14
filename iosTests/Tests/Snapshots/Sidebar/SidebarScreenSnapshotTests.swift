@@ -34,7 +34,7 @@ class SidebarScreenSnapshotTests: XCTestCase {
             dependencies: .init(activeUserSession: MailUserSessionSpy())
         )
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
-            .environmentObject(AppUIState(isSidebarOpen: true))
+            .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
@@ -53,7 +53,7 @@ class SidebarScreenSnapshotTests: XCTestCase {
             dependencies: .init(activeUserSession: MailUserSessionSpy())
         )
         let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
-            .environmentObject(AppUIState(isSidebarOpen: true))
+            .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }

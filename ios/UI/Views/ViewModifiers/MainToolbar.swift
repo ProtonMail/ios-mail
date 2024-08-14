@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MainToolbar: ViewModifier {
-    @EnvironmentObject private var appUIState: AppUIState
+    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @ObservedObject private var selectionMode: SelectionModeState
 
     private let title: LocalizedStringResource
@@ -50,7 +50,7 @@ struct MainToolbar: ViewModifier {
                     Button(action: {
                         switch state {
                         case .noSelection:
-                            appUIState.isSidebarOpen = true
+                            appUIStateStore.sidebarState.isOpen = true
                         case .selection:
                             selectionMode.exitSelectionMode()
                         }
@@ -104,7 +104,7 @@ extension MainToolbar {
 
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: false)
+    let appUIStateStore = AppUIStateStore()
     let userSettings = UserSettings(mailboxActions: .init())
 
     let customLabelModel = CustomLabelModel()
@@ -112,7 +112,7 @@ extension MainToolbar {
 
     return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
         .mainToolbar(title: "Inbox", selectionMode: .init())
-        .environmentObject(appUIState)
+        .environmentObject(appUIStateStore)
         .environmentObject(userSettings)
 }
 

@@ -19,7 +19,7 @@ import proton_mail_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
-    @EnvironmentObject private var appUIState: AppUIState
+    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
@@ -84,7 +84,7 @@ struct AuthenticatedScreens: View {
                     )))
                 }
             }
-            .zIndex(appUIState.sidebarZIndex)
+            .zIndex(appUIStateStore.sidebarState.zIndex)
         }
         .sheet(item: $webViewSheet) { webViewSheet in
             SidebarWebViewScreen(webViewPage: webViewSheet)

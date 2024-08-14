@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @EnvironmentObject var appUIState: AppUIState
+    @EnvironmentObject var appUIStateStore: AppUIStateStore
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
@@ -113,7 +113,7 @@ extension MailboxScreen {
     }
 
     private func zIndexUpdateContainer(content: @escaping () -> some View) -> some View {
-        ZIndexUpdateContainer(zIndex: $appUIState.sidebarZIndex, content: content)
+        ZIndexUpdateContainer(zIndex: $appUIStateStore.sidebarState.zIndex, content: content)
     }
 }
 
@@ -122,13 +122,13 @@ private extension Animation {
 }
 
 #Preview {
-    let appUIState = AppUIState(isSidebarOpen: false)
+    let appUIStateStore = AppUIStateStore()
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
     let dummySettings = EmptyPMMailSettings()
 
     return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
-        .environmentObject(appUIState)
+        .environmentObject(appUIStateStore)
         .environmentObject(userSettings)
 }
 

@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct SidebarScreen: View {
-    @EnvironmentObject private var appUIState: AppUIState
+    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @Environment(\.mainBundle) var mainBundle: Bundle
     @State private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
@@ -29,7 +29,7 @@ struct SidebarScreen: View {
     private let selectedItem: (SidebarItem) -> Void
 
     private var dragOffset: CGFloat {
-        appUIState.isSidebarOpen ? sidebarWidth : .zero
+        appUIStateStore.sidebarState.isOpen ? sidebarWidth : .zero
     }
 
     init(screenModel: SidebarModel = .init(), selectedItem: @escaping (SidebarItem) -> Void) {
@@ -48,7 +48,7 @@ struct SidebarScreen: View {
                     .contentShape(Rectangle())
                     .frame(width: sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
                     .gesture(sidebarDragGesture)
-                    .gesture(appUIState.isSidebarOpen ? closeSidebarTapGesture : nil)
+                    .gesture(appUIStateStore.sidebarState.isOpen ? closeSidebarTapGesture : nil)
 
                 HStack(spacing: .zero) {
                     sideBarBackground
@@ -65,7 +65,7 @@ struct SidebarScreen: View {
                 .frame(width: sidebarWidth)
                 .highPriorityGesture(sidebarDragGesture)
             }
-            .animation(.easeOut(duration: animationDuration), value: appUIState.isSidebarOpen)
+            .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.isOpen)
             .offset(x: dragOffset - sidebarWidth - geometry.safeAreaInsets.leading)
         }
         .onAppear { screenModel.handle(action: .viewAppear) }
@@ -92,18 +92,18 @@ struct SidebarScreen: View {
     private var sidebarDragGesture: some Gesture {
         DragGesture()
             .onEnded { value in
-                appUIState.isSidebarOpen = value.velocity.width > 100
+                appUIStateStore.sidebarState.isOpen = value.velocity.width > 100
             }
     }
 
     private var closeSidebarTapGesture: some Gesture {
         TapGesture()
-            .onEnded { appUIState.isSidebarOpen = false }
+            .onEnded { appUIStateStore.sidebarState.isOpen = false }
     }
 
     private var opacityBackground: some View {
         DS.Color.Sidebar.overlay
-            .animation(.linear(duration: animationDuration), value: appUIState.isSidebarOpen)
+            .animation(.linear(duration: animationDuration), value: appUIStateStore.sidebarState.isOpen)
             .opacity(0.5 * (dragOffset / sidebarWidth))
             .ignoresSafeArea(.all)
     }
@@ -130,7 +130,7 @@ struct SidebarScreen: View {
                         .padding(.vertical, DS.Spacing.standard)
                     separator
                     appVersionNote
-                }.onChange(of: appUIState.isSidebarOpen) { _, isSidebarOpen in
+                }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
                     if isSidebarOpen, let first = screenModel.state.system.first {
                         proxy.scrollTo("\(first.localID)", anchor: .zero)
                     }
@@ -288,13 +288,13 @@ struct SidebarScreen: View {
     }
 
     private func closeSidebarAction() {
-        appUIState.isSidebarOpen = false
+        appUIStateStore.sidebarState.isOpen = false
     }
 
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
-        appUIState.isSidebarOpen = !item.hideSidebar
+        appUIStateStore.sidebarState.isOpen = !item.hideSidebar
 
         if item.isShareLogsItem {
             onShareLogsTap()

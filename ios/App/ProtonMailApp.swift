@@ -23,7 +23,7 @@ struct ProtonMailApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     // declaration of state objects
-    private let appUIState = AppUIState()
+    private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let userSettings = UserSettings(
         mailboxActions: .init()
@@ -33,7 +33,7 @@ struct ProtonMailApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(appContext: .shared, appRoute: .shared, customLabelModel: customLabelModel)
-                .environmentObject(appUIState)
+                .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
                 .environmentObject(userSettings)
         }
