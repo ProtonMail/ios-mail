@@ -22,6 +22,7 @@ struct MailboxScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
+    @State private var zIndex: Double = 0
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: LocalizedStringResource {
@@ -39,7 +40,7 @@ struct MailboxScreen: View {
     }
 
     var body: some View {
-        NavigationStack(path: $mailboxModel.navigationPath) {
+        ZIndexedNavigationStack(zIndex: $zIndex, path: $mailboxModel.navigationPath) {
             mailboxScreen
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -97,21 +98,24 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
+        ZIndexUpdateContainer<ConversationDetailScreen>(zIndex: $zIndex) {
+            ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
+        }
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
-        ConversationDetailScreen(
-            seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
-        )
+        ZIndexUpdateContainer<ConversationDetailScreen>(zIndex: $zIndex) {
+            ConversationDetailScreen(
+                seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
+            )
+        }
     }
 }
 
 private extension Animation {
     static let selectModeAnimation = Animation.easeInOut(duration: AppConstants.selectionModeStartDuration)
 }
-
 
 #Preview {
     let appUIState = AppUIState(isSidebarOpen: false)
