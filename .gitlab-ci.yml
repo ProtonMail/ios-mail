@@ -218,7 +218,9 @@ test:ui:monkey:
 
 .report:slack:
   stage: report
-  image: $CI_REGISTRY/tpe/test-scripts
+  image:
+    name: $CI_REGISTRY/tpe/test-scripts
+    pull_policy: always  
   allow_failure: true
   tags:
     - shared-small
