@@ -251,8 +251,22 @@ extension UpsellPage {
                     .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
                 ],
                 purchasingOptions: [
-                    .init(identifier: "a", cycleInMonths: 1, monthlyPrice: "CHF 4.99", isHighlighted: false, discount: nil),
-                    .init(identifier: "b", cycleInMonths: 1, monthlyPrice: "CHF 3.99", isHighlighted: true, discount: 20)
+                    .init(
+                        identifier: "a",
+                        cycleInMonths: 1,
+                        monthlyPrice: "CHF 4.99",
+                        billingPrice: "CHF 4.99",
+                        isHighlighted: false,
+                        discount: nil
+                    ),
+                    .init(
+                        identifier: "b",
+                        cycleInMonths: 12,
+                        monthlyPrice: "CHF 3.99",
+                        billingPrice: "CHF 47.88",
+                        isHighlighted: true,
+                        discount: 20
+                    )
                 ]
             )
         ),

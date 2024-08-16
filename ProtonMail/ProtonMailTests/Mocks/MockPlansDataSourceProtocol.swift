@@ -28,8 +28,9 @@ final class MockPlansDataSourceProtocol: PlansDataSourceProtocol {
         fatalError("not implemented")
     }
 
+    @PropertyStub(\MockPlansDataSourceProtocol.availablePlans, initialGet: nil) var availablePlansStub
     var availablePlans: AvailablePlans? {
-        fatalError("not implemented")
+        availablePlansStub()
     }
 
     @PropertyStub(\MockPlansDataSourceProtocol.currentPlan, initialGet: nil) var currentPlanStub
@@ -49,16 +50,19 @@ final class MockPlansDataSourceProtocol: PlansDataSourceProtocol {
         fatalError("not implemented")
     }
 
-    func fetchIAPAvailability() async throws {
-        fatalError("not implemented")
+    @FuncStub(MockPlansDataSourceProtocol.fetchIAPAvailability) var fetchIAPAvailabilityStub
+    func fetchIAPAvailability() {
+        fetchIAPAvailabilityStub()
     }
 
-    func fetchAvailablePlans() async throws {
-        fatalError("not implemented")
+    @FuncStub(MockPlansDataSourceProtocol.fetchAvailablePlans) var fetchAvailablePlansStub
+    func fetchAvailablePlans() {
+        fetchAvailablePlansStub()
     }
 
-    func fetchCurrentPlan() async throws {
-        fatalError("not implemented")
+    @FuncStub(MockPlansDataSourceProtocol.fetchCurrentPlan) var fetchCurrentPlanStub
+    func fetchCurrentPlan() {
+        fetchCurrentPlanStub()
     }
 
     func fetchPaymentMethods() async throws {

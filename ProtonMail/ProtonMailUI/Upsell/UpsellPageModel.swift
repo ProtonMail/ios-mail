@@ -31,7 +31,7 @@ public final class UpsellPageModel: ObservableObject {
         }
     }
 
-    public struct Perk: Equatable {
+    public struct Perk: Equatable, Hashable {
         public let icon: KeyPath<ProtonIconSet, ProtonIcon>
         public let description: String
 
@@ -45,6 +45,7 @@ public final class UpsellPageModel: ObservableObject {
         public let identifier: String
         public let cycleInMonths: Int
         public let monthlyPrice: String
+        public let billingPrice: String
         public let isHighlighted: Bool
         public let discount: Int?
 
@@ -52,12 +53,14 @@ public final class UpsellPageModel: ObservableObject {
             identifier: String,
             cycleInMonths: Int,
             monthlyPrice: String,
+            billingPrice: String,
             isHighlighted: Bool,
             discount: Int?
         ) {
             self.identifier = identifier
             self.cycleInMonths = cycleInMonths
             self.monthlyPrice = monthlyPrice
+            self.billingPrice = billingPrice
             self.isHighlighted = isHighlighted
             self.discount = discount
         }

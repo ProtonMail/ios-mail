@@ -130,7 +130,10 @@ final class UpsellCoordinator {
     }
 
     private func showErrorMessage(_ error: NSError) {
-        guard UIApplication.shared.applicationState == .active, let rootViewController else {
+        guard
+            UIApplication.shared.applicationState == .active,
+            let presentedViewController = rootViewController?.presentedViewController
+        else {
             return
         }
 
@@ -141,7 +144,7 @@ final class UpsellCoordinator {
             bannerHandler: PMBanner.dismiss
         )
 
-        banner.show(at: .top, on: rootViewController)
+        banner.show(at: .top, on: presentedViewController)
     }
 
     // MARK: legacy Core flow

@@ -104,6 +104,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.importDeviceContacts
         _ = strongRefToContainer?.messageSearch
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
+        _ = strongRefToContainer?.onboardingUpsellPageFactory
         _ = strongRefToContainer?.payments
         _ = strongRefToContainer?.paymentsUIFactory
         _ = strongRefToContainer?.planService

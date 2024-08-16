@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+@testable import ProtonCorePayments
 @testable import ProtonMail
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUnitTestsServices
@@ -32,7 +33,6 @@ class MailboxCoordinatorTests: XCTestCase {
     private var conversationStateProviderMock: MockConversationStateProviderProtocol!
     private var dummyAPIService: APIServiceMock!
     private var uiNavigationControllerMock: NavigationControllerSpy!
-    private var upsellOfferProvider: MockUpsellOfferProvider!
 
     override func setUp() {
         super.setUp()
@@ -74,10 +74,15 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let userContainer = dummyUser.container
 
-        upsellOfferProvider = .init()
+        let planService = MockPlansDataSourceProtocol()
+        let upsellOfferProvider = MockUpsellOfferProvider()
+
+        userContainer.planServiceFactory.register {
+            .right(planService)
+        }
 
         userContainer.upsellOfferProviderFactory.register {
-            self.upsellOfferProvider
+            upsellOfferProvider
         }
 
         let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
@@ -94,6 +99,23 @@ class MailboxCoordinatorTests: XCTestCase {
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
             callback()
         }
+
+        planService.availablePlansStub.fixture = AvailablePlans(
+            plans: [
+                .init(ID: nil, type: nil, name: "", title: "", instances: [], entitlements: [], decorations: [])
+            ],
+            defaultCycle: nil
+        )
+
+        upsellOfferProvider.availablePlan = .init(
+            ID: nil,
+            type: nil,
+            name: nil,
+            title: "",
+            instances: [],
+            entitlements: [],
+            decorations: []
+        )
     }
 
     override func tearDown() {
@@ -105,7 +127,6 @@ class MailboxCoordinatorTests: XCTestCase {
         uiNavigationControllerMock = nil
         connectionStatusProviderMock = nil
         uiNavigationControllerMock = nil
-        upsellOfferProvider = nil
         viewModelMock = nil
     }
 
@@ -196,16 +217,6 @@ class MailboxCoordinatorTests: XCTestCase {
             message.messageID = messageID
         }
 
-        upsellOfferProvider.availablePlan = .init(
-            ID: nil,
-            type: nil,
-            name: nil,
-            title: "",
-            instances: [],
-            entitlements: [],
-            decorations: []
-        )
-
         let deepLink = DeepLink("toComposeMailto", sender: messageID)
         deepLink.append(DeepLink.Node(name: "toUpsellPage", value: "scheduleSend"))
 
@@ -224,6 +235,22 @@ class MailboxCoordinatorTests: XCTestCase {
         let viewPresentedByComposer = try XCTUnwrap(composer.presentedViewController)
 
         XCTAssertNotNil(viewPresentedByComposer as? SheetLikeSpotlightViewController<UpsellPage>)
+    }
+
+    @MainActor
+    func testIfPlansAreAvailable_PresentsUpsellPageAfterOnboarding() async throws {
+        let window = UIWindow(root: uiNavigationControllerMock, scene: nil)
+        window.makeKeyAndVisible()
+
+        sut.go(to: .onboardingForNew)
+
+        var presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        let onboardingViewController = try XCTUnwrap(presentedViewController as? OnboardViewController)
+
+        await onboardingViewController.dismiss(animated: false)
+
+        presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<OnboardingUpsellPage>)
     }
 }
 

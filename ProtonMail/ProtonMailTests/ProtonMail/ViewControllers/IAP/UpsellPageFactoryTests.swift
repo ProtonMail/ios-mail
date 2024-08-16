@@ -76,6 +76,7 @@ final class UpsellPageFactoryTests: XCTestCase {
                     identifier: "iosmail_mail2022_1_usd_auto_renewing",
                     cycleInMonths: 1,
                     monthlyPrice: "$4.99",
+                    billingPrice: "$4.99",
                     isHighlighted: false,
                     discount: nil
                 ),
@@ -83,6 +84,7 @@ final class UpsellPageFactoryTests: XCTestCase {
                     identifier: "iosmail_mail2022_12_usd_auto_renewing",
                     cycleInMonths: 12,
                     monthlyPrice: "$3.99",
+                    billingPrice: "$47.88",
                     isHighlighted: true,
                     discount: 20
                 )

@@ -37,7 +37,11 @@ struct UpsellCTATile: View {
     private let cornerRadius = 16.0
 
     private var discountGradient: LinearGradient {
-        .init(colors: [.gradientStart, .gradientEnd], startPoint: .topTrailing, endPoint: .bottomLeading)
+        .init(
+            colors: [.discountGradientStart, .discountGradientEnd],
+            startPoint: .topTrailing,
+            endPoint: .bottomLeading
+        )
     }
 
     var body: some View {
