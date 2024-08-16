@@ -103,20 +103,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("mail/v4/settings") {
-                let response = SettingTestData.mailSettings
-                completion(nil, .success(response))
-            } else if path.contains("/settings") {
-                let response = SettingTestData.userSettings
-                completion(nil, .success(response))
-            } else if path.contains("features") || path.contains("/auth") {
-                completion(nil, .success(["Code": 1000]))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
-        }
+        mockSuccessfulResponses()
 
         sut.finalizeSignIn(
             loginData: userData,
@@ -149,20 +136,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("mail/v4/settings") {
-                let response = SettingTestData.mailSettings
-                completion(nil, .success(response))
-            } else if path.contains("/settings") {
-                let response = SettingTestData.userSettings
-                completion(nil, .success(response))
-            } else if path.contains("features") {
-                completion(nil, .success(["Code": 1000]))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
-        }
+        mockSuccessfulResponses()
 
         sut.finalizeSignIn(
             loginData: userData,
@@ -222,20 +196,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains("mail/v4/settings") {
-                let response = SettingTestData.mailSettings
-                completion(nil, .success(response))
-            } else if path.contains("/settings") {
-                let response = SettingTestData.userSettings
-                completion(nil, .success(response))
-            } else if path.contains("features") || path.contains("/auth") {
-                completion(nil, .success(["Code": 1000]))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
-        }
+        mockSuccessfulResponses()
 
         sut.finalizeSignIn(
             loginData: userData,
@@ -299,5 +260,24 @@ extension SignInManagerTests {
             addresses: [],
             scopes: []
         )
+    }
+
+    private func mockSuccessfulResponses() {
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            if path.contains("mail/v4/settings") {
+                let response = SettingTestData.mailSettings
+                completion(nil, .success(response))
+            } else if path.contains("/settings") {
+                let response = SettingTestData.userSettings
+                completion(nil, .success(response))
+            } else if path.contains("features") || path.contains("/auth") {
+                completion(nil, .success(["Code": 1000]))
+            } else if path.hasPrefix("/payments") {
+                completion(nil, .success([:]))
+            } else {
+                XCTFail("Unexpected path: \(path)")
+                completion(nil, .failure(.badResponse()))
+            }
+        }
     }
 }
