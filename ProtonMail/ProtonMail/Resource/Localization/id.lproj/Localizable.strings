@@ -20,7 +20,7 @@
 "Enter your signature here" = "Masukkan tanda tangan Anda di sini";
 
 /* Mobile Signature title in settings */
-"Mobile Signature" = "Tanda Tangan Mobile";
+"Mobile Signature" = "Tanda Tangan Seluler";
 
 /* Title */
 "Recovery email" = "Email pemulihan";
@@ -44,7 +44,7 @@
 "Remove image metadata" = "Hapus metadata gambar";
 
 /* Settings row */
-"Block email tracking" = "Blokir pelacak email";
+"Block email tracking" = "Blokir pelacakan email";
 
 /* Settings row */
 "Default browser" = "Browser default";
@@ -205,10 +205,10 @@
 "Repeat password" = "Ulangi kata sandi";
 
 /* Placeholder */
-"Passwords must match" = "Kata sandi harus cocok";
+"Passwords must match" = "Kata sandi harus sesuai";
 
 /* Error message */
-"The 2 passwords are not matching" = "Kedua sandi tidak sesuai";
+"The 2 passwords are not matching" = "Kedua kata sandi tidak sesuai";
 
 /* action title */
 "Remove password" = "Hapus kata sandi";
@@ -262,7 +262,7 @@
 "Define Hint (Optional)" = "Tentukan Petunjuk (Opsional)";
 
 /* Menu action to remove text formatting */
-"Clear Style" = "Hapus Corak Mode";
+"Clear Style" = "Hapus Pengayaan Teks";
 
 /* new contacts add Organization  */
 "Add organization" = "Tambah organisasi";
@@ -271,7 +271,7 @@
 "Add nickname" = "Tambah julukan";
 
 /* new contacts add Title */
-"Add title" = "Tambah judul";
+"Add title" = "Tambah gelar";
 
 /* new contacts add Birthday */
 "Add birthday" = "Tambah tanggal lahir";
@@ -340,7 +340,7 @@
 "City" = "Kota";
 
 /* contact placeholder */
-"State" = "Negara Bagian";
+"State" = "Negara bagian";
 
 /* contact placeholder */
 "ZIP" = "Kode pos";
@@ -817,7 +817,7 @@
 "Go to sign in" = "Tuju layar masuk";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpannya?";
+"You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpan perubahan ini?";
 
 /* title */
 "Save Changes" = "Simpan Perubahan";
@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Dapatkan ruang penyimpanan tambahan";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Ruang penyimpanan Anda penuh";
 
@@ -2268,7 +2274,7 @@
 "Please retry after all attachments are uploaded." = "Silakan coba lagi setelah seluruh lampiran selesai terunggah.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "Pengiriman dengan ekstensi Share pada saat offline tidak didukung";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nama tampilan";
@@ -2439,7 +2445,7 @@
 "Custom email domain support" = "Dukungan domain email khusus";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"+%u premium features" = "+%u fitur premium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
@@ -2484,28 +2490,28 @@
 "Group your contacts" = "Kelompokkan kontak Anda";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Kirim email ke grup dengan mudah dan nikmati fitur premium lainnya dengan %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Perlu lebih banyak label atau folder?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Dapatkan fitur-fitur ini dan berbagai fitur premium lainnya pada saat Anda meningkatkan ke %@.";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "Atur tanda tangan Anda";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda sendiri dan nikmati fitur premium lainnya dengan %@.";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "Jadwalkan sekarang, kirim nanti";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Nikmati pengiriman terjadwal khusus dan fitur premium lainnya dengan %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Waktu yang kurang tepat untuk email ini?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Tunda selama waktu yang Anda inginkan. Dapatkan penundaan kustom dan lebih banyak lagi dengan %@.";

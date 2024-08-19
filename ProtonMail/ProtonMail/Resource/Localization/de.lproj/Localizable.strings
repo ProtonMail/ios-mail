@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Mehr Speicherplatz erhalten";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Dein Speicherplatz ist voll.";
 
@@ -2502,10 +2508,10 @@
 "Schedule now, send later" = "Jetzt planen, später senden";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Genieße benutzerdefinierte Sendetermine und andere Premium-Funktionen mit %@.";
 
 /* Title of the upsell page */
 "Bad time for this email?" = "Schlechte Zeit für diese E-Mail?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Setze die Schlummerfunktion zu einem Zeitpunkt deiner Wahl. Individuelle Schlummerfunktion und mehr mit %@.";

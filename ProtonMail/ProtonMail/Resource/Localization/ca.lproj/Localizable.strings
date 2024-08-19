@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Aconseguiu més emmagatzematge";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "L'emmagatzematge és ple.";
 
@@ -1855,7 +1861,7 @@
 "Your account is at risk of deletion" = "Your account is at risk of deletion";
 
 /* Description of the banner alert */
-"To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu per a obtenir més emmagatzematge.";
+"To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
 
 /* Description of the banner alert */
 "To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";

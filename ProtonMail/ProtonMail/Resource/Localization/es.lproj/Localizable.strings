@@ -1501,7 +1501,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Denunciar suplantación de identidad";
 
-"Not spam (move to inbox)" = "No es spam (mover al bandeja de entrada)";
+"Not spam (move to inbox)" = "No es spam (mover a la bandeja de entrada)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mover a";
@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Obtener más almacenamiento";
 
+/* Spotlight title */
+"Sized for reading" = "Adaptado para la lectura";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "El almacenamiento está lleno.";
 
@@ -1998,7 +2004,7 @@
 "%1@ has %2@ your invitation to %3@" = "%1@ ha %2@ la invitación para %3@";
 
 /* Part of the body of the email sent to the participants that indicates the event's title */
-"You are invited to %@" = "Estás invitado a %@";
+"You are invited to %@" = "Estás invitado a %@.";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
 "LOCATION:\n%@" = "UBICACIÓN:\n%@";

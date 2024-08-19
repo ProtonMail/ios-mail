@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Obter mais armazenamento";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Seu armazenamento está cheio";
 
@@ -2268,7 +2274,7 @@
 "Please retry after all attachments are uploaded." = "Tente novamente depois que todos os anexos forem carregados.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "O envio com a extensão Compartilhar enquanto estiver off-line não é suportado";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome de exibição";
@@ -2475,10 +2481,10 @@
 "Purchase already in progress" = "A compra já está em progresso";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "Limpe a lixeira e spam antigos";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Aproveite de uma caixa de correio mais organizada e beneficie-se de outros recursos premium com %@.";
 
 /* Title of the upsell page */
 "Group your contacts" = "Agrupe seus contatos";
@@ -2490,22 +2496,22 @@
 "Need more labels or folders?" = "Precisa de mais marcadores ou pastas?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Obtenha com outros recursos premium ao fazer upgrade para %@.";
 
 /* Title of the upsell page */
 "Customize your signature" = "Personalize sua assinatura";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Use sua própria assinatura móvel e aproveite os outros recursos premium com %@.";
 
 /* Title of the upsell page */
 "Schedule now, send later" = "Agende agora, envie depois";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Aproveite o enviar agendado personalizado e outros recursos premium com %@.";
 
 /* Title of the upsell page */
 "Bad time for this email?" = "É um momento ruim para este e-mail?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Adie por tempo de sua preferência. Obtenha la adiamento personalizado e mais com%@.";
