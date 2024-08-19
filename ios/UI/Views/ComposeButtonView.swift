@@ -30,17 +30,21 @@ struct ComposeButtonView: View {
             HStack(spacing: DS.Spacing.standard) {
                 Image(DS.Icon.icPenSquare)
                     .foregroundStyle(DS.Color.Brand.lighten30)
+                    .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
                 if isExpanded {
                     Text(text)
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(DS.Color.Brand.lighten30)
                         .transition(.move(edge: .trailing).combined(with: .opacity))
+                        .accessibilityIdentifier(ComposeButtonIdentifiers.text)
                 }
             }
+            .accessibilityElement(children: .contain)
             .animation(animation, value: isExpanded)
         })
         .buttonStyle(ComposeButtonStyle(isExpanded: isExpanded, animation: animation))
+        .accessibilityIdentifier(ComposeButtonIdentifiers.rootElement)
     }
 }
 
@@ -71,4 +75,10 @@ private struct ComposeButtonStyle: ButtonStyle {
         }
     }
     return Container()
+}
+
+private struct ComposeButtonIdentifiers {
+    static let rootElement = "compose.button"
+    static let icon = "compose.button.icon"
+    static let text = "compose.button.text"
 }

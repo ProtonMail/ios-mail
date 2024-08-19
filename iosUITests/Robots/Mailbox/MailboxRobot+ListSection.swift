@@ -24,6 +24,10 @@ extension MailboxRobot {
     func scrollDown() {
         rootElement.swipeUp()
     }
+    
+    func scrollUp() {
+        rootElement.swipeDown()
+    }
 
     func tapEntryAt(index: Int) {
         let model = UITestMailboxListItemEntryModel(index: index)

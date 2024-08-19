@@ -28,6 +28,7 @@
         "LoginFlowPaidUserTest\/testLoginFlowPaidUser()",
         "MailboxAttachmentPreviewsTests\/testAttachmentCapsulePreview()",
         "MailboxAttachmentPreviewsTests\/testAttachmentPreviewLoading()",
+        "MailboxComposeFloatingButtonTest\/testComposeButtonShownAsExpandedByDefault()",
         "MailboxSelectionModeActionBarTests\/testExitSelectionModeDismissesActionBar()",
         "MailboxSelectionModeActionBarTests\/testSelectionModeShowsActionBar()",
         "MailboxSelectionModeTests\/testAvatarClickSelectionMode()",
