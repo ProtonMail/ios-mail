@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Awi ugar n uḥraz";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Aḥraz-ik yeččuṛ";
 

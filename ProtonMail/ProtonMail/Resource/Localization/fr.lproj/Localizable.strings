@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Obtenir plus d'espace de stockage";
 
+/* Spotlight title */
+"Sized for reading" = "Adapté à la lecture";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Le texte du corps de vos e-mails s'affiche également désormais dans la taille de lecture que vous préférez.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Votre espace de stockage est plein.";
 

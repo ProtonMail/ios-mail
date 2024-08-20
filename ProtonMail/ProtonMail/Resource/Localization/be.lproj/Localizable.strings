@@ -1845,6 +1845,12 @@
 /* Get more storage button action */
 "Get more storage" = "Атрымаць больш месца ў сховішчы";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
 /* Title of the banner alert */
 "Your storage is full" = "Ваша сховішча запоўнена";
 
@@ -2268,7 +2274,7 @@
 "Please retry after all attachments are uploaded." = "Паўтарыце спробу, калі ўсе далучэнні будуць запампаваны.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "Адпраўка з дапамогай пашырэння абагульвання без падключэння да інтэрнэту не падтрымліваецца";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Бачнае імя";
@@ -2439,7 +2445,7 @@
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"+%u premium features" = "І яшчэ %u прэміяльныя функцыі";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
@@ -2475,37 +2481,37 @@
 "Purchase already in progress" = "Купля ўжо ажыццяўляецца";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "Ачысціць выдаленыя файлы і спам";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з %@.";
 
 /* Title of the upsell page */
-"Group your contacts" = "Group your contacts";
+"Group your contacts" = "Групаванне кантактаў";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Без намаганняў адпраўляйце лісты групе і атрымлівайце асалоду ад іншых прэміяльных функцый з тарыфным планам %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Неабходна больш метак або папак?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Атрымайце не толькі іх, але і іншыя прэміяльныя функцыі пасля пераходу на тарыфны план %@.";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "Наладзьце свой подпіс";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Выкарыстоўвайце свой уласны подпіс на мабільных прыладах і атрымайце іншыя прэміяльныя функцыі з тарыфным планам %@.";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "Заплануйце цяпер, а адпраўце пазней";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Атрымлівайце асалоду ад магчымасці карыстальніцкай планавання адпраўкі і іншых прэміяльных функцый з тарыфным планам %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Не падыходзячы час для гэтага ліста?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Адкладзіце яго на зручны для вас час. Атрымайце магчымасць адкладаць лісты і іншыя функцыі з тарыфным планам %@.";
