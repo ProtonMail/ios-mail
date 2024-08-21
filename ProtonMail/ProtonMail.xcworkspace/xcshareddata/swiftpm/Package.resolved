@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
         "state": {
           "branch": null,
-          "revision": "aa90f835486fcd9638a20d67f9eb8cd0afb0a6c6",
-          "version": "25.2.5"
+          "revision": "6bfa72ac7c4e9b4acbb9de79e9e686ebd7ccf1a6",
+          "version": "26.0.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
         "state": {
           "branch": null,
-          "revision": "2b15823b95440012d2f1d23be120feec0cf7c908",
-          "version": "1.0.0"
+          "revision": "354d65e2e75add0ba9299e615a3c850639a150a2",
+          "version": "2.2.0"
         }
       },
       {
