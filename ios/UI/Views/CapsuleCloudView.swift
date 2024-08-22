@@ -30,11 +30,11 @@ struct CapsuleCloudView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .topLeading) {
-                var xPos: CGFloat = .zero
-                var yPos: CGFloat = .zero
+            var xPos: CGFloat = .zero
+            var yPos: CGFloat = .zero
 
-                return ForEach(subviews.indices, id: \.self) { index in
+            ZStack(alignment: .topLeading) {
+                ForEach(subviews.indices, id: \.self) { index in
                     subviews[index]
                         .padding([.horizontal, .vertical], innerPadding)
                         .alignmentGuide(.leading) { viewDimensions in
