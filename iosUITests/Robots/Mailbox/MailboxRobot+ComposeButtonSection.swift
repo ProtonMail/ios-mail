@@ -36,13 +36,17 @@ extension MailboxRobot {
     }
     
     func hasComposeButtonCollapsed() {
-        XCTAssertTrue(composeButtonIcon.exists)
+        XCTAssertTrue(composeButtonIcon.isHittable)
         XCTAssertFalse(composeButtonText.exists)
     }
     
     func hasComposeButtonExpanded() {
-        XCTAssertTrue(composeButtonIcon.exists)
+        XCTAssertTrue(composeButtonIcon.isHittable)
         XCTAssertEqual(composeButtonText.label, "Compose")
+    }
+    
+    func hasComposeButtonHidden() {
+        XCTAssertFalse(composeButtonIcon.isHittable)
     }
 }
 

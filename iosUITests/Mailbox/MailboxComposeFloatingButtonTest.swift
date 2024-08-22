@@ -83,4 +83,26 @@ final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
             $0.hasComposeButtonExpanded()
         }
     }
+    
+    /// TestId 448603, 448604
+    func testComposeButtonVisibilityDependsOnSelectionMode() async {
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_448603.json",
+                ignoreQueryParams: true
+            )
+        )
+        
+        navigator.navigateTo(.inbox)
+        
+        MailboxRobot {
+            $0.selectItemAt(index: 0)
+            $0.hasComposeButtonHidden()
+            
+            $0.unselectItemAt(index: 0)
+            $0.hasComposeButtonExpanded()
+        }
+    }
 }
