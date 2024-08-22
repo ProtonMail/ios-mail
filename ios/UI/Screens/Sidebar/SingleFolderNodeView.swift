@@ -23,12 +23,19 @@ struct SingleFolderNodeView: View {
     private let folder: SidebarFolder
     private let padding: CGFloat
     private let selected: (SidebarFolder) -> Void
+    private let toggle: (SidebarFolder, Bool) -> Void
     @State private var isExpanded: Bool
 
-    init(folder: SidebarFolder, padding: CGFloat = 0, selected: @escaping (SidebarFolder) -> Void) {
+    init(
+        folder: SidebarFolder,
+        padding: CGFloat = 0,
+        selected: @escaping (SidebarFolder) -> Void,
+        toggle: @escaping (SidebarFolder, Bool) -> Void
+    ) {
         self.folder = folder
         self.padding = padding
         self.selected = selected
+        self.toggle = toggle
         self.isExpanded = folder.expanded
     }
 
@@ -47,8 +54,9 @@ struct SingleFolderNodeView: View {
                         .foregroundStyle(folder.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
                         .lineLimit(1)
                     Spacer()
+
                     if !folder.childFolders.isEmpty {
-                        Button(action: { isExpanded.toggle() }) {
+                        Button(action: { toggleChildFoldersVisibility() }) {
                             Image(isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled)
                                 .resizable()
                                 .square(size: 16)
@@ -74,13 +82,21 @@ struct SingleFolderNodeView: View {
             }
 
             if !folder.childFolders.isEmpty, isExpanded {
-                FolderNodeView(
-                    folders: folder.childFolders,
-                    padding: padding + DS.Spacing.large,
-                    selected: selected
-                )
+                ForEach(folder.childFolders) { childFolder in
+                    SingleFolderNodeView(
+                        folder: childFolder,
+                        padding: padding + DS.Spacing.large,
+                        selected: selected,
+                        toggle: toggle
+                    )
+                }
             }
         }
+    }
+
+    private func toggleChildFoldersVisibility() {
+        isExpanded.toggle()
+        toggle(folder, isExpanded)
     }
 
 }

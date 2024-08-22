@@ -21,6 +21,7 @@ import SwiftUI
 enum SidebarAction {
     case viewAppear
     case select(item: SidebarItem)
+    case toggle(folder: SidebarFolder, expand: Bool)
 }
 
 @Observable
@@ -43,6 +44,18 @@ final class SidebarModel: Sendable {
             initLiveQuery()
         case .select(let item):
             select(item: item)
+        case .toggle(let folder, let expand):
+            changeVisibility(of: folder, expand: expand)
+        }
+    }
+
+    private func changeVisibility(of folder: SidebarFolder, expand: Bool) {
+        Task {
+            if expand {
+                try? await sidebar.expandFolder(localId: folder.id)
+            } else {
+                try? await sidebar.collapseFolder(localId: folder.id)
+            }
         }
     }
 

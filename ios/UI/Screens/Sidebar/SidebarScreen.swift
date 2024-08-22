@@ -159,8 +159,12 @@ struct SidebarScreen: View {
 
     private func customFoldersList() -> some View {
         VStack(spacing: .zero) {
-            FolderNodeView(folders: screenModel.state.folders, padding: .zero) { folder in
-                select(item: .folder(folder))
+            ForEach(screenModel.state.folders) { folder in
+                SingleFolderNodeView(
+                    folder: folder,
+                    selected: { folder in select(item: .folder(folder)) },
+                    toggle: { folder, expand in screenModel.handle(action: .toggle(folder: folder, expand: expand)) }
+                )
             }
             createButton(
                 for: screenModel.state.createFolder,
