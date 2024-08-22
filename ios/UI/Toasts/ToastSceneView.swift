@@ -39,7 +39,7 @@ private extension View {
 private struct ToastModifier: ViewModifier {
     @Binding var state: ToastStateStore.State
     @State private var automaticDismissalTasks: OrderedDictionary<Toast, DispatchWorkItem> = [:]
-
+    
     func body(content: Content) -> some View {
         content
             .overlay(
@@ -54,21 +54,21 @@ private struct ToastModifier: ViewModifier {
                 if new.isEmpty {
                     state.maxToastHeight = 0
                 }
-
+                
                 new.forEach { toast in
                     if automaticDismissalTasks[toast] == nil && toast.duration > 0 {
                         let automaticDismissalTask = DispatchWorkItem {
                             dismissToast(toast: toast)
                         }
-
+                        
                         automaticDismissalTasks[toast] = automaticDismissalTask
-
+                        
                         Dispatcher.dispatchOnMainAfter(.now() + toast.duration, automaticDismissalTask)
                     }
                 }
             }
     }
-
+    
     @ViewBuilder 
     private func toastView(toast: Toast) -> some View {
         VStack {
@@ -77,8 +77,8 @@ private struct ToastModifier: ViewModifier {
                 .background {
                     GeometryReader { geometry in
                         Color.clear
-                            .preference(key: ToastHeightPreferenceKey.self, value: geometry.size.height)
-                            .onPreferenceChange(ToastHeightPreferenceKey.self) { value in
+                            .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
+                            .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
                                 state.maxToastHeight = max(geometry.size.height, state.maxToastHeight)
                             }
                     }
@@ -86,19 +86,11 @@ private struct ToastModifier: ViewModifier {
         }
         .transition(.move(edge: .bottom))
     }
-
+    
     private func dismissToast(toast: Toast) {
         state.toasts = state.toasts.filter { $0 != toast }
-
+        
         automaticDismissalTasks[toast]?.cancel()
         automaticDismissalTasks[toast] = nil
-    }
-}
-
-private struct ToastHeightPreferenceKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }

@@ -310,14 +310,6 @@ private struct SidebarScreenIdentifiers {
     static let badgeIcon = "sidebar.button.badgeIcon"
 }
 
-private struct HeaderHeightPreferenceKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
 private extension SidebarItem {
 
     var hideSidebar: Bool {

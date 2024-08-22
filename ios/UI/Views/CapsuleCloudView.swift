@@ -29,74 +29,53 @@ struct CapsuleCloudView: View {
     }
 
     var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                generateContent(in: geometry)
+        GeometryReader { geometry in
+            ZStack(alignment: .topLeading) {
+                var xPos: CGFloat = .zero
+                var yPos: CGFloat = .zero
+
+                return ForEach(subviews.indices, id: \.self) { index in
+                    subviews[index]
+                        .padding([.horizontal, .vertical], innerPadding)
+                        .alignmentGuide(.leading) { viewDimensions in
+                            if (abs(xPos - viewDimensions.width) > geometry.size.width) {
+                                xPos = 0
+                                yPos -= viewDimensions.height
+                            }
+                            let result = xPos
+                            if isLast(index) {
+                                xPos = 0
+                            } else {
+                                xPos -= viewDimensions.width
+                            }
+                            return result
+                        }
+                        .alignmentGuide(.top) { viewDimensions in
+                            let result = yPos
+                            if isLast(index) {
+                                yPos = 0
+                            }
+                            return result
+                        }
+                }
+            }
+            .background {
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
+                        .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
+                            totalHeight = value
+                        }
+                }
             }
         }
         .frame(height: totalHeight)
     }
 
-    private func generateContent(in geometry: GeometryProxy) -> some View {
-        var xPos: CGFloat = .zero
-        var yPos: CGFloat = .zero
-
-        return ZStack(alignment: .topLeading) {
-            ForEach(subviews.indices, id: \.self) { index in
-                subviews[index]
-                    .padding([.horizontal, .vertical], innerPadding)
-                    .alignmentGuide(.leading) { viewDimensions in
-                        if (abs(xPos - viewDimensions.width) > geometry.size.width) {
-                            xPos = 0
-                            yPos -= viewDimensions.height
-                        }
-                        let result = xPos
-                        if isLast(index) {
-                            xPos = 0
-                        } else {
-                            xPos -= viewDimensions.width
-                        }
-                        return result
-                    }
-                    .alignmentGuide(.top) { viewDimensions in
-                        let result = yPos
-                        if isLast(index) {
-                            yPos = 0
-                        }
-                        return result
-                    }
-            }
-        }
-        .heightReader(binding: $totalHeight)
-    }
-
     private func isLast(_ index: Int) -> Bool {
-        index == subviews.count-1
+        index == subviews.count - 1
     }
 }
-
-private extension View {
-    func heightReader(binding: Binding<CGFloat>) -> some View {
-        modifier(HeightReader(binding: binding))
-    }
-}
-
-private struct HeightReader: ViewModifier {
-    let binding: Binding<CGFloat>
-    func body(content: Content) -> some View {
-        content
-            .overlay {
-                GeometryReader { geometry -> Color in
-                    let rect = geometry.frame(in: .local)
-                    DispatchQueue.main.async {
-                        binding.wrappedValue = rect.size.height
-                    }
-                    return .clear
-                }
-            }
-    }
-}
-
 
 #Preview {
     VStack {
@@ -118,6 +97,5 @@ private struct HeightReader: ViewModifier {
         )
         .padding(10)
         .border(.red)
-
     }
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import proton_mail_uniffi
 import SwiftUI
 
 struct MessageDetailsView: View {
@@ -42,16 +43,14 @@ extension MessageDetailsView {
     private var headerView: some View {
         HStack(alignment: .top, spacing: 0) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
-                .frame(width: 40, height: 40)
+                .square(size: 40)
             VStack(alignment: .leading, spacing: DS.Spacing.small) {
                 senderNameView
                 senderAddressView
                 recipientsView
             }
             .padding(.leading, DS.Spacing.large)
-
             Spacer()
-
             ZStack(alignment: .top) {
                 headerActionsView
             }
@@ -70,11 +69,9 @@ extension MessageDetailsView {
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
-
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
-
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.weak)
@@ -142,7 +139,9 @@ extension MessageDetailsView {
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
             dateRow
-//            locationRow
+            if let model = uiModel.location {
+                locationRow(model: model)
+            }
             labelRow
                 .removeViewIf(uiModel.labels.isEmpty)
             otherRow
@@ -195,7 +194,6 @@ extension MessageDetailsView {
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-
                 ForEach(recipients.indices, id:\.self) { index in
                     let recipient = recipients[index]
                     Button {
@@ -214,7 +212,6 @@ extension MessageDetailsView {
                     }
                 }
             }
-
             Spacer()
         }
     }
@@ -226,27 +223,25 @@ extension MessageDetailsView {
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateLabel)
-
             Text(uiModel.date.messageDetailsFormat())
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateValue)
-
             Spacer()
         }
     }
 
-    private var locationRow: some View {
+    private func locationRow(model: MessageDetail.Location) -> some View {
         HStack(alignment: .center, spacing: DS.Spacing.small) {
             Text(L10n.MessageDetails.location)
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-
             CapsuleView(
-                text: SystemFolderLabel.inbox.humanReadable,
+                text: model.name,
                 color: DS.Color.Background.secondary,
-                icon: Image(SystemFolderLabel.inbox.icon),
+                icon: Image(model.icon),
+                iconColor: model.iconColor,
                 style: .attachment
             )
             Spacer()
@@ -263,9 +258,7 @@ extension MessageDetailsView {
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-
             CapsuleCloudView(subviews: capsules, innerPadding: DS.Spacing.tiny)
-
             Spacer()
         }
     }
@@ -276,9 +269,7 @@ extension MessageDetailsView {
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-
             starCapsule
-
             Spacer()
         }
     }
@@ -336,7 +327,7 @@ struct MessageDetailsUIModel {
         recipientsTo.count + recipientsCc.count + recipientsBcc.count == 1
     }
     let date: Date
-    let location: MessageDetail.Location
+    let location: MessageDetail.Location?
     let labels: [LabelUIModel]
     let other: [MessageDetail.Other]
 }
@@ -355,9 +346,10 @@ enum MessageDetail {
         let address: String
     }
 
-    enum Location {
-        case systemFolder(SystemFolderLabel)
-        case customFolder(PMCustomFolder)
+    struct Location: Equatable {
+        let name: LocalizedStringResource
+        let icon: ImageResource
+        let iconColor: Color?
     }
 
     enum Other {
@@ -384,36 +376,46 @@ extension Array where Element == MessageDetail.Recipient {
 }
 
 #Preview {
-
-    let messageDetails = MessageDetailsUIModel(
-        avatar: .init(initials: "", type: .sender(params: .init())),
-        sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
-        isSenderProtonOfficial: true,
-        recipientsTo: [
-            .init(name: "Me", address: "eric.norbert@protonmail.ch"),
-        ],
-        recipientsCc: [
-            .init(name: "James Hayes", address: "james@proton.me"),
-            .init(name: "Riley Scott", address: "scott375@gmail.com"),
-            .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch"),
-        ],
-        recipientsBcc: [
-            .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com"),
-        ],
-        date: .now,
-        location: .systemFolder(.inbox),
+    let model = MessageDetailsPreviewProvider.testData(
+        location: .custom(name: "Online shopping", id: .init(value: 1), color: .init(value: "FFA500")),
         labels: [
             .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue),
             .init(labelId: .init(value: 2), text: "Work", color: .green),
             .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
-        ],
-        other: [.starred, .pinned]
-    )
+        ])
 
-    return MessageDetailsView(
-        isHeaderCollapsed: false,
-        uiModel: messageDetails
-    ) { _ in }
+    return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, onEvent: { _ in })
+}
+
+enum MessageDetailsPreviewProvider {
+
+    static func testData(location: ExclusiveLocation?, labels: [LabelUIModel]) -> MessageDetailsUIModel {
+        .init(
+            avatar: .init(initials: "", type: .sender(params: .init())),
+            sender: .init(
+                name: "Camila Hall",
+                address: "camila.hall@protonmail.ch",
+                encryptionInfo: "End to end encrypted and signed"
+            ),
+            isSenderProtonOfficial: true,
+            recipientsTo: [
+                .init(name: "Me", address: "eric.norbert@protonmail.ch"),
+            ],
+            recipientsCc: [
+                .init(name: "James Hayes", address: "james@proton.me"),
+                .init(name: "Riley Scott", address: "scott375@gmail.com"),
+                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch"),
+            ],
+            recipientsBcc: [
+                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com"),
+            ],
+            date: Date(timeIntervalSince1970: 1724347300),
+            location: location?.model,
+            labels: labels,
+            other: [.starred, .pinned]
+        )
+    }
+
 }
 
 private struct MessageDetailsViewIdentifiers {

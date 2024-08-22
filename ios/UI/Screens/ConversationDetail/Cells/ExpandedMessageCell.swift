@@ -113,26 +113,11 @@ enum ExpandedMessageCellEvent {
 }
 
 #Preview {
-
-    let messageDetails = MessageDetailsUIModel(
-        avatar: .init(initials: "Gg", type: .sender(params: .init())),
-        sender: .init(name: "Camila Hall", address: "camila.hall@protonmail.ch", encryptionInfo: "End to end encrypted and signed"),
-        isSenderProtonOfficial: true,
-        recipientsTo: [
-            .init(name: "Me", address: "eric.norbert@protonmail.ch"),
-        ],
-        recipientsCc: [
-            .init(name: "James Hayes", address: "james@proton.me"),
-            .init(name: "Riley Scott", address: "scott375@gmail.com"),
-            .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch"),
-        ],
-        recipientsBcc: [
-            .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com"),
-        ],
-        date: .now,
-        location: .systemFolder(.inbox),
-        labels: [.init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue)],
-        other: [.starred, .pinned]
+    let messageDetails = MessageDetailsPreviewProvider.testData(
+        location: .inbox,
+        labels: [
+            .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue)
+        ]
     )
 
     return VStack(spacing: 0) {

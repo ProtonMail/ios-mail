@@ -29,6 +29,7 @@ public extension DS.Icon {
     static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
     static let icFolder = ImageResource.icFolder
+    static let icFolderOpenFilled = ImageResource.icFolderOpenFilled
     static let icFolders = ImageResource.icFolders
     static let icInbox = ImageResource.icInbox
     static let icMinus = ImageResource.icMinus
