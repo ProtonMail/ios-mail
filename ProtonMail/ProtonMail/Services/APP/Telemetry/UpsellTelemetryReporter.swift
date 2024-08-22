@@ -221,6 +221,8 @@ private extension UpsellPageEntryPoint {
             return "labels_creation"
         case .mobileSignature:
             return "mobile_signature_edit"
+        case .onboarding:
+            return "onboarding"
         case .scheduleSend:
             return "schedule_send"
         case .snooze:

@@ -19,7 +19,7 @@ import ProtonCorePaymentsUI
 import UIKit
 
 final class PaymentsUIFactory {
-    typealias Dependencies = UpsellCoordinator.Dependencies & HasPayments
+    typealias Dependencies = OnboardingUpsellCoordinator.Dependencies & UpsellCoordinator.Dependencies & HasPayments
 
     private unowned let dependencies: Dependencies
 
@@ -38,6 +38,11 @@ final class PaymentsUIFactory {
 
     @MainActor
     func makeUpsellCoordinator(rootViewController: UIViewController) -> UpsellCoordinator {
+        .init(dependencies: dependencies, rootViewController: rootViewController)
+    }
+
+    @MainActor
+    func makeOnboardingUpsellCoordinator(rootViewController: UIViewController) -> OnboardingUpsellCoordinator {
         .init(dependencies: dependencies, rootViewController: rootViewController)
     }
 }

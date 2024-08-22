@@ -151,6 +151,12 @@ extension UserContainer {
         .scope(.shared)
     }
 
+    var onboardingUpsellPageFactoryFactory: Factory<OnboardingUpsellPageFactory> {
+        self {
+            OnboardingUpsellPageFactory(dependencies: self)
+        }
+    }
+
     var paymentsFactory: Factory<Payments> {
         self {
             Payments(

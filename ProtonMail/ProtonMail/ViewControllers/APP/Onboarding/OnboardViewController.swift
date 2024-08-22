@@ -23,6 +23,8 @@
 import UIKit
 
 final class OnboardViewController: UIViewController, UIScrollViewDelegate {
+    var onViewDidDisappear: (@MainActor () -> Void)?
+
     private var pageWidth: CGFloat {
         UIScreen.main.bounds.size.width
     }
@@ -54,6 +56,12 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
         customView.pageControl.addTarget(self, action: #selector(pageControllerIsChange), for: .valueChanged)
         setupView()
         addOnboardViews()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        onViewDidDisappear?()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

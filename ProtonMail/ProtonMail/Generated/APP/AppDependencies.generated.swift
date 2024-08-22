@@ -401,6 +401,16 @@ extension UserContainer: HasNextMessageAfterMoveStatusProvider {
     }
 }
 
+protocol HasOnboardingUpsellPageFactory {
+    var onboardingUpsellPageFactory: OnboardingUpsellPageFactory { get }
+}
+
+extension UserContainer: HasOnboardingUpsellPageFactory {
+    var onboardingUpsellPageFactory: OnboardingUpsellPageFactory {
+        onboardingUpsellPageFactoryFactory()
+    }
+}
+
 protocol HasPayments {
     var payments: Payments { get }
 }

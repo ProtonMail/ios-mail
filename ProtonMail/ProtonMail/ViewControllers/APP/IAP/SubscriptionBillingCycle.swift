@@ -21,6 +21,7 @@ struct SubscriptionBillingCycle: Equatable {
     let months: Int
     let monthlyPrice: Double
     let formattedMonthlyPrice: String
+    let formattedBillingPrice: String
     let storeKitProductId: InAppPurchasePlan.ProductId
 
     private static let minimumVisibleDiscount = 5

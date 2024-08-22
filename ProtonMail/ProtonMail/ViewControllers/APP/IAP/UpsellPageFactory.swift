@@ -58,7 +58,10 @@ struct UpsellPageFactory {
 
             priceFormatter.locale = priceLabel.locale
 
-            guard let formattedMonthlyPrice = priceFormatter.string(from: NSNumber(value: monthlyPrice)) else {
+            guard
+                let formattedMonthlyPrice = priceFormatter.string(from: NSNumber(value: monthlyPrice)),
+                let formattedBillingPrice = priceFormatter.string(from: priceLabel.value)
+            else {
                 return nil
             }
 
@@ -66,6 +69,7 @@ struct UpsellPageFactory {
                 months: instance.cycle,
                 monthlyPrice: monthlyPrice,
                 formattedMonthlyPrice: formattedMonthlyPrice,
+                formattedBillingPrice: formattedBillingPrice,
                 storeKitProductId: storeKitProductId
             )
         }
@@ -84,6 +88,7 @@ struct UpsellPageFactory {
                 identifier: billingCycle.storeKitProductId,
                 cycleInMonths: billingCycle.months,
                 monthlyPrice: billingCycle.formattedMonthlyPrice,
+                billingPrice: billingCycle.formattedBillingPrice,
                 isHighlighted: discount != nil,
                 discount: discount
             )

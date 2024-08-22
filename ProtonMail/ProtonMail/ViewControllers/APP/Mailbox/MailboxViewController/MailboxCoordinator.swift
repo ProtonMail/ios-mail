@@ -58,6 +58,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
     private let dependencies: Dependencies
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
+    private var onboardingUpsellCoordinator: OnboardingUpsellCoordinator?
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -242,7 +243,23 @@ extension MailboxCoordinator {
     private func presentOnboardingView() {
         let viewController = OnboardViewController()
         viewController.modalPresentationStyle = .fullScreen
-        self.viewController?.present(viewController, animated: true, completion: nil)
+        viewController.onViewDidDisappear = { [weak self] in
+            self?.presentUpsellIfApplicable()
+        }
+        navigation?.present(viewController, animated: true, completion: nil)
+    }
+
+    @MainActor
+    private func presentUpsellIfApplicable() {
+        guard !viewModel.user.hasPaidMailPlan, let navigation else {
+            return
+        }
+
+        onboardingUpsellCoordinator = dependencies.paymentsUIFactory.makeOnboardingUpsellCoordinator(
+            rootViewController: navigation
+        )
+
+        onboardingUpsellCoordinator?.start()
     }
 
     private func presentNewBrandingView() {
