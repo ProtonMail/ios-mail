@@ -24,7 +24,7 @@ public enum UpsellPageEntryPoint: Sendable {
     case header
     case labels
     case mobileSignature
-    case onboarding
+    case postOnboarding
     case scheduleSend
     case snooze
 
@@ -40,7 +40,7 @@ public enum UpsellPageEntryPoint: Sendable {
             return .upsellDefaultLogo
         case .mobileSignature:
             return .upsellMobileSignatureLogo
-        case .onboarding:
+        case .postOnboarding:
             fatalError("not applicable")
         case .scheduleSend:
             return .upsellScheduleSendLogo
@@ -70,7 +70,7 @@ public enum UpsellPageEntryPoint: Sendable {
             return String(format: L10n.Upsell.upgradeToPlan, planName)
         case .mobileSignature:
             return L10n.Upsell.mobileSignatureTitle
-        case .onboarding:
+        case .postOnboarding:
             fatalError("not applicable")
         case .scheduleSend:
             return L10n.Upsell.scheduleSendTitle
@@ -91,7 +91,7 @@ public enum UpsellPageEntryPoint: Sendable {
             return L10n.Upsell.mailPlusDescription
         case .mobileSignature:
             return String(format: L10n.Upsell.mobileSignatureDescription, planName)
-        case .onboarding:
+        case .postOnboarding:
             fatalError("not applicable")
         case .scheduleSend:
             return String(format: L10n.Upsell.scheduleSendDescription, planName)

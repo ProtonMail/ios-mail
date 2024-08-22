@@ -77,6 +77,8 @@ final class OnboardingUpsellCoordinatorTests: XCTestCase {
 
         sut.start()
 
+        try await Task.sleep(for: .milliseconds(100))
+
         let presentedViewController = try XCTUnwrap(rootViewController.presentedViewController)
         XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<OnboardingUpsellPage>)
     }
