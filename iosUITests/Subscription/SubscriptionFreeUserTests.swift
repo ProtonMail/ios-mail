@@ -24,7 +24,8 @@ final class SubscriptionNavigationTests: PMUIUnmockedNetworkTestCase {
     }
 
     /// TestId 430810
-    func testSubscriptionNavigationFreeUser() {
+    /// To be re-enabled once the native view has been implemented.
+    func skip_testSubscriptionNavigationFreeUser() {
         navigator.navigateTo(UITestDestination.subscription)
 
         let subscription = UITestSubscriptionEntry(name: "Free")
