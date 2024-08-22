@@ -147,16 +147,15 @@ struct MessageDetailsView: View {
     }
 
     private var fromRow: some View {
-        Button(action: {
-            onEvent(.onSenderTap)
-        }, label: {
-            HStack(alignment: .top, spacing: DS.Spacing.small) {
-                Text(L10n.MessageDetails.from)
-                    .font(.caption)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
-
+        HStack(alignment: .top, spacing: DS.Spacing.small) {
+            Text(L10n.MessageDetails.from)
+                .font(.caption)
+                .foregroundStyle(DS.Color.Text.weak)
+                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
+                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
+            Button {
+                onEvent(.onSenderTap)
+            } label: {
                 VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
                     Text(uiModel.sender.name)
                         .font(.caption)
@@ -167,9 +166,9 @@ struct MessageDetailsView: View {
                         .foregroundStyle(DS.Color.Text.accent)
                         .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
                 }
-                Spacer()
             }
-        })
+            Spacer()
+        }
     }
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
