@@ -18,18 +18,9 @@
 import Combine
 
 public final class OnboardingUpsellPageModel: ObservableObject {
-    public enum Cycle: CaseIterable {
+    public enum Cycle {
         case monthly
         case annual
-
-        var optionTitle: String {
-            switch self {
-            case .monthly:
-                return L10n.Recurrence.monthly
-            case .annual:
-                return L10n.Upsell.annual
-            }
-        }
 
         var lengthInMonths: Int {
             switch self {
