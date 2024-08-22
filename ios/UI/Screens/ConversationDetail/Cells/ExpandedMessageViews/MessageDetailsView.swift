@@ -34,11 +34,8 @@ struct MessageDetailsView: View {
         }
         .padding(.horizontal, DS.Spacing.large)
     }
-}
 
-// MARK: Header
-
-extension MessageDetailsView {
+    // MARK: - Private
 
     private var headerView: some View {
         HStack(alignment: .top, spacing: 0) {
@@ -124,11 +121,6 @@ extension MessageDetailsView {
         }
         .foregroundColor(DS.Color.Icon.weak)
     }
-}
-
-// MARK: Extended details
-
-extension MessageDetailsView {
 
     private var extendedDetailsView: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.moderatelyLarge) {
@@ -139,9 +131,7 @@ extension MessageDetailsView {
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
             dateRow
-            if let model = uiModel.location {
-                locationRow(model: model)
-            }
+            locationRow
             labelRow
                 .removeViewIf(uiModel.labels.isEmpty)
             otherRow
@@ -176,11 +166,7 @@ extension MessageDetailsView {
                         .font(.caption)
                         .foregroundStyle(DS.Color.Text.accent)
                         .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
-    //                Text(uiModel.sender.encryptionInfo)
-    //                    .font(.caption)
-    //                    .foregroundStyle(DS.Color.Text.weak)
                 }
-
                 Spacer()
             }
         })
@@ -231,20 +217,23 @@ extension MessageDetailsView {
         }
     }
 
-    private func locationRow(model: MessageDetail.Location) -> some View {
-        HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.location)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-            CapsuleView(
-                text: model.name,
-                color: DS.Color.Background.secondary,
-                icon: Image(model.icon),
-                iconColor: model.iconColor,
-                style: .attachment
-            )
-            Spacer()
+    @ViewBuilder
+    private var locationRow: some View {
+        if let model = uiModel.location {
+            HStack(alignment: .center, spacing: DS.Spacing.small) {
+                Text(L10n.MessageDetails.location)
+                    .font(.caption)
+                    .foregroundStyle(DS.Color.Text.weak)
+                    .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
+                CapsuleView(
+                    text: model.name,
+                    color: DS.Color.Background.secondary,
+                    icon: Image(model.icon),
+                    iconColor: model.iconColor,
+                    style: .attachment
+                )
+                Spacer()
+            }
         }
     }
 

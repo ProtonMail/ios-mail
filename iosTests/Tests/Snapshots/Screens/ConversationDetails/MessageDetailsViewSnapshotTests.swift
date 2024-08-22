@@ -60,7 +60,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
     }
 
     private func sut(collapsed: Bool, model: MessageDetailsUIModel) -> MessageDetailsView {
-        MessageDetailsView(isHeaderCollapsed: collapsed, uiModel: model, onEvent: { _ in })
+        .init(isHeaderCollapsed: collapsed, uiModel: model, onEvent: { _ in })
     }
 
 }
