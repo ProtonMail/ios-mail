@@ -59,13 +59,15 @@ final class OnboardingUpsellCoordinator {
         availablePlansHaveBeenFetched
             .compactMap { [unowned self] in plansDataSource?.availablePlans }
             .sink { [weak self] availablePlans in
-                self?.presentUpsellPage(availablePlans: availablePlans)
+                Task { [weak self] in
+                    await self?.presentUpsellPage(availablePlans: availablePlans)
+                }
             }
             .store(in: &cancellables)
     }
 
-    private func presentUpsellPage(availablePlans: AvailablePlans) {
-        dependencies.upsellTelemetryReporter.prepare(entryPoint: .onboarding)
+    private func presentUpsellPage(availablePlans: AvailablePlans) async {
+        dependencies.upsellTelemetryReporter.prepare(entryPoint: .postOnboarding)
 
         let model = dependencies.onboardingUpsellPageFactory.makeOnboardingUpsellPageModel(for: availablePlans.plans)
 
@@ -75,6 +77,8 @@ final class OnboardingUpsellCoordinator {
 
         let hosting = SheetLikeSpotlightViewController(rootView: onboardingUpsellPage)
         rootViewController?.present(hosting, animated: true)
+
+        await dependencies.upsellTelemetryReporter.upsellPageDisplayed()
     }
 
     private func purchasePlan(storeKitProductId: String, onboardingUpsellPageModel: OnboardingUpsellPageModel) {
