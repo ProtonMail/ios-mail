@@ -251,7 +251,11 @@ extension MailboxCoordinator {
 
     @MainActor
     private func presentUpsellIfApplicable() {
-        guard !viewModel.user.hasPaidMailPlan, let navigation else {
+        guard
+            dependencies.featureFlagProvider.isEnabled(.postOnboardingUpsellPage),
+            !viewModel.user.hasPaidMailPlan,
+            let navigation
+        else {
             return
         }
 
