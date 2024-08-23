@@ -43,13 +43,13 @@ public struct OnboardingUpsellPage: View {
                     .padding(.vertical, 16)
 
                 ScrollView(showsIndicators: false) {
-                    Picker("Cycle", selection: $model.selectedCycle) {
-                        ForEach(OnboardingUpsellPageModel.Cycle.allCases, id: \.hashValue) {
-                            Text($0.optionTitle)
-                                .tag($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
+                    SegmentedControl(
+                        options: [
+                            .init(title: L10n.Recurrence.monthly, value: OnboardingUpsellPageModel.Cycle.monthly),
+                            .init(title: L10n.Upsell.annual, value: OnboardingUpsellPageModel.Cycle.annual)
+                        ],
+                        selectedValue: $model.selectedCycle
+                    )
 
                     Spacer()
                         .frame(height: 24)
