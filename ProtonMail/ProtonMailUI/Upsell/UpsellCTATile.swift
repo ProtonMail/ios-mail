@@ -61,18 +61,23 @@ struct UpsellCTATile: View {
                         .foregroundColor(ColorProvider.SidebarTextWeak)
                 }
 
-                Button(String(format: L10n.Upsell.getPlan, planName)) {
-                    onTap()
-                }
-                .lineLimit(1)
-                .fixedSize()
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 20)
-                .background(purchasingOption.isHighlighted ? ColorProvider.InteractionNorm : Color.white.opacity(0.16))
-                .clipShape(Capsule())
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
+                Button(
+                    action: {
+                        onTap()
+                    },
+                    label: {
+                        Text(String(format: L10n.Upsell.getPlan, planName))
+                            .lineLimit(1)
+                            .fixedSize()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 20)
+                            .background(purchasingOption.isHighlighted ? ColorProvider.InteractionNorm : Color.white.opacity(0.16))
+                            .clipShape(Capsule())
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                    }
+                )
             }
             .padding([.top], 24)
             .padding([.horizontal, .bottom], 16)
