@@ -24,6 +24,9 @@ public struct OnboardingUpsellPage: View {
     @Environment(\.presentationMode)
     private var presentationMode
 
+    @Environment(\.verticalSizeClass)
+    private var verticalSizeClass
+
     private let onPurchaseTapped: (String) -> Void
 
     private var backgroundGradient: LinearGradient {
@@ -35,93 +38,133 @@ public struct OnboardingUpsellPage: View {
     }
 
     public var body: some View {
-        VStack {
-            VStack {
-                Text(L10n.Upsell.chooseAPlan)
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(ColorProvider.TextNorm)
-                    .padding(.vertical, 16)
+        if verticalSizeClass == .compact {
+            HStack {
+                planList
 
-                ScrollView(showsIndicators: false) {
-                    SegmentedControl(
-                        options: [
-                            .init(title: L10n.Recurrence.monthly, value: OnboardingUpsellPageModel.Cycle.monthly),
-                            .init(title: L10n.Upsell.annual, value: OnboardingUpsellPageModel.Cycle.annual)
-                        ],
-                        selectedValue: $model.selectedCycle
-                    )
+                VStack {
+                    choosePlanLabel
+
+                    cyclePicker
 
                     Spacer()
-                        .frame(height: 24)
 
-                    ForEach(Array(zip(model.tiles.indices, model.tiles)), id: \.0) { index, tileModel in
-                        Tile(
-                            model: tileModel,
-                            selectedCycle: model.selectedCycle,
-                            isSelected: index == model.selectedPlanIndex
-                        )
-                        .onTapGesture {
-                            model.selectedPlanIndex = index
-                        }
-                    }
+                    ctaButton
                 }
             }
-            .padding(.horizontal, 16)
+            .background(backgroundGradient)
+        } else {
+            VStack(spacing: 0) {
+                choosePlanLabel
 
-            Rectangle()
-                .frame(height: 1)
-                .foregroundColor(ColorProvider.Shade20)
+                planList
 
-            VStack {
-                if let actualChargeDisclaimer = model.actualChargeDisclaimer {
-                    Text(actualChargeDisclaimer)
-                        .font(.system(size: 11, weight: .regular))
-                        .foregroundColor(ColorProvider.BrandDarken20)
-                }
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(ColorProvider.Shade20)
 
-                Button(
-                    action: {
-                        if let selectedPlanIdentifier = model.selectedPlanIdentifier {
-                            onPurchaseTapped(selectedPlanIdentifier)
-                        } else {
-                            onFreePlanSelected()
-                        }
-                    },
-                    label: {
-                        ZStack {
-                            Text(model.ctaButtonTitle)
-                                .font(.system(size: 17, weight: .semibold))
-                                .minimumScaleFactor(0.5)
-                                .lineLimit(1)
-                                .foregroundColor(.white)
-                                .visible(!model.isBusy)
+                Spacer()
+                    .frame(height: 8)
 
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .visible(model.isBusy)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 36)
-                        .background(ColorProvider.InteractionNorm)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                ctaButton
+            }
+            .background(backgroundGradient)
+        }
+    }
+
+    private var choosePlanLabel: some View {
+        Text(L10n.Upsell.chooseAPlan)
+            .font(.system(size: 17, weight: .semibold))
+            .foregroundStyle(ColorProvider.TextNorm)
+            .padding(.vertical, 16)
+    }
+
+    private var cyclePicker: some View {
+        SegmentedControl(
+            options: [
+                .init(title: L10n.Recurrence.monthly, value: OnboardingUpsellPageModel.Cycle.monthly),
+                .init(title: L10n.Upsell.annual, value: OnboardingUpsellPageModel.Cycle.annual)
+            ],
+            selectedValue: $model.selectedCycle
+        )
+    }
+
+    private var planList: some View {
+        ScrollView(showsIndicators: false) {
+            if verticalSizeClass != .compact {
+                cyclePicker
+
+                Spacer()
+                    .frame(height: 8)
+            }
+
+            Spacer()
+                .frame(height: 16)
+
+            ForEach(Array(zip(model.tiles.indices, model.tiles)), id: \.0) { index, tileModel in
+                Tile(
+                    model: tileModel,
+                    selectedCycle: model.selectedCycle,
+                    isSelected: index == model.selectedPlanIndex
                 )
+                .onTapGesture {
+                    model.selectedPlanIndex = index
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+    }
 
-                if model.showGetProtonFreeButton {
-                    Spacer()
-                        .frame(height: 16)
+    private var ctaButton: some View {
+        VStack {
+            if let actualChargeDisclaimer = model.actualChargeDisclaimer {
+                Text(actualChargeDisclaimer)
+                    .font(.system(size: 11, weight: .regular))
+                    .foregroundColor(ColorProvider.BrandDarken20)
+            }
 
-                    Button(model.getFreePlanButtonTitle) {
+            Button(
+                action: {
+                    if let selectedPlanIdentifier = model.selectedPlanIdentifier {
+                        onPurchaseTapped(selectedPlanIdentifier)
+                    } else {
                         onFreePlanSelected()
                     }
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(ColorProvider.BrandDarken20)
+                },
+                label: {
+                    ZStack {
+                        Text(model.ctaButtonTitle)
+                            .font(.system(size: 17, weight: .semibold))
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
+                            .foregroundColor(.white)
+                            .visible(!model.isBusy)
+
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .visible(model.isBusy)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 36)
+                    .background(ColorProvider.InteractionNorm)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
+            )
+
+            if model.showGetProtonFreeButton {
+                Spacer()
+                    .frame(height: 16)
+
+                Button(model.getFreePlanButtonTitle) {
+                    onFreePlanSelected()
+                }
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(ColorProvider.BrandDarken20)
             }
-            .padding([.horizontal, .bottom], 32)
         }
-        .background(backgroundGradient)
+        .padding(.horizontal, 32)
+        .padding(.bottom, 32)
     }
 
     public init(model: OnboardingUpsellPageModel, onPurchaseTapped: @escaping (String) -> Void) {
