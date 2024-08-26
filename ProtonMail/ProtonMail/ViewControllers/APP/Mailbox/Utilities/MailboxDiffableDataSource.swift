@@ -63,7 +63,13 @@ final class MailboxDiffableDataSource {
         guard var snapshotToLoad = snapshotToLoad else { return }
 
         if forceReload {
-            snapshotToLoad.reloadSections([0])
+            do {
+                try ObjC.catchException {
+                    snapshotToLoad.reloadSections([0])
+                }
+            } catch {
+                SystemLogger.log(error: error)
+            }
         }
 
         queue.async {
