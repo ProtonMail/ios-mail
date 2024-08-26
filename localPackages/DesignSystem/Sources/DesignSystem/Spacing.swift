@@ -17,6 +17,8 @@ public extension DS.Spacing {
     static let compact: CGFloat = 6
     /// 8px
     static let standard: CGFloat = 8
+    /// 10px
+    static let mediumLight: CGFloat = 10
     /// 12px
     static let medium: CGFloat = 12
     /// 14px
