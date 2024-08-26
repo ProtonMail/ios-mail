@@ -1846,10 +1846,10 @@
 "Get more storage" = "Få mere lagerplads";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Dimensioneret til læsning";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Nu vil brødteksten i dine mails også blive vist i din foretrukne læsestørrelse.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Lagerpladsen er fuld";
@@ -2515,3 +2515,18 @@
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Udsæt den til et selvvalgt tidspunkt. Få tilpasset slumretid og mere med %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %@ every %@" = "Billed at %@ every %@";
