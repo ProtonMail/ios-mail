@@ -2529,4 +2529,4 @@
 "%u more features" = "%u more features";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %@ every %@" = "Billed at %@ every %@";
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
