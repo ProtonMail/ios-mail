@@ -1846,10 +1846,10 @@
 "Get more storage" = "Атрымаць больш месца ў сховішчы";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Памер для чытання";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Цяпер цела тэксту вашых лістоў будзе таксама адлюстроўвацца ў выбраным вамі памеры чытання.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Ваша сховішча запоўнена";
@@ -2484,7 +2484,7 @@
 "Clear out old trash and spam" = "Ачысціць выдаленыя файлы і спам";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з тарыфным планам %@.";
 
 /* Title of the upsell page */
 "Group your contacts" = "Групаванне кантактаў";
@@ -2508,10 +2508,25 @@
 "Schedule now, send later" = "Заплануйце цяпер, а адпраўце пазней";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Атрымлівайце асалоду ад магчымасці карыстальніцкай планавання адпраўкі і іншых прэміяльных функцый з тарыфным планам %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Атрымлівайце асалоду ад магчымасці карыстальніцкага планавання адпраўкі і іншых прэміяльных функцый з тарыфным планам %@.";
 
 /* Title of the upsell page */
 "Bad time for this email?" = "Не падыходзячы час для гэтага ліста?";
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Адкладзіце яго на зручны для вас час. Атрымайце магчымасць адкладаць лісты і іншыя функцыі з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";

@@ -1678,6 +1678,6 @@ enum L10n {
         static let annual = NSLocalizedString("Annual", comment: "Refers to an annual billing cycle")
         static let bestValue = NSLocalizedString("Best value", comment: "Label on the Proton Unlimited plan")
         static let nMoreFeatures = NSLocalizedString("%u more features", comment: "Button to expand the feature list")
-        static let billedAtEvery = NSLocalizedString("Billed at %@ every %@", comment: "1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc")
+        static let billedAtEvery = NSLocalizedString("Billed at %1$@ every %2$@", comment: "1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc")
     }
 }

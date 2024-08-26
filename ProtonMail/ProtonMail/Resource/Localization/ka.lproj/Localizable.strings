@@ -1846,10 +1846,10 @@
 "Get more storage" = "მიიღეთ მეტი საცავი";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "ზომა შეცვლილია წასაკითხად";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "ახლა თქვენი ელფოსტების სხეულის ტექსტიც სასურველი ფონტიზ ზომით გამოჩნდება.";
 
 /* Title of the banner alert */
 "Your storage is full" = "თქვენი საცავი სავსეა";
@@ -2515,3 +2515,18 @@
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "დაადუმეთ ის დროით, რომელიც გაწყობთ. მიიღეთ მორგებული დადუმება და მეტი %@-სთან ერთად.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";

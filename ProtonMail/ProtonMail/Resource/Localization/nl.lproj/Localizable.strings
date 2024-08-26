@@ -2515,3 +2515,18 @@
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Sluimer het voor een tijd van uw keuze. Krijg aangepaste snooze en meer met %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";

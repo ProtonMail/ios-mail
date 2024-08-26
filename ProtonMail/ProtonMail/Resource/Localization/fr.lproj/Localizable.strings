@@ -1849,7 +1849,7 @@
 "Sized for reading" = "Adapté à la lecture";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Le texte du corps de vos e-mails s'affiche également désormais dans la taille de lecture que vous préférez.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Le texte du corps de vos e-mails s'affiche également désormais à la taille de lecture que vous préférez.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Votre espace de stockage est plein.";
@@ -2515,3 +2515,18 @@
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Personnalisez vos mises en attente comme vous le souhaitez et plus avec %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choisissez un abonnement";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annuel";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Meilleur rapport qualité/prix";
+
+/* Button to expand the feature list */
+"%u more features" = "%u fonctionnalités en plus";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Facturé %1$@ tous les %2$@";

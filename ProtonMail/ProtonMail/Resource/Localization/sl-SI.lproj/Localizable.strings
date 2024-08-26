@@ -1633,7 +1633,7 @@
 "Cannot empty folder right now." = "Trenutno ni mogoče izprazniti mape";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Ali ste prepričani, da želite trajno izbrisati vsa sporočila v mapi »%@«?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "… [Prikaži celotno sporočilo]";
@@ -1855,16 +1855,16 @@
 "Your storage is full" = "Vaša shramba je polna";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "Vaša naročnina se je iztekla";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "Vašemu računu grozi izbris";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "Za pošiljanje in prejemanje sporočil sprostite nekaj prostora ali dokupite prostor za shranjevanje.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "Za nalaganje datotek sprostite nekaj prostora ali dokupite prostor za shranjevanje.";
 
 /* Description of the banner alert */
 "Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
@@ -2493,7 +2493,7 @@
 "Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Potrebujete več oznak ali map?";
 
 /* Subtitle of the upsell page */
 "Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
@@ -2511,7 +2511,22 @@
 "Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Ni pravi trenutek za to sporočilo?";
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
