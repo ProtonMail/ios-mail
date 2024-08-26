@@ -59,6 +59,7 @@ extension OnboardingUpsellPage {
                         isSelected ? IconProvider.checkmarkCircleFilled : IconProvider.emptyCircle
                     }
                     .foregroundStyle(ColorProvider.IconAccent)
+                    .animation(.spring, value: isSelected)
 
                     HStack {
                         Spacer()
@@ -106,7 +107,9 @@ extension OnboardingUpsellPage {
                     if model.showExpandButton {
                         Button(
                             action: {
-                                model.isExpanded.toggle()
+                                withAnimation(.spring) {
+                                    model.isExpanded.toggle()
+                                }
                             },
                             label: {
                                 HStack(spacing: 4) {
@@ -134,6 +137,7 @@ extension OnboardingUpsellPage {
                         isSelected ? highlightGradient : nonSelectionGradient,
                         lineWidth: isSelected ? 3 : 1.5
                     )
+                    .animation(.spring, value: isSelected)
             }
         }
     }
