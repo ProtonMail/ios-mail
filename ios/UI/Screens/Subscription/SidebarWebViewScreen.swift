@@ -28,22 +28,12 @@ struct SidebarWebViewScreen: View {
     }
 
     var body: some View {
-        NavigationStack {
+        ClosableScreenView(topSpacing: DS.Spacing.large) {
             ProtonAuthenticatedWebView(webViewPage: webViewPage)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webViewPage.title.string)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: { dismiss.callAsFunction() }) {
-                            Image(DS.Icon.icCrossBig)
-                                .resizable()
-                                .square(size: 24)
-                                .tint(DS.Color.Sidebar.iconNorm)
-                        }
-                    }
-                }
         }
     }
 
