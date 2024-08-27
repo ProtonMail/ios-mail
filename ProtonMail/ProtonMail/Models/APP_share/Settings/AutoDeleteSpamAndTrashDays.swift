@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum AutoDeleteSpamAndTrashDays: Int, Encodable {
+enum AutoDeleteSpamAndTrashDays {
     case implicitlyDisabled
     case explicitlyDisabled
     case explicitlyEnabled
@@ -43,6 +43,21 @@ enum AutoDeleteSpamAndTrashDays: Int, Encodable {
             return false
         case .explicitlyEnabled:
             return true
+        }
+    }
+}
+
+extension AutoDeleteSpamAndTrashDays: Encodable {
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+        case .implicitlyDisabled:
+            try container.encodeNil()
+        case .explicitlyDisabled:
+            try container.encode(Self.disabledValue)
+        case .explicitlyEnabled:
+            try container.encode(Self.enabledValue)
         }
     }
 }
