@@ -76,6 +76,7 @@ final class OnboardingUpsellCoordinator {
         }
 
         let hosting = SheetLikeSpotlightViewController(rootView: onboardingUpsellPage)
+        hosting.overrideUserInterfaceStyle = .light
         rootViewController?.present(hosting, animated: true)
 
         await dependencies.upsellTelemetryReporter.upsellPageDisplayed()
