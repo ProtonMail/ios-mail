@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCorePayments
+import ProtonCorePaymentsUI
 import ProtonMailUI
 
 struct OnboardingUpsellPageFactory {
@@ -24,23 +26,39 @@ struct OnboardingUpsellPageFactory {
     private unowned let dependencies: Dependencies
 
     private let unlimitedPlanPerks: [UpsellPageModel.Perk] = [
-        .init(icon: \.storage, description: "Up to 500 GB of storage"),
-        .init(icon: \.storage, description: "Up to 500 GB of storage"),
-        .init(icon: \.storage, description: "Up to 500 GB of storage"),
-        .init(icon: \.storage, description: "Up to 500 GB of storage"),
-        .init(icon: \.storage, description: "Up to 500 GB of storage"),
-        .init(icon: \.storage, description: "Up to 500 GB of storage")
+        .init(
+            icon: \.storage,
+            description: String(
+                format: PUITranslations.plan_details_storage.l10n,
+                Measurement<UnitInformationStorage>(value: 500, unit: .gigabytes).formatted()
+            )
+        ),
+        .init(icon: \.envelope, description: String(format: PUITranslations.plan_details_n_addresses.l10n, 15)),
+        .init(icon: \.globe, description: String(format: PUITranslations._details_n_custom_email_domains.l10n, 3)),
+        .init(icon: \.tag, description: PUITranslations._details_unlimited_folders_labels_filters.l10n),
+        .init(icon: \.calendarCheckmark, description: String(format: L10n.PremiumPerks.personalCalendars, 25)),
+        .init(icon: \.shield, description: String(format: PUITranslations._details_vpn_on_n_devices.l10n, 10))
     ]
 
     private let plusPlanPerks: [UpsellPageModel.Perk] = [
         .init(icon: \.storage, description: L10n.PremiumPerks.storage),
-        .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
-        .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain)
+        .init(icon: \.envelope, description: String(format: PUITranslations.plan_details_n_addresses.l10n, 10)),
+        .init(icon: \.globe, description: String(format: PUITranslations._details_n_custom_email_domains.l10n, 1)),
+        .init(icon: \.tag, description: PUITranslations._details_unlimited_folders_labels_filters.l10n),
+        .init(icon: \.calendarCheckmark, description: String(format: L10n.PremiumPerks.personalCalendars, 25))
     ]
 
     private let freePlanPerks: [UpsellPageModel.Perk] = [
-        .init(icon: \.storage, description: "1 GB Storage and 1 email")
+        .init(icon: \.storage, description: L10n.PremiumPerks.freePlanPerk)
     ]
+
+    private var unlimitedPlanProducts: [ClientApp] {
+        plusPlanProducts + [.drive, .vpn, .pass]
+    }
+
+    private var plusPlanProducts: [ClientApp] {
+        [.mail, .calendar]
+    }
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -75,7 +93,8 @@ struct OnboardingUpsellPageFactory {
                 isBestValue: isUnlimited,
                 alwaysVisiblePerks: isUnlimited ? 3 : 2,
                 storeKitProductIDsPerCycle: storeKitProductIDsPerCycle,
-                billingPricesPerCycle: billingPricesPerCycle
+                billingPricesPerCycle: billingPricesPerCycle,
+                includedProducts: isUnlimited ? unlimitedPlanProducts : plusPlanProducts
             )
         }
 
@@ -86,7 +105,8 @@ struct OnboardingUpsellPageFactory {
             isBestValue: false,
             alwaysVisiblePerks: 1,
             storeKitProductIDsPerCycle: [:],
-            billingPricesPerCycle: [:]
+            billingPricesPerCycle: [:],
+            includedProducts: nil
         )
 
         let maxDiscount = upsellPageModels.flatMap(\.plan.purchasingOptions).compactMap(\.discount).max()

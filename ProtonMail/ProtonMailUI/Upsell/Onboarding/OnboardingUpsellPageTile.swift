@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -104,6 +105,30 @@ extension OnboardingUpsellPage {
                         }
                     }
 
+                    if let includedProducts = model.includedProducts, model.isExpanded {
+                        Spacer()
+                            .frame(height: 24)
+
+                        Text(L10n.Upsell.premiumValueIncluded)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(ColorProvider.BrandDarken40)
+
+                        Spacer()
+                            .frame(height: 12)
+
+                        HStack {
+                            ForEach(includedProducts, id: \.name) { includedProduct in
+                                includedProduct
+                                    .icon
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                            }
+                        }
+
+                        Spacer()
+                            .frame(height: 16)
+                    }
+
                     if model.showExpandButton {
                         Button(
                             action: {
@@ -143,6 +168,29 @@ extension OnboardingUpsellPage {
     }
 }
 
+private extension ClientApp {
+    var icon: Image {
+        let imageName: String
+
+        switch self {
+        case .mail:
+            imageName = "LaunchScreenMailLogo"
+        case .vpn:
+            imageName = "LaunchScreenVPNLogo"
+        case .drive:
+            imageName = "LaunchScreenDriveLogo"
+        case .calendar:
+            imageName = "LaunchScreenCalendarLogo"
+        case .pass:
+            imageName = "LaunchScreenPassLogo"
+        case .wallet, .other:
+            fatalError("not reachable")
+        }
+
+        return Image(imageName, bundle: PMUIFoundations.bundle)
+    }
+}
+
 #Preview {
     ScrollView {
         OnboardingUpsellPage.Tile(
@@ -150,10 +198,11 @@ extension OnboardingUpsellPage {
                 planName: "Proton Unlimited",
                 perks: [
                     .init(icon: \.storage, description: "500 GB storage"),
-                    .init(icon: \.storage, description: "500 GB storage"),
-                    .init(icon: \.storage, description: "500 GB storage"),
-                    .init(icon: \.storage, description: "500 GB storage"),
-                    .init(icon: \.storage, description: "500 GB storage")
+                    .init(icon: \.envelope, description: "15 email addresses"),
+                    .init(icon: \.globe, description: "Support for 3 custom email domains"),
+                    .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                    .init(icon: \.calendarCheckmark, description: "25 personal calendars"),
+                    .init(icon: \.shield, description: "High-speed VPN on 10 devices")
                 ],
                 monthlyPricesPerCycle: [
                     1: "CHF 4.99"
@@ -161,7 +210,8 @@ extension OnboardingUpsellPage {
                 isBestValue: true,
                 alwaysVisiblePerks: 3,
                 storeKitProductIDsPerCycle: [:],
-                billingPricesPerCycle: [:]
+                billingPricesPerCycle: [:],
+                includedProducts: [.mail, .calendar, .drive, .vpn, .pass]
             ),
             selectedCycle: .monthly,
             isSelected: true

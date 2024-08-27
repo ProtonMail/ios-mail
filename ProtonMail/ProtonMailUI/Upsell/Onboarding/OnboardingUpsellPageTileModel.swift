@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -27,6 +28,7 @@ extension OnboardingUpsellPageModel {
         let alwaysVisiblePerks: Int
         let storeKitProductIDsPerCycle: [Int: String]
         let billingPricesPerCycle: [Int: String]
+        let includedProducts: [ClientApp]?
         var isExpanded: Bool
 
         var showExpandButton: Bool {
@@ -52,7 +54,8 @@ extension OnboardingUpsellPageModel {
             isBestValue: Bool,
             alwaysVisiblePerks: Int,
             storeKitProductIDsPerCycle: [Int: String],
-            billingPricesPerCycle: [Int: String]
+            billingPricesPerCycle: [Int: String],
+            includedProducts: [ClientApp]?
         ) {
             self.planName = planName
             self.perks = perks
@@ -61,6 +64,7 @@ extension OnboardingUpsellPageModel {
             self.alwaysVisiblePerks = alwaysVisiblePerks
             self.storeKitProductIDsPerCycle = storeKitProductIDsPerCycle
             self.billingPricesPerCycle = billingPricesPerCycle
+            self.includedProducts = includedProducts
 
             isExpanded = false
         }
