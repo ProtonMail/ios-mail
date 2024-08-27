@@ -270,13 +270,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
                          selector: #selector(willBecomeActive),
                          name: UIScene.willEnterForegroundNotification,
                          object: nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(timeZoneDidChange),
-            name: .NSSystemTimeZoneDidChange,
-            object: nil
-        )
     }
 
     // swiftlint:disable:next function_body_length
@@ -379,19 +372,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
         }
-    }
-
-    @objc
-    private func timeZoneDidChange() {
-        let cells = customView.tableView.visibleCells.compactMap { $0 as? ConversationMessageCell }
-        var indexes: [IndexPath] = []
-        for cell in cells {
-            guard let index = customView.tableView.indexPath(for: cell) else { continue }
-            indexes.append(index)
-        }
-        customView.tableView.beginUpdates()
-        customView.tableView.reloadRows(at: indexes, with: .automatic)
-        customView.tableView.endUpdates()
     }
 
     required init?(coder: NSCoder) { nil }
