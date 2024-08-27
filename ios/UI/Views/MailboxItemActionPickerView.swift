@@ -37,24 +37,26 @@ struct MailboxItemActionPickerView: View {
     }
 
     var body: some View {
-        ActionPickerList(
-            headerContent: {
-                replyActionButtons
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets())
-            },
-            sections: [
-                MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
-                MailboxItemActionPickerSection
-                    .second(isSpamFolder: resolver.params.systemFolder.isSpam)
-                    .actions(type: mailboxItemIdentifier.type)
-                    .map(resolver.action(for:)),
-                MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:))
-            ],
-            onElementTap: { action in
-                onActionTap(action, mailboxItemIdentifier)
-            })
-        .accessibilityElement(children: .contain)
+        ClosableScreenView(topSpacing: -DS.Spacing.standard) {
+            ActionPickerList(
+                headerContent: {
+                    replyActionButtons
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                },
+                sections: [
+                    MailboxItemActionPickerSection.first.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:)),
+                    MailboxItemActionPickerSection
+                        .second(isSpamFolder: resolver.params.systemFolder.isSpam)
+                        .actions(type: mailboxItemIdentifier.type)
+                        .map(resolver.action(for:)),
+                    MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:))
+                ],
+                onElementTap: { action in
+                    onActionTap(action, mailboxItemIdentifier)
+                })
+            .accessibilityElement(children: .contain)
+        }
     }
 
     @ViewBuilder
