@@ -119,12 +119,12 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
             .init(
                 planName: "Proton Unlimited",
                 perks: [
-                    .init(icon: \.storage, description: "Up to 500 GB of storage"),
-                    .init(icon: \.storage, description: "Up to 500 GB of storage"),
-                    .init(icon: \.storage, description: "Up to 500 GB of storage"),
-                    .init(icon: \.storage, description: "Up to 500 GB of storage"),
-                    .init(icon: \.storage, description: "Up to 500 GB of storage"),
-                    .init(icon: \.storage, description: "Up to 500 GB of storage")
+                    .init(icon: \.storage, description: "500 GB storage"),
+                    .init(icon: \.envelope, description: "15 email addresses"),
+                    .init(icon: \.globe, description: "Support for 3 custom email domains"),
+                    .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                    .init(icon: \.calendarCheckmark, description: "25 personal calendars"),
+                    .init(icon: \.shield, description: "High-speed VPN on 10 devices")
                 ],
                 monthlyPricesPerCycle: [
                     1: "$12.99",
@@ -139,14 +139,17 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                 billingPricesPerCycle: [
                     1: "$12.99",
                     12: "$119.88"
-                ]
+                ],
+                includedProducts: [.mail, .calendar, .drive, .vpn, .pass]
             ),
             .init(
                 planName: "Mail Plus",
                 perks: [
                     .init(icon: \.storage, description: "15 GB storage"),
-                    .init(icon: \.inbox, description: "10 email addresses"),
-                    .init(icon: \.globe, description: "Custom email domain support")
+                    .init(icon: \.envelope, description: "10 email addresses"),
+                    .init(icon: \.globe, description: "Support for 1 custom email domain"),
+                    .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                    .init(icon: \.calendarCheckmark, description: "25 personal calendars")
                 ],
                 monthlyPricesPerCycle: [
                     1: "$4.99",
@@ -161,7 +164,8 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                 billingPricesPerCycle: [
                     1: "$4.99",
                     12: "$47.88"
-                ]
+                ],
+                includedProducts: [.mail, .calendar]
             ),
             .init(
                 planName: "Proton Free",
@@ -172,7 +176,8 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                 isBestValue: false,
                 alwaysVisiblePerks: 1,
                 storeKitProductIDsPerCycle: [:],
-                billingPricesPerCycle: [:]
+                billingPricesPerCycle: [:],
+                includedProducts: nil
             )
         ]
 

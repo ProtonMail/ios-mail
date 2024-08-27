@@ -185,42 +185,46 @@ public struct OnboardingUpsellPage: View {
                     planName: "Proton Unlimited",
                     perks: [
                         .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage")
+                        .init(icon: \.envelope, description: "15 email addresses"),
+                        .init(icon: \.globe, description: "Support for 3 custom email domains"),
+                        .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                        .init(icon: \.calendarCheckmark, description: "25 personal calendars"),
+                        .init(icon: \.shield, description: "High-speed VPN on 10 devices")
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: true,
                     alwaysVisiblePerks: 3,
                     storeKitProductIDsPerCycle: [:],
-                    billingPricesPerCycle: [:]
+                    billingPricesPerCycle: [:],
+                    includedProducts: [.mail, .calendar, .drive, .vpn, .pass]
                 ),
                 .init(
                     planName: "Mail Plus",
                     perks: [
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage"),
-                        .init(icon: \.storage, description: "500 GB storage")
+                        .init(icon: \.storage, description: "15 GB storage"),
+                        .init(icon: \.envelope, description: "10 email addresses"),
+                        .init(icon: \.globe, description: "Support for 1 custom email domain"),
+                        .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
+                        .init(icon: \.calendarCheckmark, description: "25 personal calendars")
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: false,
                     alwaysVisiblePerks: 2,
                     storeKitProductIDsPerCycle: [:],
-                    billingPricesPerCycle: [:]
+                    billingPricesPerCycle: [:],
+                    includedProducts: [.mail, .calendar]
                 ),
                 .init(
                     planName: "Proton Free",
                     perks: [
-                        .init(icon: \.storage, description: "500 GB storage")
+                        .init(icon: \.storage, description: "1 GB Storage and 1 email")
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: false,
                     alwaysVisiblePerks: 1,
                     storeKitProductIDsPerCycle: [:],
-                    billingPricesPerCycle: [:]
+                    billingPricesPerCycle: [:],
+                    includedProducts: nil
                 )
             ],
             maxDiscount: 20

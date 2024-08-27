@@ -1640,6 +1640,8 @@ enum L10n {
         static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
         static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
         static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
+        static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
+        static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
     }
 
@@ -1679,5 +1681,6 @@ enum L10n {
         static let bestValue = NSLocalizedString("Best value", comment: "Label on the Proton Unlimited plan")
         static let nMoreFeatures = NSLocalizedString("%u more features", comment: "Button to expand the feature list")
         static let billedAtEvery = NSLocalizedString("Billed at %1$@ every %2$@", comment: "1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc")
+        static let premiumValueIncluded = NSLocalizedString("Premium value included", comment: "In the list of premium plan features")
     }
 }
