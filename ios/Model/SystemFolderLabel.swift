@@ -18,26 +18,11 @@
 import DesignSystem
 import DeveloperToolsSupport
 import Foundation
+import proton_mail_uniffi
 
-/// List of remote identifiers for system folders. These values are not to be used for PMLocalLabelId
-enum SystemFolderIdentifier: UInt64, CaseIterable {
-    case inbox = 0
-    case allDrafts = 1
-    case allSent = 2
-    case trash = 3
-    case spam = 4
-    case allMail = 5
-    case archive = 6
-    case sent = 7
-    case draft = 8
-    case outbox = 9
-    case starred = 10
-    case allScheduled = 12
-    case almostAllMail = 15
-    case snoozed = 16
-}
+typealias SystemFolderLabel = SystemLabel
 
-extension SystemFolderIdentifier {
+extension SystemFolderLabel {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .inbox:
@@ -56,18 +41,20 @@ extension SystemFolderIdentifier {
             L10n.Mailbox.SystemFolder.allMail
         case .archive:
             L10n.Mailbox.SystemFolder.archive
-        case .draft:
+        case .drafts:
             L10n.Mailbox.SystemFolder.draft
         case .outbox:
             L10n.Mailbox.SystemFolder.outbox
         case .starred:
             L10n.Mailbox.SystemFolder.starred
-        case .allScheduled:
+        case .scheduled:
             L10n.Mailbox.SystemFolder.allScheduled
         case .almostAllMail:
             L10n.Mailbox.SystemFolder.allMail
         case .snoozed:
             L10n.Mailbox.SystemFolder.snoozed
+        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
+            fatalError("Not implemented")
         }
     }
 
@@ -75,7 +62,7 @@ extension SystemFolderIdentifier {
         switch self {
         case .inbox:
             DS.Icon.icInbox
-        case .allDrafts, .draft, .outbox:
+        case .allDrafts, .drafts, .outbox:
             DS.Icon.icFile
         case .allSent, .sent:
             DS.Icon.icPaperPlane
@@ -89,8 +76,10 @@ extension SystemFolderIdentifier {
             DS.Icon.icArchiveBox
         case .starred:
             DS.Icon.icStar
-        case .allScheduled, .snoozed:
+        case .scheduled, .snoozed:
             DS.Icon.icClock
+        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
+            fatalError("Not implemented")
         }
     }
 }

@@ -17,20 +17,14 @@
 
 import proton_mail_uniffi
 
-extension LocalAttachmentMetadata {
+extension ViewMode: CustomStringConvertible {
 
-    func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
-        AttachmentCapsuleUIModel(
-            attachmentId: id,
-            icon: AttachmentType(mimeType: mimeType).icon,
-            name: name
-        )
-    }
-}
-
-extension Array where Element == LocalAttachmentMetadata {
-
-    func toAttachmentCapsuleUIModels() -> [AttachmentCapsuleUIModel] {
-        map { $0.toAttachmentCapsuleUIModel() }
+    public var description: String {
+        switch self {
+        case .conversations:
+            "conversations"
+        case .messages:
+            "messages"
+        }
     }
 }

@@ -17,16 +17,27 @@
 
 import proton_mail_uniffi
 
-extension LocalLabelWithCount {
+protocol MessageBodyProviding {
+    @MainActor
+    func messageBody(for messageId: ID) async -> String?
+}
 
-    var sidebarLabel: SidebarLabel {
-        .init(
-            localID: id,
-            color: color,
-            name: name,
-            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped(),
-            isSelected: false
-        )
+final class MessageBodyProvider: Sendable, MessageBodyProviding {
+    private let mailbox: Mailbox
+
+    init(mailbox: Mailbox) {
+        self.mailbox = mailbox
     }
 
+    func messageBody(for messageId: ID) async -> String? {
+        do {
+            let decryptedMessage = try await getMessageBody(mbox: mailbox, id: messageId)
+            let tranformOptions = TransformOpts(blockQuote: .strip, remoteContent: .default)
+            let decryptedBody = try await decryptedMessage.body(opts: tranformOptions)
+
+            return decryptedBody.body
+        } catch {
+            return nil
+        }
+    }
 }

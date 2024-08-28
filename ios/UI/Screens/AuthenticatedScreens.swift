@@ -23,7 +23,8 @@ struct AuthenticatedScreens: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
-    @StateObject var mailSettings: PMMailSettings
+    private let mailSettingsLiveQuery: MailSettingLiveQuerying
+    private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
 
     @State var webViewSheet: ProtonAuthenticatedWebPage?
 
@@ -32,28 +33,42 @@ struct AuthenticatedScreens: View {
         customLabelModel: CustomLabelModel,
         userSession: MailUserSession
     ) {
-        self._mailSettings = StateObject(wrappedValue: PMMailSettings(userSession: userSession))
         self.appRoute = appRoute
         self.customLabelModel = customLabelModel
+        self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
+        self.makeSidebarScreen = { selectedItem in
+            SidebarScreen(
+                state: .initial,
+                sidebar: Sidebar(ctx: userSession),
+                selectedItem: selectedItem
+            )
+        }
     }
 
     var body: some View {
         ZStack {
             switch appRoute.route {
             case .mailbox:
-                MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings)
+                MailboxScreen(
+                    customLabelModel: customLabelModel,
+                    mailSettingsLiveQuery: mailSettingsLiveQuery
+                )
             case .mailboxOpenMessage(let item):
-                MailboxScreen(customLabelModel: customLabelModel, mailSettings: mailSettings, openedItem: item)
+                MailboxScreen(
+                    customLabelModel: customLabelModel,
+                    mailSettingsLiveQuery: mailSettingsLiveQuery,
+                    openedItem: item
+                )
             case .settings:
                 SettingsScreen()
             }
-            SidebarScreen() { selectedItem in
+            makeSidebarScreen() { selectedItem in
                 switch selectedItem {
                 case .system(let systemFolder):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
-                        localLabelId: systemFolder.localID,
-                        name: systemFolder.identifier.humanReadable,
-                        systemFolder: systemFolder.identifier
+                        labelId: systemFolder.id,
+                        name: systemFolder.type.humanReadable,
+                        systemFolder: systemFolder.type
                     )))
                 case .other(let otherItem):
                     switch otherItem.type {
@@ -74,13 +89,13 @@ struct AuthenticatedScreens: View {
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
-                        localLabelId: label.localID,
+                        labelId: label.id,
                         name: label.name.stringResource,
                         systemFolder: nil
                     )))
                 case .folder(let folder):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
-                        localLabelId: folder.id,
+                        labelId: folder.id,
                         name: folder.name.stringResource,
                         systemFolder: nil
                     )))

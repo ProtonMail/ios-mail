@@ -134,8 +134,7 @@ private extension View {
         ConversationDetailScreen(seed:
                 .mailboxItem(
                     item: .init(
-                        id: 0,
-                        conversationId: 0,
+                        id: .init(value: 0),
                         type: .conversation,
                         avatar: .init(initials: "Pf", type: .sender(params: .init())),
                         senders: "",
@@ -147,10 +146,10 @@ private extension View {
                         isSenderProtonOfficial: true,
                         numMessages: 3,
                         labelUIModel: MailboxLabelUIModel(
-                            labelModels: [LabelUIModel(labelId: 0, text: "Work", color: .blue)]
+                            labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                         ),
                         attachmentsUIModel: [
-                            .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+                            .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
                         ],
                         expirationDate: nil,
                         snoozeDate: nil
@@ -164,7 +163,12 @@ private extension View {
 #Preview("From Notification") {
 
     NavigationView {
-        ConversationDetailScreen(seed: .message(remoteMessageId: "0", subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"))
+        ConversationDetailScreen(
+            seed: .message(
+                localID: .init(value: 0),
+                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"
+            )
+        )
     }
 }
 

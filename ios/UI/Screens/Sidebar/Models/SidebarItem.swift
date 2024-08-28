@@ -18,7 +18,7 @@
 import SwiftUI
 
 enum SidebarItem: Equatable, Identifiable {
-    case system(SidebarSystemFolder)
+    case system(SystemFolder)
     case label(SidebarLabel)
     case folder(SidebarFolder)
     case other(SidebarOtherItem)
@@ -63,11 +63,11 @@ enum SidebarItem: Equatable, Identifiable {
     var id: String {
         switch self {
         case .system(let item):
-            return "\(item.localID)"
+            return "\(item.id.value)"
         case .label(let item):
-            return "\(item.localID)"
+            return "\(item.id.value)"
         case .folder(let item):
-            return "\(item.id)"
+            return "\(item.id.value)"
         case .other(let item):
             return item.name
         }

@@ -27,14 +27,14 @@ enum SidebarAction {
 final class SidebarModel: Sendable {
     private(set) var state: SidebarState
 
-    private var systemFolderQuery: SidebarLiveQuery?
-    private var labelsQuery: SidebarLiveQuery?
-    private var foldersQuery: SidebarLiveQuery?
-    private let dependencies: Dependencies
+    private var foldersChangesObservation: SidebarModelsObservation<PMCustomFolder>?
+    private var labelsChangesObservation: SidebarModelsObservation<PMCustomLabel>?
+    private var systemLabelsChangesObservation: SidebarModelsObservation<PMSystemLabel>?
+    private let sidebar: SidebarProtocol
 
-    init(state: SidebarState = .initial, dependencies: Dependencies = .init()) {
+    init(state: SidebarState, sidebar: SidebarProtocol) {
         self.state = state
-        self.dependencies = dependencies
+        self.sidebar = sidebar
     }
 
     func handle(action: SidebarAction) {
@@ -57,52 +57,54 @@ final class SidebarModel: Sendable {
         case .label(let item):
             state = state.copy(labels: selected(item: item, keyPath: \.labels))
         case .folder(let item):
-            state = state.copy(folders: selected(item: item, keyPath: \.folders))
+            state = state.copy(folders: selected(folder: item, in: state.folders))
         case .other(let item):
             state = state.copy(other: selected(item: item, keyPath: \.other))
         }
     }
 
     private func initLiveQuery() {
-        guard let userContext = dependencies.activeUserSession else { return }
-        systemFolderQuery = SidebarLiveQuery(
-            queryFactory: userContext.newSystemLabelsObservedQuery,
-            dataUpdate: { newFolders in
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.updateSystemFolders(with: newFolders)
-                }))
-            }
-        )
-        labelsQuery = SidebarLiveQuery(
-            queryFactory: userContext.newLabelLabelsObservedQuery,
-            dataUpdate: { newLabels in
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.updateLabels(with: newLabels)
-                }))
-            }
-        )
-        foldersQuery = SidebarLiveQuery(
-            queryFactory: userContext.newFolderLabelsObservedQuery,
-            dataUpdate: { newFolders in
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.updateFolders(with: newFolders)
-                }))
-            }
-        )
+        foldersChangesObservation = .init(
+            sidebar: sidebar,
+            labelType: .folder,
+            updatedData: sidebar.customFolders
+        ) { newFolders in
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.updateFolders(with: newFolders)
+            }))
+        }
+        labelsChangesObservation = .init(
+            sidebar: sidebar,
+            labelType: .label,
+            updatedData: sidebar.customLabels
+        ) { newLabels in
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.updateLabels(with: newLabels)
+            }))
+        }
+        systemLabelsChangesObservation = .init(
+            sidebar: sidebar,
+            labelType: .system, 
+            updatedData: sidebar.systemLabels
+        ) { newSystemLabels in
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.updateSystemFolders(with: newSystemLabels)
+            }))
+        }
     }
 
-    private func updateSystemFolders(with newSystemFolders: [LocalLabelWithCount]) {
-        state = state.copy(
-            system: updated(
-                newItems: newSystemFolders,
-                stateKeyPath: \.system,
-                transformation: \.sidebarSystemFolder
-            )
-        )
-        selectFirstSystemItemIfNeeded()
+    private func updateFolders(with newFolders: [PMCustomFolder]) {
+        let sidebarFolders = newFolders.map(\.sidebarFolder)
+        let sidebarFoldersWithSelection: [SidebarFolder]
+        if let selectedFolder = findSelectedFolder(in: state.folders) {
+            sidebarFoldersWithSelection = selected(folder: selectedFolder, in: sidebarFolders)
+        } else {
+            sidebarFoldersWithSelection = sidebarFolders
+        }
+        state = state.copy(folders: sidebarFoldersWithSelection)
     }
 
-    private func updateLabels(with newLabels: [LocalLabelWithCount]) {
+    private func updateLabels(with newLabels: [PMCustomLabel]) {
         state = state.copy(
             labels: updated(
                 newItems: newLabels,
@@ -112,20 +114,21 @@ final class SidebarModel: Sendable {
         )
     }
 
-    private func updateFolders(with newFolders: [LocalLabelWithCount]) {
+    private func updateSystemFolders(with newSystemLabels: [PMSystemLabel]) {
         state = state.copy(
-            folders: updated(
-                newItems: newFolders,
-                stateKeyPath: \.folders,
-                transformation: { folder in folder.sidebarFolder }
+            system: updated(
+                newItems: newSystemLabels,
+                stateKeyPath: \.system,
+                transformation: \.sidebarSystemFolder
             )
         )
+        selectFirstSystemItemIfNeeded()
     }
 
-    private func updated<Item: SelectableItem>(
-        newItems: [LocalLabelWithCount],
+    private func updated<Item: SelectableItem, Model>(
+        newItems: [Model],
         stateKeyPath: KeyPath<SidebarState, [Item]>,
-        transformation: (LocalLabelWithCount) -> Item?
+        transformation: (Model) -> Item?
     ) -> [Item] where Item.SelectableItemType == Item {
         let selectedItem = state[keyPath: stateKeyPath].first(where: \.isSelected)
         let newItems = newItems
@@ -137,18 +140,44 @@ final class SidebarModel: Sendable {
     private func unselectAll() {
         state = .init(
             system: unselected(keyPath: \.system),
-            labels: unselected(keyPath: \.labels), 
-            folders: unselected(keyPath: \.folders),
+            labels: unselected(keyPath: \.labels),
+            folders: unselectedFolders(in: state.folders),
             other: unselected(keyPath: \.other),
             createLabel: .createLabel.copy(isSelected: false),
             createFolder: .createFolder.copy(isSelected: false)
         )
     }
 
+    private func unselectedFolders(in folders: [SidebarFolder]) -> [SidebarFolder] {
+        folders.map { folder in
+            folder
+                .copy(isSelected: false)
+                .copy(childFolders: unselectedFolders(in: folder.childFolders))
+        }
+    }
+
     private func unselected<Item: SelectableItem>(
         keyPath: KeyPath<SidebarState, [Item]>
     ) -> [Item] where Item.SelectableItemType == Item{
         state[keyPath: keyPath].map { item in item.copy(isSelected: false) }
+    }
+
+    private func selected(folder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
+        folders.map { folder in
+            if folder.selectionIdentifier == folder.selectionIdentifier {
+                return folder.copy(isSelected: true)
+            } else {
+                return folder.copy(childFolders: selected(folder: folder, in: folder.childFolders))
+            }
+        }
+    }
+
+    func findSelectedFolder(in folders: [SidebarFolder]) -> SidebarFolder? {
+        if let selected = folders.findFirst(for: true, by: \.isSelected) {
+            return selected
+        }
+        let childFolders = folders.flatMap(\.childFolders)
+        return childFolders.isEmpty ? nil : findSelectedFolder(in: childFolders)
     }
 
     private func selected<Item: SelectableItem>(
@@ -162,47 +191,73 @@ final class SidebarModel: Sendable {
     }
 
     private func selectFirstSystemItemIfNeeded() {
-        if state.items.filter(\.isSelected).isEmpty, let first = state.items.first(where: \.isSelectable) {
-            select(item: first)
+        if state.items.filter(\.isSelected).isEmpty, let first = state.system.first {
+            select(item: .system(first))
         }
     }
 
 }
 
-extension SidebarModel {
+private class SidebarModelsObservation<Model>: LiveQueryCallback {
 
-    struct Dependencies {
-        let activeUserSession: MailUserSessionProtocol?
+    private let sidebar: SidebarProtocol
+    private let labelType: LabelType
+    private let updatedData: () async throws -> ([Model])
+    private let dataUpdate: ([Model]) -> Void
 
-        init(activeUserSession: MailUserSessionProtocol? = AppContext.shared.activeUserSession) {
-            self.activeUserSession = activeUserSession
-        }
-    }
-
-}
-
-private class SidebarLiveQuery: MailboxLiveQueryUpdatedCallback {
-
-    private let dataUpdate: ([LocalLabelWithCount]) -> Void
-    private var query: MailLabelsLiveQuery?
+    private var watchHandle: WatchHandle?
 
     init(
-        queryFactory: @escaping (MailboxLiveQueryUpdatedCallback) -> MailLabelsLiveQuery,
-        dataUpdate: @escaping ([LocalLabelWithCount]) -> Void
+        sidebar: SidebarProtocol,
+        labelType: LabelType,
+        updatedData: @escaping () async throws -> ([Model]),
+        dataUpdate: @escaping ([Model]) -> Void
     ) {
+        self.sidebar = sidebar
+        self.labelType = labelType
+        self.updatedData = updatedData
         self.dataUpdate = dataUpdate
-        self.query = queryFactory(self)
+        initLiveQuery()
     }
 
-    // MARK: - MailboxLiveQueryUpdatedCallback
+    // MARK: - LiveQueryCallback
 
-    func onUpdated() {
-        do {
-            let newItems = try query.unsafelyUnwrapped.value()
-            dataUpdate(newItems)
-        } catch {
-            AppLogger.log(error: error)
+    func onUpdate() {
+        Task {
+            await emitUpdatedModelsIfAvailable()
         }
+    }
+
+    // MARK: - Private
+
+    private func initLiveQuery() {
+        Task {
+            watchHandle = try await sidebar.watchLabels(labelType: labelType, callback: self)
+            await emitUpdatedModelsIfAvailable()
+        }
+    }
+
+    private func emitUpdatedModelsIfAvailable() async {
+        if let newData = try? await updatedData() {
+            dataUpdate(newData)
+        }
+    }
+
+}
+
+private extension SidebarFolder {
+
+    func copy(childFolders: [SidebarFolder]) -> SidebarFolder {
+        .init(
+            id: id,
+            parentID: parentID,
+            name: name,
+            color: color,
+            unreadCount: unreadCount,
+            expanded: expanded,
+            childFolders: childFolders,
+            isSelected: isSelected
+        )
     }
 
 }

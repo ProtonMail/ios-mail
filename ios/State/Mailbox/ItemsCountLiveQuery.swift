@@ -15,18 +15,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_mail_uniffi
 
-struct SelectedItem: Hashable {
-    let id: PMMailboxItemId
-    let isRead: Bool
-    let isStarred: Bool
+final class ItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+    private let mailbox: Mailbox
+    private let dataUpdate: (UInt64) -> Void
+    private var watchHandle: WatchHandle?
+
+    init(mailbox: Mailbox, dataUpdate: @escaping (UInt64) -> Void) {
+        self.mailbox = mailbox
+        self.dataUpdate = dataUpdate
+        setUpLiveQuery()
     }
 
-    static func == (lhs: SelectedItem, rhs: SelectedItem) -> Bool {
-        return lhs.id == rhs.id
+    func setUpLiveQuery() {
+        Task {
+            watchHandle = try await mailbox.watchUnreadCount(callback: self)
+        }
     }
+
+    // MARK: - LiveQueryCallback
+
+    func onUpdate() {
+        Task {
+            if let itemsCount = try? await mailbox.unreadCount() {
+                dataUpdate(itemsCount)
+            }
+        }
+    }
+
 }

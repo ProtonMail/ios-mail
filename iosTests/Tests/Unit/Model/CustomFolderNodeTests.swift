@@ -19,11 +19,11 @@
 import proton_mail_uniffi
 import XCTest
 
-final class CustomFolderTests: XCTestCase {
+final class CustomFolderNodeTests: BaseTestCase {
 
     func testPreorderTreeTraversal_whenSingleFolder_itReturnsTheFolder() {
         let name = "Folder"
-        let sut = CustomFolder(folder: LocalLabel(name: name), children: [])
+        let sut = CustomFolderNode(folder: .testData(name: name), children: [])
 
         let result = sut.preorderTreeTraversal()
 
@@ -32,19 +32,19 @@ final class CustomFolderTests: XCTestCase {
     }
 
     func testPreorderTreeTraversal_whenNestedFolders_itReturnsTheFlattenedArray() {
-        let sut = CustomFolder(
-            folder: LocalLabel(name: "F1"),
+        let sut = CustomFolderNode(
+            folder: .testData(name: "F1"),
             children: [
-                CustomFolder(
-                    folder: LocalLabel(name: "F11"),
+                CustomFolderNode(
+                    folder: .testData(name: "F11"),
                     children: [
-                        CustomFolder(folder: LocalLabel(name: "F111"), children: []),
-                        CustomFolder(folder: LocalLabel(name: "F112"), children: [])
+                        CustomFolderNode(folder: .testData(name: "F111"), children: []),
+                        CustomFolderNode(folder: .testData(name: "F112"), children: [])
                     ]
                 ),
-                CustomFolder(folder: LocalLabel(name: "F12"), children: []),
-                CustomFolder(folder: LocalLabel(name: "F13"), children: [
-                    CustomFolder(folder: LocalLabel(name: "F131"), children: []),
+                CustomFolderNode(folder: .testData(name: "F12"), children: []),
+                CustomFolderNode(folder: .testData(name: "F13"), children: [
+                    CustomFolderNode(folder: .testData(name: "F131"), children: []),
                 ])
             ]
         )
@@ -53,24 +53,5 @@ final class CustomFolderTests: XCTestCase {
 
         XCTAssertEqual(result.count, 7)
         XCTAssertEqual(result.map(\.folder.name), ["F1", "F11", "F111", "F112", "F12", "F13", "F131"])
-    }
-}
-
-private extension LocalLabel {
-
-    init(name: String) {
-        self.init(
-            id: UInt64.random(in: 1...UInt64.max),
-            rid: nil,
-            parentId: nil,
-            name: name,
-            path: nil,
-            color: .init(), 
-            labelType: .folder,
-            order: UInt32.random(in: 1...UInt32.max),
-            notify: Bool.random(),
-            expanded: Bool.random(),
-            sticky: Bool.random()
-        )
     }
 }

@@ -24,7 +24,7 @@ enum SwipeAction {
     case moveToTrash
     case toggleReadStatus
 
-    func isActionAssigned(systemFolder: SystemFolderIdentifier?) -> Bool {
+    func isActionAssigned(systemFolder: SystemFolderLabel?) -> Bool {
         switch self {
         case .none:
             return false

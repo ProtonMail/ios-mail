@@ -26,9 +26,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
 
-    private var mailbox: Mailbox?
-    private var messagesLiveQuery: ConversationMessagesLiveQueryResult?
-    private var expandedMessages: Set<PMLocalMessageId>
+    private(set) var mailbox: Mailbox?
+    private var messagesLiveQuery: WatchedConversation?
+    private var expandedMessages: Set<ID>
     private let dependencies: Dependencies
     private let messageListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
 
@@ -36,7 +36,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.seed = seed
         self.expandedMessages = .init()
         self.dependencies = dependencies
-
     }
 
     private func setUpCallback() {
@@ -52,8 +51,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         await updateState(.fetchingMessages)
         do {
             let mailbox = try await initialiseMailbox()
-            let conversationId = try await obtainLocalConversationId()
-            let messages = try await createLiveQueryAndPrepareMessages(for: conversationId, mailbox: mailbox)
+            let conversationID = try await conversationID()
+            let messages = try await createLiveQueryAndPrepareMessages(
+                forConversationID: conversationID,
+                mailbox: mailbox
+            )
 
             await updateStateToMessagesReady(with: messages)
             try await scrollToRelevantMessage(messages: messages)
@@ -64,7 +66,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func onMessageTap(messageId: PMLocalMessageId) {
+    func onMessageTap(messageId: ID) {
         Task {
             if expandedMessages.contains(messageId) {
                 expandedMessages.remove(messageId)
@@ -94,45 +96,44 @@ extension ConversationDetailModel {
         return newMailbox
     }
 
-    private func obtainLocalConversationId() async throws -> PMLocalConversationId {
+    private func conversationID() async throws -> ID {
         switch seed {
         case .mailboxItem(let item, _):
-            return item.conversationId
-        case .message(let messageId, _, _):
-            return try await obtainLocalConversationIdFrom(remoteMessageId: messageId)
+            return item.id
+        case .message(let messageID, _, _):
+            let message = try await fetchMessage(with: messageID)
+            return message.conversationId
         }
     }
 
-    private func obtainLocalConversationIdFrom(remoteMessageId: String) async throws -> PMLocalConversationId {
-        guard let session = dependencies.appContext.activeUserSession else {
-            throw ConversationModelError.noActiveSessionFound
+    private func fetchMessage(with messageID: ID) async throws -> Message {
+        guard let message = try await message(session: dependencies.appContext.userSession, id: messageID) else {
+            throw ConversationModelError.noMessageFound(messageID: messageID)
         }
-        guard let messageFromRemoteId = try await session.messageMetadataWithRemoteId(remoteId: remoteMessageId) else {
-            throw ConversationModelError.noMessageFoundForRemoteId(id: remoteMessageId)
-        }
-        return messageFromRemoteId.conversationId
+
+        return message
     }
 
     private func createLiveQueryAndPrepareMessages(
-        for conversationId: PMLocalConversationId,
+        forConversationID conversationID: ID,
         mailbox: Mailbox
     ) async throws -> [MessageCellUIModel] {
-        messagesLiveQuery = try await mailbox.newConversationMessagesLiveQuery(
-            id: conversationId,
-            cb: messageListCallback
+        messagesLiveQuery = try await watchConversation(
+            mailbox: mailbox,
+            id: conversationID,
+            callback: messageListCallback
         )
+
         /// We want to set the state to expanded before rendering the list to scroll to the correct position
-        await setRelevantMessageStateAsExpanded()
+        setRelevantMessageStateAsExpanded()
         return await readLiveQueryValues()
     }
 
-    private func setRelevantMessageStateAsExpanded() async {
-        do {
-            if let initialMessage = try await determineLocalMessageIdToScrollTo() {
-                expandedMessages.insert(initialMessage)
-            }
-        } catch {
-            let msg = "Failed to expand relevant message. Error: \(String(describing: error))"
+    private func setRelevantMessageStateAsExpanded() {
+        if let messageID = messageIDToScrollTo() {
+            expandedMessages.insert(messageID)
+        } else {
+            let msg = "Failed to expand relevant message. Error: missing messageID."
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
         }
     }
@@ -144,33 +145,32 @@ extension ConversationDetailModel {
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
-        let localMessageIdToScrollTo = try await determineLocalMessageIdToScrollTo()
-        let cell = messages.first(where: { $0.id == localMessageIdToScrollTo })
+        let messageIDToScrollTo = messageIDToScrollTo()
+        let cell = messages.first(where: { $0.id == messageIDToScrollTo })
         scrollToMessage = cell?.cellId ?? Self.lastCellId
     }
 
-    private func determineLocalMessageIdToScrollTo() async throws -> PMLocalMessageId? {
-        let localMessageIdToScrollTo: PMLocalMessageId?
+    private func messageIDToScrollTo() -> ID? {
+        let messageID: ID?
         switch seed {
         case .mailboxItem(let item, _):
             switch item.type {
             case .conversation:
                 logMessageIdToOpen()
-                localMessageIdToScrollTo = messagesLiveQuery?.messageIdToOpen
+                messageID = messagesLiveQuery?.messageIdToOpen
             case .message:
-                localMessageIdToScrollTo = item.id
+                messageID = item.id
             }
-        case .message(let remoteMessageId, _, _):
-            let session = dependencies.appContext.activeUserSession
-            localMessageIdToScrollTo = try await session?.messageMetadataWithRemoteId(remoteId: remoteMessageId)?.id
+        case .message(let id, _, _):
+            messageID = id
         }
-        return localMessageIdToScrollTo
+        return messageID
     }
 
     private func logMessageIdToOpen() {
         let value: String
         if let messageIdToOpen = messagesLiveQuery?.messageIdToOpen {
-            value = String(messageIdToOpen)
+            value = String(messageIdToOpen.value)
         } else {
             value = "n/a"
         }
@@ -184,7 +184,7 @@ extension ConversationDetailModel {
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return []
             }
-            let messages = try messagesLiveQuery.query.value()
+            let messages = messagesLiveQuery.messages
             guard let lastMessage = messages.last else { return [] }
             
             // list of messages except the last one
@@ -216,11 +216,12 @@ extension ConversationDetailModel {
     }
 
     private func expandedMessageCellUIModel(
-        for message: LocalMessageMetadata,
+        for message: Message,
         wait: Bool,
         mailbox: Mailbox
     ) async throws -> ExpandedMessageCellUIModel {
-        let messageBody = wait ? try await mailbox.messageBody(id: message.id).body() : nil
+        let provider = MessageBodyProvider(mailbox: mailbox)
+        let messageBody = wait ? await provider.messageBody(for: message.id) : nil
         return await message.toExpandedMessageCellUIModel(message: messageBody)
     }
 
@@ -258,7 +259,7 @@ extension ConversationDetailModel {
 }
 
 struct MessageCellUIModel {
-    let id: PMLocalMessageId
+    let id: ID
     let type: MessageCellUIModelType
     
     /// Used to identify Views in a way that allows to scroll to them and allows to refresh 
@@ -266,7 +267,7 @@ struct MessageCellUIModel {
     /// existing view but we replace it with another type so we need a different
     /// id value: CollapsedMessageCell <--> ExpandedMessageCell
     var cellId: String {
-        "\(id)-\(type.description)"
+        "\(id.value)-\(type.description)"
     }
 }
 
@@ -286,5 +287,5 @@ enum MessageCellUIModelType {
 
 enum ConversationModelError: Error {
     case noActiveSessionFound
-    case noMessageFoundForRemoteId(id: String)
+    case noMessageFound(messageID: ID)
 }

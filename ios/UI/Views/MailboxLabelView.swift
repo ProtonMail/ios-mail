@@ -69,12 +69,12 @@ struct MailboxLabelView: View {
 struct MailboxLabelUIModel: Identifiable {
     let labelModels: [LabelUIModel]
     
-    var allLabelIds: Set<PMLocalLabelId> {
+    var allLabelIds: Set<ID> {
         Set(labelModels.map(\.labelId))
     }
 
-    var id: PMLocalLabelId {
-        labelModels.first?.labelId ?? PMLocalLabelId.random()
+    var id: ID {
+        labelModels.first?.labelId ?? .random()
     }
 
     var color: Color {
@@ -99,7 +99,7 @@ struct MailboxLabelUIModel: Identifiable {
 }
 
 struct LabelUIModel {
-    let labelId: PMLocalLabelId
+    let labelId: ID
     let text: String
     let color: Color
 }
@@ -110,12 +110,14 @@ struct LabelUIModel {
             MailboxLabelView(uiModel: .init())
                 .border(.red)
             MailboxLabelView(
-                uiModel: MailboxLabelUIModel(labelModels: [LabelUIModel(labelId: 0, text: "a", color: .blue)])
+                uiModel: MailboxLabelUIModel(labelModels: [
+                    LabelUIModel(labelId: .init(value: 0), text: "a", color: .blue)
+                ])
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(labelModels: [
                     .init(
-                        labelId: PMLocalLabelId.random(),
+                        labelId: .random(),
                         text: "Work",
                         color: .red
                     )
@@ -124,7 +126,7 @@ struct LabelUIModel {
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(labelModels: [
                     .init(
-                        labelId: PMLocalLabelId.random(),
+                        labelId: .random(),
                         text: "Work",
                         color: .red
                     )
@@ -133,21 +135,21 @@ struct LabelUIModel {
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
-                    labelModels: [.init(labelId: 0, text: "Holidays", color: Color.purple)]
+                    labelModels: [.init(labelId: .init(value: 0), text: "Holidays", color: Color.purple)]
                     + LabelUIModel.random(num: 25)
                 )
             ).border(.red)
             MailboxLabelView(
                 uiModel: MailboxLabelUIModel(
-                    labelModels: [LabelUIModel(labelId: 0, text: "surprise birthday party", color: .green)]
+                    labelModels: [LabelUIModel(labelId: .init(value: 0), text: "surprise birthday party", color: .green)]
                     + LabelUIModel.random(num: 240)
                 )
             ).border(.red)
             MailboxLabelView(
-                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: 0, text: "amazing pictures", color: .gray)])
+                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: .init(value: 0), text: "amazing pictures", color: .gray)])
             ).border(.red)
             MailboxLabelView(
-                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: 0, text: "surprise birthday party", color: .gray)])
+                uiModel: MailboxLabelUIModel(labelModels: [.init(labelId: .init(value: 0), text: "surprise birthday party", color: .gray)])
             ).border(.red)
         }
     }

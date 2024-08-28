@@ -15,15 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import proton_mail_uniffi
+import SwiftUI
 
-struct SidebarFolder: Equatable, SelectableItem {
-    let id: LocalLabelId
-    let parentID: LocalLabelId?
+struct SidebarFolder: Equatable, Identifiable, SelectableItem {
+    let id: ID
+    let parentID: ID?
     let name: String
-    let color: String
+    let color: Color?
     let unreadCount: UInt64
     let expanded: Bool
+    let childFolders: [SidebarFolder]
+
+    var displayColor: Color {
+        guard let color else {
+            return isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconWeak
+        }
+
+        return color
+    }
 
     // MARK: - SelectableItem
 
@@ -40,7 +51,8 @@ struct SidebarFolder: Equatable, SelectableItem {
             name: name,
             color: color,
             unreadCount: unreadCount,
-            expanded: expanded,
+            expanded: expanded, 
+            childFolders: childFolders,
             isSelected: isSelected
         )
     }

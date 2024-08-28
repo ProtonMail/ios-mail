@@ -105,14 +105,14 @@ extension MainToolbar {
 
 #Preview {
     let appUIStateStore = AppUIStateStore()
+    let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings(mailboxActions: .init())
-
     let customLabelModel = CustomLabelModel()
-    let dummySettings = EmptyPMMailSettings()
 
-    return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
+    return MailboxScreen(customLabelModel: customLabelModel, mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy())
         .mainToolbar(title: "Inbox", selectionMode: .init())
         .environmentObject(appUIStateStore)
+        .environmentObject(toastStateStore)
         .environmentObject(userSettings)
 }
 

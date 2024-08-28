@@ -18,100 +18,52 @@
 @testable import ProtonMail
 import XCTest
 
-class SidebarScreenSnapshotTests: XCTestCase {
+class SidebarScreenSnapshotTests: BaseTestCase {
+
+    var sidebarSpy: SidebarSpy!
+    var state: SidebarState!
+    private var bundleStub: BundleStub!
+
+    override func setUp() {
+        super.setUp()
+
+        sidebarSpy = .init()
+        state = SidebarState(
+            system: [],
+            labels: [],
+            folders: [],
+            other: .staleItems,
+            createLabel: .createLabel,
+            createFolder: .createFolder
+        )
+        bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
+    }
+
+    override func tearDown() {
+        sidebarSpy = nil
+        bundleStub = nil
+
+        super.tearDown()
+    }
 
     func testSidebarWithDataLayoutsCorrectOnIphoneX() {
-        let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
-        let screenModel = SidebarModel(
-            state: .init(
-                system: .systemFolders.selectFirst(),
-                labels: .labels, 
-                folders: .folders,
-                other: .staleItems,
-                createLabel: .createLabel,
-                createFolder: .createFolder
-            ),
-            dependencies: .init(activeUserSession: MailUserSessionSpy())
-        )
-        let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
+        sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
+        sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
+        sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
+
+        let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
     func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX() {
-        let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
-        let screenModel = SidebarModel(
-            state: .init(
-                system: .systemFolders.selectFirst(),
-                labels: [],
-                folders: [],
-                other: .staleItems,
-                createLabel: .createLabel,
-                createFolder: .createFolder
-            ),
-            dependencies: .init(activeUserSession: MailUserSessionSpy())
-        )
-        let sidebarScreen = SidebarScreen(screenModel: screenModel) { _ in }
+        sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
+
+        let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
-    }
-
-}
-
-private extension Array where Element == SidebarSystemFolder {
-
-    func selectFirst() -> [Element] {
-        enumerated()
-            .map { index, element in element.copy(isSelected: index == 0) }
-    }
-
-}
-
-import DesignSystem
-
-private extension Array where Element == SidebarFolder {
-
-    static var folders: [Element] {
-        [
-            .init(
-                id: 2,
-                parentID: nil,
-                name: "Random",
-                color: "#F78400",
-                unreadCount: 100,
-                expanded: true,
-                isSelected: false
-            ),
-            .init(
-                id: 3,
-                parentID: 1,
-                name: "Top Secret",
-                color: "#179FD9",
-                unreadCount: 5,
-                expanded: true,
-                isSelected: false
-            ),
-            .init(
-                id: 4,
-                parentID: 3,
-                name: "Top Top Secret",
-                color: "#1DA583",
-                unreadCount: 9999,
-                expanded: true,
-                isSelected: false
-            ),
-            .init(
-                id: 1,
-                parentID: nil,
-                name: "Secret",
-                color: "#EC3E7C",
-                unreadCount: 10,
-                expanded: true,
-                isSelected: false
-            )
-        ]
     }
 
 }

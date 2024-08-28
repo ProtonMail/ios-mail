@@ -29,10 +29,10 @@ final class CustomLabelModel: ObservableObject {
         self.dependencies = dependencies
     }
 
-    func fetchLabels() async -> [LocalLabel] {
+    func fetchLabels() async -> [PMCustomLabel] {
         guard let userSession = dependencies.appContext.activeUserSession else { return [] }
         do {
-            return try userSession.applicableLabels()
+            return try await userSession.applicableLabels()
         } catch {
             AppLogger.log(error: error)
             return []

@@ -19,7 +19,6 @@ import Foundation
 @testable import ProtonMail
 import XCTest
 
-@MainActor
 final class SelectionModeStateTests: XCTestCase {
     private var sut: SelectionModeState!
 
@@ -36,7 +35,7 @@ final class SelectionModeStateTests: XCTestCase {
     func testAddMailboxItem_itAddsTheItem() {
         XCTAssertEqual(sut.hasSelectedItems, false)
 
-        let item = SelectedItem(id: 1, isRead: false, isStarred: true)
+        let item = MailboxSelectedItem.testData(id: 1, isRead: false, isStarred: true)
         sut.addMailboxItem(item)
 
         XCTAssertEqual(sut.hasSelectedItems, true)
@@ -44,17 +43,17 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testAddMailboxItem_whenChangesTheSelectionStatus_itUpdatesTheStatus() {
-        sut.addMailboxItem(SelectedItem(id: 1, isRead: false, isStarred: false))
+        sut.addMailboxItem(.testData(id: 1, isRead: false, isStarred: false))
         XCTAssertEqual(sut.selectionStatus.readStatus, .noneRead)
         XCTAssertEqual(sut.selectionStatus.starStatus, .noneStarred)
 
-        sut.addMailboxItem(SelectedItem(id: 2, isRead: true, isStarred: true))
+        sut.addMailboxItem(.testData(id: 2, isRead: true, isStarred: true))
         XCTAssertEqual(sut.selectionStatus.readStatus, .someRead)
         XCTAssertEqual(sut.selectionStatus.starStatus, .someStarred)
     }
 
     func testRemoveMailboxItem_itRemovesTheItem() {
-        let item = SelectedItem(id: 1, isRead: false, isStarred: true)
+        let item = MailboxSelectedItem.testData(id: 1, isRead: false, isStarred: true)
         sut.addMailboxItem(item)
 
         XCTAssertEqual(sut.hasSelectedItems, true)
@@ -66,8 +65,8 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testRemoveMailboxItem_whenChangesTheSelectionStatus_itUpdatesTheStatus() {
-        let item1 = SelectedItem(id: 1, isRead: true, isStarred: true)
-        let item2 = SelectedItem(id: 2, isRead: false, isStarred: false)
+        let item1 = MailboxSelectedItem.testData(id: 1, isRead: true, isStarred: true)
+        let item2 = MailboxSelectedItem.testData(id: 2, isRead: false, isStarred: false)
 
         [item1, item2].forEach(sut.addMailboxItem(_:))
         XCTAssertEqual(sut.selectionStatus.readStatus, .someRead)
@@ -84,9 +83,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testHasSelectedItems_whenThereAreItems_itReturnsTrue() {
-        let items = [
-            SelectedItem(id: 1, isRead: Bool.random(), isStarred: Bool.random()),
-            SelectedItem(id: 2, isRead: Bool.random(), isStarred: Bool.random()),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1),
+            .testData(id: 2),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -100,9 +99,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionReadStatus_whenAllRead_itReturnsAllRead() {
-        let items = [
-            SelectedItem(id: 1, isRead: true, isStarred: Bool.random()),
-            SelectedItem(id: 2, isRead: true, isStarred: Bool.random()),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: true),
+            .testData(id: 2, isRead: true),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -111,9 +110,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionReadStatus_whenMixedReadStatus_itReturnsSomeRead() {
-        let items = [
-            SelectedItem(id: 1, isRead: true, isStarred: Bool.random()),
-            SelectedItem(id: 2, isRead: false, isStarred: Bool.random()),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: true),
+            .testData(id: 2, isRead: false),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -122,9 +121,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionReadStatus_whenNoneRead_itReturnsNoneRead() {
-        let items = [
-            SelectedItem(id: 1, isRead: false, isStarred: Bool.random()),
-            SelectedItem(id: 2, isRead: false, isStarred: Bool.random()),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: false),
+            .testData(id: 2, isRead: false),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -133,9 +132,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionStarStatus_whenAllStarred_itReturnsAllStarred() {
-        let items = [
-            SelectedItem(id: 1, isRead: Bool.random(), isStarred: true),
-            SelectedItem(id: 2, isRead: Bool.random(), isStarred: true),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isStarred: true),
+            .testData(id: 2, isStarred: true),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -144,9 +143,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionStarStatus_whenMixedStarStatus_itReturnsSomeStarred() {
-        let items = [
-            SelectedItem(id: 1, isRead: Bool.random(), isStarred: false),
-            SelectedItem(id: 2, isRead: Bool.random(), isStarred: true),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isStarred: false),
+            .testData(id: 2, isStarred: true),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -155,9 +154,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testSelectionStarStatus_whenNoneStarred_itReturnsNoneStarred() {
-        let items = [
-            SelectedItem(id: 1, isRead: Bool.random(), isStarred: false),
-            SelectedItem(id: 2, isRead: Bool.random(), isStarred: false),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isStarred: false),
+            .testData(id: 2, isStarred: false),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -166,9 +165,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testRefreshSelectedItemsStatus_whenStatusDoesChanges_itChangesTheSelectionStatus() {
-        let items = [
-            SelectedItem(id: 1, isRead: false, isStarred: false),
-            SelectedItem(id: 2, isRead: false, isStarred: false),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: false, isStarred: false),
+            .testData(id: 2, isRead: false, isStarred: false),
         ]
         items.forEach(sut.addMailboxItem(_:))
         XCTAssertEqual(sut.hasSelectedItems, true)
@@ -178,7 +177,7 @@ final class SelectionModeStateTests: XCTestCase {
 
         sut.refreshSelectedItemsStatus { _ in
             let newItems = items.map {
-                SelectedItem(id: $0.id, isRead: !$0.isRead, isStarred: !$0.isStarred)
+                MailboxSelectedItem(id: $0.id, isRead: !$0.isRead, isStarred: !$0.isStarred)
             }
             return Set(newItems)
         }
@@ -189,9 +188,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSelectionStatus() {
-        let items = [
-            SelectedItem(id: 1, isRead: true, isStarred: true),
-            SelectedItem(id: 2, isRead: true, isStarred: true),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: true, isStarred: true),
+            .testData(id: 2, isRead: true, isStarred: true),
         ]
         items.forEach(sut.addMailboxItem(_:))
         XCTAssertEqual(sut.hasSelectedItems, true)
@@ -209,8 +208,8 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
-        let item1 = SelectedItem(id: 1, isRead: true, isStarred: true)
-        let item2 = SelectedItem(id: 2, isRead: true, isStarred: true)
+        let item1 = MailboxSelectedItem.testData(id: 1, isRead: true, isStarred: true)
+        let item2 = MailboxSelectedItem.testData(id: 2, isRead: true, isStarred: true)
         [item1, item2].forEach(sut.addMailboxItem(_:))
         XCTAssertEqual(sut.hasSelectedItems, true)
         XCTAssertEqual(sut.selectedItems, [item1, item2])
@@ -229,9 +228,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testRefreshSelectedItemsStatus_whenSelectedItemsDoNotChange_itDoesNotTriggerHasSelectedItemsPublisher() {
-        let items = [
-            SelectedItem(id: 1, isRead: true, isStarred: true),
-            SelectedItem(id: 2, isRead: true, isStarred: true),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isRead: true, isStarred: true),
+            .testData(id: 2, isRead: true, isStarred: true),
         ]
         items.forEach(sut.addMailboxItem(_:))
 
@@ -245,9 +244,9 @@ final class SelectionModeStateTests: XCTestCase {
     }
 
     func testExitSelectionMode_itRemovesAllSelectedItems() {
-        let items = [
-            SelectedItem(id: 1, isRead: Bool.random(), isStarred: false),
-            SelectedItem(id: 2, isRead: Bool.random(), isStarred: false),
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1, isStarred: false),
+            .testData(id: 2, isStarred: false),
         ]
         items.forEach(sut.addMailboxItem(_:))
         XCTAssertEqual(sut.hasSelectedItems, true)

@@ -27,8 +27,7 @@ enum PreviewData {
             let expirationDate: Bool = ((1..<11).randomElement()!%10) == 0
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
-                id: UInt64.random(in: 1...UInt64.max),
-                conversationId: 0,
+                id: .random(),
                 type: .conversation,
                 avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), type: .sender(params: .init())),
                 senders: randomSenderSubject.0,
@@ -50,39 +49,39 @@ enum PreviewData {
 
     static let mailboxLabels: [MailboxLabelUIModel] = [
         MailboxLabelUIModel(
-            labelModels: [.init(labelId: 0, text: "Work", color: Color(hex: "179FD9"))]
+            labelModels: [.init(labelId: .init(value: 0), text: "Work", color: Color(hex: "179FD9"))]
             + LabelUIModel.random(num: [2, 3].randomElement()!)
         ),
         MailboxLabelUIModel(
-            labelModels: [.init(labelId: 0, text: "Read later", color: Color(hex: "F78400"))]
+            labelModels: [.init(labelId: .init(value: 0), text: "Read later", color: Color(hex: "F78400"))]
             + LabelUIModel.random(num: [2, 3].randomElement()!)
         ),
         MailboxLabelUIModel(
-            labelModels: [.init(labelId: 0, text: "Newsletters", color: Color(hex: "3CBB3A"))]
+            labelModels: [.init(labelId: .init(value: 0), text: "Newsletters", color: Color(hex: "3CBB3A"))]
             + LabelUIModel.random(num: [2, 3].randomElement()!)
         )
     ]
-
+    
     static let attachments: [[AttachmentCapsuleUIModel]] = [
         [
-            .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
-            .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-            .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+            .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+            .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+            .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
         ],
         [
-            .init(attachmentId: 4, icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+            .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
         ],
         [
-            .init(attachmentId: 5, icon: DS.Icon.icFileTypeIconNumbers, name: "number.xls"),
-            .init(attachmentId: 6, icon: DS.Icon.icFileTypeIconPowerPoint, name: "slides.ppt")
+            .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconNumbers, name: "number.xls"),
+            .init(id: .init(value: 6), icon: DS.Icon.icFileTypeIconPowerPoint, name: "slides.ppt")
         ],
         [
-            .init(attachmentId: 7, icon: DS.Icon.icFileTypeIconImage, name: "01.png"),
-            .init(attachmentId: 8, icon: DS.Icon.icFileTypeIconImage, name: "02.png"),
-            .init(attachmentId: 9, icon: DS.Icon.icFileTypeIconImage, name: "03.png"),
-            .init(attachmentId: 10, icon: DS.Icon.icFileTypeIconImage, name: "04.png"),
-            .init(attachmentId: 11, icon: DS.Icon.icFileTypeIconImage, name: "05.png"),
-            .init(attachmentId: 12, icon: DS.Icon.icFileTypeIconImage, name: "06.png"),
+            .init(id: .init(value: 7), icon: DS.Icon.icFileTypeIconImage, name: "01.png"),
+            .init(id: .init(value: 8), icon: DS.Icon.icFileTypeIconImage, name: "02.png"),
+            .init(id: .init(value: 9), icon: DS.Icon.icFileTypeIconImage, name: "03.png"),
+            .init(id: .init(value: 10), icon: DS.Icon.icFileTypeIconImage, name: "04.png"),
+            .init(id: .init(value: 11), icon: DS.Icon.icFileTypeIconImage, name: "05.png"),
+            .init(id: .init(value: 12), icon: DS.Icon.icFileTypeIconImage, name: "06.png"),
         ],
     ]
 
@@ -106,7 +105,7 @@ extension LabelUIModel {
     static func random(num: Int) -> [LabelUIModel] {
         (0..<num).map { _ in
             LabelUIModel(
-                labelId: PMLocalLabelId.random(),
+                labelId: .random(),
                 text: ["a", "b", "c"].randomElement()!,
                 color: [Color.blue, .red, .green].randomElement()!
             )

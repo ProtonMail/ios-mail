@@ -31,22 +31,22 @@ struct MoveToFolderModel {
     }
 
     /// Returns labels representing system folders where a message or conversatino can be moved to e.g. inbox
-    func moveToSystemFolders() async -> [LocalLabel] {
-        await fetchMovableFolders().filter { $0.systemFolderIdentifier != nil }
+    func moveToSystemFolders() async -> [SystemFolder] {
+        return [] // FIXME: - [ET-1069] iOS - Display messages / conversation actions in the action sheet based on what Rust SDK returns to the client
     }
 
     /// Returns an array of top level custom folders, with its children, created by the user.
     ///
     /// All folders and subfolders are returned sorted following the backend `order` parameter.
-    func customFoldersHierarchy() async -> [CustomFolder] {
-        let allCustomFolders = await fetchMovableFolders().filter { $0.systemFolderIdentifier == nil }
+    func customFoldersHierarchy() async -> [CustomFolderNode] {
+        let allCustomFolders = await fetchMovableFolders().filter { $0.description == .folder }
         return foldersHierarchy(from: allCustomFolders)
     }
 
-    private func fetchMovableFolders() async -> [LocalLabel] {
+    private func fetchMovableFolders() async -> [PMCustomFolder] {
         do {
             guard let userSession = dependencies.appContext.activeUserSession else { return [] }
-            return try userSession.movableFolders()
+            return try await userSession.movableFolders()
         } catch {
             AppLogger.log(error: error)
             return []
@@ -56,33 +56,33 @@ struct MoveToFolderModel {
 
 extension MoveToFolderModel {
 
-    private func foldersHierarchy(from folders: [LocalLabel]) -> [CustomFolder] {
-        var rawFolders: [CustomFolder] = folders
+    private func foldersHierarchy(from folders: [PMCustomFolder]) -> [CustomFolderNode] {
+        var rawFolders: [CustomFolderNode] = folders
             .sorted(by: { $0.childLevel <= $1.childLevel })
-            .map { CustomFolder(folder: $0, children: []) }
+            .map { CustomFolderNode(folder: $0, children: []) }
 
         let indexes: [Int] = [Int](0..<rawFolders.count)
 
-        let rawFolderLabelIds = rawFolders.map { $0.folder.id }
-        var labelIDToIndex: [PMLocalLabelId: Int] = [:]
+        let rawFolderLabelIds = rawFolders.map(\.folder.id)
+        var labelIDToIndex: [Id: Int] = [:]
         for (labelId, index) in zip(rawFolderLabelIds, indexes) {
             labelIDToIndex[labelId] = index
         }
 
-        var folders = [CustomFolder]()
+        var folders = [CustomFolderNode]()
         for index in indexes.reversed() {
             let hierarchyItem = rawFolders[index]
 
             guard 
                 let parentID = hierarchyItem.folder.parentId,
-                let parentIdx = labelIDToIndex[parentID] 
+                let parentIdx = labelIDToIndex[parentID]
             else {
                 folders.insert(hierarchyItem, at: 0)
                 continue
             }
             rawFolders[parentIdx].children.insert(hierarchyItem, at: 0)
         }
-        return folders.recursivelySorted(by: { $0.folder.order < $1.folder.order })
+        return folders.recursivelySorted(by: { $0.folder.displayOrder < $1.folder.displayOrder })
     }
 }
 

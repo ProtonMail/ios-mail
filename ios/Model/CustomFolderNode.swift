@@ -19,9 +19,9 @@ import DesignSystem
 import proton_mail_uniffi
 import class SwiftUI.UIImage
 
-struct CustomFolder: Sendable {
-    var folder: LocalLabel
-    var children: [CustomFolder]
+struct CustomFolderNode: Sendable {
+    var folder: PMCustomFolder
+    var children: [CustomFolderNode]
 
     /**
      Flattens the folder structure.
@@ -45,12 +45,12 @@ struct CustomFolder: Sendable {
      ```
      would return [F1, F11, F111, F112, F12]
     */
-    func preorderTreeTraversal() -> [CustomFolder] {
+    func preorderTreeTraversal() -> [CustomFolderNode] {
         return [self] + children.flatMap { $0.preorderTreeTraversal() }
     }
 }
 
-extension Array where Element == CustomFolder {
+extension Array where Element == CustomFolderNode {
 
     /// Sorts every folder, and child folder, using the comparison logic
     func recursivelySorted(by comparison: (Self.Element, Self.Element) -> Bool) -> [Element] {

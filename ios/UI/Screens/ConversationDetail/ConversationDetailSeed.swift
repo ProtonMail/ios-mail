@@ -19,7 +19,7 @@ import Foundation
 
 enum ConversationDetailSeed {
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
-    case message(remoteMessageId: String, subject: String, sender: String)
+    case message(localID: ID, subject: String, sender: String)
 
     var selectedMailbox: SelectedMailbox {
         switch self {

@@ -15,24 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_mail_uniffi
 import SwiftUI
 
 final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
     @Published private(set) var state: State
-    private let dataSource: AttachmentDataSource
+    private let mailbox: MailboxProtocol
     private let queue: DispatchQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AttachmentViewLoader")
 
-    init(state: State = .loading, dataSource: AttachmentDataSource) {
+    init(state: State = .loading, mailbox: MailboxProtocol) {
         self.state = state
-        self.dataSource = dataSource
+        self.mailbox = mailbox
     }
 
-    func load(attachmentId: PMLocalAttachmentId) async {
-        let result = await dataSource.attachment(for: attachmentId)
-        switch result {
-        case .success(let url):
+    func load(attachmentId: ID) async {
+        do {
+            let result = try await mailbox.getAttachment(localAttachmentId: attachmentId)
+            let url = URL(string: result.dataPath).unsafelyUnwrapped
+
             await updateState(.attachmentReady(url))
-        case .failure(let error):
+        } catch {
             await updateState(.error(error))
         }
     }
@@ -42,19 +44,6 @@ final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
         queue.sync {
             state = newState
         }
-    }
-
-    private func deleteAttachment() {
-        switch state {
-        case .loading, .error:
-            break
-        case .attachmentReady(let url):
-            try? FileManager.default.removeItem(atPath: url.path())
-        }
-    }
-
-    deinit {
-        deleteAttachment()
     }
 }
 

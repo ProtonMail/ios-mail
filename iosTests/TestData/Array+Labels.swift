@@ -21,8 +21,8 @@ extension Array where Element == SidebarLabel {
 
     static var labels: [Element] {
         [
-            .init(localID: 3, color: "#A4A4AB", name: "Important", unreadCount: "10", isSelected: false),
-            .init(localID: 4, color: "#9292F9", name: "Work", unreadCount: "1", isSelected: false)
+            .init(id: .init(value: 3), color: "#A4A4AB", name: "Important", unreadCount: "10", isSelected: false),
+            .init(id: .init(value: 4), color: "#9292F9", name: "Work", unreadCount: "1", isSelected: false)
         ]
     }
 

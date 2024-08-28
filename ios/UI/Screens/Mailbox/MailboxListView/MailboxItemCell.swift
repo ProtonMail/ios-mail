@@ -91,7 +91,6 @@ extension MailboxItemCell {
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
             MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
-                .removeViewIf(uiModel.numMessages == 0)
             Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption2)
@@ -181,12 +180,11 @@ extension MailboxItemCell {
     }
 
     private var attachmentRowView: some View {
-
         AttachmentsView(
             uiModel: uiModel.attachmentsUIModel,
             isAttachmentHighlightEnabled: isParentListSelectionEmpty,
             onTapEvent: {
-                onEvent(.onAttachmentTap(attachmentId: $0))
+                onEvent(.onAttachmentTap(attachmentID: $0))
             }
         )
         .padding(.top, DS.Spacing.standard)
@@ -198,8 +196,7 @@ extension MailboxItemCell {
 
 @Observable
 final class MailboxItemCellUIModel: Identifiable, Sendable {
-    let id: PMMailboxItemId
-    let conversationId: PMLocalConversationId
+    let id: ID
     let type: MailboxItemType
     let avatar: AvatarUIModel
     let senders: String
@@ -220,8 +217,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let snoozeDate: String?
 
     init(
-        id: PMMailboxItemId,
-        conversationId: PMLocalConversationId,
+        id: ID,
         type: MailboxItemType,
         avatar: AvatarUIModel,
         senders: String,
@@ -239,7 +235,6 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         snoozeDate: Date?
     ) {
         self.id = id
-        self.conversationId = conversationId
         self.type = type
         self.avatar = avatar
         self.senders = senders
@@ -300,14 +295,13 @@ enum MailboxItemCellEvent {
     case onLongPress
     case onSelectedChange(isSelected: Bool)
     case onStarredChange(isStarred: Bool)
-    case onAttachmentTap(attachmentId: PMLocalAttachmentId)
+    case onAttachmentTap(attachmentID: ID)
 }
 
 #Preview {
     func model(subject: String) -> MailboxItemCellUIModel {
         MailboxItemCellUIModel(
-            id: 0,
-            conversationId: 0,
+            id: .init(value: 0),
             type: .conversation,
             avatar: .init(initials: "P", type: .sender(params: .init())),
             senders: "Proton",
@@ -318,7 +312,7 @@ enum MailboxItemCellEvent {
             isSelected: true,
             isSenderProtonOfficial: true,
             numMessages: 0,
-            labelUIModel: .init(labelModels: [.init(labelId: 0, text: "Working", color: .brown)] + LabelUIModel.random(num: 3)),
+            labelUIModel: .init(labelModels: [.init(labelId: .init(value: 0), text: "Working", color: .brown)] + LabelUIModel.random(num: 3)),
             expirationDate: nil,
             snoozeDate: nil
         )
@@ -332,8 +326,7 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: 0,
-                conversationId: 0,
+                id: .init(value: 0),
                 type: .message,
                 avatar: .init(initials: "FE", backgroundColor: .yellow, type: .sender(params: .init())),
                 senders: "FedEx",
@@ -344,8 +337,12 @@ enum MailboxItemCellEvent {
                 isSelected: false,
                 isSenderProtonOfficial: false,
                 numMessages: 3,
-                labelUIModel: .init(labelModels: [LabelUIModel(labelId: 0, text: "Offer lst minute for me and for you", color: .purple)]),
-                attachmentsUIModel: [.init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")],
+                labelUIModel: .init(labelModels: [
+                    LabelUIModel(labelId: .init(value: 0), text: "Offer lst minute for me and for you", color: .purple)
+                ]),
+                attachmentsUIModel: [
+                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")
+                ],
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
                 snoozeDate: .now + 500
@@ -356,8 +353,7 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: 0,
-                conversationId: 0,
+                id: .init(value: 0),
                 type: .message,
                 avatar: .init(initials: "MA", backgroundColor: .cyan, type: .sender(params: .init())),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
@@ -369,11 +365,11 @@ enum MailboxItemCellEvent {
                 isSenderProtonOfficial: true,
                 numMessages: 12,
                 labelUIModel: MailboxLabelUIModel(
-                    labelModels: [.init(labelId: 0, text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
+                    labelModels: [.init(labelId: .init(value: 0), text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
                 attachmentsUIModel: [
-                    .init(attachmentId: 1, icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
-                    .init(attachmentId: 2, icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-                    .init(attachmentId: 3, icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+                    .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf")
                 ],
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,

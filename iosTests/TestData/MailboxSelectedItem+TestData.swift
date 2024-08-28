@@ -15,16 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_mail_uniffi
+@testable import ProtonMail
 
-extension MailSettingsViewMode: CustomStringConvertible {
+extension MailboxSelectedItem {
 
-    public var description: String {
-        switch self {
-        case .conversations:
-            "conversations"
-        case .messages:
-            "messages"
-        }
+    static func testData(id: UInt64, isRead: Bool = .random(), isStarred: Bool = .random()) -> Self {
+        .init(id: .init(value: id), isRead: isRead, isStarred: isStarred)
     }
+
 }

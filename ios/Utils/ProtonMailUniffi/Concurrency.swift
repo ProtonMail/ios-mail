@@ -26,8 +26,7 @@ import proton_mail_uniffi
 
 extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}
-extension MailUserSettings: @unchecked Sendable {}
-
-extension MailboxConversationMessagesLiveQuery: @unchecked Sendable {}
-extension ConversationMessagesLiveQueryResult: @unchecked Sendable {}
+extension UserSettings: @unchecked Sendable {}
+extension WatchedMessages: @unchecked Sendable {}
+extension WatchedConversations: @unchecked Sendable {}
 extension DecryptedMessage: @unchecked Sendable {}

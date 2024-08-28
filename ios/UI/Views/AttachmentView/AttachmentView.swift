@@ -16,14 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import proton_mail_uniffi
 
 struct AttachmentView: View {
     @StateObject private var loader: AttachmentViewLoader
-    private let attachmentId: PMLocalAttachmentId
+    private let attachmentId: ID
 
     init(config: AttachmentViewConfig) {
-        _loader = StateObject(wrappedValue: .init(dataSource: config.dataSource))
-        self.attachmentId = config.attachmentId
+        _loader = StateObject(wrappedValue: .init(mailbox: config.mailbox))
+        self.attachmentId = config.id
     }
 
     var body: some View {
@@ -75,9 +76,6 @@ private struct ShowDoneNavBarButton: ViewModifier {
 }
 
 struct AttachmentViewConfig: Identifiable {
-    var id: PMLocalAttachmentId {
-        attachmentId
-    }
-    var attachmentId: PMLocalAttachmentId
-    let dataSource: AttachmentDataSource
+    let id: ID
+    let mailbox: MailboxProtocol
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import proton_mail_uniffi
 import SwiftUI
 
 struct SidebarScreen: View {
@@ -32,8 +33,12 @@ struct SidebarScreen: View {
         appUIStateStore.sidebarState.isOpen ? sidebarWidth : .zero
     }
 
-    init(screenModel: SidebarModel = .init(), selectedItem: @escaping (SidebarItem) -> Void) {
-        self.screenModel = screenModel
+    init(
+        state: SidebarState,
+        sidebar: SidebarProtocol,
+        selectedItem: @escaping (SidebarItem) -> Void
+    ) {
+        self.screenModel = .init(state: state, sidebar: sidebar)
         self.selectedItem = selectedItem
     }
 
@@ -132,7 +137,7 @@ struct SidebarScreen: View {
                     appVersionNote
                 }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
                     if isSidebarOpen, let first = screenModel.state.system.first {
-                        proxy.scrollTo("\(first.localID)", anchor: .zero)
+                        proxy.scrollTo(first.id, anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
             }
@@ -154,7 +159,7 @@ struct SidebarScreen: View {
 
     private func customFoldersList() -> some View {
         VStack(spacing: .zero) {
-            FolderNodeView(folders: screenModel.state.folders.sidebarFolderNodes, padding: .zero) { folder in
+            FolderNodeView(folders: screenModel.state.folders, padding: .zero) { folder in
                 select(item: .folder(folder))
             }
             createButton(
@@ -213,10 +218,10 @@ struct SidebarScreen: View {
         .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
     }
 
-    private func systemItemContent(model: SidebarSystemFolder) -> some View {
+    private func systemItemContent(model: SystemFolder) -> some View {
         HStack {
-            sidebarItemImage(icon: model.identifier.icon, isSelected: model.isSelected)
-            itemNameLabel(name: model.identifier.humanReadable.string, isSelected: model.isSelected)
+            sidebarItemImage(icon: model.type.icon, isSelected: model.isSelected)
+            itemNameLabel(name: model.type.humanReadable.string, isSelected: model.isSelected)
             Spacer()
             if let unreadCount = model.unreadCount {
                 unreadLabel(unreadCount: unreadCount, isSelected: model.isSelected)

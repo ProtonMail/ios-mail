@@ -29,4 +29,5 @@ extension Array where Element == MessageAddress {
     var addressUIRepresentation: String {
         map(\.uiRepresentation).joined(separator: ", ")
     }
+
 }

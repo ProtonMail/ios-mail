@@ -20,21 +20,21 @@ import Foundation
 protocol MailboxActionable {
 
     @MainActor
-    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>]
+    func labelsOfSelectedItems() -> [Set<ID>]
 
     @MainActor
     func onActionTap(_ action: Action)
 
     @MainActor
-    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool)
+    func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool)
 
     @MainActor
-    func onFolderSelected(labelId: PMLocalLabelId)
+    func onFolderSelected(labelId: ID)
 }
 
 struct EmptyMailboxActionable: MailboxActionable {
-    func labelsOfSelectedItems() -> [Set<PMLocalLabelId>] { [] }
+    func labelsOfSelectedItems() -> [Set<ID>] { [] }
     func onActionTap(_ action: Action) {}
-    func onLabelsSelected(labelIds: Set<PMLocalLabelId>, alsoArchive: Bool) {}
-    func onFolderSelected(labelId: PMLocalLabelId) {}
+    func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {}
+    func onFolderSelected(labelId: ID) {}
 }

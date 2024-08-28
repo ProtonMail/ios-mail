@@ -24,29 +24,33 @@ struct MailboxConversationMessageCountView: View {
     private let cornerRadius = 6.0
 
     var body: some View {
-        Text(numMessages.toBadgeCapped())
-            .font(.caption2)
-            .fontWeight(.semibold)
-            .foregroundStyle(DS.Color.Text.weak)
-            .padding(.vertical, DS.Spacing.tiny)
-            .padding(.horizontal, DS.Spacing.small)
-            .frame(minWidth: 20)
-            .fixedSize()
-            .lineLimit(1)
-            .background(
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(DS.Color.Background.secondary)
-            )
-            .accessibilityIdentifier(MailConversationMessageCountView.countText)
+        if let unreadFormatted = UnreadCountFormatter.string(count: numMessages) {
+            Text(unreadFormatted)
+                .font(.caption2)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.weak)
+                .padding(.vertical, DS.Spacing.tiny)
+                .padding(.horizontal, DS.Spacing.small)
+                .frame(minWidth: 20)
+                .fixedSize()
+                .lineLimit(1)
+                .background(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .fill(DS.Color.Background.secondary)
+                )
+                .accessibilityIdentifier(MailConversationMessageCountView.countText)
+        }
     }
 }
 
 #Preview {
     VStack(spacing: 10) {
+        MailboxConversationMessageCountView(numMessages: 0)
         MailboxConversationMessageCountView(numMessages: 1)
         MailboxConversationMessageCountView(numMessages: 12)
         MailboxConversationMessageCountView(numMessages: 23889)
     }
+    .border(.purple)
 }
 
 private struct MailConversationMessageCountView {

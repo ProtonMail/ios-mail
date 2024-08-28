@@ -63,7 +63,7 @@ struct ConversationDetailListView: View {
         )
 
         return MailboxItemActionPickerView(
-            mailboxItemIdentifier: .message(target.messageId),
+            mailboxItemIdentifier: .message(target.id),
             actionResolverParams: conditionalParams,
             onActionTap: { action, item in
                 print("action \(action) for item \(item)")
@@ -111,6 +111,7 @@ struct ConversationDetailListView: View {
                             .accessibilityIdentifier(ConversationDetailListViewIdentifiers.collapsedCell(index))
                         case .expanded(let uiModel):
                             ExpandedMessageCell(
+                                mailbox: model.mailbox.unsafelyUnwrapped,
                                 uiModel: uiModel,
                                 isFirstCell: index == 0,
                                 onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) }
@@ -122,6 +123,7 @@ struct ConversationDetailListView: View {
                     }
                 }
                 ExpandedMessageCell(
+                    mailbox: model.mailbox.unsafelyUnwrapped,
                     uiModel: last,
                     hasShadow: !previous.isEmpty,
                     isFirstCell: previous.isEmpty,
@@ -142,7 +144,7 @@ struct ConversationDetailListView: View {
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {
         switch event {
         case .onTap:
-            model.onMessageTap(messageId: uiModel.messageId)
+            model.onMessageTap(messageId: uiModel.id)
         case .onReply:
             break
         case .onReplyAll:

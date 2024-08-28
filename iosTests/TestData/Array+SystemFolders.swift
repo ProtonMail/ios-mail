@@ -17,12 +17,12 @@
 
 @testable import ProtonMail
 
-extension Array where Element == SidebarSystemFolder {
+extension Array where Element == SystemFolder {
 
     static var systemFolders: [Element] {
         [
-            .init(localID: 1, identifier: .allMail, unreadCount: "5", isSelected: false),
-            .init(localID: 2, identifier: .sent, unreadCount: "+999", isSelected: false)
+            .init(id: .init(value: 1), type: .allMail, unreadCount: "5", isSelected: false),
+            .init(id: .init(value: 2), type: .sent, unreadCount: "+999", isSelected: false)
         ]
     }
 

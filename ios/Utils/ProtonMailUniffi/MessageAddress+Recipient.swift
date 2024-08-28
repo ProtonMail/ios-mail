@@ -17,17 +17,10 @@
 
 import proton_mail_uniffi
 
-extension LocalLabelWithCount {
+extension MessageAddress {
 
-    var sidebarSystemFolder: SidebarSystemFolder? {
-        let id = rid.unsafelyUnwrapped
-        guard let systemFolder = SystemFolderIdentifier(rawValue: UInt64(id).unsafelyUnwrapped) else { return nil }
-        return .init(
-            localID: self.id,
-            identifier: systemFolder,
-            unreadCount: unreadCount == 0 ? nil : unreadCount.toBadgeCapped(), // FIXME: - Not here
-            isSelected: false
-        )
+    var toRecipient: MessageDetail.Recipient {
+        .init(name: uiRepresentation, address: address)
     }
 
 }

@@ -33,15 +33,15 @@ struct AppConfig: Sendable {
 
 extension AppConfig {
 
-    var apiEnvConfig: ApiEnvConfig {
+    var apiEnvConfig: ApiConfig {
         let environment = self.environment
 
-        return ApiEnvConfig(
+        return ApiConfig(
+            allowHttp: environment.isHttpAllowed, 
             appVersion: appVersion,
             baseUrl: environment.apiBaseUrl,
-            userAgent: environment.userAgent,
-            allowHttp: environment.isHttpAllowed,
-            skipSrpProofValidation: environment.isSrpProofSkipped
+            skipSrpProofValidation: environment.isSrpProofSkipped, 
+            userAgent: environment.userAgent
         )
     }
 }

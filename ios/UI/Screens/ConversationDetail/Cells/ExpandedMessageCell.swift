@@ -16,9 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import proton_mail_uniffi
 import SwiftUI
 
 struct ExpandedMessageCell: View {
+    private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
 
@@ -31,11 +33,13 @@ struct ExpandedMessageCell: View {
     private let cardCornerRadius = DS.Radius.extraLarge
 
     init(
+        mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void
     ) {
+        self.mailbox = mailbox
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
@@ -63,7 +67,12 @@ struct ExpandedMessageCell: View {
                         onEvent(.onRecipientTap(recipient))
                     }
                 })
-                MessageBodyView(messageBody: uiModel.message, messageId: uiModel.messageId, uiModel: uiModel)
+                MessageBodyView(
+                    messageBody: uiModel.message,
+                    messageId: uiModel.id,
+                    uiModel: uiModel,
+                    mailbox: mailbox
+                )
 
                 Spacer()
 
@@ -86,8 +95,7 @@ struct ExpandedMessageCell: View {
 }
 
 struct ExpandedMessageCellUIModel: Identifiable {
-    var id: PMLocalMessageId { messageId }
-    let messageId: PMLocalMessageId
+    let id: ID
     let message: String?
     let messageDetails: MessageDetailsUIModel
 }
@@ -123,14 +131,15 @@ enum ExpandedMessageCellEvent {
         ],
         date: .now,
         location: .systemFolder(.inbox),
-        labels: [.init(labelId: 1, text: "Friends and Holidays", color: .blue)],
+        labels: [.init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue)],
         other: [.starred, .pinned]
     )
 
     return VStack(spacing: 0) {
         ExpandedMessageCell(
+            mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
-                messageId: 0,
+                id: .init(value: 0),
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 messageDetails: messageDetails
             ),
@@ -139,8 +148,9 @@ enum ExpandedMessageCellEvent {
             onEvent: { _ in }
         )
         ExpandedMessageCell(
+            mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
-                messageId: 1,
+                id: .init(value: 1),
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
                 messageDetails: messageDetails
             ),

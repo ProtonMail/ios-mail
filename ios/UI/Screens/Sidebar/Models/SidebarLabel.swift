@@ -18,29 +18,22 @@
 import Foundation
 
 struct SidebarLabel: Identifiable, Equatable, SelectableItem {
-
-    let localID: PMLocalLabelId
+    let id: ID
     let color: String
     let name: String
     let unreadCount: String?
-
-    // MARK: - Identifiable
-
-    var id: UInt64 {
-        localID
-    }
 
     // MARK: - SelectableItem
 
     let isSelected: Bool
 
     var selectionIdentifier: String {
-        "\(localID)"
+        "\(id.value)"
     }
 
     func copy(isSelected: Bool) -> Self {
         .init(
-            localID: localID,
+            id: id,
             color: color,
             name: name,
             unreadCount: unreadCount,

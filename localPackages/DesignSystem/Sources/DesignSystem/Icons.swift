@@ -94,6 +94,7 @@ public extension DS.Icon {
     static let icFileTypeDefault = ImageResource.icFileTypeDefault
     static let icFileTypeExcel = ImageResource.icFileTypeExcel
     static let icFileTypeFont = ImageResource.icFileTypeFont
+    static let icFileTypeIconAttachment = ImageResource.icFileTypeIconAttachment
     static let icFileTypeIconAudio = ImageResource.icFileTypeIconAudio
     static let icFileTypeIconCalendar = ImageResource.icFileTypeIconCalendar
     static let icFileTypeIconCode = ImageResource.icFileTypeIconCode

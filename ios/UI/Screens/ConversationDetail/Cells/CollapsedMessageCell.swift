@@ -108,7 +108,7 @@ struct CollapsedMessageCell: View {
 }
 
 struct CollapsedMessageCellUIModel {
-    let messageId: PMLocalMessageId
+    let id: ID
     let sender: String
     let date: Date
     let recipients: String
@@ -124,7 +124,7 @@ enum CollapsedMessageCellEvent {
 #Preview {
     VStack(spacing: 0) {
         CollapsedMessageCell(uiModel: .init(
-            messageId: 1,
+            id: .init(value: 1),
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",
@@ -133,7 +133,7 @@ enum CollapsedMessageCellEvent {
             avatar: .init(initials: "Ba", type: .sender(params: .init()))
         ), isFirstCell: true, onTap: {})
         CollapsedMessageCell(uiModel: .init(
-            messageId: 2,
+            id: .init(value: 2),
             sender: "john@gmail.com",
             date: .now,
             recipients: "martha@proton.me",
@@ -142,7 +142,7 @@ enum CollapsedMessageCellEvent {
             avatar: .init(initials: "De", type: .sender(params: .init()))
         ), onTap: {})
         CollapsedMessageCell(uiModel: .init(
-            messageId: 3,
+            id: .init(value: 3),
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",

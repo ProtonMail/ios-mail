@@ -19,7 +19,8 @@ import Foundation
 
 extension MailboxItemCellUIModel {
 
-    func toSelectedItem() -> SelectedItem {
-        SelectedItem(id: id, isRead: isRead, isStarred: isStarred)
+    func toSelectedItem() -> MailboxSelectedItem {
+        .init(id: id, isRead: isRead, isStarred: isStarred)
     }
+
 }

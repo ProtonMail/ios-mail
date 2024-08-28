@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 
-final class PassThroughWindowTests: XCTestCase {
+final class PassThroughWindowTests: BaseTestCase {
 
     var sut: PassThroughWindow!
 

@@ -22,9 +22,13 @@ import proton_mail_uniffi
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
-    private var _mailSession: MailSession!
-    private let dependencies: AppContext.Dependencies
-    private var cancellables = Set<AnyCancellable>()
+    var userSession: MailUserSession {
+        guard let activeUserSession = activeUserSession else {
+            fatalError("Can not find active session.")
+        }
+
+        return activeUserSession
+    }
 
     private var mailSession: MailSession {
         guard let mailContext = _mailSession else {
@@ -32,6 +36,10 @@ final class AppContext: Sendable, ObservableObject {
         }
         return mailContext
     }
+
+    private var _mailSession: MailSession!
+    private let dependencies: AppContext.Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var activeUserSession: MailUserSession?
     var hasActiveUser: Bool {
@@ -42,7 +50,7 @@ final class AppContext: Sendable, ObservableObject {
         self.dependencies = dependencies
     }
 
-    private func start() throws {
+    private func start() async throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
         guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw AppContextError.applicationSupportDirectoryNotAccessible
@@ -64,24 +72,25 @@ final class AppContext: Sendable, ObservableObject {
         let params = MailSessionParams(
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
-            mailCacheDir: cachePath,
+            mailCacheDir: cachePath, 
+            mailCacheSize: .oneHundredMBInBytes,
             logDir: cachePath,
             logDebug: true,
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
-        _mailSession = try MailSession.create(
+        _mailSession = try await MailSession.create(
             params: params,
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
         )
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
-        if let storedSession = try mailSession.storedSessions().first {
-            activeUserSession = try mailSession.userContextFromSession(
-                session: storedSession,
-                sessionCb: SessionDelegate.shared
-            )
+        if let storedSession = try await mailSession.storedSessions().first {
+            let session = try await mailSession.userContextFromSession(session: storedSession)
+            Dispatcher.dispatchOnMain(.init { [weak self] in
+                self?.activeUserSession = session
+            })
         }
     }
 }
@@ -110,26 +119,6 @@ final class NetworkStatusManager: NetworkStatusChanged, Sendable {
     }
 }
 
-final class SessionDelegate: SessionCallback, Sendable {
-    static let shared = SessionDelegate()
-
-    func onSessionRefresh() {
-        AppLogger.logTemporarily(message: "onSessionRefresh", category: .userSessions)
-    }
-
-    func onSessionDeleted() {
-        AppLogger.logTemporarily(message: "onSessionDeleted", category: .userSessions)
-    }
-
-    func onRefreshFailed(e: proton_mail_uniffi.SessionError) {
-        AppLogger.logTemporarily(message: "onRefreshFailed error: \(e)", category: .userSessions)
-    }
-
-    func onError(err: proton_mail_uniffi.SessionError) {
-        AppLogger.logTemporarily(message: "onError error: \(err)", category: .userSessions)
-    }
-}
-
 final class UserContextInitializationDelegate: MailUserSessionInitializationCallback, Sendable {
     static let shared = UserContextInitializationDelegate()
 
@@ -144,9 +133,9 @@ final class UserContextInitializationDelegate: MailUserSessionInitializationCall
 
 extension AppContext: ApplicationServiceSetUp {
     
-    func setUpService() {
+    func setUpService() async {
         do {
-            try start()
+            try await start()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }
@@ -168,7 +157,7 @@ extension AppContext: EventLoopProvider {
                  Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
                  */
                 AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-                try await mailUserSession.executePendingActions()
+                try mailUserSession.executePendingActions()
 
                 AppLogger.log(message: "poll events", category: .rustLibrary)
                 try await mailUserSession.pollEvents()
@@ -183,7 +172,7 @@ extension AppContext: SessionProvider {
 
     @MainActor
     func login(email: String, password: String) async throws {
-        let flow = try mailSession.newLoginFlow(cb: SessionDelegate.shared)
+        let flow = try await mailSession.newLoginFlow()
         try await flow.login(email: email, password: password)
         let newUserSession = try flow.toUserContext()
         try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
@@ -195,4 +184,8 @@ extension AppContext: SessionProvider {
         try await activeUserSession?.logout()
         activeUserSession = nil
     }
+}
+
+private extension UInt32 {
+    static let oneHundredMBInBytes: Self = 100 * 1_024 * 1_024
 }

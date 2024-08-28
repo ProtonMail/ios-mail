@@ -20,7 +20,7 @@ import SwiftUI
 import SwiftUIIntrospect
 
 struct FolderPickerView: View {
-    typealias OnSelectionDone = (_ selectedLabelId: PMLocalLabelId) -> Void
+    typealias OnSelectionDone = (_ selectedLabelId: ID) -> Void
 
     @State private var customFolders: [FolderPickerCellUIModel] = []
     @State private var moveToSystemFolders: [FolderPickerCellUIModel] = []
@@ -42,11 +42,11 @@ struct FolderPickerView: View {
             customFolders = await moveToFolderModel
                 .customFoldersHierarchy()
                 .flatMap { $0.preorderTreeTraversal() }
-                .map { $0.toFolderPickerCellUIModel() }
+                .map(\.cellModel)
 
             moveToSystemFolders = await moveToFolderModel
                 .moveToSystemFolders()
-                .map { $0.toFolderPickerCellUIModel(parentIds: .init()) }
+                .map(\.cellModel)
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(FolderPickerViewIdentifiers.rootItem)
@@ -123,7 +123,7 @@ private struct AddNewFolder: View {
 // MARK: cell
 
 struct FolderPickerCellUIModel: Identifiable {
-    let id: PMLocalLabelId
+    let id: ID
     let name: String
     let icon: ImageResource
     let level: UInt

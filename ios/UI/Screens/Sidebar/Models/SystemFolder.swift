@@ -15,11 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-extension UnsignedInteger {
+struct SystemFolder: Identifiable, Equatable, SelectableItem {
+    let id: ID
+    let type: SystemFolderLabel
+    let unreadCount: String?
 
-    func toBadgeCapped(at max: Self = 999) -> String {
-        self > max ? "\(max)+" : "\(self)"
+    // MARK: - SelectableItem
+
+    let isSelected: Bool
+
+    var selectionIdentifier: String {
+        "\(type.rawValue)"
+    }
+
+    func copy(isSelected: Bool) -> Self {
+        .init(
+            id: id,
+            type: type,
+            unreadCount: unreadCount,
+            isSelected: isSelected
+        )
     }
 }

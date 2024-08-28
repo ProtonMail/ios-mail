@@ -18,13 +18,13 @@
 import SwiftUI
 
 struct MailboxSwipeActionsModifier: ViewModifier {
-    typealias OnTapAction = @MainActor (Action, [PMMailboxItemId]) -> Void
+    typealias OnTapAction = @MainActor (Action, [ID]) -> Void
 
     @EnvironmentObject private var userSettings: UserSettings
     @State private(set) var triggerFeedback = false
     private let isSelectionModeOn: Bool
-    private let itemId: PMMailboxItemId
-    private let systemFolder: SystemFolderIdentifier?
+    private let mailboxItemId: ID
+    private let systemFolder: SystemFolderLabel?
     private let isItemRead: Bool
     private let onTap: OnTapAction
 
@@ -36,9 +36,15 @@ struct MailboxSwipeActionsModifier: ViewModifier {
         userSettings.trailingSwipeAction
     }
 
-    init(isSelectionModeOn: Bool, itemId: PMMailboxItemId, systemFolder: SystemFolderIdentifier?, isItemRead: Bool, onTapAction: @escaping OnTapAction) {
+    init(
+        isSelectionModeOn: Bool,
+        mailboxItemId: ID,
+        systemFolder: SystemFolderLabel?,
+        isItemRead: Bool,
+        onTapAction: @escaping OnTapAction
+    ) {
         self.isSelectionModeOn = isSelectionModeOn
-        self.itemId = itemId
+        self.mailboxItemId = mailboxItemId
         self.systemFolder = systemFolder
         self.isItemRead = isItemRead
         self.onTap = onTapAction
@@ -71,7 +77,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
                     newReadStatus = MailboxReadStatus(rawValue: !isItemRead)
                 }
                 guard let action = swipeAction.toAction(newReadStatus: newReadStatus) else { return }
-                onTap(action, [itemId])
+                onTap(action, [mailboxItemId])
                 triggerFeedback.toggle()
             } label: {
                 Image(uiImage: swipeAction.icon(readStatus: isItemRead ? .allRead : .noneRead))
@@ -86,15 +92,15 @@ extension View {
 
     @MainActor func mailboxSwipeActions(
         isSelectionModeOn: Bool,
-        itemId: PMMailboxItemId,
-        systemFolder: SystemFolderIdentifier?,
+        mailboxItemId: ID,
+        systemFolder: SystemFolderLabel?,
         isItemRead: Bool,
         onTapAction: @escaping MailboxSwipeActionsModifier.OnTapAction
     ) -> some View {
         self.modifier(
             MailboxSwipeActionsModifier(
                 isSelectionModeOn: isSelectionModeOn,
-                itemId: itemId,
+                mailboxItemId: mailboxItemId,
                 systemFolder: systemFolder,
                 isItemRead: isItemRead,
                 onTapAction: onTapAction

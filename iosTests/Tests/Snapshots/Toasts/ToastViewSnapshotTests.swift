@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 
-class ToastViewSnapshotTests: XCTestCase {
+class ToastViewSnapshotTests: BaseTestCase {
 
     func testSmallWarningToastShortTextNoActionLayoutsCorrecttly() {
         let toastView = ToastView(model: ToastViewPreviewProvider.smallWarningShortTextNoAction, didSwipeDown: {})

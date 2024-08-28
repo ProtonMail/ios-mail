@@ -18,27 +18,26 @@
 import Foundation
 
 /// Keeps the state of the items selected in a Mailbox. This class is agnostic of Messages and Conversations and so it works for both.
-@MainActor
 final class SelectionModeState: ObservableObject {
 
     @Published private(set) var hasSelectedItems: Bool
     @Published private(set) var selectionStatus: SelectedItemsStatus
-    private(set) var selectedItems: Set<SelectedItem>
+    private(set) var selectedItems: Set<MailboxSelectedItem>
 
-    init(selectedItems: Set<SelectedItem> = .init()) {
+    init(selectedItems: Set<MailboxSelectedItem> = .init()) {
         self.hasSelectedItems = false
         self.selectedItems = selectedItems
         self.selectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
         updateSelectionStatus()
     }
 
-    func addMailboxItem(_ item: SelectedItem) {
+    func addMailboxItem(_ item: MailboxSelectedItem) {
         selectedItems.insert(item)
         hasSelectedItems = true
         updateSelectionStatus()
     }
 
-    func removeMailboxItem(_ item: SelectedItem) {
+    func removeMailboxItem(_ item: MailboxSelectedItem) {
         selectedItems.remove(item)
         hasSelectedItems = !selectedItems.isEmpty
         updateSelectionStatus()
@@ -59,7 +58,7 @@ final class SelectionModeState: ObservableObject {
      - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
      items should be added calling  `addMailboxItem`.
      */
-    func refreshSelectedItemsStatus(itemProvider: ([PMMailboxItemId]) -> Set<SelectedItem> ) {
+    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<MailboxSelectedItem> ) {
         let returnedItems = itemProvider(selectedItems.map(\.id))
         let selectedItemsNewStatus = returnedItems.union(returnedItems)
         selectedItems.removeAll()

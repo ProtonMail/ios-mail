@@ -24,40 +24,41 @@ struct UnreadFilterBarView: View {
     let unread: UInt64
 
     var body: some View {
-        HStack {
-            Button {
-                isSelected.toggle()
-            } label: {
-                HStack(spacing: DS.Spacing.small) {
-                    Text(L10n.Mailbox.unread)
-                        .font(.footnote)
-                        .foregroundStyle(DS.Color.Text.weak)
-                        .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
-
-                    Text(unread.magnitude.toBadgeCapped(at: 99))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
+        if let unreadFormatted = UnreadCountFormatter.string(count: unread, maxCount: 99) {
+            HStack {
+                Button {
+                    isSelected.toggle()
+                } label: {
+                    HStack(spacing: DS.Spacing.small) {
+                        Text(L10n.Mailbox.unread)
+                            .font(.footnote)
+                            .foregroundStyle(DS.Color.Text.weak)
+                            .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
+                        Text(unreadFormatted)
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundStyle(DS.Color.Text.norm)
+                            .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
+                    }
                 }
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+                .padding(.vertical, DS.Spacing.standard)
+                .padding(.horizontal, DS.Spacing.medium*scale)
+                .background(
+                    RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
+                        .fill(isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
+                )
+                .overlay {
+                    RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
+                        .stroke(DS.Color.Border.norm)
+                }
+                Spacer()
             }
-            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .padding(.horizontal, DS.Spacing.large)
             .padding(.vertical, DS.Spacing.standard)
-            .padding(.horizontal, DS.Spacing.medium*scale)
-            .background(
-                RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
-                    .fill(isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
-                    .stroke(DS.Color.Border.norm)
-            }
-            Spacer()
+            .background(DS.Color.Background.norm)
+            .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
         }
-        .padding(.horizontal, DS.Spacing.large)
-        .padding(.vertical, DS.Spacing.standard)
-        .background(DS.Color.Background.norm)
-        .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
     }
 }
 
@@ -65,8 +66,11 @@ struct UnreadFilterBarView: View {
     struct Preview: View {
         @State var isSelected = false
         var body: some View {
-            UnreadFilterBarView(isSelected: $isSelected, unread: 187)
-                .border(.red)
+            VStack {
+                UnreadFilterBarView(isSelected: $isSelected, unread: 0)
+                UnreadFilterBarView(isSelected: $isSelected, unread: 187)
+            }
+            .border(.red)
         }
     }
 

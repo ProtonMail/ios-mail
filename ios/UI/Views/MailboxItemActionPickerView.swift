@@ -157,7 +157,7 @@ private enum MailboxItemActionPickerSection {
     }
 }
 
-private extension SystemFolderIdentifier? {
+private extension SystemFolderLabel? {
 
     var isSpam: Bool {
         guard let self = self else { return false }
@@ -182,7 +182,7 @@ private struct SendActionButtonStack<Content: View>: View {
         systemFolder: nil
     )
     return MailboxItemActionPickerView(
-        mailboxItemIdentifier: .message(1),
+        mailboxItemIdentifier: .message(.init(value: 1)),
         actionResolverParams: params,
         onActionTap: { _, _ in }
     )
@@ -195,7 +195,7 @@ private struct SendActionButtonStack<Content: View>: View {
         systemFolder: nil
     )
     return MailboxItemActionPickerView(
-        mailboxItemIdentifier: .conversation(1),
+        mailboxItemIdentifier: .conversation(.init(value: 1)),
         actionResolverParams: params,
         onActionTap: { _, _ in }
     )

@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import struct proton_mail_uniffi.MessageAddress
 import enum SwiftUI.ColorScheme
 import class SwiftUI.UIImage
+import func proton_mail_uniffi.mailSettings
 
 protocol SenderImageDataSource {
     @MainActor
@@ -54,9 +54,10 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
             guard let userSession = dependencies.appContext.activeUserSession else {
                 return nil
             }
+            let mailSettings = await mailSettings(ctx: userSession)
             guard let data = try await userSession
                 .imageForSender(
-                    mailSettings: .init(session: userSession, callback: nil),
+                    mailSettings: mailSettings,
                     address: params.address,
                     bimiSelector: params.bimiSelector,
                     displaySenderImage: params.displaySenderImage,

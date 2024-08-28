@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 
-final class ToastStateStoreTests: XCTestCase {
+final class ToastStateStoreTests: BaseTestCase {
 
     private var sut: ToastStateStore!
 

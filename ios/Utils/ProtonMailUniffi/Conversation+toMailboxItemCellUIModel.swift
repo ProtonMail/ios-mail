@@ -20,39 +20,39 @@ import proton_mail_uniffi
 import struct SwiftUI.Color
 import class SwiftUI.UIImage
 
-extension LocalConversation {
+extension Conversation {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<PMMailboxItemId>) async -> MailboxItemCellUIModel {
-        var senderImage: UIImage? = nil
-        if let firstSender = senders.first {
-            senderImage = await Caches.senderImageCache.object(for: firstSender.address)
-        }
+    func toMailboxItemCellUIModel(selectedIds: Set<Id>) async -> MailboxItemCellUIModel {
+        let firstSender = senders.first.unsafelyUnwrapped
+        let senderImage = await Caches.senderImageCache.object(for: firstSender.address)
+        let avatarInformation = avatarInformationFromMessageAddress(address: firstSender)
+
         return MailboxItemCellUIModel(
             id: id,
-            conversationId: id,
             type: .conversation,
             avatar: .init(
                 initials: avatarInformation.text,
                 senderImage: senderImage,
                 backgroundColor: Color(hex: avatarInformation.color),
                 type: .sender(params: .init(
-                    address: senders.first?.address ?? "",
-                    bimiSelector: senders.first?.bimiSelector,
-                    displaySenderImage: senders.first?.displaySenderImage ?? true
+                    address: firstSender.address,
+                    bimiSelector: firstSender.bimiSelector,
+                    displaySenderImage: firstSender.displaySenderImage
                 ))
             ),
             senders: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,
-            isStarred: starred,
+            isStarred: isStarred,
             isSelected: selectedIds.contains(id),
-            isSenderProtonOfficial: senders.first?.isProton ?? false,
+            isSenderProtonOfficial: firstSender.isProton,
             numMessages: numMessages > 1 ? numMessages : 0,
-            labelUIModel: labels?.toMailboxLabelUIModel() ?? .init(),
-            attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),
+            labelUIModel: customLabels.toMailboxLabelUIModel(),
+            attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
             snoozeDate: nil
         )
     }
+
 }

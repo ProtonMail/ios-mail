@@ -20,97 +20,112 @@ import proton_mail_uniffi
 import XCTest
 
 final class LocalMessageMetadataMapTests: XCTestCase {
-    static private let defaultSubject = "Dummy subject"
-    static private let recipient1 = makeMessageAddress(withName: "The Rec.A", address: "a@example.com")
-    static private let recipient2 = makeMessageAddress(withName: "", address: "b@example.com")
-    static private let recipient3 = makeMessageAddress(withName: "The Rec.C", address: "c@example.com")
-    private let sender = makeMessageAddress(withName: "", address: "sender@example.com")
+    private let defaultSubject = "Dummy subject"
+    private let recipient1: MessageAddress = .testData(name: "The Rec.A", address: "a@example.com")
+    private let recipient2: MessageAddress = .testData(name: "", address: "b@example.com")
+    private let recipient3: MessageAddress = .testData(name: "The Rec.C", address: "c@example.com")
+    private let sender: MessageAddress = .testData(name: "", address: "sender@example.com")
 
     func testToMailboxItemCellUIModel_whenNoSubject_itReturnsAPlaceholder() async {
-        let message1 = makeLocalMessageMetadata(subject: "")
-        let result1 = await message1.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: Bool.random())
+        let message1 = Message.testData(subject: "")
+        let result1 = await message1.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: .random())
         XCTAssertEqual(result1.subject, "(No Subject)")
 
-        let message2 = makeLocalMessageMetadata()
-        let result2 = await message2.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: Bool.random())
-        XCTAssertEqual(result2.subject, Self.defaultSubject)
+        let message2 = Message.testData(subject: defaultSubject)
+        let result2 = await message2.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: .random())
+        XCTAssertEqual(result2.subject, defaultSubject)
     }
 
     func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() async {
-        let message = makeLocalMessageMetadata(messageId: 33)
+        let message = Message.testData(messageId: 33)
 
-        let result1 = await message.toMailboxItemCellUIModel(selectedIds: [12], mapRecipientsAsSender: Bool.random())
+        let result1 = await message.toMailboxItemCellUIModel(
+            selectedIds: [.init(value: 12)], mapRecipientsAsSender: .random()
+        )
         XCTAssertFalse(result1.isSelected)
 
-        let result2 = await message.toMailboxItemCellUIModel(selectedIds: [33], mapRecipientsAsSender: Bool.random())
+        let result2 = await message.toMailboxItemCellUIModel(
+            selectedIds: [.init(value: 33)], mapRecipientsAsSender: .random()
+        )
         XCTAssertTrue(result2.isSelected)
     }
 
     func testToMailboxItemCellUIModel_whenMappingRecipientsAsSender_itReturnsRecipientsInSenderField() async {
-        let message = makeLocalMessageMetadata()
+        let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
         let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: true)
         XCTAssertEqual(result.senders, "The Rec.A, b@example.com, The Rec.C")
     }
 
     func testToMailboxItemCellUIModel_whenMappingRecipientsAsSender_andNoRecipients_itReturnsAPlaceholder() async {
-        let message = makeLocalMessageMetadata(to: [], cc: [], bcc: [])
+        let message = Message.testData(to: [], cc: [], bcc: [])
         let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: true)
         XCTAssertEqual(result.senders, "(No Recipient)")
     }
 
     func testToMailboxItemCellUIModel_whenNotMappingRecipientsAsSender_itReturnsTheSender() async {
-        let message = makeLocalMessageMetadata()
+        let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
         let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: false)
         XCTAssertEqual(result.senders, "sender@example.com")
     }
 }
 
-extension LocalMessageMetadataMapTests {
+private extension MessageAddress {
 
-    private static func makeMessageAddress(withName name: String, address: String) -> MessageAddress {
-        MessageAddress(
+    static func testData(name: String, address: String) -> Self {
+        .init(
             address: address,
-            name: name,
-            isProton: Bool.random(),
-            displaySenderImage: Bool.random(),
-            isSimpleLogin: Bool.random(),
-            bimiSelector: nil
+            bimiSelector: nil,
+            displaySenderImage: .random(),
+            isProton: .random(),
+            isSimpleLogin: .random(),
+            name: name
         )
     }
 
-    private func makeLocalMessageMetadata(
+}
+
+private extension Message {
+
+    static func testData(
         messageId: UInt64 = UInt64.random(in: 0..<100),
-        subject: String = defaultSubject,
-        to: [MessageAddress] = [recipient1],
-        cc: [MessageAddress] = [recipient2],
-        bcc: [MessageAddress] = [recipient3]
-    ) -> LocalMessageMetadata {
-        LocalMessageMetadata(
-            id: messageId,
-            rid: nil,
-            conversationId: 31,
-            addressId: "32",
-            order: 0,
-            subject: subject,
-            unread: true,
-            sender: sender,
-            to: to,
-            cc: cc,
-            bcc: bcc,
-            time: 1622548800,
-            size: 1024,
+        to: [MessageAddress] = [],
+        cc: [MessageAddress] = [],
+        bcc: [MessageAddress] = [],
+        sender: MessageAddress = .testData(name: "", address: "sender@example.com"),
+        subject: String = .notUsed
+    ) -> Self {
+        .init(
+            id: .init(value: messageId),
+            conversationId: .init(value: 31),
+            addressId: .init(value: 32),
+            attachmentsMetadata: [],
+            bccList: bcc,
+            ccList: cc,
+            exclusiveLocation: nil,
             expirationTime: 1625140800,
-            snoozeTime: 0,
+            header: .notUsed,
+            flags: .init(value: 2),
+            isForwarded: true,
             isReplied: true,
             isRepliedAll: true,
-            isForwarded: true,
-            externalId: nil,
             numAttachments: 1,
-            flags: 2,
-            starred: true,
-            attachments: [],
-            labels: [],
-            avatarInformation: .init(text: "JV", color: "blue")
+            displayOrder: 0,
+            replyTos: [],
+            sender: sender,
+            size: 1_024,
+            snoozeTime: 0,
+            subject: subject,
+            time: 1622548800,
+            toList: to,
+            unread: true,
+            customLabels: [],
+            starred: true, 
+            avatar: .init(text: .notUsed, color: .notUsed)
         )
     }
+
+}
+
+extension String {
+    static let notUsed = "__NOT_USED__"
 }

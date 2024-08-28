@@ -67,7 +67,6 @@ extension MailboxListView {
                 .listRowBackground(DS.Color.Background.norm)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
-                .removeViewIf(model.unreadItemsCount < 1)
 
             ForEach(Array(mailboxItems.enumerated()), id: \.1.id) { index, item in
                 VStack {
@@ -94,7 +93,7 @@ extension MailboxListView {
 
                     .mailboxSwipeActions(
                         isSelectionModeOn: model.selectionMode.hasSelectedItems,
-                        itemId: item.id,
+                        mailboxItemId: item.id,
                         systemFolder: model.selectedMailbox.systemFolder,
                         isItemRead: item.isRead,
                         onTapAction: model.onMailboxItemAction(_:itemIds:)
@@ -146,13 +145,12 @@ extension MailboxListView {
 
 #Preview {
     let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
-    let dummySettings = EmptyPMMailSettings()
 
     return MailboxListView(
         isListAtTop: .constant(true),
         model: .init(
             state: .empty,
-            mailSettings: dummySettings,
+            mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route
         )
     )

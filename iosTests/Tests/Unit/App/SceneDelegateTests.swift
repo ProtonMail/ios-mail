@@ -20,7 +20,7 @@ import SwiftUI
 import XCTest
 import Nimble
 
-final class SceneDelegateTests: XCTestCase {
+final class SceneDelegateTests: BaseTestCase {
 
     private var sut: SceneDelegate!
 

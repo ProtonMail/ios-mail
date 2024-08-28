@@ -15,18 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import DeveloperToolsSupport
+import Foundation
 
-extension CustomFolder {
+struct MailboxSelectedItem: Hashable {
+    let id: ID
+    let isRead: Bool
+    let isStarred: Bool
 
-    func toFolderPickerCellUIModel() -> FolderPickerCellUIModel {
-        let icon: ImageResource
-        if let systemFolderIcon = folder.systemFolderIdentifier?.icon {
-            icon = systemFolderIcon
-        } else {
-            icon = children.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders
-        }
-        return FolderPickerCellUIModel(id: folder.id, name: folder.name, icon: icon, level: UInt(folder.childLevel))
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
     }
 }

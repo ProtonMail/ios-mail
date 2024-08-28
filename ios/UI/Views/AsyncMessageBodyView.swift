@@ -22,15 +22,15 @@ struct AsyncMessageBodyView<Content>: View where Content: View {
     @StateObject private var bodyLoader: MessageBodyLoader
     @ViewBuilder private var content: (MessageBodyLoader.MessageBody) -> Content
 
-    private let messageId: PMLocalMessageId
+    private let messageId: ID
 
     init(
-        messageId: PMLocalMessageId,
-        loader: MessageBodyLoader = .init(),
+        messageId: ID,
+        mailbox: Mailbox,
         @ViewBuilder content: @escaping (MessageBodyLoader.MessageBody) -> Content
     ) {
         self.messageId = messageId
-        _bodyLoader = .init(wrappedValue: loader)
+        _bodyLoader = .init(wrappedValue: .init(mailbox: mailbox))
         self.content = content
     }
 
@@ -52,14 +52,14 @@ final class MessageBodyLoader: ObservableObject {
     }
 
     @Published var body: MessageBody = .fetching
-    private let provider: MessageBodyDataSource
+    private let provider: MessageBodyProviding
 
-    init(provider: MessageBodyDataSource = MessageBodyAPIDataSource.shared) {
-        self.provider = provider
+    init(mailbox: Mailbox) {
+        self.provider = MessageBodyProvider(mailbox: mailbox)
     }
 
     @MainActor
-    func loadBody(for messageId: PMLocalMessageId) async {
+    func loadBody(for messageId: ID) async {
         guard let bodyValue = await provider.messageBody(for: messageId) else {
             body = .fetching // TODO: error
             return

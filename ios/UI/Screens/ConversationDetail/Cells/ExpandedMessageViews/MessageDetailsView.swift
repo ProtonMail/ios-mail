@@ -244,9 +244,9 @@ extension MessageDetailsView {
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
 
             CapsuleView(
-                text: SystemFolderIdentifier.inbox.humanReadable,
-                color: DS.Color.Background.secondary, 
-                icon: Image(SystemFolderIdentifier.inbox.icon),
+                text: SystemFolderLabel.inbox.humanReadable,
+                color: DS.Color.Background.secondary,
+                icon: Image(SystemFolderLabel.inbox.icon),
                 style: .attachment
             )
             Spacer()
@@ -356,8 +356,8 @@ enum MessageDetail {
     }
 
     enum Location {
-        case systemFolder(SystemFolderIdentifier)
-        case customFolder(CustomFolder)
+        case systemFolder(SystemFolderLabel)
+        case customFolder(PMCustomFolder)
     }
 
     enum Other {
@@ -403,9 +403,9 @@ extension Array where Element == MessageDetail.Recipient {
         date: .now,
         location: .systemFolder(.inbox),
         labels: [
-            .init(labelId: 1, text: "Friends and Holidays", color: .blue),
-            .init(labelId: 2, text: "Work", color: .green),
-            .init(labelId: 3, text: "Summer trip", color: .pink),
+            .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue),
+            .init(labelId: .init(value: 2), text: "Work", color: .green),
+            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ],
         other: [.starred, .pinned]
     )

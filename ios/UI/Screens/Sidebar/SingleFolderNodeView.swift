@@ -20,49 +20,51 @@ import DesignSystem
 
 struct SingleFolderNodeView: View {
 
-    private let folderNode: SidebarFolderNode
+    private let folder: SidebarFolder
     private let padding: CGFloat
     private let selected: (SidebarFolder) -> Void
     @State private var isExpanded: Bool
 
-    init(folderNode: SidebarFolderNode, padding: CGFloat = 0, selected: @escaping (SidebarFolder) -> Void) {
-        self.folderNode = folderNode
+    init(folder: SidebarFolder, padding: CGFloat = 0, selected: @escaping (SidebarFolder) -> Void) {
+        self.folder = folder
         self.padding = padding
         self.selected = selected
-        self.isExpanded = folderNode.folder.expanded
+        self.isExpanded = folder.expanded
     }
 
     var body: some View {
         VStack {
-            SidebarItemButton(item: .folder(folderNode.folder), action: { selected(folderNode.folder) }) {
+            SidebarItemButton(item: .folder(folder), action: { selected(folder) }) {
                 HStack {
-                    Image(folderNode.children.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders)
+                    Image(folder.childFolders.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders)
                         .renderingMode(.template)
                         .square(size: 20)
-                        .tint(Color(hex: folderNode.folder.color))
+                        .tint(folder.displayColor)
                         .padding(.trailing, DS.Spacing.extraLarge)
-                    Text(folderNode.folder.name)
+                    Text(folder.name)
                         .font(.subheadline)
-                        .fontWeight(folderNode.folder.isSelected ? .bold : .regular)
-                        .foregroundStyle(folderNode.folder.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
+                        .fontWeight(folder.isSelected ? .bold : .regular)
+                        .foregroundStyle(folder.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
                         .lineLimit(1)
                     Spacer()
-                    if !folderNode.children.isEmpty {
+                    if !folder.childFolders.isEmpty {
                         Button(action: { isExpanded.toggle() }) {
                             Image(isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled)
                                 .resizable()
                                 .square(size: 16)
                                 .tint(DS.Color.Sidebar.iconWeak)
-                                .background(DS.Color.Global.white.opacity(0.04)) // FIXME: - Check the color with Zuza
+                                .background(DS.Color.Global.white.opacity(0.04))
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
                         .square(size: 16)
                         .animation(.default, value: isExpanded)
                     }
                     VStack {
-                        if let unreadBadge = folderNode.folder.unreadBadge {
-                            Text(unreadBadge)
-                                .foregroundStyle(folderNode.folder.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
+                        if let unreadFormatted = UnreadCountFormatter.string(count: folder.unreadCount) {
+                            Text(unreadFormatted)
+                                .foregroundStyle(
+                                    folder.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak
+                                )
                                 .font(.caption)
                         }
                     }
@@ -71,22 +73,14 @@ struct SingleFolderNodeView: View {
                 .padding(.leading, padding)
             }
 
-            if !folderNode.children.isEmpty, isExpanded {
+            if !folder.childFolders.isEmpty, isExpanded {
                 FolderNodeView(
-                    folders: folderNode.children,
+                    folders: folder.childFolders,
                     padding: padding + DS.Spacing.large,
                     selected: selected
                 )
             }
         }
-    }
-
-}
-
-private extension SidebarFolder {
-
-    var unreadBadge: String? {
-        unreadCount == 0 ? nil : unreadCount.toBadgeCapped()
     }
 
 }

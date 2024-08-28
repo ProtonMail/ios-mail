@@ -15,25 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import proton_mail_uniffi
-import struct SwiftUI.Color
-import class SwiftUI.UIImage
+import SwiftUI
 
-extension LocalMessageMetadata {
+extension Message {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<PMMailboxItemId>, mapRecipientsAsSender: Bool) async -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<ID>, mapRecipientsAsSender: Bool) async -> MailboxItemCellUIModel {
         let senderImage: UIImage? = await Caches.senderImageCache.object(for: sender.address)
         var recipientsUIRepresentation: String {
-            let recipients = (to + cc + bcc).map(\.uiRepresentation).joined(separator: ", ")
+            let recipients = (toList + ccList + bccList).map(\.uiRepresentation).joined(separator: ", ")
             return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
         }
 
         let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
+        let avatarInformation = avatarInformationFromMessageAddress(address: sender)
 
         return MailboxItemCellUIModel(
             id: id,
-            conversationId: conversationId,
             type: .message,
             avatar: .init(
                 initials: avatarInformation.text,
@@ -53,8 +51,8 @@ extension LocalMessageMetadata {
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: sender.isProton,
             numMessages: 0,
-            labelUIModel: labels?.toMailboxLabelUIModel() ?? .init(),
-            attachmentsUIModel: (attachments ?? []).toAttachmentCapsuleUIModels(),
+            labelUIModel: customLabels.toMailboxLabelUIModel(),
+            attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             replyIcons: .init(
                 shouldShowRepliedIcon: isReplied,
                 shouldShowRepliedAllIcon: isRepliedAll,
@@ -64,57 +62,76 @@ extension LocalMessageMetadata {
             snoozeDate: nil
         )
     }
-}
 
-extension LocalMessageMetadata {
+    func toAvatarUIModel() async -> AvatarUIModel {
+        let cachedImage = await Caches.senderImageCache.object(for: sender.address)
+        let avatarInformation = avatarInformationFromMessageAddress(address: sender)
+        return .init(
+            initials: avatarInformation.text,
+            senderImage: cachedImage,
+            backgroundColor: Color(hex: avatarInformation.color),
+            type: .sender(params: .init(
+                address: sender.address,
+                bimiSelector: sender.bimiSelector,
+                displaySenderImage: sender.displaySenderImage
+            ))
+        )
+    }
+
+    func toExpandedMessageCellUIModel(message: String?) async -> ExpandedMessageCellUIModel {
+        .init(
+            id: id,
+            message: message,
+            messageDetails: MessageDetailsUIModel(
+                avatar: await toAvatarUIModel(),
+                sender: .init(
+                    name: sender.uiRepresentation,
+                    address: sender.address,
+                    encryptionInfo: "End to end encrypted and signed"
+                ), // TODO: !!
+                isSenderProtonOfficial: sender.isProton,
+                recipientsTo: toList.map(\.toRecipient),
+                recipientsCc: ccList.map(\.toRecipient),
+                recipientsBcc: bccList.map(\.toRecipient),
+                date: Date(timeIntervalSince1970: TimeInterval(time)),
+                location: .systemFolder(.inbox), // TODO: !!
+                labels: labels,
+                other: other
+            )
+        )
+    }
 
     func toCollapsedMessageCellUIModel() async -> CollapsedMessageCellUIModel {
         .init(
-            messageId: id,
+            id: id,
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            recipients: messageDetailUIModelRecipients().recipientsUIRepresentation,
+            recipients: recipients.recipientsUIRepresentation,
             messagePreview: nil,
             isRead: !unread,
             avatar: await toAvatarUIModel()
         )
     }
-}
 
-extension LocalMessageMetadata {
-
-    func toExpandedMessageCellUIModel(message: String?) async -> ExpandedMessageCellUIModel {
-        .init(
-            messageId: id,
-            message: message,
-            messageDetails: MessageDetailsUIModel(
-                avatar: await toAvatarUIModel(),
-                sender: .init(name: sender.uiRepresentation, address: sender.address, encryptionInfo: "End to end encrypted and signed"), // TODO: !!
-                isSenderProtonOfficial: sender.isProton,
-                recipientsTo: to.map { $0.toMessageDetailUIModelRecipient() },
-                recipientsCc: cc.map { $0.toMessageDetailUIModelRecipient() },
-                recipientsBcc: bcc.map { $0.toMessageDetailUIModelRecipient() },
-                date: Date(timeIntervalSince1970: TimeInterval(time)),
-                location: .systemFolder(.inbox), // TODO: !!
-                labels: self.labels?.map {
-                    LabelUIModel(labelId: $0.id, text: $0.name, color: Color(hex: $0.color))
-                } ?? [],
-                other: messageDetailUIModelOther()
-            )
-        )
+    private var recipients: [MessageDetail.Recipient] {
+        let allRecipients = toList + ccList + bccList
+        return allRecipients.map(\.toRecipient)
     }
 
-    private func messageDetailUIModelRecipients() -> [MessageDetail.Recipient] {
-        to.map { $0.toMessageDetailUIModelRecipient() }
-        + cc.map { $0.toMessageDetailUIModelRecipient() }
-        + bcc.map { $0.toMessageDetailUIModelRecipient() }
+    private var labels: [LabelUIModel] {
+        customLabels.map { label in
+            LabelUIModel(labelId: label.id, text: label.name, color: .init(hex: label.color.value))
+        }
     }
 
-    private func messageDetailUIModelOther() -> [MessageDetail.Other] {
-        var result = [MessageDetail.Other]()
+    private var other: [MessageDetail.Other] {
+        var result: [MessageDetail.Other] = []
+
         if starred {
             result.append(.starred)
         }
+
         return result
     }
+
 }

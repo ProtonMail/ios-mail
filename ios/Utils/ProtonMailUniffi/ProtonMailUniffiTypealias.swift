@@ -17,17 +17,12 @@
 
 import proton_mail_uniffi
 
-// Rust library aliases mappings to avoid having to import the SDK everywhere
+typealias ID = proton_mail_uniffi.Id
 
-typealias PMMailboxItemId = UInt64 // it can be a LocalMessageId or a LocalConversationId
-typealias PMLocalAttachmentId = LocalAttachmentId
-typealias PMLocalConversationId = LocalConversationId
-typealias PMLocalMessageId = LocalMessageId
-typealias PMLocalLabelId = LocalLabelId
+extension ID {
 
-extension PMLocalLabelId {
-
-    static func random() -> PMLocalLabelId {
-        PMLocalLabelId.random(in: (0..<PMLocalLabelId.max))
+    static func random() -> ID {
+        .init(value: UInt64.random(in: (0..<UInt64.max)))
     }
+
 }

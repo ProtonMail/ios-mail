@@ -18,7 +18,7 @@
 import Foundation
 
 struct MailboxMessageSeed: Hashable {
-    let messageId: String
+    let localID: ID
     let subject: String
     let sender: String
 }

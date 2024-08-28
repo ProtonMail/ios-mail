@@ -15,20 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import proton_mail_uniffi
+extension SystemFolder {
 
-extension LocalLabel {
-    
-    var systemFolderIdentifier: SystemFolderIdentifier? {
-        guard let rid, let remoteId = UInt64(rid) else {
-            return nil
-        }
-        return SystemFolderIdentifier(rawValue: remoteId)
+    var cellModel: FolderPickerCellUIModel {
+        .init(id: id, name: type.humanReadable.string, icon: type.icon, level: 0)
     }
 
-    var childLevel: Int {
-        guard let count = path?.components(separatedBy: "/").count else { return 0 }
-        return count - 1
-    }
 }

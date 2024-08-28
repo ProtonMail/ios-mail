@@ -17,22 +17,30 @@
 
 @testable import ProtonMail
 import proton_mail_uniffi
-import XCTest
 
-final class UnsignedIntegerTests: XCTestCase {
+extension PMCustomLabel {
 
-    func testToBadgeCapped_whenValueBelowLimit_itReturnsTheValue() {
-        XCTAssertEqual(UInt(0).toBadgeCapped(at: 1), "0")
-        XCTAssertEqual(UInt(101).toBadgeCapped(at: 999), "101")
+    static let importantLabel: Self = .testData(id: 3, name: "Important", color: "#1DA583")
+    static let topSecretLabel: Self = .testData(id: 4, name: "Top Secret", color: "#179FD9")
+
+    static func testData(
+        id: UInt64 = UInt64.random(in: 1...UInt64.max),
+        name: String,
+        color: String = "#000000",
+        displayOrder: UInt32 = UInt32.random(in: 1...UInt32.max)
+    ) -> Self {
+        .init(
+            id: .init(value: id),
+            color: .init(value: color),
+            description: .label,
+            display: false,
+            name: name,
+            notify: false,
+            displayOrder: displayOrder,
+            sticky: false,
+            total: 0,
+            unread: 0
+        )
     }
 
-    func testToBadgeCapped_whenValueEqualsTheLimit_itReturnsTheValue() {
-        XCTAssertEqual(UInt(0).toBadgeCapped(at: 0), "0")
-        XCTAssertEqual(UInt(99).toBadgeCapped(at: 99), "99")
-    }
-
-    func testToBadgeCapped_whenValueAboveTheLimit_itReturnsTheLimitFormatted() {
-        XCTAssertEqual(UInt(1).toBadgeCapped(at: 0), "0+")
-        XCTAssertEqual(UInt(1000).toBadgeCapped(at: 999), "999+")
-    }
 }

@@ -18,7 +18,7 @@
 import Foundation
 
 struct SidebarState {
-    let system: [SidebarSystemFolder]
+    let system: [SystemFolder]
     let labels: [SidebarLabel]
     let folders: [SidebarFolder]
     let other: [SidebarOtherItem]
@@ -31,7 +31,7 @@ extension SidebarState {
     var items: [SidebarItem] {
         let systemItems = system.map(SidebarItem.system)
         let labelItems = labels.map(SidebarItem.label)
-        let folderItems = folders.map(SidebarItem.folder)
+        let folderItems = folders.allFolders.map(SidebarItem.folder)
         let otherItems = (other + [createLabel, createFolder]).map(SidebarItem.other)
 
         return systemItems + labelItems + folderItems + otherItems
@@ -48,7 +48,7 @@ extension SidebarState {
         )
     }
 
-    func copy(system: [SidebarSystemFolder]) -> Self {
+    func copy(system: [SystemFolder]) -> Self {
         .init(
             system: system,
             labels: labels, 
@@ -116,19 +116,18 @@ extension SidebarState {
 
 }
 
-extension Array where Element == SidebarFolder {
+private extension SidebarFolder {
 
-    var sidebarFolderNodes: [SidebarFolderNode] {
-        let foldersByParentId = Dictionary(grouping: self, by: \.parentID)
+    var folderWithChildren: [SidebarFolder] {
+        [self] + childFolders.flatMap(\.folderWithChildren)
+    }
 
-        func buildTree(parentId: UInt64?) -> [SidebarFolderNode] {
-            guard let folders = foldersByParentId[parentId] else { return [] }
-            return folders.map { folder in
-                SidebarFolderNode(folder: folder, children: buildTree(parentId: folder.id))
-            }
-        }
+}
 
-        return buildTree(parentId: nil)
+private extension Array where Element == SidebarFolder {
+
+    var allFolders: [SidebarFolder] {
+        flatMap(\.folderWithChildren)
     }
 
 }

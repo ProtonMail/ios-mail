@@ -22,28 +22,25 @@ import proton_mail_uniffi
 class SidebarModelTests: BaseTestCase {
 
     var sut: SidebarModel!
-    var activeUserSessionSpy: MailUserSessionSpy!
+    var sidebarSpy: SidebarSpy!
 
     override func setUp() {
         super.setUp()
 
-        activeUserSessionSpy = MailUserSessionSpy()
-        sut = .init(
-            state: .initial,
-            dependencies: .init(activeUserSession: activeUserSessionSpy)
-        )
+        sidebarSpy = .init()
+        sut = .init(state: .initial, sidebar: sidebarSpy)
 
         sut.handle(action: .viewAppear)
         emitData()
     }
 
     override func tearDown() {
-        super.tearDown()
-
         sut = nil
-        activeUserSessionSpy = nil
+        sidebarSpy = nil
+
+        super.tearDown()
     }
-    
+
     func test_WhenAppear_ItSelectsFirstSystemFolder() throws {
         let firstUnselectedSystemFolder = try XCTUnwrap(sut.state.system.first)
         XCTAssertEqual(firstUnselectedSystemFolder.isSelected, true)
@@ -99,30 +96,30 @@ class SidebarModelTests: BaseTestCase {
         sut.handle(action: .select(item: .label(firstLabel)))
         XCTAssertEqual(sut.state.labels.count, 2)
 
-        let newLabel = LocalLabelWithCount.testData(id: 5, name: "New label", type: .label)
-        let oldLabels = activeUserSessionSpy.labelsQueryStub.stubbedValue
+        let newLabel = PMCustomLabel.testData(id: 5, name: "New label")
+        let oldLabels = sidebarSpy.stubbedCustomLabels
         emit(labels: oldLabels + [newLabel])
 
         XCTAssertEqual(sut.state.labels.count, 3)
         let selectedLabel = try XCTUnwrap(sut.state.labels.first(where: \.isSelected))
-        XCTAssertEqual(selectedLabel.localID, firstLabel.localID)
+        XCTAssertEqual(selectedLabel.id, firstLabel.id)
     }
 
     // MARK: - Private
 
     private func emitData() {
-        activeUserSessionSpy.systemFoldersQueryStub.stubbedValue = [.inbox, .sent]
-        activeUserSessionSpy.newSystemLabelsObservedQueryCallback?.onUpdated()
+        sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
+        sidebarSpy.spiedWatchers[.system]?.onUpdate()
 
-        activeUserSessionSpy.foldersQueryStub.stubbedValue = [.topSecretFolder, .hiddenFolder]
-        activeUserSessionSpy.newFolderLabelsObservedQueryCallback?.onUpdated()
+        sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
+        sidebarSpy.spiedWatchers[.folder]?.onUpdate()
 
         emit(labels: [.importantLabel, .topSecretLabel])
     }
 
-    private func emit(labels: [LocalLabelWithCount]) {
-        activeUserSessionSpy.labelsQueryStub.stubbedValue = labels
-        activeUserSessionSpy.newLabelLabelsObservedQueryCallback?.onUpdated()
+    private func emit(labels: [PMCustomLabel]) {
+        sidebarSpy.stubbedCustomLabels = labels
+        sidebarSpy.spiedWatchers[.label]?.onUpdate()
     }
 
 }

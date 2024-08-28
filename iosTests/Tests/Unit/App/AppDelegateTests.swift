@@ -19,7 +19,7 @@
 import XCTest
 import Nimble
 
-final class AppDelegateTests: XCTestCase {
+final class AppDelegateTests: BaseTestCase {
 
     func testSceneConfiguration_WhenConnectingSceneSession_HasCustomSceneDelegateConfigured() throws {
         let sceneConfiguration = AppDelegate().application(

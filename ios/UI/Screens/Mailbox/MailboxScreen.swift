@@ -33,8 +33,14 @@ struct MailboxScreen: View {
         return hasSelectedItems ? L10n.Mailbox.selected(emailsCount: selectedItemsCount) : selectedMailboxName
     }
 
-    init(customLabelModel: CustomLabelModel, mailSettings: PMMailSettingsProtocol, openedItem: MailboxMessageSeed? = nil) {
-        self._mailboxModel = StateObject(wrappedValue: MailboxModel(mailSettings: mailSettings, openedItem: openedItem))
+    init(
+        customLabelModel: CustomLabelModel,
+        mailSettingsLiveQuery: MailSettingLiveQuerying,
+        openedItem: MailboxMessageSeed? = nil
+    ) {
+        self._mailboxModel = StateObject(
+            wrappedValue: MailboxModel(mailSettingsLiveQuery: mailSettingsLiveQuery, openedItem: openedItem)
+        )
         self.customLabelModel = customLabelModel
     }
 
@@ -106,7 +112,7 @@ extension MailboxScreen {
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
-                seed: .message(remoteMessageId: seed.messageId, subject: seed.subject, sender: seed.sender)
+                seed: .message(localID: seed.localID, subject: seed.subject, sender: seed.sender)
             )
         }
     }
@@ -118,15 +124,29 @@ private extension Animation {
 
 #Preview {
     let appUIStateStore = AppUIStateStore()
+    let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
-    let dummySettings = EmptyPMMailSettings()
 
-    return MailboxScreen(customLabelModel: customLabelModel, mailSettings: dummySettings)
+    return MailboxScreen(customLabelModel: customLabelModel, mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy())
         .environmentObject(appUIStateStore)
+        .environmentObject(toastStateStore)
         .environmentObject(userSettings)
 }
 
 private struct MailboxScreenIdentifiers {
     static let rootItem = "mailbox.rootItem"
+}
+
+import Combine
+import proton_mail_uniffi
+
+class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
+
+    // MARK: - MailSettingLiveQuerying
+
+    var settingsPublisher: AnyPublisher<MailSettings, Never> {
+        Just(.defaults()).eraseToAnyPublisher()
+    }
+
 }

@@ -24,7 +24,11 @@ struct ApplicationServices {
     var terminateServices: [ApplicationServiceTerminate] = []
 
     func setUp() {
-        setUpServices.forEach { $0.setUpService() }
+        setUpServices.forEach { service in
+            Task {
+                await service.setUpService()
+            }
+        }
     }
 
     func becomeActive() {
@@ -41,7 +45,7 @@ struct ApplicationServices {
 }
 
 protocol ApplicationServiceSetUp {
-    func setUpService()
+    func setUpService() async
 }
 
 protocol ApplicationServiceTerminate {

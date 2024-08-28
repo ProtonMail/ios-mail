@@ -38,5 +38,5 @@ struct MailboxItemActionResolver {
 struct ConditionalActionResolverParams {
     let selectionReadStatus: SelectionReadStatus
     let selectionStarStatus: SelectionStarStatus
-    let systemFolder: SystemFolderIdentifier?
+    let systemFolder: SystemFolderLabel?
 }

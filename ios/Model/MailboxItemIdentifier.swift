@@ -18,8 +18,8 @@
 import Foundation
 
 enum MailboxItemIdentifier {
-    case conversation(PMLocalConversationId)
-    case message(PMLocalMessageId)
+    case conversation(ID)
+    case message(ID)
 
     var type: MailboxItemType {
         switch self {

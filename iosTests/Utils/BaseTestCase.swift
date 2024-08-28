@@ -22,25 +22,44 @@ class BaseTestCase: XCTestCase {
 
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
+    private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
 
     override func setUp() {
         super.setUp()
 
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
+        original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
 
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
+        ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
+            TestExecutor.shared.enqueue(job)
+        }
     }
 
     override func tearDown() {
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
+        ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
 
         originalDispatchOnMain = nil
         originalDispatchOnMainAfter = nil
+        original_swift_task_enqueueGlobal_hook = nil
 
         super.tearDown()
     }
 
+}
+
+private final class TestExecutor: SerialExecutor {
+    static let shared = TestExecutor()
+
+    func enqueue(_ job: consuming ExecutorJob) {
+        job.runSynchronously(on: asUnownedSerialExecutor())
+    }
+
+    func asUnownedSerialExecutor() -> UnownedSerialExecutor {
+        UnownedSerialExecutor(ordinary: self)
+    }
 }

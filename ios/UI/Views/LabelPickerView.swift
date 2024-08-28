@@ -19,13 +19,13 @@ import DesignSystem
 import SwiftUI
 
 struct LabelPickerView: View {
-    typealias OnDoneTap = (_ selectedLabelIds: Set<PMLocalLabelId>, _ alsoArchive: Bool) -> Void
+    typealias OnDoneTap = (_ selectedLabelIds: Set<ID>, _ alsoArchive: Bool) -> Void
 
     @State private var isArchiveSelected: Bool = false
     @State private var labels: [LabelPickerCellUIModel] = []
 
     private let customLabelModel: CustomLabelModel
-    private let labelsOfSelectedItems: () -> [Set<PMLocalLabelId>]
+    private let labelsOfSelectedItems: () -> [Set<ID>]
     private let onDone: OnDoneTap
 
     /// - Parameters:
@@ -36,7 +36,7 @@ struct LabelPickerView: View {
     ///   - onDoneTap: closure returning the user's label picks
     init(
         customLabelModel: CustomLabelModel,
-        labelsOfSelectedItems: @escaping () -> [Set<PMLocalLabelId>],
+        labelsOfSelectedItems: @escaping () -> [Set<ID>],
         onDoneTap: @escaping OnDoneTap
     ) {
         self.customLabelModel = customLabelModel
@@ -159,8 +159,8 @@ extension LabelPickerView {
 
     private func initialiseState() async {
         let labelsOfSelectedItems = labelsOfSelectedItems()
-        let selectedLabelIds: [PMLocalLabelId: Quantifier] = labelsOfSelectedItems
-            .reduce([PMLocalLabelId: Int](), { partialResult, currentItem in
+        let selectedLabelIds: [ID: Quantifier] = labelsOfSelectedItems
+            .reduce([ID: Int](), { partialResult, currentItem in
                 var newPartialResult = partialResult
                 currentItem.forEach { labelId in
                     if let count = newPartialResult[labelId] {
@@ -178,7 +178,7 @@ extension LabelPickerView {
     }
 
     private func onCellTap(for tappedModel: LabelPickerCellUIModel) async {
-        var selectedIds: [PMLocalLabelId: Quantifier] = labels
+        var selectedIds: [ID: Quantifier] = labels
             .reduce([:]) { partialResult, uiModel in
                 var result = partialResult
                 result[uiModel.id] = uiModel.itemsWithLabel
@@ -197,7 +197,7 @@ extension LabelPickerView {
 // MARK: cell
 
 struct LabelPickerCellUIModel: Identifiable {
-    let id: PMLocalLabelId
+    let id: ID
     let name: String
     let color: Color
     let itemsWithLabel: Quantifier
@@ -268,9 +268,16 @@ private struct AddNewLabel: View {
 #Preview {
     ZStack {
         List {
-            LabelPickerCell(uiModel: .init(id: 1, name: "Holidays and a very long name to check how it behaves", color: .pink, itemsWithLabel: .all))
-            LabelPickerCell(uiModel: .init(id: 1, name: "Work", color: .blue, itemsWithLabel: .some))
-            LabelPickerCell(uiModel: .init(id: 1, name: "Sports", color: .green, itemsWithLabel: .none))
+            LabelPickerCell(
+                uiModel: .init(
+                    id: .init(value: 1),
+                    name: "Holidays and a very long name to check how it behaves",
+                    color: .pink,
+                    itemsWithLabel: .all
+                )
+            )
+            LabelPickerCell(uiModel: .init(id: .init(value: 1), name: "Work", color: .blue, itemsWithLabel: .some))
+            LabelPickerCell(uiModel: .init(id: .init(value: 1), name: "Sports", color: .green, itemsWithLabel: .none))
         }
         .listStyle(.inset)
         .padding(20)

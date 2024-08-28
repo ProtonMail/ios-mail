@@ -18,19 +18,19 @@
 import SwiftUI
 
 struct FolderNodeView: View {
-    private let folders: [SidebarFolderNode]
+    private let folders: [SidebarFolder]
     private let padding: CGFloat
     private let selected: (SidebarFolder) -> Void
 
-    init(folders: [SidebarFolderNode], padding: CGFloat, selected: @escaping (SidebarFolder) -> Void) {
+    init(folders: [SidebarFolder], padding: CGFloat, selected: @escaping (SidebarFolder) -> Void) {
         self.folders = folders
         self.padding = padding
         self.selected = selected
     }
 
     var body: some View {
-        ForEach(folders) { folderNode in
-            SingleFolderNodeView(folderNode: folderNode, padding: padding, selected: selected)
+        ForEach(folders) { folder in
+            SingleFolderNodeView(folder: folder, padding: padding, selected: selected)
         }
     }
 }
