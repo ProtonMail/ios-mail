@@ -37,7 +37,7 @@ struct MailboxItemActionPickerView: View {
     }
 
     var body: some View {
-        ClosableScreenView(topSpacing: -DS.Spacing.standard) {
+        ClosableScreen(topSpacing: -DS.Spacing.standard) {
             ActionPickerList(
                 headerContent: {
                     replyActionButtons

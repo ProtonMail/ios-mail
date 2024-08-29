@@ -18,7 +18,7 @@
 import DesignSystem
 import SwiftUI
 
-struct ClosableScreenView<ContentView: View>: View {
+struct ClosableScreen<ContentView: View>: View {
     @Environment(\.dismiss) var dismiss
     let topSpacing: CGFloat
     let content: () -> ContentView
