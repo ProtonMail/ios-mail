@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import proton_mail_uniffi
+import proton_app_uniffi
 import SwiftUI
 
 struct SidebarScreen: View {

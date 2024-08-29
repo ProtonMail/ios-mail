@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import proton_mail_uniffi
+import proton_app_uniffi
 import XCTest
 
 final class UnreadCountFormatterTests: XCTestCase {

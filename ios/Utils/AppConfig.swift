@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_mail_uniffi
+import proton_app_uniffi
 
 struct AppConfig: Sendable {
     let appVersion: String

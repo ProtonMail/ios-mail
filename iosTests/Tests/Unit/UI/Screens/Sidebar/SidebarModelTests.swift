@@ -17,7 +17,7 @@
 
 @testable import ProtonMail
 import XCTest
-import proton_mail_uniffi
+import proton_app_uniffi
 
 class SidebarModelTests: BaseTestCase {
 

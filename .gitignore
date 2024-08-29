@@ -32,7 +32,7 @@ Temporary Items
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 *Info.plist
-localPackages/proton_mail_uniffi/
+localPackages/proton_app_uniffi/
 
 ## Build generated
 build/

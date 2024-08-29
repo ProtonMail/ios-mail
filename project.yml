@@ -17,8 +17,8 @@ packages:
     path: localPackages/DesignSystem
   Keychain:
     path: localPackages/Keychain
-  proton_mail_uniffi:
-    path: localPackages/proton_mail_uniffi
+  proton_app_uniffi:
+    path: localPackages/proton_app_uniffi
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     minorVersion: "2.64.0"
@@ -105,7 +105,7 @@ targets:
       - package: DesignSystem
       - package: Keychain
       - package: Collections
-      - package: proton_mail_uniffi
+      - package: proton_app_uniffi
       - package: SwiftUIIntrospect
 
   ProtonMailTest:

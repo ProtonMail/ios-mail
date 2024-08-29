@@ -17,7 +17,7 @@
 
 import Combine
 import Foundation
-import proton_mail_uniffi
+import proton_app_uniffi
 
 /**
  Source of truth for custom labels that are applicable to Mailbox messages or conversations

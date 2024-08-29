@@ -18,7 +18,7 @@
 import Foundation
 import enum SwiftUI.ColorScheme
 import class SwiftUI.UIImage
-import func proton_mail_uniffi.mailSettings
+import func proton_app_uniffi.mailSettings
 
 protocol SenderImageDataSource {
     @MainActor

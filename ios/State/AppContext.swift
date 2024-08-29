@@ -17,7 +17,7 @@
 
 import Combine
 import Foundation
-import proton_mail_uniffi
+import proton_app_uniffi
 
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
@@ -119,11 +119,11 @@ final class NetworkStatusManager: NetworkStatusChanged, Sendable {
 final class UserContextInitializationDelegate: MailUserSessionInitializationCallback, Sendable {
     static let shared = UserContextInitializationDelegate()
 
-    func onStage(stage: proton_mail_uniffi.MailUserSessionInitializationStage) {
+    func onStage(stage: proton_app_uniffi.MailUserSessionInitializationStage) {
         AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStage stage: \(stage)")
     }
 
-    func onStageErr(stage: proton_mail_uniffi.MailUserSessionInitializationStage, err: proton_mail_uniffi.MailSessionError) {
+    func onStageErr(stage: proton_app_uniffi.MailUserSessionInitializationStage, err: proton_app_uniffi.MailSessionError) {
         AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStageError stage: \(stage) error: \(err)")
     }
 }

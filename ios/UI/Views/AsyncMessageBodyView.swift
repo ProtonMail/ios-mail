@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import class proton_mail_uniffi.Mailbox
+import class proton_app_uniffi.Mailbox
 import SwiftUI
 
 struct AsyncMessageBodyView<Content>: View where Content: View {

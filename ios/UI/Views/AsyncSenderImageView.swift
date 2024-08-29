@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import struct proton_mail_uniffi.MessageAddress
+import struct proton_app_uniffi.MessageAddress
 
 struct AsyncSenderImageView<Content>: View where Content: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme

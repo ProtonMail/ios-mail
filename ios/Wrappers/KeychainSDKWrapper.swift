@@ -17,7 +17,7 @@
 
 import Foundation
 import Keychain
-import proton_mail_uniffi
+import proton_app_uniffi
 
 /**
  This is a wrapper to make the Keychain accessible from the SDK. Notice that even though the protocol does not

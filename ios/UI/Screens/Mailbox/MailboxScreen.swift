@@ -139,7 +139,7 @@ private struct MailboxScreenIdentifiers {
 }
 
 import Combine
-import proton_mail_uniffi
+import proton_app_uniffi
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
 

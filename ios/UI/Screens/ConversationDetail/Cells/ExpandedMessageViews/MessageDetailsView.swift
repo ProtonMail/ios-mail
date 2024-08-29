@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import enum proton_mail_uniffi.ExclusiveLocation
+import enum proton_app_uniffi.ExclusiveLocation
 import SwiftUI
 
 struct MessageDetailsView: View {

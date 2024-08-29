@@ -18,7 +18,7 @@
 import DesignSystem
 import DeveloperToolsSupport
 import Foundation
-import proton_mail_uniffi
+import proton_app_uniffi
 
 typealias SystemFolderLabel = SystemLabel
 

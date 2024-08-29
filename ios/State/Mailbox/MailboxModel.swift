@@ -18,7 +18,7 @@
 import Combine
 import Foundation
 import SwiftUI
-import proton_mail_uniffi
+import proton_app_uniffi
 import class UIKit.UIImage
 
 /**
