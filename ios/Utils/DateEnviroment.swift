@@ -17,20 +17,6 @@
 
 import Foundation
 
-enum MessageDetailsDateFormatter {
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .medium
-
-        let calendar = DateEnviroment.calendar
-        formatter.timeZone = calendar.timeZone
-        formatter.locale = calendar.locale
-
-        return formatter
-    }()
-
-    static func string(from date: Date) -> String {
-        dateFormatter.string(from: date)
-    }
+enum DateEnviroment {
+    static var calendar: Calendar = .current
 }

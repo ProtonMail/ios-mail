@@ -23,6 +23,7 @@ class BaseTestCase: XCTestCase {
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
     private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
+    private var originalCalendar: Calendar!
 
     override func setUp() {
         super.setUp()
@@ -30,22 +31,26 @@ class BaseTestCase: XCTestCase {
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
+        originalCalendar = DateEnviroment.calendar
 
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
             TestExecutor.shared.enqueue(job)
         }
+        DateEnviroment.calendar = .warsawEnUS
     }
 
     override func tearDown() {
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
+        DateEnviroment.calendar = originalCalendar
 
         originalDispatchOnMain = nil
         originalDispatchOnMainAfter = nil
         original_swift_task_enqueueGlobal_hook = nil
+        originalCalendar = nil
 
         super.tearDown()
     }
@@ -61,5 +66,14 @@ private final class TestExecutor: SerialExecutor {
 
     func asUnownedSerialExecutor() -> UnownedSerialExecutor {
         UnownedSerialExecutor(ordinary: self)
+    }
+}
+
+extension Calendar {
+    static var warsawEnUS: Self {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Europe/Warsaw").unsafelyUnwrapped
+        calendar.locale = Locale(identifier: "en_US")
+        return calendar
     }
 }
