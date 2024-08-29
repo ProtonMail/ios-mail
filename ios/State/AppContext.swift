@@ -50,7 +50,7 @@ final class AppContext: Sendable, ObservableObject {
         self.dependencies = dependencies
     }
 
-    private func start() async throws {
+    private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
         guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw AppContextError.applicationSupportDirectoryNotAccessible
@@ -79,18 +79,15 @@ final class AppContext: Sendable, ObservableObject {
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
-        _mailSession = try await MailSession.create(
+        _mailSession = try MailSession.create(
             params: params,
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
         )
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
-        if let storedSession = try await mailSession.storedSessions().first {
-            let session = try await mailSession.userContextFromSession(session: storedSession)
-            Dispatcher.dispatchOnMain(.init { [weak self] in
-                self?.activeUserSession = session
-            })
+        if let storedSession = try mailSession.storedSessions().first {
+            activeUserSession = try mailSession.userContextFromSession(session: storedSession)
         }
     }
 }
@@ -133,9 +130,9 @@ final class UserContextInitializationDelegate: MailUserSessionInitializationCall
 
 extension AppContext: ApplicationServiceSetUp {
     
-    func setUpService() async {
+    func setUpService() {
         do {
-            try await start()
+            try start()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }
