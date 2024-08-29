@@ -254,6 +254,7 @@ extension MailboxCoordinator {
         guard
             dependencies.featureFlagProvider.isEnabled(.postOnboardingUpsellPage),
             !viewModel.user.hasPaidMailPlan,
+            dependencies.userDefaults[.didSignUpOnThisDevice] != true,
             let navigation
         else {
             return

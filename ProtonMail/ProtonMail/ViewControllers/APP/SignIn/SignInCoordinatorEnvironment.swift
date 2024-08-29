@@ -39,6 +39,7 @@ struct SignInCoordinatorEnvironment {
         (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let apiService: APIService
+    let userDefaults: UserDefaults
     let mailboxPassword: (Passphrase, AuthCredential) -> Passphrase
     let currentAuth: () -> AuthCredential?
     let tryRestoringPersistedUser: () -> Void
@@ -74,6 +75,7 @@ extension SignInCoordinatorEnvironment {
     static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
         let apiService = PMAPIService.unauthorized(dependencies: dependencies)
         return .init(apiService: apiService,
+                     userDefaults: dependencies.userDefaults,
                      mailboxPassword: dependencies.signInManager
                          .mailboxPassword(from:auth:),
                      currentAuth: { dependencies.usersManager.firstUser?.authCredential },

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCoreDataModel
 @testable import ProtonCorePayments
 @testable import ProtonMail
 import ProtonCoreTestingToolkitUnitTestsCore
@@ -238,19 +239,51 @@ class MailboxCoordinatorTests: XCTestCase {
     }
 
     @MainActor
-    func testIfPlansAreAvailable_PresentsUpsellPageAfterOnboarding() async throws {
+    func testGivenUserIsFreeAndSignedUpOnAnotherDevice_whenOnboardingIsFinished_thenDoesShowUpsellPage() async throws {
+        try await assertThatOnboardingUpsellPageIsShown()
+    }
+
+    @MainActor
+    func testGivenUserIsPaidUser_whenOnboardingIsFinished_thenDoesntShowUpsellPage() async throws {
+        viewModelMock.user.userInfo.role = UserInfo.OrganizationRole.owner.rawValue
+        viewModelMock.user.userInfo.subscribed.insert(.mail)
+
+        try await assertThatOnboardingUpsellPageIsNotShown()
+    }
+
+    @MainActor
+    func testGivenUserSignedUpOnThisDevice_whenOnboardingIsFinished_thenDoesntShowUpsellPage() async throws {
+        testContainer.userDefaults[.didSignUpOnThisDevice] = true
+
+        try await assertThatOnboardingUpsellPageIsNotShown()
+    }
+
+    @MainActor
+    private func assertThatOnboardingUpsellPageIsShown() async throws {
+        try await triggerAndDismissOnboardingCarousel()
+
+        let presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<OnboardingUpsellPage>)
+    }
+
+    @MainActor
+    private func assertThatOnboardingUpsellPageIsNotShown() async throws {
+        try await triggerAndDismissOnboardingCarousel()
+
+        XCTAssertNil(uiNavigationControllerMock.presentedViewController)
+    }
+
+    @MainActor
+    private func triggerAndDismissOnboardingCarousel() async throws {
         let window = UIWindow(root: uiNavigationControllerMock, scene: nil)
         window.makeKeyAndVisible()
 
         sut.go(to: .onboardingForNew)
 
-        var presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        let presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
         let onboardingViewController = try XCTUnwrap(presentedViewController as? OnboardViewController)
 
         await onboardingViewController.dismiss(animated: false)
-
-        presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
-        XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<OnboardingUpsellPage>)
     }
 }
 
