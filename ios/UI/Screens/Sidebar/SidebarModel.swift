@@ -175,12 +175,12 @@ final class SidebarModel: Sendable {
         state[keyPath: keyPath].map { item in item.copy(isSelected: false) }
     }
 
-    private func selected(folder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
+    private func selected(folder selectedFolder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
         folders.map { folder in
-            if folder.selectionIdentifier == folder.selectionIdentifier {
+            if folder.selectionIdentifier == selectedFolder.selectionIdentifier {
                 return folder.copy(isSelected: true)
             } else {
-                return folder.copy(childFolders: selected(folder: folder, in: folder.childFolders))
+                return folder.copy(childFolders: selected(folder: selectedFolder, in: folder.childFolders))
             }
         }
     }
