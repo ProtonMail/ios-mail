@@ -24,8 +24,8 @@ class SidebarSpy: SidebarProtocol {
     var stubbedCustomFolders: [PMCustomFolder] = []
     var stubbedCustomLabels: [PMCustomLabel] = []
     private(set) var spiedWatchers: [LabelType: LiveQueryCallback] = [:]
-    private(set) var collapseFolderInvoked: [Id] = []
-    private(set) var expandFolderInvoked: [Id] = []
+    private(set) var collapseFolderInvoked: [ID] = []
+    private(set) var expandFolderInvoked: [ID] = []
 
     // MARK: - SidebarProtocol
 
@@ -33,7 +33,7 @@ class SidebarSpy: SidebarProtocol {
         stubbedCustomFolders
     }
 
-    func collapseFolder(localId: Id) async throws {
+    func collapseFolder(localId: ID) async throws {
         collapseFolderInvoked.append(localId)
     }
 
@@ -41,7 +41,7 @@ class SidebarSpy: SidebarProtocol {
         stubbedCustomFolders
     }
 
-    func expandFolder(localId: Id) async throws {
+    func expandFolder(localId: ID) async throws {
         expandFolderInvoked.append(localId)
     }
 

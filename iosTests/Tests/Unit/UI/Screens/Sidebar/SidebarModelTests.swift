@@ -73,13 +73,25 @@ class SidebarModelTests: BaseTestCase {
         XCTAssertEqual(firstSelectedFolder.isSelected, true)
     }
 
-    func test_WhenTappingOnSubscriptionItem_ItDoesNotSelectIt() throws {
-        let subscriptionUnselected = try XCTUnwrap(sut.state.other.findFirst(for: .subscriptions, by: \.type))
-        XCTAssertEqual(subscriptionUnselected.isSelected, false)
+    func test_WhenChildFolderIsSelected_WhenFoldersAreUpdated_ItStaysSelected() throws {
+        let folderName = PMCustomFolder.superPrivate.name
 
-        sut.handle(action: .select(item: .other(subscriptionUnselected)))
-        let subscriptionSelected = try XCTUnwrap(sut.state.other.findFirst(for: .subscriptions, by: \.type))
-        XCTAssertEqual(subscriptionSelected.isSelected, false)
+        XCTAssertEqual(try getFolder(with: folderName).isSelected, false)
+        sut.handle(action: .select(item: .folder(try getFolder(with: folderName))))
+        XCTAssertEqual(try getFolder(with: folderName).isSelected, true)
+
+        emitData()
+
+        XCTAssertEqual(try getFolder(with: folderName).isSelected, true)
+    }
+
+    func test_WhenTappingOnSettingsItem_ItSelectsIt() throws {
+        let settingsUnselected = try XCTUnwrap(sut.state.other.findFirst(for: .settings, by: \.type))
+        XCTAssertEqual(settingsUnselected.isSelected, false)
+
+        sut.handle(action: .select(item: .other(settingsUnselected)))
+        let settingsSelected = try XCTUnwrap(sut.state.other.findFirst(for: .settings, by: \.type))
+        XCTAssertEqual(settingsSelected.isSelected, true)
     }
 
     func test_WhenTappingOnShareLogsItem_ItDoesNotSelectIt() throws {
@@ -105,7 +117,7 @@ class SidebarModelTests: BaseTestCase {
         XCTAssertEqual(selectedLabel.id, firstLabel.id)
     }
 
-    func test_WhenCustomFolderIsExpandedAndCollapsed_SDKIsCalled() throws {
+    func test_WhenCustomFolderIsExpandedAndCollapsed_ItExpandsAndCollapsesTheFolder() throws {
         let parentFolder = try XCTUnwrap(
             sidebarSpy.stubbedCustomFolders.first(where: { !$0.children.isEmpty })
         ).sidebarFolder
@@ -136,6 +148,20 @@ class SidebarModelTests: BaseTestCase {
     private func emit(labels: [PMCustomLabel]) {
         sidebarSpy.stubbedCustomLabels = labels
         sidebarSpy.spiedWatchers[.label]?.onUpdate()
+    }
+
+    private func getFolder(with name: String) throws -> SidebarFolder {
+        try XCTUnwrap(sut.state.find(folderWithName: name, in: sut.state.folders))
+    }
+
+}
+
+extension SidebarState {
+
+    func find(folderWithName name: String, in folders: [SidebarFolder]) -> SidebarFolder? {
+        folders.compactMap { folder in
+            folder.name == name ? folder : find(folderWithName: name, in: folder.childFolders)
+        }.first
     }
 
 }

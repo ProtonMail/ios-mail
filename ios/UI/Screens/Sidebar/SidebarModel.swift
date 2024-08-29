@@ -70,7 +70,7 @@ final class SidebarModel: Sendable {
         case .label(let item):
             state = state.copy(labels: selected(item: item, keyPath: \.labels))
         case .folder(let item):
-            state = state.copy(folders: selected(folder: item, in: state.folders))
+            state = state.copy(folders: folders(selectedFolder: item, in: state.folders))
         case .other(let item):
             state = state.copy(other: selected(item: item, keyPath: \.other))
         }
@@ -110,7 +110,7 @@ final class SidebarModel: Sendable {
         let sidebarFolders = newFolders.map(\.sidebarFolder)
         let sidebarFoldersWithSelection: [SidebarFolder]
         if let selectedFolder = findSelectedFolder(in: state.folders) {
-            sidebarFoldersWithSelection = selected(folder: selectedFolder, in: sidebarFolders)
+            sidebarFoldersWithSelection = folders(selectedFolder: selectedFolder, in: sidebarFolders)
         } else {
             sidebarFoldersWithSelection = sidebarFolders
         }
@@ -175,12 +175,12 @@ final class SidebarModel: Sendable {
         state[keyPath: keyPath].map { item in item.copy(isSelected: false) }
     }
 
-    private func selected(folder selectedFolder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
+    func folders(selectedFolder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
         folders.map { folder in
             if folder.selectionIdentifier == selectedFolder.selectionIdentifier {
                 return folder.copy(isSelected: true)
             } else {
-                return folder.copy(childFolders: selected(folder: selectedFolder, in: folder.childFolders))
+                return folder.copy(childFolders: self.folders(selectedFolder: selectedFolder, in: folder.childFolders))
             }
         }
     }

@@ -29,7 +29,7 @@ extension PMCustomFolder {
     }
 
     static var superPrivate: Self {
-        .testData(id: 6, name: "Super Private", color: "#179FD9", unread: 5)
+        .testData(id: 7, name: "Super Private", color: "#179FD9", unread: 5)
     }
 
     static func testData(
