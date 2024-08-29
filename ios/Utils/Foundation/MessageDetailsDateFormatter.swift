@@ -20,10 +20,9 @@ import Foundation
 enum MessageDetailsDateFormatter {
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        let calendar = DateEnvironment.calendar
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
-
-        let calendar = DateEnviroment.calendar
         formatter.timeZone = calendar.timeZone
         formatter.locale = calendar.locale
 

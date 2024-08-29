@@ -31,21 +31,21 @@ class BaseTestCase: XCTestCase {
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
-        originalCalendar = DateEnviroment.calendar
+        originalCalendar = DateEnvironment.calendar
 
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
             TestExecutor.shared.enqueue(job)
         }
-        DateEnviroment.calendar = .warsawEnUS
+        DateEnvironment.calendar = .warsawEnUS
     }
 
     override func tearDown() {
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
-        DateEnviroment.calendar = originalCalendar
+        DateEnvironment.calendar = originalCalendar
 
         originalDispatchOnMain = nil
         originalDispatchOnMainAfter = nil
@@ -69,7 +69,7 @@ private final class TestExecutor: SerialExecutor {
     }
 }
 
-extension Calendar {
+private extension Calendar {
     static var warsawEnUS: Self {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "Europe/Warsaw").unsafelyUnwrapped
