@@ -110,16 +110,4 @@ extension Date {
     func localisedRemainingTimeFromNow() -> String {
         DateComponentsFormatter.remainingTimeFromNowFormatter.string(from: remainingTimeFromNow()) ?? ""
     }
-
-    /**
-     Message details date format
-
-     The date will support the current locale which migth bring some differences to the following example:
-     ```
-     11 Jun 2024 at 10:35:24
-     ```
-     */
-    func messageDetailsFormat() -> String {
-        formatted(date: .abbreviated, time: .standard)
-    }
 }

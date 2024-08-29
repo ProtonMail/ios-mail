@@ -209,7 +209,7 @@ struct MessageDetailsView: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateLabel)
-            Text(uiModel.date.messageDetailsFormat())
+            Text(MessageDetailsDateFormatter.string(from: uiModel.date))
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateValue)
