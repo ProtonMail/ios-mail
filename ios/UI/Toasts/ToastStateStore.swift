@@ -21,7 +21,11 @@ import OrderedCollections
 final class ToastStateStore: ObservableObject {
     struct State {
         var toasts: OrderedSet<Toast>
-        var maxToastHeight: CGFloat
+        var toastHeights: [Toast: CGFloat]
+
+        var maxHeight: CGFloat {
+            toastHeights.values.max() ?? .zero
+        }
     }
 
     @Published var state: State
@@ -42,7 +46,7 @@ final class ToastStateStore: ObservableObject {
 extension ToastStateStore.State {
 
     static var initial: Self {
-        .init(toasts: [], maxToastHeight: .zero)
+        .init(toasts: [], toastHeights: [:])
     }
 
 }

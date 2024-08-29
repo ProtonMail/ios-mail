@@ -83,10 +83,10 @@ extension MailboxScreen {
             toastStateStore.present(toast: .comingSoon)
         }
         .padding(.trailing, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxToastHeight)
+        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)
         .opacity(mailboxModel.selectionMode.hasSelectedItems ? 0 : 1)
         .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
-        .animation(.toastAnimation, value: toastStateStore.state.maxToastHeight)
+        .animation(.toastAnimation, value: toastStateStore.state.toastHeights)
     }
 
     private var mailboxActionBarView: some View {

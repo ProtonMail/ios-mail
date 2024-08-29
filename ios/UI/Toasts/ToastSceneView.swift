@@ -52,7 +52,7 @@ private struct ToastModifier: ViewModifier {
             )
             .onChange(of: state.toasts, initial: true) { _, new in
                 if new.isEmpty {
-                    state.maxToastHeight = 0
+                    state.toastHeights = [:]
                 }
                 
                 new.forEach { toast in
@@ -79,7 +79,7 @@ private struct ToastModifier: ViewModifier {
                         Color.clear
                             .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
                             .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
-                                state.maxToastHeight = max(geometry.size.height, state.maxToastHeight)
+                                state.toastHeights[toast] = value
                             }
                     }
                 }
@@ -89,7 +89,8 @@ private struct ToastModifier: ViewModifier {
     
     private func dismissToast(toast: Toast) {
         state.toasts = state.toasts.filter { $0 != toast }
-        
+        state.toastHeights[toast] = nil
+
         automaticDismissalTasks[toast]?.cancel()
         automaticDismissalTasks[toast] = nil
     }
