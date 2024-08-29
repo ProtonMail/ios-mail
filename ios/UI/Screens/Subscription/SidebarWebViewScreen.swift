@@ -19,8 +19,6 @@ import DesignSystem
 import SwiftUI
 
 struct SidebarWebViewScreen: View {
-
-    @Environment(\.dismiss) var dismiss
     private let webViewPage: ProtonAuthenticatedWebPage
 
     init(webViewPage: ProtonAuthenticatedWebPage) {
@@ -36,7 +34,6 @@ struct SidebarWebViewScreen: View {
                 .navigationTitle(webViewPage.title.string)
         }
     }
-
 }
 
 private extension ProtonAuthenticatedWebPage {
