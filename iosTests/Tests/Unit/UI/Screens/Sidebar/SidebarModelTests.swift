@@ -106,8 +106,9 @@ class SidebarModelTests: BaseTestCase {
     }
 
     func test_WhenCustomFolderIsExpandedAndCollapsed_SDKIsCalled() throws {
-        let parentFolder = try XCTUnwrap(sidebarSpy.stubbedCustomFolders
-            .first(where: { $0.parentId != nil })).sidebarFolder
+        let parentFolder = try XCTUnwrap(
+            sidebarSpy.stubbedCustomFolders.first(where: { !$0.children.isEmpty })
+        ).sidebarFolder
 
         XCTAssertEqual(sidebarSpy.expandFolderInvoked, [])
         XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [])
