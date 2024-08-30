@@ -41,7 +41,14 @@ final class SettingsGestureViewModelImpl: SettingsGestureViewModel {
         if let action = swipeActionsCache.leftToRightSwipeActionType {
             return action
         } else {
-            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeRight) ?? .archive
+            let rawValue = swipeActionInfo.swipeRight
+
+            if let action = SwipeActionSettingType.convertFromServer(rawValue: rawValue) {
+                return action
+            } else {
+                SystemLogger.log(message: "Unrecognized action: \(rawValue))")
+                return .trash
+            }
         }
     }
 
@@ -49,7 +56,14 @@ final class SettingsGestureViewModelImpl: SettingsGestureViewModel {
         if let action = swipeActionsCache.rightToLeftSwipeActionType {
             return action
         } else {
-            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeLeft) ?? .archive
+            let rawValue = swipeActionInfo.swipeLeft
+
+            if let action = SwipeActionSettingType.convertFromServer(rawValue: rawValue) {
+                return action
+            } else {
+                SystemLogger.log(message: "Unrecognized action: \(rawValue))")
+                return .archive
+            }
         }
     }
 
