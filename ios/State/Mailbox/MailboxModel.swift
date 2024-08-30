@@ -184,8 +184,8 @@ extension MailboxModel {
             switch viewMode {
             case .conversations:
                 mailboxItems = try await conversationsForLabel(session: userSession, labelId: mailbox.labelId())
-                    .asyncMap { @Sendable conversation in
-                        await conversation.toMailboxItemCellUIModel(selectedIds: selectedIds)
+                    .map { conversation in
+                        conversation.toMailboxItemCellUIModel(selectedIds: selectedIds)
                     }
 
             case .messages:
@@ -194,7 +194,7 @@ extension MailboxModel {
                     .asyncMap { @Sendable message in
                         let mapRecipientsAsSender = [SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
                             .contains(systemFolder)
-                        return await message.toMailboxItemCellUIModel(
+                        return message.toMailboxItemCellUIModel(
                             selectedIds: selectedIds,
                             mapRecipientsAsSender: mapRecipientsAsSender
                         )

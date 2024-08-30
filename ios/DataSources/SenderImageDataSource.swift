@@ -47,15 +47,12 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
     }
 
     func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
-        if let cachedImage = await dependencies.cache.object(for: params.address) {
-            return cachedImage
-        }
         do {
             guard let userSession = dependencies.appContext.activeUserSession else {
                 return nil
             }
             let mailSettings = await mailSettings(ctx: userSession)
-            guard let data = try await userSession
+            guard let imageFilePath = try await userSession
                 .imageForSender(
                     mailSettings: mailSettings,
                     address: params.address,
@@ -68,11 +65,7 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
             else {
                 return nil
             }
-            let image = UIImage(data: data)
-            if let image {
-                await dependencies.cache.setObject(image, for: params.address)
-            }
-            return image
+            return UIImage(contentsOfFile: imageFilePath)
         } catch {
             AppLogger.log(error: error)
             return nil
@@ -84,6 +77,5 @@ extension SenderImageAPIDataSource {
 
     struct Dependencies {
         let appContext: AppContext = .shared
-        let cache: MemoryCache<String, UIImage> = Caches.senderImageCache
     }
 }

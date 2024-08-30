@@ -198,7 +198,7 @@ extension ConversationDetailModel {
                     let uiModel = try await expandedMessageCellUIModel(for: message, wait: wait, mailbox: mailbox)
                     messageCellUIModel = .expanded(uiModel)
                 } else {
-                    messageCellUIModel = await .collapsed(message.toCollapsedMessageCellUIModel())
+                    messageCellUIModel = .collapsed(message.toCollapsedMessageCellUIModel())
                 }
 
                 result.append(.init(id: message.id, type: messageCellUIModel))
@@ -222,7 +222,7 @@ extension ConversationDetailModel {
     ) async throws -> ExpandedMessageCellUIModel {
         let provider = MessageBodyProvider(mailbox: mailbox)
         let messageBody = wait ? await provider.messageBody(for: message.id) : nil
-        return await message.toExpandedMessageCellUIModel(message: messageBody)
+        return message.toExpandedMessageCellUIModel(message: messageBody)
     }
 
     @MainActor

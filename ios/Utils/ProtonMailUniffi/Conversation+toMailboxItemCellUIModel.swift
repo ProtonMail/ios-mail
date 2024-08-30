@@ -22,9 +22,8 @@ import class SwiftUI.UIImage
 
 extension Conversation {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<Id>) async -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<Id>) -> MailboxItemCellUIModel {
         let firstSender = senders.first.unsafelyUnwrapped
-        let senderImage = await Caches.senderImageCache.object(for: firstSender.address)
         let avatarInformation = avatarInformationFromMessageAddress(address: firstSender)
 
         return MailboxItemCellUIModel(
@@ -32,7 +31,6 @@ extension Conversation {
             type: .conversation,
             avatar: .init(
                 initials: avatarInformation.text,
-                senderImage: senderImage,
                 backgroundColor: Color(hex: avatarInformation.color),
                 type: .sender(params: .init(
                     address: firstSender.address,

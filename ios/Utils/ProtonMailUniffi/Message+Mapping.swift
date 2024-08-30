@@ -21,8 +21,7 @@ import SwiftUI
 
 extension Message {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<ID>, mapRecipientsAsSender: Bool) async -> MailboxItemCellUIModel {
-        let senderImage: UIImage? = await Caches.senderImageCache.object(for: sender.address)
+    func toMailboxItemCellUIModel(selectedIds: Set<ID>, mapRecipientsAsSender: Bool) -> MailboxItemCellUIModel {
         var recipientsUIRepresentation: String {
             let recipients = (toList + ccList + bccList).map(\.uiRepresentation).joined(separator: ", ")
             return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
@@ -36,7 +35,6 @@ extension Message {
             type: .message,
             avatar: .init(
                 initials: avatarInformation.text,
-                senderImage: senderImage,
                 backgroundColor: Color(hex: avatarInformation.color),
                 type: .sender(params: .init(
                     address: sender.address,
@@ -64,12 +62,10 @@ extension Message {
         )
     }
 
-    func toAvatarUIModel() async -> AvatarUIModel {
-        let cachedImage = await Caches.senderImageCache.object(for: sender.address)
+    func toAvatarUIModel() -> AvatarUIModel {
         let avatarInformation = avatarInformationFromMessageAddress(address: sender)
         return .init(
             initials: avatarInformation.text,
-            senderImage: cachedImage,
             backgroundColor: Color(hex: avatarInformation.color),
             type: .sender(params: .init(
                 address: sender.address,
@@ -79,12 +75,12 @@ extension Message {
         )
     }
 
-    func toExpandedMessageCellUIModel(message: String?) async -> ExpandedMessageCellUIModel {
+    func toExpandedMessageCellUIModel(message: String?) -> ExpandedMessageCellUIModel {
         .init(
             id: id,
             message: message,
             messageDetails: MessageDetailsUIModel(
-                avatar: await toAvatarUIModel(),
+                avatar: toAvatarUIModel(),
                 sender: .init(
                     name: sender.uiRepresentation,
                     address: sender.address,
@@ -102,7 +98,7 @@ extension Message {
         )
     }
 
-    func toCollapsedMessageCellUIModel() async -> CollapsedMessageCellUIModel {
+    func toCollapsedMessageCellUIModel() -> CollapsedMessageCellUIModel {
         .init(
             id: id,
             sender: sender.uiRepresentation,
@@ -110,7 +106,7 @@ extension Message {
             recipients: recipients.recipientsUIRepresentation,
             messagePreview: nil,
             isRead: !unread,
-            avatar: await toAvatarUIModel()
+            avatar: toAvatarUIModel()
         )
     }
 
