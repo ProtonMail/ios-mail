@@ -46,11 +46,11 @@ class SettingsGestureViewModelTests: XCTestCase {
         XCTAssertEqual(sut.leftToRightAction, .archive)
     }
 
-    func testGetLeftToRightSwipeAction_withInvalidServerValue_returnArchiveAsDefaultAction() {
+    func testGetLeftToRightSwipeAction_withInvalidServerValue_returnTrashAsDefaultAction() {
         swipeActionCacheStub.leftToRightSwipeActionType = nil
         swipeActionInfoStub.swipeRightStub.fixture = Int.random(in: 5...Int.max)
 
-        XCTAssertEqual(sut.leftToRightAction, .archive)
+        XCTAssertEqual(sut.leftToRightAction, .trash)
     }
 
     func testGetRightToLeftSwipeAction() {
