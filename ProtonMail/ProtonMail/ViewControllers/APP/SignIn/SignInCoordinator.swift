@@ -249,6 +249,8 @@ final class SignInCoordinator {
             self.loginData = loginData
             self.saveLoginData(loginData: loginData)
         case .signupFinished:
+            environment.userDefaults[.didSignUpOnThisDevice] = true
+
             if let loginData = loginData {
                 finalizeLoginSignInProcess(loginData)
             } else if let savingResult = savingResult {
