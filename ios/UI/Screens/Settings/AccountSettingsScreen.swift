@@ -22,7 +22,7 @@ struct AccountSettingsScreen : View {
 
     var body: some View {
         VStack {
-            ProtonAuthenticatedWebView(webViewPage: .mailSettings)
+            ProtonAuthenticatedWebView(webViewPage: .accountSettings)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
         }

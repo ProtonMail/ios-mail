@@ -40,14 +40,14 @@ private extension ProtonAuthenticatedWebPage {
 
     var title: LocalizedStringResource {
         switch self {
-        case .mailSettings:
+        case .accountSettings:
             L10n.Settings.accountSettings
-        case .subscriptionDetails:
-            L10n.Settings.subscription
         case .createFolder:
             L10n.Sidebar.createFolder
         case .createLabel:
             L10n.Sidebar.createLabel
+        case .emailSettings, .privacySecuritySettings, .spamFiltersSettings:
+            fatalError("Not implemented")
         }
     }
 

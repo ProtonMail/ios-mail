@@ -89,19 +89,25 @@ extension ProtonAuthenticatedWebModel {
 }
 
 enum ProtonAuthenticatedWebPage: Int, Identifiable {
-    case mailSettings
-    case subscriptionDetails
+    case accountSettings
+    case emailSettings
+    case spamFiltersSettings
+    case privacySecuritySettings
     case createFolder
     case createLabel
 
     var action: String {
         switch self {
-        case .mailSettings:
-            "mail-settings"
-        case .subscriptionDetails:
-            "subscription-details"
+        case .accountSettings:
+            "account-settings"
+        case .emailSettings:
+            "email-settings"
+        case .spamFiltersSettings:
+            "spam-filters-settings"
         case .createFolder, .createLabel:
             "labels-settings"
+        case .privacySecuritySettings:
+            "privacy-security-settings"
         }
     }
 
