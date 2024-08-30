@@ -75,7 +75,7 @@ struct AuthenticatedScreens: View {
                     case .settings:
                         appRoute.updateRoute(to: .settings)
                     case .subscriptions:
-                        webViewSheet = .subscriptionDetails
+                        toastStateStore.present(toast: .comingSoon)
                     case .createLabel:
                         webViewSheet = .createLabel
                     case .createFolder:

@@ -331,9 +331,9 @@ private extension SidebarOtherItem {
 
     var hideSidebar: Bool {
         switch type {
-        case .createFolder, .createLabel, .settings, .signOut, .subscriptions:
+        case .createFolder, .createLabel, .settings, .signOut:
             true
-        case .shareLogs, .contacts, .bugReport:
+        case .shareLogs, .contacts, .bugReport, .subscriptions:
             false
         }
     }
