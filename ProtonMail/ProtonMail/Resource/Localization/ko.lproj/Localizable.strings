@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u개의 개인 캘린더";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB 스토리지 및 1개 메일";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "선택한 시간 동안 이메일을 방해 금지 상태로 변경하세요. 커스텀 방해금지와 더 많은 것들을 %@(으)로 즐겨보세요.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "플랜 선택";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "연간";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "특가 행사";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u개 추가 기능";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "%2$@마다 %1$@씩 청구됨";
+
+/* In the list of premium plan features */
+"Premium value included" = "프리미엄 가치 포함됨";

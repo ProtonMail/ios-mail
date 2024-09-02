@@ -1672,7 +1672,7 @@
 "Warning: suspected fake website" = "Avertisment: suspectare site fals";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Această legătură duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.\n%@\n\nPentru siguranță, nu continuați.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Această legătură web duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.\n%@\n\nPentru siguranță, nu continuați.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorare avertisment și continuare";
@@ -2076,7 +2076,7 @@
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invitați-vă prietenii la Proton: vor încerca gratuit Mail Plus și veți câștiga credite când se vor abona la un plan cu plată.";
 
 /* The title link of the textfield of the referral link in referral share view. */
-"Your invite link" = "Legătură recomandare";
+"Your invite link" = "legătură web recomandare";
 
 /* The title of the share button in referral share view. */
 "Share" = "Partajare";
@@ -2088,7 +2088,7 @@
 "Terms & conditions" = "Termeni și condiții";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Am folosit Proton Mail și mi-a plăcut. Este un serviciu de e-mail securizat care îți protejează confidențialitatea. Înscrierea prin această legătură oferă acces gratuit la funcțiile speciale timp de o lună:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Am folosit Proton Mail și mi-a plăcut. Este un serviciu de e-mail securizat care îți protejează confidențialitatea. Înscrierea prin această legătură web oferă acces gratuit la funcțiile speciale timp de o lună:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia fiecare gratuit de avantajele premium.";
@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u calendare personale";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GiB spațiu de stocare și o adresă de e-mail";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "Peste %u funcții premium";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Amânați-l pentru un alt moment pe care îl stabiliți. Obțineți amânare personalizată și multe altele cu %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Alegeți un plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Anual";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Cel mai avantajos";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "Încă %u funcții";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Facturat cu %1$@ la fiecare %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Funcții Premium incluse";

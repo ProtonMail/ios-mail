@@ -1846,10 +1846,10 @@
 "Get more storage" = "Ottieni più spazio di archiviazione";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Dimensionato per la lettura";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Ora anche il corpo del testo delle tue email verrà mostrato nella dimensione di lettura che preferisci.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Spazio di archiviazione pieno";
@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Supporto per domini di posta elettronica personalizzati";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u calendari personali";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB di spazio di archiviazione e 1 email";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u funzionalità premium";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Posticipala per un momento più favorevole a tua scelta. Ottieni rinvii personalizzati e altro con %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Scegli un piano";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Annuale";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Miglior prezzo";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u altre funzionalità";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Fatturato a %1$@ ogni %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Prodotti premium inclusi";

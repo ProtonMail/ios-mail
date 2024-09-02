@@ -1846,10 +1846,10 @@
 "Get more storage" = "Získať viac úložného priestoru";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Veľkosť určená na čítanie";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Text tela emailov sa teraz bude zobrazovať aj vo vašej preferovanej veľkosti na čítanie.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Vaše úložisko je plné";
@@ -2274,7 +2274,7 @@
 "Please retry after all attachments are uploaded." = "Skúste to znova po nahraní všetkých príloh.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "Odosielanie s rozšírením Zdieľať v režime offline nie je podporované";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Zobrazované meno";
@@ -2445,7 +2445,13 @@
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"%u personal calendars" = "%u osobných kalendárov";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB úložisko a 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u prémiových funkcií";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
@@ -2481,52 +2487,55 @@
 "Purchase already in progress" = "Nákup už prebieha";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "Vymazať staré položky z koša a spamu";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Vychutnajte si prehľadnejšiu poštovú schránku a využívajte ďalšie prémiové funkcie s %@.";
 
 /* Title of the upsell page */
-"Group your contacts" = "Group your contacts";
+"Group your contacts" = "Zoskupujte svoje kontakty";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Jednoducho posielajte emaily skupine a využívajte ďalšie prémiové funkcie s %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Potrebujete viac štítkov alebo priečinkov?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Získate ich a ďalšie prémiové funkcie po upgradovaní na %@.";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "Prispôsobte si podpis";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Používajte vlastný mobilný podpis a využívajte ďalšie prémiové funkcie s %@.";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "Naplánujte teraz, odošlite neskôr";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Užívajte si odosielanie podľa vlastného plánu a ďalšie prémiové funkcie s %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Nevhodný čas na tento email?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Odložte si ho na čas, ktorý si sami zvolíte. Získajte vlastné odloženie a ďalšie funkcie s %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Vyberte si plán";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Ročne";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Nejvýhodnější";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u ďalšie funkcie";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Fakturované %1$@ každé %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Vrátane prémiovej hodnoty";

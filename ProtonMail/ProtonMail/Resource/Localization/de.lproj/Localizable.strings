@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Eigene E-Mail-Domain Support";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u persönliche Kalender";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Speicherplatz und 1 E-Mail-Adresse";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u Premium-Funktionen";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Setze die Schlummerfunktion zu einem Zeitpunkt deiner Wahl. Individuelle Schlummerfunktion und mehr mit %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Wähle ein Abonnement";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Jährlich";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Bester Wert";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u weitere Funktionen";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";
