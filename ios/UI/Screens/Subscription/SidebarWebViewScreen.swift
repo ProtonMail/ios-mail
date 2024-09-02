@@ -26,7 +26,7 @@ struct SidebarWebViewScreen: View {
     }
 
     var body: some View {
-        ClosableScreen(topSpacing: DS.Spacing.large) {
+        ClosableScreen {
             ProtonAuthenticatedWebView(webViewPage: webViewPage)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)

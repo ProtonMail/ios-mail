@@ -20,29 +20,29 @@ import SwiftUI
 
 struct ClosableScreen<ContentView: View>: View {
     @Environment(\.dismiss) var dismiss
-    let topSpacing: CGFloat
     let content: () -> ContentView
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .top) {
-                Spacer()
-                Button(action: { dismiss.callAsFunction() }) {
-                    Image(DS.Icon.icCross)
-                        .square(size: 20)
-                        .tint(DS.Color.Text.weak)
-                }
-                .padding(DS.Spacing.mediumLight)
-                .background(DS.Color.Background.norm, in: Circle())
-                .overlay {
-                    Circle()
-                        .stroke(DS.Color.Border.norm, lineWidth: 1)
-                }
-                .padding(.top, topSpacing)
-                .padding(.trailing, DS.Spacing.large)
-            }
-            Spacer()
+        NavigationStack {
             content()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: { dismiss.callAsFunction() }) {
+                            HStack {
+                                Image(DS.Icon.icCross)
+                                    .square(size: 20)
+                                    .tint(DS.Color.Text.weak)
+                                Spacer()
+                            }
+                        }
+                        .padding(DS.Spacing.mediumLight)
+                        .background(DS.Color.Background.norm, in: Circle())
+                        .overlay {
+                            Circle()
+                                .stroke(DS.Color.Border.norm, lineWidth: 1)
+                        }
+                    }
+                }
         }
     }
 }

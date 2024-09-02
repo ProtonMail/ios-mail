@@ -37,7 +37,7 @@ struct MailboxItemActionPickerView: View {
     }
 
     var body: some View {
-        ClosableScreen(topSpacing: -DS.Spacing.standard) {
+        ClosableScreen {
             ActionPickerList(
                 headerContent: {
                     replyActionButtons
@@ -57,6 +57,7 @@ struct MailboxItemActionPickerView: View {
                 })
             .accessibilityElement(children: .contain)
         }
+        .presentationDragIndicator(.visible)
     }
 
     @ViewBuilder
