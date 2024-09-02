@@ -15,19 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
+import XCTest
 
-/**
- Objects provided by the Rust SDK are concurrency safe, however at the moment of writing this, uniffi does
- not support marking reference types as Sendable.
-
- For this reason we extend the Rust SDK objects and mark them as unchecked Sendable to avoid warnings.
- */
-
-extension DecryptedMessage: @unchecked Sendable {}
-extension LoginFlow: @unchecked Sendable {}
-extension Mailbox: @unchecked Sendable {}
-extension StoredSession: @unchecked Sendable {}
-extension UserSettings: @unchecked Sendable {}
-extension WatchedMessages: @unchecked Sendable {}
-extension WatchedConversations: @unchecked Sendable {}
+final class WelcomeRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements["welcome.rootElement"]
+    }
+}

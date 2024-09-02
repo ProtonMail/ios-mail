@@ -91,7 +91,8 @@ platform :ios do
       configuration: "Release",
       skip_codesigning: true,
       clean: true,
-      skip_archive: true
+      skip_archive: true,
+      xcargs: "-skipPackagePluginValidation"
     )
   end
 
@@ -106,7 +107,8 @@ platform :ios do
         provisioningProfiles: {
           "me.proton.mail.ios" => "Mail - Engineering Transformation Distribution",
         }
-      }
+      },
+      xcargs: "-skipPackagePluginValidation"
     )
   end
 
@@ -117,7 +119,8 @@ platform :ios do
       devices: UNIT_TESTS_DEVICE,
       prelaunch_simulator: true,
       reset_simulator: true,
-      result_bundle: true
+      result_bundle: true,
+      xcargs: "-skipPackagePluginValidation"
     )
   end
 
@@ -138,7 +141,8 @@ platform :ios do
         prelaunch_simulator: true,
         reset_simulator: true,
         result_bundle: true,
-        testplan: SMOKE_PLAN_NAME
+        testplan: SMOKE_PLAN_NAME,
+        xcargs: "-skipPackagePluginValidation"
       )
   end
 
@@ -153,7 +157,8 @@ platform :ios do
         prelaunch_simulator: true,
         reset_simulator: true,
         result_bundle: true,
-        testplan: REGRESSION_PLAN_NAME
+        testplan: REGRESSION_PLAN_NAME,
+        xcargs: "-skipPackagePluginValidation"
       )
   end
 

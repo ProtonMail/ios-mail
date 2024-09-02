@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountLogin
 import Combine
 import Foundation
 import proton_app_uniffi
@@ -40,6 +41,8 @@ final class AppContext: Sendable, ObservableObject {
     private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
     private var cancellables = Set<AnyCancellable>()
+
+    var accountCoordinator: AccountAuthCoordinator!
 
     @Published private(set) var activeUserSession: MailUserSession?
     var hasActiveUser: Bool {
@@ -86,8 +89,29 @@ final class AppContext: Sendable, ObservableObject {
         )
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
+        accountCoordinator = AccountAuthCoordinator(appContext: _mailSession)
+
         if let storedSession = try mailSession.storedSessions().first {
             activeUserSession = try mailSession.userContextFromSession(session: storedSession)
+        }
+    }
+
+    @MainActor
+    func initializeMailUserSession(session: StoredSession) async {
+        do {
+            let newUserSession = try mailSession.userContextFromSession(session: session)
+            try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
+        } catch {
+            AppLogger.log(error: error, category: .userSessions)
+        }
+    }
+
+    @MainActor
+    func setupActiveUserSession(session: StoredSession) {
+        do {
+            activeUserSession = try mailSession.userContextFromSession(session: session)
+        } catch {
+            AppLogger.log(error: error, category: .userSessions)
         }
     }
 }

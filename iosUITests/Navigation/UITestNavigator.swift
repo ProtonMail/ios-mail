@@ -60,6 +60,9 @@ struct UITestNavigator: ApplicationHolder {
     private func login(_ loginType: UITestLoginType) {
         switch loginType {
         case .loggedIn(let user):
+            WelcomeRobot {
+                $0.tapSignIn()
+            }
             SignInRobot {
                 $0.typeUsername(user.username)
                 $0.typePassword(user.password)

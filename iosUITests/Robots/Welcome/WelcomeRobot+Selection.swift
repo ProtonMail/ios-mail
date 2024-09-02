@@ -15,19 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
+import XCTest
 
-/**
- Objects provided by the Rust SDK are concurrency safe, however at the moment of writing this, uniffi does
- not support marking reference types as Sendable.
+extension WelcomeRobot {
+    private var createAccountButton: XCUIElement {
+        application.buttons[WelcomeIdentifiers.createAccountButton]
+    }
 
- For this reason we extend the Rust SDK objects and mark them as unchecked Sendable to avoid warnings.
- */
+    private var signInButton: XCUIElement {
+        application.buttons[WelcomeIdentifiers.signInButton]
+    }
 
-extension DecryptedMessage: @unchecked Sendable {}
-extension LoginFlow: @unchecked Sendable {}
-extension Mailbox: @unchecked Sendable {}
-extension StoredSession: @unchecked Sendable {}
-extension UserSettings: @unchecked Sendable {}
-extension WatchedMessages: @unchecked Sendable {}
-extension WatchedConversations: @unchecked Sendable {}
+    public func tapCreateAccount() {
+        createAccountButton.tap()
+    }
+
+    public func tapSignIn() {
+        signInButton.tap()
+    }
+}
+
+private enum WelcomeIdentifiers {
+    static let createAccountButton = "welcome.createAccountButton"
+    static let signInButton = "welcome.signInButton"
+}

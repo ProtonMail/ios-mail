@@ -34,6 +34,9 @@ packages:
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
     minorVersion: "1.17.0"
+  ProtonCoreET:
+    path: ../et-protoncore/platform/apple/ProtonCoreET
+    group: Packages
 
 configs:
   Debug: debug
@@ -107,6 +110,9 @@ targets:
       - package: Collections
       - package: proton_app_uniffi
       - package: SwiftUIIntrospect
+      - package: ProtonCoreET
+        products: 
+          - AccountLogin
 
   ProtonMailTest:
     type: bundle.unit-test
