@@ -1846,10 +1846,10 @@
 "Get more storage" = "Uzyskaj więcej przestrzeni dyskowej";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Rozmiar do czytania";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Treść wiadomości będzie wyświetlana w preferowanym rozmiarze do czytania.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Przestrzeń dyskowa jest pełna";
@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Wsparcie dla niestandardowej domeny";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB przestrzeń dyskowa i 1 adres";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
@@ -2517,10 +2523,10 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Odłóż wiadomość na lepszy moment. Uzyskaj niestandardowy czas odłożenia i więcej w planie %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Wybierz plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Rocznie";
 
 /* Label on the Proton Unlimited plan */
 "Best value" = "Best value";
@@ -2530,3 +2536,6 @@
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

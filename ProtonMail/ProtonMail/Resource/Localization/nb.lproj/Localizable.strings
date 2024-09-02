@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Støtte for tilpasset e-postdomene";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u personlige kalendere";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB lagring og 1 e-post";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunksjoner";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Slumre den for en tid du velger. Få tilpasset slumring og mer med %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Velg en plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Årlig";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Beste verdi";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u funksjoner til";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Faktureres til %1$@ hver %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premiumverdi inkludert";

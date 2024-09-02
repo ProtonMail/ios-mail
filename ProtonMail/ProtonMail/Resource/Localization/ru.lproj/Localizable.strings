@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Поддержка пользовательских доменов электронной почты";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
@@ -2530,3 +2536,6 @@
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u პერსონალური კალენდარი";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 გბ საცავი და 1 ელფოსტა";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ფასიანი ფუნქცია";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "დაადუმეთ ის დროით, რომელიც გაწყობთ. მიიღეთ მორგებული დადუმება და მეტი %@-სთან ერთად.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "აირჩიეთ სატარიფო გეგმა";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "წელიწადში ერთხელ";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "საუკეთესო მნიშვნელობა";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "კიდევ %u ფუნქცია";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "გადაიხდით %1$@-ს ყოველ %2$@-ში";
+
+/* In the list of premium plan features */
+"Premium value included" = "ფასიანი ფუნქციების ჩათვლით";

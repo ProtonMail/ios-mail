@@ -742,7 +742,7 @@
 "Breeze through threaded messages in conversation mode." = "Baca pesan berutas dengan mudah dalam mode percakapan.";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Undang kontak Anda ke Proton Mail agar mereka dapat ikut terlindung oleh enkripsi ujung ke ujung, atau tambahkan kata sandi pada pesan yang Anda kirimkan kepada mereka.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Undang kontak Anda ke Proton Mail untuk dapat saling menikmati enkripsi end-to-end terpadu, atau tambahkan perlindugnan kata sandi pada pesan yang Anda kirimkan kepada mereka.";
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Arsipkan, labeli, dan warnai pesan Anda untuk menciptakan kotak masuk khusus yang sempurna bagi Anda.";
@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Dukungan domain email khusus";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u kalender pribadi";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "Ruang penyimpanan 1 GB dan 1 email";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u fitur premium";
 
 /* The title of the telemetry setting. */
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Tunda selama waktu yang Anda inginkan. Dapatkan penundaan kustom dan lebih banyak lagi dengan %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Pilih paket";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Tahunan";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Penawaran terbaik";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u fitur lainnya";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Tertagih dengan harga %1$@ setiap %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Meliputi nilai premium";

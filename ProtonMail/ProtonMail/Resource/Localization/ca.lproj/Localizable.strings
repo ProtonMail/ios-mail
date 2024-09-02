@@ -2445,6 +2445,12 @@
 "Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
+"%u personal calendars" = "%u calendaris personals";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
@@ -2499,7 +2505,7 @@
 "Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "Personalitzeu la vostra firma";
 
 /* Subtitle of the upsell page */
 "Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
@@ -2517,16 +2523,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Trieu un pla";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Anual";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Millor oferta";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";
