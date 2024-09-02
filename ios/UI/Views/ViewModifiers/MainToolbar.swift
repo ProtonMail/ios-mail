@@ -109,7 +109,11 @@ extension MainToolbar {
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
 
-    return MailboxScreen(customLabelModel: customLabelModel, mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy())
+    return MailboxScreen(
+        customLabelModel: customLabelModel,
+        mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
+        appRoute: .initialState
+    )
         .mainToolbar(title: "Inbox", selectionMode: .init())
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)

@@ -28,12 +28,8 @@ struct AuthenticatedScreens: View {
 
     @State var webViewSheet: ProtonAuthenticatedWebPage?
 
-    init(
-        appRoute: AppRouteState,
-        customLabelModel: CustomLabelModel,
-        userSession: MailUserSession
-    ) {
-        self.appRoute = appRoute
+    init(customLabelModel: CustomLabelModel, userSession: MailUserSession) {
+        self.appRoute = AppRouteState.initialState
         self.customLabelModel = customLabelModel
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
         self.makeSidebarScreen = { selectedItem in
@@ -51,12 +47,14 @@ struct AuthenticatedScreens: View {
             case .mailbox:
                 MailboxScreen(
                     customLabelModel: customLabelModel,
-                    mailSettingsLiveQuery: mailSettingsLiveQuery
+                    mailSettingsLiveQuery: mailSettingsLiveQuery,
+                    appRoute: appRoute
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
                     customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
+                    appRoute: appRoute,
                     openedItem: item
                 )
             case .settings:

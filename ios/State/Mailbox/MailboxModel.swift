@@ -59,7 +59,7 @@ final class MailboxModel: ObservableObject {
     init(
         state: State = .loading,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
-        appRoute: AppRouteState = .shared,
+        appRoute: AppRouteState,
         openedItem: MailboxMessageSeed? = nil,
         dependencies: Dependencies = .init()
     ) {

@@ -20,8 +20,6 @@ import Foundation
 
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {
-    static let shared = AppRouteState(route: .mailbox(selectedMailbox: .inbox))
-
     @Published private(set) var route: Route
     var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
         selectedMailbox.eraseToAnyPublisher()
@@ -46,6 +44,14 @@ final class AppRouteState: ObservableObject, Sendable {
         AppLogger.log(message: "new app route [\(newRoute)]", category: .appRoute)
         route = newRoute
     }
+}
+
+extension AppRouteState {
+
+    static var initialState: Self {
+        .init(route: .mailbox(selectedMailbox: .inbox))
+    }
+
 }
 
 enum Route: Equatable, CustomStringConvertible {

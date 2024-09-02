@@ -36,10 +36,15 @@ struct MailboxScreen: View {
     init(
         customLabelModel: CustomLabelModel,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
+        appRoute: AppRouteState,
         openedItem: MailboxMessageSeed? = nil
     ) {
         self._mailboxModel = StateObject(
-            wrappedValue: MailboxModel(mailSettingsLiveQuery: mailSettingsLiveQuery, openedItem: openedItem)
+            wrappedValue: MailboxModel(
+                mailSettingsLiveQuery: mailSettingsLiveQuery,
+                appRoute: appRoute,
+                openedItem: openedItem
+            )
         )
         self.customLabelModel = customLabelModel
     }
@@ -128,7 +133,11 @@ private extension Animation {
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
 
-    return MailboxScreen(customLabelModel: customLabelModel, mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy())
+    return MailboxScreen(
+        customLabelModel: customLabelModel,
+        mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
+        appRoute: .initialState
+    )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
         .environmentObject(userSettings)
