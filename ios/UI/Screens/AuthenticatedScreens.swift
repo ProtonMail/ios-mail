@@ -21,7 +21,7 @@ import SwiftUI
 struct AuthenticatedScreens: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
-    @ObservedObject private var appRoute: AppRouteState
+    @StateObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
@@ -29,7 +29,7 @@ struct AuthenticatedScreens: View {
     @State var webViewSheet: ProtonAuthenticatedWebPage?
 
     init(customLabelModel: CustomLabelModel, userSession: MailUserSession) {
-        self.appRoute = AppRouteState.initialState
+        _appRoute = .init(wrappedValue: .initialState)
         self.customLabelModel = customLabelModel
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
         self.makeSidebarScreen = { selectedItem in
