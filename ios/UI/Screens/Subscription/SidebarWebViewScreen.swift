@@ -42,10 +42,8 @@ private extension ProtonAuthenticatedWebPage {
         switch self {
         case .accountSettings:
             L10n.Settings.accountSettings
-        case .createFolder:
-            L10n.Sidebar.createFolder
-        case .createLabel:
-            L10n.Sidebar.createLabel
+        case .createFolderOrLabel:
+            L10n.CreateFolderOrLabel.title
         case .emailSettings, .privacySecuritySettings, .spamFiltersSettings:
             fatalError("Not implemented")
         }

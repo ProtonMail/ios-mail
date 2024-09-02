@@ -93,8 +93,7 @@ enum ProtonAuthenticatedWebPage: Int, Identifiable {
     case emailSettings
     case spamFiltersSettings
     case privacySecuritySettings
-    case createFolder
-    case createLabel
+    case createFolderOrLabel
 
     var action: String {
         switch self {
@@ -104,7 +103,7 @@ enum ProtonAuthenticatedWebPage: Int, Identifiable {
             "email-settings"
         case .spamFiltersSettings:
             "spam-filters-settings"
-        case .createFolder, .createLabel:
+        case .createFolderOrLabel:
             "labels-settings"
         case .privacySecuritySettings:
             "privacy-security-settings"
