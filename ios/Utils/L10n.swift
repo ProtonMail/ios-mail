@@ -327,6 +327,13 @@ enum L10n {
         )
     }
 
+    enum CreateFolderOrLabel {
+        static let title = LocalizedStringResource(
+            "Create folder or label",
+            comment: "Title of the web view presenting custom folders and labels"
+        )
+    }
+
     static func files(attachmentsCount: Int) -> LocalizedStringResource {
         .init("\(attachmentsCount) files", comment: "The number of attachments on conversation details screen.")
     }
