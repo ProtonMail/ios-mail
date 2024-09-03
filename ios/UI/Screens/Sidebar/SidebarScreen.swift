@@ -22,7 +22,7 @@ import SwiftUI
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @Environment(\.mainBundle) var mainBundle: Bundle
-    @State private var screenModel: SidebarModel
+    @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     private let sidebarWidth: CGFloat = 320
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 35
@@ -38,7 +38,7 @@ struct SidebarScreen: View {
         sidebar: SidebarProtocol,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
-        self.screenModel = .init(state: state, sidebar: sidebar)
+        self._screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebar))
         self.selectedItem = selectedItem
     }
 

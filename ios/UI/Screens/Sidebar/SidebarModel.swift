@@ -24,8 +24,7 @@ enum SidebarAction {
     case toggle(folder: SidebarFolder, expand: Bool)
 }
 
-@Observable
-final class SidebarModel: Sendable {
+final class SidebarModel: Sendable, ObservableObject {
     private(set) var state: SidebarState
 
     private var foldersChangesObservation: SidebarModelsObservation<PMCustomFolder>?
