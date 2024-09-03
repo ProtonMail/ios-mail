@@ -32,7 +32,7 @@ struct ProtonMailApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(appContext: .shared, appRoute: .shared, customLabelModel: customLabelModel)
+            RootView(appContext: .shared, customLabelModel: customLabelModel)
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
                 .environmentObject(userSettings)
@@ -54,16 +54,13 @@ private struct RootView: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
-    @ObservedObject private var appRoute: AppRouteState
     @ObservedObject private var customLabelModel: CustomLabelModel
 
     init(
         appContext: AppContext,
-        appRoute: AppRouteState,
         customLabelModel: CustomLabelModel
     ) {
         self.appContext = appContext
-        self.appRoute = appRoute
         self.customLabelModel = customLabelModel
     }
 
@@ -79,11 +76,7 @@ private struct RootView: View {
     @ViewBuilder
     private func mainView() -> some View {
         if let activerUser = appContext.activeUserSession {
-            AuthenticatedScreens(
-                appRoute: appRoute,
-                customLabelModel: customLabelModel,
-                userSession: activerUser
-            )
+            AuthenticatedScreens(customLabelModel: customLabelModel, userSession: activerUser)
         } else {
             appContext
                 .accountCoordinator

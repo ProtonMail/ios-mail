@@ -31,7 +31,7 @@ final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
     func load(attachmentId: ID) async {
         do {
             let result = try await mailbox.getAttachment(localAttachmentId: attachmentId)
-            let url = URL(string: result.dataPath).unsafelyUnwrapped
+            let url = URL(fileURLWithPath: result.dataPath)
 
             await updateState(.attachmentReady(url))
         } catch {
