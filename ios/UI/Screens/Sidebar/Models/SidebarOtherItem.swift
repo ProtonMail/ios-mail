@@ -27,15 +27,6 @@ struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
         case signOut
         case createLabel
         case createFolder
-
-        var isSelectable: Bool {
-            switch self {
-            case .settings:
-                return true
-            case .shareLogs, .signOut, .bugReport, .contacts, .subscriptions, .createLabel, .createFolder:
-                return false
-            }
-        }
     }
 
     let type: ItemType

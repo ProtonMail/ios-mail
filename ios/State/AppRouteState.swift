@@ -57,7 +57,6 @@ extension AppRouteState {
 enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
-    case settings
 
     /// Determines if the route has a selected mailbox with inbox instead of a local label
     var isInboxHardcoded: Bool {
@@ -80,8 +79,6 @@ enum Route: Equatable, CustomStringConvertible {
         switch self {
         case .mailbox(let label):
             "mailbox \(label.name.string)"
-        case .settings:
-            "settings"
         case .mailboxOpenMessage:
             "mailboxOpenMessage"
         }

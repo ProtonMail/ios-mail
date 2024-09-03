@@ -27,6 +27,7 @@ struct AuthenticatedScreens: View {
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
 
     @State var webViewSheet: ProtonAuthenticatedWebPage?
+    @State var areSettingsPresented = false
 
     init(customLabelModel: CustomLabelModel, userSession: MailUserSession) {
         _appRoute = .init(wrappedValue: .initialState)
@@ -57,8 +58,6 @@ struct AuthenticatedScreens: View {
                     appRoute: appRoute,
                     openedItem: item
                 )
-            case .settings:
-                SettingsScreen()
             }
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
@@ -71,7 +70,7 @@ struct AuthenticatedScreens: View {
                 case .other(let otherItem):
                     switch otherItem.type {
                     case .settings:
-                        appRoute.updateRoute(to: .settings)
+                        areSettingsPresented = true
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
                     case .createFolder, .createLabel:
@@ -101,6 +100,9 @@ struct AuthenticatedScreens: View {
         }
         .sheet(item: $webViewSheet) { webViewSheet in
             SidebarWebViewScreen(webViewPage: webViewSheet)
+        }
+        .sheet(isPresented: $areSettingsPresented) {
+            SettingsScreen()
         }
     }
 

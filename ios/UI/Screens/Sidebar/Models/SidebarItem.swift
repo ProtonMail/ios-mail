@@ -26,22 +26,22 @@ enum SidebarItem: Equatable, Identifiable {
     var isSelected: Bool {
         switch self {
         case .system(let item):
-            return item.isSelected
+            item.isSelected
         case .label(let item):
-            return item.isSelected
+            item.isSelected
         case .other(let item):
-            return item.isSelected
+            item.isSelected
         case .folder(let item):
-            return item.isSelected
+            item.isSelected
         }
     }
 
     var isSelectable: Bool {
         switch self {
         case .system, .label, .folder:
-            return true
+            true
         case .other(let item):
-            return item.type.isSelectable
+            false
         }
     }
 
@@ -63,13 +63,13 @@ enum SidebarItem: Equatable, Identifiable {
     var id: String {
         switch self {
         case .system(let item):
-            return "\(item.id.value)"
+            "\(item.id.value)"
         case .label(let item):
-            return "\(item.id.value)"
+            "\(item.id.value)"
         case .folder(let item):
-            return "\(item.id.value)"
+            "\(item.id.value)"
         case .other(let item):
-            return item.name
+            item.name
         }
     }
 
