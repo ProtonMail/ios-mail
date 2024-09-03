@@ -57,6 +57,28 @@ final class UpsellOfferProviderTests: XCTestCase {
         XCTAssertNil(sut.availablePlan)
     }
 
+    func testUpdate_whenPlansAreAvailable_thenPerformsOtherRequests() async throws {
+        stubPlans(named: ["mail2022"])
+        try await sut.update()
+
+        XCTAssertEqual(
+            apiService.requestJSONStub.capturedArguments.map(\.a2),
+            // plans request is duplicated because of the prefetch in the Core library
+            ["/payments/v5/plans", "/payments/v5/plans", "/payments/v5/subscription", "/payments/v5/status/apple"]
+        )
+    }
+
+    func testUpdate_whenNoPlansAreAvailable_thenDoesntPerformOtherRequests() async throws {
+        stubPlans(named: [])
+        try await sut.update()
+
+        XCTAssertEqual(
+            apiService.requestJSONStub.capturedArguments.map(\.a2),
+            // plans request is duplicated because of the prefetch in the Core library
+            ["/payments/v5/plans", "/payments/v5/plans"]
+        )
+    }
+
     // planService getter has a side-effect where it calls fetchAvailableProducts() in a Task
     // StoreKitDataSource does not handle concurrent calls to fetchAvailableProducts()
     // this sometimes hangs the tests, so we have to call it in advance and let it finish
