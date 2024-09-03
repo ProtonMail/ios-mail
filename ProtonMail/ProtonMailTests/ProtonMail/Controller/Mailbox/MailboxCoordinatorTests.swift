@@ -20,6 +20,7 @@ import ProtonCoreDataModel
 @testable import ProtonCorePayments
 @testable import ProtonMail
 import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUnitTestsPayments
 import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 
@@ -75,7 +76,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let userContainer = dummyUser.container
 
-        let planService = MockPlansDataSourceProtocol()
+        let planService = PlansDataSourceMock()
         let upsellOfferProvider = MockUpsellOfferProvider()
 
         userContainer.planServiceFactory.register {

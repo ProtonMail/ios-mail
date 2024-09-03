@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreTestingToolkitUnitTestsPayments
 import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 import XCTest
@@ -23,7 +24,7 @@ import XCTest
 
 final class UpsellTelemetryReporterTests: XCTestCase {
     private var sut: UpsellTelemetryReporter!
-    private var plansDataSource: MockPlansDataSourceProtocol!
+    private var plansDataSource: PlansDataSourceMock!
     private var telemetryService: MockTelemetryServiceProtocol!
     private var user: UserManager!
 
