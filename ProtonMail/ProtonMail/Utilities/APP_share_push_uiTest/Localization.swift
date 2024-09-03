@@ -1043,6 +1043,10 @@ class LocalizedString {
     lazy var _delete_label_message = NSLocalizedString("This action cannot be undone.", comment: "Alert message when user tries to delete label")
     lazy var _discard_change_message = NSLocalizedString("Any unsaved changes will be lost.", comment: "Alert message when user tries to discard unsaved changes")
     lazy var _color_inherited_from_parent_folder = NSLocalizedString("Inherited from parent folder", comment: "A label message")
+    lazy var _creating_folder_not_allowed = NSLocalizedString("Creating folder not allowed", comment: "Alert title")
+    lazy var _creating_label_not_allowed = NSLocalizedString("Creating label not allowed", comment: "Alert title")
+    lazy var _upgrade_to_create_folder = NSLocalizedString("Please upgrade to a paid plan to use more than 3 folders", comment: "Alert message")
+    lazy var _upgrade_to_create_label = NSLocalizedString("Please upgrade to a paid plan to use more than 3 labels", comment: "Alert message")
     lazy var _please_connect_and_retry = NSLocalizedString("Please connect and retry", comment: "Alert message is shown when the device doesn't have network connection")
     lazy var _use_folder_color = NSLocalizedString("Use folder colors", comment: "Option title")
     lazy var _inherit_parent_color = NSLocalizedString("Inherit color from parent folder", comment: "Option title")
@@ -1442,6 +1446,15 @@ enum L10n {
         static let tomorrow = NSLocalizedString("Tomorrow", comment: "One of schedule time options")
         static let custom = NSLocalizedString("Custom", comment: "Option for set up custom schedule send date")
         static let asSchedule = NSLocalizedString("As scheduled", comment: "One of the schedule time options")
+        static let upSellTitle = NSLocalizedString("Set your own schedule", comment: "The title of the up sell content of the scheduled send.")
+        static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
+        static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
+        static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
+        static let itemAliases = NSLocalizedString("Hide My Email aliases", comment: "The up sell bullet point in the schedule send promotion view.")
         static let inTheMorning = NSLocalizedString("In the morning", comment: "One of schedule time options")
     }
 
@@ -1537,6 +1550,13 @@ enum L10n {
 	}
 
     struct AutoDeleteUpsellSheet {
+        static let title = NSLocalizedString("Clear out the junk", comment: "Title of the sheet to advertise the auto delete feature to free users")
+        static let description = NSLocalizedString("Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.", comment: "Text content of the sheet to advertise the auto delete feature to free users")
+
+        static let upsellLineOne = NSLocalizedString("Up to 3 TB of storage", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineTwo = NSLocalizedString("Up to 15 email addresses", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
     }
 
@@ -1599,6 +1619,11 @@ enum L10n {
         static let thisWeekend = NSLocalizedString("This weekend", comment: "One of snooze option shows in action sheet")
         static let nextWeek = NSLocalizedString("Next week", comment: "One of snooze option shows in action sheet")
         static let selectTimeInFuture = NSLocalizedString("Please select a time in the future", comment: "An error message will be shown to user when user select past snooze time")
+        static let promotionTitle = NSLocalizedString("Want to snooze any time?", comment: "The title of snooze promotion view")
+        static let promotionDesc = NSLocalizedString("Unlock custom snooze times when you upgrade", comment: "The content description of snooze promotion view")
+        static let addressBenefit = NSLocalizedString("Up to 15 email addresses/aliases", comment: "The benefit item for snooze promotion view")
+        static let folderBenefit = NSLocalizedString("Unlimited folders, labels, and filters", comment: "The benefit item for snooze promotion view")
+        static let domainBenefit = NSLocalizedString("Custom email domains", comment: "The benefit item for snooze promotion view")
     }
 
 	struct InlineAttachment {

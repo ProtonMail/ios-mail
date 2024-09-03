@@ -54,7 +54,7 @@ final class UpsellCoordinator {
         if let availablePlan = await prepareAvailablePlan() {
             await presentUpsellPage(availablePlan: availablePlan, entryPoint: entryPoint, onDismiss: onDismiss)
         } else {
-            await fallBackToCorePaymentsUI(onDismiss: onDismiss)
+            await fallbackToPreviousFlow(entryPoint: entryPoint, onDismiss: onDismiss)
         }
     }
 
@@ -147,14 +147,79 @@ final class UpsellCoordinator {
         banner.show(at: .top, on: presentedViewController)
     }
 
-    // MARK: legacy Core flow
+    // MARK: legacy flows
 
-    private func fallBackToCorePaymentsUI(onDismiss: OnDismissCallback?) async {
+    private func fallbackToPreviousFlow(entryPoint: UpsellPageEntryPoint, onDismiss: OnDismissCallback?) async {
+        switch entryPoint {
+        case .autoDelete:
+            guard let navigationController = rootViewController?.navigationController else {
+                return
+            }
+
+            let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
+                Task { [weak self] in
+                    await self?.presentCoreSubscriptionScreen(onDismiss: onDismiss)
+                }
+            }
+
+            upsellSheet.present(on: navigationController.view)
+        case .contactGroups:
+            await presentCoreSubscriptionScreen(onDismiss: onDismiss)
+        case .folders:
+            presentAlertController(
+                title: LocalString._creating_folder_not_allowed,
+                message: LocalString._upgrade_to_create_folder
+            )
+        case .header:
+            await presentCoreSubscriptionScreen(onDismiss: onDismiss)
+        case .labels:
+            presentAlertController(
+                title: LocalString._creating_label_not_allowed,
+                message: LocalString._upgrade_to_create_label
+            )
+        case .mobileSignature:
+            await presentCoreSubscriptionScreen(onDismiss: onDismiss)
+        case .postOnboarding:
+            onDismiss?()
+        case .scheduleSend:
+            presentPromotionView(type: .scheduleSend, onDismiss: onDismiss)
+        case .snooze:
+            presentPromotionView(type: .snooze, onDismiss: onDismiss)
+        }
+    }
+
+    private func presentAlertController(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addOKAction()
+        rootViewController?.present(alert, animated: true)
+    }
+
+    private func presentPromotionView(type: PromotionView.PromotionType, onDismiss: OnDismissCallback?) {
+        guard let navigationController = rootViewController?.navigationController else {
+            return
+        }
+
+        let promotionView = PromotionView()
+
+        promotionView.presentPaymentUpgradeView = { [weak self] in
+            Task { [weak self] in
+                await self?.presentCoreSubscriptionScreen(onDismiss: onDismiss)
+            }
+        }
+
+        promotionView.viewWasDismissed = onDismiss
+        promotionView.present(on: navigationController.view, type: type)
+    }
+
+    private func presentCoreSubscriptionScreen(onDismiss: OnDismissCallback?) async {
         let paymentsUI = dependencies.paymentsUIFactory.makeView()
 
         await withCheckedContinuation { continuation in
             // this is necessary because showUpgradePlan completion handler is called several times
             let nullableContinuation: Atomic<CheckedContinuation<Void, Never>?> = .init(continuation)
+
+            // and this is necessary because .close is being returned multiple times
+            let closeAlreadyReturnedOnce: Atomic<Bool> = .init(false)
 
             paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { resultReason in
                 nullableContinuation.mutate {
@@ -164,7 +229,10 @@ final class UpsellCoordinator {
 
                 switch resultReason {
                 case .close:
-                    onDismiss?()
+                    if !closeAlreadyReturnedOnce.value {
+                        closeAlreadyReturnedOnce.mutate { $0 = true }
+                        onDismiss?()
+                    }
                 case .purchasedPlan:
                     Task {
                         await self.dependencies.user.fetchUserInfo()
