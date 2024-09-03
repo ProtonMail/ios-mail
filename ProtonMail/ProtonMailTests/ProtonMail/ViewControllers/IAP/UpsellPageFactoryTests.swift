@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
+import ProtonCoreTestingToolkitUnitTestsPayments
 import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 import XCTest
@@ -29,7 +30,7 @@ final class UpsellPageFactoryTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let storeKitManager = MockStoreKitManager()
+        let storeKitManager = StoreKitManagerMock()
         storeKitManager.priceLabelForProductStub.bodyIs { _, storeKitProductId in
             switch storeKitProductId {
             case "iosmail_mail2022_1_usd_auto_renewing":

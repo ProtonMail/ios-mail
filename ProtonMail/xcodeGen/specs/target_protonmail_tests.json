@@ -16,7 +16,8 @@
                "products": [
                   "fusion",
                   "ProtonCoreTestingToolkitUnitTestsFeatureFlag",
-                  "ProtonCoreTestingToolkitUnitTestsLoginUI"
+                  "ProtonCoreTestingToolkitUnitTestsLoginUI",
+                  "ProtonCoreTestingToolkitUnitTestsPayments"
                ]
             }
          ],

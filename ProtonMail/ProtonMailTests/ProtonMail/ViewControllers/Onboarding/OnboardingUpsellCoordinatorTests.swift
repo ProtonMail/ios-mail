@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreTestingToolkitUnitTestsPayments
 import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 import XCTest
@@ -37,7 +38,7 @@ final class OnboardingUpsellCoordinatorTests: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
 
-        let planService = MockPlansDataSourceProtocol()
+        let planService = PlansDataSourceMock()
 
         user = UserManager(api: APIServiceMock(), globalContainer: TestContainer())
 

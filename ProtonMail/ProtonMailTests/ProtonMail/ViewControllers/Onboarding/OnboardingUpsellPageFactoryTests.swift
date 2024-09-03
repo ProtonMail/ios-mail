@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreTestingToolkitUnitTestsPayments
 import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
@@ -29,7 +30,7 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let storeKitManager = MockStoreKitManager()
+        let storeKitManager = StoreKitManagerMock()
 
         storeKitManager.priceLabelForProductStub.bodyIs { _, storeKitProductId in
             switch storeKitProductId {
