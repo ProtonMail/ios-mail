@@ -32,6 +32,8 @@ struct SidebarWebViewScreen: View {
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webViewPage.title.string)
+				.accessibilityElement()
+                .accessibilityIdentifier(SidebarWebViewScreenIdentifiers.rootItem(forPage: webViewPage))
         }
     }
 }
@@ -49,4 +51,10 @@ private extension ProtonAuthenticatedWebPage {
         }
     }
 
+}
+
+private struct SidebarWebViewScreenIdentifiers {
+    static func rootItem(forPage page: ProtonAuthenticatedWebPage) -> String {
+        "sheet.\(page.action).rootItem"
+    }
 }

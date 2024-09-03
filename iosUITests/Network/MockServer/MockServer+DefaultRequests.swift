@@ -41,7 +41,7 @@ extension MockServer {
             )
         }
 
-        if useDefaultFolders {
+        if useDefaultSystemFolders {
             await addRequests(
                 NetworkRequest(
                     method: .get,

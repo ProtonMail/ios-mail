@@ -48,11 +48,13 @@ struct SingleFolderNodeView: View {
                         .square(size: 20)
                         .tint(folder.displayColor)
                         .padding(.trailing, DS.Spacing.extraLarge)
+                        .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.icon)
                     Text(folder.name)
                         .font(.subheadline)
                         .fontWeight(folder.isSelected ? .bold : .regular)
                         .foregroundStyle(folder.isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
                         .lineLimit(1)
+                        .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.textItem)
                     Spacer()
 
                     if !folder.childFolders.isEmpty {
@@ -66,6 +68,7 @@ struct SingleFolderNodeView: View {
                         }
                         .square(size: 16)
                         .animation(.default, value: isExpanded)
+                        .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.chevronItem)
                     }
                     VStack {
                         if let unreadFormatted = UnreadCountFormatter.string(count: folder.unreadCount) {
@@ -74,11 +77,13 @@ struct SingleFolderNodeView: View {
                                     folder.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak
                                 )
                                 .font(.caption)
+                                .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.badgeItem)
                         }
                     }
                     .frame(width: 32, alignment: .trailing)
                 }
                 .padding(.leading, padding)
+                .accessibilityElement(children: .contain)
             }
 
             if !folder.childFolders.isEmpty, isExpanded {
@@ -99,4 +104,11 @@ struct SingleFolderNodeView: View {
         toggle(folder, isExpanded)
     }
 
+}
+
+private struct SidebarFolderNodeViewIdentifiers {
+    static let icon = "sidebar.button.icon"
+    static let badgeItem = "sidebar.button.badgeIcon"
+    static let textItem = "sidebar.button.text"
+    static let chevronItem = "sidebar.button.chevron"
 }

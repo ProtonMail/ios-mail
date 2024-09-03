@@ -16,14 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonMail
 import XCTest
 
-final class SubscriptionRobot: Robot {
+final class CreateFolderLabelRobot: Robot {
     var rootElement: XCUIElement {
         application.otherElements[Identifiers.rootItem]
     }
 }
 
 private struct Identifiers {
-    static let rootItem = "sheet.subscription-details.rootItem"
+    static let rootItem = "sheet.labels-settings.rootItem"
 }
