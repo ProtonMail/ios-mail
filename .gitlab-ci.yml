@@ -7,7 +7,7 @@ include:
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
-  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.7
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.14
     inputs:
       allowed-to-fail: false
       run-gitleaks-no-git-scan: false
@@ -220,7 +220,7 @@ test:ui:monkey:
   stage: report
   image:
     name: $CI_REGISTRY/tpe/test-scripts
-    pull_policy: always  
+    pull_policy: always
   allow_failure: true
   tags:
     - shared-small
