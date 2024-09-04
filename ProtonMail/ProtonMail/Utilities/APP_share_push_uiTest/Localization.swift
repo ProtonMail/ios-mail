@@ -1667,6 +1667,7 @@ enum L10n {
         static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
         static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
         static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
+        static let endToEndEncryption = NSLocalizedString("End-to-end encryption", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
     }
 

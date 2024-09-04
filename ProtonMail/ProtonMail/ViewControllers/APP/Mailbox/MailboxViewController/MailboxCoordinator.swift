@@ -241,7 +241,7 @@ extension MailboxCoordinator {
     }
 
     private func presentOnboardingView() {
-        let viewController = OnboardViewController()
+        let viewController = OnboardViewController(isPaidUser: viewModel.user.hasPaidMailPlan)
         viewController.modalPresentationStyle = .fullScreen
         viewController.onViewDidDisappear = { [weak self] in
             self?.presentUpsellIfApplicable()

@@ -29,14 +29,6 @@ public struct OnboardingUpsellPage: View {
 
     private let onPurchaseTapped: (String) -> Void
 
-    private var backgroundGradient: LinearGradient {
-        .init(
-            colors: [.onboardingUpsellPageBackgroundGradientStart, .onboardingUpsellPageBackgroundGradientEnd],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
-
     public var body: some View {
         if verticalSizeClass == .compact {
             HStack {
@@ -52,7 +44,7 @@ public struct OnboardingUpsellPage: View {
                     ctaButton
                 }
             }
-            .background(backgroundGradient)
+            .background(Color(white: 250 / 255))
         } else {
             VStack(spacing: 0) {
                 choosePlanLabel
@@ -68,7 +60,7 @@ public struct OnboardingUpsellPage: View {
 
                 ctaButton
             }
-            .background(backgroundGradient)
+            .background(Color(white: 250 / 255))
         }
     }
 
@@ -80,13 +72,29 @@ public struct OnboardingUpsellPage: View {
     }
 
     private var cyclePicker: some View {
-        SegmentedControl(
-            options: [
-                .init(title: L10n.Recurrence.monthly, value: OnboardingUpsellPageModel.Cycle.monthly),
-                .init(title: L10n.Upsell.annual, value: OnboardingUpsellPageModel.Cycle.annual)
-            ],
-            selectedValue: $model.selectedCycle
-        )
+        ZStack(alignment: .topTrailing) {
+            SegmentedControl(
+                options: [
+                    .init(title: L10n.Recurrence.monthly, value: OnboardingUpsellPageModel.Cycle.monthly),
+                    .init(title: L10n.Upsell.annual, value: OnboardingUpsellPageModel.Cycle.annual)
+                ],
+                selectedValue: $model.selectedCycle
+            )
+
+            Text(String(format: L10n.Upsell.save, model.maxDiscountForSelectedPlan ?? 0))
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(ColorProvider.TextInverted)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .background {
+                    Capsule()
+                        .foregroundStyle(ColorProvider.IconAccent)
+                }
+                .alignmentGuide(VerticalAlignment.top) { dimension in
+                    dimension[VerticalAlignment.bottom] - 2
+                }
+                .visible(model.maxDiscountForSelectedPlan != nil)
+        }
     }
 
     private var planList: some View {
@@ -185,6 +193,7 @@ public struct OnboardingUpsellPage: View {
                     planName: "Proton Unlimited",
                     perks: [
                         .init(icon: \.storage, description: "500 GB storage"),
+                        .init(icon: \.lock, description: "End-to-end encryption"),
                         .init(icon: \.envelope, description: "15 email addresses"),
                         .init(icon: \.globe, description: "Support for 3 custom email domains"),
                         .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
@@ -193,7 +202,8 @@ public struct OnboardingUpsellPage: View {
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: true,
-                    alwaysVisiblePerks: 3,
+                    maxDiscount: 24,
+                    alwaysVisiblePerks: 4,
                     storeKitProductIDsPerCycle: [:],
                     billingPricesPerCycle: [:],
                     includedProducts: [.mail, .calendar, .drive, .vpn, .pass]
@@ -202,6 +212,7 @@ public struct OnboardingUpsellPage: View {
                     planName: "Mail Plus",
                     perks: [
                         .init(icon: \.storage, description: "15 GB storage"),
+                        .init(icon: \.lock, description: "End-to-end encryption"),
                         .init(icon: \.envelope, description: "10 email addresses"),
                         .init(icon: \.globe, description: "Support for 1 custom email domain"),
                         .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
@@ -209,7 +220,8 @@ public struct OnboardingUpsellPage: View {
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: false,
-                    alwaysVisiblePerks: 2,
+                    maxDiscount: 20,
+                    alwaysVisiblePerks: 3,
                     storeKitProductIDsPerCycle: [:],
                     billingPricesPerCycle: [:],
                     includedProducts: [.mail, .calendar]
@@ -217,17 +229,18 @@ public struct OnboardingUpsellPage: View {
                 .init(
                     planName: "Proton Free",
                     perks: [
-                        .init(icon: \.storage, description: "1 GB Storage and 1 email")
+                        .init(icon: \.storage, description: "1 GB Storage and 1 email"),
+                        .init(icon: \.lock, description: "End-to-end encryption"),
                     ],
                     monthlyPricesPerCycle: [:],
                     isBestValue: false,
-                    alwaysVisiblePerks: 1,
+                    maxDiscount: nil,
+                    alwaysVisiblePerks: 2,
                     storeKitProductIDsPerCycle: [:],
                     billingPricesPerCycle: [:],
                     includedProducts: nil
                 )
-            ],
-            maxDiscount: 20
+            ]
         ),
         onPurchaseTapped: { _ in }
     )

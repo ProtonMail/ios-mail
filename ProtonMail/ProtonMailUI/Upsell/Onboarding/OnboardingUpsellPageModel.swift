@@ -33,11 +33,14 @@ public final class OnboardingUpsellPageModel: ObservableObject {
     }
 
     let tiles: [OnboardingUpsellPageModel.TileModel]
-    let maxDiscount: Int?
 
     @Published public var isBusy = false
     @Published var selectedCycle: Cycle
     @Published var selectedPlanIndex: Int
+
+    var maxDiscountForSelectedPlan: Int? {
+        tiles[selectedPlanIndex].maxDiscount
+    }
 
     var actualChargeDisclaimer: String? {
         guard let billingPrice = tiles[selectedPlanIndex].billingPricesPerCycle[selectedCycle.lengthInMonths] else {
@@ -89,9 +92,8 @@ public final class OnboardingUpsellPageModel: ObservableObject {
         return formatter
     }()
 
-    public init(tiles: [OnboardingUpsellPageModel.TileModel], maxDiscount: Int?) {
+    public init(tiles: [OnboardingUpsellPageModel.TileModel]) {
         self.tiles = tiles
-        self.maxDiscount = maxDiscount
 
         selectedCycle = .monthly
         selectedPlanIndex = 0

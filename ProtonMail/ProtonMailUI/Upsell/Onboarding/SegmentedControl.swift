@@ -29,26 +29,17 @@ struct SegmentedControl<T: Equatable>: View {
 
     @State private var highestSegmentWidth: CGFloat = 0
 
-    private var bestValueGradient: LinearGradient {
-        .init(
-            colors: [.onboardingUpsellPageSelectorGradientStart, .onboardingUpsellPageSelectorGradientEnd],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
+    private let indicatorPadding: CGFloat = 4
 
     var body: some View {
         ZStack(alignment: .crossAlignment) {
             RoundedRectangle(cornerRadius: 8)
                 .frame(width: highestSegmentWidth)
                 .frame(height: 32)
-                .foregroundStyle(Color(white: 17 / 255))
+                .foregroundStyle(Color.white)
                 .alignmentGuide(.crossAlignment) { $0[HorizontalAlignment.center] }
-                .overlay {
-                    RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(bestValueGradient, lineWidth: 1.5)
-                }
-                .padding(4)
+                .shadow(color: .black.opacity(0.16), radius: 2, y: 1)
+                .padding(indicatorPadding)
                 .animation(.spring, value: selectedValue.wrappedValue)
 
             HStack(spacing: 0) {
@@ -57,7 +48,7 @@ struct SegmentedControl<T: Equatable>: View {
 
                     Text(option.title)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(isSelected ? ColorProvider.TextInverted : ColorProvider.TextNorm)
+                        .foregroundStyle(ColorProvider.TextNorm)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 32)
                         .background(GeometryReader { geometry in
@@ -69,7 +60,8 @@ struct SegmentedControl<T: Equatable>: View {
                         .onPreferenceChange(HighestIntrinsicWidthPreferenceKey.self) {
                             highestSegmentWidth = max(highestSegmentWidth, $0)
                         }
-                        .frame(minWidth: highestSegmentWidth)
+                        .frame(minWidth: highestSegmentWidth + indicatorPadding * 2)
+                        .contentShape(Rectangle())
                         .alignmentGuide(isSelected ? .crossAlignment : HorizontalAlignment.center) {
                             $0[HorizontalAlignment.center]
                         }
@@ -79,11 +71,8 @@ struct SegmentedControl<T: Equatable>: View {
                 }
             }
         }
+        .background(ColorProvider.Shade15)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay {
-            RoundedRectangle(cornerRadius: 8)
-                .strokeBorder(.black.opacity(0.16), lineWidth: 1)
-        }
     }
 
     init(options: [Option], selectedValue: Binding<T>) {
