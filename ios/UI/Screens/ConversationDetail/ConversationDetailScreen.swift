@@ -136,7 +136,7 @@ private extension View {
                     item: .init(
                         id: .init(value: 0),
                         type: .conversation,
-                        avatar: .init(initials: "Pf", type: .sender(params: .init())),
+                        avatar: .init(initials: "Pf", backgroundColor: .blue, type: .sender(params: .init())),
                         senders: "",
                         subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                         date: .now,

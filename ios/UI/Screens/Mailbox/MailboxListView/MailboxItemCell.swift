@@ -303,7 +303,7 @@ enum MailboxItemCellEvent {
         MailboxItemCellUIModel(
             id: .init(value: 0),
             type: .conversation,
-            avatar: .init(initials: "P", type: .sender(params: .init())),
+            avatar: .init(initials: "P", backgroundColor: .purple, type: .sender(params: .init())),
             senders: "Proton",
             subject: subject,
             date: Date(),

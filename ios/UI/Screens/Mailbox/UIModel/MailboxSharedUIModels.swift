@@ -27,7 +27,7 @@ struct AvatarUIModel {
     init(
         initials: String,
         senderImage: UIImage? = nil,
-        backgroundColor: Color = DS.Color.Background.secondary,
+        backgroundColor: Color,
         type: AvatarViewType
     ) {
         self.initials = initials

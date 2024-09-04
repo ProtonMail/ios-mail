@@ -379,7 +379,11 @@ enum MessageDetailsPreviewProvider {
 
     static func testData(location: ExclusiveLocation?, labels: [LabelUIModel]) -> MessageDetailsUIModel {
         .init(
-            avatar: .init(initials: "", type: .sender(params: .init())),
+            avatar: .init(
+                initials: "",
+                backgroundColor: DS.Color.Background.secondary,
+                type: .sender(params: .init())
+            ),
             sender: .init(
                 name: "Camila Hall",
                 address: "camila.hall@protonmail.ch",

@@ -29,7 +29,11 @@ enum PreviewData {
             return .init(
                 id: .random(),
                 type: .conversation,
-                avatar: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), type: .sender(params: .init())),
+                avatar: .init(
+                    initials: randomSenderSubject.0.prefix(2).uppercased(),
+                    backgroundColor: .red,
+                    type: .sender(params: .init())
+                ),
                 senders: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
