@@ -41,6 +41,7 @@ public extension DS.Icon {
     static let icPaperPlane = ImageResource.icPaperPlane
     static let icPencil = ImageResource.icPencil
     static let icPlus = ImageResource.icPlus
+    static let icShield2 = ImageResource.icShield2
     static let icSpam = ImageResource.icSpam
     static let icNotSpam = ImageResource.icNoSpam
     static let icStarFilled = ImageResource.icStarFilled
