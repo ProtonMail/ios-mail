@@ -8,9 +8,10 @@
 import SwiftUI
 
 public extension DS.Icon {
+    static let icArchiveBox = ImageResource.icArchiveBox
     static let icArrowOutFromRectangle = ImageResource.icArrowOutFromRectangle
     static let icArrowRotateRight = ImageResource.icArrowRotateRight
-
+    static let icBookmark = ImageResource.icBookmark
     static let icBug = ImageResource.icBug
     static let icCheckmark = ImageResource.icCheckmark
     static let icChevronLeft = ImageResource.icChevronLeft
@@ -25,15 +26,16 @@ public extension DS.Icon {
     static let icCogWheel = ImageResource.icCogWheel
     static let icCross = ImageResource.icCross
     static let icCrossBig = ImageResource.icCrossBig
-    static let icHamburguer = ImageResource.icHamburger
-    static let icArchiveBox = ImageResource.icArchiveBox
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
+    static let icFilter = ImageResource.icFilter
     static let icFolder = ImageResource.icFolder
     static let icFolderOpenFilled = ImageResource.icFolderOpenFilled
     static let icFolders = ImageResource.icFolders
+    static let icHamburguer = ImageResource.icHamburger
     static let icInbox = ImageResource.icInbox
+    static let icMobile = ImageResource.icMobile
     static let icMinus = ImageResource.icMinus
     static let icPaperClip = ImageResource.icPaperClip
     static let icPaperPlane = ImageResource.icPaperPlane
