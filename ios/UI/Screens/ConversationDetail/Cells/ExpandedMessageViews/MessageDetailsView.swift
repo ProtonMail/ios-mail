@@ -332,6 +332,12 @@ enum MessageDetail {
         var id: String { address } // Identifiable needed to present the action sheet
         let name: String
         let address: String
+        let avatarInfo: AvatarInfo
+    }
+
+    struct AvatarInfo {
+        let text: String
+        let color: Color
     }
 
     struct Location: Equatable {
@@ -391,15 +397,18 @@ enum MessageDetailsPreviewProvider {
             ),
             isSenderProtonOfficial: true,
             recipientsTo: [
-                .init(name: "Me", address: "eric.norbert@protonmail.ch"),
+                .init(
+                    name: "Me", address: "eric.norbert@protonmail.ch",
+                    avatarInfo: .init(text: "E", color: .red)
+                ),
             ],
             recipientsCc: [
-                .init(name: "James Hayes", address: "james@proton.me"),
-                .init(name: "Riley Scott", address: "scott375@gmail.com"),
-                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch"),
+                .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(text: "J", color: .red)),
+                .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(text: "R", color: .red)),
+                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(text: "L", color: .red)),
             ],
             recipientsBcc: [
-                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com"),
+                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(text: "I", color: .red)),
             ],
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,

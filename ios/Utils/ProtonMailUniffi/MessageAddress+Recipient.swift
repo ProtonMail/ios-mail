@@ -20,7 +20,13 @@ import proton_app_uniffi
 extension MessageAddress {
 
     var toRecipient: MessageDetail.Recipient {
-        .init(name: uiRepresentation, address: address)
+        let avatarInfo = avatarInformationFromMessageAddress(address: self)
+
+        return .init(
+            name: uiRepresentation, 
+            address: address,
+            avatarInfo: .init(text: avatarInfo.text, color: .init(hex: avatarInfo.color))
+        )
     }
 
 }

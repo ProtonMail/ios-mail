@@ -82,10 +82,9 @@ struct ConversationDetailListView: View {
     }
 
     private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        // TODO: The initials and background color should be provided from the Rust SDK
         let avatarUIModel = AvatarUIModel(
-            initials: target.name.first?.uppercased() ?? "",
-            backgroundColor: DS.Color.Brand.darken10,
+            initials: target.avatarInfo.text,
+            backgroundColor: target.avatarInfo.color,
             type: .other
         )
         return MessageAddressActionPickerView(
