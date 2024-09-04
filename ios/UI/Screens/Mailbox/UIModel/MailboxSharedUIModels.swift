@@ -18,21 +18,23 @@
 import DesignSystem
 import SwiftUI
 
-struct AvatarUIModel {
+struct AvatarInfo {
     let initials: String
+    let color: Color
+}
+
+struct AvatarUIModel {
+    let info: AvatarInfo
     let senderImage: UIImage?
-    let backgroundColor: Color
     let type: AvatarViewType
 
     init(
-        initials: String,
+        info: AvatarInfo,
         senderImage: UIImage? = nil,
-        backgroundColor: Color,
         type: AvatarViewType
     ) {
-        self.initials = initials
+        self.info = info
         self.senderImage = senderImage
-        self.backgroundColor = backgroundColor
         self.type = type
     }
 }

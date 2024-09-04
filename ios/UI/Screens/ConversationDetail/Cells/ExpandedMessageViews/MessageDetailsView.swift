@@ -335,11 +335,6 @@ enum MessageDetail {
         let avatarInfo: AvatarInfo
     }
 
-    struct AvatarInfo {
-        let text: String
-        let color: Color
-    }
-
     struct Location: Equatable {
         let name: LocalizedStringResource
         let icon: ImageResource
@@ -386,8 +381,7 @@ enum MessageDetailsPreviewProvider {
     static func testData(location: ExclusiveLocation?, labels: [LabelUIModel]) -> MessageDetailsUIModel {
         .init(
             avatar: .init(
-                initials: "",
-                backgroundColor: DS.Color.Background.secondary,
+                info: .init(initials: "", color: DS.Color.Background.secondary),
                 type: .sender(params: .init())
             ),
             sender: .init(
@@ -399,16 +393,16 @@ enum MessageDetailsPreviewProvider {
             recipientsTo: [
                 .init(
                     name: "Me", address: "eric.norbert@protonmail.ch",
-                    avatarInfo: .init(text: "E", color: .red)
+                    avatarInfo: .init(initials: "E", color: .red)
                 ),
             ],
             recipientsCc: [
-                .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(text: "J", color: .red)),
-                .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(text: "R", color: .red)),
-                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(text: "L", color: .red)),
+                .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
+                .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(initials: "R", color: .red)),
+                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
             ],
             recipientsBcc: [
-                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(text: "I", color: .red)),
+                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red)),
             ],
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,

@@ -303,7 +303,7 @@ enum MailboxItemCellEvent {
         MailboxItemCellUIModel(
             id: .init(value: 0),
             type: .conversation,
-            avatar: .init(initials: "P", backgroundColor: .purple, type: .sender(params: .init())),
+            avatar: .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init())),
             senders: "Proton",
             subject: subject,
             date: Date(),
@@ -328,7 +328,7 @@ enum MailboxItemCellEvent {
             uiModel: .init(
                 id: .init(value: 0),
                 type: .message,
-                avatar: .init(initials: "FE", backgroundColor: .yellow, type: .sender(params: .init())),
+                avatar: .init(info: .init(initials: "FE", color: .yellow), type: .sender(params: .init())),
                 senders: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
@@ -355,7 +355,7 @@ enum MailboxItemCellEvent {
             uiModel: .init(
                 id: .init(value: 0),
                 type: .message,
-                avatar: .init(initials: "MA", backgroundColor: .cyan, type: .sender(params: .init())),
+                avatar: .init(info: .init(initials: "MA", color: .cyan), type: .sender(params: .init())),
                 senders: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,

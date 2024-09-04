@@ -56,8 +56,7 @@ extension Message {
     func toAvatarUIModel() -> AvatarUIModel {
         let avatarInformation = avatarInformationFromMessageAddress(address: sender)
         return .init(
-            initials: avatarInformation.text,
-            backgroundColor: Color(hex: avatarInformation.color),
+            info: .init(initials: avatarInformation.text, color: Color(hex: avatarInformation.color)),
             type: .sender(params: .init(
                 address: sender.address,
                 bimiSelector: sender.bimiSelector,

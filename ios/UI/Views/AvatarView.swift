@@ -68,12 +68,12 @@ struct AvatarView: View {
     }
 
     private var initialsView: some View {
-        Text(avatar.initials)
+        Text(avatar.info.initials)
             .fontBody3()
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Global.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(avatar.backgroundColor)
+            .background(avatar.info.color)
             .accessibilityIdentifier(AvatarViewIdentifiers.avatarText)
     }
 }
@@ -87,19 +87,16 @@ private struct AvatarViewIdentifiers {
 #Preview {
     let senderParams = SenderImageDataParameters(address: "aaron@proton.me", displaySenderImage: true)
     let avatarUIModel1 = AvatarUIModel(
-        initials: "Gh",
-        backgroundColor: .cyan,
+        info: .init(initials: "Gh", color: .cyan),
         type: .sender(params: senderParams)
     )
     let avatarUIModel2 = AvatarUIModel(
-        initials: "Aa",
-        backgroundColor: DS.Color.Brand.norm,
+        info: .init(initials: "Aa", color: DS.Color.Brand.norm),
         type: .sender(params: senderParams)
     )
     let avatarUIModel3 = AvatarUIModel(
-        initials: "Aa",
+        info: .init(initials: "Ad", color: DS.Color.Brand.norm),
         senderImage: UIImage(resource: PreviewData.senderImage),
-        backgroundColor: DS.Color.Brand.norm,
         type: .sender(params: senderParams)
     )
 

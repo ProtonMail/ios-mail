@@ -30,8 +30,7 @@ extension Conversation {
             id: id,
             type: .conversation,
             avatar: .init(
-                initials: avatarInformation.text,
-                backgroundColor: Color(hex: avatarInformation.color),
+                info: .init(initials: avatarInformation.text, color: Color(hex: avatarInformation.color)),
                 type: .sender(params: .init(
                     address: firstSender.address,
                     bimiSelector: firstSender.bimiSelector,

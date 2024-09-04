@@ -82,7 +82,7 @@ private enum MessageAddressActionPickerSection {
 #Preview {
     HStack {
         MessageAddressActionPickerView(
-            avatarUIModel: .init(initials: "Aa", backgroundColor: .purple, type: .sender(params: .init())),
+            avatarUIModel: .init(info: .init(initials: "Aa", color: .purple), type: .sender(params: .init())),
             name: "Aaron",
             emailAddress: "aaron@proton.me"
         )

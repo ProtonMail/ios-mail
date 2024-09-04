@@ -30,8 +30,7 @@ enum PreviewData {
                 id: .random(),
                 type: .conversation,
                 avatar: .init(
-                    initials: randomSenderSubject.0.prefix(2).uppercased(),
-                    backgroundColor: .red,
+                    info: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), color: .red),
                     type: .sender(params: .init())
                 ),
                 senders: randomSenderSubject.0,

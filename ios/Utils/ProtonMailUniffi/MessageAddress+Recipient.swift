@@ -25,7 +25,7 @@ extension MessageAddress {
         return .init(
             name: uiRepresentation, 
             address: address,
-            avatarInfo: .init(text: avatarInfo.text, color: .init(hex: avatarInfo.color))
+            avatarInfo: .init(initials: avatarInfo.text, color: .init(hex: avatarInfo.color))
         )
     }
 

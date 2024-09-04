@@ -82,11 +82,8 @@ struct ConversationDetailListView: View {
     }
 
     private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        let avatarUIModel = AvatarUIModel(
-            initials: target.avatarInfo.text,
-            backgroundColor: target.avatarInfo.color,
-            type: .other
-        )
+        let avatarUIModel = AvatarUIModel(info: target.avatarInfo, type: .other)
+
         return MessageAddressActionPickerView(
             avatarUIModel: avatarUIModel,
             name: target.name,
