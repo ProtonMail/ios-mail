@@ -28,20 +28,11 @@ extension Message {
         }
 
         let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
-        let avatarInformation = avatarInformationFromMessageAddress(address: sender)
 
         return MailboxItemCellUIModel(
             id: id,
             type: .message,
-            avatar: .init(
-                initials: avatarInformation.text,
-                backgroundColor: Color(hex: avatarInformation.color),
-                type: .sender(params: .init(
-                    address: sender.address,
-                    bimiSelector: sender.bimiSelector,
-                    displaySenderImage: sender.displaySenderImage
-                ))
-            ),
+            avatar: toAvatarUIModel(),
             senders: mappedSender,
             subject: subject.isEmpty ? L10n.Mailbox.Item.noSubject.string : subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
