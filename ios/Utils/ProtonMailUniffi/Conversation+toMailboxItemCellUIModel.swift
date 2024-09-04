@@ -24,13 +24,12 @@ extension Conversation {
 
     func toMailboxItemCellUIModel(selectedIds: Set<Id>) -> MailboxItemCellUIModel {
         let firstSender = senders.first.unsafelyUnwrapped
-        let avatarInformation = avatarInformationFromMessageAddress(address: firstSender)
 
         return MailboxItemCellUIModel(
             id: id,
             type: .conversation,
             avatar: .init(
-                info: .init(initials: avatarInformation.text, color: Color(hex: avatarInformation.color)),
+                info: firstSender.avatarInfo,
                 type: .sender(params: .init(
                     address: firstSender.address,
                     bimiSelector: firstSender.bimiSelector,
