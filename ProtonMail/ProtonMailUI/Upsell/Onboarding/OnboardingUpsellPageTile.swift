@@ -25,28 +25,12 @@ extension OnboardingUpsellPage {
         let selectedCycle: OnboardingUpsellPageModel.Cycle
         let isSelected: Bool
 
-        private var highlightGradient: LinearGradient {
-            .init(
-                colors: [.onboardingUpsellPageHighlightGradientStart, .onboardingUpsellPageHighlightGradientEnd],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-        }
-
-        private var nonSelectionGradient: LinearGradient {
-            .init(
-                colors: [.onboardingUpsellPageNonSelectionGradientStart, .onboardingUpsellPageNonSelectionGradientEnd],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-        }
-
         var body: some View {
             VStack(spacing: 0) {
                 if model.isBestValue {
                     ZStack {
                         Rectangle()
-                            .foregroundStyle(highlightGradient)
+                            .foregroundStyle(ColorProvider.BrandNorm)
 
                         Text(L10n.Upsell.bestValue)
                             .font(.system(size: 15, weight: .semibold))
@@ -95,8 +79,10 @@ extension OnboardingUpsellPage {
                     ForEach(model.visiblePerks, id: \.self) { perk in
                         HStack {
                             IconProvider[dynamicMember: perk.icon]
+                                .resizable()
+                                .frame(width: 18, height: 18)
                                 .foregroundStyle(ColorProvider.IconNorm)
-                                .padding(4)
+                                .padding(7)
                                 .background(Circle().foregroundStyle(ColorProvider.Shade10))
 
                             Text(perk.description)
@@ -156,11 +142,13 @@ extension OnboardingUpsellPage {
             }
             .background(ColorProvider.BackgroundNorm)
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.12), radius: 2, y: 1)
+            .padding(2)
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
                     .strokeBorder(
-                        isSelected ? highlightGradient : nonSelectionGradient,
-                        lineWidth: isSelected ? 3 : 1.5
+                        isSelected ? ColorProvider.BrandNorm : .clear,
+                        lineWidth: 3
                     )
                     .animation(.spring, value: isSelected)
             }
@@ -198,6 +186,7 @@ private extension ClientApp {
                 planName: "Proton Unlimited",
                 perks: [
                     .init(icon: \.storage, description: "500 GB storage"),
+                    .init(icon: \.lock, description: "End-to-end encryption"),
                     .init(icon: \.envelope, description: "15 email addresses"),
                     .init(icon: \.globe, description: "Support for 3 custom email domains"),
                     .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
@@ -208,7 +197,8 @@ private extension ClientApp {
                     1: "CHF 4.99"
                 ],
                 isBestValue: true,
-                alwaysVisiblePerks: 3,
+                maxDiscount: 24,
+                alwaysVisiblePerks: 4,
                 storeKitProductIDsPerCycle: [:],
                 billingPricesPerCycle: [:],
                 includedProducts: [.mail, .calendar, .drive, .vpn, .pass]

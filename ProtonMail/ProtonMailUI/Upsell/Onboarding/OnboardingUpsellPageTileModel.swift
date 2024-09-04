@@ -25,6 +25,7 @@ extension OnboardingUpsellPageModel {
         let perks: [UpsellPageModel.Perk]
         let monthlyPricesPerCycle: [Int: String]
         let isBestValue: Bool
+        let maxDiscount: Int?
         let alwaysVisiblePerks: Int
         let storeKitProductIDsPerCycle: [Int: String]
         let billingPricesPerCycle: [Int: String]
@@ -52,6 +53,7 @@ extension OnboardingUpsellPageModel {
             perks: [UpsellPageModel.Perk],
             monthlyPricesPerCycle: [Int: String],
             isBestValue: Bool,
+            maxDiscount: Int?,
             alwaysVisiblePerks: Int,
             storeKitProductIDsPerCycle: [Int: String],
             billingPricesPerCycle: [Int: String],
@@ -61,6 +63,7 @@ extension OnboardingUpsellPageModel {
             self.perks = perks
             self.monthlyPricesPerCycle = monthlyPricesPerCycle
             self.isBestValue = isBestValue
+            self.maxDiscount = maxDiscount
             self.alwaysVisiblePerks = alwaysVisiblePerks
             self.storeKitProductIDsPerCycle = storeKitProductIDsPerCycle
             self.billingPricesPerCycle = billingPricesPerCycle

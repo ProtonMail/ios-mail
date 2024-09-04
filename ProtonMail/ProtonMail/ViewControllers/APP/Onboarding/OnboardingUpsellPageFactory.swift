@@ -33,6 +33,7 @@ struct OnboardingUpsellPageFactory {
                 Measurement<UnitInformationStorage>(value: 500, unit: .gigabytes).formatted()
             )
         ),
+        .init(icon: \.lock, description: L10n.PremiumPerks.endToEndEncryption),
         .init(icon: \.envelope, description: String(format: PUITranslations.plan_details_n_addresses.l10n, 15)),
         .init(icon: \.globe, description: String(format: PUITranslations._details_n_custom_email_domains.l10n, 3)),
         .init(icon: \.tag, description: PUITranslations._details_unlimited_folders_labels_filters.l10n),
@@ -42,6 +43,7 @@ struct OnboardingUpsellPageFactory {
 
     private let plusPlanPerks: [UpsellPageModel.Perk] = [
         .init(icon: \.storage, description: L10n.PremiumPerks.storage),
+        .init(icon: \.lock, description: L10n.PremiumPerks.endToEndEncryption),
         .init(icon: \.envelope, description: String(format: PUITranslations.plan_details_n_addresses.l10n, 10)),
         .init(icon: \.globe, description: String(format: PUITranslations._details_n_custom_email_domains.l10n, 1)),
         .init(icon: \.tag, description: PUITranslations._details_unlimited_folders_labels_filters.l10n),
@@ -49,7 +51,8 @@ struct OnboardingUpsellPageFactory {
     ]
 
     private let freePlanPerks: [UpsellPageModel.Perk] = [
-        .init(icon: \.storage, description: L10n.PremiumPerks.freePlanPerk)
+        .init(icon: \.storage, description: L10n.PremiumPerks.freePlanPerk),
+        .init(icon: \.lock, description: L10n.PremiumPerks.endToEndEncryption)
     ]
 
     private var unlimitedPlanProducts: [ClientApp] {
@@ -86,12 +89,15 @@ struct OnboardingUpsellPageFactory {
                 acc[element.cycleInMonths] = element.billingPrice
             }
 
+            let maxDiscount = plan.purchasingOptions.compactMap(\.discount).max()
+
             return .init(
                 planName: plan.name,
                 perks: isUnlimited ? unlimitedPlanPerks : plusPlanPerks,
                 monthlyPricesPerCycle: monthlyPricesPerCycle,
                 isBestValue: isUnlimited,
-                alwaysVisiblePerks: isUnlimited ? 3 : 2,
+                maxDiscount: maxDiscount,
+                alwaysVisiblePerks: isUnlimited ? 4 : 3,
                 storeKitProductIDsPerCycle: storeKitProductIDsPerCycle,
                 billingPricesPerCycle: billingPricesPerCycle,
                 includedProducts: isUnlimited ? unlimitedPlanProducts : plusPlanProducts
@@ -103,14 +109,13 @@ struct OnboardingUpsellPageFactory {
             perks: freePlanPerks,
             monthlyPricesPerCycle: [:],
             isBestValue: false,
-            alwaysVisiblePerks: 1,
+            maxDiscount: nil,
+            alwaysVisiblePerks: 2,
             storeKitProductIDsPerCycle: [:],
             billingPricesPerCycle: [:],
             includedProducts: nil
         )
 
-        let maxDiscount = upsellPageModels.flatMap(\.plan.purchasingOptions).compactMap(\.discount).max()
-
-        return OnboardingUpsellPageModel(tiles: tiles + [freePlanTile], maxDiscount: maxDiscount)
+        return OnboardingUpsellPageModel(tiles: tiles + [freePlanTile])
     }
 }

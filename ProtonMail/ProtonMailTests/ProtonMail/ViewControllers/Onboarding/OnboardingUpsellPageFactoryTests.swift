@@ -121,6 +121,7 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                 planName: "Proton Unlimited",
                 perks: [
                     .init(icon: \.storage, description: "500 GB storage"),
+                    .init(icon: \.lock, description: "End-to-end encryption"),
                     .init(icon: \.envelope, description: "15 email addresses"),
                     .init(icon: \.globe, description: "Support for 3 custom email domains"),
                     .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
@@ -132,7 +133,8 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                     12: "$9.99"
                 ],
                 isBestValue: true,
-                alwaysVisiblePerks: 3,
+                maxDiscount: 23,
+                alwaysVisiblePerks: 4,
                 storeKitProductIDsPerCycle: [
                     1: "iosmail_bundle2022_1_usd_auto_renewing",
                     12: "iosmail_bundle2022_12_usd_auto_renewing"
@@ -147,6 +149,7 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                 planName: "Mail Plus",
                 perks: [
                     .init(icon: \.storage, description: "15 GB storage"),
+                    .init(icon: \.lock, description: "End-to-end encryption"),
                     .init(icon: \.envelope, description: "10 email addresses"),
                     .init(icon: \.globe, description: "Support for 1 custom email domain"),
                     .init(icon: \.tag, description: "Unlimited folders, labels, and filters"),
@@ -157,7 +160,8 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
                     12: "$3.99"
                 ],
                 isBestValue: false,
-                alwaysVisiblePerks: 2,
+                maxDiscount: 20,
+                alwaysVisiblePerks: 3,
                 storeKitProductIDsPerCycle: [
                     1: "iosmail_mail2022_1_usd_auto_renewing",
                     12: "iosmail_mail2022_12_usd_auto_renewing"
@@ -171,11 +175,13 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
             .init(
                 planName: "Proton Free",
                 perks: [
-                    .init(icon: \.storage, description: "1 GB Storage and 1 email")
+                    .init(icon: \.storage, description: "1 GB Storage and 1 email"),
+                    .init(icon: \.lock, description: "End-to-end encryption")
                 ],
                 monthlyPricesPerCycle: [:],
                 isBestValue: false,
-                alwaysVisiblePerks: 1,
+                maxDiscount: nil,
+                alwaysVisiblePerks: 2,
                 storeKitProductIDsPerCycle: [:],
                 billingPricesPerCycle: [:],
                 includedProducts: nil
@@ -183,6 +189,5 @@ final class OnboardingUpsellPageFactoryTests: XCTestCase {
         ]
 
         XCTAssertEqual(pageModel.tiles, expectedTiles)
-        XCTAssertEqual(pageModel.maxDiscount, 23)
     }
 }

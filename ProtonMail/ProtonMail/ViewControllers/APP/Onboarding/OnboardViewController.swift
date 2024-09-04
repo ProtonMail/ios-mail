@@ -35,10 +35,11 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
             return .darkContent
     }
 
-    private let onboardingList: [Onboarding]
+    private let onboardingList: [Onboarding] = [.page2, .page1, .page3]
+    private let isPaidUser: Bool
 
-    init() {
-            self.onboardingList = [.page2, .page1, .page3]
+    init(isPaidUser: Bool) {
+        self.isPaidUser = isPaidUser
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -93,7 +94,7 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func updateView(at page: Int) {
-        let isLastPage = page == onboardingList.endIndex - 1
+        let isLastPage = page == customView.pageControl.numberOfPages - 1
         customView.skipButton.isHidden = isLastPage ? true : false
 
         let title = isLastPage ? LocalString._get_started_title : LocalString._next_btn_title
@@ -138,7 +139,7 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
         }
 
         let count = onboardingList.count
-        customView.pageControl.numberOfPages = count
+        customView.pageControl.numberOfPages = isPaidUser ? count : count + 1
         customView.pageControl.currentPage = 0
         updateView(at: 0)
     }
