@@ -9,7 +9,7 @@ const scaleContentSize = function () {
         const originalPropertyName = getOriginalPropertyName(propertyName);
 
         if (!element.style.getPropertyValue(originalPropertyName)) {
-            element.style.setProperty(originalPropertyName, currentPropertyValue);
+            setInlineStyleProperty(element, originalPropertyName, currentPropertyValue);
         }
 
         const originalFullValue = element.style.getPropertyValue(originalPropertyName);
@@ -25,12 +25,12 @@ const scaleContentSize = function () {
             case "scale":
                 window.webkit.messageHandlers.scaledValue.postMessage(originalNumericValue)
                     .then(scaledValue => {
-                        element.style.setProperty(propertyName, scaledValue + unit, "important");
+                        setInlineStyleProperty(element, propertyName, scaledValue + unit + " !important");
                     }).catch(error => {
                         console.error(error);
                     });
             case "remove":
-                element.style.removeProperty(propertyName);
+                setInlineStyleProperty(element, propertyName, null);
         }
     }
 
@@ -49,14 +49,36 @@ const resetContentSize = function () {
             return;
         }
 
-        element.style.setProperty(propertyName, originalFullValue);
-        element.style.removeProperty(originalPropertyName);
+        setInlineStyleProperty(element, propertyName, originalFullValue);
+        setInlineStyleProperty(element, originalPropertyName, null);
     }
 
     applyToAllElements(function (element) {
         restoreOriginalProperty(element, "font-size");
         restoreOriginalProperty(element, "line-height");
     });
+}
+
+function setInlineStyleProperty(element, propertyName, newValue) {
+    const rawStyle = element.getAttribute("style");
+    const keyValueStrings = rawStyle.split(";");
+
+    var newKeyValueStrings = keyValueStrings.filter((keyValueString) => {
+        const keyValueStringComponents = keyValueString.split(":");
+
+        if (keyValueStringComponents.length > 0) {
+            return keyValueStringComponents[0].trim() != propertyName;
+        } else {
+            return false;
+        }
+    });
+
+    if (newValue != null) {
+        newKeyValueStrings.push(propertyName + ":" + newValue)
+    }
+
+    const newStyleString = newKeyValueStrings.join(";") + ";";
+    element.setAttribute("style", newStyleString);
 }
 
 function getOriginalPropertyName(propertyName) {
