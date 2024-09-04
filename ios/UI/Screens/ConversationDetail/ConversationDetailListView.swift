@@ -73,7 +73,7 @@ struct ConversationDetailListView: View {
     }
 
     private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
-        return MessageAddressActionPickerView(
+        MessageAddressActionPickerView(
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
             emailAddress: target.messageDetails.sender.address
@@ -82,10 +82,8 @@ struct ConversationDetailListView: View {
     }
 
     private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        let avatarUIModel = AvatarUIModel(info: target.avatarInfo, type: .other)
-
-        return MessageAddressActionPickerView(
-            avatarUIModel: avatarUIModel,
+        MessageAddressActionPickerView(
+            avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address
         )
