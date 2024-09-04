@@ -152,7 +152,13 @@ final class UpsellCoordinator {
     private func fallbackToPreviousFlow(entryPoint: UpsellPageEntryPoint, onDismiss: OnDismissCallback?) async {
         switch entryPoint {
         case .autoDelete:
-            guard let navigationController = rootViewController?.navigationController else {
+            let presentingNavigationController: UINavigationController
+
+            if let navigationController = rootViewController as? UINavigationController {
+                presentingNavigationController = navigationController
+            } else if let navigationController = rootViewController?.navigationController {
+                presentingNavigationController = navigationController
+            } else {
                 return
             }
 
@@ -162,7 +168,7 @@ final class UpsellCoordinator {
                 }
             }
 
-            upsellSheet.present(on: navigationController.view)
+            upsellSheet.present(on: presentingNavigationController.view)
         case .contactGroups:
             await presentCoreSubscriptionScreen(onDismiss: onDismiss)
         case .folders:
