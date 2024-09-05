@@ -32,7 +32,7 @@ import UIKit
 // swiftlint:disable:next type_body_length
 final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     LifetimeTrackable, ScheduledAlertPresenter {
-    typealias Dependencies = HasPaymentsUIFactory
+    typealias Dependencies = SingleMessageContentViewController.Dependencies & HasPaymentsUIFactory
 
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
@@ -629,6 +629,7 @@ private extension ConversationViewController {
         let contentViewModel = viewModel.messageContent
         let singleMessageContentViewController = SingleMessageContentViewController(
             viewModel: contentViewModel,
+            dependencies: dependencies,
             parentScrollView: customView.tableView,
             viewMode: .conversation,
             navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }

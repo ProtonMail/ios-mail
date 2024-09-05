@@ -28,6 +28,8 @@ import UIKit
 
 final class SingleMessageViewController: UIViewController, UIScrollViewDelegate, ComposeSaveHintProtocol,
                                    LifetimeTrackable, ScheduledAlertPresenter {
+    typealias Dependencies = SingleMessageContentViewController.Dependencies
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
     }
@@ -35,6 +37,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
     private lazy var contentController: SingleMessageContentViewController = { [unowned self] in
         SingleMessageContentViewController(
             viewModel: self.viewModel.contentViewModel,
+            dependencies: dependencies,
             parentScrollView: self.customView.scrollView,
             viewMode: .singleMessage
         ) { action in
@@ -55,6 +58,7 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
 
     private(set) lazy var customView = SingleMessageView()
 
+    private let dependencies: Dependencies
     private lazy var actionSheetPresenter = MessageViewActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
@@ -63,8 +67,9 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         (self.parent as? PagesViewController<MessageID, MessageEntity, Message>) != nil
     }
 
-    init(viewModel: SingleMessageViewModel) {
+    init(viewModel: SingleMessageViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: nil, bundle: nil)
         trackLifetime()
     }

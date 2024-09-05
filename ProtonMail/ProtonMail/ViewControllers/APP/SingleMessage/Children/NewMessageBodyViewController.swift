@@ -35,7 +35,9 @@ protocol NewMessageBodyViewControllerDelegate: AnyObject {
 }
 
 class NewMessageBodyViewController: UIViewController {
+    typealias Dependencies = HasFeatureFlagProvider
 
+    private let dependencies: Dependencies
     private let viewModel: NewMessageBodyViewModel
     private weak var scrollViewContainer: ScrollableContainer!
     private lazy var customView = NewMessageBodyView()
@@ -88,8 +90,14 @@ class NewMessageBodyViewController: UIViewController {
 
     private var fontSizeHasBeenAdjusted = false
 
-    init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
+    init(
+        viewModel: NewMessageBodyViewModel,
+        dependencies: Dependencies,
+        parentScrollView: ScrollableContainer,
+        viewMode: ViewMode
+    ) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         self.scrollViewContainer = parentScrollView
         self.viewMode = viewMode
         super.init(nibName: nil, bundle: nil)
@@ -377,6 +385,10 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     func updateDynamicFontSize() {
+        guard dependencies.featureFlagProvider.isEnabled(.dynamicFontSizeInMessageBody) else {
+            return
+        }
+
         let isUsingDefaultSizeCategory = view.traitCollection.preferredContentSizeCategory == .large
 
         if isUsingDefaultSizeCategory {
