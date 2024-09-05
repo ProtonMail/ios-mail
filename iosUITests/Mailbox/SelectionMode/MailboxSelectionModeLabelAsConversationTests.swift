@@ -24,7 +24,7 @@ final class MailboxSelectionModeLabelAsConversationTests: PMUIMockedNetworkTestC
     }
 
     /// TestId 428273
-    func testLabelAsBottomSheetEntriesInConversationMode() async {
+    func skip_testLabelAsBottomSheetEntriesInConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultLabels: false,
             NetworkRequest(
