@@ -147,7 +147,7 @@ extension LabelPickerView {
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
             .controlSize(.large)
-            .tint(DS.Color.Brand.darken20)
+            .tint(DS.Color.Interaction.norm)
             .accessibilityIdentifier(LabelPickerViewIdentifiers.doneButton)
         }
     }
