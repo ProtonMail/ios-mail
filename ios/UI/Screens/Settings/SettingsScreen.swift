@@ -19,24 +19,96 @@ import DesignSystem
 import SwiftUI
 
 struct SettingsScreen: View {
+    @Environment(\.dismiss) var dismiss
+    @State var state: [SettingsItem]
+
+    init() {
+        _state = .init(initialValue: .stale)
+    }
+
     var body: some View {
         NavigationStack {
-            Form {
-                Section(
-                    header: EmptyView(),
-                    content: {
-                        NavigationLink(L10n.Settings.accountSettings.string) {
-                            SidebarZIndexUpdateContainer {
-                                AccountSettingsScreen()
-                            }
+            ZStack {
+                DS.Color.Background.secondary
+                    .ignoresSafeArea()
+                ScrollView {
+                    section(items: state, header: "Preferences")
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, DS.Spacing.large)
+                        .padding(.top, DS.Spacing.medium)
+                }
+                .navigationTitle("Settings")
+                .toolbarTitleDisplayMode(.large)
+                .toolbarBackground(DS.Color.Background.secondary, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: { dismiss.callAsFunction() }) {
+                            Text("Done")
+                                .foregroundStyle(DS.Color.Interaction.norm)
                         }
-                        .navigationBarTitleDisplayMode(.inline)
-                        .mainToolbar(title: L10n.Settings.title)
-                        .toolbarBackground(.visible, for: .navigationBar)
-                    })
+                    }
+                }
             }
-            .scrollContentBackground(.hidden)
-            .background(DS.Color.Background.secondary)
         }
     }
+
+    // MARK: - Private
+
+    private func section(items: [SettingsItem], header: String) -> some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+            Text(header)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.hint)
+
+            VStack(spacing: .zero) {
+                ForEach(items, id: \.self) { item in
+                    Button(action: { print("ITEM: \(item) tapped") }) {
+                        VStack(spacing: .zero) {
+                            HStack(spacing: .zero) {
+                                Image(item.icon)
+                                    .square(size: 40)
+                                    .foregroundStyle(DS.Color.Brand.norm)
+                                    .background(DS.Color.Brand.minus30)
+                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+                                    .padding(.trailing, DS.Spacing.large)
+                                VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                                    Text(item.title)
+                                        .foregroundStyle(DS.Color.Text.weak)
+                                    Text(item.subtitle)
+                                        .foregroundStyle(DS.Color.Text.hint)
+                                        .font(.subheadline)
+                                }
+                                Spacer()
+                                Image(DS.Icon.icChevronTinyRight)
+                                    .foregroundStyle(DS.Color.Icon.hint)
+                                
+                            }.padding(DS.Spacing.large)
+                        }
+                    }
+                    if items.last != item {
+                        Divider()
+                            .frame(height: 1)
+                            .background(DS.Color.Background.norm)
+                    }
+                }
+            }
+            .background(DS.Color.Background.norm)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SettingsScreen()
+    }
+}
+
+private extension Array where Element == SettingsItem {
+
+    static var stale: [Element] {
+        [.email, .foldersAndLabels, .filters, .privacyAndSecurity, .app]
+    }
+
 }
