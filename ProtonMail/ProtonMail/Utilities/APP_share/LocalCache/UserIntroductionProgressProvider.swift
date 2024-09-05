@@ -32,6 +32,8 @@ enum SpotlightableFeatureKey: String, CaseIterable {
             return .autoImportContacts
         case .answerInvitation:
             return .answerInvitation
+        case .dynamicFontSize:
+            return .dynamicFontSizeInMessageBody
         default:
             return nil
         }

@@ -84,7 +84,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                 self?.goToDraft?(msgID, originalScheduleTime)
             }
         )
-        let viewController = SingleMessageViewController(viewModel: viewModel)
+        let viewController = SingleMessageViewController(viewModel: viewModel, dependencies: dependencies)
         self.viewController = viewController
         return viewController
     }
