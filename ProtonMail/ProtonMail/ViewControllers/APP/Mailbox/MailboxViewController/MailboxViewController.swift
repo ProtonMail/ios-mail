@@ -139,7 +139,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
     private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
-        return self.unreadFilterButton.isSelected
+        unreadFilterButton?.isSelected ?? false
     }
 
     private let messageCellPresenter = NewMailboxMessageCellPresenter()
