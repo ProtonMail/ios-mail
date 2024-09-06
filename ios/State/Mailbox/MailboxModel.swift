@@ -48,9 +48,10 @@ final class MailboxModel: ObservableObject {
     private var mailbox: Mailbox?
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
-    private var itemsCountLiveQuery: ItemsCountLiveQuery?
+
+    private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
     private let itemListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
-    private var handle: WatchHandle?
+    private var itemListHandle: WatchHandle?
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -72,7 +73,7 @@ final class MailboxModel: ObservableObject {
         self.dependencies = dependencies
 
         setUpBindings()
-        setUpWatchedMailboxItemsCallback()
+        setUpCallbacks()
 
         if let openedItem = openedItem {
             navigationPath.append(openedItem)
@@ -127,12 +128,11 @@ extension MailboxModel {
             .store(in: &cancellables)
     }
 
-    private func setUpWatchedMailboxItemsCallback() {
+    private func setUpCallbacks() {
         itemListCallback.delegate = { [weak self] in
-            AppLogger.logTemporarily(message: "item list callback", category: .mailbox)
-            guard let self else { return }
             Task {
-                await self.readMailboxItems()
+                AppLogger.logTemporarily(message: "item list callback", category: .mailbox)
+                await self?.readMailboxItems()
             }
         }
     }
@@ -148,28 +148,41 @@ extension MailboxModel {
             self.mailbox = mailbox
 
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-            try await createWatchHandler(for: mailbox.labelId())
+            await createWatchHandlers(for: mailbox)
+
+            // temporary, delete when the handler callback is triggered when initialised
             await readMailboxItems()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
         }
     }
     
-    /// Keeps a reference to the `WatchHandler` that will trigger a callback when there are changes to the mailbox items
-    private func createWatchHandler(for labelId: ID) async throws {
-        switch viewMode {
-        case .conversations:
-            handle = try await watchConversationsForLabel(
-                session: userSession,
-                labelId: labelId,
-                callback: itemListCallback
-            ).handle
-        case .messages:
-            handle = try await watchMessagesForLabel(
-                session: userSession,
-                labelId: labelId,
-                callback: itemListCallback
-            ).handle
+    /// Keeps a reference to the `WatchHandler` objects responsible for calling back when there are data changes
+    private func createWatchHandlers(for mailbox: Mailbox) async {
+        unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
+            await MainActor.run {
+                self?.unreadItemsCount = unreadCount
+            }
+        }
+        await unreadCountLiveQuery?.setUpLiveQuery()
+
+        do {
+            switch viewMode {
+            case .conversations:
+                itemListHandle = try await watchConversationsForLabel(
+                    session: userSession,
+                    labelId: mailbox.labelId(),
+                    callback: itemListCallback
+                ).handle
+            case .messages:
+                itemListHandle = try await watchMessagesForLabel(
+                    session: userSession,
+                    labelId: mailbox.labelId(),
+                    callback: itemListCallback
+                ).handle
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
         }
     }
 

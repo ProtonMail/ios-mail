@@ -17,21 +17,22 @@
 
 import proton_app_uniffi
 
-final class ItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
-
+final class UnreadItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
     private let mailbox: Mailbox
-    private let dataUpdate: (UInt64) -> Void
+    private let dataUpdate: (UInt64) async -> Void
     private var watchHandle: WatchHandle?
 
-    init(mailbox: Mailbox, dataUpdate: @escaping (UInt64) -> Void) {
+    init(mailbox: Mailbox, dataUpdate: @escaping (UInt64) async -> Void) {
         self.mailbox = mailbox
         self.dataUpdate = dataUpdate
-        setUpLiveQuery()
     }
 
-    func setUpLiveQuery() {
-        Task {
+    func setUpLiveQuery() async {
+        do {
             watchHandle = try await mailbox.watchUnreadCount(callback: self)
+            await emitDataIfAvailable()
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
         }
     }
 
@@ -39,10 +40,18 @@ final class ItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
 
     func onUpdate() {
         Task {
-            if let itemsCount = try? await mailbox.unreadCount() {
-                dataUpdate(itemsCount)
-            }
+            await emitDataIfAvailable()
         }
     }
 
+    // MARK: - Private
+
+    private func emitDataIfAvailable() async {
+        do {
+            let unreadItemsCount = try await mailbox.unreadCount()
+            await dataUpdate(unreadItemsCount)
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+        }
+    }
 }
