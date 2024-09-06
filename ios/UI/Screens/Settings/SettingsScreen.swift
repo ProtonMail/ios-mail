@@ -17,10 +17,13 @@
 
 import DesignSystem
 import SwiftUI
+import SwiftUIIntrospect
 
 struct SettingsScreen: View {
-    @Environment(\.dismiss) var dismiss
-    @State var state: [SettingsItem]
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+    @State private var state: [SettingsItem]
+    @State private var webViewPage: ProtonAuthenticatedWebPage?
 
     init() {
         _state = .init(initialValue: .stale)
@@ -41,13 +44,23 @@ struct SettingsScreen: View {
                 .toolbarTitleDisplayMode(.large)
                 .toolbarBackground(DS.Color.Background.secondary, for: .navigationBar)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: { dismiss.callAsFunction() }) {
-                            Text("Done")
-                                .foregroundStyle(DS.Color.Interaction.norm)
-                        }
-                    }
+                    doneToolbarItem()
                 }
+            }
+            .navigationDestination(item: $webViewPage) { webViewPage in
+                ProtonAuthenticatedWebView(webViewPage: webViewPage)
+                    .background(DS.Color.Background.norm)
+                    .edgesIgnoringSafeArea(.bottom)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigation) {
+                            Button(action: { self.webViewPage = nil }) {
+                                Image(DS.Icon.icChevronTinyRight)
+                            }
+                        }
+                        doneToolbarItem()
+                    }
+                    .navigationBarBackButtonHidden(true)
             }
         }
     }
@@ -63,28 +76,8 @@ struct SettingsScreen: View {
 
             VStack(spacing: .zero) {
                 ForEach(items, id: \.self) { item in
-                    Button(action: { print("ITEM: \(item) tapped") }) {
-                        VStack(spacing: .zero) {
-                            HStack(spacing: .zero) {
-                                Image(item.icon)
-                                    .square(size: 40)
-                                    .foregroundStyle(DS.Color.Brand.norm)
-                                    .background(DS.Color.Brand.minus30)
-                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
-                                    .padding(.trailing, DS.Spacing.large)
-                                VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                                    Text(item.title)
-                                        .foregroundStyle(DS.Color.Text.weak)
-                                    Text(item.subtitle)
-                                        .foregroundStyle(DS.Color.Text.hint)
-                                        .font(.subheadline)
-                                }
-                                Spacer()
-                                Image(DS.Icon.icChevronTinyRight)
-                                    .foregroundStyle(DS.Color.Icon.hint)
-                                
-                            }.padding(DS.Spacing.large)
-                        }
+                    Button(action: { selected(item: item) }) {
+                        buttonContent(item: item)
                     }
                     if items.last != item {
                         Divider()
@@ -95,6 +88,47 @@ struct SettingsScreen: View {
             }
             .background(DS.Color.Background.norm)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+        }
+    }
+
+    private func buttonContent(item: SettingsItem) -> some View {
+        VStack(spacing: .zero) {
+            HStack(spacing: .zero) {
+                Image(item.icon)
+                    .square(size: 40)
+                    .foregroundStyle(DS.Color.Brand.norm)
+                    .background(DS.Color.Brand.minus30)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+                    .padding(.trailing, DS.Spacing.large)
+                VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                    Text(item.title)
+                        .foregroundStyle(DS.Color.Text.weak)
+                    Text(item.subtitle)
+                        .foregroundStyle(DS.Color.Text.hint)
+                        .font(.subheadline)
+                }
+                Spacer()
+                Image(DS.Icon.icChevronTinyRight)
+                    .foregroundStyle(DS.Color.Icon.hint)
+
+            }.padding(DS.Spacing.large)
+        }
+    }
+
+    private func doneToolbarItem() -> some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button(action: { dismiss.callAsFunction() }) {
+                Text("Done")
+                    .foregroundStyle(DS.Color.Interaction.norm)
+            }
+        }
+    }
+
+    private func selected(item: SettingsItem) {
+        if let webViewPage = item.webViewPage {
+            self.webViewPage = webViewPage
+        } else {
+            toastStateStore.present(toast: .comingSoon)
         }
     }
 }
@@ -109,6 +143,25 @@ private extension Array where Element == SettingsItem {
 
     static var stale: [Element] {
         [.email, .foldersAndLabels, .filters, .privacyAndSecurity, .app]
+    }
+
+}
+
+private extension SettingsItem {
+
+    var webViewPage: ProtonAuthenticatedWebPage? {
+        switch self {
+        case .email:
+            return .emailSettings
+        case .foldersAndLabels:
+            return .createFolderOrLabel
+        case .filters:
+            return .spamFiltersSettings
+        case .privacyAndSecurity:
+            return .privacySecuritySettings
+        case .app:
+            return nil
+        }
     }
 
 }
