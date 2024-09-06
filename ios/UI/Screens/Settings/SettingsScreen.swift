@@ -53,9 +53,10 @@ struct SettingsScreen: View {
                     .edgesIgnoringSafeArea(.bottom)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
-                        ToolbarItem(placement: .navigation) {
+                        ToolbarItem(placement: .topBarLeading) {
                             Button(action: { self.webViewPage = nil }) {
-                                Image(DS.Icon.icChevronTinyRight)
+                                Image(DS.Icon.icChevronTinyLeft)
+                                    .foregroundStyle(DS.Color.Icon.weak)
                             }
                         }
                         doneToolbarItem()
