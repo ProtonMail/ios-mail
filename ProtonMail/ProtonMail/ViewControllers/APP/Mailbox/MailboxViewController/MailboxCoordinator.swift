@@ -569,6 +569,8 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViewsFor(message: MessageEntity) {
+        viewController?.loadViewIfNeeded()
+
         let pageVM = MessagePagesViewModel(
             initialID: message.messageID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
@@ -579,6 +581,7 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
+
         presentPageViews(pageVM: pageVM)
     }
 
