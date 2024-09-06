@@ -61,6 +61,7 @@ struct SettingsScreen: View {
                         }
                         doneToolbarItem()
                     }
+                    .navigationTitle(webViewPage.title.string)
                     .navigationBarBackButtonHidden(true)
             }
         }

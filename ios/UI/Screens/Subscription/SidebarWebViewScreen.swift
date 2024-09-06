@@ -36,7 +36,8 @@ struct SidebarWebViewScreen: View {
     }
 }
 
-private extension ProtonAuthenticatedWebPage {
+// FIXME: - Move to separate file
+extension ProtonAuthenticatedWebPage {
 
     var title: LocalizedStringResource {
         switch self {
@@ -44,8 +45,12 @@ private extension ProtonAuthenticatedWebPage {
             L10n.Settings.accountSettings
         case .createFolderOrLabel:
             L10n.CreateFolderOrLabel.title
-        case .emailSettings, .privacySecuritySettings, .spamFiltersSettings:
-            fatalError("Not implemented")
+        case .emailSettings:
+            "Email"
+        case .privacySecuritySettings:
+            "Privacy and security"
+        case .spamFiltersSettings:
+            "Spam and custom filters"
         }
     }
 
