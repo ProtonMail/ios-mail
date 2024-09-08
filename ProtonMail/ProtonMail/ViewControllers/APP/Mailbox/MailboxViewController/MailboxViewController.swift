@@ -26,6 +26,7 @@ import CoreData
 import LifetimeTracker
 import ProtonCoreDataModel
 import ProtonCoreNetworking
+import ProtonCorePayments
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
@@ -335,7 +336,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
             }
             .store(in: &cancellables)
-
+        
+        viewModel.fetchUserPlan(completion: displayReminderModalIfNeeded(subscription:))
+        
         viewModel.viewDidLoad()
     }
 
@@ -2970,6 +2973,29 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
 extension MailboxViewController: ComposeContainerViewControllerDelegate {
     func composerVillDismiss() {
         getLatestMessages()
+    }
+}
+
+extension MailboxViewController {
+    private func displayReminderModalIfNeeded(subscription: CurrentPlan.Subscription) {
+        guard viewModel.shouldShowReminderModal(),
+              let planName = subscription.name,
+              let periodEnd = subscription.periodEnd else { return }
+        let endSubscriptionDate = Date(timeIntervalSince1970: TimeInterval(periodEnd))
+        if let planUpsellModel = PlanUpsell(planName: planName) {
+            let reminderView = ReminderView(periodEnd: endSubscriptionDate.formatLongDate(), perks: planUpsellModel.perks, markAsSeen: viewModel.markRemindersAsSeen, reactivateSubscription: viewModel.reactivateSubscription(completion:), displayReactivationBanner: displayReactivationBanner(error:))
+            let hostVC = SheetLikeSpotlightViewController(rootView: reminderView)
+            navigationController?.present(hostVC, animated: false)
+        }
+    }
+    
+    private func displayReactivationBanner(error: Error?) {
+        let banner = PMBanner(
+            message: error == nil ? L10n.ReminderModal.successMessage : L10n.ReminderModal.errorMessage,
+            style: error == nil ? PMBannerNewStyle.info : PMBannerNewStyle.error,
+            bannerHandler: PMBanner.dismiss
+        )
+        banner.show(at: .bottom, on: self, ignoreKeyboard: true)
     }
 }
 

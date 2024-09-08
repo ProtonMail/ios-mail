@@ -297,7 +297,7 @@ extension PromotionView {
                 case .schedule:
                     return L10n.ScheduledSend.itemSchedule
                 case .folder:
-                    return L10n.ScheduledSend.itemFolder
+                    return L10n.PremiumPerks.unlimitedFoldersAndLabels
                 case .storage:
                     return L10n.ScheduledSend.itemStorage
                 case .addresses:

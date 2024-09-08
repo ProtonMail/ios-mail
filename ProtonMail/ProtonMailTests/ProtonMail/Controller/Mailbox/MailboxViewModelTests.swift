@@ -1404,6 +1404,59 @@ final class MailboxViewModelTests: XCTestCase {
     }
 }
 
+// MARK: Cancellation Reminder Modal Tests
+
+extension MailboxViewModelTests {
+    func testShouldShowReminderModal_noDataPassed_shouldReturnFalse() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: [:]])
+        }
+        XCTAssertFalse(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_defaultValuePassed_shouldReturnFalse() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: []])
+        }
+        XCTAssertFalse(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_allValuesAreEqualToTwo_shouldReturnFalse() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 2, "day-30": 2]])
+        }
+        XCTAssertFalse(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_singleValueIsEqualsToOne_shouldReturnTrue() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 2, "day-30": 1]])
+        }
+        XCTAssertTrue(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_multipleValuesAreEqualToOne_shouldReturnTrue() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 1, "day-30": 1]])
+        }
+        XCTAssertTrue(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_allValuesAreEqualToZero_shouldReturnFalse() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 0, "day-30": 0]])
+        }
+        XCTAssertFalse(sut.shouldShowReminderModal())
+    }
+    
+    func testShouldShowReminderModal_valuesAreZeroOrOne_shouldReturnTrue() {
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 0, "day-30": 1]])
+        }
+        XCTAssertTrue(sut.shouldShowReminderModal())
+    }
+}
+
 extension MailboxViewModelTests {
     func loadTestMessage() throws -> Message {
         let parsedObject = testMessageMetaData.parseObjectAny()!
