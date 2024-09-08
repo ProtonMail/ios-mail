@@ -1427,7 +1427,6 @@ enum L10n {
         static let upSellContent = NSLocalizedString("Unlock custom message scheduling and other benefits when you upgrade your plan.", comment: "The content of the up sell content of the scheduled send.")
         static let upgradeTitle = NSLocalizedString("Upgrade now", comment: "The title of the upgrade button in the schedule send promotion view.")
         static let itemSchedule = NSLocalizedString("Schedule messages at any time", comment: "The up sell bullet point in the schedule send promotion view.")
-        static let itemFolder = NSLocalizedString("Unlimited folders and labels", comment: "The up sell bullet point in the schedule send promotion view.")
         static let itemStorage = NSLocalizedString("Up to 500 GB of storage", comment: "The up sell bullet point in the schedule send promotion view.")
         static let itemAddresses = NSLocalizedString("Up to 15 email addresses", comment: "The up sell bullet point in the schedule send promotion view.")
         static let itemDomain = NSLocalizedString("Up to 3 custom email domains", comment: "The up sell bullet point in the schedule send promotion view.")
@@ -1532,7 +1531,6 @@ enum L10n {
 
         static let upsellLineOne = NSLocalizedString("Up to 3 TB of storage", comment: "Text to advertise what upgrading will provide")
         static let upsellLineTwo = NSLocalizedString("Up to 15 email addresses", comment: "Text to advertise what upgrading will provide")
-        static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
         static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
     }
@@ -1649,6 +1647,33 @@ enum L10n {
         static let desktopApp = NSLocalizedString("Access to desktop app", comment: "Description of a feature of a paid subscription")
         static let priorityCustomerSupport = NSLocalizedString("Priority customer support", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
+        static let nGBTotalStorage = NSLocalizedString("%u GB total storage", comment: "Description of a feature of a paid subscription")
+        static let nTBTotalStorage = NSLocalizedString("%u TB total storage", comment: "Description of a feature of a paid subscription")
+        static let yearlyFreeStorageBonuses = NSLocalizedString("Yearly free storage bonuses", comment: "Description of a feature of a paid subscription")
+        static let yourOwnCustomEmailDomain = NSLocalizedString("Your own custom email domain", comment: "Description of a feature of a paid subscription")
+        static let calendarSharing = NSLocalizedString("Calendar sharing", comment: "Description of a feature of a paid subscription")
+        static let shortDomain = NSLocalizedString("Your own short @pm.me email alias", comment: "Description of a feature of a paid subscription")
+        static let customScheduleAndSnoozeTimes = NSLocalizedString("Custom schedule send and snooze times", comment: "Description of a feature of a paid subscription")
+        static let mailDesktopApp = NSLocalizedString("Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+        static let versionHistory = NSLocalizedString("Version history", comment: "Description of a feature of a paid subscription")
+        static let sentinelProgram = NSLocalizedString("Proton Sentinel program", comment: "Description of a feature of a paid subscription")
+        static let mailAndPremiumFeatures = NSLocalizedString("Proton Mail and all premium productivity features", comment: "Description of a feature of a paid subscription")
+        static let calendarSharingAndAvailability = NSLocalizedString("Proton Calendar including calendar sharing", comment: "Description of a feature of a paid subscription")
+        static let driveWithVersionHistory = NSLocalizedString("Proton Drive including version history", comment: "Description of a feature of a paid subscription")
+        static let passWithUnlimitedAliases = NSLocalizedString("Proton Pass including unlimited hide-my-email aliases", comment: "Description of a feature of a paid subscription")
+        static let vpnHighSpeedServers = NSLocalizedString("Proton VPN with access to all high-speed servers in 90+ countries", comment: "Description of a feature of a paid subscription")
+        static let mailAutomaticEmailForwarding = NSLocalizedString("Proton Mail with automatic email forwarding", comment: "Description of a feature of a paid subscription")
+        static let passDarkWebMonitoring = NSLocalizedString("Proton Pass with Dark Web Monitoring", comment: "Description of a feature of a paid subscription")
+        static let vpnMalware = NSLocalizedString("Proton VPN with malware and ad-blocking", comment: "Description of a feature of a paid subscription")
+        static let catchAllEmailAddress = NSLocalizedString("Catch-all email address", comment: "Description of a feature of a paid subscription")
+        static let colleaguesAvailability = NSLocalizedString("See your colleagues’ availability", comment: "Description of a feature of a paid subscription")
+        static let automaticEmailForwarding = NSLocalizedString("Automatic email forwarding", comment: "Description of a feature of a paid subscription")
+        static let earlyAccess = NSLocalizedString("Early access to new apps and features", comment: "Description of a feature of a paid subscription")
+        static let nGBStoragePerUser = NSLocalizedString("%u GB storage per user", comment: "Description of a feature of a paid subscription")
+        static let nEmailAddressesPerUser = NSLocalizedString("%u email addresses per user", comment: "Description of a feature of a paid subscription")
+        static let unlimitedFoldersAndLabels = NSLocalizedString("Unlimited folders and labels", comment: "Description of a feature of a paid subscription")
+        static let nCustomEmailDmains = NSLocalizedString("%u custom email domains", comment: "Description of a feature of a paid subscription")
+        static let desktopAppAndEmailClientSupport = NSLocalizedString("Desktop app and email client support (via IMAP)", comment: "Description of a feature of a paid subscription")
 
         // carousel
         static let nTimesMoreStorage = NSLocalizedString("%ux more storage", comment: "Description of a feature of a paid subscription")
@@ -1700,5 +1725,13 @@ enum L10n {
         static let nMoreFeatures = NSLocalizedString("%u more features", comment: "Button to expand the feature list")
         static let billedAtEvery = NSLocalizedString("Billed at %1$@ every %2$@", comment: "1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc")
         static let premiumValueIncluded = NSLocalizedString("Premium value included", comment: "In the list of premium plan features")
+    }
+    
+    enum ReminderModal {
+        static let title = NSLocalizedString("Your subscription is ending soon", comment: "The title of the modal")
+        static let subtitle = NSLocalizedString("Reactivate by %@ to keep these features:", comment: "The subtitle of the modal")
+        static let reactivateSubscriptionButtonTitle = NSLocalizedString("Reactivate subscription", comment: "Title of the modal button")
+        static let successMessage = NSLocalizedString("Subscription reactivated", comment: "Confirmation message after reactivation subscription")
+        static let errorMessage = NSLocalizedString("Subscription reactivation failed", comment: "Error message while reactivation subscription")
     }
 }

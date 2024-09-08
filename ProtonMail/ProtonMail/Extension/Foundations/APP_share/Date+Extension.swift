@@ -46,6 +46,12 @@ extension Date {
         formatter.dateFormat = template
         return formatter.string(from: self)
     }
+    
+    func formatLongDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter.string(from: self)
+    }
 
     var minute: Int {
         Calendar.current.component(.minute, from: self)

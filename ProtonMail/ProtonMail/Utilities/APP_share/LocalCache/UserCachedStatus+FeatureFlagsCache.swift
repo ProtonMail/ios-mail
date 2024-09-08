@@ -41,6 +41,7 @@ extension UserCachedStatus: FeatureFlagCache {
     func storeFeatureFlags(_ flags: SupportedFeatureFlags, for userID: UserID) {
         var featureFlagsPerUser = loadFeatureFlagsPerUser()
         featureFlagsPerUser[userID.rawValue] = flags.rawValues
+
         userDefaults.setValue(featureFlagsPerUser, forKey: featureFlagsPerUserKey)
     }
 

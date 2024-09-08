@@ -52,7 +52,7 @@ struct UpsellPageContentVariantCarousel: View {
         ),
         .init(
             image: .upsellCarouselLabels,
-            title: L10n.AutoDeleteUpsellSheet.upsellLineThree,
+            title: L10n.PremiumPerks.unlimitedFoldersAndLabels,
             subtitle: L10n.PremiumPerks.labelsDesc
         ),
         .init(

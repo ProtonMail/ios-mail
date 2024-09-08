@@ -44,7 +44,7 @@ struct UpsellPageContentVariantComparison: View {
         .init(title: LocalString._contacts_email_addresses_title, type: .integer(free: 1, plus: 10)),
         .init(title: L10n.PremiumPerks.desktopApp, type: .boolean),
         .init(title: L10n.PremiumPerks.customEmailDomain, type: .boolean),
-        .init(title: L10n.AutoDeleteUpsellSheet.upsellLineThree, type: .boolean),
+        .init(title: L10n.PremiumPerks.unlimitedFoldersAndLabels, type: .boolean),
         .init(title: L10n.PremiumPerks.priorityCustomerSupport, type: .boolean)
     ]
 

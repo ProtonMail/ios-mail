@@ -124,6 +124,14 @@ enum FeatureFlagTestData {
                 "Global": true,
                 "Code": "iOSMessageNavigation",
                 "DefaultValue": true
+            ],
+            [
+                "Writable": true,
+                "Type": "Any",
+                "Value": ["day-45": 2, "day-30": 1, "day-7": 2],
+                "Global": true,
+                "Code": "AutoDowngradeReminder",
+                "DefaultValue": [:]
             ]
         ] as [[String: Any]]
     ]

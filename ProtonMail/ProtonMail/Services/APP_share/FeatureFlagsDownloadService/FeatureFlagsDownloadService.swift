@@ -28,6 +28,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case refetchEventsHourThreshold = "iOSRefetchEventsHourThreshold"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
+    case autoDowngradeReminder = "AutoDowngradeReminder"
 }
 
 // sourcery: mock
