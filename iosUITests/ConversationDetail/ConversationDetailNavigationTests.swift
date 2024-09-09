@@ -64,7 +64,6 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
     
     /// TestId 435484
     func testSentFoldersToConversationDetailsNavigation() async {
-        // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -107,7 +106,6 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
     
     /// TestId 435484/2
     func testSentFoldersToConversationDetailsNavigationWhenMessageIsLatest() async {
-        // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -150,7 +148,6 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
     
     /// TestId 435485
     func testMessageModeToConversationDetailsNavigationFromInboxWhenMessageIsLatest() async {
-        // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultMailSettings: false,
             NetworkRequest(
@@ -195,7 +192,6 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
     
     /// TestId 435485/2
     func testMessageModeToConversationDetailsNavigationFromInbox() async {
-        // Mocks
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultMailSettings: false,
             NetworkRequest(

@@ -42,7 +42,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
             // Keep the request since if it loads, the test is expected to fail.
             NetworkRequest(
                 method: .get,
-                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Size=128&Mode=light&Format=png",
+                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Format=png&Mode=light&Size=128",
                 localPath: "proton_logo.png",
                 mimeType: .imagePng
             )
@@ -82,7 +82,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Size=128&Mode=light&Format=png",
+                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Format=png&Mode=light&Size=128",
                 localPath: "proton_logo.png",
                 mimeType: .imagePng
             )
@@ -122,7 +122,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
             ),
             NetworkRequest(
                 method: .get,
-                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Size=128&Mode=light&Format=png",
+                remotePath: "/core/v4/images/logo?Address=no-reply%40notify.proton.black&Format=png&Mode=light&Size=128",
                 localPath: "error_mock.json",
                 status: 500
             )

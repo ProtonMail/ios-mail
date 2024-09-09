@@ -87,6 +87,9 @@
     "Create a label" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create label screen."
     },
+    "Create folder or label" : {
+      "comment" : "Title of the web view presenting custom folders and labels"
+    },
     "Create new folder" : {
       "comment" : "Action title for creating new folder."
     },

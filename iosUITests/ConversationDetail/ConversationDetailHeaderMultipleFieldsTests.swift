@@ -110,12 +110,11 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
             
             $0.toggleCollapsedHeader(at: 2)
             $0.verifyExpandedHeader(thirdExpandedHeader)
-            
+
             $0.tapCollapsedEntry(at: 1)
             $0.toggleCollapsedHeader(at: 1)
             $0.verifyExpandedHeader(secondExpandedHeader)
             
-            $0.tapCollapsedEntry(at: 0)
             $0.toggleCollapsedHeader(at: 0)
             $0.verifyExpandedHeader(firstExpandedHeader)
         }

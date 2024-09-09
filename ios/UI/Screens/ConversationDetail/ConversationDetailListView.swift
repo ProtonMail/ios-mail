@@ -73,7 +73,7 @@ struct ConversationDetailListView: View {
     }
 
     private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
-        return MessageAddressActionPickerView(
+        MessageAddressActionPickerView(
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
             emailAddress: target.messageDetails.sender.address
@@ -82,14 +82,8 @@ struct ConversationDetailListView: View {
     }
 
     private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        // TODO: The initials and background color should be provided from the Rust SDK
-        let avatarUIModel = AvatarUIModel(
-            initials: target.name.first?.uppercased() ?? "",
-            backgroundColor: DS.Color.Brand.minus10,
-            type: .other
-        )
-        return MessageAddressActionPickerView(
-            avatarUIModel: avatarUIModel,
+        MessageAddressActionPickerView(
+            avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address
         )

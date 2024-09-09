@@ -18,48 +18,36 @@
 import Foundation
 import XCTest
 
-struct UITestSidebarListItemEntryModel: ApplicationHolder {
-    let parent: XCUIElement
+class UITestSidebarListItemEntryModel: UITestSidebarListItemEntryBaseModel {
     let label: String
-
+    
+    init(parent: XCUIElement, label: String) {
+        self.label = label
+        super.init(parent: parent)
+    }
+    
     // MARK: UI Elements
-
-    private var rootItem: XCUIElement {
+    
+    override var rootItem: XCUIElement {
         let predicate = NSPredicate(format: "label BEGINSWITH[c] %@", label)
         return application.buttons.containing(predicate).firstMatch
-    }
-
-    private var iconElement: XCUIElement {
-        rootItem.images[Identifiers.iconItem]
-    }
-
-    private var textElement: XCUIElement {
-        rootItem.staticTexts[Identifiers.textItem]
     }
 
     private var badgeElement: XCUIElement {
         rootItem.staticTexts[Identifiers.badgeItem]
     }
-
-    // MARK: Actions
     
-    func findElement() {
-        XCTAssertTrue(UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent))
+    private var chevronButton: XCUIElement {
+        rootItem.buttons[Identifiers.chevron]
     }
 
-    func tap() {
-        rootItem.tap()
+    // MARK: Actions
+
+    func tapChevron() {
+        chevronButton.tap()
     }
 
     // MARK: Assertions
-
-    func isIconDisplayed() {
-        XCTAssertTrue(iconElement.exists)
-    }
-
-    func isTextMatching(value: String) {
-        XCTAssertEqual(value, textElement.label)
-    }
 
     func isBadgeShown(value: String) {
         XCTAssertEqual(value, badgeElement.label)
@@ -68,11 +56,17 @@ struct UITestSidebarListItemEntryModel: ApplicationHolder {
     func isBadgeNotShown() {
         XCTAssertFalse(badgeElement.exists)
     }
+    
+    func isChevronShown() {
+        XCTAssertTrue(chevronButton.exists)
+    }
+    
+    func isChevronNotShown() {
+        XCTAssertFalse(chevronButton.exists)
+    }
 }
 
 private struct Identifiers {
-    static let buttonItem = "sidebar.button.container"
-    static let iconItem = "sidebar.button.folderIcon"
     static let badgeItem = "sidebar.button.badgeIcon"
-    static let textItem = "sidebar.button.labelText"
+    static let chevron = "sidebar.button.chevron"
 }

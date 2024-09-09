@@ -18,12 +18,15 @@
 import Foundation
 import XCTest
 
-final class SubscriptionRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[Identifiers.rootItem]
+class UITestSidebarListCreateLabelEntryModel: UITestSidebarListItemEntryBaseModel {
+
+    // MARK: UI Elements
+
+    override var rootItem: XCUIElement {
+        application.buttons[Identifiers.rootItem]
     }
 }
 
 private struct Identifiers {
-    static let rootItem = "sheet.subscription-details.rootItem"
+    static let rootItem = "sidebar.button.createLabel"
 }

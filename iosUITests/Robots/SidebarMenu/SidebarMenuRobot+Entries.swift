@@ -52,10 +52,35 @@ extension SidebarMenuRobot {
         // where tapping an entry would not collapse the Sidebar Menu.
         _ = rootElement.waitUntilGone()
     }
+    
+    func toggleItemExpansion(withLabel label: String) {
+        let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)
+        
+        model.findElement()
+        model.tapChevron()
+    }
+    
+    func tapCreateFolder() {
+        let model = UITestSidebarListCreateFolderEntryModel(parent: rootElement)
+        model.findElement()
+        model.tap()
+    }
+    
+    func tapCreateLabel() {
+        let model = UITestSidebarListCreateLabelEntryModel(parent: rootElement)
+        model.findElement()
+        model.tap()
+    }
 
     func hasEntries(_ entries: UITestSidebarListItemEntry...) {
         entries.forEach { entry in
             hasEntry(entry)
+        }
+    }
+    
+    func hasNoEntries(_ entries: UITestSidebarListItemEntry...) {
+        entries.forEach { entry in
+            hasNoEntry(entry)
         }
     }
 
@@ -65,6 +90,12 @@ extension SidebarMenuRobot {
         model.findElement()
         model.isIconDisplayed()
         model.isTextMatching(value: entry.text)
+        
+        if entry.expandable {
+            model.isChevronShown()
+        } else {
+            model.isChevronNotShown()
+        }
 
         if let badge = entry.badge {
             model.isBadgeShown(value: badge)
@@ -72,5 +103,10 @@ extension SidebarMenuRobot {
         else {
             model.isBadgeNotShown()
         }
+    }
+    
+    private func hasNoEntry(_ entry: UITestSidebarListItemEntry) {
+        let model = UITestSidebarListItemEntryModel(parent: rootElement, label: entry.text)
+        model.isNotShown()
     }
 }

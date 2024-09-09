@@ -15,34 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
+import ProtonMail
+import XCTest
 
-final class ItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
-
-    private let mailbox: Mailbox
-    private let dataUpdate: (UInt64) -> Void
-    private var watchHandle: WatchHandle?
-
-    init(mailbox: Mailbox, dataUpdate: @escaping (UInt64) -> Void) {
-        self.mailbox = mailbox
-        self.dataUpdate = dataUpdate
-        setUpLiveQuery()
+final class CreateFolderLabelRobot: Robot {
+    var rootElement: XCUIElement {
+        application.otherElements[Identifiers.rootItem]
     }
+}
 
-    func setUpLiveQuery() {
-        Task {
-            watchHandle = try await mailbox.watchUnreadCount(callback: self)
-        }
-    }
-
-    // MARK: - LiveQueryCallback
-
-    func onUpdate() {
-        Task {
-            if let itemsCount = try? await mailbox.unreadCount() {
-                dataUpdate(itemsCount)
-            }
-        }
-    }
-
+private struct Identifiers {
+    static let rootItem = "sheet.labels-settings.rootItem"
 }

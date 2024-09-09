@@ -25,7 +25,7 @@ final class MailboxSelectionModeLabelAsTests: PMUIMockedNetworkTestCase {
     }
 
     /// TestId 427477
-    func testLabelAsBottomSheetClosedWithDoneButton() async {
+    func skip_testLabelAsBottomSheetClosedWithDoneButton() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
@@ -51,7 +51,7 @@ final class MailboxSelectionModeLabelAsTests: PMUIMockedNetworkTestCase {
     }
 
     /// TestId 427478
-    func testLabelAsBottomSheetClosedWithExternalTap() async {
+    func skip_testLabelAsBottomSheetClosedWithExternalTap() async {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,

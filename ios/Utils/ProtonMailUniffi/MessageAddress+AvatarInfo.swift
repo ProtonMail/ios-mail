@@ -15,15 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import XCTest
+import proton_app_uniffi
 
-final class SubscriptionRobot: Robot {
-    var rootElement: XCUIElement {
-        application.otherElements[Identifiers.rootItem]
+extension MessageAddress {
+
+    var avatarInfo: AvatarInfo {
+        let avatarInformation = avatarInformationFromMessageAddress(address: self)
+
+        return .init(initials: avatarInformation.text, color: .init(hex: avatarInformation.color))
     }
-}
 
-private struct Identifiers {
-    static let rootItem = "sheet.subscription-details.rootItem"
 }

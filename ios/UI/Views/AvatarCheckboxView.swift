@@ -55,15 +55,24 @@ struct AvatarCheckboxView: View {
 
 #Preview {
     return VStack {
-        AvatarCheckboxView(isSelected: true, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
+        AvatarCheckboxView(
+            isSelected: true,
+            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+        ) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
+        AvatarCheckboxView(
+            isSelected: false,
+            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+        ) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
 
-        AvatarCheckboxView(isSelected: false, avatar: .init(initials: "Mb", backgroundColor: .cyan, type: .sender(params: .init()))) { _ in}
+        AvatarCheckboxView(
+            isSelected: false,
+            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+        ) { _ in}
             .frame(width: 40, height: 40)
             .clipped()
     }

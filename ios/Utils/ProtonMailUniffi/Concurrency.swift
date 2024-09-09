@@ -29,5 +29,6 @@ extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}
 extension StoredSession: @unchecked Sendable {}
 extension UserSettings: @unchecked Sendable {}
+extension WatchHandle: @unchecked Sendable {}
 extension WatchedMessages: @unchecked Sendable {}
 extension WatchedConversations: @unchecked Sendable {}

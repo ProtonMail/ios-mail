@@ -210,16 +210,19 @@ struct SidebarScreen: View {
                     .square(size: 20)
                     .tint(DS.Color.Sidebar.iconWeak)
                     .padding(.trailing, DS.Spacing.extraLarge)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
                 Text(item.name)
                     .font(.subheadline)
                     .foregroundStyle(isListEmpty ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
                     .lineLimit(1)
+                    .accessibilityIdentifier(SidebarScreenIdentifiers.textItem)
                 Spacer()
             }
         }
         .padding(.vertical, DS.Spacing.medium)
         .padding(.horizontal, DS.Spacing.extraLarge)
         .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+        .accessibilityIdentifier(SidebarScreenIdentifiers.otherButton(type: item.type))
     }
 
     private func systemItemContent(model: SystemFolder) -> some View {
@@ -247,7 +250,7 @@ struct SidebarScreen: View {
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
-            .accessibilityIdentifier(SidebarScreenIdentifiers.folderIcon)
+            .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
     }
 
     private func labelItemContent(model: SidebarLabel) -> some View {
@@ -257,6 +260,8 @@ struct SidebarScreen: View {
                 .clipShape(Circle())
                 .square(size: 20)
                 .padding(.trailing, DS.Spacing.extraLarge)
+                .accessibilityElement()
+                .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
             Spacer()
             if let unreadCount = model.unreadCount {
@@ -278,7 +283,7 @@ struct SidebarScreen: View {
             .fontWeight(isSelected ? .bold : .regular)
             .foregroundStyle(isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
             .lineLimit(1)
-            .accessibilityIdentifier(SidebarScreenIdentifiers.labelText)
+            .accessibilityIdentifier(SidebarScreenIdentifiers.textItem)
     }
 
     private var separator: some View {
@@ -309,9 +314,13 @@ struct SidebarScreen: View {
 
 private struct SidebarScreenIdentifiers {
     static let rootItem = "sidebar.rootItem"
-    static let folderIcon = "sidebar.button.folderIcon"
-    static let labelText = "sidebar.button.labelText"
+    static let icon = "sidebar.button.icon"
+    static let textItem = "sidebar.button.text"
     static let badgeIcon = "sidebar.button.badgeIcon"
+
+    static func otherButton(type: SidebarOtherItem.ItemType) -> String {
+        "sidebar.button.\(type.rawValue)"
+    }
 }
 
 private extension SidebarItem {
