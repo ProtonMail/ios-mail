@@ -35,7 +35,7 @@ enum SettingsItemType: Equatable, Hashable {
         case .account(let accountSettings):
             accountSettings.name
         case .preference(let settingsPreference):
-            settingsPreference.title
+            settingsPreference.title.string
         }
     }
 
@@ -44,7 +44,7 @@ enum SettingsItemType: Equatable, Hashable {
         case .account(let accountSettings):
             accountSettings.email
         case .preference(let settingsPreference):
-            settingsPreference.subtitle
+            settingsPreference.subtitle.string
         }
     }
 }

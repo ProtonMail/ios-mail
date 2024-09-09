@@ -30,7 +30,7 @@ extension Array where Element == SidebarOtherItem {
             .init(
                 type: .settings,
                 icon: DS.Icon.icCogWheel,
-                name: L10n.Settings.accountSettings.string,
+                name: L10n.Settings.title.string,
                 isSelected: false
             ),
             .init(

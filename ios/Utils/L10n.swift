@@ -299,13 +299,52 @@ enum L10n {
     enum Settings {
         static let accountSettings = LocalizedStringResource(
             "Account Settings",
-            comment: "Account settings title in the settings."
+            comment: "Account settings screen title."
         )
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."
         )
         static let title = LocalizedStringResource("Settings", comment: "Settings menu title.")
+        static let account = LocalizedStringResource("Account", comment: "Title of a section in Settings.")
+        static let preferences = LocalizedStringResource("Preferences", comment: "Title of a section in Settings.")
+        static let email = LocalizedStringResource("Email", comment: "Title of the Email settings item.")
+        static let emailSubtitle = LocalizedStringResource(
+            "Email and mailbox preferences",
+            comment: "Subtitle of the Email settings item."
+        )
+        static let foldersAndLabels = LocalizedStringResource(
+            "Folders and labels",
+            comment: "Title of the Folders and labels settings item."
+        )
+        static let foldersAndLabelsSubtitle = LocalizedStringResource(
+            "Mailbox organization",
+            comment: "Subtitle of the Folders and labels settings item."
+        )
+        static let filters = LocalizedStringResource(
+            "Spam and custom filters",
+            comment: "Title of the Filters settings item."
+        )
+        static let filtersSubtitle = LocalizedStringResource(
+            "Automatic actions and sorting",
+            comment: "Subtitle of the Filters settings item."
+        )
+        static let privacyAndSecurity = LocalizedStringResource(
+            "Privacy and security",
+            comment: "Title of the Privacy and security settings item."
+        )
+        static let privacyAndSecuritySubtitle = LocalizedStringResource(
+            "Email tracking protection",
+            comment: "Subtitle of the Privacy and security settings item."
+        )
+        static let appSettingsTitle = LocalizedStringResource(
+            "App",
+            comment: "Title of the App settings item."
+        )
+        static let appSettingsSubtitle = LocalizedStringResource(
+            "Mobile app customization",
+            comment: "Subtitle of the App settings item."
+        )
     }
 
     enum Sidebar {

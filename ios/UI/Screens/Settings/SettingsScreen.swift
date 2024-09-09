@@ -34,10 +34,13 @@ struct SettingsScreen: View {
                 DS.Color.Background.secondary
                     .ignoresSafeArea()
                 ScrollView {
-                    section(items: [.account(state.accountSettings)], header: "Account")
-                    section(items: state.preferences.map(SettingsItemType.preference), header: "Preferences")
+                    section(items: [.account(state.accountSettings)], header: L10n.Settings.account)
+                    section(
+                        items: state.preferences.map(SettingsItemType.preference),
+                        header: L10n.Settings.preferences
+                    )
                 }
-                .navigationTitle("Settings")
+                .navigationTitle(L10n.Settings.title.string)
                 .toolbarTitleDisplayMode(.large)
                 .toolbarBackground(DS.Color.Background.secondary, for: .navigationBar)
                 .toolbar {
@@ -66,7 +69,7 @@ struct SettingsScreen: View {
 
     // MARK: - Private
 
-    private func section(items: [SettingsItemType], header: String) -> some View {
+    private func section(items: [SettingsItemType], header: LocalizedStringResource) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
             Text(header)
                 .font(.subheadline)
@@ -138,7 +141,7 @@ struct SettingsScreen: View {
     private func doneToolbarItem() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
-                Text("Done")
+                Text(L10n.Common.done)
                     .foregroundStyle(DS.Color.Interaction.norm)
             }
         }

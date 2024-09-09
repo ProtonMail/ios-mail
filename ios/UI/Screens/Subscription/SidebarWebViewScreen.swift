@@ -48,11 +48,11 @@ extension ProtonAuthenticatedWebPage {
         case .createFolderOrLabel:
             L10n.CreateFolderOrLabel.title
         case .emailSettings:
-            "Email"
+            L10n.Settings.email
         case .privacySecuritySettings:
-            "Privacy and security"
+            L10n.Settings.privacyAndSecurity
         case .spamFiltersSettings:
-            "Spam and custom filters"
+            L10n.Settings.filters
         }
     }
 

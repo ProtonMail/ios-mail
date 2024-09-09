@@ -25,31 +25,33 @@ enum SettingsPreference: CaseIterable, Equatable {
     case privacyAndSecurity
     case app
 
-    var title: String {
+    var title: LocalizedStringResource {
         switch self {
         case .email:
-            "Email"
+            L10n.Settings.email
         case .foldersAndLabels:
-            "Folders and labels"
+            L10n.Settings.foldersAndLabels
         case .filters:
-            "Filters"
+            L10n.Settings.filters
         case .privacyAndSecurity:
-            "Privacy and security"
+            L10n.Settings.privacyAndSecurity
         case .app:
-            "App"
+            L10n.Settings.appSettingsTitle
         }
     }
 
-    var subtitle: String {
+    var subtitle: LocalizedStringResource {
         switch self {
         case .email:
-            "Email and mailbox preferences"
-        case .foldersAndLabels, .filters:
-            "Mailbox organization"
+            L10n.Settings.emailSubtitle
+        case .foldersAndLabels:
+            L10n.Settings.foldersAndLabelsSubtitle
+        case .filters:
+            L10n.Settings.filtersSubtitle
         case .privacyAndSecurity:
-            "Spam and tracking protection"
+            L10n.Settings.privacyAndSecuritySubtitle
         case .app:
-            "Mobile app customization"
+            L10n.Settings.appSettingsSubtitle
         }
     }
 
