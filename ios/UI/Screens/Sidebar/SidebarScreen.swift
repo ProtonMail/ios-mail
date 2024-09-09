@@ -107,7 +107,7 @@ struct SidebarScreen: View {
     }
 
     private var opacityBackground: some View {
-        DS.Color.Sidebar.overlay
+        DS.Color.Global.modal
             .animation(.linear(duration: animationDuration), value: appUIStateStore.sidebarState.isOpen)
             .opacity(0.5 * (dragOffset / sidebarWidth))
             .ignoresSafeArea(.all)

@@ -33,6 +33,7 @@ public extension DS.Color {
     enum Global {
         public static let black = Color(.globalBlack)
         public static let white = Color(.globalWhite)
+        public static let modal = Color(.modal)
     }
 
     enum Icon {
@@ -89,8 +90,6 @@ public extension DS.Color {
         public static let iconNorm = Color(.sidebarIconNorm)
         public static let iconWeak = Color(.sidebarIconWeak)
         public static let iconSelected = Color(.sidebarIconSelected)
-
-        public static let overlay = Color(.sidebarOverlay) // FIXME: - Check with Zuza
     }
 
     enum Star {
