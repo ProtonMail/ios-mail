@@ -60,6 +60,11 @@ struct SidebarScreen: View {
                         .frame(width: geometry.safeAreaInsets.leading)
                     ZStack(alignment: .topLeading) {
                         sideBarBackground
+                            .shadow(
+                                color: DS.Color.Global.black.opacity(appUIStateStore.sidebarState.isOpen ? 0.25 : 0),
+                                radius: 10,
+                                x: 4
+                            )
                         sideBarItemsList
                             .safeAreaPadding(.top, headerHeight)
                         header
