@@ -18,41 +18,17 @@
 import DesignSystem
 import SwiftUI
 
-struct SidebarWebViewScreen: View {
-    private let webViewPage: ProtonAuthenticatedWebPage
-
-    init(webViewPage: ProtonAuthenticatedWebPage) {
-        self.webViewPage = webViewPage
-    }
+struct CreateFolderOrLabelScreen: View {
 
     var body: some View {
         ClosableScreen {
-            ProtonAuthenticatedWebView(webViewPage: webViewPage)
+            ProtonAuthenticatedWebView(webViewPage: .createFolderOrLabel)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle(webViewPage.title.string)
+                .navigationTitle(L10n.CreateFolderOrLabel.title.string)
 				.accessibilityElement()
-                .accessibilityIdentifier(SidebarWebViewScreenIdentifiers.rootItem(forPage: webViewPage))
-        }
-    }
-}
-
-// FIXME: - Move to separate file
-extension ProtonAuthenticatedWebPage {
-
-    var title: LocalizedStringResource {
-        switch self {
-        case .accountSettings:
-            L10n.Settings.accountSettings
-        case .createFolderOrLabel:
-            L10n.CreateFolderOrLabel.title
-        case .emailSettings:
-            L10n.Settings.email
-        case .privacySecuritySettings:
-            L10n.Settings.privacyAndSecurity
-        case .spamFiltersSettings:
-            L10n.Settings.filters
+                .accessibilityIdentifier(SidebarWebViewScreenIdentifiers.rootItem(forPage: .createFolderOrLabel))
         }
     }
 

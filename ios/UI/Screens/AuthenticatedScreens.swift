@@ -26,8 +26,8 @@ struct AuthenticatedScreens: View {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
 
-    @State var webViewSheet: ProtonAuthenticatedWebPage?
     @State var areSettingsPresented = false
+    @State var isLabelOrFolderCreationScreenPresented = false
 
     init(customLabelModel: CustomLabelModel, userSession: MailUserSession) {
         _appRoute = .init(wrappedValue: .initialState)
@@ -74,7 +74,7 @@ struct AuthenticatedScreens: View {
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
                     case .createFolder, .createLabel:
-                        webViewSheet = .createFolderOrLabel
+                        isLabelOrFolderCreationScreenPresented = true
                     case .signOut:
                         signOut()
                     case .shareLogs:
@@ -98,8 +98,8 @@ struct AuthenticatedScreens: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(item: $webViewSheet) { webViewSheet in
-            SidebarWebViewScreen(webViewPage: webViewSheet)
+        .sheet(isPresented: $isLabelOrFolderCreationScreenPresented) {
+            CreateFolderOrLabelScreen()
         }
         .sheet(isPresented: $areSettingsPresented) {
             SettingsScreen()

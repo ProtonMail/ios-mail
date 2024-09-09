@@ -161,3 +161,22 @@ struct SettingsScreen: View {
         SettingsScreen()
     }
 }
+
+private extension ProtonAuthenticatedWebPage {
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .accountSettings:
+            L10n.Settings.account
+        case .emailSettings:
+            L10n.Settings.email
+        case .spamFiltersSettings:
+            L10n.Settings.filters
+        case .privacySecuritySettings:
+            L10n.Settings.privacyAndSecurity
+        case .createFolderOrLabel:
+            L10n.Settings.foldersAndLabels
+        }
+    }
+
+}
