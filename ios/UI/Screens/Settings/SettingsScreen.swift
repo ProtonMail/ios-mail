@@ -17,16 +17,15 @@
 
 import DesignSystem
 import SwiftUI
-import SwiftUIIntrospect
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var toastStateStore: ToastStateStore
-    @State private var state: [SettingsItem]
+    @State private var state: SettingsState
     @State private var webViewPage: ProtonAuthenticatedWebPage?
 
     init() {
-        _state = .init(initialValue: .stale)
+        _state = .init(initialValue: .initial)
     }
 
     var body: some View {
@@ -35,10 +34,8 @@ struct SettingsScreen: View {
                 DS.Color.Background.secondary
                     .ignoresSafeArea()
                 ScrollView {
-                    section(items: state, header: "Preferences")
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, DS.Spacing.large)
-                        .padding(.top, DS.Spacing.medium)
+                    section(items: [.account(state.accountSettings)], header: "Account")
+                    section(items: state.preferences.map(SettingsItemType.preference), header: "Preferences")
                 }
                 .navigationTitle("Settings")
                 .toolbarTitleDisplayMode(.large)
@@ -69,7 +66,7 @@ struct SettingsScreen: View {
 
     // MARK: - Private
 
-    private func section(items: [SettingsItem], header: String) -> some View {
+    private func section(items: [SettingsItemType], header: String) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
             Text(header)
                 .font(.subheadline)
@@ -91,16 +88,15 @@ struct SettingsScreen: View {
             .background(DS.Color.Background.norm)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
         }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, DS.Spacing.large)
+        .padding(.top, DS.Spacing.medium)
     }
 
-    private func buttonContent(item: SettingsItem) -> some View {
+    private func buttonContent(item: SettingsItemType) -> some View {
         VStack(spacing: .zero) {
             HStack(spacing: .zero) {
-                Image(item.icon)
-                    .square(size: 40)
-                    .foregroundStyle(DS.Color.Brand.norm)
-                    .background(DS.Color.Brand.minus30)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+                image(for: item)
                     .padding(.trailing, DS.Spacing.large)
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(item.title)
@@ -117,6 +113,28 @@ struct SettingsScreen: View {
         }
     }
 
+    @ViewBuilder
+    private func image(for item: SettingsItemType) -> some View {
+        switch item {
+        case .account(let accountSettings):
+            ZStack {
+                Color(accountSettings.initialsBackground)
+                Text(accountSettings.initials)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(DS.Color.Global.white)
+            }
+            .square(size: 40)
+            .clipShape(Circle())
+        case .preference(let settingsPreference):
+            Image(settingsPreference.icon)
+                .square(size: 40)
+                .foregroundStyle(DS.Color.Brand.norm)
+                .background(DS.Color.Brand.minus30)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+        }
+    }
+
     private func doneToolbarItem() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
@@ -126,7 +144,7 @@ struct SettingsScreen: View {
         }
     }
 
-    private func selected(item: SettingsItem) {
+    private func selected(item: SettingsItemType) {
         if let webViewPage = item.webViewPage {
             self.webViewPage = webViewPage
         } else {
@@ -139,31 +157,4 @@ struct SettingsScreen: View {
     NavigationStack {
         SettingsScreen()
     }
-}
-
-private extension Array where Element == SettingsItem {
-
-    static var stale: [Element] {
-        [.email, .foldersAndLabels, .filters, .privacyAndSecurity, .app]
-    }
-
-}
-
-private extension SettingsItem {
-
-    var webViewPage: ProtonAuthenticatedWebPage? {
-        switch self {
-        case .email:
-            return .emailSettings
-        case .foldersAndLabels:
-            return .createFolderOrLabel
-        case .filters:
-            return .spamFiltersSettings
-        case .privacyAndSecurity:
-            return .privacySecuritySettings
-        case .app:
-            return nil
-        }
-    }
-
 }

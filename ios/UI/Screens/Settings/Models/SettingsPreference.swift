@@ -18,7 +18,7 @@
 import DesignSystem
 import SwiftUI
 
-enum SettingsItem: CaseIterable, Equatable {
+enum SettingsPreference: CaseIterable, Equatable {
     case email
     case foldersAndLabels
     case filters
