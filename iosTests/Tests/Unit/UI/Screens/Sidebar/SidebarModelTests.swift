@@ -85,13 +85,13 @@ class SidebarModelTests: BaseTestCase {
         XCTAssertEqual(try getFolder(with: folderName).isSelected, true)
     }
 
-    func test_WhenTappingOnSettingsItem_ItSelectsIt() throws {
+    func test_WhenTappingOnSettingsItem_ItDoesNotSelectIt() throws {
         let settingsUnselected = try XCTUnwrap(sut.state.other.findFirst(for: .settings, by: \.type))
         XCTAssertEqual(settingsUnselected.isSelected, false)
 
         sut.handle(action: .select(item: .other(settingsUnselected)))
         let settingsSelected = try XCTUnwrap(sut.state.other.findFirst(for: .settings, by: \.type))
-        XCTAssertEqual(settingsSelected.isSelected, true)
+        XCTAssertEqual(settingsSelected.isSelected, false)
     }
 
     func test_WhenTappingOnShareLogsItem_ItDoesNotSelectIt() throws {
