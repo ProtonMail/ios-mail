@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Nasljedno iz roditeljske mape";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Povežite se i pokušajte ponovno";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "As scheduled";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Nadogradi sada";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "In the morning";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Otvori u Proton Calendaru";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Nadogradi sada";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Clear out the junk";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Up to 3 TB of storage";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Custom email domains";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Sender changed";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Neograničen broj mapa, oznaka i filtara";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
 
@@ -2449,6 +2509,9 @@
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";

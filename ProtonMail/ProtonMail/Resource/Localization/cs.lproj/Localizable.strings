@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Převzato z nadřazené složky";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Připojte se a zkuste to znovu";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Dle plánu";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Navýšit nyní";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "Ráno";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Otevřít v Proton kalendáři";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Navýšit nyní";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Pročištění nevyžádané pošty";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatické mazání zpráv starších než 30 dní z koše a spamu. Užijte si tyto a další výhody po navýšení tarifu.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Až 3 TB úložného prostoru";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Vlastní e-mailové domény";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Odesílatel byl změněn";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Vyberte prosím čas v budoucnosti";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Chcete odložit na kdykoliv?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Odemkněte si možnost vlastního času odložení tím, že navýšíte tarif";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Až 15 e-mailových adres/aliasů";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Neomezený počet složek, štítků a filtrů";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Přidat jako přílohu";
 
@@ -2449,6 +2509,9 @@
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB úložiště a 1 e-mail";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcí";

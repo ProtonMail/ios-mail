@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Унаследовано от родительской папки";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Пожалуйста, подключитесь и попробуйте снова";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Как запланировано";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Улучшить сейчас";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "Утром";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Открыть в Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Улучшить сейчас";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Очистить от спама";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматически удалять сообщения старше 30 дней из Корзины и Спама. Воспользуйтесь этими и другими функциями после обновления.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "До 3 ТБ хранилища";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Пользовательские домены электронной почты";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Отправитель изменен";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Выберите время в будущем";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Хотите отложить в любое время?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Разблокируйте пользовательские времена задержки после улучшения";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "До 15 адесов электронной почты или псевдонимов";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Неограниченное количество папок, ярлыков и фильтров";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Добавить как вложение";
 
@@ -2445,10 +2505,13 @@
 "Custom email domain support" = "Поддержка пользовательских доменов электронной почты";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u личный календарь";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 ГБ хранилища и 1 адрес электронной почты";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
@@ -2523,19 +2586,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Отложите на удобное для вас время. Настройте параметры отсрочки и многое другое с %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Выбрать тариф";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Ежегодно";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Лучшая цена";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "Еще %u функции";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Оплачивается по цене %1$@ раз в %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Премиальная цена включена";

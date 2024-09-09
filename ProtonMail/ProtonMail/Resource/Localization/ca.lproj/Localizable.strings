@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Heretat d'una carpeta principal";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Connecteu-vos i torneu-ho a intentar.";
 
@@ -1858,7 +1870,7 @@
 "Your subscription has ended" = "La subscripció ha finalitzat";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "El vostre compte corre el risc de ser eliminat";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Tal com s'ha programat";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Millora ara";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "Al matí";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Obre a Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Millora ara";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Neteja la brossa";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Fins a 3 TB d'emmagatzematge";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Dominis de correu electrònic personalitzats";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "S'ha canviat el remitent.";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Seleccioneu una hora en el futur";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Voleu posposar en algun moment?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Carpetes, etiquetes i filtres il·limitats";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Afegeix-ho com a adjunt";
 
@@ -2448,7 +2508,10 @@
 "%u personal calendars" = "%u calendaris personals";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB d'emmagatzematge i 1 correu electrònic";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Xifratge d'extrem a extrem";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
@@ -2493,13 +2556,13 @@
 "Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
 
 /* Title of the upsell page */
-"Group your contacts" = "Group your contacts";
+"Group your contacts" = "Agrupeu els vostres contactes";
 
 /* Subtitle of the upsell page */
 "Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Necessiteu més etiquetes o carpetes?";
 
 /* Subtitle of the upsell page */
 "Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
@@ -2532,10 +2595,10 @@
 "Best value" = "Millor oferta";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u més funcionalitats";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Facturat a %1$@ cada %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Característiques prèmium incloses";

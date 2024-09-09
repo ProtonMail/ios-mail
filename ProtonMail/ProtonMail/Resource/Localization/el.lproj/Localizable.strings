@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Κληρονoμήθηκαν από το γονικό φάκελο";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Παρακαλούμε συνδεθήτε και ξαναπροσπαθήσετε";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Όπως έχει προγραμματιστεί";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Αναβάθμιση τώρα";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "Το πρωί";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Άνοιγμα στο Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Αναβάθμιση τώρα";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Ξεφορτωθείτε τη σαβούρα";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Αυτόματη εκκαθάριση μηνυμάτων παλαιότερων των 30 ημερών από τα Διαγραμμένα και τα Ενοχλητικά. Απολαύστε αυτό και άλλα πλεονεκτήματα όταν αναβαθμίσετε.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Έως 3 TB αποθηκευτικού χώρου";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Ο αποστολέας άλλαξε";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Επιλέξτε μια μελλοντική ώρα";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Θέλετε να κάνετε αναβολή ανά πάσα στιγμή;";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Ξεκλειδώστε προσαρμοσμένους χρόνους αναβολής όταν αναβαθμίσετε";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Έως 15 διευθύνσεις ηλεκτρονικού ταχυδρομείου/ψευδώνυμα";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Προσθήκη ως συνημμένο";
 
@@ -2448,7 +2508,10 @@
 "%u personal calendars" = "%u προσωπικά ημερολόγια";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB αποθηκευτικού χώρου και 1 email";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium χαρακτηριστικά";
@@ -2532,10 +2595,10 @@
 "Best value" = "Βέλτιστη προσφορά";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u περισσότερα χαρακτηριστικά";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Χρεώνεται σε %1$@ κάθε %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Περιλαμβάνεται premium αξία";

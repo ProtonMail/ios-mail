@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "상위폴더에 상속되어 있습니다";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "연결 후 다시 시도하세요";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "예정됨";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "지금 업그레이드";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "아침";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar에서 열기";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "지금 업그레이드";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "정크 삭제";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "휴지통과 스팸함의 30일 이상 된 메시지를 자동으로 삭제합니다. 업그레이드하여 이 기능과 다른 혜택들을 누려보세요.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "최대 3 TB 스토리지";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "사용자 지정 이메일 도메인";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "발신자가 변경됨";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "미래의 시간을 선택해주세요.";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "항상 방해 금지 상태로 전환하시겠어요?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "업그레이드로 사용자 지정 방해 금지 모드를 잠금 해제하세요";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별칭";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "첨부 파일로 추가";
 
@@ -2449,6 +2509,9 @@
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB 스토리지 및 1개 메일";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";

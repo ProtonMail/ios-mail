@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Örökölve a tartalmazó mappáról";
 
+/* Alert title */
+"Creating folder not allowed" = "Creating folder not allowed";
+
+/* Alert title */
+"Creating label not allowed" = "Creating label not allowed";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Kérjük, csatlakozzon és próbálja meg újra";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Terv szerint";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Váltás nagyobb csomagra";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
 /* One of schedule time options */
 "In the morning" = "Reggel";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Megnyitás a Proton Calendarban";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Váltás nagyobb csomagra";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Töröld a szemetet";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "A 30 napnál régebbi üzenetek automatikus törlése a kukából és a levélszemét mappából. Fizessen elő és élvezze ezt és más előnyöket!";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Akár 3 TB tárhely";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Saját domain nevek";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Feladó megváltoztatva";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Kérjük, válasszon egy jövőbeli időpontot";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Bármikor elhallgatatná?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Fizessen elő és hallgatassa el igény szerinti időben!";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Akár 15 email-cím/álnév";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
 
@@ -2449,6 +2509,9 @@
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
