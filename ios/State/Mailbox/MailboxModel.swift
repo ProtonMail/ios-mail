@@ -362,6 +362,7 @@ extension MailboxModel {
 
     private func actionUpdateReadStatus(to newStatus: MailboxReadStatus, for ids: [ID]) {
         AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
+        guard let mailbox else { return }
         do {
             if case .read = newStatus {
                 Task {
@@ -374,7 +375,7 @@ extension MailboxModel {
             } else if case .unread = newStatus {
                 Task {
                     do {
-                        try await markConversationsAsUnread(session: userSession, ids: ids)
+                        try await markConversationsAsUnread(mailbox: mailbox, ids: ids)
                     } catch {
                         AppLogger.log(error: error, category: .mailboxActions)
                     }

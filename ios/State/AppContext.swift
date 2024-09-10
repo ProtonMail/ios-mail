@@ -192,15 +192,6 @@ extension AppContext: EventLoopProvider {
 extension AppContext: SessionProvider {
 
     @MainActor
-    func login(email: String, password: String) async throws {
-        let flow = try await mailSession.newLoginFlow()
-        try await flow.login(email: email, password: password)
-        let newUserSession = try flow.toUserContext()
-        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
-        activeUserSession = newUserSession
-    }
-
-    @MainActor
     func logoutActiveUserSession() async throws {
         try await activeUserSession?.logout()
         activeUserSession = nil
