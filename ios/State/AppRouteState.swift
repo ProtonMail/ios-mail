@@ -22,22 +22,12 @@ import Foundation
 final class AppRouteState: ObservableObject, Sendable {
     @Published private(set) var route: Route
     var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
-        selectedMailbox.eraseToAnyPublisher()
+        _route.projectedValue.compactMap(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
     }
-    private let selectedMailbox: PassthroughSubject<SelectedMailbox, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
 
     init(route: Route) {
         self.route = route
-
-        $route
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newRoute in
-                if let newSelectedMailbox = newRoute.selectedMailbox {
-                    self?.selectedMailbox.send(newSelectedMailbox)
-                }
-            }
-            .store(in: &cancellables)
     }
 
     func updateRoute(to newRoute: Route) {

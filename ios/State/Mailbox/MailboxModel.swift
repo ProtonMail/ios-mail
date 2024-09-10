@@ -106,9 +106,7 @@ extension MailboxModel {
             .store(in: &cancellables)
 
         mailSettingsLiveQuery
-            .settingsPublisher
-            .map(\.viewMode)
-            .removeDuplicates()
+            .viewModeHasChanged
             .sink { [weak self] _ in
                 Task {
                     guard let self else { return }
