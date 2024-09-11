@@ -13,6 +13,8 @@ include:
       run-gitleaks-no-git-scan: false
       stage: scan
 
+  - component: gitlab.protontech.ch/tpe/test-scripts/slack@0.0.2
+
 variables:
   LANG: "en_US.UTF-8"
   MINT_PATH: "$CI_PROJECT_DIR/ci-cache/mint"
@@ -218,9 +220,11 @@ test:ui:monkey:
 
 .report:slack:
   stage: report
-  image:
-    name: $CI_REGISTRY/tpe/test-scripts
-    pull_policy: always
+  extends:
+    - .reporting:slack
+  variables:
+    FOLDER_PATH: "test_output/TestResults/"
+    PLATFORM: "ios"
   allow_failure: true
   tags:
     - shared-small
@@ -233,12 +237,9 @@ report:slack:feature:
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
       when: always
-  script:
-    - test_reporter.py
-      --path test_output/TestResults/
-      --platform ios
-      --job-name $TEST_PLAN
-      --slack-channel "$SLACK_CHANNEL"
+  variables:
+    SLACK_CHANNEL: "$SLACK_CHANNEL"
+    JOB_NAME: "$TEST_PLAN"
 
 report:slack:monkey:
   dependencies:
@@ -247,12 +248,9 @@ report:slack:monkey:
   rules:
     - if: '$TEST_TYPE == "monkey"'
       when: always
-  script:
-    - test_reporter.py
-      --path test_output/TestResults/
-      --platform ios
-      --job-name Mail-iOS-Monkey-tests
-      --slack-channel mail-ios-uitests
+  variables:
+    SLACK_CHANNEL: "mail-ios-uitests"
+    JOB_NAME: "Mail-iOS-Monkey-tests"
 
 .report:testmo:
   extends: .testmo-upload
