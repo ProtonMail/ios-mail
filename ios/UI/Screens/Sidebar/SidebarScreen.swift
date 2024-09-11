@@ -62,8 +62,8 @@ struct SidebarScreen: View {
                         sideBarBackground
                             .shadow(
                                 color: DS.Color.Global.black.opacity(appUIStateStore.sidebarState.isOpen ? 0.25 : 0),
-                                radius: 10,
-                                x: 4
+                                radius: DS.Spacing.mediumLight,
+                                x: DS.Spacing.small
                             )
                         sideBarItemsList
                             .safeAreaPadding(.top, headerHeight)
