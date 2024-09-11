@@ -36,7 +36,7 @@ extension Conversation {
                     displaySenderImage: firstSender.displaySenderImage
                 ))
             ),
-            senders: senders.addressUIRepresentation,
+            emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: numUnread == 0,

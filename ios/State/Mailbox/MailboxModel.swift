@@ -203,11 +203,11 @@ extension MailboxModel {
                 let systemFolder = selectedMailbox.systemFolder
                 mailboxItems = try await messagesForLabel(session: userSession, labelId: mailbox.labelId())
                     .map { message in
-                        let mapRecipientsAsSender = [SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+                        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
                             .contains(systemFolder)
                         return message.toMailboxItemCellUIModel(
                             selectedIds: selectedIds,
-                            mapRecipientsAsSender: mapRecipientsAsSender
+                            displaySenderEmail: displaySenderEmail
                         )
                     }
             }

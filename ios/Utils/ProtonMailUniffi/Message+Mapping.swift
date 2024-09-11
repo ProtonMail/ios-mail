@@ -21,19 +21,19 @@ import SwiftUI
 
 extension Message {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<ID>, mapRecipientsAsSender: Bool) -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<ID>, displaySenderEmail: Bool) -> MailboxItemCellUIModel {
         var recipientsUIRepresentation: String {
             let recipients = (toList + ccList + bccList).map(\.uiRepresentation).joined(separator: ", ")
             return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
         }
 
-        let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
+        let emails: String = displaySenderEmail ? sender.uiRepresentation : recipientsUIRepresentation
 
         return MailboxItemCellUIModel(
             id: id,
             type: .message,
             avatar: toAvatarUIModel(),
-            senders: mappedSender,
+            emails: emails,
             subject: subject.isEmpty ? L10n.Mailbox.Item.noSubject.string : subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: !unread,

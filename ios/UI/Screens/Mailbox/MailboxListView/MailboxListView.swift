@@ -132,7 +132,7 @@ extension MailboxListView {
         : ""
         let value: String = """
         \(unread)
-        \(item.senders).
+        \(item.emails).
         \(item.subject).
         \(item.date.mailboxVoiceOverSupport()).
         \(expiration).
