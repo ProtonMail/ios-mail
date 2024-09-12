@@ -20,8 +20,5 @@ import Combine
 protocol SessionProvider: AnyObject {
 
     @MainActor
-    func login(email: String, password: String) async throws
-
-    @MainActor
     func logoutActiveUserSession() async throws
 }
