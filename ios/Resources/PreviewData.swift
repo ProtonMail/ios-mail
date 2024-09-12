@@ -33,7 +33,7 @@ enum PreviewData {
                     info: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), color: .red),
                     type: .sender(params: .init())
                 ),
-                senders: randomSenderSubject.0,
+                emails: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
                 isRead: (value == 2 || value>5),

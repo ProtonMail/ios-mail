@@ -202,12 +202,12 @@ extension MailboxModel {
             case .messages:
                 let systemFolder = selectedMailbox.systemFolder
                 mailboxItems = try await messagesForLabel(session: userSession, labelId: mailbox.labelId())
-                    .asyncMap { @Sendable message in
-                        let mapRecipientsAsSender = [SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+                    .map { message in
+                        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
                             .contains(systemFolder)
                         return message.toMailboxItemCellUIModel(
                             selectedIds: selectedIds,
-                            mapRecipientsAsSender: mapRecipientsAsSender
+                            displaySenderEmail: displaySenderEmail
                         )
                     }
             }

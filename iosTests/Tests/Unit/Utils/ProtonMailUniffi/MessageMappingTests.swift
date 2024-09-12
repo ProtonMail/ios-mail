@@ -19,53 +19,53 @@ import proton_app_uniffi
 @testable import ProtonMail
 import XCTest
 
-final class LocalMessageMetadataMapTests: XCTestCase {
+final class MessageMappingTests: XCTestCase {
     private let defaultSubject = "Dummy subject"
     private let recipient1: MessageAddress = .testData(name: "The Rec.A", address: "a@example.com")
     private let recipient2: MessageAddress = .testData(name: "", address: "b@example.com")
     private let recipient3: MessageAddress = .testData(name: "The Rec.C", address: "c@example.com")
     private let sender: MessageAddress = .testData(name: "", address: "sender@example.com")
 
-    func testToMailboxItemCellUIModel_whenNoSubject_itReturnsAPlaceholder() async {
+    func testToMailboxItemCellUIModel_whenNoSubject_itReturnsAPlaceholder() {
         let message1 = Message.testData(subject: "")
-        let result1 = await message1.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: .random())
+        let result1 = message1.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: .random())
         XCTAssertEqual(result1.subject, "(No Subject)")
 
         let message2 = Message.testData(subject: defaultSubject)
-        let result2 = await message2.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: .random())
+        let result2 = message2.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: .random())
         XCTAssertEqual(result2.subject, defaultSubject)
     }
 
-    func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() async {
+    func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() {
         let message = Message.testData(messageId: 33)
 
-        let result1 = await message.toMailboxItemCellUIModel(
-            selectedIds: [.init(value: 12)], mapRecipientsAsSender: .random()
+        let result1 = message.toMailboxItemCellUIModel(
+            selectedIds: [.init(value: 12)], displaySenderEmail: .random()
         )
         XCTAssertFalse(result1.isSelected)
 
-        let result2 = await message.toMailboxItemCellUIModel(
-            selectedIds: [.init(value: 33)], mapRecipientsAsSender: .random()
+        let result2 = message.toMailboxItemCellUIModel(
+            selectedIds: [.init(value: 33)], displaySenderEmail: .random()
         )
         XCTAssertTrue(result2.isSelected)
     }
 
-    func testToMailboxItemCellUIModel_whenMappingRecipientsAsSender_itReturnsRecipientsInSenderField() async {
+    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_itReturnsRecipientsInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
-        let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: true)
-        XCTAssertEqual(result.senders, "The Rec.A, b@example.com, The Rec.C")
+        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
+        XCTAssertEqual(result.emails, "The Rec.A, b@example.com, The Rec.C")
     }
 
-    func testToMailboxItemCellUIModel_whenMappingRecipientsAsSender_andNoRecipients_itReturnsAPlaceholder() async {
+    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_andNoRecipients_itReturnsAPlaceholderInEmailsField() {
         let message = Message.testData(to: [], cc: [], bcc: [])
-        let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: true)
-        XCTAssertEqual(result.senders, "(No Recipient)")
+        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
+        XCTAssertEqual(result.emails, "(No Recipient)")
     }
 
-    func testToMailboxItemCellUIModel_whenNotMappingRecipientsAsSender_itReturnsTheSender() async {
+    func testToMailboxItemCellUIModel_whenDisplaySenderEmail_itReturnsSenderInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
-        let result = await message.toMailboxItemCellUIModel(selectedIds: [], mapRecipientsAsSender: false)
-        XCTAssertEqual(result.senders, "sender@example.com")
+        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: true)
+        XCTAssertEqual(result.emails, "sender@example.com")
     }
 }
 

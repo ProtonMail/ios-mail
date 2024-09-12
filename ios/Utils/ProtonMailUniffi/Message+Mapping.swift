@@ -21,19 +21,24 @@ import SwiftUI
 
 extension Message {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<ID>, mapRecipientsAsSender: Bool) -> MailboxItemCellUIModel {
+    var allRecipients: [MessageAddress] {
+        toList + ccList + bccList
+    }
+
+    func toMailboxItemCellUIModel(selectedIds: Set<ID>, displaySenderEmail: Bool) -> MailboxItemCellUIModel {
         var recipientsUIRepresentation: String {
-            let recipients = (toList + ccList + bccList).map(\.uiRepresentation).joined(separator: ", ")
+            let recipients = allRecipients.map(\.uiRepresentation).joined(separator: ", ")
             return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
         }
 
-        let mappedSender: String = mapRecipientsAsSender ? recipientsUIRepresentation : sender.uiRepresentation
+        let emails: String = displaySenderEmail ? sender.uiRepresentation : recipientsUIRepresentation
+        let avatar = displaySenderEmail ? sender.senderAvatar : allRecipientsAvatar
 
         return MailboxItemCellUIModel(
             id: id,
             type: .message,
-            avatar: toAvatarUIModel(),
-            senders: mappedSender,
+            avatar: avatar,
+            emails: emails,
             subject: subject.isEmpty ? L10n.Mailbox.Item.noSubject.string : subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             isRead: !unread,
@@ -53,23 +58,12 @@ extension Message {
         )
     }
 
-    func toAvatarUIModel() -> AvatarUIModel {
-        .init(
-            info: sender.avatarInfo,
-            type: .sender(params: .init(
-                address: sender.address,
-                bimiSelector: sender.bimiSelector,
-                displaySenderImage: sender.displaySenderImage
-            ))
-        )
-    }
-
     func toExpandedMessageCellUIModel(message: String?) -> ExpandedMessageCellUIModel {
         .init(
             id: id,
             message: message,
             messageDetails: MessageDetailsUIModel(
-                avatar: toAvatarUIModel(),
+                avatar: sender.senderAvatar,
                 sender: .init(
                     name: sender.uiRepresentation,
                     address: sender.address,
@@ -95,13 +89,12 @@ extension Message {
             recipients: recipients.recipientsUIRepresentation,
             messagePreview: nil,
             isRead: !unread,
-            avatar: toAvatarUIModel()
+            avatar: sender.senderAvatar
         )
     }
 
     private var recipients: [MessageDetail.Recipient] {
-        let allRecipients = toList + ccList + bccList
-        return allRecipients.map(\.toRecipient)
+        allRecipients.map(\.toRecipient)
     }
 
     private var labels: [LabelUIModel] {
@@ -118,6 +111,12 @@ extension Message {
         }
 
         return result
+    }
+
+    private var allRecipientsAvatar: AvatarUIModel {
+        let avatarInformation = avatarInformationFromMessageAddresses(addressList: allRecipients)
+
+        return .init(info: avatarInformation.info, type: .other)
     }
 
 }

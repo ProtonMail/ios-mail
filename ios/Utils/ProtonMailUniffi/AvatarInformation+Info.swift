@@ -17,10 +17,10 @@
 
 import proton_app_uniffi
 
-extension MessageAddress {
+extension AvatarInformation {
 
-    var avatarInfo: AvatarInfo {
-        avatarInformationFromMessageAddress(address: self).info
+    var info: AvatarInfo {
+        .init(initials: text, color: .init(hex: color))
     }
 
 }

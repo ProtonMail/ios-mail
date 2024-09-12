@@ -82,7 +82,7 @@ extension MailboxItemCell {
     private var senderRowView: some View {
         HStack(spacing: DS.Spacing.small) {
             replyIcons
-            Text(uiModel.senders)
+            Text(uiModel.emails)
                 .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
@@ -199,7 +199,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let id: ID
     let type: MailboxItemType
     let avatar: AvatarUIModel
-    let senders: String
+    let emails: String
     let subject: String
     let date: Date
     
@@ -220,7 +220,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         id: ID,
         type: MailboxItemType,
         avatar: AvatarUIModel,
-        senders: String,
+        emails: String,
         subject: String,
         date: Date,
         isRead: Bool,
@@ -237,7 +237,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.id = id
         self.type = type
         self.avatar = avatar
-        self.senders = senders
+        self.emails = emails
         self.subject = subject
         self.date = date
         self.isRead = isRead
@@ -304,7 +304,7 @@ enum MailboxItemCellEvent {
             id: .init(value: 0),
             type: .conversation,
             avatar: .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init())),
-            senders: "Proton",
+            emails: "Proton",
             subject: subject,
             date: Date(),
             isRead: false,
@@ -329,7 +329,7 @@ enum MailboxItemCellEvent {
                 id: .init(value: 0),
                 type: .message,
                 avatar: .init(info: .init(initials: "FE", color: .yellow), type: .sender(params: .init())),
-                senders: "FedEx",
+                emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                 isRead: false,
@@ -356,7 +356,7 @@ enum MailboxItemCellEvent {
                 id: .init(value: 0),
                 type: .message,
                 avatar: .init(info: .init(initials: "MA", color: .cyan), type: .sender(params: .init())),
-                senders: "Mary, Elijah Wood, wiseman@pm.me",
+                emails: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
                 isRead: true,

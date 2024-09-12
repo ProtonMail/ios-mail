@@ -137,7 +137,7 @@ private extension View {
                         id: .init(value: 0),
                         type: .conversation,
                         avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
-                        senders: "",
+                        emails: "",
                         subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                         date: .now,
                         isRead: true,
