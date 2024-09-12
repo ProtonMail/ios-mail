@@ -22,7 +22,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithInboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
-            location: .inbox,
+            location: .system(.inbox),
             labels: [
                 .init(labelId: .init(value: 1), text: "Reminder", color: .init(hex: "#F67900")),
                 .init(labelId: .init(value: 2), text: "Private", color: .init(hex: "#E93671")),
@@ -36,7 +36,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithArchiveLocationNoLabelsLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
-            location: .archive,
+            location: .system(.archive),
             labels: []
         )
 
@@ -46,7 +46,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithCustomLocationAndLabelsLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
-            location: .custom(name: "Online shopping", id: .init(value: 0), color: .init(value: "#F67900")),
+            location: .custom(name: "Online shopping", id: .random(), color: .init(value: "#F67900")),
             labels: [
                 .init(labelId: .init(value: 1), text: "Friends and Family", color: .init(hex: "#1795D4")),
                 .init(labelId: .init(value: 2), text: "Work", color: .init(hex: "#F67900")),
