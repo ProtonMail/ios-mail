@@ -101,6 +101,7 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
     func testSidebarCounters() async {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultConversationCount: false,
+            useDefaultMessagesCount: false,
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations",
@@ -112,6 +113,12 @@ final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
                 method: .get,
                 remotePath: "/mail/v4/conversations/count",
                 localPath: "conversations-count_426538.json",
+                serveOnce: true
+            ),
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/messages/count",
+                localPath: "messages-count_426538.json",
                 serveOnce: true
             )
         )

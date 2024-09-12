@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <g class="ic-chevron-left-filled">
-    <path d="m8.232 11.434 4.688-4.745c.398-.404 1.08-.118 1.08.453v9.716c0 .57-.682.857-1.08.453l-4.688-4.745a.808.808 0 0 1 0-1.132Z" class="Icon"/>
-  </g>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic-chevron-left-filled">
+<path id="Icon" d="M8.23166 11.4339L12.9198 6.68887C13.3184 6.28542 14 6.57116 14 7.14174L14 16.8583C14 17.4289 13.3184 17.7146 12.9198 17.3111L8.23166 12.5661C7.92278 12.2534 7.92278 11.7466 8.23166 11.4339Z" fill="#0F0F0F"/>
+</g>
 </svg>

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <g class="ic-circle-half-filled">
-    <path fill-rule="evenodd" d="M12 21V3a9 9 0 0 0 0 18Zm0-19.5c5.799 0 10.5 4.701 10.5 10.5S17.799 22.5 12 22.5 1.5 17.799 1.5 12 6.201 1.5 12 1.5Z" class="Icon"/>
-  </g>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic-circle-half-filled">
+<path id="Icon" fill-rule="evenodd" clip-rule="evenodd" d="M12 21V3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12C1.5 6.20101 6.20101 1.5 12 1.5Z" fill="#0F0F0F"/>
+</g>
 </svg>

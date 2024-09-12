@@ -22,9 +22,9 @@ struct ProtonOfficialBadgeView: View {
 
     var body: some View {
         SenderBadgeView(
-            color: DS.Color.Brand.lighten30,
+            color: DS.Color.Brand.minus30,
             text: L10n.official,
-            textColor: DS.Color.Brand.darken10
+            textColor: DS.Color.Brand.plus10
         )
     }
 }

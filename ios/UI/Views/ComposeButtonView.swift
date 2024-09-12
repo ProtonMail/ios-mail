@@ -29,13 +29,13 @@ struct ComposeButtonView: View {
         Button(action: onTap, label: {
             HStack(spacing: DS.Spacing.standard) {
                 Image(DS.Icon.icPenSquare)
-                    .foregroundStyle(DS.Color.Brand.lighten30)
+                    .foregroundStyle(DS.Color.Brand.minus30)
                     .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
                 if isExpanded {
                     Text(text)
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundStyle(DS.Color.Brand.lighten30)
+                        .foregroundStyle(DS.Color.Brand.minus30)
                         .transition(.move(edge: .trailing).combined(with: .opacity))
                         .accessibilityIdentifier(ComposeButtonIdentifiers.text)
                 }

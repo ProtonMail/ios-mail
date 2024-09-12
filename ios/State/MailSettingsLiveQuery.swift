@@ -20,6 +20,9 @@ import proton_app_uniffi
 
 protocol MailSettingLiveQuerying {
     var settingsPublisher: AnyPublisher<MailSettings, Never> { get }
+
+    /// Emits an event only when the user's view mode setting changes
+    var viewModeHasChanged: AnyPublisher<Void, Never> { get }
 }
 
 final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailSettingLiveQuerying {
@@ -45,6 +48,15 @@ final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailS
 
     var settingsPublisher: AnyPublisher<MailSettings, Never> {
         settingsSubject.eraseToAnyPublisher()
+    }
+
+    var viewModeHasChanged: AnyPublisher<Void, Never> {
+        settingsPublisher
+            .map(\.viewMode)
+            .removeDuplicates()
+            .dropFirst()
+            .map { _ in }
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Private

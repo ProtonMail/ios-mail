@@ -21,13 +21,13 @@ public extension DS.Color {
     }
 
     enum Brand {
-        public static let lighten30 = Color(.brandLighten30)
-        public static let lighten20 = Color(.brandLighten20)
-        public static let lighten10 = Color(.brandLighten10)
+        public static let plus30 = Color(.brandPlus30)
+        public static let plus20 = Color(.brandPlus20)
+        public static let plus10 = Color(.brandPlus10)
         public static let norm = Color(.brandNorm)
-        public static let darken10 = Color(.brandDarken10)
-        public static let darken20 = Color(.brandDarken20)
-        public static let darken30 = Color(.brandDarken30)
+        public static let minus10 = Color(.brandMinus10)
+        public static let minus20 = Color(.brandMinus20)
+        public static let minus30 = Color(.brandMinus30)
     }
 
     enum Global {
@@ -46,14 +46,14 @@ public extension DS.Color {
     }
 
     enum Interaction {
-        public static let norm = Color(.brandNorm)
-        public static let pressed = Color(.brandDarken10)
-        public static let disabled = Color(.brandLighten10)
+        public static let norm = Color(.interactionNorm)
+        public static let pressed = Color(.interactionPressed)
+        public static let disabled = Color(.interactionDisabled)
     }
 
     enum InteractionStrong {
-        public static let norm = Color(.brandDarken10)
-        public static let pressed = Color(.brandDarken20)
+        public static let norm = Color(.interactionStrongNorm)
+        public static let pressed = Color(.interactionStrongPressed)
     }
 
     enum InteractionWeak {

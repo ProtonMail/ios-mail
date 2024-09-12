@@ -158,4 +158,7 @@ class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
         Just(.defaults()).eraseToAnyPublisher()
     }
 
+    var viewModeHasChanged: AnyPublisher<Void, Never> {
+        Just(Void()).eraseToAnyPublisher()
+    }
 }
