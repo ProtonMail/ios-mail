@@ -131,10 +131,10 @@ struct SettingsScreen: View {
             .clipShape(Circle())
         case .preference(let settingsPreference):
             Image(settingsPreference.icon)
+                .resizable()
+                .square(size: 24)
+                .foregroundStyle(DS.Color.Icon.norm)
                 .square(size: 40)
-                .foregroundStyle(DS.Color.Brand.norm)
-                .background(DS.Color.Brand.minus30)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
         }
     }
 

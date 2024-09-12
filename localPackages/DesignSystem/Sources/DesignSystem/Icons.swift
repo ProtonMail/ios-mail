@@ -34,6 +34,7 @@ public extension DS.Icon {
     static let icFilter = ImageResource.icFilter
     static let icFolder = ImageResource.icFolder
     static let icFolderOpenFilled = ImageResource.icFolderOpenFilled
+    static let icFolderOpen = ImageResource.icFolderOpen
     static let icFolders = ImageResource.icFolders
     static let icHamburguer = ImageResource.icHamburger
     static let icInbox = ImageResource.icInbox
@@ -43,7 +44,9 @@ public extension DS.Icon {
     static let icPaperPlane = ImageResource.icPaperPlane
     static let icPencil = ImageResource.icPencil
     static let icPlus = ImageResource.icPlus
+    static let icSliders = ImageResource.icSliders
     static let icShield2 = ImageResource.icShield2
+    static let icShield2Bolt = ImageResource.icShield2Bolt
     static let icSpam = ImageResource.icSpam
     static let icNotSpam = ImageResource.icNoSpam
     static let icStarFilled = ImageResource.icStarFilled

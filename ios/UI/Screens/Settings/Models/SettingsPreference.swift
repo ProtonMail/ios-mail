@@ -58,13 +58,13 @@ enum SettingsPreference: CaseIterable, Equatable {
     var icon: ImageResource {
         switch self {
         case .email:
-            DS.Icon.icEnvelope
+            DS.Icon.icEnvelopes
         case .foldersAndLabels:
-            DS.Icon.icBookmark
+            DS.Icon.icFolderOpen
         case .filters:
-            DS.Icon.icFilter
+            DS.Icon.icSliders
         case .privacyAndSecurity:
-            DS.Icon.icShield2
+            DS.Icon.icShield2Bolt
         case .app:
             DS.Icon.icMobile
         }
