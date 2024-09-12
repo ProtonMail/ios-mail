@@ -24,4 +24,30 @@ extension View {
         self.shadow(color: shadow.color, radius: shadow.blur, x: shadow.x, y: shadow.y)
     }
 
+    func shadow(_ shadow: Shadow, isPresented: Bool) -> some View {
+        modifier(ConditionalShadow(shadow: shadow, isPresented: isPresented))
+    }
+
+}
+
+struct ConditionalShadow: ViewModifier {
+
+    private let shadow: Shadow
+    private let isPresented: Bool
+
+    init(shadow: Shadow, isPresented: Bool) {
+        self.shadow = shadow
+        self.isPresented = isPresented
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .shadow(
+                color: isPresented ? shadow.color : shadow.color.opacity(0),
+                radius: shadow.blur,
+                x: shadow.x,
+                y: shadow.y
+            )
+    }
+
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension DS.Shadows {
+public extension DS.Shadows {
 
     static let softFull = Shadow.make(x: .zero, y: .zero, color: .shadowWeak)
     static let softTop = Shadow.make(x: .zero, y: -4, color: .shadowWeak)
