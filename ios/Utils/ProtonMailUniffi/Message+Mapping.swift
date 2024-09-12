@@ -32,7 +32,7 @@ extension Message {
         }
 
         let emails: String = displaySenderEmail ? sender.uiRepresentation : recipientsUIRepresentation
-        let avatar = displaySenderEmail ? senderAvatar() : allRecipientsAvatar()
+        let avatar = displaySenderEmail ? sender.senderAvatar : allRecipientsAvatar
 
         return MailboxItemCellUIModel(
             id: id,
@@ -58,23 +58,12 @@ extension Message {
         )
     }
 
-    func senderAvatar() -> AvatarUIModel {
-        .init(
-            info: sender.avatarInfo,
-            type: .sender(params: .init(
-                address: sender.address,
-                bimiSelector: sender.bimiSelector,
-                displaySenderImage: sender.displaySenderImage
-            ))
-        )
-    }
-
     func toExpandedMessageCellUIModel(message: String?) -> ExpandedMessageCellUIModel {
         .init(
             id: id,
             message: message,
             messageDetails: MessageDetailsUIModel(
-                avatar: senderAvatar(),
+                avatar: sender.senderAvatar,
                 sender: .init(
                     name: sender.uiRepresentation,
                     address: sender.address,
@@ -100,7 +89,7 @@ extension Message {
             recipients: recipients.recipientsUIRepresentation,
             messagePreview: nil,
             isRead: !unread,
-            avatar: senderAvatar()
+            avatar: sender.senderAvatar
         )
     }
 
@@ -124,11 +113,10 @@ extension Message {
         return result
     }
 
-    private func allRecipientsAvatar() -> AvatarUIModel {
+    private var allRecipientsAvatar: AvatarUIModel {
         let avatarInformation = avatarInformationFromMessageAddresses(addressList: allRecipients)
-        let info = AvatarInfo(initials: avatarInformation.text, color: .init(hex: avatarInformation.color))
 
-        return .init(info: info, type: .other)
+        return .init(info: avatarInformation.info, type: .other)
     }
 
 }

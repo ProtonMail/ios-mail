@@ -50,19 +50,19 @@ final class MessageMappingTests: XCTestCase {
         XCTAssertTrue(result2.isSelected)
     }
 
-    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_itReturnsRecipientsInSenderField() {
+    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_itReturnsRecipientsInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
         let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
         XCTAssertEqual(result.emails, "The Rec.A, b@example.com, The Rec.C")
     }
 
-    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_andNoRecipients_itReturnsAPlaceholder() {
+    func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_andNoRecipients_itReturnsAPlaceholderInEmailsField() {
         let message = Message.testData(to: [], cc: [], bcc: [])
         let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
         XCTAssertEqual(result.emails, "(No Recipient)")
     }
 
-    func testToMailboxItemCellUIModel_whenDisplaySenderEmail_itReturnsTheSender() {
+    func testToMailboxItemCellUIModel_whenDisplaySenderEmail_itReturnsSenderInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
         let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: true)
         XCTAssertEqual(result.emails, "sender@example.com")

@@ -28,14 +28,7 @@ extension Conversation {
         return MailboxItemCellUIModel(
             id: id,
             type: .conversation,
-            avatar: .init(
-                info: firstSender.avatarInfo,
-                type: .sender(params: .init(
-                    address: firstSender.address,
-                    bimiSelector: firstSender.bimiSelector,
-                    displaySenderImage: firstSender.displaySenderImage
-                ))
-            ),
+            avatar: firstSender.senderAvatar,
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
