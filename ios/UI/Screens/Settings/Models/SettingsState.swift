@@ -20,7 +20,7 @@ import DesignSystem
 struct SettingsState {
     let accountSettings: AccountSettings
     let preferences: [SettingsPreference]
-    var presentedWebPage: ProtonAuthenticatedWebPage?
+    let presentedWebPage: ProtonAuthenticatedWebPage?
 }
 
 extension SettingsState {

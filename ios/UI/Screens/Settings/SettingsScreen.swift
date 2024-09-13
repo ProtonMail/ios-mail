@@ -46,7 +46,7 @@ struct SettingsScreen: View {
                     doneToolbarItem()
                 }
             }
-            .navigationDestination(item: $state.presentedWebPage) { webPage in
+            .navigationDestination(item: presentedWebPage) { webPage in
                 ProtonAuthenticatedWebView(webViewPage: webPage)
                     .background(DS.Color.Background.norm)
                     .edgesIgnoringSafeArea(.bottom)
@@ -67,6 +67,13 @@ struct SettingsScreen: View {
     }
 
     // MARK: - Private
+
+    private var presentedWebPage: Binding<ProtonAuthenticatedWebPage?> {
+        Binding(
+            get: { state.presentedWebPage },
+            set: { newValue in state = state.copy(presentedWebPage: newValue) }
+        )
+    }
 
     private func section(items: [SettingsItemType], header: LocalizedStringResource) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
