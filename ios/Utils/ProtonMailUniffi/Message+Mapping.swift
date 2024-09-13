@@ -46,7 +46,7 @@ extension Message {
             isStarred: starred,
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: sender.isProton,
-            numMessages: 0,
+            messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             replyIcons: .init(

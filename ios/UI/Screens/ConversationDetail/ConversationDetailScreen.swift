@@ -145,7 +145,7 @@ private extension View {
                         isStarred: true,
                         isSelected: false,
                         isSenderProtonOfficial: true,
-                        numMessages: 3,
+                        messagesCount: 3,
                         labelUIModel: MailboxLabelUIModel(
                             labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                         ),
