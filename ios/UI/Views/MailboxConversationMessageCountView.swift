@@ -19,12 +19,12 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxConversationMessageCountView: View {
-    let numMessages: UInt64
+    let messagesCount: UInt64
 
     private let cornerRadius = 6.0
 
     var body: some View {
-        if let unreadFormatted = UnreadCountFormatter.string(count: numMessages) {
+        if let unreadFormatted = UnreadCountFormatter.string(count: messagesCount) {
             Text(unreadFormatted)
                 .font(.caption2)
                 .fontWeight(.semibold)
@@ -45,10 +45,10 @@ struct MailboxConversationMessageCountView: View {
 
 #Preview {
     VStack(spacing: 10) {
-        MailboxConversationMessageCountView(numMessages: 0)
-        MailboxConversationMessageCountView(numMessages: 1)
-        MailboxConversationMessageCountView(numMessages: 12)
-        MailboxConversationMessageCountView(numMessages: 23889)
+        MailboxConversationMessageCountView(messagesCount: 0)
+        MailboxConversationMessageCountView(messagesCount: 1)
+        MailboxConversationMessageCountView(messagesCount: 12)
+        MailboxConversationMessageCountView(messagesCount: 23889)
     }
     .border(.purple)
 }

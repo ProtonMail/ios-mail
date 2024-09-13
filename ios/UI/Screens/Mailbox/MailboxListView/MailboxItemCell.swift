@@ -90,7 +90,7 @@ extension MailboxItemCell {
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.senderText)
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
-            MailboxConversationMessageCountView(numMessages: uiModel.messagesCount)
+            MailboxConversationMessageCountView(messagesCount: uiModel.messagesCount)
             Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption2)
