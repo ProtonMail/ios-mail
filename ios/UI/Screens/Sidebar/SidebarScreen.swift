@@ -38,7 +38,7 @@ struct SidebarScreen: View {
         sidebar: SidebarProtocol,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
-        self._screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebar))
+        _screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebar))
         self.selectedItem = selectedItem
     }
 

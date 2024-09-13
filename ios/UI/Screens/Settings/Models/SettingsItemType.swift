@@ -17,41 +17,34 @@
 
 import Foundation
 
-enum SettingsItemType: Equatable, Hashable {
+enum SettingsItemType: Hashable {
     case account(AccountSettings)
     case preference(SettingsPreference)
 
-    var webViewPage: ProtonAuthenticatedWebPage? {
+    struct DisplayData {
+        let title: String
+        let subtitle: String
+        let webPage: ProtonAuthenticatedWebPage?
+    }
+
+    var displayData: DisplayData {
         switch self {
-        case .account:
-            return .accountSettings
+        case .account(let accountSettings):
+            .init(title: accountSettings.name, subtitle: accountSettings.email, webPage: .accountSettings)
         case .preference(let settingsPreference):
-            return settingsPreference.webViewPage
+            .init(
+                title: settingsPreference.displayData.title.string,
+                subtitle: settingsPreference.displayData.subtitle.string,
+                webPage: settingsPreference.webPage
+            )
         }
     }
 
-    var title: String {
-        switch self {
-        case .account(let accountSettings):
-            accountSettings.name
-        case .preference(let settingsPreference):
-            settingsPreference.title.string
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .account(let accountSettings):
-            accountSettings.email
-        case .preference(let settingsPreference):
-            settingsPreference.subtitle.string
-        }
-    }
 }
 
 private extension SettingsPreference {
 
-    var webViewPage: ProtonAuthenticatedWebPage? {
+    var webPage: ProtonAuthenticatedWebPage? {
         switch self {
         case .email:
             return .emailSettings

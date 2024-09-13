@@ -18,55 +18,44 @@
 import DesignSystem
 import SwiftUI
 
-enum SettingsPreference: CaseIterable, Equatable {
+enum SettingsPreference: CaseIterable, Hashable {
     case email
     case foldersAndLabels
     case filters
     case privacyAndSecurity
     case app
 
-    var title: LocalizedStringResource {
+    struct DisplayData {
+        let title: LocalizedStringResource
+        let subtitle: LocalizedStringResource
+        let icon: ImageResource
+    }
+
+    var displayData: DisplayData {
         switch self {
         case .email:
-            L10n.Settings.email
+            .init(title: L10n.Settings.email, subtitle: L10n.Settings.emailSubtitle, icon: DS.Icon.icEnvelopes)
         case .foldersAndLabels:
-            L10n.Settings.foldersAndLabels
+            .init(
+                title: L10n.Settings.foldersAndLabels,
+                subtitle: L10n.Settings.foldersAndLabelsSubtitle,
+                icon: DS.Icon.icFolderOpen
+            )
         case .filters:
-            L10n.Settings.filters
+            .init(title: L10n.Settings.filters, subtitle: L10n.Settings.filtersSubtitle, icon: DS.Icon.icSliders)
         case .privacyAndSecurity:
-            L10n.Settings.privacyAndSecurity
+            .init(
+                title: L10n.Settings.privacyAndSecurity,
+                subtitle: L10n.Settings.privacyAndSecuritySubtitle,
+                icon: DS.Icon.icShield2Bolt
+            )
         case .app:
-            L10n.Settings.appSettingsTitle
+            .init(
+                title: L10n.Settings.appSettingsTitle, 
+                subtitle: L10n.Settings.appSettingsSubtitle,
+                icon: DS.Icon.icMobile
+            )
         }
     }
 
-    var subtitle: LocalizedStringResource {
-        switch self {
-        case .email:
-            L10n.Settings.emailSubtitle
-        case .foldersAndLabels:
-            L10n.Settings.foldersAndLabelsSubtitle
-        case .filters:
-            L10n.Settings.filtersSubtitle
-        case .privacyAndSecurity:
-            L10n.Settings.privacyAndSecuritySubtitle
-        case .app:
-            L10n.Settings.appSettingsSubtitle
-        }
-    }
-
-    var icon: ImageResource {
-        switch self {
-        case .email:
-            DS.Icon.icEnvelopes
-        case .foldersAndLabels:
-            DS.Icon.icFolderOpen
-        case .filters:
-            DS.Icon.icSliders
-        case .privacyAndSecurity:
-            DS.Icon.icShield2Bolt
-        case .app:
-            DS.Icon.icMobile
-        }
-    }
 }

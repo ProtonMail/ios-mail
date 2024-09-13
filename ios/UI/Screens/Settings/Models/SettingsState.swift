@@ -20,6 +20,7 @@ import DesignSystem
 struct SettingsState {
     let accountSettings: AccountSettings
     let preferences: [SettingsPreference]
+    var presentedWebPage: ProtonAuthenticatedWebPage?
 }
 
 extension SettingsState {
@@ -29,11 +30,15 @@ extension SettingsState {
             accountSettings: .init(
                 name: "Mocked name".notLocalized,
                 email: "mocked.email@pm.me".notLocalized,
-                initials: "T".notLocalized,
-                initialsBackground: DS.Color.Brand.norm
+                avatarInfo: .init(initials: "T".notLocalized, color: DS.Color.Brand.norm)
             ),
-            preferences: .stale
+            preferences: .stale, 
+            presentedWebPage: nil
         )
+    }
+
+    func copy(presentedWebPage: ProtonAuthenticatedWebPage?) -> Self {
+        .init(accountSettings: accountSettings, preferences: preferences, presentedWebPage: presentedWebPage)
     }
 
 }

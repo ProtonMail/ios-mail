@@ -18,7 +18,7 @@
 import DesignSystem
 import SwiftUI
 
-struct AvatarInfo {
+struct AvatarInfo: Hashable {
     let initials: String
     let color: Color
 }

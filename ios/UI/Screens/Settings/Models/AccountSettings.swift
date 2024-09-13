@@ -17,9 +17,8 @@
 
 import SwiftUI
 
-struct AccountSettings: Equatable, Hashable {
+struct AccountSettings: Hashable {
     let name: String
     let email: String
-    let initials: String
-    let initialsBackground: Color
+    let avatarInfo: AvatarInfo
 }

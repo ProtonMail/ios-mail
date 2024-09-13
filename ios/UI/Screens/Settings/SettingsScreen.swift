@@ -22,7 +22,6 @@ struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private var state: SettingsState
-    @State private var webViewPage: ProtonAuthenticatedWebPage?
 
     init() {
         _state = .init(initialValue: .initial)
@@ -47,21 +46,21 @@ struct SettingsScreen: View {
                     doneToolbarItem()
                 }
             }
-            .navigationDestination(item: $webViewPage) { webViewPage in
-                ProtonAuthenticatedWebView(webViewPage: webViewPage)
+            .navigationDestination(item: $state.presentedWebPage) { webPage in
+                ProtonAuthenticatedWebView(webViewPage: webPage)
                     .background(DS.Color.Background.norm)
                     .edgesIgnoringSafeArea(.bottom)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            Button(action: { self.webViewPage = nil }) {
+                            Button(action: { popWebPage() }) {
                                 Image(DS.Icon.icChevronTinyLeft)
                                     .foregroundStyle(DS.Color.Icon.weak)
                             }
                         }
                         doneToolbarItem()
                     }
-                    .navigationTitle(webViewPage.title.string)
+                    .navigationTitle(webPage.title.string)
                     .navigationBarBackButtonHidden(true)
             }
         }
@@ -102,9 +101,9 @@ struct SettingsScreen: View {
                 image(for: item)
                     .padding(.trailing, DS.Spacing.large)
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                    Text(item.title)
+                    Text(item.displayData.title)
                         .foregroundStyle(DS.Color.Text.weak)
-                    Text(item.subtitle)
+                    Text(item.displayData.subtitle)
                         .foregroundStyle(DS.Color.Text.hint)
                         .font(.subheadline)
                 }
@@ -121,8 +120,8 @@ struct SettingsScreen: View {
         switch item {
         case .account(let accountSettings):
             ZStack {
-                Color(accountSettings.initialsBackground)
-                Text(accountSettings.initials)
+                Color(accountSettings.avatarInfo.color)
+                Text(accountSettings.avatarInfo.initials)
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Global.white)
@@ -130,11 +129,11 @@ struct SettingsScreen: View {
             .square(size: 40)
             .clipShape(Circle())
         case .preference(let settingsPreference):
-            Image(settingsPreference.icon)
+            Image(settingsPreference.displayData.icon)
                 .resizable()
                 .square(size: 24)
                 .foregroundStyle(DS.Color.Icon.norm)
-                .square(size: 40)
+                .padding(DS.Spacing.standard)
         }
     }
 
@@ -148,12 +147,17 @@ struct SettingsScreen: View {
     }
 
     private func selected(item: SettingsItemType) {
-        if let webViewPage = item.webViewPage {
-            self.webViewPage = webViewPage
+        if let webPage = item.displayData.webPage {
+            state = state.copy(presentedWebPage: webPage)
         } else {
             toastStateStore.present(toast: .comingSoon)
         }
     }
+
+    private func popWebPage() {
+        state = state.copy(presentedWebPage: nil)
+    }
+
 }
 
 #Preview {
