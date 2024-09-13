@@ -99,7 +99,7 @@ extension ConversationDetailModel {
     private func conversationID() async throws -> ID {
         switch seed {
         case .mailboxItem(let item, _):
-            return item.id
+            return item.conversationID
         case .message(let messageID, _, _):
             let message = try await fetchMessage(with: messageID)
             return message.conversationId

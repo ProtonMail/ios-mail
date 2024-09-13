@@ -28,6 +28,7 @@ enum PreviewData {
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: .random(),
+                conversationID: .random(),
                 type: .conversation,
                 avatar: .init(
                     info: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), color: .red),

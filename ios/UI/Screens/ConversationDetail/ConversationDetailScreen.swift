@@ -134,7 +134,8 @@ private extension View {
         ConversationDetailScreen(seed:
                 .mailboxItem(
                     item: .init(
-                        id: .init(value: 0),
+                        id: .random(),
+                        conversationID: .random(),
                         type: .conversation,
                         avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
                         emails: "",

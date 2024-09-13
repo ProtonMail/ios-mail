@@ -36,6 +36,7 @@ extension Message {
 
         return MailboxItemCellUIModel(
             id: id,
+            conversationID: conversationId,
             type: .message,
             avatar: avatar,
             emails: emails,

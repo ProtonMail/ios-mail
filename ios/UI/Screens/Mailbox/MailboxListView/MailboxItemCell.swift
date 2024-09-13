@@ -197,6 +197,7 @@ extension MailboxItemCell {
 @Observable
 final class MailboxItemCellUIModel: Identifiable, Sendable {
     let id: ID
+    let conversationID: ID
     let type: MailboxItemType
     let avatar: AvatarUIModel
     let emails: String
@@ -218,6 +219,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
     init(
         id: ID,
+        conversationID: ID,
         type: MailboxItemType,
         avatar: AvatarUIModel,
         emails: String,
@@ -235,6 +237,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         snoozeDate: Date?
     ) {
         self.id = id
+        self.conversationID = conversationID
         self.type = type
         self.avatar = avatar
         self.emails = emails
@@ -301,7 +304,8 @@ enum MailboxItemCellEvent {
 #Preview {
     func model(subject: String) -> MailboxItemCellUIModel {
         MailboxItemCellUIModel(
-            id: .init(value: 0),
+            id: .random(),
+            conversationID: .random(),
             type: .conversation,
             avatar: .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init())),
             emails: "Proton",
@@ -326,7 +330,8 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: .init(value: 0),
+                id: .random(),
+                conversationID: .random(),
                 type: .message,
                 avatar: .init(info: .init(initials: "FE", color: .yellow), type: .sender(params: .init())),
                 emails: "FedEx",
@@ -353,7 +358,8 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: .init(value: 0),
+                id: .random(),
+                conversationID: .random(),
                 type: .message,
                 avatar: .init(info: .init(initials: "MA", color: .cyan), type: .sender(params: .init())),
                 emails: "Mary, Elijah Wood, wiseman@pm.me",

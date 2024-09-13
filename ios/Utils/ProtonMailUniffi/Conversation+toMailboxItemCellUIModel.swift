@@ -27,6 +27,7 @@ extension Conversation {
 
         return MailboxItemCellUIModel(
             id: id,
+            conversationID: id,
             type: .conversation,
             avatar: firstSender.senderAvatar,
             emails: senders.addressUIRepresentation,
