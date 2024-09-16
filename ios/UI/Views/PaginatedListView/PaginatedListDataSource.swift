@@ -43,6 +43,7 @@ final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecke
 
     /// Use this function to refresh the items' values by overwriting the existing item list.
     /// - Parameter updatedItems: new list of items. The list can't be empty
+    @MainActor
     func updateItems(_ updatedItems: [Item]) async {
         guard !updatedItems.isEmpty else { return }
         state.items = updatedItems

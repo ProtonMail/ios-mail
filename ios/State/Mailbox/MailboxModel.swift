@@ -26,8 +26,8 @@ import class UIKit.UIImage
  */
 final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
-    @Published private(set) var state: MailboxModel.State
-    
+    @Published private(set) var mailboxTitle: LocalizedStringResource = .init(stringLiteral: "")
+
     // Filter
     @Published var unreadItemsCount: UInt64 = 0
     @Published var isUnreadSelected: Bool = false
@@ -50,8 +50,12 @@ final class MailboxModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     private var messagePaginator: MessagePaginator?
-    private var conversationPaginator: MessagePaginator?
-    private(set) var paginatedDatasource: PaginatedListDatasource<MailboxItemCellUIModel>!
+    private var conversationPaginator: ConversationPaginator?
+    lazy var paginatedDatasource = PaginatedListDatasource<MailboxItemCellUIModel>(fetchPage: { currentPage, pageSize in
+        let result = await self.fetchNextPageItems(currentPage: currentPage)
+        AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items", category: .mailbox)
+        return result
+    })
 
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
     private let itemListCallback: LiveQueryCallbackWrapper = .init()
@@ -62,26 +66,20 @@ final class MailboxModel: ObservableObject {
     }
 
     init(
-        state: State = .loading,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         openedItem: MailboxMessageSeed? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
-        self.state = state
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.selectionMode = SelectionModeState()
         self.dependencies = dependencies
 
-        self.paginatedDatasource = .init(fetchPage: { [unowned self] currentPage, _ in
-            return await self.fetchNextPageItems(currentPage: currentPage)
-        })
-
         setUpBindings()
-        setUpCallbacks()
+//        setUpCallbacks()
 
         if let openedItem = openedItem {
             navigationPath.append(openedItem)
@@ -93,7 +91,8 @@ final class MailboxModel: ObservableObject {
     }
 
     func onViewDidAppear() async {
-        await updateMailboxAndFetchData()
+//        await updateMailboxAndFetchData()
+        await updateMailboxAndPaginator()
     }
 }
 
@@ -108,7 +107,8 @@ extension MailboxModel {
                 Task {
                     guard let self else { return }
                     self.selectedMailbox = newSelectedMailbox
-                    await self.updateMailboxAndFetchData()
+//                    await self.updateMailboxAndFetchData()
+                    await self.updateMailboxAndPaginator()
                 }
             }
             .store(in: &cancellables)
@@ -119,7 +119,8 @@ extension MailboxModel {
                 Task {
                     guard let self else { return }
                     AppLogger.log(message: "viewMode has changed", category: .mailbox)
-                    await self.updateMailboxAndFetchData()
+//                    await self.updateMailboxAndFetchData()
+                    await self.updateMailboxAndPaginator()
                 }
             }
             .store(in: &cancellables)
@@ -128,112 +129,112 @@ extension MailboxModel {
             .$hasSelectedItems
             .sink { [weak self] hasItems in
                 Task {
-                    await self?.readMailboxItems()
+//                    await self?.readMailboxItems()
                 }
             }
             .store(in: &cancellables)
     }
 
-    private func setUpCallbacks() {
-        itemListCallback.delegate = { [weak self] in
-            Task {
-                AppLogger.logTemporarily(message: "item list callback", category: .mailbox)
-                await self?.readMailboxItems()
-            }
-        }
-    }
+//    private func setUpCallbacks() {
+//        itemListCallback.delegate = { [weak self] in
+//            Task {
+//                AppLogger.logTemporarily(message: "item list callback", category: .mailbox)
+////                await self?.readMailboxItems()
+//            }
+//        }
+//    }
 
     /// Call this function to reset the Mailbox object with a new label id and fetch its mailbox items
-    private func updateMailboxAndFetchData() async {
-        await updateState(.loading)
-        guard let userSession = dependencies.appContext.activeUserSession else { return }
-        do {
-            let mailbox = selectedMailbox.isInbox
-            ? try await Mailbox.inbox(ctx: userSession)
-            : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
-            self.mailbox = mailbox
-
-            AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-            await createWatchHandlers(for: mailbox)
-
-            // temporary, delete when the handler callback is triggered when initialised
-            await readMailboxItems()
-        } catch {
-            AppLogger.log(error: error, category: .mailbox)
-        }
-    }
+//    private func updateMailboxAndFetchData() async {
+//        await updateState(.loading)
+//        guard let userSession = dependencies.appContext.activeUserSession else { return }
+//        do {
+//            let mailbox = selectedMailbox.isInbox
+//            ? try await Mailbox.inbox(ctx: userSession)
+//            : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
+//            self.mailbox = mailbox
+//
+//            AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
+//            await createWatchHandlers(for: mailbox)
+//
+//            // temporary, delete when the handler callback is triggered when initialised
+//            await readMailboxItems()
+//        } catch {
+//            AppLogger.log(error: error, category: .mailbox)
+//        }
+//    }
 
     /// Keeps a reference to the `WatchHandler` objects responsible for calling back when there are data changes
-    private func createWatchHandlers(for mailbox: Mailbox) async {
-        unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
-            await MainActor.run {
-                self?.unreadItemsCount = unreadCount
-            }
-        }
-        await unreadCountLiveQuery?.setUpLiveQuery()
+//    private func createWatchHandlers(for mailbox: Mailbox) async {
+//        unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
+//            await MainActor.run {
+//                self?.unreadItemsCount = unreadCount
+//            }
+//        }
+//        await unreadCountLiveQuery?.setUpLiveQuery()
+//
+//        do {
+//            switch viewMode {
+//            case .conversations:
+//                itemListHandle = try await watchConversationsForLabel(
+//                    session: userSession,
+//                    labelId: mailbox.labelId(),
+//                    callback: itemListCallback
+//                ).handle
+//            case .messages:
+//                itemListHandle = try await watchMessagesForLabel(
+//                    session: userSession,
+//                    labelId: mailbox.labelId(),
+//                    callback: itemListCallback
+//                ).handle
+//            }
+//        } catch {
+//            AppLogger.log(error: error, category: .mailbox)
+//        }
+//    }
 
-        do {
-            switch viewMode {
-            case .conversations:
-                itemListHandle = try await watchConversationsForLabel(
-                    session: userSession,
-                    labelId: mailbox.labelId(),
-                    callback: itemListCallback
-                ).handle
-            case .messages:
-                itemListHandle = try await watchMessagesForLabel(
-                    session: userSession,
-                    labelId: mailbox.labelId(),
-                    callback: itemListCallback
-                ).handle
-            }
-        } catch {
-            AppLogger.log(error: error, category: .mailbox)
-        }
-    }
-
-    private func readMailboxItems() async {
-        guard let mailbox else {
-            AppLogger.log(message: "No mailbox object found", category: .mailbox, isError: true)
-            return
-        }
-        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
-        var mailboxItems = [MailboxItemCellUIModel]()
-        do {
-            switch viewMode {
-            case .conversations:
-                mailboxItems = try await conversationsForLabel(session: userSession, labelId: mailbox.labelId())
-                    .map { conversation in
-                        conversation.toMailboxItemCellUIModel(selectedIds: selectedIds)
-                    }
-
-            case .messages:
-                let systemFolder = selectedMailbox.systemFolder
-                mailboxItems = try await messagesForLabel(session: userSession, labelId: mailbox.labelId())
-                    .map { message in
-                        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
-                            .contains(systemFolder)
-                        return message.toMailboxItemCellUIModel(
-                            selectedIds: selectedIds,
-                            displaySenderEmail: displaySenderEmail
-                        )
-                    }
-            }
-        }
-        catch {
-            AppLogger.log(error: error, category: .mailbox)
-        }
-        let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
-        await updateState(newState)
-
-        selectionMode.refreshSelectedItemsStatus { itemIds in
-            guard !itemIds.isEmpty, case .data(let mailboxItems) = state else { return [] }
-            let selectedItems = mailboxItems
-                .filter { itemIds.contains($0.id) }
-                .map { $0.toSelectedItem() }
-            return Set(selectedItems)
-        }
-    }
+//    private func readMailboxItems() async {
+//        guard let mailbox else {
+//            AppLogger.log(message: "No mailbox object found", category: .mailbox, isError: true)
+//            return
+//        }
+//        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+//        var mailboxItems = [MailboxItemCellUIModel]()
+//        do {
+//            switch viewMode {
+//            case .conversations:
+//                mailboxItems = try await conversationsForLabel(session: userSession, labelId: mailbox.labelId())
+//                    .map { conversation in
+//                        conversation.toMailboxItemCellUIModel(selectedIds: selectedIds)
+//                    }
+//
+//            case .messages:
+//                let systemFolder = selectedMailbox.systemFolder
+//                mailboxItems = try await messagesForLabel(session: userSession, labelId: mailbox.labelId())
+//                    .map { message in
+//                        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+//                            .contains(systemFolder)
+//                        return message.toMailboxItemCellUIModel(
+//                            selectedIds: selectedIds,
+//                            displaySenderEmail: displaySenderEmail
+//                        )
+//                    }
+//            }
+//        }
+//        catch {
+//            AppLogger.log(error: error, category: .mailbox)
+//        }
+//        let newState: State = mailboxItems.count > 0 ? .data(mailboxItems) : .empty
+//        await updateState(newState)
+//
+//        selectionMode.refreshSelectedItemsStatus { itemIds in
+//            guard !itemIds.isEmpty, paginatedDatasource.state == .data else { return [] }
+//            let selectedItems = mailboxItems
+//                .filter { itemIds.contains($0.id) }
+//                .map { $0.toSelectedItem() }
+//            return Set(selectedItems)
+//        }
+//    }
 
     private func updateMailboxAndPaginator() async {
         guard let userSession = dependencies.appContext.activeUserSession else { return }
@@ -242,20 +243,32 @@ extension MailboxModel {
             ? try await Mailbox.inbox(ctx: userSession)
             : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
             self.mailbox = mailbox
+            AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
 
             if mailbox.viewMode() == .messages {
-                let result = try await paginateMessagesForLabel(
+                messagePaginator = try await paginateMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
                     callback: self
                 )
             } else {
-                let result = try await paginateConversationsForLabel(
+                conversationPaginator = try await paginateConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
                     callback: self
                 )
             }
+            updateMailboxTitle()
+            
+            await paginatedDatasource.fetchInitialPage()
+            
+            unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
+                AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
+                await MainActor.run {
+                    self?.unreadItemsCount = unreadCount
+                }
+            }
+            await unreadCountLiveQuery?.setUpLiveQuery()
 
         } catch {
             AppLogger.log(error: error, category: .mailbox)
@@ -283,26 +296,54 @@ extension MailboxModel {
             AppLogger.log(message: "no mailbox found when fetching messages", category: .mailbox, isError: true)
             return .init(newItems: [], isLastPage: true)
         }
-        let isLastPage = currentPage == messagePaginator.pageCount()-1
         let systemFolder = selectedMailbox.systemFolder
         let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
             .contains(systemFolder)
         AppLogger.log(message: "fetching messages page \(currentPage)", category: .mailbox)
         do {
-            let messages = try await messagePaginator.currentPage().map {
+            let messages = currentPage == 0
+            ? try await messagePaginator.currentPage()
+            : try await messagePaginator.nextPage()
+            let items = messages.map {
                 $0.toMailboxItemCellUIModel(selectedIds: selectedIds, displaySenderEmail: displaySenderEmail)
             }
-            return .init(newItems: messages, isLastPage: isLastPage)
+            print("👉 \(items.count) - \(items.first?.subject)")
+            print("👉 currentPageNumber = \(messagePaginator.currentPageNumber())")
+            print("👉 resultCount = \(messagePaginator.resultCount())")
+            print("👉 pageCount = \(messagePaginator.pageCount())")
+            print("👉 hasNextPage() = \(messagePaginator.hasNextPage())")
+            return .init(newItems: items, isLastPage: items.isEmpty) // !messagePaginator.hasNextPage())
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            return .init(newItems: [], isLastPage: isLastPage)
+            return .init(newItems: paginatedDatasource.state.items, isLastPage: true)
         }
     }
 
-    @MainActor
-    private func updateState(_ newState: State) async {
-        AppLogger.logTemporarily(message: "mailbox update state \(newState.debugDescription)", category: .mailbox)
-        state = newState
+    func reloadRenderedMessages() async {
+        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        let systemFolder = selectedMailbox.systemFolder
+        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+            .contains(systemFolder)
+        guard let messagePaginator else { return }
+        do {
+            let messages = try await messagePaginator.reload()
+            let items = messages.map {
+                $0.toMailboxItemCellUIModel(selectedIds: selectedIds, displaySenderEmail: displaySenderEmail)
+            }
+            AppLogger.log(message: "refreshed items before: \(paginatedDatasource.state.items.count) after: \(items.count)", category: .mailbox)
+            await paginatedDatasource.updateItems(items)
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+        }
+    }
+
+    private func updateMailboxTitle() {
+        let selectionMode = selectionMode
+        let hasSelectedItems = selectionMode.hasSelectedItems
+        let selectedItemsCount = selectionMode.selectedItems.count
+        let selectedMailboxName = selectedMailbox.name
+
+        mailboxTitle = hasSelectedItems ? L10n.Mailbox.selected(emailsCount: selectedItemsCount) : selectedMailboxName
     }
 }
 
@@ -312,6 +353,7 @@ extension MailboxModel: LiveQueryCallback {
     func onUpdate() {
         Task { [weak self] in
             AppLogger.log(message: "items paginator callback", category: .mailbox)
+            await self?.reloadRenderedMessages()
         }
     }
 }
@@ -465,40 +507,43 @@ extension MailboxModel {
     }
 
     private func actionApplyLabels(_ selectedLabels: Set<ID>, to ids: [ID]) {
-        guard case .data(let conversations) = state else { return }
-        let selectedConversations = conversations.filter({ $0.isSelected })
-        do {
-            let existingLabelsInConversations = selectedConversations
-                .map(\.labelUIModel.allLabelIds)
-                .reduce(Set<ID>(), { $0.union($1) })
+        let selectedConversations = paginatedDatasource.state.items.filter({ $0.isSelected })
+        if viewMode == .conversations {
+            do {
+                let existingLabelsInConversations = selectedConversations
+                    .map(\.labelUIModel.allLabelIds)
+                    .reduce(Set<ID>(), { $0.union($1) })
 
-            existingLabelsInConversations.forEach { labelId in
-                Task {
-                    do {
-                        try await removeLabelFromConversations(
-                            session: userSession,
-                            labelId: labelId,
-                            ids: selectedConversations.map(\.id)
-                        )
-                    } catch {
-                        AppLogger.log(error: error, category: .mailboxActions)
+                existingLabelsInConversations.forEach { labelId in
+                    Task {
+                        do {
+                            try await removeLabelFromConversations(
+                                session: userSession,
+                                labelId: labelId,
+                                ids: selectedConversations.map(\.id)
+                            )
+                        } catch {
+                            AppLogger.log(error: error, category: .mailboxActions)
+                        }
+                    }
+                }
+
+                selectedLabels.forEach { labelId in
+                    Task {
+                        do {
+                            try await applyLabelToConversations(
+                                session: userSession,
+                                labelId: labelId,
+                                ids: selectedConversations.map(\.id)
+                            )
+                        } catch {
+                            AppLogger.log(error: error, category: .mailboxActions)
+                        }
                     }
                 }
             }
-
-            selectedLabels.forEach { labelId in
-                Task {
-                    do {
-                        try await applyLabelToConversations(
-                            session: userSession,
-                            labelId: labelId,
-                            ids: selectedConversations.map(\.id)
-                        )
-                    } catch {
-                        AppLogger.log(error: error, category: .mailboxActions)
-                    }
-                }
-            }
+        } else {
+            // TODO: actions for messages not ready
         }
     }
 }
@@ -508,8 +553,7 @@ extension MailboxModel {
 extension MailboxModel: MailboxActionable {
     
     func labelsOfSelectedItems() -> [Set<ID>] {
-        guard case .data(let items) = state else { return [] }
-        return items.filter({ $0.isSelected }).map(\.labelUIModel.allLabelIds)
+        paginatedDatasource.state.items.filter({ $0.isSelected }).map(\.labelUIModel.allLabelIds)
     }
 
     func onActionTap(_ action: Action) {
@@ -526,29 +570,6 @@ extension MailboxModel: MailboxActionable {
 
     func onFolderSelected(labelId: ID) {
         actionMoveTo(labelId: labelId, ids: selectionMode.selectedItems.map(\.id))
-    }
-}
-
-extension MailboxModel {
-
-    enum State: Sendable {
-        case loading
-        case empty
-        case data([MailboxItemCellUIModel])
-
-        var mailboxItems: [MailboxItemCellUIModel] {
-            switch self {
-            case .data(let items): return items
-            case .empty, .loading: return []
-            }
-        }
-
-        var debugDescription: String {
-            if case .data(let array) = self {
-                return "data \(array.count) mailbox items"
-            }
-            return "\(self)"
-        }
     }
 }
 

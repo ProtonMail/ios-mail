@@ -24,15 +24,6 @@ struct MailboxScreen: View {
     @State private var isComposeButtonExpanded: Bool = true
     private var customLabelModel: CustomLabelModel
 
-    private var navigationTitle: LocalizedStringResource {
-        let selectionMode = mailboxModel.selectionMode
-        let hasSelectedItems = selectionMode.hasSelectedItems
-        let selectedItemsCount = selectionMode.selectedItems.count
-        let selectedMailboxName = mailboxModel.selectedMailbox.name
-
-        return hasSelectedItems ? L10n.Mailbox.selected(emailsCount: selectedItemsCount) : selectedMailboxName
-    }
-
     init(
         customLabelModel: CustomLabelModel,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -79,7 +70,7 @@ extension MailboxScreen {
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
-        .mainToolbar(title: navigationTitle, selectionMode: mailboxModel.selectionMode)
+        .mainToolbar(title: mailboxModel.mailboxTitle, selectionMode: mailboxModel.selectionMode)
         .accessibilityElement(children: .contain)
     }
 

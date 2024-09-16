@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(No Recipient)" : {
       "comment" : "No recipent placeholder."
     },
@@ -69,6 +72,9 @@
     "Cc" : {
       "comment" : "`CC` in the messsage details."
     },
+    "cell %lld" : {
+
+    },
     "Compose" : {
       "comment" : "The compose button title for creating new email."
     },
@@ -131,6 +137,9 @@
     },
     "Labels" : {
       "comment" : "Labels screen title."
+    },
+    "List is Empty" : {
+
     },
     "Location" : {
       "comment" : "`Location` in the message details."
@@ -199,6 +208,9 @@
     },
     "Not spam" : {
       "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet."
+    },
+    "Numbered cells" : {
+
     },
     "Official" : {
       "comment" : "Proton official badge title."
