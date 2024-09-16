@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Moştenit de la folderul părinte";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Crearea folderului nu este permisă";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Crearea etichetei nu este permisă";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 foldere.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 etichete.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conectați-vă și reîncercați.";
@@ -1873,7 +1873,7 @@
 "Your account is at risk of deletion" = "Contul riscă să fie șters";
 
 /* Description of the banner alert */
-"To send or receive emails, free up space or upgrade for more storage." = "Pentru a trimite sau primi mesaje, eliberați spațiu sau treceți la alt tip de plan pentru mai mult spațiu de stocare.";
+"To send or receive emails, free up space or upgrade for more storage." = "Pentru a trimite sau primi mesaje, eliberați spațiu sau treceți la un plan cu plată pentru a obține mai mult spațiu.";
 
 /* Description of the banner alert */
 "To upload files, free up space or upgrade for more storage." = "Pentru a încărca fișiere, eliberați spațiu sau modificați tipul de abonament pentru mai mult spațiu de stocare.";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Ca programat";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Setați-vă programarea dorită";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Deblocați programarea personalizată a mesajelor și alte avantaje trecând la un plan cu plată.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Modificare";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Programați mesajele oricând";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Foldere și etichete nelimitate";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Până la 500 GiB spațiu de stocare";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Până la 15 adrese de e-mail";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Până la 3 domenii de e-mail personale";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Aliasuri hide-my-email";
 
 /* One of schedule time options */
 "In the morning" = "Dimineața";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GiB spațiu de stocare și o adresă de e-mail";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Criptare bilaterală";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "Peste %u funcții premium";

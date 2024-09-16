@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Стварэнне папкі забаронена";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Стварэнне меткі забаронена";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 меткі";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Падключыцеся і паўтарыце спробу";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Як запланавана";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Прызначэнне свайго ўласнага раскладу";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблакіруйце магчымасць ствараць уласны расклад адпраўкі паведамленняў і іншыя перавагі пасля паляпшэння свайго тарыфнага плана.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Палепшыць зараз";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Заплануйце адпраўку паведамленняў у любы час";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Неабмежаваная колькасць папак і метак";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Да 500 ГБ сховішча";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Да 15 адрасоў электроннай пошты";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Да 3 карыстальніцкі даменаў электроннай пошты";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Схаваць мае псеўданімы электроннай пошты";
 
 /* One of schedule time options */
 "In the morning" = "Раніцай";
@@ -2505,13 +2505,13 @@
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u асабістыя календары";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 ГБ сховішча і 1 электронная пошта";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Скразное шыфраванне";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "І яшчэ %u прэміяльныя функцыі";

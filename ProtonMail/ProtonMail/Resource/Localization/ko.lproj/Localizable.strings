@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "상위폴더에 상속되어 있습니다";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "폴더 생성이 허용되지 않았습니다.";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "라벨 생성이 허용되지 않았습니다.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "3개 이상의 폴더를 사용하려면 요금제 업그레이드가 필요합니다";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "3개 이상의 라벨을 사용하려면 요금제 업그레이드가 필요합니다";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "연결 후 다시 시도하세요";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "예정됨";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "나만의 스케쥴 설정";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "플랜을 업그레이드 하여 사용자 지정 메시지 스케줄과 다른 혜택을 잠금 해제하세요.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "지금 업그레이드";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "언제든지 메시지를 예약하세요";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "무제한 폴더 및 라벨";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "최대 500 GB 저장공간";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "최대 15개의 이메일 주소";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "최대 3개 사용자 지정 이메일 도메인";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "나의 이메일 숨기기 별칭";
 
 /* One of schedule time options */
 "In the morning" = "아침";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB 스토리지 및 1개 메일";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "종단간 암호화";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";

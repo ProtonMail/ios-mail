@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Převzato z nadřazené složky";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Vytvoření složky není povoleno";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Vytvoření štítku není povoleno";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Chcete-li používat více než 3 složky, přejděte prosím na placený tarif";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Chcete-li používat více než 3 štítky, přejděte prosím na placený tarif";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Připojte se a zkuste to znovu";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Dle plánu";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Nastavte si vlastní plán";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Odemkněte si vlastní plánování zpráv a další výhody navýšením tarifu.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Navýšit nyní";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Plánování zpráv na libovolný čas";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Neomezený počet složek a štítků";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Až 500 GB úložiště";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Až 15 e-mailových adres";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Až 3 vlastní e-mailové domény";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Aliasy Hide-my-email";
 
 /* One of schedule time options */
 "In the morning" = "Ráno";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB úložiště a 1 e-mail";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Koncové šifrování";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcí";

@@ -2433,10 +2433,10 @@
 "Please select a time in the future" = "Wybierz przyszły czas";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Chcesz odłożyć w wybranym czasie?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Ulepsz plan, aby odblokować niestandardowy czas odłożenia";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Do 15 adresów e-mail / aliasów";

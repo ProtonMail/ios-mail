@@ -509,7 +509,7 @@
 "Confirmation" = "Potvrdenie";
 
 /* Action */
-"Draft" = "Rozpísať";
+"Draft" = "Koncept";
 
 /* Title */
 "The request timed out." = "Požiadavka vypršala.";
@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Zdedené z nadradeného priečinka";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Vytvorenie priečinka nie je povolené";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Vytvorenie štítku nie je povolené";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Ak chcete používať viac ako 3 priečinky, prejdite na platený plán, prosím";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Ak chcete používať viac ako 3 štítky, prejdite na platený plán, prosím";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Prosím pripojte sa a skúste to znova";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Podľa plánu";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Nastavte si vlastný rozvrh";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Odomknite vlastné plánovanie správ a ďalšie výhody navýšením vášho plánu.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Navýšiť teraz";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Plánovanie správ v ľubovoľnom čase";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Neobmedzené množstvo priečinkov a štítkov";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Až do 500 GB úložiska";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Až do 15 emailových adries";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Až do 3 vlastných emailových domén";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email aliasy";
 
 /* One of schedule time options */
 "In the morning" = "Ráno";
@@ -2301,10 +2301,10 @@
 "Open in Proton Calendar" = "Otvoriť v Proton kalendári";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Vyčistenie odpadu";
+"Clear out the junk" = "Zbavte sa zbytočnosti";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatické odstraňovanie správ starších ako 30 dní z koša a spamu. Využívajte tieto a ďalšie výhody po upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatické odstraňovanie správ starších ako 30 dní z koša a spamu. Využívajte túto a ďalšie výhody, keď upgradujete.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Až do 3 TB úložiska";
@@ -2436,10 +2436,10 @@
 "Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia po navýšení plánu";
+"Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia, keď upgradujete";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
+"Up to 15 email addresses/aliases" = "Až do 15 emailových adries/aliasov";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB úložisko a 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "End-to-end šifrovanie";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcií";

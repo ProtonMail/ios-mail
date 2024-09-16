@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Ärvd från överordnad mapp";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Det är inte tillåtet att skapa mapp";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Det är inte tillåtet att skapa etikett";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Uppgradera till ett betalt paket för att använda fler än 3 etiketter";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Anslut och försök igen";
@@ -2163,16 +2163,16 @@
 "Schedule messages at any time" = "Schedule messages at any time";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Upp till 500 GB lagringsutrymme";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Upp till 15 e-postadresser";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Upp till 3 anpassade e-postdomäner";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Hide My Email aliases";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB lagringsutrymme och 1 e-post";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "End-to-end-kryptering";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunktioner";

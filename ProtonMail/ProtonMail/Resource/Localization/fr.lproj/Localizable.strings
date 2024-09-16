@@ -2433,10 +2433,10 @@
 "Please select a time in the future" = "Sélectionnez une période dans le futur.";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Vous voulez personnaliser les périodes de mise en attente ?";
+"Want to snooze any time?" = "Voulez-vous personnaliser les mises en attente ?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Personnalisez les périodes de mise en attente en changeant d'abonnement.";
+"Unlock custom snooze times when you upgrade" = "Personnalisez les mises en attente en améliorant votre abonnement.";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Jusqu'à 15 adresses e-mail/alias";

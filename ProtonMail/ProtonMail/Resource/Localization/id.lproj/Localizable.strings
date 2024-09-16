@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Diwariskan dari folder induk";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Pembuatan folder tidak diizinkan";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Pembuatan label tidak diizinkan";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Silakan tingkatkan ke paket berbayar untuk menggunakan lebih dari 3 folder";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Silakan tingkatkan ke paket berbayar untuk menggunakan lebih dari 3 label";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Silakan hubungkan dan coba lagi";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Sebagaimana terjadwal";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Tentukan jadwal Anda sendiri";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Dapatkan penjadwalan pesan khusus dan manfaat lainnya ketika Anda meningkatkan akun Anda.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Tingkatkan sekarang";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Jadwalkan pesan kapan pun";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Folder dan label tidak terbatas";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Penyimpanan sampai dengan 500 GB";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Hingga 15 alamat email";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Sampai dengan 3 domain email khusus";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* One of schedule time options */
 "In the morning" = "Di pagi hari";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "Ruang penyimpanan 1 GB dan 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Enkripsi ujung ke ujung";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u fitur premium";
