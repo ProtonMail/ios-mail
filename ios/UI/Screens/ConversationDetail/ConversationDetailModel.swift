@@ -30,7 +30,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
     private let dependencies: Dependencies
-    private let messageListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
+    private let messageListCallback: LiveQueryCallbackWrapper = .init()
 
     init(seed: ConversationDetailSeed, dependencies: Dependencies = .init()) {
         self.seed = seed

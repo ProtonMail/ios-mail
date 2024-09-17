@@ -50,7 +50,7 @@ final class MailboxModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-    private let itemListCallback: PMMailboxLiveQueryUpdatedCallback = .init(delegate: {})
+    private let itemListCallback: LiveQueryCallbackWrapper = .init()
     private var itemListHandle: WatchHandle?
 
     private var userSession: MailUserSession {
