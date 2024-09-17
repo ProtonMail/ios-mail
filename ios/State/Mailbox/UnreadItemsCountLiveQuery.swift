@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-final class UnreadItemsCountLiveQuery: @unchecked Sendable, LiveQueryCallback {
+final class UnreadItemsCountLiveQuery: @unchecked Sendable {
     private let mailbox: Mailbox
     private let dataUpdate: (UInt64) async -> Void
     private var watchHandle: WatchHandle?
