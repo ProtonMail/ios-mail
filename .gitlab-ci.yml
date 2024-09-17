@@ -1,9 +1,6 @@
 include:
   - local: ".gitlab-ci.d/i18n.yml"
 
-  - project: 'proton/devops/atlas-deploy'
-    file: '/scenarios/pipeline-env.yml'
-
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
@@ -15,20 +12,33 @@ include:
 
   - component: gitlab.protontech.ch/tpe/test-scripts/slack@0.0.2
 
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+    inputs:
+      cleanup-stage: cleanup
+
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+    inputs:
+      cleanup-stage: cleanup
+      deploy: manual
+      cleanup: manual
+      images: $IMAGES
+      key: customenv$CI_PIPELINE_ID
+      suffix: ":custom"
+
 variables:
   LANG: "en_US.UTF-8"
   MINT_PATH: "$CI_PROJECT_DIR/ci-cache/mint"
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_ENV: "true"
   GIT_SUBMODULE_STRATEGY: recursive
+  IMAGES: $IMAGES
 
 # See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
 stages:
   - i18n
   - scan
-  - build
   - deploy
+  - build
   - test
   - report
   - cleanup
@@ -124,7 +134,7 @@ test:unit:
 .test:ui:
   extends: .macos_job
   dependencies:
-    - deploy:review
+    - atlas:deploy:pipenv
     - build:debug:for-testing
   stage: test
   artifacts:
