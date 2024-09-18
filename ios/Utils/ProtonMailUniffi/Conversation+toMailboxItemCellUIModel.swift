@@ -33,7 +33,7 @@ extension Conversation {
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            isRead: totalUnread == 0,
+            isRead: numUnread == 0,
             isStarred: isStarred,
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: firstSender.isProton,
