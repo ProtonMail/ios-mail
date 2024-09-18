@@ -103,7 +103,6 @@ private extension Message {
             ccList: cc,
             exclusiveLocation: nil,
             expirationTime: 1625140800,
-            header: .notUsed,
             flags: .init(value: 2),
             isForwarded: true,
             isReplied: true,
