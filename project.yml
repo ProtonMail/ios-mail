@@ -26,7 +26,7 @@ packages:
   proton_app_uniffi:
     path: localPackages/proton_app_uniffi
   ProtonCoreET:
-    path: ../et-protoncore/platform/apple/ProtonCoreET
+    path: externalPackages/et-protoncore/platform/apple/ProtonCoreET
     group: Packages    
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
