@@ -31,10 +31,10 @@ final class UnreadItemsCountLiveQuery: @unchecked Sendable {
         do {
             let liveQueryCallback = LiveQueryCallbackWrapper()
             liveQueryCallback.delegate = { [weak self] in
-                guard let unwrappedSelf = self else { return }
+                guard let self else { return }
 
                 Task {
-                    await unwrappedSelf.emitDataIfAvailable()
+                    await self.emitDataIfAvailable()
                 }
             }
 
