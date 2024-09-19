@@ -49,7 +49,7 @@ extension MailboxListView {
 
     private func mailboxItemsListView() -> some View {
         PaginatedListView(
-            datasource: model.paginatedDatasource,
+            dataSource: model.paginatedDataSource,
             headerView: { unreadFilterView() },
             emptyListView: { MailboxEmptyView() },
             cellView: { index, item in
