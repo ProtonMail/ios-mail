@@ -53,13 +53,12 @@ final class MailboxModel: ObservableObject {
     private var conversationPaginator: ConversationPaginator?
     lazy var paginatedDatasource = PaginatedListDatasource<MailboxItemCellUIModel>(fetchPage: { currentPage, pageSize in
         let result = await self.fetchNextPageItems(currentPage: currentPage)
-        AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items", category: .mailbox)
         return result
     })
 
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-    private let itemListCallback: LiveQueryCallbackWrapper = .init()
-    private var itemListHandle: WatchHandle?
+//    private let itemListCallback: LiveQueryCallbackWrapper = .init()
+//    private var itemListHandle: WatchHandle?
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -130,6 +129,7 @@ extension MailboxModel {
             .sink { [weak self] hasItems in
                 Task {
 //                    await self?.readMailboxItems()
+                    await self?.refreshMailboxItems()
                 }
             }
             .store(in: &cancellables)
@@ -258,10 +258,6 @@ extension MailboxModel {
                     callback: self
                 )
             }
-            updateMailboxTitle()
-            
-            await paginatedDatasource.fetchInitialPage()
-            
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
                 await MainActor.run {
@@ -269,6 +265,10 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
+
+            updateMailboxTitle()
+            
+            await paginatedDatasource.fetchInitialPage()
 
         } catch {
             AppLogger.log(error: error, category: .mailbox)
@@ -281,56 +281,114 @@ extension MailboxModel {
             AppLogger.log(message: "no mailbox found when requesting a page", isError: true)
             return .init(newItems: [], isLastPage: true)
         }
-        if mailbox.viewMode() == .messages {
-            return await fetchNextPageMessages(currentPage: currentPage)
-        } else {
-            let conversations = try? await conversationPaginator?.currentPage()
-            // TODO:
-            return .init(newItems: [], isLastPage: false)
-        }
-    }
-
-    private func fetchNextPageMessages(currentPage: Int) async -> PaginatedListDatasource<MailboxItemCellUIModel>.NextPageResult {
-        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
-        guard let messagePaginator else {
-            AppLogger.log(message: "no mailbox found when fetching messages", category: .mailbox, isError: true)
-            return .init(newItems: [], isLastPage: true)
-        }
-        let systemFolder = selectedMailbox.systemFolder
-        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
-            .contains(systemFolder)
-        AppLogger.log(message: "fetching messages page \(currentPage)", category: .mailbox)
         do {
-            let messages = currentPage == 0
-            ? try await messagePaginator.currentPage()
-            : try await messagePaginator.nextPage()
-            let items = messages.map {
-                $0.toMailboxItemCellUIModel(selectedIds: selectedIds, displaySenderEmail: displaySenderEmail)
-            }
-            print("👉 \(items.count) - \(items.first?.subject)")
-            print("👉 currentPageNumber = \(messagePaginator.currentPageNumber())")
-            print("👉 resultCount = \(messagePaginator.resultCount())")
-            print("👉 pageCount = \(messagePaginator.pageCount())")
-            print("👉 hasNextPage() = \(messagePaginator.hasNextPage())")
-            return .init(newItems: items, isLastPage: items.isEmpty) // !messagePaginator.hasNextPage())
+            let result: PaginatedListDatasource<MailboxItemCellUIModel>.NextPageResult
+            result = mailbox.viewMode() == .messages
+            ? try await fetchNextPageMessages(currentPage: currentPage)
+            : try await fetchNextPageConversations(currentPage: currentPage)
+            AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items", category: .mailbox)
+            return result
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             return .init(newItems: paginatedDatasource.state.items, isLastPage: true)
         }
     }
 
-    func reloadRenderedMessages() async {
+    private func fetchNextPageMessages(currentPage: Int) async throws -> PaginatedListDatasource<MailboxItemCellUIModel>.NextPageResult {
+        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        guard let messagePaginator else {
+            AppLogger.log(message: "no paginator found when fetching messages", category: .mailbox, isError: true)
+            return .init(newItems: [], isLastPage: true)
+        }
+        let systemFolder = selectedMailbox.systemFolder
+        let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+            .contains(systemFolder)
+        AppLogger.log(message: "fetching messages page \(currentPage)", category: .mailbox)
+
+        let messages = currentPage == 0
+        ? try await messagePaginator.currentPage()
+        : try await messagePaginator.nextPage()
+        let items = messages.map {
+            $0.toMailboxItemCellUIModel(selectedIds: selectedIds, displaySenderEmail: displaySenderEmail)
+        }
+
+        logPaginatorState(messagePaginator, items: items)
+
+        return .init(newItems: items, isLastPage: !messagePaginator.hasNextPage())
+    }
+
+    private func fetchNextPageConversations(currentPage: Int) async throws -> PaginatedListDatasource<MailboxItemCellUIModel>.NextPageResult {
+        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        guard let conversationPaginator else {
+            AppLogger.log(message: "no paginator found when fetching conversations", category: .mailbox, isError: true)
+            return .init(newItems: [], isLastPage: true)
+        }
+        AppLogger.log(message: "fetching conversations page \(currentPage)", category: .mailbox)
+
+        let messages = currentPage == 0
+        ? try await conversationPaginator.currentPage()
+        : try await conversationPaginator.nextPage()
+        let items = messages.map {
+            $0.toMailboxItemCellUIModel(selectedIds: selectedIds)
+        }
+
+        logPaginatorState(conversationPaginator, items: items)
+
+        return .init(newItems: items, isLastPage: !conversationPaginator.hasNextPage())
+    }
+
+    private func logPaginatorState(_ paginator: MessagePaginator, items: [MailboxItemCellUIModel]) {
+        print("👉 \(items.count) items from new page | first item: '\(items.first?.subject ?? "")'")
+        print(" paginator state: currentPageNumber = \(paginator.currentPageNumber()) resultCount = \(paginator.resultCount()) pageCount = \(paginator.pageCount()) hasNextPage() = \(paginator.hasNextPage())")
+    }
+
+    private func logPaginatorState(_ paginator: ConversationPaginator, items: [MailboxItemCellUIModel]) {
+        print("👉 \(items.count) items from new page | first item: '\(items.first?.subject ?? "")'")
+        print(" paginator state: currentPageNumber = \(paginator.currentPageNumber()) resultCount = \(paginator.resultCount()) pageCount = \(paginator.pageCount()) hasNextPage() = \(paginator.hasNextPage())")
+    }
+
+    private func refreshMailboxItems() async {
+        if viewMode == .messages {
+            await refreshMessage()
+        } else {
+            await refreshConversations()
+        }
+
+        selectionMode.refreshSelectedItemsStatus { itemIds in
+            let selectedItems = paginatedDatasource.state.items
+                .filter { itemIds.contains($0.id) }
+                .map { $0.toSelectedItem() }
+            return Set(selectedItems)
+        }
+    }
+
+    private func refreshMessage() async {
+        guard let messagePaginator else { return }
         let selectedIds = Set(selectionMode.selectedItems.map(\.id))
         let systemFolder = selectedMailbox.systemFolder
         let displaySenderEmail = ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
             .contains(systemFolder)
-        guard let messagePaginator else { return }
         do {
             let messages = try await messagePaginator.reload()
             let items = messages.map {
                 $0.toMailboxItemCellUIModel(selectedIds: selectedIds, displaySenderEmail: displaySenderEmail)
             }
-            AppLogger.log(message: "refreshed items before: \(paginatedDatasource.state.items.count) after: \(items.count)", category: .mailbox)
+            AppLogger.log(message: "refreshed messages before: \(paginatedDatasource.state.items.count) after: \(items.count)", category: .mailbox)
+            await paginatedDatasource.updateItems(items)
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+        }
+    }
+
+    private func refreshConversations() async {
+        guard let conversationPaginator else { return }
+        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        do {
+            let conversations = try await conversationPaginator.reload()
+            let items = conversations.map {
+                $0.toMailboxItemCellUIModel(selectedIds: selectedIds)
+            }
+            AppLogger.log(message: "refreshed conversations before: \(paginatedDatasource.state.items.count) after: \(items.count)", category: .mailbox)
             await paginatedDatasource.updateItems(items)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
@@ -353,7 +411,7 @@ extension MailboxModel: LiveQueryCallback {
     func onUpdate() {
         Task { [weak self] in
             AppLogger.log(message: "items paginator callback", category: .mailbox)
-            await self?.reloadRenderedMessages()
+            await self?.refreshMailboxItems()
         }
     }
 }
