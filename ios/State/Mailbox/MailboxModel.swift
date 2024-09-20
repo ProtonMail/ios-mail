@@ -26,18 +26,8 @@ import class UIKit.UIImage
  */
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
-
-    let selectionMode: SelectionModeState
-
+    let selectionMode: SelectionModeState = .init()
     private(set) var selectedMailbox: SelectedMailbox
-
-    private var userSession: MailUserSession {
-        dependencies.appContext.userSession
-    }
-
-    private var viewMode: ViewMode {
-        mailbox?.viewMode() ?? .conversations
-    }
 
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
@@ -49,9 +39,17 @@ final class MailboxModel: ObservableObject {
         return result
     })
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-
+    private var paginatorCallback: LiveQueryCallbackWrapper = .init()
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
+
+    private var userSession: MailUserSession {
+        dependencies.appContext.userSession
+    }
+
+    private var viewMode: ViewMode {
+        mailbox?.viewMode() ?? .conversations
+    }
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -63,10 +61,10 @@ final class MailboxModel: ObservableObject {
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
-        self.selectionMode = SelectionModeState()
         self.dependencies = dependencies
 
         setUpBindings()
+        setUpPaginatorCallback()
 
         if let openedItem = openedItem {
             state.navigationPath.append(openedItem)
@@ -121,6 +119,15 @@ extension MailboxModel {
             .store(in: &cancellables)
     }
 
+    private func setUpPaginatorCallback() {
+        paginatorCallback.delegate = { [weak self] in
+            Task {
+                AppLogger.log(message: "items paginator callback", category: .mailbox)
+                await self?.refreshMailboxItems()
+            }
+        }
+    }
+
     private func updateMailboxTitle() {
         let selectionMode = selectionMode
         let hasSelectedItems = selectionMode.hasSelectedItems
@@ -148,13 +155,13 @@ extension MailboxModel {
                 messagePaginator = try await paginateMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    callback: self
+                    callback: paginatorCallback
                 )
             } else {
                 conversationPaginator = try await paginateConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    callback: self
+                    callback: paginatorCallback
                 )
             }
             await paginatedDataSource.fetchInitialPage()
@@ -272,17 +279,6 @@ extension MailboxModel {
             await paginatedDataSource.updateItems(items)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-        }
-    }
-}
-
-// TODO: Make sure there is no retention cycle
-extension MailboxModel: LiveQueryCallback {
-
-    func onUpdate() {
-        Task { [weak self] in
-            AppLogger.log(message: "items paginator callback", category: .mailbox)
-            await self?.refreshMailboxItems()
         }
     }
 }
