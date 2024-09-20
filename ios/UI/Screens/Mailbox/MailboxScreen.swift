@@ -41,9 +41,9 @@ struct MailboxScreen: View {
     }
 
     var body: some View {
-        NavigationStack(path: $mailboxModel.navigationPath) {
+        NavigationStack(path: $mailboxModel.state.navigationPath) {
             mailboxScreen
-                .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
+                .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
                 }
@@ -70,7 +70,7 @@ extension MailboxScreen {
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
-        .mainToolbar(title: mailboxModel.mailboxTitle, selectionMode: mailboxModel.selectionMode)
+        .mainToolbar(title: mailboxModel.state.mailboxTitle, selectionMode: mailboxModel.selectionMode)
         .accessibilityElement(children: .contain)
     }
 
@@ -80,8 +80,8 @@ extension MailboxScreen {
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)
-        .opacity(mailboxModel.selectionMode.hasSelectedItems ? 0 : 1)
-        .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
+        .opacity(mailboxModel.state.showActionBar ? 0 : 1)
+        .animation(.selectModeAnimation, value: mailboxModel.state.showActionBar)
         .animation(.toastAnimation, value: toastStateStore.state.toastHeights)
     }
 
@@ -92,9 +92,9 @@ extension MailboxScreen {
             mailboxActionable: mailboxModel,
             customLabelModel: customLabelModel
         )
-        .opacity(mailboxModel.selectionMode.hasSelectedItems ? 1 : 0)
-        .offset(y: mailboxModel.selectionMode.hasSelectedItems ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: mailboxModel.selectionMode.hasSelectedItems)
+        .opacity(mailboxModel.state.showActionBar ? 1 : 0)
+        .offset(y: mailboxModel.state.showActionBar ? 0 : 45 + 100)
+        .animation(.selectModeAnimation, value: mailboxModel.state.showActionBar)
     }
 
     @ViewBuilder

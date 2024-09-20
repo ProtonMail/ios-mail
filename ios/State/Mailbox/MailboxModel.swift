@@ -25,20 +25,24 @@ import class UIKit.UIImage
  Source of truth for the Mailbox view showing mailbox items (conversations or messages).
  */
 final class MailboxModel: ObservableObject {
+    
+    struct State {
+        var mailboxTitle: LocalizedStringResource = ""
+        var showActionBar: Bool = false
+        var unreadItemsCount: UInt64 = 0
+        var isUnreadSelected: Bool = false
+
+        // Navigation properties
+        var attachmentPresented: AttachmentViewConfig?
+        var navigationPath: NavigationPath = .init()
+    }
+
     @ObservedObject private var appRoute: AppRouteState
-    @Published private(set) var mailboxTitle: LocalizedStringResource = .init(stringLiteral: "")
-
-    // Filter
-    @Published var unreadItemsCount: UInt64 = 0
-    @Published var isUnreadSelected: Bool = false
-
-    // Navigation properties
-    @Published var attachmentPresented: AttachmentViewConfig?
-    @Published var navigationPath: NavigationPath = .init()
+    @Published var state: State = .init()
 
     let selectionMode: SelectionModeState
 
-    var viewMode: ViewMode {
+    private var viewMode: ViewMode {
         mailbox?.viewMode() ?? .conversations
     }
 
@@ -81,7 +85,7 @@ final class MailboxModel: ObservableObject {
 //        setUpCallbacks()
 
         if let openedItem = openedItem {
-            navigationPath.append(openedItem)
+            state.navigationPath.append(openedItem)
         }
     }
 
@@ -129,10 +133,23 @@ extension MailboxModel {
             .sink { [weak self] hasItems in
                 Task {
 //                    await self?.readMailboxItems()
+                    self?.state.showActionBar = hasItems
+                    self?.updateMailboxTitle()
                     await self?.refreshMailboxItems()
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func updateMailboxTitle() {
+        let selectionMode = selectionMode
+        let hasSelectedItems = selectionMode.hasSelectedItems
+        let selectedItemsCount = selectionMode.selectedItems.count
+        let selectedMailboxName = selectedMailbox.name
+
+        state.mailboxTitle = hasSelectedItems 
+        ? L10n.Mailbox.selected(emailsCount: selectedItemsCount)
+        : selectedMailboxName
     }
 
 //    private func setUpCallbacks() {
@@ -239,14 +256,14 @@ extension MailboxModel {
     private func updateMailboxAndPaginator() async {
         guard let userSession = dependencies.appContext.activeUserSession else { return }
         do {
+            updateMailboxTitle()
+            await paginatedDataSource.resetToInitialState()
+
             let mailbox = selectedMailbox.isInbox
             ? try await Mailbox.inbox(ctx: userSession)
             : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
             self.mailbox = mailbox
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-
-            updateMailboxTitle()
-            await paginatedDataSource.resetToInitialState()
 
             if mailbox.viewMode() == .messages {
                 messagePaginator = try await paginateMessagesForLabel(
@@ -266,7 +283,7 @@ extension MailboxModel {
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
                 await MainActor.run {
-                    self?.unreadItemsCount = unreadCount
+                    self?.state.unreadItemsCount = unreadCount
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
@@ -394,15 +411,6 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
         }
     }
-
-    private func updateMailboxTitle() {
-        let selectionMode = selectionMode
-        let hasSelectedItems = selectionMode.hasSelectedItems
-        let selectedItemsCount = selectionMode.selectedItems.count
-        let selectedMailboxName = selectedMailbox.name
-
-        mailboxTitle = hasSelectedItems ? L10n.Mailbox.selected(emailsCount: selectedItemsCount) : selectedMailboxName
-    }
 }
 
 // TODO: Make sure there is no retention cycle
@@ -431,7 +439,7 @@ extension MailboxModel {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
-        navigationPath.append(item)
+        state.navigationPath.append(item)
     }
 
     @MainActor
@@ -460,7 +468,7 @@ extension MailboxModel {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
-        attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
+        state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
     }
 
     func onMailboxItemAction(_ action: Action, itemIds: [ID]) {

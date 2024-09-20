@@ -63,7 +63,7 @@ extension MailboxListView {
     }
 
     private func unreadFilterView() -> some View {
-        UnreadFilterBarView(isSelected: $model.isUnreadSelected, unread: model.unreadItemsCount)
+        UnreadFilterBarView(isSelected: $model.state.isUnreadSelected, unread: model.state.unreadItemsCount)
             .buttonStyle(PlainButtonStyle())
             .listRowBackground(DS.Color.Background.norm)
             .listRowSeparator(.hidden)
