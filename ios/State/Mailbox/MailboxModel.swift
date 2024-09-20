@@ -245,6 +245,9 @@ extension MailboxModel {
             self.mailbox = mailbox
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
 
+            updateMailboxTitle()
+            await paginatedDataSource.resetToInitialState()
+
             if mailbox.viewMode() == .messages {
                 messagePaginator = try await paginateMessagesForLabel(
                     session: userSession,
@@ -258,6 +261,8 @@ extension MailboxModel {
                     callback: self
                 )
             }
+            await paginatedDataSource.fetchInitialPage()
+
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
                 await MainActor.run {
@@ -265,11 +270,6 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-
-            updateMailboxTitle()
-            
-            await paginatedDataSource.fetchInitialPage()
-
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             fatalError("failed to instantiate the Mailbox or Paginator object")
