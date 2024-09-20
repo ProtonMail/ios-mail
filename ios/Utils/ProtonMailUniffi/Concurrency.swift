@@ -24,9 +24,11 @@ import proton_app_uniffi
  For this reason we extend the Rust SDK objects and mark them as unchecked Sendable to avoid warnings.
  */
 
+extension ConversationPaginator: @unchecked Sendable {}
 extension DecryptedMessage: @unchecked Sendable {}
 extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}
+extension MessagePaginator: @unchecked Sendable {}
 extension StoredSession: @unchecked Sendable {}
 extension UserSettings: @unchecked Sendable {}
 extension WatchHandle: @unchecked Sendable {}

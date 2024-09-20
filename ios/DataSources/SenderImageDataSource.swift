@@ -51,10 +51,8 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
             guard let userSession = dependencies.appContext.activeUserSession else {
                 return nil
             }
-            let mailSettings = await mailSettings(ctx: userSession)
             guard let imageFilePath = try await userSession
                 .imageForSender(
-                    mailSettings: mailSettings,
                     address: params.address,
                     bimiSelector: params.bimiSelector,
                     displaySenderImage: params.displaySenderImage,

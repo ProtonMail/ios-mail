@@ -29,99 +29,95 @@ struct MailboxListView: View {
     }
 
     var body: some View {
-        ZStack {
-            switch model.state {
-            case .loading:
-                loadingView
-            case .empty:
-                MailboxEmptyView()
-            case .data(let mailboxItems):
-                mailboxItemsListView(mailboxItems: mailboxItems)
+        mailboxItemsListView()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
+                oldValue.count != newValue.count ? .selection : nil
             }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
-            oldValue.count != newValue.count ? .selection : nil
-        }
-        .onChange(of: model.selectedMailbox) { _, _ in
-            self.isListAtTop = true
-        }
-        .task {
-            guard !didAppearBefore else { return }
-            didAppearBefore = true
-            await model.onViewDidAppear()
-        }
+            .onChange(of: model.selectedMailbox) { _, _ in
+                self.isListAtTop = true
+            }
+            .task {
+                guard !didAppearBefore else { return }
+                didAppearBefore = true
+                await model.onViewDidAppear()
+            }
     }
 }
 
 extension MailboxListView {
 
-    private var loadingView: some View {
-        ProgressView()
-    }
-
-    private func mailboxItemsListView(mailboxItems: [MailboxItemCellUIModel]) -> some View {
-        List {
-            UnreadFilterBarView(isSelected: $model.isUnreadSelected, unread: model.unreadItemsCount)
-                .buttonStyle(PlainButtonStyle())
-                .listRowBackground(DS.Color.Background.norm)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-
-            ForEach(Array(mailboxItems.enumerated()), id: \.1.id) { index, item in
-                VStack {
-                    MailboxItemCell(
-                        uiModel: item,
-                        isParentListSelectionEmpty: !model.selectionMode.hasSelectedItems,
-                        onEvent: { [weak model] event in
-                            switch event {
-                            case .onTap:
-                                model?.onMailboxItemTap(item: item)
-                            case .onLongPress:
-                                model?.onLongPress(mailboxItem: item)
-                            case .onSelectedChange(let isSelected):
-                                model?.onMailboxItemSelectionChange(item: item, isSelected: isSelected)
-                            case .onStarredChange(let isStarred):
-                                model?.onMailboxItemStarChange(item: item, isStarred: isStarred)
-                            case .onAttachmentTap(let attachmentId):
-                                model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
-                            }
-                        }
-                    )
-                    .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
-                    .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
-
-                    .mailboxSwipeActions(
-                        isSelectionModeOn: model.selectionMode.hasSelectedItems,
-                        mailboxItemId: item.id,
-                        systemFolder: model.selectedMailbox.systemFolder,
-                        isItemRead: item.isRead,
-                        onTapAction: model.onMailboxItemAction(_:itemIds:)
-                    )
-
-                    Spacer().frame(height: DS.Spacing.tiny)
-                }
-                .listRowBackground(Color.clear)
-                .listRowInsets(
-                    .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
-                )
-                .listRowSeparator(.hidden)
-                .compositingGroup()
-                .clipShape(
-                    .rect(
-                        topLeadingRadius: 20,
-                        bottomLeadingRadius: 20,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 0
-                    )
-                )
-                .background(DS.Color.Background.norm) // cell background color after clipping
+    private func mailboxItemsListView() -> some View {
+        PaginatedListView(
+            dataSource: model.paginatedDataSource,
+            headerView: { unreadFilterView() },
+            emptyListView: { MailboxEmptyView() },
+            cellView: { index, item in
+                cellView(index: index, item: item)
             }
-        }
+        )
         .listStyle(.plain)
         .listScrollObservation(onEventAtTopChange: { newValue in
             isListAtTop = newValue
         })
+    }
+
+    private func unreadFilterView() -> some View {
+        UnreadFilterBarView(isSelected: $model.state.isUnreadSelected, unread: model.state.unreadItemsCount)
+            .buttonStyle(PlainButtonStyle())
+            .listRowBackground(DS.Color.Background.norm)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+    }
+
+    private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
+        VStack {
+            MailboxItemCell(
+                uiModel: item,
+                isParentListSelectionEmpty: !model.selectionMode.hasSelectedItems,
+                onEvent: { [weak model] event in
+                    switch event {
+                    case .onTap:
+                        model?.onMailboxItemTap(item: item)
+                    case .onLongPress:
+                        model?.onLongPress(mailboxItem: item)
+                    case .onSelectedChange(let isSelected):
+                        model?.onMailboxItemSelectionChange(item: item, isSelected: isSelected)
+                    case .onStarredChange(let isStarred):
+                        model?.onMailboxItemStarChange(item: item, isStarred: isStarred)
+                    case .onAttachmentTap(let attachmentId):
+                        model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
+                    }
+                }
+            )
+            .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
+            .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
+
+            .mailboxSwipeActions(
+                isSelectionModeOn: model.selectionMode.hasSelectedItems,
+                mailboxItemId: item.id,
+                systemFolder: model.selectedMailbox.systemFolder,
+                isItemRead: item.isRead,
+                onTapAction: model.onMailboxItemAction(_:itemIds:)
+            )
+
+            Spacer().frame(height: DS.Spacing.tiny)
+        }
+        .listRowBackground(Color.clear)
+        .listRowInsets(
+            .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
+        )
+        .listRowSeparator(.hidden)
+        .compositingGroup()
+        .clipShape(
+            .rect(
+                topLeadingRadius: 20,
+                bottomLeadingRadius: 20,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 0
+            )
+        )
+        .background(DS.Color.Background.norm) // cell background color after clipping
     }
 
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
@@ -149,7 +145,6 @@ extension MailboxListView {
     return MailboxListView(
         isListAtTop: .constant(true),
         model: .init(
-            state: .empty,
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route
         )
