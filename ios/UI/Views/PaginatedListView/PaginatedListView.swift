@@ -1,0 +1,121 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import SwiftUI
+
+struct PaginatedListView<
+    Item: Identifiable & Sendable,
+    HeaderView: View,
+    EmptyListView: View,
+    CellView: View
+>: View {
+    @ObservedObject private var dataSource: PaginatedListDataSource<Item>
+    private var headerView: () -> HeaderView
+    private var emptyListView: () -> EmptyListView
+    private var cellView: (_ index: Int, Item) -> CellView
+    private var viewState: PaginatedListViewState {
+        dataSource.state.viewState
+    }
+
+    init(
+        dataSource: PaginatedListDataSource<Item>,
+        headerView: @escaping () -> HeaderView = { EmptyView() },
+        emptyListView: @escaping () -> EmptyListView,
+        cellView: @escaping (Int, Item) -> CellView
+    ) {
+        self.dataSource = dataSource
+        self.headerView = headerView
+        self.emptyListView = emptyListView
+        self.cellView = cellView
+    }
+
+    var body: some View {
+        switch viewState {
+        case .fetchingInitialPage:
+            loadingView
+        case .empty:
+            emptyListView()
+        case .data:
+            dataStateView
+        }
+    }
+
+    private var loadingView: some View {
+        ProgressView()
+    }
+
+    private var dataStateView: some View {
+        List {
+            headerView()
+            ForEach(Array(dataSource.state.items.enumerated()), id: \.1.id) { index, item in
+                cellView(index, item)
+            }
+
+            if !viewState.isLastPage {
+                ProgressView()
+                    .id(UUID())
+                    .onAppear {
+                        Task { await dataSource.fetchNextPageIfNeeded() }
+                    }
+            }
+        }
+    }
+}
+
+enum PaginatedListViewState: Equatable {
+    case fetchingInitialPage
+    case empty
+    case data(isLastPage: Bool)
+
+    var isLastPage: Bool {
+        guard case .data(let isLastPage) = self else {
+            return false
+        }
+        return isLastPage
+    }
+}
+
+#Preview {
+
+    struct PreviewListItem: Identifiable {
+        var id: Int
+    }
+
+    func fetchMockItems(page: Int, pageSize: Int) async -> PaginatedListDataSource<PreviewListItem>.NextPageResult {
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        let newItems = Array(page * pageSize..<(page + 1) * pageSize)
+        return .init(newItems: newItems.map { PreviewListItem(id: $0) }, isLastPage: page == 3)
+    }
+
+    let dataSource = PaginatedListDataSource<PreviewListItem>(pageSize: 20, fetchPage: fetchMockItems)
+
+    return PaginatedListView(
+        dataSource: dataSource,
+        headerView: {
+            Text("Numbered cells")
+                .bold()
+        },
+        emptyListView: {
+            Text("List is Empty")
+        },
+        cellView: { index, item in
+            Text("cell \(item.id)")
+        }
+    )
+    .listStyle(.plain)
+    .task { await dataSource.fetchInitialPage() }
+}
