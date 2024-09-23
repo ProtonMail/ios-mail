@@ -15,25 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
 import SwiftUI
 
-struct PickerViewStyle: ViewModifier {
-    let detents: Set<PresentationDetent>
+struct OnboardingPage: Identifiable {
+    let image: ImageResource
+    let title: String
+    let subtitle: String
 
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.Background.secondary)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(DS.Radius.huge)
-            .presentationDetents(detents)
-            .presentationDragIndicator(.visible)
-    }
-}
+    // MARK: - Identifiable
 
-extension View {
-    func pickerViewStyle(_ detents: Set<PresentationDetent>) -> some View {
-        modifier(PickerViewStyle(detents: detents))
-    }
+    var id: String { title + subtitle }
 }

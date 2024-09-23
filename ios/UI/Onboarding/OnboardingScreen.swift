@@ -1,0 +1,179 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import DesignSystem
+import SwiftUI
+
+struct OnboardingScreen: View {
+    struct ViewState: Copying {
+        var currentPageIndex: Int
+        let pages: [OnboardingPage] = [
+            .init(
+                image: .protonLogo,
+                title: "Transformed from the ground up",
+                subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability."
+            ),
+            .init(
+                image: .protonLogo,
+                title: "New inbox unboxed",
+                subtitle: "We’re excited to unveil the vibrant new design and improved user experience. For now, you can preview the new list and message views."
+            ),
+            .init(
+                image: .protonLogo,
+                title: "Your feedback is key",
+                subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!"
+            )
+        ]
+    }
+
+    @State var state: ViewState
+    private let onDismiss: () -> Void
+    @State private var totalHeight: CGFloat = 1
+
+    init(
+        state: ViewState = .init(currentPageIndex: 0),
+        onDismiss: @escaping () -> Void
+    ) {
+        self.state = state
+        self.onDismiss = onDismiss
+    }
+
+    internal var didAppear: ((Self) -> Void)?
+
+    // MARK: - View
+
+    var body: some View {
+        VStack(spacing: DS.Spacing.extraLarge) {
+            spacing(height: DS.Spacing.small)
+            header
+            pagesView
+            dotsIndexIndicator
+            actionButton
+            spacing(height: DS.Spacing.extraLarge)
+        }
+        .background(
+            GeometryReader { geometry in
+                Color.clear
+                    .edgesIgnoringSafeArea(.all)
+                    .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
+                    .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
+                        totalHeight = value
+                    }
+            }
+        )
+        .pickerViewStyle([.height(totalHeight)])
+        .onAppear { didAppear?(self) }
+    }
+
+    // MARK: - Private
+
+    private var header: some View {
+        Text("Introducing our next-gen app!".notLocalized)
+            .font(.system(size: 22, weight: .bold))
+            .foregroundStyle(DS.Color.Text.norm)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, DS.Spacing.large)
+    }
+
+    private var pagesView: some View {
+        HeightPreservingTabView(selection: $state.currentPageIndex) {
+            ForEach(Array(state.pages.enumerated()), id: \.element.id) { index, model in
+                OnboardingPageView(model: model).tag(index)
+            }
+        }
+        .animation(.easeIn, value: state.currentPageIndex)
+        .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+
+    private var dotsIndexIndicator: some View {
+        OnboardingDotsIndexView(
+            numberOfPages: state.pages.count,
+            currentPageIndex: state.currentPageIndex,
+            onTap: { selectedIndex in state = state.copy(\.currentPageIndex, with: selectedIndex) }
+        )
+    }
+
+    private var actionButton: some View {
+        Button(
+            action: {
+                guard hasNextPage else {
+                    onDismiss()
+
+                    return
+                }
+
+                state = state.copy(\.currentPageIndex, with: state.currentPageIndex + 1)
+            },
+            label: {
+                Text(hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
+                    .fontBody3()
+                    .fontWeight(.semibold)
+                    .foregroundColor(DS.Color.Text.inverted)
+                    .frame(height: 44)
+                    .frame(maxWidth: .infinity)
+                    .background(DS.Color.Interaction.norm, in: RoundedRectangle(cornerRadius: DS.Radius.huge))
+                    .padding(.horizontal, DS.Spacing.large)
+            }
+        )
+    }
+
+    private var hasNextPage: Bool {
+        state.currentPageIndex < state.pages.count - 1
+    }
+
+    private func spacing(height: CGFloat) -> some View {
+        Spacer().frame(height: height)
+    }
+}
+
+/// A variant of `TabView` that sets an appropriate `minHeight` on its frame.
+private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>: View {
+    var selection: Binding<SelectionValue>?
+    @ViewBuilder var content: () -> Content
+
+    /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
+    @State private var minHeight: CGFloat = 1
+
+    var body: some View {
+        TabView(selection: selection) {
+            content()
+                .background {
+                    GeometryReader { reader in
+                        Color.clear
+                            .preference(key: TabViewMinHeightPreference.self, value: reader.frame(in: .local).height)
+                    }
+                }
+        }
+        .frame(minHeight: minHeight)
+        .onPreferenceChange(TabViewMinHeightPreference.self) { minHeight in
+            self.minHeight = minHeight
+        }
+    }
+}
+
+private struct TabViewMinHeightPreference: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+#Preview {
+    OnboardingScreen(onDismiss: {})
+}

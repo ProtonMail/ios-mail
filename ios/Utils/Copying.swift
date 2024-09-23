@@ -15,25 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import SwiftUI
+protocol Copying {}
 
-struct PickerViewStyle: ViewModifier {
-    let detents: Set<PresentationDetent>
+extension Copying {
 
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.Background.secondary)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(DS.Radius.huge)
-            .presentationDetents(detents)
-            .presentationDragIndicator(.visible)
+    func copy<Value>(_ path: WritableKeyPath<Self, Value>, with value: Value) -> Self {
+        var clone = self
+        clone[keyPath: path] = value
+        return clone
     }
-}
 
-extension View {
-    func pickerViewStyle(_ detents: Set<PresentationDetent>) -> some View {
-        modifier(PickerViewStyle(detents: detents))
-    }
 }

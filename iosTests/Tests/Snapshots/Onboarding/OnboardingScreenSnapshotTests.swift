@@ -15,25 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
+@testable import ProtonMail
 import SwiftUI
+import XCTest
 
-struct PickerViewStyle: ViewModifier {
-    let detents: Set<PresentationDetent>
+class OnboardingScreenSnapshotTests: BaseTestCase {
 
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.Background.secondary)
-            .safeAreaPadding(.top, DS.Spacing.extraLarge)
-            .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(DS.Radius.huge)
-            .presentationDetents(detents)
-            .presentationDragIndicator(.visible)
+    func testInitialStateLayoutsCorrecttly() {
+        assertSnapshots(matching: makeSUT(currentPageIndex: 0), on: .allPhones)
     }
-}
 
-extension View {
-    func pickerViewStyle(_ detents: Set<PresentationDetent>) -> some View {
-        modifier(PickerViewStyle(detents: detents))
+    func test2ndPageSelectedLayoutsCorrecttly() {
+        assertSnapshots(matching: makeSUT(currentPageIndex: 1), on: .allPhones)
     }
+
+    func test3rdPageSelectedLayoutsCorrecttly() {
+        assertSnapshots(matching: makeSUT(currentPageIndex: 2), on: .allPhones)
+    }
+
+    // MARK: - Private
+
+    private func makeSUT(currentPageIndex: Int) -> UIHostingController<OnboardingScreen> {
+        let sut = OnboardingScreen(state: .init(currentPageIndex: currentPageIndex), onDismiss: {})
+        return UIHostingController(rootView: sut)
+    }
+
 }

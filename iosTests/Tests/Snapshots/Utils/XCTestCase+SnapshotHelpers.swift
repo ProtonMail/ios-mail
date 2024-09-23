@@ -21,7 +21,7 @@ import XCTest
 
 extension XCTestCase {
 
-    public func assertSelfSizingSnapshot(
+    func assertSelfSizingSnapshot(
         of view: some View,
         styles: Set<UIUserInterfaceStyle> = [.light, .dark],
         preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
@@ -46,6 +46,66 @@ extension XCTestCase {
             testName: testName,
             line: line
         )
+    }
+
+    func assertSnapshots(
+        matching controller: @autoclosure () throws -> UIViewController,
+        on configurations: [(String, ViewImageConfig)],
+        named name: String? = nil,
+        record recording: Bool = false,
+        timeout: TimeInterval = 5,
+        file: StaticString = #file,
+        testName: String = #function,
+        line: UInt = #line
+    ) {
+        configurations.forEach { (configurationName, configuration) in
+            let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
+            let styles: [UIUserInterfaceStyle] = [.light, .dark]
+
+            try? styles.forEach { style in
+                let controller = try controller()
+                controller.overrideUserInterfaceStyle = style
+
+                assertSnapshot(
+                    of: controller,
+                    as: .image(on: configuration),
+                    named: suffixedName(name: name, withStyle: style),
+                    record: recording,
+                    timeout: timeout,
+                    file: file,
+                    testName: testName,
+                    line: line
+                )
+            }
+        }
+    }
+
+    func assertCustomHeightSnapshot(
+        matching view: UIView,
+        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+        preferredHeight: CGFloat,
+        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
+        named name: String? = nil,
+        record recording: Bool = false,
+        timeout: TimeInterval = 5,
+        file: StaticString = #file,
+        testName: String = #function,
+        line: UInt = #line
+    ) {
+        styles.forEach { style in
+            view.overrideUserInterfaceStyle = style
+
+            assertSnapshot(
+                of: view,
+                as: .image(size: .init(width: preferredWidth, height: preferredHeight)),
+                named: suffixedName(name: name, withStyle: style),
+                record: recording,
+                timeout: timeout,
+                file: file,
+                testName: testName,
+                line: line
+            )
+        }
     }
 
     func assertSnapshotsOnIPhoneX(
@@ -100,34 +160,6 @@ extension XCTestCase {
         )
     }
 
-    private func assertCustomHeightSnapshot(
-        matching view: UIView,
-        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
-        preferredHeight: CGFloat,
-        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
-        named name: String? = nil,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        styles.forEach { style in
-            view.overrideUserInterfaceStyle = style
-
-            assertSnapshot(
-                of: view,
-                as: .image(size: .init(width: preferredWidth, height: preferredHeight)),
-                named: suffixedName(name: name, withStyle: style),
-                record: recording,
-                timeout: timeout,
-                file: file,
-                testName: testName,
-                line: line
-            )
-        }
-    }
-
     private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
         [name, style.humanReadable]
             .compactMap { $0 }
@@ -177,4 +209,16 @@ private extension UIView {
             verticalFittingPriority: .defaultLow
         )
     }
+}
+
+extension Array where Element == (String, ViewImageConfig) {
+
+    public static var allPhones: [Element] {
+        return [
+            ("iPhoneSe", .iPhoneSe),
+            ("iPhoneX", .iPhoneX),
+            ("iPhone13ProMax", .iPhone13ProMax)
+        ]
+    }
+
 }
