@@ -21,6 +21,33 @@ import XCTest
 
 extension XCTestCase {
 
+    public func assertSelfSizingSnapshot(
+        of view: some View,
+        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
+        named name: String? = nil,
+        record recording: Bool = false,
+        timeout: TimeInterval = 5,
+        file: StaticString = #file,
+        testName: String = #function,
+        line: UInt = #line
+    ) {
+        let view = UIHostingController(rootView: view).view.unsafelyUnwrapped
+
+        assertCustomHeightSnapshot(
+            matching: view,
+            styles: styles,
+            preferredHeight: view.calculatePreferredHeight(preferredWidth: preferredWidth),
+            preferredWidth: preferredWidth,
+            named: name,
+            record: recording,
+            timeout: timeout,
+            file: file,
+            testName: testName,
+            line: line
+        )
+    }
+
     func assertSnapshotsOnIPhoneX(
         of view: some View,
         named name: String? = nil,
@@ -47,6 +74,8 @@ extension XCTestCase {
         }
     }
 
+    // MARK: - Private
+
     private func assertSnapshotOnIPhoneX(
         of controller: UIViewController,
         style: UIUserInterfaceStyle = .light,
@@ -71,7 +100,33 @@ extension XCTestCase {
         )
     }
 
-    // MARK: - Private
+    private func assertCustomHeightSnapshot(
+        matching view: UIView,
+        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+        preferredHeight: CGFloat,
+        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
+        named name: String? = nil,
+        record recording: Bool = false,
+        timeout: TimeInterval = 5,
+        file: StaticString = #file,
+        testName: String = #function,
+        line: UInt = #line
+    ) {
+        styles.forEach { style in
+            view.overrideUserInterfaceStyle = style
+
+            assertSnapshot(
+                of: view,
+                as: .image(size: .init(width: preferredWidth, height: preferredHeight)),
+                named: suffixedName(name: name, withStyle: style),
+                record: recording,
+                timeout: timeout,
+                file: file,
+                testName: testName,
+                line: line
+            )
+        }
+    }
 
     private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
         [name, style.humanReadable]
@@ -98,3 +153,28 @@ private extension UIUserInterfaceStyle {
 
 }
 
+private extension UIView {
+    func calculatePreferredHeight(preferredWidth: CGFloat) -> CGFloat {
+        let widthConstraint = NSLayoutConstraint(
+            item: self,
+            attribute: .width,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: preferredWidth
+        )
+        addConstraint(widthConstraint)
+        let height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        removeConstraint(widthConstraint)
+        return height
+    }
+
+    func systemLayoutSizeFitting(width: CGFloat) -> CGSize {
+        systemLayoutSizeFitting(
+            .init(width: width, height: 1),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .defaultLow
+        )
+    }
+}
