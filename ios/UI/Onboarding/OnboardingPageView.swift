@@ -48,7 +48,6 @@ struct OnboardingPageView: View {
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
                 .multilineTextAlignment(.center)
-                .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
