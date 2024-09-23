@@ -20,7 +20,6 @@ import SwiftUI
 
 struct OnboardingScreen: View {
     struct ViewState: Copying {
-        var selectedPageIndex: Int
         let pages: [OnboardingPage] = [
             .init(
                 image: .protonLogo,
@@ -38,15 +37,15 @@ struct OnboardingScreen: View {
                 subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!"
             )
         ]
+        var selectedPageIndex: Int
+        let onDismiss: () -> Void
     }
 
     @State var state: ViewState
-    private let onDismiss: () -> Void
     @State private var totalHeight: CGFloat = 1
 
-    init(state: ViewState = .init(selectedPageIndex: 0), onDismiss: @escaping () -> Void) {
-        self.state = state
-        self.onDismiss = onDismiss
+    init(selectedPageIndex: Int = 0, onDismiss: @escaping () -> Void) {
+        self.state = .init(selectedPageIndex: selectedPageIndex, onDismiss: onDismiss)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -109,7 +108,7 @@ struct OnboardingScreen: View {
         Button(
             action: {
                 guard hasNextPage else {
-                    onDismiss()
+                    state.onDismiss()
 
                     return
                 }
