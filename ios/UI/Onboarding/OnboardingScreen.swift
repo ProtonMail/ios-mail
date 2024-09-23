@@ -20,7 +20,7 @@ import SwiftUI
 
 struct OnboardingScreen: View {
     struct ViewState: Copying {
-        var currentPageIndex: Int
+        var selectedPageIndex: Int
         let pages: [OnboardingPage] = [
             .init(
                 image: .protonLogo,
@@ -44,15 +44,12 @@ struct OnboardingScreen: View {
     private let onDismiss: () -> Void
     @State private var totalHeight: CGFloat = 1
 
-    init(
-        state: ViewState = .init(currentPageIndex: 0),
-        onDismiss: @escaping () -> Void
-    ) {
+    init(state: ViewState = .init(selectedPageIndex: 0), onDismiss: @escaping () -> Void) {
         self.state = state
         self.onDismiss = onDismiss
     }
 
-    internal var didAppear: ((Self) -> Void)?
+    var didAppear: ((Self) -> Void)?
 
     // MARK: - View
 
@@ -60,7 +57,7 @@ struct OnboardingScreen: View {
         VStack(spacing: DS.Spacing.extraLarge) {
             spacing(height: DS.Spacing.small)
             header
-            pagesView
+            pages
             dotsIndexIndicator
             actionButton
             spacing(height: DS.Spacing.extraLarge)
@@ -90,21 +87,21 @@ struct OnboardingScreen: View {
             .padding(.horizontal, DS.Spacing.large)
     }
 
-    private var pagesView: some View {
-        HeightPreservingTabView(selection: $state.currentPageIndex) {
+    private var pages: some View {
+        HeightPreservingTabView(selection: $state.selectedPageIndex) {
             ForEach(Array(state.pages.enumerated()), id: \.element.id) { index, model in
                 OnboardingPageView(model: model).tag(index)
             }
         }
-        .animation(.easeIn, value: state.currentPageIndex)
+        .animation(.easeIn, value: state.selectedPageIndex)
         .tabViewStyle(.page(indexDisplayMode: .never))
     }
 
     private var dotsIndexIndicator: some View {
         OnboardingDotsIndexView(
-            numberOfPages: state.pages.count,
-            currentPageIndex: state.currentPageIndex,
-            onTap: { selectedIndex in state = state.copy(\.currentPageIndex, with: selectedIndex) }
+            pagesCount: state.pages.count,
+            selectedPageIndex: state.selectedPageIndex,
+            onTap: { selectedIndex in state = state.copy(\.selectedPageIndex, with: selectedIndex) }
         )
     }
 
@@ -117,7 +114,7 @@ struct OnboardingScreen: View {
                     return
                 }
 
-                state = state.copy(\.currentPageIndex, with: state.currentPageIndex + 1)
+                state = state.copy(\.selectedPageIndex, with: state.selectedPageIndex + 1)
             },
             label: {
                 Text(hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
@@ -133,7 +130,7 @@ struct OnboardingScreen: View {
     }
 
     private var hasNextPage: Bool {
-        state.currentPageIndex < state.pages.count - 1
+        state.selectedPageIndex < state.pages.count - 1
     }
 
     private func spacing(height: CGFloat) -> some View {
@@ -143,8 +140,8 @@ struct OnboardingScreen: View {
 
 /// A variant of `TabView` that sets an appropriate `minHeight` on its frame.
 private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>: View {
-    var selection: Binding<SelectionValue>?
-    @ViewBuilder var content: () -> Content
+    let selection: Binding<SelectionValue>?
+    @ViewBuilder let content: () -> Content
 
     /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
     @State private var minHeight: CGFloat = 1

@@ -19,19 +19,19 @@ import DesignSystem
 import SwiftUI
 
 struct OnboardingDotsIndexView: View {
-    let numberOfPages: Int
-    let currentPageIndex: Int
+    let pagesCount: Int
+    let selectedPageIndex: Int
     let onTap: (_ pageIndex: Int) -> Void
 
     // MARK: - Body
 
     var body: some View {
         HStack(spacing: DS.Spacing.small) {
-            ForEach(0..<numberOfPages, id: \.self) { pageIndex in
+            ForEach(0..<pagesCount, id: \.self) { pageIndex in
                 RoundedRectangle(cornerRadius: DS.Radius.huge)
                     .fill(color(forIndex: pageIndex))
-                    .frame(width: size(forIndex: pageIndex), height: dotSize)
-                    .animation(.easeInOut, value: currentPageIndex)
+                    .frame(width: width(forIndex: pageIndex), height: dotSize)
+                    .animation(.easeInOut, value: selectedPageIndex)
                     .onTapGesture { onTap(pageIndex) }
                     .id(pageIndex)
             }
@@ -43,10 +43,10 @@ struct OnboardingDotsIndexView: View {
     private let dotSize: CGFloat = 4
 
     private func color(forIndex index: Int) -> Color {
-        currentPageIndex == index ? DS.Color.Interaction.norm : DS.Color.Shade.shade20
+        selectedPageIndex == index ? DS.Color.Interaction.norm : DS.Color.Shade.shade20
     }
 
-    private func size(forIndex index: Int) -> CGFloat {
-        currentPageIndex == index ? dotSize * 4 : dotSize
+    private func width(forIndex index: Int) -> CGFloat {
+        selectedPageIndex == index ? dotSize * 4 : dotSize
     }
 }

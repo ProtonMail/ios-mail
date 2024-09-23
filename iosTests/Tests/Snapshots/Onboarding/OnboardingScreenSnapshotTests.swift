@@ -22,21 +22,21 @@ import XCTest
 class OnboardingScreenSnapshotTests: BaseTestCase {
 
     func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(currentPageIndex: 0), on: .allPhones)
+        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
     }
 
     func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(currentPageIndex: 1), on: .allPhones)
+        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
     }
 
     func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(currentPageIndex: 2), on: .allPhones)
+        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
     }
 
     // MARK: - Private
 
-    private func makeSUT(currentPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(state: .init(currentPageIndex: currentPageIndex), onDismiss: {})
+    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
+        let sut = OnboardingScreen(state: .init(selectedPageIndex: selectedPageIndex), onDismiss: {})
         return UIHostingController(rootView: sut)
     }
 

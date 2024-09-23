@@ -21,19 +21,19 @@ import XCTest
 class OnboardingDotsIndexViewSnapshotTests: BaseTestCase {
 
     func testOnboardingDotsIndexView_With5PagesAnd5thSelected_LayoutsCorrectly() {
-        let sut = OnboardingDotsIndexView(numberOfPages: 5, currentPageIndex: 4)
+        let sut = OnboardingDotsIndexView(pagesCount: 5, selectedPageIndex: 4)
 
         assertSelfSizingSnapshot(of: sut)
     }
 
     func testOnboardingDotsIndexView_With3PagesAnd2ndSelected_LayoutsCorrectly() {
-        let sut = OnboardingDotsIndexView(numberOfPages: 3, currentPageIndex: 1)
+        let sut = OnboardingDotsIndexView(pagesCount: 3, selectedPageIndex: 1)
 
         assertSelfSizingSnapshot(of: sut)
     }
 
     func testOnboardingDotsIndexView_With2PagesAnd1stSelected_LayoutsCorrectly() {
-        let sut = OnboardingDotsIndexView(numberOfPages: 2, currentPageIndex: 0)
+        let sut = OnboardingDotsIndexView(pagesCount: 2, selectedPageIndex: 0)
 
         assertSelfSizingSnapshot(of: sut)
     }
@@ -42,8 +42,8 @@ class OnboardingDotsIndexViewSnapshotTests: BaseTestCase {
 
 private extension OnboardingDotsIndexView {
 
-    init(numberOfPages: Int, currentPageIndex: Int) {
-        self.init(numberOfPages: numberOfPages, currentPageIndex: currentPageIndex, onTap: { _ in })
+    init(pagesCount: Int, selectedPageIndex: Int) {
+        self.init(pagesCount: pagesCount, selectedPageIndex: selectedPageIndex, onTap: { _ in })
     }
 
 }

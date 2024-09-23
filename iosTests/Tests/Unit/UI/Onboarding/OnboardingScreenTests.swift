@@ -36,83 +36,86 @@ class OnboardingScreenTests: BaseTestCase {
         super.tearDown()
     }
 
-    func testInInitialState_ItHas1stPageSelected() throws {
-        XCTAssertEqual(sut.state.currentPageIndex, 0)
+    func testOnAppear_ItHas1stPageSelected() throws {
+        arrange { inspectSUT in
+            let sut = try inspectSUT.actualView()
+
+            XCTAssertEqual(sut.state.selectedPageIndex, 0)
+            XCTAssertEqual(self.dismissCallsCount, 0)
+        }
     }
 
     func test_WhenTapOnNextOnce_ItHas2ndPageSelected() throws {
-        let expectation = sut.on(\.didAppear) { inspectView in
-            try inspectView.simulateTapOnNext()
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapOnNext()
 
-            let view = try inspectView.actualView()
+            let sut = try inspectSUT.actualView()
 
-            XCTAssertEqual(view.state.currentPageIndex, 1)
+            XCTAssertEqual(sut.state.selectedPageIndex, 1)
             XCTAssertEqual(self.dismissCallsCount, 0)
         }
-
-        ViewHosting.host(view: sut)
-
-        wait(for: [expectation], timeout: 0.1)
     }
 
     func test_WhenTapOnNextTwice_ItHas3rdPageSelected() throws {
-        let expectation = sut.on(\.didAppear) { inspectView in
-            try inspectView.simulateTapOnNext()
-            try inspectView.simulateTapOnNext()
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapOnNext()
+            try inspectSUT.simulateTapOnNext()
 
-            let indexView = try inspectView.find(OnboardingDotsIndexView.self)
-            try indexView.find(viewWithId: 2).callOnTapGesture()
+            let sut = try inspectSUT.actualView()
 
-
-            let view = try inspectView.actualView()
-
-            XCTAssertEqual(view.state.currentPageIndex, 2)
+            XCTAssertEqual(sut.state.selectedPageIndex, 2)
             XCTAssertEqual(self.dismissCallsCount, 0)
         }
-
-        ViewHosting.host(view: sut)
-
-        wait(for: [expectation], timeout: 0.1)
     }
 
     func test_WhenTapOn2ndPageDot_ItHas2ndPageSelected() throws {
-        let expectation = sut.on(\.didAppear) { inspectView in
-            try inspectView.simulateTapGestureOnDot(index: 1)
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapGestureOnDot(index: 1)
 
-            let view = try inspectView.actualView()
+            let sut = try inspectSUT.actualView()
 
-            XCTAssertEqual(view.state.currentPageIndex, 1)
+            XCTAssertEqual(sut.state.selectedPageIndex, 1)
             XCTAssertEqual(self.dismissCallsCount, 0)
         }
-
-        ViewHosting.host(view: sut)
-
-        wait(for: [expectation], timeout: 0.1)
     }
 
     func test_WhenTapOn3rdPageDot_ItHas3rdPageSelected() throws {
-        let expectation = sut.on(\.didAppear) { inspectView in
-            try inspectView.simulateTapGestureOnDot(index: 2)
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapGestureOnDot(index: 2)
 
-            let view = try inspectView.actualView()
+            let sut = try inspectSUT.actualView()
 
-            XCTAssertEqual(view.state.currentPageIndex, 2)
+            XCTAssertEqual(sut.state.selectedPageIndex, 2)
             XCTAssertEqual(self.dismissCallsCount, 0)
         }
-
-        ViewHosting.host(view: sut)
-
-        wait(for: [expectation], timeout: 0.1)
     }
 
     func test_WhenTapOnStartTesting_ItDismissesSelf() throws {
-        let expectation = sut.on(\.didAppear) { inspectView in
-            try inspectView.simulateTapOnNext()
-            try inspectView.simulateTapOnNext()
-            try inspectView.simulateTapOnStartTesting()
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapOnNext()
+            try inspectSUT.simulateTapOnNext()
+
+            XCTAssertEqual(self.dismissCallsCount, 0)
+
+            try inspectSUT.simulateTapOnStartTesting()
 
             XCTAssertEqual(self.dismissCallsCount, 1)
         }
+    }
+
+    private func arrange(
+        function: String = #function,
+        file: StaticString = #file,
+        line: UInt = #line,
+        perform: @escaping (InspectableView<ViewType.View<OnboardingScreen>>) throws -> Void
+    ) {
+        let expectation = sut.on(
+            \.didAppear,
+             function: function,
+             file: file,
+             line: line, 
+             perform: perform
+        )
 
         ViewHosting.host(view: sut)
 
