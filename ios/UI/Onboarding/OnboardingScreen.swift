@@ -69,8 +69,8 @@ struct OnboardingScreen: View {
             GeometryReader { geometry in
                 Color.clear
                     .edgesIgnoringSafeArea(.all)
-                    .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
-                    .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
+                    .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
+                    .onPreferenceChange(HeightPreferenceKey.self) { value in
                         totalHeight = value
                     }
             }

@@ -77,8 +77,8 @@ private struct ToastModifier: ViewModifier {
                 .background {
                     GeometryReader { geometry in
                         Color.clear
-                            .preference(key: HeaderHeightPreferenceKey.self, value: geometry.size.height)
-                            .onPreferenceChange(HeaderHeightPreferenceKey.self) { value in
+                            .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
+                            .onPreferenceChange(HeightPreferenceKey.self) { value in
                                 state.toastHeights[toast] = value
                             }
                     }
