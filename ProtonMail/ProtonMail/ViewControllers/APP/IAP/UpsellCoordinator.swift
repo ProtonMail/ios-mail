@@ -39,6 +39,8 @@ final class UpsellCoordinator {
     private weak var rootViewController: UIViewController?
     private var paymentsUI: PaymentsUI?
 
+    private let paymentsUnavailableMessage = "Payments are disabled in TestFlight builds using production environment"
+
     init(dependencies: Dependencies, rootViewController: UIViewController) {
         self.dependencies = dependencies
         self.rootViewController = rootViewController
@@ -102,6 +104,11 @@ final class UpsellCoordinator {
     }
 
     private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
+        guard Application.arePaymentsEnabled else {
+            showErrorMessage(paymentsUnavailableMessage)
+            return
+        }
+
         rootViewController?.lockUI()
         upsellPageModel.isBusy = true
 
@@ -130,6 +137,10 @@ final class UpsellCoordinator {
     }
 
     private func showErrorMessage(_ error: NSError) {
+        showErrorMessage(error.localizedDescription)
+    }
+
+    private func showErrorMessage(_ message: String) {
         guard
             UIApplication.shared.applicationState == .active,
             let presentedViewController = rootViewController?.presentedViewController
@@ -138,7 +149,7 @@ final class UpsellCoordinator {
         }
 
         let banner = PMBanner(
-            message: error.localizedDescription,
+            message: message,
             style: PMBannerNewStyle.error,
             dismissDuration: .infinity,
             bannerHandler: PMBanner.dismiss
@@ -152,7 +163,13 @@ final class UpsellCoordinator {
     private func fallbackToPreviousFlow(entryPoint: UpsellPageEntryPoint, onDismiss: OnDismissCallback?) async {
         switch entryPoint {
         case .autoDelete:
-            guard let navigationController = rootViewController?.navigationController else {
+            let presentingNavigationController: UINavigationController
+
+            if let navigationController = rootViewController as? UINavigationController {
+                presentingNavigationController = navigationController
+            } else if let navigationController = rootViewController?.navigationController {
+                presentingNavigationController = navigationController
+            } else {
                 return
             }
 
@@ -162,7 +179,7 @@ final class UpsellCoordinator {
                 }
             }
 
-            upsellSheet.present(on: navigationController.view)
+            upsellSheet.present(on: presentingNavigationController.view)
         case .contactGroups:
             await presentCoreSubscriptionScreen(onDismiss: onDismiss)
         case .folders:
@@ -188,9 +205,9 @@ final class UpsellCoordinator {
         }
     }
 
-    private func presentAlertController(title: String, message: String) {
+    private func presentAlertController(title: String, message: String?, okAction: ((UIAlertAction?) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
+        alert.addOKAction(handler: okAction)
         rootViewController?.present(alert, animated: true)
     }
 
@@ -212,6 +229,14 @@ final class UpsellCoordinator {
     }
 
     private func presentCoreSubscriptionScreen(onDismiss: OnDismissCallback?) async {
+        guard Application.arePaymentsEnabled else {
+            presentAlertController(title: paymentsUnavailableMessage, message: nil) { _ in
+                onDismiss?()
+            }
+
+            return
+        }
+
         let paymentsUI = dependencies.paymentsUIFactory.makeView()
 
         await withCheckedContinuation { continuation in
