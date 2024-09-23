@@ -31,35 +31,35 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
     func testModel_ForGivenLocation_IsMappedCorrectly() {
         let testCases: [TestCase] = [
             .init(
-                given: .inbox,
+                given: .system(.inbox),
                 expected: .init(name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox, iconColor: nil)
             ),
             .init(
-                given: .trash,
+                given: .system(.trash),
                 expected: .init(name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash, iconColor: nil)
             ),
             .init(
-                given: .archive,
+                given: .system(.archive),
                 expected: .init(name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox, iconColor: nil)
             ),
             .init(
-                given: .spam,
+                given: .system(.spam),
                 expected: .init(name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire, iconColor: nil)
             ),
             .init(
-                given: .snoozed,
+                given: .system(.snoozed),
                 expected: .init(name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock, iconColor: nil)
             ),
             .init(
-                given: .scheduled,
+                given: .system(.scheduled),
                 expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClock, iconColor: nil)
             ),
             .init(
-                given: .outbox,
+                given: .system(.outbox),
                 expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icFile, iconColor: nil)
             ),
             .init(
-                given: .custom(name: "Online shopping", id: .init(value: 0), color: .init(value: "FFA500")),
+                given: .custom(name: "Online shopping", id: .random(), color: .init(value: "FFA500")),
                 expected: .init(
                     name: "Online shopping",
                     icon: DS.Icon.icFolderOpenFilled,

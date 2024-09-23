@@ -15,22 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonMail
 import proton_app_uniffi
 
-/**
- The Rust SDK by default strongly retains the callbacks/delegates set from the iOS app. This is because 
- uniffi does not provide support to avoid retain cycles as stated in their
- documentation: https://mozilla.github.io/uniffi-rs/foreign_traits.html.
+extension ExclusiveLocation {
 
- This could change in the future, but in the meantime we replicate any callback declared in the Rust SDK
- with a proxy callback retaining a weak reference to the Swift object.
- */
-final class LiveQueryCallbackWrapper: @unchecked Sendable, LiveQueryCallback {
-
-    var delegate: (() -> Void)?
-
-    func onUpdate() {
-        delegate?()
+    static func system(_ systemLabel: SystemFolderLabel) -> Self {
+        .system(name: systemLabel, id: .random())
     }
 
 }

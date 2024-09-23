@@ -114,7 +114,7 @@ enum ExpandedMessageCellEvent {
 
 #Preview {
     let messageDetails = MessageDetailsPreviewProvider.testData(
-        location: .inbox,
+        location: .system(name: .inbox, id: .random()),
         labels: [
             .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue)
         ]

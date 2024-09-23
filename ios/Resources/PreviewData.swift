@@ -28,6 +28,7 @@ enum PreviewData {
             let snoozeDate: Bool = ((1..<11).randomElement()!%10) == 0
             return .init(
                 id: .random(),
+                conversationID: .random(),
                 type: .conversation,
                 avatar: .init(
                     info: .init(initials: randomSenderSubject.0.prefix(2).uppercased(), color: .red),
@@ -40,7 +41,7 @@ enum PreviewData {
                 isStarred: (value%6 == 0),
                 isSelected: false,
                 isSenderProtonOfficial: (randomSenderSubject.0 == "Proton"),
-                numMessages: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
+                messagesCount: [0, 1, 5, [0, 2, 14].randomElement()!].randomElement()!,
                 labelUIModel: [0, 1, 2].randomElement()! == 0 ? mailboxLabels.randomElement()! : .init(),
                 attachmentsUIModel: [0, 1, 2].randomElement()! == 0 ? attachments.randomElement()! : [],
                 expirationDate: expirationDate ? .now + 1000 : nil,

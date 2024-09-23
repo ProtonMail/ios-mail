@@ -134,7 +134,8 @@ private extension View {
         ConversationDetailScreen(seed:
                 .mailboxItem(
                     item: .init(
-                        id: .init(value: 0),
+                        id: .random(),
+                        conversationID: .random(),
                         type: .conversation,
                         avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
                         emails: "",
@@ -144,7 +145,7 @@ private extension View {
                         isStarred: true,
                         isSelected: false,
                         isSenderProtonOfficial: true,
-                        numMessages: 3,
+                        messagesCount: 3,
                         labelUIModel: MailboxLabelUIModel(
                             labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                         ),

@@ -27,12 +27,12 @@ final class PassThroughWindowTests: BaseTestCase {
         sut = .init(frame: UIScreen.main.bounds)
         sut.rootViewController = UIViewController()
         sut.makeKeyAndVisible()
-      }
+    }
 
-      override func tearDown() {
+    override func tearDown() {
         sut = nil
         super.tearDown()
-      }
+    }
 
     func testHitTest_WhenHitViewIsRootViewControllerView_ReturnsNil() throws {
         let rootController = try XCTUnwrap(sut.rootViewController)

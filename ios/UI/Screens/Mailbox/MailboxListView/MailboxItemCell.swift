@@ -90,7 +90,7 @@ extension MailboxItemCell {
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.senderText)
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
-            MailboxConversationMessageCountView(numMessages: uiModel.numMessages)
+            MailboxConversationMessageCountView(messagesCount: uiModel.messagesCount)
             Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption2)
@@ -197,6 +197,7 @@ extension MailboxItemCell {
 @Observable
 final class MailboxItemCellUIModel: Identifiable, Sendable {
     let id: ID
+    let conversationID: ID
     let type: MailboxItemType
     let avatar: AvatarUIModel
     let emails: String
@@ -208,7 +209,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let isSelected: Bool
 
     let isSenderProtonOfficial: Bool
-    let numMessages: UInt64
+    let messagesCount: UInt64
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
     let replyIcons: ReplyIconsUIModel
@@ -218,6 +219,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
     init(
         id: ID,
+        conversationID: ID,
         type: MailboxItemType,
         avatar: AvatarUIModel,
         emails: String,
@@ -227,7 +229,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         isStarred: Bool,
         isSelected: Bool,
         isSenderProtonOfficial: Bool,
-        numMessages: UInt64,
+        messagesCount: UInt64,
         labelUIModel: MailboxLabelUIModel = .init(),
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
         replyIcons: ReplyIconsUIModel = .init(),
@@ -235,6 +237,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         snoozeDate: Date?
     ) {
         self.id = id
+        self.conversationID = conversationID
         self.type = type
         self.avatar = avatar
         self.emails = emails
@@ -244,7 +247,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.isStarred = isStarred
         self.isSelected = isSelected
         self.isSenderProtonOfficial = isSenderProtonOfficial
-        self.numMessages = numMessages
+        self.messagesCount = messagesCount
         self.labelUIModel = labelUIModel
         self.attachmentsUIModel = attachmentsUIModel
         self.replyIcons = replyIcons
@@ -301,7 +304,8 @@ enum MailboxItemCellEvent {
 #Preview {
     func model(subject: String) -> MailboxItemCellUIModel {
         MailboxItemCellUIModel(
-            id: .init(value: 0),
+            id: .random(),
+            conversationID: .random(),
             type: .conversation,
             avatar: .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init())),
             emails: "Proton",
@@ -311,7 +315,7 @@ enum MailboxItemCellEvent {
             isStarred: false,
             isSelected: true,
             isSenderProtonOfficial: true,
-            numMessages: 0,
+            messagesCount: 0,
             labelUIModel: .init(labelModels: [.init(labelId: .init(value: 0), text: "Working", color: .brown)] + LabelUIModel.random(num: 3)),
             expirationDate: nil,
             snoozeDate: nil
@@ -326,7 +330,8 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: .init(value: 0),
+                id: .random(),
+                conversationID: .random(),
                 type: .message,
                 avatar: .init(info: .init(initials: "FE", color: .yellow), type: .sender(params: .init())),
                 emails: "FedEx",
@@ -336,7 +341,7 @@ enum MailboxItemCellEvent {
                 isStarred: true,
                 isSelected: false,
                 isSenderProtonOfficial: false,
-                numMessages: 3,
+                messagesCount: 3,
                 labelUIModel: .init(labelModels: [
                     LabelUIModel(labelId: .init(value: 0), text: "Offer lst minute for me and for you", color: .purple)
                 ]),
@@ -353,7 +358,8 @@ enum MailboxItemCellEvent {
 
         MailboxItemCell(
             uiModel: .init(
-                id: .init(value: 0),
+                id: .random(),
+                conversationID: .random(),
                 type: .message,
                 avatar: .init(info: .init(initials: "MA", color: .cyan), type: .sender(params: .init())),
                 emails: "Mary, Elijah Wood, wiseman@pm.me",
@@ -363,7 +369,7 @@ enum MailboxItemCellEvent {
                 isStarred: true,
                 isSelected: false,
                 isSenderProtonOfficial: true,
-                numMessages: 12,
+                messagesCount: 12,
                 labelUIModel: MailboxLabelUIModel(
                     labelModels: [.init(labelId: .init(value: 0), text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
                 attachmentsUIModel: [

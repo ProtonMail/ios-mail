@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import ProtonCoreUtilities
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -40,4 +41,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         AppLifeCycle.shared.applicationWillTerminate(application)
     }
 
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        InterfaceOrientationCoordinator.shared.supportedOrientations
+    }
 }

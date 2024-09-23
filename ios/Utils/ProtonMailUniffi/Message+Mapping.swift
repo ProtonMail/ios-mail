@@ -36,6 +36,7 @@ extension Message {
 
         return MailboxItemCellUIModel(
             id: id,
+            conversationID: conversationId,
             type: .message,
             avatar: avatar,
             emails: emails,
@@ -45,7 +46,7 @@ extension Message {
             isStarred: starred,
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: sender.isProton,
-            numMessages: 0,
+            messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             replyIcons: .init(
@@ -125,20 +126,8 @@ extension ExclusiveLocation {
 
     var model: MessageDetail.Location {
         switch self {
-        case .inbox:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox)
-        case .trash:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash)
-        case .archive:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox)
-        case .spam:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire)
-        case .snoozed:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock)
-        case .scheduled:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClock)
-        case .outbox:
-            .noIconColor(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icFile)
+        case .system(let systemLabel, _):
+            .init(name: systemLabel.humanReadable, icon: systemLabel.icon, iconColor: nil)
         case .custom(let name, _, let color):
             .init(name: name.stringResource, icon: DS.Icon.icFolderOpenFilled, iconColor: Color(hex: color.value))
         }

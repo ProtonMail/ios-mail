@@ -27,6 +27,7 @@ extension Conversation {
 
         return MailboxItemCellUIModel(
             id: id,
+            conversationID: id,
             type: .conversation,
             avatar: firstSender.senderAvatar,
             emails: senders.addressUIRepresentation,
@@ -36,7 +37,7 @@ extension Conversation {
             isStarred: isStarred,
             isSelected: selectedIds.contains(id),
             isSenderProtonOfficial: firstSender.isProton,
-            numMessages: numMessages > 1 ? numMessages : 0,
+            messagesCount: totalMessages > 1 ? totalMessages : 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),

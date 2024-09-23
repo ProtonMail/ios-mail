@@ -17,8 +17,20 @@ packages:
     path: localPackages/DesignSystem
   Keychain:
     path: localPackages/Keychain
+  Lottie:
+    url: https://github.com/airbnb/lottie-ios.git
+    minorVersion: "4.5.0"    
+  Nimble:
+    url: https://github.com/Quick/Nimble
+    minorVersion: "13.3.0"    
   proton_app_uniffi:
     path: localPackages/proton_app_uniffi
+  ProtonCoreET:
+    path: externalPackages/et-protoncore/platform/apple/ProtonCoreET
+    group: Packages    
+  swift-snapshot-testing:
+    url: https://github.com/pointfreeco/swift-snapshot-testing
+    minorVersion: "1.17.0"
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     minorVersion: "2.64.0"
@@ -28,15 +40,6 @@ packages:
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
     minorVersion: "1.3.0"
-  Nimble:
-    url: https://github.com/Quick/Nimble
-    minorVersion: "13.3.0"
-  swift-snapshot-testing:
-    url: https://github.com/pointfreeco/swift-snapshot-testing
-    minorVersion: "1.17.0"
-  ProtonCoreET:
-    path: ../et-protoncore/platform/apple/ProtonCoreET
-    group: Packages
 
 configs:
   Debug: debug
@@ -105,14 +108,15 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight  
     dependencies:
+      - package: Collections
       - package: DesignSystem
       - package: Keychain
-      - package: Collections
+      - package: Lottie
       - package: proton_app_uniffi
-      - package: SwiftUIIntrospect
       - package: ProtonCoreET
         products: 
           - AccountLogin
+      - package: SwiftUIIntrospect
 
   ProtonMailTest:
     type: bundle.unit-test
