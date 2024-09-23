@@ -106,14 +106,14 @@ enum PaginatedListViewState: Equatable {
     return PaginatedListView(
         dataSource: dataSource,
         headerView: {
-            Text("Numbered cells")
+            Text("Numbered cells".notLocalized)
                 .bold()
         },
         emptyListView: {
-            Text("List is Empty")
+            Text("List is Empty".notLocalized)
         },
         cellView: { index, item in
-            Text("cell \(item.id)")
+            Text("cell \(item.id)".notLocalized)
         }
     )
     .listStyle(.plain)
