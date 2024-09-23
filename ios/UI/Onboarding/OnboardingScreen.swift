@@ -37,14 +37,14 @@ struct OnboardingScreen: View {
                 subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!"
             )
         ]
-        var selectedPageIndex: Int
+        var selectedPageIndex: UInt
         let onDismiss: () -> Void
     }
 
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
-    init(selectedPageIndex: Int = 0, onDismiss: @escaping () -> Void) {
+    init(selectedPageIndex: UInt = 0, onDismiss: @escaping () -> Void) {
         self.state = .init(selectedPageIndex: selectedPageIndex, onDismiss: onDismiss)
     }
 
@@ -98,7 +98,7 @@ struct OnboardingScreen: View {
 
     private var dotsIndexIndicator: some View {
         OnboardingDotsIndexView(
-            pagesCount: state.pages.count,
+            pagesCount: UInt(state.pages.count),
             selectedPageIndex: state.selectedPageIndex,
             onTap: { selectedIndex in state = state.copy(\.selectedPageIndex, with: selectedIndex) }
         )
