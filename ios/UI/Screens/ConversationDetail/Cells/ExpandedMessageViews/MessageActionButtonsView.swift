@@ -28,7 +28,6 @@ struct MessageActionButtonsView: View {
                 .removeViewIf(isSingleRecipient)
             MessageActionButtonView(image: DS.Icon.icForward, text: L10n.Action.Send.forward)
         }
-        .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.large)
     }
 }
