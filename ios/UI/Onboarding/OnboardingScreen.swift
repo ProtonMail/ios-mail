@@ -38,7 +38,6 @@ struct OnboardingScreen: View {
             )
         ]
         var selectedPageIndex: Int
-        let didTapStartTesting: () -> Void
 
         var buttonTitle: String {
             hasNextPage ? "Next" : "Start testing"
@@ -53,11 +52,12 @@ struct OnboardingScreen: View {
         }
     }
 
+    @Environment(\.dismissable) var dismiss: Dismissable
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
-    init(selectedPageIndex: Int = 0, didTapStartTesting: @escaping () -> Void) {
-        self.state = .init(selectedPageIndex: selectedPageIndex, didTapStartTesting: didTapStartTesting)
+    init(selectedPageIndex: Int = 0) {
+        self.state = .init(selectedPageIndex: selectedPageIndex)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -120,7 +120,7 @@ struct OnboardingScreen: View {
         Button(
             action: {
                 if !state.hasNextPage {
-                    state.didTapStartTesting()
+                    dismiss()
                 }
 
                 state = state
@@ -182,5 +182,5 @@ private struct TabViewMinHeightPreference: PreferenceKey {
 }
 
 #Preview {
-    OnboardingScreen(didTapStartTesting: {})
+    OnboardingScreen()
 }

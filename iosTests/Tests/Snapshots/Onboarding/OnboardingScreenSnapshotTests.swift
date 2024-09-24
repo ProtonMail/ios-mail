@@ -36,7 +36,7 @@ class OnboardingScreenSnapshotTests: BaseTestCase {
     // MARK: - Private
 
     private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex, didTapStartTesting: {})
+        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
         return UIHostingController(rootView: sut)
     }
 
