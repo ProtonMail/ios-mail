@@ -27,7 +27,7 @@ struct MessageDetailsView: View {
     private let messageDetailsLeftColumnWidth: CGFloat = 80
 
     var body: some View {
-        VStack {
+        VStack(spacing: .zero) {
             headerView
             extendedDetailsView
                 .removeViewIf(isHeaderCollapsed)
@@ -147,6 +147,7 @@ struct MessageDetailsView: View {
             RoundedRectangle(cornerSize: CGSize(width: DS.Radius.extraLarge, height: DS.Radius.extraLarge))
                 .stroke(DS.Color.Border.strong)
         }
+        .padding(.vertical, DS.Spacing.large)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRootItem)
     }
