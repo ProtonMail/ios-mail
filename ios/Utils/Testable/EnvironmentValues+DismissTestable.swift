@@ -17,9 +17,26 @@
 
 import SwiftUI
 
+extension EnvironmentValues {
+
+    var dismissTestable: Dismissable {
+        get { isTestingTarget ? self[DismissKey.self] : dismiss }
+        set { self[DismissKey.self] = newValue }
+    }
+
+    // MARK: - Private
+
+    private var isTestingTarget: Bool {
+        NSClassFromString("XCTest") != nil
+    }
+
+}
+
 protocol Dismissable {
     func callAsFunction()
 }
+
+extension DismissAction: Dismissable {}
 
 private struct DismissKey: EnvironmentKey {
     struct DefaultDismisser: Dismissable {
@@ -42,20 +59,3 @@ private struct DismissKey: EnvironmentKey {
 
     static let defaultValue: Dismissable = DefaultDismisser()
 }
-
-extension EnvironmentValues {
-
-    var dismissable: Dismissable {
-        get { isTestingTarget ? self[DismissKey.self] : dismiss }
-        set { self[DismissKey.self] = newValue }
-    }
-
-    // MARK: - Private
-
-    private var isTestingTarget: Bool {
-        NSClassFromString("XCTest") != nil
-    }
-
-}
-
-extension DismissAction: Dismissable {}

@@ -129,7 +129,7 @@ class OnboardingScreenTests: BaseTestCase {
              perform: perform
         )
 
-        ViewHosting.host(view: sut.environment(\.dismissable, dismissSpy))
+        ViewHosting.host(view: sut.environment(\.dismissTestable, dismissSpy))
 
         wait(for: [expectation], timeout: 0.01)
     }

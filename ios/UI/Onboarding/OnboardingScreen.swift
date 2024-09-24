@@ -52,7 +52,7 @@ struct OnboardingScreen: View {
         }
     }
 
-    @Environment(\.dismissable) var dismiss: Dismissable
+    @Environment(\.dismissTestable) var dismiss: Dismissable
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 

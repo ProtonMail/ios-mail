@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
+    @AppStorage(.showAlphaV1Onboarding) var showOnboarding: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
@@ -49,9 +50,14 @@ struct MailboxScreen: View {
         self.customLabelModel = customLabelModel
     }
 
+    var didAppear: ((Self) -> Void)?
+
+    // MARK: - View
+
     var body: some View {
         NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
+                .sheetTestable(isPresented: $showOnboarding, content: { OnboardingScreen() })
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -65,6 +71,7 @@ struct MailboxScreen: View {
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
+        .onAppear { didAppear?(self) }
     }
 }
 
@@ -132,6 +139,8 @@ private extension Animation {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
+    let userDefaults = UserDefaults(suiteName: "preview")!
+    userDefaults.set(true, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
 
     return MailboxScreen(
         customLabelModel: customLabelModel,
@@ -141,6 +150,7 @@ private extension Animation {
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
         .environmentObject(userSettings)
+        .defaultAppStorage(userDefaults)
 }
 
 private struct MailboxScreenIdentifiers {
