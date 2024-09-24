@@ -77,7 +77,7 @@ final class FetchAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
-    func testExecute_whenDownloadFails_returnedErrorContainsAttachmentID() {
+    func testExecute_whenDownloadFails_returnsError() {
         mockApiServiceShouldReturnError = true
         let params = makeDummyParams()
 
@@ -86,10 +86,8 @@ final class FetchAttachmentTests: XCTestCase {
             switch result {
             case .success:
                 XCTFail()
-            case .failure(let error):
-                let customError = error as? FetchAttachmentError
-                XCTAssertNotNil(customError)
-                XCTAssert(customError?.attachmentID == dummySingleAttachmentID)
+            case .failure:
+                break
             }
             expectation.fulfill()
         }
@@ -100,16 +98,13 @@ final class FetchAttachmentTests: XCTestCase {
         let params = makeDummyParams(setNilKeyPacket: true)
 
         let expectation = expectation(description: "")
-        sut.execute(params: params) { [unowned self] result in
+        sut.execute(params: params) { result in
             switch result {
             case .success:
                 XCTFail()
             case .failure(let error):
-                let customError = error as? FetchAttachmentError
-                XCTAssertNotNil(customError)
-                XCTAssert(customError?.attachmentID == dummySingleAttachmentID)
-                let errorThrown = customError?.error as? AttachmentDecrypterError
-                XCTAssertNotNil(errorThrown == .failDecodingKeyPacket)
+                let errorThrown = error as? AttachmentDecrypterError
+                XCTAssertEqual(errorThrown, .failDecodingKeyPacket)
             }
             expectation.fulfill()
         }
