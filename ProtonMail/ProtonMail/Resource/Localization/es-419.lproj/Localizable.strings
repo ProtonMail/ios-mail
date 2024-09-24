@@ -1450,6 +1450,18 @@
 /* A label message */
 "Inherited from parent folder" = "Heredada de la carpeta padre";
 
+/* Alert title */
+"Creating folder not allowed" = "No se permite crear la carpeta.";
+
+/* Alert title */
+"Creating label not allowed" = "No se permite crear la etiqueta.";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Mejore a un plan de pago para usar más de 3 carpetas";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Mejore a un plan de pago para usar más de 3 etiquetas";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conéctese y vuelva a intentarlo";
 
@@ -2138,6 +2150,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Como lo programado";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Establezca su propia programación";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquee la programación de mensajes personalizados y otros beneficios cuando actualiza el plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Mejorar ahora";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programe mensajes en cualquier momento";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Número ilimitado de carpetas y etiquetas";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Hasta 500 GB de almacenamiento";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Hasta 15 direcciones de correo electrónico";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Hasta 3 dominios de correo electrónico personalizados";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias de hide-my-email";
+
 /* One of schedule time options */
 "In the morning" = "En la mañana";
 
@@ -2261,8 +2300,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Abrir en Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Mejorar ahora";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Elimine los mensajes no deseados";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Elimine automáticamente los mensajes de más de 30 días de la papelera y spam. Disfrute de este y otros beneficios al actualizar el plan.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Hasta 3 TB de almacenamiento";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Dominios de correo personalizados";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Remitente cambiado";
@@ -2384,6 +2432,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Seleccione un tiempo en el futuro";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "¿Desea pausar cuando desee?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Desbloquee las pausas personalizadas al mejorar el plan";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Hasta 15 direcciones/alias de correo";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Añadir como adjunto";
 
@@ -2449,6 +2509,9 @@
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB de almacenamiento y 1 correo electrónico";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Cifrado de extremo a extremo";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "Más de %u funciones premium";
