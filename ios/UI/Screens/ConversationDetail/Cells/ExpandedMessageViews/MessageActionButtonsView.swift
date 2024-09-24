@@ -46,7 +46,7 @@ private struct MessageActionButtonView: View {
                     .resizable()
                     .foregroundColor(DS.Color.Icon.norm)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 16, height: 16)
+                    .square(size: 20)
                 Text(text)
                     .fontBody3()
                     .fontWeight(.regular)
