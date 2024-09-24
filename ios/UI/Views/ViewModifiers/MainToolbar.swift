@@ -58,16 +58,14 @@ struct MainToolbar: ViewModifier {
                         HStack {
                             Spacer()
                             Image(state.icon)
+                                .resizable()
+                                .square(size: 24)
                                 .id(state.rawValue)
                                 .transition(.scale.animation(.easeOut(duration: AppConstants.selectionModeStartDuration)))
                         }
                         .padding(10)
                     })
-                    .frame(width: 40, height: 40)
-                    .overlay {
-                        Circle()
-                            .stroke(DS.Color.Border.norm)
-                    }
+                    .square(size: 40)
                     .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                 }
             }
@@ -94,9 +92,9 @@ extension MainToolbar {
         var icon: ImageResource {
             switch self {
             case .noSelection:
-                return DS.Icon.icHamburguer
+                DS.Icon.icHamburguer
             case .selection:
-                return DS.Icon.icChevronLeft
+                DS.Icon.icChevronTinyLeft
             }
         }
     }

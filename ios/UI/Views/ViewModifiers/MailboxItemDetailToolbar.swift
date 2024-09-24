@@ -32,15 +32,11 @@ struct MailboxItemDetailToolbar: ViewModifier {
                     }, label: {
                         HStack {
                             Spacer()
-                            Image(DS.Icon.icChevronLeft)
+                            Image(DS.Icon.icChevronTinyLeft)
                         }
                         .padding(10)
                     })
-                    .frame(width: 40, height: 40)
-                    .overlay {
-                        Circle()
-                            .stroke(DS.Color.Border.norm)
-                    }
+                    .square(size: 40)
                     .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.backButton)
                 }
                 ToolbarItem(placement: .principal) {
