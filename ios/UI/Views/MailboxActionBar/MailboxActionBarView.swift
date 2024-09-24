@@ -45,30 +45,44 @@ struct MailboxActionBarView: View {
     }
 
     var body: some View {
-        HStack(spacing: 48) {
-            button(for: mailboxActions.action1)
-                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button1)
-            button(for: mailboxActions.action2)
-                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button2)
-            button(for: mailboxActions.action3)
-                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button3)
-            button(for: mailboxActions.action4)
-                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
-            Button(action: {}, label: {
-                Image(DS.Icon.icThreeDotsHorizontal)
-            })
-            .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                HStack(alignment: .center) {
+                    Spacer()
+                    button(for: mailboxActions.action1)
+                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button1)
+                    Spacer()
+                    button(for: mailboxActions.action2)
+                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button2)
+                    Spacer()
+                    button(for: mailboxActions.action3)
+                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button3)
+                    Spacer()
+                    button(for: mailboxActions.action4)
+                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
+                    Spacer()
+                    Button(action: {}, label: {
+                        Image(DS.Icon.icThreeDotsHorizontal)
+                    })
+                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
+                    Spacer()
+                }
+                .frame(
+                    width: min(geometry.size.width, geometry.size.height), 
+                    height: 45 + geometry.safeAreaInsets.bottom
+                )
+                .frame(maxWidth: .infinity)
+                .background(.thinMaterial)
+                .compositingGroup()
+                .shadow(radius: 2)
+                .tint(DS.Color.Text.norm)
+                .sheet(isPresented: $showLabelPicker, content: { labelPickerView })
+                .sheet(isPresented: $showFolderPicker, content: { folderPickerView })
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
+            }
         }
-        .frame(height: 44)
-        .frame(maxWidth: .infinity)
-        .background(.thinMaterial)
-        .compositingGroup()
-        .shadow(radius: 2)
-        .tint(DS.Color.Text.norm)
-        .sheet(isPresented: $showLabelPicker, content: { labelPickerView })
-        .sheet(isPresented: $showFolderPicker, content: { folderPickerView })
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
     }
 
     @ViewBuilder
@@ -92,6 +106,7 @@ struct MailboxActionBarView: View {
                 }
             }, label: {
                 Image(action.icon)
+                    .foregroundStyle(DS.Color.Icon.weak)
             })
         } else {
             EmptyView()

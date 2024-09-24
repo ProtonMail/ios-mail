@@ -32,7 +32,6 @@ struct ConversationDetailScreen: View {
 
     private var conversationView: some View {
         GeometryReader { proxy in
-
             ScrollView {
                 VStack {
                     conversationDataView
