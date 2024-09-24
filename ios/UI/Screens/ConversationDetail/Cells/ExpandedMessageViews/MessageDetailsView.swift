@@ -48,9 +48,7 @@ struct MessageDetailsView: View {
             }
             .padding(.leading, DS.Spacing.large)
             Spacer()
-            ZStack(alignment: .top) {
-                headerActionsView
-            }
+            headerActionsView
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -106,20 +104,27 @@ struct MessageDetailsView: View {
     }
 
     private var headerActionsView: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.large) {
-            Button(action: {
-                onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll)
-            }, label: {
-                Image(uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll)
-            })
-            Button(action: {
-                onEvent(.onMoreActions)
-            }, label: {
-                Image(DS.Icon.icThreeDotsHorizontal)
-            })
+        HStack(alignment: .top, spacing: .zero) {
+            headerActionButton(
+                action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) }, 
+                image: uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll
+            )
+            headerActionButton(
+                action: { onEvent(.onMoreActions) },
+                image: DS.Icon.icThreeDotsHorizontal
+            )
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)
+    }
+
+    private func headerActionButton(action: () -> Void, image: ImageResource) -> some View {
+        Button(action: {}) {
+            Image(image)
+                .resizable()
+                .square(size: 20)
+        }
+        .square(size: 40)
     }
 
     private var extendedDetailsView: some View {
