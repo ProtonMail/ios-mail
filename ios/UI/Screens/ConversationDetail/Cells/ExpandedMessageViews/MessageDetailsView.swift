@@ -41,7 +41,7 @@ struct MessageDetailsView: View {
         HStack(alignment: .top, spacing: 0) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
                 .square(size: 40)
-            VStack(alignment: .leading, spacing: DS.Spacing.small) {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 senderNameView
                 senderAddressView
                 recipientsView
