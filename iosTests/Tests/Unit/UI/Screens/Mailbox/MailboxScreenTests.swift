@@ -24,7 +24,6 @@ class MailboxScreenTests: BaseTestCase {
     private var sut: MailboxScreen!
     private var userDefaults: UserDefaults!
 
-
     override func setUp() {
         super.setUp()
         userDefaults = .clearedTestInstance()
@@ -42,6 +41,14 @@ class MailboxScreenTests: BaseTestCase {
     }
 
     // MARK: - Onboarding sheet
+
+    func testShowOnboarding_WhenNoDataInUserDefaults_SetsToTrue() throws {
+        arrange { inspectSUT in
+            let sut = try inspectSUT.actualView()
+
+            XCTAssertTrue(sut.showOnboarding)
+        }
+    }
 
     func testOnboardingSheet_WhenShouldShowAlphaV1Onboarding_ItPresentsSheet() throws {
         configureShowAlphaV1Onboarding(true)
