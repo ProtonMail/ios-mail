@@ -118,8 +118,8 @@ struct MessageDetailsView: View {
         .foregroundColor(DS.Color.Icon.weak)
     }
 
-    private func headerActionButton(action: () -> Void, image: ImageResource) -> some View {
-        Button(action: {}) {
+    private func headerActionButton(action: @escaping () -> Void, image: ImageResource) -> some View {
+        Button(action: action) {
             Image(image)
                 .resizable()
                 .square(size: 20)

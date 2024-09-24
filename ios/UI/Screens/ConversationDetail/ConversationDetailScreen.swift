@@ -128,7 +128,6 @@ private extension View {
 }
 
 #Preview("From Mailbox") {
-
     NavigationView {
         ConversationDetailScreen(seed:
                 .mailboxItem(
@@ -161,7 +160,6 @@ private extension View {
 }
 
 #Preview("From Notification") {
-
     NavigationView {
         ConversationDetailScreen(
             seed: .message(
