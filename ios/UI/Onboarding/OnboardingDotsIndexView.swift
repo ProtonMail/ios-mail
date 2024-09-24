@@ -19,9 +19,9 @@ import DesignSystem
 import SwiftUI
 
 struct OnboardingDotsIndexView: View {
-    let pagesCount: UInt
-    let selectedPageIndex: UInt
-    let onTap: (_ pageIndex: UInt) -> Void
+    let pagesCount: Int
+    let selectedPageIndex: Int
+    let onTap: (_ pageIndex: Int) -> Void
 
     // MARK: - Body
 
@@ -42,11 +42,11 @@ struct OnboardingDotsIndexView: View {
 
     private let dotSize: CGFloat = 4
 
-    private func color(forIndex index: UInt) -> Color {
+    private func color(forIndex index: Int) -> Color {
         selectedPageIndex == index ? DS.Color.Interaction.norm : DS.Color.Shade.shade20
     }
 
-    private func width(forIndex index: UInt) -> CGFloat {
+    private func width(forIndex index: Int) -> CGFloat {
         selectedPageIndex == index ? dotSize * 4 : dotSize
     }
 }

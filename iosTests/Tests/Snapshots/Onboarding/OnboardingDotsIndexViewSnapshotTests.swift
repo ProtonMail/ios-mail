@@ -42,7 +42,7 @@ class OnboardingDotsIndexViewSnapshotTests: BaseTestCase {
 
 private extension OnboardingDotsIndexView {
 
-    init(pagesCount: UInt, selectedPageIndex: UInt) {
+    init(pagesCount: Int, selectedPageIndex: Int) {
         self.init(pagesCount: pagesCount, selectedPageIndex: selectedPageIndex, onTap: { _ in })
     }
 
