@@ -2595,7 +2595,7 @@
 "Best value" = "Millor oferta";
 
 /* Button to expand the feature list */
-"%u more features" = "%u més funcionalitats";
+"%u more features" = "%u més característiques";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Facturat a %1$@ cada %2$@";

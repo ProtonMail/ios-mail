@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Arvet fra overordnet mappe";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Oppretting av mappe ikke tillatt";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Oppretting av etikett ikke tillatt";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "For å bruke mer enn 3 mapper vennligst oppgrader til en betalt plan";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "For å bruke mer enn 3 etiketter vennligst oppgrader til en betalt plan";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Vennligst koble til og prøv på nytt";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Som planlagt";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Lag din egen timeplan";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås opp tilpasset meldingsplanlegging og andre fordeler når du oppgraderer planen din.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Oppgrader nå";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Planlegg meldinger når som helst";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Ubegrenset antall mapper og etiketter";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Opptil 500 GB med lagringsplass";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Opptil 15 e-postadresser";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Opptil 3 egendefinerte e-postdomener";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email-aliaser";
 
 /* One of schedule time options */
 "In the morning" = "Om morgenen";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB lagring og 1 e-post";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Ende-til-ende-kryptering";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunksjoner";

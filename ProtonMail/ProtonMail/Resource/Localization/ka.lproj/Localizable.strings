@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "მემკვიდრეობით მშობელი საქაღალდისგან";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "საქაღალდის შექმნა აკრძალულია";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "ჭდის შექმნა დაუშვებელია";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "სამზე მეტი საქაღალდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "სამზე მეტი ჭდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "დაუკავშირდით და თავიდან სცადეთ";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "როგორც დაგეგმილია";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "თქვენი განრიგის დაყენება";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "განბლოკეთ შეტყობინებების მორგებული დაგეგმვა და სხვა უპირატესობები თქვენი გეგმის განახლებისას.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "ტარიფის განახლება";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "შეტყობინებების განრიგში ნებისმიერ დროს ჩასმა";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "500გბ-მდე საცავი";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "15-მდე ელფოსტის მისამართი";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "ელფოსტის 3-მდე ხელით მითითებული დომენი";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email-ის ფსევდონიმები";
 
 /* One of schedule time options */
 "In the morning" = "დილით";
@@ -2301,16 +2301,16 @@
 "Open in Proton Calendar" = "Proton Calendar-ში გახსნა";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "ნაგვის მოსუფთავება";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "შეტყობინებების სპამიდან და ნაგვის ყუთიდან 30 დღეში ავტომატური წაშლა. ისიამოვნეთ ამ და სხვა ფასიანი თვისებებით, როცა პაკეტს ასწევთ.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "3ტბ-მდე საცავი";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "თქვენი ელფოსტის დომენები";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "გამგზავნი შეიცვალა";
@@ -2433,13 +2433,13 @@
 "Please select a time in the future" = "აირჩიეთ დრო მომავალში";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "გნებავთ, დროებით დაადუმოთ ნებისმიერ დროს?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "განბლოკეთ მომხმარებლის დროებით დადუმების დროებით, როცა თქვენს სატარიფო გეგმას ასწევთ";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "15-მდე ელფოსტის მისამართი/ფსევდონიმი";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 გბ საცავი და 1 ელფოსტა";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "გამჭოლი დაშიფვრა";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ფასიანი ფუნქცია";

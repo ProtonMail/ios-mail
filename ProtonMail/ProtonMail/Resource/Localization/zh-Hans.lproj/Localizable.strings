@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "与上层文件夹一致";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "未能创建文件夹";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "未能创建标签";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "请开通付费账户以使用 3 个以上文件夹";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "请开通付费账户以使用 3 个以上标签";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "请连接网络并重试";
@@ -1858,10 +1858,10 @@
 "Get more storage" = "获得更多存储空间";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "已缩放以供阅读";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "现在您的邮件正文也会显示在您首选的阅读大小中。";
 
 /* Title of the banner alert */
 "Your storage is full" = "您的存储空间已满";
@@ -2151,7 +2151,7 @@
 "As scheduled" = "按原定时间";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "设置您自己的日程表";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -2163,19 +2163,19 @@
 "Schedule messages at any time" = "Schedule messages at any time";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "文件夹和标签不限量";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "高达 500 GB 存储空间";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "高达 15 个邮箱别名";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "高达 3 个自定义邮箱域名";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email 邮箱别名";
 
 /* One of schedule time options */
 "In the morning" = "早晨";
@@ -2301,16 +2301,16 @@
 "Open in Proton Calendar" = "在 Proton Calendar 中打开";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "邮件也需辞旧迎新";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "最高 3 TB 存储空间";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "自定义电子邮件域名";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "发件地址已更改";
@@ -2589,16 +2589,16 @@
 "Choose a plan" = "Choose a plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "按年";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "超值";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "每次 %1$@ 计费周期 %2$@";
 
 /* In the list of premium plan features */
 "Premium value included" = "Premium value included";

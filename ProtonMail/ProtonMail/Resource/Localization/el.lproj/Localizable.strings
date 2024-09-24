@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Κληρονoμήθηκαν από το γονικό φάκελο";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Δεν επιτρέπεται η δημιουργία ετικέτας";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Για χρήση άνω των 3 ετικετών, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Παρακαλούμε συνδεθήτε και ξαναπροσπαθήσετε";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Όπως έχει προγραμματιστεί";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Ορίστε το δικό σας πρόγραμμα";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ξεκλειδώστε προσαρμοσμένο προγραμματισμό μηνυμάτων και άλλα οφέλη όταν αναβαθμίζετε το πρόγραμμά σας.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Αναβάθμιση τώρα";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Προγραμματισμός μηνυμάτων ανά πάσα στιγμή";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Απεριόριστοι φάκελοι και ετικέτες";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Έως 500 GB αποθηκευτικού χώρου";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Έως 15 διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Έως 3 προσαρμοσμένους τομείς ηλεκτρονικού ταχυδρομείου";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide My Email ψευδώνυμα";
 
 /* One of schedule time options */
 "In the morning" = "Το πρωί";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB αποθηκευτικού χώρου και 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium χαρακτηριστικά";
