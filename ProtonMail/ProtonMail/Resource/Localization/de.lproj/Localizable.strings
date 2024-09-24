@@ -1451,16 +1451,16 @@
 "Inherited from parent folder" = "Von übergeordnetem Ordner übernommen";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Das Erstellen von Ordnern ist nicht erlaubt";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Das Erstellen von Kategorien ist nicht erlaubt";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Bitte wechsle zu einem kostenpflichtigen Abonnement, um mehr als 3 Ordner zu verwenden.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Bitte wechsle zu einem kostenpflichtigen Abonnement, um mehr als 3 Kategorien zu verwenden.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Bitte verbinden und erneut versuchen";
@@ -2151,31 +2151,31 @@
 "As scheduled" = "Wie geplant";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Eigenen Zeitplan festlegen";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Schalte benutzerdefiniertes Planen von Nachrichten und andere Vorteile frei, wenn du ein Upgrade deines Abonnements durchführst.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Jetzt upgraden";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Nachrichten zu jeder Zeit planen";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Unbegrenzte Anzahl an Ordnern und Kategorien";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Bis zu 500 GB Speicherplatz";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Bis zu 15 E-Mail-Adressen";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Bis zu 3 benutzerdefinierte E-Mail-Domains";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email-Aliasse";
 
 /* One of schedule time options */
 "In the morning" = "Morgens";
@@ -2511,7 +2511,7 @@
 "1 GB Storage and 1 email" = "1 GB Speicherplatz und 1 E-Mail-Adresse";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Ende-zu-Ende-Verschlüsselung";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u Premium-Funktionen";
