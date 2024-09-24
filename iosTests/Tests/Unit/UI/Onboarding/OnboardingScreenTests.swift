@@ -70,7 +70,7 @@ class OnboardingScreenTests: BaseTestCase {
 
     func test_WhenTapOn2ndPageDot_ItHas2ndPageSelected() throws {
         arrange { inspectSUT in
-            try inspectSUT.simulateTapGestureOnDot(index: 1)
+            try inspectSUT.simulateTapGestureOnDot(atIndex: 1)
 
             let sut = try inspectSUT.actualView()
 
@@ -81,11 +81,23 @@ class OnboardingScreenTests: BaseTestCase {
 
     func test_WhenTapOn3rdPageDot_ItHas3rdPageSelected() throws {
         arrange { inspectSUT in
-            try inspectSUT.simulateTapGestureOnDot(index: 2)
+            try inspectSUT.simulateTapGestureOnDot(atIndex: 2)
 
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 2)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
+        }
+    }
+
+    func test_WhenTapOn3rdAnd1stPageDot_ItHas1stPageSelected() throws {
+        arrange { inspectSUT in
+            try inspectSUT.simulateTapGestureOnDot(atIndex: 2)
+            try inspectSUT.simulateTapGestureOnDot(atIndex: 0)
+
+            let sut = try inspectSUT.actualView()
+
+            XCTAssertEqual(sut.state.selectedPageIndex, 0)
             XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
@@ -119,7 +131,7 @@ class OnboardingScreenTests: BaseTestCase {
 
         ViewHosting.host(view: sut)
 
-        wait(for: [expectation], timeout: 0.1)
+        wait(for: [expectation], timeout: 0.01)
     }
 
 }
@@ -134,7 +146,7 @@ private extension InspectableView where View == ViewType.View<OnboardingScreen> 
         try find(button: "Start testing").tap()
     }
 
-    func simulateTapGestureOnDot(index: Int) throws {
+    func simulateTapGestureOnDot(atIndex index: Int) throws {
         let dotsIndexView = try find(OnboardingDotsIndexView.self)
         try dotsIndexView.find(viewWithId: index).callOnTapGesture()
     }
