@@ -19,7 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @AppStorage(.showAlphaV1Onboarding) var showOnboarding: Bool = false
+    @AppStorage(.showAlphaV1Onboarding) var showOnboarding: Bool = true
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
