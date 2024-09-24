@@ -22,16 +22,16 @@ import ViewInspector
 class OnboardingScreenTests: BaseTestCase {
 
     private var sut: OnboardingScreen!
-    private var dismissCallsCount: Int!
+    private var startTestingCallsCount: Int!
 
     override func setUp() {
         super.setUp()
-        dismissCallsCount = 0
-        sut = .init(onDismiss: { self.dismissCallsCount += 1 })
+        startTestingCallsCount = 0
+        sut = .init(didTapStartTesting: { self.startTestingCallsCount += 1 })
     }
 
     override func tearDown() {
-        dismissCallsCount = nil
+        startTestingCallsCount = nil
         sut = nil
         super.tearDown()
     }
@@ -41,7 +41,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 0)
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
 
@@ -52,7 +52,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 1)
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
 
@@ -64,7 +64,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 2)
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
 
@@ -75,7 +75,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 1)
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
 
@@ -86,20 +86,20 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 2)
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
         }
     }
 
-    func test_WhenTapOnStartTesting_ItDismissesSelf() throws {
+    func test_WhenTapOnStartTesting_ItInvokesDidTapStartTestingClosure() throws {
         arrange { inspectSUT in
             try inspectSUT.simulateTapOnNext()
             try inspectSUT.simulateTapOnNext()
 
-            XCTAssertEqual(self.dismissCallsCount, 0)
+            XCTAssertEqual(self.startTestingCallsCount, 0)
 
             try inspectSUT.simulateTapOnStartTesting()
 
-            XCTAssertEqual(self.dismissCallsCount, 1)
+            XCTAssertEqual(self.startTestingCallsCount, 1)
         }
     }
 

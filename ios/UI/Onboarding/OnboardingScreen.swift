@@ -38,14 +38,26 @@ struct OnboardingScreen: View {
             )
         ]
         var selectedPageIndex: Int
-        let onDismiss: () -> Void
+        let didTapStartTesting: () -> Void
+
+        var buttonTitle: String {
+            hasNextPage ? "Next" : "Start testing"
+        }
+
+        var hasNextPage: Bool {
+            selectedPageIndex < maxPageIndex
+        }
+
+        var maxPageIndex: Int {
+            pages.count - 1
+        }
     }
 
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
-    init(selectedPageIndex: Int = 0, onDismiss: @escaping () -> Void) {
-        self.state = .init(selectedPageIndex: selectedPageIndex, onDismiss: onDismiss)
+    init(selectedPageIndex: Int = 0, didTapStartTesting: @escaping () -> Void) {
+        self.state = .init(selectedPageIndex: selectedPageIndex, didTapStartTesting: didTapStartTesting)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -107,16 +119,15 @@ struct OnboardingScreen: View {
     private var actionButton: some View {
         Button(
             action: {
-                guard hasNextPage else {
-                    state.onDismiss()
-
-                    return
+                if !state.hasNextPage {
+                    state.didTapStartTesting()
                 }
 
-                state = state.copy(\.selectedPageIndex, with: state.selectedPageIndex + 1)
+                state = state
+                    .copy(\.selectedPageIndex, with: min(state.selectedPageIndex + 1, state.maxPageIndex))
             },
             label: {
-                Text(hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
+                Text(state.buttonTitle)
                     .fontBody3()
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.inverted)
@@ -171,5 +182,5 @@ private struct TabViewMinHeightPreference: PreferenceKey {
 }
 
 #Preview {
-    OnboardingScreen(onDismiss: {})
+    OnboardingScreen(didTapStartTesting: {})
 }
