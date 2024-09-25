@@ -36,7 +36,6 @@ struct ClosableScreen<ContentView: View>: View {
                             }
                         }
                         .padding(DS.Spacing.mediumLight)
-                        .background(DS.Color.Background.norm, in: Circle())
                     }
                 }
         }
