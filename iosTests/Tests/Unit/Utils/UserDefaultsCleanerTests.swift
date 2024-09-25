@@ -15,16 +15,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+@testable import ProtonMail
+import XCTest
+import Nimble
 
-enum UserDefaultsKey: String, CaseIterable {
-    case showAlphaV1Onboarding
-}
+class UserDefaultsCleanerTests: XCTestCase {
 
-extension AppStorage {
+    private var sut: UserDefaultsCleaner!
+    private var userDefaults: UserDefaults!
 
-    init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
-        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
+    override func setUp() {
+        super.setUp()
+        userDefaults = .clearedTestInstance()
+        sut = .init(userDefaults: userDefaults)
+    }
+
+    override func tearDown() {
+        userDefaults = nil
+        sut = nil
+        super.tearDown()
+    }
+
+    func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
+        let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
+
+        userDefaults.setValue(true, forKey: key)
+
+        sut.cleanUp()
+
+        XCTAssertNil(userDefaults.value(forKey: key))
     }
 
 }

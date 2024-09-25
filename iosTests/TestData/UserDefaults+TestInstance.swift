@@ -15,16 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-enum UserDefaultsKey: String, CaseIterable {
-    case showAlphaV1Onboarding
-}
+extension UserDefaults {
 
-extension AppStorage {
+    static func testInstance(inFile fileName: StaticString = #file) -> UserDefaults {
+        .init(suiteName: suiteName(inFile: fileName)).unsafelyUnwrapped
+    }
 
-    init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
-        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
+    static func clearedTestInstance(inFile fileName: StaticString = #file) -> UserDefaults {
+        let defaults = testInstance(inFile: fileName)
+        defaults.removePersistentDomain(forName: suiteName(inFile: fileName))
+        return defaults
     }
 
 }
+
+private func suiteName(inFile fileName: StaticString = #file) -> String {
+    let className = "\(fileName)".split(separator: ".")[0]
+    return "com.proton.mail.test.\(className)"
+}
+

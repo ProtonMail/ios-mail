@@ -15,16 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-enum UserDefaultsKey: String, CaseIterable {
-    case showAlphaV1Onboarding
-}
+struct UserDefaultsCleaner {
+    let userDefaults: UserDefaults
 
-extension AppStorage {
-
-    init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
-        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
+    func cleanUp() {
+        UserDefaultsKey.allCases.forEach { key in
+            userDefaults.removeObject(forKey: key.rawValue)
+        }
     }
-
 }

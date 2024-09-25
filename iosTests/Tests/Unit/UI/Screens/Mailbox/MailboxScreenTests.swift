@@ -115,22 +115,3 @@ private extension InspectableView where View == ViewType.View<MailboxScreen> {
     }
 
 }
-
-private extension UserDefaults {
-
-    static func testInstance(inFile fileName: StaticString = #file) -> UserDefaults {
-        .init(suiteName: suiteName(inFile: fileName)).unsafelyUnwrapped
-    }
-
-    static func clearedTestInstance(inFile fileName: StaticString = #file) -> UserDefaults {
-        let defaults = testInstance(inFile: fileName)
-        defaults.removePersistentDomain(forName: suiteName(inFile: fileName))
-        return defaults
-    }
-
-}
-
-private func suiteName(inFile fileName: StaticString = #file) -> String {
-    let className = "\(fileName)".split(separator: ".")[0]
-    return "com.proton.mail.test.\(className)"
-}
