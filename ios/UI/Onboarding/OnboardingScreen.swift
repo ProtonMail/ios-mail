@@ -39,10 +39,6 @@ struct OnboardingScreen: View {
         ]
         var selectedPageIndex: Int
 
-        var buttonTitle: String {
-            hasNextPage ? "Next" : "Start testing"
-        }
-
         var hasNextPage: Bool {
             selectedPageIndex < maxPageIndex
         }
@@ -57,7 +53,7 @@ struct OnboardingScreen: View {
     @State private var totalHeight: CGFloat = 1
 
     init(selectedPageIndex: Int = 0) {
-        self.state = .init(selectedPageIndex: selectedPageIndex)
+        _state = .init(initialValue: .init(selectedPageIndex: selectedPageIndex))
     }
 
     var didAppear: ((Self) -> Void)?
@@ -127,7 +123,7 @@ struct OnboardingScreen: View {
                     .copy(\.selectedPageIndex, with: min(state.selectedPageIndex + 1, state.maxPageIndex))
             },
             label: {
-                Text(state.buttonTitle)
+                Text(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
                     .fontBody3()
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.inverted)

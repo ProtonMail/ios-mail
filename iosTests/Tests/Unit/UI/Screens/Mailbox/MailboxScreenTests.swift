@@ -71,6 +71,8 @@ class MailboxScreenTests: BaseTestCase {
         }
     }
 
+    // MARK: - Private
+
     private func arrangeStorage(showAlphaV1Onboarding: Bool) {
         userDefaults.setValue(showAlphaV1Onboarding, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
     }
@@ -132,5 +134,3 @@ private func suiteName(inFile fileName: StaticString = #file) -> String {
     let className = "\(fileName)".split(separator: ".")[0]
     return "com.proton.mail.test.\(className)"
 }
-
-extension InspectableSheet: PopupPresenter {}
