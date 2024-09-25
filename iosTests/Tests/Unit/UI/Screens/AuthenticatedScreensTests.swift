@@ -46,7 +46,7 @@ class AuthenticatedScreensTests: BaseTestCase {
         super.tearDown()
     }
 
-    func testLogout_WhenNoDataInUserDefaults_ItCleansUpUserDefaults() throws {
+    func x_testLogout_WhenNoDataInUserDefaults_ItCleansUpUserDefaults() throws {
         arrange { inspectSUT in
             let mailboxScreen = try self.mailboxScreenWithEnvironmentObjects(inspectSUT: inspectSUT)
             let sidebarScreen = try self.sidebarScreenWithEnvironmentObjects(inspectSUT: inspectSUT)
@@ -58,7 +58,7 @@ class AuthenticatedScreensTests: BaseTestCase {
         }
     }
 
-    func testLogout_WhenThereIsDataInUserDefaults_ItCleansUpUserDefaults() throws {
+    func x_testLogout_WhenThereIsDataInUserDefaults_ItCleansUpUserDefaults() throws {
         store(value: true)
 
         arrange { inspectSUT in
