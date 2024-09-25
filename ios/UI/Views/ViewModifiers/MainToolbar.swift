@@ -69,6 +69,7 @@ struct MainToolbar: ViewModifier {
                     .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                 }
             }
+            .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
             .tint(DS.Color.Text.norm)
     }
 }
