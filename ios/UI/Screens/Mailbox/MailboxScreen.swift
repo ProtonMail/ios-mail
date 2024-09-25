@@ -57,7 +57,7 @@ struct MailboxScreen: View {
     var body: some View {
         NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
-                .sheetTestable(isPresented: $showOnboarding, content: { OnboardingScreen() })
+                .sheetTestable(isPresented: $showOnboarding) { OnboardingScreen() }
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -139,8 +139,7 @@ private extension Animation {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
-    let userDefaults = UserDefaults(suiteName: "preview")!
-    userDefaults.set(true, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+    let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 
     return MailboxScreen(
         customLabelModel: customLabelModel,

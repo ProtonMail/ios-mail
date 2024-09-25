@@ -24,11 +24,7 @@ enum UserDefaultsKey: String {
 extension AppStorage {
 
     init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
-        self.init(wrappedValue: wrappedValue, typedKey.rawValue, store: .defaults)
+        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
     }
 
-}
-
-private extension UserDefaults {
-    static let defaults = UserDefaults(suiteName: "me.proton.mail.ios")
 }
