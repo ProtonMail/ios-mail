@@ -23,7 +23,7 @@ struct MailboxScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
-    @State private var showOnboarding = false
+    @State private var isOnboardingPresented = false
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: LocalizedStringResource {
@@ -59,7 +59,7 @@ struct MailboxScreen: View {
         NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
                 .sheetTestable(
-                    isPresented: $showOnboarding,
+                    isPresented: $isOnboardingPresented,
                     onDismiss: { storedShowOnboarding = false },
                     content: { OnboardingScreen()
                 })
@@ -77,7 +77,7 @@ struct MailboxScreen: View {
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
         .onAppear {
-            showOnboarding = storedShowOnboarding
+            isOnboardingPresented = storedShowOnboarding
             didAppear?(self)
         }
     }
