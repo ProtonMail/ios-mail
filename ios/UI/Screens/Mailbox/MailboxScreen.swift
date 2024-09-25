@@ -19,12 +19,12 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @AppStorage(.showAlphaV1Onboarding) private var storedShowOnboarding: Bool = true
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
     private var customLabelModel: CustomLabelModel
+    private let onboardingStore: OnboardingStore
 
     private var navigationTitle: LocalizedStringResource {
         let selectionMode = mailboxModel.selectionMode
@@ -39,6 +39,7 @@ struct MailboxScreen: View {
         customLabelModel: CustomLabelModel,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
+        userDefaults: UserDefaults,
         openedItem: MailboxMessageSeed? = nil
     ) {
         self._mailboxModel = StateObject(
@@ -49,6 +50,7 @@ struct MailboxScreen: View {
             )
         )
         self.customLabelModel = customLabelModel
+        self.onboardingStore = .init(userDefaults: userDefaults)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -60,9 +62,9 @@ struct MailboxScreen: View {
             mailboxScreen
                 .sheetTestable(
                     isPresented: $isOnboardingPresented,
-                    onDismiss: { storedShowOnboarding = false },
-                    content: { OnboardingScreen()
-                })
+                    onDismiss: { onboardingStore.shouldShowOnboarding = false },
+                    content: { OnboardingScreen() }
+                )
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -77,7 +79,7 @@ struct MailboxScreen: View {
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
         .onAppear {
-            isOnboardingPresented = storedShowOnboarding
+            isOnboardingPresented = onboardingStore.shouldShowOnboarding
             didAppear?(self)
         }
     }
@@ -152,12 +154,12 @@ private extension Animation {
     return MailboxScreen(
         customLabelModel: customLabelModel,
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState
+        appRoute: .initialState,
+        userDefaults: userDefaults
     )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
         .environmentObject(userSettings)
-        .defaultAppStorage(userDefaults)
 }
 
 private struct MailboxScreenIdentifiers {

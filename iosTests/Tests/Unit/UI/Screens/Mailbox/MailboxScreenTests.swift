@@ -31,7 +31,8 @@ class MailboxScreenTests: BaseTestCase {
         sut = MailboxScreen(
             customLabelModel: CustomLabelModel(),
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-            appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox))
+            appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox)),
+            userDefaults: userDefaults
         )
     }
 
@@ -127,7 +128,6 @@ class MailboxScreenTests: BaseTestCase {
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
                 .environmentObject(userSettings)
-                .defaultAppStorage(userDefaults)
         )
 
         wait(for: [expectation], timeout: 0.01)

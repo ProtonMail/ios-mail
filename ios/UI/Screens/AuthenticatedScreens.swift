@@ -26,6 +26,7 @@ struct AuthenticatedScreens: View {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaultsCleaner: UserDefaultsCleaner
+    private let userDefaults: UserDefaults
 
     @State var areSettingsPresented = false
     @State var isLabelOrFolderCreationScreenPresented = false
@@ -42,6 +43,7 @@ struct AuthenticatedScreens: View {
             )
         }
         self.userDefaultsCleaner = .init(userDefaults: userDefaults)
+        self.userDefaults = userDefaults
     }
 
     var didAppear: ((Self) -> Void)?
@@ -55,13 +57,15 @@ struct AuthenticatedScreens: View {
                 MailboxScreen(
                     customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
-                    appRoute: appRoute
+                    appRoute: appRoute,
+                    userDefaults: userDefaults
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
                     customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
+                    userDefaults: userDefaults,
                     openedItem: item
                 )
             }

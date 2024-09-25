@@ -111,7 +111,8 @@ extension MainToolbar {
     return MailboxScreen(
         customLabelModel: customLabelModel,
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState
+        appRoute: .initialState,
+        userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped
     )
         .mainToolbar(title: "Inbox", selectionMode: .init())
         .environmentObject(appUIStateStore)
