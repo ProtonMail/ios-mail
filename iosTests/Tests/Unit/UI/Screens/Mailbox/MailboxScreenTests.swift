@@ -43,31 +43,54 @@ class MailboxScreenTests: BaseTestCase {
 
     // MARK: - Onboarding sheet
 
-    func testShowOnboarding_WhenNoDataInUserDefaults_ItPresentsSheet() throws {
+    func testOnboarding_WhenNoDataInUserDefaults_ItPresentsSheet() throws {
         arrange { inspectSUT in
             let onboarding = try? inspectSUT.onboardingScreen()
 
             XCTAssertNotNil(onboarding)
+            XCTAssertEqual(self.storedShowOnboarding, nil)
         }
     }
 
-    func testOnboardingSheet_WhenShouldShowAlphaV1Onboarding_ItPresentsSheet() throws {
+    func testOnboarding_WhenNoDataInUserDefaultsAndDismiss_ItDismissesAndUpdatesStorages() throws {
+        arrange { inspectSUT in
+            let sheet = try inspectSUT.onboardingSheet()
+            try sheet.dismiss()
+
+            XCTAssertNil(try? inspectSUT.onboardingScreen())
+            XCTAssertEqual(self.storedShowOnboarding, false)
+        }
+    }
+
+    func testOnboarding_WhenShouldShowAlphaV1Onboarding_ItPresentsSheet() throws {
         arrangeStorage(showAlphaV1Onboarding: true)
 
         arrange { inspectSUT in
-            let onboarding = try? inspectSUT.onboardingScreen()
-
-            XCTAssertNotNil(onboarding)
+            XCTAssertNotNil(try? inspectSUT.onboardingScreen())
+            XCTAssertEqual(self.storedShowOnboarding, true)
         }
     }
 
-    func testOnboardingSheet_WhenShouldNotShowAlphaV1Onboarding_ItDoesNotPresentSheet() throws {
+    func testOnboarding_WhenShouldShowAlphaV1OnboardingAndDismiss_ItDismissesAndUpdatesStorages() throws {
+        arrangeStorage(showAlphaV1Onboarding: true)
+
+        arrange { inspectSUT in
+            let sheet = try inspectSUT.onboardingSheet()
+            try sheet.dismiss()
+
+            XCTAssertNil(try? inspectSUT.onboardingScreen())
+            XCTAssertEqual(self.storedShowOnboarding, false)
+        }
+    }
+
+    func testOnboarding_WhenShouldNotShowAlphaV1Onboarding_ItDoesNotPresentSheet() throws {
         arrangeStorage(showAlphaV1Onboarding: false)
 
         arrange { inspectSUT in
             let onboarding = try? inspectSUT.onboardingScreen()
 
             XCTAssertNil(onboarding)
+            XCTAssertEqual(self.storedShowOnboarding, false)
         }
     }
 
@@ -75,6 +98,10 @@ class MailboxScreenTests: BaseTestCase {
 
     private func arrangeStorage(showAlphaV1Onboarding: Bool) {
         userDefaults.setValue(showAlphaV1Onboarding, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+    }
+
+    private var storedShowOnboarding: Bool? {
+        userDefaults.value(forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue) as? Bool
     }
 
     private func arrange(
@@ -112,6 +139,10 @@ private extension InspectableView where View == ViewType.View<MailboxScreen> {
 
     func onboardingScreen() throws -> InspectableView<ViewType.View<OnboardingScreen>> {
         try find(OnboardingScreen.self)
+    }
+
+    func onboardingSheet() throws -> InspectableView<ViewType.Sheet> {
+        try navigationStack().zStack().sheet()
     }
 
 }
