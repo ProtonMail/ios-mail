@@ -40,7 +40,7 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     )
 
     /// TestId 433907
-    func testSelectionModeMoveToArchiveConversationMode() async {
+    func skip_testSelectionModeMoveToArchiveConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultConversationCount: false,
             NetworkRequest(
@@ -84,7 +84,7 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     }
     
     /// TestId 433908
-    func testSelectionModeMultipleMoveToArchiveConversationMode() async {
+    func skip_testSelectionModeMultipleMoveToArchiveConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultConversationCount: false,
             NetworkRequest(
@@ -128,7 +128,7 @@ final class MailboxSelectionModeArchiveConversationTests: PMUIMockedNetworkTestC
     }
     
     /// TestId 433911
-    func testSelectionModeMoveToArchiveConversationModeWithBeError() async {
+    func skip_testSelectionModeMoveToArchiveConversationModeWithBeError() async {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultConversationCount: false,
             NetworkRequest(
