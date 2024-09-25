@@ -24,13 +24,10 @@ struct OnboardingPageView: View {
     var body: some View {
         VStack(spacing: DS.Spacing.extraLarge) {
             Image(model.image)
-                .aspectRatio(contentMode: .fill)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity)
                 .frame(height: 228)
-                .background(
-                    DS.Color.Interaction.norm,
-                    in: RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                )
             texts(title: model.title, subtitle: model.subtitle)
         }
         .padding(.horizontal, DS.Spacing.large)
