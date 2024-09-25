@@ -36,6 +36,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.seed = seed
         self.expandedMessages = .init()
         self.dependencies = dependencies
+        setUpCallback()
     }
 
     private func setUpCallback() {
@@ -75,6 +76,22 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             }
             let messages = await readLiveQueryValues()
             await updateStateToMessagesReady(with: messages)
+        }
+    }
+
+    func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
+        guard let mailbox, metadata.unread else { return }
+        Task {
+            do {
+                try await markMessagesRead(
+                    session: dependencies.appContext.userSession,
+                    labelId: mailbox.labelId(),
+                    messageIds: [metadata.messageID]
+                )
+            } catch {
+                let msg = "Failed to mark message as read. Error: \(String(describing: error))"
+                AppLogger.log(message: msg, category: .conversationDetail, isError: true)
+            }
         }
     }
 }

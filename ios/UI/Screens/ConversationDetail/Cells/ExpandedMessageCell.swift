@@ -23,6 +23,7 @@ struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
+    private let htmlLoaded: () -> Void
 
     private let hasShadow: Bool
 
@@ -37,13 +38,15 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
-        onEvent: @escaping (ExpandedMessageCellEvent) -> Void
+        onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
+        htmlLoaded: @escaping () -> Void
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
         self.onEvent = onEvent
+        self.htmlLoaded = htmlLoaded
     }
 
     var body: some View {
@@ -71,7 +74,8 @@ struct ExpandedMessageCell: View {
                     messageBody: uiModel.message,
                     messageId: uiModel.id,
                     uiModel: uiModel,
-                    mailbox: mailbox
+                    mailbox: mailbox, 
+                    htmlLoaded: htmlLoaded
                 )
 
                 Spacer()
@@ -97,6 +101,7 @@ struct ExpandedMessageCell: View {
 struct ExpandedMessageCellUIModel: Identifiable {
     let id: ID
     let message: String?
+    let unread: Bool
     let messageDetails: MessageDetailsUIModel
 }
 
@@ -125,23 +130,27 @@ enum ExpandedMessageCellEvent {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 0),
-                message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
+                message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it", 
+                unread: false,
                 messageDetails: messageDetails
             ),
             hasShadow: false,
             isFirstCell: true,
-            onEvent: { _ in }
+            onEvent: { _ in }, 
+            htmlLoaded: {}
         )
         ExpandedMessageCell(
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 1),
                 message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
+                unread: false,
                 messageDetails: messageDetails
             ),
             hasShadow: true,
             isFirstCell: false,
-            onEvent: { _ in }
+            onEvent: { _ in },
+            htmlLoaded: {}
         )
     }
 }

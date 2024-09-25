@@ -22,6 +22,7 @@ import WebKit
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let html: String
+    let htmlLoaded: () -> Void
 
     func makeUIView(context: Context) -> WKWebView  {
         let backgroundColor = UIColor(DS.Color.Background.norm)
@@ -62,6 +63,7 @@ extension MessageBodyReaderView {
                 try await webView.evaluateJavaScript("document.readyState")
                 let scrollHeight = try await webView.evaluateJavaScript("document.documentElement.scrollHeight")
                 parent.bodyContentHeight = scrollHeight as! CGFloat
+                parent.htmlLoaded()
             }
         }
     }

@@ -26,6 +26,7 @@ struct MessageBodyView: View {
     let messageId: ID
     let uiModel: ExpandedMessageCellUIModel
     let mailbox: Mailbox
+    let htmlLoaded: () -> Void
 
     var body: some View {
         if let messageBody = uiModel.message {
@@ -50,7 +51,7 @@ struct MessageBodyView: View {
     }
 
     private func messageBodyView(body: String) -> some View {
-        MessageBodyReaderView(bodyContentHeight: $bodyContentHeight, html: body)
+        MessageBodyReaderView(bodyContentHeight: $bodyContentHeight, html: body, htmlLoaded: htmlLoaded)
             .frame(height: bodyContentHeight)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
