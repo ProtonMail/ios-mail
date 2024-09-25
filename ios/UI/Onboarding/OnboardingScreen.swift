@@ -23,18 +23,18 @@ struct OnboardingScreen: View {
         let pages: [OnboardingPage] = [
             .init(
                 image: .protonLogo,
-                title: "Transformed from the ground up",
-                subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability."
+                title: "Transformed from the ground up".notLocalized.stringResource,
+                subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability.".notLocalized.stringResource
             ),
             .init(
                 image: .protonLogo,
-                title: "New inbox unboxed",
-                subtitle: "We’re excited to unveil the vibrant new design and improved user experience. For now, you can preview the new list and message views."
+                title: "New inbox unboxed".notLocalized.stringResource,
+                subtitle: "We’re excited to unveil the vibrant new design and improved user experience. For now, you can preview the new list and message views.".notLocalized.stringResource
             ),
             .init(
                 image: .protonLogo,
-                title: "Your feedback is key",
-                subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!"
+                title: "Your feedback is key".notLocalized.stringResource,
+                subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!".notLocalized.stringResource
             )
         ]
         var selectedPageIndex: Int

@@ -36,7 +36,7 @@ struct OnboardingPageView: View {
         .padding(.horizontal, DS.Spacing.large)
     }
 
-    private func texts(title: String, subtitle: String) -> some View {
+    private func texts(title: LocalizedStringResource, subtitle: LocalizedStringResource) -> some View {
         VStack(spacing: DS.Spacing.small) {
             Text(title)
                 .font(.body)

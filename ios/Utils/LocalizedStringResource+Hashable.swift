@@ -15,10 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-struct OnboardingPage: Hashable {
-    let image: ImageResource
-    let title: LocalizedStringResource
-    let subtitle: LocalizedStringResource
+extension LocalizedStringResource: Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(key)
+    }
+
 }
