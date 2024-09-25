@@ -43,16 +43,16 @@ class MailboxScreenTests: BaseTestCase {
 
     // MARK: - Onboarding sheet
 
-    func testShowOnboarding_WhenNoDataInUserDefaults_SetsToTrue() throws {
+    func testShowOnboarding_WhenNoDataInUserDefaults_ItPresentsSheet() throws {
         arrange { inspectSUT in
-            let sut = try inspectSUT.actualView()
+            let onboarding = try? inspectSUT.onboardingScreen()
 
-            XCTAssertTrue(sut.showOnboarding)
+            XCTAssertNotNil(onboarding)
         }
     }
 
     func testOnboardingSheet_WhenShouldShowAlphaV1Onboarding_ItPresentsSheet() throws {
-        configureShowAlphaV1Onboarding(true)
+        arrangeStorage(showAlphaV1Onboarding: true)
 
         arrange { inspectSUT in
             let onboarding = try? inspectSUT.onboardingScreen()
@@ -62,7 +62,7 @@ class MailboxScreenTests: BaseTestCase {
     }
 
     func testOnboardingSheet_WhenShouldNotShowAlphaV1Onboarding_ItDoesNotPresentSheet() throws {
-        configureShowAlphaV1Onboarding(false)
+        arrangeStorage(showAlphaV1Onboarding: false)
 
         arrange { inspectSUT in
             let onboarding = try? inspectSUT.onboardingScreen()
@@ -71,8 +71,8 @@ class MailboxScreenTests: BaseTestCase {
         }
     }
 
-    private func configureShowAlphaV1Onboarding(_ value: Bool) {
-        userDefaults.setValue(value, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+    private func arrangeStorage(showAlphaV1Onboarding: Bool) {
+        userDefaults.setValue(showAlphaV1Onboarding, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
     }
 
     private func arrange(
