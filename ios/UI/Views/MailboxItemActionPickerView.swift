@@ -65,7 +65,6 @@ struct MailboxItemActionPickerView: View {
         if mailboxItemIdentifier.type == .conversation {
             EmptyView()
         } else {
-
             HStack {
                 replyActionButton(name: L10n.Action.Send.reply, icon: DS.Icon.icReply)
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionReply)
@@ -84,7 +83,7 @@ struct MailboxItemActionPickerView: View {
         } label: {
             SendActionButtonStack() {
                 Image(icon)
-                    .actionSheetIconModifier()
+                    .actionSheetTopIconModifier()
                     .accessibilityIdentifier(MailboxItemActionPickerIdentifiers.composeActionIcon)
 
                 Text(name)
@@ -166,6 +165,7 @@ private extension SystemFolderLabel? {
         guard let self = self else { return false }
         return self == .spam
     }
+
 }
 
 private struct SendActionButtonStack<Content: View>: View {

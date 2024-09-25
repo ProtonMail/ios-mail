@@ -20,10 +20,18 @@ import SwiftUI
 
 extension Image {
 
-    func actionSheetIconModifier() -> some View {
+    func actionSheetTopIconModifier() -> some View {
         self
             .resizable()
-            .frame(width: 20, height: 20)
+            .square(size: 24)
             .foregroundStyle(DS.Color.Icon.norm)
     }
+
+    func actionSheetSmallIconModifier() -> some View {
+        self
+            .resizable()
+            .square(size: 20)
+            .foregroundStyle(DS.Color.Icon.norm)
+    }
+
 }
