@@ -100,7 +100,7 @@ struct OnboardingScreen: View {
 
     private var pages: some View {
         HeightPreservingTabView(selection: $state.selectedPageIndex) {
-            ForEach(Array(state.pages.enumerated()), id: \.element.id) { index, model in
+            ForEach(Array(state.pages.enumerated()), id: \.element) { index, model in
                 OnboardingPageView(model: model).tag(index)
             }
         }

@@ -23,7 +23,7 @@ struct OnboardingDotsIndexView: View {
     let selectedPageIndex: Int
     let onTap: (_ pageIndex: Int) -> Void
 
-    // MARK: - Body
+    // MARK: - View
 
     var body: some View {
         HStack(spacing: DS.Spacing.small) {

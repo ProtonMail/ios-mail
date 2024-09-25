@@ -17,12 +17,8 @@
 
 import SwiftUI
 
-struct OnboardingPage: Identifiable {
+struct OnboardingPage: Hashable {
     let image: ImageResource
     let title: String
     let subtitle: String
-
-    // MARK: - Identifiable
-
-    var id: String { title + subtitle }
 }
