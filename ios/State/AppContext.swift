@@ -91,8 +91,10 @@ final class AppContext: Sendable, ObservableObject {
 
         accountCoordinator = AccountAuthCoordinator(appContext: _mailSession)
 
-        if let storedSession = try mailSession.storedSessions().first {
-            activeUserSession = try mailSession.userContextFromSession(session: storedSession)
+        Task { @MainActor in
+            if let currentSession = await accountCoordinator.primaryAccountSession() {
+                activeUserSession = try mailSession.userContextFromSession(session: currentSession)
+            }
         }
     }
 
