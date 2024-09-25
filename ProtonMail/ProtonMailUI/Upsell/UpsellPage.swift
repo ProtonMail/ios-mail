@@ -72,13 +72,19 @@ public struct UpsellPage: View {
                     infoSection
 
                     interactiveArea
+                        .padding(.top, -24)
                 }
                 .padding(.bottom, windowSafeAreaInsets.bottom)
             } else {
-                VStack {
+                VStack(spacing: 0) {
                     infoSection
 
+                    Divider()
+                        .overlay(Color.white.opacity(0.24))
+
                     interactiveArea
+                        .padding(.top, 8)
+                        .background(Color.white.opacity(0.04))
                 }
                 .padding(.bottom, windowSafeAreaInsets.bottom)
             }
@@ -163,34 +169,40 @@ public struct UpsellPage: View {
                     }
                 }
             }
-            .padding(.top, 12)
-            .padding(.horizontal, 16)
-            .padding(.bottom, 8)
+            .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
     private var interactiveArea: some View {
-        ZStack {
-            if layoutTilesVertically {
-                VStack {
-                    tiles
-                }
-                .padding(.top, 10)
-                .padding(.horizontal, 24)
-                .padding(.bottom, 16)
-            } else {
-                HStack(alignment: .bottom) {
-                    tiles
-                }
-                .padding(.top, 10)
-                .padding(.horizontal, 24)
-                .padding(.bottom, 16)
-            }
+        VStack(spacing: 8) {
+            Text(L10n.Upsell.autoRenewalNotice)
+                .font(Font(UIFont.adjustedFont(forTextStyle: .footnote)))
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(ColorProvider.SidebarTextNorm)
 
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                .visible(model.isBusy)
+            ZStack {
+                if layoutTilesVertically {
+                    VStack {
+                        tiles
+                    }
+                    .padding(.top, 10)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 16)
+                } else {
+                    HStack(alignment: .bottom, spacing: 7) {
+                        tiles
+                    }
+                    .padding(.top, 10)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 16)
+                }
+
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .visible(model.isBusy)
+            }
         }
     }
 
