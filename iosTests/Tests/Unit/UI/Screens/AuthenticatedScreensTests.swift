@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import AccountLogin
 import proton_app_uniffi
 import SwiftUI
 import ViewInspector
@@ -224,7 +225,9 @@ private extension MailUserSession {
             networkCallback: nil
         )
 
-        let storedSession = try mailSession.storedSessions().first.unsafelyUnwrapped
+        let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
+
+        let storedSession = authCoordinator.primaryAccountSession().unsafelyUnwrapped
         let mailUserSession = try mailSession.userContextFromSession(session: storedSession)
 
         return mailUserSession
