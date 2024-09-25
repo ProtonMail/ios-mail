@@ -19,10 +19,11 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
-    @AppStorage(.showAlphaV1Onboarding) private var showOnboarding: Bool = true
+    @AppStorage(.showAlphaV1Onboarding) private var storedShowOnboarding: Bool = true
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
+    @State private var showOnboarding = false
     private var customLabelModel: CustomLabelModel
 
     private var navigationTitle: LocalizedStringResource {
@@ -57,7 +58,11 @@ struct MailboxScreen: View {
     var body: some View {
         NavigationStack(path: $mailboxModel.navigationPath) {
             mailboxScreen
-                .sheetTestable(isPresented: $showOnboarding) { OnboardingScreen() }
+                .sheetTestable(
+                    isPresented: $showOnboarding,
+                    onDismiss: { storedShowOnboarding = false },
+                    content: { OnboardingScreen()
+                })
                 .fullScreenCover(item: $mailboxModel.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -71,7 +76,10 @@ struct MailboxScreen: View {
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
-        .onAppear { didAppear?(self) }
+        .onAppear {
+            showOnboarding = storedShowOnboarding
+            didAppear?(self)
+        }
     }
 }
 
