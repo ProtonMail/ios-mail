@@ -24,8 +24,9 @@ class MailboxScreenTests: BaseTestCase {
     private var sut: MailboxScreen!
     private var userDefaults: UserDefaults!
 
-    override func setUp() {
-        super.setUp()
+    @MainActor
+    override func setUp() async throws {
+        try await super.setUp()
         userDefaults = .clearedTestInstance()
         sut = MailboxScreen(
             customLabelModel: CustomLabelModel(),

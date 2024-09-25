@@ -18,6 +18,7 @@
 import Combine
 import Foundation
 
+@MainActor
 final class AppRouteState: ObservableObject, Sendable {
     @Published private(set) var route: Route
     var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
