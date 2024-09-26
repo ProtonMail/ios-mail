@@ -47,6 +47,7 @@ class AuthenticatedScreensTests: BaseTestCase {
         super.tearDown()
     }
 
+    // FIXME: Enable and adjust `MailUserSession` creation when Rust fixes following issue: ET-1248
     func x_testLogout_WhenNoDataInUserDefaults_ItCleansUpUserDefaults() throws {
         arrange { inspectSUT in
             let mailboxScreen = try self.mailboxScreenWithEnvironmentObjects(inspectSUT: inspectSUT)
@@ -59,6 +60,7 @@ class AuthenticatedScreensTests: BaseTestCase {
         }
     }
 
+    // FIXME: Enable and adjust `MailUserSession` creation when Rust fixes following issue: ET-1248
     func x_testLogout_WhenThereIsDataInUserDefaults_ItCleansUpUserDefaults() throws {
         store(value: true)
 
