@@ -144,13 +144,12 @@ struct OnboardingScreen: View {
     }
 }
 
-/// A variant of `TabView` that sets an appropriate `minHeight` on its frame.
+/// A variant of `TabView` that sets an appropriate `height` on its frame based on content.
 private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>: View {
     let selection: Binding<SelectionValue>?
     @ViewBuilder let content: () -> Content
 
-    /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
-    @State private var minHeight: CGFloat = 1
+    @State private var height: CGFloat = 0
 
     var body: some View {
         TabView(selection: selection) {
@@ -158,18 +157,19 @@ private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>:
                 .background {
                     GeometryReader { reader in
                         Color.clear
-                            .preference(key: TabViewMinHeightPreference.self, value: reader.frame(in: .local).height)
+                            .preference(key: TabViewHeightPreference.self, value: reader.frame(in: .local).height)
                     }
                 }
         }
-        .frame(minHeight: minHeight)
-        .onPreferenceChange(TabViewMinHeightPreference.self) { minHeight in
-            self.minHeight = minHeight
+        .frame(minHeight: 1)
+        .frame(height: height)
+        .onPreferenceChange(TabViewHeightPreference.self) { height in
+            self.height = height
         }
     }
 }
 
-private struct TabViewMinHeightPreference: PreferenceKey {
+private struct TabViewHeightPreference: PreferenceKey {
     static let defaultValue: CGFloat = 0
 
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
