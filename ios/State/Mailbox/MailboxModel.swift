@@ -394,7 +394,7 @@ extension MailboxModel {
         guard let mailbox else { return }
         Task {
             do {
-                try await deleteConversations(mailbox: mailbox, ids: ids)
+                try await deleteConversations(mailbox: mailbox, conversationIds: ids)
             } catch {
                 AppLogger.log(error: error, category: .mailboxActions)
             }
