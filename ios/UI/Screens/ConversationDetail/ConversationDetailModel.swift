@@ -201,7 +201,8 @@ extension ConversationDetailModel {
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return []
             }
-            let messages = messagesLiveQuery.messages
+            let conversationID = try await conversationID()
+            let messages = try await conversation(mailbox: mailbox, id: conversationID)?.messages ?? []
             guard let lastMessage = messages.last else { return [] }
             
             // list of messages except the last one
