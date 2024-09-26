@@ -15,29 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import SwiftUI
-import XCTest
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
+enum UserDefaultsKey: String, CaseIterable {
+    case showAlphaV1Onboarding
+}
 
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
-    }
+extension AppStorage {
 
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
-    }
-
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
-    }
-
-    // MARK: - Private
-
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
-        return UIHostingController(rootView: sut)
+    init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
+        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
     }
 
 }

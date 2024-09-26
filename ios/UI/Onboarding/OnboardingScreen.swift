@@ -22,27 +22,22 @@ struct OnboardingScreen: View {
     struct ViewState: Copying {
         let pages: [OnboardingPage] = [
             .init(
-                image: .protonLogo,
+                image: DS.Images.onboardingFirstPage,
                 title: "Transformed from the ground up".notLocalized.stringResource,
                 subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability.".notLocalized.stringResource
             ),
             .init(
-                image: .protonLogo,
+                image: DS.Images.onboardingSecondPage,
                 title: "New inbox unboxed".notLocalized.stringResource,
                 subtitle: "We’re excited to unveil the vibrant new design and improved user experience. For now, you can preview the new list and message views.".notLocalized.stringResource
             ),
             .init(
-                image: .protonLogo,
+                image: DS.Images.onboardingThirdPage,
                 title: "Your feedback is key".notLocalized.stringResource,
                 subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!".notLocalized.stringResource
             )
         ]
         var selectedPageIndex: Int
-        let didTapStartTesting: () -> Void
-
-        var buttonTitle: String {
-            hasNextPage ? "Next" : "Start testing"
-        }
 
         var hasNextPage: Bool {
             selectedPageIndex < maxPageIndex
@@ -53,11 +48,12 @@ struct OnboardingScreen: View {
         }
     }
 
+    @Environment(\.dismissTestable) var dismiss: Dismissable
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
-    init(selectedPageIndex: Int = 0, didTapStartTesting: @escaping () -> Void) {
-        self.state = .init(selectedPageIndex: selectedPageIndex, didTapStartTesting: didTapStartTesting)
+    init(selectedPageIndex: Int = 0) {
+        _state = .init(initialValue: .init(selectedPageIndex: selectedPageIndex))
     }
 
     var didAppear: ((Self) -> Void)?
@@ -120,14 +116,14 @@ struct OnboardingScreen: View {
         Button(
             action: {
                 if !state.hasNextPage {
-                    state.didTapStartTesting()
+                    dismiss()
                 }
 
                 state = state
                     .copy(\.selectedPageIndex, with: min(state.selectedPageIndex + 1, state.maxPageIndex))
             },
             label: {
-                Text(state.buttonTitle)
+                Text(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
                     .fontBody3()
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.inverted)
@@ -182,5 +178,5 @@ private struct TabViewMinHeightPreference: PreferenceKey {
 }
 
 #Preview {
-    OnboardingScreen(didTapStartTesting: {})
+    OnboardingScreen()
 }

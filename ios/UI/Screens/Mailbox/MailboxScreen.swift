@@ -22,12 +22,15 @@ struct MailboxScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
+    @State private var isOnboardingPresented = false
     private var customLabelModel: CustomLabelModel
+    private let onboardingStore: OnboardingStore
 
     init(
         customLabelModel: CustomLabelModel,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
+        userDefaults: UserDefaults,
         openedItem: MailboxMessageSeed? = nil
     ) {
         self._mailboxModel = StateObject(
@@ -38,11 +41,21 @@ struct MailboxScreen: View {
             )
         )
         self.customLabelModel = customLabelModel
+        self.onboardingStore = .init(userDefaults: userDefaults)
     }
+
+    var didAppear: ((Self) -> Void)?
+
+    // MARK: - View
 
     var body: some View {
         NavigationStack(path: $mailboxModel.state.navigationPath) {
             mailboxScreen
+                .sheetTestable(
+                    isPresented: $isOnboardingPresented,
+                    onDismiss: { onboardingStore.shouldShowOnboarding = false },
+                    content: { OnboardingScreen() }
+                )
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -56,6 +69,10 @@ struct MailboxScreen: View {
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
+        .onAppear {
+            isOnboardingPresented = onboardingStore.shouldShowOnboarding
+            didAppear?(self)
+        }
     }
 }
 
@@ -123,11 +140,13 @@ private extension Animation {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings(mailboxActions: .init())
     let customLabelModel = CustomLabelModel()
+    let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 
     return MailboxScreen(
         customLabelModel: customLabelModel,
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState
+        appRoute: .initialState,
+        userDefaults: userDefaults
     )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)

@@ -16,28 +16,34 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import SwiftUI
 import XCTest
+import Nimble
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
+class UserDefaultsCleanerTests: XCTestCase {
 
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
+    private var sut: UserDefaultsCleaner!
+    private var userDefaults: UserDefaults!
+
+    override func setUp() {
+        super.setUp()
+        userDefaults = .clearedTestInstance()
+        sut = .init(userDefaults: userDefaults)
     }
 
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
+    override func tearDown() {
+        userDefaults = nil
+        sut = nil
+        super.tearDown()
     }
 
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
-    }
+    func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
+        let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
 
-    // MARK: - Private
+        userDefaults.setValue(true, forKey: key)
 
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
-        return UIHostingController(rootView: sut)
+        sut.cleanUp()
+
+        XCTAssertNil(userDefaults.value(forKey: key))
     }
 
 }

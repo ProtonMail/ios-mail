@@ -16,22 +16,22 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
 import ViewInspector
+import XCTest
 
 class OnboardingScreenTests: BaseTestCase {
 
     private var sut: OnboardingScreen!
-    private var startTestingCallsCount: Int!
+    private var dismissSpy: DismissSpy!
 
     override func setUp() {
         super.setUp()
-        startTestingCallsCount = 0
-        sut = .init(didTapStartTesting: { self.startTestingCallsCount += 1 })
+        dismissSpy = .init()
+        sut = OnboardingScreen()
     }
 
     override func tearDown() {
-        startTestingCallsCount = nil
+        dismissSpy = nil
         sut = nil
         super.tearDown()
     }
@@ -41,7 +41,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 0)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
@@ -52,7 +52,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 1)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
@@ -64,7 +64,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 2)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
@@ -75,7 +75,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 1)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
@@ -86,7 +86,7 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 2)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
@@ -98,20 +98,20 @@ class OnboardingScreenTests: BaseTestCase {
             let sut = try inspectSUT.actualView()
 
             XCTAssertEqual(sut.state.selectedPageIndex, 0)
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
         }
     }
 
-    func test_WhenTapOnStartTesting_ItInvokesDidTapStartTestingClosure() throws {
+    func test_WhenTapOnStartTesting_ItDismissesSelf() throws {
         arrange { inspectSUT in
             try inspectSUT.simulateTapOnNext()
             try inspectSUT.simulateTapOnNext()
 
-            XCTAssertEqual(self.startTestingCallsCount, 0)
+            XCTAssertEqual(self.dismissSpy.callsCount, 0)
 
             try inspectSUT.simulateTapOnStartTesting()
 
-            XCTAssertEqual(self.startTestingCallsCount, 1)
+            XCTAssertEqual(self.dismissSpy.callsCount, 1)
         }
     }
 
@@ -129,7 +129,7 @@ class OnboardingScreenTests: BaseTestCase {
              perform: perform
         )
 
-        ViewHosting.host(view: sut)
+        ViewHosting.host(view: sut.environment(\.dismissTestable, dismissSpy))
 
         wait(for: [expectation], timeout: 0.01)
     }
@@ -149,6 +149,18 @@ private extension InspectableView where View == ViewType.View<OnboardingScreen> 
     func simulateTapGestureOnDot(atIndex index: Int) throws {
         let dotsIndexView = try find(OnboardingDotsIndexView.self)
         try dotsIndexView.find(viewWithId: index).callOnTapGesture()
+    }
+
+}
+
+private class DismissSpy: Dismissable {
+
+    private(set) var callsCount: Int = 0
+
+    // MARK: - Dismissable
+
+    func callAsFunction() {
+        callsCount += 1
     }
 
 }

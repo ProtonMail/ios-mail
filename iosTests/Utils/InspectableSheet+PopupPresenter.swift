@@ -16,28 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import SwiftUI
-import XCTest
+import ViewInspector
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
-
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
-    }
-
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
-    }
-
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
-    }
-
-    // MARK: - Private
-
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
-        return UIHostingController(rootView: sut)
-    }
-
-}
+extension InspectableSheet: PopupPresenter {}

@@ -25,11 +25,13 @@ struct AuthenticatedScreens: View {
     @ObservedObject private var customLabelModel: CustomLabelModel
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
+    private let userDefaultsCleaner: UserDefaultsCleaner
+    private let userDefaults: UserDefaults
 
     @State var areSettingsPresented = false
     @State var isLabelOrFolderCreationScreenPresented = false
 
-    init(customLabelModel: CustomLabelModel, userSession: MailUserSession) {
+    init(customLabelModel: CustomLabelModel, userSession: MailUserSession, userDefaults: UserDefaults) {
         _appRoute = .init(wrappedValue: .initialState)
         self.customLabelModel = customLabelModel
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
@@ -40,7 +42,13 @@ struct AuthenticatedScreens: View {
                 selectedItem: selectedItem
             )
         }
+        self.userDefaultsCleaner = .init(userDefaults: userDefaults)
+        self.userDefaults = userDefaults
     }
+
+    var didAppear: ((Self) -> Void)?
+
+    // MARK: - View
 
     var body: some View {
         ZStack {
@@ -49,13 +57,15 @@ struct AuthenticatedScreens: View {
                 MailboxScreen(
                     customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
-                    appRoute: appRoute
+                    appRoute: appRoute,
+                    userDefaults: userDefaults
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
                     customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
+                    userDefaults: userDefaults,
                     openedItem: item
                 )
             }
@@ -104,9 +114,11 @@ struct AuthenticatedScreens: View {
         .sheet(isPresented: $areSettingsPresented) {
             SettingsScreen()
         }
+        .onAppear { didAppear?(self) }
     }
 
     private func signOut() {
+        userDefaultsCleaner.cleanUp()
         Task {
             do {
                 try await AppContext.shared.logoutActiveUserSession()

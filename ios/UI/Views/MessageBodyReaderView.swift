@@ -22,11 +22,15 @@ import WebKit
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let html: String
+    let urlOpener: URLOpenerProtocol
     let htmlLoaded: () -> Void
 
     func makeUIView(context: Context) -> WKWebView  {
         let backgroundColor = UIColor(DS.Color.Background.norm)
-        let webView = WKWebView()
+        let config = WKWebViewConfiguration()
+        config.dataDetectorTypes = [.link]
+
+        let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
 
         webView.scrollView.isScrollEnabled = false
@@ -50,7 +54,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
 }
 
 extension MessageBodyReaderView {
-
     class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
         let parent: MessageBodyReaderView
 
@@ -65,6 +68,16 @@ extension MessageBodyReaderView {
                 parent.bodyContentHeight = scrollHeight as! CGFloat
                 parent.htmlLoaded()
             }
+        }
+
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
+            if navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url {
+                parent.urlOpener(url)
+            }
+            return .allow
         }
     }
 }

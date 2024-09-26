@@ -15,29 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import SwiftUI
-import XCTest
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
-
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
+extension View {
+    func sheetTestable<Sheet>(
+        isPresented: Binding<Bool>,
+        onDismiss: (() -> Void)? = nil,
+        @ViewBuilder content: @escaping () -> Sheet
+    ) -> some View where Sheet: View {
+        modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
     }
+}
 
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
+struct InspectableSheet<Sheet>: ViewModifier where Sheet: View {
+    let isPresented: Binding<Bool>
+    let onDismiss: (() -> Void)?
+    let popupBuilder: () -> Sheet
+
+    func body(content: Self.Content) -> some View {
+        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
     }
-
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
-    }
-
-    // MARK: - Private
-
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
-        let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
-        return UIHostingController(rootView: sut)
-    }
-
 }

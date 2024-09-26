@@ -76,7 +76,11 @@ private struct RootView: View {
     @ViewBuilder
     private func mainView() -> some View {
         if let activerUser = appContext.activeUserSession {
-            AuthenticatedScreens(customLabelModel: customLabelModel, userSession: activerUser)
+            AuthenticatedScreens(
+                customLabelModel: customLabelModel,
+                userSession: activerUser,
+                userDefaults: .standard
+            )
         } else {
             appContext
                 .accountCoordinator

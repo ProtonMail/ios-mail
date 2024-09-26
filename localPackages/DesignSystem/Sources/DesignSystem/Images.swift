@@ -9,4 +9,7 @@ import SwiftUI
 
 public extension DS.Images {
     static let mailProductLogo = ImageResource.mailProductLogo
+    static let onboardingFirstPage = ImageResource.onboardingAlphaV11
+    static let onboardingSecondPage = ImageResource.onboardingAlphaV12
+    static let onboardingThirdPage = ImageResource.onboardingAlphaV13
 }
