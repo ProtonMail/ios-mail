@@ -46,16 +46,12 @@ struct PaginatedListView<
     var body: some View {
         switch viewState {
         case .fetchingInitialPage:
-            loadingView
+            ProtonSpinner()
         case .empty:
             emptyListView()
         case .data:
             dataStateView
         }
-    }
-
-    private var loadingView: some View {
-        ProgressView()
     }
 
     private var dataStateView: some View {
@@ -66,11 +62,16 @@ struct PaginatedListView<
             }
 
             if !viewState.isLastPage {
-                ProgressView()
-                    .id(UUID())
-                    .onAppear {
-                        Task { await dataSource.fetchNextPageIfNeeded() }
-                    }
+                HStack {
+                    ProtonSpinner()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .background(.clear)
+                        .onAppear {
+                            Task { await dataSource.fetchNextPageIfNeeded() }
+                        }
+                }
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
             }
         }
     }
@@ -96,7 +97,7 @@ enum PaginatedListViewState: Equatable {
     }
 
     func fetchMockItems(page: Int, pageSize: Int) async -> PaginatedListDataSource<PreviewListItem>.NextPageResult {
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
         let newItems = Array(page * pageSize..<(page + 1) * pageSize)
         return .init(newItems: newItems.map { PreviewListItem(id: $0) }, isLastPage: page == 3)
     }
