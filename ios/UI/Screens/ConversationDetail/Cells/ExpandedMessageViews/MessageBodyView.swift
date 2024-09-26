@@ -20,6 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MessageBodyView: View {
+    @Environment(\.openURL) var urlOpener
     @State var bodyContentHeight: CGFloat = 0.0
 
     let messageBody: String?
@@ -50,7 +51,7 @@ struct MessageBodyView: View {
     }
 
     private func messageBodyView(body: String) -> some View {
-        MessageBodyReaderView(bodyContentHeight: $bodyContentHeight, html: body)
+        MessageBodyReaderView(bodyContentHeight: $bodyContentHeight, html: body, urlOpener: urlOpener)
             .frame(height: bodyContentHeight)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
