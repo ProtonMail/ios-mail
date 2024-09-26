@@ -53,7 +53,7 @@ struct ExpandedMessageCell: View {
         ZStack(alignment: .top) {
             MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
 
-            VStack(spacing: 0) {
+            VStack(spacing: .zero) {
                 MessageDetailsView(uiModel: uiModel.messageDetails, onEvent: { event in
                     switch event {
                     case .onTap:
@@ -81,6 +81,8 @@ struct ExpandedMessageCell: View {
                 Spacer()
 
                 MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
+                    .padding(.top, DS.Spacing.moderatelyLarge)
+                    .padding(.bottom, DS.Spacing.large)
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
             .padding(.top, cardCornerRadius)

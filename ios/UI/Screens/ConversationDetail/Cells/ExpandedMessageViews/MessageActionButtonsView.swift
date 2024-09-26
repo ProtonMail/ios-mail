@@ -28,7 +28,6 @@ struct MessageActionButtonsView: View {
                 .removeViewIf(isSingleRecipient)
             MessageActionButtonView(image: DS.Icon.icForward, text: L10n.Action.Send.forward)
         }
-        .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.large)
     }
 }
@@ -46,7 +45,7 @@ private struct MessageActionButtonView: View {
                     .resizable()
                     .foregroundColor(DS.Color.Icon.norm)
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 16, height: 16)
+                    .square(size: 20)
                 Text(text)
                     .fontBody3()
                     .fontWeight(.regular)

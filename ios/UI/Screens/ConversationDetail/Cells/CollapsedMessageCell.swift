@@ -71,7 +71,7 @@ struct CollapsedMessageCell: View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
                 .frame(width: 40, height: 40)
-            VStack(spacing: DS.Spacing.small) {
+            VStack(spacing: DS.Spacing.compact) {
                 senderRow
                 previewRow
             }

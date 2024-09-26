@@ -32,7 +32,6 @@ struct ConversationDetailScreen: View {
 
     private var conversationView: some View {
         GeometryReader { proxy in
-
             ScrollView {
                 VStack {
                     conversationDataView
@@ -129,7 +128,6 @@ private extension View {
 }
 
 #Preview("From Mailbox") {
-
     NavigationView {
         ConversationDetailScreen(seed:
                 .mailboxItem(
@@ -162,7 +160,6 @@ private extension View {
 }
 
 #Preview("From Notification") {
-
     NavigationView {
         ConversationDetailScreen(
             seed: .message(

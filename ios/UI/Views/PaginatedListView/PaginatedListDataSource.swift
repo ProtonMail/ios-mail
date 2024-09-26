@@ -30,6 +30,12 @@ final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecke
         self.fetchPage = fetchPage
     }
     
+    /// This function is for convenience to be able to show the initial state if the operation to have the fetchPage ready
+    /// takes some time and we are not ready to call `fetchInitialPage`.
+    func resetToInitialState() async {
+        await resetState()
+    }
+
     /// Resets the data and state and launches a new request to fetch the first page
     func fetchInitialPage() async {
         await resetState()
@@ -43,6 +49,7 @@ final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecke
 
     /// Use this function to refresh the items' values by overwriting the existing item list.
     /// - Parameter updatedItems: new list of items. The list can't be empty
+    @MainActor
     func updateItems(_ updatedItems: [Item]) async {
         guard !updatedItems.isEmpty else { return }
         state.items = updatedItems

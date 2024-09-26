@@ -77,12 +77,12 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
                         highlightedElement = isPressed ? element : nil
                     })
                     .listRowBackground(
-                        highlightedElement == element
-                        ? DS.Color.InteractionWeak.pressed
-                        : DS.Color.Background.norm
+                        highlightedElement == element ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm
                     )
                     .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIdentifier(section: sectionIndex, index: index))
+                    .accessibilityIdentifier(
+                        ActionPickerListIdentifiers.messageActionIdentifier(section: sectionIndex, index: index)
+                    )
             }
         }
     }
@@ -90,7 +90,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
     private func cell(for element: Element) -> some View {
         HStack(spacing: DS.Spacing.large) {
             Image(element.icon)
-                .actionSheetIconModifier()
+                .actionSheetSmallIconModifier()
                 .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIcon)
 
             Text(element.name)

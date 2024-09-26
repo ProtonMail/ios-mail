@@ -15,15 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import SwiftUI
+protocol Copying {}
 
-extension Image {
+extension Copying {
 
-    func actionSheetIconModifier() -> some View {
-        self
-            .resizable()
-            .frame(width: 20, height: 20)
-            .foregroundStyle(DS.Color.Icon.norm)
+    func copy<Value>(_ path: WritableKeyPath<Self, Value>, with value: Value) -> Self {
+        var clone = self
+        clone[keyPath: path] = value
+        return clone
     }
+
 }

@@ -40,6 +40,9 @@ packages:
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
     minorVersion: "1.3.0"
+  ViewInspector:
+    url: https://github.com/nalexn/ViewInspector.git
+    minorVersion: "0.9.11"
 
 configs:
   Debug: debug
@@ -132,6 +135,7 @@ targets:
       - package: Nimble
       - package: swift-snapshot-testing
         product: SnapshotTesting
+      - package: ViewInspector
     scheme:
       gatherCoverageData: true
       testTargets:
