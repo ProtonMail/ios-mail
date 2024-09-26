@@ -29,7 +29,7 @@ extension MailboxViewModelTests {
         }
 
         let expectation1 = expectation(description: "Closure is called")
-        sut.fetchMessages(time: 999, forceClean: false, isUnread: false) { _ in
+        sut.fetchMessages(time: 999, isUnread: false) { _ in
             XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)

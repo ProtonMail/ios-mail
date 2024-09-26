@@ -20,8 +20,11 @@ import ProtonCoreServices
 
 typealias UpdateMailboxUseCase = UseCase<Void, UpdateMailbox.Parameters>
 
+// sourcery: mock
 protocol UpdateMailboxSourceProtocol: AnyObject {
     var locationViewMode: ViewMode { get }
+    var isConversationModeEnabled: Bool { get }
+    var messageLocation: Message.Location? { get }
 }
 
 final class UpdateMailbox: UpdateMailboxUseCase {
@@ -169,12 +172,7 @@ extension UpdateMailbox {
                     case .success:
                         self.dependencies.conversationProvider
                             .fetchConversationCounts(addressID: nil) { result in
-                                switch result {
-                                case .success:
-                                    completion(nil)
-                                case .failure(let error):
-                                    completion(error)
-                                }
+                                completion(result.error)
                             }
                     case .failure(let error):
                         completion(error)
@@ -188,8 +186,20 @@ extension UpdateMailbox {
                                     cleanContact: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
+        let shouldFetchConversations: Bool
+
         switch self.locationViewMode {
         case .singleMessage:
+            if let sourceDelegate, sourceDelegate.messageLocation == .sent && sourceDelegate.isConversationModeEnabled {
+                shouldFetchConversations = true
+            } else {
+                shouldFetchConversations = false
+            }
+        case .conversation:
+            shouldFetchConversations = true
+        }
+
+        if !shouldFetchConversations {
             let params = FetchMessagesWithReset.Params(
                 labelID: labelID,
                 endTime: time,
@@ -202,7 +212,7 @@ extension UpdateMailbox {
                 .execute(params: params) { result in
                     completion(result.error)
                 }
-        case .conversation:
+        } else {
             self.dependencies.fetchLatestEventID.execute(params: ()) { [weak self] fetchLatestEventIDResult in
                 if let error = fetchLatestEventIDResult.error {
                     assertionFailure("\(error)")

@@ -716,7 +716,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
-                                    forceClean: false,
                                     isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
@@ -2488,7 +2487,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.tableView.showLoadingFooter()
             self.viewModel.fetchMessages(
                 time: Int(date.timeIntervalSince1970),
-                forceClean: false,
                 isUnread: self.isShowingUnreadMessageOnly
             ) { error in
                 DispatchQueue.main.async {
@@ -2554,7 +2552,6 @@ extension MailboxViewController: UITableViewDelegate {
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(
                         time: unixTimt,
-                        forceClean: false,
                         isUnread: self.isShowingUnreadMessageOnly
                     ) { error in
                         DispatchQueue.main.async {
