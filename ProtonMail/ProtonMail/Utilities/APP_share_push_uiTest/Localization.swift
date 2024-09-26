@@ -1681,6 +1681,7 @@ enum L10n {
     enum Upsell {
         static let upgradeToPlan = NSLocalizedString("Upgrade to %@", comment: "Title of the upsell page.")
         static let mailPlusDescription = NSLocalizedString("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+        static let autoRenewalNotice = NSLocalizedString("Auto-renews at the same price and terms unless canceled.", comment: "Auto-renewal notice")
         static let perMonth = NSLocalizedString("/month", comment: "Displayed next to the monthly price")
         static let getPlan = NSLocalizedString("Get %@", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
