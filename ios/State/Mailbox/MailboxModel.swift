@@ -280,6 +280,18 @@ extension MailboxModel {
     }
 }
 
+// MARK: Pull to refresh
+
+extension MailboxModel {
+
+    func onPullToRefresh() async {
+        await dependencies.appContext.pollEventsAsync()
+        let twoHundredsMilliseconds: UInt64 = 200_000_000
+        try? await Task.sleep(nanoseconds: twoHundredsMilliseconds)
+    }
+}
+
+
 // MARK: View actions
 
 extension MailboxModel {

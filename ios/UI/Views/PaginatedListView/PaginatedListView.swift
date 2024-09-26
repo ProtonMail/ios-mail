@@ -30,17 +30,22 @@ struct PaginatedListView<
     private var viewState: PaginatedListViewState {
         dataSource.state.viewState
     }
+    private var onScrollEvent: ((_ event: ListScrollOffsetTrackerView.ScrollEvent) -> Void)?
+
+    @State private var listRealTopOffset: CGFloat = 0
 
     init(
         dataSource: PaginatedListDataSource<Item>,
         headerView: @escaping () -> HeaderView = { EmptyView() },
         emptyListView: @escaping () -> EmptyListView,
-        cellView: @escaping (Int, Item) -> CellView
+        cellView: @escaping (Int, Item) -> CellView,
+        onScrollEvent: ((_ event: ListScrollOffsetTrackerView.ScrollEvent) -> Void)? = nil
     ) {
         self.dataSource = dataSource
         self.headerView = headerView
         self.emptyListView = emptyListView
         self.cellView = cellView
+        self.onScrollEvent = onScrollEvent
     }
 
     var body: some View {
@@ -56,7 +61,12 @@ struct PaginatedListView<
 
     private var dataStateView: some View {
         List {
+            ListScrollOffsetTrackerView(listTopOffset: listRealTopOffset) { event in
+                onScrollEvent?(event)
+            }
+
             headerView()
+
             ForEach(Array(dataSource.state.items.enumerated()), id: \.1.id) { index, item in
                 cellView(index, item)
             }
@@ -74,6 +84,10 @@ struct PaginatedListView<
                 .listRowBackground(Color.clear)
             }
         }
+        .environment(\.defaultMinListRowHeight, 0)
+        .readLayoutData(coordinateSpace: .global, onChange: { data in
+            listRealTopOffset = data.frameInCoordinateSpace.minY
+        })
     }
 }
 

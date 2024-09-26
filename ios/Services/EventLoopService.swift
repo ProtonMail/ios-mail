@@ -100,4 +100,5 @@ extension EventLoopService: ApplicationServiceDidEnterBackground {
 protocol EventLoopProvider: AnyObject {
 
     func pollEvents()
+    func pollEventsAsync() async
 }
