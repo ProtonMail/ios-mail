@@ -15,13 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import DesignSystem
 import SwiftUI
 
 struct MailboxListView: View {
     @ObservedObject private var model: MailboxModel
+
     @State private var didAppearBefore = false
+    @State private var pullToRefreshOffset: CGFloat = 0.0
     @Binding private var isListAtTop: Bool
+
+    @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
+    private var listPullOffsetPublisher: AnyPublisher<CGFloat, Never> {
+        listPullOffset.eraseToAnyPublisher()
+    }
 
     init(isListAtTop: Binding<Bool>, model: MailboxModel) {
         self._isListAtTop = isListAtTop
@@ -54,9 +62,23 @@ extension MailboxListView {
             emptyListView: { MailboxEmptyView() },
             cellView: { index, item in
                 cellView(index: index, item: item)
+            },
+            onScrollEvent: { event in
+                switch event {
+                case .onChangeOffset(let offset):
+                    self.listPullOffset.send(offset)
+                }
             }
         )
         .listStyle(.plain)
+        .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
+            guard (collectionView.refreshControl as? ProtonRefreshControl) == nil else { return }
+            let protonRefreshControl = ProtonRefreshControl(listPullOffset: listPullOffsetPublisher) {
+                await model.onPullToRefresh()
+            }
+            collectionView.refreshControl = protonRefreshControl
+            protonRefreshControl.tintColor = .clear
+        }
         .listScrollObservation(onEventAtTopChange: { newValue in
             isListAtTop = newValue
         })

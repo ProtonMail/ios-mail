@@ -17,7 +17,6 @@
 
 import DesignSystem
 import SwiftUI
-import SwiftUIIntrospect
 
 struct FolderPickerView: View {
     typealias OnSelectionDone = (_ selectedLabelId: ID) -> Void

@@ -167,24 +167,28 @@ extension AppContext: EventLoopProvider {
 
     func pollEvents() {
         Task { [weak self] in
-            do {
-                guard let mailUserSession = self?.activeUserSession else {
-                    AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
-                    return
-                }
+            await self?.pollEventsAsync()
+        }
+    }
 
-                /**
-                 For now, event loop calls can't be run in parallel so we flush any action from the queue first.
-                 Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
-                 */
-                AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-                try mailUserSession.executePendingActions()
-
-                AppLogger.log(message: "poll events", category: .rustLibrary)
-                try await mailUserSession.pollEvents()
-            } catch {
-                AppLogger.log(error: error, category: .rustLibrary)
+    func pollEventsAsync() async {
+        do {
+            guard let mailUserSession = activeUserSession else {
+                AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
+                return
             }
+
+            /**
+             For now, event loop calls can't be run in parallel so we flush any action from the queue first.
+             Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
+             */
+            AppLogger.log(message: "execute pending actions", category: .rustLibrary)
+            try mailUserSession.executePendingActions()
+
+            AppLogger.log(message: "poll events", category: .rustLibrary)
+            try await mailUserSession.pollEvents()
+        } catch {
+            AppLogger.log(error: error, category: .rustLibrary)
         }
     }
 }
