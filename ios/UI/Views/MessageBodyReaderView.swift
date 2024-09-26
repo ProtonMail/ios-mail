@@ -53,7 +53,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
 }
 
 extension MessageBodyReaderView {
-
     class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
         let parent: MessageBodyReaderView
 
@@ -79,5 +78,4 @@ extension MessageBodyReaderView {
             return .allow
         }
     }
-
 }

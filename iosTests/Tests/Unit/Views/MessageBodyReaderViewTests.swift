@@ -20,18 +20,27 @@ import XCTest
 import WebKit
 
 class MessageBodyReaderViewTests: XCTestCase {
-
-    func test_whenLinkInsideWebViewIsTappedItOpensURL() async {
+    func test_WhenLinkInsideWebViewIsTapped_ItOpensURL() async {
         let urlOpenerSpy = URLOpenerSpy()
         let sut = MessageBodyReaderView(bodyContentHeight: .constant(.zero), html: .notUsed, urlOpener: urlOpenerSpy)
-        let coordinator = await sut.makeCoordinator()
-        let stubbedURL = URL(string: "https://account.proton.me").unsafelyUnwrapped
+
+        let urlString = "https://account.proton.me"
+        let result = await sut.simulateTapOn(urlString: urlString)
+
+        XCTAssertEqual(result, .allow)
+        XCTAssertEqual(urlOpenerSpy.callAsFunctionInvokedWithURL.map(\.absoluteString), [urlString])
+    }
+}
+
+private extension MessageBodyReaderView {
+    func simulateTapOn(urlString: String) async -> WKNavigationActionPolicy {
+        let coordinator = await makeCoordinator()
+        let stubbedURL = URL(string: urlString).unsafelyUnwrapped
         let webViewLinkAction = NavigationActionStub(navigationType: .linkActivated, url: stubbedURL)
         let result = await coordinator.webView(WKWebView(), decidePolicyFor: webViewLinkAction)
-        XCTAssertEqual(result, .allow)
-        XCTAssertEqual(urlOpenerSpy.callAsFunctionInvokedWithURL, [stubbedURL])
-    }
 
+        return result
+    }
 }
 
 private class URLOpenerSpy: URLOpenerProtocol {
@@ -43,7 +52,6 @@ private class URLOpenerSpy: URLOpenerProtocol {
 }
 
 private class NavigationActionStub: WKNavigationAction {
-
     private let _navigationType: WKNavigationType
     private let url: URL
 
@@ -59,5 +67,4 @@ private class NavigationActionStub: WKNavigationAction {
     override var request: URLRequest {
         URLRequest(url: url)
     }
-
 }
