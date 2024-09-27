@@ -33,12 +33,13 @@ struct MessageActionButtonsView: View {
 }
 
 private struct MessageActionButtonView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     let image: ImageResource
     let text: LocalizedStringResource
 
     var body: some View {
         Button(action: {
-
+            toastStateStore.present(toast: .comingSoon)
         }) {
             HStack(spacing: DS.Spacing.medium) {
                 Image(image)

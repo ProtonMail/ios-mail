@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemDetailToolbar: ViewModifier {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.presentationMode) var presentationMode
     let purpose: Purpose
 
@@ -44,7 +45,9 @@ struct MailboxItemDetailToolbar: ViewModifier {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    purpose.trailingView
+                    purpose.trailingView {
+                        toastStateStore.present(toast: .comingSoon)
+                    }
                 }
             }
             .tint(DS.Color.Text.norm)
@@ -78,12 +81,12 @@ extension MailboxItemDetailToolbar {
         }
 
         @ViewBuilder
-        var trailingView: some View {
+        func trailingView(action: @escaping () -> Void) -> some View {
             switch self {
             case .itemDetail(let isStarStateKnown, let isStarred):
                 if isStarStateKnown {
                     Button(action: {
-                        // TODO:
+                        action()
                     }, label: {
                         Image(isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                             .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)

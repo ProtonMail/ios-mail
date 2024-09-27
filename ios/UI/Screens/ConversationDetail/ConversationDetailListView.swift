@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct ConversationDetailListView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     @State private var showMessageActionPicker: Bool = false
     
@@ -141,12 +142,8 @@ struct ConversationDetailListView: View {
         switch event {
         case .onTap:
             model.onMessageTap(messageId: uiModel.id)
-        case .onReply:
-            break
-        case .onReplyAll:
-            break
-        case .onForward:
-            break
+        case .onReply, .onReplyAll, .onForward:
+            toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
             messageActionTarget = uiModel
         case .onSenderTap:
