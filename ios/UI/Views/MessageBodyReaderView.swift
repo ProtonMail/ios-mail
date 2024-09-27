@@ -74,12 +74,12 @@ extension MessageBodyReaderView {
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
         ) async -> WKNavigationActionPolicy {
-            if navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url {
-                parent.urlOpener(url)
-                return .cancel
-            } else {
+            guard navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url else {
                 return .allow
             }
+
+            parent.urlOpener(url)
+            return .cancel
         }
     }
 }
