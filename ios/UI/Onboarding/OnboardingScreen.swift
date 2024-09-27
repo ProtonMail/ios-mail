@@ -149,7 +149,9 @@ private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>:
     let selection: Binding<SelectionValue>?
     @ViewBuilder let content: () -> Content
 
-    @State private var height: CGFloat = 0
+    @State private var height: CGFloat = .zero
+    /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
+    private let minHeight: CGFloat = 1
 
     var body: some View {
         TabView(selection: selection) {
@@ -161,7 +163,7 @@ private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>:
                     }
                 }
         }
-        .frame(minHeight: 1)
+        .frame(minHeight: minHeight)
         .frame(height: height)
         .onPreferenceChange(TabViewHeightPreference.self) { height in
             self.height = height
@@ -173,7 +175,7 @@ private struct TabViewHeightPreference: PreferenceKey {
     static let defaultValue: CGFloat = 0
 
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
+        value = nextValue()
     }
 }
 
