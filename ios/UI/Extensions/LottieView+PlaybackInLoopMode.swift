@@ -18,11 +18,10 @@
 import Lottie
 import SwiftUI
 
-struct ProtonSpinner: View {
+extension LottieView where Placeholder == EmptyView {
 
-    var body: some View {
-        LottieView(animation: .named("protonspinner"))
-            .playbackInLoopMode()
-            .square(size: 28)
+    func playbackInLoopMode() -> Self {
+        playbackMode(.playing(.fromProgress(0, toProgress: 1, loopMode: .loop)))
     }
+
 }

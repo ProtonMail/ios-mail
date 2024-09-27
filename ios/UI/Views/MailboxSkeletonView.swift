@@ -39,7 +39,7 @@ struct MailboxSkeletonView: View {
 
     private func rowView() -> some View {
         LottieView(animation: animation(for: colorScheme))
-            .playbackMode(.playing(.fromProgress(0, toProgress: 1, loopMode: .loop)))
+            .playbackInLoopMode()
             .frame(maxWidth: .infinity)
             .frame(height: 40)
             .padding(.trailing, 60)
