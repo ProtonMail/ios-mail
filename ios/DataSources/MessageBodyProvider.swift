@@ -32,7 +32,7 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
     func messageBody(for messageId: ID) async -> String? {
         do {
             let decryptedMessage = try await getMessageBody(mbox: mailbox, id: messageId)
-            let tranformOptions = TransformOpts(blockQuote: .strip, remoteContent: .default)
+            let tranformOptions = TransformOpts(blockQuote: .untouched, remoteContent: .default)
             let decryptedBody = try await decryptedMessage.body(opts: tranformOptions)
 
             return decryptedBody.body
