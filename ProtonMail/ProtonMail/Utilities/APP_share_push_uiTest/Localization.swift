@@ -1664,10 +1664,13 @@ enum L10n {
     enum PremiumPerks {
         static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
         static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
-        static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomain = NSLocalizedString("Custom email domain", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomainSupport = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
         static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
         static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
         static let endToEndEncryption = NSLocalizedString("End-to-end encryption", comment: "Description of a feature of a paid subscription")
+        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+        static let priorityCustomerSupport = NSLocalizedString("Priority customer support", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
     }
 
@@ -1681,6 +1684,7 @@ enum L10n {
     enum Upsell {
         static let upgradeToPlan = NSLocalizedString("Upgrade to %@", comment: "Title of the upsell page.")
         static let mailPlusDescription = NSLocalizedString("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+        static let freePlan = NSLocalizedString("Free", comment: "Shorthand for the free plan, as opposed to a paid plan")
         static let autoRenewalNotice = NSLocalizedString("Auto-renews at the same price and terms unless canceled.", comment: "Auto-renewal notice")
         static let perMonth = NSLocalizedString("/month", comment: "Displayed next to the monthly price")
         static let getPlan = NSLocalizedString("Get %@", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")

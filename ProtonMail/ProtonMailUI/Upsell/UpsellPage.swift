@@ -144,34 +144,20 @@ public struct UpsellPage: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(ColorProvider.SidebarTextWeak)
             }
-            .padding(.horizontal, 16)
 
-            VStack(alignment: .leading) {
-                ForEach(model.plan.perks.indices, id: \.self) { idx in
-                    VStack(alignment: .leading) {
-                        HStack(spacing: 12) {
-                            IconProvider[dynamicMember: model.plan.perks[idx].icon]
-                                .frame(maxHeight: 20)
-                                .foregroundColor(ColorProvider.IconWeak)
-                                .preferredColorScheme(.dark)
-
-                            Text(model.plan.perks[idx].description)
-                                .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
-                                .foregroundColor(ColorProvider.SidebarTextWeak)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-
-                        if idx != model.plan.perks.indices.last {
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundColor(.white.opacity(0.08))
-                        }
-                    }
+            Group {
+                switch model.variant {
+                case .plain:
+                    UpsellPageContentVariantDefault(perks: model.plan.perks)
+                        .padding(.bottom, 16)
+                case .comparison:
+                    UpsellPageContentVariantComparison()
+                        .frame(minHeight: 250)
                 }
             }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 12)
         }
+        .padding(.horizontal, 16)
     }
 
     private var interactiveArea: some View {
@@ -251,7 +237,7 @@ extension UpsellPage {
     }
 }
 
-#Preview {
+#Preview("default") {
     UpsellPage(
         model: .init(
             plan: .init(
@@ -259,7 +245,7 @@ extension UpsellPage {
                 perks: [
                     .init(icon: \.storage, description: L10n.PremiumPerks.storage),
                     .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
-                    .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
+                    .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomainSupport),
                     .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
                 ],
                 purchasingOptions: [
@@ -280,7 +266,45 @@ extension UpsellPage {
                         discount: 20
                     )
                 ]
-            )
+            ),
+            variant: .plain
+        ),
+        entryPoint: .header,
+        onPurchaseTapped: { _ in }
+    )
+}
+
+#Preview("comparison") {
+    UpsellPage(
+        model: .init(
+            plan: .init(
+                name: "Mail Plus",
+                perks: [
+                    .init(icon: \.storage, description: L10n.PremiumPerks.storage),
+                    .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
+                    .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomainSupport),
+                    .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
+                ],
+                purchasingOptions: [
+                    .init(
+                        identifier: "a",
+                        cycleInMonths: 1,
+                        monthlyPrice: "CHF 4.99",
+                        billingPrice: "CHF 4.99",
+                        isHighlighted: false,
+                        discount: nil
+                    ),
+                    .init(
+                        identifier: "b",
+                        cycleInMonths: 12,
+                        monthlyPrice: "CHF 3.99",
+                        billingPrice: "CHF 47.88",
+                        isHighlighted: true,
+                        discount: 20
+                    )
+                ]
+            ),
+            variant: .comparison
         ),
         entryPoint: .header,
         onPurchaseTapped: { _ in }
