@@ -41,7 +41,7 @@ struct MailboxSkeletonView: View {
         LottieView(animation: animation(for: colorScheme))
             .playbackInLoopMode()
             .frame(maxWidth: .infinity)
-            .frame(height: 40)
+            .frame(height: 40, alignment: .leading)
             .padding(.trailing, 60)
             .listRowBackground(Color.clear)
             .listRowInsets(.init(vertical: .zero, horizontal: DS.Spacing.large))
