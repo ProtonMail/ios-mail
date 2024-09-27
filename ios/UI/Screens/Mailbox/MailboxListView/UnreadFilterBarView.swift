@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct UnreadFilterBarView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @ScaledMetric var scale: CGFloat = 1
     @Binding var isSelected: Bool
     let unread: UInt64
@@ -27,7 +28,7 @@ struct UnreadFilterBarView: View {
         if let unreadFormatted = UnreadCountFormatter.string(count: unread, maxCount: 99) {
             HStack {
                 Button {
-                    isSelected.toggle()
+                    toastStateStore.present(toast: .comingSoon)
                 } label: {
                     HStack(spacing: DS.Spacing.small) {
                         Text(L10n.Mailbox.unread)
