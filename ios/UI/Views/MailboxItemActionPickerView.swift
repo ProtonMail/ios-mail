@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemActionPickerView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @State private(set) var highlightedAction: Action? = nil
 
     private let mailboxItemIdentifier: MailboxItemIdentifier
@@ -53,6 +54,7 @@ struct MailboxItemActionPickerView: View {
                     MailboxItemActionPickerSection.third.actions(type: mailboxItemIdentifier.type).map(resolver.action(for:))
                 ],
                 onElementTap: { action in
+                    toastStateStore.present(toast: .comingSoon)
                     onActionTap(action, mailboxItemIdentifier)
                 })
             .accessibilityElement(children: .contain)
@@ -79,7 +81,7 @@ struct MailboxItemActionPickerView: View {
 
     private func replyActionButton(name: LocalizedStringResource, icon: ImageResource) -> some View {
         Button {
-
+            toastStateStore.present(toast: .comingSoon)
         } label: {
             SendActionButtonStack() {
                 Image(icon)

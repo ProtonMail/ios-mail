@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MessageAddressActionPickerView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
@@ -34,7 +35,10 @@ struct MessageAddressActionPickerView: View {
                 MessageAddressActionPickerSection.second.actions(),
                 MessageAddressActionPickerSection.third(avatarUIModel).actions()
             ],
-            onElementTap: { print($0) }
+            onElementTap: {
+                toastStateStore.present(toast: .comingSoon)
+                print($0)
+            }
         )
     }
 
