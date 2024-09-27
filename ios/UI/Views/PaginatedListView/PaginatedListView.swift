@@ -51,7 +51,7 @@ struct PaginatedListView<
     var body: some View {
         switch viewState {
         case .fetchingInitialPage:
-            ProtonSpinner()
+            MailboxSkeletonView()
         case .empty:
             emptyListView()
         case .data:
