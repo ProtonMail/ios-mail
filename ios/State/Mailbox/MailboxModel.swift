@@ -510,7 +510,7 @@ extension MailboxModel: MailboxActionable {
 extension MailboxModel {
 
     struct State {
-        var mailboxTitle: LocalizedStringResource = ""
+        var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
         var showActionBar: Bool = false
         var unreadItemsCount: UInt64 = 0
         var isUnreadSelected: Bool = false
