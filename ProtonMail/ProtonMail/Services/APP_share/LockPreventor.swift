@@ -22,7 +22,7 @@ final class LockPreventor {
     static let shared = LockPreventor()
 
     /// Check this variable to know if notifications received to lock the app should be ignored
-    private (set) var isLockSuppressed: Bool = false
+    private(set) var isLockSuppressed: Bool = false
     private let serialQueue = DispatchQueue(label: "ch.protonmail.protonmail.LockPreventor")
 
     /// Use this function to execute code that could send a notification to lock the
