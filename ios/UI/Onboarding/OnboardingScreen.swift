@@ -81,6 +81,8 @@ struct OnboardingScreen: View {
         )
         .pickerViewStyle([.height(totalHeight)])
         .onAppear { didAppear?(self) }
+        .accessibilityElement()
+        .accessibilityIdentifier(OnboardingScreenIdentifiers.rootItem)
     }
 
     // MARK: - Private
@@ -181,4 +183,8 @@ private struct TabViewHeightPreference: PreferenceKey {
 
 #Preview {
     OnboardingScreen()
+}
+
+private struct OnboardingScreenIdentifiers {
+    static let rootItem = "onboarding.rootItem"
 }

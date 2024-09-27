@@ -25,7 +25,8 @@ struct UITestNavigator: ApplicationHolder {
     func navigateTo(
         _ destination: UITestDestination,
         performAppLaunch: Bool = true,
-        performLogin: Bool = true
+        performLogin: Bool = true,
+        skipOnboarding: Bool = true
     ) {
         if performAppLaunch {
             launchApp(environment: environment)
@@ -33,6 +34,10 @@ struct UITestNavigator: ApplicationHolder {
 
         if performLogin {
             login(loginType)
+            
+            if (skipOnboarding) {
+                dismissOnboarding()
+            }
         }
 
         switch destination {
@@ -81,6 +86,10 @@ struct UITestNavigator: ApplicationHolder {
             environment: environment
         )
         appWithLaunchArguments.launch()
+    }
+    
+    private func dismissOnboarding() {
+        OnboardingRobot { $0.dismissIfDisplayed() }
     }
 
     private func setAppLaunchArguments(
