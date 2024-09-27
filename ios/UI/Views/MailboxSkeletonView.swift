@@ -28,11 +28,11 @@ struct MailboxSkeletonView: View {
         List(0..<25) { _ in
             rowView()
         }
-        .scrollDisabled(true)
         .listStyle(.plain)
         .listRowSpacing(DS.Spacing.huge)
         .padding(.top, DS.Spacing.huge)
         .scrollContentBackground(.hidden)
+        .scrollDisabled(true)
     }
 
     // MARK: - Private
