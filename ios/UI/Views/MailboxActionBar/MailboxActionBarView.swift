@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxActionBarView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var userSettings: UserSettings
     @ObservedObject var selectionMode: SelectionModeState
 
@@ -62,7 +63,9 @@ struct MailboxActionBarView: View {
                     button(for: mailboxActions.action4)
                         .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
                     Spacer()
-                    Button(action: {}, label: {
+                    Button(action: {
+                        toastStateStore.present(toast: .comingSoon)
+                    }, label: {
                         Image(DS.Icon.icThreeDotsHorizontal)
                     })
                     .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
@@ -97,13 +100,14 @@ struct MailboxActionBarView: View {
             )
             let action = resolver.action(for: mailboxAction)
             Button(action: {
-                if case .labelAs = action {
-                    showLabelPicker.toggle()
-                } else if case .moveTo = action {
-                    showFolderPicker.toggle()
-                } else {
-                    mailboxActionable.onActionTap(action)
-                }
+                toastStateStore.present(toast: .comingSoon)
+//                if case .labelAs = action {
+//                    showLabelPicker.toggle()
+//                } else if case .moveTo = action {
+//                    showFolderPicker.toggle()
+//                } else {
+//                    mailboxActionable.onActionTap(action)
+//                }
             }, label: {
                 Image(action.icon)
                     .foregroundStyle(DS.Color.Icon.weak)
