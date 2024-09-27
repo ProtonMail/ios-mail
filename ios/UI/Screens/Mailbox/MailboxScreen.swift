@@ -70,7 +70,10 @@ struct MailboxScreen: View {
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
         .onAppear {
-            isOnboardingPresented = onboardingStore.shouldShowOnboarding
+            let workItem = DispatchWorkItem {
+                isOnboardingPresented = onboardingStore.shouldShowOnboarding
+            }
+            Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
             didAppear?(self)
         }
     }
