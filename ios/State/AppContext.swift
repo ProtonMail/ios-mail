@@ -198,6 +198,7 @@ extension AppContext: SessionProvider {
     @MainActor
     func logoutActiveUserSession() async throws {
         try await activeUserSession?.logout()
+        await accountCoordinator.logoutAccount()
         activeUserSession = nil
     }
 }
