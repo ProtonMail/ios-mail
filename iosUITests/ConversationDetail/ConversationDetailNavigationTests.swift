@@ -67,6 +67,12 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_435484.json",
                 ignoreQueryParams: true
@@ -107,6 +113,12 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
     /// TestId 435484/2
     func testSentFoldersToConversationDetailsNavigationWhenMessageIsLatest() async {
         await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+                            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/messages",

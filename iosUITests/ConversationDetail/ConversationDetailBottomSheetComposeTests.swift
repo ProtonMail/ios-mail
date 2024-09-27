@@ -112,6 +112,12 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_440554.json",
                 ignoreQueryParams: true

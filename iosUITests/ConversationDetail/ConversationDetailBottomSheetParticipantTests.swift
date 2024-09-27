@@ -140,6 +140,12 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
         await environment.mockServer.addRequestsWithDefaults(
             NetworkRequest(
                 method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
                 remotePath: "/mail/v4/messages",
                 localPath: "messages_440537.json",
                 ignoreQueryParams: true
@@ -214,6 +220,12 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
     /// TestId 440542
     func testParticipantBottomSheetInBccFieldWhenNotAContact() async {
         await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/messages",

@@ -36,6 +36,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             useDefaultMessagesCount: false,
             NetworkRequest(
                 method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
                 remotePath: "/mail/v4/conversations/count",
                 localPath: "conversations-count_448501.json",
                 serveOnce: true
@@ -72,6 +78,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             useDefaultFolders: false,
             useDefaultConversationCount: false,
             useDefaultMessagesCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations/count",
@@ -114,6 +126,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             useDefaultFolders: false,
             useDefaultConversationCount: false,
             useDefaultMessagesCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/conversations/count",
@@ -167,6 +185,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             useDefaultMessagesCount: false,
             NetworkRequest(
                 method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
+            NetworkRequest(
+                method: .get,
                 remotePath: "/mail/v4/conversations/count",
                 localPath: "conversations-count_448516.json",
                 serveOnce: true
@@ -211,7 +235,14 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
     
     /// TestId 448506
     func testCreateFolderButton() async {
-        await environment.mockServer.addRequestsWithDefaults()
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            )
+        )
 
         navigator.navigateTo(UITestDestination.inbox)
         

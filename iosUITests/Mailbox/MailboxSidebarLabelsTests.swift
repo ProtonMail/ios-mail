@@ -25,7 +25,14 @@ final class MailboxSidebarLabelsTests: PMUIMockedNetworkTestCase {
 
     /// TestId 448520
     func testCreateLabelButton() async {
-        await environment.mockServer.addRequestsWithDefaults()
+        await environment.mockServer.addRequestsWithDefaults(
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            )
+        )
 
         navigator.navigateTo(UITestDestination.inbox)
         
@@ -47,6 +54,12 @@ final class MailboxSidebarLabelsTests: PMUIMockedNetworkTestCase {
         await environment.mockServer.addRequestsWithDefaults(
             useDefaultLabels: false,
             useDefaultConversationCount: false,
+            NetworkRequest(
+                method: .get,
+                remotePath: "/mail/v4/conversations",
+                localPath: "conversations_empty.json",
+                ignoreQueryParams: true
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/core/v4/labels?Type=1",
