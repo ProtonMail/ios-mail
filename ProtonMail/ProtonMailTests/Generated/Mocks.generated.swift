@@ -6,6 +6,7 @@ import LocalAuthentication
 import Network
 import ProtonCoreCrypto
 import ProtonCoreEnvironment
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
@@ -446,6 +447,11 @@ class MockFeatureFlagProvider: FeatureFlagProvider {
     @FuncStub(MockFeatureFlagProvider.isEnabled, initialReturn: Bool()) var isEnabledStub
     func isEnabled(_ featureFlag: MailFeatureFlag) -> Bool {
         isEnabledStub(featureFlag)
+    }
+
+    @FuncStub(MockFeatureFlagProvider.getFlag, initialReturn: nil) var getFlagStub
+    func getFlag(_ featureFlag: MailFeatureFlag) -> ProtonCoreFeatureFlags.FeatureFlag? {
+        getFlagStub(featureFlag)
     }
 
 }

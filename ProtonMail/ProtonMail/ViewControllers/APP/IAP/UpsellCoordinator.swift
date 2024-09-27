@@ -87,9 +87,12 @@ final class UpsellCoordinator {
         entryPoint: UpsellPageEntryPoint,
         onDismiss: OnDismissCallback?
     ) async {
-        dependencies.upsellTelemetryReporter.prepare(entryPoint: entryPoint)
+        let upsellPageModel = dependencies.upsellPageFactory.makeUpsellPageModel(
+            for: availablePlan,
+            entryPoint: entryPoint
+        )
 
-        let upsellPageModel = dependencies.upsellPageFactory.makeUpsellPageModel(for: availablePlan)
+        dependencies.upsellTelemetryReporter.prepare(entryPoint: entryPoint, upsellPageVariant: upsellPageModel.variant)
 
         let upsellPage = UpsellPage(model: upsellPageModel, entryPoint: entryPoint) { [weak self] selectedProductId in
             self?.purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)

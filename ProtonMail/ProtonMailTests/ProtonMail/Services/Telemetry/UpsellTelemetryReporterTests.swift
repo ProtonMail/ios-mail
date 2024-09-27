@@ -49,7 +49,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
 
         sut = .init(dependencies: container)
 
-        sut.prepare(entryPoint: entryPoint)
+        sut.prepare(entryPoint: entryPoint, upsellPageVariant: .plain)
     }
 
     override func tearDown() {
@@ -178,7 +178,7 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             subscriptions: [.init(title: "", name: "foo2024", description: "", entitlements: [])]
         )
 
-        sut.prepare(entryPoint: entryPoint)
+        sut.prepare(entryPoint: entryPoint, upsellPageVariant: .plain)
         await sut.upsellPageDisplayed()
 
         let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
@@ -216,5 +216,14 @@ final class UpsellTelemetryReporterTests: XCTestCase {
             let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
             XCTAssertEqual(transmittedEvent.dimensions["days_since_account_creation"], expectedBracket)
         }
+    }
+
+    func testNonDefaultUpsellPageVariant() async throws {
+        sut.prepare(entryPoint: entryPoint, upsellPageVariant: .comparison)
+
+        await sut.upsellPageDisplayed()
+
+        let transmittedEvent = try XCTUnwrap(telemetryService.sendEventStub.lastArguments?.value)
+        XCTAssertEqual(transmittedEvent.dimensions["upsell_modal_version"], "B.1")
     }
 }

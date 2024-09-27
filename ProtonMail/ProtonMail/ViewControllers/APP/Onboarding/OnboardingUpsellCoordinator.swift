@@ -67,7 +67,7 @@ final class OnboardingUpsellCoordinator {
     }
 
     private func presentUpsellPage(availablePlans: AvailablePlans) async {
-        dependencies.upsellTelemetryReporter.prepare(entryPoint: .postOnboarding)
+        dependencies.upsellTelemetryReporter.prepare(entryPoint: .postOnboarding, upsellPageVariant: .plain)
 
         let model = dependencies.onboardingUpsellPageFactory.makeOnboardingUpsellPageModel(for: availablePlans.plans)
 

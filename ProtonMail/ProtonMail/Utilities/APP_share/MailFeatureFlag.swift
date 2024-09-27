@@ -23,6 +23,7 @@ enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
     case autoImportContacts = "MailiosAutoImportContacts"
     case calendarMiniLandingPage = "MailiosCalendarMiniLandingPage"
     case dynamicFontSizeInMessageBody = "MailiosDynamicFontSizeInMessageBody"
+    case headerUpsellExperiment1 = "MailiosHeaderUpsellExperiment1"
     case postOnboardingUpsellPage = "MailiosPostOnboardingUpsellPage"
     case rsvpWidget = "MailiosRSVPWidget"
     case upsellButton = "MailiosUpsellButton"
