@@ -1369,6 +1369,24 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
+class MockUpdateMailboxSourceProtocol: UpdateMailboxSourceProtocol {
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.locationViewMode, initialGet: .conversation) var locationViewModeStub
+    var locationViewMode: ViewMode {
+        locationViewModeStub()
+    }
+
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.isConversationModeEnabled, initialGet: Bool()) var isConversationModeEnabledStub
+    var isConversationModeEnabled: Bool {
+        isConversationModeEnabledStub()
+    }
+
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.messageLocation, initialGet: nil) var messageLocationStub
+    var messageLocation: Message.Location? {
+        messageLocationStub()
+    }
+
+}
+
 class MockUserCachedStatusProvider: UserCachedStatusProvider {
     @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
     var lastDraftMessageID: String? {
