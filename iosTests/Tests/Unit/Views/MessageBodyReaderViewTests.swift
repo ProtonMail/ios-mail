@@ -20,28 +20,51 @@ import XCTest
 import WebKit
 
 class MessageBodyReaderViewTests: XCTestCase {
-    func test_WhenLinkInsideWebViewIsTapped_ItOpensURL() async {
-        let urlOpenerSpy = URLOpenerSpy()
-        let sut = MessageBodyReaderView(
+
+    var sut: MessageBodyReaderView!
+    private var urlOpenerSpy: URLOpenerSpy!
+
+    override func setUp() {
+        super.setUp()
+
+        urlOpenerSpy = .init()
+        sut = MessageBodyReaderView(
             bodyContentHeight: .constant(.zero),
             html: .notUsed,
             urlOpener: urlOpenerSpy
         ) {}
+    }
 
-        let urlString = "https://account.proton.me"
-        let result = await sut.simulateTapOn(urlString: urlString)
+    override func tearDown() {
+        urlOpenerSpy = nil
+        sut = nil
+
+        super.tearDown()
+    }
+
+    func test_WhenLinkInsideWebViewIsTapped_ItOpensURL() async {
+        let result = await sut.webView(navigation: .init(navigationType: .linkActivated, url: protonURL))
+
+        XCTAssertEqual(result, .cancel)
+        XCTAssertEqual(urlOpenerSpy.callAsFunctionInvokedWithURL, [protonURL])
+    }
+
+    func test_WhenReloadNavigationIsTriggered_ItDoesNotOpenURL() async {
+        let result = await sut.webView(navigation: .init(navigationType: .reload, url: protonURL))
 
         XCTAssertEqual(result, .allow)
-        XCTAssertEqual(urlOpenerSpy.callAsFunctionInvokedWithURL.map(\.absoluteString), [urlString])
+        XCTAssertTrue(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty)
+    }
+
+    private var protonURL: URL {
+        URL(string: "https://account.proton.me").unsafelyUnwrapped
     }
 }
 
 private extension MessageBodyReaderView {
-    func simulateTapOn(urlString: String) async -> WKNavigationActionPolicy {
+    func webView(navigation: NavigationActionStub) async -> WKNavigationActionPolicy {
         let coordinator = await makeCoordinator()
-        let stubbedURL = URL(string: urlString).unsafelyUnwrapped
-        let webViewLinkAction = NavigationActionStub(navigationType: .linkActivated, url: stubbedURL)
-        let result = await coordinator.webView(WKWebView(), decidePolicyFor: webViewLinkAction)
+        let result = await coordinator.webView(WKWebView(), decidePolicyFor: navigation)
 
         return result
     }
