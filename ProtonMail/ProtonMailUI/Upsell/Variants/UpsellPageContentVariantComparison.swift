@@ -61,7 +61,7 @@ struct UpsellPageContentVariantComparison: View {
                     .fill(Color.white.opacity(0.08))
                     .frame(width: secondColumnWidth)
 
-                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                LazyVStack(spacing: 0) {
                     Section {
                         ForEach(perks.indices, id: \.self) { idx in
                             VStack {

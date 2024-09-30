@@ -96,14 +96,19 @@ public struct UpsellPage: View {
             )
         })
         .onPreferenceChange(SizePreferenceKey.self) {
+            let isLandscapeAccordingToSize = $0.width > $0.height
+            let isLandscapeAccordingToClass = verticalSizeClass == .compact // makes sense on iPhone but not iPad
+            let transitionInProgress = isLandscapeAccordingToSize != isLandscapeAccordingToClass
+            let isPhone = UIDevice.current.userInterfaceIdiom == .phone
+
+            guard !transitionInProgress, isPhone, let keyWindow else {
+                return
+            }
+
             if verticalSizeClass != previousVerticalSizeClass {
                 enforceVerticalTiles.reset()
                 hideLogo.reset()
                 previousVerticalSizeClass = verticalSizeClass
-            }
-
-            guard let keyWindow else {
-                return
             }
 
             let keyWindowSize = keyWindow.frame.size
@@ -152,7 +157,7 @@ public struct UpsellPage: View {
                         .padding(.bottom, 16)
                 case .comparison:
                     UpsellPageContentVariantComparison()
-                        .frame(minHeight: 250)
+                        .frame(minHeight: 225)
                 }
             }
             .padding(.top, 12)
