@@ -6,6 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>webcredentials:proton.me</string>
 		<string>webcredentials:proton.black?mode=developer</string>
 		<string>webcredentials:account.protonmail.com</string>
 		<string>webcredentials:account.proton.me</string>
