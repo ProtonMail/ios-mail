@@ -20,6 +20,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxListView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: MailboxModel
 
     @State private var didAppearBefore = false
@@ -120,7 +121,10 @@ extension MailboxListView {
                 mailboxItemId: item.id,
                 systemFolder: model.selectedMailbox.systemFolder,
                 isItemRead: item.isRead,
-                onTapAction: model.onMailboxItemAction(_:itemIds:)
+                onTapAction: { _, _ in
+                    toastStateStore.present(toast: .comingSoon)
+//                    model.onMailboxItemAction(action, itemIds: ids)
+                }
             )
 
             Spacer().frame(height: DS.Spacing.tiny)

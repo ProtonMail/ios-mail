@@ -37,12 +37,13 @@ enum SwipeAction {
 
     /// if `true` the swipe action will optimistically remove the cell from the list
     var isDestructive: Bool {
-        switch self {
-        case .none, .toggleReadStatus:
-            return false
-        case .delete, .moveToTrash:
-            return true
-        }
+        return false
+//        switch self {
+//        case .none, .toggleReadStatus:
+//            return false
+//        case .delete, .moveToTrash:
+//            return true
+//        }
     }
 
     func icon(readStatus: SelectionReadStatus) -> UIImage {
