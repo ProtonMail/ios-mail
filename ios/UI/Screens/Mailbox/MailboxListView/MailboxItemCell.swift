@@ -19,6 +19,7 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxItemCell: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.sizeCategory) var sizeCategory
     @State private(set) var isPressed: Bool = false
 
@@ -120,7 +121,8 @@ extension MailboxItemCell {
                 .frame(width: 16, height: 16)
                 .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                 .onTapGesture {
-                    onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
+                    toastStateStore.present(toast: .comingSoon)
+//                    onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.starIcon)
         }
