@@ -135,6 +135,7 @@ struct OnboardingScreen: View {
                     .padding(.horizontal, DS.Spacing.large)
             }
         )
+        .accessibilityIdentifier(OnboardingScreenIdentifiers.actionButton)
     }
 
     private var hasNextPage: Bool {
@@ -187,4 +188,5 @@ private struct TabViewHeightPreference: PreferenceKey {
 
 private struct OnboardingScreenIdentifiers {
     static let rootItem = "onboarding.rootItem"
+    static let actionButton = "onboarding.actionButton"
 }

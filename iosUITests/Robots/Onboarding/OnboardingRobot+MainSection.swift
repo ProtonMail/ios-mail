@@ -15,11 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import XCTest
+
 extension OnboardingRobot {
+
+    private var actionButton: XCUIElement {
+        rootElement.buttons[Identifiers.actionButton]
+    }
     
     func dismissIfDisplayed() {
-        if rootElement.isHittable {
-            rootElement.swipeDown(velocity: .fast)
+        var nextActionAttempts = 0
+        
+        // Keep a threshold and make the test fail if for some reason the root element is not dismissed.
+        while(rootElement.isHittable && nextActionAttempts < nextActionThreshold) {
+            nextActionAttempts += 1
+            actionButton.tap()
         }
     }
+}
+
+private let nextActionThreshold = 5
+
+private struct Identifiers {
+    static let actionButton = "onboarding.actionButton"
 }
