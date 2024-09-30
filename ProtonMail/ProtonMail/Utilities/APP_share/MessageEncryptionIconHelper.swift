@@ -209,7 +209,7 @@ struct MessageEncryptionIconHelper {
                         return .init(
                             iconColor: .green,
                             icon: IconProvider.lockOpenPenFilled,
-                            text: LocalString._pgp_encrypted_signed_of_received
+                            text: LocalString._pgp_signed_of_received
                         )
                     }
                 case .messageNotSigned, .signatureVerificationSkipped:

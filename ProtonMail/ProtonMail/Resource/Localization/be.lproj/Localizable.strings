@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
 
-/* Alert title */
-"Creating folder not allowed" = "Стварэнне папкі забаронена";
-
-/* Alert title */
-"Creating label not allowed" = "Стварэнне меткі забаронена";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 меткі";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Падключыцеся і паўтарыце спробу";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "У дадзены момант немагчыма ачысціць папку.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі ’%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Паказаць паведамленне цалкам]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Атрымаць больш месца ў сховішчы";
+
+/* Spotlight title */
+"Sized for reading" = "Памер для чытання";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Цяпер цела тэксту вашых лістоў будзе таксама адлюстроўвацца ў выбраным вамі памеры чытання.";
+
+/* Title of the banner alert */
+"Your storage is full" = "Ваша сховішча запоўнена";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Ваша падпіска завяршылася";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Ваш уліковы запіс знаходзіцца пад пагрозай выдалення";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Калі вы хочаце і далей адпраўляць і прымаць лісты, вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Вызваліце месца або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць дадатковае месца ў сховішчы і запампаваць файлы.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Палепшыце свой уліковы запіс, каб аднавіць поўны доступ і пазбегнуць страты даных.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Папрасіце свайго адміністратара палепшыць ваш уліковы запіс, каб пазбегнуць страты даных.";
+
+/* Upgrade button action */
+"Upgrade" = "Палепшыць";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Блакіраваць паведамленні ад гэтага адпраўніка";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Як запланавана";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Прызначыць свой уласны расклад";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблакіруйце карыстальніцкі расклад адпраўкі лістоў і іншыя перавагі пасля паляпшэння свайго тарыфнага плана.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Палепшыць зараз";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Заплануйце адпраўку паведамленняў у любы час";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Неабмежаваная колькасць папак і метак";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Да 500 ГБ сховішча";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Да 15 адрасоў электроннай пошты";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Да 3 карыстальніцкі даменаў электроннай пошты";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псеўданімы Hide-my-email";
-
 /* One of schedule time options */
 "In the morning" = "Раніцай";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Палепшыце свой тарыфны план, каб аўтаматычна выдаляць паведамленні, якія былі ў папках сметніца або спам больш за 30 дзён.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Не, дзякуй";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Адкрыць у Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Ачысціць непажаданую пошту";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Аўтаматычна ачышчае паведамленні, якія старэйшыя за 30 дзён са сметніцы і спама. Атрымлівайце асалоду ад гэтай і іншых пераваг пасля паляпшэння.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Да 3 ТБ сховішча";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Карыстальніцкія дамены электроннай пошты";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Палепшыць зараз";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Адпраўнік зменены";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Паўтарыце спробу, калі ўсе далучэнні будуць запампаваны.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Адпраўка з дапамогай пашырэння абагульвання без падключэння да інтэрнэту не падтрымліваецца";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Бачнае імя";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Выберыце час у будучыні";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Хочаце адкладаць у любы час?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Разблакіруйце карыстальніцкі час адкладання пасля паляпшэння";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Да 15 адрасоў электроннай пошты/псеўданімаў";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Дадаць як далучэнне";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Новая настольная праграма Proton Mail";
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 ГБ сховішча і 1 электронная пошта";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "І яшчэ %u прэміяльныя функцыі";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Купля ўжо ажыццяўляецца";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Ачысціць выдаленыя файлы і спам";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Групаванне кантактаў";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Без намаганняў адпраўляйце лісты групе і атрымлівайце асалоду ад іншых прэміяльных функцый з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Неабходна больш метак або папак?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Атрымайце не толькі іх, але і іншыя прэміяльныя функцыі пасля пераходу на тарыфны план %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Наладзьце свой подпіс";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Выкарыстоўвайце свой уласны подпіс на мабільных прыладах і атрымайце іншыя прэміяльныя функцыі з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Заплануйце цяпер, а адпраўце пазней";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Атрымлівайце асалоду ад магчымасці карыстальніцкага планавання адпраўкі і іншых прэміяльных функцый з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Не падыходзячы час для гэтага ліста?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Адкладзіце яго на зручны для вас час. Атрымайце магчымасць адкладаць лісты і іншыя функцыі з тарыфным планам %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Выбар тарыфнага плана";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Штогод";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Лепшыя суадносіны кошту і якасці";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Спаганяецца сума ў памеры %1$@ кожныя %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Уключаны прэміяльны функцыянал";

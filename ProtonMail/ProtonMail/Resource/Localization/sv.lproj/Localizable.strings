@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Ärvd från överordnad mapp";
 
-/* Alert title */
-"Creating folder not allowed" = "Det är inte tillåtet att skapa mapp";
-
-/* Alert title */
-"Creating label not allowed" = "Det är inte tillåtet att skapa etikett";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Uppgradera till ett betalt paket för att använda fler än 3 etiketter";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Anslut och försök igen";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "Kan inte tömma mapp just nu.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Är du säker på att du vill ta bort alla meddelanden permanent i ”%@”?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Visa hela meddelandet]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Skaffa mer lagringsutrymme";
+
+/* Spotlight title */
+"Sized for reading" = "Storleksanpassad för läsning";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Nu kommer även brödtexten i dina e-postmeddelanden att visas i den storlek du föredrar.";
+
+/* Title of the banner alert */
+"Your storage is full" = "Ditt lagringsutrymme är fullt";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Din prenumeration har upphört";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Ditt konto riskeras att tas bort";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "För att skicka eller ta emot e-post, frigör utrymme eller uppgradera för mer lagringsutrymme.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "För att ladda upp filer, frigör utrymme eller uppgradera för mer lagringsutrymme.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Uppgradera för att återställa full åtkomst och för att undvika dataförlust.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "För att undvika dataförlust, be din admin att uppgradera.";
+
+/* Upgrade button action */
+"Upgrade" = "Uppgradera";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blockera meddelanden från denna avsändare";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Enligt schema";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Ställ in ditt eget schema";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås upp anpassat meddelandeschemaläggning och andra fördelar när du uppgraderar ditt paket.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Uppgradera nu";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schemalägg meddelanden när som helst";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Upp till 500 GB lagringsutrymme";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Upp till 15 e-postadresser";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Upp till 3 anpassade e-postdomäner";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email-alias";
-
 /* One of schedule time options */
 "In the morning" = "På morgonen";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nej tack";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Öppna i Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Rensa bort skräpet";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Rensa automatiskt bort meddelanden som är äldre än 30 dagar från papperskorg och skräppost. Njut av denna och andra fördelar när du uppgraderar.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Upp till 3 TB lagringsutrymme";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Anpassade e-domäner";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Uppgradera nu";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Avsändare ändrad";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Försök igen när alla bilagor är uppladdade.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Visningsnamn";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Välj en tid i framtiden";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Vill du snooza valfri tid?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Lås upp anpassade tider för snooze när du uppgraderar";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Upp till 15 e-postadresser/alias";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Lägg till det som bilaga";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Stöd för anpassad e-postdomän";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Ny Proton Mail-app för stationär dator";
+"%u personal calendars" = "%u personliga kalendrar";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB lagringsutrymme och 1 e-post";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premiumfunktioner";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Köp pågår redan";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Rensa bort gammalt i papperskorg och skräppost";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Få en snyggare brevlåda och dra nytta av andra premiumfunktioner med %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Gruppera dina kontakter";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Skicka enkelt e-post till en grupp och njut av andra premiumfunktioner med %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Behöver du fler etiketter eller mappar?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Skaffa dem och andra premiumfunktioner när du uppgraderar till %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Anpassa din signatur";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Använd din egen mobilsignatur och njut av andra premiumfunktioner med %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schemalägg nu, skicka senare";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Olämplig tidpunkt för detta e-postmeddelande?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Välj ett paket";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Årlig";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Bästa värde";
+
+/* Button to expand the feature list */
+"%u more features" = "%u fler funktioner";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premiumvärde inkluderat";

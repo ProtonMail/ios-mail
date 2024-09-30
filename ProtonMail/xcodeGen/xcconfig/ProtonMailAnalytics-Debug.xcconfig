@@ -6,7 +6,6 @@
 //
 
 #include "ProtonMailAnalytics-Shared.xcconfig"
-#include "../../Pods/Target Support Files/Pods-ProtonMailAnalytics/Pods-ProtonMailAnalytics.debug.xcconfig"
 
 MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG

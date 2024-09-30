@@ -20,7 +20,7 @@
 "Enter your signature here" = "Masukkan tanda tangan Anda di sini";
 
 /* Mobile Signature title in settings */
-"Mobile Signature" = "Tanda Tangan Mobile";
+"Mobile Signature" = "Tanda Tangan Seluler";
 
 /* Title */
 "Recovery email" = "Email pemulihan";
@@ -44,7 +44,7 @@
 "Remove image metadata" = "Hapus metadata gambar";
 
 /* Settings row */
-"Block email tracking" = "Blokir pelacak email";
+"Block email tracking" = "Blokir pelacakan email";
 
 /* Settings row */
 "Default browser" = "Browser default";
@@ -205,10 +205,10 @@
 "Repeat password" = "Ulangi kata sandi";
 
 /* Placeholder */
-"Passwords must match" = "Kata sandi harus cocok";
+"Passwords must match" = "Kata sandi harus sesuai";
 
 /* Error message */
-"The 2 passwords are not matching" = "Kedua sandi tidak sesuai";
+"The 2 passwords are not matching" = "Kedua kata sandi tidak sesuai";
 
 /* action title */
 "Remove password" = "Hapus kata sandi";
@@ -262,7 +262,7 @@
 "Define Hint (Optional)" = "Tentukan Petunjuk (Opsional)";
 
 /* Menu action to remove text formatting */
-"Clear Style" = "Hapus Corak Mode";
+"Clear Style" = "Hapus Pengayaan Teks";
 
 /* new contacts add Organization  */
 "Add organization" = "Tambah organisasi";
@@ -271,7 +271,7 @@
 "Add nickname" = "Tambah julukan";
 
 /* new contacts add Title */
-"Add title" = "Tambah judul";
+"Add title" = "Tambah gelar";
 
 /* new contacts add Birthday */
 "Add birthday" = "Tambah tanggal lahir";
@@ -340,7 +340,7 @@
 "City" = "Kota";
 
 /* contact placeholder */
-"State" = "Negara Bagian";
+"State" = "Negara bagian";
 
 /* contact placeholder */
 "ZIP" = "Kode pos";
@@ -742,7 +742,7 @@
 "Breeze through threaded messages in conversation mode." = "Baca pesan berutas dengan mudah dalam mode percakapan.";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Undang kontak Anda ke Proton Mail agar mereka dapat ikut terlindung oleh enkripsi ujung ke ujung, atau tambahkan kata sandi pada pesan yang Anda kirimkan kepada mereka.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Undang kontak Anda ke Proton Mail untuk dapat saling menikmati enkripsi end-to-end terpadu, atau tambahkan perlindugnan kata sandi pada pesan yang Anda kirimkan kepada mereka.";
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Arsipkan, labeli, dan warnai pesan Anda untuk menciptakan kotak masuk khusus yang sempurna bagi Anda.";
@@ -817,7 +817,7 @@
 "Go to sign in" = "Tuju layar masuk";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpannya?";
+"You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpan perubahan ini?";
 
 /* title */
 "Save Changes" = "Simpan Perubahan";
@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Diwariskan dari folder induk";
 
-/* Alert title */
-"Creating folder not allowed" = "Pembuatan folder tidak diizinkan";
-
-/* Alert title */
-"Creating label not allowed" = "Pembuatan label tidak diizinkan";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 folder";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 label";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Silakan hubungkan dan coba lagi";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "Folder tidak dapat dikosongkan pada saat ini.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Apakah Anda yakin ingin menghapus seluruh pesan dalam ‘%@’ secara permanen?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Tampilkan isi pesan selengkapnya]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Dapatkan ruang penyimpanan tambahan";
+
+/* Spotlight title */
+"Sized for reading" = "Diukur untuk membaca";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Sekarang teks bodi dari email Anda juga akan ditampilkan dalam ukuran membaca yang diinginkan.";
+
+/* Title of the banner alert */
+"Your storage is full" = "Ruang penyimpanan Anda penuh";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Langganan Anda telah berakhir.";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Akun Anda berisiko dihapus";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Untuk mengirim atau menerima email, kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang penyimpanan.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Untuk mengunggah berkas, kosongkan ruang yang ada atau tingkatkan akun Anda untuk memperoleh lebih banyak ruang penyimpanan.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Tingkatkan akun Anda untuk memulihkan akses penuh dan mencegah hilangnya data.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Untuk mencegah hilangnya data, mintalah admin Anda untuk meningkatkan akun.";
+
+/* Upgrade button action */
+"Upgrade" = "Tingkatkan";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blokir pesan dari pengirim ini";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Sebagaimana terjadwal";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Tentukan jadwal Anda sendiri";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Dapatkan fitur penjadwalan pesan khusus dan berbagai kelebihan lainnya dengan meningkatkan akun Anda.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Tingkatkan sekarang";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Jadwalkan pesan sesuai keinginan Anda";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Ruang penyimpanan hingga 500 GB";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Hingga 15 alamat email";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Hingga 3 domain email khusus";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
-
 /* One of schedule time options */
 "In the morning" = "Di pagi hari";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Tingkatkan untuk menghapus pesan yang telah berada di sampah dan spam selama lebih dari 30 hari secara otomatis.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Hapus pesan yang telah berada ke sampah selama lebih dari 30 hari secara otomatis.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Hapus pesan yang telah berada di sampah dan spam selama lebih dari 30 hari secara otomatis.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Tidak, terima kasih";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Buka di Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Hapus sampah yang ada";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Hapus pesan yang telah berusia lebih dari 30 hari dari spam dan sampah secara otomatis. Nikmati fitur ini dan berbagai kelebihan lainnya pada saat Anda meningkatkan akun.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Ruang penyimpanan hingga 3 TB";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Domain email khusus";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Tingkatkan sekarang";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Pengirim diubah";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Silakan coba lagi setelah seluruh lampiran selesai terunggah.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Pengiriman dengan ekstensi Share pada saat offline tidak didukung";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nama tampilan";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Silakan pilih waktu yang akan datang";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Ingin menunda sesuai keinginan Anda?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Dapatkan waktu tunda yang dapat disesuaikan pada saat Anda meningkatkan akun";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Hingga 15 alamat/alias email";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Tanpa batasan jumlah folder, label, dan filter";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tambah sebagai lampiran";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Dukungan domain email khusus";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Aplikasi desktop Proton Mail baru";
+"%u personal calendars" = "%u kalender pribadi";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "Ruang penyimpanan 1 GB dan 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u fitur premium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Pembelian sedang berlangsung";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Bersihkan sampah dan spam yang telah lama menumpuk";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Nikmati kotak surat yang lebih rapi dan dapatkan manfaat dari berbagai fitur premium lainnya dengan %@";
+
+/* Title of the upsell page */
+"Group your contacts" = "Kelompokkan kontak Anda";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Kirim email ke grup dengan mudah dan nikmati fitur premium lainnya dengan %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Perlu lebih banyak label atau folder?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Dapatkan fitur-fitur ini dan berbagai fitur premium lainnya pada saat Anda meningkatkan ke %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Atur tanda tangan Anda";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda sendiri dan nikmati fitur premium lainnya dengan %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Jadwalkan sekarang, kirim nanti";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Nikmati pengiriman terjadwal khusus dan fitur premium lainnya dengan %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Waktu yang kurang tepat untuk email ini?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Tunda selama waktu yang Anda inginkan. Dapatkan penundaan kustom dan lebih banyak lagi dengan %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Pilih paket";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Tahunan";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Penawaran terbaik";
+
+/* Button to expand the feature list */
+"%u more features" = "%u fitur lainnya";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Tertagih dengan harga %1$@ setiap %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Meliputi nilai premium";

@@ -42,7 +42,7 @@ public struct JumpToNextSpotlightView: View {
             buttonTitle: buttonTitle,
             closeAction: closeAction,
             message: message,
-            spotlightImage: ImageAsset.jumpToNextSpotlight,
+            spotlightImage: .jumpToNextSpotlight,
             title: title,
             imageAlignBottom: true
         )

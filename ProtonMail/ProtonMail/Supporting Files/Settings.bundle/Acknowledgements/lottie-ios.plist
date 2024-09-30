@@ -209,7 +209,7 @@
    limitations under the License.
 </string>
 			<key>License</key>
-			<string>unknown</string>
+			<string>Apache-2.0</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

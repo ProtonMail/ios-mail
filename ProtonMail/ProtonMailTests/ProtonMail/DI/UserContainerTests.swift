@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 @testable import ProtonMail
 
@@ -104,6 +104,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.importDeviceContacts
         _ = strongRefToContainer?.messageSearch
         _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
+        _ = strongRefToContainer?.onboardingUpsellPageFactory
         _ = strongRefToContainer?.payments
         _ = strongRefToContainer?.paymentsUIFactory
         _ = strongRefToContainer?.planService

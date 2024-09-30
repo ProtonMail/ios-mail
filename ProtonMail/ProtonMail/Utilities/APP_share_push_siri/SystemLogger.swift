@@ -135,6 +135,7 @@ extension SystemLogger {
         case contacts = "Contacts"
         case coreDataMigration = "CoreDataMigration"
         case draft = "Draft"
+        case dynamicFontSize = "DynamicFontSize"
         case iap = "In-app purchases"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
@@ -152,6 +153,7 @@ extension SystemLogger {
         case notificationDebug = "NotificationDebug"
         case menuDebug = "MenuDebug"
         case emptyAlert = "EmptyAlert"
+        case webView = "WebView"
     }
 
     struct Caller {

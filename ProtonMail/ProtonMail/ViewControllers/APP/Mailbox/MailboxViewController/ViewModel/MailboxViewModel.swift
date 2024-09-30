@@ -42,9 +42,10 @@ struct LabelInfo {
 }
 
 protocol MailboxViewModelUIProtocol: AnyObject {
+    var isUsingDefaultSizeCategory: Bool { get }
+
     func updateTitle()
     func updateUnreadButton(count: Int)
-    func updateTheUpdateTimeLabel()
     func selectionDidChange()
     func clickSnoozeActionButton()
 }
@@ -59,8 +60,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
-    & HasPurchasePlan
-    & HasUpsellPageFactory
     & HasUpsellOfferProvider
     & HasUpdateMailbox
     & HasUpsellButtonStateProvider
@@ -74,10 +73,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     let labelID: LabelID
     var storageAlertVisibility: StorageAlertVisibility = .hidden
+    var lockedStateAlertVisibility: LockedStateAlertVisibility = .hidden
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
-    /// This field stores the latest update time of the user event.
-    private var latestEventUpdateTime: Date?
     var messageLocation: Message.Location? {
         return Message.Location(rawValue: labelID.rawValue)
     }
@@ -88,10 +86,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
-    private var eventUpdatePublisher: EventUpdatePublisher?
     private var unreadCounterPublisher: UnreadCounterPublisher?
     var unreadCount: Int {
         unreadCounterPublisher?.unreadCount ?? 0
+    }
+
+    private var mailboxLastUpdateTime: Date? {
+        let key = UserSpecificLabelKey(labelID: labelID, userID: user.userID)
+        return dependencies.userDefaults[.mailboxLastUpdateTimes][key.userDefaultsKey]
     }
 
     private(set) var selectedIDs: Set<String> = Set()
@@ -116,12 +118,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         dependencies.updateMailbox.isFetching
     }
     private(set) var isFirstFetch: Bool = true
-
-    var error: AnyPublisher<Error, Never> {
-        errorSubject.eraseToAnyPublisher()
-    }
-
-    private let errorSubject = PassthroughSubject<Error, Never>()
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
 
@@ -170,6 +166,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     }
 
     private var storageExceedObservation: Cancellable?
+    private var lockedStateObservation: Cancellable?
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -206,18 +203,18 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
         super.init()
         trackLifetime()
-        self.setupStorageAlert()
+        self.setupAlertBox()
         self.conversationStateProvider.add(delegate: self)
         dependencies.updateMailbox.setup(source: self)
     }
 
     func viewDidLoad() {
         if !hasPreloadedPlanToUpsell && shouldShowUpsellButton {
-            Task {
+            Task { [unowned self] in
                 do {
                     try await dependencies.upsellOfferProvider.update()
                 } catch {
-                    PMLog.error(error)
+                    SystemLogger.log(error: error, category: .iap)
                 }
             }
         }
@@ -231,8 +228,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return location.localizedTitle
     }
 
-    var currentViewMode: ViewMode {
-        conversationStateProvider.viewMode
+    var isConversationModeEnabled: Bool {
+        conversationStateProvider.viewMode == .conversation
     }
 
     var locationViewMode: ViewMode {
@@ -326,7 +323,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return contactProvider.getAllEmails()
     }
 
-    func setupStorageAlert() {
+    func setupAlertBox() {
+        if let lockedFlags = user.userInfo.lockedFlags {
+            lockedStateAlertVisibility = LockedStateAlertVisibility(lockedFlags: lockedFlags)
+        } else {
+            setupStorageAlert()
+        }
+    }
+
+    private func setupStorageAlert() {
         let usersWhoHaveSeenStorageBanner = dependencies.userDefaults[.usersWhoHaveSeenStorageBanner]
         let userDismissedBanner = usersWhoHaveSeenStorageBanner[user.userID.rawValue] ?? false
         if FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.splitStorage, reloadValue: true),
@@ -390,6 +395,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     func shouldShowAutoImportContactsSpotlight() -> Bool {
         user.container.autoImportContactsFeature.isFeatureEnabled && shouldShowSpotlight(for: .autoImportContacts)
+    }
+
+    func shouldShowDynamicFontSizeSpotlight() -> Bool {
+        uiDelegate?.isUsingDefaultSizeCategory == false && shouldShowSpotlight(for: .dynamicFontSize)
     }
 
     func shouldShowSpotlight(for featureKey: SpotlightableFeatureKey) -> Bool {
@@ -526,18 +535,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         )
     }
 
-	private func makeEventPublisher() {
-        eventUpdatePublisher = .init(contextProvider: coreDataContextProvider)
-        eventUpdatePublisher?.startObserve(
-            userID: user.userID,
-            onContentChanged: { [weak self] events in
-                DispatchQueue.main.async {
-                    self?.latestEventUpdateTime = events.first?.updateTime
-                    self?.uiDelegate?.updateTheUpdateTimeLabel()
-                }
-            })
-	}
-
     /// Setup fetch controller to fetch message of specific labelID
     ///
     /// - Parameter delegate: delegate from viewcontroller
@@ -556,7 +553,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
 
         makeLabelPublisherIfNeeded()
-        makeEventPublisher()
         makeUnreadCounterPublisher()
     }
 
@@ -661,7 +657,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = latestEventUpdateTime {
+        if let updateTime = mailboxLastUpdateTime {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 
@@ -683,33 +679,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return result
     }
 
-    func updateListAndCounter(complete: @escaping (LabelCountEntity?) -> Void) {
-        let group = DispatchGroup()
-        group.enter()
-        self.messageService.updateMessageCount {
-            group.leave()
-        }
-
-        group.enter()
-        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { _ in
-            group.leave()
-        }
-
-        group.notify(queue: DispatchQueue.main) { [weak self] in
-            delay(0.2) {
-                guard let self = self else { return }
-                // For operation context sync with main context
-                let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userID)
-                complete(count)
-            }
-
-        }
-    }
-
-    func getEmptyFolderCheckMessage(count: Int) -> String {
-        let format = self.currentViewMode == .conversation ? LocalString._clean_conversation_warning: LocalString._clean_message_warning
-        let message = String(format: format, count)
-        return message
+    func getEmptyFolderCheckMessage(folder: LabelLocation) -> String {
+        String(format: LocalString._clean_message_warning, folder.localizedTitle)
     }
 
     func emptyFolder() {
@@ -918,6 +889,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
             didChanged(value)
         })
     }
+    
+    func setupLockedStateObservation(didChanged: @escaping (Bool) -> Void) {
+        lockedStateObservation = user.$userLockedFlagsChanged.sink(receiveValue: { value in
+            didChanged(value)
+        })
+    }
 }
 
 // MARK: - Data fetching methods
@@ -992,7 +969,8 @@ extension MailboxViewModel {
                 isCleanFetch: isCleanFetch,
                 time: time,
                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
-                errorHandler: errorHandler
+                errorHandler: errorHandler,
+                userID: user.userID
             )
         ) { _ in
             completion()
@@ -1509,7 +1487,7 @@ extension MailboxViewModel {
     private var upsellButtonVisibilityHasChanged: AnyPublisher<Void, Never> {
         dependencies
             .upsellOfferProvider
-            .$availablePlan
+            .availablePlanPublisher
             .map { [unowned self] plan in
                 /**
                  We can't use `isUpsellButtonVisible` here: $availablePlan publishes on willSet,
@@ -1528,27 +1506,6 @@ extension MailboxViewModel {
 
     func upsellButtonWasTapped() {
         dependencies.upsellButtonStateProvider.upsellButtonWasTapped()
-    }
-
-    func makeUpsellPageModel() -> UpsellPageModel? {
-        dependencies.upsellOfferProvider.availablePlan.map(dependencies.upsellPageFactory.makeUpsellPageModel)
-    }
-
-    func purchasePlan(storeKitProductId: String) async -> Bool {
-        let result = await dependencies.purchasePlan.execute(storeKitProductId: storeKitProductId)
-
-        switch result {
-        case .planPurchased:
-            await user.fetchUserInfo()
-
-            return true
-        case .error(let error):
-            errorSubject.send(error)
-
-            return false
-        case .cancelled:
-            return false
-        }
     }
 }
 

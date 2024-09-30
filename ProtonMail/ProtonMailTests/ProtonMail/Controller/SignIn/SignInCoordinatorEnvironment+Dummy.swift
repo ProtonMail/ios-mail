@@ -14,7 +14,8 @@ import ProtonCoreDoh
 import ProtonCoreLogin
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 
 @testable import ProtonMail
 
@@ -44,6 +45,7 @@ extension SignInCoordinatorEnvironment {
         let dohMock = DohMock()
         apiMock.dohInterfaceStub.fixture = dohMock
         return .init(apiService: apiMock,
+                     userDefaults: UserDefaults(),
                      mailboxPassword: mailboxPassword,
                      currentAuth: currentAuth,
                      tryRestoringPersistedUser: tryRestoringPersistedUser,

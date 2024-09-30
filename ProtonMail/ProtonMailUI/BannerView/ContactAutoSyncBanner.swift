@@ -38,7 +38,7 @@ public struct ContactAutoSyncBanner: View {
 
     public var body: some View {
         HStack {
-            Image(uiImage: ImageAsset.contactSync)
+            Image(.contactSync)
             VStack(alignment: .leading, spacing: 8, content: {
                 Text(title)
                     .fixedSize(horizontal: false, vertical: true)

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -47,11 +46,11 @@ class SettingsGestureViewModelTests: XCTestCase {
         XCTAssertEqual(sut.leftToRightAction, .archive)
     }
 
-    func testGetLeftToRightSwipeAction_withInvalidServerValue_returnArchiveAsDefaultAction() {
+    func testGetLeftToRightSwipeAction_withInvalidServerValue_returnTrashAsDefaultAction() {
         swipeActionCacheStub.leftToRightSwipeActionType = nil
         swipeActionInfoStub.swipeRightStub.fixture = Int.random(in: 5...Int.max)
 
-        XCTAssertEqual(sut.leftToRightAction, .archive)
+        XCTAssertEqual(sut.leftToRightAction, .trash)
     }
 
     func testGetRightToLeftSwipeAction() {

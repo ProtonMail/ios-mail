@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 
 final class FetchEmailAddressesPublicKeyTests: XCTestCase {
     var sut: FetchEmailAddressesPublicKey!

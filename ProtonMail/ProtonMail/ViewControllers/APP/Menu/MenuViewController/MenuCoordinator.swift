@@ -93,7 +93,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         viewModel.coordinator = self
     }
 
-    func start(launchedByNotification: Bool = false) {
+    func start() {
         let menuView = MenuViewController(viewModel: self.viewModel)
         if let viewModel = self.viewModel as? MenuViewModel {
             viewModel.set(delegate: menuView)
@@ -102,9 +102,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         self.viewModel.set(menuWidth: self.menuWidth)
         sideMenu.menuViewController = menuView
 
-        if launchedByNotification {
-            presentInitialPage()
-        }
+        presentInitialPage()
     }
 
     func update(menuWidth: CGFloat) {
@@ -335,7 +333,7 @@ extension MenuCoordinator {
 
 extension MenuCoordinator {
     func handleSwitchView(deepLink: DeepLink?) {
-        guard let deepLink = deepLink else {
+        guard let deepLink, deepLink.first != nil else {
             // There is no previous states , navigate to inbox
             self.presentInitialPage()
             return
@@ -645,11 +643,8 @@ extension MenuCoordinator {
 
     private func navigateToSkeletonVC(labelInfo: MenuLabel) {
         guard case let .customize(_, value) = labelInfo.location else { return }
-        // If this is triggered by SignInCoordinator
-        // Disable skeleton timer
-        let isEnabledTimeout = value != String(describing: SignInCoordinator.self)
-        let skeletonVC = SkeletonViewController.instance(isEnabledTimeout: isEnabledTimeout)
-        guard let navigation = skeletonVC.navigationController else { return }
+        let skeletonVC = SkeletonViewController()
+        let navigation = UINavigationController(rootViewController: skeletonVC)
         self.setupContentVC(destination: navigation)
     }
 

@@ -71,7 +71,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
                                     cleanContact: false,
                                     unreadOnly: false) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
-                self?.isFetching = false
+                self?.markFetchingAsFinished(params: params)
                 callback(.success)
             }
             return
@@ -87,9 +87,15 @@ final class UpdateMailbox: UpdateMailboxUseCase {
                                 cleanContact: true,
                                 unreadOnly: params.showUnreadOnly) { [weak self] error in
             self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
-            self?.isFetching = false
+            self?.markFetchingAsFinished(params: params)
             callback(.success)
         }
+    }
+
+    private func markFetchingAsFinished(params: Parameters) {
+        let key = UserSpecificLabelKey(labelID: params.labelID, userID: params.userID)
+        dependencies.userDefaults[.mailboxLastUpdateTimes][key.userDefaultsKey] = Date()
+        isFetching = false
     }
 }
 
@@ -274,12 +280,12 @@ extension UpdateMailbox {
                 isUnread: params.showUnreadOnly
             ) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
-                self?.isFetching = false
+                self?.markFetchingAsFinished(params: params)
                 self?.dependencies.internetConnectionStatusProvider.apiCallIsSucceeded()
                 callback(.success)
             }
         } else {
-            self.isFetching = false
+            markFetchingAsFinished(params: params)
             dependencies.internetConnectionStatusProvider.apiCallIsSucceeded()
             callback(.success)
         }
@@ -294,6 +300,7 @@ extension UpdateMailbox {
         let time: Int
         let fetchMessagesAtTheEnd: Bool
         let errorHandler: ErrorHandler
+        let userID: UserID
     }
 
     struct Dependencies {

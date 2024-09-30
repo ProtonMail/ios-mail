@@ -1,6 +1,0 @@
-framework module ProtonCoreTelemetry {
-  umbrella header "ProtonCore-Telemetry-umbrella.h"
-
-  export *
-  module * { export * }
-}

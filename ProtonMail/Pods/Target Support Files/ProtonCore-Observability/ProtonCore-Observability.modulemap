@@ -1,6 +1,0 @@
-framework module ProtonCoreObservability {
-  umbrella header "ProtonCore-Observability-umbrella.h"
-
-  export *
-  module * { export * }
-}

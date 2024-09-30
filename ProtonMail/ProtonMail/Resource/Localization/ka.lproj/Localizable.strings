@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "მემკვიდრეობით მშობელი საქაღალდისგან";
 
-/* Alert title */
-"Creating folder not allowed" = "საქაღალდის შექმნა აკრძალულია";
-
-/* Alert title */
-"Creating label not allowed" = "ჭდის შექმნა დაუშვებელია";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "სამზე მეტი საქაღალდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "სამზე მეტი ჭდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "დაუკავშირდით და თავიდან სცადეთ";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "საქაღალდის დაცარიელება ახლა შეუძლებელია.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ყველა შეტყობინება საქაღალდეში '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[სრული შეტყობინების ჩვენება]";
@@ -1854,6 +1845,36 @@
 /* Get more storage button action */
 "Get more storage" = "მიიღეთ მეტი საცავი";
 
+/* Spotlight title */
+"Sized for reading" = "ზომა შეცვლილია წასაკითხად";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "ახლა თქვენი ელფოსტების სხეულის ტექსტიც სასურველი ფონტიზ ზომით გამოჩნდება.";
+
+/* Title of the banner alert */
+"Your storage is full" = "თქვენი საცავი სავსეა";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "თქვენი გამოწერა დასრულდა";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "თქვენი ანგარიში წაშლის საშიშროების ქვეშაა";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "ელფოსტის გასაგზავნად ან მისაღებად გაათავისუფლეთ ადგილი ან ასწიეთ სატარიფო გეგმა მეტი საცავის მისაღებად.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "ფაილების ასატვირთად გაათავისუფლეთ ადგილი ან ასწიეთ სატარიფო გეგმა მეტი საცავის მისაღებად.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "ასწიეთ სატარიფო გეგმა სრული წვდომის აღსადგენად და მონაცემების დაკარგვის თავიდან ასაცილებლად.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "მონაცემების კარგვის თავიდან ასაცილებლად სთხოვეთ თქვენს ადმინისტრატორს, სატარიფო გეგმა ასწიოს.";
+
+/* Upgrade button action */
+"Upgrade" = "ტარიფის აწევა";
+
 /* Button to block a sender */
 "Block messages from this sender" = "ამ გამომგზავნის შეტყობინებების დაბლოკვა";
 
@@ -2031,7 +2052,7 @@
 "Easily RSVP to events" = "ადვილი პასუხი მოვლენებზე";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "ახლა შეგიძლიათ უპასუხოთ მოსაწვევს, ან ნახოთ მოვლენა Proton Calendar-ში, მხოლოდ, ერთი დატყაპუნებით. ";
 
 /* Menu title */
 "Max Storage" = "მაქს საცავი";
@@ -2116,33 +2137,6 @@
 
 /* One of the schedule time options */
 "As scheduled" = "როგორც დაგეგმილია";
-
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "თქვენი განრიგის დაყენება";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "განბლოკეთ შეტყობინებების მორგებული დაგეგმვა და სხვა უპირატესობები თქვენი გეგმის განახლებისას.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "ტარიფის განახლება";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "შეტყობინებების განრიგში ნებისმიერ დროს ჩასმა";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "500გბ-მდე საცავი";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "15-მდე ელფოსტის მისამართი";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "ელფოსტის 3-მდე ხელით მითითებული დომენი";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "ჩემი ელფოსტის მეტსახელების დამალვა";
 
 /* One of schedule time options */
 "In the morning" = "დილით";
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "ნაგვის საქაღალდეში მყოფი შეტყობინებების და სპამის ავტომატური წაშლა 30 დღეში.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "არა, მადლობა";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar-ში გახსნა";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "ნაგვის მოსუფთავება";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "შეტყობინებების სპამიდან და ნაგვის ყუთიდან 30 დღეში ავტომატური წაშლა. ისიამოვნეთ ამ და სხვა ფასიანი თვისებებით, როცა პაკეტს ასწევთ.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "3ტბ-მდე საცავი";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "თქვენი ელფოსტის დომენები";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "ტარიფის განახლება";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "გამგზავნი შეიცვალა";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "თავიდან სცადეთ, როცა ყველა მიმაგრებული ფაილი აიტვირთება.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "ინტერნეტიდან გათიშულობისას გაზიარების გაფართოებით გაგზავნა შეუძლებელია";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "საჩვენებელი სახელი";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "აირჩიეთ დრო მომავალში";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "გნებავთ, დროებით დაადუმოთ ნებისმიერ დროს?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "განბლოკეთ მომხმარებლის დროებით დადუმების დროებით, როცა თქვენს სატარიფო გეგმას ასწევთ";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "15-მდე ელფოსტის მისამართი/ფსევდონიმი";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "დამატება მიმაგრებულ ფაილად";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "ახალი Proton Mal-ის კომპიუტერის აპი";
+"%u personal calendars" = "%u პერსონალური კალენდარი";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 გბ საცავი და 1 ელფოსტა";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u ფასიანი ფუნქცია";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "შეძენა უკვე მიმდინარეობს";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "გაასუფთავეთ ძველი ნაგავი და სპამი";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "ისიამოვნეთ დალაგებული საფოსტო ყუთით და სხვა ფასიანი ფუნქციებით %@-ით.";
+
+/* Title of the upsell page */
+"Group your contacts" = "დააჯგუფეთ თქვენი კონტაქტები";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "ადვილად გაუგზავნეთ ელფოსტა ჯგუფებს და ისიანოვნეთ სხვა ფასიანი ფუნქციებით %@-სთან ერთად.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "გჭირდებათ მეტი ჭდე ან საქაღალდე?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "მიიღეთ ისინი და სხვა ფასიანი ფუნქციები, როცა სატარიფო გეგმას %@-მდე ასწევთ.";
+
+/* Title of the upsell page */
+"Customize your signature" = "მოირგეთ თქვენი ხელმოწერა";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "გამოიყენეთ თქვენი მობილური ხელმოწერა და ისიამოვნეთ სხვა ფასიანი ფუნქციებით %@-სთან ერთად.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "დაგეგმეთ ახლა, გააგზავნეთ მოგვიანებით";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "ისიამოვნეთ მორგებული დაგეგმილი გაგზავნით და სხვა ფასიანი ფუნქციებით %@-ით.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "ცუდი დროა ამ ელფოსტისთვის?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "დაადუმეთ ის დროით, რომელიც გაწყობთ. მიიღეთ მორგებული დადუმება და მეტი %@-სთან ერთად.";
+
+/* Title of the upsell page */
+"Choose a plan" = "აირჩიეთ სატარიფო გეგმა";
+
+/* Refers to an annual billing cycle */
+"Annual" = "წელიწადში ერთხელ";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "საუკეთესო მნიშვნელობა";
+
+/* Button to expand the feature list */
+"%u more features" = "კიდევ %u ფუნქცია";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "გადაიხდით %1$@-ს ყოველ %2$@-ში";
+
+/* In the list of premium plan features */
+"Premium value included" = "ფასიანი ფუნქციების ჩათვლით";

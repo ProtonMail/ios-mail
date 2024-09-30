@@ -61,8 +61,6 @@ final class Launch {
             }
         }
         #endif
-
-        NotificationCenter.default.post(name: .switchView, object: nil)
     }
 
     private func loadUsersIfMainKeyAvailable() {

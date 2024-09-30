@@ -24,6 +24,7 @@ import class ProtonCoreDataModel.UserInfo
 import ProtonCoreTroubleShooting
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import SideMenuSwift
 import protocol ProtonCoreServices.APIService
 
@@ -51,15 +52,13 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private weak var sideMenu: SideMenuController?
-    private var isMessageSwipeNavigationEnabled: Bool {
-        true
-    }
     var pendingActionAfterDismissal: (() -> Void)?
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
     private let dependencies: Dependencies
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
+    private var onboardingUpsellCoordinator: OnboardingUpsellCoordinator?
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -200,7 +199,14 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 nav.present(composer, animated: true)
             }
         case .composeMailto where path.value != nil:
-            followToComposeMailTo(path: path.value)
+            let upsellPageEntryPoint: UpsellPageEntryPoint?
+            if deeplink.first?.name == "toUpsellPage", deeplink.first?.value == "scheduleSend" {
+                upsellPageEntryPoint = .scheduleSend
+            } else {
+                upsellPageEntryPoint = nil
+            }
+
+            followToComposeMailTo(path: path.value, upsellPageEntryPoint: upsellPageEntryPoint)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
                   let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
@@ -235,9 +241,30 @@ extension MailboxCoordinator {
     }
 
     private func presentOnboardingView() {
-        let viewController = OnboardViewController()
+        let viewController = OnboardViewController(isPaidUser: viewModel.user.hasPaidMailPlan)
         viewController.modalPresentationStyle = .fullScreen
-        self.viewController?.present(viewController, animated: true, completion: nil)
+        viewController.onViewDidDisappear = { [weak self] in
+            self?.presentUpsellIfApplicable()
+        }
+        navigation?.present(viewController, animated: true, completion: nil)
+    }
+
+    @MainActor
+    private func presentUpsellIfApplicable() {
+        guard
+            dependencies.featureFlagProvider.isEnabled(.postOnboardingUpsellPage),
+            !viewModel.user.hasPaidMailPlan,
+            dependencies.userDefaults[.didSignUpOnThisDevice] != true,
+            let navigation
+        else {
+            return
+        }
+
+        onboardingUpsellCoordinator = dependencies.paymentsUIFactory.makeOnboardingUpsellCoordinator(
+            rootViewController: navigation
+        )
+
+        onboardingUpsellCoordinator?.start()
     }
 
     private func presentNewBrandingView() {
@@ -249,7 +276,8 @@ extension MailboxCoordinator {
     private func navigateToComposer(
         existingMessage: MessageEntity?,
         isEditingScheduleMsg: Bool = false,
-        originalScheduledTime: Date? = nil
+        originalScheduledTime: Date? = nil,
+        upsellPageEntryPoint: UpsellPageEntryPoint? = nil
     ) {
         guard let navigationVC = navigation else {
             return
@@ -261,7 +289,13 @@ extension MailboxCoordinator {
             originalScheduledTime: originalScheduledTime,
             composerDelegate: viewController
         )
-        navigationVC.present(composer, animated: true)
+
+        navigationVC.present(composer, animated: true) {
+            if let upsellPageEntryPoint {
+                let actualComposer = composer.viewControllers.first as? ComposeContainerViewController
+                actualComposer?.presentUpsellPage(entryPoint: upsellPageEntryPoint)
+            }
+        }
     }
 
     private func presentSearch() {
@@ -289,10 +323,10 @@ extension MailboxCoordinator {
         }
     }
 
-    private func followToComposeMailTo(path: String?) {
+    private func followToComposeMailTo(path: String?, upsellPageEntryPoint: UpsellPageEntryPoint?) {
         if let msgID = path,
            let msg = fetchMessage(by: .init(msgID)) {
-            navigateToComposer(existingMessage: msg)
+            navigateToComposer(existingMessage: msg, upsellPageEntryPoint: upsellPageEntryPoint)
             return
         }
 
@@ -374,30 +408,39 @@ extension MailboxCoordinator {
             messageToShow(isNotification: false, node: nil) { [weak self] message in
                 guard let self = self,
                       let message = message else { return }
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(message: message)
+                if viewModel.messageLocation == .sent,
+                   viewModel.isConversationModeEnabled,
+                   let conversation = findConversation(for: message) {
+                    self.presentPageViewsFor(conversation: conversation, targetID: message.messageID)
                 } else {
-                    self.present(message: message)
+                    self.presentPageViewsFor(message: message)
                 }
             }
         case .conversation:
             conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
                 guard let self = self,
                       let conversation = conversation else { return }
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(conversation: conversation, targetID: nil)
-                } else {
-                    self.present(conversation: conversation, targetID: nil)
-                }
+                self.presentPageViewsFor(conversation: conversation, targetID: nil)
             }
         }
     }
 
+    private func findConversation(for message: MessageEntity) -> ConversationEntity? {
+        let conversationID = message.conversationID
+
+        return contextProvider.read { context in
+            let conversations = self.conversationDataService.fetchLocalConversations(
+                withIDs: [conversationID],
+                in: context
+            )
+
+            return conversations.first.map(ConversationEntity.init)
+        }
+    }
+
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
-        if
-            let timeOfLastNavigationToMessageDetails,
-            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3
-        {
+        if let timeOfLastNavigationToMessageDetails,
+            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3 {
             return
         }
 
@@ -415,8 +458,7 @@ extension MailboxCoordinator {
                 message: "Finished fetching msg: message id is: \(message?.messageID.rawValue ?? "Nil")",
                 category: .notificationDebug
             )
-            guard let self = self,
-                  let message = message else {
+            guard let self, let message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
                 L10n.Error.cant_open_message.alertToastBottom()
                 return
@@ -428,11 +470,7 @@ extension MailboxCoordinator {
                     message: "Display notification in single message mode. id: \(messageID)",
                     category: .notificationDebug
                 )
-                if self.isMessageSwipeNavigationEnabled {
-                    self.presentPageViewsFor(message: message)
-                } else {
-                    self.present(message: message)
-                }
+                self.presentPageViewsFor(message: message)
             case .conversation:
                 SystemLogger.log(
                     message: "Start fetching conversation for msg id: \(messageID)",
@@ -453,11 +491,7 @@ extension MailboxCoordinator {
                         message: "Display notification in conversation mode. msg id: \(messageID), conv id: \(conversation.conversationID.rawValue)",
                         category: .notificationDebug
                     )
-                    if self?.isMessageSwipeNavigationEnabled ?? false {
-                        self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
-                    } else {
-                        self?.present(conversation: conversation, targetID: messageID)
-                    }
+                    self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                 }
             }
         }
@@ -534,47 +568,9 @@ extension MailboxCoordinator {
         }
     }
 
-    private func present(message: MessageEntity) {
-        guard let navigationController = viewController?.navigationController else {
-            SystemLogger.log(
-                message: "Can not find the navigation view to show the message detail view.",
-                category: .notificationDebug
-            )
-            return
-        }
-        let coordinator = SingleMessageCoordinator(
-            navigationController: navigationController,
-            labelId: viewModel.labelID,
-            dependencies: dependencies
-        )
-        coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
-            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
-        }
-        coordinator.start(message: message)
-    }
-
-    private func present(conversation: ConversationEntity, targetID: MessageID?) {
-        guard let navigationController = viewController?.navigationController else {
-            SystemLogger.log(
-                message: "Can not find the navigation view to show the conversation view.",
-                category: .notificationDebug
-            )
-            return
-        }
-        let coordinator = ConversationCoordinator(
-            labelId: viewModel.labelID,
-            navigationController: navigationController,
-            conversation: conversation,
-            dependencies: dependencies,
-            targetID: targetID
-        )
-        coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
-            self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
-        }
-        coordinator.start()
-    }
-
     private func presentPageViewsFor(message: MessageEntity) {
+        viewController?.loadViewIfNeeded()
+
         let pageVM = MessagePagesViewModel(
             initialID: message.messageID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
@@ -585,6 +581,7 @@ extension MailboxCoordinator {
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
         )
+
         presentPageViews(pageVM: pageVM)
     }
 
@@ -708,6 +705,12 @@ extension MailboxCoordinator: SnoozeSupport {
     }
 
     func presentPaymentView() {
-        viewController?.presentPayments(paidFeature: .snooze)
+        viewController?.presentUpsellPage(entryPoint: .snooze) { [unowned self] in
+            guard let viewController else {
+                return
+            }
+
+            presentSnoozeConfigSheet(on: viewController, current: Date())
+        }
     }
 }

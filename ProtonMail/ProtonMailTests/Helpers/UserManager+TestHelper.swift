@@ -18,7 +18,7 @@
 import ProtonCoreDataModel
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import UIKit
 
 @testable import ProtonMail
@@ -62,7 +62,13 @@ extension UserManager {
         globalContainer: GlobalContainer? = nil
     ) throws -> UserManager {
         let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey, active: 1, primary: 1)
+        let key = Key(
+            keyID: "1",
+            privateKey: keyPair.privateKey,
+            keyFlags: Key.Flags.notCompromised.rawValue,
+            active: 1,
+            primary: 1
+        )
         key.signature = "signature is needed to make this a V2 key"
         let address = Address(
             addressID: "1",

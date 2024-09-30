@@ -83,6 +83,7 @@ private enum SubviewsFactory {
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.bounces = false
         return scrollView
     }
 

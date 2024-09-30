@@ -9,7 +9,7 @@ import ProtonCoreEnvironment
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonInboxRSVP
 import UIKit
 
@@ -92,11 +92,6 @@ class MockBGTaskSchedulerProtocol: BGTaskSchedulerProtocol {
     @FuncStub(MockBGTaskSchedulerProtocol.register, initialReturn: Bool()) var registerStub
     func register(forTaskWithIdentifier identifier: String, using queue: DispatchQueue?, launchHandler: @escaping (BGTask) -> Void) -> Bool {
         registerStub(identifier, queue, launchHandler)
-    }
-
-    @FuncStub(MockBGTaskSchedulerProtocol.cancel) var cancelStub
-    func cancel(taskRequestWithIdentifier identifier: String) {
-        cancelStub(identifier)
     }
 
 }
@@ -598,6 +593,11 @@ class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
         navigateToLabelEditStub(editMode, labels, type, userInfo, labelService)
     }
 
+    @FuncStub(MockLabelManagerRouterProtocol.presentUpsellPage) var presentUpsellPageStub
+    func presentUpsellPage(labelType: PMLabelType) {
+        presentUpsellPageStub(labelType)
+    }
+
 }
 
 class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
@@ -629,11 +629,6 @@ class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
     @FuncStub(MockLabelManagerUIProtocol.showToast) var showToastStub
     func showToast(message: String) {
         showToastStub(message)
-    }
-
-    @FuncStub(MockLabelManagerUIProtocol.showAlertMaxItemsReached) var showAlertMaxItemsReachedStub
-    func showAlertMaxItemsReached() {
-        showAlertMaxItemsReachedStub()
     }
 
     @FuncStub(MockLabelManagerUIProtocol.showNoInternetConnectionToast) var showNoInternetConnectionToastStub
@@ -1260,8 +1255,8 @@ class MockURLOpener: URLOpener {
     }
 
     @FuncStub(MockURLOpener.open) var openStub
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
-        openStub(url, options, completion)
+    func open(_ url: URL) {
+        openStub(url)
     }
 
     @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub

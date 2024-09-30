@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonMailUI
 import QuickLook
 import SafariServices
 import UIKit
@@ -27,6 +28,7 @@ import UIKit
 class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     typealias Dependencies = HasComposerViewFactory
     & HasContactViewsFactory
+    & HasPaymentsUIFactory
     & HasToolbarSettingViewFactory
     & AttachmentListViewModel.Dependencies
     & SingleMessageViewModelFactory.Dependencies
@@ -40,6 +42,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, Date?) -> Void)?
     private let dependencies: Dependencies
+    @MainActor private var upsellCoordinator: UpsellCoordinator?
 
     init(
         navigationController: UINavigationController,
@@ -81,7 +84,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                 self?.goToDraft?(msgID, originalScheduleTime)
             }
         )
-        let viewController = SingleMessageViewController(viewModel: viewModel)
+        let viewController = SingleMessageViewController(viewModel: viewModel, dependencies: dependencies)
         self.viewController = viewController
         return viewController
     }
@@ -120,6 +123,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                                         currentActions: currentActions)
         case .toolbarSettingView:
             presentToolbarCustomizationSettingView()
+        case .upsellPage(let entryPoint):
+            presentUpsellPage(entryPoint: entryPoint)
         }
     }
 }
@@ -247,5 +252,16 @@ extension SingleMessageCoordinator {
     private func presentToolbarCustomizationSettingView() {
         let settingView = dependencies.toolbarSettingViewFactory.makeSettingView()
         self.viewController?.navigationController?.pushViewController(settingView, animated: true)
+    }
+
+    private func presentUpsellPage(entryPoint: UpsellPageEntryPoint) {
+        guard let viewController else {
+            return
+        }
+
+        Task { @MainActor in
+            upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: viewController)
+            upsellCoordinator?.start(entryPoint: entryPoint)
+        }
     }
 }

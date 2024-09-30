@@ -24,7 +24,7 @@ import XCTest
 import fusion
 import RegexBuilder
 import ProtonCoreQuarkCommands
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUITestsLogin
 
 final class LoginDelinquentAccountsTests: FixtureAuthenticatedTestCase {
 

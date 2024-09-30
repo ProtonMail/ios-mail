@@ -56,18 +56,10 @@ class ComposeViewModel: NSObject {
     }
 
     var contacts: [ContactPickerModelProtocol] {
-        /**
-         We use `contactTitle` and `displayEmail` combined to determine the unique contacts because:
-         1. The same name could be used in 2 different contacts, but each contact has a different email.
-         2. The same email could be in 2 different contacts using the same name, but one contact card could have specific send preferences.
-         */
-        protonContacts
-            .appending(protonGroupContacts)
-            .appending(phoneContacts)
-            .unique { "\($0.contactTitle)-\($0.displayEmail ?? "")" }
-            .sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+        // sort the contact group and phone address together
+        let sortedContacts = phoneContacts.appending(protonGroupContacts).sorted(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
+        return protonContacts + sortedContacts
     }
-
     private var phoneContacts: [ContactPickerModelProtocol] = [] {
         didSet {
             contactsDidChangePublisher.send()
@@ -268,7 +260,7 @@ class ComposeViewModel: NSObject {
 
         switch messageAction {
         case .openDraft:
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
             let supplementCSS = supplementCSS(from: body)
             return .init(
                 body: body,
@@ -279,7 +271,7 @@ class ComposeViewModel: NSObject {
             )
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
 
             let clockFormat: String = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
@@ -329,7 +321,7 @@ class ComposeViewModel: NSObject {
             if !msg.ccList.isEmpty {
                 forwardHeader.append(contentsOf: "\(c) \(msg.ccList.formatJsonContact(true))<br>")
             }
-            let body = composerMessageHelper.decryptBody()
+            let body = decryptedBody()
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
@@ -390,6 +382,22 @@ class ComposeViewModel: NSObject {
                 messageDisplayMode: .expanded,
                 contentLoadingType: contentLoadingType
             )
+        }
+    }
+
+    private func decryptedBody() -> String {
+        let rawHTML = composerMessageHelper.decryptBody()
+
+        do {
+            let document: Document = try Parser.parseAndLogErrors(rawHTML)
+            if let body = document.body() {
+                return try body.html()
+            } else {
+                return try document.html()
+            }
+        } catch {
+            SystemLogger.log(error: error)
+            return rawHTML
         }
     }
 
@@ -471,7 +479,7 @@ extension ComposeViewModel {
     // Exact base64 image from body and upload it, if has any
     func extractAndUploadBase64ImagesFromSendingBody(body: String) -> String {
         guard
-            let document = try? SwiftSoup.parse(body),
+            let document = Parser.parseAndLogErrors(body),
             let base64Images = try? document.select(#"img[src^="data"]"#)
         else {
             return body

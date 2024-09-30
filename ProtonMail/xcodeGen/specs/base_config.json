@@ -33,12 +33,16 @@
          "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
          "from": "1.0.0"
       },
-      "OHHTTPStubs": {
-         "url": "https://github.com/AliSoftware/OHHTTPStubs",
-         "from": "9.1.0"
+      "ProtonCore": {
+         "url": "https://github.com/ProtonMail/protoncore_ios",
+         "version": "26.1.0"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
+      },
+      "ProtonInboxRSVP": {
+         "url": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
+         "from": "2.2.0"
       },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",

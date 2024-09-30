@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsFeatureFlag
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 @testable import ProtonMail
 
 final class UpsellOfferProviderTests: XCTestCase {
-    private var sut: UpsellOfferProvider!
+    private var sut: UpsellOfferProviderImpl!
     private var apiService: APIServiceMock!
     private var user: UserManager!
 
@@ -54,6 +55,28 @@ final class UpsellOfferProviderTests: XCTestCase {
         stubPlans(named: ["vpn2022", "mail2023"])
         try await sut.update()
         XCTAssertNil(sut.availablePlan)
+    }
+
+    func testUpdate_whenPlansAreAvailable_thenPerformsOtherRequests() async throws {
+        stubPlans(named: ["mail2022"])
+        try await sut.update()
+
+        XCTAssertEqual(
+            apiService.requestJSONStub.capturedArguments.map(\.a2),
+            // plans request is duplicated because of the prefetch in the Core library
+            ["/payments/v5/plans", "/payments/v5/plans", "/payments/v5/subscription", "/payments/v5/status/apple"]
+        )
+    }
+
+    func testUpdate_whenNoPlansAreAvailable_thenDoesntPerformOtherRequests() async throws {
+        stubPlans(named: [])
+        try await sut.update()
+
+        XCTAssertEqual(
+            apiService.requestJSONStub.capturedArguments.map(\.a2),
+            // plans request is duplicated because of the prefetch in the Core library
+            ["/payments/v5/plans", "/payments/v5/plans"]
+        )
     }
 
     // planService getter has a side-effect where it calls fetchAvailableProducts() in a Task

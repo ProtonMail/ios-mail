@@ -3,6 +3,7 @@ import MBProgressHUD
 import ProtonCoreUIFoundations
 
 class SingleMessageContentViewController: UIViewController {
+    typealias Dependencies = NewMessageBodyViewController.Dependencies
 
     let viewModel: SingleMessageContentViewModel
 
@@ -38,6 +39,7 @@ class SingleMessageContentViewController: UIViewController {
     private(set) var shouldReloadWhenAppIsActive = false
 
     init(viewModel: SingleMessageContentViewModel,
+         dependencies: Dependencies,
          parentScrollView: UIScrollView,
          viewMode: ViewMode,
          navigationAction: @escaping (SingleMessageNavigationAction) -> Void,
@@ -52,8 +54,12 @@ class SingleMessageContentViewController: UIViewController {
         self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
 
-        self.messageBodyViewController =
-            NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel, parentScrollView: self, viewMode: viewMode)
+        self.messageBodyViewController = NewMessageBodyViewController(
+            viewModel: viewModel.messageBodyViewModel,
+            dependencies: dependencies,
+            parentScrollView: self,
+            viewMode: viewMode
+        )
         self.messageBodyViewController.delegate = self
 
         if viewModel.message.expirationTime != nil {
@@ -499,13 +505,18 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged() {
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        SystemLogger.log(
+            message: "\(notification.name.rawValue) \(notification.userInfo?[UIContentSizeCategory.newValueUserInfoKey] ?? "")",
+            category: .dynamicFontSize
+        )
         customView.preferredContentSizeChanged()
         if let expandedVC = headerViewController as? ExpandedHeaderViewController {
             expandedVC.preferredContentSizeChanged()
         } else if let nonExpandedVC = headerViewController as? NonExpandedHeaderViewController {
             nonExpandedVC.preferredContentSizeChanged()
         }
+        messageBodyViewController.preferredContentSizeChanged()
     }
 }
 

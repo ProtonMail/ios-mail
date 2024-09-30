@@ -39,7 +39,14 @@ var mutationObserver = new MutationObserver(function (events) {
             } else if (removedNode.getAttribute('src-original-pm-cid')) {
                 var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
                 var cid = cidWithPrefix.replace(/^(cid:|proton-cid:)/,"");
-                window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
+                console.log("Trying to remove image with cid " + cid);
+
+                const imgsContainingThisImage = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+                console.log("Image is referenced by " + imgsContainingThisImage.length + " nodes");
+
+                if (imgsContainingThisImage.length == 0) {
+                    window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
+                }
             }
         }
 
@@ -162,17 +169,6 @@ html_editor.addSupplementCSS = function (css) {
     let style = document.createElement(`style`);
     style.textContent = css;
     document.head.appendChild(style);
-};
-
-/// update view port width. set to the content size otherwise the text selection will not work
-html_editor.setWidth = function (width) {
-    var mvp = document.getElementById('myViewport');
-    mvp.setAttribute('content', 'user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
-};
-
-/// we don't use it for now.
-html_editor.setPlaceholderText = function (text) {
-    html_editor.editor.setAttribute("placeholder", text);
 };
 
 /// transmits caret position to the app

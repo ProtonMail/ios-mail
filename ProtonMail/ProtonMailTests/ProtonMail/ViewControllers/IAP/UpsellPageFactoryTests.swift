@@ -16,7 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsPayments
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonMailUI
 import XCTest
 
@@ -29,7 +30,7 @@ final class UpsellPageFactoryTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let storeKitManager = MockStoreKitManager()
+        let storeKitManager = StoreKitManagerMock()
         storeKitManager.priceLabelForProductStub.bodyIs { _, storeKitProductId in
             switch storeKitProductId {
             case "iosmail_mail2022_1_usd_auto_renewing":
@@ -55,6 +56,7 @@ final class UpsellPageFactoryTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    @MainActor
     func testGeneratedPlan() throws {
         let planJSON = AvailablePlansTestData.availablePlan(named: "mail2022")
         let planData = try JSONSerialization.data(withJSONObject: planJSON)
@@ -68,14 +70,14 @@ final class UpsellPageFactoryTests: XCTestCase {
                 .init(icon: \.storage, description: "15 GB storage"),
                 .init(icon: \.inbox, description: "10 email addresses"),
                 .init(icon: \.globe, description: "Custom email domain support"),
-                .init(icon: \.rocket, description: "New Proton Mail desktop app"),
-                .init(icon: \.tag, description: "Unlimited folders, labels, and filters")
+                .init(icon: \.gift, description: "+7 premium features")
             ],
             purchasingOptions: [
                 .init(
                     identifier: "iosmail_mail2022_1_usd_auto_renewing",
                     cycleInMonths: 1,
                     monthlyPrice: "$4.99",
+                    billingPrice: "$4.99",
                     isHighlighted: false,
                     discount: nil
                 ),
@@ -83,6 +85,7 @@ final class UpsellPageFactoryTests: XCTestCase {
                     identifier: "iosmail_mail2022_12_usd_auto_renewing",
                     cycleInMonths: 12,
                     monthlyPrice: "$3.99",
+                    billingPrice: "$47.88",
                     isHighlighted: true,
                     discount: 20
                 )

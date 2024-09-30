@@ -1155,8 +1155,7 @@ class LocalizedString {
     lazy var _empty_spam = NSLocalizedString("Empty Spam", comment: "An action title shows in ellipsis menu")
     lazy var _empty_spam_folder = NSLocalizedString("Empty spam folder", comment: "Alert title")
     lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
-    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete %d message?", comment: "Warning message when users try to empty messages in the folder")
-    lazy var _clean_conversation_warning = NSLocalizedString("Are you sure you want to permanently delete %d conversation?", comment: "Warning message when users try to empty conversations in the folder")
+    lazy var _clean_message_warning = NSLocalizedString("Are you sure you want to permanently delete all messages within '%@'?", comment: "Warning message when users try to empty messages in the folder")
     lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 
     lazy var _token_revoke_noti_title = NSLocalizedString("Signed out of %@", comment: "The title of notification that will show when the token of one account is revoked")
@@ -1210,6 +1209,7 @@ class LocalizedString {
     lazy var _pgp_encrypted_signed_of_received = NSLocalizedString("PGP-encrypted and signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verified_of_received = NSLocalizedString("PGP-signed message from verified sender", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_encrypted_of_received = NSLocalizedString("PGP-encrypted message", comment: "The message after tapping the encryption icon of message received.")
+    lazy var _pgp_signed_of_received = NSLocalizedString("PGP-signed message", comment: "The message after tapping the encryption icon of message received.")
     lazy var _pgp_signed_verification_failed_of_received = NSLocalizedString("PGP-signed message. Sender verification failed", comment: "The message after tapping the encryption icon of message received.")
 
     lazy var _end_to_end_encrypted_to_verified_recipient = NSLocalizedString("End-to-end encrypted to verified recipient", comment: "The message after tapping the encryption icon of recipient in composer.")
@@ -1265,6 +1265,28 @@ enum L10n {
         static let alertBoxDescription = NSLocalizedString("Upgrade to get more storage.", comment: "Description of the banner alert")
         static let alertBoxDismissButtonTitle = NSLocalizedString("Not now", comment: "Get more storage button action")
         static let alertBoxButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
+    }
+
+    struct DynamicFontSize {
+        struct Spotlight {
+            static let title = NSLocalizedString("Sized for reading", comment: "Spotlight title")
+            static let body = NSLocalizedString("Now the body text of your emails will also be shown in your preferred reading size.", comment: "Spotlight body")
+        }
+    }
+
+    struct LockedStateAlertBox {
+        static let alertBoxMailFullText = NSLocalizedString("Your Mail storage is full", comment: "Title of the banner alert")
+        static let alertBoxDriveFullText = NSLocalizedString("Your Drive storage is full", comment: "Title of the banner alert")
+        static let alertBoxStorageFullText = NSLocalizedString("Your storage is full", comment: "Title of the banner alert")
+        static let alertBoxSubscriptionEndedText = NSLocalizedString("Your subscription has ended", comment: "Title of the banner alert")
+        static let alertBoxAccountAtRiskText = NSLocalizedString("Your account is at risk of deletion", comment: "Title of the banner alert")
+        static let alertBoxMailFullDescription = NSLocalizedString("To send or receive emails, free up space or upgrade for more storage.", comment: "Description of the banner alert")
+        static let alertBoxDriveFullDescription = NSLocalizedString("To upload files, free up space or upgrade for more storage.", comment: "Description of the banner alert")
+        static let alertBoxDescriptionForPrimaryAdmin = NSLocalizedString("Upgrade to restore full access and to avoid data loss.", comment: "Description of the banner alert")
+        static let alertBoxDescriptionForOrgMember = NSLocalizedString("To avoid data loss, ask your admin to upgrade.", comment: "Description of the banner alert")
+        static let alertBoxDefaultButtonTitle = NSLocalizedString("Get more storage", comment: "Get more storage button action")
+        static let alertBoxButtonTitleForPrimaryAdmin = NSLocalizedString("Upgrade", comment: "Upgrade button action")
+        static let alertBoxButtonTitleForOrgMember = NSLocalizedString("Learn more", comment: "Learn more storage button action")
     }
     struct BlockSender {
         static let blockActionTitleLong = NSLocalizedString("Block messages from this sender", comment: "Button to block a sender")
@@ -1512,7 +1534,7 @@ enum L10n {
         static let freeUpsell = NSLocalizedString("Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.", comment: "Text to advertise the auto delete feature to free users")
         static let learnMore = NSLocalizedString("Learn more", comment: "Title of button to learn more about upgrading for auto delete")
 
-        static let paidPrompt = NSLocalizedString("Automatically delete messages that have been in trash for more than 30 days.", comment: "Text to prompt paid users to enable the auto delete feature")
+        static let paidPrompt = NSLocalizedString("Automatically delete messages that have been in trash and spam for more than 30 days.", comment: "Text to prompt paid users to enable the auto delete feature")
         static let enableButtonTitle = NSLocalizedString("Enable", comment: "Title of button to enable auto delete option")
         static let noThanksButtonTitle = NSLocalizedString("No, thanks", comment: "Title of button to discard auto delete option")
 
@@ -1636,13 +1658,17 @@ enum L10n {
         static let loginPassword = NSLocalizedString("Change account password", comment: "settings general section title")
         static let mailboxPassword = NSLocalizedString("Change mailbox password", comment: "settings general section title")
         static let singlePassword = NSLocalizedString("Change password", comment: "settings general section title")
+        static let securityKeys = NSLocalizedString("Security keys", comment: "settings general section title")
     }
 
     enum PremiumPerks {
         static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
         static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
         static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
-        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+        static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
+        static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
+        static let endToEndEncryption = NSLocalizedString("End-to-end encryption", comment: "Description of a feature of a paid subscription")
+        static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
     }
 
     struct PrivacyAndDataSettings {
@@ -1660,5 +1686,27 @@ enum L10n {
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
         static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
+
+        // pages
+        static let autoDeleteTitle = NSLocalizedString("Clear out old trash and spam", comment: "Title of the upsell page")
+        static let autoDeleteDescription = NSLocalizedString("Enjoy a tidier mailbox and benefit from other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let contactGroupsTitle = NSLocalizedString("Group your contacts", comment: "Title of the upsell page")
+        static let contactGroupsDescription = NSLocalizedString("Easily send emails to a group and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let labelsTitle = NSLocalizedString("Need more labels or folders?", comment: "Title of the upsell page")
+        static let labelsDescription = NSLocalizedString("Get them and other premium features when you upgrade to %@.", comment: "Subtitle of the upsell page")
+        static let mobileSignatureTitle = NSLocalizedString("Customize your signature", comment: "Title of the upsell page")
+        static let mobileSignatureDescription = NSLocalizedString("Use your own mobile signature and enjoy other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let scheduleSendTitle = NSLocalizedString("Schedule now, send later", comment: "Title of the upsell page")
+        static let scheduleSendDescription = NSLocalizedString("Enjoy custom schedule send and other premium features with %@.", comment: "Subtitle of the upsell page")
+        static let snoozeTitle = NSLocalizedString("Bad time for this email?", comment: "Title of the upsell page")
+        static let snoozeDescription = NSLocalizedString("Snooze it for a time of your choosing. Get custom snooze and more with %@.", comment: "Subtitle of the upsell page")
+
+        // onboarding
+        static let chooseAPlan = NSLocalizedString("Choose a plan", comment: "Title of the upsell page")
+        static let annual = NSLocalizedString("Annual", comment: "Refers to an annual billing cycle")
+        static let bestValue = NSLocalizedString("Best value", comment: "Label on the Proton Unlimited plan")
+        static let nMoreFeatures = NSLocalizedString("%u more features", comment: "Button to expand the feature list")
+        static let billedAtEvery = NSLocalizedString("Billed at %1$@ every %2$@", comment: "1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc")
+        static let premiumValueIncluded = NSLocalizedString("Premium value included", comment: "In the list of premium plan features")
     }
 }

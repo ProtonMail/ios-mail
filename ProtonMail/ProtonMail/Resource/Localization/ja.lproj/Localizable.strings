@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "親フォルダーから継承";
 
-/* Alert title */
-"Creating folder not allowed" = "フォルダーを作成できません";
-
-/* Alert title */
-"Creating label not allowed" = "ラベルを作成できません。";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "3 つ以上のフォルダーを使うには有料プランにアップグレードしてください";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "3 つ以上のラベルを使うには有料プランにアップグレードしてください";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "接続して再試行してください";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "現在、フォルダーを空にできません。";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[全文を表示]";
@@ -1854,6 +1845,36 @@
 /* Get more storage button action */
 "Get more storage" = "ストレージを増やす";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
+/* Title of the banner alert */
+"Your storage is full" = "ストレージがいっぱいです";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "To send or receive emails, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "アップグレード";
+
 /* Button to block a sender */
 "Block messages from this sender" = "この送信者からのメッセージをブロックする";
 
@@ -1914,13 +1935,13 @@
 "Load" = "読み込む";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(タイトルなし)";
 
 /* As in: event organizer */
 "Organizer" = "主催者";
 
 /* Button to hide some items in the list to conserve screen estate */
-"Show less" = "Show less";
+"Show less" = "詳細を非表示";
 
 /* Text shown when opening an invitation for a past event */
 "This event already ended" = "This event already ended";
@@ -1953,28 +1974,28 @@
 "(Attendance optional)" = "(参加は任意です)";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "%@ごと";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "%@まで";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "%@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "%u日";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "%@まで";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ の %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "承諾";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "辞退";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "仮承諾";
@@ -2007,25 +2028,25 @@
 "Weekly" = "Weekly";
 
 /* Occurring every month */
-"Monthly" = "Monthly";
+"Monthly" = "毎月";
 
 /* Occurring every year */
-"Yearly" = "Yearly";
+"Yearly" = "年払い";
 
 /* \"1st\" spelled out */
-"first" = "first";
+"first" = "第一";
 
 /* \"2nd\" spelled out */
-"second" = "second";
+"second" = "第二";
 
 /* \"3rd\" spelled out */
-"third" = "third";
+"third" = "第三";
 
 /* \"4th\" spelled out */
-"fourth" = "fourth";
+"fourth" = "第四";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "最終";
 
 /* Title of the spotlight view */
 "Easily RSVP to events" = "Easily RSVP to events";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "スケジュール通り";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "スケジュールを設定しましょう";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "プランをアップグレードすると、カスタムメッセージの送信予約などを使用できます。";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "今すぐアップグレード";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "いつでもメッセージを送信予約できます";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "無制限のフォルダーとラベル";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "500 GB のストレージ";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "15 件のメールアドレス";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "3 件の独自メールドメイン";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email エイリアス";
-
 /* One of schedule time options */
 "In the morning" = "午前中";
 
@@ -2157,7 +2151,7 @@
 "Application logs" = "アプリケーションのログ";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "新規!";
 
 /* Got it action */
 "Got it" = "はい";
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ごみ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "ごみ箱に入ってから30日以上経過したメッセージを自動的に削除。";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "30 日以上経過したごみ箱のメールと迷惑メールを自動で削除します。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "いいえ、結構です";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar で開く";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "ガラクタを片付ける";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "ごみ箱や迷惑メールから30日以上前のメッセージを自動的に消去。アップグレードすると、このような特典があります。";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "最大3TBのストレージ";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "カスタムメールドメイン";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "今すぐアップグレード";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "送信者変更";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "表示名";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Please select a time in the future";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
 
@@ -2457,10 +2433,10 @@
 "Change mailbox password" = "メールボックスのパスワードを変更";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "セキュリティキー";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB のストレージ";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u メールアドレス";
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Custom email domain support";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名の情報収集";
@@ -2490,7 +2472,7 @@
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
 
 /* Displayed next to the monthly price */
-"/month" = "/month";
+"/month" = "/月";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
 "Get %@" = "%@ を入手";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Purchase already in progress";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

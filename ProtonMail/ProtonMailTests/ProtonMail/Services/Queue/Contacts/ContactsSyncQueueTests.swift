@@ -17,7 +17,7 @@
 
 import Combine
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import XCTest
 
 final class ContactsSyncQueueTests: XCTestCase {

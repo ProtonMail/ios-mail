@@ -56,6 +56,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
     static let loopbackScheme = "pm-incoming-mail"
     static let imageCacheScheme = "pm-cache"
 
+    private let dynamicFontSizeMessageHandler = DynamicFontSizeMessageHandler()
     private let schemeHandler: SecureLoaderSchemeHandler
 
     init(schemeHandler: SecureLoaderSchemeHandler) {
@@ -269,6 +270,9 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         config.userContentController.add(self, name: "logger")
         #endif
 
+        config.userContentController.removeScriptMessageHandler(forName: "scaledValue", contentWorld: .page)
+        config.userContentController.addScriptMessageHandler(dynamicFontSizeMessageHandler, contentWorld: .page, name: "scaledValue")
+
         config.userContentController.removeAllContentRuleLists()
         config.userContentController.add(self.blockRules!)
     }
@@ -278,7 +282,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             assertionFailure("Unexpected message sent from JS")
             return
         }
-        print("WebView log:\(body)")
+        SystemLogger.log(message: "WebView log:\(body)", category: .webView)
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -341,6 +345,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             userContentController.addUserScript(WebContents.blockQuoteJS)
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)
+            userContentController.addUserScript(WebContents.dynamicFontSize)
 
             let urlString = (UUID().uuidString + ".proton").lowercased()
             let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!

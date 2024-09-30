@@ -17,7 +17,6 @@
 
 import Combine
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
 import XCTest
 
 final class ApplicationLogsViewModelTests: XCTestCase {

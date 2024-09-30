@@ -250,7 +250,7 @@
 "From" = "보낸 사람";
 
 /* Title */
-"Bcc" = "숨은 참조";
+"Bcc" = "숨은참조";
 
 /* Placeholder */
 "Subject" = "제목";
@@ -454,7 +454,7 @@
 "Cc" = "참조";
 
 /* message Bcc: feild */
-"Bcc:" = "숨은 참조:";
+"Bcc:" = "숨은참조:";
 
 /*
  general delete action
@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "상위폴더에 상속되어 있습니다";
 
-/* Alert title */
-"Creating folder not allowed" = "폴더 생성이 허용되지 않았습니다.";
-
-/* Alert title */
-"Creating label not allowed" = "라벨 생성이 허용되지 않았습니다.";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "3개 이상의 폴더를 사용하려면 요금제 업그레이드가 필요합니다";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "3개 이상의 라벨을 사용하려면 요금제 업그레이드가 필요합니다";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "연결 후 다시 시도하세요";
 
@@ -1644,6 +1632,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "지금은 폴더를 비울 수 없습니다.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "'%@' 내에 있는 전체 메시지를 완전히 삭제하시겠어요?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[모든 메시지 보기]";
 
@@ -1660,10 +1651,10 @@
 "Do you want to send your message anyway?" = "메시지를 그대로 전송하시겠습니까?";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "참조와 부참조 추가";
+"Add CC and BCC" = "참조와 숨은참조 추가";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "CC와 BCC 닫기";
+"Close CC and BCC" = "참조와 숨은참조 닫기";
 
 /* The title of the button in the composer that can select different sender address. */
 "Choose different sender address" = "다른 발신자 주소를 선택하세요.";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "더 많은 저장공간 확보하기";
+
+/* Spotlight title */
+"Sized for reading" = "읽기에 맞추어짐";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "이제 이메일 본문이 내가 선호하는 읽기 크기로 표시됩니다.";
+
+/* Title of the banner alert */
+"Your storage is full" = "저장공간이 꽉 찼습니다";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "구독이 만료되었습니다";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "계정이 삭제될 수 있습니다";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "이메일을 주고 받으려면, 저장 공간을 비우거나 저장 공간 확보를 위해 업그레이드 하세요.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "파일을 업로드하려면, 공간을 비우거나 스토리지를 추가하기 위해 업그레이드하세요.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "전체 접근 권한을 복원하고 데이터 손실을 방지하려면 업그레이드하세요.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "데이터 손실을 방지하려면, 관리자에게 업그레이드를 요청하세요.";
+
+/* Upgrade button action */
+"Upgrade" = "업그레이드";
 
 /* Button to block a sender */
 "Block messages from this sender" = "이 전송자의 메시지 차단";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "예정됨";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "나만의 스케쥴 설정";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "플랜을 업그레이드 하여 사용자 지정 메시지 스케줄과 다른 혜택을 잠금 해제하세요.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "지금 업그레이드";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "언제든지 메시지를 예약하세요";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "무제한 폴더 및 라벨";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "최대 500 GB 저장공간";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "최대 15개의 이메일 주소";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "최대 3개 사용자 지정 이메일 도메인";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "나의 이메일 숨기기 별칭";
-
 /* One of schedule time options */
 "In the morning" = "아침";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "휴지통 및 스팸함에 30일 이상 방치된 메시지들을 자동으로 삭제하려면 업그레이드 하세요.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "30일 이상 휴지통에 있는 메시지를 자동으로 삭제합니다.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "30일 이상 휴지통 및 스팸함에 있던 메시지를 자동으로 삭제합니다.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "아니요, 괜찮아요";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar에서 열기";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "정크 삭제";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "휴지통과 스팸함의 30일 이상 된 메시지를 자동으로 삭제합니다. 업그레이드하여 이 기능과 다른 혜택들을 누려보세요.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "최대 3 TB 스토리지";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "사용자 지정 이메일 도메인";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "지금 업그레이드";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "발신자가 변경됨";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "모든 첨부 파일이 업로드되면 다시 시도하세요.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "오프라인 상태에서 공유 확장 프로그램을 사용하여 보내는 것은 지원되지 않습니다.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "표시되는 이름";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "미래의 시간을 선택해주세요.";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "항상 방해 금지 상태로 전환하시겠어요?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "업그레이드로 사용자 지정 방해 금지 모드를 잠금 해제하세요";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별칭";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "첨부 파일로 추가";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "새로운 Proton Mail 데스크톱 앱";
+"%u personal calendars" = "%u개의 개인 캘린더";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB 스토리지 및 1개 메일";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+ %u개 프리미엄 기능";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "익명 원격 측정";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "구매가 이미 진행중입니다";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "오래된 휴지통 및 스팸함 내 항목 완전히 지우기";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "%@(으)로 더 간결한 우편함과 다른 프리미엄 기능을 즐겨보세요.";
+
+/* Title of the upsell page */
+"Group your contacts" = "연락처를 그룹화하기";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "%@(으)로 그룹화하여 쉽게 이메일을 발송하고 다른 프리미엄 기능도 즐길 수 있어요.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "라벨 또는 폴더가 더 필요하신가요?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "%@로 업그레이드하면 이 기능 및 기타 프리미엄 기능을 사용할 수 있습니다.";
+
+/* Title of the upsell page */
+"Customize your signature" = "내 서명 사용자화";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "%@(으)로 나만의 모바일 서명을 사용하고 다른 프리미엄 기능도 즐길 수 있어요.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "지금 발송 예약하여 나중에 발송하기";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "%@(으)로 커스텀 스케쥴 전송과 더불어 다른 프리미엄 기능을 즐길 수 있어요.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "이 이메일에 대한 불편함을 느낀적 있나요?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "선택한 시간 동안 이메일을 방해 금지 상태로 변경하세요. 커스텀 방해금지와 더 많은 것들을 %@(으)로 즐겨보세요.";
+
+/* Title of the upsell page */
+"Choose a plan" = "플랜 선택";
+
+/* Refers to an annual billing cycle */
+"Annual" = "연간";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "특가 행사";
+
+/* Button to expand the feature list */
+"%u more features" = "%u개 추가 기능";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "%2$@마다 %1$@씩 청구됨";
+
+/* In the list of premium plan features */
+"Premium value included" = "프리미엄 가치 포함됨";

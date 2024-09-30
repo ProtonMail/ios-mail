@@ -1055,7 +1055,7 @@
 "Sender Verification Failed" = "Bekreftelse av avsender mislyktes";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "Ende-til-ende kryptert melding";
+"End-to-end encrypted message" = "Ende-til-ende-kryptert melding";
 
 /* alert title */
 "Expiration not supported" = "Utløpstid er ikke støttet";
@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Arvet fra overordnet mappe";
 
-/* Alert title */
-"Creating folder not allowed" = "Oppretting av mappe ikke tillatt";
-
-/* Alert title */
-"Creating label not allowed" = "Oppretting av etikett ikke tillatt";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "For å bruke mer enn 3 mapper vennligst oppgrader til en betalt plan";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "For å bruke mer enn 3 etiketter vennligst oppgrader til en betalt plan";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Vennligst koble til og prøv på nytt";
 
@@ -1644,6 +1632,9 @@
 /* Warning message */
 "Cannot empty folder right now." = "Kan ikke tømme mappen akkurat nå.";
 
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Er du sikker på at du vil slette alle meldinger permanent i '%@'?";
+
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Vis hele meldingen]";
 
@@ -1735,10 +1726,10 @@
 "Stored with zero-access encryption" = "Lagret med nulltilgangskryptering";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Ende-til-ende kryptert melding fra verifisert avsender";
+"End-to-end encrypted message from verified sender" = "Ende-til-ende-kryptert melding fra verifisert avsender";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Ende-til-ende kryptert og signert melding";
+"End-to-end encrypted and signed message" = "Ende-til-ende-kryptert og signert melding";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "PGP-kryptert melding fra bekreftet avsender";
@@ -1759,10 +1750,10 @@
 "PGP-signed message. Sender verification failed" = "PGP-signert melding. Bekreftelse av avsender mislyktes";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "Ende-til-ende kryptert til bekreftet mottaker";
+"End-to-end encrypted to verified recipient" = "Ende-til-ende-kryptert til bekreftet mottaker";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Ende-til-ende kryptert";
+"End-to-end encrypted" = "Ende-til-ende-kryptert";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "PGP-kryptert til verifisert mottaker";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Få mer lagringskapasitet";
+
+/* Spotlight title */
+"Sized for reading" = "Dimensjonert for lesing";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Nå vil også brødteksten til e-postene dine vises i din foretrukne lesestørrelse.";
+
+/* Title of the banner alert */
+"Your storage is full" = "Lagringsplassen din er full";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Abonnementet ditt er avsluttet";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Kontoen din står i fare for å bli slettet";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "For å sende eller motta e-post, frigjør plass eller oppgrader for mer lagringsplass.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "For å laste opp filer, frigjør plass eller oppgrader for mer lagringsplass.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Oppgrader for å gjenopprette full tilgang og unngå tap av data.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "For å unngå tap av data kan du be administratoren om å oppgradere.";
+
+/* Upgrade button action */
+"Upgrade" = "Oppgrader";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blokkér meldinger fra denne avsenderen";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Som planlagt";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Lag din egen timeplan";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås opp tilpasset meldingsplanlegging og andre fordeler når du oppgraderer planen din.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Oppgrader nå";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Planlegg meldinger når som helst";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Ubegrenset antall mapper og etiketter";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Opptil 500 GB med lagringsplass";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Opptil 15 e-postadresser";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Opptil 3 egendefinerte e-postdomener";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email-aliaser";
-
 /* One of schedule time options */
 "In the morning" = "Om morgenen";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatisk sletting av meldinger som har ligget i papirkurven i mer enn 30 dager.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Slett automatisk meldinger som har ligget i papirkurven og søppelposten i mer enn 30 dager.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nei, takk";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Åpne i Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Fjern søppelet";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Fjern automatisk meldinger som er eldre enn 30 dager, fra papirkurv og søppelpost. Nyt dette og andre fordeler når du oppgraderer.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Opptil 3 TB med lagringsplass";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Egendefinerte e-postdomener";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Oppgrader nå";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Avsender endret";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Vennligst prøv på nytt etter at alle vedlegg er lastet opp.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending med Del-utvidelsen mens du er frakoblet støttes ikke";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Visningsnavn";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Vennligst velg et tidspunkt i fremtiden";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Vil du slumre når som helst?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Lås opp tilpassede slumretider når du oppgraderer";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Opptil 15 e-postadresser/aliaser";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Ubegrenset antall mapper, etiketter og filtre";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Legg det til som vedlegg";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Støtte for tilpasset e-postdomene";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Ny Proton Mail-skrivebordsapp";
+"%u personal calendars" = "%u personlige kalendere";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB lagring og 1 e-post";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premiumfunksjoner";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Kjøpet pågår allerede";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Fjern gammelt papirkurvinnhold og søppelpost";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Nyt en ryddigere postkasse og dra nytte av andre premiumfunksjoner med %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Grupper kontaktene dine";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Send enkelt e-post til en gruppe og dra nytte av andre premiumfunksjoner med %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Behov for flere etiketter eller mapper?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Få dem og andre premiumfunksjoner når du oppgraderer til %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Tilpass signaturen din";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Bruk din egen mobilsignatur og nyt andre premiumfunksjoner med %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Planlegg nå, send senere";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Gled deg over tilpassede timeplansendinger og andre premiumfunksjoner med %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Dårlig tidspunkt for denne e-posten?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Slumre den for en tid du velger. Få tilpasset slumring og mer med %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Velg en plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Årlig";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Beste verdi";
+
+/* Button to expand the feature list */
+"%u more features" = "%u funksjoner til";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Faktureres til %1$@ hver %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premiumverdi inkludert";

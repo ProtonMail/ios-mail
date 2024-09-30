@@ -398,6 +398,8 @@ extension AppDelegate {
     private func fetchUnauthFeatureFlags() {
         FeatureFlagsRepository.shared.setApiService(PMAPIService.unauthorized(dependencies: dependencies))
 
+        FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.dynamicPlan, true)
+
         // TODO: This is a wayward fetch that will complete at an arbitrary point in time during app launch,
         // possibly resulting in an inconsistent behavior.
         // Consider placing it in LaunchService once it's ready.

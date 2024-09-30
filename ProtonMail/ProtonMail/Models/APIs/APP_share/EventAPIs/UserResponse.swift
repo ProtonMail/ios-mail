@@ -31,6 +31,7 @@ struct UserResponse: Decodable {
     let delinquent: Int
     let createTime: Int
     let accountRecovery: ProtonCoreDataModel.AccountRecovery?
+    let lockedFlags: ProtonCoreDataModel.LockedFlags?
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -45,6 +46,7 @@ struct UserResponse: Decodable {
         case delinquent = "Delinquent"
         case createTime = "CreateTime"
         case accountRecovery = "AccountRecovery"
+        case lockedFlags = "LockedFlags"
     }
 
     struct Key: Decodable {

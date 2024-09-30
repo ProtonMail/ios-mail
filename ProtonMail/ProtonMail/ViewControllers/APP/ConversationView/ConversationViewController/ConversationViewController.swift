@@ -23,21 +23,24 @@
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCoreDataModel
-import ProtonCorePaymentsUI
 import protocol ProtonCoreServices.APIService
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import ProtonMailUI
 import UIKit
 
 // swiftlint:disable:next type_body_length
 final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     LifetimeTrackable, ScheduledAlertPresenter {
+    typealias Dependencies = SingleMessageContentViewController.Dependencies & HasPaymentsUIFactory
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
     }
 
     let viewModel: ConversationViewModel
 
+    private let dependencies: Dependencies
     private let applicationStateProvider: ApplicationStateProvider
     private(set) lazy var customView = ConversationView()
     private var selectedMessageID: MessageID?
@@ -51,7 +54,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
     private var _snoozeDateConfigReceiver: SnoozeDateConfigReceiver?
-    private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
 
     // the purpose of this timer is to uncover the conversation even if the viewModel does not call `conversationIsReadyToBeDisplayed` for whatever reason
     // this is to avoid making the view unusable
@@ -65,9 +68,11 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
     }
 
     init(
+        dependencies: Dependencies,
         viewModel: ConversationViewModel,
         applicationStateProvider: ApplicationStateProvider = UIApplication.shared
     ) {
+        self.dependencies = dependencies
         self.viewModel = viewModel
         self.applicationStateProvider = applicationStateProvider
 
@@ -265,13 +270,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
                          selector: #selector(willBecomeActive),
                          name: UIScene.willEnterForegroundNotification,
                          object: nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(timeZoneDidChange),
-            name: .NSSystemTimeZoneDidChange,
-            object: nil
-        )
     }
 
     // swiftlint:disable:next function_body_length
@@ -376,19 +374,6 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         }
     }
 
-    @objc
-    private func timeZoneDidChange() {
-        let cells = customView.tableView.visibleCells.compactMap { $0 as? ConversationMessageCell }
-        var indexes: [IndexPath] = []
-        for cell in cells {
-            guard let index = customView.tableView.indexPath(for: cell) else { continue }
-            indexes.append(index)
-        }
-        customView.tableView.beginUpdates()
-        customView.tableView.reloadRows(at: indexes, with: .automatic)
-        customView.tableView.endUpdates()
-    }
-
     required init?(coder: NSCoder) { nil }
 
     private func hideConversationUntilItIsReady() {
@@ -403,6 +388,14 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
                 self.customView.tableView.alpha = 1
             }
         }
+    }
+
+    private func presentUpsellPage(
+        entryPoint: UpsellPageEntryPoint,
+        onDismiss: @escaping UpsellCoordinator.OnDismissCallback
+    ) {
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: entryPoint, onDismiss: onDismiss)
     }
 }
 
@@ -636,6 +629,7 @@ private extension ConversationViewController {
         let contentViewModel = viewModel.messageContent
         let singleMessageContentViewController = SingleMessageContentViewController(
             viewModel: contentViewModel,
+            dependencies: dependencies,
             parentScrollView: customView.tableView,
             viewMode: .conversation,
             navigationAction: { [weak self] in self?.handleSingleMessageAction(action: $0) }
@@ -1222,7 +1216,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewLabel)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheetForConversation()
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isOn in
@@ -1271,7 +1267,9 @@ extension ConversationViewController {
                              }
                              self.viewModel.handleNavigationAction(.addNewLabel)
                          } else {
-                             self.showAlertLabelCreationNotAllowed()
+                             self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                                 self?.showLabelAsActionSheet(for: message)
+                             }
                          }
                      },
                      selected: { [weak self] menuLabel, isOn in
@@ -1316,24 +1314,6 @@ extension ConversationViewController {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }
         return true
-    }
-
-    private func showAlertLabelCreationNotAllowed() {
-        let title = LocalString._creating_label_not_allowed
-        let message = LocalString._upgrade_to_create_label
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlertFolderCreationNotAllowed() {
-        let title = LocalString._creating_folder_not_allowed
-        let message = LocalString._upgrade_to_create_folder
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 
     func showLabelAsActionSheet(dataSource: ActionSheetDataSource) {
@@ -1381,7 +1361,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewFolder)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(for: message)
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -1426,7 +1408,9 @@ extension ConversationViewController {
                     }
                     self.viewModel.handleNavigationAction(.addNewFolder)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheetForConversation()
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -1595,32 +1579,13 @@ extension ConversationViewController: SnoozeSupport {
             navigationController?.popViewController(animated: true)
             banner.show(at: .bottom, on: viewController)
         }
-
     }
 
     func presentPaymentView() {
-        paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        paymentsUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true
-        ) { [weak self] reason in
-            switch reason {
-            case .purchasedPlan:
-                guard let self else { return }
-                Task {
-                    await self.viewModel.user.fetchUserInfo()
-                    await MainActor.run {
-                        self.presentSnoozeConfigSheet(on: self, current: Date())
-                    }
-                }
-            default:
-                break
-            }
+        presentUpsellPage(entryPoint: .snooze) { [weak self] in
+            guard let self else { return }
+
+            self.presentSnoozeConfigSheet(on: self, current: Date())
         }
     }
 

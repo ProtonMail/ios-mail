@@ -34,6 +34,8 @@ private enum CSSKeys: String {
     case target, id, `class`
 
     case fontFamily = "font-family"
+    case fontSize = "font-size"
+    case lineHeight = "line-height"
     case width = "width"
     case height = "height"
 }
@@ -328,9 +330,7 @@ struct CSSMagic {
         let newStyleCSS = CSSMagic.getDarkModeCSSFrom(styleCSS: styleCSS)
 
         let colorNodes = CSSMagic.getColorNodes(from: document)
-        guard let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes, startTime: startTime) else {
-            return ""
-        }
+        let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes, startTime: startTime)
         let inlineCSS = CSSMagic.assemble(cssDict: cssDict)
 
         let css = newStyleCSS + inlineCSS
@@ -453,8 +453,8 @@ extension CSSMagic {
 
     /// Get dark mode style css for each html nodes
     /// - Parameter colorNodes: nodes that contains color related attributes
-    /// - Returns: dark mode css style or `nil` if one of nodes doesn't have good contrast
-    static func getDarkModeCSSDict(for colorNodes: [Element], startTime: TimeInterval) -> [String: [String]]? {
+    /// - Returns: dark mode css style
+    static func getDarkModeCSSDict(for colorNodes: [Element], startTime: TimeInterval) -> [String: [String]] {
         var darkModeCSS: [String: [String]] = [:]
         for node in colorNodes {
             let tolerationTime: TimeInterval = 7
@@ -972,7 +972,11 @@ extension CSSMagic {
             let ignoreStyleKey = [
                 CSSKeys.fontFamily.rawValue,
                 CSSKeys.width.rawValue,
-                CSSKeys.height.rawValue
+                CSSKeys.height.rawValue,
+
+                // modified by DFS
+                CSSKeys.fontSize.rawValue,
+                CSSKeys.lineHeight.rawValue
             ]
             let values = value
                 .components(separatedBy: ";")

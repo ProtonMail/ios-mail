@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Heretat d'una carpeta principal";
 
-/* Alert title */
-"Creating folder not allowed" = "No es permet crear la carpeta";
-
-/* Alert title */
-"Creating label not allowed" = "No es permet crear l'etiqueta";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Milloreu a un pla de pagament per utilitzar més de 3 carpetes.";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Milloreu a un pla de pagament per utilitzar més de 3 etiquetes.";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Connecteu-vos i torneu-ho a intentar.";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra el missatge complet]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Aconseguiu més emmagatzematge";
+
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
+/* Title of the banner alert */
+"Your storage is full" = "L'emmagatzematge és ple.";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "La subscripció ha finalitzat";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "Millora";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Bloqueja els missatges d'aquest remitent";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Tal com s'ha programat";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Establiu la vostra pròpia planificació";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquegeu la programació de missatges personalitzada i altres avantatges quan milloreu el pla.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Millora ara";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Programeu missatges en qualsevol moment";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Carpetes i etiquetes il·limitades";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Fins a 15 adreces de correu electrònic";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Fins a 3 dominis de correu electrònic personalitzats";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Àlies de Hide My Email";
-
 /* One of schedule time options */
 "In the morning" = "Al matí";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Suprimeix automàticament els missatges que han estat a la paperera durant més de 30 dies.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimineu automàticament els missatges que han estat a la paperera i al correu brossa durant més de 30 dies.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "No, gràcies";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Obre a Proton Calendar";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Elimineu els missatges innecessaris";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Esborreu automàticament els missatges de més de 30 dies a la paperera i el correu brossa. Gaudiu d'aquest i d'altres avantatges quan milloreu.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Fins a 3 TB d'emmagatzematge";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Dominis de correu personalitzats";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Millora ara";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "S'ha canviat el remitent.";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Torneu-ho a provar després de carregar tots els adjunts.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom a mostrar";
@@ -2361,7 +2349,7 @@
 "Unsubscribe?" = "Voleu anul·lar la subscripció?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de descarrega de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de baixa de la llista de correu. Es notificarà al remitent que ja no enviï correus electrònics a aquesta adreça.";
 
 /* Alert telling the user that we are unable to preview this attachment */
 "Unable to preview this attachment" = "No s'ha pogut previsualitzar aquest adjunt";
@@ -2395,18 +2383,6 @@
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Seleccioneu una hora en el futur";
-
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Voleu posposar els vostres missatges quan vulgueu?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de posposició personalitzats quan milloreu el vostre pla";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Carpetes, etiquetes i filtres il·limitats";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Afegeix-ho com a adjunt";
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nova aplicació d'escriptori de Proton Mail";
+"%u personal calendars" = "%u calendaris personals";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "La compra ja està en curs";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Personalitzeu la vostra firma";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Trieu un pla";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Anual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Millor oferta";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

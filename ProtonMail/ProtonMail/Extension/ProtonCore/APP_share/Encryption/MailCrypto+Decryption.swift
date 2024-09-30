@@ -21,11 +21,11 @@ import ProtonCoreCryptoGoInterface
 extension MailCrypto {
     /// The listener object used to communicate with gopenpgp.
     private class CryptoMIMECallbacks: NSObject, CryptoMIMECallbacksProtocol {
-        private (set) var attachments: [MIMEAttachmentData] = []
-        private (set) var body: String?
-        private (set) var errors: [Error] = []
-        private (set) var mimeType: String?
-        private (set) var signatureVerificationStatus: Int?
+        private(set) var attachments: [MIMEAttachmentData] = []
+        private(set) var body: String?
+        private(set) var errors: [Error] = []
+        private(set) var mimeType: String?
+        private(set) var signatureVerificationStatus: Int?
 
         func onAttachment(_ headers: String?, data: Data?) {
             guard let headers = headers, let data = data else {

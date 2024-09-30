@@ -42,7 +42,7 @@ public struct AutoImportContactsSpotlightView: View {
             buttonTitle: buttonTitle,
             closeAction: closeAction,
             message: message,
-            spotlightImage: ImageAsset.autoImportContactsSpotlight,
+            spotlightImage: .autoImportContactsSpotlight,
             title: title,
             maxHeightOfTheImage: 110
         )

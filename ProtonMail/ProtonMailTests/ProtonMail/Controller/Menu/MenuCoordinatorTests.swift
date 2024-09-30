@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import XCTest
 
@@ -34,7 +34,7 @@ final class MenuCoordinatorTests: XCTestCase {
         testContainer.usersManager.add(newUser: user)
         sut = .init(
             dependencies: testContainer,
-            sideMenu: PMSideMenuController(isUserInfoAlreadyFetched: true),
+            sideMenu: PMSideMenuController(),
             menuWidth: 300
         )
         apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in

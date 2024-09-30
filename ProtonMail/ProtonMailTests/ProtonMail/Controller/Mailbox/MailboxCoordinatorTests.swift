@@ -16,8 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCoreDataModel
+@testable import ProtonCorePayments
 @testable import ProtonMail
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
+import ProtonCoreTestingToolkitUnitTestsPayments
+import ProtonCoreTestingToolkitUnitTestsServices
+import ProtonMailUI
 
 class MailboxCoordinatorTests: XCTestCase {
 
@@ -26,6 +31,7 @@ class MailboxCoordinatorTests: XCTestCase {
     var connectionStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
     var applicationStateStub: UIApplication.State = .active
 
+    private var testContainer: TestContainer!
     private var conversationStateProviderMock: MockConversationStateProviderProtocol!
     private var dummyAPIService: APIServiceMock!
     private var uiNavigationControllerMock: NavigationControllerSpy!
@@ -33,7 +39,7 @@ class MailboxCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let testContainer = TestContainer()
+        testContainer = TestContainer()
         testContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
         let dummyUser = UserManager(api: dummyAPIService, globalContainer: testContainer)
         testContainer.usersManager.add(newUser: dummyUser)
@@ -70,6 +76,17 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let userContainer = dummyUser.container
 
+        let planService = PlansDataSourceMock()
+        let upsellOfferProvider = MockUpsellOfferProvider()
+
+        userContainer.planServiceFactory.register {
+            .right(planService)
+        }
+
+        userContainer.upsellOfferProviderFactory.register {
+            upsellOfferProvider
+        }
+
         let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
         uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
 
@@ -84,11 +101,29 @@ class MailboxCoordinatorTests: XCTestCase {
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
             callback()
         }
+
+        planService.availablePlansStub.fixture = AvailablePlans(
+            plans: [
+                .init(ID: nil, type: nil, name: "", title: "", instances: [], entitlements: [], decorations: [])
+            ],
+            defaultCycle: nil
+        )
+
+        upsellOfferProvider.availablePlan = .init(
+            ID: nil,
+            type: nil,
+            name: nil,
+            title: "",
+            instances: [],
+            entitlements: [],
+            decorations: []
+        )
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        testContainer = nil
         conversationStateProviderMock = nil
         dummyAPIService = nil
         uiNavigationControllerMock = nil
@@ -173,6 +208,83 @@ class MailboxCoordinatorTests: XCTestCase {
             // one call for showing the actual message details
             XCTAssertEqual(uiNavigationControllerMock.setViewControllersStub.callCounter, 1)
         }
+    }
+
+    @MainActor
+    func testFollowDeepLinkWithComposerAndUpsell() async throws {
+        let messageID = "someMessageID"
+
+        try await testContainer.contextProvider.writeAsync { context in
+            let message = Message(context: context)
+            message.messageID = messageID
+        }
+
+        let deepLink = DeepLink("toComposeMailto", sender: messageID)
+        deepLink.append(DeepLink.Node(name: "toUpsellPage", value: "scheduleSend"))
+
+        let window = UIWindow(root: uiNavigationControllerMock, scene: nil)
+        window.makeKeyAndVisible()
+
+        sut.follow(deepLink)
+
+        try await Task.sleep(for: .milliseconds(500))
+
+        let presentedViewController = try XCTUnwrap(
+            uiNavigationControllerMock.presentedViewController as? UINavigationController
+        )
+
+        let composer = try XCTUnwrap(presentedViewController.viewControllers.first as? ComposeContainerViewController)
+        let viewPresentedByComposer = try XCTUnwrap(composer.presentedViewController)
+
+        XCTAssertNotNil(viewPresentedByComposer as? SheetLikeSpotlightViewController<UpsellPage>)
+    }
+
+    @MainActor
+    func testGivenUserIsFreeAndSignedUpOnAnotherDevice_whenOnboardingIsFinished_thenDoesShowUpsellPage() async throws {
+        try await assertThatOnboardingUpsellPageIsShown()
+    }
+
+    @MainActor
+    func testGivenUserIsPaidUser_whenOnboardingIsFinished_thenDoesntShowUpsellPage() async throws {
+        viewModelMock.user.userInfo.role = UserInfo.OrganizationRole.owner.rawValue
+        viewModelMock.user.userInfo.subscribed.insert(.mail)
+
+        try await assertThatOnboardingUpsellPageIsNotShown()
+    }
+
+    @MainActor
+    func testGivenUserSignedUpOnThisDevice_whenOnboardingIsFinished_thenDoesntShowUpsellPage() async throws {
+        testContainer.userDefaults[.didSignUpOnThisDevice] = true
+
+        try await assertThatOnboardingUpsellPageIsNotShown()
+    }
+
+    @MainActor
+    private func assertThatOnboardingUpsellPageIsShown() async throws {
+        try await triggerAndDismissOnboardingCarousel()
+
+        let presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        XCTAssertNotNil(presentedViewController as? SheetLikeSpotlightViewController<OnboardingUpsellPage>)
+    }
+
+    @MainActor
+    private func assertThatOnboardingUpsellPageIsNotShown() async throws {
+        try await triggerAndDismissOnboardingCarousel()
+
+        XCTAssertNil(uiNavigationControllerMock.presentedViewController)
+    }
+
+    @MainActor
+    private func triggerAndDismissOnboardingCarousel() async throws {
+        let window = UIWindow(root: uiNavigationControllerMock, scene: nil)
+        window.makeKeyAndVisible()
+
+        sut.go(to: .onboardingForNew)
+
+        let presentedViewController = try XCTUnwrap(uiNavigationControllerMock.presentedViewController)
+        let onboardingViewController = try XCTUnwrap(presentedViewController as? OnboardViewController)
+
+        await onboardingViewController.dismiss(animated: false)
     }
 }
 

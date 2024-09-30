@@ -596,7 +596,8 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             isCleanFetch: isCleanFetch,
             time: 0,
             fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
-            errorHandler: errorHandler
+            errorHandler: errorHandler,
+            userID: ""
         )
     }
 }

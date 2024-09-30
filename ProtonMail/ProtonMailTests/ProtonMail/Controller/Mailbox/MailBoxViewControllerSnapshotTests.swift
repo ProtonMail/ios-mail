@@ -18,7 +18,8 @@
 import CoreData
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsDoh
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 @testable import ProtonMail
 import protocol ProtonCoreServices.APIService
@@ -303,6 +304,66 @@ final class MailBoxViewControllerSnapshotTests: XCTestCase {
             sut.set(coordinator: fakeCoordinator)
             snapshot(viewController: sut)
         }
+    }
+    
+    func testLockedStateBannersView_noLockedFlags_noBanner() {
+        userManagerMock.userInfo.lockedFlags = nil
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
+    }
+    
+    func testLockedStateBannersView_lockedFlagsMailExceeded_showBanner() {
+        userManagerMock.userInfo.lockedFlags = .mailStorageExceeded
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
+    }
+    
+    func testLockedStateBannersView_lockedFlagsDriveExceeded_showBanner() {
+        userManagerMock.userInfo.lockedFlags = .driveStorageExceeded
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
+    }
+    
+    func testLockedStateBannersView_lockedFlagStorageExceeded_showBanner() {
+        userManagerMock.userInfo.lockedFlags = .storageExceeded
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
+    }
+    
+    func testLockedStateBannersView_lockedFlagForOrgPrimaryAdmin_showBanner() {
+        userManagerMock.userInfo.lockedFlags = .orgIssueForPrimaryAdmin
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
+    }
+    
+    func testLockedStateBannersView_lockedFlagForOrgMember_showBanner() {
+        userManagerMock.userInfo.lockedFlags = .orgIssueForMember
+
+        viewModel = makeViewModel()
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.set(coordinator: fakeCoordinator)
+        snapshot(viewController: sut)
     }
 
     private func makeViewModel() -> MailboxViewModel {

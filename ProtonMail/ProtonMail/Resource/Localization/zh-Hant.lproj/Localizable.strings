@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "繼承自上層資料夾";
 
-/* Alert title */
-"Creating folder not allowed" = "不允許創建資料夾";
-
-/* Alert title */
-"Creating label not allowed" = "不允許創建標籤";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "請升級至付費方案以使用超過 3 個標籤";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "請連線後再試一次";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "目前無法清空資料夾。";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[顯示完整郵件]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "取得更多儲存空間";
+
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
+/* Title of the banner alert */
+"Your storage is full" = "您的儲存空間已滿";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Your subscription has ended";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Your account is at risk of deletion";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "您的儲存已滿，要傳送或接收電郵，請釋放儲存空間或升級以取得更多空間。";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+
+/* Upgrade button action */
+"Upgrade" = "升級";
 
 /* Button to block a sender */
 "Block messages from this sender" = "封鎖來自此寄件者的訊息";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "按排程";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "設定您自己的排程";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "升級方案以解鎖自訂訊息排程與其他好處。";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "立即升級";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "在任意時間排程訊息";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "無限的資料夾 / 標籤";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "多達 500 GB 的儲存空間";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "多達 15 組電子郵件位址";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "支援 3 個自訂電郵網域";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email 別名";
-
 /* One of schedule time options */
 "In the morning" = "在早上";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升級以自動刪除在垃圾桶和垃圾郵件中超過30天的訊息。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "將會把於垃圾桶超過30天的訊息刪除";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "自動刪除在垃圾桶與垃圾郵件中超過30天的訊息。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "不用了，謝謝";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "在 Proton 行事曆開啟";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "清除垃圾";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "自動清除垃圾桶與垃圾郵件中超過30天的訊息。您升級後便可享受這個與其他好處。";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "多達 3 TB的儲存空間";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "自訂電子郵件網域";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "立即升級";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "寄件者已變更";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "請等待所有附件都上傳完畢後再重試。";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "顯示名稱";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "請選取未來的某個時間";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "想隨時延後?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "升級即可解鎖自訂緩辦時間";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "至多15組電郵位址/別名";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "資料夾、標籤和篩選器無上限";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "新增附件";
 
@@ -2457,7 +2433,7 @@
 "Change mailbox password" = "變更郵箱密碼";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "安全性密鑰";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB 儲存空間";
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "支援自訂電子郵件網域";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遙測";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Purchase already in progress";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

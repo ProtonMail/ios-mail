@@ -23,7 +23,6 @@
 import XCTest
 import ProtonCoreNetworking
 import ProtonCoreServices
-import ProtonCoreTestingToolkit
 @testable import ProtonMail
 
 final class PushNotificationServiceTests: XCTestCase {

@@ -34,14 +34,14 @@ struct UpsellPageFactory {
         .init(icon: \.storage, description: L10n.PremiumPerks.storage),
         .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
         .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
-        .init(icon: \.rocket, description: L10n.PremiumPerks.desktopApp),
-        .init(icon: \.tag, description: L10n.Snooze.folderBenefit)
+        .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
     ]
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
+    @MainActor
     func makeUpsellPageModel(for plan: AvailablePlans.AvailablePlan) -> UpsellPageModel {
         let storeKitManager = dependencies.storeKitManager
 
@@ -58,7 +58,10 @@ struct UpsellPageFactory {
 
             priceFormatter.locale = priceLabel.locale
 
-            guard let formattedMonthlyPrice = priceFormatter.string(from: NSNumber(value: monthlyPrice)) else {
+            guard
+                let formattedMonthlyPrice = priceFormatter.string(from: NSNumber(value: monthlyPrice)),
+                let formattedBillingPrice = priceFormatter.string(from: priceLabel.value)
+            else {
                 return nil
             }
 
@@ -66,6 +69,7 @@ struct UpsellPageFactory {
                 months: instance.cycle,
                 monthlyPrice: monthlyPrice,
                 formattedMonthlyPrice: formattedMonthlyPrice,
+                formattedBillingPrice: formattedBillingPrice,
                 storeKitProductId: storeKitProductId
             )
         }
@@ -84,6 +88,7 @@ struct UpsellPageFactory {
                 identifier: billingCycle.storeKitProductId,
                 cycleInMonths: billingCycle.months,
                 monthlyPrice: billingCycle.formattedMonthlyPrice,
+                billingPrice: billingCycle.formattedBillingPrice,
                 isHighlighted: discount != nil,
                 discount: discount
             )

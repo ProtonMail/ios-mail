@@ -17,8 +17,9 @@
 
 @testable import ProtonMail
 import ProtonCoreKeymaker
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
+// auto mock
 class MockKeyMakerProtocol: KeyMakerProtocol {
     var isMainKeyInMemory: Bool = false
 

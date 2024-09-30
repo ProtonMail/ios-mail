@@ -35,7 +35,7 @@ final class PromotionView: UIView {
     private var didClickUpgrade: Bool = false
 
     var presentPaymentUpgradeView: (() -> Void)?
-    var viewWasDismissed: (() -> Void)?
+    var viewWasDismissed: (@MainActor () -> Void)?
 
     init() {
         super.init(frame: .zero)

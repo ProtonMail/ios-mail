@@ -84,7 +84,7 @@ extension MIMEEMLBuilder {
 
     private func buildQuotedPrintableEML(for cleanBody: String) -> String? {
         var eml: [String] = []
-        guard let document = try? SwiftSoup.parse(cleanBody) else { return nil }
+        guard let document = Parser.parseAndLogErrors(cleanBody) else { return nil }
         document.outputSettings().prettyPrint(pretty: false)
         guard let html = try? document.body()?.html() else { return nil }
         let plainText = html
@@ -191,7 +191,7 @@ extension MIMEEMLBuilder {
     /// - inlineDict: inline image dataURI
     private func extractInlines(from messageBody: String) -> (body: String, inlineDict: [String: String]) {
         guard
-            let document = try? SwiftSoup.parse(messageBody),
+            let document = Parser.parseAndLogErrors(messageBody),
             let inlines = try? document.select(#"img[src^="data"]"#).array(),
             !inlines.isEmpty
         else { return (messageBody, [:]) }
@@ -219,12 +219,12 @@ extension MIMEEMLBuilder {
         else { return nil }
 
         // image/png
-        let mimeType = dataURI[match.range(at: 2)].trimmingCharacters(in: .whitespacesAndNewlines)
+        let mimeType = dataURI.substring(with: match.range(at: 2)).trimmingCharacters(in: .whitespacesAndNewlines)
         // base64
-        let encoding = dataURI[match.range(at: 3)].trimmingCharacters(in: .whitespacesAndNewlines)
+        let encoding = dataURI.substring(with: match.range(at: 3)).trimmingCharacters(in: .whitespacesAndNewlines)
         // The maximum length is 64, should insert `\r\n` every 64 characters
         // Otherwise the EML is broken
-        let base64RawString = dataURI[match.range(at: 4)]
+        let base64RawString = dataURI.substring(with: match.range(at: 4))
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let base64 = Base64String(alreadyEncoded: base64RawString)
         return (mimeType, encoding, base64)

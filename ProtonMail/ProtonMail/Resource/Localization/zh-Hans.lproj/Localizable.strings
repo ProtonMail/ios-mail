@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "与上层文件夹一致";
 
-/* Alert title */
-"Creating folder not allowed" = "未能创建文件夹";
-
-/* Alert title */
-"Creating label not allowed" = "未能创建标签";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "请开通付费账户以使用 3 个以上文件夹";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "请开通付费账户以使用 3 个以上标签";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "请连接网络并重试";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "当前无法清空文件夹。";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "您确定要永久删除“%@”内的所有邮件吗？";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[显示完整邮件]";
@@ -1854,6 +1845,36 @@
 /* Get more storage button action */
 "Get more storage" = "获得更多存储空间";
 
+/* Spotlight title */
+"Sized for reading" = "Sized for reading";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+
+/* Title of the banner alert */
+"Your storage is full" = "您的存储空间已满";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "您的订阅已结束";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "您的账户面临删除风险";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "若要发送或接收电子邮件，请释放存储空间或升级以获取更多存储空间。";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "要上传文件，请释放空间或升级以获得更多存储空间。";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "升级以恢复完全访问权限并避免数据丢失。";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "为了避免数据丢失，请要求您的管理员升级。";
+
+/* Upgrade button action */
+"Upgrade" = "升级账户";
+
 /* Button to block a sender */
 "Block messages from this sender" = "屏蔽来自此发件人的所有邮件";
 
@@ -1914,7 +1935,7 @@
 "Load" = "载入";
 
 /* Title of an event with missing title */
-"(no title)" = "(no title)";
+"(no title)" = "(无标题)";
 
 /* As in: event organizer */
 "Organizer" = "组织者";
@@ -1929,7 +1950,7 @@
 "This event has been cancelled" = "这项日程已取消";
 
 /* Prompt above yes/no/maybe buttons */
-"Attending?" = "Attending?";
+"Attending?" = "是否参加？";
 
 /* Part of a yes/no/maybe prompt */
 "Yes" = "确认";
@@ -1938,7 +1959,7 @@
 "No" = "取消";
 
 /* Part of a yes/no/maybe prompt */
-"Maybe" = "Maybe";
+"Maybe" = "可能";
 
 /* Confirm attending an event */
 "Yes, I'll attend" = "是，我将参加";
@@ -1947,34 +1968,34 @@
 "No, I won't attend" = "不，我不会参加";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "我可能参加";
 
 /* Information that the user is an optional participant */
 "(Attendance optional)" = "（非必须出席）";
 
 /* As in: Every 3 days */
-"Every %@" = "Every %@";
+"Every %@" = "每 %@";
 
 /* As in: on Saturday */
-"on %@" = "on %@";
+"on %@" = "在 %@";
 
 /* As in: on the last Saturday */
-"on the %@" = "on the %@";
+"on the %@" = "在 %@";
 
 /* Phrase \"on day\" with an ordinal, e.g. on day 6 of a given month */
-"on day %u" = "on day %u";
+"on day %u" = "在 %u 日";
 
 /* As in: Until Sep 27, 2025 */
-"until %@" = "until %@";
+"until %@" = "直到 %@";
 
 /* Event date format used in email sent with an invitation answer. Example: January 28, 2023 at 8:00 PM (GMT+2), where %1@ - month, day, and year, %2@ - hour, %3@ - time zone offset */
 "%1@ at %2@ %3@" = "%1@ 在 %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "accepted";
+"accepted" = "已接受";
 
 /* Status in an email body sent with an invitation answer */
-"declined" = "declined";
+"declined" = "已拒绝";
 
 /* Status in an email body sent with an invitation answer */
 "tentatively accepted" = "暂时接受";
@@ -1986,13 +2007,13 @@
 "You are invited to %@" = "您受邀参加 %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "位置：\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "描述：\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ 已被取消。";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "回复：%@ 的活动邀请函";
@@ -2025,22 +2046,22 @@
 "fourth" = "第四个";
 
 /* Opposite of \"first\" */
-"last" = "last";
+"last" = "最后";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "轻松回复事件邀请";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "现在，您只需轻轻一按即可响应邀请或查看 Proton 日历中的事件。 ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "存储上限";
 
 /* Cell title that shows the percentage of the storage */
 "Storage: %@ full" = "存储空间：已使用 %@";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "云盘：已使用 %@";
 
 /* Official badge next to sender's name */
 "Official" = "官方";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "按原定时间";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "自由设置定时发送";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "升级账户即可解锁更多定时发送选项，以及各种高级功能。";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "立即升级账户";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "自由选择发送时间";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "文件夹和标签不限量";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "最高 500 GB 存储空间";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "最多 15 个邮箱地址";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "最多 3 个自有域名";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email 邮箱别名";
-
 /* One of schedule time options */
 "In the morning" = "早晨";
 
@@ -2157,7 +2151,7 @@
 "Application logs" = "应用程序日志";
 
 /* Badge present on some spotlights */
-"New!" = "New!";
+"New!" = "新！";
 
 /* Got it action */
 "Got it" = "知道了";
@@ -2175,7 +2169,7 @@
 "View the next email in your inbox when you delete or move the current email." = "删除或移动当前邮件后自动打开收件箱中的下一封邮件。";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "更快地阅读电子邮件";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "发生意外错误，请联系客服。\n错误信息：%@";
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升级账户即可自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "自动删除废件箱内超过 30 天的邮件。";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "不用了，谢谢";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "在 Proton Calendar 中打开";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "邮件也需辞旧迎新";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "废件箱与垃圾邮件超过 30 天自动为您清理。升级账户即可开启，还能享受更多功能。";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "高达 3 TB 的存储空间";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "自有域名";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "立即升级账户";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "发件地址已更改";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "请在所有附件上传完成后重试";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "称呼";
@@ -2396,56 +2384,44 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "请选择将来的时间点";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "想将通知推迟至任意时间？";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "升级账户即可自由调整延迟通知时间";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "最多 15 个邮箱地址/别名";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "作为附件添加";
 
 /* The title in setting page */
-"Swipe to next message" = "Swipe to next message";
+"Swipe to next message" = "滑动至下一封邮件";
 
 /* Description text for setting */
-"Allow navigating through messages by swiping left or right." = "Allow navigating through messages by swiping left or right.";
+"Allow navigating through messages by swiping left or right." = "允许通过向左或向右滑动浏览邮件。";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "您的联系人触手可及";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "无需离开应用程序即可查找电子邮件地址。将联系人从您的设备同步到 Proton Mail。";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "启用自动导入";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "暂无联系人";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "从您的设备导入联系人以便轻松发送电子邮件和邀请。";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "自动导入联系人";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "正在导入您的联系人";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "您的联系人很快就会出现在这里。";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "从设备自动添加新联系人";
 
 /* The title of the privacy and data in the account setting. */
-"Privacy and data" = "Privacy and data";
+"Privacy and data" = "隐私和数据";
 
 /* cell title in device settings */
 "Storage" = "存储空间";
@@ -2457,19 +2433,25 @@
 "Change mailbox password" = "更改邮箱密码";
 
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "安全密钥";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB storage";
+"15 GB storage" = "15 GB 存储空间";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u 个邮箱地址";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "自有域名支持";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"%u personal calendars" = "%u personal calendars";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u premium features";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遥测";
@@ -2481,13 +2463,13 @@
 "To improve our services, we sometimes collect anonymized usage data." = "为了提升服务质量，我们偶尔会收集一些匿名的使用数据。";
 
 /* The subtitle of the crash report setting. */
-"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app.";
+"If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "如果应用程序崩溃，我们会向我们的工程师发送一份报告，其中包含原因的详细信息。这些信息仅用于改进应用程序。";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "升级至 %@";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "解锁更多存储和高级功能。";
 
 /* Displayed next to the monthly price */
 "/month" = "/月";
@@ -2496,10 +2478,64 @@
 "Get %@" = "开通 %@";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "立省 %u%%";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "无效的产品 ID：$@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "购买正在进行中";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Clear out old trash and spam";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Group your contacts";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Need more labels or folders?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Customize your signature";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Schedule now, send later";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Bad time for this email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Choose a plan";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Annual";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Best value";
+
+/* Button to expand the feature list */
+"%u more features" = "%u more features";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Premium value included";

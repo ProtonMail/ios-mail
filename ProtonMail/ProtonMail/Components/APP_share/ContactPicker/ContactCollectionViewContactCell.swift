@@ -115,7 +115,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self.bgView.backgroundColor = ColorProvider.InteractionWeak
             self.contactTitleLabel.textColor = ColorProvider.TextNorm
 
-            if self.model is ContactGroupVO {
+            if let _ = _model as? ContactGroupVO {
                 self.lockImage.isHighlighted = false
                 self.lockImage.tintColor = ColorProvider.IconNorm
             }

@@ -2,12 +2,48 @@
   "object": {
     "pins": [
       {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire",
+        "state": {
+          "branch": null,
+          "revision": "d120af1e8638c7da36c8481fd61a66c0c08dc4fc",
+          "version": "5.4.4"
+        }
+      },
+      {
+        "package": "fusion",
+        "repositoryURL": "https://github.com/ProtonMail/apple-fusion",
+        "state": {
+          "branch": null,
+          "revision": "0abfcfa5dc4e4436e6460fc9f9b91f937c0bf03b",
+          "version": "2.1.1"
+        }
+      },
+      {
+        "package": "CryptoSwift",
+        "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift",
+        "state": {
+          "branch": null,
+          "revision": "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
+          "version": "1.8.2"
+        }
+      },
+      {
         "package": "Difference",
         "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
         "state": {
           "branch": null,
           "revision": "f627d00718033c3d7888acd5f4e3524a843db1cf",
           "version": "1.0.2"
+        }
+      },
+      {
+        "package": "EllipticCurveKeyPair",
+        "repositoryURL": "https://github.com/agens-no/EllipticCurveKeyPair",
+        "state": {
+          "branch": null,
+          "revision": "944ae5c89ca045e9f1a113b736706c73fc51d1c2",
+          "version": "2.0.0"
         }
       },
       {
@@ -24,8 +60,17 @@
         "repositoryURL": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
         "state": {
           "branch": null,
-          "revision": "1cc54d84d87ac4f5010027d0f115757636256c5c",
-          "version": "1.8.3"
+          "revision": "fccc98aae719f6615d1f0cfd8f5e60f3888bdf62",
+          "version": "1.8.4"
+        }
+      },
+      {
+        "package": "Lottie",
+        "repositoryURL": "https://github.com/airbnb/lottie-ios",
+        "state": {
+          "branch": null,
+          "revision": "45517c3cfec9469bbdd4f86e32393c28ae9df0bc",
+          "version": "4.3.3"
         }
       },
       {
@@ -38,12 +83,102 @@
         }
       },
       {
+        "package": "ProtonCore",
+        "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
+        "state": {
+          "branch": null,
+          "revision": "9011efa9720d74b465276e9222c756298f6b1455",
+          "version": "26.1.0"
+        }
+      },
+      {
+        "package": "ProtonInboxICal",
+        "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxical",
+        "state": {
+          "branch": null,
+          "revision": "c427e6dcde94128021c1b273882d18092a1db299",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "ProtonInboxRSVP",
+        "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
+        "state": {
+          "branch": null,
+          "revision": "354d65e2e75add0ba9299e615a3c850639a150a2",
+          "version": "2.2.0"
+        }
+      },
+      {
+        "package": "Reachability",
+        "repositoryURL": "https://github.com/ashleymills/Reachability.swift",
+        "state": {
+          "branch": null,
+          "revision": "7cbd73f46a7dfaeca079e18df7324c6de6d1834a",
+          "version": "5.2.3"
+        }
+      },
+      {
+        "package": "SDWebImage",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
+        "state": {
+          "branch": null,
+          "revision": "7f9fb5d43ecd4aa714c00746f54873f354403438",
+          "version": "5.15.8"
+        }
+      },
+      {
+        "package": "Sentry",
+        "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
+        "state": {
+          "branch": null,
+          "revision": "c9a692ba837f4832ec7ce6378c071cb91cb55f92",
+          "version": "8.29.0"
+        }
+      },
+      {
         "package": "swift-css-parser",
         "repositoryURL": "https://github.com/stackotter/swift-css-parser.git",
         "state": {
           "branch": null,
           "revision": "6cf16c6696def00a313daef0e29eb27f5c39ece4",
           "version": "0.1.2"
+        }
+      },
+      {
+        "package": "swift-snapshot-testing",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
+        "state": {
+          "branch": null,
+          "revision": "c097f955b4e724690f0fc8ffb7a6d4b881c9c4e3",
+          "version": "1.17.2"
+        }
+      },
+      {
+        "package": "swift-syntax",
+        "repositoryURL": "https://github.com/swiftlang/swift-syntax",
+        "state": {
+          "branch": null,
+          "revision": "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
+          "version": "600.0.0-prerelease-2024-07-30"
+        }
+      },
+      {
+        "package": "SwiftOTP",
+        "repositoryURL": "https://github.com/lachlanbell/SwiftOTP",
+        "state": {
+          "branch": null,
+          "revision": "93d4942c90dd498580988ffb9971e2ddf91d5a28",
+          "version": "2.0.3"
+        }
+      },
+      {
+        "package": "TrustKit",
+        "repositoryURL": "https://github.com/ProtonMail/TrustKit",
+        "state": {
+          "branch": null,
+          "revision": "d107d7cc825f38ae2d6dc7c54af71d58145c3506",
+          "version": "1.0.3"
         }
       }
     ]

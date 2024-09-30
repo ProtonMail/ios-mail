@@ -1450,18 +1450,6 @@
 /* A label message */
 "Inherited from parent folder" = "Zdedené z nadradeného priečinka";
 
-/* Alert title */
-"Creating folder not allowed" = "Vytvorenie priečinka nie je povolené";
-
-/* Alert title */
-"Creating label not allowed" = "Vytvorenie štítku nie je povolené";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Ak chcete používať viac ako 3 priečinky, upgradujte prosím na platený plán";
-
-/* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Ak chcete používať viac ako 3 štítky, prejdite prosím na platený plán";
-
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Prosím pripojte sa a skúste to znova";
 
@@ -1643,6 +1631,9 @@
 
 /* Warning message */
 "Cannot empty folder right now." = "Priečinok momentálne nie je možné vyprázdniť.";
+
+/* Warning message when users try to empty messages in the folder */
+"Are you sure you want to permanently delete all messages within '%@'?" = "Skutočne chcete natrvalo vymazať všetky správy v rámci '%@'?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Zobraziť celú správu]";
@@ -1853,6 +1844,36 @@
 
 /* Get more storage button action */
 "Get more storage" = "Získať viac úložného priestoru";
+
+/* Spotlight title */
+"Sized for reading" = "Veľkosť určená na čítanie";
+
+/* Spotlight body */
+"Now the body text of your emails will also be shown in your preferred reading size." = "Text tela emailov sa teraz bude zobrazovať aj vo vašej preferovanej veľkosti na čítanie.";
+
+/* Title of the banner alert */
+"Your storage is full" = "Vaše úložisko je plné";
+
+/* Title of the banner alert */
+"Your subscription has ended" = "Vaše predplatné skončilo";
+
+/* Title of the banner alert */
+"Your account is at risk of deletion" = "Vášmu účtu hrozí vymazanie";
+
+/* Description of the banner alert */
+"To send or receive emails, free up space or upgrade for more storage." = "Ak chcete odosielať alebo prijímať emaily, uvoľnite miesto alebo aktualizujte úložisko.";
+
+/* Description of the banner alert */
+"To upload files, free up space or upgrade for more storage." = "Ak chcete nahrať súbory, uvoľnite miesto alebo upgradujte a získajte tak viac úložného priestoru.";
+
+/* Description of the banner alert */
+"Upgrade to restore full access and to avoid data loss." = "Upgradujte, aby ste obnovili úplný prístup a zabránili strate údajov.";
+
+/* Description of the banner alert */
+"To avoid data loss, ask your admin to upgrade." = "Ak chcete zabrániť strate údajov, požiadajte správcu o aktualizáciu.";
+
+/* Upgrade button action */
+"Upgrade" = "Upgradovať";
 
 /* Button to block a sender */
 "Block messages from this sender" = "Blokovať správy od tohto odosielateľa";
@@ -2117,33 +2138,6 @@
 /* One of the schedule time options */
 "As scheduled" = "Podľa plánu";
 
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Naplánujte si vlastný harmonogram";
-
-/* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Odomknite vlastné plánovanie správ a ďalšie výhody navýšením svojho plánu.";
-
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Navýšiť teraz";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Plánovanie správ v ľubovoľnom čase";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Neobmedzené množstvo priečinkov a štítkov";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Až do 500 GB úložiska";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Až 15 emailových adries";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Až 3 vlastné emailové domény";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide-my-email aliasy";
-
 /* One of schedule time options */
 "In the morning" = "Ráno";
 
@@ -2244,7 +2238,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgradujte svoj plán a automaticky mažte správy, ktoré boli v koši a spame viac ako 30 dní.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automaticky vymazať správy, ktoré boli v koši viac ako 30 dní.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Automaticky zmazať správy, ktoré boli v koši a spame viac ako 30 dní.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Nie, ďakujem";
@@ -2267,17 +2261,8 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Otvoriť v Proton kalendári";
 
-/* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Prečistite nevyžiadanú poštu";
-
-/* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automaticky prečistite správy v koši a spame staršie ako 30 dní. Užívajte si túto a ďalšie výhody pri updgradovaní plánu.";
-
-/* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Až 3 TB úložného priestoru";
-
-/* Text to advertise what upgrading will provide */
-"Custom email domains" = "Vlastné emailové domény";
+/* Title of button to upgrade to a paid plan */
+"Upgrade now" = "Navýšiť teraz";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Odosielateľ zmenený";
@@ -2287,6 +2272,9 @@
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
 "Please retry after all attachments are uploaded." = "Skúste to znova po nahraní všetkých príloh.";
+
+/* Alert title */
+"Sending with the Share extension while offline is not supported" = "Odosielanie s rozšírením Zdieľať v režime offline nie je podporované";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Zobrazované meno";
@@ -2396,18 +2384,6 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Vyberte prosím čas v budúcnosti";
 
-/* The title of snooze promotion view */
-"Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
-
-/* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia po navýšení plánu";
-
-/* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
-
-/* The benefit item for snooze promotion view */
-"Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
-
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Pridať ako prílohu";
 
@@ -2469,7 +2445,13 @@
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nová desktopová aplikácia Proton Mail";
+"%u personal calendars" = "%u osobných kalendárov";
+
+/* Description of a feature of a paid subscription */
+"1 GB Storage and 1 email" = "1 GB úložisko a 1 email";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u prémiových funkcií";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
@@ -2503,3 +2485,57 @@
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
 "Purchase already in progress" = "Nákup už prebieha";
+
+/* Title of the upsell page */
+"Clear out old trash and spam" = "Vymazať staré položky z koša a spamu";
+
+/* Subtitle of the upsell page */
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Vychutnajte si prehľadnejšiu poštovú schránku a využívajte ďalšie prémiové funkcie s %@.";
+
+/* Title of the upsell page */
+"Group your contacts" = "Zoskupujte svoje kontakty";
+
+/* Subtitle of the upsell page */
+"Easily send emails to a group and enjoy other premium features with %@." = "Jednoducho posielajte emaily skupine a využívajte ďalšie prémiové funkcie s %@.";
+
+/* Title of the upsell page */
+"Need more labels or folders?" = "Potrebujete viac štítkov alebo priečinkov?";
+
+/* Subtitle of the upsell page */
+"Get them and other premium features when you upgrade to %@." = "Získate ich a ďalšie prémiové funkcie po upgradovaní na %@.";
+
+/* Title of the upsell page */
+"Customize your signature" = "Prispôsobte si podpis";
+
+/* Subtitle of the upsell page */
+"Use your own mobile signature and enjoy other premium features with %@." = "Používajte vlastný mobilný podpis a využívajte ďalšie prémiové funkcie s %@.";
+
+/* Title of the upsell page */
+"Schedule now, send later" = "Naplánujte teraz, odošlite neskôr";
+
+/* Subtitle of the upsell page */
+"Enjoy custom schedule send and other premium features with %@." = "Užívajte si odosielanie podľa vlastného plánu a ďalšie prémiové funkcie s %@.";
+
+/* Title of the upsell page */
+"Bad time for this email?" = "Nevhodný čas na tento email?";
+
+/* Subtitle of the upsell page */
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Odložte si ho na čas, ktorý si sami zvolíte. Získajte vlastné odloženie a ďalšie funkcie s %@.";
+
+/* Title of the upsell page */
+"Choose a plan" = "Vyberte si plán";
+
+/* Refers to an annual billing cycle */
+"Annual" = "Ročne";
+
+/* Label on the Proton Unlimited plan */
+"Best value" = "Nejvýhodnější";
+
+/* Button to expand the feature list */
+"%u more features" = "%u ďalšie funkcie";
+
+/* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
+"Billed at %1$@ every %2$@" = "Fakturované %1$@ každé %2$@";
+
+/* In the list of premium plan features */
+"Premium value included" = "Vrátane prémiovej hodnoty";

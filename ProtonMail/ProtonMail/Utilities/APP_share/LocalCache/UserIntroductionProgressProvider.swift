@@ -19,10 +19,10 @@ import Foundation
 
 enum SpotlightableFeatureKey: String, CaseIterable {
     case answerInvitation
+    case dynamicFontSize
     case scheduledSend
     case toolbarCustomization
     case messageSwipeNavigationAnimation
-    case messageSwipeNavigation
     case autoImportContacts
     case jumpToNextMessage
 
@@ -32,6 +32,8 @@ enum SpotlightableFeatureKey: String, CaseIterable {
             return .autoImportContacts
         case .answerInvitation:
             return .answerInvitation
+        case .dynamicFontSize:
+            return .dynamicFontSizeInMessageBody
         default:
             return nil
         }

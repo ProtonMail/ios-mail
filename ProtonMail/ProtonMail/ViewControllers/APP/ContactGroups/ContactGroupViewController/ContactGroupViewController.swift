@@ -126,7 +126,11 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         self.viewModel.timerStart(true)
         self.isOnMainView = true
         self.viewModel.user.undoActionManager.register(handler: self)
-        self.setupMenuButton(userInfo: dependencies.user.userInfo)
+
+        if !viewModel.initEditing() {
+            setupMenuButton(userInfo: dependencies.user.userInfo)
+        }
+
         NotificationCenter.default.addKeyboardObserver(self)
     }
 

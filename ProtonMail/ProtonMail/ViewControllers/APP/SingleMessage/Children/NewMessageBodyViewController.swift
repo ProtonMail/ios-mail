@@ -35,7 +35,9 @@ protocol NewMessageBodyViewControllerDelegate: AnyObject {
 }
 
 class NewMessageBodyViewController: UIViewController {
+    typealias Dependencies = HasFeatureFlagProvider
 
+    private let dependencies: Dependencies
     private let viewModel: NewMessageBodyViewModel
     private weak var scrollViewContainer: ScrollableContainer!
     private lazy var customView = NewMessageBodyView()
@@ -86,8 +88,16 @@ class NewMessageBodyViewController: UIViewController {
         return round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale
     }
 
-    init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
+    private var fontSizeHasBeenAdjusted = false
+
+    init(
+        viewModel: NewMessageBodyViewModel,
+        dependencies: Dependencies,
+        parentScrollView: ScrollableContainer,
+        viewMode: ViewMode
+    ) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         self.scrollViewContainer = parentScrollView
         self.viewMode = viewMode
         super.init(nibName: nil, bundle: nil)
@@ -256,6 +266,7 @@ class NewMessageBodyViewController: UIViewController {
                 self?.viewModel.recalculateCellHeight?(true)
             })
         } else {
+            updateDynamicFontSize()
             updatesTimer?.invalidate()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
@@ -367,6 +378,56 @@ class NewMessageBodyViewController: UIViewController {
             else { return }
             self?.updateViewHeight(to: height)
         })
+    }
+
+    func preferredContentSizeChanged() {
+        updateDynamicFontSize()
+    }
+
+    func updateDynamicFontSize() {
+        guard dependencies.featureFlagProvider.isEnabled(.dynamicFontSizeInMessageBody) else {
+            return
+        }
+
+        let isUsingDefaultSizeCategory = view.traitCollection.preferredContentSizeCategory == .large
+
+        if isUsingDefaultSizeCategory {
+            if fontSizeHasBeenAdjusted {
+                SystemLogger.log(
+                    message: "Reverting to default content size category",
+                    category: .dynamicFontSize
+                )
+                resetMessageContentFontSize()
+            } else {
+                SystemLogger.log(
+                    message: "Using default content size category, no adjustment needed",
+                    category: .dynamicFontSize
+                )
+            }
+        } else {
+            SystemLogger.log(message: "Adjusting content size category", category: .dynamicFontSize)
+            scaleMessageContentFontSize()
+        }
+    }
+
+    private func scaleMessageContentFontSize() {
+        fontSizeHasBeenAdjusted = true
+        runDynamicFontSizeCode(functionName: "scaleContentSize")
+    }
+
+    private func resetMessageContentFontSize() {
+        fontSizeHasBeenAdjusted = false
+        runDynamicFontSizeCode(functionName: "resetContentSize")
+    }
+
+    private func runDynamicFontSizeCode(functionName: String) {
+        webView?.evaluateJavaScript("\(functionName)();") { _, error in
+            if let error {
+                SystemLogger.log(error: error, category: .dynamicFontSize)
+            } else {
+                SystemLogger.log(message: "Content size updated", category: .dynamicFontSize)
+            }
+        }
     }
 }
 

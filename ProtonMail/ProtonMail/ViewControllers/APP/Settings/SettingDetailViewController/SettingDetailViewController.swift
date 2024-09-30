@@ -24,12 +24,9 @@ import UIKit
 import MBProgressHUD
 import ProtonCoreNetworking
 import ProtonCoreUIFoundations
-import ProtonCorePaymentsUI
 import ProtonCoreFoundations
 
 class SettingDetailViewController: UIViewController, AccessibleView {
-    typealias Dependencies = HasPaymentsUIFactory
-
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var switcher: UISwitch!
@@ -48,14 +45,11 @@ class SettingDetailViewController: UIViewController, AccessibleView {
     @IBOutlet weak var notesLabel: UILabel!
 
     fileprivate var doneButton: UIBarButtonItem!
-    private var paymentsUI: PaymentsUI?
 
     private let viewModel: SettingDetailsViewModel
-    private let dependencies: Dependencies
 
-    init(viewModel: SettingDetailsViewModel, dependencies: Dependencies) {
+    init(viewModel: SettingDetailsViewModel) {
         self.viewModel = viewModel
-        self.dependencies = dependencies
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -142,16 +136,8 @@ class SettingDetailViewController: UIViewController, AccessibleView {
 
         passwordView.isHidden = true
 
-        switcher.isEnabled = viewModel.isSwitchEnabled()
-        inputTextView.isEditable = viewModel.isSwitchEnabled()
-
         notesLabel.set(text: viewModel.getNotes(),
                        preferredFont: .footnote)
-
-        // check Role if need a paid feature
-        if !viewModel.isSwitchEnabled() {
-            presentPlanUpgrade()
-        }
 
         NotificationCenter.default
             .addObserver(self,
@@ -210,11 +196,6 @@ class SettingDetailViewController: UIViewController, AccessibleView {
         let disabledForegroundColor: UIColor = ColorProvider.InteractionNormDisabled
         attribute[.foregroundColor] = disabledForegroundColor
         doneButton.setTitleTextAttributes(attribute, for: .disabled)
-    }
-
-    private func presentPlanUpgrade() {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.presentUpgradePlan()
     }
 
     fileprivate func dismissKeyboard() {

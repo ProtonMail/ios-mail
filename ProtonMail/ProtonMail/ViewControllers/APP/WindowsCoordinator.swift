@@ -37,7 +37,6 @@ final class WindowsCoordinator {
     & HasNotificationCenter
 
     private lazy var snapshot = Snapshot()
-    private var launchedByNotification = false
 
     private var deepLink: DeepLink?
 
@@ -74,8 +73,6 @@ final class WindowsCoordinator {
         }
     }
 
-    private var arePrimaryUserSettingsFetched = false
-
     enum Destination {
         enum SignInDestination: String { case form, mailboxPassword }
         case lockWindow, appWindow, signInWindow(SignInDestination)
@@ -101,7 +98,6 @@ final class WindowsCoordinator {
     }
 
     func start(launchedByNotification: Bool = false, completion: (() -> Void)? = nil) {
-        self.launchedByNotification = launchedByNotification
         let placeholder = UIWindow(root: PlaceholderViewController(color: .white), scene: self.scene)
         self.currentWindow = placeholder
 
@@ -281,7 +277,7 @@ final class WindowsCoordinator {
             case .appWindow:
                 self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderViewController {
-                    let root = PMSideMenuController(isUserInfoAlreadyFetched: self.arePrimaryUserSettingsFetched)
+                    let root = PMSideMenuController()
                     let menuWidth = MenuViewController.calcProperMenuWidth()
                     let coordinator = MenuCoordinator(
                         dependencies: self.dependencies,
@@ -290,9 +286,8 @@ final class WindowsCoordinator {
                     )
                     coordinator.delegate = self
                     self.menuCoordinator = coordinator
-                    coordinator.start(launchedByNotification: self.launchedByNotification)
+                    coordinator.start()
                     self.appWindow = UIWindow(root: root, scene: self.scene)
-                    self.launchedByNotification = false
                 }
                 if self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
@@ -361,7 +356,6 @@ final class WindowsCoordinator {
             object: nil,
             queue: .main
         ) { [weak self] notification in
-            self?.arePrimaryUserSettingsFetched = true
             SystemLogger.log(
                 message: "Notification observer: start handle view switching",
                 category: .notificationDebug
@@ -416,16 +410,10 @@ extension WindowsCoordinator {
     }
 
     func followDeepDeepLinkIfNeeded(_ deepLink: DeepLink) {
-        self.deepLink = deepLink
-        _ = deepLink.popFirst
-
-        if arePrimaryUserSettingsFetched {
-            start()
-        }
+        followDeepLink(deepLink)
     }
 
     private func handleDeepLinkIfNeeded(_ deepLink: DeepLink) {
-        guard arePrimaryUserSettingsFetched else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
                let coordinator = self.menuCoordinator {
@@ -478,24 +466,25 @@ extension WindowsCoordinator {
         }
     }
 
-    private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
-        self.deepLink = deepLink
+    private func handleSwitchViewDeepLinkIfNeeded(_ deepLinkInNotification: DeepLink?) {
+        deepLink = deepLinkInNotification ?? deepLink
         if let url = shouldOpenURL(deepLink: deepLink) {
             self.deepLink = nil
             handleWebUrl(url: url)
             return
         }
-        guard arePrimaryUserSettingsFetched && appWindow != nil else {
+        guard appWindow != nil else {
             return
         }
         SystemLogger.log(
             message: "HandleSwitchViewDeepLinkIfNeeded: \(deepLink?.debugDescription ?? "no deep link")",
             category: .notificationDebug
         )
+
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
                let coordinator = self.menuCoordinator {
-                coordinator.handleSwitchView(deepLink: deepLink)
+                coordinator.handleSwitchView(deepLink: self.deepLink)
                 stop = true
                 self.deepLink = nil
             }

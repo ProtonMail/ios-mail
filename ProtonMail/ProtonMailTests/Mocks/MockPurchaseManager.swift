@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCorePayments
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsCore
 
 final class MockPurchaseManager: PurchaseManagerProtocol {
     var unfinishedPurchasePlan: InAppPurchasePlan? {

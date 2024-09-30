@@ -26,7 +26,6 @@ import CoreData
 import LifetimeTracker
 import ProtonCoreDataModel
 import ProtonCoreNetworking
-import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
@@ -41,7 +40,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
-    & HasUpsellTelemetryReporter
     & HasUserManager
     & HasUserDefaults
     & HasAddressBookService
@@ -141,7 +139,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
     private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
-        return self.unreadFilterButton.isSelected
+        unreadFilterButton?.isSelected ?? false
     }
 
     private let messageCellPresenter = NewMailboxMessageCellPresenter()
@@ -149,7 +147,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
-    private var paymentsUI: PaymentsUI?
+    private var upsellCoordinator: UpsellCoordinator?
 
     private var isSwipingCell = false {
         didSet {
@@ -203,7 +201,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         if viewModel.reloadTable() {
             resetTableView()
         }
-        self.updateTheUpdateTimeLabel()
+        self.updateLastUpdateTimeLabel()
         self.updateUnreadButton(count: viewModel.unreadCount)
 
         refetchAllIfNeeded()
@@ -284,7 +282,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         setupAlertBox()
 
         self.updateUnreadButton(count: viewModel.unreadCount)
-        self.updateTheUpdateTimeLabel()
+        self.updateLastUpdateTimeLabel()
 
         generateAccessibilityIdentifiers()
         configureBannerContainer()
@@ -319,13 +317,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             }
         }
 
-        viewModel
-            .error
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned self] error in
-                showErrorMessage(error as NSError)
+        viewModel.setupLockedStateObservation { [weak self] newValue in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.setupAlertBox()
             }
-            .store(in: &cancellables)
+        }
 
         viewModel
             .reloadRightBarButtons
@@ -362,7 +359,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         notificationsAreScheduled = false
         NotificationCenter.default.removeObserver(self)
-
+        
         PMBanner.dismissAll(on: self, animated: animated)
     }
 
@@ -545,7 +542,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         newElement.accessibilityCustomActions = [unreadAction]
         newElement.accessibilityFrame = unreadFilterButton.frame
         customUnreadFilterElement = newElement
-        view.accessibilityElements = [updateTimeLabel as Any,
+        view.accessibilityElements = [alertContainerView as Any,
+                                      updateTimeLabel as Any,
                                       newElement,
                                       bannerContainer as Any,
                                       tableView as Any,
@@ -607,45 +605,18 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         handleShadow(isScrolled: scrollView.contentOffset.y > 0)
     }
 
+    func presentUpsellPage(entryPoint: UpsellPageEntryPoint, onDismiss: UpsellCoordinator.OnDismissCallback? = nil) {
+        upsellCoordinator = dependencies.paymentsUIFactory.makeUpsellCoordinator(rootViewController: self)
+        upsellCoordinator?.start(entryPoint: entryPoint, onDismiss: onDismiss)
+    }
+
     // MARK: - Button Targets
 
     @objc
     func upsellButtonTapped() {
-        guard let upsellPageModel = viewModel.makeUpsellPageModel() else {
-            return
-        }
-
-        dependencies.upsellTelemetryReporter.prepare()
-
-        Task { [weak self] in
-            await self?.dependencies.upsellTelemetryReporter.upsellButtonTapped()
-        }
-
-        let upsellPage = UpsellPage(model: upsellPageModel) { [unowned self] selectedProductId in
-            purchasePlan(storeKitProductId: selectedProductId, upsellPageModel: upsellPageModel)
-        }
-        let hostingController = SheetLikeSpotlightViewController(rootView: upsellPage)
-        hostingController.modalTransitionStyle = .crossDissolve
-        present(hostingController, animated: false)
-
+        presentUpsellPage(entryPoint: .header)
         viewModel.upsellButtonWasTapped()
         setupRightButtons(viewModel.listEditing, isStorageExceeded: viewModel.user.isStorageExceeded)
-    }
-
-    private func purchasePlan(storeKitProductId: String, upsellPageModel: UpsellPageModel) {
-        Task { [weak self] in
-            guard let self else { return }
-
-            lockUI()
-            upsellPageModel.isBusy = true
-            let planPurchased = await self.viewModel.purchasePlan(storeKitProductId: storeKitProductId)
-            upsellPageModel.isBusy = false
-            unlockUI()
-
-            if planPurchased {
-                await presentedViewController?.dismiss(animated: true)
-            }
-        }
     }
 
     @objc func composeButtonTapped() {
@@ -681,15 +652,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     func clickEmptyFolderAction() {
-        self.viewModel.updateListAndCounter { [weak self] count in
-            guard let count = count else {
-                if let self = self {
-                    LocalString._cannot_empty_folder_now.toast(at: self.view)
-                }
-                return
-            }
-            self?.showEmptyFolderAlert(total: Int(count.total))
-        }
+        showEmptyFolderAlert()
     }
 
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -1187,7 +1150,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         }
     }
 
-	private func updateLastUpdateTimeLabel() {
+    private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .notConnected {
             updateTimeLabel.set(text: LocalString._mailbox_offline_text,
                                 preferredFont: .footnote,
@@ -1322,13 +1285,23 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func showSpotlightIfNeeded() {
-        if viewModel.shouldShowSpotlight(for: .answerInvitation) {
+        if viewModel.shouldShowDynamicFontSizeSpotlight() {
+            showDynamicFontSizeSpotlight()
+        } else if viewModel.shouldShowSpotlight(for: .answerInvitation) {
             showAnswerInvitationSpotlight()
         } else if viewModel.shouldShowAutoImportContactsSpotlight() {
             showAutoImportContactsSpotlight()
         } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
         }
+    }
+
+    private func showDynamicFontSizeSpotlight() {
+        let spotlightView = DynamicFontSizeSpotlightView()
+        let hosting = SheetLikeSpotlightViewController(rootView: spotlightView)
+        spotlightView.config.hostingController = hosting
+        navigationController?.present(hosting, animated: false)
+        viewModel.hasSeenSpotlight(for: .dynamicFontSize)
     }
 
     private func showAnswerInvitationSpotlight() {
@@ -1819,11 +1792,16 @@ extension MailboxViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    private func showEmptyFolderAlert(total: Int) {
+    private func showEmptyFolderAlert() {
         let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
         let title = isTrashFolder ? LocalString._empty_trash_folder: LocalString._empty_spam_folder
-        let message = self.viewModel.getEmptyFolderCheckMessage(count: total)
-        let alert = UIAlertController(title: "\(title)?", message: message, preferredStyle: .alert)
+
+        guard let labelLocation = LabelLocation.allCases.first(where: { $0.labelID == viewModel.labelID }) else {
+            return
+        }
+
+        let message = viewModel.getEmptyFolderCheckMessage(folder: labelLocation)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
             self?.viewModel.emptyFolder()
         }
@@ -1882,7 +1860,9 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheet(messages: messages, isFromSwipeAction: isFromSwipeAction)
+                    }
                 }
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1932,7 +1912,9 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newLabel, sender: nil)
                 } else {
-                    self.showAlertLabelCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .labels) { [weak self] in
+                        self?.showLabelAsActionSheet(conversations: conversations, isFromSwipeAction: isFromSwipeAction)
+                    }
                 }
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1974,18 +1956,6 @@ extension MailboxViewController {
             return existingLabels < Constants.FreePlan.maxNumberOfLabels
         }
         return true
-    }
-
-    private func showAlertLabelCreationNotAllowed() {
-        let title = LocalString._creating_label_not_allowed
-        let message = LocalString._upgrade_to_create_label
-        showAlert(title: title, message: message)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -2045,7 +2015,14 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(
+                            messages: messages,
+                            isEnableColor: isEnableColor,
+                            isInherit: isInherit,
+                            isFromSwipeAction: isFromSwipeAction
+                        )
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -2125,7 +2102,14 @@ extension MailboxViewController {
                     }
                     self.coordinator?.go(to: .newFolder, sender: nil)
                 } else {
-                    self.showAlertFolderCreationNotAllowed()
+                    self.presentUpsellPage(entryPoint: .folders) { [weak self] in
+                        self?.showMoveToActionSheet(
+                            conversations: conversations,
+                            isEnableColor: isEnableColor,
+                            isInherit: isInherit,
+                            isFromSwipeAction: isFromSwipeAction
+                        )
+                    }
                 }
             },
             selected: { [weak self] menuLabel, isSelected in
@@ -2195,19 +2179,14 @@ extension MailboxViewController {
         }
         return true
     }
-
-    private func showAlertFolderCreationNotAllowed() {
-        let title = LocalString._creating_folder_not_allowed
-        let message = LocalString._upgrade_to_create_folder
-        showAlert(title: title, message: message)
-    }
 }
 
 // MARK: - Show banner or alert
 extension MailboxViewController {
 
     private func setupAlertBox() {
-        guard viewModel.storageAlertVisibility != .hidden else {
+        viewModel.setupAlertBox()
+        guard viewModel.storageAlertVisibility != .hidden || viewModel.lockedStateAlertVisibility != .hidden else {
             alertContainerView.isHidden = true
             return
         }
@@ -2217,6 +2196,35 @@ extension MailboxViewController {
         alertCardView.layer.cornerRadius = 8
         alertIcon.image = IconProvider.exclamationCircleFilled
 
+        alertLabel.textColor = ColorProvider.TextNorm
+        alertDescription.textColor = ColorProvider.TextNorm
+        alertDescription.numberOfLines = 0
+        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
+        alertButton.layer.cornerRadius = 8
+        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        
+        if (viewModel.lockedStateAlertVisibility != .hidden) {
+            setupLockedStateAlertBox()
+        } else if (viewModel.storageAlertVisibility != .hidden) {
+            setupStorageAlertBox()
+        }
+    }
+
+    private func setupLockedStateAlertBox() {
+        alertIcon.tintColor = ColorProvider.NotificationError
+        alertDismissButton.isHidden = true
+        
+        alertLabel.text = viewModel.lockedStateAlertVisibility.mailboxBannerTitle
+        alertDescription.text = viewModel.lockedStateAlertVisibility.mailboxBannerDescription
+        alertButton.setTitle(viewModel.lockedStateAlertVisibility.mailBoxBannerButtonTitle, for: .normal)
+        alertButton.addTarget(
+            self,
+            action: #selector(lockedStateBannerTapped),
+            for: .touchUpInside
+        )
+    }
+
+    private func setupStorageAlertBox() {
         alertLabel.text = viewModel.storageAlertVisibility.mailboxBannerTitle
         switch viewModel.storageAlertVisibility {
         case .mail(let value) where value < StorageAlertVisibility.fullThreshold,
@@ -2231,15 +2239,9 @@ extension MailboxViewController {
         case .hidden:
             break
         }
-
+        
         alertDescription.text = L10n.AlertBox.alertBoxDescription
-
-        alertLabel.textColor = ColorProvider.TextNorm
-        alertDescription.textColor = ColorProvider.TextNorm
-        alertDismissButton.setTitle(L10n.AlertBox.alertBoxDismissButtonTitle, for: .normal)
         alertButton.setTitle(L10n.AlertBox.alertBoxButtonTitle, for: .normal)
-        alertButton.layer.cornerRadius = 8
-        alertButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         alertButton.addTarget(
             self,
             action: #selector(getMoreStorageTapped),
@@ -2250,6 +2252,12 @@ extension MailboxViewController {
             action: #selector(dismissStorageAlertTapped),
             for: .touchUpInside
         )
+    }
+    
+    @objc private func lockedStateBannerTapped() {
+        guard let urlString = viewModel.lockedStateAlertVisibility.mailBoxBannerButtonUrl,
+              let url = URL(string: urlString) else { return }
+        UIApplication.shared.open(url)
     }
 
     @objc private func getMoreStorageTapped() {
@@ -2361,7 +2369,7 @@ extension MailboxViewController {
         }
         lastNetworkStatus = connectionStatus
 
-        updateTheUpdateTimeLabel()
+        updateLastUpdateTimeLabel()
     }
 
     private func afterNetworkChange(status: ConnectionStatus) {
@@ -2376,40 +2384,6 @@ extension MailboxViewController {
         if status == .connectedViaCellular || status == .connectedViaEthernet || status == .connectedViaWiFi {
             self.retry(delay: 5)
         }
-    }
-}
-
-// MARK: - UITableViewDataSource
-extension MailboxViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if self.shouldAnimateSkeletonLoading {
-            return 1
-        } else {
-            return self.viewModel.sectionCount()
-        }
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.shouldAnimateSkeletonLoading {
-            return 10
-        } else {
-            return self.viewModel.rowCount(section: section)
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = self.shouldAnimateSkeletonLoading ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        if self.shouldAnimateSkeletonLoading {
-            self.configure(cell: cell, rowItem: .skeleton(indexPath.row))
-        } else if let mailboxItem = viewModel.mailboxItem(at: indexPath) {
-            self.configure(cell: cell, rowItem: .real(mailboxItem))
-        } else {
-            assertionFailure("Should be either showing skeleton cells or receive a real MailboxItem")
-        }
-        return cell
-
     }
 }
 
@@ -2754,12 +2728,6 @@ extension MailboxViewController {
     }
 }
 
-extension MailboxViewController: SkeletonTableViewDataSource {
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return MailBoxSkeletonLoadingCell.Constant.identifier
-    }
-}
-
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
         viewModel.deleteExpiredMessages()
@@ -2862,11 +2830,9 @@ extension MailboxViewController {
             let headerView = AutoDeleteUpsellHeaderView()
             headerView.learnMoreButtonAction = { [weak self] in
                 guard let self else { return }
-                let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
-                    guard let self else { return }
-                    self.presentPayments(paidFeature: .autoDelete)
+                presentUpsellPage(entryPoint: .autoDelete) { [weak self] in
+                    self?.reloadTableViewDataSource(forceReload: true)
                 }
-                upsellSheet.present(on: self.navigationController!.view)
             }
             return headerView
         case .promptBanner:
@@ -2917,26 +2883,6 @@ extension MailboxViewController {
             return nil
         }
     }
-
-    func presentPayments(paidFeature: PaidFeature) {
-        paymentsUI = dependencies.paymentsUIFactory.makeView()
-        paymentsUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true,
-            completionHandler: { [weak self] reason in
-                switch reason {
-                case .purchasedPlan:
-                    if paidFeature == .snooze {
-                        Task {
-                            await self?.viewModel.user.fetchUserInfo()
-                            self?.clickSnoozeActionButton()
-                        }
-                    }
-                default:
-                    break
-                }
-            })
-    }
 }
 
 extension MailboxViewController: UndoActionHandlerBase {
@@ -2961,24 +2907,12 @@ extension MailboxViewController: ConnectionStatusReceiver {
 }
 
 extension MailboxViewController: MailboxViewModelUIProtocol {
-    func updateTitle() {
-        setupNavigationTitle(showSelected: viewModel.listEditing)
+    var isUsingDefaultSizeCategory: Bool {
+        view.traitCollection.preferredContentSizeCategory == .large
     }
 
-    func updateTheUpdateTimeLabel() {
-        if let status = self.lastNetworkStatus, status == .notConnected {
-            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
-                                preferredFont: .footnote,
-                                weight: .regular,
-                                textColor: ColorProvider.NotificationError)
-            return
-        }
-
-        let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.set(text: timeText,
-                            preferredFont: .footnote,
-                            weight: .regular,
-                            textColor: ColorProvider.TextHint)
+    func updateTitle() {
+        setupNavigationTitle(showSelected: viewModel.listEditing)
     }
 
     func updateUnreadButton(count: Int) {

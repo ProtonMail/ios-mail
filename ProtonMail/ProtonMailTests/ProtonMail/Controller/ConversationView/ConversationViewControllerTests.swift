@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreTestingToolkit
+import ProtonCoreTestingToolkitUnitTestsServices
 import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest
@@ -62,7 +62,8 @@ class ConversationViewControllerTests: XCTestCase {
                                                   goToDraft: { _, _  in },
                                                   dependencies: userContainer)
         applicationStateMock = MockApplicationStateProvider(state: .background)
-        sut = ConversationViewController(viewModel: viewModelMock,
+        sut = ConversationViewController(dependencies: userContainer,
+                                         viewModel: viewModelMock,
                                          applicationStateProvider: applicationStateMock)
     }
 

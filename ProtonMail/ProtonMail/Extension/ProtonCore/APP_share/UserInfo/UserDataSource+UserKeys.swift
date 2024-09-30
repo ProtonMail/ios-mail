@@ -20,7 +20,7 @@ import class ProtonCoreDataModel.Key
 import typealias ProtonCoreCrypto.ArmoredKey
 import typealias ProtonCoreCrypto.Passphrase
 
-struct UserKeys: Equatable {
+struct UserKeys {
     let privateKeys: [ArmoredKey]
     let addressesPrivateKeys: [Key]
     let mailboxPassphrase: Passphrase

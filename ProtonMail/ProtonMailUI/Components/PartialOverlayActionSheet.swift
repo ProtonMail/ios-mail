@@ -69,7 +69,7 @@ struct PartialOverlayActionSheet<Content: View>: View {
                         dismiss()
                     }
                     .padding(.leading, 8)
-                    .padding(.vertical, 4)
+                    .padding(.top, -12)
 
                     Spacer()
                 }
