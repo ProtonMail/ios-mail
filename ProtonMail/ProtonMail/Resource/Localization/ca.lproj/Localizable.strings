@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Netetja Estil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Afegir organització";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Voleu cancel·lar el procés?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "S'ha desat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
 /*
@@ -2151,7 +2151,7 @@
 "As scheduled" = "Tal com s'ha programat";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Establiu la vostra pròpia planificació.";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -2160,7 +2160,7 @@
 "Upgrade now" = "Millora ara";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Programeu missatges en qualsevol moment.";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Unlimited folders and labels";
@@ -2169,13 +2169,13 @@
 "Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Fins a 15 adreces de correu electrònic";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 3 custom email domains" = "Up to 3 custom email domains";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Àlies de hide-my-email";
 
 /* One of schedule time options */
 "In the morning" = "Al matí";
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Desactiva el codi PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Establir codi PIN";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u adreces de correu electrònic";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
@@ -2514,7 +2517,13 @@
 "End-to-end encryption" = "Xifratge d'extrem a extrem";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Atenció al client prioritària";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u característiques prèmium";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Per desbloquejar més emmagatzematge i característiques prèmium.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratuït";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mes";

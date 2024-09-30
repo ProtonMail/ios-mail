@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "添加单位";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "是否取消该进程？";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "联系人已保存，联网后将同步";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "联系人已删除，联网后将同步";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "关闭解锁密码";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "设置解锁密码";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u 个邮箱地址";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "自有域名支持";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "End-to-end encryption";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "优先客服支持";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "解锁更多存储和高级功能。";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "免费";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/月";

@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "서식 삭제";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "조직 추가";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "결제를 취소하시겠습니까?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "연락처가 저장되었습니다. 연결이 가능하면 동기화됩니다.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "연락처가 삭제되었습니다. 연결이 가능하면 동기화됩니다.";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN 코드로 액세스를 비활성화";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "PIN 코드 설정";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "이메일 주소 %u개";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "종단간 암호화";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "새로운 Proton Mail 데스크톱 앱";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "고객 지원 우선 순위 제공";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "더 많은 저장 공간과 프리미엄 기능을 잠금 해제하기 위해.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "무료";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/월간";

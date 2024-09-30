@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Borrar estilo";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Añadir organización";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "¿Quieres cancelar el proceso?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contacto guardado. Se sincronizará cuando la conexión esté disponible.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contacto eliminado. Se sincronizará cuando la conexión esté disponible.";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Desactivar el código PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Establecer código PIN";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u direcciones de correo electrónico";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Soporte de dominio de correo personalizado";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "Cifrado de extremo a extremo";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Nueva aplicación de escritorio de Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Soporte prioritario";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u funciones prémium";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Para desbloquear más almacenamiento y funciones premium.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratuito";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Se renueva automáticamente al mismo precio y términos a menos que se cancele.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mes";
