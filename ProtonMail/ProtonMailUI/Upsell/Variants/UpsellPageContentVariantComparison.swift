@@ -67,7 +67,7 @@ struct UpsellPageContentVariantComparison: View {
                             VStack {
                                 HStack {
                                     Text(perks[idx].title)
-                                        .fixedSize()
+                                        .fixedSize(horizontal: false, vertical: true)
                                         .padding(.vertical, 16)
                                         .font(Font(UIFont.adjustedFont(forTextStyle: .footnote)))
 
@@ -131,6 +131,7 @@ struct UpsellPageContentVariantComparison: View {
                 }
             }
             .foregroundColor(ColorProvider.SidebarTextWeak)
+            .padding(.bottom, 8)
         }
         .disableBounceIfNotNeeded()
     }
