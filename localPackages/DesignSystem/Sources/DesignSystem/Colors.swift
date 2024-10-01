@@ -12,12 +12,19 @@ public extension DS.Color {
     enum Background {
         public static let norm = Color(.shade0)
         public static let secondary = Color(.shade10)
-        public static let deep = Color(.shade20)
+        public static let deep = Color(.backgroundDeep)
+        public static let avatar = Color(.backgroundAvatar)
+    }
+
+    enum BackgroundInverted {
+        public static let norm = Color(.backgroundInvertedNorm)
+        public static let secondary = Color(.backgroundInvertedSecondary)
+        public static let deep = Color(.backgroundInvertedSecondary)
     }
 
     enum Border {
-        public static let norm = Color(.shade10)
-        public static let strong = Color(.shade20)
+        public static let norm = Color(.borderNorm)
+        public static let strong = Color(.borderStrong)
     }
 
     enum Brand {
@@ -39,8 +46,8 @@ public extension DS.Color {
     enum Icon {
         public static let norm = Color(.shade100)
         public static let weak = Color(.shade80)
-        public static let hint = Color(.shade50)
-        public static let disabled = Color(.shade40)
+        public static let hint = Color(.iconHint)
+        public static let disabled = Color(.iconDisabled)
         public static let inverted = Color(.shade0)
         public static let accent = Color(.brandNorm)
     }
@@ -58,7 +65,7 @@ public extension DS.Color {
 
     enum InteractionWeak {
         public static let norm = Color(.shade10)
-        public static let pressed = Color(.shade20)
+        public static let pressed = Color(.interactionWeakPressed)
         public static let disabled = Color(.shade10)
     }
 
@@ -74,6 +81,7 @@ public extension DS.Color {
         public static let shade10 = Color(.shade10)
         public static let shade20 = Color(.shade20)
         public static let shade40 = Color(.shade40)
+        public static let shade45 = Color(.shade45)
         public static let shade50 = Color(.shade50)
         public static let shade60 = Color(.shade60)
         public static let shade80 = Color(.shade80)
@@ -100,8 +108,8 @@ public extension DS.Color {
     enum Text {
         public static let norm = Color(.shade100)
         public static let weak = Color(.shade80)
-        public static let hint = Color(.shade50)
-        public static let disabled = Color(.shade40)
+        public static let hint = Color(.textHint)
+        public static let disabled = Color(.textDisabled)
         public static let inverted = Color(.shade0)
         public static let accent = Color(.brandNorm)
     }
