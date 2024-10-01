@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Počisti slog";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Dodaj organizacijo";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Ali želite preklicati postopek?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Stik je bil shranjen in se bo sinhroniziral, ko se povežete z internetom";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Stik je bil izbrisan in se bo sinhroniziral, ko se povežete z internetom";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Onemogoči kodo PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Nastavi kodo PIN";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u e-poštnih naslovov";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora za e-poštno domeno po meri";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "End-to-end encryption";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prednostna podpora strankam";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Nadgradite za več prostora za shranjevanje in premijskih funkcij.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Brezplačno";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mesec";
@@ -2589,7 +2604,7 @@
 "Choose a plan" = "Choose a plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Letno";
 
 /* Label on the Proton Unlimited plan */
 "Best value" = "Best value";

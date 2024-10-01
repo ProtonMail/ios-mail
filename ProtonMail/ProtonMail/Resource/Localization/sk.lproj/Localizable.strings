@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Zmazať štýl";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Pridať organizáciu";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Chcete prerušiť tento proces?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt bol uložený, bude synchronizovaný po pripojení na internet";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt vymazaný, bude synchronizovaný keď bude dostupné pripojenie";
 
 /*
@@ -2301,7 +2301,7 @@
 "Open in Proton Calendar" = "Otvoriť v Proton kalendári";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Zbavte sa zbytočnosti";
+"Clear out the junk" = "Zbavte sa zbytočností";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatické odstraňovanie správ starších ako 30 dní z koša a spamu. Využívajte túto a ďalšie výhody, keď upgradujete.";
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivovať PIN kód";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Nastaviť PIN kód";
 
 /*
@@ -2439,7 +2439,7 @@
 "Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia, keď upgradujete";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Až do 15 emailových adries/aliasov";
+"Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u emailových adries";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "End-to-end šifrovanie";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "Nová desktopová aplikácia Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prioritná zákaznícka podpora";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcií";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Zdarma";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mesiac";

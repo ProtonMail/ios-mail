@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Ryd stil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Tilføj organisation";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Annullér processen?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt gemt. Den synkroniseres, når forbindelse bliver tilgængelig";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt slettet. Den synkroniseres, når forbindelse bliver tilgængelig";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivér pinkode";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Angiv pinkode";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u e-mailadresser";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "End-to-end kryptering";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "New Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prioriteret kundesupport";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium-funktioner";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "For at få mere lagerplads og premium-funktioner.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratis";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/måned";

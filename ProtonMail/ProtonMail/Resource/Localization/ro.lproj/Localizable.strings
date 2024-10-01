@@ -264,7 +264,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Eliminare stil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Adăugare organizaţie";
 
 /* new contacts add Nickname */
@@ -586,10 +586,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Doriți anularea procesului?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contact salvat. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contact șters. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
 /*
@@ -2360,7 +2360,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Dezactivare cod PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Setare cod PIN";
 
 /*
@@ -2502,6 +2502,9 @@
 "%u email addresses" = "%u adrese de e-mail";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
@@ -2512,6 +2515,12 @@
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "Criptare bilaterală";
+
+/* Description of a feature of a paid subscription */
+"New Proton Mail desktop app" = "✓ Aplicație nouă Proton Mail pentru desktop";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Asistență prioritară clienți";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "Peste %u funcții premium";
@@ -2533,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Pentru a debloca mai mult spațiu și funcții premium.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratuit";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/lună";
