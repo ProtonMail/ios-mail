@@ -87,11 +87,7 @@ private struct RootView: View {
         } else {
             appContext
                 .accountCoordinator
-                .welcomeView(clientSessionInitializationStep: { storedSession in
-                    await appContext.initializeMailUserSession(session: storedSession)
-                }, onSignInComplete: { storedSession in
-                    appContext.setupActiveUserSession(session: storedSession)
-                })
+                .accountView()
         }
     }
 }

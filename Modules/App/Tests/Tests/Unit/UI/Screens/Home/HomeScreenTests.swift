@@ -229,7 +229,7 @@ private extension MailUserSession {
 
         let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
 
-        let storedSession = authCoordinator.primaryAccountSession().unsafelyUnwrapped
+        let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
         let mailUserSession = try mailSession.userContextFromSession(session: storedSession)
 
         return mailUserSession

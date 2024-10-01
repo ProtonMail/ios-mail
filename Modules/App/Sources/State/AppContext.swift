@@ -89,9 +89,9 @@ final class AppContext: Sendable, ObservableObject {
         )
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
-        accountCoordinator = AccountAuthCoordinator(appContext: _mailSession)
+        accountCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
 
-        if let currentSession = accountCoordinator.primaryAccountSession() {
+        if let currentSession = accountCoordinator.primaryAccountSignedInSession() {
             activeUserSession = try mailSession.userContextFromSession(session: currentSession)
         }
     }
@@ -112,6 +112,23 @@ final class AppContext: Sendable, ObservableObject {
             activeUserSession = try mailSession.userContextFromSession(session: session)
         } catch {
             AppLogger.log(error: error, category: .userSessions)
+        }
+    }
+}
+
+extension AppContext: AccountAuthDelegate {
+    func accountSessionInitialization(storedSession: proton_app_uniffi.StoredSession) async {
+        await initializeMailUserSession(session: storedSession)
+    }
+
+    func accountSessionDidChange(state: AccountLogin.AccountSessionState) async {
+        switch state {
+        case .signedIn(let storedSession):
+            await setupActiveUserSession(session: storedSession)
+        case .signedOut:
+            await MainActor.run {
+                activeUserSession = nil
+            }
         }
     }
 }
@@ -197,8 +214,7 @@ extension AppContext: SessionProvider {
 
     @MainActor
     func logoutActiveUserSession() async throws {
-        try await activeUserSession?.logout()
-        await accountCoordinator.logoutAccount()
+        await accountCoordinator.signOutAccount()
         activeUserSession = nil
     }
 }
