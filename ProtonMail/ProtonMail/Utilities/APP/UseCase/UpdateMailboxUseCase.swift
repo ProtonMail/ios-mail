@@ -58,16 +58,15 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         }
         isFetching = true
 
-        guard params.isCleanFetch else {
+        if params.isCleanFetch {
+            cleanFetch(params: params, callback: callback)
+        } else {
             scheduledFetch(params: params, callback: callback)
-            return
         }
-        cleanFetch(params: params, callback: callback)
     }
 
     /// Scheduled task to update inbox / event data
     private func scheduledFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
-
         guard self.isEventIDValid else {
             self.fetchDataWithReset(time: params.time,
                                     labelID: params.labelID,

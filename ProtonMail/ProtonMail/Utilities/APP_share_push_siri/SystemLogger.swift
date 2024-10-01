@@ -137,6 +137,7 @@ extension SystemLogger {
         case draft = "Draft"
         case dynamicFontSize = "DynamicFontSize"
         case iap = "In-app purchases"
+        case mailboxRefresh = "MailboxRefresh"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"
