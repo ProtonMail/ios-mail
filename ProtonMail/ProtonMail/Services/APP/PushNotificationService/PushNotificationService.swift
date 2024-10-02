@@ -57,7 +57,7 @@ final class PushNotificationService: NSObject {
     }
 
     // MARK: - register for notifications
-    func registerForRemoteNotifications() {
+    func registerForRemoteNotifications(caller: StaticString = #function) {
         guard !ProcessInfo.isRunningUITests else {
             SystemLogger.log(message: "push registration disabled for UI tests ", category: .pushNotification)
             return
@@ -69,7 +69,7 @@ final class PushNotificationService: NSObject {
             }
             DispatchQueue.main.async {
                 SystemLogger.log(
-                    message: "Requesting system to register for remote notifications",
+                    message: "Requesting system to register for remote notifications (caller: \(caller))",
                     category: .pushNotification
                 )
                 UIApplication.shared.registerForRemoteNotifications()
