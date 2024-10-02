@@ -57,7 +57,6 @@ class SingleMessageContentViewModelFactory {
                         context: context,
                         highlightedKeywords: highlightedKeywords
                      ),
-                     highlightedKeywords: highlightedKeywords,
                      goToDraft: goToDraft)
     }
 

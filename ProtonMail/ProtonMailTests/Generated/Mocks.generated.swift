@@ -1265,11 +1265,6 @@ class MockURLOpener: URLOpener {
         openStub(url)
     }
 
-    @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub
-    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) -> Bool {
-        openAsyncStub(url, options)
-    }
-
 }
 
 class MockURLSessionProtocol: URLSessionProtocol {
@@ -1389,49 +1384,6 @@ class MockUpdateMailboxSourceProtocol: UpdateMailboxSourceProtocol {
     @PropertyStub(\MockUpdateMailboxSourceProtocol.messageLocation, initialGet: nil) var messageLocationStub
     var messageLocation: Message.Location? {
         messageLocationStub()
-    }
-
-}
-
-class MockUserCachedStatusProvider: UserCachedStatusProvider {
-    @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
-    var lastDraftMessageID: String? {
-        get {
-            lastDraftMessageIDStub()
-        }
-        set {
-            lastDraftMessageIDStub(newValue)
-        }
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.getDefaultSignaureSwitchStatus, initialReturn: nil) var getDefaultSignaureSwitchStatusStub
-    func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
-        getDefaultSignaureSwitchStatusStub(uid)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.setDefaultSignatureSwitchStatus) var setDefaultSignatureSwitchStatusStub
-    func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
-        setDefaultSignatureSwitchStatusStub(uid, value)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.removeDefaultSignatureSwitchStatus) var removeDefaultSignatureSwitchStatusStub
-    func removeDefaultSignatureSwitchStatus(uid: String) {
-        removeDefaultSignatureSwitchStatusStub(uid)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.getIsCheckSpaceDisabledStatus, initialReturn: nil) var getIsCheckSpaceDisabledStatusStub
-    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool? {
-        getIsCheckSpaceDisabledStatusStub(uid)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.setIsCheckSpaceDisabledStatus) var setIsCheckSpaceDisabledStatusStub
-    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool) {
-        setIsCheckSpaceDisabledStatusStub(uid, value)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.removeIsCheckSpaceDisabledStatus) var removeIsCheckSpaceDisabledStatusStub
-    func removeIsCheckSpaceDisabledStatus(uid: String) {
-        removeIsCheckSpaceDisabledStatusStub(uid)
     }
 
 }
