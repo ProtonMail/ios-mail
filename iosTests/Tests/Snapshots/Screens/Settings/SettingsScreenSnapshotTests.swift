@@ -21,7 +21,7 @@ import SwiftUI
 
 class SettingsScreenSnapshotTests: BaseTestCase {
 
-    func testSidebarLayoutsCorrectOnIphoneX() {
+    func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let sut = NavigationStack {
             SettingsScreen()
         }
