@@ -34,7 +34,6 @@ final class ComposeViewModelTests: XCTestCase {
     private var testContainer: TestContainer!
     private let userID: UserID = .init(String.randomString(20))
     private var mockUIDelegate: MockComposeUIProtocol!
-    private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
     private var htmlEditor: HtmlEditorBehaviour!
 
     override func setUpWithError() throws {

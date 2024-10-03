@@ -26,16 +26,8 @@ import ProtonCoreKeymaker
 @available(*, deprecated, message: "Remove global access of userCachedStatus in the future.")
 let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
-// sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
     var lastDraftMessageID: String? { get set }
-
-    func getDefaultSignaureSwitchStatus(uid: String) -> Bool?
-    func setDefaultSignatureSwitchStatus(uid: String, value: Bool)
-    func removeDefaultSignatureSwitchStatus(uid: String)
-    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool?
-    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool)
-    func removeIsCheckSpaceDisabledStatus(uid: String)
 }
 
 final class UserCachedStatus: UserCachedStatusProvider {

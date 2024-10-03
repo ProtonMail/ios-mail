@@ -26,15 +26,10 @@ import UIKit
 protocol URLOpener {
     func canOpenURL(_ url: URL) -> Bool
     func open(_ url: URL)
-    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool
 }
 
 extension UIApplication: URLOpener {
     func open(_ url: URL) {
         open(url, options: [:], completionHandler: nil)
-    }
-
-    func openAsync(_ url: URL, options: [OpenExternalURLOptionsKey: Any]) async -> Bool {
-        await open(url, options: options)
     }
 }
