@@ -34,30 +34,31 @@ struct UITestNavigator: ApplicationHolder {
 
         if performLogin {
             login(loginType)
-            
-            if (skipOnboarding) {
-                dismissOnboarding()
-            }
+        }
+
+        MailboxRobot { $0.verifyShown() }
+    
+        if (skipOnboarding) {
+            dismissOnboarding()
         }
 
         switch destination {
         case .inbox:
-            MailboxRobot { $0.verifyShown() }
             break
         case .trash:
-            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openTrash() }
         case .archive:
-            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openArchive() }
         case .sent:
-            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openSent() }
         case .spam:
-            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openSpam() }
         case .subscription:
-            MailboxRobot { $0.verifyShown().openSidebarMenu() }
+            MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openSubscription() }
         }
     }
