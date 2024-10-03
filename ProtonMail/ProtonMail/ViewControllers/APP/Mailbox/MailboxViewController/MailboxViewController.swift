@@ -130,6 +130,10 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     var shouldAnimateSkeletonLoading = false {
         didSet {
+            SystemLogger.log(
+                message: "Placeholder cells \(shouldAnimateSkeletonLoading ? "on" : "off")",
+                category: .mailboxRefresh
+            )
             if shouldAnimateSkeletonLoading {
                 viewModel.diffableDataSource?.animateSkeletonLoading()
             } else {
@@ -137,7 +141,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             }
         }
     }
-    private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
         unreadFilterButton?.isSelected ?? false
     }
@@ -204,19 +207,11 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         self.updateLastUpdateTimeLabel()
         self.updateUnreadButton(count: viewModel.unreadCount)
 
-        refetchAllIfNeeded()
         startAutoFetch()
     }
 
     @objc func doEnterBackground() {
         stopAutoFetch()
-    }
-
-    private func refetchAllIfNeeded() {
-        if BackgroundTimer.shared.wasInBackgroundForMoreThanOneHour {
-            pullDown()
-            BackgroundTimer.shared.updateLastForegroundDate()
-        }
     }
 
     func resetTableView() {
@@ -291,8 +286,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
         SwipyCellConfig.shared.shouldAnimateSwipeViews = false
         SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin = false
-
-        refetchAllIfNeeded()
 
         setupScreenEdgeGesture()
         setupAccessibility()
@@ -934,20 +927,25 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private func forceRefreshAllMessages() {
         guard !self.viewModel.isFetchingMessage else { return }
-        self.shouldKeepSkeletonUntilManualDismissal = true
-
         shouldAnimateSkeletonLoading = true
 
         stopAutoFetch()
 
+        let startTime = Date()
+        SystemLogger.log(message: "Refresh started", category: .mailboxRefresh)
+
         self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: true) {  [weak self] error in
+            SystemLogger.log(error: error, category: .mailboxRefresh)
+
             DispatchQueue.main.async {
                 self?.handleRequestError(error as NSError)
             }
         } completion: { [weak self] in
+            let timeElapsed = Date().timeIntervalSince(startTime)
+            SystemLogger.log(message: "Refresh finished in \(timeElapsed)", category: .mailboxRefresh)
+
             delay(0.5) {
                 self?.shouldAnimateSkeletonLoading = false
-                self?.shouldKeepSkeletonUntilManualDismissal = false
 
                 self?.endRefreshSpinner()
                 self?.showNoResultLabelIfNeeded()
@@ -2392,7 +2390,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         removeDeletedIDFromSelectedItem(snapshot: remappedSnapshot)
-        if shouldKeepSkeletonUntilManualDismissal {
+        if shouldAnimateSkeletonLoading {
             viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             return
         }
