@@ -97,18 +97,12 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         switch dest {
         case .blockList:
             openBlockList()
-        case .singlePwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
-            openCoreChangePassword(mode: .singlePassword)
         case .singlePwd:
-            openChangePassword(ofType: ChangeSinglePasswordViewModel.self)
-        case .loginPwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
-            openCoreChangePassword(mode: .loginPassword)
+            openCoreChangePassword(mode: .singlePassword)
         case .loginPwd:
-            openChangePassword(ofType: ChangeLoginPWDViewModel.self)
-        case .mailboxPwd where FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true):
-            openCoreChangePassword(mode: .mailboxPassword)
+            openCoreChangePassword(mode: .loginPassword)
         case .mailboxPwd:
-            openChangePassword(ofType: ChangeMailboxPWDViewModel.self)
+            openCoreChangePassword(mode: .mailboxPassword)
         case .recoveryEmail:
             openSettingDetail(ofType: ChangeNotificationEmailViewModel.self)
         case .displayName:
@@ -185,12 +179,6 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         user.update(authCredential: authCredential)
         self.navigationController?.popToRootViewController(animated: true)
         L10n.Settings.passwordUpdated.alertToast(withTitle: false)
-    }
-
-    private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {
-        let viewModel = T(user: user)
-        let cpvc = ChangePasswordViewController(viewModel: viewModel)
-        self.navigationController?.pushViewController(cpvc, animated: true)
     }
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {

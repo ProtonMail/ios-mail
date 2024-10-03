@@ -51,12 +51,6 @@ class LocalizedString {
     lazy var _settings_notification_email_switch_title = NSLocalizedString("Enable email notices", comment: "Title")
     /// "Input Notification Email…"
     lazy var _settings_notification_email_placeholder = NSLocalizedString("Input Notification Email…", comment: "place holder")
-    /// "Current password"
-    lazy var _settings_current_password = NSLocalizedString("Current password", comment: "Placeholder")
-    /// "New password"
-    lazy var _settings_new_password = NSLocalizedString("New password", comment: "Placeholder")
-    /// "Confirm new password"
-    lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
     /// "Remove image metadata"
     lazy var _strip_metadata = NSLocalizedString("Remove image metadata", comment: "Settings row")
     /// "Remove image metadata"
@@ -494,23 +488,6 @@ class LocalizedString {
     lazy var _unknown_error = NSLocalizedString("Unknown Error", comment: "Error")
     /// "Load remote content"
     lazy var _load_remote_content = NSLocalizedString("Load remote content", comment: "Action")
-
-    lazy var _setting_change_password = NSLocalizedString("Change password", comment: "title")
-
-    /// "Current signin password"
-    lazy var _current_signin_password = NSLocalizedString("Current sign-in password", comment: "Title")
-
-    /// "New signin password"
-    lazy var _new_signin_password = NSLocalizedString("New sign-in password", comment: "Title")
-
-    /// "Confirm new signin password"
-    lazy var _confirm_new_signin_password = NSLocalizedString("Confirm new sign-in password", comment: "Title")
-
-    /// "New mailbox password"
-    lazy var _new_mailbox_password = NSLocalizedString("New mailbox password", comment: "Title")
-
-    /// "Confirm new mailbox password"
-    lazy var _confirm_new_mailbox_password = NSLocalizedString("Confirm new mailbox password", comment: "Title")
 
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
