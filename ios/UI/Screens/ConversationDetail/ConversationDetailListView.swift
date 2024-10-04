@@ -38,9 +38,7 @@ struct ConversationDetailListView: View {
             case .initial:
                 EmptyView()
             case .fetchingMessages:
-                ProgressView()
-                    .padding(.top, DS.Spacing.medium)
-                    .accessibilityIdentifier(ConversationDetailListViewIdentifiers.loader)
+                ConversationDetailsSkeletonView()
             case .messagesReady(let previous, let last):
                 messageList(previous: previous, last: last)
                     .padding(.top, DS.Spacing.compact)
