@@ -27,11 +27,10 @@ struct AsyncSenderImageView<Content>: View where Content: View {
     private let senderImageParams: SenderImageDataParameters
 
     init(
-        loader: SenderImageLoader = .init(),
         senderImageParams: SenderImageDataParameters,
         @ViewBuilder content: @escaping (SenderImageLoader.Image) -> Content
     ) {
-        _loader = .init(wrappedValue: loader)
+        _loader = StateObject(wrappedValue: .init(address: senderImageParams.address))
         self.senderImageParams = senderImageParams
         self.content = content
     }
@@ -52,16 +51,21 @@ final class SenderImageLoader: ObservableObject {
         case image(_ image: UIImage)
     }
 
-    @Published var senderImage: Image = .empty
-    private let provider: SenderImageDataSource
+    @Published var senderImage: Image
+    private let dependencies: Dependencies
 
-    init(provider: SenderImageDataSource = SenderImageAPIDataSource.shared) {
-        self.provider = provider
+    init(address: String, dependencies: Dependencies = .init()) {
+        self.dependencies = dependencies
+        if let image = self.dependencies.cache.object(for: address) {
+            senderImage = .image(image)
+        } else {
+            senderImage = .empty
+        }
     }
 
     @MainActor
     func loadImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async {
-        guard let image = await provider.senderImage(for: params, colorScheme: colorScheme) else {
+        guard let image = await dependencies.imageDataSource.senderImage(for: params, colorScheme: colorScheme) else {
             senderImage = .empty
             return
         }
@@ -69,15 +73,31 @@ final class SenderImageLoader: ObservableObject {
     }
 }
 
+extension SenderImageLoader {
+
+    struct Dependencies {
+        let imageDataSource: SenderImageDataSource
+        let cache: MemoryCache<String, UIImage>
+
+        init(
+            imageDataSource: SenderImageDataSource = SenderImageAPIDataSource.shared,
+            cache: MemoryCache<String, UIImage> = Caches.senderImageCache
+        ) {
+            self.imageDataSource = imageDataSource
+            self.cache = cache
+        }
+    }
+}
+
+
 #Preview {
     class DummyDataSource: SenderImageDataSource {
         func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
             UIImage(resource: PreviewData.senderImage)
         }        
     }
-    let loader = SenderImageLoader(provider: DummyDataSource())
 
-    return AsyncSenderImageView(loader: loader, senderImageParams: .init()) { image in
+    return AsyncSenderImageView(senderImageParams: .init()) { image in
         switch image {
         case .empty:
             Text("EMPTY".notLocalized)

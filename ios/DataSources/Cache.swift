@@ -15,25 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import SwiftUI
+import class SwiftUI.UIImage
 
-struct AvatarInfo: Hashable {
-    let initials: String
-    let color: Color
-}
-
-struct AvatarUIModel {
-    let info: AvatarInfo
-    let type: AvatarViewType
-
-    init(info: AvatarInfo, type: AvatarViewType) {
-        self.info = info
-        self.type = type
-    }
-}
-
-struct ExpirationDateUIModel {
-    let text: LocalizedStringResource
-    let color: Color
+enum Caches{
+    static let senderImageCache: MemoryCache<String, UIImage> = .init()
 }

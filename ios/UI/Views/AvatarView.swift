@@ -45,9 +45,7 @@ struct AvatarView: View {
     let avatar: AvatarUIModel
 
     var body: some View {
-        if let senderImage = avatar.senderImage {
-            senderImageView(image: Image(uiImage: senderImage))
-        } else if let senderParams = avatar.type.senderImageDataParameters {
+        if let senderParams = avatar.type.senderImageDataParameters {
             AsyncSenderImageView(senderImageParams: senderParams) { senderImage in
                 switch senderImage {
                 case .empty:
@@ -96,7 +94,6 @@ private struct AvatarViewIdentifiers {
     )
     let avatarUIModel3 = AvatarUIModel(
         info: .init(initials: "Ad", color: DS.Color.Brand.norm),
-        senderImage: UIImage(resource: PreviewData.senderImage),
         type: .sender(params: senderParams)
     )
 
