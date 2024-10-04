@@ -32,10 +32,13 @@ struct ProtonMailApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(appContext: .shared, customLabelModel: customLabelModel)
-                .environmentObject(appUIStateStore)
-                .environmentObject(toastStateStore)
-                .environmentObject(userSettings)
+            GeometryReader { proxy in
+                RootView(appContext: .shared, customLabelModel: customLabelModel)
+                    .environment(\.mainWindowSize, proxy.size)
+                    .environmentObject(appUIStateStore)
+                    .environmentObject(toastStateStore)
+                    .environmentObject(userSettings)
+            }
         }
         .onChange(of: scenePhase, { oldValue, newValue in
             // scenePhase contains an aggregate phase for all scenes

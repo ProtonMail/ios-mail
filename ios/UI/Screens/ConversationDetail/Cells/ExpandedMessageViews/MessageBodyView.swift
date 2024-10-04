@@ -20,6 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MessageBodyView: View {
+    @Environment(\.mainWindowSize) var mainWindowSize
     @Environment(\.openURL) var urlOpener
     @State var bodyContentHeight: CGFloat = 0.0
 
@@ -28,6 +29,13 @@ struct MessageBodyView: View {
     let uiModel: ExpandedMessageCellUIModel
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
+    
+    /// This value is key to the conversation scrolling to the opened message. We don't
+    /// know the height of the body before it has finished rendering in the webview, having a
+    /// meaningful default size avoids more than one scroll movement (before and after the html rendering).
+    private var loadingHtmlInitialHeight: CGFloat {
+        mainWindowSize.height * 0.5
+    }
 
     var body: some View {
         if let messageBody = uiModel.message {
@@ -52,16 +60,23 @@ struct MessageBodyView: View {
     }
 
     private func messageBodyView(body: String) -> some View {
-        MessageBodyReaderView(
-            bodyContentHeight: $bodyContentHeight,
-            html: body,
-            urlOpener: urlOpener,
-            htmlLoaded: htmlLoaded
-        )
+        ZStack {
+            ProtonSpinner()
+                .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
+                .removeViewIf(bodyContentHeight > 0)
+
+            MessageBodyReaderView(
+                bodyContentHeight: $bodyContentHeight,
+                html: body,
+                urlOpener: urlOpener,
+                htmlLoaded: htmlLoaded
+            )
             .frame(height: bodyContentHeight)
             .padding(.vertical, DS.Spacing.large)
             .padding(.horizontal, DS.Spacing.large)
+            .opacity(bodyContentHeight > 0 ? 1 : 0)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
+        }
     }
 }
 

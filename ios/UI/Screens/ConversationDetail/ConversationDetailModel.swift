@@ -158,8 +158,12 @@ extension ConversationDetailModel {
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
         let messageIDToScrollTo = messageIDToScrollTo()
-        let cell = messages.first(where: { $0.id == messageIDToScrollTo })
-        scrollToMessage = cell?.cellId ?? Self.lastCellId
+        if messages.last?.id == messageIDToScrollTo {
+            scrollToMessage = Self.lastCellId
+        } else {
+            let cell = messages.first(where: { $0.id == messageIDToScrollTo })
+            scrollToMessage = cell?.cellId ?? Self.lastCellId
+        }
     }
 
     private func messageIDToScrollTo() -> ID? {
