@@ -16,22 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import Lottie
 import SwiftUI
 
-struct MailboxSkeletonView: View {
-    @Environment(\.colorScheme) var colorScheme
+extension List {
 
-    // MARK: - View
-
-    var body: some View {
-        List(0..<25) { _ in
-            MailboxSkeletonItemView(colorScheme: colorScheme)
-        }
-        .styledSkeleton()
+    func styledSkeleton() -> some View {
+        listStyle(.plain)
+            .listRowSpacing(DS.Spacing.huge)
+            .padding(.top, DS.Spacing.huge)
+            .scrollContentBackground(.hidden)
+            .scrollDisabled(true)
     }
-}
 
-#Preview {
-    MailboxSkeletonView()
 }

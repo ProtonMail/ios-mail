@@ -19,19 +19,40 @@ import DesignSystem
 import Lottie
 import SwiftUI
 
-struct MailboxSkeletonView: View {
+struct ConversationDetailsSkeletonView: View {
     @Environment(\.colorScheme) var colorScheme
 
     // MARK: - View
 
     var body: some View {
-        List(0..<25) { _ in
+        List {
             MailboxSkeletonItemView(colorScheme: colorScheme)
+            MailboxSkeletonItemView(colorScheme: colorScheme)
+            skeletonBody(for: colorScheme)
         }
         .styledSkeleton()
+    }
+
+    // MARK: - Private
+
+    private func skeletonBody(for colorScheme: ColorScheme) -> some View {
+        LottieView(animation: animation(for: colorScheme))
+            .playbackInLoopMode()
+            .frame(maxWidth: .infinity)
+            .frame(height: 180)
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(vertical: .zero, horizontal: DS.Spacing.large))
+            .padding(.top, DS.Spacing.standard)
+    }
+
+    private func animation(for colorScheme: ColorScheme) -> LottieAnimation {
+        let darkItem = LottieAnimations.SkeletonBody.dark
+        let lightItem = LottieAnimations.SkeletonBody.light
+
+        return colorScheme == .dark ? darkItem : lightItem
     }
 }
 
 #Preview {
-    MailboxSkeletonView()
+    ConversationDetailsSkeletonView()
 }
