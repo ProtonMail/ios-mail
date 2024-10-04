@@ -22,6 +22,8 @@ import SwiftUI
 struct MailboxSkeletonRowView: View {
     let colorScheme: ColorScheme
 
+    // MARK: - View
+
     var body: some View {
         LottieView(animation: animation(for: colorScheme))
             .playbackInLoopMode()
