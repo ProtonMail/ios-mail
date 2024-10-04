@@ -26,7 +26,7 @@ struct MailboxSkeletonView: View {
 
     var body: some View {
         List(0..<25) { _ in
-            rowView()
+            MailboxSkeletonItemView(colorScheme: colorScheme)
         }
         .listStyle(.plain)
         .listRowSpacing(DS.Spacing.huge)
@@ -34,31 +34,6 @@ struct MailboxSkeletonView: View {
         .scrollContentBackground(.hidden)
         .scrollDisabled(true)
     }
-
-    // MARK: - Private
-
-    private func rowView() -> some View {
-        LottieView(animation: animation(for: colorScheme))
-            .playbackInLoopMode()
-            .frame(maxWidth: .infinity)
-            .frame(height: 40, alignment: .leading)
-            .padding(.trailing, 60)
-            .listRowBackground(Color.clear)
-            .listRowInsets(.init(vertical: .zero, horizontal: DS.Spacing.large))
-            .listRowSeparator(.hidden)
-    }
-
-    private func animation(for colorScheme: ColorScheme) -> LottieAnimation {
-        let darkItem = LottieAnimations.skeletonListItemDark
-        let lightItem = LottieAnimations.skeletonListItemLight
-
-        return colorScheme == .dark ? darkItem : lightItem
-    }
-}
-
-private enum LottieAnimations {
-    static let skeletonListItemLight: LottieAnimation = .named("skeleton_list_item_light").unsafelyUnwrapped
-    static let skeletonListItemDark: LottieAnimation = .named("skeleton_list_item_dark").unsafelyUnwrapped
 }
 
 #Preview {
