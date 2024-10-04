@@ -32,7 +32,7 @@ struct RegularButtonStyle: ButtonStyle {
                 .background(
                     configuration.isPressed
                     ? DS.Color.InteractionWeak.pressed
-                    : DS.Color.Background.norm
+                    : DS.Color.BackgroundInverted.secondary
                 )
         } else {
             configuration.label

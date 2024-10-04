@@ -59,7 +59,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .presentationDragIndicator(.visible)
-        .background(DS.Color.Background.secondary)
+        .background(DS.Color.BackgroundInverted.norm)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(ActionPickerListIdentifiers.rootElement)
     }
@@ -77,7 +77,8 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
                         highlightedElement = isPressed ? element : nil
                     })
                     .listRowBackground(
-                        highlightedElement == element ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm
+                        highlightedElement == element ?
+                            DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary
                     )
                     .accessibilityElement(children: .contain)
                     .accessibilityIdentifier(
