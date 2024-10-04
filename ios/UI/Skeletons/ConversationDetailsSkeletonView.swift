@@ -26,8 +26,8 @@ struct ConversationDetailsSkeletonView: View {
 
     var body: some View {
         List {
-            MailboxSkeletonItemView(colorScheme: colorScheme)
-            MailboxSkeletonItemView(colorScheme: colorScheme)
+            MailboxSkeletonRowView(colorScheme: colorScheme)
+            MailboxSkeletonRowView(colorScheme: colorScheme)
             skeletonBody(for: colorScheme)
         }
         .styledSkeleton()
@@ -40,9 +40,8 @@ struct ConversationDetailsSkeletonView: View {
             .playbackInLoopMode()
             .frame(maxWidth: .infinity)
             .frame(height: 180)
-            .listRowSeparator(.hidden)
-            .listRowInsets(.init(vertical: .zero, horizontal: DS.Spacing.large))
             .padding(.top, DS.Spacing.standard)
+            .styledSkeletonRow()
     }
 
     private func animation(for colorScheme: ColorScheme) -> LottieAnimation {
