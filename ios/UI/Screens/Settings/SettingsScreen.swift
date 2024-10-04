@@ -30,7 +30,7 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                DS.Color.Background.secondary
+                DS.Color.BackgroundInverted.norm
                     .ignoresSafeArea()
                 ScrollView {
                     section(items: [.account(state.accountSettings)], header: L10n.Settings.account)
@@ -41,14 +41,14 @@ struct SettingsScreen: View {
                 }
                 .navigationTitle(L10n.Settings.title.string)
                 .toolbarTitleDisplayMode(.large)
-                .toolbarBackground(DS.Color.Background.secondary, for: .navigationBar)
+                .toolbarBackground(DS.Color.BackgroundInverted.norm, for: .navigationBar)
                 .toolbar {
                     doneToolbarItem()
                 }
             }
             .navigationDestination(item: presentedWebPage) { webPage in
                 ProtonAuthenticatedWebView(webViewPage: webPage)
-                    .background(DS.Color.Background.norm)
+                    .background(DS.Color.BackgroundInverted.norm)
                     .edgesIgnoringSafeArea(.bottom)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -94,7 +94,7 @@ struct SettingsScreen: View {
                     }
                 }
             }
-            .background(DS.Color.Background.norm)
+            .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
         }
         .frame(maxWidth: .infinity)
