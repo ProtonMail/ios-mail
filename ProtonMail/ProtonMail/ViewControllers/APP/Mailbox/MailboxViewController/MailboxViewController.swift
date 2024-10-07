@@ -950,10 +950,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
                 self?.endRefreshSpinner()
                 self?.showNoResultLabelIfNeeded()
                 self?.updateLastUpdateTimeLabel()
+                self?.startAutoFetch(false)
             }
-            self?.startAutoFetch(false)
         }
-
     }
 
     fileprivate func showNoResultLabelIfNeeded() {
