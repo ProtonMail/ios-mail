@@ -207,11 +207,20 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         self.updateLastUpdateTimeLabel()
         self.updateUnreadButton(count: viewModel.unreadCount)
 
+        refetchAllIfNeeded()
         startAutoFetch()
     }
 
     @objc func doEnterBackground() {
         stopAutoFetch()
+    }
+
+    private func refetchAllIfNeeded(caller: StaticString = #function) {
+        if BackgroundTimer.shared.wasInBackgroundLongEnoughForDataToBecomeOutdated {
+            SystemLogger.log(message: "refetchAllIfNeeded called by \(caller)", category: .mailboxRefresh)
+            pullDown()
+            BackgroundTimer.shared.updateLastForegroundDate()
+        }
     }
 
     func resetTableView() {
@@ -286,6 +295,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
         SwipyCellConfig.shared.shouldAnimateSwipeViews = false
         SwipyCellConfig.shared.shouldUseSpringAnimationWhileSwipingToOrigin = false
+
+        refetchAllIfNeeded()
 
         setupScreenEdgeGesture()
         setupAccessibility()
@@ -926,7 +937,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func forceRefreshAllMessages() {
-        guard !self.viewModel.isFetchingMessage else { return }
+        SystemLogger.log(message: "Will refresh all messages", category: .mailboxRefresh)
+
+        guard !self.viewModel.isFetchingMessage else {
+            SystemLogger.log(message: "Fetch already in progress", category: .mailboxRefresh)
+            return
+        }
         shouldAnimateSkeletonLoading = true
 
         stopAutoFetch()

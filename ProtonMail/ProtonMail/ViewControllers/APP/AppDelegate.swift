@@ -215,10 +215,12 @@ extension AppDelegate: UIApplicationDelegate {
         } else {
             delayedCompletion()
         }
+        BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         SystemLogger.log(message: "application will terminate", category: .appLifeCycle)
+        BackgroundTimer().willEnterBackgroundOrTerminate()
     }
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
