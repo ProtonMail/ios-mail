@@ -1646,9 +1646,19 @@ enum L10n {
         static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
         static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
         static let endToEndEncryption = NSLocalizedString("End-to-end encryption", comment: "Description of a feature of a paid subscription")
-        static let desktopApp = NSLocalizedString("New Proton Mail desktop app", comment: "Description of a feature of a paid subscription")
+        static let desktopApp = NSLocalizedString("Access to desktop app", comment: "Description of a feature of a paid subscription")
         static let priorityCustomerSupport = NSLocalizedString("Priority customer support", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
+
+        // carousel
+        static let nTimesMoreStorage = NSLocalizedString("%ux more storage", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreStorageDesc = NSLocalizedString("Get %u GB—plenty of space to securely store your messages, files, and photos", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreAddresses = NSLocalizedString("%ux more email addresses", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreAddressesDesc = NSLocalizedString("Create up to %u email addresses, including @pm.me ones, to meet your needs.", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomainDesc = NSLocalizedString("Connect your own domain and send your professional or branded emails securely.", comment: "Description of a feature of a paid subscription")
+        static let desktopAppDesc = NSLocalizedString("Open your email and calendar with one click and avoid browser distractions.", comment: "Description of a feature of a paid subscription")
+        static let labelsDesc = NSLocalizedString("Organize your emails using your preferred filing and labeling system.", comment: "Description of a feature of a paid subscription")
+        static let customerSupportDesc = NSLocalizedString("Enjoy faster response time from dedicated support staff should an issue arise.", comment: "Description of a feature of a paid subscription")
     }
 
     struct PrivacyAndDataSettings {

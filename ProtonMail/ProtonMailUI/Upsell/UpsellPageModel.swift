@@ -69,6 +69,7 @@ public final class UpsellPageModel: ObservableObject {
     public enum Variant {
         case plain
         case comparison
+        case carousel
     }
 
     public let plan: Plan

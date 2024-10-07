@@ -128,7 +128,7 @@ public struct UpsellPage: View {
     private var infoSection: some View {
         VStack(spacing: 8) {
             VStack(spacing: infoSectionSpacing) {
-                if hideLogo.value {
+                if model.variant == .carousel || hideLogo.value {
                     Text(entryPoint.title(planName: model.plan.name))
                         .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
                         .foregroundColor(ColorProvider.SidebarTextNorm)
@@ -143,11 +143,13 @@ public struct UpsellPage: View {
                     }
                 }
 
-                Text(entryPoint.subtitle(planName: model.plan.name))
-                    .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(ColorProvider.SidebarTextWeak)
+                if model.variant != .carousel {
+                    Text(entryPoint.subtitle(planName: model.plan.name))
+                        .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(ColorProvider.SidebarTextWeak)
+                }
             }
 
             Group {
@@ -158,6 +160,9 @@ public struct UpsellPage: View {
                 case .comparison:
                     UpsellPageContentVariantComparison()
                         .frame(minHeight: enforceVerticalTiles.value ? 100 : 225)
+                case .carousel:
+                    UpsellPageContentVariantCarousel()
+                        .padding(.horizontal, -16)
                 }
             }
             .padding(.top, 12)
@@ -284,12 +289,7 @@ extension UpsellPage {
         model: .init(
             plan: .init(
                 name: "Mail Plus",
-                perks: [
-                    .init(icon: \.storage, description: L10n.PremiumPerks.storage),
-                    .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
-                    .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomainSupport),
-                    .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
-                ],
+                perks: [],
                 purchasingOptions: [
                     .init(
                         identifier: "a",
@@ -310,6 +310,38 @@ extension UpsellPage {
                 ]
             ),
             variant: .comparison
+        ),
+        entryPoint: .header,
+        onPurchaseTapped: { _ in }
+    )
+}
+
+#Preview("carousel") {
+    UpsellPage(
+        model: .init(
+            plan: .init(
+                name: "Mail Plus",
+                perks: [],
+                purchasingOptions: [
+                    .init(
+                        identifier: "a",
+                        cycleInMonths: 1,
+                        monthlyPrice: "CHF 4.99",
+                        billingPrice: "CHF 4.99",
+                        isHighlighted: false,
+                        discount: nil
+                    ),
+                    .init(
+                        identifier: "b",
+                        cycleInMonths: 12,
+                        monthlyPrice: "CHF 3.99",
+                        billingPrice: "CHF 47.88",
+                        isHighlighted: true,
+                        discount: 20
+                    )
+                ]
+            ),
+            variant: .carousel
         ),
         entryPoint: .header,
         onPurchaseTapped: { _ in }
