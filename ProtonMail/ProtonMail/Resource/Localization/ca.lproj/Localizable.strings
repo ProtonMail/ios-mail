@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Introduïu el correu electrònic de notificació…";
 
-/* Placeholder */
-"Current password" = "Contrasenya actual";
-
-/* Placeholder */
-"New password" = "Contrasenya nova";
-
-/* Placeholder */
-"Confirm new password" = "Confirmi la nova contrasenya";
-
 /* Settings row */
 "Remove image metadata" = "Esborrar les metadades de la imatge";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Carrega el contingut remot";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Canvia la contrasenya";
-
-/* Title */
-"Current sign-in password" = "Contrasenya d'inici de sessió actual";
-
-/* Title */
-"New sign-in password" = "Nova contrasenya d'inici de sessió";
-
-/* Title */
-"Confirm new sign-in password" = "Confirmeu la nova contrasenya d'inici de sessió";
-
-/* Title */
-"New mailbox password" = "Nova contrasenya de la bústia";
-
-/* Title */
-"Confirm new mailbox password" = "Confirmeu la contrasenya de la bústia nova";
 
 /* Title */
 "Star/unstar" = "Destaca / no destaquis";
@@ -1451,10 +1421,10 @@
 "Inherited from parent folder" = "Heretat d'una carpeta principal";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "No es permet crear la carpeta.";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "No es permet crear l'etiqueta.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
@@ -1858,7 +1828,7 @@
 "Get more storage" = "Aconseguiu més emmagatzematge";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Mida adaptada per llegir";
 
 /* Spotlight body */
 "Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Canvia la contrasenya";
+
 /* settings general section title */
 "Security keys" = "Claus de seguretat";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u adreces de correu electrònic";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Domini de correu electrònic personalitzat";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport de domini de correu electrònic personalitzat";
@@ -2517,7 +2493,7 @@
 "End-to-end encryption" = "Xifratge d'extrem a extrem";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Nova aplicació d'escriptori de Proton Mail";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Atenció al client prioritària";
@@ -2589,13 +2565,13 @@
 "Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "Programeu ara i envieu més tard";
 
 /* Subtitle of the upsell page */
 "Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Mal moment per a aquest correu?";
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";

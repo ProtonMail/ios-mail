@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Ingresar correo electrónico de notificación…";
 
-/* Placeholder */
-"Current password" = "Contraseña actual";
-
-/* Placeholder */
-"New password" = "Contraseña nueva";
-
-/* Placeholder */
-"Confirm new password" = "Confirmar contraseña nueva";
-
 /* Settings row */
 "Remove image metadata" = "Borrar los metadatos de la imagen";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Cargar contenido remoto";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Cambiar contraseña";
-
-/* Title */
-"Current sign-in password" = "Contraseña de inicio de sesión actual";
-
-/* Title */
-"New sign-in password" = "Contraseña nueva de inicio de sesión";
-
-/* Title */
-"Confirm new sign-in password" = "Confirmar contraseña nueva de inicio de sesión";
-
-/* Title */
-"New mailbox password" = "Contraseña nueva del buzón";
-
-/* Title */
-"Confirm new mailbox password" = "Confirmar contraseña nueva del buzón";
 
 /* Title */
 "Star/unstar" = "Destacar/no destacar";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Cambiar contraseña del buzón";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Cambiar contraseña";
+
 /* settings general section title */
 "Security keys" = "Claves de seguridad";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u direcciones de correo";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Dominio de correo personalizado";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Soporte de dominio de correo personalizado";

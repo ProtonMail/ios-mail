@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Sekcem imayl n ulɣu…";
 
-/* Placeholder */
-"Current password" = "Awal uffir amiran";
-
-/* Placeholder */
-"New password" = "Awal uffir amaynut";
-
-/* Placeholder */
-"Confirm new password" = "Sentem awal uffir amaynut";
-
 /* Settings row */
 "Remove image metadata" = "Kkes idefrisefka n tugna";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Sali-d agbur anmeggag";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Snifel awal uffir";
-
-/* Title */
-"Current sign-in password" = "Awal uffir n tuqqna amiran";
-
-/* Title */
-"New sign-in password" = "Awal uffir n tuqqna amaynut";
-
-/* Title */
-"Confirm new sign-in password" = "Sentem awal uffir amaynut n tuqqna";
-
-/* Title */
-"New mailbox password" = "Awal uffir n tnaka n yimayl amaynut";
-
-/* Title */
-"Confirm new mailbox password" = "Sentem awal uffir n tnaka n yimayl amaynut";
 
 /* Title */
 "Star/unstar" = "Err itri/Kkes itri";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "Snifel awal uffir n tnaka n yimayl";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Snifel awal uffir";
 
 /* settings general section title */
 "Security keys" = "Security keys";

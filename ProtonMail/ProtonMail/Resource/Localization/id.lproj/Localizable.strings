@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Masukkan Email Notifikasi…";
 
-/* Placeholder */
-"Current password" = "Kata sandi saat ini";
-
-/* Placeholder */
-"New password" = "Kata sandi baru";
-
-/* Placeholder */
-"Confirm new password" = "Konfirmasi kata sandi baru";
-
 /* Settings row */
 "Remove image metadata" = "Hapus metadata gambar";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Muat remote content";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Ubah kata sandi";
-
-/* Title */
-"Current sign-in password" = "Kata sandi masuk saat ini";
-
-/* Title */
-"New sign-in password" = "Kata sandi masuk baru";
-
-/* Title */
-"Confirm new sign-in password" = "Konfirmasi kata sandi masuk baru";
-
-/* Title */
-"New mailbox password" = "Kata sandi kotak surat baru";
-
-/* Title */
-"Confirm new mailbox password" = "Konfirmasi kata sandi kotak surat baru";
 
 /* Title */
 "Star/unstar" = "Bintangi/Hapus Bintang";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Ubah kata sandi kotak surat";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Ubah kata sandi";
+
 /* settings general section title */
 "Security keys" = "Kunci keamanan";
 
@@ -2517,7 +2493,7 @@
 "End-to-end encryption" = "Enkripsi end-to-end";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Aplikasi desktop Proton Mail baru";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Dukungan pelanggan prioritas";

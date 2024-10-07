@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Введите электронную почту для уведомлений…";
 
-/* Placeholder */
-"Current password" = "Текущий пароль";
-
-/* Placeholder */
-"New password" = "Новый пароль";
-
-/* Placeholder */
-"Confirm new password" = "Подтвердите новый пароль";
-
 /* Settings row */
 "Remove image metadata" = "Удалить метаданные изображения";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Загрузить внешнее содержимое";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Изменить пароль";
-
-/* Title */
-"Current sign-in password" = "Текущий пароль для входа";
-
-/* Title */
-"New sign-in password" = "Новый пароль для входа";
-
-/* Title */
-"Confirm new sign-in password" = "Подтвердите новый пароль входа";
-
-/* Title */
-"New mailbox password" = "Новый пароль почтового ящика";
-
-/* Title */
-"Confirm new mailbox password" = "Подтвердить новый пароль почтового ящика";
 
 /* Title */
 "Star/unstar" = "Отметить как важное/неважное";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Изменить пароль почтового ящика";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Изменить пароль";
+
 /* settings general section title */
 "Security keys" = "Ключи безопасности";
 
@@ -2517,7 +2493,7 @@
 "End-to-end encryption" = "Сквозное шифрование";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Новое приложение для настольных компьютеров Proton Mail";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Приоритетная поддержка клиентов";

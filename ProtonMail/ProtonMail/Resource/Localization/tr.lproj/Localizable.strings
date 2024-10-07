@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Bildirim e-posta adresini yazın…";
 
-/* Placeholder */
-"Current password" = "Geçerli parola";
-
-/* Placeholder */
-"New password" = "Yeni parola";
-
-/* Placeholder */
-"Confirm new password" = "Yeni parola onayı";
-
 /* Settings row */
 "Remove image metadata" = "Görsel üst verilerini kaldır";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Uzak içeriği yükle";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Parolayı değiştir";
-
-/* Title */
-"Current sign-in password" = "Geçerli oturum açma parolası";
-
-/* Title */
-"New sign-in password" = "Yeni oturum açma parolası";
-
-/* Title */
-"Confirm new sign-in password" = "Yeni oturum açma parolası onayı";
-
-/* Title */
-"New mailbox password" = "Yeni posta kutusu parolası";
-
-/* Title */
-"Confirm new mailbox password" = "Yeni posta kutusu parolası onayı";
 
 /* Title */
 "Star/unstar" = "Yıldız koy/kaldır";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Parolayı değiştir";
+
 /* settings general section title */
 "Security keys" = "Güvenlik anahtarları";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u e-posta adresi";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Özel e-posta etki alanı";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Özel e-posta etki alanı desteği";
@@ -2547,7 +2523,7 @@
 "Free" = "Ücretsiz";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "İptal edilmediği sürece aynı fiyat ve koşullarla otomatik olarak yenilenir.";
 
 /* Displayed next to the monthly price */
 "/month" = "/ay";

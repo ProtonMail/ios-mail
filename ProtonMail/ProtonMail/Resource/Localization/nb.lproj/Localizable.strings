@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "E-post med inndatavarsel ...";
 
-/* Placeholder */
-"Current password" = "Nåværende passord";
-
-/* Placeholder */
-"New password" = "Nytt passord";
-
-/* Placeholder */
-"Confirm new password" = "Bekreft nytt passord";
-
 /* Settings row */
 "Remove image metadata" = "Fjern bildemetadata";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Last eksternt innhold";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Endre passord";
-
-/* Title */
-"Current sign-in password" = "Gjeldende påloggingspassord";
-
-/* Title */
-"New sign-in password" = "Nytt påloggingspassord";
-
-/* Title */
-"Confirm new sign-in password" = "Bekreft nytt påloggingspassord";
-
-/* Title */
-"New mailbox password" = "Nytt postbokspassord";
-
-/* Title */
-"Confirm new mailbox password" = "Bekreft nytt postbokspassord";
 
 /* Title */
 "Star/unstar" = "Stjernemerk/fjern stjernemerking";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Endre postbokspassord";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Endre passord";
+
 /* settings general section title */
 "Security keys" = "Sikkerhetsnøkler";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u e-postadresser";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Egendefinert e-postdomene";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Støtte for tilpasset e-postdomene";
@@ -2547,7 +2523,7 @@
 "Free" = "Gratis";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Fornyes automatisk til samme pris og vilkår med mindre det kanselleres.";
 
 /* Displayed next to the monthly price */
 "/month" = "/måned";

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Увядзіце электронную пошту для апавяшчэння…";
 
-/* Placeholder */
-"Current password" = "Бягучы пароль";
-
-/* Placeholder */
-"New password" = "Новы пароль";
-
-/* Placeholder */
-"Confirm new password" = "Пацвердзіць новы пароль";
-
 /* Settings row */
 "Remove image metadata" = "Выдаліць метаданыя відарыса";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Загрузіць аддаленае змесціва";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Змяніць пароль";
-
-/* Title */
-"Current sign-in password" = "Бягучы пароль уваходу";
-
-/* Title */
-"New sign-in password" = "Новы пароль уваходу";
-
-/* Title */
-"Confirm new sign-in password" = "Пацвердзіць новы пароль уваходу";
-
-/* Title */
-"New mailbox password" = "Новы пароль паштовай скрыні";
-
-/* Title */
-"Confirm new mailbox password" = "Пацвердзіць новы пароль паштовай скрыні";
 
 /* Title */
 "Star/unstar" = "Паставіць/прыбраць зорачку";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Змяніць пароль";
+
 /* settings general section title */
 "Security keys" = "Ключы бяспекі";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u адрасоў электроннай пошты";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Карыстальніцкі дамен электроннай пошты";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
@@ -2547,7 +2523,7 @@
 "Free" = "Бясплатна";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Аўтаматычнае падаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана.";
 
 /* Displayed next to the monthly price */
 "/month" = "/месяц";

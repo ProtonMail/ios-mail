@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Zadajte email na zasielanie notifikácií…";
 
-/* Placeholder */
-"Current password" = "Aktuálne heslo";
-
-/* Placeholder */
-"New password" = "Nové heslo";
-
-/* Placeholder */
-"Confirm new password" = "Potvrďte nové heslo";
-
 /* Settings row */
 "Remove image metadata" = "Odstrániť metadáta obrázku";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Načítať vzdialený obsah";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Zmeniť heslo";
-
-/* Title */
-"Current sign-in password" = "Aktuálne prihlasovacie heslo";
-
-/* Title */
-"New sign-in password" = "Nové prihlasovacie heslo";
-
-/* Title */
-"Confirm new sign-in password" = "Potvrdiť nové prihlasovacie heslo";
-
-/* Title */
-"New mailbox password" = "Nové heslo k poštovej schránke";
-
-/* Title */
-"Confirm new mailbox password" = "Potvrdiť nové heslo k poštovej schránke";
 
 /* Title */
 "Star/unstar" = "Pridať/odobrať hviezdičku";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Zmeniť heslo";
+
 /* settings general section title */
 "Security keys" = "Bezpečnostné kľúče";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u emailových adries";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Vlastná emailová doména";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
@@ -2547,7 +2523,7 @@
 "Free" = "Zdarma";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Automatické obnovenie za rovnakú cenu a za rovnakých podmienok až pokým nedôjde k zrušeniu.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mesiac";

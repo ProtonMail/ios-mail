@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "알림 이메일을 입력해주세요…";
 
-/* Placeholder */
-"Current password" = "현재 비밀번호";
-
-/* Placeholder */
-"New password" = "새 비밀번호";
-
-/* Placeholder */
-"Confirm new password" = "새 비밀번호 확인";
-
 /* Settings row */
 "Remove image metadata" = "이미지 메타데이터 삭제";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "외부 콘텐츠 로드";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "비밀번호 변경";
-
-/* Title */
-"Current sign-in password" = "현재 로그인 비밀번호";
-
-/* Title */
-"New sign-in password" = "새로운 로그인 비밀번호";
-
-/* Title */
-"Confirm new sign-in password" = "새로운 로그인 비밀번호 확인";
-
-/* Title */
-"New mailbox password" = "새 메일함 비밀번호";
-
-/* Title */
-"Confirm new mailbox password" = "새로운 메일함 비밀번호 확인";
 
 /* Title */
 "Star/unstar" = "별표/별표 해제";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "메일함 비밀번호 변경";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "비밀번호 변경";
+
 /* settings general section title */
 "Security keys" = "보안 키";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "이메일 주소 %u개";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "사용자 지정 이메일 도메인";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
@@ -2547,7 +2523,7 @@
 "Free" = "무료";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "취소되기 전까지 같은 가격과 규정으로 갱신됩니다.";
 
 /* Displayed next to the monthly price */
 "/month" = "/월간";

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Mata in e-postavisering…";
 
-/* Placeholder */
-"Current password" = "Nuvarande lösenord";
-
-/* Placeholder */
-"New password" = "Nytt lösenord";
-
-/* Placeholder */
-"Confirm new password" = "Bekräfta nytt lösenord";
-
 /* Settings row */
 "Remove image metadata" = "Ta bort bild-metadata";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Ladda fjärrinnehåll";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Ändra lösenord";
-
-/* Title */
-"Current sign-in password" = "Nuvarande inloggningslösenord";
-
-/* Title */
-"New sign-in password" = "Nytt inloggningslösenord";
-
-/* Title */
-"Confirm new sign-in password" = "Bekräfta nytt inloggningslösenord";
-
-/* Title */
-"New mailbox password" = "Nytt lösenord för brevlådan";
-
-/* Title */
-"Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlåda";
 
 /* Title */
 "Star/unstar" = "Stjärnmärk/ta bort stjärnmärkning";
@@ -2151,7 +2121,7 @@
 "As scheduled" = "Enligt schema";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Ställ in ditt eget schema";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -2160,7 +2130,7 @@
 "Upgrade now" = "Uppgradera nu";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Schemalägg meddelanden när som helst";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Ändra lösenord";
+
 /* settings general section title */
 "Security keys" = "Säkerhetsnycklar";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u e-postadresser";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Anpassad e-postdomän";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Stöd för anpassad e-postdomän";

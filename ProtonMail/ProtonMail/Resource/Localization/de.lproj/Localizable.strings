@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "E-Mail-Benachrichtigung eingeben…";
 
-/* Placeholder */
-"Current password" = "Aktuelles Passwort";
-
-/* Placeholder */
-"New password" = "Neues Passwort";
-
-/* Placeholder */
-"Confirm new password" = "Neues Passwort bestätigen";
-
 /* Settings row */
 "Remove image metadata" = "Metadaten aus Grafiken entfernen";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Inhalte aus externen Quellen laden";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Passwort ändern";
-
-/* Title */
-"Current sign-in password" = "Aktuelles Anmeldepasswort";
-
-/* Title */
-"New sign-in password" = "Neues Anmeldepasswort";
-
-/* Title */
-"Confirm new sign-in password" = "Neues Anmeldepasswort bestätigen";
-
-/* Title */
-"New mailbox password" = "Neues Postfachpasswort";
-
-/* Title */
-"Confirm new mailbox password" = "Neues Mailbox-Passwort bestätigen";
 
 /* Title */
 "Star/unstar" = "Markieren/Markierung entfernen";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Postfach-Passwort ändern";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Passwort ändern";
+
 /* settings general section title */
 "Security keys" = "Sicherheitsschlüssel";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u E-Mail-Adressen";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Eigene E-Mail-Domain";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Eigene E-Mail-Domain Support";
@@ -2616,4 +2592,4 @@
 "Billed at %1$@ every %2$@" = "Abgerechnet zu %1$@ alle %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Premium-Funktionen inbegriffen";

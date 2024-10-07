@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "输入通知邮箱…";
 
-/* Placeholder */
-"Current password" = "当前密码";
-
-/* Placeholder */
-"New password" = "新密码";
-
-/* Placeholder */
-"Confirm new password" = "确认新密码";
-
 /* Settings row */
 "Remove image metadata" = "移除图片元数据";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "加载外链内容";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "更改密码";
-
-/* Title */
-"Current sign-in password" = "当前登录密码";
-
-/* Title */
-"New sign-in password" = "新建登录密码";
-
-/* Title */
-"Confirm new sign-in password" = "确认新登录密码";
-
-/* Title */
-"New mailbox password" = "新邮箱密码";
-
-/* Title */
-"Confirm new mailbox password" = "确认新邮箱密码";
 
 /* Title */
 "Star/unstar" = "星标/取消星标";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "更改密码";
 
 /* settings general section title */
 "Security keys" = "安全密钥";
