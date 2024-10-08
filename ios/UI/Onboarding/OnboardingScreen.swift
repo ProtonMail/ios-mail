@@ -61,24 +61,27 @@ struct OnboardingScreen: View {
     // MARK: - View
 
     var body: some View {
-        VStack(spacing: DS.Spacing.extraLarge) {
-            spacing(height: DS.Spacing.small)
-            header
-            pages
-            dotsIndexIndicator
-            actionButton
-            spacing(height: DS.Spacing.extraLarge)
-        }
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .edgesIgnoringSafeArea(.all)
-                    .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
-                    .onPreferenceChange(HeightPreferenceKey.self) { value in
-                        totalHeight = value
-                    }
+        ZStack {
+            DS.Color.Background.secondary.ignoresSafeArea()
+            VStack(spacing: DS.Spacing.extraLarge) {
+                spacing(height: DS.Spacing.small)
+                header
+                pages
+                dotsIndexIndicator
+                actionButton
+                spacing(height: DS.Spacing.extraLarge)
             }
-        )
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .edgesIgnoringSafeArea(.all)
+                        .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
+                        .onPreferenceChange(HeightPreferenceKey.self) { value in
+                            totalHeight = value
+                        }
+                }
+            )
+        }
         .pickerViewStyle([.height(totalHeight)])
         .onAppear { didAppear?(self) }
         .accessibilityElement()
