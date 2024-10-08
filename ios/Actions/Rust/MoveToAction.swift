@@ -15,11 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-struct AvailableActions {
-    let replyActions: [ReplyAction]
-    let mailboxItemActions: [MailboxItemAction_v2]
-    let moveActions: [MoveToAction]
-    let generalActions: [GeneralActions]
+// FIXME: - Temporary models waiting for Rust SDK for being updated
+enum MoveToAction {
+    case system(MoveToSystemFolderLocation)
+    case moveTo
+}
+
+enum MoveToSystemFolderLabel {
+    case trash
+    case spam
+    case archive
+    case inbox
+}
+
+struct MoveToSystemFolderLocation {
+    let localId: ID
+    let systemLabel: MoveToSystemFolderLabel
 }

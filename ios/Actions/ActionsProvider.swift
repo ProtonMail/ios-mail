@@ -15,22 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-// FIXME: - Temporary models waiting for Rust SDK for being updated
-enum MoveToActions {
-    case system(MoveToSystemFolderLocation)
-    case moveTo
+struct ActionsProvider {
+    let message: (Mailbox, [Id]) async throws -> MessageAvailableActions
+    let conversation: (Mailbox, [Id]) async throws -> ConversationAvailableActions
 }
 
-enum MoveToSystemFolderLabel {
-    case trash
-    case spam
-    case archive
-    case inbox
-}
+extension ActionsProvider {
 
-struct MoveToSystemFolderLocation {
-    let localId: ID
-    let systemLabel: MoveToSystemFolderLabel
+    static var instance: ActionsProvider {
+        .init(
+            message: availableActionsForMessages,
+            conversation: availableActionsForConversations
+        )
+    }
+
 }

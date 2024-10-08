@@ -50,7 +50,11 @@ struct ConversationDetailListView: View {
     }
 
     private func inboxItemActionPicker(input: MessageConversationSheetInput) -> some View {
-        let model = MailboxItemActionsSheetModel(mailbox: model.mailbox.unsafelyUnwrapped, input: input)
+        let model = MailboxItemActionsSheetModel(
+            mailbox: model.mailbox.unsafelyUnwrapped,
+            actionsProvider: .instance,
+            input: input
+        )
         return MailboxItemActionsSheet(model: model)
             .pickerViewStyle([.large])
     }

@@ -20,17 +20,17 @@ import proton_app_uniffi
 
 class MailboxItemActionsSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState
-    private let actionsProvider: MailboxItemActionsProvider
+    private let availableActionsProvider: AvailableActionsProvider
     private let input: MessageConversationSheetInput
 
-    init(mailbox: Mailbox, input: MessageConversationSheetInput) {
-        self.actionsProvider = .init(mailbox: mailbox)
+    init(mailbox: Mailbox, actionsProvider: ActionsProvider, input: MessageConversationSheetInput) {
+        self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
         self.state = .initial(title: input.title)
         self.input = input
     }
 
     func loadActions() async {
-        let actions = await actionsProvider.actions(for: input.type, ids: input.ids)
+        let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
         switch actions {
         case .success(let actions):
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in

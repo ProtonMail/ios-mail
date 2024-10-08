@@ -19,7 +19,8 @@ import Foundation
 import proton_app_uniffi
 import SwiftUI
 
-struct MailboxItemActionsProvider {
+struct AvailableActionsProvider {
+    let actionsProvider: ActionsProvider
     let mailbox: Mailbox
 
     func actions(for type: MailboxItemType, ids: [ID]) async -> Result<AvailableActions, Error> {
@@ -39,9 +40,9 @@ struct MailboxItemActionsProvider {
     ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> AvailableActionsConvertible {
         switch type {
         case .message:
-            availableActionsForMessages
+            actionsProvider.message
         case .conversation:
-            availableActionsForConversations
+            actionsProvider.conversation
         }
     }
 }
@@ -56,7 +57,7 @@ extension MessageAvailableActions: AvailableActionsConvertible {
         .init(
             replyActions: replyActions,
             mailboxItemActions: messageActions.map(\.action),
-            moveActions: moveActions,
+            moveActions: .mocked(), // FIXME: - Waiting for Rust SDK
             generalActions: generalActions
         )
     }
@@ -69,9 +70,24 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
         .init(
             replyActions: replyActions,
             mailboxItemActions: conversationActions.map(\.action),
-            moveActions: moveActions,
+            moveActions: .mocked(), // FIXME: - Waiting for Rust SDK
             generalActions: generalActions
         )
+    }
+
+}
+
+// FIXME: - Waiting for Rust SDK
+private extension Array where Element == MoveToAction {
+
+    static func mocked() -> Self {
+        [
+            .system(.init(localId: .random(), systemLabel: .inbox)),
+            .system(.init(localId: .random(), systemLabel: .archive)),
+            .system(.init(localId: .random(), systemLabel: .spam)),
+            .system(.init(localId: .random(), systemLabel: .trash)),
+            .moveTo
+        ]
     }
 
 }

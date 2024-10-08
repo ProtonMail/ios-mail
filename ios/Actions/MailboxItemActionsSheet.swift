@@ -35,30 +35,23 @@ struct MailboxItemActionsSheet: View {
                             replyButton(action: action)
                         }
                     }
-                    section {
-                        ForEachLast(data: model.state.availableActions.mailboxItemActions) { action, isLast in
-                            listButton(displayData: action.displayData, displayBottomSeparator: !isLast)
-                        }
-                    }
-
-                    section { // FIXME: - Move to actions
-                        listButton(
-                            displayData: .init(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn),
-                            displayBottomSeparator: false
-                        )
-                    }
-
-                    section {
-                        ForEachLast(data: model.state.availableActions.generalActions) { action, isLast in
-                            listButton(displayData: action.displayData, displayBottomSeparator: !isLast)
-                        }
-                    }
+                    section(displayData: model.state.availableActions.mailboxItemActions.map(\.displayData))
+                    section(displayData: model.state.availableActions.moveActions.map(\.displayData))
+                    section(displayData: model.state.availableActions.generalActions.map(\.displayData))
                 }.padding(.all, DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
             .task { await model.loadActions() }
+        }
+    }
+
+    private func section(displayData: [ActionDisplayData]) -> some View {
+        section {
+            ForEachLast(data: displayData) { displayData, isLast in
+                listButton(displayData: displayData, displayBottomSeparator: !isLast)
+            }
         }
     }
 
@@ -114,36 +107,4 @@ struct MailboxItemActionsSheet: View {
 
 #Preview {
     MailboxItemActionsSheet(model: MailboxItemActionsSheetPreviewProvider.testData())
-}
-
-enum MailboxItemActionsSheetPreviewProvider {
-    static func testData() -> MailboxItemActionsSheetModel {
-        let model = MailboxItemActionsSheetModel(
-            mailbox: .init(noPointer: .init()),
-            input: .init(ids: [], type: .message, title: "Hello".notLocalized)
-        )
-        model.state = .init(
-            title: "Hello".notLocalized,
-            availableActions: .init(
-                replyActions: [.reply, .forward, .replyAll],
-                mailboxItemActions: [.markUnread, .star, .pin, .labelAs],
-                moveActions: [
-                    .init(
-                        localId: .random(),
-                        name: .trash,
-                        isSelected: .unselected
-                    ),
-                ],
-                generalActions: [
-                    .viewMessageInLightMode,
-                    .saveAsPdf,
-                    .print,
-                    .viewHeaders,
-                    .viewHtml,
-                    .reportPhishing
-                ]
-            )
-        )
-        return model
-    }
 }
