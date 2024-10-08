@@ -81,6 +81,8 @@ public extension DS.Icon {
     static let icSun = ImageResource.icSun
     static let icTag = ImageResource.icTag
     static let icThreeDotsHorizontal = ImageResource.icThreeDotsHorizontal
+    static let icPinAngled = ImageResource.icPinAngled
+    static let icPinAngledSlash = ImageResource.icPinAngledSlash
 }
 
 // MARK: message address actions

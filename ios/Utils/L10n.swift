@@ -107,6 +107,8 @@ enum L10n {
             "Print",
             comment: "Action title for printing given message in the action sheet."
         )
+        static let pin = LocalizedStringResource("Pin", comment: "Message pin action title.")
+        static let unpin = LocalizedStringResource("Unpin", comment: "Message unpin action title.")
         static let renderInLightMode = LocalizedStringResource(
             "View message in light mode",
             comment: "Action title for viewing given message in light mode in the action sheet."

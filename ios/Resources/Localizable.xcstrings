@@ -233,6 +233,9 @@
     "Outbox" : {
       "comment" : "Menu title of all outbox emails in the sidebar."
     },
+    "Pin" : {
+      "comment" : "Message pin action title."
+    },
     "Preferences" : {
       "comment" : "Title of a section in Settings."
     },
@@ -292,6 +295,9 @@
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar."
+    },
+    "Unpin" : {
+      "comment" : "Message unpin action title."
     },
     "Unread" : {
       "comment" : "Badge title indicating how many emails are unread in given system folder."
