@@ -117,12 +117,46 @@ final class CoreDataStore {
 
     private func isMigrationNeeded(currentModel: NSManagedObjectModel) -> Bool {
         do {
-            let sourceMetaData = try NSPersistentStoreCoordinator.metadataForPersistentStore(type: .sqlite, at: databaseURL)
-            return !currentModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: sourceMetaData)
+            var result: Result<Bool, Error>!
+
+            try ObjC.catchException {
+                do {
+                    let sourceMetaData = try NSPersistentStoreCoordinator.metadataForPersistentStore(
+                        type: .sqlite,
+                        at: self.databaseURL
+                    )
+
+                    let isNeeded = !currentModel.isConfiguration(
+                        withName: nil,
+                        compatibleWithStoreMetadata: sourceMetaData
+                    )
+
+                    result = .success(isNeeded)
+                } catch {
+                    result = .failure(error)
+                }
+            }
+
+            return try result.get()
         } catch {
-            print(error)
+            if !shouldIgnore(error: error) {
+                PMAssertionFailure(error)
+            }
             return false
         }
+    }
+
+    private func shouldIgnore(error: Error) -> Bool {
+        #if DEBUG
+        guard ProcessInfo.isRunningUnitTests else {
+            return false
+        }
+
+        let nsError = error as NSError
+        return nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileReadNoSuchFileError
+        #else
+        return false
+        #endif
     }
 
     private func getManagedObjectModel() -> NSManagedObjectModel? {
