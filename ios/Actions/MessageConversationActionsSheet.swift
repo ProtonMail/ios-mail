@@ -45,7 +45,9 @@ struct MessageConversationActionsSheet: View {
                         }
                     }
 
-                    // FIXME: - Move to actions
+                    section { // FIXME: - Move to actions
+                        listButton(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn, isLast: false)
+                    }
 
                     section {
                         ForEachLast(data: model.state.availableActions.generalActions) { action, isLast in
@@ -57,6 +59,7 @@ struct MessageConversationActionsSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
+            .task { await model.loadActions() }
         }
     }
 

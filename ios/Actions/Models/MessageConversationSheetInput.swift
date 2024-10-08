@@ -17,7 +17,11 @@
 
 import Foundation
 
-struct MessageConversationSheetInput {
+struct MessageConversationSheetInput: Identifiable {
+    var id: String {
+        title
+    }
+
     let ids: [ID]
     let type: ActionType
     let title: String

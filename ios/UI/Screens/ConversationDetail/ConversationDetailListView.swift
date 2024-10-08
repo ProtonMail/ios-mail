@@ -24,7 +24,7 @@ struct ConversationDetailListView: View {
     @State private var showMessageActionPicker: Bool = false
     
     /// These attributes trigger the different action sheets
-    @State private var messageActionTarget: ExpandedMessageCellUIModel?
+    @State private var inboxItemActionSheetInput: MessageConversationSheetInput?
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
@@ -44,31 +44,15 @@ struct ConversationDetailListView: View {
                     .padding(.top, DS.Spacing.compact)
             }
         }
-        .sheet(item: $messageActionTarget, content: messageActionPicker)
+        .sheet(item: $inboxItemActionSheetInput, content: inboxItemActionPicker)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
     }
 
-    private func messageActionPicker(target: ExpandedMessageCellUIModel) -> some View {
-        let readStatus: SelectionReadStatus = .allRead // because the cell is expanded
-        let starStatus: SelectionStarStatus = target.messageDetails.other.contains(.starred)
-        ? .allStarred
-        : .noneStarred
-
-        let conditionalParams = ConditionalActionResolverParams(
-            selectionReadStatus: readStatus,
-            selectionStarStatus: starStatus,
-            systemFolder: model.seed.selectedMailbox.systemFolder
-        )
-
-        return MailboxItemActionPickerView(
-            mailboxItemIdentifier: .message(target.id),
-            actionResolverParams: conditionalParams,
-            onActionTap: { action, item in
-                print("action \(action) for item \(item)")
-            }
-        )
-        .pickerViewStyle([.large])
+    private func inboxItemActionPicker(input: MessageConversationSheetInput) -> some View {
+        let model = MessageConversationActionsModel(mailbox: model.mailbox.unsafelyUnwrapped, input: input)
+        return MessageConversationActionsSheet(model: model)
+            .pickerViewStyle([.large])
     }
 
     private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
@@ -143,7 +127,7 @@ struct ConversationDetailListView: View {
         case .onReply, .onReplyAll, .onForward:
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
-            messageActionTarget = uiModel
+            inboxItemActionSheetInput = .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

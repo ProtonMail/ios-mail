@@ -28,6 +28,22 @@ class MessageConversationActionsModel: ObservableObject {
         self.state = .initial(title: input.title)
         self.input = input
     }
+
+    func loadActions() async {
+        let actions = await actionsProvider.actions(for: input.type, ids: input.ids)
+        switch actions {
+        case .success(let actions):
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.update(actions: actions)
+            }))
+        case .failure:
+            fatalError("Handle error here")
+        }
+    }
+
+    private func update(actions: AvailableActions) {
+        state = state.copy(availableActions: actions)
+    }
 }
 
 private extension MessageConversationSheetState {
@@ -41,5 +57,9 @@ private extension MessageConversationSheetState {
                 generalActions: []
             )
         )
+    }
+
+    func copy(availableActions: AvailableActions) -> Self {
+        .init(title: title, availableActions: availableActions)
     }
 }
