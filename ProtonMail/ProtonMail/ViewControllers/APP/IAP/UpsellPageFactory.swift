@@ -117,6 +117,8 @@ struct UpsellPageFactory {
             switch experimentFeatureFlag?.variant?.name {
             case "comparison":
                 return .comparison
+            case "carousel":
+                return .comparison
             default:
                 return .plain
             }

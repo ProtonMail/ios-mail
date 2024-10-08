@@ -235,6 +235,8 @@ private extension UpsellPageModel.Variant {
             return "A"
         case .comparison:
             return "B"
+        case .carousel:
+            return "C"
         }
     }
 }
