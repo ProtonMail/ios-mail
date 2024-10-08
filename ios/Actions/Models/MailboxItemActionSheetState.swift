@@ -17,13 +17,7 @@
 
 import Foundation
 
-enum MessageConversationActions {
-    case star
-    case unstar
-    case pin
-    case unpin
-    case labelAs
-    case markRead
-    case markUnread
-    case delete
+struct MailboxItemActionSheetState {
+    let title: String
+    let availableActions: AvailableActions
 }

@@ -17,7 +17,14 @@
 
 import Foundation
 
-enum ActionType {
-    case message
-    case conversation
+// FIXME: - Rename to "MailboxItemAction"
+enum MailboxItemAction_v2 {
+    case star
+    case unstar
+    case pin
+    case unpin
+    case labelAs
+    case markRead
+    case markUnread
+    case delete
 }

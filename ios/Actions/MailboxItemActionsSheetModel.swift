@@ -18,9 +18,9 @@
 import Combine
 import proton_app_uniffi
 
-class MessageConversationActionsModel: ObservableObject {
-    @Published var state: MessageConversationSheetState
-    private let actionsProvider: MessageConversationActionsProvider
+class MailboxItemActionsSheetModel: ObservableObject {
+    @Published var state: MailboxItemActionSheetState
+    private let actionsProvider: MailboxItemActionsProvider
     private let input: MessageConversationSheetInput
 
     init(mailbox: Mailbox, input: MessageConversationSheetInput) {
@@ -46,13 +46,13 @@ class MessageConversationActionsModel: ObservableObject {
     }
 }
 
-private extension MessageConversationSheetState {
+private extension MailboxItemActionSheetState {
     static func initial(title: String) -> Self {
         .init(
             title: title,
             availableActions: .init(
                 replyActions: [],
-                messageConversationActions: [],
+                mailboxItemActions: [],
                 moveActions: [],
                 generalActions: []
             )

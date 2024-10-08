@@ -19,10 +19,10 @@ import Foundation
 import proton_app_uniffi
 import SwiftUI
 
-struct MessageConversationActionsProvider {
+struct MailboxItemActionsProvider {
     let mailbox: Mailbox
 
-    func actions(for type: ActionType, ids: [ID]) async -> Result<AvailableActions, Error> {
+    func actions(for type: MailboxItemType, ids: [ID]) async -> Result<AvailableActions, Error> {
         let provider = actionsProvider(for: type)
         do {
             let actions = try await provider(mailbox, ids).availableActions
@@ -35,7 +35,7 @@ struct MessageConversationActionsProvider {
     // MARK: - Private
 
     private func actionsProvider(
-        for type: ActionType
+        for type: MailboxItemType
     ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> AvailableActionsConvertible {
         switch type {
         case .message:
@@ -46,7 +46,7 @@ struct MessageConversationActionsProvider {
     }
 }
 
-private protocol AvailableActionsConvertible {
+protocol AvailableActionsConvertible {
     var availableActions: AvailableActions { get }
 }
 
@@ -55,7 +55,7 @@ extension MessageAvailableActions: AvailableActionsConvertible {
     var availableActions: AvailableActions {
         .init(
             replyActions: replyActions,
-            messageConversationActions: messageActions.map(\.action),
+            mailboxItemActions: messageActions.map(\.action),
             moveActions: moveActions,
             generalActions: generalActions
         )
@@ -68,7 +68,7 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
     var availableActions: AvailableActions {
         .init(
             replyActions: replyActions,
-            messageConversationActions: conversationActions.map(\.action),
+            mailboxItemActions: conversationActions.map(\.action),
             moveActions: moveActions,
             generalActions: generalActions
         )

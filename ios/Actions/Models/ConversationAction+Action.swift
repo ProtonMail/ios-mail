@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 extension ConversationAction {
-    var action: MessageConversationActions {
+    var action: MailboxItemAction_v2 {
         switch self {
         case .star:
             return .star

@@ -17,7 +17,7 @@
 
 import DesignSystem
 
-extension MessageConversationActions {
+extension MailboxItemAction_v2 {
 
     var displayData: ActionDisplayData {
         switch self {

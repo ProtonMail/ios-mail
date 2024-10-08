@@ -18,11 +18,13 @@
 import Foundation
 
 struct MessageConversationSheetInput: Identifiable {
+    let ids: [ID]
+    let type: MailboxItemType
+    let title: String
+
+    // MARK: - Identifiable
+
     var id: String {
         title
     }
-
-    let ids: [ID]
-    let type: ActionType
-    let title: String
 }

@@ -19,10 +19,10 @@ import SwiftUI
 import proton_app_uniffi
 import DesignSystem
 
-struct MessageConversationActionsSheet: View {
-    @StateObject var model: MessageConversationActionsModel
+struct MailboxItemActionsSheet: View {
+    @StateObject var model: MailboxItemActionsSheetModel
 
-    init(model: MessageConversationActionsModel) {
+    init(model: MailboxItemActionsSheetModel) {
         _model = .init(wrappedValue: model)
     }
 
@@ -36,22 +36,21 @@ struct MessageConversationActionsSheet: View {
                         }
                     }
                     section {
-                        ForEachLast(data: model.state.availableActions.messageConversationActions) { action, isLast in
-                            listButton(
-                                title: action.displayData.title,
-                                image: action.displayData.image,
-                                isLast:  isLast
-                            )
+                        ForEachLast(data: model.state.availableActions.mailboxItemActions) { action, isLast in
+                            listButton(displayData: action.displayData, displayBottomSeparator: !isLast)
                         }
                     }
 
                     section { // FIXME: - Move to actions
-                        listButton(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn, isLast: false)
+                        listButton(
+                            displayData: .init(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn),
+                            displayBottomSeparator: false
+                        )
                     }
 
                     section {
                         ForEachLast(data: model.state.availableActions.generalActions) { action, isLast in
-                            listButton(title: action.displayData.title, image: action.displayData.image, isLast: isLast)
+                            listButton(displayData: action.displayData, displayBottomSeparator: !isLast)
                         }
                     }
                 }.padding(.all, DS.Spacing.large)
@@ -89,22 +88,22 @@ struct MessageConversationActionsSheet: View {
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
 
-    private func listButton(title: LocalizedStringResource, image: ImageResource, isLast: Bool) -> some View {
+    private func listButton(displayData: ActionDisplayData, displayBottomSeparator: Bool) -> some View {
         VStack(spacing: .zero) {
             Button(action: { print("Action") }) {
                 HStack(spacing: DS.Spacing.large) {
-                    Image(image)
+                    Image(displayData.image)
                         .resizable()
                         .square(size: 20)
                         .foregroundStyle(DS.Color.Icon.norm)
-                    Text(title)
+                    Text(displayData.title)
                         .foregroundStyle(DS.Color.Text.weak)
                     Spacer()
                 }
                 .frame(height: 52)
                 .padding(.leading, DS.Spacing.large)
             }
-            if !isLast {
+            if displayBottomSeparator {
                 Divider()
                     .frame(height: 1)
             }
@@ -114,12 +113,12 @@ struct MessageConversationActionsSheet: View {
 }
 
 #Preview {
-    MessageConversationActionsSheet(model: MessageConversationActionsSheetPreviewProvider.testData())
+    MailboxItemActionsSheet(model: MailboxItemActionsSheetPreviewProvider.testData())
 }
 
-enum MessageConversationActionsSheetPreviewProvider {
-    static func testData() -> MessageConversationActionsModel {
-        let model = MessageConversationActionsModel(
+enum MailboxItemActionsSheetPreviewProvider {
+    static func testData() -> MailboxItemActionsSheetModel {
+        let model = MailboxItemActionsSheetModel(
             mailbox: .init(noPointer: .init()),
             input: .init(ids: [], type: .message, title: "Hello".notLocalized)
         )
@@ -127,7 +126,7 @@ enum MessageConversationActionsSheetPreviewProvider {
             title: "Hello".notLocalized,
             availableActions: .init(
                 replyActions: [.reply, .forward, .replyAll],
-                messageConversationActions: [.markUnread, .star, .pin, .labelAs],
+                mailboxItemActions: [.markUnread, .star, .pin, .labelAs],
                 moveActions: [
                     .init(
                         localId: .random(),

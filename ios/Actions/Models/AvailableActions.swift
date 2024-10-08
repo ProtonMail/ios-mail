@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 struct AvailableActions {
     let replyActions: [ReplyAction]
-    let messageConversationActions: [MessageConversationActions]
+    let mailboxItemActions: [MailboxItemAction_v2]
     let moveActions: [SystemFolderAction]
     let generalActions: [GeneralActions]
 }
