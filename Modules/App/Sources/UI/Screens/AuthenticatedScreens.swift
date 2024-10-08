@@ -19,16 +19,21 @@ import proton_app_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
-    enum ModalState {
-        case none
-        case settingsScreen
+    enum ModalState: String, Identifiable {
         case labelOrFolderCreationScreen
+        case settingsScreen
+
+        // MARK: - Identifiable
+
+        var id: String {
+            rawValue
+        }
     }
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
-    @State private var modalState: ModalState = .none
+    @State private var modalState: ModalState?
     @ObservedObject private var customLabelModel: CustomLabelModel
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
@@ -109,20 +114,8 @@ struct AuthenticatedScreens: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(isPresented: isModalPresented(for: .labelOrFolderCreationScreen)) {
-            CreateFolderOrLabelScreen()
-        }
-        .sheet(isPresented: isModalPresented(for: .settingsScreen)) {
-            SettingsScreen()
-        }
+        .sheet(item: $modalState, content: AuthenticatedScreenModalFactory.makeModal)
         .onAppear { didAppear?(self) }
-    }
-
-    private func isModalPresented(for state: ModalState) -> Binding<Bool> {
-        .init(
-            get: { modalState == state },
-            set: { newValue in modalState = newValue ? state : .none }
-        )
     }
 
     private func signOut() {
