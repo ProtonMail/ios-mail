@@ -19,17 +19,21 @@ import proton_app_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
+    enum ModalState {
+        case none
+        case settingsScreen
+        case labelOrFolderCreationScreen
+    }
+
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
+    @State private var modalState: ModalState = .none
     @ObservedObject private var customLabelModel: CustomLabelModel
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaultsCleaner: UserDefaultsCleaner
     private let userDefaults: UserDefaults
-
-    @State var areSettingsPresented = false
-    @State var isLabelOrFolderCreationScreenPresented = false
 
     init(customLabelModel: CustomLabelModel, userSession: MailUserSession, userDefaults: UserDefaults) {
         _appRoute = .init(wrappedValue: .initialState)
@@ -79,11 +83,11 @@ struct AuthenticatedScreens: View {
                 case .other(let otherItem):
                     switch otherItem.type {
                     case .settings:
-                        areSettingsPresented = true
+                        modalState = .settingsScreen
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
                     case .createFolder, .createLabel:
-                        isLabelOrFolderCreationScreenPresented = true
+                        modalState = .labelOrFolderCreationScreen
                     case .signOut:
                         signOut()
                     case .shareLogs:
@@ -105,13 +109,20 @@ struct AuthenticatedScreens: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(isPresented: $isLabelOrFolderCreationScreenPresented) {
+        .sheet(isPresented: isModalPresented(for: .labelOrFolderCreationScreen)) {
             CreateFolderOrLabelScreen()
         }
-        .sheet(isPresented: $areSettingsPresented) {
+        .sheet(isPresented: isModalPresented(for: .settingsScreen)) {
             SettingsScreen()
         }
         .onAppear { didAppear?(self) }
+    }
+
+    private func isModalPresented(for state: ModalState) -> Binding<Bool> {
+        .init(
+            get: { modalState == state },
+            set: { newValue in modalState = newValue ? state : .none }
+        )
     }
 
     private func signOut() {
