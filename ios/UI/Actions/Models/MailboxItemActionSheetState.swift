@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct MailboxItemActionSheetState {
+struct MailboxItemActionSheetState: Equatable {
     let title: String
     let availableActions: AvailableActions
 }

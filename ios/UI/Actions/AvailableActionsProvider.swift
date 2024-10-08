@@ -78,14 +78,14 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
 }
 
 // FIXME: - Waiting for Rust SDK
-private extension Array where Element == MoveToAction {
+extension Array where Element == MoveToAction {
 
     static func mocked() -> Self {
         [
-            .system(.init(localId: .random(), systemLabel: .inbox)),
-            .system(.init(localId: .random(), systemLabel: .archive)),
-            .system(.init(localId: .random(), systemLabel: .spam)),
-            .system(.init(localId: .random(), systemLabel: .trash)),
+            .system(.init(localId: .init(value: 1), systemLabel: .inbox)),
+            .system(.init(localId: .init(value: 2), systemLabel: .archive)),
+            .system(.init(localId: .init(value: 3), systemLabel: .spam)),
+            .system(.init(localId: .init(value: 4), systemLabel: .trash)),
             .moveTo
         ]
     }

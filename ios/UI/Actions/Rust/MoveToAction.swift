@@ -18,19 +18,19 @@
 import Foundation
 
 // FIXME: - Temporary models waiting for Rust SDK for being updated
-enum MoveToAction {
+enum MoveToAction: Equatable {
     case system(MoveToSystemFolderLocation)
     case moveTo
 }
 
-enum MoveToSystemFolderLabel {
+enum MoveToSystemFolderLabel: Equatable {
     case trash
     case spam
     case archive
     case inbox
 }
 
-struct MoveToSystemFolderLocation {
+struct MoveToSystemFolderLocation: Equatable {
     let localId: ID
     let systemLabel: MoveToSystemFolderLabel
 }
