@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "輸入通知電郵…";
 
-/* Placeholder */
-"Current password" = "目前密碼";
-
-/* Placeholder */
-"New password" = "新密碼";
-
-/* Placeholder */
-"Confirm new password" = "確認新密碼";
-
 /* Settings row */
 "Remove image metadata" = "移除圖像中繼資料";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "載入遠端內容";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "變更密碼";
-
-/* Title */
-"Current sign-in password" = "目前登入密碼";
-
-/* Title */
-"New sign-in password" = "新的登入密碼";
-
-/* Title */
-"Confirm new sign-in password" = "確認新登入密碼";
-
-/* Title */
-"New mailbox password" = "新的信箱密碼";
-
-/* Title */
-"Confirm new mailbox password" = "確認新郵箱密碼";
 
 /* Title */
 "Star/unstar" = "加上星號/移除星號";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "變更郵箱密碼";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "變更密碼";
 
 /* settings general section title */
 "Security keys" = "安全性密鑰";

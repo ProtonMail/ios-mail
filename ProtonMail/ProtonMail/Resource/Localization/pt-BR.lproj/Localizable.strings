@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Inserir e-mail de notificação…";
 
-/* Placeholder */
-"Current password" = "Senha atual";
-
-/* Placeholder */
-"New password" = "Nova senha";
-
-/* Placeholder */
-"Confirm new password" = "Confirmar nova senha";
-
 /* Settings row */
 "Remove image metadata" = "Remover metadados da imagem";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Carregar conteúdo remoto";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Alterar senha";
-
-/* Title */
-"Current sign-in password" = "Senha de acesso atual";
-
-/* Title */
-"New sign-in password" = "Nova senha de acesso";
-
-/* Title */
-"Confirm new sign-in password" = "Confirmar nova senha de acesso";
-
-/* Title */
-"New mailbox password" = "Nova senha da caixa de correio";
-
-/* Title */
-"Confirm new mailbox password" = "Confirmar a nova senha da caixa de correio";
 
 /* Title */
 "Star/unstar" = "Atribuir/retirar estrela";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Alterar senha da caixa de correio";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Alterar senha";
+
 /* settings general section title */
 "Security keys" = "Chaves de segurança";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u endereços de e-mail";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Domínio de e-mail personalizado";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suporte para domínios de e-mail personalizados";
@@ -2517,7 +2493,7 @@
 "End-to-end encryption" = "Criptografia de ponta a ponta";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Novo aplicativo Proton Mail para desktop";
+"New Proton Mail desktop app" = "Novo aplicativo do Proton Mail para computador";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Suporte prioritário ao cliente";
@@ -2547,7 +2523,7 @@
 "Free" = "Grátis";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Renovação automática com o mesmo preço e condições, a menos que seja cancelado.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mês";

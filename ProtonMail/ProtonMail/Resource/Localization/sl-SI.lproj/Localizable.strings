@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Vnesite e-pošto za obvestila …";
 
-/* Placeholder */
-"Current password" = "Trenutno geslo";
-
-/* Placeholder */
-"New password" = "Novo geslo";
-
-/* Placeholder */
-"Confirm new password" = "Potrdite novo geslo";
-
 /* Settings row */
 "Remove image metadata" = "Odstrani metapodatke slike";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Naloži oddaljeno vsebino";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Spremeni geslo";
-
-/* Title */
-"Current sign-in password" = "Trenutno geslo za prijavo";
-
-/* Title */
-"New sign-in password" = "Novo geslo za prijavo";
-
-/* Title */
-"Confirm new sign-in password" = "Potrdite novo geslo za prijavo";
-
-/* Title */
-"New mailbox password" = "Novo geslo nabiralnika";
-
-/* Title */
-"Confirm new mailbox password" = "Potrdite novo geslo poštnega nabiralnika";
 
 /* Title */
 "Star/unstar" = "Dodaj/odstrani zvezdico";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Spremeni geslo";
 
 /* settings general section title */
 "Security keys" = "Varnostni ključi";

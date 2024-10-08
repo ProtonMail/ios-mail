@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Введіть е-пошту для сповіщень…";
 
-/* Placeholder */
-"Current password" = "Поточний пароль";
-
-/* Placeholder */
-"New password" = "Новий пароль";
-
-/* Placeholder */
-"Confirm new password" = "Підтвердити новий пароль";
-
 /* Settings row */
 "Remove image metadata" = "Вилучати метадані зображень";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Завантажити зовнішній вміст";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Змінити пароль";
-
-/* Title */
-"Current sign-in password" = "Поточний пароль входу";
-
-/* Title */
-"New sign-in password" = "Новий пароль входу";
-
-/* Title */
-"Confirm new sign-in password" = "Підтвердити новий пароль входу";
-
-/* Title */
-"New mailbox password" = "Новий пароль поштової скриньки";
-
-/* Title */
-"Confirm new mailbox password" = "Підтвердження нового пароля поштової скриньки";
 
 /* Title */
 "Star/unstar" = "Позначити/прибрати зірочку";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "Змінити пароль поштової скриньки";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Змінити пароль";
 
 /* settings general section title */
 "Security keys" = "Ключі безпеки";

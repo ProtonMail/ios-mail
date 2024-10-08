@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Inserir e-mail de notificação…";
 
-/* Placeholder */
-"Current password" = "Palavra-passe actual";
-
-/* Placeholder */
-"New password" = "Nova palavra-passe";
-
-/* Placeholder */
-"Confirm new password" = "Confirmar a nova palavra-passe";
-
 /* Settings row */
 "Remove image metadata" = "Remover meta-dados da imagem";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Carregar o conteúdo remoto";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Alterar a palavra-passe";
-
-/* Title */
-"Current sign-in password" = "Palavra-passe de acesso actual";
-
-/* Title */
-"New sign-in password" = "Nova palavra-passe de acesso";
-
-/* Title */
-"Confirm new sign-in password" = "Confirmar a nova palavra-passe de acesso";
-
-/* Title */
-"New mailbox password" = "Nova palavra-passe da caixa de correio";
-
-/* Title */
-"Confirm new mailbox password" = "Confirmar a nova palavra-passe da caixa de correio";
 
 /* Title */
 "Star/unstar" = "Adicionar/Remover estrela";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "Alterar a palavra-passe da caixa de correio";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Alterar a palavra-passe";
 
 /* settings general section title */
 "Security keys" = "Chaves de segurança";

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Írja be az értesítési e-mail címet…";
 
-/* Placeholder */
-"Current password" = "Jelenlegi jelszó";
-
-/* Placeholder */
-"New password" = "Új jelszó";
-
-/* Placeholder */
-"Confirm new password" = "Új jelszó megerősítése";
-
 /* Settings row */
 "Remove image metadata" = "Metaadatok eltávolítása a képből";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Távoli tartalom betöltése";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Jelszó módosítása";
-
-/* Title */
-"Current sign-in password" = "Jelenlegi belépési jelszó";
-
-/* Title */
-"New sign-in password" = "Új belépési jelszó";
-
-/* Title */
-"Confirm new sign-in password" = "Új belépési jelszó megerősítése";
-
-/* Title */
-"New mailbox password" = "Új e-mail titkosítási jelszó";
-
-/* Title */
-"Confirm new mailbox password" = "Új e-mail jelszó megerősítése";
 
 /* Title */
 "Star/unstar" = "Csillagozás/Vagy nem";
@@ -2301,10 +2271,10 @@
 "Open in Proton Calendar" = "Megnyitás a Proton Calendarban";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Töröld a szemetet";
+"Clear out the junk" = "Szabaduljon meg a szeméttől";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "A 30 napnál régebbi üzenetek automatikus törlése a kukából és a levélszemét mappából. Fizessen elő és élvezze ezt és más előnyöket!";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Törölje automatikusan a 30 napnál régebben a lomtárba vagy a levélszemét mappába került leveleket. Ehhez a lehetőséghez és további előnyökhöz, váltson nagyobb csomagra.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Akár 3 TB tárhely";
@@ -2433,13 +2403,13 @@
 "Please select a time in the future" = "Kérjük, válasszon egy jövőbeli időpontot";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Bármikor elhallgatatná?";
+"Want to snooze any time?" = "Tetszőleges szüneteltetést szeretne?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Fizessen elő és hallgatassa el igény szerinti időben!";
+"Unlock custom snooze times when you upgrade" = "Egyedi szüneteltetési idők használatához váltson nagyobb csomagra";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Akár 15 email-cím/álnév";
+"Up to 15 email addresses/aliases" = "Akár 15 e-mail cím/álnév";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
@@ -2491,6 +2461,12 @@
 
 /* settings general section title */
 "Change mailbox password" = "E-mail titkosítási jelszó módosítása";
+
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Jelszó módosítása";
 
 /* settings general section title */
 "Security keys" = "Hitelesítési kulcsok";

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Inserisci Email di Notifica…";
 
-/* Placeholder */
-"Current password" = "Password attuale";
-
-/* Placeholder */
-"New password" = "Nuova password";
-
-/* Placeholder */
-"Confirm new password" = "Conferma la nuova password";
-
 /* Settings row */
 "Remove image metadata" = "Rimuovi meta-dati dell'immagine";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Carica i contenuti remoti";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Cambia la password";
-
-/* Title */
-"Current sign-in password" = "Password di accesso attuale";
-
-/* Title */
-"New sign-in password" = "Nuova password di accesso";
-
-/* Title */
-"Confirm new sign-in password" = "Conferma la nuova password di accesso";
-
-/* Title */
-"New mailbox password" = "Nuova password della casella di posta";
-
-/* Title */
-"Confirm new mailbox password" = "Conferma la nuova password della casella di posta";
 
 /* Title */
 "Star/unstar" = "Segna come importante/non importante";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Cambia la password della casella di posta";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Cambia la password";
+
 /* settings general section title */
 "Security keys" = "Chiavi di sicurezza";
 
@@ -2502,7 +2478,7 @@
 "%u email addresses" = "%u indirizzi email";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Dominio email personalizzato";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Supporto per domini di posta elettronica personalizzati";
@@ -2547,7 +2523,7 @@
 "Free" = "Free";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Rinnovo automatico allo stesso prezzo e termini, salvo disdetta.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mese";

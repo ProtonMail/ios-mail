@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Εισαγωγή E-mail ειδοποίησης…";
 
-/* Placeholder */
-"Current password" = "Τρέχων κωδικός πρόσβασης";
-
-/* Placeholder */
-"New password" = "Νέος κωδικός";
-
-/* Placeholder */
-"Confirm new password" = "Επιβεβαίωση νέου κωδικού";
-
 /* Settings row */
 "Remove image metadata" = "Αφαίρεση μετα-δεδομένων εικόνας";
 
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Φόρτωση απομακρυσμένου περιεχομένου";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Αλλαγή κωδικού πρόσβασης";
-
-/* Title */
-"Current sign-in password" = "Τρέχων κωδικός εισόδου";
-
-/* Title */
-"New sign-in password" = "Νέος κωδικός εισόδου";
-
-/* Title */
-"Confirm new sign-in password" = "Επιβεβαίωση νέου κωδικού εισόδου";
-
-/* Title */
-"New mailbox password" = "Νέος Κωδικός Θυρίδας";
-
-/* Title */
-"Confirm new mailbox password" = "Επιβεβαίωση νέου κωδικού πρόσβασης θυρίδας";
 
 /* Title */
 "Star/unstar" = "Με/χωρίς αστέρι";
@@ -2492,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Αλλαγή κωδικού πρόσβασης";
+
 /* settings general section title */
 "Security keys" = "Κλειδιά ασφαλείας";
 
@@ -2517,7 +2493,7 @@
 "End-to-end encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"New Proton Mail desktop app" = "Νέα Proton Mail εφαρμογή για υπολογιστές";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
