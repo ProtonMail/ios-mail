@@ -27,10 +27,11 @@ packages:
     url: https://github.com/Quick/Nimble
     minorVersion: "13.3.0"    
   proton_app_uniffi:
-    path: localPackages/proton_app_uniffi
+    path: ProtonPackages/proton_app_uniffi
+    group: ProtonPackages
   ProtonCoreET:
-    path: externalPackages/et-protoncore/platform/apple/ProtonCoreET
-    group: Packages    
+    path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
+    group: ProtonPackages
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
     minorVersion: "1.17.0"
