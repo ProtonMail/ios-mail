@@ -75,14 +75,14 @@ public extension DS.Icon {
     static let icFilePDF = ImageResource.icFilePdf
     static let icFolderArrowIn = ImageResource.icFolderArrowIn
     static let icHook = ImageResource.icHook
+    static let icPinAngled = ImageResource.icPinAngled
+    static let icPinAngledSlash = ImageResource.icPinAngledSlash
     static let icPrinter = ImageResource.icPrinter
     static let icStar = ImageResource.icStar
     static let icStarSlash = ImageResource.icStarSlash
     static let icSun = ImageResource.icSun
     static let icTag = ImageResource.icTag
     static let icThreeDotsHorizontal = ImageResource.icThreeDotsHorizontal
-    static let icPinAngled = ImageResource.icPinAngled
-    static let icPinAngledSlash = ImageResource.icPinAngledSlash
 }
 
 // MARK: message address actions

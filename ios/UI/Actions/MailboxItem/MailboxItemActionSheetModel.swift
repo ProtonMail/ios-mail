@@ -18,12 +18,12 @@
 import Combine
 import proton_app_uniffi
 
-class MailboxItemActionsSheetModel: ObservableObject {
+class MailboxItemActionSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
-    private let input: MessageConversationSheetInput
+    private let input: MailboxItemActionSheetInput
 
-    init(mailbox: Mailbox, actionsProvider: ActionsProvider, input: MessageConversationSheetInput) {
+    init(mailbox: Mailbox, actionsProvider: ActionsProvider, input: MailboxItemActionSheetInput) {
         self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
         self.state = .initial(title: input.title)
         self.input = input

@@ -19,10 +19,10 @@ import SwiftUI
 import proton_app_uniffi
 import DesignSystem
 
-struct MailboxItemActionsSheet: View {
-    @StateObject var model: MailboxItemActionsSheetModel
+struct MailboxItemActionSheet: View {
+    @StateObject var model: MailboxItemActionSheetModel
 
-    init(model: MailboxItemActionsSheetModel) {
+    init(model: MailboxItemActionSheetModel) {
         _model = .init(wrappedValue: model)
     }
 
@@ -49,7 +49,7 @@ struct MailboxItemActionsSheet: View {
 
     private func section(displayData: [ActionDisplayData]) -> some View {
         section {
-            ForEachLast(data: displayData) { displayData, isLast in
+            ForEachLast(collection: displayData) { displayData, isLast in
                 listButton(displayData: displayData, displayBottomSeparator: !isLast)
             }
         }
@@ -59,8 +59,7 @@ struct MailboxItemActionsSheet: View {
         VStack(spacing: .zero) {
             content()
         }
-        .background(DS.Color.BackgroundInverted.secondary)
-        .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
+        .background(DS.Color.BackgroundInverted.secondary, in: .rect(cornerRadius: DS.Radius.extraLarge))
     }
 
     private func replyButton(action: ReplyAction) -> some View {
@@ -78,8 +77,7 @@ struct MailboxItemActionsSheet: View {
             .frame(maxWidth: .infinity)
         }
         .buttonStyle(RegularButtonStyle())
-        .background(DS.Color.BackgroundInverted.secondary)
-        .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
+        .background(DS.Color.BackgroundInverted.secondary, in: .rect(cornerRadius: DS.Radius.extraLarge))
     }
 
     private func listButton(displayData: ActionDisplayData, displayBottomSeparator: Bool) -> some View {
@@ -109,5 +107,5 @@ struct MailboxItemActionsSheet: View {
 }
 
 #Preview {
-    MailboxItemActionsSheet(model: MailboxItemActionsSheetPreviewProvider.testData())
+    MailboxItemActionSheet(model: MailboxItemActionSheetPreviewProvider.testData())
 }

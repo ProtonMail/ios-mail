@@ -24,7 +24,7 @@ struct ConversationDetailListView: View {
     @State private var showMessageActionPicker: Bool = false
     
     /// These attributes trigger the different action sheets
-    @State private var inboxItemActionSheetInput: MessageConversationSheetInput?
+    @State private var mailboxItemActionSheetInput: MailboxItemActionSheetInput?
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
@@ -44,18 +44,18 @@ struct ConversationDetailListView: View {
                     .padding(.top, DS.Spacing.compact)
             }
         }
-        .sheet(item: $inboxItemActionSheetInput, content: inboxItemActionPicker)
+        .sheet(item: $mailboxItemActionSheetInput, content: mailboxItemActionPicker)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
     }
 
-    private func inboxItemActionPicker(input: MessageConversationSheetInput) -> some View {
-        let model = MailboxItemActionsSheetModel(
+    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
+        let model = MailboxItemActionSheetModel(
             mailbox: model.mailbox.unsafelyUnwrapped,
             actionsProvider: .instance,
             input: input
         )
-        return MailboxItemActionsSheet(model: model)
+        return MailboxItemActionSheet(model: model)
             .pickerViewStyle([.large])
     }
 
@@ -131,7 +131,7 @@ struct ConversationDetailListView: View {
         case .onReply, .onReplyAll, .onForward:
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
-            inboxItemActionSheetInput = .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
+            mailboxItemActionSheetInput = .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

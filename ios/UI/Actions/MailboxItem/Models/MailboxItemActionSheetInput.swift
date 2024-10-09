@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct MessageConversationSheetInput: Identifiable {
+struct MailboxItemActionSheetInput: Identifiable {
     let ids: [ID]
     let type: MailboxItemType
     let title: String

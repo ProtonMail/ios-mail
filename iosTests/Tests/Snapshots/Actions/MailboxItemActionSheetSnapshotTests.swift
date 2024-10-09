@@ -17,10 +17,10 @@
 
 @testable import ProtonMail
 
-class MailboxItemActionsSheetSnapshotTests: BaseTestCase {
+class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
-    func testMessageConversationActionsSheetLayoutsCorrectly() {
-        let sut = MailboxItemActionsSheet(model: MailboxItemActionsSheetPreviewProvider.testData())
+    func testMessageConversationActionSheetLayoutsCorrectly() {
+        let sut = MailboxItemActionSheet(model: MailboxItemActionSheetPreviewProvider.testData())
 
         assertSnapshotsOnIPhoneX(of: sut)
     }

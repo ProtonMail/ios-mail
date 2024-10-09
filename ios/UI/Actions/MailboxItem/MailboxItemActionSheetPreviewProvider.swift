@@ -17,9 +17,9 @@
 
 import proton_app_uniffi
 
-enum MailboxItemActionsSheetPreviewProvider {
-    static func testData() -> MailboxItemActionsSheetModel {
-        let model = MailboxItemActionsSheetModel(
+enum MailboxItemActionSheetPreviewProvider {
+    static func testData() -> MailboxItemActionSheetModel {
+        let model = MailboxItemActionSheetModel(
             mailbox: .init(noPointer: .init()),
             actionsProvider: ActionsProvider(
                 message: { _, _ in .init(

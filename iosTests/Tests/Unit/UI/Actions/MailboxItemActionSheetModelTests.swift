@@ -19,14 +19,14 @@
 import proton_app_uniffi
 import XCTest
 
-class MailboxItemActionsSheetModelTests: BaseTestCase {
+class MailboxItemActionSheetModelTests: BaseTestCase {
 
     var invokedWithMessagesIDs: [ID] = []
     var invokedWithConversationIDs: [ID] = []
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
 
-    func test_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() async {
+    func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() async {
         stubbedMessageActions = .init(
             replyActions: [.reply],
             messageActions: [.delete],
@@ -53,7 +53,7 @@ class MailboxItemActionsSheetModelTests: BaseTestCase {
         ))
     }
 
-    func test_WhenMailboxTypeIsConversation_ItReturnsAvailableConversatioActions() async {
+    func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() async {
         stubbedConversationActions = .init(
             replyActions: [.forward],
             conversationActions: [.labelAs],
@@ -80,8 +80,8 @@ class MailboxItemActionsSheetModelTests: BaseTestCase {
         ))
     }
 
-    private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionsSheetModel {
-        MailboxItemActionsSheetModel(
+    private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
+        MailboxItemActionSheetModel(
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, ids in
