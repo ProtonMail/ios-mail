@@ -103,6 +103,8 @@ extension MailboxItemCell {
 
     private var subjectRowView: some View {
         HStack(spacing: DS.Spacing.small) {
+            locationView
+
             Text(uiModel.subject)
                 .fontBody3()
                 .fontWeight(uiModel.isRead ? .regular : .bold)
@@ -131,6 +133,16 @@ extension MailboxItemCell {
     }
 
     @ViewBuilder
+    private var locationView: some View {
+        if let icon = uiModel.locationIcon {
+            Image(icon)
+                .resizable()
+                .frame(width: 16, height: 16)
+                .foregroundColor(DS.Color.Text.weak)
+        }
+    }
+
+    @ViewBuilder
     private var replyIcons: some View {
         if uiModel.replyIcons.shouldShowIcon {
             HStack(spacing: DS.Spacing.tiny) {
@@ -144,8 +156,6 @@ extension MailboxItemCell {
                     imageForReplyIcon(imageResource: DS.Icon.icForward)
                 }
             }
-        } else {
-            EmptyView()
         }
     }
 
@@ -205,17 +215,15 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let emails: String
     let subject: String
     let date: Date
-    
+    let locationIcon: ImageResource?
     let isRead: Bool
     let isStarred: Bool
     let isSelected: Bool
-
     let isSenderProtonOfficial: Bool
     let messagesCount: UInt64
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
     let replyIcons: ReplyIconsUIModel
-
     let expirationDate: Date?
     let snoozeDate: String?
 
@@ -227,6 +235,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         emails: String,
         subject: String,
         date: Date,
+        locationIcon: ImageResource?,
         isRead: Bool,
         isStarred: Bool,
         isSelected: Bool,
@@ -245,6 +254,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.emails = emails
         self.subject = subject
         self.date = date
+        self.locationIcon = locationIcon
         self.isRead = isRead
         self.isStarred = isStarred
         self.isSelected = isSelected
@@ -313,6 +323,7 @@ enum MailboxItemCellEvent {
             emails: "Proton",
             subject: subject,
             date: Date(),
+            locationIcon: nil,
             isRead: false,
             isStarred: false,
             isSelected: true,
@@ -339,6 +350,7 @@ enum MailboxItemCellEvent {
                 emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+                locationIcon: nil,
                 isRead: false,
                 isStarred: true,
                 isSelected: false,
@@ -367,6 +379,7 @@ enum MailboxItemCellEvent {
                 emails: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
+                locationIcon: nil,
                 isRead: true,
                 isStarred: true,
                 isSelected: false,

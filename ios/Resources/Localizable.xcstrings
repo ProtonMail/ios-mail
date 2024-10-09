@@ -4,9 +4,6 @@
     "(No Recipient)" : {
       "comment" : "No recipent placeholder."
     },
-    "(No Subject)" : {
-      "comment" : "No subject placeholder."
-    },
     "%lld files" : {
       "comment" : "The number of attachments on conversation details screen.",
       "localizations" : {

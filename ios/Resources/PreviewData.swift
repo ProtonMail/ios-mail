@@ -37,6 +37,7 @@ enum PreviewData {
                 emails: randomSenderSubject.0,
                 subject: randomSenderSubject.1,
                 date: Calendar.current.date(byAdding: .minute, value: -1 * (value*value*1005), to: Date())!,
+                locationIcon: nil,
                 isRead: (value == 2 || value>5),
                 isStarred: (value%6 == 0),
                 isSelected: false,

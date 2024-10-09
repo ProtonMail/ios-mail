@@ -18,14 +18,28 @@
 import UIKit
 
 enum SelectedMailbox: Equatable {
+    /// The `inbox` case is a workaround to be able to launch the mailbox screen without having to wait
+    /// until the SDK returns the list of available local label ids.
     case inbox
-    case label(labelId: ID, name: LocalizedStringResource, systemFolder: SystemFolderLabel?)
+    case systemFolder(labelId: ID, systemFolder: SystemFolderLabel)
+    case customLabel(labelId: ID, name: LocalizedStringResource)
+    case customFolder(labelId: ID, name: LocalizedStringResource)
+
 
     var isInbox: Bool {
         switch self {
         case .inbox:
             return true
-        case .label:
+        case .systemFolder, .customLabel, .customFolder:
+            return false
+        }
+    }
+
+    var isCustomLabel: Bool {
+        switch self {
+        case .customLabel:
+            return true
+        case .inbox, .systemFolder, .customFolder:
             return false
         }
     }
@@ -34,7 +48,11 @@ enum SelectedMailbox: Equatable {
         switch self {
         case .inbox:
             return .init(value: UInt64.max)
-        case .label(let labelId, _, _):
+        case .systemFolder(let labelId, _):
+            return labelId
+        case .customLabel(let labelId, _):
+            return labelId
+        case .customFolder(let labelId, _):
             return labelId
         }
     }
@@ -43,7 +61,11 @@ enum SelectedMailbox: Equatable {
         switch self {
         case .inbox:
             return SystemFolderLabel.inbox.humanReadable
-        case .label(_, let name, _):
+        case .systemFolder(_, let systemFolder):
+            return systemFolder.humanReadable
+        case .customLabel(_, let name):
+            return name
+        case .customFolder(_, let name):
             return name
         }
     }
@@ -53,8 +75,10 @@ enum SelectedMailbox: Equatable {
         switch self {
         case .inbox:
             return SystemFolderLabel.inbox
-        case .label(_, _, let systemFolder):
+        case .systemFolder(_, let systemFolder):
             return systemFolder
+        case .customLabel, .customFolder:
+            return nil
         }
     }
 

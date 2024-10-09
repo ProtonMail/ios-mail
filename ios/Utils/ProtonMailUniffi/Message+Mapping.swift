@@ -25,7 +25,7 @@ extension Message {
         toList + ccList + bccList
     }
 
-    func toMailboxItemCellUIModel(selectedIds: Set<ID>, displaySenderEmail: Bool) -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<ID>, displaySenderEmail: Bool, showLocation: Bool) -> MailboxItemCellUIModel {
         var recipientsUIRepresentation: String {
             let recipients = allRecipients.map(\.uiRepresentation).joined(separator: ", ")
             return recipients.isEmpty ? L10n.Mailbox.Item.noRecipient.string : recipients
@@ -40,8 +40,9 @@ extension Message {
             type: .message,
             avatar: avatar,
             emails: emails,
-            subject: subject.isEmpty ? L10n.Mailbox.Item.noSubject.string : subject,
+            subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
+            locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
             isRead: !unread,
             isStarred: starred,
             isSelected: selectedIds.contains(id),
@@ -120,21 +121,6 @@ extension Message {
 
         return .init(info: avatarInformation.info, type: .other)
     }
-
-}
-
-extension ExclusiveLocation {
-
-    var model: MessageDetail.Location {
-        switch self {
-        case .system(let systemLabel, _):
-            .init(name: systemLabel.humanReadable, icon: systemLabel.icon, iconColor: nil)
-        case .custom(let name, _, let color):
-            .init(name: name.stringResource, icon: DS.Icon.icFolderOpenFilled, iconColor: Color(hex: color.value))
-        }
-    }
-
-
 
 }
 

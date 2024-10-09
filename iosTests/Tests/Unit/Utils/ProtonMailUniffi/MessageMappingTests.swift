@@ -20,53 +20,69 @@ import proton_app_uniffi
 import XCTest
 
 final class MessageMappingTests: XCTestCase {
-    private let defaultSubject = "Dummy subject"
     private let recipient1: MessageAddress = .testData(name: "The Rec.A", address: "a@example.com")
     private let recipient2: MessageAddress = .testData(name: "", address: "b@example.com")
     private let recipient3: MessageAddress = .testData(name: "The Rec.C", address: "c@example.com")
     private let sender: MessageAddress = .testData(name: "", address: "sender@example.com")
 
-    func testToMailboxItemCellUIModel_whenNoSubject_itReturnsAPlaceholder() {
-        let message1 = Message.testData(subject: "")
-        let result1 = message1.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: .random())
-        XCTAssertEqual(result1.subject, "(No Subject)")
-
-        let message2 = Message.testData(subject: defaultSubject)
-        let result2 = message2.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: .random())
-        XCTAssertEqual(result2.subject, defaultSubject)
-    }
-
     func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() {
         let message = Message.testData(messageId: 33)
 
         let result1 = message.toMailboxItemCellUIModel(
-            selectedIds: [.init(value: 12)], displaySenderEmail: .random()
+            selectedIds: [.init(value: 12)], displaySenderEmail: .random(),
+            showLocation: Bool.random()
         )
         XCTAssertFalse(result1.isSelected)
 
         let result2 = message.toMailboxItemCellUIModel(
-            selectedIds: [.init(value: 33)], displaySenderEmail: .random()
+            selectedIds: [.init(value: 33)], displaySenderEmail: .random(),
+            showLocation: Bool.random()
         )
         XCTAssertTrue(result2.isSelected)
     }
 
     func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_itReturnsRecipientsInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
-        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
+        let result = message.toMailboxItemCellUIModel(displaySenderEmail: false)
         XCTAssertEqual(result.emails, "The Rec.A, b@example.com, The Rec.C")
     }
 
     func testToMailboxItemCellUIModel_whenDoNotDisplaySenderEmail_andNoRecipients_itReturnsAPlaceholderInEmailsField() {
         let message = Message.testData(to: [], cc: [], bcc: [])
-        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: false)
+        let result = message.toMailboxItemCellUIModel(displaySenderEmail: false)
         XCTAssertEqual(result.emails, "(No Recipient)")
     }
 
     func testToMailboxItemCellUIModel_whenDisplaySenderEmail_itReturnsSenderInEmailsField() {
         let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
-        let result = message.toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: true)
+        let result = message.toMailboxItemCellUIModel(displaySenderEmail: true)
         XCTAssertEqual(result.emails, "sender@example.com")
     }
+
+    func testToMailboxItemCellUIModel_whenShowLocationIsTrue_itReturnsTheLocationIcon() {
+        let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
+        let result = message.toMailboxItemCellUIModel(showLocation: true)
+        XCTAssertNotNil(result.locationIcon)
+    }
+
+    func testToMailboxItemCellUIModel_whenShowLocationIsFalse_itReturnsNilForLocationIcon() {
+        let message = Message.testData(to: [recipient1], cc: [recipient2], bcc: [recipient3])
+        let result = message.toMailboxItemCellUIModel(showLocation: false)
+        XCTAssertNil(result.locationIcon)
+    }
+    
+}
+
+private extension Message {
+
+    func toMailboxItemCellUIModel(showLocation: Bool) -> MailboxItemCellUIModel {
+        toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: Bool.random(), showLocation: showLocation)
+    }
+
+    func toMailboxItemCellUIModel(displaySenderEmail: Bool) -> MailboxItemCellUIModel {
+        toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: displaySenderEmail, showLocation: Bool.random())
+    }
+
 }
 
 private extension MessageAddress {
@@ -91,8 +107,7 @@ private extension Message {
         to: [MessageAddress] = [],
         cc: [MessageAddress] = [],
         bcc: [MessageAddress] = [],
-        sender: MessageAddress = .testData(name: "", address: "sender@example.com"),
-        subject: String = .notUsed
+        sender: MessageAddress = .testData(name: "", address: "sender@example.com")
     ) -> Self {
         .init(
             id: .init(value: messageId),
@@ -101,7 +116,7 @@ private extension Message {
             attachmentsMetadata: [],
             bccList: bcc,
             ccList: cc,
-            exclusiveLocation: nil,
+            exclusiveLocation: .system(name: .inbox, id: .init(value: 33)),
             expirationTime: 1625140800,
             flags: .init(value: 2),
             isForwarded: true,
@@ -113,7 +128,7 @@ private extension Message {
             sender: sender,
             size: 1_024,
             snoozeTime: 0,
-            subject: subject,
+            subject: .notUsed,
             time: 1622548800,
             toList: to,
             unread: true,

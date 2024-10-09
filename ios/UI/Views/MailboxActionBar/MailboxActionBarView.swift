@@ -149,7 +149,7 @@ struct MailboxActionBarView: View {
     )
 
     func selectedMailbox(systemFolder: SystemFolderLabel) -> SelectedMailbox {
-        .label(labelId: .init(value: 0), name: "".notLocalized.stringResource, systemFolder: systemFolder)
+        .systemFolder(labelId: .init(value: 0), systemFolder: systemFolder)
     }
 
     return VStack {

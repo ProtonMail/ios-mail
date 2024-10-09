@@ -42,11 +42,7 @@ final class AppRouteStateTests: XCTestCase {
     @MainActor
     func testOnSelectedMailboxChange_whenRouteIsUpdated_itEmitNewSelectedMailbox() {
         let initialRoute: Route = .mailbox(selectedMailbox: .inbox)
-        let newSelectedMailbox: SelectedMailbox = .label(
-            labelId: .init(value: 1),
-            name: .init(stringLiteral: ""),
-            systemFolder: nil
-        )
+        let newSelectedMailbox: SelectedMailbox = .systemFolder(labelId: .init(value: 1), systemFolder: .inbox)
         let updatedRoute: Route = .mailbox(selectedMailbox: newSelectedMailbox)
         let sut = AppRouteState(route: initialRoute)
 

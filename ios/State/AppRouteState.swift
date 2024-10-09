@@ -53,7 +53,7 @@ enum Route: Equatable, CustomStringConvertible {
         switch selectedMailbox {
         case .inbox:
             return true
-        case .none, .label:
+        case .none, .systemFolder, .customLabel, .customFolder:
             return false
         }
     }

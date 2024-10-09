@@ -72,9 +72,8 @@ struct AuthenticatedScreens: View {
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
                 case .system(let systemFolder):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .systemFolder(
                         labelId: systemFolder.id,
-                        name: systemFolder.type.humanReadable,
                         systemFolder: systemFolder.type
                     )))
                 case .other(let otherItem):
@@ -93,16 +92,14 @@ struct AuthenticatedScreens: View {
                         toastStateStore.present(toast: .comingSoon)
                     }
                 case .label(let label):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .customLabel(
                         labelId: label.id,
-                        name: label.name.stringResource,
-                        systemFolder: nil
+                        name: label.name.stringResource
                     )))
                 case .folder(let folder):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .label(
+                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .customFolder(
                         labelId: folder.id,
-                        name: folder.name.stringResource,
-                        systemFolder: nil
+                        name: folder.name.stringResource
                     )))
                 }
             }

@@ -184,7 +184,6 @@ enum L10n {
                 )
             }
             static let noRecipient = LocalizedStringResource("(No Recipient)", comment: "No recipent placeholder.")
-            static let noSubject = LocalizedStringResource("(No Subject)", comment: "No subject placeholder.")
         }
 
         enum SystemFolder {

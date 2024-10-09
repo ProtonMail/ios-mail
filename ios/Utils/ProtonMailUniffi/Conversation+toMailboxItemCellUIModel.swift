@@ -22,7 +22,7 @@ import class SwiftUI.UIImage
 
 extension Conversation {
 
-    func toMailboxItemCellUIModel(selectedIds: Set<Id>) -> MailboxItemCellUIModel {
+    func toMailboxItemCellUIModel(selectedIds: Set<Id>, showLocation: Bool) -> MailboxItemCellUIModel {
         let firstSender = senders.first.unsafelyUnwrapped
 
         return MailboxItemCellUIModel(
@@ -33,6 +33,7 @@ extension Conversation {
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
+            locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
             isRead: numUnread == 0,
             isStarred: isStarred,
             isSelected: selectedIds.contains(id),

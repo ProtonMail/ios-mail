@@ -139,6 +139,7 @@ private extension View {
                         emails: "",
                         subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                         date: .now,
+                        locationIcon: nil,
                         isRead: true,
                         isStarred: true,
                         isSelected: false,
