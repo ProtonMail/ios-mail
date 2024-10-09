@@ -118,7 +118,7 @@ struct UpsellPageFactory {
             case "comparison":
                 return .comparison
             case "carousel":
-                return .comparison
+                return .carousel
             default:
                 return .plain
             }

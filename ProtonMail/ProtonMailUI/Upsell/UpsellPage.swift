@@ -159,7 +159,7 @@ public struct UpsellPage: View {
                         .padding(.bottom, 16)
                 case .comparison:
                     UpsellPageContentVariantComparison()
-                        .frame(minHeight: enforceVerticalTiles.value ? 100 : 225)
+                        .frame(minHeight: enforceVerticalTiles.value ? 150 : 225)
                 case .carousel:
                     UpsellPageContentVariantCarousel()
                         .padding(.horizontal, -16)
