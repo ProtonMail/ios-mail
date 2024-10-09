@@ -77,6 +77,7 @@ struct MailboxItemActionsSheet: View {
             .frame(height: 84)
             .frame(maxWidth: .infinity)
         }
+        .buttonStyle(RegularButtonStyle())
         .background(DS.Color.BackgroundInverted.secondary)
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
@@ -96,6 +97,8 @@ struct MailboxItemActionsSheet: View {
                 .frame(height: 52)
                 .padding(.leading, DS.Spacing.large)
             }
+            .buttonStyle(RegularButtonStyle())
+
             if displayBottomSeparator {
                 Divider()
                     .frame(height: 1)
