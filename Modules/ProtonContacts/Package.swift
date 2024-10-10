@@ -7,20 +7,14 @@ let package = Package(
     name: "ProtonContacts",
     platforms: [.iOS(.v17)],
     products: [
-        .library(
-            name: "ProtonContacts",
-            targets: ["ProtonContacts"]
-        ),
+        .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
     ],
     dependencies: [
         .package(path: "DesignSystem"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.12.0"),
     ],
     targets: [
-        .target(
-            name: "ProtonContacts",
-            dependencies: ["DesignSystem"]
-        ),
+        .target(name: "ProtonContacts", dependencies: ["DesignSystem"]),
         .testTarget(
             name: "ProtonContactsTests",
             dependencies: [
