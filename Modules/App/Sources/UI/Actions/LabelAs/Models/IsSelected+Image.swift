@@ -15,11 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import DesignSystem
 import proton_app_uniffi
+import SwiftUI
 
-struct ActionColorButtonDisplayData {
-    let color: Color
-    let title: String
-    let isSelected: IsSelected
+extension IsSelected {
+
+    var image: ImageResource? {
+        switch self {
+        case .selected:
+            DS.Icon.icCheckmark
+        case .partial:
+            DS.Icon.icMinus
+        case .unselected:
+            nil
+        }
+    }
+
 }

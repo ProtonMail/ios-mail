@@ -82,21 +82,6 @@ struct LabelAsSheet: View {
     return LabelAsSheet(model: model)
 }
 
-extension IsSelected {
-
-    var image: ImageResource? {
-        switch self {
-        case .selected:
-            DS.Icon.icCheckmark
-        case .partial:
-            DS.Icon.icMinus
-        case .unselected:
-            nil
-        }
-    }
-
-}
-
 private extension LabelDisplayModel {
 
     var displayData: ActionColorButtonDisplayData {
