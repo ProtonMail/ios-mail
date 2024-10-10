@@ -23,7 +23,8 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            DS.Color.BackgroundInverted.norm
+            DS.Color.Background.secondary
+                .ignoresSafeArea()
                 .navigationTitle("Contacts")
         }
     }
