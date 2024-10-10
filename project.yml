@@ -4,6 +4,9 @@ options:
   createIntermediateGroups: true
   dead_code_stripping: true
   generateEmptyDirectories: true
+  groupOrdering:
+    - pattern: 'Modules'
+      order: [App]
   deploymentTarget:
     iOS: "17.2"
   postGenCommand:
@@ -92,7 +95,7 @@ targets:
           PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Distribution"
           PM_API_HOST: "proton.me"
     info: 
-      path: Modules/App/Sources/Info/Info.plist
+      path: Modules/App/Sources/SupportingFiles/Info.plist
       properties:
         CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
@@ -127,7 +130,7 @@ targets:
     type: bundle.unit-test
     platform: iOS
     info: 
-      path: Modules/App/Tests/Info/Info.plist
+      path: Modules/App/Tests/SupportingFiles/Info.plist
     sources:
       - path: Modules/App/Tests
         excludes:
@@ -151,7 +154,7 @@ targets:
     type: bundle.ui-testing
     platform: iOS
     info: 
-      path: Modules/App/UITests/Info/Info.plist
+      path: Modules/App/UITests/SupportingFiles/Info.plist
     sources:
       - path: Modules/App/UITests
       - path: Modules/App/UITests/NetworkMocks
