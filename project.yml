@@ -17,9 +17,6 @@ packages:
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
-  Contacts:
-    path: Modules/Contacts
-    group: Modules
   DesignSystem:
     path: Modules/DesignSystem
     group: Modules
@@ -32,6 +29,9 @@ packages:
   Nimble:
     url: https://github.com/Quick/Nimble
     minorVersion: "13.3.0"    
+  PContacts:
+    path: Modules/PContacts
+    group: Modules
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
     group: ProtonPackages

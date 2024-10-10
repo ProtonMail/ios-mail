@@ -16,11 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import DesignSystem
 
 public struct ContactsScreen: View {
     public init() {}
 
     public var body: some View {
-        Text("Contacts")
+        NavigationStack {
+            DS.Color.BackgroundInverted.norm
+                .navigationTitle("Contacts")
+        }
     }
 }
