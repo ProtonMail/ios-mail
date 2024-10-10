@@ -20,6 +20,7 @@ import SwiftUI
 
 struct AuthenticatedScreens: View {
     enum ModalState: String, Identifiable {
+        case contacts
         case labelOrFolderCreationScreen
         case settingsScreen
 
@@ -87,6 +88,8 @@ struct AuthenticatedScreens: View {
                     )))
                 case .other(let otherItem):
                     switch otherItem.type {
+                    case .contacts:
+                        modalState = .contacts
                     case .settings:
                         modalState = .settingsScreen
                     case .subscriptions:
@@ -97,7 +100,7 @@ struct AuthenticatedScreens: View {
                         signOut()
                     case .shareLogs:
                         presentShareFileController()
-                    case .bugReport, .contacts:
+                    case .bugReport:
                         toastStateStore.present(toast: .comingSoon)
                     }
                 case .label(let label):
