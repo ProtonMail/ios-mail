@@ -1,6 +1,7 @@
 name: ProtonMail
 
 options:
+  createIntermediateGroups: true
   dead_code_stripping: true
   generateEmptyDirectories: true
   deploymentTarget:
@@ -14,9 +15,11 @@ packages:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
   DesignSystem:
-    path: localPackages/DesignSystem
+    path: Modules/DesignSystem
+    group: Modules
   Keychain:
-    path: localPackages/Keychain
+    path: Modules/Keychain
+    group: Modules
   Lottie:
     url: https://github.com/airbnb/lottie-ios.git
     minorVersion: "4.5.0"    
@@ -60,7 +63,7 @@ targets:
     attributes:
       ProvisioningStyle: Manual    
     sources:
-      - path: ios
+      - path: Modules/App/Sources
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
@@ -88,7 +91,7 @@ targets:
           PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Distribution"
           PM_API_HOST: "proton.me"
     info: 
-      path: ios/Info/Info.plist  
+      path: Modules/App/Sources/Info/Info.plist
       properties:
         CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
@@ -123,11 +126,11 @@ targets:
     type: bundle.unit-test
     platform: iOS
     info: 
-      path: iosTests/Info/Info.plist  
+      path: Modules/App/Tests/Info/Info.plist
     sources:
-      - path: iosTests
+      - path: Modules/App/Tests
         excludes:
-          - "Tests/**/__Snapshots__"
+          - "Modules/App/Tests/**/__Snapshots__"
     dependencies:
       - target: ProtonMail
       - package: Nimble
@@ -141,16 +144,16 @@ targets:
           parallelizable: true
           randomExecutionOrder: true
     settings:
-       SWIFT_OBJC_BRIDGING_HEADER: iosTests/Utils/ProtonMailTest-Bridging-Header.h
+       SWIFT_OBJC_BRIDGING_HEADER: Modules/App/Tests/Utils/ProtonMailTest-Bridging-Header.h
 
   ProtonMailUITest:
     type: bundle.ui-testing
     platform: iOS
     info: 
-      path: iosUITests/Info/Info.plist
+      path: Modules/App/UITests/Info/Info.plist
     sources:
-      - path: iosUITests
-      - path: iosUITests/NetworkMocks
+      - path: Modules/App/UITests
+      - path: Modules/App/UITests/NetworkMocks
         type: resources
     dependencies:
       - target: ProtonMail
@@ -177,9 +180,9 @@ schemes:
       targets:
         - ProtonMailUITest
       testPlans:
-        - path: iosUITests/Plans/SmokeTests.xctestplan
+        - path: Modules/App/UITests/Plans/SmokeTests.xctestplan
           defaultPlan: true
-        - path: iosUITests/Plans/RegressionTests.xctestplan
+        - path: Modules/App/UITests/Plans/RegressionTests.xctestplan
       gatherCoverageData: true
       parallelizable: true
       randomExecutionOrder: true
