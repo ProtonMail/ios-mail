@@ -7,18 +7,10 @@ let package = Package(
     name: "DesignSystem",
     platforms: [.iOS(.v17)],
     products: [
-        .library(
-            name: "DesignSystem",
-            targets: ["DesignSystem"]
-        ),
+        .library(name: "DesignSystem", targets: ["DesignSystem"]),
     ],
     targets: [
-        .target(
-            name: "DesignSystem"
-        ),
-        .testTarget(
-            name: "DesignSystemTests",
-            dependencies: ["DesignSystem"]
-        ),
+        .target(name: "DesignSystem", resources: [.process("Resources")]),
+        .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"]),
     ]
 )

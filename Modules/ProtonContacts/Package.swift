@@ -7,19 +7,13 @@ let package = Package(
     name: "ProtonContacts",
     platforms: [.iOS(.v17)],
     products: [
-        .library(
-            name: "ProtonContacts",
-            targets: ["ProtonContacts"]
-        ),
+        .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
     ],
     dependencies: [
         .package(path: "DesignSystem")
     ],
     targets: [
-        .target(
-            name: "ProtonContacts",
-            dependencies: ["DesignSystem"]
-        ),
+        .target(name: "ProtonContacts", dependencies: ["DesignSystem"]),
         .testTarget(
             name: "ProtonContactsTests",
             dependencies: [.target(name: "ProtonContacts")]
