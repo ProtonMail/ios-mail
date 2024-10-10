@@ -17,6 +17,9 @@ packages:
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
+  Contacts:
+    path: Modules/Contacts
+    group: Modules
   DesignSystem:
     path: Modules/DesignSystem
     group: Modules
