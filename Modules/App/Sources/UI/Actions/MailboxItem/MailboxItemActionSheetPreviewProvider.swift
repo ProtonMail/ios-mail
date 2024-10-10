@@ -19,14 +19,21 @@ import proton_app_uniffi
 
 enum MailboxItemActionSheetPreviewProvider {
     static func testData() -> MailboxItemActionSheetModel {
-        let model = MailboxItemActionSheetModel(
+        MailboxItemActionSheetModel(
             mailbox: .init(noPointer: .init()),
             actionsProvider: ActionsProvider(
                 message: { _, _ in .init(
-                    replyActions: [],
-                    messageActions: [],
+                    replyActions: [.reply, .forward, .replyAll],
+                    messageActions: [.markUnread, .star, .pin, .labelAs],
                     moveActions: [],
-                    generalActions: []
+                    generalActions: [
+                        .viewMessageInLightMode,
+                        .saveAsPdf,
+                        .print,
+                        .viewHeaders,
+                        .viewHtml,
+                        .reportPhishing
+                    ]
                 ) },
                 conversation: { _, _ in .init(
                     replyActions: [],
@@ -37,28 +44,5 @@ enum MailboxItemActionSheetPreviewProvider {
             ),
             input: .init(ids: [], type: .message, title: "Hello".notLocalized)
         )
-        model.state = .init(
-            title: "Hello".notLocalized,
-            availableActions: .init(
-                replyActions: [.reply, .forward, .replyAll],
-                mailboxItemActions: [.markUnread, .star, .pin, .labelAs],
-                moveActions: [
-                    .system(.init(localId: .random(), systemLabel: .inbox)),
-                    .system(.init(localId: .random(), systemLabel: .archive)),
-                    .system(.init(localId: .random(), systemLabel: .spam)),
-                    .system(.init(localId: .random(), systemLabel: .trash)),
-                    .moveTo
-                ],
-                generalActions: [
-                    .viewMessageInLightMode,
-                    .saveAsPdf,
-                    .print,
-                    .viewHeaders,
-                    .viewHtml,
-                    .reportPhishing
-                ]
-            )
-        )
-        return model
     }
 }
