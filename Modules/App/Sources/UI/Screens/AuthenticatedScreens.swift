@@ -19,17 +19,27 @@ import proton_app_uniffi
 import SwiftUI
 
 struct AuthenticatedScreens: View {
+    enum ModalState: String, Identifiable {
+        case contacts
+        case labelOrFolderCreationScreen
+        case settingsScreen
+
+        // MARK: - Identifiable
+
+        var id: String {
+            rawValue
+        }
+    }
+
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
+    @State private var modalState: ModalState?
     @ObservedObject private var customLabelModel: CustomLabelModel
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaultsCleaner: UserDefaultsCleaner
     private let userDefaults: UserDefaults
-
-    @State var areSettingsPresented = false
-    @State var isLabelOrFolderCreationScreenPresented = false
 
     init(customLabelModel: CustomLabelModel, userSession: MailUserSession, userDefaults: UserDefaults) {
         _appRoute = .init(wrappedValue: .initialState)
@@ -78,17 +88,19 @@ struct AuthenticatedScreens: View {
                     )))
                 case .other(let otherItem):
                     switch otherItem.type {
+                    case .contacts:
+                        modalState = .contacts
                     case .settings:
-                        areSettingsPresented = true
+                        modalState = .settingsScreen
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
                     case .createFolder, .createLabel:
-                        isLabelOrFolderCreationScreenPresented = true
+                        modalState = .labelOrFolderCreationScreen
                     case .signOut:
                         signOut()
                     case .shareLogs:
                         presentShareFileController()
-                    case .bugReport, .contacts:
+                    case .bugReport:
                         toastStateStore.present(toast: .comingSoon)
                     }
                 case .label(let label):
@@ -105,12 +117,7 @@ struct AuthenticatedScreens: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(isPresented: $isLabelOrFolderCreationScreenPresented) {
-            CreateFolderOrLabelScreen()
-        }
-        .sheet(isPresented: $areSettingsPresented) {
-            SettingsScreen()
-        }
+        .sheet(item: $modalState, content: AuthenticatedScreenModalFactory.makeModal)
         .onAppear { didAppear?(self) }
     }
 

@@ -7,18 +7,10 @@ let package = Package(
     name: "Keychain",
     platforms: [.iOS(.v17)],
     products: [
-        .library(
-            name: "Keychain",
-            targets: ["Keychain"]
-        ),
+        .library(name: "Keychain", targets: ["Keychain"]),
     ],
     targets: [
-        .target(
-            name: "Keychain"
-        ),
-        .testTarget(
-            name: "KeychainTests",
-            dependencies: ["Keychain"]
-        ),
+        .target(name: "Keychain"),
+        .testTarget(name: "KeychainTests", dependencies: ["Keychain"]),
     ]
 )
