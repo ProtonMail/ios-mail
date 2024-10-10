@@ -29,8 +29,8 @@ packages:
   Nimble:
     url: https://github.com/Quick/Nimble
     minorVersion: "13.3.0"    
-  PContacts:
-    path: Modules/PContacts
+  ProtonContacts:
+    path: Modules/ProtonContacts
     group: Modules
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
@@ -123,7 +123,7 @@ targets:
       - package: DesignSystem
       - package: Keychain
       - package: Lottie
-      - package: PContacts
+      - package: ProtonContacts
       - package: proton_app_uniffi
       - package: ProtonCoreET
         products: 

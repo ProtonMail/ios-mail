@@ -4,25 +4,25 @@
 import PackageDescription
 
 let package = Package(
-    name: "PContacts",
+    name: "ProtonContacts",
     platforms: [.iOS(.v17)],
     products: [
         .library(
-            name: "PContacts",
-            targets: ["PContacts"]
+            name: "ProtonContacts",
+            targets: ["ProtonContacts"]
         ),
     ],
-    dependencies: [.package(path: "DesignSystem")],
+    dependencies: [
+        .package(path: "DesignSystem")
+    ],
     targets: [
         .target(
-            name: "PContacts",
+            name: "ProtonContacts",
             dependencies: ["DesignSystem"]
         ),
         .testTarget(
-            name: "PContactsTests",
-            dependencies: [
-                .target(name: "PContacts"),
-            ]
+            name: "ProtonContactsTests",
+            dependencies: [.target(name: "ProtonContacts")]
         ),
     ]
 )

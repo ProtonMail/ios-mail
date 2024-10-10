@@ -15,12 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import PContacts
+@testable import ProtonContacts
 import XCTest
 
 final class ContactsExampleTests: XCTestCase {
-
-    // MARK: - Read
 
     func testExample() {
         XCTAssertEqual(1 + 1, 2)
