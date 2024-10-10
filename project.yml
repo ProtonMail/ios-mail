@@ -123,6 +123,7 @@ targets:
       - package: DesignSystem
       - package: Keychain
       - package: Lottie
+      - package: PContacts
       - package: proton_app_uniffi
       - package: ProtonCoreET
         products: 
