@@ -15,11 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountManager
 import Combine
 import Foundation
 import SwiftUI
 import proton_app_uniffi
 import class UIKit.UIImage
+import ProtonCoreUtilities
 
 /**
  Source of truth for the Mailbox view showing mailbox items (conversations or messages).
@@ -43,6 +45,8 @@ final class MailboxModel: ObservableObject {
     private var paginatorCallback: LiveQueryCallbackWrapper = .init()
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
+
+    @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -75,6 +79,7 @@ final class MailboxModel: ObservableObject {
         self.appRoute = appRoute
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.dependencies = dependencies
+        self.accountManagerCoordinator = AccountManagerCoordinator(appContext: dependencies.appContext.mailSession)
 
         setUpBindings()
         setUpPaginatorCallback()

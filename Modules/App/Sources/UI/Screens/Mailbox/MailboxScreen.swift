@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountManager
 import DesignSystem
 import SwiftUI
 
@@ -90,6 +91,7 @@ extension MailboxScreen {
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
+        .withAccountManager(coordinator: $mailboxModel.accountManagerCoordinator)
         .mainToolbar(title: mailboxModel.state.mailboxTitle, selectionMode: mailboxModel.selectionMode)
         .accessibilityElement(children: .contain)
     }

@@ -31,7 +31,7 @@ final class AppContext: Sendable, ObservableObject {
         return activeUserSession
     }
 
-    private var mailSession: MailSession {
+    var mailSession: MailSession {
         guard let mailContext = _mailSession else {
             fatalError("AppSession.start was not called")
         }
