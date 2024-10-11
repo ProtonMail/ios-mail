@@ -22,9 +22,9 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
-class AuthenticatedScreensTests: BaseTestCase {
+class HomeScreenTests: BaseTestCase {
 
-    private var sut: AuthenticatedScreens!
+    private var sut: HomeScreen!
     private var userDefaults: UserDefaults!
 
     private let appUIStateStore = AppUIStateStore()
@@ -34,7 +34,7 @@ class AuthenticatedScreensTests: BaseTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         userDefaults = .clearedTestInstance()
-        sut = AuthenticatedScreens(
+        sut = HomeScreen(
             customLabelModel: CustomLabelModel(),
             userSession: try .testInstance(),
             userDefaults: userDefaults
@@ -91,7 +91,7 @@ class AuthenticatedScreensTests: BaseTestCase {
         function: String = #function,
         file: StaticString = #file,
         line: UInt = #line,
-        perform: @escaping (InspectableView<ViewType.View<AuthenticatedScreens>>) throws -> Void
+        perform: @escaping (InspectableView<ViewType.View<HomeScreen>>) throws -> Void
     ) {
         let expectation = sut.on(
             \.didAppear,
@@ -112,7 +112,7 @@ class AuthenticatedScreensTests: BaseTestCase {
     }
 
     private func mailboxScreenWithEnvironmentObjects(
-        inspectSUT: InspectableView<ViewType.View<AuthenticatedScreens>>
+        inspectSUT: InspectableView<ViewType.View<HomeScreen>>
     ) throws -> InspectableView<ViewType.ClassifiedView> {
         try inspectSUT
             .mailboxScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore, userSettings)
@@ -120,7 +120,7 @@ class AuthenticatedScreensTests: BaseTestCase {
     }
 
     private func sidebarScreenWithEnvironmentObjects(
-        inspectSUT: InspectableView<ViewType.View<AuthenticatedScreens>>
+        inspectSUT: InspectableView<ViewType.View<HomeScreen>>
     ) throws -> InspectableView<ViewType.ClassifiedView> {
         try inspectSUT
             .sidebarScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore, userSettings)
@@ -129,7 +129,7 @@ class AuthenticatedScreensTests: BaseTestCase {
 
 }
 
-private extension InspectableView where View == ViewType.View<AuthenticatedScreens> {
+private extension InspectableView where View == ViewType.View<HomeScreen> {
 
     func mailboxScreenWithInjectedEnvironmentObjects(
         _ appUIStateStore: AppUIStateStore,

@@ -18,9 +18,9 @@
 import ProtonContacts
 import SwiftUI
 
-enum AuthenticatedScreenModalFactory {
+enum HomeScreenModalFactory {
     @MainActor @ViewBuilder
-    static func makeModal(for state: AuthenticatedScreens.ModalState) -> some View {
+    static func makeModal(for state: HomeScreen.ModalState) -> some View {
         switch state {
         case .contacts:
             ContactsScreen()

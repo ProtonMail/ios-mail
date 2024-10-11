@@ -18,7 +18,7 @@
 import proton_app_uniffi
 import SwiftUI
 
-struct AuthenticatedScreens: View {
+struct HomeScreen: View {
     enum ModalState: String, Identifiable {
         case contacts
         case labelOrFolderCreationScreen
@@ -117,7 +117,7 @@ struct AuthenticatedScreens: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(item: $modalState, content: AuthenticatedScreenModalFactory.makeModal)
+        .sheet(item: $modalState, content: HomeScreenModalFactory.makeModal)
         .onAppear { didAppear?(self) }
     }
 

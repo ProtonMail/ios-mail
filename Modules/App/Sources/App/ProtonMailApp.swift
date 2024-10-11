@@ -79,7 +79,7 @@ private struct RootView: View {
     @ViewBuilder
     private func mainView() -> some View {
         if let activerUser = appContext.activeUserSession {
-            AuthenticatedScreens(
+            HomeScreen(
                 customLabelModel: customLabelModel,
                 userSession: activerUser,
                 userDefaults: .standard
