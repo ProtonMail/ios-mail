@@ -83,8 +83,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         guard let mailbox, metadata.unread else { return }
         Task {
             try? await markMessagesRead(
-                session: dependencies.appContext.userSession,
-                labelId: mailbox.labelId(),
+                mailbox: mailbox,
                 messageIds: [metadata.messageID]
             )
         }
