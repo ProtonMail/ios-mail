@@ -15,17 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonContacts
 import SwiftUI
-import DesignSystem
 
-public struct ContactsScreen: View {
-    public init() {}
-
-    public var body: some View {
-        NavigationStack {
-            DS.Color.Background.secondary
-                .ignoresSafeArea()
-                .navigationTitle("Contacts")
+enum HomeScreenModalFactory {
+    @MainActor @ViewBuilder
+    static func makeModal(for state: HomeScreen.ModalState) -> some View {
+        switch state {
+        case .contacts:
+            ContactsScreen()
+        case .labelOrFolderCreationScreen:
+            CreateFolderOrLabelScreen()
+        case .settingsScreen:
+            SettingsScreen()
         }
     }
 }

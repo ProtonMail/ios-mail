@@ -15,17 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonContacts
+import SnapshotTesting
 import SwiftUI
-import DesignSystem
+import XCTest
 
-public struct ContactsScreen: View {
-    public init() {}
+final class ContactsScreenSnapshotTests: XCTestCase {
 
-    public var body: some View {
-        NavigationStack {
-            DS.Color.Background.secondary
-                .ignoresSafeArea()
-                .navigationTitle("Contacts")
-        }
+    func testContactsScreenLayoutsCorrectOnIphoneX() {
+        assertSnapshot(of: UIHostingController(rootView: ContactsScreen()), as: .image(on: .iPhoneX))
     }
+
 }
