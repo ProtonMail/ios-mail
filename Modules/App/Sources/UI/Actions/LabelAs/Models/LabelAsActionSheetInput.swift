@@ -17,7 +17,13 @@
 
 import Foundation
 
-struct LabelAsActionSheetInput {
+struct LabelAsActionSheetInput: Identifiable {
     let ids: [ID]
     let type: MailboxItemType
+
+    // MARK: - Identifiable
+
+    var id: [ID] {
+        ids
+    }
 }

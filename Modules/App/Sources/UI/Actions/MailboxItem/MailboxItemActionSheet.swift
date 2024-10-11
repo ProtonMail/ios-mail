@@ -35,7 +35,15 @@ struct MailboxItemActionSheet: View {
                             replyButton(action: action)
                         }
                     }
-                    section(displayData: model.state.availableActions.mailboxItemActions.map(\.displayData))
+                    ActionSheetSection {
+                        ForEachLast(collection: model.state.availableActions.mailboxItemActions) { action, isLast in
+                            ActionSheetImageButton(
+                                displayData: action.displayData,
+                                displayBottomSeparator: !isLast,
+                                action: { model.handle(action: .mailbox(action)) }
+                            )
+                        }
+                    }
                     section(displayData: model.state.availableActions.moveActions.map(\.displayData))
                     section(displayData: model.state.availableActions.generalActions.map(\.displayData))
                 }.padding(.all, DS.Spacing.large)

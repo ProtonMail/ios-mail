@@ -20,6 +20,7 @@ import proton_app_uniffi
 enum MailboxItemActionSheetPreviewProvider {
     static func testData() -> MailboxItemActionSheetModel {
         MailboxItemActionSheetModel(
+            input: .init(ids: [], type: .message, title: "Hello".notLocalized),
             mailbox: .init(noPointer: .init()),
             actionsProvider: ActionsProvider(
                 message: { _, _ in .init(
@@ -42,7 +43,7 @@ enum MailboxItemActionSheetPreviewProvider {
                     generalActions: []
                 ) }
             ),
-            input: .init(ids: [], type: .message, title: "Hello".notLocalized)
+            navigation: { _ in }
         )
     }
 }

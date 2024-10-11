@@ -15,11 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-struct LabelDisplayModel: Equatable, Identifiable {
-    let id: ID
-    let hexColor: String
-    let title: String
-    let isSelected: IsSelected
+enum MailboxItemActionSheetNavigation: Equatable {
+    case labelAs
 }

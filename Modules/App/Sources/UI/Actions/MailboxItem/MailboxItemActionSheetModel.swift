@@ -22,11 +22,30 @@ class MailboxItemActionSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
+    private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
-    init(mailbox: Mailbox, actionsProvider: ActionsProvider, input: MailboxItemActionSheetInput) {
+    init(
+        input: MailboxItemActionSheetInput,
+        mailbox: Mailbox,
+        actionsProvider: ActionsProvider,
+        navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
+    ) {
+        self.input = input
         self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
         self.state = .initial(title: input.title)
-        self.input = input
+        self.navigation = navigation
+    }
+
+    func handle(action: MailboxItemActionSheetAction) {
+        switch action {
+        case .mailbox(let action):
+            switch action {
+            case .labelAs:
+                navigation(.labelAs)
+            default:
+                break
+            }
+        }
     }
 
     func loadActions() async {

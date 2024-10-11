@@ -48,14 +48,33 @@ struct LabelAsSheet: View {
                         .padding(.trailing, DS.Spacing.large)
                     }
                     ActionSheetSection {
-                        ForEachLast(collection: model.state.labels) { label, isLast in
-                            ActionSheetSelectableColorButton(
-                                displayData: label.displayData,
-                                displayBottomSeparator: !isLast,
-                                action: { model.handle(action: .selected(label)) }
-                            )
+                        VStack(spacing: .zero) {
+                            ForEach(model.state.labels) { label in
+                                ActionSheetSelectableColorButton(
+                                    displayData: label.displayData,
+                                    displayBottomSeparator: true,
+                                    action: { model.handle(action: .selected(label)) }
+                                )
+                            }
+                            ActionSheetButton(
+                                displayBottomSeparator: false,
+                                action: {}
+                            ) {
+                                HStack {
+                                    Image(DS.Icon.icPlus)
+                                        .resizable()
+                                        .square(size: 20)
+                                        .foregroundStyle(DS.Color.Icon.norm)
+                                        .padding(.trailing, DS.Spacing.standard)
+                                    Text(L10n.Sidebar.createLabel)
+                                        .foregroundStyle(DS.Color.Text.weak)
+                                    Spacer()
+                                }
+                            }
                         }
                     }
+                    Button(action: {}, label: { Text(L10n.Common.done) })
+                        .buttonStyle(PurpleButtonStyle())
                 }
                 .padding(.all, DS.Spacing.large)
             }
@@ -84,4 +103,20 @@ private extension LabelDisplayModel {
         .init(color: Color(hex: hexColor), title: title, isSelected: isSelected)
     }
 
+}
+
+private struct PurpleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        return configuration
+            .label
+            .fontBody3()
+            .fontWeight(.semibold)
+            .foregroundColor(DS.Color.Text.inverted)
+            .frame(height: 44)
+            .frame(maxWidth: .infinity)
+            .background(
+                configuration.isPressed ? DS.Color.Interaction.pressed : DS.Color.Interaction.norm,
+                in: RoundedRectangle(cornerRadius: DS.Radius.huge)
+            )
+    }
 }
