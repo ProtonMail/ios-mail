@@ -182,13 +182,28 @@ platform :ios do
 
       build_release_app
 
-      upload_to_testflight(
-        api_key: api_key,
-        team_name: "Proton Technologies AG",
-        skip_waiting_for_build_processing: true
-      )
+      # upload_to_testflight(
+      #   api_key: api_key,
+      #   team_name: "Proton Technologies AG",
+      #   skip_waiting_for_build_processing: true
+      # )
+      branch_name = ENV['CI_COMMIT_REF_NAME']
 
-      git_commit(path: "project.yml", message: "Bump build number to #{new_build_number}")
+      git_username = ENV['GIT_CI_USERNAME']
+      git_token = ENV['TAGS_PUBLISHER_TOKEN']
+      repository_url = ENV['CI_REPOSITORY_URL']
+
+      sh("git remote set-url origin \"https://#{git_username}:#{git_token}@$(echo #{repository_url} | awk -F '@' '{print $2}')\"")
+
+      # Fetch only the required branch and check it out
+
+      sh("git pull origin #{branch_name}")
+    
+      # Check if we are in a detached HEAD state
+      # sh("git symbolic-ref --short HEAD || git checkout #{branch_name}")
+      
+      git_commit(path: "./project.yml", message: "Bump build number to #{new_build_number} [ci skip]")
+      push_to_git_remote
     ensure
       tear_down_keychain
     end
