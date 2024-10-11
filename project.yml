@@ -124,6 +124,7 @@ targets:
       - package: Keychain
       - package: Lottie
       - package: proton_app_uniffi
+      - package: ProtonContacts
       - package: ProtonCoreET
         products: 
           - AccountLogin
