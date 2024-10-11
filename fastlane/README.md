@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios decode_distribution_certificate
+
+```sh
+[bundle exec] fastlane ios decode_distribution_certificate
+```
+
+
+
 ### ios build
 
 ```sh
@@ -22,6 +30,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 ```
 
 Build the app
+
+### ios build_release_app
+
+```sh
+[bundle exec] fastlane ios build_release_app
+```
+
+Build the release app
 
 ### ios tests
 
@@ -39,13 +55,29 @@ Run unit tests
 
 Setup UI Tests assets
 
-### ios uitests
+### ios uitests_smoke
 
 ```sh
-[bundle exec] fastlane ios uitests
+[bundle exec] fastlane ios uitests_smoke
 ```
 
-Run UI tests
+Run UI Smoke Tests
+
+### ios uitests_full_regression
+
+```sh
+[bundle exec] fastlane ios uitests_full_regression
+```
+
+Run UI Full Regression Tests
+
+### ios test_build
+
+```sh
+[bundle exec] fastlane ios test_build
+```
+
+
 
 ### ios deploy
 
