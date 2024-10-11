@@ -21,7 +21,6 @@ import proton_app_uniffi
 
 struct LabelAsSheet: View {
     @StateObject var model: LabelAsSheetModel
-    @State var isOn = false
 
     init(model: LabelAsSheetModel) {
         self._model = StateObject(wrappedValue: model)
@@ -32,26 +31,29 @@ struct LabelAsSheet: View {
             ScrollView {
                 VStack(spacing: DS.Spacing.large) {
                     ActionSheetSection {
-                            Toggle(isOn: $isOn) {
-                                HStack(spacing: DS.Spacing.large) {
-                                    Image(DS.Icon.icArchiveBox)
-                                        .resizable()
-                                        .square(size: 20)
-                                        .padding(.leading, DS.Spacing.large)
-                                    Text("Also archive?".notLocalized)
-                                        .font(.body)
-                                        .foregroundStyle(DS.Color.Text.weak)
-                                    Spacer()
+                        Toggle(isOn: shouldArchiveBinding) {
+                            HStack(spacing: DS.Spacing.large) {
+                                Image(DS.Icon.icArchiveBox)
+                                    .resizable()
+                                    .square(size: 20)
+                                    .padding(.leading, DS.Spacing.large)
+                                Text("Also archive?".notLocalized)
+                                    .font(.body)
+                                    .foregroundStyle(DS.Color.Text.weak)
+                                Spacer()
                             }
-
                         }
                         .frame(height: 52)
                         .tint(DS.Color.Brand.norm)
                         .padding(.trailing, DS.Spacing.large)
                     }
                     ActionSheetSection {
-                        ForEachLast(collection: model.state) { label, isLast in
-                            listButton(label: label, displayBottomSeparator: !isLast)
+                        ForEachLast(collection: model.state.labels) { label, isLast in
+                            ActionSheetSelectableColorButton(
+                                displayData: label.displayData,
+                                displayBottomSeparator: !isLast,
+                                action: { model.handle(action: .selected(label)) }
+                            )
                         }
                     }
                 }
@@ -60,26 +62,20 @@ struct LabelAsSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle("Label as...".notLocalized)
             .navigationBarTitleDisplayMode(.inline)
+            .task { await model.loadLabels() }
         }
     }
 
-    private func listButton(label: LabelDisplayModel, displayBottomSeparator: Bool) -> some View {
-        ActionSheetSelectableColorButton(
-            displayData: label.displayData,
-            displayBottomSeparator: displayBottomSeparator,
-            action: { model.handle(action: .selected(label)) }
+    private var shouldArchiveBinding: Binding<Bool> {
+        .init(
+            get: { model.state.shouldArchive },
+            set: { _ in model.handle(action: .toggleSwitch) }
         )
     }
 }
 
 #Preview {
-    var model = LabelAsSheetModel()
-    model.state = [
-        .init(id: .init(value: 1), hexColor: "#F67900", title: "Private", isSelected: .partial),
-        .init(id: .init(value: 2), hexColor: "#E93671", title: "Personal", isSelected: .selected),
-        .init(id: .init(value: 3), hexColor: "#9E329A", title: "Summer trip", isSelected: .unselected)
-    ]
-    return LabelAsSheet(model: model)
+    LabelAsSheet(model: LabelAsSheetPreviewProvider.testData())
 }
 
 private extension LabelDisplayModel {

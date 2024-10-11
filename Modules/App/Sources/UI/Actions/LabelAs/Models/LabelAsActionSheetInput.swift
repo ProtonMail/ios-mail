@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct LabelAsSheetState: Equatable {
-    let labels: [LabelDisplayModel]
-    let shouldArchive: Bool
+struct LabelAsActionSheetInput {
+    let ids: [ID]
+    let type: MailboxItemType
 }

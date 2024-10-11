@@ -50,7 +50,11 @@ struct MailboxItemActionSheet: View {
     private func section(displayData: [ActionDisplayData]) -> some View {
         ActionSheetSection {
             ForEachLast(collection: displayData) { displayData, isLast in
-                listButton(displayData: displayData, displayBottomSeparator: !isLast)
+                ActionSheetImageButton(
+                    displayData: displayData,
+                    displayBottomSeparator: !isLast,
+                    action: { print("Action: \(displayData.title.string)") }
+                )
             }
         }
     }
@@ -73,15 +77,6 @@ struct MailboxItemActionSheet: View {
         .background(DS.Color.BackgroundInverted.secondary)
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
-
-    private func listButton(displayData: ActionDisplayData, displayBottomSeparator: Bool) -> some View {
-        ActionSheetImageButton(
-            displayData: displayData,
-            displayBottomSeparator: displayBottomSeparator,
-            action: { print("Action: \(displayData.title.string)") }
-        )
-    }
-
 }
 
 #Preview {

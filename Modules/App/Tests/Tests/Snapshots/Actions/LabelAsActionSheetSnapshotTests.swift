@@ -15,9 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
+import SnapshotTesting
 
-struct LabelAsSheetState: Equatable {
-    let labels: [LabelDisplayModel]
-    let shouldArchive: Bool
+class LabelAsActionSheetSnapshotTests: BaseTestCase {
+
+    func testActionSheetLayoutsCorrectly() {
+        let model = LabelAsSheetPreviewProvider.testData()
+        model.state = .init(labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel), shouldArchive: false)
+        assertSnapshotsOnIPhoneX(of: LabelAsSheet(model: model))
+    }
+
 }

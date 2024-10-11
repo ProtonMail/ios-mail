@@ -23,4 +23,3 @@ struct LabelDisplayModel: Equatable {
     let title: String
     let isSelected: IsSelected
 }
-

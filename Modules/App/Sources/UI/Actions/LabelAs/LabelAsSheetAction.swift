@@ -18,6 +18,6 @@
 import Foundation
 
 enum LabelAsSheetAction {
-    case loadData
     case selected(LabelDisplayModel)
+    case toggleSwitch
 }
