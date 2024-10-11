@@ -16,10 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonContacts
-import XCTest
-import DesignSystem
-import SwiftUI
 import SnapshotTesting
+import SwiftUI
+import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
 

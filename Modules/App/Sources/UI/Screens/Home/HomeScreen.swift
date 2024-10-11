@@ -88,20 +88,20 @@ struct HomeScreen: View {
                     )))
                 case .other(let otherItem):
                     switch otherItem.type {
-                    case .contacts:
-                        modalState = .contacts
-                    case .settings:
-                        modalState = .settingsScreen
-                    case .subscriptions:
-                        toastStateStore.present(toast: .comingSoon)
-                    case .createFolder, .createLabel:
-                        modalState = .labelOrFolderCreationScreen
-                    case .signOut:
-                        signOut()
-                    case .shareLogs:
-                        presentShareFileController()
                     case .bugReport:
                         toastStateStore.present(toast: .comingSoon)
+                    case .contacts:
+                        modalState = .contacts
+                    case .createFolder, .createLabel:
+                        modalState = .labelOrFolderCreationScreen
+                    case .settings:
+                        modalState = .settingsScreen
+                    case .shareLogs:
+                        presentShareFileController()
+                    case .subscriptions:
+                        toastStateStore.present(toast: .comingSoon)
+                    case .signOut:
+                        signOut()
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .customLabel(
