@@ -12,9 +12,13 @@ let package = Package(
     dependencies: [
         .package(path: "DesignSystem"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
+        .package(path: "proton_app_uniffi")
     ],
     targets: [
-        .target(name: "ProtonContacts", dependencies: ["DesignSystem"]),
+        .target(
+            name: "ProtonContacts",
+            dependencies: ["DesignSystem", "proton_app_uniffi"]
+        ),
         .testTarget(
             name: "ProtonContactsTests",
             dependencies: [
