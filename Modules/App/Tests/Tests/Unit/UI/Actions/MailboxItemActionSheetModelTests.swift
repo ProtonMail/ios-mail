@@ -23,6 +23,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
     var invokedWithMessagesIDs: [ID] = []
     var invokedWithConversationIDs: [ID] = []
+    var spiedNavigation: [MailboxItemActionSheetNavigation] = []
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
 
@@ -80,8 +81,25 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         ))
     }
 
+    func testNavigation_WhenStarMailboxActionIsHandled_ItDoesNotEmitCorrectNavigation() {
+        let sut = sut(ids: [], type: .message, title: .notUsed)
+
+        sut.handle(action: .mailbox(.star))
+
+        XCTAssertEqual(spiedNavigation, [])
+    }
+
+    func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
+        let sut = sut(ids: [], type: .message, title: .notUsed)
+
+        sut.handle(action: .mailbox(.labelAs))
+
+        XCTAssertEqual(spiedNavigation, [.labelAs])
+    }
+
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
         MailboxItemActionSheetModel(
+            input: .init(ids: ids, type: type, title: title),
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, ids in
@@ -93,7 +111,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                     return self.stubbedConversationActions
                 }
             ),
-            input: .init(ids: ids, type: type, title: title)
+            navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
     }
 

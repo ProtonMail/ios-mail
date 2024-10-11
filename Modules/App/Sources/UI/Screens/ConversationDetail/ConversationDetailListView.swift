@@ -22,9 +22,11 @@ struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     @State private var showMessageActionPicker: Bool = false
-    
+    @Environment(\.dismiss) var dismiss
+
     /// These attributes trigger the different action sheets
     @State private var mailboxItemActionSheetInput: MailboxItemActionSheetInput?
+    @State private var labelAsActionSheetInput: LabelAsActionSheetInput?
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
@@ -47,14 +49,27 @@ struct ConversationDetailListView: View {
         .sheet(item: $mailboxItemActionSheetInput, content: mailboxItemActionPicker)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
+        .sheet(item: $labelAsActionSheetInput, content: labelAsActionPicker)
+    }
+
+    private func labelAsActionPicker(input: LabelAsActionSheetInput) -> some View {
+        let model = LabelAsSheetModel(
+            input: input,
+            mailbox: model.mailbox.unsafelyUnwrapped,
+            actionsProvider: .instance
+        )
+        return LabelAsSheet(model: model)
     }
 
     private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
         let model = MailboxItemActionSheetModel(
+            input: input,
             mailbox: model.mailbox.unsafelyUnwrapped,
-            actionsProvider: .instance,
-            input: input
-        )
+            actionsProvider: .instance
+        ) { navigation in
+            mailboxItemActionSheetInput = nil
+            labelAsActionSheetInput = .init(ids: input.ids, type: input.type)
+        }
         return MailboxItemActionSheet(model: model)
             .pickerViewStyle([.large])
     }
