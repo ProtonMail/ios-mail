@@ -22,33 +22,46 @@ class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
     private let input: LabelAsActionSheetInput
     private let actionsProvider: LabelAsActionsProvider
+    private let navigation: (LabelAsSheetNavigation) -> Void
 
-    init(input: LabelAsActionSheetInput, mailbox: Mailbox, actionsProvider: LabelAsAvailableActionsProvider) {
+    init(
+        input: LabelAsActionSheetInput,
+        mailbox: Mailbox, 
+        actionsProvider: LabelAsAvailableActionsProvider,
+        navigation: @escaping (LabelAsSheetNavigation) -> Void
+    ) {
         self.input = input
         self.actionsProvider = .init(mailbox: mailbox, labelAsAvailableActionsProvider: actionsProvider)
-    }
-
-    func loadLabels() async {
-        switch await actionsProvider.actions(for: input.type, ids: input.ids) {
-        case .success(let labels):
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.update(labels: labels)
-            }))
-        case .failure:
-            fatalError("Handle error here")
-        }
+        self.navigation = navigation
     }
 
     func handle(action: LabelAsSheetAction) {
         switch action {
+        case .viewAppear:
+            loadLabels()
         case .selected(let label):
             updateSelection(of: label)
         case .toggleSwitch:
             state = state.copy(shouldArchive: state.shouldArchive.toggled)
+        case .createLabelButtonTapped:
+            navigation(.createLabel)
         }
     }
 
     // MARK: - Private
+
+    private func loadLabels() {
+        Task {
+            switch await actionsProvider.actions(for: input.type, ids: input.ids) {
+            case .success(let labels):
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.update(labels: labels)
+                }))
+            case .failure:
+                fatalError("Handle error here")
+            }
+        }
+    }
 
     private func update(labels: [LabelAsAction]) {
         state = state.copy(labels: labels.map(\.displayModel))

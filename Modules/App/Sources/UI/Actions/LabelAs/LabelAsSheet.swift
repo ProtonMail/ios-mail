@@ -58,7 +58,7 @@ struct LabelAsSheet: View {
                             }
                             ActionSheetButton(
                                 displayBottomSeparator: false,
-                                action: {}
+                                action: { model.handle(action: .createLabelButtonTapped) }
                             ) {
                                 HStack {
                                     Image(DS.Icon.icPlus)
@@ -81,7 +81,7 @@ struct LabelAsSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle("Label as...".notLocalized)
             .navigationBarTitleDisplayMode(.inline)
-            .task { await model.loadLabels() }
+            .onAppear { model.handle(action: .viewAppear) }
         }
     }
 

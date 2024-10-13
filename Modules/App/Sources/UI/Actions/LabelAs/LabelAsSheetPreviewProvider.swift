@@ -25,7 +25,8 @@ enum LabelAsSheetPreviewProvider {
             actionsProvider: .init(
                 message: { _, _ in testLabels() },
                 conversation: { _, _ in [] }
-            )
+            ),
+            navigation: { _ in }
         )
     }
 

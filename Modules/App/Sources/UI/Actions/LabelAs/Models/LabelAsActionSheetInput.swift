@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct LabelAsActionSheetInput: Identifiable {
+struct LabelAsActionSheetInput: Hashable, Identifiable {
     let ids: [ID]
     let type: MailboxItemType
 
