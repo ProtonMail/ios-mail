@@ -180,7 +180,7 @@ platform :ios do
       increment_build_number(build_number: new_build_number)
       bump_build_number_in_xcodegen_configuration(new_build_number)
 
-      build_release_app
+      # build_release_app
 
       sh("git branch")
       
