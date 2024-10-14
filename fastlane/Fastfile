@@ -13,6 +13,7 @@ UNIT_TESTS_SCHEME = "ProtonMailTest"
 UI_TESTS_SCHEME = "ProtonMailUITest"
 UI_TESTS_DEVICE = "iPhone 15 Pro"
 UNIT_TESTS_DEVICE = "iPhone 15 Pro"
+XCODEGEN_CONFIGURATION_FILE_PATH = "../project.yml"
 
 CONCURRENT_WORKERS=2
 MAX_CONCURRENT_SIMULATORS=2
@@ -79,8 +80,25 @@ platform :ios do
     latest_build_number == 1 ? latest_build_number : latest_build_number + 1
   end
 
+  def current_marketing_version
+    sh("sed -n 's/.*MARKETING_VERSION: \\(.*\\)/\\1/p' #{XCODEGEN_CONFIGURATION_FILE_PATH}").strip
+  end
+
   def bump_build_number_in_xcodegen_configuration(new_build_number)
-    sh("sed -i '' -e 's/^\\( *CURRENT_PROJECT_VERSION: \\).*/\\1#{new_build_number}/' ../project.yml")
+    sh("sed -i '' -e 's/^\\( *CURRENT_PROJECT_VERSION: \\).*/\\1#{new_build_number}/' #{XCODEGEN_CONFIGURATION_FILE_PATH}").strip
+  end
+
+  def commit_add_tag_and_push(build_number)
+    project_version = current_marketing_version
+    branch_name = ENV['CI_COMMIT_REF_NAME']
+
+    sh("git fetch origin #{branch_name}:#{branch_name}")
+    sh("git checkout #{branch_name}")
+
+    bump_build_number_in_xcodegen_configuration(build_number)
+    git_commit(path: "./project.yml", message: "Bump the project v#{project_version}_#{build_number} [ci skip]")
+    add_git_tag(tag: "v#{project_version}_#{build_number}")
+    push_to_git_remote
   end
 
   lane :decode_distribution_certificate do
@@ -178,13 +196,10 @@ platform :ios do
       latest_build_number = get_latest_build_number(api_key)
       new_build_number = generate_new_build_number(latest_build_number)
       increment_build_number(build_number: new_build_number)
-      bump_build_number_in_xcodegen_configuration(new_build_number)
-
-      # build_release_app
-
-      sh("git branch")
       
-      git_commit(path: "./project.yml", message: "Bump build number to #{new_build_number} [ci skip]")
+      # build_release_app
+      
+      commit_add_tag_and_push(new_build_number)
     ensure
       tear_down_keychain
     end
