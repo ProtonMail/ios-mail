@@ -49,7 +49,7 @@
       "comment" : "Menu title of all sent emails in the sidebar."
     },
     "Also archive?" : {
-      "comment" : "Switch title for moving message to `Archive` folder."
+      "comment" : "Title of switcher in the label as action sheet."
     },
     "App" : {
       "comment" : "Title of the App settings item."

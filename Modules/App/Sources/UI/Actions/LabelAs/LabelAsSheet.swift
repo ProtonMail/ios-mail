@@ -37,7 +37,7 @@ struct LabelAsSheet: View {
                                     .resizable()
                                     .square(size: 20)
                                     .padding(.leading, DS.Spacing.large)
-                                Text("Also archive?".notLocalized)
+                                Text(L10n.Action.alsoArchive)
                                     .font(.body)
                                     .foregroundStyle(DS.Color.Text.weak)
                                 Spacer()
@@ -73,13 +73,13 @@ struct LabelAsSheet: View {
                             }
                         }
                     }
-                    Button(action: {}, label: { Text(L10n.Common.done) })
+                    Button(action: { model.handle(action: .createLabelButtonTapped) }, label: { Text(L10n.Common.done) })
                         .buttonStyle(PurpleButtonStyle())
                 }
                 .padding(.all, DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
-            .navigationTitle("Label as...".notLocalized)
+            .navigationTitle(L10n.Action.labelAs.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
         }
