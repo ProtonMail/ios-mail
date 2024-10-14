@@ -69,7 +69,7 @@ Carthage/
 tmp/
 
 # UITest Mocks
-iosUITests/NetworkMocks/*
+Modules/App/UITests/NetworkMocks/*
 
 # Bundler
 .bundle
