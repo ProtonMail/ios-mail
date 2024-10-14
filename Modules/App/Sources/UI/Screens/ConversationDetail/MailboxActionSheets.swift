@@ -57,7 +57,11 @@ struct MailboxActionSheets: ViewModifier {
     }
 
     @MainActor private func labelAsActionPicker(input: LabelAsActionSheetInput) -> some View {
-        let model = LabelAsSheetModel(input: input, mailbox: mailbox(), actionsProvider: .instance) { navigation in
+        let model = LabelAsSheetModel(
+            input: input,
+            mailbox: mailbox(),
+            availableLabelAsActions: .instance
+        ) { navigation in
             switch navigation {
             case .done:
                 state = state.dismissed()

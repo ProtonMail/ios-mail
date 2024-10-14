@@ -27,11 +27,11 @@ class LabelAsSheetModel: ObservableObject {
     init(
         input: LabelAsActionSheetInput,
         mailbox: Mailbox, 
-        actionsProvider: LabelAsAvailableActionsProvider,
+        availableLabelAsActions: AvailableLabelAsActions,
         navigation: @escaping (LabelAsSheetNavigation) -> Void
     ) {
         self.input = input
-        self.actionsProvider = .init(mailbox: mailbox, labelAsAvailableActionsProvider: actionsProvider)
+        self.actionsProvider = .init(mailbox: mailbox, availableLabelAsActions: availableLabelAsActions)
         self.navigation = navigation
     }
 

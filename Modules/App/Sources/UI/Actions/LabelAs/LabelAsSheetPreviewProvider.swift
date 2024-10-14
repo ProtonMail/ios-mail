@@ -22,7 +22,7 @@ enum LabelAsSheetPreviewProvider {
         .init(
             input: .init(ids: [], type: .message),
             mailbox: .init(noPointer: .init()),
-            actionsProvider: .init(
+            availableLabelAsActions: .init(
                 message: { _, _ in testLabels() },
                 conversation: { _, _ in [] }
             ),

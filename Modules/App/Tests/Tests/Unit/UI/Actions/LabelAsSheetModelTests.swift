@@ -21,22 +21,22 @@ import XCTest
 
 class LabelAsSheetModelTests: BaseTestCase {
 
-    var invokedActionsProviderWithMessagesIDs: [ID]!
-    var invokedActionsProviderWithConversationIDs: [ID]!
+    var invokedAvailableActionsWithMessagesIDs: [ID]!
+    var invokedAvailableActionsWithConversationIDs: [ID]!
     var invokedNavigation: [LabelAsSheetNavigation]!
     var stubbedLabelAsActions: [LabelAsAction]!
 
     override func setUp() {
         super.setUp()
 
-        invokedActionsProviderWithMessagesIDs = []
-        invokedActionsProviderWithConversationIDs = []
+        invokedAvailableActionsWithMessagesIDs = []
+        invokedAvailableActionsWithConversationIDs = []
         invokedNavigation = []
     }
 
     override func tearDown() {
-        invokedActionsProviderWithMessagesIDs = nil
-        invokedActionsProviderWithConversationIDs = nil
+        invokedAvailableActionsWithMessagesIDs = nil
+        invokedAvailableActionsWithConversationIDs = nil
         invokedNavigation = nil
         stubbedLabelAsActions = nil
 
@@ -50,8 +50,8 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedActionsProviderWithMessagesIDs, messageIDs)
-        XCTAssertEqual(invokedActionsProviderWithConversationIDs, [])
+        XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, messageIDs)
+        XCTAssertEqual(invokedAvailableActionsWithConversationIDs, [])
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
             shouldArchive: false
@@ -65,8 +65,8 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedActionsProviderWithMessagesIDs, [])
-        XCTAssertEqual(invokedActionsProviderWithConversationIDs, conversationIDs)
+        XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, [])
+        XCTAssertEqual(invokedAvailableActionsWithConversationIDs, conversationIDs)
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
             shouldArchive: false
@@ -124,13 +124,13 @@ class LabelAsSheetModelTests: BaseTestCase {
         LabelAsSheetModel(
             input: .init(ids: ids, type: type),
             mailbox: .init(noPointer: .init()),
-            actionsProvider: .init(
+            availableLabelAsActions: .init(
                 message: { _, ids in
-                    self.invokedActionsProviderWithMessagesIDs = ids
+                    self.invokedAvailableActionsWithMessagesIDs = ids
                     return self.stubbedLabelAsActions
                 },
                 conversation: { _, ids in
-                    self.invokedActionsProviderWithConversationIDs = ids
+                    self.invokedAvailableActionsWithConversationIDs = ids
                     return self.stubbedLabelAsActions
                 }
             ), 

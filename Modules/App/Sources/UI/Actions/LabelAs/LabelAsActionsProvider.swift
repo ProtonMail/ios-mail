@@ -19,11 +19,11 @@ import proton_app_uniffi
 
 struct LabelAsActionsProvider {
     private let mailbox: Mailbox
-    private let labelAsAvailableActionsProvider: LabelAsAvailableActionsProvider
+    private let availableLabelAsActions: AvailableLabelAsActions
 
-    init(mailbox: Mailbox, labelAsAvailableActionsProvider: LabelAsAvailableActionsProvider) {
+    init(mailbox: Mailbox, availableLabelAsActions: AvailableLabelAsActions) {
         self.mailbox = mailbox
-        self.labelAsAvailableActionsProvider = labelAsAvailableActionsProvider
+        self.availableLabelAsActions = availableLabelAsActions
     }
 
     func actions(for type: MailboxItemType, ids: [ID]) async -> Result<[LabelAsAction], Error> {
@@ -43,19 +43,19 @@ struct LabelAsActionsProvider {
     ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> [LabelAsAction] {
         switch type {
         case .message:
-            labelAsAvailableActionsProvider.message
+            availableLabelAsActions.message
         case .conversation:
-            labelAsAvailableActionsProvider.conversation
+            availableLabelAsActions.conversation
         }
     }
 }
 
-struct LabelAsAvailableActionsProvider {
+struct AvailableLabelAsActions {
     let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> [LabelAsAction]
     let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> [LabelAsAction]
 }
 
-extension LabelAsAvailableActionsProvider {
+extension AvailableLabelAsActions {
     static var instance: Self {
         .init(
             message: availableLabelAsActionsForMessages,
