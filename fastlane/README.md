@@ -71,14 +71,6 @@ Run UI Smoke Tests
 
 Run UI Full Regression Tests
 
-### ios test_build
-
-```sh
-[bundle exec] fastlane ios test_build
-```
-
-
-
 ### ios deploy
 
 ```sh
