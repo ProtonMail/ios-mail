@@ -196,10 +196,10 @@ platform :ios do
       latest_build_number = get_latest_build_number(api_key)
       new_build_number = generate_new_build_number(latest_build_number)
       increment_build_number(build_number: new_build_number)
-      
-      # build_release_app
-      
+
       commit_add_tag_and_push(new_build_number)
+      
+      build_release_app
     ensure
       tear_down_keychain
     end
