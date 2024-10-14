@@ -58,6 +58,13 @@ class LabelAsSheetModelTests: BaseTestCase {
         ))
     }
 
+    func testNavigation_WhenDoneButtonIsTapped_ItReturnsCorrectValue() {
+        let sut = sut(ids: [.init(value: 7), .init(value: 88)], type: .message)
+        sut.handle(action: .doneButtonTapped)
+
+        XCTAssertEqual(invokedNavigation, [.done])
+    }
+
     func testState_WhenMailboxTypeIsConversationAndArchiveToggleIsTapped_ItReturnsCorrectState() {
         stubbedLabelAsActions = LabelAsSheetPreviewProvider.testLabels()
         let conversationIDs: [ID] = [.init(value: 1), .init(value: 3)]

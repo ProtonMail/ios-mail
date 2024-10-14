@@ -45,6 +45,8 @@ class LabelAsSheetModel: ObservableObject {
             state = state.copy(shouldArchive: state.shouldArchive.toggled)
         case .createLabelButtonTapped:
             navigation(.createLabel)
+        case .doneButtonTapped:
+            navigation(.done)
         }
     }
 

@@ -21,5 +21,6 @@ enum LabelAsSheetAction {
     case selected(LabelDisplayModel)
     case toggleSwitch
     case createLabelButtonTapped
+    case doneButtonTapped
     case viewAppear
 }
