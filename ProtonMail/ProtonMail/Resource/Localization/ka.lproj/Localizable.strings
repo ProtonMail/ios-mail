@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u ელფოსტის მისამართი";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "თქვენი ელფოსტის დომენი";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "გამჭოლი დაშიფვრა";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "ახალი Proton Mal-ის კომპიუტერის აპი";
+"Access to desktop app" = "წვდომა კომპიუტერის აპთან";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "მომხმარებლის პრიორიტეტული მხარდაჭერა";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ფასიანი ფუნქცია";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u-ჯერ მეტი საცავი";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u-ჯერ მეტი ელფოსტის მისამართი";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "გახსენით თქვენი ელფოსტა და კალენდარი ერთი წკაპით და აიცილეთ თავიდან ბრაუზერის ელემენტები.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "დააორგანიზეთ თქვენი ელფოსტა თქვენთვის მოსახერხებელი შევსებსა და ჭდეების სისტემით.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";
@@ -2523,7 +2547,7 @@
 "Free" = "უფასო";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "ავტომატურად განახლდება იგივე ფასით და პირობებით, თუ არ გააუქმებთ.";
 
 /* Displayed next to the monthly price */
 "/month" = "/თვე";

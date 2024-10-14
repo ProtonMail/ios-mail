@@ -2271,7 +2271,7 @@
 "Open in Proton Calendar" = "Abrir en Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Vaciar la papelera.";
+"Clear out the junk" = "Elimina los mensajes no deseados";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Elimina automáticamente los mensajes de más de 30 días de las carpetas Papelera y Spam. Disfruta de este y otros beneficios al mejorar tu plan.";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Cifrado de extremo a extremo";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nueva aplicación de escritorio de Proton Mail";
+"Access to desktop app" = "Acceso a la aplicación de escritorio";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Soporte prioritario";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u funciones prémium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u veces más almacenamiento";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Obtén %u GB: suficiente espacio para almacenar de forma segura tus mensajes, archivos y fotos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u veces más direcciones de correo";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Cree hasta %u direcciones de correo electrónico, incluida @pm.me, para satisfacer sus necesidades.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Conecta tu propio dominio y envía tus correos electrónicos profesionales o de marca, de forma segura.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Abra su correo electrónico y calendario con un solo clic y evite las distracciones del navegador.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organice sus correos electrónicos utilizando su sistema de archivo y etiquetado preferido.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Disfrute de un tiempo de respuesta más rápido del personal de soporte dedicado en caso de que surja un problema.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetría anónima";

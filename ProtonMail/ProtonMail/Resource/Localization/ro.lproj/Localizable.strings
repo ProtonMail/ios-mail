@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u adrese de e-mail";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Criptare bilaterală";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "✓ Aplicație nouă Proton Mail pentru desktop";
+"Access to desktop app" = "Acces la aplicația desktop";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Asistență prioritară clienți";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "Peste %u funcții premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "De %ux mai mult spațiu de stocare";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Obțineți %u GiB — spațiu suficient pentru a vă stoca în siguranță mesajele, fișierele și fotografiile.";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "De %ux mai multe adrese de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Creați până la %u adrese de e-mail, inclusiv cea @pm.me, pentru nevoile personale.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Conectați-vă propriul domeniu și transmiteți-vă în siguranță mesajele de afaceri sau de marcă.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Deschideți-vă e-mailul și calendarul cu un singur clic și evitați distragerile din navigatorul web.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organizați-vă mesajele folosindu-vă sistemul preferat de aranjare și etichetare.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Beneficiați de un timp de răspuns mai rapid din partea personalului de asistență dedicat în cazul în care apare o problemă.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";
@@ -2523,7 +2547,7 @@
 "Free" = "Gratuit";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Se reînnoiește automat la același preț și condiții, dacă nu este anulat.";
 
 /* Displayed next to the monthly price */
 "/month" = "/lună";

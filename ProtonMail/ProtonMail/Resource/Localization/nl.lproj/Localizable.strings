@@ -1421,7 +1421,7 @@
 "Inherited from parent folder" = "Overgenomen van bovenliggende map";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Maken van map niet toegestaan";
 
 /* Alert title */
 "Creating label not allowed" = "Creating label not allowed";
@@ -2121,7 +2121,7 @@
 "As scheduled" = "Zoals gepland";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Maak uw eigen planning";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -2130,22 +2130,22 @@
 "Upgrade now" = "Upgrade nu";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Plan berichten in op ieder moment";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Onbeperkte mappen en labels";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Tot wel 500 GB opslag";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 15 email addresses" = "Up to 15 email addresses";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Tot wel 3 aangepaste e-mail domeinen";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Hide-my-email-aliassen";
 
 /* One of schedule time options */
 "In the morning" = "'s Ochtends";
@@ -2271,13 +2271,13 @@
 "Open in Proton Calendar" = "Openen in Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Spam opruimen";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Verwijder automatisch berichten van de prullenbak of spam die ouder zijn dan 30 dagen. Geniet hiervan en van andere voordelen wanneer u upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "Tot wel 3 TB opslag";
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Custom email domains";
@@ -2484,22 +2484,46 @@
 "Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u persoonlijke agenda's";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "End-to-end versleuteling";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"Access to desktop app" = "Access to desktop app";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Ondersteuning met hoge prioriteit";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonieme telemetrie";
@@ -2553,10 +2577,10 @@
 "Easily send emails to a group and enjoy other premium features with %@." = "Stuur gemakkelijk e-mails naar een groep en geniet van andere premium functies met %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Heeft u meer labels of mappen nodig?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Krijg ze en andere premium functies wanneer u upgraden naar %@.";
 
 /* Title of the upsell page */
 "Customize your signature" = "Pas uw handtekening aan";
@@ -2580,10 +2604,10 @@
 "Choose a plan" = "Kies een abonnement";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Jaarlijks";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Beste Koop";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";

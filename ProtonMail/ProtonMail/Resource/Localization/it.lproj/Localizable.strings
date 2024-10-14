@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Crittografia end-to-end";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nuova app desktop Proton Mail";
+"Access to desktop app" = "Accesso all'app desktop";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Assistenza clienti prioritaria";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u funzionalità premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux spazio di archiviazione in più";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Ottieni %u GB: tanto spazio per archiviare in modo sicuro messaggi, file e foto";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux indirizzi email in più";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Crea fino a %u indirizzi email, inclusi quelli @pm.me, per soddisfare le tue esigenze.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Collega il tuo dominio e invia le tue email professionali o brandizzate in tutta sicurezza.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Apri la tua posta elettronica e il tuo calendario con un clic ed evita le distrazioni del browser.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organizza le tue email utilizzando il tuo sistema di archiviazione ed etichettatura preferito.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Goditi tempi di risposta più rapidi da parte del personale di supporto dedicato in caso di problemi.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anonima";

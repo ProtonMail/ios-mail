@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "종단간 암호화";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "새로운 Proton Mail 데스크톱 앱";
+"Access to desktop app" = "데스크톱 앱으로 접근";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "고객 지원 우선 순위 제공";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u배 더 많은 스토리지";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "%u GB 얻기 — 나의 메시지, 파일, 사진을 안전하게 보관하지 위한 충분한 공간";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u배 많은 이메일 주소";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "나의 요구에 충족하는 @pm.me 도메인을 포함한 최대 %u개 이메일 주소를 생성하세요.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "도메인을 연결하고 전문 및 브랜드 이메일을 안전하게 전송하세요.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "한 번의 클릭으로 이메일 및 캘린더를 열어 브라우저 방해를 피해보세요.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "지정 필터 및 라벨링 시스템으로 편지함을 정리하세요.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "문제가 발생했을 때 전담 지원 직원의 더 빠른 응답 시간을 누려보세요.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "익명 원격 측정";

@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u e-mailadresser";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Tilpasset e-maildomæne";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "End-to-end kryptering";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"Access to desktop app" = "Adgang til skrivebords-app";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Prioriteret kundesupport";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium-funktioner";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux mere lagerplads";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Få %u GB—rigelig plads til sikker opbevaring af dine beskeder, filer og fotos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux flere e-mailadresser";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Opret op til %u e-mailadresser, herunder dem med @pm.me, for at opfylde dine behov.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Tilslut dit eget domæne, og send dine professionelle eller brandede e-mails sikkert.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Åbn din e-mail og kalender med et enkelt klik, og undgå at blive distraheret af browseren.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2523,7 +2547,7 @@
 "Free" = "Gratis";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Fornyes automatisk til samme pris og vilkår, medmindre aftalen opsiges.";
 
 /* Displayed next to the monthly price */
 "/month" = "/måned";

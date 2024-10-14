@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Сквозное шифрование";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Новое приложение для настольных компьютеров Proton Mail";
+"Access to desktop app" = "Доступ к приложению для настольных компьютеров";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Приоритетная поддержка клиентов";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u платных функций";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "В %u раз больше места в хранилище";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Получите %u ГБ - много места для защищенного хранения ваших сообщений, файлов и фотографий.";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "В %u раз больше адресов электронной почты";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Создайте до %u адресов электронной почты, включая @pm.me, чтобы обеспечить свои потребности.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Подключите собственный домен и отправляйте профессиональную или фирменную электронную почту в защищенном режиме.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Открывайте электронную почту и календарь одним нажатием и не отвлекайтесь на браузер.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Организуйте электронную почту, используя удобную для вас систему сортировки и маркировки.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "В случае возникновения проблем, воспользуйтесь быстрым ответом специалистов службы поддержки.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонимная телеметрия";

@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "End-to-end-kryptering";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Ny Proton Mail-app för stationär dator";
+"Access to desktop app" = "Åtkomst till app för stationär dator";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Prioriterad kundsupport";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunktioner";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux mer lagringsutrymme";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Få %u GB – gott om utrymme för att säkert lagra dina meddelanden, filer och foton";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux fler e-postadresser";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Skapa upp till %u e-postadresser, inklusive @pm.me, för att möta dina behov.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Öppna din e-post och kalender med ett klick och undvik webbläsarens distraktioner.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organisera din e-post med ditt föredragna arkiverings- och etikettsystem.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Njut av snabbare svarstid från dedikerad supportpersonal om ett problem skulle uppstå.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
