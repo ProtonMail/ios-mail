@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Скразное шыфраванне";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Новая настольная праграма Proton Mail";
+"Access to desktop app" = "Доступ да настольнай праграмы";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Прыярытэтная падтрымка кліентаў";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "І яшчэ %u прэміяльныя функцыі";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "У %u разы больш сховішча";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Атрымайце %u ГБ прасторы, якой будзе дастаткова для захоўвання вашых паведамленняў, файлаў і фатаграфій";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "У %u разы больш адрасоў электроннай пошты";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Стварайце да %u адрасоў электроннай пошты, уключаючы @pm.me для задавальнення вашых патрэб.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Падключайце свой уласны дамен і бяспечна адпраўляйце брэндзіраваныя або прафесійныя лісты.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Не рабіце лішнія дзеянні ў браўзеры, а адкрывайце вашу электронную пошту і каляндар адным націскам.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Парадкуйце свае электронныя лісты выкарыстоўваючы пажаданую сістэму захоўвання і маркіроўкі.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Атрымлівайце асалоду ад прыярытэтнай падтрымкі ў выпадку ўзнікнення праблем.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";

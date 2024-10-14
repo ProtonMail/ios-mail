@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Chiffrement de bout en bout";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nouvelle application de bureau Proton Mail";
+"Access to desktop app" = "Accéder à l'application de bureau";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Service client prioritaire";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u fonctionnalités premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u fois plus d'espace de stockage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Profitez de %u Go : un espace conséquent pour stocker en toute sécurité vos messages, fichiers et photos.";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u fois plus d'adresses e-mail";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Créez jusqu'à %u adresses e-mails, y compris des adresses @pm.me, pour répondre à vos besoins.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connectez votre propre domaine et envoyez en toute sécurité vos e-mails professionnels ou avec adresse personnalisée.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Ouvrez votre e-mail et votre calendrier en un seul clic et ne vous laissez pas distraire par votre navigateur.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organisez vos e-mails à l'aide de votre système préféré de classement et de labellisation.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Profitez d'un temps de réponse plus rapide de la part de l'équipe de support dédiée en cas de problème.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Données d'utilisation anonymisées";

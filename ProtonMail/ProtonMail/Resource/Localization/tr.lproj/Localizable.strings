@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Uçtan uca şifreleme";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Yeni Proton Mail masaüstü uygulaması";
+"Access to desktop app" = "Masaüstü uygulamasına erişim";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Öncelikli müşteri desteği";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ücretli özellikler";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux daha fazla depolama alanı";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "%u GB edinin. İletilerinizi, dosyalarınızı ve fotoğraflarınızı güvenle depolamak için bolca alan";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux daha fazla e-posta adresi";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Gereksinimleriniz için @pm.me ile birlikte %u taneye kadar e-posta adresi oluşturun.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Kendi etki alanınızı bağlayın ve profesyonel veya markalı e-postalarınızı güvenli olarak gönderin.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Tek tıklamayla e-postanızı ve takviminizi açın ve tarayıcınızdaki dikkat dağıtıcı şeylerden uzak durun.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "E-postalarınızı kendi dosyalama ve etiketleme sisteminize göre düzenleyin.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Bir sorunla karşılaşırsanız, size özel destek personelimizden daha hızlı yanıt almanın tadını çıkarın.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonim kullanım verileri";

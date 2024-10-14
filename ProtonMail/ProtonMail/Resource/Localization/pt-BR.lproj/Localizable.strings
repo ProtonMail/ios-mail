@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Criptografia de ponta a ponta";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Novo aplicativo do Proton Mail para computador";
+"Access to desktop app" = "Acesso ao aplicativo para computador";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Suporte prioritário ao cliente";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u recursos premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux mais armazenamento";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Obtenha %u GB - muito espaço para armazenar com segurança suas mensagens, arquivos e fotos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux mais endereços de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Crie até %u endereços de e-mail, incluindo @pm.me, para atender às suas necessidades.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Conecte seu próprio domínio e envie seus e-mails profissionais ou de marca com segurança.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Abra seu e-mail e calendário com um clique e evite distrações no navegador.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize seus e-mails usando seu sistema de arquivamento e rotulagem preferido.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Aproveite o tempo de resposta mais rápido da equipe de suporte dedicada, caso surja um problema.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anônima";

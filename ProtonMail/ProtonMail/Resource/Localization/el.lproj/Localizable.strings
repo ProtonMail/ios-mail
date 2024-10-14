@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Προσαρμοσμένος τομέας ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Νέα Proton Mail εφαρμογή για υπολογιστές";
+"Access to desktop app" = "Access to desktop app";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium χαρακτηριστικά";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
@@ -2523,7 +2547,7 @@
 "Free" = "Δωρεάν";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί.";
 
 /* Displayed next to the monthly price */
 "/month" = "/μήνα";

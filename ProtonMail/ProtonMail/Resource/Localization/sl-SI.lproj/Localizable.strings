@@ -1421,7 +1421,7 @@
 "Inherited from parent folder" = "Podedovano od nadrejene mape";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Ustvarjanje mape ni dovoljeno.";
 
 /* Alert title */
 "Creating label not allowed" = "Creating label not allowed";
@@ -1430,7 +1430,7 @@
 "Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Za uporabo več kot treh oznak nadgradite na plačljiv paket.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Povežite se in poskusite znova";
@@ -2121,28 +2121,28 @@
 "As scheduled" = "Kot načrtovano";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Nastavite svoj urnik.";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Odklenite razporejanje sporočil po meri in druge ugodnosti, ko nadgradite svoj paket.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Nadgradi zdaj";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Načrtujte sporočila kadar koli";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Neomejeno število map in oznak";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "Do 500 GB prostora za shranjevanje";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Do 15 e-poštnih naslovov";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Do 3 e-poštne domene po meri";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Hide My Email aliases";
@@ -2271,16 +2271,16 @@
 "Open in Proton Calendar" = "Odpri v Proton Calendar";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Očistite navlako";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "Do 3 TB prostora za shranjevanje";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "E-poštne domene po meri";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Pošiljatelj spremenjen";
@@ -2403,13 +2403,13 @@
 "Please select a time in the future" = "Izberite čas v prihodnosti";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Želite dremež kadar koli?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Odklenite čas dremeža po meri, ko nadgradite";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "Do 15 e-poštnih naslovov/vzdevkov";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Neomejeno število map, oznak in filtrov";
@@ -2484,7 +2484,7 @@
 "Custom email domain support" = "Podpora za e-poštno domeno po meri";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u osebni koledarji";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "End-to-end encryption";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "New Proton Mail desktop app";
+"Access to desktop app" = "Access to desktop app";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Prednostna podpora strankam";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonimna telemetrija";

@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Koncové šifrování";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Nová aplikace Proton Mail pro desktop";
+"Access to desktop app" = "Přístup k desktopové aplikaci";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Prioritní zákaznická podpora";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcí";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux více úložného prostoru";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Získejte %u GB—dostatek prostoru pro bezpečné ukládání zpráv, souborů a fotografií";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux více e-mailových adres";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Vytvořte si podle svých potřeb až %u e-mailových adres včetně adres @pm.me.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Připojte vlastní doménu a bezpečně odesílejte profesionální nebo firemní e-maily.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Otevřete e-mail a kalendář jedním kliknutím a vyhněte se rozptylování v prohlížeči.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Uspořádejte své e-maily pomocí preferovaného systému archivace a označování.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "V případě problému můžete využít rychlejší odezvu specializovaného personálu podpory.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymní telemetrie";

@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u alamat email";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Domain email khusus";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Dukungan domain email khusus";
@@ -2493,13 +2493,37 @@
 "End-to-end encryption" = "Enkripsi end-to-end";
 
 /* Description of a feature of a paid subscription */
-"New Proton Mail desktop app" = "Aplikasi desktop Proton Mail baru";
+"Access to desktop app" = "Akses ke aplikasi desktop";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Dukungan pelanggan prioritas";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u fitur premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux lebih banyak penyimpanan";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Dapatkan %u GB—cukup untuk menyimpan pesan, berkas, dan foto Anda dengan aman";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux lebih banyak alamat email";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Buat sampai dengan %u alamat email, termasuk @pm.me, untuk memenuhi kebutuhan Anda.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Hubungkan domain Anda sendiri dan kirim email profesional atau bermerek Anda dengan aman.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Buka email dan kalender Anda dengan satu klik dan hindari gangguan peramban.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Kelola email Anda menggunakan sistem filing dan labeling Anda sendiri.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Nikmati waktu respons yang lebih cepat dari staf dukungan jika terjadi masalah.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetri anonim";
@@ -2523,7 +2547,7 @@
 "Free" = "Free";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Diperbarui secara otomatis pada harga dan ketentuan yang sama kecuali dibatalkan.";
 
 /* Displayed next to the monthly price */
 "/month" = "/bulan";
