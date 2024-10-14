@@ -73,7 +73,10 @@ struct LabelAsSheet: View {
                             }
                         }
                     }
-                    Button(action: { model.handle(action: .createLabelButtonTapped) }, label: { Text(L10n.Common.done) })
+                    Button(
+                        action: { model.handle(action: .doneButtonTapped) },
+                        label: { Text(L10n.Common.done) }
+                    )
                         .buttonStyle(PurpleButtonStyle())
                 }
                 .padding(.all, DS.Spacing.large)
