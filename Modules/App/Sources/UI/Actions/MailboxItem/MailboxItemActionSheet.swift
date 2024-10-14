@@ -51,7 +51,7 @@ struct MailboxItemActionSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
-            .task { await model.loadActions() }
+            .onAppear { model.handle(action: .viewAppear) }
         }
     }
 

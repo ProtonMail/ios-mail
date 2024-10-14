@@ -27,7 +27,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
 
-    func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() async {
+    func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
         stubbedMessageActions = .init(
             replyActions: [.reply],
             messageActions: [.delete],
@@ -39,7 +39,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         let title = "Message title"
         let sut = sut(ids: messagesIDs, type: .message, title: title)
 
-        await sut.loadActions()
+        sut.handle(action: .viewAppear)
 
         XCTAssertEqual(invokedWithMessagesIDs, messagesIDs)
         XCTAssertEqual(invokedWithConversationIDs, [])
@@ -54,7 +54,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         ))
     }
 
-    func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() async {
+    func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
         stubbedConversationActions = .init(
             replyActions: [.forward],
             conversationActions: [.labelAs],
@@ -66,7 +66,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         let title = "Conversation title"
         let sut = sut(ids: conversationIDs, type: .conversation, title: title)
 
-        await sut.loadActions()
+        sut.handle(action: .viewAppear)
 
         XCTAssertEqual(invokedWithMessagesIDs, [])
         XCTAssertEqual(invokedWithConversationIDs, conversationIDs)

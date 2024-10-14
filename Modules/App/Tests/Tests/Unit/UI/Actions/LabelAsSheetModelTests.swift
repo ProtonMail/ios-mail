@@ -21,34 +21,52 @@ import XCTest
 
 class LabelAsSheetModelTests: BaseTestCase {
 
-    var invokedWithMessagesIDs: [ID] = []
-    var invokedWithConversationIDs: [ID] = []
+    var invokedActionsProviderWithMessagesIDs: [ID]!
+    var invokedActionsProviderWithConversationIDs: [ID]!
+    var invokedNavigation: [LabelAsSheetNavigation]!
     var stubbedLabelAsActions: [LabelAsAction]!
 
-    func testState_WhenMailboxTypeIsMessageAndLabelsAreLoaded_ItReturnsLabelActions() async {
+    override func setUp() {
+        super.setUp()
+
+        invokedActionsProviderWithMessagesIDs = []
+        invokedActionsProviderWithConversationIDs = []
+        invokedNavigation = []
+    }
+
+    override func tearDown() {
+        invokedActionsProviderWithMessagesIDs = nil
+        invokedActionsProviderWithConversationIDs = nil
+        invokedNavigation = nil
+        stubbedLabelAsActions = nil
+
+        super.tearDown()
+    }
+
+    func testState_WhenMailboxTypeIsMessageAndLabelsAreLoaded_ItReturnsLabelActions() {
         stubbedLabelAsActions = LabelAsSheetPreviewProvider.testLabels()
         let messageIDs: [ID] = [.init(value: 7), .init(value: 88)]
         let sut = sut(ids: messageIDs, type: .message)
 
-        await sut.loadLabels()
+        sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedWithMessagesIDs, messageIDs)
-        XCTAssertEqual(invokedWithConversationIDs, [])
+        XCTAssertEqual(invokedActionsProviderWithMessagesIDs, messageIDs)
+        XCTAssertEqual(invokedActionsProviderWithConversationIDs, [])
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
             shouldArchive: false
         ))
     }
 
-    func testState_WhenMailboxTypeIsConversationAndArchiveToggleIsTapped_ItReturnsCorrectState() async {
+    func testState_WhenMailboxTypeIsConversationAndArchiveToggleIsTapped_ItReturnsCorrectState() {
         stubbedLabelAsActions = LabelAsSheetPreviewProvider.testLabels()
         let conversationIDs: [ID] = [.init(value: 1), .init(value: 3)]
         let sut = sut(ids: conversationIDs, type: .conversation)
 
-        await sut.loadLabels()
+        sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedWithMessagesIDs, [])
-        XCTAssertEqual(invokedWithConversationIDs, conversationIDs)
+        XCTAssertEqual(invokedActionsProviderWithMessagesIDs, [])
+        XCTAssertEqual(invokedActionsProviderWithConversationIDs, conversationIDs)
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
             shouldArchive: false
@@ -62,7 +80,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         ))
     }
 
-    func testState_WhenLabelActionsSelectionIsChanged_ItReturnsCorrectState() async {
+    func testState_WhenLabelActionsSelectionIsChanged_ItReturnsCorrectState() {
         stubbedLabelAsActions = [IsSelected.partial, .selected, .unselected]
             .enumerated()
             .map { index, status in
@@ -79,7 +97,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         let sut = sut(ids: [], type: .conversation)
 
-        await sut.loadLabels()
+        sut.handle(action: .viewAppear)
 
         XCTAssertEqual(sut.state, .init(
             labels: [firstLabel, secondLabel, thirdLabel].map(\.displayModel),
@@ -108,14 +126,15 @@ class LabelAsSheetModelTests: BaseTestCase {
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, ids in
-                    self.invokedWithMessagesIDs = ids
+                    self.invokedActionsProviderWithMessagesIDs = ids
                     return self.stubbedLabelAsActions
                 },
                 conversation: { _, ids in
-                    self.invokedWithConversationIDs = ids
+                    self.invokedActionsProviderWithConversationIDs = ids
                     return self.stubbedLabelAsActions
                 }
-            )
+            ), 
+            navigation: { self.invokedNavigation.append($0) }
         )
     }
 

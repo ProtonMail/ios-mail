@@ -88,7 +88,7 @@ struct MailboxActionSheets: ViewModifier {
 
 }
 
-private extension MailboxActionSheetsState {
+extension MailboxActionSheetsState {
     func copy(mailbox: MailboxItemActionSheetInput?) -> Self {
         .init(mailbox: mailbox, labelAs: labelAs, isCreateLabelScreenPresented: isCreateLabelScreenPresented)
     }
