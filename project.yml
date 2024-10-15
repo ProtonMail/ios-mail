@@ -32,6 +32,9 @@ packages:
   ProtonContacts:
     path: Modules/ProtonContacts
     group: Modules
+  ProtonSnapshotTesting:
+    path: Modules/ProtonSnapshotTesting
+    group: Modules
   ProtonCoreUI:
     path: Modules/ProtonCoreUI
     group: Modules

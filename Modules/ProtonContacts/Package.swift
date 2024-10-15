@@ -11,9 +11,9 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "DesignSystem"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
         .package(path: "proton_app_uniffi"),
-        .package(path: "ProtonCoreUI")
+        .package(path: "ProtonCoreUI"),
+        .package(path: "ProtonSnapshotTesting")
     ],
     targets: [
         .target(
@@ -24,7 +24,7 @@ let package = Package(
             name: "ProtonContactsTests",
             dependencies: [
                 .target(name: "ProtonContacts"),
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "ProtonSnapshotTesting", package: "ProtonSnapshotTesting"),
             ]
         ),
     ]
