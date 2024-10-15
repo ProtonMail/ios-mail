@@ -18,8 +18,7 @@
 import SwiftUI
 
 extension Color {
-
-    init(hex: String) {
+    public init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
@@ -44,7 +43,7 @@ extension Color {
         )
     }
 
-    func toHex() -> String? {
+    public func toHex() -> String? {
         let uic = UIColor(self)
         guard let components = uic.cgColor.components, components.count >= 3 else {
             return nil

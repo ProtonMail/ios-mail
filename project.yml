@@ -32,6 +32,9 @@ packages:
   ProtonContacts:
     path: Modules/ProtonContacts
     group: Modules
+  ProtonCoreUI:
+    path: Modules/ProtonCoreUI
+    group: Modules
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
     group: ProtonPackages
@@ -129,6 +132,7 @@ targets:
         products: 
           - AccountLogin
           - AccountManager
+      - package: ProtonCoreUI
       - package: SwiftUIIntrospect
 
   ProtonMailTest:
