@@ -20,9 +20,11 @@ import DesignSystem
 import SwiftUI
 
 struct MailboxScreen: View {
+    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
+    @State private var isSearchPresented = false
     @State private var isOnboardingPresented = false
     private var customLabelModel: CustomLabelModel
     private let onboardingStore: OnboardingStore
@@ -57,6 +59,9 @@ struct MailboxScreen: View {
                     onDismiss: { onboardingStore.shouldShowOnboarding = false },
                     content: { OnboardingScreen() }
                 )
+                .fullScreenCover(isPresented: $isSearchPresented) {
+                    SearchScreen()
+                }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
@@ -92,8 +97,24 @@ extension MailboxScreen {
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
         .withAccountManager(coordinator: $mailboxModel.accountManagerCoordinator)
-        .mainToolbar(title: mailboxModel.state.mailboxTitle, selectionMode: mailboxModel.selectionMode)
+        .mainToolbar(
+            title: mailboxModel.state.mailboxTitle,
+            selectionMode: mailboxModel.selectionMode,
+            onEvent: handleMainToolbarEvent
+        )
         .accessibilityElement(children: .contain)
+    }
+
+    private func handleMainToolbarEvent(_ event: MainToolbarEvent) {
+        switch event {
+        case .onOpenMenu:
+            appUIStateStore.sidebarState.isOpen = true
+        case .onExitSelectionMode:
+            mailboxModel.selectionMode.exitSelectionMode()
+        case .onSearch:
+            toastStateStore.present(toast: .comingSoon)
+//            isSearchPresented = true
+        }
     }
 
     private var composeButtonView: some View {

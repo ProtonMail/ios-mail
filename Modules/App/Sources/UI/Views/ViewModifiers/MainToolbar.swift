@@ -21,6 +21,7 @@ import SwiftUI
 struct MainToolbar: ViewModifier {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @ObservedObject private var selectionMode: SelectionModeState
+    let onEvent: (MainToolbarEvent) -> Void
 
     private let title: LocalizedStringResource
 
@@ -28,9 +29,10 @@ struct MainToolbar: ViewModifier {
         selectionMode.hasSelectedItems ? .selection : .noSelection
     }
 
-    init(title: LocalizedStringResource, selectionMode: SelectionModeState) {
+    init(title: LocalizedStringResource, selectionMode: SelectionModeState, onEvent: @escaping (MainToolbarEvent) -> Void) {
         self.title = title
         self.selectionMode = selectionMode
+        self.onEvent = onEvent
     }
 
     func body(content: Content) -> some View {
@@ -50,9 +52,9 @@ struct MainToolbar: ViewModifier {
                     Button(action: {
                         switch state {
                         case .noSelection:
-                            appUIStateStore.sidebarState.isOpen = true
+                            onEvent(.onOpenMenu)
                         case .selection:
-                            selectionMode.exitSelectionMode()
+                            onEvent(.onExitSelectionMode)
                         }
                     }, label: {
                         HStack {
@@ -68,6 +70,22 @@ struct MainToolbar: ViewModifier {
                     .square(size: 40)
                     .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        onEvent(.onSearch)
+                    }, label: {
+                        HStack {
+                            Spacer()
+                            Image(DS.Icon.icMagnifier)
+                                .resizable()
+                                .square(size: 24)
+                        }
+                        .padding(10)
+                    })
+                    .opacity(selectionMode.hasSelectedItems ? 0 : 1)
+                    .square(size: 40)
+                }
+
             }
             .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
             .tint(DS.Color.Text.norm)
@@ -76,10 +94,14 @@ struct MainToolbar: ViewModifier {
 
 extension View {
     @MainActor 
-    func mainToolbar(title: LocalizedStringResource, selectionMode: SelectionModeState? = nil) -> some View {
+    func mainToolbar(
+        title: LocalizedStringResource,
+        selectionMode: SelectionModeState? = nil,
+        onEvent: @escaping (MainToolbarEvent) -> Void
+    ) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
         return self.modifier(
-            MainToolbar(title: title, selectionMode: selectionMode)
+            MainToolbar(title: title, selectionMode: selectionMode, onEvent: onEvent)
         )
     }
 }
@@ -101,6 +123,11 @@ extension MainToolbar {
     }
 }
 
+enum MainToolbarEvent {
+    case onOpenMenu
+    case onExitSelectionMode
+    case onSearch
+}
 
 #Preview {
     let appUIStateStore = AppUIStateStore()
@@ -114,7 +141,7 @@ extension MainToolbar {
         appRoute: .initialState,
         userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped
     )
-        .mainToolbar(title: "Inbox", selectionMode: .init())
+        .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
         .environmentObject(userSettings)

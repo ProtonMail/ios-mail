@@ -28,6 +28,7 @@ public extension DS.Icon {
     static let icCogWheel = ImageResource.icCogWheel
     static let icCross = ImageResource.icCross
     static let icCrossBig = ImageResource.icCrossBig
+    static let icCrossCircleFilled = ImageResource.icCrossCircleFilled
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
@@ -38,6 +39,7 @@ public extension DS.Icon {
     static let icFolders = ImageResource.icFolders
     static let icHamburguer = ImageResource.icHamburger
     static let icInbox = ImageResource.icInbox
+    static let icMagnifier = ImageResource.icMagnifier
     static let icMobile = ImageResource.icMobile
     static let icMinus = ImageResource.icMinus
     static let icPaperClip = ImageResource.icPaperClip
