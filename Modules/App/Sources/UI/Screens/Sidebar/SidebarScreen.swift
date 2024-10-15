@@ -17,6 +17,7 @@
 
 import DesignSystem
 import proton_app_uniffi
+import ProtonCoreUI
 import SwiftUI
 
 struct SidebarScreen: View {

@@ -17,6 +17,7 @@
 
 import SwiftUI
 import proton_app_uniffi
+import ProtonCoreUI
 import DesignSystem
 
 struct MailboxItemActionSheet: View {
