@@ -62,7 +62,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         let sut = sut(ids: [.init(value: 7), .init(value: 88)], type: .message)
         sut.handle(action: .doneButtonTapped)
 
-        XCTAssertEqual(invokedNavigation, [.done])
+        XCTAssertEqual(invokedNavigation, [.dismiss])
     }
 
     func testState_WhenMailboxTypeIsConversationAndArchiveToggleIsTapped_ItReturnsCorrectState() {

@@ -30,54 +30,9 @@ struct LabelAsSheet: View {
         ClosableScreen {
             ScrollView {
                 VStack(spacing: DS.Spacing.large) {
-                    ActionSheetSection {
-                        Toggle(isOn: shouldArchiveBinding) {
-                            HStack(spacing: DS.Spacing.large) {
-                                Image(DS.Icon.icArchiveBox)
-                                    .resizable()
-                                    .square(size: 20)
-                                    .padding(.leading, DS.Spacing.large)
-                                Text(L10n.Action.alsoArchive)
-                                    .font(.body)
-                                    .foregroundStyle(DS.Color.Text.weak)
-                                Spacer()
-                            }
-                        }
-                        .frame(height: 52)
-                        .tint(DS.Color.Brand.norm)
-                        .padding(.trailing, DS.Spacing.large)
-                    }
-                    ActionSheetSection {
-                        VStack(spacing: .zero) {
-                            ForEach(model.state.labels) { label in
-                                ActionSheetSelectableColorButton(
-                                    displayData: label.displayData,
-                                    displayBottomSeparator: true,
-                                    action: { model.handle(action: .selected(label)) }
-                                )
-                            }
-                            ActionSheetButton(
-                                displayBottomSeparator: false,
-                                action: { model.handle(action: .createLabelButtonTapped) }
-                            ) {
-                                HStack {
-                                    Image(DS.Icon.icPlus)
-                                        .resizable()
-                                        .square(size: 20)
-                                        .foregroundStyle(DS.Color.Icon.norm)
-                                        .padding(.trailing, DS.Spacing.standard)
-                                    Text(L10n.Sidebar.createLabel)
-                                        .foregroundStyle(DS.Color.Text.weak)
-                                    Spacer()
-                                }
-                            }
-                        }
-                    }
-                    Button(
-                        action: { model.handle(action: .doneButtonTapped) },
-                        label: { Text(L10n.Common.done) }
-                    )
-                        .buttonStyle(PurpleButtonStyle())
+                    archiveSection()
+                    labelsSection()
+                    doneButton()
                 }
                 .padding(.all, DS.Spacing.large)
             }
@@ -94,6 +49,63 @@ struct LabelAsSheet: View {
             set: { _ in model.handle(action: .toggleSwitch) }
         )
     }
+
+    private func archiveSection() -> some View {
+        ActionSheetSection {
+            Toggle(isOn: shouldArchiveBinding) {
+                HStack(spacing: DS.Spacing.large) {
+                    Image(DS.Icon.icArchiveBox)
+                        .resizable()
+                        .square(size: 20)
+                        .padding(.leading, DS.Spacing.large)
+                    Text(L10n.Action.alsoArchive)
+                        .font(.body)
+                        .foregroundStyle(DS.Color.Text.weak)
+                    Spacer()
+                }
+            }
+            .frame(height: 52)
+            .tint(DS.Color.Brand.norm)
+            .padding(.trailing, DS.Spacing.large)
+        }
+    }
+
+    private func labelsSection() -> some View {
+        ActionSheetSection {
+            VStack(spacing: .zero) {
+                ForEach(model.state.labels) { label in
+                    ActionSheetSelectableColorButton(
+                        displayData: label.displayData,
+                        displayBottomSeparator: true,
+                        action: { model.handle(action: .selected(label)) }
+                    )
+                }
+                ActionSheetButton(
+                    displayBottomSeparator: false,
+                    action: { model.handle(action: .createLabelButtonTapped) }
+                ) {
+                    HStack {
+                        Image(DS.Icon.icPlus)
+                            .resizable()
+                            .square(size: 20)
+                            .foregroundStyle(DS.Color.Icon.norm)
+                            .padding(.trailing, DS.Spacing.standard)
+                        Text(L10n.Sidebar.createLabel)
+                            .foregroundStyle(DS.Color.Text.weak)
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+
+    private func doneButton() -> some View {
+        Button(
+            action: { model.handle(action: .doneButtonTapped) },
+            label: { Text(L10n.Common.done) }
+        )
+        .buttonStyle(PurpleButtonStyle())
+    }
 }
 
 #Preview {
@@ -103,7 +115,7 @@ struct LabelAsSheet: View {
 private extension LabelDisplayModel {
 
     var displayData: ActionColorButtonDisplayData {
-        .init(color: Color(hex: hexColor), title: title, isSelected: isSelected)
+        .init(color: color, title: title, isSelected: isSelected)
     }
 
 }

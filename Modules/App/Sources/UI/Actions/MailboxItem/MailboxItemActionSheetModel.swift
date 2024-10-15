@@ -40,7 +40,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         switch action {
         case .viewAppear:
             loadActions()
-        case .mailbox(let action):
+        case .mailboxItemActionSelected(let action):
             switch action {
             case .labelAs:
                 navigation(.labelAs)
@@ -53,14 +53,9 @@ class MailboxItemActionSheetModel: ObservableObject {
     private func loadActions() {
         Task {
             let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
-            switch actions {
-            case .success(let actions):
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.update(actions: actions)
-                }))
-            case .failure:
-                fatalError("Handle error here")
-            }
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.update(actions: actions)
+            }))
         }
     }
 

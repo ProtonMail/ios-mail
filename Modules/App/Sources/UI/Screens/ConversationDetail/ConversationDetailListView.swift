@@ -46,7 +46,7 @@ struct ConversationDetailListView: View {
                     .padding(.top, DS.Spacing.compact)
             }
         }
-        .modifier(MailboxActionSheets(mailbox: { model.mailbox.unsafelyUnwrapped }, state: $actionSheets))
+        .actionSheetsFlow(mailbox: { model.mailbox.unsafelyUnwrapped }, state: $actionSheets)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
     }

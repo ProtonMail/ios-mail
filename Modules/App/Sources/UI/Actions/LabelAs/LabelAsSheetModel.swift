@@ -17,6 +17,7 @@
 
 import Combine
 import proton_app_uniffi
+import SwiftUI
 
 class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
@@ -46,7 +47,7 @@ class LabelAsSheetModel: ObservableObject {
         case .createLabelButtonTapped:
             navigation(.createLabel)
         case .doneButtonTapped:
-            navigation(.done)
+            navigation(.dismiss)
         }
     }
 
@@ -54,14 +55,10 @@ class LabelAsSheetModel: ObservableObject {
 
     private func loadLabels() {
         Task {
-            switch await actionsProvider.actions(for: input.type, ids: input.ids) {
-            case .success(let labels):
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.update(labels: labels)
-                }))
-            case .failure:
-                fatalError("Handle error here")
-            }
+            let labels = await actionsProvider.actions(for: input.type, ids: input.ids)
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.update(labels: labels)
+            }))
         }
     }
 
@@ -85,7 +82,7 @@ class LabelAsSheetModel: ObservableObject {
 
 private extension LabelDisplayModel {
     func copy(isSelected: IsSelected) -> Self {
-        .init(id: id, hexColor: hexColor, title: title, isSelected: isSelected)
+        .init(id: id, color: color, title: title, isSelected: isSelected)
     }
 }
 
@@ -110,7 +107,7 @@ private extension Bool {
 extension LabelAsAction {
 
     var displayModel: LabelDisplayModel {
-        .init(id: labelId, hexColor: color.value, title: name, isSelected: isSelected)
+        .init(id: labelId, color: Color(hex: color.value), title: name, isSelected: isSelected)
     }
 
 }

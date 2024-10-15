@@ -16,10 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import SwiftUI
 
 struct LabelDisplayModel: Equatable, Identifiable {
     let id: ID
-    let hexColor: String
+    let color: Color
     let title: String
     let isSelected: IsSelected
 }

@@ -81,10 +81,10 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         ))
     }
 
-    func testNavigation_WhenStarMailboxActionIsHandled_ItDoesNotEmitCorrectNavigation() {
+    func testNavigation_WhenStarMailboxActionIsHandled_ItDoesNotEmitAnyNavigation() {
         let sut = sut(ids: [], type: .message, title: .notUsed)
 
-        sut.handle(action: .mailbox(.star))
+        sut.handle(action: .mailboxItemActionSelected(.star))
 
         XCTAssertEqual(spiedNavigation, [])
     }
@@ -92,7 +92,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
         let sut = sut(ids: [], type: .message, title: .notUsed)
 
-        sut.handle(action: .mailbox(.labelAs))
+        sut.handle(action: .mailboxItemActionSelected(.labelAs))
 
         XCTAssertEqual(spiedNavigation, [.labelAs])
     }

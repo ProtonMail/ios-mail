@@ -18,6 +18,6 @@
 import Foundation
 
 enum LabelAsSheetNavigation {
-    case done
     case createLabel
+    case dismiss
 }

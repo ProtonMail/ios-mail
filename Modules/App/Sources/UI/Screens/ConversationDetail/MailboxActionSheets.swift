@@ -24,7 +24,13 @@ struct MailboxActionSheetsState {
     let isCreateLabelScreenPresented: Bool
 }
 
-struct MailboxActionSheets: ViewModifier {
+extension View {
+    func actionSheetsFlow(mailbox: @escaping () -> Mailbox, state: Binding<MailboxActionSheetsState>) -> some View {
+        modifier(MailboxActionSheets(mailbox: mailbox, state: state))
+    }
+}
+
+private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     private let mailbox: () -> Mailbox
 
@@ -43,7 +49,7 @@ struct MailboxActionSheets: ViewModifier {
         let model = MailboxItemActionSheetModel(
             input: input,
             mailbox: mailbox(),
-            actionsProvider: .instance
+            actionsProvider: .productionInstance
         ) { navigation in
             switch navigation {
             case .labelAs:
@@ -60,10 +66,10 @@ struct MailboxActionSheets: ViewModifier {
         let model = LabelAsSheetModel(
             input: input,
             mailbox: mailbox(),
-            availableLabelAsActions: .instance
+            availableLabelAsActions: .productionInstance
         ) { navigation in
             switch navigation {
-            case .done:
+            case .dismiss:
                 state = state.dismissed()
             case .createLabel:
                 state = state.copy(isCreateLabelScreenPresented: true)

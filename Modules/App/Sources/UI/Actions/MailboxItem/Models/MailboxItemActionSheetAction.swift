@@ -19,5 +19,5 @@ import Foundation
 
 enum MailboxItemActionSheetAction {
     case viewAppear
-    case mailbox(MailboxItemAction_v2)
+    case mailboxItemActionSelected(MailboxItemAction_v2)
 }

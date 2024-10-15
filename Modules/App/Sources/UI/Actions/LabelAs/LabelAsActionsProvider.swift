@@ -26,14 +26,8 @@ struct LabelAsActionsProvider {
         self.availableLabelAsActions = availableLabelAsActions
     }
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> Result<[LabelAsAction], Error> {
-        let provider = actionsProvider(for: type)
-        do {
-            let actions = try await provider(mailbox, ids)
-            return .success(actions)
-        } catch {
-            return .failure(error)
-        }
+    func actions(for type: MailboxItemType, ids: [ID]) async -> [LabelAsAction] {
+        try! await actionsProvider(for: type)(mailbox, ids)
     }
 
     // MARK: - Private
@@ -56,7 +50,7 @@ struct AvailableLabelAsActions {
 }
 
 extension AvailableLabelAsActions {
-    static var instance: Self {
+    static var productionInstance: Self {
         .init(
             message: availableLabelAsActionsForMessages,
             conversation: availableLabelAsActionsForConversations

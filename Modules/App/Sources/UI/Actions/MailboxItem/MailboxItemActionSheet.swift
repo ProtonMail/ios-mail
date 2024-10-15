@@ -40,7 +40,7 @@ struct MailboxItemActionSheet: View {
                             ActionSheetImageButton(
                                 displayData: action.displayData,
                                 displayBottomSeparator: !isLast,
-                                action: { model.handle(action: .mailbox(action)) }
+                                action: { model.handle(action: .mailboxItemActionSelected(action)) }
                             )
                         }
                     }

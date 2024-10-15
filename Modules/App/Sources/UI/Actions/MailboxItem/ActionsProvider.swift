@@ -24,7 +24,7 @@ struct ActionsProvider {
 
 extension ActionsProvider {
 
-    static var instance: ActionsProvider {
+    static var productionInstance: ActionsProvider {
         .init(
             message: availableActionsForMessages,
             conversation: availableActionsForConversations
