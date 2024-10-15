@@ -297,6 +297,17 @@ enum L10n {
         static let title = LocalizedStringResource("Move to..", comment: "Folders title screen.")
     }
 
+    enum Search {
+        static let searchPlaceholder = LocalizedStringResource(
+            "Search",
+            comment: "Search textbox placeholder"
+        )
+        static let cancel = LocalizedStringResource(
+            "Cancel",
+            comment: "Search screen dismiss"
+        )
+    }
+
     enum Settings {
         static let accountSettings = LocalizedStringResource(
             "Account Settings",

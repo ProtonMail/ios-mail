@@ -72,6 +72,9 @@
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet."
     },
+    "Cancel" : {
+      "comment" : "Search screen dismiss"
+    },
     "Cc" : {
       "comment" : "`CC` in the messsage details."
     },
@@ -259,6 +262,9 @@
     },
     "Scheduled" : {
       "comment" : "Menu title of all scheduled emails in the sidebar."
+    },
+    "Search" : {
+      "comment" : "Search textbox placeholder"
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar."
