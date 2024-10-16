@@ -17,13 +17,7 @@
 
 import Foundation
 
-struct LabelAsActionSheetInput: Hashable, Identifiable { // FIXME: - Rename
-    let ids: [ID]
-    let type: MailboxItemType
-
-    // MARK: - Identifiable
-
-    var id: [ID] {
-        ids
-    }
+enum MoveToSheetNavigation {
+    case createFolder
+    case dismiss
 }

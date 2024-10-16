@@ -15,24 +15,59 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 
 enum MoveToSheetPreviewProvider {
 
-    static var testData: MoveToState {
+    static var testModel: MoveToSheetModel {
         .init(
-            moveToSystemFolderActions: [
-                .init(id: .init(value: 1), label: .inbox, isSelected: .unselected),
-                .init(id: .init(value: 2), label: .archive, isSelected: .unselected),
+            input: .init(ids: [], type: .message),
+            mailbox: .init(noPointer: .init()),
+            availableMoveToActions: .init(
+                message: { _, _ in
+                    [
+                        .systemFolder(.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)),
+                        .systemFolder(.init(localId: .init(value: 2), name: .archive, isSelected: .unselected)),
+                        .customFolder(customFoldersTree),
+                        .customFolder(.init(
+                            localId: .init(value: 6),
+                            name: "4",
+                            color: .init(value: "#9E221A"),
+                            children: [],
+                            isSelected: .unselected
+                        ))
+                    ]
+                },
+                conversation: { _, _ in [] }
+            ),
+            navigation: { _ in }
+        )
+    }
+
+    private static var customFoldersTree: CustomFolderAction {
+        .init(
+            localId: .init(value: 3),
+            name: "1",
+            color: .init(value: "#F67900"),
+            children: [
+                .init(
+                    localId: .init(value: 4), 
+                    name: "2",
+                    color: .init(value: "#E93672"),
+                    children: [
+                        .init(
+                            localId: .init(value: 5),
+                            name: "3",
+                            color: .init(value: "#9E329A"),
+                            children: [],
+                            isSelected: .selected
+                        )
+                    ],
+                    isSelected: .unselected
+                )
             ],
-            moveToCustomFolderActions: [
-                .init(id: .init(value: 3), name: "1", color: Color(hex: "#F67900"), isSelected: .unselected, children: [
-                    .init(id: .init(value: 4), name: "2", color: Color(hex: "#E93672"), isSelected: .unselected, children: [
-                        .init(id: .init(value: 5), name: "3", color: Color(hex: "#9E329A"), isSelected: .selected, children: [])
-                    ])
-                ]),
-                .init(id: .init(value: 6), name: "4", color: Color(hex: "#9E221A"), isSelected: .unselected, children: [])
-            ]
+            isSelected: .unselected
         )
     }
 

@@ -18,10 +18,10 @@
 @testable import ProtonMail
 import XCTest
 
-class MoveToSheetSnapshotTests: XCTestCase {
+class MoveToSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
-        let sut = MoveToSheet(state: MoveToSheetPreviewProvider.testData)
+        let sut = MoveToSheet(model: MoveToSheetPreviewProvider.testModel)
         assertSnapshotsOnIPhoneX(of: sut)
     }
 

@@ -20,7 +20,11 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MoveToSheet: View {
-    @State var state: MoveToState
+    @StateObject var model: MoveToSheetModel
+
+    init(model: MoveToSheetModel) {
+        self._model = StateObject(wrappedValue: model)
+    }
 
     var body: some View {
         ClosableScreen {
@@ -34,6 +38,7 @@ struct MoveToSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle(L10n.Action.labelAs.string)
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear { model.handle(action: .viewAppear) }
         }
     }
 
@@ -41,11 +46,11 @@ struct MoveToSheet: View {
 
     private func moveToSystemFolderSection() -> some View {
         ActionSheetSection {
-            ForEachLast(collection: state.moveToSystemFolderActions) { model, isLast in
+            ForEachLast(collection: model.state.moveToSystemFolderActions) { moveToSystemFolder, isLast in
                 ActionSheetSelectableButton(
-                    displayData: model.displayData,
+                    displayData: moveToSystemFolder.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { print("Item tapped") }
+                    action: { model.handle(action: .folderTapped(id: moveToSystemFolder.id)) }
                 )
             }
         }
@@ -54,11 +59,11 @@ struct MoveToSheet: View {
     private func moveToCustomFolderSection() -> some View {
         ActionSheetSection {
             VStack(spacing: .zero) {
-                ForEach(state.moveToCustomFolderActions.displayData(spacing: .zero)) { displayModel in
+                ForEach(model.state.moveToCustomFolderActions.displayData(spacing: .zero)) { displayModel in
                     ActionSheetSelectableButton(
                         displayData: displayModel,
                         displayBottomSeparator: true,
-                        action: { print("Item tapped") }
+                        action: { model.handle(action: .folderTapped(id: displayModel.id)) }
                     )
                 }
                 ActionSheetButton(displayBottomSeparator: false, action: {  }) {
@@ -111,5 +116,5 @@ private extension Array where Element == MoveToCustomFolder {
 }
 
 #Preview {
-    MoveToSheet(state: MoveToSheetPreviewProvider.testData)
+    MoveToSheet(model: MoveToSheetPreviewProvider.testModel)
 }
