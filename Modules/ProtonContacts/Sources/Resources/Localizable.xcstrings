@@ -1,0 +1,32 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%lld members" : {
+      "comment" : "Contact group row subtitle.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld member"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld members"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Contacts" : {
+      "comment" : "Title of the contacts screen that displays contacts and contact groups."
+    }
+  },
+  "version" : "1.0"
+}

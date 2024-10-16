@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCore
 import ProtonCoreUI
 import SwiftUI
 
@@ -36,7 +37,7 @@ public struct ContactsScreen: View {
                 }
                 .styledGroupedContacts()
             }
-            .navigationTitle("Contacts")
+            .navigationTitle(L10n.Contacts.title.string)
         }
         .onLoad { groupedContacts = groupedContactsDataSource.allContacts() }
     }
@@ -89,7 +90,7 @@ public struct ContactsScreen: View {
                 .square(size: 20)
                 .padding(10)
                 .background(Color(hex: item.avatarColor), in: Circle())
-            texts(title: item.name, subtitle: "\(item.emails.count) members")
+            texts(title: item.name, subtitle: L10n.Contacts.groupSubtitle(membersCount: item.emails.count).string)
         }
     }
 
@@ -101,7 +102,7 @@ public struct ContactsScreen: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .lineLimit(1)
             if let subtitle = subtitle {
-                Text(subtitle)
+                Text(verbatim: subtitle)
                     .fontBody3()
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.hint)
