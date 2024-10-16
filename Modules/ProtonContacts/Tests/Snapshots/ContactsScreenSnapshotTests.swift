@@ -21,9 +21,19 @@ import SwiftUI
 import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
+    var sut: ContactsScreen!
 
-    func testContactsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: ContactsScreen())
+    override func setUp() {
+        super.setUp()
+        sut = .init()
     }
 
+    override func tearDown() {
+        sut = nil
+        super.tearDown()
+    }
+
+    func testContactsScreenLayoutsCorrectOnIphoneX() {
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
 }

@@ -16,16 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import DesignSystem
 
-public struct ContactsScreen: View {
-    public init() {}
+extension View {
+    /// `onLoad` callback is an SwiftUI's equivalent of `viewDidLoad` callback in UIKit
+    public func onLoad(perform action: (() -> Void)? = nil) -> some View {
+        modifier(ViewDidLoadModifier(action: action))
+    }
+}
 
-    public var body: some View {
-        NavigationStack {
-            DS.Color.Background.secondary
-                .ignoresSafeArea()
-                .navigationTitle("Contacts")
-        }
+private struct ViewDidLoadModifier: ViewModifier {
+    @State private var viewDidLoad = false
+    let action: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                if viewDidLoad == false {
+                    viewDidLoad = true
+                    action?()
+                }
+            }
     }
 }
