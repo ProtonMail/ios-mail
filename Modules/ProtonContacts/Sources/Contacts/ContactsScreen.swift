@@ -21,11 +21,9 @@ import ProtonCoreUI
 import SwiftUI
 
 public struct ContactsScreen: View {
-    @State private var groupedContacts: [GroupedContacts] = []
+    @State private var state: [GroupedContacts] = []
 
     public init() {}
-
-    var didCallTask: ((Self) -> Void)?
 
     public var body: some View {
         NavigationStack {
@@ -33,13 +31,13 @@ public struct ContactsScreen: View {
                 DS.Color.Background.secondary
                     .ignoresSafeArea()
                 List {
-                    sections(for: groupedContacts)
+                    sections(for: state)
                 }
                 .styledGroupedContacts()
             }
             .navigationTitle(L10n.Contacts.title.string)
         }
-        .onLoad { groupedContacts = groupedContactsDataSource.allContacts() }
+        .onLoad { state = groupedContactsDataSource.allContacts() }
     }
 
     // MARK: - Private

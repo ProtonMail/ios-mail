@@ -7,11 +7,11 @@ let package = Package(
     name: "ProtonCoreUI",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonCoreUI", targets: ["ProtonCoreUI"]),
+        .library(name: "ProtonCoreUI", targets: ["ProtonCoreUI"])
     ],
     dependencies: [],
     targets: [
-        .target(name: "ProtonCoreUI", dependencies: []),
-        .testTarget(name: "ProtonCoreUITests", dependencies: [.target(name: "ProtonCoreUI")]),
+        .target(name: "ProtonCoreUI"),
+        .testTarget(name: "ProtonCoreUITests", dependencies: [.target(name: "ProtonCoreUI")])
     ]
 )

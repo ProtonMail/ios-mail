@@ -7,10 +7,9 @@ let package = Package(
     name: "ProtonCore",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonCore", targets: ["ProtonCore"]),
+        .library(name: "ProtonCore", targets: ["ProtonCore"])
     ],
-    dependencies: [],
     targets: [
-        .target(name: "ProtonCore", dependencies: [])
+        .target(name: "ProtonCore")
     ]
 )

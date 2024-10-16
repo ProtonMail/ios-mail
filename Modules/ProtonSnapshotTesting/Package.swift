@@ -7,10 +7,10 @@ let package = Package(
     name: "ProtonSnapshotTesting",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonSnapshotTesting", targets: ["ProtonSnapshotTesting"]),
+        .library(name: "ProtonSnapshotTesting", targets: ["ProtonSnapshotTesting"])
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0")
     ],
     targets: [
         .target(
