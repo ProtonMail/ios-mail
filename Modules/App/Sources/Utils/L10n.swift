@@ -394,20 +394,3 @@ enum L10n {
     }
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
 }
-
-// FIXME: Replace with extracted helpers to ProtonCore
-extension LocalizedStringResource {
-    var string: String {
-        String(localized: self)
-    }
-}
-
-extension String {
-    var notLocalized: String {
-        String(self)
-    }
-
-    var stringResource: LocalizedStringResource {
-        .init(stringLiteral: self)
-    }
-}

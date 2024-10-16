@@ -134,6 +134,7 @@ targets:
       - package: Lottie
       - package: proton_app_uniffi
       - package: ProtonContacts
+      - package: ProtonCore
       - package: ProtonCoreET
         products: 
           - AccountLogin
