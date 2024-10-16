@@ -23,14 +23,8 @@ struct AvailableActionsProvider {
     let actionsProvider: ActionsProvider
     let mailbox: Mailbox
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> Result<AvailableActions, Error> {
-        let provider = actionsProvider(for: type)
-        do {
-            let actions = try await provider(mailbox, ids).availableActions
-            return .success(actions)
-        } catch {
-            return .failure(error)
-        }
+    func actions(for type: MailboxItemType, ids: [ID]) async -> AvailableActions {
+        try! await actionsProvider(for: type)(mailbox, ids).availableActions
     }
 
     // MARK: - Private

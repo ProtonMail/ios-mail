@@ -17,16 +17,18 @@
 
 import DesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     @State private var showMessageActionPicker: Bool = false
-    
+    @Environment(\.dismiss) var dismiss
+
     /// These attributes trigger the different action sheets
-    @State private var mailboxItemActionSheetInput: MailboxItemActionSheetInput?
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
+    @State private var actionSheets: MailboxActionSheetsState = .initial()
 
     init(model: ConversationDetailModel) {
         self.model = model
@@ -44,19 +46,9 @@ struct ConversationDetailListView: View {
                     .padding(.top, DS.Spacing.compact)
             }
         }
-        .sheet(item: $mailboxItemActionSheetInput, content: mailboxItemActionPicker)
+        .actionSheetsFlow(mailbox: { model.mailbox.unsafelyUnwrapped }, state: $actionSheets)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
-    }
-
-    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
-        let model = MailboxItemActionSheetModel(
-            mailbox: model.mailbox.unsafelyUnwrapped,
-            actionsProvider: .instance,
-            input: input
-        )
-        return MailboxItemActionSheet(model: model)
-            .pickerViewStyle([.large])
     }
 
     private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
@@ -131,7 +123,9 @@ struct ConversationDetailListView: View {
         case .onReply, .onReplyAll, .onForward:
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
-            mailboxItemActionSheetInput = .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
+            actionSheets = actionSheets.copy(
+                mailbox: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
+            )
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):
@@ -159,4 +153,10 @@ private extension ExpandedMessageCellUIModel {
         .init(messageID: id, unread: unread)
     }
 
+}
+
+private extension MailboxActionSheetsState {
+    static func initial() -> Self {
+        .init(mailbox: nil, labelAs: nil, isCreateLabelScreenPresented: false)
+    }
 }

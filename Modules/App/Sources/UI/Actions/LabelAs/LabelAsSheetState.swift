@@ -15,20 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-struct ActionsProvider {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> MessageAvailableActions
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> ConversationAvailableActions
-}
-
-extension ActionsProvider {
-
-    static var productionInstance: ActionsProvider {
-        .init(
-            message: availableActionsForMessages,
-            conversation: availableActionsForConversations
-        )
-    }
-
+struct LabelAsSheetState: Equatable {
+    let labels: [LabelDisplayModel]
+    let shouldArchive: Bool
 }

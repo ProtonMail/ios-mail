@@ -1,0 +1,137 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import SwiftUI
+import DesignSystem
+import proton_app_uniffi
+
+struct LabelAsSheet: View {
+    @StateObject var model: LabelAsSheetModel
+
+    init(model: LabelAsSheetModel) {
+        self._model = StateObject(wrappedValue: model)
+    }
+
+    var body: some View {
+        ClosableScreen {
+            ScrollView {
+                VStack(spacing: DS.Spacing.large) {
+                    archiveSection()
+                    labelsSection()
+                    doneButton()
+                }
+                .padding(.all, DS.Spacing.large)
+            }
+            .background(DS.Color.Background.secondary)
+            .navigationTitle(L10n.Action.labelAs.string)
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear { model.handle(action: .viewAppear) }
+        }
+    }
+
+    private var shouldArchiveBinding: Binding<Bool> {
+        .init(
+            get: { model.state.shouldArchive },
+            set: { _ in model.handle(action: .toggleSwitch) }
+        )
+    }
+
+    private func archiveSection() -> some View {
+        ActionSheetSection {
+            Toggle(isOn: shouldArchiveBinding) {
+                HStack(spacing: DS.Spacing.large) {
+                    Image(DS.Icon.icArchiveBox)
+                        .resizable()
+                        .square(size: 20)
+                        .padding(.leading, DS.Spacing.large)
+                    Text(L10n.Action.alsoArchive)
+                        .font(.body)
+                        .foregroundStyle(DS.Color.Text.weak)
+                    Spacer()
+                }
+            }
+            .frame(height: 52)
+            .tint(DS.Color.Brand.norm)
+            .padding(.trailing, DS.Spacing.large)
+        }
+    }
+
+    private func labelsSection() -> some View {
+        ActionSheetSection {
+            VStack(spacing: .zero) {
+                ForEach(model.state.labels) { label in
+                    ActionSheetSelectableColorButton(
+                        displayData: label.displayData,
+                        displayBottomSeparator: true,
+                        action: { model.handle(action: .selected(label)) }
+                    )
+                }
+                ActionSheetButton(
+                    displayBottomSeparator: false,
+                    action: { model.handle(action: .createLabelButtonTapped) }
+                ) {
+                    HStack {
+                        Image(DS.Icon.icPlus)
+                            .resizable()
+                            .square(size: 20)
+                            .foregroundStyle(DS.Color.Icon.norm)
+                            .padding(.trailing, DS.Spacing.standard)
+                        Text(L10n.Sidebar.createLabel)
+                            .foregroundStyle(DS.Color.Text.weak)
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+
+    private func doneButton() -> some View {
+        Button(
+            action: { model.handle(action: .doneButtonTapped) },
+            label: { Text(L10n.Common.done) }
+        )
+        .buttonStyle(PurpleButtonStyle())
+    }
+}
+
+#Preview {
+    LabelAsSheet(model: LabelAsSheetPreviewProvider.testData())
+}
+
+private extension LabelDisplayModel {
+
+    var displayData: ActionColorButtonDisplayData {
+        .init(color: color, title: title, isSelected: isSelected)
+    }
+
+}
+
+private struct PurpleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        return configuration
+            .label
+            .fontBody3()
+            .fontWeight(.semibold)
+            .foregroundColor(DS.Color.Text.inverted)
+            .frame(height: 44)
+            .frame(maxWidth: .infinity)
+            .background(
+                configuration.isPressed ? DS.Color.Interaction.pressed : DS.Color.Interaction.norm,
+                in: RoundedRectangle(cornerRadius: DS.Radius.huge)
+            )
+    }
+}

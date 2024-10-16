@@ -141,6 +141,10 @@ enum L10n {
             "View HTML",
             comment: "Action title for viewing given message's HTML in the action sheet."
         )
+        static let alsoArchive = LocalizedStringResource(
+            "Also archive?",
+            comment: "Title of switcher in the label as action sheet."
+        )
     }
 
     enum Common {

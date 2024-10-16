@@ -22,22 +22,40 @@ class MailboxItemActionSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
+    private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
-    init(mailbox: Mailbox, actionsProvider: ActionsProvider, input: MailboxItemActionSheetInput) {
+    init(
+        input: MailboxItemActionSheetInput,
+        mailbox: Mailbox,
+        actionsProvider: ActionsProvider,
+        navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
+    ) {
+        self.input = input
         self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
         self.state = .initial(title: input.title)
-        self.input = input
+        self.navigation = navigation
     }
 
-    func loadActions() async {
-        let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
-        switch actions {
-        case .success(let actions):
+    func handle(action: MailboxItemActionSheetAction) {
+        switch action {
+        case .viewAppear:
+            loadActions()
+        case .mailboxItemActionSelected(let action):
+            switch action {
+            case .labelAs:
+                navigation(.labelAs)
+            default:
+                break
+            }
+        }
+    }
+
+    private func loadActions() {
+        Task {
+            let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(actions: actions)
             }))
-        case .failure:
-            fatalError("Handle error here")
         }
     }
 

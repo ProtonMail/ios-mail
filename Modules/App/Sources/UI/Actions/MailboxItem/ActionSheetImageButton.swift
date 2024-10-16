@@ -15,20 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import DesignSystem
+import SwiftUI
 
-struct ActionsProvider {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> MessageAvailableActions
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> ConversationAvailableActions
-}
+struct ActionSheetImageButton: View {
+    let displayData: ActionDisplayData
+    let displayBottomSeparator: Bool
+    let action: () -> Void
 
-extension ActionsProvider {
-
-    static var productionInstance: ActionsProvider {
-        .init(
-            message: availableActionsForMessages,
-            conversation: availableActionsForConversations
-        )
+    var body: some View {
+        ActionSheetButton(displayBottomSeparator: displayBottomSeparator, action: action) {
+            HStack(spacing: DS.Spacing.large) {
+                Image(displayData.image)
+                    .resizable()
+                    .square(size: 20)
+                    .foregroundStyle(DS.Color.Icon.norm)
+                Text(displayData.title)
+                    .foregroundStyle(DS.Color.Text.weak)
+                Spacer()
+            }
+        }
     }
-
 }

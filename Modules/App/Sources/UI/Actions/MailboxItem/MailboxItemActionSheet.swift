@@ -35,7 +35,15 @@ struct MailboxItemActionSheet: View {
                             replyButton(action: action)
                         }
                     }
-                    section(displayData: model.state.availableActions.mailboxItemActions.map(\.displayData))
+                    ActionSheetSection {
+                        ForEachLast(collection: model.state.availableActions.mailboxItemActions) { action, isLast in
+                            ActionSheetImageButton(
+                                displayData: action.displayData,
+                                displayBottomSeparator: !isLast,
+                                action: { model.handle(action: .mailboxItemActionSelected(action)) }
+                            )
+                        }
+                    }
                     section(displayData: model.state.availableActions.moveActions.map(\.displayData))
                     section(displayData: model.state.availableActions.generalActions.map(\.displayData))
                 }.padding(.all, DS.Spacing.large)
@@ -43,23 +51,20 @@ struct MailboxItemActionSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
-            .task { await model.loadActions() }
+            .onAppear { model.handle(action: .viewAppear) }
         }
     }
 
     private func section(displayData: [ActionDisplayData]) -> some View {
-        section {
+        ActionSheetSection {
             ForEachLast(collection: displayData) { displayData, isLast in
-                listButton(displayData: displayData, displayBottomSeparator: !isLast)
+                ActionSheetImageButton(
+                    displayData: displayData,
+                    displayBottomSeparator: !isLast,
+                    action: { print("Action: \(displayData.title.string)") }
+                )
             }
         }
-    }
-
-    private func section<Content: View>(content: () -> Content) -> some View {
-        VStack(spacing: .zero) {
-            content()
-        }
-        .background(DS.Color.BackgroundInverted.secondary, in: .rect(cornerRadius: DS.Radius.extraLarge))
     }
 
     private func replyButton(action: ReplyAction) -> some View {
@@ -77,33 +82,9 @@ struct MailboxItemActionSheet: View {
             .frame(maxWidth: .infinity)
         }
         .buttonStyle(RegularButtonStyle())
-        .background(DS.Color.BackgroundInverted.secondary, in: .rect(cornerRadius: DS.Radius.extraLarge))
+        .background(DS.Color.BackgroundInverted.secondary)
+        .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
-
-    private func listButton(displayData: ActionDisplayData, displayBottomSeparator: Bool) -> some View {
-        VStack(spacing: .zero) {
-            Button(action: { print("Action") }) {
-                HStack(spacing: DS.Spacing.large) {
-                    Image(displayData.image)
-                        .resizable()
-                        .square(size: 20)
-                        .foregroundStyle(DS.Color.Icon.norm)
-                    Text(displayData.title)
-                        .foregroundStyle(DS.Color.Text.weak)
-                    Spacer()
-                }
-                .frame(height: 52)
-                .padding(.leading, DS.Spacing.large)
-            }
-            .buttonStyle(RegularButtonStyle())
-
-            if displayBottomSeparator {
-                Divider()
-                    .frame(height: 1)
-            }
-        }
-    }
-
 }
 
 #Preview {
