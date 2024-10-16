@@ -74,7 +74,7 @@ struct LabelAsSheet: View {
         ActionSheetSection {
             VStack(spacing: .zero) {
                 ForEach(model.state.labels) { label in
-                    ActionSheetSelectableColorButton(
+                    ActionSheetSelectableButton(
                         displayData: label.displayData,
                         displayBottomSeparator: true,
                         action: { model.handle(action: .selected(label)) }
@@ -114,8 +114,8 @@ struct LabelAsSheet: View {
 
 private extension LabelDisplayModel {
 
-    var displayData: ActionColorButtonDisplayData {
-        .init(color: color, title: title, isSelected: isSelected)
+    var displayData: ActionSelectableButtonDisplayData {
+        .init(id: id, visualAsset: .color(color), title: title, isSelected: isSelected, leadingSpacing: .zero)
     }
 
 }

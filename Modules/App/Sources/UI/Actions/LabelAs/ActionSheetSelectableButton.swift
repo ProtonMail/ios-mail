@@ -18,18 +18,16 @@
 import DesignSystem
 import SwiftUI
 
-struct ActionSheetSelectableColorButton: View {
-    let displayData: ActionColorButtonDisplayData
+struct ActionSheetSelectableButton: View {
+    let displayData: ActionSelectableButtonDisplayData
     let displayBottomSeparator: Bool
     let action: () -> Void
 
     var body: some View {
         ActionSheetButton(displayBottomSeparator: displayBottomSeparator, action: action) {
             HStack(spacing: DS.Spacing.large) {
-                displayData.color
-                    .square(size: 13)
-                    .clipShape(Circle())
-                    .square(size: 20)
+                visualAsset()
+                    .padding(.leading, displayData.leadingSpacing)
                 Text(displayData.title)
                     .foregroundStyle(DS.Color.Text.weak)
                 Spacer()
@@ -42,6 +40,24 @@ struct ActionSheetSelectableColorButton: View {
                         .foregroundStyle(DS.Color.Icon.accent)
                 }
             }
+        }
+    }
+
+    // MARK: - Private
+
+    @ViewBuilder
+    func visualAsset() -> some View {
+        switch displayData.visualAsset {
+        case .color(let color):
+            color
+                .square(size: 13)
+                .clipShape(Circle())
+                .square(size: 20)
+        case .image(let imageResource, let color):
+            Image(imageResource)
+                .resizable()
+                .square(size: 20)
+                .foregroundStyle(color)
         }
     }
 }

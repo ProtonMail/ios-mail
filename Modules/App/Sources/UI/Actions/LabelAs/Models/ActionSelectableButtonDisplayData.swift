@@ -18,8 +18,15 @@
 import proton_app_uniffi
 import SwiftUI
 
-struct ActionColorButtonDisplayData {
-    let color: Color
+enum VisualAsset {
+    case color(Color)
+    case image(ImageResource, color: Color)
+}
+
+struct ActionSelectableButtonDisplayData: Identifiable {
+    let id: ID
+    let visualAsset: VisualAsset
     let title: String
     let isSelected: IsSelected
+    let leadingSpacing: CGFloat
 }
