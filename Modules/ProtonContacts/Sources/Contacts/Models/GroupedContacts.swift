@@ -17,15 +17,9 @@
 
 import proton_app_uniffi
 
-struct GroupedContacts: Hashable, Identifiable {
+struct GroupedContacts: Hashable {
     let groupedBy: String
     let contacts: [ContactType]
-
-    // MARK: - Identifiable
-
-    var id: String {
-        groupedBy
-    }
 }
 
 struct ContactEmailItem: Hashable {
@@ -33,32 +27,21 @@ struct ContactEmailItem: Hashable {
     let email: String
 }
 
-struct ContactGroupItem: Hashable, Identifiable {
+struct ContactGroupItem: Hashable {
     let id: UInt64
     let name: String
     let avatarColor: String
     let emails: [ContactEmailItem]
 }
 
-struct ContactItem: Hashable, Identifiable {
+struct ContactItem: Hashable {
     let id: UInt64
     let name: String
     let avatarInformation: AvatarInformation
     let emails: [ContactEmailItem]
 }
 
-enum ContactType: Hashable, Identifiable {
+enum ContactType: Hashable {
     case contact(ContactItem)
     case group(ContactGroupItem)
-
-    // MARK: - Identifiable
-
-    var id: UInt64 {
-        switch self {
-        case .contact(let contactItem):
-            return contactItem.id
-        case .group(let contactGroupItem):
-            return contactGroupItem.id
-        }
-    }
 }
