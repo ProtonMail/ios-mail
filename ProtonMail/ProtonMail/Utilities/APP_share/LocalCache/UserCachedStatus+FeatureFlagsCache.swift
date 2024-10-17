@@ -39,9 +39,11 @@ extension UserCachedStatus: FeatureFlagCache {
     }
 
     func storeFeatureFlags(_ flags: SupportedFeatureFlags, for userID: UserID) {
-        var featureFlagsPerUser = loadFeatureFlagsPerUser()
-        featureFlagsPerUser[userID.rawValue] = flags.rawValues
+        // sometimes the flags dictionary contains NSNull that would crash UserDefaults
+        let sanitizedFlags = flags.rawValues.filter { !($1 is NSNull) }
 
+        var featureFlagsPerUser = loadFeatureFlagsPerUser()
+        featureFlagsPerUser[userID.rawValue] = sanitizedFlags
         userDefaults.setValue(featureFlagsPerUser, forKey: featureFlagsPerUserKey)
     }
 
