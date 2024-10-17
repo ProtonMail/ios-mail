@@ -21,8 +21,8 @@ import SwiftUI
 struct HomeScreen: View {
     enum ModalState: String, Identifiable {
         case contacts
-        case labelOrFolderCreationScreen
-        case settingsScreen
+        case labelOrFolderCreation
+        case settings
 
         // MARK: - Identifiable
 
@@ -93,9 +93,9 @@ struct HomeScreen: View {
                     case .contacts:
                         modalState = .contacts
                     case .createFolder, .createLabel:
-                        modalState = .labelOrFolderCreationScreen
+                        modalState = .labelOrFolderCreation
                     case .settings:
-                        modalState = .settingsScreen
+                        modalState = .settings
                     case .shareLogs:
                         presentShareFileController()
                     case .subscriptions:

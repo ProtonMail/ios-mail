@@ -17,6 +17,7 @@
 
 import DesignSystem
 import enum proton_app_uniffi.ExclusiveLocation
+import ProtonCoreUI
 import SwiftUI
 
 struct MessageDetailsView: View {

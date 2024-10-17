@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonContacts
-import XCTest
+import Foundation
 
-final class ContactsExampleTests: XCTestCase {
-
-    func testExample() {
-        XCTAssertEqual(1 + 1, 2)
+extension String {
+    public var notLocalized: String {
+        String(self)
     }
 
+    public var stringResource: LocalizedStringResource {
+        .init(stringLiteral: self)
+    }
 }

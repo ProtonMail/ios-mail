@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct ConversationDetailScreen: View {
@@ -94,7 +95,7 @@ struct ConversationDetailScreen: View {
                     )
                     .removeViewIf(model.seed.hasNoAttachments)
 
-                    ForEach(Array(model.seed.labels.enumerated()), id: \.element.labelId) { _, element in
+                    ForEach(model.seed.labels, id: \.labelId) { element in
                         CapsuleView(text: element.text.stringResource, color: element.color, style: .label)
                     }
                     .removeViewIf(model.seed.labels.isEmpty)

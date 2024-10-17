@@ -15,10 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+@testable import ProtonContacts
+import XCTest
 
-extension EdgeInsets {
-    init(vertical: CGFloat, horizontal: CGFloat) {
-        self.init(top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal)
+final class L10nTests: XCTestCase {
+    func testContactsGroupSubtitle_For1Member_ReturnsCorrectString() {
+        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 1).string, "1 member")
+    }
+
+    func testContactsGroupSubtitle_For2Members_ReturnsCorrectString() {
+        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 2).string, "2 members")
     }
 }

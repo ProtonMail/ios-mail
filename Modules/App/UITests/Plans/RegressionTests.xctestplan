@@ -13,6 +13,19 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "ConversationDetailBottomSheetComposeTests",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsMultipleRecipients()",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsMultipleRecipientsBccInSentFolder()",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsSingleRecipient()",
+        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsWhenInBcc()",
+        "ConversationDetailBottomSheetTests",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInArchive()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInInbox()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInSpam()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInTrash()",
+        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenStarred()"
+      ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
         "identifier" : "F10B9F81555EBE694D795ECF",

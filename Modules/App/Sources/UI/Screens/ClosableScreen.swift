@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct ClosableScreen<ContentView: View>: View {

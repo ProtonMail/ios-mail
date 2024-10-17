@@ -14,12 +14,12 @@ options:
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
 
 packages:
-  Collections:
-    url: https://github.com/apple/swift-collections.git
-    minorVersion: "1.1.2"
   DesignSystem:
     path: Modules/DesignSystem
     group: Modules
+  Collections:
+    url: https://github.com/apple/swift-collections.git
+    minorVersion: "1.1.2"
   Keychain:
     path: Modules/Keychain
     group: Modules
@@ -28,16 +28,25 @@ packages:
     minorVersion: "4.5.0"    
   Nimble:
     url: https://github.com/Quick/Nimble
-    minorVersion: "13.3.0"    
-  ProtonContacts:
-    path: Modules/ProtonContacts
-    group: Modules
+    minorVersion: "13.3.0"
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
     group: ProtonPackages
+  ProtonContacts:
+    path: Modules/ProtonContacts
+    group: Modules
+  ProtonCore:
+    path: Modules/ProtonCore
+    group: Modules
   ProtonCoreET:
     path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
     group: ProtonPackages
+  ProtonCoreUI:
+    path: Modules/ProtonCoreUI
+    group: Modules
+  ProtonSnapshotTesting:
+    path: Modules/ProtonSnapshotTesting
+    group: Modules
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
     minorVersion: "1.17.0"
@@ -79,8 +88,8 @@ targets:
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
-        MARKETING_VERSION: 0.1.10
-        CURRENT_PROJECT_VERSION: 27
+        MARKETING_VERSION: 0.2.0
+        CURRENT_PROJECT_VERSION: 1
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_EMIT_LOC_STRINGS: YES
@@ -125,10 +134,12 @@ targets:
       - package: Lottie
       - package: proton_app_uniffi
       - package: ProtonContacts
+      - package: ProtonCore
       - package: ProtonCoreET
         products: 
           - AccountLogin
           - AccountManager
+      - package: ProtonCoreUI
       - package: SwiftUIIntrospect
 
   ProtonMailTest:

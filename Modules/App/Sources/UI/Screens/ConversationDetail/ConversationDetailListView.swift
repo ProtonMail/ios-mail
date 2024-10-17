@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import SwiftUI
 import proton_app_uniffi
+import ProtonCoreUI
+import SwiftUI
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -73,7 +74,7 @@ struct ConversationDetailListView: View {
         ScrollViewReader { scrollView in
             VStack(spacing: 0) {
                 LazyVStack(spacing: 0) {
-                    ForEach(Array(previous.enumerated()), id: \.element.id) { index, cellUIModel in
+                    ForEachEnumerated(previous, id: \.element.id) { cellUIModel, index in
                         switch cellUIModel.type {
                         case .collapsed(let uiModel):
                             CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
