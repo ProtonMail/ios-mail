@@ -22,7 +22,7 @@ class MoveToSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
         let sut = MoveToSheet(model: MoveToSheetPreviewProvider.testModel)
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: sut, named: "move_to_sheet")
     }
 
 }
