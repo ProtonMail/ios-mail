@@ -47,7 +47,7 @@ public struct ContactsScreen: View {
     private func sections(for groupedContacts: [GroupedContacts]) -> some View {
         ForEach(groupedContacts, id: \.self) { groupedContacts in
             Section(header: EmptyView()) {
-                ForEach(groupedContacts.contacts, id: \.self) { contactType in
+                ForEachEnumerated(groupedContacts.contacts, id: \.element) { contactType, _ in
                     row(for: contactType)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
