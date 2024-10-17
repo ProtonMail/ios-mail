@@ -20,8 +20,8 @@ import proton_app_uniffi
 
 struct MailboxActionSheetsState {
     let mailbox: MailboxItemActionSheetInput?
-    let labelAs: LabelAsActionSheetInput?
-    let moveTo: LabelAsActionSheetInput?
+    let labelAs: ActionSheetInput?
+    let moveTo: ActionSheetInput?
     let isCreateLabelScreenPresented: Bool
 }
 
@@ -47,7 +47,8 @@ private struct MailboxActionSheets: ViewModifier {
             .sheet(item: moveToBinding, content: moveToActionPicker)
     }
 
-    @MainActor private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
+    @MainActor
+    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
         let model = MailboxItemActionSheetModel(
             input: input,
             mailbox: mailbox(),
@@ -68,7 +69,8 @@ private struct MailboxActionSheets: ViewModifier {
             .pickerViewStyle([.large])
     }
 
-    @MainActor private func labelAsActionPicker(input: LabelAsActionSheetInput) -> some View {
+    @MainActor
+    private func labelAsActionPicker(input: ActionSheetInput) -> some View {
         let model = LabelAsSheetModel(
             input: input,
             mailbox: mailbox(),
@@ -87,7 +89,8 @@ private struct MailboxActionSheets: ViewModifier {
             }
     }
 
-    @MainActor private func moveToActionPicker(input: LabelAsActionSheetInput) -> some View {
+    @MainActor
+    private func moveToActionPicker(input: ActionSheetInput) -> some View {
         let model = MoveToSheetModel(
             input: input,
             mailbox: mailbox(),
@@ -110,11 +113,11 @@ private struct MailboxActionSheets: ViewModifier {
         .init(get: { state.mailbox }, set: { mailbox in state = state.copy(mailbox: mailbox) })
     }
 
-    private var labelAsBinding: Binding<LabelAsActionSheetInput?> {
+    private var labelAsBinding: Binding<ActionSheetInput?> {
         .init(get: { state.labelAs }, set: { labelAs in state = state.copy(labelAs: labelAs) })
     }
 
-    private var moveToBinding: Binding<LabelAsActionSheetInput?> {
+    private var moveToBinding: Binding<ActionSheetInput?> {
         .init(get: { state.moveTo }, set: { moveTo in state = state.copy(moveTo: moveTo) })
     }
 
@@ -137,7 +140,16 @@ extension MailboxActionSheetsState {
         )
     }
 
-    func copy(labelAs: LabelAsActionSheetInput?) -> Self {
+    func copy(labelAs: ActionSheetInput?) -> Self {
+        .init(
+            mailbox: mailbox,
+            labelAs: labelAs,
+            moveTo: moveTo,
+            isCreateLabelScreenPresented: isCreateLabelScreenPresented
+        )
+    }
+
+    func copy(moveTo: ActionSheetInput?) -> Self {
         .init(
             mailbox: mailbox,
             labelAs: labelAs,
@@ -147,15 +159,6 @@ extension MailboxActionSheetsState {
     }
 
     func copy(isCreateLabelScreenPresented: Bool) -> Self {
-        .init(
-            mailbox: mailbox,
-            labelAs: labelAs,
-            moveTo: moveTo,
-            isCreateLabelScreenPresented: isCreateLabelScreenPresented
-        )
-    }
-
-    func copy(moveTo: LabelAsActionSheetInput?) -> Self {
         .init(
             mailbox: mailbox,
             labelAs: labelAs,

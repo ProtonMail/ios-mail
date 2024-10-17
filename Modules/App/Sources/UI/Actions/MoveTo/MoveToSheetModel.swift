@@ -23,12 +23,12 @@ import SwiftUI
 class MoveToSheetModel: ObservableObject {
     @Published var state: MoveToState = .initial
 
-    private let input: LabelAsActionSheetInput
+    private let input: ActionSheetInput
     private let moveToActionsProvider: MoveToActionsProvider
     private let navigation: (MoveToSheetNavigation) -> Void
 
     init(
-        input: LabelAsActionSheetInput,
+        input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
         navigation: @escaping (MoveToSheetNavigation) -> Void

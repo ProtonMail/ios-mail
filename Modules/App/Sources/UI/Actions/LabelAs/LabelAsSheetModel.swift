@@ -21,12 +21,12 @@ import SwiftUI
 
 class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
-    private let input: LabelAsActionSheetInput
+    private let input: ActionSheetInput
     private let actionsProvider: LabelAsActionsProvider
     private let navigation: (LabelAsSheetNavigation) -> Void
 
     init(
-        input: LabelAsActionSheetInput,
+        input: ActionSheetInput,
         mailbox: Mailbox, 
         availableLabelAsActions: AvailableLabelAsActions,
         navigation: @escaping (LabelAsSheetNavigation) -> Void

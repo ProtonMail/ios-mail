@@ -17,7 +17,7 @@
 
 import Foundation
 
-struct LabelAsActionSheetInput: Hashable, Identifiable { // FIXME: - Rename
+struct ActionSheetInput: Hashable, Identifiable {
     let ids: [ID]
     let type: MailboxItemType
 
