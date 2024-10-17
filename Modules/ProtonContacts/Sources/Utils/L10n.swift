@@ -19,15 +19,18 @@ import Foundation
 
 /// Once you define `LocalizedStringResource` below Xcode puts related string in `Localizable.xcstrings` file.
 /// The generation happens automatically when adding/removing string below. All keys are added in alphabetical order.
+/// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
     enum Contacts {
         static let title = LocalizedStringResource(
             "Contacts",
+            bundle: .atURL(Bundle.module.bundleURL),
             comment: "Title of the contacts screen that displays contacts and contact groups."
         )
         static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {
             LocalizedStringResource(
                 "\(membersCount) members",
+                bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Contact group row subtitle."
             )
         }
