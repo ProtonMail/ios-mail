@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct LabelPickerView: View {
@@ -104,7 +105,7 @@ extension LabelPickerView {
     @MainActor
     private var labelList: some View {
         List {
-            ForEach(Array(labels.enumerated()), id: \.1.id) { index, uiModel in
+            ForEachEnumerated(labels, id: \.element.id) { uiModel, index in
                 VStack {
                     LabelPickerCell(uiModel: uiModel)
                         .onTapGesture {

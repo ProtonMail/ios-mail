@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct OnboardingScreen: View {
@@ -101,7 +102,7 @@ struct OnboardingScreen: View {
 
     private var pages: some View {
         HeightPreservingTabView(selection: $state.selectedPageIndex) {
-            ForEach(Array(state.pages.enumerated()), id: \.element) { index, model in
+            ForEachEnumerated(state.pages, id: \.element) { model, index in
                 OnboardingPageView(model: model).tag(index)
             }
         }

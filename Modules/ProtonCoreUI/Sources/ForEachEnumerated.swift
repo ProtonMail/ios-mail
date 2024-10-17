@@ -34,6 +34,8 @@ public struct ForEachEnumerated<
         self.content = content
     }
 
+    // MARK: - View
+
     public var body: some View {
         ForEach(Array(collection.enumerated()), id: id) { index, element in
             content(element, index)

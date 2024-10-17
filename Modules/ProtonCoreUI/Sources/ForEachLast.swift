@@ -17,12 +17,19 @@
 
 import SwiftUI
 
-struct ForEachLast<Collection: RandomAccessCollection, Content: View>: View {
-    let collection: Collection
-    let content: (Collection.Element, Bool) -> Content
+public struct ForEachLast<Collection: RandomAccessCollection, Content: View>: View {
+    public let collection: Collection
+    public let content: (Collection.Element, Bool) -> Content
 
-    var body: some View {
-        ForEach(Array(collection.enumerated()), id: \.offset) { index, element in
+    public init(collection: Collection, content: @escaping (Collection.Element, Bool) -> Content) {
+        self.collection = collection
+        self.content = content
+    }
+
+    // MARK: - View
+
+    public var body: some View {
+        ForEachEnumerated(collection, id: \.offset) { element, index in
             content(element, index == (collection.count - 1))
         }
     }
