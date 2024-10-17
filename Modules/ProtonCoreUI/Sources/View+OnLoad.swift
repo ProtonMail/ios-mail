@@ -18,7 +18,8 @@
 import SwiftUI
 
 extension View {
-    /// `onLoad` callback is an SwiftUI's equivalent of `viewDidLoad` callback in UIKit
+    /// The `onLoad` modifier is kind of an SwiftUI's equivalent of `viewDidLoad` callback in UIKit.
+    /// Under the hood it still relies on `onAppear` callback but it's called only once instead.
     public func onLoad(perform action: (() -> Void)? = nil) -> some View {
         modifier(ViewDidLoadModifier(action: action))
     }
