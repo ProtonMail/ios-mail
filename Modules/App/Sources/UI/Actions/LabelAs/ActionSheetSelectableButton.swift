@@ -29,6 +29,7 @@ struct ActionSheetSelectableButton: View {
                 visualAsset()
                     .padding(.leading, displayData.leadingSpacing)
                 Text(displayData.title)
+                    .lineLimit(1)
                     .foregroundStyle(DS.Color.Text.weak)
                 Spacer()
 

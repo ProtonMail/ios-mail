@@ -66,7 +66,10 @@ struct MoveToSheet: View {
                         action: { model.handle(action: .folderTapped(id: displayModel.id)) }
                     )
                 }
-                ActionSheetButton(displayBottomSeparator: false, action: {  }) {
+                ActionSheetButton(
+                    displayBottomSeparator: false,
+                    action: { model.handle(action: .createFolderTapped) }
+                ) {
                     HStack {
                         Image(DS.Icon.icPlus)
                             .resizable()

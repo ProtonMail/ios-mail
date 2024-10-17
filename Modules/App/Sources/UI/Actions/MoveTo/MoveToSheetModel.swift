@@ -42,7 +42,7 @@ class MoveToSheetModel: ObservableObject {
         switch action {
         case .viewAppear:
             loadMoveToActions()
-        case .folderTapped(let id):
+        case .folderTapped:
             navigation(.dismiss)
         case .createFolderTapped:
             navigation(.createFolder)

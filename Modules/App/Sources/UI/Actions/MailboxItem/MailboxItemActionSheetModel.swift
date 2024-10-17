@@ -45,7 +45,14 @@ class MailboxItemActionSheetModel: ObservableObject {
             case .labelAs:
                 navigation(.labelAs)
             default:
-                break
+                break // FIXME: - Handle rest of actions here
+            }
+        case .moveTo(let action):
+            switch action {
+            case .moveTo:
+                navigation(.moveTo)
+            default:
+                break // FIXME: - Handle rest of actions here
             }
         }
     }

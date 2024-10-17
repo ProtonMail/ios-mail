@@ -157,6 +157,6 @@ private extension ExpandedMessageCellUIModel {
 
 private extension MailboxActionSheetsState {
     static func initial() -> Self {
-        .init(mailbox: nil, labelAs: nil, isCreateLabelScreenPresented: false)
+        .init(mailbox: nil, labelAs: nil, moveTo: nil, isCreateLabelScreenPresented: false)
     }
 }
