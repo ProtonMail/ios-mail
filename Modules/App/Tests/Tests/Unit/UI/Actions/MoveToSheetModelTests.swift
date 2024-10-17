@@ -90,7 +90,7 @@ class MoveToSheetModelTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func sut(input: LabelAsActionSheetInput) -> MoveToSheetModel {
+    private func sut(input: ActionSheetInput) -> MoveToSheetModel {
         .init(
             input: input,
             mailbox: .init(noPointer: .init()),

@@ -30,29 +30,9 @@ struct MailboxItemActionSheet: View {
         ClosableScreen {
             ScrollView {
                 VStack(spacing: DS.Spacing.standard) {
-                    HStack(spacing: DS.Spacing.standard) {
-                        ForEach(model.state.availableActions.replyActions, id: \.self) { action in
-                            replyButton(action: action)
-                        }
-                    }
-                    ActionSheetSection {
-                        ForEachLast(collection: model.state.availableActions.mailboxItemActions) { action, isLast in
-                            ActionSheetImageButton(
-                                displayData: action.displayData,
-                                displayBottomSeparator: !isLast,
-                                action: { model.handle(action: .mailboxItemActionSelected(action)) }
-                            )
-                        }
-                    }
-                    ActionSheetSection {
-                        ForEachLast(collection: model.state.availableActions.moveActions) { action, isLast in
-                            ActionSheetImageButton(
-                                displayData: action.displayData,
-                                displayBottomSeparator: !isLast,
-                                action: { model.handle(action: .moveTo(action)) }
-                            )
-                        }
-                    }
+                    replyButtonsSection()
+                    mailboxItemActionsSection()
+                    moveToActionsSection()
                     section(displayData: model.state.availableActions.generalActions.map(\.displayData))
                 }.padding(.all, DS.Spacing.large)
             }
@@ -60,6 +40,40 @@ struct MailboxItemActionSheet: View {
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
+        }
+    }
+
+    // MARK: - Private
+
+    private func replyButtonsSection() -> some View {
+        HStack(spacing: DS.Spacing.standard) {
+            ForEach(model.state.availableActions.replyActions, id: \.self) { action in
+                replyButton(action: action)
+            }
+        }
+    }
+
+    private func mailboxItemActionsSection() -> some View {
+        ActionSheetSection {
+            ForEachLast(collection: model.state.availableActions.mailboxItemActions) { action, isLast in
+                ActionSheetImageButton(
+                    displayData: action.displayData,
+                    displayBottomSeparator: !isLast,
+                    action: { model.handle(action: .mailboxItemActionSelected(action)) }
+                )
+            }
+        }
+    }
+
+    private func moveToActionsSection() -> some View {
+        ActionSheetSection {
+            ForEachLast(collection: model.state.availableActions.moveActions) { action, isLast in
+                ActionSheetImageButton(
+                    displayData: action.displayData,
+                    displayBottomSeparator: !isLast,
+                    action: { model.handle(action: .moveTo(action)) }
+                )
+            }
         }
     }
 
