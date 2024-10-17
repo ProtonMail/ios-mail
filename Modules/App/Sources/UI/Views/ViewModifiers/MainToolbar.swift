@@ -27,7 +27,7 @@ struct MainToolbar: ViewModifier {
     private let title: LocalizedStringResource
 
     private var state: ToolbarState {
-        selectionMode.hasSelectedItems ? .selection : .noSelection
+        selectionMode.hasItems ? .selection : .noSelection
     }
 
     init(title: LocalizedStringResource, selectionMode: SelectionModeState, onEvent: @escaping (MainToolbarEvent) -> Void) {
@@ -64,7 +64,7 @@ struct MainToolbar: ViewModifier {
                                 .resizable()
                                 .square(size: 24)
                                 .id(state.rawValue)
-                                .transition(.scale.animation(.easeOut(duration: AppConstants.selectionModeStartDuration)))
+                                .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
                         }
                         .padding(10)
                     })
@@ -83,7 +83,7 @@ struct MainToolbar: ViewModifier {
                         }
                         .padding(10)
                     })
-                    .opacity(selectionMode.hasSelectedItems ? 0 : 1)
+                    .opacity(selectionMode.hasItems ? 0 : 1)
                     .square(size: 40)
                 }
 

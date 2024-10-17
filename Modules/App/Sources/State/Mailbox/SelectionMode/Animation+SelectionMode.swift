@@ -15,17 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-enum AppConstants {
+extension Animation {
+    static let selectionModeStartDuration = 0.2
 
-    /// time interval between event loop poll calls
-    static let eventLoopFrequency: TimeInterval = 30
-
-}
-
-enum AppGroup {
-
-    /// Mail app group identifier to access shared resources
-    static let mail = "group.ch.protonmail.protonmail"
+    static let selectModeAnimation = Animation.easeInOut(duration: selectionModeStartDuration)
 }
