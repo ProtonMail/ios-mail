@@ -17,8 +17,8 @@
 
 import SwiftUI
 
-extension EdgeInsets {
-    init(vertical: CGFloat, horizontal: CGFloat) {
-        self.init(top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal)
-    }
+extension Animation {
+    static let selectionModeStartDuration = 0.2
+
+    static let selectModeAnimation = Animation.easeInOut(duration: selectionModeStartDuration)
 }

@@ -16,14 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonContacts
-import SnapshotTesting
-import SwiftUI
+import ProtonSnapshotTesting
 import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
-
     func testContactsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshot(of: UIHostingController(rootView: ContactsScreen()), as: .image(on: .iPhoneX))
+        assertSnapshotsOnIPhoneX(of: ContactsScreen())
     }
-
 }

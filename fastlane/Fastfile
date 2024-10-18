@@ -96,6 +96,7 @@ platform :ios do
     sh("git checkout #{branch_name}")
 
     bump_build_number_in_xcodegen_configuration(build_number)
+    git_add(path: "./project.yml")
     git_commit(path: "./project.yml", message: "Bump the project v#{project_version}_#{build_number} [ci skip]")
     add_git_tag(tag: "v#{project_version}_#{build_number}")
     push_to_git_remote
@@ -197,7 +198,6 @@ platform :ios do
       new_build_number = generate_new_build_number(latest_build_number)
       increment_build_number(build_number: new_build_number)
 
-      commit_add_tag_and_push(new_build_number)    
       build_release_app
 
       upload_to_testflight(
@@ -205,6 +205,8 @@ platform :ios do
         team_name: "Proton Technologies AG",
         skip_waiting_for_build_processing: true
       )
+
+      commit_add_tag_and_push(new_build_number)
     ensure
       tear_down_keychain
     end

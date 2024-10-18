@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreUI
 import SwiftUI
 
 struct PaginatedListView<
@@ -67,7 +68,7 @@ struct PaginatedListView<
 
             headerView()
 
-            ForEach(Array(dataSource.state.items.enumerated()), id: \.1.id) { index, item in
+            ForEachEnumerated(dataSource.state.items, id: \.element.id) { item, index in
                 cellView(index, item)
             }
 

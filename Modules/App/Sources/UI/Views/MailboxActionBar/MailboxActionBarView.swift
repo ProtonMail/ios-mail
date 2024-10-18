@@ -93,8 +93,8 @@ struct MailboxActionBarView: View {
         if let mailboxAction {
             let resolver = MailboxItemActionResolver(
                 params: .init(
-                    selectionReadStatus: selectionMode.selectionStatus.readStatus,
-                    selectionStarStatus: selectionMode.selectionStatus.starStatus, 
+                    selectionReadStatus: selectionMode.collectionStatus.readStatus,
+                    selectionStarStatus: selectionMode.collectionStatus.starStatus, 
                     systemFolder: selectedMailbox.systemFolder ?? .inbox
                 )
             )

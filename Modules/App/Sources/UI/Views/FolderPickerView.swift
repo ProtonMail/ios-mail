@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct FolderPickerView: View {
@@ -90,7 +91,7 @@ extension FolderPickerView {
     }
 
     private func forEachFor(folders: [FolderPickerCellUIModel], onSelection: @escaping (_ uiModel: FolderPickerCellUIModel) -> Void) -> some View {
-        ForEach(Array(folders.enumerated()), id: \.1.id) { index, uiModel in
+        ForEachEnumerated(folders, id: \.element.id) { uiModel, index in
             FolderPickerCell(uiModel: uiModel)
                 .onTapGesture {
                     onSelection(uiModel)

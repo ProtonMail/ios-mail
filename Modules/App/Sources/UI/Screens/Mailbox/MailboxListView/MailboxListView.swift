@@ -15,74 +15,94 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import DesignSystem
 import SwiftUI
 
 struct MailboxListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject private var userSettings: UserSettings
     @ObservedObject private var model: MailboxModel
 
     @State private var didAppearBefore = false
     @State private var pullToRefreshOffset: CGFloat = 0.0
     @Binding private var isListAtTop: Bool
+    private let customLabelModel: CustomLabelModel
 
-    @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
-    private var listPullOffsetPublisher: AnyPublisher<CGFloat, Never> {
-        listPullOffset.eraseToAnyPublisher()
-    }
-
-    init(isListAtTop: Binding<Bool>, model: MailboxModel) {
+    init(isListAtTop: Binding<Bool>, model: MailboxModel, customLabelModel: CustomLabelModel) {
         self._isListAtTop = isListAtTop
         self.model = model
+        self.customLabelModel = customLabelModel
     }
 
     var body: some View {
-        mailboxItemsListView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .sensoryFeedback(trigger: model.selectionMode.selectedItems) { oldValue, newValue in
-                oldValue.count != newValue.count ? .selection : nil
-            }
-            .onChange(of: model.selectedMailbox) { _, _ in
-                self.isListAtTop = true
-            }
-            .task {
-                guard !didAppearBefore else { return }
-                didAppearBefore = true
-                await model.onViewDidAppear()
-            }
+        MailboxItemsListView(
+            config: mailboxItemListViewConfiguration(),
+            headerView:  { unreadFilterView() },
+            emptyView: { MailboxEmptyView()}
+        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onChange(of: model.selectedMailbox) { _, _ in
+            self.isListAtTop = true
+        }
+        .task {
+            guard !didAppearBefore else { return }
+            didAppearBefore = true
+            await model.onViewDidAppear()
+        }
     }
 }
 
 extension MailboxListView {
 
-    private func mailboxItemsListView() -> some View {
-        PaginatedListView(
+    private func disableSwipeActionIfNeeded(_ swipeAction: SwipeAction) -> SwipeAction {
+        swipeAction.isActionAssigned(systemFolder: model.selectedMailbox.systemFolder) 
+        ? swipeAction
+        : .none
+    }
+
+    private func mailboxItemListViewConfiguration() -> MailboxItemsListViewConfiguration {
+        var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
-            headerView: { unreadFilterView() },
-            emptyListView: { MailboxEmptyView() },
-            cellView: { index, item in
-                cellView(index: index, item: item)
-            },
-            onScrollEvent: { event in
+            selectionState: model.selectionMode.selectionState,
+            actionBar: MailboxItemsListActionBar(
+                selectedMailbox: model.selectedMailbox,
+                customLabelModel: customLabelModel,
+                mailboxActionable: model
+            )
+        )
+
+        config.swipeActions = .init(
+            leadingSwipe: { disableSwipeActionIfNeeded(userSettings.leadingSwipeAction) },
+            trailingSwipe: { disableSwipeActionIfNeeded(userSettings.trailingSwipeAction) }
+        )
+        
+        config.listEventHandler = .init(
+            listAtTop: { isListAtTop = $0 },
+            pullToRefresh: { await model.onPullToRefresh() }
+        )
+        
+        config.cellEventHandler = .init(
+            onCellEvent: { [weak model] event, item in
                 switch event {
-                case .onChangeOffset(let offset):
-                    self.listPullOffset.send(offset)
+                case .onTap:
+                    model?.onMailboxItemTap(item: item)
+                case .onLongPress:
+                    model?.onLongPress(mailboxItem: item)
+                case .onSelectedChange(let isSelected):
+                    model?.onMailboxItemSelectionChange(item: item, isSelected: isSelected)
+                case .onStarredChange(let isStarred):
+                    model?.onMailboxItemStarChange(item: item, isStarred: isStarred)
+                case .onAttachmentTap(let attachmentId):
+                    model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
                 }
+            },
+            onSwipeAction: { action, itemId in
+                toastStateStore.present(toast: .comingSoon)
+//                    model?.onMailboxItemAction(action, itemIds: ids)
             }
         )
-        .listStyle(.plain)
-        .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
-            guard (collectionView.refreshControl as? ProtonRefreshControl) == nil else { return }
-            let protonRefreshControl = ProtonRefreshControl(listPullOffset: listPullOffsetPublisher) {
-                await model.onPullToRefresh()
-            }
-            collectionView.refreshControl = protonRefreshControl
-            protonRefreshControl.tintColor = .clear
-        }
-        .listScrollObservation(onEventAtTopChange: { newValue in
-            isListAtTop = newValue
-        })
+        
+        return config
     }
 
     private func unreadFilterView() -> some View {
@@ -91,77 +111,6 @@ extension MailboxListView {
             .listRowBackground(DS.Color.Background.norm)
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
-    }
-
-    private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
-        VStack {
-            MailboxItemCell(
-                uiModel: item,
-                isParentListSelectionEmpty: !model.selectionMode.hasSelectedItems,
-                onEvent: { [weak model] event in
-                    switch event {
-                    case .onTap:
-                        model?.onMailboxItemTap(item: item)
-                    case .onLongPress:
-                        model?.onLongPress(mailboxItem: item)
-                    case .onSelectedChange(let isSelected):
-                        model?.onMailboxItemSelectionChange(item: item, isSelected: isSelected)
-                    case .onStarredChange(let isStarred):
-                        model?.onMailboxItemStarChange(item: item, isStarred: isStarred)
-                    case .onAttachmentTap(let attachmentId):
-                        model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
-                    }
-                }
-            )
-            .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
-            .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
-
-            .mailboxSwipeActions(
-                isSelectionModeOn: model.selectionMode.hasSelectedItems,
-                mailboxItemId: item.id,
-                systemFolder: model.selectedMailbox.systemFolder,
-                isItemRead: item.isRead,
-                onTapAction: { _, _ in
-                    toastStateStore.present(toast: .comingSoon)
-//                    model.onMailboxItemAction(action, itemIds: ids)
-                }
-            )
-
-            Spacer().frame(height: DS.Spacing.tiny)
-        }
-        .listRowBackground(Color.clear)
-        .listRowInsets(
-            .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
-        )
-        .listRowSeparator(.hidden)
-        .compositingGroup()
-        .clipShape(
-            .rect(
-                topLeadingRadius: 20,
-                bottomLeadingRadius: 20,
-                bottomTrailingRadius: 0,
-                topTrailingRadius: 0
-            )
-        )
-        .background(DS.Color.Background.norm) // cell background color after clipping
-    }
-
-    private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
-        let unread = item.isRead ? "" : L10n.Mailbox.VoiceOver.unread.string
-        let expiration = item.expirationDate?.toExpirationDateUIModel?.text.string ?? ""
-        let attachments = item.attachmentsUIModel.count > 0
-        ? L10n.Mailbox.VoiceOver.attachments(count: item.attachmentsUIModel.count).string
-        : ""
-        let value: String = """
-        \(unread)
-        \(item.emails).
-        \(item.subject).
-        \(item.date.mailboxVoiceOverSupport()).
-        \(expiration).
-        \(item.snoozeDate ?? "").
-        \(attachments)
-        """
-        return value
     }
 }
 
@@ -173,10 +122,7 @@ extension MailboxListView {
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route
-        )
+        ),
+        customLabelModel: CustomLabelModel()
     )
-}
-
-private struct MailboxListViewIdentifiers {
-    static let listCell = "mailbox.list.cell"
 }

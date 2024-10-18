@@ -89,17 +89,20 @@ extension MailboxScreen {
 
     private var mailboxScreen: some View {
         ZStack(alignment: .bottomTrailing) {
-            MailboxListView(isListAtTop: $isComposeButtonExpanded, model: mailboxModel)
+            MailboxListView(
+                isListAtTop: $isComposeButtonExpanded,
+                model: mailboxModel,
+                customLabelModel: customLabelModel
+            )
             composeButtonView
                 .accessibilitySortPriority(1)
-            mailboxActionBarView
         }
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .navigationBarTitleDisplayMode(.inline)
         .withAccountManager(coordinator: $mailboxModel.accountManagerCoordinator)
         .mainToolbar(
             title: mailboxModel.state.mailboxTitle,
-            selectionMode: mailboxModel.selectionMode,
+            selectionMode: mailboxModel.selectionMode.selectionState,
             onEvent: handleMainToolbarEvent
         )
         .accessibilityElement(children: .contain)
@@ -110,7 +113,7 @@ extension MailboxScreen {
         case .onOpenMenu:
             appUIStateStore.sidebarState.isOpen = true
         case .onExitSelectionMode:
-            mailboxModel.selectionMode.exitSelectionMode()
+            mailboxModel.selectionMode.selectionModifier.exitSelectionMode()
         case .onSearch:
             toastStateStore.present(toast: .comingSoon)
 //            isSearchPresented = true
@@ -128,18 +131,6 @@ extension MailboxScreen {
         .animation(.toastAnimation, value: toastStateStore.state.toastHeights)
     }
 
-    private var mailboxActionBarView: some View {
-        MailboxActionBarView(
-            selectionMode: mailboxModel.selectionMode,
-            selectedMailbox: mailboxModel.selectedMailbox,
-            mailboxActionable: mailboxModel,
-            customLabelModel: customLabelModel
-        )
-        .opacity(mailboxModel.state.showActionBar ? 1 : 0)
-        .offset(y: mailboxModel.state.showActionBar ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: mailboxModel.state.showActionBar)
-    }
-
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
         SidebarZIndexUpdateContainer {
@@ -155,10 +146,6 @@ extension MailboxScreen {
             )
         }
     }
-}
-
-private extension Animation {
-    static let selectModeAnimation = Animation.easeInOut(duration: AppConstants.selectionModeStartDuration)
 }
 
 #Preview {

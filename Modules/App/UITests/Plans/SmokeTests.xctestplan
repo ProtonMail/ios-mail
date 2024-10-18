@@ -15,12 +15,8 @@
     {
       "selectedTests" : [
         "ConversationDetailAutoExpandMessageTests\/testConversationDetailAutoExpandMessagesAllUnreadNoDrafts()",
-        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsMultipleRecipients()",
-        "ConversationDetailBottomSheetComposeTests\/testComposeButtonsSingleRecipient()",
         "ConversationDetailBottomSheetParticipantTests\/testSenderBottomSheetFromSentFolder()",
         "ConversationDetailBottomSheetParticipantTests\/testSenderBottomSheetWhenNotAContact()",
-        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInInbox()",
-        "ConversationDetailBottomSheetTests\/testMessageActionBottomSheetWhenInTrash()",
         "ConversationDetailMessageItemsTests\/testConversationDetailExpandCollapsedItem()",
         "ConversationDetailNavigationTests\/testMailboxToConversationDetailsNavigation()",
         "ConversationDetailNavigationTests\/testMessageModeToConversationDetailsNavigationFromInbox()",

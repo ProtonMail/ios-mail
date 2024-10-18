@@ -17,85 +17,115 @@
 
 import Foundation
 
-/// Keeps the state of the items selected in a Mailbox. This class is agnostic of Messages and Conversations and so it works for both.
-final class SelectionModeState: ObservableObject {
+/**
+ This class wraps the mailbox item selection state and its modifier.
 
-    @Published private(set) var hasSelectedItems: Bool
-    @Published private(set) var selectionStatus: SelectedItemsStatus
-    private(set) var selectedItems: Set<MailboxSelectedItem>
+ The reason to keep the writing logic in a separate object is to be able
+ to differentiate entities that only observe the selection state from the 
+ ones that are also responsible for updating it.
+ */
+final class SelectionMode {
+    let selectionState: SelectionModeState
+    let selectionModifier: SelectionModeStateModifier
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
-        self.hasSelectedItems = false
+        self.selectionState = .init(selectedItems: selectedItems)
+        self.selectionModifier = .init(state: self.selectionState)
+    }
+}
+
+/**
+ Keeps the state of the items selected in a Mailbox.
+
+ The `SelectionModeState` object is a read only class for observation purposes only.
+ This class is agnostic of Messages and Conversations and so it works for both.
+ */
+final class SelectionModeState: ObservableObject {
+
+    @Published fileprivate(set) var hasItems: Bool
+    @Published fileprivate(set) var collectionStatus: SelectedItemsStatus
+    fileprivate(set) var selectedItems: Set<MailboxSelectedItem>
+
+    init(selectedItems: Set<MailboxSelectedItem> = .init()) {
+        self.hasItems = false
         self.selectedItems = selectedItems
-        self.selectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
-        updateSelectionStatus()
+        self.collectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
+    }
+}
+
+/**
+ Responsible for updating the `SelectionModeState`
+ */
+final class SelectionModeStateModifier {
+    let state: SelectionModeState
+
+    init(state: SelectionModeState) {
+        self.state = state
+        updateCollectionStatus()
     }
 
     func addMailboxItem(_ item: MailboxSelectedItem) {
-        selectedItems.insert(item)
-        hasSelectedItems = true
-        updateSelectionStatus()
+        state.selectedItems.insert(item)
+        state.hasItems = true
+        updateCollectionStatus()
     }
 
     func removeMailboxItem(_ item: MailboxSelectedItem) {
-        selectedItems.remove(item)
-        hasSelectedItems = !selectedItems.isEmpty
-        updateSelectionStatus()
+        state.selectedItems.remove(item)
+        state.hasItems = !state.selectedItems.isEmpty
+        updateCollectionStatus()
     }
 
     func exitSelectionMode() {
-        selectedItems.removeAll()
-        hasSelectedItems = false
-        updateSelectionStatus()
+        state.selectedItems.removeAll()
+        state.hasItems = false
+        updateCollectionStatus()
     }
 
     /**
      Call this method to refresh the status of the selected items when their status might have changed.
      - Parameter itemProvider: closure that given a collection of item ids, returns the newest status of those items.
-     
+
      - If `itemProvider` does not return one of the selected items, this will be removed from the selection collection. The reason
      being that the item might not exist anymore.
      - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
      items should be added calling  `addMailboxItem`.
      */
     func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<MailboxSelectedItem> ) {
-        let returnedItems = itemProvider(selectedItems.map(\.id))
+        let returnedItems = itemProvider(state.selectedItems.map(\.id))
         let selectedItemsNewStatus = returnedItems.union(returnedItems)
-        selectedItems.removeAll()
-        selectedItems = selectedItemsNewStatus
+        state.selectedItems.removeAll()
+        state.selectedItems = selectedItemsNewStatus
 
         // Given that this method can be frequently called, we only change the `hasSelectedItems` property
         // if the value changes to avoid potential infinite loops with observers.
-        let newHasSelectedItemsValue = !selectedItems.isEmpty
-        if hasSelectedItems != newHasSelectedItemsValue {
-            hasSelectedItems = newHasSelectedItemsValue
+        let newHasSelectedItemsValue = !state.selectedItems.isEmpty
+        if state.hasItems != newHasSelectedItemsValue {
+            state.hasItems = newHasSelectedItemsValue
         }
-        updateSelectionStatus()
+        updateCollectionStatus()
     }
-}
 
-extension SelectionModeState {
-
-    private func updateSelectionStatus() {
+    private func updateCollectionStatus() {
         let readStatus: SelectionReadStatus
-        switch selectedItems.filter(\.isRead).count {
+        switch state.selectedItems.filter(\.isRead).count {
         case 0:
             readStatus = .noneRead
-        case selectedItems.count:
+        case state.selectedItems.count:
             readStatus = .allRead
         default:
             readStatus = .someRead
         }
         let starStatus: SelectionStarStatus
-        switch selectedItems.filter(\.isStarred).count {
+        switch state.selectedItems.filter(\.isStarred).count {
         case 0:
             starStatus = .noneStarred
-        case selectedItems.count:
+        case state.selectedItems.count:
             starStatus = .allStarred
         default:
             starStatus = .someStarred
         }
-        selectionStatus = .init(readStatus: readStatus, starStatus: starStatus)
+        state.collectionStatus = .init(readStatus: readStatus, starStatus: starStatus)
     }
 }
 

@@ -24,9 +24,9 @@ enum HomeScreenModalFactory {
         switch state {
         case .contacts:
             ContactsScreen()
-        case .labelOrFolderCreationScreen:
+        case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
-        case .settingsScreen:
+        case .settings:
             SettingsScreen()
         }
     }

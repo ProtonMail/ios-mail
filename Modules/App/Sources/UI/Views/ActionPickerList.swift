@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 protocol ActionPickerListElement: Equatable {
@@ -48,7 +49,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
             }
             .listSectionSpacing(DS.Spacing.medium)
 
-            ForEach(Array(sections.enumerated()), id: \.offset) { index, section in
+            ForEachEnumerated(sections, id: \.offset) { section, index in
                 sectionView(elements: section, sectionIndex: index)
             }
         }
@@ -66,7 +67,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 
     private func sectionView(elements: [Element], sectionIndex: Int) -> some View {
         Section {
-            ForEach(Array(elements.enumerated()), id: \.offset) { index, element in
+            ForEachEnumerated(elements, id: \.offset) { element, index in
                 cell(for: element)
                     .customListLeadingSeparator()
                     .contentShape(Rectangle())

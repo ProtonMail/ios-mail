@@ -28,7 +28,7 @@ import ProtonCoreUtilities
  */
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
-    let selectionMode: SelectionModeState = .init()
+    let selectionMode: SelectionMode = .init()
     private(set) var selectedMailbox: SelectedMailbox
 
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
@@ -126,7 +126,8 @@ extension MailboxModel {
             .store(in: &cancellables)
 
         selectionMode
-            .$hasSelectedItems
+            .selectionState
+            .$hasItems
             .sink { [weak self] hasItems in
                 Task {
                     self?.state.showActionBar = hasItems
@@ -148,8 +149,8 @@ extension MailboxModel {
 
     private func updateMailboxTitle() {
         let selectionMode = selectionMode
-        let hasSelectedItems = selectionMode.hasSelectedItems
-        let selectedItemsCount = selectionMode.selectedItems.count
+        let hasSelectedItems = selectionMode.selectionState.hasItems
+        let selectedItemsCount = selectionMode.selectionState.selectedItems.count
         let selectedMailboxName = selectedMailbox.name
 
         state.mailboxTitle = hasSelectedItems 
@@ -246,7 +247,7 @@ extension MailboxModel {
             await refreshConversations()
         }
 
-        selectionMode.refreshSelectedItemsStatus { itemIds in
+        selectionMode.selectionModifier.refreshSelectedItemsStatus { itemIds in
             let selectedItems = paginatedDataSource.state.items
                 .filter { itemIds.contains($0.id) }
                 .map { $0.toSelectedItem() }
@@ -279,7 +280,7 @@ extension MailboxModel {
     }
 
     private func mailboxItems(messages: [Message]) -> [MailboxItemCellUIModel] {
-        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        let selectedIds = Set(selectionMode.selectionState.selectedItems.map(\.id))
         let displaySenderEmail = messagesShouldDisplaySenderEmail
         let showLocation = itemsShouldShowLocation
         return messages.map { message in
@@ -292,7 +293,7 @@ extension MailboxModel {
     }
 
     private func mailboxItems(conversations: [Conversation]) -> [MailboxItemCellUIModel] {
-        let selectedIds = Set(selectionMode.selectedItems.map(\.id))
+        let selectedIds = Set(selectionMode.selectionState.selectedItems.map(\.id))
         let showLocation = itemsShouldShowLocation
         return conversations.map { conversation in
             conversation.toMailboxItemCellUIModel(selectedIds: selectedIds, showLocation: showLocation)
@@ -317,13 +318,13 @@ extension MailboxModel {
 extension MailboxModel {
 
     private func applySelectionStateChangeInstead(mailboxItem: MailboxItemCellUIModel) {
-        let isCurrentlySelected = selectionMode.selectedItems.contains(mailboxItem.toSelectedItem())
+        let isCurrentlySelected = selectionMode.selectionState.selectedItems.contains(mailboxItem.toSelectedItem())
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
     }
 
     @MainActor
     func onMailboxItemTap(item: MailboxItemCellUIModel) {
-        guard !selectionMode.hasSelectedItems else {
+        guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
@@ -332,19 +333,19 @@ extension MailboxModel {
 
     @MainActor
     func onLongPress(mailboxItem: MailboxItemCellUIModel) {
-        guard !selectionMode.hasSelectedItems else { return }
+        guard !selectionMode.selectionState.hasItems else { return }
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: true)
     }
 
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         isSelected
-        ? selectionMode.addMailboxItem(item.toSelectedItem())
-        : selectionMode.removeMailboxItem(item.toSelectedItem())
+        ? selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
+        : selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
     }
 
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
-        guard !selectionMode.hasSelectedItems else {
+        guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
@@ -352,7 +353,7 @@ extension MailboxModel {
     }
 
     func onMailboxItemAttachmentTap(attachmentId: ID, for item: MailboxItemCellUIModel) {
-        guard !selectionMode.hasSelectedItems, let mailbox else {
+        guard !selectionMode.selectionState.hasItems, let mailbox else {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
@@ -443,7 +444,7 @@ extension MailboxModel {
             if case .read = newStatus {
                 Task {
                     do {
-                        try await markConversationsAsRead(session: userSession, ids: ids)
+                        try await markConversationsAsRead(mailbox: mailbox, ids: ids)
                     } catch {
                         AppLogger.log(error: error, category: .mailboxActions)
                     }
@@ -511,11 +512,11 @@ extension MailboxModel: MailboxActionable {
     }
 
     func onActionTap(_ action: Action) {
-        onMailboxItemAction(action, itemIds: selectionMode.selectedItems.map(\.id))
+        onMailboxItemAction(action, itemIds: selectionMode.selectionState.selectedItems.map(\.id))
     }
 
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {
-        let selectedItemIds = selectionMode.selectedItems.map(\.id)
+        let selectedItemIds = selectionMode.selectionState.selectedItems.map(\.id)
         actionApplyLabels(labelIds, to: selectedItemIds)
         if alsoArchive {
             actionMoveTo(systemFolder: .archive, ids: selectedItemIds)
@@ -523,7 +524,7 @@ extension MailboxModel: MailboxActionable {
     }
 
     func onFolderSelected(labelId: ID) {
-        actionMoveTo(labelId: labelId, ids: selectionMode.selectedItems.map(\.id))
+        actionMoveTo(labelId: labelId, ids: selectionMode.selectionState.selectedItems.map(\.id))
     }
 }
 

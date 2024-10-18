@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct AttachmentsView: View {
@@ -64,7 +65,7 @@ struct AttachmentsView: View {
         HStack(spacing: 0) {
             HStack(spacing: Layout.spacingBetweenCapsules) {
                 let items = uiModel.prefix(limit)
-                ForEach(Array(items.enumerated()), id: \.1.id) { index, item in
+                ForEachEnumerated(items, id: \.element.id) { item, index in
                     AttachmentCapsuleView(
                         uiModel: item,
                         maxWidth: capsuleMaxWidth,

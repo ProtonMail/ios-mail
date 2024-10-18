@@ -5,21 +5,31 @@ import PackageDescription
 
 let package = Package(
     name: "ProtonContacts",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
         .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
     ],
     dependencies: [
         .package(path: "DesignSystem"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0"),
+        .package(path: "proton_app_uniffi"),
+        .package(path: "ProtonCore"),
+        .package(path: "ProtonCoreUI"),
+        .package(path: "ProtonSnapshotTesting")
     ],
     targets: [
-        .target(name: "ProtonContacts", dependencies: ["DesignSystem"]),
+        .target(
+            name: "ProtonContacts",
+            dependencies: ["DesignSystem", "proton_app_uniffi", "ProtonCore", "ProtonCoreUI"],
+            resources: [
+                .process("Resources")
+            ]
+        ),
         .testTarget(
             name: "ProtonContactsTests",
             dependencies: [
                 .target(name: "ProtonContacts"),
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "ProtonSnapshotTesting", package: "ProtonSnapshotTesting"),
             ]
         ),
     ]

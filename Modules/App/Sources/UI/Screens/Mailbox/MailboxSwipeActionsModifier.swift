@@ -18,54 +18,42 @@
 import SwiftUI
 
 struct MailboxSwipeActionsModifier: ViewModifier {
-    typealias OnTapAction = @MainActor (Action, [ID]) -> Void
+    typealias OnTapAction = (Action, ID) -> Void
 
-    @EnvironmentObject private var userSettings: UserSettings
     @State private(set) var triggerFeedback = false
-    private let isSelectionModeOn: Bool
     private let mailboxItemId: ID
-    private let systemFolder: SystemFolderLabel?
     private let isItemRead: Bool
     private let onTap: OnTapAction
 
-    var leadingSwipe: SwipeAction {
-        userSettings.leadingSwipeAction
-    }
-
-    var trailingSwipe: SwipeAction {
-        userSettings.trailingSwipeAction
-    }
+    private let leadingSwipe: SwipeAction
+    private let trailingSwipe: SwipeAction
 
     init(
-        isSelectionModeOn: Bool,
+        leadingSwipe: SwipeAction,
+        trailingSwipe: SwipeAction,
         mailboxItemId: ID,
-        systemFolder: SystemFolderLabel?,
         isItemRead: Bool,
         onTapAction: @escaping OnTapAction
     ) {
-        self.isSelectionModeOn = isSelectionModeOn
         self.mailboxItemId = mailboxItemId
-        self.systemFolder = systemFolder
         self.isItemRead = isItemRead
+        self.leadingSwipe = leadingSwipe
+        self.trailingSwipe = trailingSwipe
         self.onTap = onTapAction
     }
 
     func body(content: Content) -> some View {
-        if isSelectionModeOn {
-            content
-        } else {
-            content
-                .if(leadingSwipe.isActionAssigned(systemFolder: systemFolder)) { view in
-                    view.swipeActions(edge: .leading) {
-                        button(for: leadingSwipe)
-                    }
+        content
+            .if(leadingSwipe != .none) { view in
+                view.swipeActions(edge: .leading) {
+                    button(for: leadingSwipe)
                 }
-                .if(trailingSwipe.isActionAssigned(systemFolder: systemFolder)) { view in
-                    view.swipeActions(edge: .trailing) {
-                        button(for: trailingSwipe)
-                    }
+            }
+            .if(trailingSwipe != .none) { view in
+                view.swipeActions(edge: .trailing) {
+                    button(for: trailingSwipe)
                 }
-        }
+            }
     }
 
     @ViewBuilder
@@ -77,7 +65,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
                     newReadStatus = MailboxReadStatus(rawValue: !isItemRead)
                 }
                 guard let action = swipeAction.toAction(newReadStatus: newReadStatus) else { return }
-                onTap(action, [mailboxItemId])
+                onTap(action, mailboxItemId)
                 triggerFeedback.toggle()
             } label: {
                 Image(uiImage: swipeAction.icon(readStatus: isItemRead ? .allRead : .noneRead))
@@ -90,21 +78,26 @@ struct MailboxSwipeActionsModifier: ViewModifier {
 
 extension View {
 
-    @MainActor func mailboxSwipeActions(
-        isSelectionModeOn: Bool,
-        mailboxItemId: ID,
-        systemFolder: SystemFolderLabel?,
-        isItemRead: Bool,
+    @ViewBuilder 
+    func mailboxSwipeActions(
+        leadingSwipe: SwipeAction,
+        trailingSwipe: SwipeAction,
+        isSwipeEnabled: Bool,
+        mailboxItem: MailboxItemCellUIModel,
         onTapAction: @escaping MailboxSwipeActionsModifier.OnTapAction
     ) -> some View {
-        self.modifier(
-            MailboxSwipeActionsModifier(
-                isSelectionModeOn: isSelectionModeOn,
-                mailboxItemId: mailboxItemId,
-                systemFolder: systemFolder,
-                isItemRead: isItemRead,
-                onTapAction: onTapAction
+        if isSwipeEnabled, leadingSwipe != .none || trailingSwipe != .none {
+            self.modifier(
+                MailboxSwipeActionsModifier(
+                    leadingSwipe: leadingSwipe,
+                    trailingSwipe: trailingSwipe,
+                    mailboxItemId: mailboxItem.id,
+                    isItemRead: mailboxItem.isRead,
+                    onTapAction: onTapAction
+                )
             )
-        )
+        } else {
+            self
+        }
     }
 }

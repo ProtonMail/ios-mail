@@ -314,32 +314,12 @@ enum MailboxItemCellEvent {
 }
 
 #Preview {
-    func model(subject: String) -> MailboxItemCellUIModel {
-        MailboxItemCellUIModel(
-            id: .random(),
-            conversationID: .random(),
-            type: .conversation,
-            avatar: .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init())),
-            emails: "Proton",
-            subject: subject,
-            date: Date(),
-            locationIcon: nil,
-            isRead: false,
-            isStarred: false,
-            isSelected: true,
-            isSenderProtonOfficial: true,
-            messagesCount: 0,
-            labelUIModel: .init(labelModels: [.init(labelId: .init(value: 0), text: "Working", color: .brown)] + LabelUIModel.random(num: 3)),
-            expirationDate: nil,
-            snoozeDate: nil
-        )
-    }
 
     return VStack {
 
-        MailboxItemCell(uiModel: model(subject: "30% discount on all our products"), isParentListSelectionEmpty: true, onEvent: { _ in })
+        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton1, isParentListSelectionEmpty: true, onEvent: { _ in })
 
-        MailboxItemCell(uiModel: model(subject: "sales up to 50%"), isParentListSelectionEmpty: true, onEvent: { _ in })
+        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton2, isParentListSelectionEmpty: true, onEvent: { _ in })
 
         MailboxItemCell(
             uiModel: .init(

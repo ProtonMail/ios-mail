@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-import proton_app_uniffi
 import DesignSystem
+import proton_app_uniffi
+import ProtonCoreUI
+import SwiftUI
 
 struct MailboxItemActionSheet: View {
     @StateObject var model: MailboxItemActionSheetModel

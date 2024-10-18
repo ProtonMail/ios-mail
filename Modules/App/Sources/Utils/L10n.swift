@@ -394,19 +394,3 @@ enum L10n {
     }
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
 }
-
-extension LocalizedStringResource {
-    var string: String {
-        String(localized: self)
-    }
-}
-
-extension String {
-    var notLocalized: String {
-        String(self)
-    }
-
-    var stringResource: LocalizedStringResource {
-        .init(stringLiteral: self)
-    }
-}
