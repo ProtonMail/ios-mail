@@ -130,14 +130,14 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
 
     private var mailboxActionBarView: some View {
         MailboxActionBarView(
-            selectionMode: config.selectionState,
-            selectedMailbox: config.actionBar.selectedMailbox,
-            mailboxActionable: config.actionBar.mailboxActionable,
-            customLabelModel: config.actionBar.customLabelModel
+            state: .initial,
+            mailbox: .init(noPointer: .init()), // FIXME: - Pass mailbox
+            availableActions: .productionInstance,
+            selectedItems: $config.selectionState.selectedItems
         )
-        .opacity(config.selectionState.hasItems ? 1 : 0)
-        .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: config.selectionState.hasItems)
+            .opacity(config.selectionState.hasItems ? 1 : 0)
+            .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
+            .animation(.selectModeAnimation, value: config.selectionState.hasItems)
     }
 }
 

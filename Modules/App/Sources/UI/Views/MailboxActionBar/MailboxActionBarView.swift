@@ -18,31 +18,117 @@
 import DesignSystem
 import SwiftUI
 
-struct MailboxActionBarView: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
-    @EnvironmentObject var userSettings: UserSettings
-    @ObservedObject var selectionMode: SelectionModeState
+struct AvailableMailboxActionBarActions {
+    let message: (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
+}
 
-    @State private var showLabelPicker: Bool = false
-    @State private var showFolderPicker: Bool = false
+extension AvailableMailboxActionBarActions {
 
-    private let selectedMailbox: SelectedMailbox
-    private var mailboxActions: MailboxActionSettings {
-        userSettings.mailboxActions
+    static var productionInstance: Self {
+        .init(message: allAvailableBottomBarActionsForMessages)
     }
-    private let customLabelModel: CustomLabelModel
-    private let mailboxActionable: MailboxActionable
+
+}
+
+struct MailboxActionBarActionsProvider {
+    let availableActions: AvailableMailboxActionBarActions
+    let mailbox: Mailbox
+
+    func actions(for type: MailboxItemType, ids: [ID]) async -> AllBottomBarMessageActions {
+        try! await actionsProvider(for: type)(mailbox, ids)
+    }
+
+    // MARK: - Private
+
+    private func actionsProvider(
+        for type: MailboxItemType
+    ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> AllBottomBarMessageActions {
+        switch type {
+        case .message:
+            availableActions.message
+        case .conversation:
+            { _, _ in AllBottomBarMessageActions(hiddenBottomBarActions: [], visibleBottomBarActions: []) } // FIXME: - Use real
+        }
+    }
+}
+
+struct MailboxActionBarActionDisplayData {
+    let icon: ImageResource
+    let name: LocalizedStringResource?
+}
+
+struct MailboxActionBarState: Copying {
+    var visibleActions: [BottomBarAction]
+    var moreActions: [BottomBarAction]
+    let moreActionSheetPresented: Bool
+    let labelAsSheetPresented: Bool
+    let moveToSheetPresented: Bool
+}
+
+enum MailboxActionBarAction {
+    case mailboxItemsSelectionUpdated(Set<ID>)
+}
+
+extension MailboxActionBarState {
+    static var initial: Self {
+        .init(
+            visibleActions: [],
+            moreActions: [],
+            moreActionSheetPresented: false,
+            labelAsSheetPresented: false,
+            moveToSheetPresented: false
+        )
+    }
+}
+
+class MailboxActionBarStateStore: ObservableObject {
+    @Published var state: MailboxActionBarState
+    let actionsProvider: MailboxActionBarActionsProvider
 
     init(
-        selectionMode: SelectionModeState,
-        selectedMailbox: SelectedMailbox,
-        mailboxActionable: MailboxActionable,
-        customLabelModel: CustomLabelModel
+        state: MailboxActionBarState,
+        mailbox: Mailbox,
+        availableActions: AvailableMailboxActionBarActions
     ) {
-        self.selectionMode = selectionMode
-        self.selectedMailbox = selectedMailbox
-        self.mailboxActionable = mailboxActionable
-        self.customLabelModel = customLabelModel
+        self.state = state
+        self.actionsProvider = .init(availableActions: availableActions, mailbox: mailbox)
+    }
+
+    func handle(action: MailboxActionBarAction) {
+        switch action {
+        case .mailboxItemsSelectionUpdated(let ids):
+            fetchAvailableBottomBarActions(for: ids)
+        }
+    }
+
+    private func fetchAvailableBottomBarActions(for ids: Set<ID>) {
+        Task {
+            let actions = await actionsProvider.actions(for: .message, ids: Array(ids))
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.updateActions(actions: actions)
+            }))
+        }
+    }
+
+    private func updateActions(actions: AllBottomBarMessageActions) {
+        state = state
+            .copy(\.visibleActions, to: actions.visibleBottomBarActions.compactMap(\.action))
+            .copy(\.moreActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
+    }
+}
+
+struct MailboxActionBarView: View {
+    @Binding var selectedItems: Set<ID>
+    let store: MailboxActionBarStateStore
+
+    init(
+        state: MailboxActionBarState,
+        mailbox: Mailbox,
+        availableActions: AvailableMailboxActionBarActions,
+        selectedItems: Binding<Set<ID>>
+    ) {
+        self._selectedItems = selectedItems
+        self.store = .init(state: state, mailbox: mailbox, availableActions: availableActions)
     }
 
     var body: some View {
@@ -51,25 +137,13 @@ struct MailboxActionBarView: View {
                 Spacer()
                 HStack(alignment: .center) {
                     Spacer()
-                    button(for: mailboxActions.action1)
-                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button1)
-                    Spacer()
-                    button(for: mailboxActions.action2)
-                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button2)
-                    Spacer()
-                    button(for: mailboxActions.action3)
-                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button3)
-                    Spacer()
-                    button(for: mailboxActions.action4)
-                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button4)
-                    Spacer()
-                    Button(action: {
-                        toastStateStore.present(toast: .comingSoon)
-                    }, label: {
-                        Image(DS.Icon.icThreeDotsHorizontal)
-                    })
-                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button5)
-                    Spacer()
+                    ForEach(store.state.visibleActions, id: \.self) { action in
+                        Button(action: { }) {
+                            Image(action.displayModel.icon)
+                                .foregroundStyle(DS.Color.Icon.weak)
+                        }
+                        Spacer()
+                    }
                 }
                 .frame(
                     width: min(geometry.size.width, geometry.size.height), 
@@ -80,95 +154,44 @@ struct MailboxActionBarView: View {
                 .compositingGroup()
                 .shadow(radius: 2)
                 .tint(DS.Color.Text.norm)
-                .sheet(isPresented: $showLabelPicker, content: { labelPickerView })
-                .sheet(isPresented: $showFolderPicker, content: { folderPickerView })
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
+                .onChange(of: selectedItems) { oldValue, newValue in
+                    if oldValue != newValue {
+                        store.handle(action: .mailboxItemsSelectionUpdated(newValue))
+                    }
+                }
             }
         }
     }
-
-    @ViewBuilder
-    private func button(for mailboxAction: MailboxItemAction?) -> some View {
-        if let mailboxAction {
-            let resolver = MailboxItemActionResolver(
-                params: .init(
-                    selectionReadStatus: selectionMode.collectionStatus.readStatus,
-                    selectionStarStatus: selectionMode.collectionStatus.starStatus, 
-                    systemFolder: selectedMailbox.systemFolder ?? .inbox
-                )
-            )
-            let action = resolver.action(for: mailboxAction)
-            Button(action: {
-                toastStateStore.present(toast: .comingSoon)
-//                if case .labelAs = action {
-//                    showLabelPicker.toggle()
-//                } else if case .moveTo = action {
-//                    showFolderPicker.toggle()
-//                } else {
-//                    mailboxActionable.onActionTap(action)
-//                }
-            }, label: {
-                Image(action.icon)
-                    .foregroundStyle(DS.Color.Icon.weak)
-            })
-        } else {
-            EmptyView()
-        }
-    }
-
-    private var labelPickerView: some View {
-        LabelPickerView(
-            customLabelModel: customLabelModel,
-            labelsOfSelectedItems: mailboxActionable.labelsOfSelectedItems,
-            onDoneTap: { selectedLabelIds, alsoArchive in
-                showLabelPicker.toggle()
-                mailboxActionable.onLabelsSelected(labelIds: selectedLabelIds, alsoArchive: alsoArchive)
-            }
-        )
-        .pickerViewStyle([.medium, .large])
-    }
-
-    private var folderPickerView: some View {
-        FolderPickerView(onSelectionDone: { selectedFolderId in
-            showFolderPicker.toggle()
-            mailboxActionable.onFolderSelected(labelId: selectedFolderId)
-        })
-        .pickerViewStyle([.medium, .large])
-    }
 }
 
-#Preview {
-    let userSettings = UserSettings(
-        mailboxActions: .init(
-            action1: .conditional(.toggleReadStatus),
-            action2: .conditional(.toggleStarStatus),
-            action3: .conditional(.moveToTrash),
-            action4: .action(.moveToArchive)
-        )
-    )
-
-    func selectedMailbox(systemFolder: SystemFolderLabel) -> SelectedMailbox {
-        .systemFolder(labelId: .init(value: 0), systemFolder: systemFolder)
-    }
-
-    return VStack {
-        MailboxActionBarView(
-            selectionMode:.init(selectedItems: [.init(id: .init(value: 1), isRead: false, isStarred: true)]),
-            selectedMailbox: selectedMailbox(systemFolder: .archive),
-            mailboxActionable: EmptyMailboxActionable(),
-            customLabelModel: .init()
-        )
-
-        MailboxActionBarView(
-            selectionMode: .init(selectedItems: [.init(id: .init(value: 1), isRead: true, isStarred: false)]),
-            selectedMailbox: selectedMailbox(systemFolder: .trash),
-            mailboxActionable: EmptyMailboxActionable(),
-            customLabelModel: .init()
-        )
-    }
-    .environmentObject(userSettings)
-}
+//#Preview {
+//    let state = MailboxActionBarState(
+//        visibleActions: [
+//            .markRead,
+//            .moveTo,
+//            .labelAs,
+//            .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)), 
+//            .more
+//        ],
+//        moreActions: [.notSpam, .permanentDelete, .star],
+//        moreActionSheetPresented: false,
+//        labelAsSheetPresented: false,
+//        moveToSheetPresented: false
+//    )
+//    return MailboxActionBarView(
+//        state: state,
+//        mailbox: .init(noPointer: .init()),
+//        availableActions: .init(message: { _, _ in
+//            AllBottomBarMessageActions(
+//                hiddenBottomBarActions: [],
+//                visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
+//            )
+//        }),
+//        selectedItems: []
+//    )
+//}
 
 // MARK: Accessibility
 
@@ -179,4 +202,107 @@ private struct MailboxActionBarViewIdentifiers {
     static let button3 = "mailbox.actionBar.button3"
     static let button4 = "mailbox.actionBar.button4"
     static let button5 = "mailbox.actionBar.button5"
+}
+
+import proton_app_uniffi
+import ProtonCoreUI
+
+extension SystemLabel {
+
+    var moveToSystemFolder: MoveToSystemFolderLocation? {
+        switch self {
+        case .inbox:
+            return .init(localId: .init(value: 1), systemLabel: .inbox)
+        case .trash:
+            return .init(localId: .init(value: 2), systemLabel: .trash)
+        case .spam:
+            return .init(localId: .init(value: 3), systemLabel: .spam)
+        case .archive:
+            return .init(localId: .init(value: 4), systemLabel: .archive)
+        case .sent, .allMail, .allDrafts, .allSent, .drafts, .outbox, .starred, .scheduled, .almostAllMail,
+                .snoozed, .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
+            return nil
+        }
+    }
+
+}
+
+extension BottomBarActions {
+
+    var action: BottomBarAction? {
+        switch self {
+        case .labelAs:
+            return .labelAs
+        case .markRead:
+            return .markRead
+        case .markUnread:
+            return .markUnread
+        case .more:
+            return .more
+        case .moveTo:
+            return .moveTo
+        case .moveToSystemFolder(let label):
+            return label.moveToSystemFolder.map(BottomBarAction.moveToSystemFolder)
+        case .notSpam:
+            return .notSpam
+        case .permanentDelete:
+            return .permanentDelete
+        case .star:
+            return .star
+        case .unstar:
+            return .unstar
+        }
+    }
+
+}
+
+enum BottomBarAction: Hashable {
+    case labelAs
+    case markRead
+    case markUnread
+    case more
+    case moveTo
+    case moveToSystemFolder(MoveToSystemFolderLocation)
+    case notSpam
+    case permanentDelete
+    case star
+    case unstar
+}
+
+extension BottomBarAction {
+
+    var displayModel: MailboxActionBarActionDisplayData {
+        switch self {
+        case .labelAs:
+            return .init(icon: DS.Icon.icTag, name: L10n.Action.labelAs)
+        case .markRead:
+            return .init(icon: DS.Icon.icEnvelopeOpen, name: L10n.Action.markAsRead)
+        case .markUnread:
+            return .init(icon: DS.Icon.icEnvelopeDot, name: L10n.Action.markAsUnread)
+        case .more:
+            return .init(icon: DS.Icon.icThreeDotsHorizontal, name: nil)
+        case .moveTo:
+            return .init(icon: DS.Icon.icFolderArrowIn, name: L10n.Action.moveTo)
+        case .moveToSystemFolder(let systemFolder):
+            switch systemFolder.systemLabel {
+            case .archive:
+                return .init(icon: DS.Icon.icArchiveBox, name: L10n.Action.moveToArchive)
+            case .inbox:
+                return .init(icon: DS.Icon.icInbox, name: L10n.Action.moveToInbox)
+            case .spam:
+                return .init(icon: DS.Icon.icSpam, name: L10n.Action.moveToSpam)
+            case .trash:
+                return .init(icon: DS.Icon.icTrash, name: L10n.Action.moveToTrash)
+            }
+        case .notSpam:
+            return .init(icon: DS.Icon.icNotSpam, name: "Not spam")
+        case .permanentDelete:
+            return .init(icon: DS.Icon.icTrashCross, name: L10n.Action.deletePermanently)
+        case .star:
+            return .init(icon: DS.Icon.icStar, name: L10n.Action.star)
+        case .unstar:
+            return .init(icon: DS.Icon.icStarSlash, name: L10n.Action.unstar)
+        }
+    }
+
 }
