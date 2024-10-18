@@ -47,9 +47,6 @@ packages:
   ProtonSnapshotTesting:
     path: Modules/ProtonSnapshotTesting
     group: Modules
-  swift-snapshot-testing:
-    url: https://github.com/pointfreeco/swift-snapshot-testing
-    minorVersion: "1.17.0"
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     minorVersion: "2.64.0"
@@ -154,8 +151,7 @@ targets:
     dependencies:
       - target: ProtonMail
       - package: Nimble
-      - package: swift-snapshot-testing
-        product: SnapshotTesting
+      - package: ProtonSnapshotTesting
       - package: ViewInspector
     scheme:
       gatherCoverageData: true
