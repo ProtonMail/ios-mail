@@ -29,7 +29,7 @@ final class SelectionMode {
     let selectionModifier: SelectionModeStateModifier
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
-        self.selectionState = .init(selectedItems: selectedItems)
+        self.selectionState = .init()
         self.selectionModifier = .init(state: self.selectionState)
     }
 }
@@ -43,13 +43,14 @@ final class SelectionMode {
 final class SelectionModeState: ObservableObject {
 
     @Published fileprivate(set) var hasItems: Bool
-    @Published fileprivate(set) var collectionStatus: SelectedItemsStatus
-    fileprivate(set) var selectedItems: Set<MailboxSelectedItem>
+//    @Published fileprivate(set) var collectionStatus: SelectedItemsStatus
+    @Published var selectedItems: Set<ID>
 
-    init(selectedItems: Set<MailboxSelectedItem> = .init()) {
+    init(selectedItems: Set<ID> = .init()) {
         self.hasItems = false
         self.selectedItems = selectedItems
-        self.collectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
+//        self.selectedItems = selectedItems
+//        self.collectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
     }
 }
 
@@ -61,25 +62,25 @@ final class SelectionModeStateModifier {
 
     init(state: SelectionModeState) {
         self.state = state
-        updateCollectionStatus()
+//        updateCollectionStatus()
     }
 
-    func addMailboxItem(_ item: MailboxSelectedItem) {
+    func addMailboxItem(_ item: ID) {
         state.selectedItems.insert(item)
         state.hasItems = true
-        updateCollectionStatus()
+//        updateCollectionStatus()
     }
 
-    func removeMailboxItem(_ item: MailboxSelectedItem) {
+    func removeMailboxItem(_ item: ID) {
         state.selectedItems.remove(item)
         state.hasItems = !state.selectedItems.isEmpty
-        updateCollectionStatus()
+//        updateCollectionStatus()
     }
 
     func exitSelectionMode() {
         state.selectedItems.removeAll()
         state.hasItems = false
-        updateCollectionStatus()
+//        updateCollectionStatus()
     }
 
     /**
@@ -91,8 +92,8 @@ final class SelectionModeStateModifier {
      - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
      items should be added calling  `addMailboxItem`.
      */
-    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<MailboxSelectedItem> ) {
-        let returnedItems = itemProvider(state.selectedItems.map(\.id))
+    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<ID> ) {
+        let returnedItems = itemProvider(Array(state.selectedItems))
         let selectedItemsNewStatus = returnedItems.union(returnedItems)
         state.selectedItems.removeAll()
         state.selectedItems = selectedItemsNewStatus
@@ -103,30 +104,30 @@ final class SelectionModeStateModifier {
         if state.hasItems != newHasSelectedItemsValue {
             state.hasItems = newHasSelectedItemsValue
         }
-        updateCollectionStatus()
+//        updateCollectionStatus()
     }
 
-    private func updateCollectionStatus() {
-        let readStatus: SelectionReadStatus
-        switch state.selectedItems.filter(\.isRead).count {
-        case 0:
-            readStatus = .noneRead
-        case state.selectedItems.count:
-            readStatus = .allRead
-        default:
-            readStatus = .someRead
-        }
-        let starStatus: SelectionStarStatus
-        switch state.selectedItems.filter(\.isStarred).count {
-        case 0:
-            starStatus = .noneStarred
-        case state.selectedItems.count:
-            starStatus = .allStarred
-        default:
-            starStatus = .someStarred
-        }
-        state.collectionStatus = .init(readStatus: readStatus, starStatus: starStatus)
-    }
+//    private func updateCollectionStatus() {
+//        let readStatus: SelectionReadStatus
+//        switch state.selectedItems.filter(\.isRead).count {
+//        case 0:
+//            readStatus = .noneRead
+//        case state.selectedItems.count:
+//            readStatus = .allRead
+//        default:
+//            readStatus = .someRead
+//        }
+//        let starStatus: SelectionStarStatus
+//        switch state.selectedItems.filter(\.isStarred).count {
+//        case 0:
+//            starStatus = .noneStarred
+//        case state.selectedItems.count:
+//            starStatus = .allStarred
+//        default:
+//            starStatus = .someStarred
+//        }
+//        state.collectionStatus = .init(readStatus: readStatus, starStatus: starStatus)
+//    }
 }
 
 struct SelectedItemsStatus {

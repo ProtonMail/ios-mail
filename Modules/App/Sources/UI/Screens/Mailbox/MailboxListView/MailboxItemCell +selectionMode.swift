@@ -17,10 +17,10 @@
 
 import Foundation
 
-extension MailboxItemCellUIModel {
-
-    func toSelectedItem() -> MailboxSelectedItem {
-        .init(id: id, isRead: isRead, isStarred: isStarred)
-    }
-
-}
+//extension MailboxItemCellUIModel {
+//
+//    func toSelectedItem() -> MailboxSelectedItem {
+//        .init(id: id, isRead: isRead, isStarred: isStarred)
+//    }
+//
+//}

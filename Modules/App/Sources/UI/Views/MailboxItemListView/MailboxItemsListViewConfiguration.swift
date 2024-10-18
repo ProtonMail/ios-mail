@@ -21,7 +21,7 @@ struct MailboxItemsListViewConfiguration {
     /// State observed by the list to update the data.
     let dataSource: PaginatedListDataSource<MailboxItemCellUIModel>
     /// Item selection observed to manage the selection state.
-    let selectionState: SelectionModeState
+    var selectionState: SelectionModeState
     /// Entity required by the action bar to refresh and to call when an action has been triggered.
     let actionBar: MailboxItemsListActionBar
     /// Swipe actions to be applied to the cells. If  `nil` no actions are configured.

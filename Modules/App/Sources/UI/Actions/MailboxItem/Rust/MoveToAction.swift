@@ -30,7 +30,7 @@ enum MoveToSystemFolderLabel: Equatable {
     case inbox
 }
 
-struct MoveToSystemFolderLocation: Equatable {
+struct MoveToSystemFolderLocation: Hashable {
     let localId: ID
     let systemLabel: MoveToSystemFolderLabel
 }
