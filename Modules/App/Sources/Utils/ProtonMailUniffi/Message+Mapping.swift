@@ -79,7 +79,8 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: exclusiveLocation?.model,
                 labels: labels,
-                other: other
+                other: other, 
+                attachments: attachmentsMetadata.map(\.displayModel)
             )
         )
     }
@@ -128,6 +129,14 @@ private extension MessageDetail.Location {
 
     static func noIconColor(name: LocalizedStringResource, icon: ImageResource) -> Self {
         .init(name: name, icon: icon, iconColor: nil)
+    }
+
+}
+
+private extension AttachmentMetadata {
+
+    var displayModel: AttachmentDisplayModel {
+        .init(id: id, mimeType: mimeType, name: name, size: size)
     }
 
 }

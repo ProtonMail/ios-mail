@@ -325,6 +325,7 @@ struct MessageDetailsUIModel {
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
     let other: [MessageDetail.Other]
+    let attachments: [AttachmentDisplayModel]
 }
 
 enum MessageDetail {
@@ -414,7 +415,12 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            other: [.starred, .pinned]
+            other: [.starred, .pinned], 
+            attachments: [
+                .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
+                .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
+                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
+            ]
         )
     }
 
