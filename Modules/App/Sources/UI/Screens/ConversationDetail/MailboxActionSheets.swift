@@ -18,11 +18,11 @@
 import SwiftUI
 import proton_app_uniffi
 
-struct MailboxActionSheetsState {
-    let mailbox: MailboxItemActionSheetInput?
-    let labelAs: ActionSheetInput?
-    let moveTo: ActionSheetInput?
-    let isCreateLabelScreenPresented: Bool
+struct MailboxActionSheetsState: Copying {
+    var mailbox: MailboxItemActionSheetInput?
+    var labelAs: ActionSheetInput?
+    var moveTo: ActionSheetInput?
+    var isCreateLabelScreenPresented: Bool
 }
 
 extension View {
@@ -57,12 +57,12 @@ private struct MailboxActionSheets: ViewModifier {
             switch navigation {
             case .labelAs:
                 state = state
-                    .copy(labelAs: .init(ids: input.ids, type: input.type))
-                    .copy(mailbox: nil)
+                    .copy(\.labelAs, to: .init(ids: input.ids, type: input.type))
+                    .copy(\.mailbox, to: nil)
             case .moveTo:
                 state = state
-                    .copy(moveTo: .init(ids: input.ids, type: input.type))
-                    .copy(mailbox: nil)
+                    .copy(\.moveTo, to: .init(ids: input.ids, type: input.type))
+                    .copy(\.mailbox, to: nil)
             }
         }
         return MailboxItemActionSheet(model: model)
@@ -80,7 +80,7 @@ private struct MailboxActionSheets: ViewModifier {
             case .dismiss:
                 state = state.dismissed()
             case .createLabel:
-                state = state.copy(isCreateLabelScreenPresented: true)
+                state = state.copy(\.isCreateLabelScreenPresented, to: true)
             }
         }
         return LabelAsSheet(model: model)
@@ -98,7 +98,7 @@ private struct MailboxActionSheets: ViewModifier {
         ) { navigation in
             switch navigation {
             case .createFolder:
-                state = state.copy(isCreateLabelScreenPresented: true)
+                state = state.copy(\.isCreateLabelScreenPresented, to: true)
             case .dismiss:
                 state = state.dismissed()
             }
@@ -110,63 +110,27 @@ private struct MailboxActionSheets: ViewModifier {
     }
 
     private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
-        .init(get: { state.mailbox }, set: { mailbox in state = state.copy(mailbox: mailbox) })
+        .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
     }
 
     private var labelAsBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.labelAs }, set: { labelAs in state = state.copy(labelAs: labelAs) })
+        .init(get: { state.labelAs }, set: { labelAs in state = state.copy(\.labelAs, to: labelAs) })
     }
 
     private var moveToBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.moveTo }, set: { moveTo in state = state.copy(moveTo: moveTo) })
+        .init(get: { state.moveTo }, set: { moveTo in state = state.copy(\.moveTo, to: moveTo) })
     }
 
     private var isCreateLabelScreenPresentedBinding: Binding<Bool> {
         .init(
             get: { state.isCreateLabelScreenPresented },
-            set: { isPresented in state = state.copy(isCreateLabelScreenPresented: isPresented) }
+            set: { isPresented in state = state.copy(\.isCreateLabelScreenPresented, to: isPresented) }
         )
     }
 
 }
 
 extension MailboxActionSheetsState {
-    func copy(mailbox: MailboxItemActionSheetInput?) -> Self {
-        .init(
-            mailbox: mailbox,
-            labelAs: labelAs,
-            moveTo: moveTo,
-            isCreateLabelScreenPresented: isCreateLabelScreenPresented
-        )
-    }
-
-    func copy(labelAs: ActionSheetInput?) -> Self {
-        .init(
-            mailbox: mailbox,
-            labelAs: labelAs,
-            moveTo: moveTo,
-            isCreateLabelScreenPresented: isCreateLabelScreenPresented
-        )
-    }
-
-    func copy(moveTo: ActionSheetInput?) -> Self {
-        .init(
-            mailbox: mailbox,
-            labelAs: labelAs,
-            moveTo: moveTo,
-            isCreateLabelScreenPresented: isCreateLabelScreenPresented
-        )
-    }
-
-    func copy(isCreateLabelScreenPresented: Bool) -> Self {
-        .init(
-            mailbox: mailbox,
-            labelAs: labelAs,
-            moveTo: moveTo,
-            isCreateLabelScreenPresented: isCreateLabelScreenPresented
-        )
-    }
-
     func dismissed() -> Self {
         .init(mailbox: nil, labelAs: nil, moveTo: nil, isCreateLabelScreenPresented: false)
     }

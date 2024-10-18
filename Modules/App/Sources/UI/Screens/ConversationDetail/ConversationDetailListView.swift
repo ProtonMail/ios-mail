@@ -124,7 +124,7 @@ struct ConversationDetailListView: View {
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
             actionSheets = actionSheets.copy(
-                mailbox: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
+                \.mailbox, to: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
             )
         case .onSenderTap:
             senderActionTarget = uiModel

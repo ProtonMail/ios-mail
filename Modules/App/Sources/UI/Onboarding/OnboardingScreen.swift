@@ -113,7 +113,7 @@ struct OnboardingScreen: View {
         OnboardingDotsIndexView(
             pagesCount: state.pages.count,
             selectedPageIndex: state.selectedPageIndex,
-            onTap: { selectedIndex in state = state.copy(\.selectedPageIndex, with: selectedIndex) }
+            onTap: { selectedIndex in state = state.copy(\.selectedPageIndex, to: selectedIndex) }
         )
     }
 
@@ -125,7 +125,7 @@ struct OnboardingScreen: View {
                 }
 
                 state = state
-                    .copy(\.selectedPageIndex, with: min(state.selectedPageIndex + 1, state.maxPageIndex))
+                    .copy(\.selectedPageIndex, to: min(state.selectedPageIndex + 1, state.maxPageIndex))
             },
             label: {
                 Text(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
