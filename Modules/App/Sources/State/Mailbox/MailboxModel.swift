@@ -444,7 +444,7 @@ extension MailboxModel {
             if case .read = newStatus {
                 Task {
                     do {
-                        try await markConversationsAsRead(session: userSession, ids: ids)
+                        try await markConversationsAsRead(mailbox: mailbox, ids: ids)
                     } catch {
                         AppLogger.log(error: error, category: .mailboxActions)
                     }
