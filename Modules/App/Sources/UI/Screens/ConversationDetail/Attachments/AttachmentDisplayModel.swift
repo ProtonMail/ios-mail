@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct AttachmentDisplayModel {
+struct AttachmentDisplayModel: Hashable {
     let id: ID
     let mimeType: AttachmentMimeType
     let name: String

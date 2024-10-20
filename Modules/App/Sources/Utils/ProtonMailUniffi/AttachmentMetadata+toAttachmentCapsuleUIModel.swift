@@ -36,7 +36,7 @@ extension Array where Element == AttachmentMetadata {
 
 }
 
-private extension MimeTypeCategory {
+extension MimeTypeCategory { // FIXME: - Move to separate file
 
     var icon: ImageResource {
         switch self {

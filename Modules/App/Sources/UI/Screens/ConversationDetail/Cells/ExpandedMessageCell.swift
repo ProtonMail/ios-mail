@@ -70,6 +70,7 @@ struct ExpandedMessageCell: View {
                         onEvent(.onRecipientTap(recipient))
                     }
                 })
+                AttachmentsCarouselView(attachments: uiModel.messageDetails.attachments)
                 MessageBodyView(
                     messageBody: uiModel.message,
                     messageId: uiModel.id,
