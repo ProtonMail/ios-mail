@@ -17,6 +17,7 @@
 
 import DesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -36,6 +37,7 @@ struct MailboxListView: View {
 
     var body: some View {
         MailboxItemsListView(
+            mailbox: model.mailbox,
             config: mailboxItemListViewConfiguration(),
             headerView:  { unreadFilterView() },
             emptyView: { MailboxEmptyView()}

@@ -47,7 +47,7 @@ struct MailboxActionBarActionsProvider {
         case .message:
             availableActions.message
         case .conversation:
-            { _, _ in AllBottomBarMessageActions(hiddenBottomBarActions: [], visibleBottomBarActions: []) } // FIXME: - Use real
+            { _, _ in AllBottomBarMessageActions.testData } // FIXME: - Use real provider
         }
     }
 }
@@ -60,13 +60,14 @@ struct MailboxActionBarActionDisplayData {
 struct MailboxActionBarState: Copying {
     var visibleActions: [BottomBarAction]
     var moreActions: [BottomBarAction]
-    let moreActionSheetPresented: Bool
-    let labelAsSheetPresented: Bool
-    let moveToSheetPresented: Bool
+    var moreActionSheetPresented: Bool
+    var labelAsSheetPresented: ActionSheetInput?
+    var moveToSheetPresented: ActionSheetInput?
 }
 
 enum MailboxActionBarAction {
     case mailboxItemsSelectionUpdated(Set<ID>)
+    case actionSelected(BottomBarAction, ids: Set<ID>)
 }
 
 extension MailboxActionBarState {
@@ -75,21 +76,24 @@ extension MailboxActionBarState {
             visibleActions: [],
             moreActions: [],
             moreActionSheetPresented: false,
-            labelAsSheetPresented: false,
-            moveToSheetPresented: false
+            labelAsSheetPresented: nil,
+            moveToSheetPresented: nil
         )
     }
 }
 
 class MailboxActionBarStateStore: ObservableObject {
     @Published var state: MailboxActionBarState
-    let actionsProvider: MailboxActionBarActionsProvider
+    private let mailboxItemType: MailboxItemType
+    private let actionsProvider: MailboxActionBarActionsProvider
 
     init(
+        mailboxItemType: MailboxItemType,
         state: MailboxActionBarState,
         mailbox: Mailbox,
         availableActions: AvailableMailboxActionBarActions
     ) {
+        self.mailboxItemType = mailboxItemType
         self.state = state
         self.actionsProvider = .init(availableActions: availableActions, mailbox: mailbox)
     }
@@ -98,6 +102,23 @@ class MailboxActionBarStateStore: ObservableObject {
         switch action {
         case .mailboxItemsSelectionUpdated(let ids):
             fetchAvailableBottomBarActions(for: ids)
+        case .actionSelected(let action, let ids):
+            handle(action: action, ids: ids)
+        }
+    }
+
+    // MARK: - Private
+
+    private func handle(action: BottomBarAction, ids: Set<ID>) {
+        switch action {
+        case .more:
+            state = state.copy(\.moreActionSheetPresented, to: true)
+        case .labelAs:
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: mailboxItemType))
+        case .moveTo:
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: mailboxItemType))
+        default:
+            break // FIXME: - Handle rest of the actions
         }
     }
 
@@ -117,18 +138,26 @@ class MailboxActionBarStateStore: ObservableObject {
     }
 }
 
+extension Mailbox: ObservableObject {}
+
 struct MailboxActionBarView: View {
     @Binding var selectedItems: Set<ID>
     let store: MailboxActionBarStateStore
 
     init(
+        mailboxItemType: MailboxItemType,
         state: MailboxActionBarState,
         mailbox: Mailbox,
         availableActions: AvailableMailboxActionBarActions,
         selectedItems: Binding<Set<ID>>
     ) {
         self._selectedItems = selectedItems
-        self.store = .init(state: state, mailbox: mailbox, availableActions: availableActions)
+        self.store = .init(
+            mailboxItemType: mailboxItemType,
+            state: state, 
+            mailbox: mailbox,
+            availableActions: availableActions
+        )
     }
 
     var body: some View {
@@ -166,32 +195,44 @@ struct MailboxActionBarView: View {
     }
 }
 
-//#Preview {
-//    let state = MailboxActionBarState(
-//        visibleActions: [
-//            .markRead,
-//            .moveTo,
-//            .labelAs,
-//            .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)), 
-//            .more
-//        ],
-//        moreActions: [.notSpam, .permanentDelete, .star],
-//        moreActionSheetPresented: false,
-//        labelAsSheetPresented: false,
-//        moveToSheetPresented: false
-//    )
-//    return MailboxActionBarView(
-//        state: state,
-//        mailbox: .init(noPointer: .init()),
-//        availableActions: .init(message: { _, _ in
-//            AllBottomBarMessageActions(
-//                hiddenBottomBarActions: [],
-//                visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
-//            )
-//        }),
-//        selectedItems: []
-//    )
-//}
+#Preview {
+    let state = MailboxActionBarState(
+        visibleActions: [
+            .markRead,
+            .moveTo,
+            .labelAs,
+            .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)), 
+            .more
+        ],
+        moreActions: [.notSpam, .permanentDelete, .star],
+        moreActionSheetPresented: false,
+        labelAsSheetPresented: nil,
+        moveToSheetPresented: nil
+    )
+    return MailboxActionBarView(
+        mailboxItemType: .message,
+        state: state,
+        mailbox: .init(noPointer: .init()),
+        availableActions: .init(message: { _, _ in
+            AllBottomBarMessageActions(
+                hiddenBottomBarActions: [],
+                visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
+            )
+        }),
+        selectedItems: .constant([])
+    )
+}
+
+extension AllBottomBarMessageActions {
+
+    static var testData: Self {
+        .init(
+            hiddenBottomBarActions: [.notSpam, .permanentDelete, .moveToSystemFolder(.archive)],
+            visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
+        )
+    }
+
+}
 
 // MARK: Accessibility
 

@@ -17,6 +17,7 @@
 
 import Foundation
 
+// FIXME: - Add view mode to configuration
 struct MailboxItemsListViewConfiguration {
     /// State observed by the list to update the data.
     let dataSource: PaginatedListDataSource<MailboxItemCellUIModel>
