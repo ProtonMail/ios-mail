@@ -1747,7 +1747,7 @@
 "PGP-signed" = "Signat amb PGP";
 
 /* The error message while calculating the encryption preferences */
-"Email address disabled" = "Correu electrònic desactivada";
+"Email address disabled" = "Correu electrònic desactivat";
 
 /* The error message while calculating the encryption preferences */
 "No keys retrieved for internal user" = "No s’ha recuperat cap clau per a l’usuari intern";
@@ -2145,7 +2145,7 @@
 "Up to 3 custom email domains" = "Fins a 3 dominis de correu electrònic personalitzats";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Àlies de hide-my-email";
+"Hide My Email aliases" = "Oculta els àlies del meu correu electrònic";
 
 /* One of schedule time options */
 "In the morning" = "Al matí";
@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "Xifratge d'extrem a extrem";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Accés a l'aplicació d'escriptori";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Atenció al client prioritària";
@@ -2508,7 +2508,7 @@
 "Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%u vegades més adreces de correu electrònic";
 
 /* Description of a feature of a paid subscription */
 "Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";

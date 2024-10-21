@@ -2505,16 +2505,16 @@
 "%ux more storage" = "%u-ჯერ მეტი საცავი";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "მიიღეთ %u გბ - საკმარისი სივრცე, რომ უსაფრთხოდ შეინახოთ თქვენი შეტყობინებები, ფაილები და სურათები";
 
 /* Description of a feature of a paid subscription */
 "%ux more email addresses" = "%u-ჯერ მეტი ელფოსტის მისამართი";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "შექმენით %u-მდე ელფოსტის მისამართი @pm.ge -ების ჩათვლით, რომ თქვენი მოთხოვნები დაკმაყოფილდეს.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "მიაერთეთ თქვენი საკუთარი დომენი და გააგზავნეთ თქვენი საქმიანი ან ბრენდიანი ელფოსტები დაცულად.";
 
 /* Description of a feature of a paid subscription */
 "Open your email and calendar with one click and avoid browser distractions." = "გახსენით თქვენი ელფოსტა და კალენდარი ერთი წკაპით და აიცილეთ თავიდან ბრაუზერის ელემენტები.";
@@ -2523,7 +2523,7 @@
 "Organize your emails using your preferred filing and labeling system." = "დააორგანიზეთ თქვენი ელფოსტა თქვენთვის მოსახერხებელი შევსებსა და ჭდეების სისტემით.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "ისიამოვნეთ უფრო სწრაფი პასუხით გამოყოფილი მხარდაჭერის გუნდისგან, როცა პრობლემა გექნებათ.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";

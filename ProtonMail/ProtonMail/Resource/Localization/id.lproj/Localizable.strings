@@ -2220,7 +2220,7 @@
 "Try a different search term." = "Coba kata kunci pencarian yang berbeda.";
 
 /* zero messages matching search query */
-"No results found" = "Tidak ada hasil";
+"No results found" = "Tidak ada hasil yang ditemukan";
 
 /* The title of the setting of the auto-delete option */
 "Auto-delete" = "Hapus otomatis";

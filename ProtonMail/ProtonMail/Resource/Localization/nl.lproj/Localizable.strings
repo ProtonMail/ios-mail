@@ -1424,7 +1424,7 @@
 "Creating folder not allowed" = "Maken van map niet toegestaan";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Label aanmaken is niet toegestaan";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
@@ -2124,7 +2124,7 @@
 "Set your own schedule" = "Maak uw eigen planning";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ontgrendel aangepaste berichten inplannen en andere voordelen als u uw abonnement upgrade.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Upgrade nu";
@@ -2139,7 +2139,7 @@
 "Up to 500 GB of storage" = "Tot wel 500 GB opslag";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "Tot wel 15 e-mailadressen";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 3 custom email domains" = "Tot wel 3 aangepaste e-mail domeinen";
@@ -2280,7 +2280,7 @@
 "Up to 3 TB of storage" = "Tot wel 3 TB opslag";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Aangepaste e-maildomeinen";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Afzender gewijzigd";
@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u e-mailadressen";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Aangepast e-maildomein";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Gepersonaliseerde e-maildomein ondersteuning";
@@ -2487,7 +2487,7 @@
 "%u personal calendars" = "%u persoonlijke agenda's";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB opslag en 1 e-mail";
 
 /* Description of a feature of a paid subscription */
 "End-to-end encryption" = "End-to-end versleuteling";
@@ -2499,16 +2499,16 @@
 "Priority customer support" = "Ondersteuning met hoge prioriteit";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"+%u premium features" = "+%u premium functies";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%u keer meer opslag";
 
 /* Description of a feature of a paid subscription */
 "Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%u keer meer e-mailadressen";
 
 /* Description of a feature of a paid subscription */
 "Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
@@ -2610,10 +2610,10 @@
 "Best value" = "Beste Koop";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u meer functies";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Producten inbegrepen";

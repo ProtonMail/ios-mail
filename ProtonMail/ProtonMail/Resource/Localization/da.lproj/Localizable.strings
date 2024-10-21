@@ -1807,10 +1807,10 @@
 "You can now choose and rearrange the actions in this bar" = "Du kan nu vælge og omarrangere handlingerne i denne værktøjslinje";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Dit Mail-lager er %@ fyldt";
+"Your Mail storage is %@ full" = "Din Mail-lagerplads er %@ fyldt";
 
 /* Title of the banner alert */
-"Your Drive storage is %@ full" = "Dit drev lagerplads er %@ fyldt";
+"Your Drive storage is %@ full" = "Dit drev-lagerplads er %@ fyldt";
 
 /* Title of the banner alert */
 "Your Mail storage is full" = "Din Mail lagerplads er fuld";
