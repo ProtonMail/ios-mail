@@ -37,9 +37,12 @@ struct MoveToSheet: View {
                 .padding(.all, DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
-            .navigationTitle(L10n.Action.labelAs.string)
+            .navigationTitle(L10n.Action.moveTo.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
+            .sheet(isPresented: $model.state.createFolderLabelPresented) {
+                CreateFolderOrLabelScreen()
+            }
         }
     }
 

@@ -41,7 +41,7 @@ enum MoveToSheetPreviewProvider {
                 },
                 conversation: { _, _ in [] }
             ),
-            navigation: { _ in }
+            dismiss: { }
         )
     }
 

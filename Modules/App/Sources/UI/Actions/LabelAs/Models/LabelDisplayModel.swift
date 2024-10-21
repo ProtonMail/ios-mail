@@ -18,9 +18,9 @@
 import proton_app_uniffi
 import SwiftUI
 
-struct LabelDisplayModel: Equatable, Identifiable {
+struct LabelDisplayModel: Equatable, Identifiable, Copying {
     let id: ID
     let color: Color
     let title: String
-    let isSelected: IsSelected
+    var isSelected: IsSelected
 }

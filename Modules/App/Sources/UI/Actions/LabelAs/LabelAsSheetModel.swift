@@ -23,17 +23,17 @@ class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
     private let input: ActionSheetInput
     private let actionsProvider: LabelAsActionsProvider
-    private let navigation: (LabelAsSheetNavigation) -> Void
+    private let dismiss: () -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox, 
         availableLabelAsActions: AvailableLabelAsActions,
-        navigation: @escaping (LabelAsSheetNavigation) -> Void
+        dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.actionsProvider = .init(mailbox: mailbox, availableLabelAsActions: availableLabelAsActions)
-        self.navigation = navigation
+        self.dismiss = dismiss
     }
 
     func handle(action: LabelAsSheetAction) {
@@ -43,11 +43,11 @@ class LabelAsSheetModel: ObservableObject {
         case .selected(let label):
             updateSelection(of: label)
         case .toggleSwitch:
-            state = state.copy(shouldArchive: state.shouldArchive.toggled)
+            state = state.copy(\.shouldArchive, to: state.shouldArchive.toggled)
         case .createLabelButtonTapped:
-            navigation(.createLabel)
+            state = state.copy(\.createFolderLabelPresented, to: true)
         case .doneButtonTapped:
-            navigation(.dismiss)
+            dismiss()
         }
     }
 
@@ -63,15 +63,15 @@ class LabelAsSheetModel: ObservableObject {
     }
 
     private func update(labels: [LabelAsAction]) {
-        state = state.copy(labels: labels.map(\.displayModel))
+        state = state.copy(\.labels, to: labels.map(\.displayModel))
     }
 
     private func updateSelection(of selectedLabel: LabelDisplayModel) {
         let updatedLabels = state.labels
             .map { label in
-                label.copy(isSelected: updateSelectionIfNeeded(selectedLabel: selectedLabel, label: label))
+                label.copy(\.isSelected, to: updateSelectionIfNeeded(selectedLabel: selectedLabel, label: label))
             }
-        state = state.copy(labels: updatedLabels)
+        state = state.copy(\.labels, to: updatedLabels)
     }
 
     private func updateSelectionIfNeeded(selectedLabel: LabelDisplayModel, label: LabelDisplayModel) -> IsSelected {
@@ -80,28 +80,14 @@ class LabelAsSheetModel: ObservableObject {
     }
 }
 
-private extension LabelDisplayModel {
-    func copy(isSelected: IsSelected) -> Self {
-        .init(id: id, color: color, title: title, isSelected: isSelected)
-    }
-}
-
-private extension LabelAsSheetState {
-    static let initial = LabelAsSheetState(labels: [], shouldArchive: false)
-
-    func copy(shouldArchive: Bool) -> Self {
-        .init(labels: labels, shouldArchive: shouldArchive)
-    }
-
-    func copy(labels: [LabelDisplayModel]) -> Self {
-        .init(labels: labels, shouldArchive: shouldArchive)
-    }
-}
-
 private extension Bool {
     var toggled: Bool {
         !self
     }
+}
+
+private extension LabelAsSheetState {
+    static let initial = LabelAsSheetState(labels: [], shouldArchive: false, createFolderLabelPresented: false)
 }
 
 extension LabelAsAction {

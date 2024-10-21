@@ -17,7 +17,8 @@
 
 import Foundation
 
-struct LabelAsSheetState: Equatable {
-    let labels: [LabelDisplayModel]
-    let shouldArchive: Bool
+struct LabelAsSheetState: Equatable, Copying {
+    var labels: [LabelDisplayModel]
+    var shouldArchive: Bool
+    var createFolderLabelPresented: Bool
 }

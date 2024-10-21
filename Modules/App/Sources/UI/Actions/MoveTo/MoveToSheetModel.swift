@@ -25,17 +25,17 @@ class MoveToSheetModel: ObservableObject {
 
     private let input: ActionSheetInput
     private let moveToActionsProvider: MoveToActionsProvider
-    private let navigation: (MoveToSheetNavigation) -> Void
+    private let dismiss: () -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
-        navigation: @escaping (MoveToSheetNavigation) -> Void
+        dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
-        self.navigation = navigation
+        self.dismiss = dismiss
     }
 
     func handle(action: MoveToSheetAction) {
@@ -43,9 +43,9 @@ class MoveToSheetModel: ObservableObject {
         case .viewAppear:
             loadMoveToActions()
         case .folderTapped:
-            navigation(.dismiss)
+            dismiss()
         case .createFolderTapped:
-            navigation(.createFolder)
+            state = state.copy(\.createFolderLabelPresented, to: true)
         }
     }
 
@@ -54,14 +54,16 @@ class MoveToSheetModel: ObservableObject {
     private func loadMoveToActions() {
         Task {
             let actions = await moveToActionsProvider.actions(for: input.type, ids: input.ids)
-            let state = MoveToState(
-                moveToSystemFolderActions: actions.compactMap(\.moveToSystemFolder),
-                moveToCustomFolderActions: actions.compactMap(\.moveToCustomFolder)
-            )
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.state = state
+                self?.update(moveToActions: actions)
             }))
         }
+    }
+
+    private func update(moveToActions: [MoveAction]) {
+        state = state
+            .copy(\.moveToSystemFolderActions, to: moveToActions.compactMap(\.moveToSystemFolder))
+            .copy(\.moveToCustomFolderActions, to: moveToActions.compactMap(\.moveToCustomFolder))
     }
 }
 
@@ -99,6 +101,6 @@ private extension CustomFolderAction {
 
 private extension MoveToState {
     static var initial: Self {
-        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [])
+        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
     }
 }

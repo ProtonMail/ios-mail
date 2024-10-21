@@ -22,7 +22,11 @@ class LabelAsActionSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
         let model = LabelAsSheetPreviewProvider.testData()
-        model.state = .init(labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel), shouldArchive: false)
+        model.state = .init(
+            labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
+            shouldArchive: false,
+            createFolderLabelPresented: false
+        )
         assertSnapshotsOnIPhoneX(of: LabelAsSheet(model: model))
     }
 

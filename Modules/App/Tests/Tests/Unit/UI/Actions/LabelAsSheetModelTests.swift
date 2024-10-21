@@ -23,7 +23,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
-    var invokedNavigation: [LabelAsSheetNavigation]!
+    var invokedDismissCount: Int!
     var stubbedLabelAsActions: [LabelAsAction]!
 
     override func setUp() {
@@ -31,13 +31,13 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
-        invokedNavigation = []
+        invokedDismissCount = 0
     }
 
     override func tearDown() {
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
-        invokedNavigation = nil
+        invokedDismissCount = nil
         stubbedLabelAsActions = nil
 
         super.tearDown()
@@ -54,7 +54,8 @@ class LabelAsSheetModelTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, [])
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: false
+            shouldArchive: false, 
+            createFolderLabelPresented: false
         ))
     }
 
@@ -62,7 +63,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         let sut = sut(ids: [.init(value: 7), .init(value: 88)], type: .message)
         sut.handle(action: .doneButtonTapped)
 
-        XCTAssertEqual(invokedNavigation, [.dismiss])
+        XCTAssertEqual(invokedDismissCount, 1)
     }
 
     func testState_WhenMailboxTypeIsConversationAndArchiveToggleIsTapped_ItReturnsCorrectState() {
@@ -76,15 +77,25 @@ class LabelAsSheetModelTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, conversationIDs)
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: false
+            shouldArchive: false, 
+            createFolderLabelPresented: false
         ))
 
         sut.handle(action: .toggleSwitch)
 
         XCTAssertEqual(sut.state, .init(
             labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: true
+            shouldArchive: true, 
+            createFolderLabelPresented: false
         ))
+    }
+
+    func testState_WhenCreateLabelButtonIsTapped_ItReturnsCorrectState() {
+        let sut = sut(ids: [], type: .conversation)
+
+        sut.handle(action: .createLabelButtonTapped)
+
+        XCTAssertTrue(sut.state.createFolderLabelPresented)
     }
 
     func testState_WhenLabelActionsSelectionIsChanged_ItReturnsCorrectState() {
@@ -108,7 +119,8 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(
             labels: [firstLabel, secondLabel, thirdLabel].map(\.displayModel),
-            shouldArchive: false
+            shouldArchive: false,
+            createFolderLabelPresented: false
         ))
 
         sut.handle(action: .selected(firstLabel.displayModel))
@@ -121,7 +133,8 @@ class LabelAsSheetModelTests: BaseTestCase {
                 secondLabel.copy(isSelected: .unselected).displayModel,
                 thirdLabel.copy(isSelected: .selected).displayModel,
             ],
-            shouldArchive: false
+            shouldArchive: false, 
+            createFolderLabelPresented: false
         ))
     }
 
@@ -141,7 +154,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                     return self.stubbedLabelAsActions
                 }
             ), 
-            navigation: { self.invokedNavigation.append($0) }
+            dismiss: { self.invokedDismissCount += 1 }
         )
     }
 

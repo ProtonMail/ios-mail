@@ -26,7 +26,7 @@ enum LabelAsSheetPreviewProvider {
                 message: { _, _ in testLabels() },
                 conversation: { _, _ in [] }
             ),
-            navigation: { _ in }
+            dismiss: { }
         )
     }
 

@@ -40,8 +40,13 @@ struct LabelAsSheet: View {
             .navigationTitle(L10n.Action.labelAs.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
+            .sheet(isPresented: $model.state.createFolderLabelPresented) {
+                CreateFolderOrLabelScreen()
+            }
         }
     }
+
+    // MARK: - Private
 
     private var shouldArchiveBinding: Binding<Bool> {
         .init(

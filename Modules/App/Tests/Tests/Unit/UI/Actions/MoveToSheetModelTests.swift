@@ -23,14 +23,14 @@ class MoveToSheetModelTests: BaseTestCase {
 
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
-    var invokedNavigation: [MoveToSheetNavigation]!
+    var invokedDismissCount: Int!
     var stubbedMoveToActions: [MoveAction]!
 
     override func setUp() {
         super.setUp()
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
-        invokedNavigation = []
+        invokedDismissCount = 0
         stubbedMoveToActions = [
             .systemFolder(.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)),
             .customFolder(.init(
@@ -46,7 +46,7 @@ class MoveToSheetModelTests: BaseTestCase {
     override func tearDown() {
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
-        invokedNavigation = nil
+        invokedDismissCount = nil
         stubbedMoveToActions = nil
 
         super.tearDown()
@@ -72,12 +72,12 @@ class MoveToSheetModelTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, ids)
     }
 
-    func testNavigation_WhenCreateFolderActionIsHandled_ItReturnsCorrectNavigation() {
+    func testState_WhenCreateFolderActionIsHandled_ItReturnsCorrectNavigation() {
         let sut = sut(input: .init(ids: [], type: .message))
 
         sut.handle(action: .createFolderTapped)
 
-        XCTAssertEqual(invokedNavigation, [.createFolder])
+        XCTAssertTrue(sut.state.createFolderLabelPresented)
     }
 
     func testNavigation_WhenMoveToActionIsHandled_ItReturnsCorrectNavigation() {
@@ -85,7 +85,7 @@ class MoveToSheetModelTests: BaseTestCase {
 
         sut.handle(action: .folderTapped(id: .random()))
 
-        XCTAssertEqual(invokedNavigation, [.dismiss])
+        XCTAssertEqual(invokedDismissCount, 1)
     }
 
     // MARK: - Private
@@ -104,7 +104,7 @@ class MoveToSheetModelTests: BaseTestCase {
                     return []
                 }
             ),
-            navigation: { navigation in self.invokedNavigation.append(navigation) }
+            dismiss: { self.invokedDismissCount += 1 }
         )
     }
 
