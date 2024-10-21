@@ -37,20 +37,39 @@ struct MailboxListView: View {
 
     var body: some View {
         MailboxItemsListView(
-            mailbox: model.mailbox,
             config: mailboxItemListViewConfiguration(),
             headerView:  { unreadFilterView() },
             emptyView: { MailboxEmptyView()}
         )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onChange(of: model.selectedMailbox) { _, _ in
-            self.isListAtTop = true
+            .injectIfNotNil(model.mailbox)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onChange(of: model.selectedMailbox) { _, _ in
+                self.isListAtTop = true
+            }
+            .task {
+                guard !didAppearBefore else { return }
+                didAppearBefore = true
+                await model.onViewDidAppear()
+            }
+    }
+
+}
+
+struct InjectIfNotNil<T: ObservableObject>: ViewModifier {
+    var object: T?
+
+    func body(content: Content) -> some View {
+        if let object = object {
+            content.environmentObject(object)
+        } else {
+            content
         }
-        .task {
-            guard !didAppearBefore else { return }
-            didAppearBefore = true
-            await model.onViewDidAppear()
-        }
+    }
+}
+
+extension View {
+    func injectIfNotNil<T: ObservableObject>(_ object: T?) -> some View {
+        self.modifier(InjectIfNotNil(object: object))
     }
 }
 

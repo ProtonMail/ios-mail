@@ -32,22 +32,13 @@ extension AvailableMailboxActionBarActions {
 
 struct MailboxActionBarActionsProvider {
     let availableActions: AvailableMailboxActionBarActions
-    let mailbox: Mailbox
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> AllBottomBarMessageActions {
-        try! await actionsProvider(for: type)(mailbox, ids)
-    }
-
-    // MARK: - Private
-
-    private func actionsProvider(
-        for type: MailboxItemType
-    ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> AllBottomBarMessageActions {
-        switch type {
-        case .message:
-            availableActions.message
-        case .conversation:
-            { _, _ in AllBottomBarMessageActions.testData } // FIXME: - Use real provider
+    func actions(for mailbox: Mailbox, ids: [ID]) async -> AllBottomBarMessageActions {
+        return switch mailbox.viewMode() {
+        case .messages:
+            try! await availableActions.message(mailbox, ids)
+        case .conversations:
+            .testData
         }
     }
 }
@@ -66,8 +57,8 @@ struct MailboxActionBarState: Copying {
 }
 
 enum MailboxActionBarAction {
-    case mailboxItemsSelectionUpdated(Set<ID>)
-    case actionSelected(BottomBarAction, ids: Set<ID>)
+    case mailboxItemsSelectionUpdated(Set<ID>, mailbox: Mailbox)
+    case actionSelected(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
 }
 
 extension MailboxActionBarState {
@@ -84,47 +75,44 @@ extension MailboxActionBarState {
 
 class MailboxActionBarStateStore: ObservableObject {
     @Published var state: MailboxActionBarState
-    private let mailboxItemType: MailboxItemType
     private let actionsProvider: MailboxActionBarActionsProvider
 
     init(
-        mailboxItemType: MailboxItemType,
         state: MailboxActionBarState,
-        mailbox: Mailbox,
         availableActions: AvailableMailboxActionBarActions
     ) {
-        self.mailboxItemType = mailboxItemType
         self.state = state
-        self.actionsProvider = .init(availableActions: availableActions, mailbox: mailbox)
+        self.actionsProvider = .init(availableActions: availableActions)
     }
 
     func handle(action: MailboxActionBarAction) {
         switch action {
-        case .mailboxItemsSelectionUpdated(let ids):
-            fetchAvailableBottomBarActions(for: ids)
-        case .actionSelected(let action, let ids):
-            handle(action: action, ids: ids)
+        case .mailboxItemsSelectionUpdated(let ids, let mailbox):
+            fetchAvailableBottomBarActions(for: ids, mailbox: mailbox)
+        case .actionSelected(let action, let ids, let mailbox):
+            handle(action: action, ids: ids, mailbox: mailbox)
         }
     }
 
     // MARK: - Private
 
-    private func handle(action: BottomBarAction, ids: Set<ID>) {
+    private func handle(action: BottomBarAction, ids: Set<ID>, mailbox: Mailbox) {
         switch action {
         case .more:
             state = state.copy(\.moreActionSheetPresented, to: true)
         case .labelAs:
-            state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: mailboxItemType))
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: mailbox.viewMode().itemType))
         case .moveTo:
-            state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: mailboxItemType))
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: mailbox.viewMode().itemType))
         default:
             break // FIXME: - Handle rest of the actions
         }
     }
 
-    private func fetchAvailableBottomBarActions(for ids: Set<ID>) {
+    private func fetchAvailableBottomBarActions(for ids: Set<ID>, mailbox: Mailbox) {
+        guard !ids.isEmpty else { return }
         Task {
-            let actions = await actionsProvider.actions(for: .message, ids: Array(ids))
+            let actions = await actionsProvider.actions(for: mailbox, ids: Array(ids))
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateActions(actions: actions)
             }))
@@ -138,26 +126,18 @@ class MailboxActionBarStateStore: ObservableObject {
     }
 }
 
-extension Mailbox: ObservableObject {}
-
 struct MailboxActionBarView: View {
     @Binding var selectedItems: Set<ID>
-    let store: MailboxActionBarStateStore
+    @EnvironmentObject var mailbox: Mailbox
+    @StateObject var store: MailboxActionBarStateStore
 
     init(
-        mailboxItemType: MailboxItemType,
         state: MailboxActionBarState,
-        mailbox: Mailbox,
         availableActions: AvailableMailboxActionBarActions,
         selectedItems: Binding<Set<ID>>
     ) {
         self._selectedItems = selectedItems
-        self.store = .init(
-            mailboxItemType: mailboxItemType,
-            state: state, 
-            mailbox: mailbox,
-            availableActions: availableActions
-        )
+        self._store = StateObject(wrappedValue: .init(state: state, availableActions: availableActions))
     }
 
     var body: some View {
@@ -187,7 +167,7 @@ struct MailboxActionBarView: View {
                 .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
-                        store.handle(action: .mailboxItemsSelectionUpdated(newValue))
+                        store.handle(action: .mailboxItemsSelectionUpdated(newValue, mailbox: mailbox))
                     }
                 }
             }
@@ -210,9 +190,7 @@ struct MailboxActionBarView: View {
         moveToSheetPresented: nil
     )
     return MailboxActionBarView(
-        mailboxItemType: .message,
         state: state,
-        mailbox: .init(noPointer: .init()),
         availableActions: .init(message: { _, _ in
             AllBottomBarMessageActions(
                 hiddenBottomBarActions: [],
@@ -343,6 +321,21 @@ extension BottomBarAction {
             return .init(icon: DS.Icon.icStar, name: L10n.Action.star)
         case .unstar:
             return .init(icon: DS.Icon.icStarSlash, name: L10n.Action.unstar)
+        }
+    }
+
+}
+
+extension Mailbox: ObservableObject {}
+
+extension ViewMode {
+
+    var itemType: MailboxItemType {
+        switch self {
+        case .conversations:
+            return .conversation
+        case .messages:
+            return .message
         }
     }
 

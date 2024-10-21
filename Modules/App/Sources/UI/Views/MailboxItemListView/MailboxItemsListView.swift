@@ -21,7 +21,6 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
-    let mailbox: Mailbox?
     @EnvironmentObject var toastStateStore: ToastStateStore
     @State var config: MailboxItemsListViewConfiguration
     @ViewBuilder let headerView: HeaderView
@@ -130,11 +129,9 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         return value
     }
 
-    private var mailboxActionBarView: some View {
+    private var mailboxActionBarView: some View { // FIXME: - Inject mailbox
         MailboxActionBarView(
-            mailboxItemType: .message, // FIXME: - Pass correct type
             state: .initial,
-            mailbox: mailbox, // FIXME: - Pass mailbox
             availableActions: .productionInstance,
             selectedItems: $config.selectionState.selectedItems
         )
@@ -162,7 +159,6 @@ private struct MailboxListViewIdentifiers {
 
         var body: some View {
             MailboxItemsListView(
-                mailbox: .init(noPointer: .init()), 
                 config: makeConfiguration(),
                 headerView: { EmptyView() },
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) }

@@ -33,7 +33,7 @@ final class MailboxModel: ObservableObject {
 
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
-    private var mailbox: Mailbox?
+    @Published private(set) var mailbox: Mailbox?
     private var messagePaginator: MessagePaginator?
     private var conversationPaginator: ConversationPaginator?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
