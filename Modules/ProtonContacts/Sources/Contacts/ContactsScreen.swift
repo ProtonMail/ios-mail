@@ -27,14 +27,11 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ZStack {
-                DS.Color.Background.secondary
-                    .ignoresSafeArea()
-                List {
-                    sections(for: state)
-                }
-                .styledGroupedContacts()
+            List {
+                sections(for: state)
             }
+            .styledGroupedContacts()
+            .background(DS.Color.BackgroundInverted.norm.ignoresSafeArea())
             .navigationTitle(L10n.Contacts.title.string)
         }
         .onLoad { state = groupedContactsDataSource.allContacts() }
@@ -52,7 +49,7 @@ public struct ContactsScreen: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .alignmentGuide(.listRowSeparatorLeading) { _ in -DS.Spacing.large }
-                .listRowBackground(DS.Color.Background.norm)
+                .listRowBackground(DS.Color.BackgroundInverted.secondary)
                 .listRowInsets(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
                 .listRowSeparatorTint(DS.Color.Border.norm)
             }
@@ -116,6 +113,7 @@ private extension List {
         contentMargins(.horizontal, DS.Spacing.large, for: .scrollContent)
             .listSectionSpacing(DS.Spacing.large)
             .listStyle(InsetGroupedListStyle())
+            .scrollContentBackground(.hidden)
     }
 
 }
