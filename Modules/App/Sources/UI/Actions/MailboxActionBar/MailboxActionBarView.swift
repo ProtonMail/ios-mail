@@ -51,7 +51,7 @@ struct MailboxActionBarActionDisplayData {
 struct MailboxActionBarState: Copying {
     var visibleActions: [BottomBarAction]
     var moreActions: [BottomBarAction]
-    var moreActionSheetPresented: Bool
+    var moreActionSheetPresented: MailboxActionBarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
 }
@@ -68,7 +68,7 @@ extension MailboxActionBarState {
         .init(
             visibleActions: [],
             moreActions: [],
-            moreActionSheetPresented: false,
+            moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
             moveToSheetPresented: nil
         )
@@ -105,7 +105,12 @@ class MailboxActionBarStateStore: ObservableObject {
     private func handle(action: BottomBarAction, ids: Set<ID>, mailbox: Mailbox) {
         switch action {
         case .more:
-            state = state.copy(\.moreActionSheetPresented, to: true)
+            let moreActionSheetState = MailboxActionBarMoreSheetState(
+                selectedItemsIDs: ids,
+                visibleActions: state.visibleActions.filter { $0 != .more }, // FIXME: - Move to extension
+                hiddenActions: state.moreActions
+            )
+            state = state.copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
             state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: mailbox.viewMode().itemType))
         case .moveTo:
@@ -184,6 +189,9 @@ struct MailboxActionBarView: View {
                 .sheet(item: $store.state.moveToSheetPresented) { input in
                     moveToSheet(input: input)
                 }
+                .sheet(item: $store.state.moreActionSheetPresented) { state in
+                    MailboxActionBarMoreSheet(state: state)
+                }
             }
         }
     }
@@ -223,7 +231,7 @@ struct MailboxActionBarView: View {
             .more
         ],
         moreActions: [.notSpam, .permanentDelete, .star],
-        moreActionSheetPresented: false,
+        moreActionSheetPresented: nil,
         labelAsSheetPresented: nil,
         moveToSheetPresented: nil
     )
