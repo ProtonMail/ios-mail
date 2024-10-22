@@ -50,6 +50,7 @@ final class ContactCell: UITableViewCell {
 
     private func setUpSelf() {
         selectionStyle = .none
+        contentView.backgroundColor = UIColor(DS.Color.BackgroundInverted.secondary)
     }
 
     private func setupUI() {
