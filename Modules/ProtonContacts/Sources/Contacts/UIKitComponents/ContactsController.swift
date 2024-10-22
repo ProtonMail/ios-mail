@@ -18,21 +18,6 @@
 import DesignSystem
 import SwiftUI
 
-struct ContactsControllerRepresentable: UIViewControllerRepresentable {
-    let contacts: [GroupedContacts]
-    let backgroundColor: Color
-
-    // MARK: - UIViewControllerRepresentable
-
-    func makeUIViewController(context: Context) -> ContactsController {
-        ContactsController(contacts: contacts, backgroundColor: backgroundColor)
-    }
-
-    func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
-        uiViewController.groupedContacts = contacts
-    }
-}
-
 final class ContactsController: UIViewController, UITableViewDataSource {
 
     var groupedContacts: [GroupedContacts] {
