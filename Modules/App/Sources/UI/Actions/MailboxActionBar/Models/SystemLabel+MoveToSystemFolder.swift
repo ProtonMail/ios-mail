@@ -17,6 +17,7 @@
 
 import proton_app_uniffi
 
+// FIXME: - Temporary mapping waiting for Rust SDK for being updated
 extension SystemLabel {
 
     var moveToSystemFolder: MoveToSystemFolderLocation? {
