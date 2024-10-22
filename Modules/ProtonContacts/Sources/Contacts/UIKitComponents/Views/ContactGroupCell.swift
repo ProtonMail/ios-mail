@@ -35,6 +35,7 @@ final class ContactGroupCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpSelf()
         setupUI()
     }
 
@@ -52,6 +53,10 @@ final class ContactGroupCell: UITableViewCell {
     }()
 
     private let contentStackView: UIStackView = ViewsFactory.contactItemStackView
+
+    private func setUpSelf() {
+        selectionStyle = .none
+    }
 
     private func setupUI() {
         iconBackgroundView.addSubview(iconImageView)

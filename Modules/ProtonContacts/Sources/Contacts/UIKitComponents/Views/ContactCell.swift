@@ -38,6 +38,7 @@ final class ContactCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpSelf()
         setupUI()
     }
 
@@ -46,6 +47,10 @@ final class ContactCell: UITableViewCell {
     // MARK: - Private
 
     private let contentStackView: UIStackView = ViewsFactory.contactItemStackView
+
+    private func setUpSelf() {
+        selectionStyle = .none
+    }
 
     private func setupUI() {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
