@@ -62,7 +62,7 @@ class MailboxActionBarStateStore: ObservableObject {
         case .moveTo:
             state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: itemType))
         default:
-            break // FIXME: - Handle rest of the actions
+            break // FIXME: - Handle rest of the actions here
         }
     }
 

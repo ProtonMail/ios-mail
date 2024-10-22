@@ -129,7 +129,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         return value
     }
 
-    private var mailboxActionBarView: some View { // FIXME: - Inject mailbox
+    private var mailboxActionBarView: some View {
         MailboxActionBarView(
             state: .initial,
             availableActions: .productionInstance,
