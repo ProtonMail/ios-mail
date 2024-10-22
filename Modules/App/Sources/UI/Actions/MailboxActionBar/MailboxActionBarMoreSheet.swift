@@ -77,19 +77,27 @@ extension BottomBarAction {
 }
 
 #Preview {
-    MailboxActionBarMoreSheet(state: .init(
-        selectedItemsIDs: [.init(value: 1), .init(value: 2), .init(value: 3)],
-        visibleActions: [
-            .markUnread,
-            .moveToSystemFolder(.init(localId: .init(value: 4), systemLabel: .archive)),
-            .moveToSystemFolder(.init(localId: .init(value: 5), systemLabel: .inbox)),
-            .moveToSystemFolder(.init(localId: .init(value: 6), systemLabel: .trash)),
-            .star
-        ],
-        hiddenActions: [
-            .labelAs,
-            .moveTo,
-            .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .spam))
-        ]
-    ), actionTapped: { _ in })
+    MailboxActionBarMoreSheet(state: MailboxActionBarMoreSheetPreviewProvider.state(), actionTapped: { _ in })
+}
+
+enum MailboxActionBarMoreSheetPreviewProvider {
+
+    static func state() -> MailboxActionBarMoreSheetState {
+        .init(
+            selectedItemsIDs: [.init(value: 1), .init(value: 2), .init(value: 3)],
+            visibleActions: [
+                .markUnread,
+                .moveToSystemFolder(.init(localId: .init(value: 4), systemLabel: .archive)),
+                .moveToSystemFolder(.init(localId: .init(value: 5), systemLabel: .inbox)),
+                .moveToSystemFolder(.init(localId: .init(value: 6), systemLabel: .trash)),
+                .star
+            ],
+            hiddenActions: [
+                .labelAs,
+                .moveTo,
+                .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .spam))
+            ]
+        )
+    }
+
 }

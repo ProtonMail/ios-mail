@@ -228,29 +228,40 @@ struct MailboxActionBarView: View {
 }
 
 #Preview {
-    let state = MailboxActionBarState(
-        visibleActions: [
-            .markRead,
-            .moveTo,
-            .labelAs,
-            .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)), 
-            .more
-        ],
-        moreActions: [.notSpam, .permanentDelete, .star],
-        moreActionSheetPresented: nil,
-        labelAsSheetPresented: nil,
-        moveToSheetPresented: nil
+    MailboxActionBarView(
+        state: MailboxActionBarPreviewProvider.state(),
+        availableActions: MailboxActionBarPreviewProvider.availableActions(),
+        selectedItems: .constant([])
     )
-    return MailboxActionBarView(
-        state: state,
-        availableActions: .init(message: { _, _ in
+}
+
+enum MailboxActionBarPreviewProvider {
+
+    static func state() -> MailboxActionBarState {
+        MailboxActionBarState(
+            visibleActions: [
+                .markRead,
+                .moveTo,
+                .labelAs,
+                .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)),
+                .more
+            ],
+            moreActions: [.notSpam, .permanentDelete, .star],
+            moreActionSheetPresented: nil,
+            labelAsSheetPresented: nil,
+            moveToSheetPresented: nil
+        )
+    }
+
+    static func availableActions() -> AvailableMailboxActionBarActions {
+        .init(message: { _, _ in
             AllBottomBarMessageActions(
                 hiddenBottomBarActions: [],
                 visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
             )
-        }),
-        selectedItems: .constant([])
-    )
+        })
+    }
+
 }
 
 extension AllBottomBarMessageActions {
