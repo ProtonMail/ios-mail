@@ -133,7 +133,7 @@ enum MainToolbarEvent {
 #Preview {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    let userSettings = UserSettings(mailboxActions: .init())
+    let userSettings = UserSettings()
     let customLabelModel = CustomLabelModel()
 
     return MailboxScreen(

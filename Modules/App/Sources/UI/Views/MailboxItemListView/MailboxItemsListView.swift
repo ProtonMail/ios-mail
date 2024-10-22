@@ -147,7 +147,7 @@ private struct MailboxListViewIdentifiers {
 
 #Preview {
     struct Container: View {
-        let userSettings = UserSettings(mailboxActions: .init())
+        let userSettings = UserSettings()
 
         let dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(pageSize: 20) { currentPage, pageSize in
             try? await Task.sleep(nanoseconds: 1_000_000_000)

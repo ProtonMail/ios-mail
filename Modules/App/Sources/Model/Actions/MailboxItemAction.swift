@@ -17,26 +17,26 @@
 
 import Foundation
 
-enum MailboxItemAction {
-    case action(Action)
-    case conditional(ConditionalAction)
-}
-
-struct MailboxItemActionResolver {
-    let params: ConditionalActionResolverParams
-
-    func action(for itemAction: MailboxItemAction) -> Action {
-        switch itemAction {
-        case .action(let action):
-            return action
-        case .conditional(let conditionalAction):
-            return conditionalAction.toAction(params: params)
-        }
-    }
-}
-
-struct ConditionalActionResolverParams {
-    let selectionReadStatus: SelectionReadStatus
-    let selectionStarStatus: SelectionStarStatus
-    let systemFolder: SystemFolderLabel?
-}
+//enum MailboxItemAction {
+//    case action(Action)
+//    case conditional(ConditionalAction)
+//}
+//
+//struct MailboxItemActionResolver {
+//    let params: ConditionalActionResolverParams
+//
+//    func action(for itemAction: MailboxItemAction) -> Action {
+//        switch itemAction {
+//        case .action(let action):
+//            return action
+//        case .conditional(let conditionalAction):
+//            return conditionalAction.toAction(params: params)
+//        }
+//    }
+//}
+//
+//struct ConditionalActionResolverParams {
+//    let selectionReadStatus: SelectionReadStatus
+//    let selectionStarStatus: SelectionStarStatus
+//    let systemFolder: SystemFolderLabel?
+//}

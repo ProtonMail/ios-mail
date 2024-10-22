@@ -18,31 +18,6 @@
 import Foundation
 
 final class UserSettings: ObservableObject {
-    var mailboxActions: MailboxActionSettings
-
     var leadingSwipeAction: SwipeAction = .toggleReadStatus
     var trailingSwipeAction: SwipeAction = .moveToTrash
-
-    init(mailboxActions: MailboxActionSettings) {
-        self.mailboxActions = mailboxActions
-    }
-}
-
-struct MailboxActionSettings {
-    let action1: MailboxItemAction
-    let action2: MailboxItemAction
-    let action3: MailboxItemAction
-    let action4: MailboxItemAction
-
-    init(
-        action1: MailboxItemAction = .conditional(.toggleReadStatus),
-        action2: MailboxItemAction = .conditional(.toggleStarStatus),
-        action3: MailboxItemAction = .conditional(.moveToArchive),
-        action4: MailboxItemAction = .action(.moveTo)
-    ) {
-        self.action1 = action1
-        self.action2 = action2
-        self.action3 = action3
-        self.action4 = action4
-    }
 }

@@ -41,16 +41,12 @@ final class SelectionMode {
  This class is agnostic of Messages and Conversations and so it works for both.
  */
 final class SelectionModeState: ObservableObject {
-
     @Published fileprivate(set) var hasItems: Bool
-//    @Published fileprivate(set) var collectionStatus: SelectedItemsStatus
     @Published var selectedItems: Set<ID>
 
     init(selectedItems: Set<ID> = .init()) {
         self.hasItems = false
         self.selectedItems = selectedItems
-//        self.selectedItems = selectedItems
-//        self.collectionStatus = .init(readStatus: .noneRead, starStatus: .noneStarred)
     }
 }
 
@@ -62,25 +58,21 @@ final class SelectionModeStateModifier {
 
     init(state: SelectionModeState) {
         self.state = state
-//        updateCollectionStatus()
     }
 
     func addMailboxItem(_ item: ID) {
         state.selectedItems.insert(item)
         state.hasItems = true
-//        updateCollectionStatus()
     }
 
     func removeMailboxItem(_ item: ID) {
         state.selectedItems.remove(item)
         state.hasItems = !state.selectedItems.isEmpty
-//        updateCollectionStatus()
     }
 
     func exitSelectionMode() {
         state.selectedItems.removeAll()
         state.hasItems = false
-//        updateCollectionStatus()
     }
 
     /**
@@ -103,64 +95,6 @@ final class SelectionModeStateModifier {
         let newHasSelectedItemsValue = !state.selectedItems.isEmpty
         if state.hasItems != newHasSelectedItemsValue {
             state.hasItems = newHasSelectedItemsValue
-        }
-//        updateCollectionStatus()
-    }
-
-//    private func updateCollectionStatus() {
-//        let readStatus: SelectionReadStatus
-//        switch state.selectedItems.filter(\.isRead).count {
-//        case 0:
-//            readStatus = .noneRead
-//        case state.selectedItems.count:
-//            readStatus = .allRead
-//        default:
-//            readStatus = .someRead
-//        }
-//        let starStatus: SelectionStarStatus
-//        switch state.selectedItems.filter(\.isStarred).count {
-//        case 0:
-//            starStatus = .noneStarred
-//        case state.selectedItems.count:
-//            starStatus = .allStarred
-//        default:
-//            starStatus = .someStarred
-//        }
-//        state.collectionStatus = .init(readStatus: readStatus, starStatus: starStatus)
-//    }
-}
-
-struct SelectedItemsStatus {
-    let readStatus: SelectionReadStatus
-    let starStatus: SelectionStarStatus
-}
-
-enum SelectionReadStatus {
-    case allRead
-    case someRead
-    case noneRead
-
-    var atLeastOneRead: Bool {
-        switch self {
-        case .allRead, .someRead:
-            return true
-        case .noneRead:
-            return false
-        }
-    }
-}
-
-enum SelectionStarStatus {
-    case allStarred
-    case someStarred
-    case noneStarred
-
-    var atLeastOneStarred: Bool {
-        switch self {
-        case .allStarred, .someStarred:
-            return true
-        case .noneStarred:
-            return false
         }
     }
 }

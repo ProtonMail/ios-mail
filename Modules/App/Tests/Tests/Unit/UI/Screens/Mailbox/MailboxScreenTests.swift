@@ -121,7 +121,7 @@ class MailboxScreenTests: BaseTestCase {
 
         let appUIStateStore = AppUIStateStore()
         let toastStateStore = ToastStateStore(initialState: .initial)
-        let userSettings = UserSettings(mailboxActions: .init())
+        let userSettings = UserSettings()
 
         ViewHosting.host(
             view: sut

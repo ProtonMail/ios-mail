@@ -43,7 +43,7 @@ extension BottomBarAction {
                 return .init(icon: DS.Icon.icTrash, name: L10n.Action.moveToTrash)
             }
         case .notSpam:
-            return .init(icon: DS.Icon.icNotSpam, name: "Not spam")
+            return .init(icon: DS.Icon.icNotSpam, name: L10n.Action.notSpam)
         case .permanentDelete:
             return .init(icon: DS.Icon.icTrashCross, name: L10n.Action.deletePermanently)
         case .star:

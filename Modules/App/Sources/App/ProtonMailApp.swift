@@ -25,9 +25,7 @@ struct ProtonMailApp: App {
     // declaration of state objects
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let userSettings = UserSettings(
-        mailboxActions: .init()
-    )
+    private let userSettings = UserSettings()
     private let customLabelModel = CustomLabelModel()
 
     var body: some Scene {

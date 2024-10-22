@@ -151,7 +151,7 @@ extension MailboxScreen {
 #Preview {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    let userSettings = UserSettings(mailboxActions: .init())
+    let userSettings = UserSettings()
     let customLabelModel = CustomLabelModel()
     let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 

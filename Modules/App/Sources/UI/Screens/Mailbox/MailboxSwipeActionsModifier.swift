@@ -68,7 +68,8 @@ struct MailboxSwipeActionsModifier: ViewModifier {
                 onTap(action, mailboxItemId)
                 triggerFeedback.toggle()
             } label: {
-                Image(uiImage: swipeAction.icon(readStatus: isItemRead ? .allRead : .noneRead))
+//                Image(uiImage: swipeAction.icon(readStatus: isItemRead ? .allRead : .noneRead))
+                // FIXME: - Fix swipe actions
             }
         }
         .tint(swipeAction.color)

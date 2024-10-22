@@ -29,7 +29,7 @@ class HomeScreenTests: BaseTestCase {
 
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let userSettings = UserSettings(mailboxActions: .init())
+    private let userSettings = UserSettings()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
