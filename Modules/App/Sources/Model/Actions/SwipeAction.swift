@@ -46,18 +46,19 @@ enum SwipeAction {
 //        }
     }
 
-//    func icon(readStatus: SelectionReadStatus) -> UIImage {
-//        switch self {
-//        case .none:
-//            return UIImage()
-//        case .toggleReadStatus:
-//            return UIImage(resource: Action.toggleReadStatusAction(when: readStatus).icon)
-//        case .delete:
-//            return UIImage(resource: Action.deletePermanently.icon)
-//        case .moveToTrash:
-//            return UIImage(resource: Action.moveToTrash.icon)
-//        }
-//    }
+    func icon(isRead: Bool) -> UIImage? {
+        switch self {
+        case .none:
+            return nil
+        case .delete:
+            return UIImage(resource: Action.deletePermanently.icon)
+        case .moveToTrash:
+            return UIImage(resource: Action.moveToTrash.icon)
+        case .toggleReadStatus:
+            let action = isRead ? Action.markAsUnread : Action.markAsRead
+            return UIImage(resource: action.icon)
+        }
+    }
 
     var color: Color {
         switch self {
