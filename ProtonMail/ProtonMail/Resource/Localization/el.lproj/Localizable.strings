@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Πρόσβαση στην εφαρμογή επιφάνειας εργασίας";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
@@ -2502,28 +2502,28 @@
 "+%u premium features" = "+%u premium χαρακτηριστικά";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%ux περισσότερο χώρο αποθήκευσης";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Αποκτήστε %u GB—άφθονο χώρο για την ασφαλή αποθήκευση των μηνυμάτων, των αρχείων και των φωτογραφιών σας";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%ux περισσότερες διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Δημιουργήστε έως και %u διευθύνσεις ηλεκτρονικού ταχυδρομείου, συμπεριλαμβανομένων @pm.me, για να καλύψετε τις ανάγκες σας.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Συνδέστε το δικό σας τομέα και στείλτε τα επαγγελματικά ή επώνυμα email σας με ασφάλεια.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Ανοίξτε το email και το ημερολόγιό σας με ένα κλικ και αποφύγετε τους περισπασμούς του προγράμματος περιήγησης.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Οργανώστε τα email σας χρησιμοποιώντας το προτιμώμενο σύστημα αρχειοθέτησης και επισήμανσης.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Απολαύστε ταχύτερο χρόνο απόκρισης από εξειδικευμένο προσωπικό υποστήριξης σε περίπτωση που προκύψει κάποιο πρόβλημα.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";

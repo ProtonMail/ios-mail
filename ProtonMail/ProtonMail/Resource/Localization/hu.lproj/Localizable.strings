@@ -2547,7 +2547,7 @@
 "Free" = "Ingyenes";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Lemondás nélkül automatikusan megújul ugyanazon az áron és feltételek mellett.";
 
 /* Displayed next to the monthly price */
 "/month" = "/hó";
