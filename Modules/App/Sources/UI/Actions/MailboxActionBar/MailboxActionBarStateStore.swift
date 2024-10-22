@@ -53,7 +53,7 @@ class MailboxActionBarStateStore: ObservableObject {
         case .more:
             let moreActionSheetState = MailboxActionBarMoreSheetState(
                 selectedItemsIDs: ids,
-                visibleActions: state.visibleActions.filter { $0 != .more }, // FIXME: - Move to extension
+                visibleActions: state.visibleActions.moreActionFiltered,
                 hiddenActions: state.moreActions
             )
             state = state.copy(\.moreActionSheetPresented, to: moreActionSheetState)
@@ -81,4 +81,12 @@ class MailboxActionBarStateStore: ObservableObject {
             .copy(\.visibleActions, to: actions.visibleBottomBarActions.compactMap(\.action))
             .copy(\.moreActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
     }
+}
+
+private extension Array where Element == BottomBarAction {
+
+    var moreActionFiltered: Self {
+        filter { $0 != .more }
+    }
+
 }
