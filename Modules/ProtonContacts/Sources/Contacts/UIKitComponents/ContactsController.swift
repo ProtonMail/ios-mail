@@ -39,11 +39,11 @@ final class ContactsController: UIViewController, UITableViewDataSource {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = UIColor(backgroundColor)
         tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
-        tableView.sectionIndexColor = UIColor(DS.Color.Text.accent)
         tableView.sectionFooterHeight = .zero
         tableView.sectionHeaderHeight = DS.Spacing.large
-        tableView.separatorInset = .zero
+        tableView.sectionIndexColor = UIColor(DS.Color.Text.accent)
         tableView.separatorColor = UIColor(DS.Color.Border.norm)
+        tableView.separatorInset = .zero
         tableView.registerCell(ContactCell.self)
         tableView.registerCell(ContactGroupCell.self)
         return tableView

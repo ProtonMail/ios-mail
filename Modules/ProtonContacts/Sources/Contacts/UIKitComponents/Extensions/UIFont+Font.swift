@@ -20,8 +20,8 @@ import UIKit
 extension UIFont {
 
     static func font(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
-        let font = UIFont.preferredFont(forTextStyle: textStyle)
-        return UIFont.systemFont(ofSize: font.pointSize, weight: weight)
+        let preferredFont = UIFont.preferredFont(forTextStyle: textStyle)
+        return .systemFont(ofSize: preferredFont.pointSize, weight: weight)
     }
 
 }

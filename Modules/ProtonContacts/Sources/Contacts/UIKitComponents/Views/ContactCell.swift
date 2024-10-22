@@ -49,8 +49,8 @@ final class ContactCell: UITableViewCell {
     private let contentStackView: UIStackView = ViewsFactory.contactItemStackView
 
     private func setUpSelf() {
-        selectionStyle = .none
         contentView.backgroundColor = UIColor(DS.Color.BackgroundInverted.secondary)
+        selectionStyle = .none
     }
 
     private func setupUI() {

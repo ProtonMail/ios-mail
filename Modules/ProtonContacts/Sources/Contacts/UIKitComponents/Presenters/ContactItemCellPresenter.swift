@@ -23,7 +23,7 @@ enum ContactItemCellPresenter {
         cell.avatarLabel.text = item.avatarInformation.text
         cell.avatarLabel.backgroundColor = UIColor(Color(hex: item.avatarInformation.color))
 
-        cell.labelsView.nameLabel.text = item.name
+        cell.labelsView.titleLabel.text = item.name
 
         cell.labelsView.subtitleLabel.text = item.emails.first?.email
         cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty

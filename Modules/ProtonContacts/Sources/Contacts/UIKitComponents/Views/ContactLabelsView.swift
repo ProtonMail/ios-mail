@@ -17,27 +17,18 @@
 
 import DesignSystem
 import ProtonCoreUI
+import SwiftUI
 import UIKit
 
 final class ContactLabelsView: UIView {
 
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = .font(textStyle: .body, weight: .regular)
-        label.textColor = UIColor(DS.Color.Text.weak)
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
+    let titleLabel: UILabel = ViewsFactory.label(
+        font: .font(textStyle: .body, weight: .regular), textColor: DS.Color.Text.weak
+    )
 
-    let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .body3(weight: .regular)
-        label.textColor = UIColor(DS.Color.Text.hint)
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
+    let subtitleLabel: UILabel = ViewsFactory.label(font: .body3(weight: .regular), textColor: DS.Color.Text.hint)
 
-    private let textStackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -55,19 +46,27 @@ final class ContactLabelsView: UIView {
     // MARK: - Private
 
     private func setupUI() {
-        textStackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        textStackView.addArrangedSubview(nameLabel)
-        textStackView.addArrangedSubview(subtitleLabel)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(subtitleLabel)
 
-        addSubview(textStackView)
+        addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            textStackView.topAnchor.constraint(equalTo: topAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            textStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+    }
+
+}
+
+private extension ViewsFactory {
+
+    static func label(font: UIFont, textColor: Color) -> UILabel {
+        label(font: font, textColor: textColor, lineBreakMode: .byTruncatingTail)
     }
 
 }

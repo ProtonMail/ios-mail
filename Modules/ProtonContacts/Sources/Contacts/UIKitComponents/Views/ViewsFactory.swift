@@ -16,9 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import SwiftUI
 import UIKit
 
 enum ViewsFactory {
+
+    static func label(font: UIFont, textColor: Color, lineBreakMode: NSLineBreakMode) -> UILabel {
+        let label = UILabel()
+        label.font = font
+        label.textColor = UIColor(textColor)
+        label.lineBreakMode = lineBreakMode
+        return label
+    }
 
     static var contactItemStackView: UIStackView {
         let stackView = UIStackView()

@@ -45,8 +45,8 @@ final class ContactGroupCell: UITableViewCell {
 
     private let iconImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: DS.Icon.icUsers))
-        imageView.tintColor = UIColor(DS.Color.Text.inverted)
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = UIColor(DS.Color.Text.inverted)
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         return imageView
@@ -55,20 +55,20 @@ final class ContactGroupCell: UITableViewCell {
     private let contentStackView: UIStackView = ViewsFactory.contactItemStackView
 
     private func setUpSelf() {
-        selectionStyle = .none
         contentView.backgroundColor = UIColor(DS.Color.BackgroundInverted.secondary)
+        selectionStyle = .none
     }
 
     private func setupUI() {
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        iconBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+
         iconBackgroundView.addSubview(iconImageView)
         contentStackView.addArrangedSubview(iconBackgroundView)
         contentStackView.addArrangedSubview(labelsView)
 
         contentView.addSubview(contentStackView)
-
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        iconBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor),

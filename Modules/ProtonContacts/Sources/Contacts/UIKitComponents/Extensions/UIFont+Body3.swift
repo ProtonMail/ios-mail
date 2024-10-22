@@ -19,7 +19,7 @@ import UIKit
 
 extension UIFont {
 
-    /// A convenience method for the body3 font equivalent
+    /// A convenience UIKit method for the `fontBody3` view modifier.
     static func body3(weight: UIFont.Weight) -> UIFont {
         dynamicFont(forTextStyle: .body, size: 14, weight: weight)
     }
