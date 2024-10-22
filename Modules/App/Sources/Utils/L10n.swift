@@ -103,6 +103,10 @@ enum L10n {
             "Move to trash",
             comment: "Action title for moving message/conversation to the `Trash` folder in the action sheet."
         )
+        static let notSpam = LocalizedStringResource(
+            "Not spam",
+            comment: "Action title for moving a message out of `Spam` to `Inbox`"
+        )
         static let print = LocalizedStringResource(
             "Print",
             comment: "Action title for printing given message in the action sheet."
