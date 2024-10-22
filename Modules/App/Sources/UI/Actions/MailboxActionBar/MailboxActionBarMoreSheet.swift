@@ -19,18 +19,6 @@ import SwiftUI
 import DesignSystem
 import ProtonCoreUI
 
-struct MailboxActionBarMoreSheetState: Identifiable {
-    let selectedItemsIDs: Set<ID>
-    let visibleActions: [BottomBarAction]
-    let hiddenActions: [BottomBarAction]
-
-    // MARK: - Identifiable
-
-    var id: Set<ID> {
-        selectedItemsIDs
-    }
-}
-
 struct MailboxActionBarMoreSheet: View {
     let state: MailboxActionBarMoreSheetState
     let actionTapped: (BottomBarAction) -> Void
@@ -70,34 +58,12 @@ struct MailboxActionBarMoreSheet: View {
     }
 }
 
-extension BottomBarAction {
+private extension BottomBarAction {
     var actionDisplayData: ActionDisplayData {
-        .init(title: displayModel.name.unsafelyUnwrapped, image: displayModel.icon)
+        .init(title: displayData.name.unsafelyUnwrapped, image: displayData.icon)
     }
 }
 
 #Preview {
     MailboxActionBarMoreSheet(state: MailboxActionBarMoreSheetPreviewProvider.state(), actionTapped: { _ in })
-}
-
-enum MailboxActionBarMoreSheetPreviewProvider {
-
-    static func state() -> MailboxActionBarMoreSheetState {
-        .init(
-            selectedItemsIDs: [.init(value: 1), .init(value: 2), .init(value: 3)],
-            visibleActions: [
-                .markUnread,
-                .moveToSystemFolder(.init(localId: .init(value: 4), systemLabel: .archive)),
-                .moveToSystemFolder(.init(localId: .init(value: 5), systemLabel: .inbox)),
-                .moveToSystemFolder(.init(localId: .init(value: 6), systemLabel: .trash)),
-                .star
-            ],
-            hiddenActions: [
-                .labelAs,
-                .moveTo,
-                .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .spam))
-            ]
-        )
-    }
-
 }
