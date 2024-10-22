@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct GroupedContactsDataSource {
+struct GroupedContactsRepository {
     func allContacts() -> [GroupedContacts] {
         [
             .init(

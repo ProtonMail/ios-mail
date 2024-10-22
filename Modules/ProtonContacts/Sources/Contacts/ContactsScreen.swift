@@ -31,12 +31,12 @@ public struct ContactsScreen: View {
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+        .onLoad { state = groupedContactsRepository.allContacts() }
     }
 
     // MARK: - Private
 
-    private let groupedContactsDataSource = GroupedContactsDataSource()
+    private let groupedContactsRepository = GroupedContactsRepository()
 }
 
 #Preview {
