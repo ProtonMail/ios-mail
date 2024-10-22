@@ -15,30 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import ProtonCore
-import ProtonCoreUI
-import SwiftUI
+import UIKit
 
-public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+extension UIFont {
 
-    public init() {}
-
-    public var body: some View {
-        NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.Background.secondary)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
-        }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+    static func font(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        let font = UIFont.preferredFont(forTextStyle: textStyle)
+        return UIFont.systemFont(ofSize: font.pointSize, weight: weight)
     }
 
-    // MARK: - Private
-
-    private let groupedContactsDataSource = GroupedContactsDataSource()
-}
-
-#Preview {
-    ContactsScreen()
 }

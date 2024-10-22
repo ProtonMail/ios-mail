@@ -15,30 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import ProtonCore
-import ProtonCoreUI
-import SwiftUI
+import UIKit
 
-public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+extension UIFont {
 
-    public init() {}
-
-    public var body: some View {
-        NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.Background.secondary)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
-        }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+    /// A convenience method for the body3 font equivalent
+    static func body3(weight: UIFont.Weight) -> UIFont {
+        dynamicFont(forTextStyle: .body, size: 14, weight: weight)
     }
 
     // MARK: - Private
 
-    private let groupedContactsDataSource = GroupedContactsDataSource()
-}
+    private static func dynamicFont(
+        forTextStyle textStyle: UIFont.TextStyle,
+        size: CGFloat,
+        weight: UIFont.Weight
+    ) -> UIFont {
+        let baseFont = UIFont.systemFont(ofSize: size, weight: weight)
+        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: baseFont)
+    }
 
-#Preview {
-    ContactsScreen()
 }

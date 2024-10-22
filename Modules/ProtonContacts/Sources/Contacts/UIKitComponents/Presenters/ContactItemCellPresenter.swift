@@ -15,30 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import ProtonCore
 import ProtonCoreUI
 import SwiftUI
 
-public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+enum ContactItemCellPresenter {
+    static func present(item: ContactItem, in cell: ContactCell) {
+        cell.avatarLabel.text = item.avatarInformation.text
+        cell.avatarLabel.backgroundColor = UIColor(Color(hex: item.avatarInformation.color))
 
-    public init() {}
+        cell.labelsView.nameLabel.text = item.name
 
-    public var body: some View {
-        NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.Background.secondary)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
-        }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+        cell.labelsView.subtitleLabel.text = item.emails.first?.email
+        cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty
     }
-
-    // MARK: - Private
-
-    private let groupedContactsDataSource = GroupedContactsDataSource()
-}
-
-#Preview {
-    ContactsScreen()
 }

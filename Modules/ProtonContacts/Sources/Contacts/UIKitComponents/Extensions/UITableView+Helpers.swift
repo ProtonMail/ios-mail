@@ -15,30 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import ProtonCore
-import ProtonCoreUI
-import SwiftUI
+import UIKit
 
-public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+extension UITableView {
 
-    public init() {}
-
-    public var body: some View {
-        NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.Background.secondary)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
-        }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+    func registerCell<T: UITableViewCell>(_ cellType: T.Type) {
+        register(cellType, forCellReuseIdentifier: cellType.reuseIdentifier)
     }
 
-    // MARK: - Private
-
-    private let groupedContactsDataSource = GroupedContactsDataSource()
 }
 
-#Preview {
-    ContactsScreen()
+extension UITableView {
+
+    func dequeueCell<T: UITableViewCell>(_ cellType: T.Type) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: cellType.reuseIdentifier) as? T else {
+            fatalError("Could not dequeue cell with reuse identifier: \(cellType.reuseIdentifier)")
+        }
+
+        return cell
+    }
+
 }
