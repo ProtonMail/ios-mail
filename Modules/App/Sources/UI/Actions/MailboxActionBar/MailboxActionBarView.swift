@@ -59,6 +59,7 @@ struct MailboxActionBarState: Copying {
 enum MailboxActionBarAction {
     case mailboxItemsSelectionUpdated(Set<ID>, mailbox: Mailbox)
     case actionSelected(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
+    case moreSheetAction(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
     case dismissLabelAsSheet
     case dismissMoveToSheet
 }
@@ -97,6 +98,9 @@ class MailboxActionBarStateStore: ObservableObject {
             state = state.copy(\.labelAsSheetPresented, to: nil)
         case .dismissMoveToSheet:
             state = state.copy(\.moveToSheetPresented, to: nil)
+        case .moreSheetAction(let action, let ids, let mailbox):
+            state = state.copy(\.moreActionSheetPresented, to: nil)
+            handle(action: action, ids: ids, mailbox: mailbox)
         }
     }
 
@@ -190,7 +194,9 @@ struct MailboxActionBarView: View {
                     moveToSheet(input: input)
                 }
                 .sheet(item: $store.state.moreActionSheetPresented) { state in
-                    MailboxActionBarMoreSheet(state: state)
+                    MailboxActionBarMoreSheet(state: state) { action in
+                        store.handle(action: .moreSheetAction(action, ids: selectedItems, mailbox: mailbox))
+                    }
                 }
             }
         }

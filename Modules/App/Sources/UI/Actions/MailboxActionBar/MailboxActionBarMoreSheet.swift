@@ -33,9 +33,11 @@ struct MailboxActionBarMoreSheetState: Identifiable {
 
 struct MailboxActionBarMoreSheet: View {
     let state: MailboxActionBarMoreSheetState
+    let actionTapped: (BottomBarAction) -> Void
 
-    init(state: MailboxActionBarMoreSheetState) {
+    init(state: MailboxActionBarMoreSheetState, actionTapped: @escaping (BottomBarAction) -> Void) {
         self.state = state
+        self.actionTapped = actionTapped
     }
 
     var body: some View {
@@ -61,7 +63,7 @@ struct MailboxActionBarMoreSheet: View {
                 ActionSheetImageButton(
                     displayData: action.actionDisplayData,
                     displayBottomSeparator: !isLast,
-                    action: {  }
+                    action: { actionTapped(action) }
                 )
             }
         }
@@ -89,5 +91,5 @@ extension BottomBarAction {
             .moveTo,
             .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .spam))
         ]
-    ))
+    ), actionTapped: { _ in })
 }
