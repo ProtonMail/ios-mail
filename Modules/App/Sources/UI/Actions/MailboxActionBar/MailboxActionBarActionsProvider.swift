@@ -20,11 +20,11 @@ import proton_app_uniffi
 struct MailboxActionBarActionsProvider {
     let availableActions: AvailableMailboxActionBarActions
 
-    func actions(for mailbox: Mailbox, ids: [ID]) async -> AllBottomBarMessageActions {
-        return switch mailbox.viewMode() {
-        case .messages:
+    func actions(for mailbox: Mailbox, ids: [ID], itemType: MailboxItemType) async -> AllBottomBarMessageActions {
+        return switch itemType {
+        case .message:
             try! await availableActions.message(mailbox, ids)
-        case .conversations:
+        case .conversation:
             .testData
         }
     }

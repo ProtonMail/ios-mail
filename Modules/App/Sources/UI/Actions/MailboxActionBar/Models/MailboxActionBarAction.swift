@@ -18,9 +18,9 @@
 import proton_app_uniffi
 
 enum MailboxActionBarAction {
-    case mailboxItemsSelectionUpdated(Set<ID>, mailbox: Mailbox)
-    case actionSelected(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
-    case moreSheetAction(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
+    case mailboxItemsSelectionUpdated(Set<ID>, mailbox: Mailbox, itemType: MailboxItemType)
+    case actionSelected(BottomBarAction, ids: Set<ID>, mailbox: Mailbox, itemType: MailboxItemType)
+    case moreSheetAction(BottomBarAction, ids: Set<ID>, mailbox: Mailbox, itemType: MailboxItemType)
     case dismissLabelAsSheet
     case dismissMoveToSheet
 }

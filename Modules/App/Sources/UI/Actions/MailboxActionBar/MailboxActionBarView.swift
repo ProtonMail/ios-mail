@@ -41,7 +41,14 @@ struct MailboxActionBarView: View {
                     Spacer()
                     ForEach(store.state.visibleActions, id: \.self) { action in
                         Button(action: {
-                            store.handle(action: .actionSelected(action, ids: selectedItems, mailbox: mailbox))
+                            store.handle(
+                                action: .actionSelected(
+                                    action,
+                                    ids: selectedItems,
+                                    mailbox: mailbox,
+                                    itemType: itemType
+                                )
+                            )
                         }) {
                             Image(action.displayData.icon)
                                 .foregroundStyle(DS.Color.Icon.weak)
@@ -62,7 +69,9 @@ struct MailboxActionBarView: View {
                 .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
-                        store.handle(action: .mailboxItemsSelectionUpdated(newValue, mailbox: mailbox))
+                        store.handle(
+                            action: .mailboxItemsSelectionUpdated(newValue, mailbox: mailbox, itemType: itemType)
+                        )
                     }
                 }
                 .sheet(item: $store.state.labelAsSheetPresented) { input in
@@ -73,7 +82,9 @@ struct MailboxActionBarView: View {
                 }
                 .sheet(item: $store.state.moreActionSheetPresented) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
-                        store.handle(action: .moreSheetAction(action, ids: selectedItems, mailbox: mailbox))
+                        store.handle(
+                            action: .moreSheetAction(action, ids: selectedItems, mailbox: mailbox, itemType: itemType)
+                        )
                     }
                 }
             }
@@ -81,6 +92,15 @@ struct MailboxActionBarView: View {
     }
 
     // MARK: - Private
+
+    private var itemType: MailboxItemType {
+        switch mailbox.viewMode() {
+        case .conversations:
+            .conversation
+        case .messages:
+            .message
+        }
+    }
 
     private func labelAsSheet(input: ActionSheetInput) -> some View {
         let model = LabelAsSheetModel(

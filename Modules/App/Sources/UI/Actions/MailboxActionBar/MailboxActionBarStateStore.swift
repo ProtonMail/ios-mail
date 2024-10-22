@@ -32,23 +32,23 @@ class MailboxActionBarStateStore: ObservableObject {
 
     func handle(action: MailboxActionBarAction) {
         switch action {
-        case .mailboxItemsSelectionUpdated(let ids, let mailbox):
-            fetchAvailableBottomBarActions(for: ids, mailbox: mailbox)
-        case .actionSelected(let action, let ids, let mailbox):
-            handle(action: action, ids: ids, mailbox: mailbox)
+        case .mailboxItemsSelectionUpdated(let ids, let mailbox, let itemType):
+            fetchAvailableBottomBarActions(for: ids, mailbox: mailbox, itemType: itemType)
+        case .actionSelected(let action, let ids, let mailbox, let itemType):
+            handle(action: action, ids: ids, mailbox: mailbox, itemType: itemType)
         case .dismissLabelAsSheet:
             state = state.copy(\.labelAsSheetPresented, to: nil)
         case .dismissMoveToSheet:
             state = state.copy(\.moveToSheetPresented, to: nil)
-        case .moreSheetAction(let action, let ids, let mailbox):
+        case .moreSheetAction(let action, let ids, let mailbox, let itemType):
             state = state.copy(\.moreActionSheetPresented, to: nil)
-            handle(action: action, ids: ids, mailbox: mailbox)
+            handle(action: action, ids: ids, mailbox: mailbox, itemType: itemType)
         }
     }
 
     // MARK: - Private
 
-    private func handle(action: BottomBarAction, ids: Set<ID>, mailbox: Mailbox) {
+    private func handle(action: BottomBarAction, ids: Set<ID>, mailbox: Mailbox, itemType: MailboxItemType) {
         switch action {
         case .more:
             let moreActionSheetState = MailboxActionBarMoreSheetState(
@@ -58,18 +58,18 @@ class MailboxActionBarStateStore: ObservableObject {
             )
             state = state.copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
-            state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: mailbox.viewMode().itemType))
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: itemType))
         case .moveTo:
-            state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: mailbox.viewMode().itemType))
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: itemType))
         default:
             break // FIXME: - Handle rest of the actions
         }
     }
 
-    private func fetchAvailableBottomBarActions(for ids: Set<ID>, mailbox: Mailbox) {
+    private func fetchAvailableBottomBarActions(for ids: Set<ID>, mailbox: Mailbox, itemType: MailboxItemType) {
         guard !ids.isEmpty else { return }
         Task {
-            let actions = await actionsProvider.actions(for: mailbox, ids: Array(ids))
+            let actions = await actionsProvider.actions(for: mailbox, ids: Array(ids), itemType: itemType)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateActions(actions: actions)
             }))
