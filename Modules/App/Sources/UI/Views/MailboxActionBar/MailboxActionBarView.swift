@@ -59,6 +59,8 @@ struct MailboxActionBarState: Copying {
 enum MailboxActionBarAction {
     case mailboxItemsSelectionUpdated(Set<ID>, mailbox: Mailbox)
     case actionSelected(BottomBarAction, ids: Set<ID>, mailbox: Mailbox)
+    case dismissLabelAsSheet
+    case dismissMoveToSheet
 }
 
 extension MailboxActionBarState {
@@ -91,6 +93,10 @@ class MailboxActionBarStateStore: ObservableObject {
             fetchAvailableBottomBarActions(for: ids, mailbox: mailbox)
         case .actionSelected(let action, let ids, let mailbox):
             handle(action: action, ids: ids, mailbox: mailbox)
+        case .dismissLabelAsSheet:
+            state = state.copy(\.labelAsSheetPresented, to: nil)
+        case .dismissMoveToSheet:
+            state = state.copy(\.moveToSheetPresented, to: nil)
         }
     }
 
@@ -147,7 +153,9 @@ struct MailboxActionBarView: View {
                 HStack(alignment: .center) {
                     Spacer()
                     ForEach(store.state.visibleActions, id: \.self) { action in
-                        Button(action: { }) {
+                        Button(action: {
+                            store.handle(action: .actionSelected(action, ids: selectedItems, mailbox: mailbox))
+                        }) {
                             Image(action.displayModel.icon)
                                 .foregroundStyle(DS.Color.Icon.weak)
                         }
@@ -170,8 +178,38 @@ struct MailboxActionBarView: View {
                         store.handle(action: .mailboxItemsSelectionUpdated(newValue, mailbox: mailbox))
                     }
                 }
+                .sheet(item: $store.state.labelAsSheetPresented) { input in
+                    labelAsSheet(input: input)
+                }
+                .sheet(item: $store.state.moveToSheetPresented) { input in
+                    moveToSheet(input: input)
+                }
             }
         }
+    }
+
+    // MARK: - Private
+
+    private func labelAsSheet(input: ActionSheetInput) -> some View {
+        let model = LabelAsSheetModel(
+            input: input,
+            mailbox: mailbox,
+            availableLabelAsActions: .productionInstance
+        ) {
+            store.handle(action: .dismissLabelAsSheet)
+        }
+        return LabelAsSheet(model: model)
+    }
+
+    private func moveToSheet(input: ActionSheetInput) -> some View {
+        let model = MoveToSheetModel(
+            input: input,
+            mailbox: mailbox,
+            availableMoveToActions: .productionInstance
+        ) {
+            store.handle(action: .dismissMoveToSheet)
+        }
+        return MoveToSheet(model: model)
     }
 }
 
