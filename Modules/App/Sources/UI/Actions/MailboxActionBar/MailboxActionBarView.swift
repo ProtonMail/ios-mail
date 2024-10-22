@@ -17,6 +17,7 @@
 
 import DesignSystem
 import proton_app_uniffi
+import ProtonCoreUI
 import SwiftUI
 
 struct MailboxActionBarView: View {
@@ -39,7 +40,7 @@ struct MailboxActionBarView: View {
                 Spacer()
                 HStack(alignment: .center) {
                     Spacer()
-                    ForEach(store.state.visibleActions, id: \.self) { action in
+                    ForEachEnumerated(store.state.visibleActions, id: \.offset) { action, index in
                         Button(action: {
                             store.handle(
                                 action: .actionSelected(
@@ -53,6 +54,8 @@ struct MailboxActionBarView: View {
                             Image(action.displayData.icon)
                                 .foregroundStyle(DS.Color.Icon.weak)
                         }
+                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+
                         Spacer()
                     }
                 }
@@ -137,9 +140,9 @@ struct MailboxActionBarView: View {
 
 private struct MailboxActionBarViewIdentifiers {
     static let rootItem = "mailbox.actionBar.rootItem"
-    static let button1 = "mailbox.actionBar.button1"
-    static let button2 = "mailbox.actionBar.button2"
-    static let button3 = "mailbox.actionBar.button3"
-    static let button4 = "mailbox.actionBar.button4"
-    static let button5 = "mailbox.actionBar.button5"
+
+    static func button(index: Int) -> String {
+        let number = index + 1
+        return "mailbox.actionBar.button\(number)"
+    }
 }

@@ -29,7 +29,7 @@ final class SelectionMode {
     let selectionModifier: SelectionModeStateModifier
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
-        self.selectionState = .init()
+        self.selectionState = .init(selectedItems: Set(selectedItems.map(\.id)))
         self.selectionModifier = .init(state: self.selectionState)
     }
 }
