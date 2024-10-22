@@ -64,6 +64,7 @@ final class ContactsController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
+        tableView.sectionIndexColor = UIColor(DS.Color.Text.accent)
         tableView.sectionFooterHeight = .zero
         tableView.sectionHeaderHeight = DS.Spacing.large
         tableView.separatorInset = .zero
@@ -96,6 +97,10 @@ final class ContactsController: UIViewController, UITableViewDataSource {
             ContactGroupCellPresenter.present(item: groupedItem, in: groupCell)
             return groupCell
         }
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        groupedContacts.map(\.groupedBy)
     }
 
 }
