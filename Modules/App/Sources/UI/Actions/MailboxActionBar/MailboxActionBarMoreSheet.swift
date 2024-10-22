@@ -38,7 +38,7 @@ struct MailboxActionBarMoreSheet: View {
                 .padding(.all, DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
-            .navigationTitle("\(state.selectedItemsIDs.count) Selected".notLocalized) // FIXME: - Add localization
+            .navigationTitle(L10n.Mailbox.selected(emailsCount: state.selectedItemsIDs.count).string)
             .navigationBarTitleDisplayMode(.inline)
         }
     }
