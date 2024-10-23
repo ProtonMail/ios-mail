@@ -42,6 +42,9 @@ final class AppContext: Sendable, ObservableObject {
     private let dependencies: AppContext.Dependencies
     private var cancellables = Set<AnyCancellable>()
 
+    var userDefaults: UserDefaults!
+    private var userDefaultsCleaner: UserDefaultsCleaner!
+
     var accountCoordinator: AccountAuthCoordinator!
 
     @Published private(set) var activeUserSession: MailUserSession?
@@ -65,6 +68,9 @@ final class AppContext: Sendable, ObservableObject {
         guard let appConfig = dependencies.appConfigService.appConfig else {
             throw AppContextError.appConfigNotDefined
         }
+
+        userDefaults = dependencies.userDefaults
+        userDefaultsCleaner = .init(userDefaults: userDefaults)
 
         // TODO: exclude application support from iCloud backup
 
@@ -126,6 +132,7 @@ extension AppContext: AccountAuthDelegate {
         case .signedIn(let storedSession):
             await setupActiveUserSession(session: storedSession)
         case .signedOut:
+            userDefaultsCleaner.cleanUp()
             await MainActor.run {
                 activeUserSession = nil
             }
@@ -140,6 +147,7 @@ extension AppContext {
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
         let appConfigService: AppConfigService = AppConfigService.shared
+        let userDefaults: UserDefaults = .standard
     }
 }
 

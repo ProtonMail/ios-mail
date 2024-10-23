@@ -36,8 +36,8 @@ class HomeScreenTests: BaseTestCase {
         userDefaults = .clearedTestInstance()
         sut = HomeScreen(
             customLabelModel: CustomLabelModel(),
-            userSession: try .testInstance(),
-            userDefaults: userDefaults
+            appContext: .shared,
+            userSession: try .testInstance()
         )
     }
 

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountLogin
 import proton_app_uniffi
 import SwiftUI
 
@@ -36,14 +37,18 @@ struct HomeScreen: View {
     @StateObject private var appRoute: AppRouteState
     @State private var modalState: ModalState?
     @ObservedObject private var customLabelModel: CustomLabelModel
+    @ObservedObject private var appContext: AppContext
+
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
-    private let userDefaultsCleaner: UserDefaultsCleaner
     private let userDefaults: UserDefaults
 
-    init(customLabelModel: CustomLabelModel, userSession: MailUserSession, userDefaults: UserDefaults) {
+    @State var presentSignOutDialog = false
+
+    init(customLabelModel: CustomLabelModel, appContext: AppContext, userSession: MailUserSession) {
         _appRoute = .init(wrappedValue: .initialState)
         self.customLabelModel = customLabelModel
+        self.appContext = appContext
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
         self.makeSidebarScreen = { selectedItem in
             SidebarScreen(
@@ -52,8 +57,7 @@ struct HomeScreen: View {
                 selectedItem: selectedItem
             )
         }
-        self.userDefaultsCleaner = .init(userDefaults: userDefaults)
-        self.userDefaults = userDefaults
+        self.userDefaults = appContext.userDefaults
     }
 
     var didAppear: ((Self) -> Void)?
@@ -101,7 +105,7 @@ struct HomeScreen: View {
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
                     case .signOut:
-                        signOut()
+                        presentSignOutDialog = true
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .customLabel(
@@ -118,18 +122,8 @@ struct HomeScreen: View {
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
         .sheet(item: $modalState, content: HomeScreenModalFactory.makeModal)
+        .withSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountCoordinator)
         .onAppear { didAppear?(self) }
-    }
-
-    private func signOut() {
-        userDefaultsCleaner.cleanUp()
-        Task {
-            do {
-                try await AppContext.shared.logoutActiveUserSession()
-            } catch {
-                AppLogger.log(error: error, category: .userSessions)
-            }
-        }
     }
 
     private func presentShareFileController() {

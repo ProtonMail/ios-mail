@@ -76,11 +76,11 @@ private struct RootView: View {
 
     @ViewBuilder
     private func mainView() -> some View {
-        if let activerUser = appContext.activeUserSession {
+        if let activeUser = appContext.activeUserSession {
             HomeScreen(
                 customLabelModel: customLabelModel,
-                userSession: activerUser,
-                userDefaults: .standard
+                appContext: appContext,
+                userSession: activeUser
             )
         } else {
             appContext
