@@ -26,9 +26,15 @@ enum MailboxItemActionSheetPreviewProvider {
                 message: { _, _ in .init(
                     replyActions: [.reply, .forward, .replyAll],
                     messageActions: [.markUnread, .star, .pin, .labelAs],
-                    moveActions: [],
+                    moveActions: [
+                        .init(localId: .init(value: 1), name: .inbox, isSelected: .unselected),
+                        .init(localId: .init(value: 2), name: .archive, isSelected: .unselected),
+                        .init(localId: .init(value: 3), name: .spam, isSelected: .unselected),
+                        .init(localId: .init(value: 4), name: .trash, isSelected: .unselected),
+                    ],
                     generalActions: [
                         .viewMessageInLightMode,
+                        .viewMessageInDarkMode,
                         .saveAsPdf,
                         .print,
                         .viewHeaders,
