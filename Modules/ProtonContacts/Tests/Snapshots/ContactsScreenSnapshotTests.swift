@@ -21,6 +21,6 @@ import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
     func testContactsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: ContactsScreen())
+        assertSnapshotsOnIPhoneX(of: ContactsScreen(repository: GroupedContactsRepositoryPreview()))
     }
 }

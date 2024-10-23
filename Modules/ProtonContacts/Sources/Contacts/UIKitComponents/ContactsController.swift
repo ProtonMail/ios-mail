@@ -46,12 +46,12 @@ final class ContactsController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        groupedContacts[section].contacts.count
+        groupedContacts[section].item.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = groupedContacts[indexPath.section]
-        let contactType = section.contacts[indexPath.row]
+        let contactType = section.item[indexPath.row]
 
         switch contactType {
         case .contact(let contactItem):

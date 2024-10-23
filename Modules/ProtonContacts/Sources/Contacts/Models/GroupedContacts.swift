@@ -15,33 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import struct proton_app_uniffi.AvatarInformation
 
-struct GroupedContacts: Hashable {
+public struct GroupedContacts: Hashable {
     let groupedBy: String
-    let contacts: [ContactType]
+    let item: [ContactType]
 }
 
-struct ContactEmailItem: Hashable {
+public struct ContactEmailItem: Hashable {
     let id: UInt64
     let email: String
 }
 
-struct ContactGroupItem: Hashable {
+public struct ContactGroupItem: Hashable {
     let id: UInt64
     let name: String
     let avatarColor: String
     let emails: [ContactEmailItem]
 }
 
-struct ContactItem: Hashable {
+public struct ContactItem: Hashable {
     let id: UInt64
     let name: String
     let avatarInformation: AvatarInformation
     let emails: [ContactEmailItem]
 }
 
-enum ContactType: Hashable {
+public enum ContactType: Hashable {
     case contact(ContactItem)
     case group(ContactGroupItem)
 }
