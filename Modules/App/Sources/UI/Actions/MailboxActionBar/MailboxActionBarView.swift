@@ -40,7 +40,7 @@ struct MailboxActionBarView: View {
                 Spacer()
                 HStack(alignment: .center) {
                     Spacer()
-                    ForEachEnumerated(store.state.visibleActions, id: \.offset) { action, index in
+                    ForEachEnumerated(store.state.bottomBarActions, id: \.offset) { action, index in
                         Button(action: {
                             store.handle(
                                 action: .actionSelected(

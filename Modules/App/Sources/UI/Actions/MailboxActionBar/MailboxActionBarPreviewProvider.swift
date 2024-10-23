@@ -21,14 +21,14 @@ enum MailboxActionBarPreviewProvider {
 
     static func state() -> MailboxActionBarState {
         MailboxActionBarState(
-            visibleActions: [
+            bottomBarActions: [
                 .markRead,
                 .moveTo,
                 .labelAs,
                 .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)),
                 .more
             ],
-            moreActions: [.notSpam, .permanentDelete, .star],
+            moreSheetOnlyActions: [.notSpam, .permanentDelete, .star],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
             moveToSheetPresented: nil

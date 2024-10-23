@@ -19,8 +19,8 @@ import Foundation
 
 struct MailboxActionBarMoreSheetState: Identifiable, Equatable {
     let selectedItemsIDs: Set<ID>
-    let visibleActions: [BottomBarAction]
-    let hiddenActions: [BottomBarAction]
+    let bottomBarActions: [BottomBarAction]
+    let moreSheetOnlyActions: [BottomBarAction]
 
     // MARK: - Identifiable
 

@@ -15,28 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-//enum MailboxItemAction {
-//    case action(Action)
-//    case conditional(ConditionalAction)
-//}
-//
-//struct MailboxItemActionResolver {
-//    let params: ConditionalActionResolverParams
-//
-//    func action(for itemAction: MailboxItemAction) -> Action {
-//        switch itemAction {
-//        case .action(let action):
-//            return action
-//        case .conditional(let conditionalAction):
-//            return conditionalAction.toAction(params: params)
-//        }
-//    }
-//}
-//
-//struct ConditionalActionResolverParams {
-//    let selectionReadStatus: SelectionReadStatus
-//    let selectionStarStatus: SelectionStarStatus
-//    let systemFolder: SystemFolderLabel?
-//}
+struct InjectIfNotNil<T: ObservableObject>: ViewModifier {
+    var object: T?
+
+    func body(content: Content) -> some View {
+        if let object = object {
+            content.environmentObject(object)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func injectIfNotNil<T: ObservableObject>(_ object: T?) -> some View {
+        self.modifier(InjectIfNotNil(object: object))
+    }
+}

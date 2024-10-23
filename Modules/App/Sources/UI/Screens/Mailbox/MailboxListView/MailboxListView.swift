@@ -55,24 +55,6 @@ struct MailboxListView: View {
 
 }
 
-struct InjectIfNotNil<T: ObservableObject>: ViewModifier {
-    var object: T?
-
-    func body(content: Content) -> some View {
-        if let object = object {
-            content.environmentObject(object)
-        } else {
-            content
-        }
-    }
-}
-
-extension View {
-    func injectIfNotNil<T: ObservableObject>(_ object: T?) -> some View {
-        self.modifier(InjectIfNotNil(object: object))
-    }
-}
-
 extension MailboxListView {
 
     private func disableSwipeActionIfNeeded(_ swipeAction: SwipeAction) -> SwipeAction {

@@ -32,8 +32,8 @@ struct MailboxActionBarMoreSheet: View {
         ClosableScreen {
             ScrollView {
                 VStack(spacing: DS.Spacing.large) {
-                    section(content: state.hiddenActions)
-                    section(content: state.visibleActions)
+                    section(content: state.moreSheetOnlyActions)
+                    section(content: state.bottomBarActions)
                 }
                 .padding(.all, DS.Spacing.large)
             }

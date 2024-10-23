@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 struct MailboxActionBarState: Copying {
-    var visibleActions: [BottomBarAction]
-    var moreActions: [BottomBarAction]
+    var bottomBarActions: [BottomBarAction]
+    var moreSheetOnlyActions: [BottomBarAction]
     var moreActionSheetPresented: MailboxActionBarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
@@ -26,8 +26,8 @@ struct MailboxActionBarState: Copying {
 extension MailboxActionBarState {
     static var initial: Self {
         .init(
-            visibleActions: [],
-            moreActions: [],
+            bottomBarActions: [],
+            moreSheetOnlyActions: [],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
             moveToSheetPresented: nil

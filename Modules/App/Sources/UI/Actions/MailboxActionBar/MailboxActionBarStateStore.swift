@@ -53,8 +53,8 @@ class MailboxActionBarStateStore: ObservableObject {
         case .more:
             let moreActionSheetState = MailboxActionBarMoreSheetState(
                 selectedItemsIDs: ids,
-                visibleActions: state.visibleActions.moreActionFiltered,
-                hiddenActions: state.moreActions
+                bottomBarActions: state.bottomBarActions.moreActionFiltered,
+                moreSheetOnlyActions: state.moreSheetOnlyActions
             )
             state = state.copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
@@ -78,8 +78,8 @@ class MailboxActionBarStateStore: ObservableObject {
 
     private func updateActions(actions: AllBottomBarMessageActions) {
         state = state
-            .copy(\.visibleActions, to: actions.visibleBottomBarActions.compactMap(\.action))
-            .copy(\.moreActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
+            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions.compactMap(\.action))
+            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
     }
 }
 
