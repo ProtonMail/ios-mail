@@ -18,12 +18,18 @@
 import ProtonContacts
 import SwiftUI
 
-enum HomeScreenModalFactory {
+struct HomeScreenModalFactory {
+    private let contactsRepository: GroupedContactsProviding
+
+    init(contactsRepository: GroupedContactsProviding) {
+        self.contactsRepository = contactsRepository
+    }
+
     @MainActor @ViewBuilder
-    static func makeModal(for state: HomeScreen.ModalState) -> some View {
+    func makeModal(for state: HomeScreen.ModalState) -> some View {
         switch state {
         case .contacts:
-            ContactsScreen()
+            ContactsScreen(repository: contactsRepository)
         case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
         case .settings:

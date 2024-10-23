@@ -23,7 +23,9 @@ import SwiftUI
 public struct ContactsScreen: View {
     @State private var state: [GroupedContacts] = []
 
-    public init() {}
+    public init(repository: GroupedContactsProviding) {
+        self.repository = repository
+    }
 
     public var body: some View {
         NavigationStack {
@@ -31,14 +33,19 @@ public struct ContactsScreen: View {
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }
-        .onLoad { state = groupedContactsRepository.allContacts() }
+        .onLoad {
+            Task {
+                let contacts = try await repository.allContacts()
+                state = contacts
+            }
+        }
     }
 
     // MARK: - Private
 
-    private let groupedContactsRepository = GroupedContactsRepository()
+    private let repository: GroupedContactsProviding
 }
 
 #Preview {
-    ContactsScreen()
+    ContactsScreen(repository: GroupedContactsRepositoryPreview())
 }

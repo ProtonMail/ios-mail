@@ -17,6 +17,7 @@
 
 import AccountLogin
 import proton_app_uniffi
+import ProtonContacts
 import SwiftUI
 
 struct HomeScreen: View {
@@ -42,6 +43,7 @@ struct HomeScreen: View {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaults: UserDefaults
+    private let modalFactory: HomeScreenModalFactory
 
     @State var presentSignOutDialog = false
 
@@ -58,6 +60,7 @@ struct HomeScreen: View {
             )
         }
         self.userDefaults = appContext.userDefaults
+        self.modalFactory = .init(contactsRepository: GroupedContactsRepositoryPreview())
     }
 
     var didAppear: ((Self) -> Void)?
@@ -121,7 +124,7 @@ struct HomeScreen: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .sheet(item: $modalState, content: HomeScreenModalFactory.makeModal)
+        .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .withSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountCoordinator)
         .onAppear { didAppear?(self) }
     }
