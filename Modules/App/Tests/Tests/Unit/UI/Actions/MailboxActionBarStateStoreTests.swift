@@ -24,19 +24,29 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var sut: MailboxActionBarStateStore!
     var invokedAvailableMessageActionsWithIDs: [[ID]]!
     var stubbedAvailableMessageActions: AllBottomBarMessageActions!
+    var invokedAvailableConversationActionsWithIDs: [[ID]]!
+    var stubbedAvailableConversationActions: AllBottomBarMessageActions!
 
     override func setUp() {
         super.setUp()
         invokedAvailableMessageActionsWithIDs = []
         stubbedAvailableMessageActions = .testData
+        invokedAvailableConversationActionsWithIDs = []
 
         sut = MailboxActionBarStateStore(
             state: .initial,
-            availableActions: .init(message: { _, ids in
-                self.invokedAvailableMessageActionsWithIDs.append(ids)
+            availableActions: .init(
+                message: { _, ids in
+                    self.invokedAvailableMessageActionsWithIDs.append(ids)
 
-                return self.stubbedAvailableMessageActions
-            })
+                    return self.stubbedAvailableMessageActions
+                },
+                conversation: { _, ids in
+                    self.invokedAvailableConversationActionsWithIDs.append(ids)
+
+                    return self.stubbedAvailableConversationActions
+                }
+            )
         )
     }
 
@@ -47,7 +57,12 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
-    func testState_WhenMailboxItemsSelectionIsUpdated_ItReturnsCorrectState() {
+    func testState_WhenMailboxItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() {
+        stubbedAvailableMessageActions = .init(
+            hiddenBottomBarActions: [.labelAs, .markRead],
+            visibleBottomBarActions: [.notSpam]
+        )
+
         let ids: [ID] = [.init(value: 11)]
 
         sut.handle(
@@ -55,8 +70,32 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
+        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 0)
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.first, ids)
-        XCTAssertEqual(stubbedAvailableMessageActions, .testData)
+        XCTAssertEqual(sut.state, .init(
+            bottomBarActions: [.notSpam],
+            moreSheetOnlyActions: [.labelAs, .markRead]
+        ))
+    }
+
+    func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
+        stubbedAvailableConversationActions = .init(
+            hiddenBottomBarActions: [.notSpam, .permanentDelete],
+            visibleBottomBarActions: [.more]
+        )
+        let ids: [ID] = [.init(value: 22)]
+
+        sut.handle(
+            action: .mailboxItemsSelectionUpdated(Set(ids), mailbox: .testData, itemType: .conversation)
+        )
+
+        XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
+        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 1)
+        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.first, ids)
+        XCTAssertEqual(sut.state, .init(
+            bottomBarActions: [.more],
+            moreSheetOnlyActions: [.notSpam, .permanentDelete]
+        ))
     }
 
     func testState_WhenMailboxItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {

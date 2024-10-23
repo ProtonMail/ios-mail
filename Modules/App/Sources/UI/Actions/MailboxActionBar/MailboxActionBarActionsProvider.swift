@@ -25,19 +25,23 @@ struct MailboxActionBarActionsProvider {
         case .message:
             try! await availableActions.message(mailbox, ids)
         case .conversation:
-            .testData
+            try! await availableActions.conversation(mailbox, ids)
         }
     }
 }
 
 struct AvailableMailboxActionBarActions {
     let message: (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
+    let conversation: (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
 }
 
 extension AvailableMailboxActionBarActions {
 
     static var productionInstance: Self {
-        .init(message: allAvailableBottomBarActionsForMessages)
+        .init(
+            message: allAvailableBottomBarActionsForMessages,
+            conversation: allAvailableBottomBarActionsForConversations
+        )
     }
 
 }

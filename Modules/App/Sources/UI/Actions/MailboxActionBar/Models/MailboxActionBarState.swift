@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct MailboxActionBarState: Copying {
+struct MailboxActionBarState: Copying, Equatable {
     var bottomBarActions: [BottomBarAction]
     var moreSheetOnlyActions: [BottomBarAction]
     var moreActionSheetPresented: MailboxActionBarMoreSheetState?
