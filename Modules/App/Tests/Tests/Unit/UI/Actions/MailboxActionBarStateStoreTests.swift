@@ -107,8 +107,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.moreActionSheetPresented, .init(
             selectedItemsIDs: [.init(value: 9)],
-            visibleActions: [.markRead, .star, .moveTo, .labelAs],
-            hiddenActions: [
+            bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
+            moreSheetOnlyActions: [
                 .notSpam,
                 .permanentDelete,
                 .moveToSystemFolder(.init(localId: .init(value: 4), systemLabel: .archive))
