@@ -15,16 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreUI
+import SwiftUI
 import UIKit
 
-enum ContactItemCellPresenter {
-    static func present(item: ContactItem, in cell: ContactCell) {
-        cell.avatarLabel.text = item.avatarInformation.text
-        cell.avatarLabel.backgroundColor = UIColor(hex: item.avatarInformation.color)
+extension UIColor {
 
-        cell.labelsView.titleLabel.text = item.name
-
-        cell.labelsView.subtitleLabel.text = item.emails.first?.email
-        cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty
+    convenience init(hex: String) {
+        self.init(Color(hex: hex))
     }
+
 }

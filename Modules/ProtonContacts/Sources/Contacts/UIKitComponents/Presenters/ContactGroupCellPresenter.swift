@@ -15,8 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreUI
-import SwiftUI
+import UIKit
 
 enum ContactGroupCellPresenter {
     static func present(item: ContactGroupItem, in cell: ContactGroupCell) {
@@ -25,6 +24,6 @@ enum ContactGroupCellPresenter {
         cell.labelsView.subtitleLabel.text = L10n.Contacts.groupSubtitle(membersCount: item.emails.count).string
         cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty
 
-        cell.iconBackgroundView.backgroundColor = UIColor(Color(hex: item.avatarColor))
+        cell.iconBackgroundView.backgroundColor = UIColor(hex: item.avatarColor)
     }
 }

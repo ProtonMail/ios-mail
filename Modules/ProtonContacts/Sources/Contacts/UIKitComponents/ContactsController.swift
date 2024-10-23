@@ -23,7 +23,6 @@ final class ContactsController: UIViewController, UITableViewDataSource {
     var groupedContacts: [GroupedContacts] {
         didSet { tableView.reloadData() }
     }
-    let backgroundColor: Color
 
     init(contacts: [GroupedContacts], backgroundColor: Color) {
         self.groupedContacts = contacts
@@ -34,20 +33,6 @@ final class ContactsController: UIViewController, UITableViewDataSource {
     required init?(coder: NSCoder) { nil }
 
     // MARK: - Lifecycle
-
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = UIColor(backgroundColor)
-        tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
-        tableView.sectionFooterHeight = .zero
-        tableView.sectionHeaderHeight = DS.Spacing.large
-        tableView.sectionIndexColor = UIColor(DS.Color.Text.accent)
-        tableView.separatorColor = UIColor(DS.Color.Border.norm)
-        tableView.separatorInset = .zero
-        tableView.registerCell(ContactCell.self)
-        tableView.registerCell(ContactGroupCell.self)
-        return tableView
-    }()
 
     override func loadView() {
         view = tableView
@@ -87,5 +72,22 @@ final class ContactsController: UIViewController, UITableViewDataSource {
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         groupedContacts.map(\.groupedBy)
     }
+
+    // MARK: - Private
+
+    private let backgroundColor: Color
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = UIColor(backgroundColor)
+        tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
+        tableView.sectionFooterHeight = .zero
+        tableView.sectionHeaderHeight = DS.Spacing.large
+        tableView.sectionIndexColor = UIColor(DS.Color.Text.accent)
+        tableView.separatorColor = UIColor(DS.Color.Border.norm)
+        tableView.separatorInset = .zero
+        tableView.registerCell(ContactCell.self)
+        tableView.registerCell(ContactGroupCell.self)
+        return tableView
+    }()
 
 }
