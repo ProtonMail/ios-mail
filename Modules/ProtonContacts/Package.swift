@@ -11,11 +11,11 @@ let package = Package(
         .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
     ],
     dependencies: [
-        .package(path: "DesignSystem"),
-        .package(path: "proton_app_uniffi"),
-        .package(path: "ProtonCore"),
-        .package(path: "ProtonCoreUI"),
-        .package(path: "ProtonSnapshotTesting")
+        .package(path: "../DesignSystem"),
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
+        .package(path: "../ProtonCore"),
+        .package(path: "../ProtonCoreUI"),
+        .package(path: "../ProtonSnapshotTesting")
     ],
     targets: [
         .target(
