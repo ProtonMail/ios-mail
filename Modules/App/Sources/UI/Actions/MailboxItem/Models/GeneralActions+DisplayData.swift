@@ -25,6 +25,8 @@ extension GeneralActions {
         switch self {
         case .viewMessageInLightMode:
             .init(title: L10n.Action.renderInLightMode, image: DS.Icon.icSun)
+        case .viewMessageInDarkMode:
+            .init(title: L10n.Action.renderInDarkMode, image: DS.Icon.icMoon)
         case .saveAsPdf:
             .init(title: L10n.Action.saveAsPDF, image: DS.Icon.icFilePDF)
         case .print:

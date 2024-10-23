@@ -41,6 +41,7 @@ public extension DS.Icon {
     static let icInbox = ImageResource.icInbox
     static let icMagnifier = ImageResource.icMagnifier
     static let icMobile = ImageResource.icMobile
+    static let icMoon = ImageResource.icMoon
     static let icMinus = ImageResource.icMinus
     static let icPaperClip = ImageResource.icPaperClip
     static let icPaperPlane = ImageResource.icPaperPlane

@@ -113,6 +113,10 @@ enum L10n {
             "View message in light mode",
             comment: "Action title for viewing given message in light mode in the action sheet."
         )
+        static let renderInDarkMode = LocalizedStringResource(
+            "View message in dark mode",
+            comment: "Action title for viewing given message in dark mode in the action sheet."
+        )
         static let reportPhishing = LocalizedStringResource(
             "Report phishing",
             comment: "Action title for reporting phishing message in the action sheet."

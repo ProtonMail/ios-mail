@@ -317,6 +317,9 @@
     "View HTML" : {
       "comment" : "Action title for viewing given message's HTML in the action sheet."
     },
+    "View message in dark mode" : {
+      "comment" : "Action title for viewing given message in dark mode in the action sheet."
+    },
     "View message in light mode" : {
       "comment" : "Action title for viewing given message in light mode in the action sheet."
     },
