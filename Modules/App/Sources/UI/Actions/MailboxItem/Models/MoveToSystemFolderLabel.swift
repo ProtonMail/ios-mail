@@ -15,25 +15,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import DesignSystem
+import SwiftUI
 
-// FIXME: - Temporary mapping waiting for Rust SDK for being updated
-extension SystemLabel {
+enum MoveToSystemFolderLabel: Equatable {
+    case trash
+    case spam
+    case archive
+    case inbox
+}
 
-    var moveToSystemFolder: MoveToSystemFolderLocation? {
+extension MoveToSystemFolderLabel {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .inbox:
-            return .init(localId: .init(value: 1), systemLabel: .inbox)
+            L10n.Mailbox.SystemFolder.inbox
         case .trash:
-            return .init(localId: .init(value: 2), systemLabel: .trash)
+            L10n.Mailbox.SystemFolder.trash
         case .spam:
-            return .init(localId: .init(value: 3), systemLabel: .spam)
+            L10n.Mailbox.SystemFolder.spam
         case .archive:
-            return .init(localId: .init(value: 4), systemLabel: .archive)
-        case .sent, .allMail, .allDrafts, .allSent, .drafts, .outbox, .starred, .scheduled, .almostAllMail,
-                .snoozed, .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
-            return nil
+            L10n.Mailbox.SystemFolder.archive
         }
     }
 
+    var icon: ImageResource {
+        switch self {
+        case .inbox:
+            DS.Icon.icInbox
+        case .trash:
+            DS.Icon.icTrash
+        case .spam:
+            DS.Icon.icFire
+        case .archive:
+            DS.Icon.icArchiveBox
+        }
+    }
 }

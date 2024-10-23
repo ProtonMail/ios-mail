@@ -16,29 +16,28 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import ProtonCore
-import ProtonCoreUI
 import SwiftUI
+import UIKit
 
-public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+enum ViewsFactory {
 
-    public init() {}
-
-    public var body: some View {
-        NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.BackgroundInverted.norm)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
-        }
-        .onLoad { state = groupedContactsDataSource.allContacts() }
+    static func label(font: UIFont, textColor: Color, lineBreakMode: NSLineBreakMode) -> UILabel {
+        let label = UILabel()
+        label.font = font
+        label.textColor = UIColor(textColor)
+        label.lineBreakMode = lineBreakMode
+        return label
     }
 
-    // MARK: - Private
+    static var contactItemStackView: UIStackView {
+        let stackView = UIStackView()
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = .init(vertical: DS.Spacing.standard, horizontal: DS.Spacing.large)
+        stackView.spacing = DS.Spacing.large
 
-    private let groupedContactsDataSource = GroupedContactsDataSource()
-}
+        return stackView
+    }
 
-#Preview {
-    ContactsScreen()
 }

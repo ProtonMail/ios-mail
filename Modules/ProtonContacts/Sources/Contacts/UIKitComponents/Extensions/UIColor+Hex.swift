@@ -15,10 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import ProtonCoreUI
+import SwiftUI
+import UIKit
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+extension UIColor {
+
+    convenience init(hex: String) {
+        self.init(Color(hex: hex))
+    }
+
 }

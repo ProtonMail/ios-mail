@@ -51,7 +51,7 @@ extension MessageAvailableActions: AvailableActionsConvertible {
         .init(
             replyActions: replyActions,
             mailboxItemActions: messageActions.map(\.action),
-            moveActions: .mocked(), // FIXME: - Waiting for Rust SDK
+            moveActions: moveActions.map(\.moveToAction),
             generalActions: generalActions
         )
     }
@@ -64,24 +64,17 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
         .init(
             replyActions: replyActions,
             mailboxItemActions: conversationActions.map(\.action),
-            moveActions: .mocked(), // FIXME: - Waiting for Rust SDK
+            moveActions: moveActions.map(\.moveToAction),
             generalActions: generalActions
         )
     }
 
 }
 
-// FIXME: - Waiting for Rust SDK
-extension Array where Element == MoveToAction {
+private extension MovableSystemFolderAction {
 
-    static func mocked() -> Self {
-        [
-            .system(.init(localId: .init(value: 1), systemLabel: .inbox)),
-            .system(.init(localId: .init(value: 2), systemLabel: .archive)),
-            .system(.init(localId: .init(value: 3), systemLabel: .spam)),
-            .system(.init(localId: .init(value: 4), systemLabel: .trash)),
-            .moveTo
-        ]
+    var moveToAction: MoveToAction {
+        .system(.init(localId: localId, systemLabel: name.moveToSystemFolderLabel))
     }
 
 }

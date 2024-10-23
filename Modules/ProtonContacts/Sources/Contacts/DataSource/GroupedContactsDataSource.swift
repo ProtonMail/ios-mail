@@ -21,6 +21,21 @@ struct GroupedContactsDataSource {
     func allContacts() -> [GroupedContacts] {
         [
             .init(
+                groupedBy: "#",
+                contacts: [
+                    .contact(
+                        .init(
+                            id: 1_000,
+                            name: "0 VIP",
+                            avatarInformation: .init(text: "0V", color: "#33FF57"),
+                            emails: [
+                                .init(id: 1_001, email: "vip@proton.me"),
+                            ]
+                        )
+                    ),
+                ]
+            ),
+            .init(
                 groupedBy: "A",
                 contacts: [
                     .contact(

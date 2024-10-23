@@ -25,7 +25,7 @@ enum MailboxActionBarPreviewProvider {
                 .markRead,
                 .moveTo,
                 .labelAs,
-                .moveToSystemFolder(MoveToSystemFolderLocation(localId: .init(value: 1), systemLabel: .archive)),
+                .moveToSystemFolder(.init(localId: .init(value: 1), systemLabel: .archive)),
                 .more
             ],
             moreSheetOnlyActions: [.notSpam, .permanentDelete, .star],

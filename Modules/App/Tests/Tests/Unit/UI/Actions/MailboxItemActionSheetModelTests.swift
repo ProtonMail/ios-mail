@@ -31,7 +31,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         stubbedMessageActions = .init(
             replyActions: [.reply],
             messageActions: [.delete],
-            moveActions: [],
+            moveActions: [.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)],
             generalActions: [.print]
         )
 
@@ -48,7 +48,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
             availableActions: .init(
                 replyActions: [.reply],
                 mailboxItemActions: [.delete],
-                moveActions: .mocked(),
+                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox))],
                 generalActions: [.print]
             )
         ))
@@ -58,7 +58,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         stubbedConversationActions = .init(
             replyActions: [.forward],
             conversationActions: [.labelAs],
-            moveActions: [],
+            moveActions: [.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)],
             generalActions: [.saveAsPdf]
         )
 
@@ -75,7 +75,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
             availableActions: .init(
                 replyActions: [.forward],
                 mailboxItemActions: [.labelAs],
-                moveActions: .mocked(),
+                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox))],
                 generalActions: [.saveAsPdf]
             )
         ))

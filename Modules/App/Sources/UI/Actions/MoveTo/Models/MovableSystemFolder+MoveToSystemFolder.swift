@@ -17,8 +17,19 @@
 
 import proton_app_uniffi
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+extension MovableSystemFolder {
+
+    var moveToSystemFolderLabel: MoveToSystemFolderLabel {
+        switch self {
+        case .inbox:
+            .inbox
+        case .trash:
+            .trash
+        case .spam:
+            .spam
+        case .archive:
+            .archive
+        }
+    }
+
 }

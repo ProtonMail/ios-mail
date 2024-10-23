@@ -15,10 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import DesignSystem
+import SwiftUI
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+struct ContactsControllerRepresentable: UIViewControllerRepresentable {
+    let contacts: [GroupedContacts]
+    let backgroundColor: Color
+
+    // MARK: - UIViewControllerRepresentable
+
+    func makeUIViewController(context: Context) -> ContactsController {
+        ContactsController(contacts: contacts, backgroundColor: backgroundColor)
+    }
+
+    func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
+        uiViewController.groupedContacts = contacts
+    }
 }

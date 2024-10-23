@@ -73,7 +73,7 @@ private extension MoveAction {
         guard case .systemFolder(let model) = self else {
             return nil
         }
-        return .init(id: model.localId, label: model.name, isSelected: model.isSelected)
+        return .init(id: model.localId, label: model.name.moveToSystemFolderLabel, isSelected: model.isSelected)
     }
 
     var moveToCustomFolder: MoveToCustomFolder? {

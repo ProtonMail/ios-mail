@@ -15,10 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import UIKit
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+extension UIFont {
+
+    static func font(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+        let preferredFont = UIFont.preferredFont(forTextStyle: textStyle)
+        return .systemFont(ofSize: preferredFont.pointSize, weight: weight)
+    }
+
 }

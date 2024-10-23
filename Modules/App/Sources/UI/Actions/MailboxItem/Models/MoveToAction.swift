@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+enum MoveToAction: Equatable {
+    case system(MoveToSystemFolderLocation)
+    case moveTo
 }

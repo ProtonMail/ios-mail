@@ -32,7 +32,10 @@ extension BottomBarActions {
         case .moveTo:
             return .moveTo
         case .moveToSystemFolder(let label):
-            return label.moveToSystemFolder.map(BottomBarAction.moveToSystemFolder)
+            return .moveToSystemFolder(.init(
+                localId: .init(value: UInt64(label.rawValue)), // FIXME: - We need to get information about localID
+                systemLabel: label.moveToSystemFolderLabel
+            ))
         case .notSpam:
             return .notSpam
         case .permanentDelete:

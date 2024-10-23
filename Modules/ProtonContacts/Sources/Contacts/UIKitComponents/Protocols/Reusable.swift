@@ -15,10 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import UIKit
 
-struct MoveToSystemFolder {
-    let id: ID
-    let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
+protocol Reusable {
+    static var reuseIdentifier: String { get }
+}
+
+extension Reusable where Self: UIView {
+
+    static var reuseIdentifier: String {
+        String(describing: self)
+    }
+
 }

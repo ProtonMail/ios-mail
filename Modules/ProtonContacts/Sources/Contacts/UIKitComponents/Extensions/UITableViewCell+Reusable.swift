@@ -15,22 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-// FIXME: - Temporary models waiting for Rust SDK for being updated
-enum MoveToAction: Equatable {
-    case system(MoveToSystemFolderLocation)
-    case moveTo
-}
-
-enum MoveToSystemFolderLabel: Equatable {
-    case trash
-    case spam
-    case archive
-    case inbox
-}
-
-struct MoveToSystemFolderLocation: Hashable {
-    let localId: ID
-    let systemLabel: MoveToSystemFolderLabel
-}
+extension UITableViewCell: Reusable {}
