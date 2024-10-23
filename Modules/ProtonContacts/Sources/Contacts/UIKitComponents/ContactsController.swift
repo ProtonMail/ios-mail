@@ -18,7 +18,7 @@
 import DesignSystem
 import SwiftUI
 
-final class ContactsController: UIViewController, UITableViewDataSource {
+final class ContactsController: UITableViewController {
 
     var groupedContacts: [GroupedContacts] {
         didSet { tableView.reloadData() }
@@ -27,33 +27,29 @@ final class ContactsController: UIViewController, UITableViewDataSource {
     init(contacts: [GroupedContacts], backgroundColor: Color) {
         self.groupedContacts = contacts
         self.backgroundColor = backgroundColor
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder: NSCoder) { nil }
 
     // MARK: - Lifecycle
 
-    override func loadView() {
-        view = tableView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
+        setUpTableView()
     }
 
-    // MARK: - UITableViewDataSource
+    // MARK: - UITableViewController
 
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         groupedContacts.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         groupedContacts[section].contacts.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = groupedContacts[indexPath.section]
         let contactType = section.contacts[indexPath.row]
 
@@ -69,15 +65,15 @@ final class ContactsController: UIViewController, UITableViewDataSource {
         }
     }
 
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         groupedContacts.map(\.groupedBy)
     }
 
     // MARK: - Private
 
     private let backgroundColor: Color
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+
+    private func setUpTableView() {
         tableView.backgroundColor = UIColor(backgroundColor)
         tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
         tableView.sectionFooterHeight = .zero
@@ -87,7 +83,6 @@ final class ContactsController: UIViewController, UITableViewDataSource {
         tableView.separatorInset = .zero
         tableView.registerCell(ContactCell.self)
         tableView.registerCell(ContactGroupCell.self)
-        return tableView
-    }()
+    }
 
 }
