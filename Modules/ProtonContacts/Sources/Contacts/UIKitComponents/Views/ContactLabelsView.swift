@@ -26,7 +26,10 @@ final class ContactLabelsView: UIView {
         font: .font(textStyle: .body, weight: .regular), textColor: DS.Color.Text.weak
     )
 
-    let subtitleLabel: UILabel = ViewsFactory.label(font: .body3(weight: .regular), textColor: DS.Color.Text.hint)
+    let subtitleLabel: UILabel = ViewsFactory.label(
+        font: .font(textStyle: .subheadline, weight: .regular),
+        textColor: DS.Color.Text.hint
+    )
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
