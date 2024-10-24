@@ -20,7 +20,12 @@ import ProtonSnapshotTesting
 import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
-    func testContactsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: ContactsScreen(repository: GroupedContactsRepositoryPreview()))
+
+    @MainActor
+    func testContactsScreenLayoutsCorrectOnIphoneX() async throws {
+        let repository = GroupedContactsRepositoryPreview()
+        let state = try await repository.allContacts()
+
+        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: state, repository: repository))
     }
 }

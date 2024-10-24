@@ -17,10 +17,10 @@
 
 import Foundation
 
-class Dispatcher {
-    typealias DispatchAfterType = (DispatchTime, DispatchWorkItem) -> Void
-    typealias Queue = DispatchQueue
+public enum Dispatcher {
+    public typealias DispatchAfterType = (DispatchTime, DispatchWorkItem) -> Void
+    public typealias Queue = DispatchQueue
 
-    static var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
-    static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
+    public static var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
+    public static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }
