@@ -69,7 +69,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         .listScrollObservation(onEventAtTopChange: { newValue in
             config.listEventHandler?.listAtTop?(newValue)
         })
-        .sensoryFeedback(trigger: config.selectionState.selectedItemIDs) { oldValue, newValue in
+        .sensoryFeedback(trigger: config.selectionState.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
     }
@@ -147,9 +147,9 @@ private struct MailboxListViewIdentifiers {
 
 private extension SelectionModeState {
 
-    var selectedItemIDsReadOnlyBinding: Binding<Set<ID>> {
+    var selectedItemIDsReadOnlyBinding: Binding<Set<MailboxSelectedItem>> {
         Binding(
-            get: { [weak self] in self?.selectedItemIDs ?? [] },
+            get: { [weak self] in self?.selectedItems ?? [] },
             set: { _ in }
         )
     }

@@ -28,8 +28,8 @@ final class SelectionMode {
     let selectionState: SelectionModeState
     let selectionModifier: SelectionModeStateModifier
 
-    init(selectedItemIDs: Set<ID> = .init()) {
-        self.selectionState = .init(selectedItemIDs: selectedItemIDs)
+    init(selectedItems: Set<MailboxSelectedItem> = .init()) {
+        self.selectionState = .init(selectedItems: selectedItems)
         self.selectionModifier = .init(state: self.selectionState)
     }
 }
@@ -42,11 +42,11 @@ final class SelectionMode {
  */
 final class SelectionModeState: ObservableObject {
     @Published fileprivate(set) var hasItems: Bool
-    @Published fileprivate(set) var selectedItemIDs: Set<ID>
+    @Published fileprivate(set) var selectedItems: Set<MailboxSelectedItem>
 
-    init(selectedItemIDs: Set<ID> = .init()) {
+    init(selectedItems: Set<MailboxSelectedItem> = .init()) {
         self.hasItems = false
-        self.selectedItemIDs = selectedItemIDs
+        self.selectedItems = selectedItems
     }
 }
 
@@ -60,18 +60,18 @@ final class SelectionModeStateModifier {
         self.state = state
     }
 
-    func addMailboxItem(withID item: ID) {
-        state.selectedItemIDs.insert(item)
+    func addMailboxItem(_ item: MailboxSelectedItem) {
+        state.selectedItems.insert(item)
         state.hasItems = true
     }
 
-    func removeMailboxItem(withID item: ID) {
-        state.selectedItemIDs.remove(item)
-        state.hasItems = !state.selectedItemIDs.isEmpty
+    func removeMailboxItem(_ item: MailboxSelectedItem) {
+        state.selectedItems.remove(item)
+        state.hasItems = !state.selectedItems.isEmpty
     }
 
     func exitSelectionMode() {
-        state.selectedItemIDs.removeAll()
+        state.selectedItems.removeAll()
         state.hasItems = false
     }
 
@@ -84,15 +84,15 @@ final class SelectionModeStateModifier {
      - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
      items should be added calling  `addMailboxItem`.
      */
-    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<ID> ) {
-        let returnedItems = itemProvider(Array(state.selectedItemIDs))
+    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<MailboxSelectedItem> ) {
+        let returnedItems = itemProvider(state.selectedItems.map(\.id))
         let selectedItemsNewStatus = returnedItems.union(returnedItems)
-        state.selectedItemIDs.removeAll()
-        state.selectedItemIDs = selectedItemsNewStatus
+        state.selectedItems.removeAll()
+        state.selectedItems = selectedItemsNewStatus
 
         // Given that this method can be frequently called, we only change the `hasSelectedItems` property
         // if the value changes to avoid potential infinite loops with observers.
-        let newHasSelectedItemsValue = !state.selectedItemIDs.isEmpty
+        let newHasSelectedItemsValue = !state.selectedItems.isEmpty
         if state.hasItems != newHasSelectedItemsValue {
             state.hasItems = newHasSelectedItemsValue
         }

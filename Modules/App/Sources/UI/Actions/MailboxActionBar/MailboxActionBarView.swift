@@ -21,14 +21,14 @@ import ProtonCoreUI
 import SwiftUI
 
 struct MailboxActionBarView: View {
-    @Binding var selectedItems: Set<ID>
+    @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @StateObject var store: MailboxActionBarStateStore
 
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
-        selectedItems: Binding<Set<ID>>
+        selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
         self._store = StateObject(wrappedValue: .init(state: state, availableActions: availableActions))
@@ -45,7 +45,7 @@ struct MailboxActionBarView: View {
                             store.handle(
                                 action: .actionSelected(
                                     action,
-                                    ids: selectedItems,
+                                    ids: selectedItemsIDs,
                                     mailbox: mailbox,
                                     itemType: itemType
                                 )
@@ -73,7 +73,11 @@ struct MailboxActionBarView: View {
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
                         store.handle(
-                            action: .mailboxItemsSelectionUpdated(newValue, mailbox: mailbox, itemType: itemType)
+                            action: .mailboxItemsSelectionUpdated(
+                                selectedItemsIDs,
+                                mailbox: mailbox,
+                                itemType: itemType
+                            )
                         )
                     }
                 }
@@ -86,7 +90,12 @@ struct MailboxActionBarView: View {
                 .sheet(item: $store.state.moreActionSheetPresented) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
                         store.handle(
-                            action: .moreSheetAction(action, ids: selectedItems, mailbox: mailbox, itemType: itemType)
+                            action: .moreSheetAction(
+                                action, 
+                                ids: selectedItemsIDs,
+                                mailbox: mailbox,
+                                itemType: itemType
+                            )
                         )
                     }
                 }
@@ -95,6 +104,10 @@ struct MailboxActionBarView: View {
     }
 
     // MARK: - Private
+
+    private var selectedItemsIDs: Set<ID> {
+        Set(selectedItems.map(\.id))
+    }
 
     private var itemType: MailboxItemType {
         switch mailbox.viewMode() {
