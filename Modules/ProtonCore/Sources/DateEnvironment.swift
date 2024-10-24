@@ -17,6 +17,6 @@
 
 import Foundation
 
-enum DateEnvironment {
-    static var calendar: Calendar = .current
+public enum DateEnvironment {
+    public static var calendar: Calendar = .current
 }

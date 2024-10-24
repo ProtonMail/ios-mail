@@ -15,18 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import ProtonCore
 import XCTest
 
-class BaseTestCase: XCTestCase {
+open class BaseTestCase: XCTestCase {
 
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
     private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
     private var originalCalendar: Calendar!
 
-    override func setUp() {
+    open override func setUp() {
         super.setUp()
 
         originalDispatchOnMain = Dispatcher.dispatchOnMain
@@ -42,7 +41,7 @@ class BaseTestCase: XCTestCase {
         DateEnvironment.calendar = .warsawEnUS
     }
 
-    override func tearDown() {
+    open override func tearDown() {
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook

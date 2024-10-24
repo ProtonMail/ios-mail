@@ -17,6 +17,7 @@
 
 import SwiftUI
 import proton_app_uniffi
+import ProtonCore
 
 class MailboxActionBarStateStore: ObservableObject {
     @Published var state: MailboxActionBarState

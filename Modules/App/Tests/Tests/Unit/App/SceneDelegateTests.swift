@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import Nimble
+import ProtonCoreTesting
 import SwiftUI
 import XCTest
-import Nimble
 
 final class SceneDelegateTests: BaseTestCase {
 

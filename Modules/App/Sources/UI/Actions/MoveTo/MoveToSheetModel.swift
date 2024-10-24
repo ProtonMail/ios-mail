@@ -18,6 +18,7 @@
 import DesignSystem
 import Foundation
 import proton_app_uniffi
+import ProtonCore
 import SwiftUI
 
 class MoveToSheetModel: ObservableObject {

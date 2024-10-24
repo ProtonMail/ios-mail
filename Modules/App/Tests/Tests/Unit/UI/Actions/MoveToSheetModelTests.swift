@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import proton_app_uniffi
+import ProtonCoreTesting
 import XCTest
 
 class MoveToSheetModelTests: BaseTestCase {
