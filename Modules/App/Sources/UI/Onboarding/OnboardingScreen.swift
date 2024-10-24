@@ -130,7 +130,7 @@ struct OnboardingScreen: View {
             },
             label: {
                 Text(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
-                    .fontBody3()
+                    .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.inverted)
                     .frame(height: 44)

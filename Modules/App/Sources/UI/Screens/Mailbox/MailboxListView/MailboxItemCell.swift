@@ -106,7 +106,7 @@ extension MailboxItemCell {
             locationView
 
             Text(uiModel.subject)
-                .fontBody3()
+                .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .semibold)
                 .lineLimit(1)
                 .foregroundColor(textColor)

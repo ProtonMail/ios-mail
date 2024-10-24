@@ -92,7 +92,7 @@ struct CollapsedMessageCell: View {
     private var senderRow: some View {
         HStack(spacing: DS.Spacing.small) {
             Text(uiModel.sender)
-                .fontBody3()
+                .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)

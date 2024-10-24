@@ -108,7 +108,7 @@ struct ToastView: View {
             action: action,
             label: {
                 Text(title)
-                    .fontBody3()
+                    .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.inverted)
                     .frame(maxWidth: .infinity)

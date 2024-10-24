@@ -73,7 +73,7 @@ extension LabelPickerView {
 
     private var titleView: some View {
         Text(L10n.Labels.title)
-            .fontBody3()
+            .font(.subheadline)
             .fontWeight(.bold)
             .accessibilityIdentifier(LabelPickerViewIdentifiers.titleText)
     }
@@ -85,7 +85,7 @@ extension LabelPickerView {
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.alsoArchiveIcon)
             Toggle(isOn: $isArchiveSelected, label: {
                 Text(L10n.Labels.alsoArchive)
-                    .fontBody3()
+                    .font(.subheadline)
             })
             .frame(height: 24)
             .foregroundStyle(DS.Color.Text.weak)
@@ -254,7 +254,7 @@ private struct AddNewLabel: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.cellIcon)
             Text(L10n.Labels.newLabel)
-                .fontBody3()
+                .font(.subheadline)
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
                 .accessibilityIdentifier(LabelPickerViewIdentifiers.cellText)

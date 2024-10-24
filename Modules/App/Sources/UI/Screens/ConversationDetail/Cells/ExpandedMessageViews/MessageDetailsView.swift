@@ -60,7 +60,7 @@ struct MessageDetailsView: View {
     private var senderNameView: some View {
         HStack(spacing: DS.Spacing.compact) {
             Text(uiModel.sender.name)
-                .fontBody3()
+                .font(.subheadline)
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)

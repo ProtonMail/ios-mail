@@ -129,7 +129,7 @@ private struct PurpleButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         return configuration
             .label
-            .fontBody3()
+            .font(.subheadline)
             .fontWeight(.semibold)
             .foregroundColor(DS.Color.Text.inverted)
             .frame(height: 44)

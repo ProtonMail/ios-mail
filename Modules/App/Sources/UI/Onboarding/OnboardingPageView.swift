@@ -44,7 +44,7 @@ struct OnboardingPageView: View {
                 .foregroundStyle(DS.Color.Text.norm)
                 .fixedSize(horizontal: false, vertical: true)
             Text(subtitle)
-                .fontBody3()
+                .font(.subheadline)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
                 .multilineTextAlignment(.center)
