@@ -92,6 +92,40 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.selectedItemIDs, Set(items))
     }
 
+    func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
+        let item1 = ID(value: 1)
+        let item2 = ID(value: 2)
+        [item1, item2].forEach(sut.selectionModifier.addMailboxItem(withID:))
+        XCTAssertEqual(sut.selectionState.hasItems, true)
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [item1, item2])
+
+        sut.selectionModifier.refreshSelectedItemsStatus { _ in
+            return [item1]
+        }
+        XCTAssertEqual(sut.selectionState.hasItems, true)
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [item1])
+
+        sut.selectionModifier.refreshSelectedItemsStatus { _ in
+            return []
+        }
+        XCTAssertEqual(sut.selectionState.hasItems, false)
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [])
+    }
+
+    func testRefreshSelectedItemsStatus_whenSelectedItemsDoNotChange_itDoesNotTriggerHasSelectedItemsPublisher() {
+        let items: [ID] = [.init(value: 1), .init(value: 2)]
+        items.forEach(sut.selectionModifier.addMailboxItem(withID:))
+
+        let observation = sut.selectionState.$hasItems.dropFirst().sink { newValue in
+            XCTFail("hasSelectedItems should not send a value if it does not change the value")
+        }
+
+        sut.selectionModifier.refreshSelectedItemsStatus { _ in
+            return Set(items)
+        }
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set(items))
+    }
+
     func testExitSelectionMode_itRemovesAllSelectedItems() {
         let items: [ID] = [
             .init(value: 1),

@@ -135,9 +135,9 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
             availableActions: .productionInstance,
             selectedItems: $config.selectionState.selectedItemIDs
         )
-            .opacity(config.selectionState.hasItems ? 1 : 0)
-            .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
-            .animation(.selectModeAnimation, value: config.selectionState.hasItems)
+        .opacity(config.selectionState.hasItems ? 1 : 0)
+        .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
+        .animation(.selectModeAnimation, value: config.selectionState.hasItems)
     }
 }
 
@@ -179,7 +179,6 @@ private struct MailboxListViewIdentifiers {
             return .init(
                 dataSource: dataSource,
                 selectionState: selectionState,
-                actionBar: actionBar,
                 swipeActions: .init(leadingSwipe: { .toggleReadStatus }, trailingSwipe: { .moveToTrash })
             )
         }

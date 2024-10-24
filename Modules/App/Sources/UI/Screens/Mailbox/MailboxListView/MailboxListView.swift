@@ -41,16 +41,16 @@ struct MailboxListView: View {
             headerView:  { unreadFilterView() },
             emptyView: { MailboxEmptyView()}
         )
-            .injectIfNotNil(model.mailbox)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onChange(of: model.selectedMailbox) { _, _ in
-                self.isListAtTop = true
-            }
-            .task {
-                guard !didAppearBefore else { return }
-                didAppearBefore = true
-                await model.onViewDidAppear()
-            }
+        .injectIfNotNil(model.mailbox)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onChange(of: model.selectedMailbox) { _, _ in
+            self.isListAtTop = true
+        }
+        .task {
+            guard !didAppearBefore else { return }
+            didAppearBefore = true
+            await model.onViewDidAppear()
+        }
     }
 
 }
@@ -66,12 +66,7 @@ extension MailboxListView {
     private func mailboxItemListViewConfiguration() -> MailboxItemsListViewConfiguration {
         var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
-            selectionState: model.selectionMode.selectionState,
-            actionBar: MailboxItemsListActionBar(
-                selectedMailbox: model.selectedMailbox,
-                customLabelModel: customLabelModel,
-                mailboxActionable: model
-            )
+            selectionState: model.selectionMode.selectionState
         )
 
         config.swipeActions = .init(
