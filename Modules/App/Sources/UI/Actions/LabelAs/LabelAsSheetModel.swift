@@ -17,6 +17,7 @@
 
 import Combine
 import proton_app_uniffi
+import ProtonCore
 import SwiftUI
 
 class LabelAsSheetModel: ObservableObject {

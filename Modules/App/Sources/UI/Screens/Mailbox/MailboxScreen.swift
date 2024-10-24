@@ -17,6 +17,7 @@
 
 import AccountManager
 import DesignSystem
+import ProtonCore
 import SwiftUI
 
 struct MailboxScreen: View {

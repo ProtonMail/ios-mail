@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
 import Nimble
+import ProtonCoreTesting
+import XCTest
 
 final class AppDelegateTests: BaseTestCase {
 
