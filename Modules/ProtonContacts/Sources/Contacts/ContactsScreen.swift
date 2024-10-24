@@ -21,29 +21,21 @@ import ProtonCoreUI
 import SwiftUI
 
 public struct ContactsScreen: View {
-    @State private var state: [GroupedContacts] = []
+    @StateObject private var store: ContactsStateStore
 
-    public init(repository: GroupedContactsProviding) {
-        self.repository = repository
+    /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
+    public init(state: [GroupedContacts] = [], repository: GroupedContactsProviding) {
+        _store = .init(wrappedValue: .init(state: state, repository: repository))
     }
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: state, backgroundColor: DS.Color.BackgroundInverted.norm)
+            ContactsControllerRepresentable(contacts: store.state, backgroundColor: DS.Color.BackgroundInverted.norm)
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }
-        .onLoad {
-            Task {
-                let contacts = try await repository.allContacts()
-                state = contacts
-            }
-        }
+        .onLoad { store.handle(action: .onLoad) }
     }
-
-    // MARK: - Private
-
-    private let repository: GroupedContactsProviding
 }
 
 #Preview {

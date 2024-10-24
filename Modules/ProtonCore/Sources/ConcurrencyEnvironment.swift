@@ -22,11 +22,11 @@ import Darwin
  (https://github.com/apple/swift/blob/main/stdlib/public/Concurrency/GlobalExecutor.cpp) which is responsible for
  asynchronous execution of code that is marked with `async` keyword and making it e.g. synchronous in unit tests.
  **/
-enum ConcurrencyEnvironment {
-    typealias Original = @convention(thin) (UnownedJob) -> Void
-    typealias Hook = @convention(thin) (UnownedJob, Original) -> Void
+public enum ConcurrencyEnvironment {
+    public typealias Original = @convention(thin) (UnownedJob) -> Void
+    public typealias Hook = @convention(thin) (UnownedJob, Original) -> Void
 
-    static var swift_task_enqueueGlobal_hook: Hook? {
+    public static var swift_task_enqueueGlobal_hook: Hook? {
         get { _swift_task_enqueueGlobal_hook.pointee }
         set { _swift_task_enqueueGlobal_hook.pointee = newValue }
     }
