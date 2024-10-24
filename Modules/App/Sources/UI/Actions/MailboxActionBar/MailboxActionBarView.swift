@@ -35,70 +35,36 @@ struct MailboxActionBarView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                Spacer()
-                HStack(alignment: .center) {
-                    Spacer()
-                    ForEachEnumerated(store.state.bottomBarActions, id: \.offset) { action, index in
-                        Button(action: {
-                            store.handle(
-                                action: .actionSelected(
-                                    action,
-                                    ids: selectedItemsIDs,
-                                    mailbox: mailbox,
-                                    itemType: itemType
-                                )
-                            )
-                        }) {
-                            Image(action.displayData.icon)
-                                .foregroundStyle(DS.Color.Icon.weak)
-                        }
-                        .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
-
-                        Spacer()
-                    }
-                }
-                .frame(
-                    width: min(geometry.size.width, geometry.size.height), 
-                    height: 45 + geometry.safeAreaInsets.bottom
+        BottomActionBarView(actions: store.state.bottomBarActions) { action in
+            store.handle(action: .actionSelected(action, ids: selectedItemsIDs, mailbox: mailbox, itemType: itemType))
+        }
+        .onChange(of: selectedItems) { oldValue, newValue in
+            if oldValue != newValue {
+                store.handle(
+                    action: .mailboxItemsSelectionUpdated(
+                        selectedItemsIDs,
+                        mailbox: mailbox,
+                        itemType: itemType
+                    )
                 )
-                .frame(maxWidth: .infinity)
-                .background(.thinMaterial)
-                .compositingGroup()
-                .shadow(radius: 2)
-                .tint(DS.Color.Text.norm)
-                .accessibilityElement(children: .contain)
-                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.rootItem)
-                .onChange(of: selectedItems) { oldValue, newValue in
-                    if oldValue != newValue {
-                        store.handle(
-                            action: .mailboxItemsSelectionUpdated(
-                                selectedItemsIDs,
-                                mailbox: mailbox,
-                                itemType: itemType
-                            )
-                        )
-                    }
-                }
-                .sheet(item: $store.state.labelAsSheetPresented) { input in
-                    labelAsSheet(input: input)
-                }
-                .sheet(item: $store.state.moveToSheetPresented) { input in
-                    moveToSheet(input: input)
-                }
-                .sheet(item: $store.state.moreActionSheetPresented) { state in
-                    MailboxActionBarMoreSheet(state: state) { action in
-                        store.handle(
-                            action: .moreSheetAction(
-                                action, 
-                                ids: selectedItemsIDs,
-                                mailbox: mailbox,
-                                itemType: itemType
-                            )
-                        )
-                    }
-                }
+            }
+        }
+        .sheet(item: $store.state.labelAsSheetPresented) { input in
+            labelAsSheet(input: input)
+        }
+        .sheet(item: $store.state.moveToSheetPresented) { input in
+            moveToSheet(input: input)
+        }
+        .sheet(item: $store.state.moreActionSheetPresented) { state in
+            MailboxActionBarMoreSheet(state: state) { action in
+                store.handle(
+                    action: .moreSheetAction(
+                        action,
+                        ids: selectedItemsIDs,
+                        mailbox: mailbox,
+                        itemType: itemType
+                    )
+                )
             }
         }
     }
@@ -147,15 +113,4 @@ struct MailboxActionBarView: View {
         availableActions: MailboxActionBarPreviewProvider.availableActions(),
         selectedItems: .constant([])
     )
-}
-
-// MARK: Accessibility
-
-private struct MailboxActionBarViewIdentifiers {
-    static let rootItem = "mailbox.actionBar.rootItem"
-
-    static func button(index: Int) -> String {
-        let number = index + 1
-        return "mailbox.actionBar.button\(number)"
-    }
 }
