@@ -42,7 +42,7 @@ final class SelectionMode {
  */
 final class SelectionModeState: ObservableObject {
     @Published fileprivate(set) var hasItems: Bool
-    @Published var selectedItemIDs: Set<ID>
+    @Published fileprivate(set) var selectedItemIDs: Set<ID>
 
     init(selectedItemIDs: Set<ID> = .init()) {
         self.hasItems = false
