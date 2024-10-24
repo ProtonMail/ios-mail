@@ -17,8 +17,8 @@
 
 import Combine
 import DesignSystem
-import SwiftUI
 import proton_app_uniffi
+import SwiftUI
 
 struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -69,7 +69,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         .listScrollObservation(onEventAtTopChange: { newValue in
             config.listEventHandler?.listAtTop?(newValue)
         })
-        .sensoryFeedback(trigger: config.selectionState.selectedItems) { oldValue, newValue in
+        .sensoryFeedback(trigger: config.selectionState.selectedItemIDs) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
     }
@@ -133,7 +133,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         MailboxActionBarView(
             state: .initial,
             availableActions: .productionInstance,
-            selectedItems: $config.selectionState.selectedItems
+            selectedItems: $config.selectionState.selectedItemIDs
         )
             .opacity(config.selectionState.hasItems ? 1 : 0)
             .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)

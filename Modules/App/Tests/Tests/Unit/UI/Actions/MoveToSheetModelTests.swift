@@ -72,7 +72,7 @@ class MoveToSheetModelTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, ids)
     }
 
-    func testState_WhenCreateFolderActionIsHandled_ItReturnsCorrectNavigation() {
+    func testState_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() {
         let sut = sut(input: .init(ids: [], type: .message))
 
         sut.handle(action: .createFolderTapped)
@@ -80,7 +80,7 @@ class MoveToSheetModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.createFolderLabelPresented)
     }
 
-    func testNavigation_WhenMoveToActionIsHandled_ItReturnsCorrectNavigation() {
+    func testNavigation_WhenMoveToActionIsHandled_ItDismissesSelf() {
         let sut = sut(input: .init(ids: [], type: .message))
 
         sut.handle(action: .folderTapped(id: .random()))

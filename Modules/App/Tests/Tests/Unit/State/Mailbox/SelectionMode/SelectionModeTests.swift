@@ -33,7 +33,7 @@ final class SelectionModeTests: XCTestCase {
 
     func testHasSelectedItems_whenNoItems_itReturnsFalse() {
         XCTAssertEqual(sut.selectionState.hasItems, false)
-        XCTAssertEqual(sut.selectionState.selectedItems, Set())
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set())
     }
 
     func testHasSelectedItems_whenThereAreItems_itReturnsTrue() {
@@ -41,15 +41,15 @@ final class SelectionModeTests: XCTestCase {
             .init(value: 1),
             .init(value: 2)
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach(sut.selectionModifier.addMailboxItem(withID:))
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set(items))
 
-        sut.selectionModifier.removeMailboxItem(items[1])
+        sut.selectionModifier.removeMailboxItem(withID: items[1])
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, [items[0]])
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [items[0]])
     }
 
     // MARK: SelectionModeStateModifier
@@ -58,22 +58,22 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.hasItems, false)
 
         let item = ID(value: 1)
-        sut.selectionModifier.addMailboxItem(item)
+        sut.selectionModifier.addMailboxItem(withID: item)
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, [item])
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [item])
     }
 
     func testRemoveMailboxItem_itRemovesTheItem() {
         let item = ID(value: 1)
-        sut.selectionModifier.addMailboxItem(item)
+        sut.selectionModifier.addMailboxItem(withID: item)
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, [item])
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [item])
 
-        sut.selectionModifier.removeMailboxItem(item)
+        sut.selectionModifier.removeMailboxItem(withID: item)
         XCTAssertEqual(sut.selectionState.hasItems, false)
-        XCTAssertEqual(sut.selectionState.selectedItems, Set())
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set())
     }
 
     func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSelectionStatus() {
@@ -81,15 +81,15 @@ final class SelectionModeTests: XCTestCase {
             .init(value: 1),
             .init(value: 2)
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach(sut.selectionModifier.addMailboxItem(withID:))
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set(items))
 
         sut.selectionModifier.refreshSelectedItemsStatus { _ in
             return Set(items)
         }
         XCTAssertEqual(sut.selectionState.hasItems, true)
-        XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, Set(items))
     }
 
     func testExitSelectionMode_itRemovesAllSelectedItems() {
@@ -97,11 +97,11 @@ final class SelectionModeTests: XCTestCase {
             .init(value: 1),
             .init(value: 2)
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach(sut.selectionModifier.addMailboxItem(withID:))
         XCTAssertEqual(sut.selectionState.hasItems, true)
 
         sut.selectionModifier.exitSelectionMode()
         XCTAssertEqual(sut.selectionState.hasItems, false)
-        XCTAssertEqual(sut.selectionState.selectedItems, [])
+        XCTAssertEqual(sut.selectionState.selectedItemIDs, [])
     }
 }

@@ -29,7 +29,7 @@ final class SelectionMode {
     let selectionModifier: SelectionModeStateModifier
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
-        self.selectionState = .init(selectedItems: Set(selectedItems.map(\.id)))
+        self.selectionState = .init(selectedItemIDs: Set(selectedItems.map(\.id)))
         self.selectionModifier = .init(state: self.selectionState)
     }
 }
@@ -42,11 +42,11 @@ final class SelectionMode {
  */
 final class SelectionModeState: ObservableObject {
     @Published fileprivate(set) var hasItems: Bool
-    @Published var selectedItems: Set<ID>
+    @Published var selectedItemIDs: Set<ID>
 
-    init(selectedItems: Set<ID> = .init()) {
+    init(selectedItemIDs: Set<ID> = .init()) {
         self.hasItems = false
-        self.selectedItems = selectedItems
+        self.selectedItemIDs = selectedItemIDs
     }
 }
 
@@ -60,18 +60,18 @@ final class SelectionModeStateModifier {
         self.state = state
     }
 
-    func addMailboxItem(_ item: ID) {
-        state.selectedItems.insert(item)
+    func addMailboxItem(withID item: ID) {
+        state.selectedItemIDs.insert(item)
         state.hasItems = true
     }
 
-    func removeMailboxItem(_ item: ID) {
-        state.selectedItems.remove(item)
-        state.hasItems = !state.selectedItems.isEmpty
+    func removeMailboxItem(withID item: ID) {
+        state.selectedItemIDs.remove(item)
+        state.hasItems = !state.selectedItemIDs.isEmpty
     }
 
     func exitSelectionMode() {
-        state.selectedItems.removeAll()
+        state.selectedItemIDs.removeAll()
         state.hasItems = false
     }
 
@@ -85,14 +85,14 @@ final class SelectionModeStateModifier {
      items should be added calling  `addMailboxItem`.
      */
     func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<ID> ) {
-        let returnedItems = itemProvider(Array(state.selectedItems))
+        let returnedItems = itemProvider(Array(state.selectedItemIDs))
         let selectedItemsNewStatus = returnedItems.union(returnedItems)
-        state.selectedItems.removeAll()
-        state.selectedItems = selectedItemsNewStatus
+        state.selectedItemIDs.removeAll()
+        state.selectedItemIDs = selectedItemsNewStatus
 
         // Given that this method can be frequently called, we only change the `hasSelectedItems` property
         // if the value changes to avoid potential infinite loops with observers.
-        let newHasSelectedItemsValue = !state.selectedItems.isEmpty
+        let newHasSelectedItemsValue = !state.selectedItemIDs.isEmpty
         if state.hasItems != newHasSelectedItemsValue {
             state.hasItems = newHasSelectedItemsValue
         }

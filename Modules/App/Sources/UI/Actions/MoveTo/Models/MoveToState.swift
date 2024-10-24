@@ -20,5 +20,5 @@ import Foundation
 struct MoveToState: Copying {
     var moveToSystemFolderActions: [MoveToSystemFolder]
     var moveToCustomFolderActions: [MoveToCustomFolder]
-    var  createFolderLabelPresented: Bool
+    var createFolderLabelPresented: Bool
 }

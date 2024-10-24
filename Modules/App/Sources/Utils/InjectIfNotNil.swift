@@ -17,8 +17,8 @@
 
 import SwiftUI
 
-struct InjectIfNotNil<T: ObservableObject>: ViewModifier {
-    var object: T?
+struct InjectIfNotNil<InjectableObject: ObservableObject>: ViewModifier {
+    var object: InjectableObject?
 
     func body(content: Content) -> some View {
         if let object = object {
@@ -30,7 +30,7 @@ struct InjectIfNotNil<T: ObservableObject>: ViewModifier {
 }
 
 extension View {
-    func injectIfNotNil<T: ObservableObject>(_ object: T?) -> some View {
-        self.modifier(InjectIfNotNil(object: object))
+    func injectIfNotNil<InjectableObject: ObservableObject>(_ object: InjectableObject?) -> some View {
+        modifier(InjectIfNotNil(object: object))
     }
 }

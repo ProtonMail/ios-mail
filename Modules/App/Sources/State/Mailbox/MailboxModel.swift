@@ -150,7 +150,7 @@ extension MailboxModel {
     private func updateMailboxTitle() {
         let selectionMode = selectionMode
         let hasSelectedItems = selectionMode.selectionState.hasItems
-        let selectedItemsCount = selectionMode.selectionState.selectedItems.count
+        let selectedItemsCount = selectionMode.selectionState.selectedItemIDs.count
         let selectedMailboxName = selectedMailbox.name
 
         state.mailboxTitle = hasSelectedItems 
@@ -280,7 +280,7 @@ extension MailboxModel {
     }
 
     private func mailboxItems(messages: [Message]) -> [MailboxItemCellUIModel] {
-        let selectedIds = Set(selectionMode.selectionState.selectedItems)
+        let selectedIds = Set(selectionMode.selectionState.selectedItemIDs)
         let displaySenderEmail = messagesShouldDisplaySenderEmail
         let showLocation = itemsShouldShowLocation
         return messages.map { message in
@@ -293,7 +293,7 @@ extension MailboxModel {
     }
 
     private func mailboxItems(conversations: [Conversation]) -> [MailboxItemCellUIModel] {
-        let selectedIds = Set(selectionMode.selectionState.selectedItems)
+        let selectedIds = Set(selectionMode.selectionState.selectedItemIDs)
         let showLocation = itemsShouldShowLocation
         return conversations.map { conversation in
             conversation.toMailboxItemCellUIModel(selectedIds: selectedIds, showLocation: showLocation)
@@ -318,7 +318,7 @@ extension MailboxModel {
 extension MailboxModel {
 
     private func applySelectionStateChangeInstead(mailboxItem: MailboxItemCellUIModel) {
-        let isCurrentlySelected = selectionMode.selectionState.selectedItems.contains(mailboxItem.id)
+        let isCurrentlySelected = selectionMode.selectionState.selectedItemIDs.contains(mailboxItem.id)
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
     }
 
@@ -340,8 +340,8 @@ extension MailboxModel {
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         isSelected
-        ? selectionMode.selectionModifier.addMailboxItem(item.id)
-        : selectionMode.selectionModifier.removeMailboxItem(item.id)
+        ? selectionMode.selectionModifier.addMailboxItem(withID: item.id)
+        : selectionMode.selectionModifier.removeMailboxItem(withID: item.id)
     }
 
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
@@ -512,11 +512,11 @@ extension MailboxModel: MailboxActionable {
     }
 
     func onActionTap(_ action: Action) {
-        onMailboxItemAction(action, itemIds: Array(selectionMode.selectionState.selectedItems))
+        onMailboxItemAction(action, itemIds: Array(selectionMode.selectionState.selectedItemIDs))
     }
 
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {
-        let selectedItemIds = Array(selectionMode.selectionState.selectedItems)
+        let selectedItemIds = Array(selectionMode.selectionState.selectedItemIDs)
         actionApplyLabels(labelIds, to: selectedItemIds)
         if alsoArchive {
             actionMoveTo(systemFolder: .archive, ids: selectedItemIds)
@@ -524,7 +524,7 @@ extension MailboxModel: MailboxActionable {
     }
 
     func onFolderSelected(labelId: ID) {
-        actionMoveTo(labelId: labelId, ids: Array(selectionMode.selectionState.selectedItems))
+        actionMoveTo(labelId: labelId, ids: Array(selectionMode.selectionState.selectedItemIDs))
     }
 }
 
