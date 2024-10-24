@@ -84,7 +84,7 @@ extension MailboxItemCell {
         HStack(spacing: DS.Spacing.small) {
             replyIcons
             Text(uiModel.emails)
-                .font(.subheadline)
+                .font(.headline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
@@ -107,7 +107,7 @@ extension MailboxItemCell {
 
             Text(uiModel.subject)
                 .fontBody3()
-                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .fontWeight(uiModel.isRead ? .regular : .semibold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
                 .layoutPriority(1)
