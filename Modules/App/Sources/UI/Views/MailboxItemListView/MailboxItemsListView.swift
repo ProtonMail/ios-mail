@@ -133,7 +133,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         MailboxActionBarView(
             state: .initial,
             availableActions: .productionInstance,
-            selectedItems: $config.selectionState.selectedItemIDs
+            selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
         )
         .opacity(config.selectionState.hasItems ? 1 : 0)
         .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
@@ -143,6 +143,17 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
 
 private struct MailboxListViewIdentifiers {
     static let listCell = "mailbox.list.cell"
+}
+
+private extension SelectionModeState {
+
+    var selectedItemIDsReadOnlyBinding: Binding<Set<ID>> {
+        Binding(
+            get: { [weak self] in self?.selectedItemIDs ?? [] },
+            set: { _ in }
+        )
+    }
+
 }
 
 #Preview {
