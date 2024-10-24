@@ -17,38 +17,23 @@
 
 @testable import ProtonContacts
 import ProtonCore
+import ProtonCoreTesting
 import XCTest
 
-final class ContactsStateStoreTests: XCTestCase {
+final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
     private var repositorySpy: GroupedContactsRepositorySpy!
-    private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
-    private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
 
     override func setUp() {
         super.setUp()
-        originalDispatchOnMain = Dispatcher.dispatchOnMain
-        original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
-
-        ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
-            TestExecutor.shared.enqueue(job)
-        }
-        Dispatcher.dispatchOnMain = { task in task.perform() }
-
         repositorySpy = .init()
         sut = .init(state: [], repository: repositorySpy)
     }
 
     override func tearDown() {
-        Dispatcher.dispatchOnMain = originalDispatchOnMain
-        ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
-
         repositorySpy = nil
         sut = nil
-
-        originalDispatchOnMain = nil
-        original_swift_task_enqueueGlobal_hook = nil
         super.tearDown()
     }
 
