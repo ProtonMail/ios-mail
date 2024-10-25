@@ -162,7 +162,7 @@ extension MailboxItemCell {
     private func imageForReplyIcon(imageResource: ImageResource) -> some View {
         Image(imageResource)
             .resizable()
-            .frame(width: 16, height: 16)
+            .square(size: 20)
             .foregroundColor(DS.Color.Text.weak)
     }
 
