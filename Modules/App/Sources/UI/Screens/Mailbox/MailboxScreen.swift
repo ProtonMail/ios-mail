@@ -126,8 +126,8 @@ extension MailboxScreen {
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)
-        .opacity(mailboxModel.state.showActionBar ? 0 : 1)
-        .animation(.selectModeAnimation, value: mailboxModel.state.showActionBar)
+        .opacity(mailboxModel.selectionMode.selectionState.hasItems ? 0 : 1)
+        .animation(.selectModeAnimation, value: mailboxModel.selectionMode.selectionState.hasItems)
         .animation(.toastAnimation, value: toastStateStore.state.toastHeights)
     }
 

@@ -39,7 +39,7 @@ struct MailboxListView: View {
         MailboxItemsListView(
             config: mailboxItemListViewConfiguration(),
             headerView:  { unreadFilterView() },
-            emptyView: { MailboxEmptyView()}
+            emptyView: { MailboxEmptyView() }
         )
         .injectIfNotNil(model.mailbox)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

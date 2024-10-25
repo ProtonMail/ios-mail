@@ -40,14 +40,8 @@ struct MainToolbar: ViewModifier {
         content
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(alignment: .leading) {
-                        Text(title)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, DS.Spacing.medium)
-                    .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
+                    SelectionTitleView(title: title)
+                        .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
@@ -86,7 +80,6 @@ struct MainToolbar: ViewModifier {
                     .opacity(selectionMode.hasItems ? 0 : 1)
                     .square(size: 40)
                 }
-
             }
             .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
             .tint(DS.Color.Text.norm)

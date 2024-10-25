@@ -130,7 +130,6 @@ extension MailboxModel {
             .$hasItems
             .sink { [weak self] hasItems in
                 Task {
-                    self?.state.showActionBar = hasItems
                     self?.updateMailboxTitle()
                     await self?.refreshMailboxItems()
                 }
@@ -148,14 +147,9 @@ extension MailboxModel {
     }
 
     private func updateMailboxTitle() {
-        let selectionMode = selectionMode
-        let hasSelectedItems = selectionMode.selectionState.hasItems
-        let selectedItemsCount = selectionMode.selectionState.selectedItems.count
-        let selectedMailboxName = selectedMailbox.name
-
-        state.mailboxTitle = hasSelectedItems 
-        ? L10n.Mailbox.selected(emailsCount: selectedItemsCount)
-        : selectedMailboxName
+        state.mailboxTitle = selectionMode.selectionState.hasItems
+        ? selectionMode.selectionState.title
+        : selectedMailbox.name
     }
 
     private func updateMailboxAndPaginator() async {
@@ -532,7 +526,6 @@ extension MailboxModel {
 
     struct State {
         var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
-        var showActionBar: Bool = false
         var unreadItemsCount: UInt64 = 0
         var isUnreadSelected: Bool = false
 
@@ -549,7 +542,7 @@ extension MailboxModel {
     }
 }
 
-private extension MailboxItemCellUIModel {
+extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
     }

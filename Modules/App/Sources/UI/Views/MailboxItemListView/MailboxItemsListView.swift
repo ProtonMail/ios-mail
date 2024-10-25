@@ -25,11 +25,23 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
     @State var config: MailboxItemsListViewConfiguration
     @ViewBuilder let headerView: HeaderView
     @ViewBuilder let emptyView: EmptyView
+    @ObservedObject private(set) var selectionState: SelectionModeState
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
     private var listPullOffsetPublisher: AnyPublisher<CGFloat, Never> {
         listPullOffset.eraseToAnyPublisher()
+    }
+
+    init(
+        config: MailboxItemsListViewConfiguration,
+        @ViewBuilder headerView: () -> HeaderView,
+        @ViewBuilder emptyView: () -> EmptyView
+    ) {
+        self._config = State(initialValue: config)
+        self.headerView = headerView()
+        self.emptyView = emptyView()
+        self.selectionState = config.selectionState
     }
 
     var body: some View {
@@ -69,7 +81,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         .listScrollObservation(onEventAtTopChange: { newValue in
             config.listEventHandler?.listAtTop?(newValue)
         })
-        .sensoryFeedback(trigger: config.selectionState.selectedItems) { oldValue, newValue in
+        .sensoryFeedback(trigger: selectionState.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
     }
@@ -78,7 +90,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         VStack {
             MailboxItemCell(
                 uiModel: item,
-                isParentListSelectionEmpty: !config.selectionState.hasItems,
+                isParentListSelectionEmpty: !selectionState.hasItems,
                 onEvent: { config.cellEventHandler?.onCellEvent($0, item) }
             )
             .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
@@ -86,7 +98,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
             .mailboxSwipeActions(
                 leadingSwipe: config.swipeActions?.leadingSwipe() ?? .none,
                 trailingSwipe: config.swipeActions?.trailingSwipe() ?? .none,
-                isSwipeEnabled: !config.selectionState.hasItems,
+                isSwipeEnabled: !selectionState.hasItems,
                 mailboxItem: item
             ) { action, itemId in
                 config.cellEventHandler?.onSwipeAction?(action, itemId)
@@ -135,9 +147,9 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
             availableActions: .productionInstance,
             selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
         )
-        .opacity(config.selectionState.hasItems ? 1 : 0)
-        .offset(y: config.selectionState.hasItems ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: config.selectionState.hasItems)
+        .opacity(selectionState.hasItems ? 1 : 0)
+        .offset(y: selectionState.hasItems ? 0 : 45 + 100)
+        .animation(.selectModeAnimation, value: selectionState.hasItems)
     }
 }
 

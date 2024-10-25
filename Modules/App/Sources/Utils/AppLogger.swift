@@ -157,11 +157,12 @@ extension AppLogger {
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
-        case userSessions = "UserSessions"
-        case rustLibrary = "RustLibrary"
+        case conversationDetail = "ConversationDetail"
         case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
-        case conversationDetail = "ConversationDetail"
+        case rustLibrary = "RustLibrary"
+        case search = "Search"
+        case userSessions = "UserSessions"
     }
 
     struct Caller {

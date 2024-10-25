@@ -224,6 +224,9 @@
     "No emails yet" : {
       "comment" : "Mailbox empty state title."
     },
+    "No matches" : {
+      "comment" : "Search result is empty title"
+    },
     "Not spam" : {
       "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet."
     },
@@ -325,6 +328,9 @@
     },
     "Why not take a breather or check back later?" : {
       "comment" : "Mailbox empty state message."
+    },
+    "You can either update your search query or clear it." : {
+      "comment" : "Search result is empty subtitle"
     }
   },
   "version" : "1.0"

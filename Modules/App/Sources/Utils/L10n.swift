@@ -318,6 +318,14 @@ enum L10n {
             "Cancel",
             comment: "Search screen dismiss"
         )
+        static let noResultsTitle = LocalizedStringResource(
+            "No matches",
+            comment: "Search result is empty title"
+        )
+        static let noResultsSubtitle = LocalizedStringResource(
+            "You can either update your search query or clear it.",
+            comment: "Search result is empty subtitle"
+        )
     }
 
     enum Settings {
