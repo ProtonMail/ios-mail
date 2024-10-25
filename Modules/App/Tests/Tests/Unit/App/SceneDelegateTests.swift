@@ -17,7 +17,7 @@
 
 @testable import ProtonMail
 import Nimble
-import ProtonCoreTesting
+import ProtonTesting
 import SwiftUI
 import XCTest
 

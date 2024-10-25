@@ -17,7 +17,7 @@
 
 @testable import ProtonMail
 import ProtonCore
-import ProtonCoreTesting
+import ProtonTesting
 import ProtonSnapshotTesting
 import XCTest
 

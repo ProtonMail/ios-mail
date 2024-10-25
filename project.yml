@@ -44,8 +44,8 @@ packages:
   ProtonCoreUI:
     path: Modules/ProtonCoreUI
     group: Modules
-  ProtonCoreTesting:
-    path: Modules/ProtonCoreTesting
+  ProtonTesting:
+    path: Modules/ProtonTesting
     group: Modules
   ProtonSnapshotTesting:
     path: Modules/ProtonSnapshotTesting
@@ -154,7 +154,7 @@ targets:
     dependencies:
       - target: ProtonMail
       - package: Nimble
-      - package: ProtonCoreTesting
+      - package: ProtonTesting
       - package: ProtonSnapshotTesting
       - package: ViewInspector
     scheme:

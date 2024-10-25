@@ -18,7 +18,7 @@
 @testable import ProtonContacts
 import proton_app_uniffi
 import ProtonCore
-import ProtonCoreTesting
+import ProtonTesting
 import XCTest
 
 final class ContactsStateStoreTests: BaseTestCase {

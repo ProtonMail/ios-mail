@@ -15,7 +15,7 @@ let package = Package(
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../ProtonCore"),
         .package(path: "../ProtonCoreUI"),
-        .package(path: "../ProtonCoreTesting"),
+        .package(path: "../ProtonTesting"),
         .package(path: "../ProtonSnapshotTesting")
     ],
     targets: [
@@ -30,7 +30,7 @@ let package = Package(
             name: "ProtonContactsTests",
             dependencies: [
                 .target(name: "ProtonContacts"),
-                .product(name: "ProtonCoreTesting", package: "ProtonCoreTesting"),
+                .product(name: "ProtonTesting", package: "ProtonTesting"),
                 .product(name: "ProtonSnapshotTesting", package: "ProtonSnapshotTesting")
             ]
         ),
