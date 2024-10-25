@@ -36,7 +36,7 @@ struct SenderBadgeView: View {
 
     var body: some View {
         Text(text)
-            .font(.caption2)
+            .font(.caption)
             .fontWeight(.semibold)
             .foregroundColor(textColor)
             .padding(.vertical, DS.Spacing.tiny)

@@ -41,7 +41,7 @@ struct MailboxItemCell: View {
             mailboxItemContentView
         }
         .padding(.horizontal, DS.Spacing.large)
-        .padding(.vertical, DS.Spacing.medium)
+        .padding(.vertical, DS.Spacing.moderatelyLarge)
         .background(uiModel.isSelected || isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
     }
 }
@@ -84,7 +84,7 @@ extension MailboxItemCell {
         HStack(spacing: DS.Spacing.small) {
             replyIcons
             Text(uiModel.emails)
-                .font(.headline)
+                .font(.body)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
                 .foregroundColor(textColor)
@@ -94,8 +94,8 @@ extension MailboxItemCell {
             MailboxConversationMessageCountView(messagesCount: uiModel.messagesCount)
             Spacer()
             Text(uiModel.date.mailboxFormat())
-                .font(.caption2)
-                .fontWeight(uiModel.isRead ? .regular : .bold)
+                .font(.caption)
+                .fontWeight(uiModel.isRead ? .semibold : .bold)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }
@@ -171,8 +171,8 @@ extension MailboxItemCell {
         if let uiModel = uiModel.expirationDate?.toExpirationDateUIModel {
             TimelineView(.everyMinute) { context in
                 Text(uiModel.text)
-                    .font(.footnote)
-                    .fontWeight(.semibold)
+                    .font(.subheadline)
+                    .fontWeight(.regular)
                     .foregroundStyle(uiModel.color)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, DS.Spacing.small)
@@ -181,10 +181,9 @@ extension MailboxItemCell {
     }
 
     private var snoozedRowView: some View {
-
         Text(uiModel.snoozeDate ?? "")
-            .font(.footnote)
-            .fontWeight(.semibold)
+            .font(.subheadline)
+            .fontWeight(.regular)
             .foregroundStyle(DS.Color.Notification.warning)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, DS.Spacing.small)

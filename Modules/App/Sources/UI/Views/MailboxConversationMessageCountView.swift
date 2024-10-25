@@ -26,7 +26,7 @@ struct MailboxConversationMessageCountView: View {
     var body: some View {
         if let unreadFormatted = UnreadCountFormatter.string(count: messagesCount) {
             Text(unreadFormatted)
-                .font(.caption2)
+                .font(.footnote)
                 .fontWeight(.semibold)
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.vertical, DS.Spacing.tiny)
