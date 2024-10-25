@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCoreTesting
+import ProtonTesting
 import ViewInspector
 import XCTest
 

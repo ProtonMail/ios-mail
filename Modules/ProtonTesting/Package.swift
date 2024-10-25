@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "ProtonCoreTesting",
+    name: "ProtonTesting",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonCoreTesting", targets: ["ProtonCoreTesting"])
+        .library(name: "ProtonTesting", targets: ["ProtonTesting"])
     ],
     dependencies: [
         .package(path: "../ProtonCore")
     ],
     targets: [
-        .target(name: "ProtonCoreTesting", dependencies: ["ProtonCore"])
+        .target(name: "ProtonTesting", dependencies: ["ProtonCore"])
     ]
 )
