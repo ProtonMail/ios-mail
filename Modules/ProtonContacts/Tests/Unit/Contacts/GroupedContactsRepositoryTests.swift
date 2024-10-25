@@ -1,0 +1,99 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+@testable import ProtonContacts
+import proton_app_uniffi
+import ProtonCore
+import ProtonCoreTesting
+import XCTest
+
+final class GroupedContactsRepositoryTests: BaseTestCase {
+
+    var sut: GroupedContactsRepository!
+    var stubbedContacts: [GroupedContacts]!
+
+    override func setUp() {
+        super.setUp()
+        stubbedContacts = []
+        sut = .init(
+            mailUserSession: MailUserSession(noPointer: .init()),
+            allContacts: { _ in self.stubbedContacts }
+        )
+    }
+
+    override func tearDown() {
+        sut = nil
+        super.tearDown()
+    }
+
+    func testAllContacts_ItReturns0Items() async {
+        let items = await sut.allContacts()
+
+        XCTAssertEqual(items, [])
+    }
+
+    func testAllContacts_WhenThereAre2Items_ItReturns2Items() async {
+        let items: [GroupedContacts] = [
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(
+                        .init(
+                            id: 0,
+                            name: "Alice Adams",
+                            avatarInformation: .init(text: "AA", color: "#FF5733"),
+                            emails: [
+                                .init(id: 1, email: "alice.adams@proton.me"),
+                                .init(id: 2, email: "alice.adams@gmail.com")
+                            ]
+                        )
+                    ),
+                ]
+            ),
+            .init(
+                groupedBy: "B",
+                item: [
+                    .contact(
+                        .init(
+                            id: 1,
+                            name: "Bob Ainsworth",
+                            avatarInformation: .init(text: "BA", color: "#FF33A1"),
+                            emails: []
+                        )
+                    ),
+                    .group(
+                        .init(
+                            id: 2,
+                            name: "Business Group",
+                            avatarColor: "#A1FF33",
+                            emails: [
+                                .init(id: 21, email: "business.group@proton.me")
+                            ]
+                        )
+                    )
+                ]
+            )
+        ]
+
+        stubbedContacts = items
+
+        let contacts = await sut.allContacts()
+
+        XCTAssertEqual(contacts, items)
+    }
+
+}

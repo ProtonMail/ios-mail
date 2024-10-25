@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonContacts
+import proton_app_uniffi
 import ProtonCore
 import ProtonCoreTesting
 import XCTest
@@ -124,7 +125,7 @@ private class GroupedContactsRepositorySpy: GroupedContactsProviding {
 
     // MARK: - GroupedContactsProviding
 
-    func allContacts() async throws -> [GroupedContacts] {
+    func allContacts() async -> [GroupedContacts] {
         stubbedContacts
     }
 

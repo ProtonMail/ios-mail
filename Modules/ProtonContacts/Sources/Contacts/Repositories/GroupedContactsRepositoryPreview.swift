@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public struct GroupedContactsRepositoryPreview: GroupedContactsProviding {
-    public init() {}
+import proton_app_uniffi
+
+struct GroupedContactsRepositoryPreview: GroupedContactsProviding {
+    init() {}
 
     // MARK: - GroupedContactsProviding
 
-    public func allContacts() async throws -> [GroupedContacts] {
+    func allContacts() async -> [GroupedContacts] {
         [
             .init(
                 groupedBy: "#",
@@ -807,4 +809,33 @@ public struct GroupedContactsRepositoryPreview: GroupedContactsProviding {
             )
         ]
     }
+}
+
+extension ContactItem {
+
+    init(id: UInt64, name: String, avatarInformation: AvatarInformation, emails: [ContactEmailItem]) {
+        self.init(
+            id: Id(value: id),
+            name: name,
+            avatarInformation: avatarInformation,
+            emails: emails
+        )
+    }
+
+}
+
+extension ContactGroupItem {
+
+    init(id: UInt64, name: String, avatarColor: String, emails: [ContactEmailItem]) {
+        self.init(id: Id(value: id), name: name, avatarColor: avatarColor, emails: emails)
+    }
+
+}
+
+extension ContactEmailItem {
+
+    init(id: UInt64, email: String) {
+        self.init(id: Id(value: id), email: email)
+    }
+
 }

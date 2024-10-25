@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import ProtonCore
 import SwiftUI
 
@@ -36,7 +37,7 @@ final class ContactsStateStore: ObservableObject {
         switch action {
         case .onLoad:
             Task {
-                let contacts = try await repository.allContacts()
+                let contacts = await repository.allContacts()
                 let updateStateWorkItem = DispatchWorkItem { [weak self] in
                     self?.state = contacts
                 }

@@ -60,7 +60,9 @@ struct HomeScreen: View {
             )
         }
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = .init(contactsRepository: GroupedContactsRepositoryPreview())
+        self.modalFactory = .init(
+            contactsRepository: GroupedContactsRepository.productionInstance(mailUserSession: userSession)
+        )
     }
 
     var didAppear: ((Self) -> Void)?
