@@ -165,9 +165,3 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     }
 
 }
-
-private extension Mailbox {
-    static var testData: Mailbox {
-        .init(noPointer: .init())
-    }
-}

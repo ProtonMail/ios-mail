@@ -31,8 +31,8 @@ struct MailboxActionBarActionsProvider {
 }
 
 struct AvailableMailboxActionBarActions {
-    let message: (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
-    let conversation: (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
+    let message: BottomBarActionsProvider
+    let conversation: BottomBarActionsProvider
 }
 
 extension AvailableMailboxActionBarActions {
@@ -45,3 +45,5 @@ extension AvailableMailboxActionBarActions {
     }
 
 }
+
+typealias BottomBarActionsProvider = (Mailbox, [Id]) async throws -> AllBottomBarMessageActions

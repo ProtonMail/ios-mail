@@ -29,10 +29,11 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
-    @State private var actionSheets: MailboxActionSheetsState = .initial()
+    @Binding private var actionSheetsState: MailboxActionSheetsState
 
-    init(model: ConversationDetailModel) {
+    init(model: ConversationDetailModel, actionSheetsState: Binding<MailboxActionSheetsState>) {
         self.model = model
+        self._actionSheetsState = actionSheetsState
     }
 
     var body: some View {
@@ -47,7 +48,6 @@ struct ConversationDetailListView: View {
                     .padding(.top, DS.Spacing.compact)
             }
         }
-        .actionSheetsFlow(mailbox: { model.mailbox.unsafelyUnwrapped }, state: $actionSheets)
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
     }
@@ -124,7 +124,7 @@ struct ConversationDetailListView: View {
         case .onReply, .onReplyAll, .onForward:
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
-            actionSheets = actionSheets.copy(
+            actionSheetsState = actionSheetsState.copy(
                 \.mailbox, to: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
             )
         case .onSenderTap:
@@ -154,10 +154,4 @@ private extension ExpandedMessageCellUIModel {
         .init(messageID: id, unread: unread)
     }
 
-}
-
-private extension MailboxActionSheetsState {
-    static func initial() -> Self {
-        .init(mailbox: nil, labelAs: nil, moveTo: nil)
-    }
 }

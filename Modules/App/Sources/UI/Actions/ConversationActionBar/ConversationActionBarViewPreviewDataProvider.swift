@@ -15,11 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-struct MailboxMessageSeed: Hashable {
-    let localID: ID
-    let conversationID: ID
-    let subject: String
-    let sender: String
+enum ConversationActionBarViewPreviewDataProvider {
+
+    static func store() -> ConversationActionBarStateStore {
+        .init(
+            conversationID: .init(value: 1),
+            bottomBarConversationActionsProvider: { _, _ in
+                return .init(
+                    hiddenBottomBarActions: [],
+                    visibleBottomBarActions: [.markRead, .star, .moveTo, .more]
+                )
+            },
+            handleAction: { _ in }
+        )
+    }
+
 }

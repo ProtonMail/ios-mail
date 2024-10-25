@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-struct MailboxMessageSeed: Hashable {
-    let localID: ID
-    let conversationID: ID
-    let subject: String
-    let sender: String
+extension Mailbox {
+    static var testData: Mailbox {
+        .init(noPointer: .init())
+    }
 }

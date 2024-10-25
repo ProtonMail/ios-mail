@@ -25,8 +25,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
+    @Published private(set) var mailbox: Mailbox?
+    @Published var actionSheets: MailboxActionSheetsState = .initial()
 
-    private(set) var mailbox: Mailbox?
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
     private let dependencies: Dependencies
@@ -88,6 +89,21 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             )
         }
     }
+
+    func handleConversation(action: BottomBarAction) {
+        switch action {
+        case .labelAs:
+            actionSheets = actionSheets.copy(\.labelAs, to: .init(ids: [seed.conversationID], type: .conversation))
+        case .more:
+            actionSheets = actionSheets
+                .copy(\.mailbox, to: .init(ids: [seed.conversationID], type: .conversation, title: seed.subject))
+        case .moveTo:
+            actionSheets = actionSheets
+                .copy(\.moveTo, to: .init(ids: [seed.conversationID], type: .conversation))
+        default:
+            break
+        }
+    }
 }
 
 extension ConversationDetailModel {
@@ -111,7 +127,7 @@ extension ConversationDetailModel {
         switch seed {
         case .mailboxItem(let item, _):
             return item.conversationID
-        case .message(let messageID, _, _):
+        case .message(let messageID, _, _, _):
             let message = try await fetchMessage(with: messageID)
             return message.conversationId
         }
@@ -176,7 +192,7 @@ extension ConversationDetailModel {
             case .message:
                 messageID = item.id
             }
-        case .message(let id, _, _):
+        case .message(let id, _, _, _):
             messageID = id
         }
         return messageID
@@ -304,4 +320,10 @@ enum MessageCellUIModelType {
 enum ConversationModelError: Error {
     case noActiveSessionFound
     case noMessageFound(messageID: ID)
+}
+
+private extension MailboxActionSheetsState {
+    static func initial() -> Self {
+        .init(mailbox: nil, labelAs: nil, moveTo: nil)
+    }
 }

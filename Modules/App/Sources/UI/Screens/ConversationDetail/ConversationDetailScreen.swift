@@ -18,6 +18,7 @@
 import DesignSystem
 import ProtonCoreUI
 import SwiftUI
+import proton_app_uniffi
 
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
@@ -28,7 +29,19 @@ struct ConversationDetailScreen: View {
     }
 
     var body: some View {
-        conversationView
+        ZStack {
+            conversationView
+            if let mailbox = model.mailbox {
+                ConversationActionBarView(store: .init(
+                    conversationID: model.seed.conversationID,
+                    bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
+                    handleAction: { action in model.handleConversation(action: action) }
+                ), mailbox: mailbox)
+            }
+        }.actionSheetsFlow(
+            mailbox: { model.mailbox.unsafelyUnwrapped },
+            state: $model.actionSheets
+        )
     }
 
     private var conversationView: some View {
@@ -36,13 +49,14 @@ struct ConversationDetailScreen: View {
             ScrollView {
                 VStack {
                     conversationDataView
-                    ConversationDetailListView(model: model)
+                    ConversationDetailListView(model: model, actionSheetsState: $model.actionSheets)
                         .frame(maxHeight: .infinity)
                 }
                 .frame(minHeight: proxy.size.height)
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
+            .padding(.bottom, proxy.safeAreaInsets.bottom + 45)
             .navigationBarTitleDisplayMode(.inline)
             .navigationToolbar(
                 purpose: .itemDetail(
@@ -165,7 +179,8 @@ private extension View {
     NavigationView {
         ConversationDetailScreen(
             seed: .message(
-                localID: .init(value: 0),
+                localID: .init(value: 0), 
+                conversationID: .init(value: 1),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"
             )
         )
