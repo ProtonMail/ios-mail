@@ -54,7 +54,7 @@ extension MailboxItemCell {
             avatar: uiModel.avatar,
             onDidChangeSelection: { onEvent(.onSelectedChange(isSelected: $0)) }
         )
-        .frame(width: 40, height: 40)
+        .square(size: 40)
     }
 
     private var mailboxItemContentView: some View {
@@ -118,9 +118,9 @@ extension MailboxItemCell {
                 .removeViewIf(uiModel.labelUIModel.isEmpty)
 
             Spacer()
-            Image(uiModel.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+            Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
                 .resizable()
-                .frame(width: 16, height: 16)
+                .square(size: 16)
                 .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                 .onTapGesture {
                     toastStateStore.present(toast: .comingSoon)
@@ -137,7 +137,7 @@ extension MailboxItemCell {
         if let icon = uiModel.locationIcon {
             Image(icon)
                 .resizable()
-                .frame(width: 16, height: 16)
+                .square(size: 20)
                 .foregroundColor(DS.Color.Text.weak)
         }
     }
@@ -329,7 +329,7 @@ enum MailboxItemCellEvent {
                 emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-                locationIcon: nil,
+                locationIcon: DS.Icon.icInbox,
                 isRead: false,
                 isStarred: true,
                 isSelected: false,
