@@ -28,7 +28,7 @@ struct AttachmentsCarouselView: View {
     }
 
     var body: some View {
-        VStack(spacing: DS.Spacing.standard) {
+        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: DS.Spacing.standard) {
                     ForEach(attachments, id: \.self) { attachment in
@@ -36,6 +36,16 @@ struct AttachmentsCarouselView: View {
                     }
                 }
             }.contentMargins(.horizontal, DS.Spacing.large)
+            if attachments.count > 2 {
+                HStack(spacing: DS.Spacing.small) {
+                    Image(DS.Icon.icPaperClip)
+                        .resizable()
+                        .square(size: 14)
+                    Text("\(attachments.count) attachments - \(Formatter.bytesFormatter.string(fromByteCount: attachments.totalSize))".notLocalized)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }.padding(.horizontal, DS.Spacing.large)
+            }
         }
     }
 
@@ -92,4 +102,14 @@ private enum Formatter {
             .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
         ]
     )
+}
+
+extension Array where Element == AttachmentDisplayModel {
+
+    var totalSize: Int64 {
+        reduce(0) { result, next in
+            return result + Int64(next.size)
+        }
+    }
+
 }
