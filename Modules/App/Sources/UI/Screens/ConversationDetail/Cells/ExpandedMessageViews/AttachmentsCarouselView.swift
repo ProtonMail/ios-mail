@@ -49,10 +49,16 @@ struct AttachmentsCarouselView: View {
                     .lineLimit(1)
                     .font(.footnote)
                     .foregroundStyle(DS.Color.Text.weak)
-                Text(attachment.mimeType.mime)
-                    .lineLimit(1)
-                    .font(.caption)
-                    .foregroundStyle(DS.Color.Text.hint)
+                HStack(spacing: .zero) {
+                    Text(attachment.mimeType.mime)
+                        .lineLimit(1)
+                        .font(.caption)
+                        .foregroundStyle(DS.Color.Text.hint)
+                    Text(" \(Formatter.bytesFormatter.string(fromByteCount: Int64(attachment.size)))".notLocalized)
+                        .lineLimit(1)
+                        .font(.caption)
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
             }
         }
         .padding(.all, DS.Spacing.medium)
@@ -65,6 +71,16 @@ struct AttachmentsCarouselView: View {
         }
     }
 
+}
+
+private enum Formatter {
+    static let bytesFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        formatter.includesUnit = true
+        return formatter
+    }()
 }
 
 
