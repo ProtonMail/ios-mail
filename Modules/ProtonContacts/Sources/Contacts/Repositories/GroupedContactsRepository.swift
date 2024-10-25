@@ -15,6 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
+
 public protocol GroupedContactsProviding {
-    func allContacts() async throws -> [GroupedContacts]
+    func allContacts() async -> [GroupedContacts]
+}
+
+public struct GroupedContactsRepository: GroupedContactsProviding {
+    private let mailUserSession: MailUserSession
+    private let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+
+    public init(
+        mailUserSession: MailUserSession,
+        allContacts: @escaping (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+    ) {
+        self.mailUserSession = mailUserSession
+        self.allContacts = allContacts
+    }
+
+    // MARK: - GroupedContactsProviding
+
+    public func allContacts() async -> [GroupedContacts] {
+        try! await allContacts(mailUserSession)
+    }
 }
