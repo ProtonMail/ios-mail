@@ -42,7 +42,7 @@ final class AppContext: Sendable, ObservableObject {
     private let dependencies: AppContext.Dependencies
     private var cancellables = Set<AnyCancellable>()
 
-    var userDefaults: UserDefaults!
+    private(set) var userDefaults: UserDefaults!
     private var userDefaultsCleaner: UserDefaultsCleaner!
 
     var accountCoordinator: AccountAuthCoordinator!
