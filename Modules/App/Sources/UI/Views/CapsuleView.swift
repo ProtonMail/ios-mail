@@ -60,7 +60,7 @@ struct CapsuleView: View {
                 icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 14, height: 14)
+                    .square(size: 14)
                     .foregroundColor(iconColor ?? DS.Color.Icon.weak)
             }
             Text(text)

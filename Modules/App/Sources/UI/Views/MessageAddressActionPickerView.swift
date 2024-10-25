@@ -46,7 +46,7 @@ struct MessageAddressActionPickerView: View {
         VStack(alignment: .center) {
             AvatarView(avatar: avatarUIModel)
                 .clipShape(Circle())
-                .frame(width: 70, height: 70)
+                .square(size: 70)
 
             Text(verbatim: name)
                 .font(.subheadline)

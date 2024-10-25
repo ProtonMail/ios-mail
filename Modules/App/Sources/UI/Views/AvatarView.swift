@@ -99,12 +99,12 @@ private struct AvatarViewIdentifiers {
 
     return VStack {
         AvatarView(avatar: avatarUIModel1)
-            .frame(width: 70, height: 70)
+            .square(size: 70)
         AvatarView(avatar: avatarUIModel2)
-            .frame(width: 70, height: 70)
+            .square(size: 70)
             .clipShape(Circle())
         AvatarView(avatar: avatarUIModel3)
-            .frame(width: 70, height: 70)
+            .square(size: 70)
             .clipShape(RoundedRectangle(cornerSize: .init(width: 20, height: 20)))
     }
 }

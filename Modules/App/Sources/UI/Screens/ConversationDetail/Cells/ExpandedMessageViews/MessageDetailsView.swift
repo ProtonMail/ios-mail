@@ -98,7 +98,7 @@ struct MessageDetailsView: View {
                 Image(isHeaderCollapsed ?  DS.Icon.icChevronTinyDown : DS.Icon.icChevronTinyUp)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
+                    .square(size: 16)
                     .foregroundColor(DS.Color.Icon.weak)
             }
         }

@@ -37,8 +37,7 @@ struct DebugOverlaySize: ViewModifier {
                     .background { Color.purple }
                     .border(.black)
                     .fixedSize()
-                    .frame(width: proxy.size.width,
-                           height: proxy.size.height)
+                    .frame(width: proxy.size.width, height: proxy.size.height)
                 }
             }
     }

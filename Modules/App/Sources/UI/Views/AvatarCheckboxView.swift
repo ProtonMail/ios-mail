@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUI
 import SwiftUI
 
 struct AvatarCheckboxView: View {
@@ -59,21 +60,21 @@ struct AvatarCheckboxView: View {
             isSelected: true,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
         ) { _ in}
-            .frame(width: 40, height: 40)
+            .square(size: 40)
             .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
         ) { _ in}
-            .frame(width: 40, height: 40)
+            .square(size: 40)
             .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
         ) { _ in}
-            .frame(width: 40, height: 40)
+            .square(size: 40)
             .clipped()
     }
 }
