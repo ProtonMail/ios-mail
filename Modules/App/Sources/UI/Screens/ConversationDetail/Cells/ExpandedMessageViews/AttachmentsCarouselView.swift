@@ -17,6 +17,7 @@
 
 import DesignSystem
 import SwiftUI
+import ProtonCoreUI
 
 struct AttachmentsCarouselView: View {
 
@@ -34,13 +35,13 @@ struct AttachmentsCarouselView: View {
                         attachmentView(attachment: attachment)
                     }
                 }
-            }
+            }.contentMargins(.horizontal, DS.Spacing.large)
         }
     }
 
     func attachmentView(attachment: AttachmentDisplayModel) -> some View {
         HStack(spacing: DS.Spacing.standard) {
-            Image(attachment.mimeType.category.icon)
+            Image(attachment.mimeType.category.bigIcon)
                 .resizable()
                 .square(size: 32)
             VStack(alignment: .leading, spacing: DS.Spacing.tiny) {

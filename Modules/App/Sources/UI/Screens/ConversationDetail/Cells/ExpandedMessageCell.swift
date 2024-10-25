@@ -71,6 +71,7 @@ struct ExpandedMessageCell: View {
                     }
                 })
                 AttachmentsCarouselView(attachments: uiModel.messageDetails.attachments)
+                    .padding(.vertical, DS.Spacing.large)
                 MessageBodyView(
                     messageBody: uiModel.message,
                     messageId: uiModel.id,

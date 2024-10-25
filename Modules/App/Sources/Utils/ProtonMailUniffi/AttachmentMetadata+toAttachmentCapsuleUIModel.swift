@@ -77,4 +77,43 @@ extension MimeTypeCategory { // FIXME: - Move to separate file
         }
     }
 
+    var bigIcon: ImageResource {
+        switch self {
+        case .audio:
+            DS.Icon.icFileTypeAudio
+        case .calendar:
+            DS.Icon.icFileTypeCalendar
+        case .code:
+            DS.Icon.icFileTypeCode
+        case .compressed:
+            DS.Icon.icFileTypeCompressed
+        case .default, .unknown:
+            DS.Icon.icFileTypeDefault
+        case .excel:
+            DS.Icon.icFileTypeExcel
+        case .font:
+            DS.Icon.icFileTypeFont
+        case .image:
+            DS.Icon.icFileTypeImage
+        case .key:
+            DS.Icon.icFileTypeKey
+        case .keynote:
+            DS.Icon.icFileTypeKeynote
+        case .numbers:
+            DS.Icon.icFileTypeNumbers
+        case .pages:
+            DS.Icon.icFileTypePages
+        case .pdf:
+            DS.Icon.icFileTypePdf
+        case .powerpoint:
+            DS.Icon.icFileTypePowerpoint
+        case .text:
+            DS.Icon.icFileTypeText
+        case .video:
+            DS.Icon.icFileTypeVideo
+        case .word:
+            DS.Icon.icFileTypeWord
+        }
+    }
+
 }
