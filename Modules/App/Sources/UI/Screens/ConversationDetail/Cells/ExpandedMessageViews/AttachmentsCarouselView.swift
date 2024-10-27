@@ -20,7 +20,6 @@ import SwiftUI
 import ProtonCoreUI
 
 struct AttachmentsCarouselView: View {
-
     private let attachments: [AttachmentDisplayModel]
 
     init(attachments: [AttachmentDisplayModel]) {
@@ -35,13 +34,15 @@ struct AttachmentsCarouselView: View {
                         attachmentView(attachment: attachment)
                     }
                 }
-            }.contentMargins(.horizontal, DS.Spacing.large)
+            }
+            .contentMargins(.horizontal, DS.Spacing.large)
+
             if attachments.count > 2 {
                 HStack(spacing: DS.Spacing.small) {
                     Image(DS.Icon.icPaperClip)
                         .resizable()
                         .square(size: 14)
-                    Text("\(attachments.count) attachments - \(Formatter.bytesFormatter.string(fromByteCount: attachments.totalSize))".notLocalized)
+                    Text(attachments.totalSizeDescription)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
                 }.padding(.horizontal, DS.Spacing.large)
@@ -59,16 +60,10 @@ struct AttachmentsCarouselView: View {
                     .lineLimit(1)
                     .font(.footnote)
                     .foregroundStyle(DS.Color.Text.weak)
-                HStack(spacing: .zero) {
-                    Text(attachment.mimeType.mime)
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.hint)
-                    Text(" \(Formatter.bytesFormatter.string(fromByteCount: Int64(attachment.size)))".notLocalized)
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.hint)
-                }
+                Text(attachment.displaySize)
+                    .lineLimit(1)
+                    .font(.caption)
+                    .foregroundStyle(DS.Color.Text.hint)
             }
         }
         .padding(.all, DS.Spacing.medium)
@@ -80,7 +75,6 @@ struct AttachmentsCarouselView: View {
                     .strokeBorder(DS.Color.Border.strong, lineWidth: 1)
         }
     }
-
 }
 
 private enum Formatter {
@@ -92,7 +86,6 @@ private enum Formatter {
         return formatter
     }()
 }
-
 
 #Preview {
     AttachmentsCarouselView(attachments:
@@ -110,6 +103,26 @@ extension Array where Element == AttachmentDisplayModel {
         reduce(0) { result, next in
             return result + Int64(next.size)
         }
+    }
+
+}
+
+extension Array where Element == AttachmentDisplayModel {
+
+    var totalSizeDescription: String {
+        "\(count) attachments - \(Formatter.bytesFormatter.string(fromByteCount: totalSize))".notLocalized
+    }
+
+}
+
+private extension AttachmentDisplayModel {
+
+    var caption: String {
+        [mimeType.mime, displaySize].joined(separator: " ")
+    }
+
+    var displaySize: String {
+        Formatter.bytesFormatter.string(fromByteCount: Int64(size))
     }
 
 }
