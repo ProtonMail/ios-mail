@@ -24,6 +24,7 @@ struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
+    @Binding var attachmentToOpen: AttachmentViewConfig?
 
     private let hasShadow: Bool
 
@@ -38,6 +39,7 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
+        attachmentToOpen: Binding<AttachmentViewConfig?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
         htmlLoaded: @escaping () -> Void
     ) {
@@ -45,6 +47,7 @@ struct ExpandedMessageCell: View {
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
+        self._attachmentToOpen = attachmentToOpen
         self.onEvent = onEvent
         self.htmlLoaded = htmlLoaded
     }
@@ -70,7 +73,11 @@ struct ExpandedMessageCell: View {
                         onEvent(.onRecipientTap(recipient))
                     }
                 })
-                AttachmentsCarouselView(attachments: uiModel.messageDetails.attachments)
+                AttachmentsCarouselView(
+                    attachments: uiModel.messageDetails.attachments,
+                    mailbox: mailbox,
+                    attachmentToOpen: $attachmentToOpen
+                )
                     .padding(.vertical, DS.Spacing.large)
                 MessageBodyView(
                     messageBody: uiModel.message,
@@ -139,8 +146,9 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             hasShadow: false,
-            isFirstCell: true,
-            onEvent: { _ in }, 
+            isFirstCell: true, 
+            attachmentToOpen: .constant(nil),
+            onEvent: { _ in },
             htmlLoaded: {}
         )
         ExpandedMessageCell(
@@ -152,7 +160,8 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             hasShadow: true,
-            isFirstCell: false,
+            isFirstCell: false, 
+            attachmentToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
         )

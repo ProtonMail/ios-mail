@@ -18,12 +18,17 @@
 import DesignSystem
 import SwiftUI
 import ProtonCoreUI
+import proton_app_uniffi
 
 struct AttachmentsCarouselView: View {
+    private let mailbox: Mailbox
     private let attachments: [AttachmentDisplayModel]
+    @Binding var attachmentToOpen: AttachmentViewConfig?
 
-    init(attachments: [AttachmentDisplayModel]) {
+    init(attachments: [AttachmentDisplayModel], mailbox: Mailbox, attachmentToOpen: Binding<AttachmentViewConfig?>) {
         self.attachments = attachments
+        self.mailbox = mailbox
+        self._attachmentToOpen = attachmentToOpen
     }
 
     var body: some View {
@@ -31,7 +36,7 @@ struct AttachmentsCarouselView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: DS.Spacing.standard) {
                     ForEach(attachments, id: \.self) { attachment in
-                        attachmentView(attachment: attachment)
+                        attachmentButton(attachment: attachment)
                     }
                 }
             }
@@ -50,29 +55,35 @@ struct AttachmentsCarouselView: View {
         }
     }
 
-    func attachmentView(attachment: AttachmentDisplayModel) -> some View {
-        HStack(spacing: DS.Spacing.standard) {
-            Image(attachment.mimeType.category.bigIcon)
-                .resizable()
-                .square(size: 32)
-            VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                Text(attachment.name)
-                    .lineLimit(1)
-                    .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
-                Text(attachment.displaySize)
-                    .lineLimit(1)
-                    .font(.caption)
-                    .foregroundStyle(DS.Color.Text.hint)
+    // MARK: - Private
+
+    private func attachmentButton(attachment: AttachmentDisplayModel) -> some View {
+        Button(action: {
+            attachmentToOpen = .init(id: attachment.id, mailbox: mailbox)
+        }) {
+            HStack(spacing: DS.Spacing.standard) {
+                Image(attachment.mimeType.category.bigIcon)
+                    .resizable()
+                    .square(size: 32)
+                VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+                    Text(attachment.name)
+                        .lineLimit(1)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.weak)
+                    Text(attachment.caption)
+                        .lineLimit(1)
+                        .font(.caption)
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
             }
-        }
-        .padding(.all, DS.Spacing.medium)
-        .frame(width: 155, alignment: .leading)
-        .background(DS.Color.InteractionWeak.norm)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-        .overlay {
+            .padding(.all, DS.Spacing.medium)
+            .frame(width: 155, alignment: .leading)
+            .background(DS.Color.InteractionWeak.norm)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+            .overlay {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                     .strokeBorder(DS.Color.Border.strong, lineWidth: 1)
+            }
         }
     }
 }
@@ -93,7 +104,7 @@ private enum Formatter {
             .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
             .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
             .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
-        ]
+        ], mailbox: .init(noPointer: .init()), attachmentToOpen: .constant(nil)
     )
 }
 

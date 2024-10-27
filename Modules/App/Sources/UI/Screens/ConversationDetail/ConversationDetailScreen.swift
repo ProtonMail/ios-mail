@@ -61,6 +61,10 @@ struct ConversationDetailScreen: View {
                 goBack: { navigationPath.removeLast() }
             )}
         )
+        .fullScreenCover(item: $model.attachmentToOpen) { config in
+            AttachmentView(config: config)
+                .edgesIgnoringSafeArea([.top, .bottom])
+        }
     }
 
     private var conversationView: some View {
@@ -68,7 +72,7 @@ struct ConversationDetailScreen: View {
             ScrollView {
                 VStack {
                     conversationDataView
-                    ConversationDetailListView(model: model, actionSheetsState: $model.actionSheets)
+                    ConversationDetailListView(model: model)
                         .frame(maxHeight: .infinity)
                 }
                 .frame(minHeight: proxy.size.height)

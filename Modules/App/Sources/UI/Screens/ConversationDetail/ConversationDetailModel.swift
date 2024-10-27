@@ -32,6 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var isStarred: Bool
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
+    @Published var attachmentToOpen: AttachmentViewConfig?
 
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>

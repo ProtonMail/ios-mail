@@ -28,11 +28,9 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
-    @Binding private var actionSheetsState: MailboxActionSheetsState
 
-    init(model: ConversationDetailModel, actionSheetsState: Binding<MailboxActionSheetsState>) {
+    init(model: ConversationDetailModel) {
         self.model = model
-        self._actionSheetsState = actionSheetsState
     }
 
     var body: some View {
@@ -87,6 +85,7 @@ struct ConversationDetailListView: View {
                                 mailbox: model.mailbox.unsafelyUnwrapped,
                                 uiModel: uiModel,
                                 isFirstCell: index == 0,
+                                attachmentToOpen: $model.attachmentToOpen,
                                 onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
                                 htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
                             )
@@ -101,7 +100,8 @@ struct ConversationDetailListView: View {
                     uiModel: last,
                     hasShadow: !previous.isEmpty,
                     isFirstCell: previous.isEmpty,
-                    onEvent: { onExpandedMessageCellEvent($0, uiModel: last) }, 
+                    attachmentToOpen: $model.attachmentToOpen,
+                    onEvent: { onExpandedMessageCellEvent($0, uiModel: last) },
                     htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: last.toActionMetadata()) }
                 )
                 .id(ConversationDetailModel.lastCellId) // static value because it won't be replaced with CollapsedMessageCell
@@ -123,7 +123,7 @@ struct ConversationDetailListView: View {
         case .onReply, .onReplyAll, .onForward:
             toastStateStore.present(toast: .comingSoon)
         case .onMoreActions:
-            actionSheetsState = actionSheetsState.copy(
+            model.actionSheets = model.actionSheets.copy(
                 \.mailbox, to: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
             )
         case .onSenderTap:
