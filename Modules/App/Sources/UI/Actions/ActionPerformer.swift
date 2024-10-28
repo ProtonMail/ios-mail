@@ -42,7 +42,10 @@ struct StarActionPerformer {
     private let mailUserSession: MailUserSession
     private let starActionPerformerWrapper: StarActionPerformerWrapper
 
-    init(mailUserSession: MailUserSession, starActionPerformerWrapper: StarActionPerformerWrapper) {
+    init(
+        mailUserSession: MailUserSession,
+        starActionPerformerWrapper: StarActionPerformerWrapper = .productionInstance()
+    ) {
         self.mailUserSession = mailUserSession
         self.starActionPerformerWrapper = starActionPerformerWrapper
     }

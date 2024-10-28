@@ -44,6 +44,7 @@ final class MailboxModel: ObservableObject {
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
     private var paginatorCallback: LiveQueryCallbackWrapper = .init()
     private let dependencies: Dependencies
+    private let starActionPerformer: StarActionPerformer
     private var cancellables = Set<AnyCancellable>()
 
     @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
@@ -80,6 +81,7 @@ final class MailboxModel: ObservableObject {
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(appContext: dependencies.appContext.mailSession)
+        self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
 
         setUpBindings()
         setUpPaginatorCallback()
@@ -387,23 +389,11 @@ extension MailboxModel {
 extension MailboxModel {
 
     private func actionStar(ids: [ID]) {
-        Task {
-            do {
-                try await starConversations(session: userSession, ids: ids)
-            } catch {
-                AppLogger.log(error: error, category: .mailboxActions)
-            }
-        }
+        starActionPerformer.star(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
 
     private func actionUnstar(ids: [ID]) {
-        Task {
-            do {
-                try await unstarConversations(session: userSession, ids: ids)
-            } catch {
-                AppLogger.log(error: error, category: .mailboxActions)
-            }
-        }
+        starActionPerformer.unstar(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
 
     private func actionDelete(ids: [ID]) {
