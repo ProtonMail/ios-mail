@@ -47,7 +47,8 @@ struct MockSearchPaginator: SearchPaginator {
     init(callback: LiveQueryCallback) async {
         self.messagePaginator = try! await paginateMessagesForLabel(
             session: AppContext.shared.userSession,
-            labelId: .init(value: [1,23].randomElement()!),
+            labelId: .init(value: [1,23].randomElement()!), 
+            filter: .init(unread: false),
             callback: callback
         )
         self.callback = callback
