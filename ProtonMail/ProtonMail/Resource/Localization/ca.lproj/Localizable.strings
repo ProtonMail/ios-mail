@@ -1615,7 +1615,7 @@
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Esteu segur que voleu eliminar permanentment tots els missatges a «%@»?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra el missatge complet]";
@@ -2085,7 +2085,7 @@
 "Auto-import device contacts" = "Importa automàticament els contactes del dispositiu";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activeu aquesta característica per afegir automàticament nous contactes des del dispositiu a l'aplicació del Proton Mail.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Activeu aquesta característica per a afegir automàticament nous contactes des del dispositiu a l'aplicació del Proton Mail.";
 
 /* Auto import alert title */
 "Auto-import enabled" = "La importació automàtica està activada.";

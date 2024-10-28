@@ -1133,7 +1133,7 @@
 "Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire dall'account %@?";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se ti esci dall'account";
+"There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se esci dall'account";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Selezionare almeno una email";
