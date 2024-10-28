@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxCore
 import proton_app_uniffi
-import ProtonCore
 
 class MailboxItemActionSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState

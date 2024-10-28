@@ -10,9 +10,9 @@ let package = Package(
         .library(name: "ProtonTesting", targets: ["ProtonTesting"])
     ],
     dependencies: [
-        .package(path: "../ProtonCore")
+        .package(path: "../InboxCore")
     ],
     targets: [
-        .target(name: "ProtonTesting", dependencies: ["ProtonCore"])
+        .target(name: "ProtonTesting", dependencies: ["InboxCore"])
     ]
 )

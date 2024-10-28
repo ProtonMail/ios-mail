@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore
+import InboxCore
 
 enum MessageDetailsDateFormatter {
     private static let dateFormatter: DateFormatter = {

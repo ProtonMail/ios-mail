@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import InboxCore
 import proton_app_uniffi
-import ProtonCore
+import SwiftUI
 
 class MailboxActionBarStateStore: ObservableObject {
     @Published var state: MailboxActionBarState

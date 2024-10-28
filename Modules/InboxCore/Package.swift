@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "ProtonCore",
+    name: "InboxCore",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonCore", targets: ["ProtonCore"])
+        .library(name: "InboxCore", targets: ["InboxCore"])
     ],
     targets: [
-        .target(name: "ProtonCore")
+        .target(name: "InboxCore")
     ]
 )

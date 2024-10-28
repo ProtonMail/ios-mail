@@ -20,8 +20,8 @@ import Combine
 import Foundation
 import SwiftUI
 import proton_app_uniffi
-import class UIKit.UIImage
 import ProtonCoreUtilities
+import class UIKit.UIImage
 
 /**
  Source of truth for the Mailbox view showing mailbox items (conversations or messages).

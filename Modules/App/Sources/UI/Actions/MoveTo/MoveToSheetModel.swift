@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxDesignSystem
 import proton_app_uniffi
-import ProtonCore
 import SwiftUI
 
 class MoveToSheetModel: ObservableObject {

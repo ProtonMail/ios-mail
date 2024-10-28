@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
+import InboxCore
 import InboxDesignSystem
-import ProtonCore
 import SwiftUI
 
 struct MailboxScreen: View {
