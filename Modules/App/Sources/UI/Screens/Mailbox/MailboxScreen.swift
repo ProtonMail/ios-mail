@@ -145,7 +145,6 @@ extension MailboxScreen {
             ConversationDetailScreen(
                 seed: .message(.init(
                     localID: seed.localID,
-                    conversationID: seed.conversationID,
                     subject: seed.subject,
                     sender: seed.sender
                 ))

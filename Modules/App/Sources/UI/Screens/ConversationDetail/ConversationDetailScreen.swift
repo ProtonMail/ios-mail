@@ -31,10 +31,10 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if let mailbox = model.mailbox {
+            if let mailbox = model.mailbox, let conversationID = model.conversationID {
                 ConversationActionBarView(
                     store: .init(
-                        conversationID: model.seed.conversationID,
+                        conversationID: conversationID,
                         bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
                         handleAction: { action in model.handleConversation(action: action) }
                     ),
@@ -183,7 +183,6 @@ private extension View {
         ConversationDetailScreen(
             seed: .message(.init(
                 localID: .init(value: 0),
-                conversationID: .init(value: 1),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                 sender: "him"
             ))

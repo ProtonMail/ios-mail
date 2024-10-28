@@ -26,6 +26,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
     @Published private(set) var mailbox: Mailbox?
+    @Published private(set) var conversationID: ID?
     @Published var actionSheets: MailboxActionSheetsState = .initial()
 
     private var messagesLiveQuery: WatchedConversation?
@@ -54,6 +55,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         do {
             let mailbox = try await initialiseMailbox()
             let conversationID = try await conversationID()
+            self.conversationID = conversationID
             let messages = try await createLiveQueryAndPrepareMessages(
                 forConversationID: conversationID,
                 mailbox: mailbox
@@ -91,15 +93,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     func handleConversation(action: BottomBarAction) {
+        let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
-            actionSheets = actionSheets.copy(\.labelAs, to: .init(ids: [seed.conversationID], type: .conversation))
+            actionSheets = actionSheets.copy(\.labelAs, to: .init(ids: [conversationID], type: .conversation))
         case .more:
             actionSheets = actionSheets
-                .copy(\.mailbox, to: .init(ids: [seed.conversationID], type: .conversation, title: seed.subject))
+                .copy(\.mailbox, to: .init(ids: [conversationID], type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets = actionSheets
-                .copy(\.moveTo, to: .init(ids: [seed.conversationID], type: .conversation))
+                .copy(\.moveTo, to: .init(ids: [conversationID], type: .conversation))
         default:
             break
         }

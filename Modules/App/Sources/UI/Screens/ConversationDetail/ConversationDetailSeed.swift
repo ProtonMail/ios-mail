@@ -20,22 +20,12 @@ import Foundation
 enum ConversationDetailSeed {
     struct Message {
         let localID: ID
-        let conversationID: ID
         let subject: String
         let sender: String
     }
 
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
     case message(Message)
-
-    var conversationID: ID {
-        switch self {
-        case .mailboxItem(let item, let selectedMailbox):
-            item.conversationID
-        case .message(let message):
-            message.conversationID
-        }
-    }
 
     var selectedMailbox: SelectedMailbox {
         switch self {
