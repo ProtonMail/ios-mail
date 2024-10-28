@@ -20,8 +20,8 @@ packages:
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
-  Keychain:
-    path: Modules/Keychain
+  InboxKeychain:
+    path: Modules/InboxKeychain
     group: Modules
   Lottie:
     url: https://github.com/airbnb/lottie-ios.git
@@ -130,7 +130,7 @@ targets:
     dependencies:
       - package: Collections
       - package: DesignSystem
-      - package: Keychain
+      - package: InboxKeychain
       - package: Lottie
       - package: proton_app_uniffi
       - package: ProtonContacts

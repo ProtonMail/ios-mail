@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "Keychain",
+    name: "InboxKeychain",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "Keychain", targets: ["Keychain"]),
+        .library(name: "InboxKeychain", targets: ["InboxKeychain"]),
     ],
     targets: [
-        .target(name: "Keychain"),
-        .testTarget(name: "KeychainTests", dependencies: ["Keychain"]),
+        .target(name: "InboxKeychain"),
+        .testTarget(name: "InboxKeychainTests", dependencies: ["InboxKeychain"]),
     ]
 )
