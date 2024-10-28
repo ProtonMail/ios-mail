@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
 import DeveloperToolsSupport
 import Foundation
+import InboxDesignSystem
 
 /**
  List of all actions that can take place over an email address (e.g. the sender or a recipient of a message

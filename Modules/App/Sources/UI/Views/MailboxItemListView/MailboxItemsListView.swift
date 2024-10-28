@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import DesignSystem
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 

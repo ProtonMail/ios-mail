@@ -14,12 +14,12 @@ options:
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
 
 packages:
-  DesignSystem:
-    path: Modules/DesignSystem
-    group: Modules
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
+  InboxDesignSystem:
+    path: Modules/InboxDesignSystem
+    group: Modules
   InboxKeychain:
     path: Modules/InboxKeychain
     group: Modules
@@ -129,7 +129,7 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     dependencies:
       - package: Collections
-      - package: DesignSystem
+      - package: InboxDesignSystem
       - package: InboxKeychain
       - package: Lottie
       - package: proton_app_uniffi

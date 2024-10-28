@@ -4,13 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "DesignSystem",
+    name: "InboxDesignSystem",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "DesignSystem", targets: ["DesignSystem"]),
+        .library(name: "InboxDesignSystem", targets: ["InboxDesignSystem"]),
     ],
     targets: [
-        .target(name: "DesignSystem", resources: [.process("Resources")]),
-        .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"]),
+        .target(name: "InboxDesignSystem", resources: [.process("Resources")])
     ]
 )

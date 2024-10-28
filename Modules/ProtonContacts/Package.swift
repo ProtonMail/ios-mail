@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
     ],
     dependencies: [
-        .package(path: "../DesignSystem"),
+        .package(path: "../InboxDesignSystem"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../ProtonCore"),
         .package(path: "../ProtonCoreUI"),
@@ -21,7 +21,7 @@ let package = Package(
     targets: [
         .target(
             name: "ProtonContacts",
-            dependencies: ["DesignSystem", "proton_app_uniffi", "ProtonCore", "ProtonCoreUI"],
+            dependencies: ["InboxDesignSystem", "proton_app_uniffi", "ProtonCore", "ProtonCoreUI"],
             resources: [
                 .process("Resources")
             ]
