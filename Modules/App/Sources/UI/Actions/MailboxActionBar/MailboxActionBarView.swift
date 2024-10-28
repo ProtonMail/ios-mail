@@ -79,8 +79,8 @@ struct MailboxActionBarView: View {
 
     // MARK: - Private
 
-    private var selectedItemsIDs: Set<ID> {
-        Set(selectedItems.map(\.id))
+    private var selectedItemsIDs: [ID] {
+        selectedItems.map(\.id)
     }
 
     private var itemType: MailboxItemType {

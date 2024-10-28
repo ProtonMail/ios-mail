@@ -28,6 +28,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var scrollToMessage: String? = nil
     @Published private(set) var mailbox: Mailbox?
     @Published private(set) var conversationID: ID?
+    @Published private(set) var isStarred: Bool
     @Published var actionSheets: MailboxActionSheetsState = .initial()
 
     private var messagesLiveQuery: WatchedConversation?
@@ -38,6 +39,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     init(seed: ConversationDetailSeed, dependencies: Dependencies = .init()) {
         self.seed = seed
+        self.isStarred = seed.isStarred
         self.expandedMessages = .init()
         self.dependencies = dependencies
         self.starActionPerformer = .init(
@@ -52,6 +54,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             guard let self else { return }
             Task {
                 await self.readLiveQueryValues()
+                self.isStarred = self.messagesLiveQuery?.conversation.isStarred ?? false
             }
         }
     }

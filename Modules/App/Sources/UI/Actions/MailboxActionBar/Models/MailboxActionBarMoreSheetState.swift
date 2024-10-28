@@ -18,13 +18,13 @@
 import Foundation
 
 struct MailboxActionBarMoreSheetState: Identifiable, Equatable {
-    let selectedItemsIDs: Set<ID>
+    let selectedItemsIDs: [ID]
     let bottomBarActions: [BottomBarAction]
     let moreSheetOnlyActions: [BottomBarAction]
 
     // MARK: - Identifiable
 
-    var id: Set<ID> {
+    var id: [ID] {
         selectedItemsIDs
     }
 }

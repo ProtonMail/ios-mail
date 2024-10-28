@@ -22,11 +22,32 @@ import XCTest
 
 class MailboxItemActionSheetModelTests: BaseTestCase {
 
-    var invokedWithMessagesIDs: [ID] = []
-    var invokedWithConversationIDs: [ID] = []
-    var spiedNavigation: [MailboxItemActionSheetNavigation] = []
+    var invokedWithMessagesIDs: [ID]!
+    var invokedWithConversationIDs: [ID]!
+    var spiedNavigation: [MailboxItemActionSheetNavigation]!
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
+    var starActionPerformerWrapperSpy: StarActionPerformerWrapperSpy!
+
+    override func setUp() {
+        super.setUp()
+
+        invokedWithMessagesIDs = []
+        invokedWithConversationIDs = []
+        spiedNavigation = []
+        starActionPerformerWrapperSpy = .init()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+
+        invokedWithMessagesIDs = nil
+        invokedWithConversationIDs = nil
+        spiedNavigation = nil
+        stubbedMessageActions = nil
+        stubbedConversationActions = nil
+        starActionPerformerWrapperSpy = nil
+    }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
         stubbedMessageActions = .init(
@@ -82,20 +103,52 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         ))
     }
 
-    func testNavigation_WhenStarMailboxActionIsHandled_ItDoesNotEmitAnyNavigation() {
-        let sut = sut(ids: [], type: .message, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionSelected(.star))
-
-        XCTAssertEqual(spiedNavigation, [])
-    }
-
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
         let sut = sut(ids: [], type: .message, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(.labelAs))
 
         XCTAssertEqual(spiedNavigation, [.labelAs])
+    }
+
+    func testNavigation_WhenMessageIsStarred_ItEmitsDismissNavigation() {
+        let ids: [ID] = [.init(value: 11),. init(value: 1)]
+        let sut = sut(ids: ids, type: .message, title: .notUsed)
+
+        sut.handle(action: .mailboxItemActionSelected(.star))
+
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarMessage, ids)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
+    }
+
+    func testNavigation_WhenMessageIsUnstarred_ItEmitsDismissNavigation() {
+        let ids: [ID] = [.init(value: 11),. init(value: 1)]
+        let sut = sut(ids: ids, type: .message, title: .notUsed)
+
+        sut.handle(action: .mailboxItemActionSelected(.unstar))
+
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedUnstarMessage, ids)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
+    }
+
+    func testNavigation_WhenConversationIsStarred_ItEmitsDismissNavigation() {
+        let ids: [ID] = [.init(value: 11),. init(value: 1)]
+        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
+
+        sut.handle(action: .mailboxItemActionSelected(.star))
+
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarConversation, ids)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
+    }
+
+    func testNavigation_WhenConversationIsUnstarred_ItEmitsDismissNavigation() {
+        let ids: [ID] = [.init(value: 11),. init(value: 1)]
+        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
+
+        sut.handle(action: .mailboxItemActionSelected(.star))
+
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarConversation, ids)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
@@ -111,9 +164,41 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                     self.invokedWithConversationIDs = ids
                     return self.stubbedConversationActions
                 }
-            ),
+            ), 
+            starActionPerformerWrapper: starActionPerformerWrapperSpy.starActionPerformerWrapper,
+            mailUserSession: .testData,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
+    }
+
+}
+
+class StarActionPerformerWrapperSpy {
+    private(set) var invokedStarMessage: [ID] = []
+    private(set) var invokedStarConversation: [ID] = []
+    private(set) var invokedUnstarMessage: [ID] = []
+    private(set) var invokedUnstarConversation: [ID] = []
+
+    private(set) lazy var starActionPerformerWrapper = StarActionPerformerWrapper(
+        starMessage: { [weak self] _, messagesIDs in
+            self?.invokedStarMessage = messagesIDs
+        },
+        starConversation: { [weak self] _, conversationsIDs in
+            self?.invokedStarConversation = conversationsIDs
+        },
+        unstarMessage: { [weak self] _, messagesIDs in
+            self?.invokedUnstarMessage = messagesIDs
+        },
+        unstarConversation: { [weak self] _, conversationsIDs in
+            self?.invokedUnstarConversation = conversationsIDs
+        }
+    )
+}
+
+extension MailUserSession {
+
+    static var testData: MailUserSession {
+        .init(noPointer: .init())
     }
 
 }

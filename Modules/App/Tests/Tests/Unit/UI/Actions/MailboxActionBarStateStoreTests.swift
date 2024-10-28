@@ -27,27 +27,31 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var stubbedAvailableMessageActions: AllBottomBarMessageActions!
     var invokedAvailableConversationActionsWithIDs: [[ID]]!
     var stubbedAvailableConversationActions: AllBottomBarMessageActions!
+    var starActionPerformerWrapperSpy: StarActionPerformerWrapperSpy!
 
     override func setUp() {
         super.setUp()
         invokedAvailableMessageActionsWithIDs = []
         stubbedAvailableMessageActions = .testData
         invokedAvailableConversationActionsWithIDs = []
+        starActionPerformerWrapperSpy = .init()
 
         sut = MailboxActionBarStateStore(
             state: .initial,
             availableActions: .init(
                 message: { _, ids in
                     self.invokedAvailableMessageActionsWithIDs.append(ids)
-
+                    
                     return self.stubbedAvailableMessageActions
                 },
                 conversation: { _, ids in
                     self.invokedAvailableConversationActionsWithIDs.append(ids)
-
+                    
                     return self.stubbedAvailableConversationActions
                 }
-            )
+            ), 
+            starActionPerformerWrapper: starActionPerformerWrapperSpy.starActionPerformerWrapper,
+            mailUserSession: .testData
         )
     }
 
@@ -67,7 +71,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 11)]
 
         sut.handle(
-            action: .mailboxItemsSelectionUpdated(Set(ids), mailbox: .testData, itemType: .message)
+            action: .mailboxItemsSelectionUpdated(ids, mailbox: .testData, itemType: .message)
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
@@ -87,7 +91,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 22)]
 
         sut.handle(
-            action: .mailboxItemsSelectionUpdated(Set(ids), mailbox: .testData, itemType: .conversation)
+            action: .mailboxItemsSelectionUpdated(ids, mailbox: .testData, itemType: .conversation)
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
@@ -122,7 +126,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenLabelAsActionIsSelectedAndThenLabelAsSheetIsDismissed_ItReturnsCorrectState() {
-        let ids: Set<ID> = [.init(value: 8)]
+        let ids: [ID] = [.init(value: 8)]
 
         XCTAssertNil(sut.state.labelAsSheetPresented)
 
@@ -130,7 +134,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             .labelAs, ids: ids, mailbox: .testData, itemType: .conversation
         ))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: Array(ids), type: .conversation))
+        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .conversation))
 
         sut.handle(action: .dismissLabelAsSheet)
 
@@ -138,7 +142,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenMoreActionIsSelected_ItReturnsCorrectState() {
-        let ids: Set<ID> = [.init(value: 9)]
+        let ids: [ID] = [.init(value: 9)]
 
         XCTAssertNil(sut.state.moreActionSheetPresented)
 
@@ -157,11 +161,11 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() {
-        let ids: Set<ID> = [.init(value: 7)]
+        let ids: [ID] = [.init(value: 7)]
 
         sut.handle(action: .moreSheetAction(.labelAs, ids: ids, mailbox: .testData, itemType: .message))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: Array(ids), type: .message))
+        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .message))
     }
 
 }

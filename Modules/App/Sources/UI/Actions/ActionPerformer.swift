@@ -47,14 +47,14 @@ struct StarActionPerformer {
         self.starActionPerformerWrapper = starActionPerformerWrapper
     }
 
-    func unstar(itemsWithIDs ids: Set<ID>, itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
         Task {
             await unstar(itemsWithIDs: ids, itemType: itemType)
             completion?()
         }
     }
 
-    func star(itemsWithIDs ids: Set<ID>, itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func star(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
         Task {
             await star(itemsWithIDs: ids, itemType: itemType)
             completion?()
@@ -63,29 +63,21 @@ struct StarActionPerformer {
 
     // MARK: - Private
 
-    private func star(itemsWithIDs ids: Set<ID>, itemType: MailboxItemType) async {
+    private func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await starMessages(session: mailUserSession, messageIds: ids.array)
+            try! await starActionPerformerWrapper.starMessage(mailUserSession, ids)
         case .conversation:
-            try! await starConversations(session: mailUserSession, ids: ids.array)
+            try! await starActionPerformerWrapper.starConversation(mailUserSession, ids)
         }
     }
 
-    private func unstar(itemsWithIDs ids: Set<ID>, itemType: MailboxItemType) async {
+    private func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await unstarMessages(session: mailUserSession, messageIds: ids.array)
+            try! await starActionPerformerWrapper.unstarMessage(mailUserSession, ids)
         case .conversation:
-            try! await unstarConversations(session: mailUserSession, ids: ids.array)
+            try! await starActionPerformerWrapper.unstarConversation(mailUserSession, ids)
         }
     }
-}
-
-private extension Set {
-
-    var array: Array<Element> {
-        Array(self)
-    }
-
 }

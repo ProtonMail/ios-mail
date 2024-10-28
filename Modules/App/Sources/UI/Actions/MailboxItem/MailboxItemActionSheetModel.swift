@@ -53,12 +53,12 @@ class MailboxItemActionSheetModel: ObservableObject {
             case .labelAs:
                 navigation(.labelAs)
             case .star:
-                starActionPerformer.star(itemsWithIDs: Set(input.ids), itemType: input.type) { [weak self] in
-                    self?.navigation(.dismiss)
+                starActionPerformer.star(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
+                    self?.dismiss()
                 }
             case .unstar:
-                starActionPerformer.unstar(itemsWithIDs: Set(input.ids), itemType: input.type) { [weak self] in
-                    self?.navigation(.dismiss)
+                starActionPerformer.unstar(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
+                    self?.dismiss()
                 }
             default:
                 break // FIXME: - Handle rest of actions here
