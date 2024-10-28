@@ -15,34 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonContacts
 import proton_app_uniffi
-import ProtonCore
-import SwiftUI
 
-final class ContactsStateStore: ObservableObject {
-    enum Action {
-        case onLoad
+extension ContactGroupItem {
+
+    static var advisorsGroup: Self {
+        .init(
+            id: 3,
+            name: "Advisors Group: Comprehensive Wealth Management and Strategic Financial Solutions",
+            avatarColor: "#A1FF33",
+            emails: [
+                .init(id: 4, email: "group.advisor@pm.me"),
+                .init(id: 5, email: "group.advisor@protonmail.com"),
+                .init(id: 6, email: "advisor.group@yahoo.com")
+            ]
+        )
     }
 
-    @Published var state: [GroupedContacts]
-
-    private let repository: GroupedContactsProviding
-
-    init(state: [GroupedContacts], repository: GroupedContactsProviding) {
-        self.state = state
-        self.repository = repository
+    static var businessGroup: Self {
+        .init(
+            id: 2,
+            name: "Business Group",
+            avatarColor: "#A1FF33",
+            emails: [
+                .init(id: 21, email: "business.group@proton.me")
+            ]
+        )
     }
 
-    func handle(action: Action) {
-        switch action {
-        case .onLoad:
-            Task {
-                let contacts = await repository.allContacts()
-                let updateStateWorkItem = DispatchWorkItem { [weak self] in
-                    self?.state = contacts
-                }
-                Dispatcher.dispatchOnMain(updateStateWorkItem)
-            }
-        }
-    }
 }

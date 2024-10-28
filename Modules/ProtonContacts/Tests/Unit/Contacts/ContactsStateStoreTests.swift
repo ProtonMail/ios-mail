@@ -47,66 +47,16 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 item: [
-                    .contact(
-                        .init(
-                            id: 1_000,
-                            name: "0 VIP",
-                            avatarInformation: .init(text: "0V", color: "#33FF57"),
-                            emails: [
-                                .init(id: 1_001, email: "vip@proton.me"),
-                            ]
-                        )
-                    ),
+                    .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
                 item: [
-                    .contact(
-                        .init(
-                            id: 0,
-                            name: "Alice Adams",
-                            avatarInformation: .init(text: "AA", color: "#FF5733"),
-                            emails: [
-                                .init(id: 1, email: "alice.adams@proton.me"),
-                                .init(id: 2, email: "alice.adams@gmail.com")
-                            ]
-                        )
-                    ),
-                    .group(
-                        .init(
-                            id: 3,
-                            name: "Advisors Group: Comprehensive Wealth Management and Strategic Financial Solutions",
-                            avatarColor: "#A1FF33",
-                            emails: [
-                                .init(id: 4, email: "group.advisor@pm.me"),
-                                .init(id: 5, email: "group.advisor@protonmail.com"),
-                                .init(id: 6, email: "advisor.group@yahoo.com")
-                            ]
-                        )
-                    ),
-                    .contact(
-                        .init(
-                            id: 7,
-                            name: "🙂 Andrew Allen",
-                            avatarInformation: .init(text: "AA", color: "#33FF57"),
-                            emails: [
-                                .init(id: 8, email: "andrew.allen@protonmail.com"),
-                                .init(id: 9, email: "andrew.allen@yahoo.com")
-                            ]
-                        )
-                    ),
-                    .contact(
-                        .init(
-                            id: 10,
-                            name: "Amanda Archer",
-                            avatarInformation: .init(text: "AA", color: "#3357FF"),
-                            emails: [
-                                .init(id: 11, email: "amanda.archer@gmail.com"),
-                                .init(id: 12, email: "amanda.archer@pm.me")
-                            ]
-                        )
-                    )
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
                 ]
             )
         ]
@@ -129,16 +79,4 @@ private class GroupedContactsRepositorySpy: GroupedContactsProviding {
         stubbedContacts
     }
 
-}
-
-private final class TestExecutor: SerialExecutor {
-    static let shared = TestExecutor()
-
-    func enqueue(_ job: consuming ExecutorJob) {
-        job.runSynchronously(on: asUnownedSerialExecutor())
-    }
-
-    func asUnownedSerialExecutor() -> UnownedSerialExecutor {
-        UnownedSerialExecutor(ordinary: self)
-    }
 }

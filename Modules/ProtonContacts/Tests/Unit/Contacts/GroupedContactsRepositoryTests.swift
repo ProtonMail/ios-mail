@@ -51,40 +51,14 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
             .init(
                 groupedBy: "A",
                 item: [
-                    .contact(
-                        .init(
-                            id: 0,
-                            name: "Alice Adams",
-                            avatarInformation: .init(text: "AA", color: "#FF5733"),
-                            emails: [
-                                .init(id: 1, email: "alice.adams@proton.me"),
-                                .init(id: 2, email: "alice.adams@gmail.com")
-                            ]
-                        )
-                    ),
+                    .contact(.aliceAdams)
                 ]
             ),
             .init(
                 groupedBy: "B",
                 item: [
-                    .contact(
-                        .init(
-                            id: 1,
-                            name: "Bob Ainsworth",
-                            avatarInformation: .init(text: "BA", color: "#FF33A1"),
-                            emails: []
-                        )
-                    ),
-                    .group(
-                        .init(
-                            id: 2,
-                            name: "Business Group",
-                            avatarColor: "#A1FF33",
-                            emails: [
-                                .init(id: 21, email: "business.group@proton.me")
-                            ]
-                        )
-                    )
+                    .contact(.bobAinsworth),
+                    .group(.businessGroup)
                 ]
             )
         ]
