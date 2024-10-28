@@ -62,10 +62,8 @@ struct ConversationDetailScreen: View {
             .padding(.bottom, proxy.safeAreaInsets.bottom + 45)
             .navigationBarTitleDisplayMode(.inline)
             .navigationToolbar(
-                purpose: .itemDetail(
-                    isStarStateKnown: model.seed.isStarStateKnown,
-                    isStarred: model.seed.isStarred
-                )
+                purpose: .itemDetail(isStarred: model.seed.isStarred),
+                trailingItemAction: {  }
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()

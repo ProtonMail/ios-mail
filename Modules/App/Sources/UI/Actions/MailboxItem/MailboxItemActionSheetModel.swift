@@ -23,16 +23,23 @@ class MailboxItemActionSheetModel: ObservableObject {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
+    private let starActionPerformer: StarActionPerformer
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
         input: MailboxItemActionSheetInput,
         mailbox: Mailbox,
         actionsProvider: ActionsProvider,
+        starActionPerformerWrapper: StarActionPerformerWrapper,
+        mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
         self.input = input
         self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
+        self.starActionPerformer = .init(
+            mailUserSession: mailUserSession,
+            starActionPerformerWrapper: starActionPerformerWrapper
+        )
         self.state = .initial(title: input.title)
         self.navigation = navigation
     }
@@ -45,6 +52,14 @@ class MailboxItemActionSheetModel: ObservableObject {
             switch action {
             case .labelAs:
                 navigation(.labelAs)
+            case .star:
+                starActionPerformer.star(itemsWithIDs: Set(input.ids), itemType: input.type) { [weak self] in
+                    self?.navigation(.dismiss)
+                }
+            case .unstar:
+                starActionPerformer.unstar(itemsWithIDs: Set(input.ids), itemType: input.type) { [weak self] in
+                    self?.navigation(.dismiss)
+                }
             default:
                 break // FIXME: - Handle rest of actions here
             }
@@ -56,6 +71,14 @@ class MailboxItemActionSheetModel: ObservableObject {
                 break // FIXME: - Handle rest of actions here
             }
         }
+    }
+
+    // MARK: - Private
+
+    private func dismiss() {
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            self?.navigation(.dismiss)
+        }))
     }
 
     private func loadActions() {

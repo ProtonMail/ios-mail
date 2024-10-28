@@ -49,6 +49,13 @@ enum MailboxItemActionSheetPreviewProvider {
                     generalActions: []
                 ) }
             ),
+            starActionPerformerWrapper: .init(
+                starMessage: { _, _ in },
+                starConversation: { _, _ in },
+                unstarMessage: { _, _ in },
+                unstarConversation: { _, _ in }
+            ),
+            mailUserSession: MailUserSession(noPointer: .init()),
             navigation: { _ in }
         )
     }

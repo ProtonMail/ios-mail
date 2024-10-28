@@ -51,7 +51,9 @@ private struct MailboxActionSheets: ViewModifier {
         let model = MailboxItemActionSheetModel(
             input: input,
             mailbox: mailbox(),
-            actionsProvider: .productionInstance
+            actionsProvider: .productionInstance,
+            starActionPerformerWrapper: .productionInstance(),
+            mailUserSession: AppContext.shared.userSession
         ) { navigation in
             switch navigation {
             case .labelAs:
@@ -62,6 +64,8 @@ private struct MailboxActionSheets: ViewModifier {
                 state = state
                     .copy(\.moveTo, to: .init(ids: input.ids, type: input.type))
                     .copy(\.mailbox, to: nil)
+            case .dismiss:
+                state = state.copy(\.mailbox, to: nil)
             }
         }
         return MailboxItemActionSheet(model: model)

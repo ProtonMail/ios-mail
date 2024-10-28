@@ -23,15 +23,23 @@ import SwiftUI
 struct MailboxActionBarView: View {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject var store: MailboxActionBarStateStore
 
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
+        starActionPerformerWrapper: StarActionPerformerWrapper = .productionInstance(),
+        mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
-        self._store = StateObject(wrappedValue: .init(state: state, availableActions: availableActions))
+        self._store = StateObject(wrappedValue: .init(
+            state: state,
+            availableActions: availableActions,
+            starActionPerformerWrapper: starActionPerformerWrapper,
+            mailUserSession: mailUserSession
+        ))
     }
 
     var body: some View {

@@ -17,6 +17,7 @@
 
 import Foundation
 import proton_app_uniffi
+import ProtonCore
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
@@ -33,11 +34,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var expandedMessages: Set<ID>
     private let dependencies: Dependencies
     private let messageListCallback: LiveQueryCallbackWrapper = .init()
+    private let starActionPerformer: StarActionPerformer
 
     init(seed: ConversationDetailSeed, dependencies: Dependencies = .init()) {
         self.seed = seed
         self.expandedMessages = .init()
         self.dependencies = dependencies
+        self.starActionPerformer = .init(
+            mailUserSession: dependencies.appContext.userSession,
+            starActionPerformerWrapper: .productionInstance()
+        )
         setUpCallback()
     }
 

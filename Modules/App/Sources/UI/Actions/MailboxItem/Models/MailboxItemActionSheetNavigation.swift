@@ -18,6 +18,7 @@
 import Foundation
 
 enum MailboxItemActionSheetNavigation: Equatable {
+    case dismiss
     case labelAs
     case moveTo
 }

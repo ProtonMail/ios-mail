@@ -19,16 +19,23 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-class MailboxActionBarStateStore: ObservableObject {
+final class MailboxActionBarStateStore: ObservableObject {
     @Published var state: MailboxActionBarState
     private let actionsProvider: MailboxActionBarActionsProvider
+    private let starActionPerformer: StarActionPerformer
 
     init(
         state: MailboxActionBarState,
-        availableActions: AvailableMailboxActionBarActions
+        availableActions: AvailableMailboxActionBarActions,
+        starActionPerformerWrapper: StarActionPerformerWrapper,
+        mailUserSession: MailUserSession
     ) {
         self.state = state
         self.actionsProvider = .init(availableActions: availableActions)
+        self.starActionPerformer = .init(
+            mailUserSession: mailUserSession,
+            starActionPerformerWrapper: starActionPerformerWrapper
+        )
     }
 
     func handle(action: MailboxActionBarAction) {
@@ -62,6 +69,10 @@ class MailboxActionBarStateStore: ObservableObject {
             state = state.copy(\.labelAsSheetPresented, to: .init(ids: Array(ids), type: itemType))
         case .moveTo:
             state = state.copy(\.moveToSheetPresented, to: .init(ids: Array(ids), type: itemType))
+        case .star:
+            starActionPerformer.star(itemsWithIDs: ids, itemType: itemType)
+        case .unstar:
+            starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemType)
         default:
             break // FIXME: - Handle rest of the actions here
         }

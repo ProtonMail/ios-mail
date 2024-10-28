@@ -39,13 +39,6 @@ enum ConversationDetailSeed {
         }
     }
 
-    var isStarStateKnown: Bool {
-        if case .mailboxItem = self {
-            return true
-        }
-        return false
-    }
-
     var isStarred: Bool {
         switch self {
         case .mailboxItem(let model, _):

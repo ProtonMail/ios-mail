@@ -20,9 +20,9 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxItemDetailToolbar: ViewModifier {
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.presentationMode) var presentationMode
     let purpose: Purpose
+    let trailingItemAction: () -> Void
 
     func body(content: Content) -> some View {
         content
@@ -47,7 +47,7 @@ struct MailboxItemDetailToolbar: ViewModifier {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     purpose.trailingView {
-                        toastStateStore.present(toast: .comingSoon)
+                        trailingItemAction()
                     }
                 }
             }
@@ -58,7 +58,7 @@ struct MailboxItemDetailToolbar: ViewModifier {
 extension MailboxItemDetailToolbar {
 
     enum Purpose {
-        case itemDetail(isStarStateKnown: Bool, isStarred: Bool)
+        case itemDetail(isStarred: Bool)
         case simpleNavigation(title: String)
 
         @ViewBuilder
@@ -84,18 +84,14 @@ extension MailboxItemDetailToolbar {
         @ViewBuilder
         func trailingView(action: @escaping () -> Void) -> some View {
             switch self {
-            case .itemDetail(let isStarStateKnown, let isStarred):
-                if isStarStateKnown {
-                    Button(action: {
-                        action()
-                    }, label: {
-                        Image(isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                            .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                    })
-                    .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.starButton)
-                } else {
-                    EmptyView()
-                }
+            case .itemDetail(let isStarred):
+                Button(action: {
+                    action()
+                }, label: {
+                    Image(isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                        .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+                })
+                .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.starButton)
             case .simpleNavigation:
                 EmptyView()
             }
@@ -105,8 +101,11 @@ extension MailboxItemDetailToolbar {
 
 extension View {
     @MainActor
-    func navigationToolbar(purpose: MailboxItemDetailToolbar.Purpose) -> some View {
-        return self.modifier(MailboxItemDetailToolbar(purpose: purpose))
+    func navigationToolbar(
+        purpose: MailboxItemDetailToolbar.Purpose,
+        trailingItemAction: @escaping () -> Void
+    ) -> some View {
+        return self.modifier(MailboxItemDetailToolbar(purpose: purpose, trailingItemAction: trailingItemAction))
     }
 }
 
