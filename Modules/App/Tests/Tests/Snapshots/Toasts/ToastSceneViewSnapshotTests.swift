@@ -17,8 +17,8 @@
 
 @testable import ProtonMail
 import InboxCore
+import InboxSnapshotTesting
 import InboxTesting
-import ProtonSnapshotTesting
 import XCTest
 
 class ToastSceneViewSnapshotTests: BaseTestCase {

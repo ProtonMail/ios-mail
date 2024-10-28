@@ -4,17 +4,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "ProtonSnapshotTesting",
+    name: "InboxSnapshotTesting",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonSnapshotTesting", targets: ["ProtonSnapshotTesting"])
+        .library(name: "InboxSnapshotTesting", targets: ["InboxSnapshotTesting"])
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0")
     ],
     targets: [
         .target(
-            name: "ProtonSnapshotTesting",
+            name: "InboxSnapshotTesting",
             dependencies: [.product(name: "SnapshotTesting", package: "swift-snapshot-testing")]
         )
     ]

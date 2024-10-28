@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
-import ProtonSnapshotTesting
+import InboxSnapshotTesting
 import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {

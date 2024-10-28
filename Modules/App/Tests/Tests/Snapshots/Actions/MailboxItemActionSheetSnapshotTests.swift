@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxSnapshotTesting
 import InboxTesting
-import ProtonSnapshotTesting
 
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 

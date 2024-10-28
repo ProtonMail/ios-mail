@@ -32,6 +32,9 @@ packages:
   InboxKeychain:
     path: Modules/InboxKeychain
     group: Modules
+  InboxSnapshotTesting:
+    path: Modules/InboxSnapshotTesting
+    group: Modules
   InboxTesting:
     path: Modules/InboxTesting
     group: Modules
@@ -47,9 +50,6 @@ packages:
   ProtonCoreET:
     path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
     group: ProtonPackages
-  ProtonSnapshotTesting:
-    path: Modules/ProtonSnapshotTesting
-    group: Modules
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     minorVersion: "2.64.0"
@@ -153,9 +153,9 @@ targets:
           - "Modules/App/Tests/**/__Snapshots__"
     dependencies:
       - target: ProtonMail
+      - package: InboxSnapshotTesting
       - package: InboxTesting
       - package: Nimble
-      - package: ProtonSnapshotTesting
       - package: ViewInspector
     scheme:
       gatherCoverageData: true
