@@ -32,6 +32,9 @@ packages:
   InboxKeychain:
     path: Modules/InboxKeychain
     group: Modules
+  InboxTesting:
+    path: Modules/InboxTesting
+    group: Modules
   Lottie:
     url: https://github.com/airbnb/lottie-ios.git
     minorVersion: "4.5.0"    
@@ -44,9 +47,6 @@ packages:
   ProtonCoreET:
     path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
     group: ProtonPackages
-  ProtonTesting:
-    path: Modules/ProtonTesting
-    group: Modules
   ProtonSnapshotTesting:
     path: Modules/ProtonSnapshotTesting
     group: Modules
@@ -153,8 +153,8 @@ targets:
           - "Modules/App/Tests/**/__Snapshots__"
     dependencies:
       - target: ProtonMail
+      - package: InboxTesting
       - package: Nimble
-      - package: ProtonTesting
       - package: ProtonSnapshotTesting
       - package: ViewInspector
     scheme:

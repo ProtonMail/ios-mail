@@ -17,8 +17,8 @@
 
 @testable import ProtonMail
 import AccountLogin
+import InboxTesting
 import proton_app_uniffi
-import ProtonTesting
 import SwiftUI
 import ViewInspector
 import XCTest

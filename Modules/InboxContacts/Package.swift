@@ -14,8 +14,8 @@ let package = Package(
         .package(path: "../InboxCore"),
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxDesignSystem"),
+        .package(path: "../InboxTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
-        .package(path: "../ProtonTesting"),
         .package(path: "../ProtonSnapshotTesting")
     ],
     targets: [
@@ -30,7 +30,7 @@ let package = Package(
             name: "InboxContactsTests",
             dependencies: [
                 .target(name: "InboxContacts"),
-                .product(name: "ProtonTesting", package: "ProtonTesting"),
+                .product(name: "InboxTesting", package: "InboxTesting"),
                 .product(name: "ProtonSnapshotTesting", package: "ProtonSnapshotTesting")
             ]
         )

@@ -17,8 +17,8 @@
 
 @testable import InboxContacts
 import InboxCore
+import InboxTesting
 import proton_app_uniffi
-import ProtonTesting
 import XCTest
 
 final class GroupedContactsRepositoryTests: BaseTestCase {
