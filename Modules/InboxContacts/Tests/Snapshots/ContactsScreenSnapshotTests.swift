@@ -15,15 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonContacts
+@testable import InboxContacts
+import ProtonSnapshotTesting
 import XCTest
 
-final class L10nTests: XCTestCase {
-    func testContactsGroupSubtitle_For1Member_ReturnsCorrectString() {
-        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 1).string, "1 member")
-    }
+final class ContactsScreenSnapshotTests: XCTestCase {
 
-    func testContactsGroupSubtitle_For2Members_ReturnsCorrectString() {
-        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 2).string, "2 members")
+    @MainActor
+    func testContactsScreenLayoutsCorrectOnIphoneX() async throws {
+        let repository = GroupedContactsRepositoryPreview()
+        let state = try await repository.allContacts()
+
+        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: state, repository: repository))
     }
 }

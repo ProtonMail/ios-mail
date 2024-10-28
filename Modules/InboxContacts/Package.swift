@@ -4,11 +4,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "ProtonContacts",
+    name: "InboxContacts",
     defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonContacts", targets: ["ProtonContacts"]),
+        .library(name: "InboxContacts", targets: ["InboxContacts"]),
     ],
     dependencies: [
         .package(path: "../InboxDesignSystem"),
@@ -20,19 +20,19 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ProtonContacts",
+            name: "InboxContacts",
             dependencies: ["InboxDesignSystem", "proton_app_uniffi", "ProtonCore", "ProtonCoreUI"],
             resources: [
                 .process("Resources")
             ]
         ),
         .testTarget(
-            name: "ProtonContactsTests",
+            name: "InboxContactsTests",
             dependencies: [
-                .target(name: "ProtonContacts"),
+                .target(name: "InboxContacts"),
                 .product(name: "ProtonTesting", package: "ProtonTesting"),
                 .product(name: "ProtonSnapshotTesting", package: "ProtonSnapshotTesting")
             ]
-        ),
+        )
     ]
 )

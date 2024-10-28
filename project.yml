@@ -17,6 +17,9 @@ packages:
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
+  InboxContacts:
+    path: Modules/InboxContacts
+    group: Modules
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
@@ -32,9 +35,6 @@ packages:
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
     group: ProtonPackages
-  ProtonContacts:
-    path: Modules/ProtonContacts
-    group: Modules
   ProtonCore:
     path: Modules/ProtonCore
     group: Modules
@@ -129,11 +129,11 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     dependencies:
       - package: Collections
+      - package: InboxContacts
       - package: InboxDesignSystem
       - package: InboxKeychain
       - package: Lottie
       - package: proton_app_uniffi
-      - package: ProtonContacts
       - package: ProtonCore
       - package: ProtonCoreET
         products: 

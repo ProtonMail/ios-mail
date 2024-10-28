@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountLogin
+import InboxContacts
 import proton_app_uniffi
-import ProtonContacts
 import SwiftUI
 
 struct HomeScreen: View {
