@@ -18,14 +18,8 @@
 import Foundation
 
 enum ConversationDetailSeed {
-    struct Message {
-        let localID: ID
-        let subject: String
-        let sender: String
-    }
-
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
-    case message(Message)
+    case message(MailboxMessageSeed)
 
     var selectedMailbox: SelectedMailbox {
         switch self {

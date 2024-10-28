@@ -17,9 +17,9 @@
 
 import Foundation
 
+/// Describes the available information when opening the conversation details screen from a push notification
 struct MailboxMessageSeed: Hashable {
-    let localID: ID
-    let conversationID: ID
+    let messageID: ID
     let subject: String
     let sender: String
 }

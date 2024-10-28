@@ -182,7 +182,7 @@ private extension View {
     NavigationView {
         ConversationDetailScreen(
             seed: .message(.init(
-                localID: .init(value: 0),
+                messageID: .init(value: 0),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                 sender: "him"
             ))
