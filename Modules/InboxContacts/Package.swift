@@ -11,17 +11,17 @@ let package = Package(
         .library(name: "InboxContacts", targets: ["InboxContacts"]),
     ],
     dependencies: [
+        .package(path: "../InboxCoreUI"),
         .package(path: "../InboxDesignSystem"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../ProtonCore"),
-        .package(path: "../ProtonCoreUI"),
         .package(path: "../ProtonTesting"),
         .package(path: "../ProtonSnapshotTesting")
     ],
     targets: [
         .target(
             name: "InboxContacts",
-            dependencies: ["InboxDesignSystem", "proton_app_uniffi", "ProtonCore", "ProtonCoreUI"],
+            dependencies: ["InboxCoreUI", "InboxDesignSystem", "proton_app_uniffi", "ProtonCore"],
             resources: [
                 .process("Resources")
             ]

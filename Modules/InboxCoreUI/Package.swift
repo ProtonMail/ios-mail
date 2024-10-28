@@ -4,14 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "ProtonCoreUI",
+    name: "InboxCoreUI",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "ProtonCoreUI", targets: ["ProtonCoreUI"])
+        .library(name: "InboxCoreUI", targets: ["InboxCoreUI"])
     ],
     dependencies: [],
     targets: [
-        .target(name: "ProtonCoreUI"),
-        .testTarget(name: "ProtonCoreUITests", dependencies: [.target(name: "ProtonCoreUI")])
+        .target(name: "InboxCoreUI"),
+        .testTarget(name: "InboxCoreUITests", dependencies: [.target(name: "InboxCoreUI")])
     ]
 )

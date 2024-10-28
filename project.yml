@@ -20,6 +20,9 @@ packages:
   InboxContacts:
     path: Modules/InboxContacts
     group: Modules
+  InboxCoreUI:
+    path: Modules/InboxCoreUI
+    group: Modules
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
@@ -41,9 +44,6 @@ packages:
   ProtonCoreET:
     path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
     group: ProtonPackages
-  ProtonCoreUI:
-    path: Modules/ProtonCoreUI
-    group: Modules
   ProtonTesting:
     path: Modules/ProtonTesting
     group: Modules
@@ -130,6 +130,7 @@ targets:
     dependencies:
       - package: Collections
       - package: InboxContacts
+      - package: InboxCoreUI
       - package: InboxDesignSystem
       - package: InboxKeychain
       - package: Lottie
@@ -139,7 +140,6 @@ targets:
         products: 
           - AccountLogin
           - AccountManager
-      - package: ProtonCoreUI
       - package: SwiftUIIntrospect
 
   ProtonMailTest:
