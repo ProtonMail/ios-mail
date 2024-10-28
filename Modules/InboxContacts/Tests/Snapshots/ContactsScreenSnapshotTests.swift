@@ -24,8 +24,9 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     @MainActor
     func testContactsScreenLayoutsCorrectOnIphoneX() async throws {
         let repository = GroupedContactsRepositoryPreview()
-        let state = try await repository.allContacts()
+        let state = await repository.allContacts()
 
         assertSnapshotsOnIPhoneX(of: ContactsScreen(state: state, repository: repository))
     }
+
 }
