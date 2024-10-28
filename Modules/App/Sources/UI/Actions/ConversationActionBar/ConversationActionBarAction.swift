@@ -18,6 +18,6 @@
 import proton_app_uniffi
 
 enum ConversationActionBarAction {
-    case viewAppear(Mailbox)
+    case onLoad(Mailbox)
     case actionSelected(BottomBarAction)
 }

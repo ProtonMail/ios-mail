@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
 import proton_app_uniffi
+import XCTest
 
 class ConversationActionBarStateStoreTests: BaseTestCase {
 
@@ -39,7 +39,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
         )
     }
 
-    func testState_WhenViewAppear_ItReturnsCorrectState() {
+    func testState_WhenViewLoads_ItReturnsCorrectState() {
         stubbedBottomBarActions = .init(
             hiddenBottomBarActions: [], 
             visibleBottomBarActions: [.labelAs, .markUnread]
@@ -47,7 +47,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.count, 0)
 
-        sut.handle(action: .viewAppear(.testData))
+        sut.handle(action: .onLoad(.testData))
 
         XCTAssertEqual(sut.state, [.labelAs, .markUnread])
     }

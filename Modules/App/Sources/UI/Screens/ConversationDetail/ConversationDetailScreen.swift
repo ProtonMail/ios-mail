@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import proton_app_uniffi
 import ProtonCoreUI
 import SwiftUI
-import proton_app_uniffi
 
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
@@ -32,11 +32,14 @@ struct ConversationDetailScreen: View {
         ZStack {
             conversationView
             if let mailbox = model.mailbox {
-                ConversationActionBarView(store: .init(
-                    conversationID: model.seed.conversationID,
-                    bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
-                    handleAction: { action in model.handleConversation(action: action) }
-                ), mailbox: mailbox)
+                ConversationActionBarView(
+                    store: .init(
+                        conversationID: model.seed.conversationID,
+                        bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
+                        handleAction: { action in model.handleConversation(action: action) }
+                    ),
+                    mailbox: mailbox
+                )
             }
         }.actionSheetsFlow(
             mailbox: { model.mailbox.unsafelyUnwrapped },
@@ -178,11 +181,12 @@ private extension View {
 #Preview("From Notification") {
     NavigationView {
         ConversationDetailScreen(
-            seed: .message(
-                localID: .init(value: 0), 
+            seed: .message(.init(
+                localID: .init(value: 0),
                 conversationID: .init(value: 1),
-                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia", sender: "him"
-            )
+                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
+                sender: "him"
+            ))
         )
     }
 }

@@ -31,8 +31,8 @@ struct ConversationActionBarView: View {
         BottomActionBarView(actions: store.state) { action in
             store.handle(action: .actionSelected(action))
         }
-        .onAppear {
-            store.handle(action: .viewAppear(mailbox))
+        .onLoad {
+            store.handle(action: .onLoad(mailbox))
         }
     }
 }

@@ -143,12 +143,12 @@ extension MailboxScreen {
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
-                seed: .message(
+                seed: .message(.init(
                     localID: seed.localID,
                     conversationID: seed.conversationID,
                     subject: seed.subject,
                     sender: seed.sender
-                )
+                ))
             )
         }
     }

@@ -37,7 +37,7 @@ class ConversationActionBarStateStore: ObservableObject {
 
     func handle(action: ConversationActionBarAction) {
         switch action {
-        case .viewAppear(let mailbox):
+        case .onLoad(let mailbox):
             fetchActions(mailbox: mailbox)
         case .actionSelected(let action):
             handleAction(action)
