@@ -30,9 +30,7 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     }
 
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {
-        let repository = GroupedContactsRepositoryPreview()
-
-        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: [], repository: repository))
+        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: [], repository: GroupedContactsRepositoryPreview()))
     }
 
 }
