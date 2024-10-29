@@ -27,14 +27,14 @@ final class NoContactsPlaceholderView: UIView {
         return imageView
     }()
 
-    let titleLabel: UILabel = ViewsFactory.label(
-        text: "No contacts yet",
+    private let titleLabel: UILabel = ViewsFactory.label(
+        text: L10n.Contacts.EmptyState.title.string,
         font: .font(textStyle: .title2, weight: .semibold),
         textColor: DS.Color.Text.weak
     )
 
-    let subtitleLabel: UILabel = ViewsFactory.label(
-        text: "Tap + to add your first contact.",
+    private let subtitleLabel: UILabel = ViewsFactory.label(
+        text: L10n.Contacts.EmptyState.subtitle.string,
         font: .font(textStyle: .subheadline, weight: .regular),
         textColor: DS.Color.Text.weak
     )
@@ -80,4 +80,3 @@ final class NoContactsPlaceholderView: UIView {
     }
 
 }
-

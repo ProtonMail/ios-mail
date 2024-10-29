@@ -22,6 +22,18 @@ import Foundation
 /// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
     enum Contacts {
+        enum EmptyState {
+            static let title = LocalizedStringResource(
+                "No contacts yet",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Contacts screen's empty state title."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Tap + to add your first contact.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Contacts screen's empty state subtitle."
+            )
+        }
         static let title = LocalizedStringResource(
             "Contacts",
             bundle: .atURL(Bundle.module.bundleURL),
