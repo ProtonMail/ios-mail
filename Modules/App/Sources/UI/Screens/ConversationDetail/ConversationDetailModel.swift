@@ -131,7 +131,7 @@ extension ConversationDetailModel {
         case .mailboxItem(let item, _):
             return item.conversationID
         case .message(let message):
-            let message = try await fetchMessage(with: message.messageID)
+            let message = try await fetchMessage(with: message.remoteID)
             return message.conversationId
         }
     }
@@ -196,7 +196,7 @@ extension ConversationDetailModel {
                 messageID = item.id
             }
         case .message(let message):
-            messageID = message.messageID
+            messageID = message.remoteID
         }
         return messageID
     }
