@@ -94,9 +94,8 @@ extension MailboxListView {
                     model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
                 }
             },
-            onSwipeAction: { action, itemId in
-                toastStateStore.present(toast: .comingSoon)
-//                    model?.onMailboxItemAction(action, itemIds: ids)
+            onSwipeAction: { [weak model] action, itemId in
+                model?.onMailboxItemAction(action, itemIds: [itemId], toastStateStore: toastStateStore)
             }
         )
         

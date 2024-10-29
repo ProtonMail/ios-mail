@@ -23,7 +23,7 @@ protocol MailboxActionable {
     func labelsOfSelectedItems() -> [Set<ID>]
 
     @MainActor
-    func onActionTap(_ action: Action)
+    func onActionTap(_ action: Action, toastStateStore: ToastStateStore)
 
     @MainActor
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool)
@@ -34,7 +34,7 @@ protocol MailboxActionable {
 
 struct EmptyMailboxActionable: MailboxActionable {
     func labelsOfSelectedItems() -> [Set<ID>] { [] }
-    func onActionTap(_ action: Action) {}
+    func onActionTap(_ action: Action, toastStateStore: ToastStateStore) {}
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {}
     func onFolderSelected(labelId: ID) {}
 }

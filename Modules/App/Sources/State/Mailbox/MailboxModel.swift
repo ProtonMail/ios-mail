@@ -358,22 +358,10 @@ extension MailboxModel {
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
     }
 
-    func onMailboxItemAction(_ action: Action, itemIds: [ID]) {
+    func onMailboxItemAction(_ action: Action, itemIds: [ID], toastStateStore: ToastStateStore) { // FIXME: - Use different type
         switch action {
-        case .deletePermanently:
-            actionDelete(ids: itemIds)
-        case .markAsRead:
-            actionUpdateReadStatus(to: .read, for: itemIds)
-        case .markAsUnread:
-            actionUpdateReadStatus(to: .unread, for: itemIds)
-        case .moveToArchive:
-            actionMoveTo(systemFolder: .archive, ids: itemIds)
-        case .moveToInbox:
-            actionMoveTo(systemFolder: .inbox, ids: itemIds)
-        case .moveToSpam:
-            actionMoveTo(systemFolder: .spam, ids: itemIds)
-        case .moveToTrash:
-            actionMoveTo(systemFolder: .trash, ids: itemIds)
+        case .deletePermanently, .markAsRead, .markAsUnread, .moveToArchive, .moveToInbox, .moveToSpam, .moveToTrash:
+            toastStateStore.present(toast: .comingSoon)
         case .star:
             actionStar(ids: itemIds)
         case .unstar:
@@ -386,6 +374,7 @@ extension MailboxModel {
 
 // MARK: conversation actions
 
+// FIXME: - Clean here
 extension MailboxModel {
 
     private func actionStar(ids: [ID]) {
@@ -497,8 +486,12 @@ extension MailboxModel: MailboxActionable {
         paginatedDataSource.state.items.filter({ $0.isSelected }).map(\.labelUIModel.allLabelIds)
     }
 
-    func onActionTap(_ action: Action) {
-        onMailboxItemAction(action, itemIds: selectionMode.selectionState.selectedItems.map(\.id))
+    func onActionTap(_ action: Action, toastStateStore: ToastStateStore) {
+        onMailboxItemAction(
+            action,
+            itemIds: selectionMode.selectionState.selectedItems.map(\.id),
+            toastStateStore: toastStateStore
+        )
     }
 
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {

@@ -201,7 +201,7 @@ extension SearchModel: MailboxActionable {
     func labelsOfSelectedItems() -> [Set<ID>] { [] }
 
     @MainActor
-    func onActionTap(_ action: Action) {}
+    func onActionTap(_ action: Action, toastStateStore: ToastStateStore) {}
 
     @MainActor
     func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {}
