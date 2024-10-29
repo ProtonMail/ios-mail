@@ -17,7 +17,7 @@
 
 import Foundation
 import proton_app_uniffi
-import ProtonCore
+import InboxCore
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
@@ -51,7 +51,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             guard let self else { return }
             Task {
                 await self.readLiveQueryValues()
-                self.isStarred = self.messagesLiveQuery?.conversation.isStarred ?? false
+                self.updateStarState()
             }
         }
     }
@@ -124,6 +124,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
+
+    private func updateStarState() {
+        let isStarred = messagesLiveQuery?.conversation.isStarred ?? false
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            self?.isStarred = isStarred
+        }))
+    }
 
     private func starConversation() {
         starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
