@@ -84,6 +84,7 @@ struct SearchToolbarView: View {
                 .font(.body)
                 .padding(.leading, DS.Spacing.standard)
                 .frame(maxHeight: Layout.searchBarHeight)
+                .textInputAutocapitalization(.never)
                 .focused($isFocused)
                 .submitLabel(.search)
                 .onSubmitWrapper(query: $textFieldState.searchText) { query in
@@ -98,7 +99,7 @@ struct SearchToolbarView: View {
                         .square(size: Layout.iconSquareSize)
                         .foregroundStyle(DS.Color.Icon.hint)
                 }
-                .padding(.trailing, DS.Spacing.mediumLight)
+                .padding(.trailing, DS.Spacing.mediumLight - Layout.searchBarCornerRadius/2)
             }
         }
         .background(DS.Color.Background.deep)
