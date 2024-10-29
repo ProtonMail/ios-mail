@@ -34,7 +34,7 @@ enum ViewsFactory {
         stackView.alignment = .center
         stackView.axis = .horizontal
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.directionalLayoutMargins = .init(vertical: DS.Spacing.standard, horizontal: DS.Spacing.large)
+        stackView.directionalLayoutMargins = .init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large)
         stackView.spacing = DS.Spacing.large
 
         return stackView
