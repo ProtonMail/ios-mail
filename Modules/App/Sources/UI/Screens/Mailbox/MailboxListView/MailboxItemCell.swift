@@ -19,7 +19,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxItemCell: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.sizeCategory) var sizeCategory
     @State private(set) var isPressed: Bool = false
 

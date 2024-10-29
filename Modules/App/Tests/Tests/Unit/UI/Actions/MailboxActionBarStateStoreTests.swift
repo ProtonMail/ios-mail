@@ -27,14 +27,14 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var stubbedAvailableMessageActions: AllBottomBarMessageActions!
     var invokedAvailableConversationActionsWithIDs: [[ID]]!
     var stubbedAvailableConversationActions: AllBottomBarMessageActions!
-    var starActionPerformerWrapperSpy: StarActionPerformerWrapperSpy!
+    var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
 
     override func setUp() {
         super.setUp()
         invokedAvailableMessageActionsWithIDs = []
         stubbedAvailableMessageActions = .testData
         invokedAvailableConversationActionsWithIDs = []
-        starActionPerformerWrapperSpy = .init()
+        starActionPerformerActionsSpy = .init()
 
         sut = MailboxActionBarStateStore(
             state: .initial,
@@ -50,7 +50,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                     return self.stubbedAvailableConversationActions
                 }
             ), 
-            starActionPerformerWrapper: starActionPerformerWrapperSpy.starActionPerformerWrapper,
+            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
             mailUserSession: .testData
         )
     }
@@ -173,7 +173,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         sut.handle(action: .actionSelected(.star, ids: ids, mailbox: .testData, itemType: .message))
 
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarMessage, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
     }
 
     func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarCorrectMessage() {
@@ -183,7 +183,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertNotNil(sut.state.moreActionSheetPresented)
 
         sut.handle(action: .moreSheetAction(.unstar, ids: ids, mailbox: .testData, itemType: .message))
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedUnstarMessage, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
     }
 
 }

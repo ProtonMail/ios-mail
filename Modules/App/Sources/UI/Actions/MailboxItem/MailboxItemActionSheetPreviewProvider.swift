@@ -49,7 +49,7 @@ enum MailboxItemActionSheetPreviewProvider {
                     generalActions: []
                 ) }
             ),
-            starActionPerformerWrapper: .init(
+            starActionPerformerActions: .init(
                 starMessage: { _, _ in },
                 starConversation: { _, _ in },
                 unstarMessage: { _, _ in },

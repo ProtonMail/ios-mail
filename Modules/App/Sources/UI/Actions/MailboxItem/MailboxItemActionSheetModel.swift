@@ -30,7 +30,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         input: MailboxItemActionSheetInput,
         mailbox: Mailbox,
         actionsProvider: ActionsProvider,
-        starActionPerformerWrapper: StarActionPerformerWrapper,
+        starActionPerformerActions: StarActionPerformerActions,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -38,7 +38,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         self.availableActionsProvider = .init(actionsProvider: actionsProvider, mailbox: mailbox)
         self.starActionPerformer = .init(
             mailUserSession: mailUserSession,
-            starActionPerformerWrapper: starActionPerformerWrapper
+            starActionPerformerActions: starActionPerformerActions
         )
         self.state = .initial(title: input.title)
         self.navigation = navigation

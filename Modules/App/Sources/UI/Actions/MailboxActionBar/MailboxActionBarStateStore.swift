@@ -27,14 +27,14 @@ final class MailboxActionBarStateStore: ObservableObject {
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
-        starActionPerformerWrapper: StarActionPerformerWrapper,
+        starActionPerformerActions: StarActionPerformerActions,
         mailUserSession: MailUserSession
     ) {
         self.state = state
         self.actionsProvider = .init(availableActions: availableActions)
         self.starActionPerformer = .init(
             mailUserSession: mailUserSession,
-            starActionPerformerWrapper: starActionPerformerWrapper
+            starActionPerformerActions: starActionPerformerActions
         )
     }
 

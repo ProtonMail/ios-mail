@@ -27,7 +27,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     var spiedNavigation: [MailboxItemActionSheetNavigation]!
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
-    var starActionPerformerWrapperSpy: StarActionPerformerWrapperSpy!
+    var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -35,7 +35,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         invokedWithMessagesIDs = []
         invokedWithConversationIDs = []
         spiedNavigation = []
-        starActionPerformerWrapperSpy = .init()
+        starActionPerformerActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -46,7 +46,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         spiedNavigation = nil
         stubbedMessageActions = nil
         stubbedConversationActions = nil
-        starActionPerformerWrapperSpy = nil
+        starActionPerformerActionsSpy = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -117,7 +117,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .mailboxItemActionSelected(.star))
 
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarMessage, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -127,7 +127,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .mailboxItemActionSelected(.unstar))
 
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedUnstarMessage, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -137,7 +137,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .mailboxItemActionSelected(.star))
 
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarConversation, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarConversation, ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -147,7 +147,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .mailboxItemActionSelected(.star))
 
-        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarConversation, ids)
+        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarConversation, ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -165,40 +165,10 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                     return self.stubbedConversationActions
                 }
             ), 
-            starActionPerformerWrapper: starActionPerformerWrapperSpy.starActionPerformerWrapper,
-            mailUserSession: .testData,
+            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
+            mailUserSession: .testInstance,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
-    }
-
-}
-
-class StarActionPerformerWrapperSpy {
-    private(set) var invokedStarMessage: [ID] = []
-    private(set) var invokedStarConversation: [ID] = []
-    private(set) var invokedUnstarMessage: [ID] = []
-    private(set) var invokedUnstarConversation: [ID] = []
-
-    private(set) lazy var starActionPerformerWrapper = StarActionPerformerWrapper(
-        starMessage: { [weak self] _, messagesIDs in
-            self?.invokedStarMessage = messagesIDs
-        },
-        starConversation: { [weak self] _, conversationsIDs in
-            self?.invokedStarConversation = conversationsIDs
-        },
-        unstarMessage: { [weak self] _, messagesIDs in
-            self?.invokedUnstarMessage = messagesIDs
-        },
-        unstarConversation: { [weak self] _, conversationsIDs in
-            self?.invokedUnstarConversation = conversationsIDs
-        }
-    )
-}
-
-extension MailUserSession {
-
-    static var testData: MailUserSession {
-        .init(noPointer: .init())
     }
 
 }

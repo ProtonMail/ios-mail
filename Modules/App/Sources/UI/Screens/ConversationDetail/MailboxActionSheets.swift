@@ -52,7 +52,7 @@ private struct MailboxActionSheets: ViewModifier {
             input: input,
             mailbox: mailbox(),
             actionsProvider: .productionInstance,
-            starActionPerformerWrapper: .productionInstance(),
+            starActionPerformerActions: .productionInstance(),
             mailUserSession: AppContext.shared.userSession
         ) { navigation in
             switch navigation {

@@ -29,7 +29,7 @@ struct MailboxActionBarView: View {
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
-        starActionPerformerWrapper: StarActionPerformerWrapper = .productionInstance(),
+        starActionPerformerActions: StarActionPerformerActions = .productionInstance(),
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
@@ -37,7 +37,7 @@ struct MailboxActionBarView: View {
         self._store = StateObject(wrappedValue: .init(
             state: state,
             availableActions: availableActions,
-            starActionPerformerWrapper: starActionPerformerWrapper,
+            starActionPerformerActions: starActionPerformerActions,
             mailUserSession: mailUserSession
         ))
     }

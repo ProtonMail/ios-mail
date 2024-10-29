@@ -42,10 +42,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.isStarred = seed.isStarred
         self.expandedMessages = .init()
         self.dependencies = dependencies
-        self.starActionPerformer = .init(
-            mailUserSession: dependencies.appContext.userSession,
-            starActionPerformerWrapper: .productionInstance()
-        )
+        self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
         setUpCallback()
     }
 

@@ -17,37 +17,16 @@
 
 import proton_app_uniffi
 
-struct StarActionPerformerWrapper {
-    let starMessage: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-    let starConversation: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-
-    let unstarMessage: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-    let unstarConversation: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-}
-
-extension StarActionPerformerWrapper {
-
-    static func productionInstance() -> StarActionPerformerWrapper {
-        .init(
-            starMessage: starMessages,
-            starConversation: starConversations,
-            unstarMessage: unstarMessages,
-            unstarConversation: unstarConversations
-        )
-    }
-
-}
-
 struct StarActionPerformer {
     private let mailUserSession: MailUserSession
-    private let starActionPerformerWrapper: StarActionPerformerWrapper
+    private let starActionPerformerActions: StarActionPerformerActions
 
     init(
         mailUserSession: MailUserSession,
-        starActionPerformerWrapper: StarActionPerformerWrapper = .productionInstance()
+        starActionPerformerActions: StarActionPerformerActions = .productionInstance()
     ) {
         self.mailUserSession = mailUserSession
-        self.starActionPerformerWrapper = starActionPerformerWrapper
+        self.starActionPerformerActions = starActionPerformerActions
     }
 
     func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
@@ -69,18 +48,18 @@ struct StarActionPerformer {
     private func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await starActionPerformerWrapper.starMessage(mailUserSession, ids)
+            try! await starActionPerformerActions.starMessage(mailUserSession, ids)
         case .conversation:
-            try! await starActionPerformerWrapper.starConversation(mailUserSession, ids)
+            try! await starActionPerformerActions.starConversation(mailUserSession, ids)
         }
     }
 
     private func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await starActionPerformerWrapper.unstarMessage(mailUserSession, ids)
+            try! await starActionPerformerActions.unstarMessage(mailUserSession, ids)
         case .conversation:
-            try! await starActionPerformerWrapper.unstarConversation(mailUserSession, ids)
+            try! await starActionPerformerActions.unstarConversation(mailUserSession, ids)
         }
     }
 }
