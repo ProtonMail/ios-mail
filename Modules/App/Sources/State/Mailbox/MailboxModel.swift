@@ -81,7 +81,10 @@ final class MailboxModel: ObservableObject {
         self.appRoute = appRoute
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.dependencies = dependencies
-        self.accountManagerCoordinator = AccountManagerCoordinator(appContext: dependencies.appContext.mailSession)
+        self.accountManagerCoordinator = AccountManagerCoordinator(
+            appContext: dependencies.appContext.mailSession,
+            accountAuthCoordinator: dependencies.appContext.accountAuthCoordinator
+        )
 
         setUpBindings()
         setUpPaginatorCallback()
@@ -191,6 +194,12 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
+        } catch MailboxError.AppError(let errorMessage) {
+            // Session invalid error will fall here.
+            // e.g. When the session has been invalidated while the app wasn't running
+            // i.e. password changed, device session deleted.
+            // It should be improved as part of the Error improvements epic.
+            AppLogger.log(message: errorMessage, category: .mailbox, isError: true)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             fatalError("failed to instantiate the Mailbox or Paginator object")

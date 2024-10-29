@@ -127,7 +127,7 @@ struct HomeScreen: View {
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
-        .withSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountCoordinator)
+        .withSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
     }
 

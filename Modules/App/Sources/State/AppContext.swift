@@ -45,7 +45,13 @@ final class AppContext: Sendable, ObservableObject {
     private(set) var userDefaults: UserDefaults!
     private var userDefaultsCleaner: UserDefaultsCleaner!
 
-    var accountCoordinator: AccountAuthCoordinator!
+    enum SessionState {
+        case idle
+        case loading
+    }
+    @Published private(set) var sessionState = SessionState.idle
+
+    private(set) var accountAuthCoordinator: AccountAuthCoordinator!
 
     @Published private(set) var activeUserSession: MailUserSession?
     var hasActiveUser: Bool {
@@ -95,29 +101,11 @@ final class AppContext: Sendable, ObservableObject {
         )
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
-        accountCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
+        accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
+        setupAccountBindings()
 
-        if let currentSession = accountCoordinator.primaryAccountSignedInSession() {
+        if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
             activeUserSession = try mailSession.userContextFromSession(session: currentSession)
-        }
-    }
-
-    @MainActor
-    func initializeMailUserSession(session: StoredSession) async {
-        do {
-            let newUserSession = try mailSession.userContextFromSession(session: session)
-            try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
-        } catch {
-            AppLogger.log(error: error, category: .userSessions)
-        }
-    }
-
-    @MainActor
-    func setupActiveUserSession(session: StoredSession) {
-        do {
-            activeUserSession = try mailSession.userContextFromSession(session: session)
-        } catch {
-            AppLogger.log(error: error, category: .userSessions)
         }
     }
 }
@@ -127,15 +115,41 @@ extension AppContext: AccountAuthDelegate {
         await initializeMailUserSession(session: storedSession)
     }
 
-    func accountSessionDidChange(state: AccountLogin.AccountSessionState) async {
-        switch state {
-        case .signedIn(let storedSession):
-            await setupActiveUserSession(session: storedSession)
-        case .signedOut:
-            userDefaultsCleaner.cleanUp()
-            await MainActor.run {
-                activeUserSession = nil
+    func setupAccountBindings() {
+        accountAuthCoordinator.$primaryAccountSession
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newSession in
+                guard let self else { return }
+                guard let primaryAccountSession = newSession else {
+                    userDefaultsCleaner.cleanUp()
+                    activeUserSession = nil
+                    return
+                }
+                self.sessionState = .loading
+                DispatchQueue.main.async {
+                    self.setupActiveUserSession(session: primaryAccountSession)
+                    self.sessionState = .idle
+                }
             }
+            .store(in: &cancellables)
+    }
+
+    @MainActor
+    private func initializeMailUserSession(session: StoredSession) async {
+        do {
+            let newUserSession = try mailSession.userContextFromSession(session: session)
+            try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
+        } catch {
+            AppLogger.log(error: error, category: .userSessions)
+        }
+    }
+
+    @MainActor
+    private func setupActiveUserSession(session: StoredSession) {
+        do {
+            activeUserSession = try mailSession.userContextFromSession(session: session)
+        } catch {
+            AppLogger.log(error: error, category: .userSessions)
         }
     }
 }
@@ -215,15 +229,6 @@ extension AppContext: EventLoopProvider {
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }
-    }
-}
-
-extension AppContext: SessionProvider {
-
-    @MainActor
-    func logoutActiveUserSession() async throws {
-        await accountCoordinator.signOutAccount()
-        activeUserSession = nil
     }
 }
 
