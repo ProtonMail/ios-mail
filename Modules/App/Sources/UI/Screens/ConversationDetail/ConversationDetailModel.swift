@@ -109,6 +109,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .moveTo:
             actionSheets = actionSheets
                 .copy(\.moveTo, to: .init(ids: [conversationID], type: .conversation))
+        case .star:
+            starActionPerformer.star(itemsWithIDs: [conversationID], itemType: .conversation)
+        case .unstar:
+            starActionPerformer.unstar(itemsWithIDs: [conversationID], itemType: .conversation)
         default:
             break
         }
