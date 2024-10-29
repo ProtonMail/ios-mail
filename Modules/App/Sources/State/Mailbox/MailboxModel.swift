@@ -358,7 +358,7 @@ extension MailboxModel {
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
     }
 
-    func onMailboxItemAction(_ action: Action, itemIds: [ID], toastStateStore: ToastStateStore) { // FIXME: - Use different type
+    func onMailboxItemAction(_ action: Action, itemIds: [ID], toastStateStore: ToastStateStore) {
         switch action {
         case .deletePermanently, .markAsRead, .markAsUnread, .moveToArchive, .moveToInbox, .moveToSpam, .moveToTrash:
             toastStateStore.present(toast: .comingSoon)
@@ -374,7 +374,6 @@ extension MailboxModel {
 
 // MARK: conversation actions
 
-// FIXME: - Clean here
 extension MailboxModel {
 
     private func actionStar(ids: [ID]) {
