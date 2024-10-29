@@ -23,7 +23,7 @@ protocol SearchProtocol: Sendable {
       session: MailUserSession,
       options: SearchOptions,
       callback: LiveQueryCallback
-    ) async throws -> SearchPaginator
+    ) async throws -> MessagePaginator
 }
 
 struct SearchOptions {
@@ -36,41 +36,4 @@ protocol SearchPaginator {
     func reload() async throws -> [Message]
     func resultCount() -> UInt32
     func handle() -> WatchHandle
-}
-
-// SDK Mocks
-
-struct MockSearchPaginator: SearchPaginator {
-    private let messagePaginator: MessagePaginator
-    let callback: LiveQueryCallback
-
-    init(callback: LiveQueryCallback) async {
-        self.messagePaginator = try! await paginateMessagesForLabel(
-            session: AppContext.shared.userSession,
-            labelId: .init(value: [1,23].randomElement()!), 
-            filter: .init(unread: false),
-            callback: callback
-        )
-        self.callback = callback
-    }
-
-    func hasNextPage() -> Bool {
-        messagePaginator.hasNextPage()
-    }
-
-    func nextPage() async throws -> [Message] {
-        try await messagePaginator.nextPage()
-    }
-
-    func reload() async throws -> [Message] {
-        try await messagePaginator.reload()
-    }
-
-    func resultCount() -> UInt32 {
-        messagePaginator.resultCount()
-    }
-
-    func handle() -> WatchHandle {
-        messagePaginator.handle()
-    }
 }

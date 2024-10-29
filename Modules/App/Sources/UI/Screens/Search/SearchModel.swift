@@ -28,7 +28,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private(set) var mailbox: Mailbox!
-    private var searchPaginator: SearchPaginator?
+    private var searchPaginator: MessagePaginator?
     private var paginatorCallback: LiveQueryCallbackWrapper = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchPage: { [unowned self] currentPage, _ in
@@ -39,7 +39,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = .init()
 
-    init(searchPaginator: SearchPaginator? = nil, dependencies: Dependencies = .init()) {
+    init(searchPaginator: MessagePaginator? = nil, dependencies: Dependencies = .init()) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchPaginator = searchPaginator
         self.dependencies = dependencies
@@ -229,7 +229,7 @@ extension SearchModel {
 
 struct SearchWrapper: SearchProtocol {
 
-    func paginateSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async throws -> any SearchPaginator {
-        return await MockSearchPaginator(callback: callback)
+    func paginateSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async throws -> MessagePaginator {
+        try await proton_app_uniffi.paginateSearch(session: session, options: .init(keywords: options.query), callback: callback)
     }
 }
