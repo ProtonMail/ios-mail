@@ -168,4 +168,22 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .message))
     }
 
+    func testState_WhenStarActionIsApplied_ItStarsCorrectMessages() {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+
+        sut.handle(action: .actionSelected(.star, ids: ids, mailbox: .testData, itemType: .message))
+
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedStarMessage, ids)
+    }
+
+    func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarCorrectMessage() {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+
+        sut.handle(action: .actionSelected(.more, ids: ids, mailbox: .testData, itemType: .message))
+        XCTAssertNotNil(sut.state.moreActionSheetPresented)
+
+        sut.handle(action: .moreSheetAction(.unstar, ids: ids, mailbox: .testData, itemType: .message))
+        XCTAssertEqual(starActionPerformerWrapperSpy.invokedUnstarMessage, ids)
+    }
+
 }
