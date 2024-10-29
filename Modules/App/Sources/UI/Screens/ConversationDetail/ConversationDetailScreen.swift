@@ -63,7 +63,7 @@ struct ConversationDetailScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationToolbar(
                 purpose: .itemDetail(isStarred: model.isStarred),
-                trailingItemAction: {  } // FIXME: - Add star action here
+                trailingItemAction: { model.toggleStarState() }
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()

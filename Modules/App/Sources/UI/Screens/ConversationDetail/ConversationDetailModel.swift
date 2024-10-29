@@ -98,6 +98,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
+    func toggleStarState() {
+        isStarred ? unstarConversation() : starConversation()
+    }
+
     func handleConversation(action: BottomBarAction) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
@@ -110,9 +114,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = actionSheets
                 .copy(\.moveTo, to: .init(ids: [conversationID], type: .conversation))
         case .star:
-            starActionPerformer.star(itemsWithIDs: [conversationID], itemType: .conversation)
+            starConversation()
         case .unstar:
-            starActionPerformer.unstar(itemsWithIDs: [conversationID], itemType: .conversation)
+            unstarConversation()
         default:
             break
         }
@@ -120,6 +124,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
+
+    private func starConversation() {
+        starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+    }
+
+    private func unstarConversation() {
+        starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+    }
 
     private func initialiseMailbox() async throws -> Mailbox {
         guard let userSession = dependencies.appContext.activeUserSession else {
