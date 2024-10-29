@@ -168,14 +168,14 @@ extension MailboxModel {
                 messagePaginator = try await paginateMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    filter: .init(unread: state.isUnreadSelected),
+                    filter: .init(unread: nil),
                     callback: paginatorCallback
                 )
             } else {
                 conversationPaginator = try await paginateConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(), 
-                    filter: .init(unread: state.isUnreadSelected),
+                    filter: .init(unread: nil),
                     callback: paginatorCallback
                 )
             }
