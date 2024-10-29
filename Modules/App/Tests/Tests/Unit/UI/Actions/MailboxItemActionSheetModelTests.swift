@@ -166,7 +166,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                 }
             ), 
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            mailUserSession: .testInstance,
+            mailUserSession: .dummy,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
     }

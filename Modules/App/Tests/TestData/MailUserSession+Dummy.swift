@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 extension MailUserSession {
 
-    static var testInstance: MailUserSession {
+    static var dummy: MailUserSession {
         .init(noPointer: .init())
     }
 

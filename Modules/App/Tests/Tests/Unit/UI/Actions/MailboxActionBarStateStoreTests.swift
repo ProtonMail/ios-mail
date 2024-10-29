@@ -51,7 +51,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                 }
             ), 
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            mailUserSession: .testData
+            mailUserSession: .dummy
         )
     }
 
