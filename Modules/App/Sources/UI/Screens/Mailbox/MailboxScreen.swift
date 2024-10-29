@@ -116,8 +116,8 @@ extension MailboxScreen {
         case .onExitSelectionMode:
             mailboxModel.selectionMode.selectionModifier.exitSelectionMode()
         case .onSearch:
-            toastStateStore.present(toast: .comingSoon)
-//            isSearchPresented = true
+//            toastStateStore.present(toast: .comingSoon)
+            isSearchPresented = true
         }
     }
 
