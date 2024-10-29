@@ -22,7 +22,10 @@ import SwiftUI
 final class ContactsController: UITableViewController {
 
     var groupedContacts: [GroupedContacts] {
-        didSet { tableView.reloadData() }
+        didSet {
+            setUpEmptyState(with: groupedContacts)
+            tableView.reloadData()
+        }
     }
 
     init(contacts: [GroupedContacts], backgroundColor: Color) {
@@ -38,7 +41,6 @@ final class ContactsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
-        setUpBackgroundView()
     }
 
     // MARK: - UITableViewController
@@ -87,8 +89,8 @@ final class ContactsController: UITableViewController {
         tableView.registerCell(ContactGroupCell.self)
     }
 
-    private func setUpBackgroundView() {
-        tableView.backgroundView = groupedContacts.isEmpty ? NoContactsPlaceholderView() : nil
+    private func setUpEmptyState(with contacts: [GroupedContacts]) {
+        tableView.backgroundView = contacts.isEmpty ? NoContactsPlaceholderView() : nil
     }
 
 }
