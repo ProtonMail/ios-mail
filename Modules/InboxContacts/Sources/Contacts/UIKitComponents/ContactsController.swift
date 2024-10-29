@@ -38,6 +38,7 @@ final class ContactsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTableView()
+        setUpBackgroundView()
     }
 
     // MARK: - UITableViewController
@@ -84,6 +85,10 @@ final class ContactsController: UITableViewController {
         tableView.separatorInset = .zero
         tableView.registerCell(ContactCell.self)
         tableView.registerCell(ContactGroupCell.self)
+    }
+
+    private func setUpBackgroundView() {
+        tableView.backgroundView = groupedContacts.isEmpty ? NoContactsPlaceholderView() : nil
     }
 
 }

@@ -21,11 +21,11 @@ import UIKit
 
 enum ViewsFactory {
 
-    static func label(font: UIFont, textColor: Color, lineBreakMode: NSLineBreakMode) -> UILabel {
+    static func label(text: String? = nil, font: UIFont, textColor: Color) -> UILabel {
         let label = UILabel()
+        label.text = text
         label.font = font
         label.textColor = UIColor(textColor)
-        label.lineBreakMode = lineBreakMode
         return label
     }
 

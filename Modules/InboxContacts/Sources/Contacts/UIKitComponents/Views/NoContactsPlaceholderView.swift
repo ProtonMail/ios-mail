@@ -17,25 +17,33 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import SwiftUI
 import UIKit
 
-final class ContactLabelsView: UIView {
+final class NoContactsPlaceholderView: UIView {
+
+    private let iconImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(resource: DS.Images.noContacts))
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
 
     let titleLabel: UILabel = ViewsFactory.label(
-        font: .font(textStyle: .body, weight: .regular), textColor: DS.Color.Text.weak
+        text: "No contacts yet",
+        font: .font(textStyle: .title2, weight: .semibold),
+        textColor: DS.Color.Text.weak
     )
 
     let subtitleLabel: UILabel = ViewsFactory.label(
+        text: "Tap + to add your first contact.",
         font: .font(textStyle: .subheadline, weight: .regular),
-        textColor: DS.Color.Text.hint
+        textColor: DS.Color.Text.weak
     )
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.spacing = DS.Spacing.small
+        stackView.alignment = .center
+        stackView.spacing = DS.Spacing.compact
         return stackView
     }()
 
@@ -51,17 +59,25 @@ final class ContactLabelsView: UIView {
     private func setupUI() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
+        stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(subtitleLabel)
+
+        stackView.setCustomSpacing(DS.Spacing.large, after: iconImageView)
 
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 128),
+            iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
+
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
 }
+

@@ -22,11 +22,18 @@ import XCTest
 final class ContactsScreenSnapshotTests: XCTestCase {
 
     @MainActor
-    func testContactsScreenLayoutsCorrectOnIphoneX() async throws {
+    func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
         let repository = GroupedContactsRepositoryPreview()
         let state = await repository.allContacts()
 
         assertSnapshotsOnIPhoneX(of: ContactsScreen(state: state, repository: repository))
+    }
+
+    @MainActor
+    func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() async throws {
+        let repository = GroupedContactsRepositoryPreview()
+
+        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: [], repository: repository))
     }
 
 }
