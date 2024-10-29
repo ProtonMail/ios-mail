@@ -123,8 +123,7 @@ extension MailboxItemCell {
                 .square(size: 16)
                 .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                 .onTapGesture {
-                    toastStateStore.present(toast: .comingSoon)
-//                    onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
+                    onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.starIcon)
         }
