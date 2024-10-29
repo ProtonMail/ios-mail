@@ -72,7 +72,7 @@ final class NoContactsPlaceholderView: UIView {
             iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
 
             stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -40),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
