@@ -43,8 +43,8 @@ final class MailboxModel: ObservableObject {
         })
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
     private var paginatorCallback: LiveQueryCallbackWrapper = .init()
-    private let dependencies: Dependencies
-    private let starActionPerformer: StarActionPerformer
+    let dependencies: Dependencies
+    private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var cancellables = Set<AnyCancellable>()
 
     @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
@@ -81,7 +81,6 @@ final class MailboxModel: ObservableObject {
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(appContext: dependencies.appContext.mailSession)
-        self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
 
         setUpBindings()
         setUpPaginatorCallback()

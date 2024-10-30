@@ -47,7 +47,9 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
     var body: some View {
         ZStack {
             listView
-            mailboxActionBarView
+            if selectionState.hasItems {
+                mailboxActionBarView
+            }
         }
     }
 

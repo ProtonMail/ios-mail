@@ -24,6 +24,7 @@ class MailboxActionBarViewSnapshotTests: BaseTestCase {
         let sut = MailboxActionBarView(
             state: MailboxActionBarPreviewProvider.state(),
             availableActions: MailboxActionBarPreviewProvider.availableActions(),
+            mailUserSession: .dummy,
             selectedItems: .constant([.testData(id: 1), .testData(id: 2), .testData(id: 3)])
         )
         assertSnapshotsOnIPhoneX(of: sut, named: "mailbox_action_bar")
