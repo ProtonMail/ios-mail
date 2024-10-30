@@ -57,6 +57,9 @@ struct MailboxActionBarView: View {
                 )
             }
         }
+        .onLoad {
+            store.handle(action: .mailboxItemsSelectionUpdated(selectedItemsIDs, mailbox: mailbox, itemType: itemType))
+        }
         .sheet(item: $store.state.labelAsSheetPresented) { input in
             labelAsSheet(input: input)
         }
