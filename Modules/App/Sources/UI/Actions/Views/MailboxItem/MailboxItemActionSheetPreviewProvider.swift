@@ -54,6 +54,12 @@ enum MailboxItemActionSheetPreviewProvider {
                 starConversation: { _, _ in },
                 unstarMessage: { _, _ in },
                 unstarConversation: { _, _ in }
+            ), 
+            readActionPerformerActions: .init( // FIXME: - Create dummy 
+                markMessageAsRead: { _, _ in },
+                markConversationAsRead: { _, _ in },
+                markMessageAsUnread: { _, _ in },
+                markConversationAsUnread: { _, _ in }
             ),
             mailUserSession: MailUserSession(noPointer: .init()),
             navigation: { _ in }

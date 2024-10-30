@@ -27,7 +27,9 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     var spiedNavigation: [MailboxItemActionSheetNavigation]!
     var stubbedMessageActions: MessageAvailableActions!
     var stubbedConversationActions: ConversationAvailableActions!
+
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
+    var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -35,7 +37,9 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         invokedWithMessagesIDs = []
         invokedWithConversationIDs = []
         spiedNavigation = []
+
         starActionPerformerActionsSpy = .init()
+        readActionPerformerActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -46,7 +50,9 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         spiedNavigation = nil
         stubbedMessageActions = nil
         stubbedConversationActions = nil
+
         starActionPerformerActionsSpy = nil
+        readActionPerformerActionsSpy = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -111,45 +117,79 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         XCTAssertEqual(spiedNavigation, [.labelAs])
     }
 
-    func testNavigation_WhenMessageIsStarred_ItEmitsDismissNavigation() {
+    func testStarAction_WhenMessageIsStarred_ItStarsMessage() {
         test(
             action: .star,
             itemType: .message,
-            verifyActionInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
+            verifyInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
         )
     }
 
-    func testNavigation_WhenMessageIsUnstarred_ItEmitsDismissNavigation() {
+    func testUnstarAction_WhenMessageIsUnstarred_ItUnstarsMessage() {
         test(
             action: .unstar,
             itemType: .message,
-            verifyActionInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
+            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
         )
     }
 
-    func testNavigation_WhenConversationIsStarred_ItEmitsDismissNavigation() {
+    func testStarAction_WhenConversationIsStarred_ItStarsConversation() {
         test(
             action: .star,
             itemType: .conversation,
-            verifyActionInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
+            verifyInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
         )
     }
 
-    func testNavigation_WhenConversationIsUnstarred_ItEmitsDismissNavigation() {
+    func testUnstarAction_WhenConversationIsUnstarred_ItUnstarsConversation() {
         test(
             action: .unstar,
             itemType: .conversation,
-            verifyActionInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
+            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
         )
     }
 
-    private func test(action: MailboxItemAction_v2, itemType: MailboxItemType, verifyActionInvoked: () -> [ID]) {
-        let ids: [ID] = [.init(value: 11),. init(value: 1)]
+    func testMarkAsReadAction_WhenMessageIsMarkedAsRead_ItMarksMessageAsRead() {
+        test(
+            action: .markRead,
+            itemType: .message,
+            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsReadInvoked }
+        )
+    }
+
+    func testMarkAsReadAction_WhenConversationIsMarkedAsRead_ItMarksConversationAsRead() {
+        test(
+            action: .markRead,
+            itemType: .conversation,
+            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsReadInvoked }
+        )
+    }
+
+    func testMarkAsUnreadAction_WhenMessageIsMarkedAsUnread_ItMarksMessageAsUnread() {
+        test(
+            action: .markUnread,
+            itemType: .message,
+            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsUnreadInvoked }
+        )
+    }
+
+    func testMarkAsUnreadAction_WhenConversationIsMarkedAsUnread_ItMarksConversationAsUnread() {
+        test(
+            action: .markUnread,
+            itemType: .conversation,
+            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsUnreadInvoked }
+        )
+    }
+
+    // MARK: - Private
+
+    private func test(action: MailboxItemAction_v2, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
+        let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(action))
 
-        XCTAssertEqual(verifyActionInvoked(), ids)
+        XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -167,7 +207,8 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                     return self.stubbedConversationActions
                 }
             ), 
-            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
+            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance, 
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             mailUserSession: .dummy,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )

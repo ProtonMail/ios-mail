@@ -24,6 +24,7 @@ class MailboxItemActionSheetModel: ObservableObject {
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
     private let starActionPerformer: StarActionPerformer
+    private let readActionPerformer: ReadActionPerformer
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
@@ -31,6 +32,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         mailbox: Mailbox,
         actionsProvider: ActionsProvider,
         starActionPerformerActions: StarActionPerformerActions,
+        readActionPerformerActions: ReadActionPerformerActions,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -40,6 +42,7 @@ class MailboxItemActionSheetModel: ObservableObject {
             mailUserSession: mailUserSession,
             starActionPerformerActions: starActionPerformerActions
         )
+        self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
         self.state = .initial(title: input.title)
         self.navigation = navigation
     }
@@ -58,6 +61,14 @@ class MailboxItemActionSheetModel: ObservableObject {
                 }
             case .unstar:
                 starActionPerformer.unstar(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
+                    self?.dismiss()
+                }
+            case .markRead:
+                readActionPerformer.markAsRead(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
+                    self?.dismiss()
+                }
+            case .markUnread:
+                readActionPerformer.markAsUnread(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
                     self?.dismiss()
                 }
             default:
