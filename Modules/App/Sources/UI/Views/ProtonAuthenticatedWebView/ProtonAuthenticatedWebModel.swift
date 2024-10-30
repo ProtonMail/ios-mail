@@ -30,8 +30,8 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     }
 
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
-        guard let activeUser = dependencies.appContext.activeUserSession else { return }
-        
+        guard case .activeSession(let userSession) = dependencies.appContext.sessionState else { return }
+
         guard let appConfig = dependencies.appConfigService.appConfig else { return }
         let domain = appConfig.environment.domain
         let appVersion = appConfig.appVersion
@@ -39,7 +39,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
         Task {
             await updateState(.forkingSession)
             do {
-                let selectorToken = try await activeUser.fork()
+                let selectorToken = try await userSession.fork()
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
                 await updateState(.urlReady(url: url))

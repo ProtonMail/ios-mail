@@ -24,11 +24,11 @@ final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
     var userSession: MailUserSession {
-        guard let activeUserSession = activeUserSession else {
+        guard case .activeSession(let userSession) = sessionState else {
             fatalError("Can not find active session.")
         }
 
-        return activeUserSession
+        return userSession
     }
 
     var mailSession: MailSession {
@@ -45,17 +45,15 @@ final class AppContext: Sendable, ObservableObject {
     private(set) var userDefaults: UserDefaults!
     private var userDefaultsCleaner: UserDefaultsCleaner!
 
-    enum SessionState {
-        case idle
-        case loading
-    }
-    @Published private(set) var sessionState = SessionState.idle
+    @Published private(set) var sessionState = SessionState.noSession
 
     private(set) var accountAuthCoordinator: AccountAuthCoordinator!
 
-    @Published private(set) var activeUserSession: MailUserSession?
     var hasActiveUser: Bool {
-        activeUserSession != nil
+        if case .activeSession = sessionState {
+            return true
+        }
+        return false
     }
 
     init(dependencies: Dependencies = .init()) {
@@ -105,13 +103,13 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            activeUserSession = try mailSession.userContextFromSession(session: currentSession)
+            sessionState = .activeSession(session: try mailSession.userContextFromSession(session: currentSession))
         }
     }
 }
 
 extension AppContext: AccountAuthDelegate {
-    func accountSessionInitialization(storedSession: proton_app_uniffi.StoredSession) async {
+    func accountSessionInitialization(storedSession: StoredSession) async {
         await initializeMailUserSession(session: storedSession)
     }
 
@@ -122,13 +120,12 @@ extension AppContext: AccountAuthDelegate {
                 guard let self else { return }
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
-                    activeUserSession = nil
+                    self.sessionState = .noSession
                     return
                 }
-                self.sessionState = .loading
+                self.sessionState = .activeSessionTransition
                 DispatchQueue.main.async {
                     self.setupActiveUserSession(session: primaryAccountSession)
-                    self.sessionState = .idle
                 }
             }
             .store(in: &cancellables)
@@ -147,7 +144,7 @@ extension AppContext: AccountAuthDelegate {
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
         do {
-            activeUserSession = try mailSession.userContextFromSession(session: session)
+            self.sessionState = .activeSession(session: try mailSession.userContextFromSession(session: session))
         } catch {
             AppLogger.log(error: error, category: .userSessions)
         }
@@ -212,7 +209,7 @@ extension AppContext: EventLoopProvider {
 
     func pollEventsAsync() async {
         do {
-            guard let mailUserSession = activeUserSession else {
+            guard case .activeSession(let userSession) = sessionState else {
                 AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
                 return
             }
@@ -222,10 +219,10 @@ extension AppContext: EventLoopProvider {
              Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
              */
             AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            try mailUserSession.executePendingActions()
+            try userSession.executePendingActions()
 
             AppLogger.log(message: "poll events", category: .rustLibrary)
-            try await mailUserSession.pollEvents()
+            try await userSession.pollEvents()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }

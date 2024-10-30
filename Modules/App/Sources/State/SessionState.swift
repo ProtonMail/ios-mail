@@ -15,34 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Foundation
 import proton_app_uniffi
 
-/**
- Source of truth for custom labels that are applicable to Mailbox messages or conversations
- */
-final class CustomLabelModel: ObservableObject {
-    private let dependencies: Dependencies
+enum SessionState: Equatable {
+    case noSession
+    case activeSession(session: MailUserSession)
+    case activeSessionTransition
 
-    init(dependencies: Dependencies = .init()) {
-        self.dependencies = dependencies
-    }
-
-    func fetchLabels() async -> [PMCustomLabel] {
-        guard case .activeSession(let userSession) = dependencies.appContext.sessionState else { return [] }
-        do {
-            return try await userSession.applicableLabels()
-        } catch {
-            AppLogger.log(error: error)
-            return []
+    static func == (lhs: SessionState, rhs: SessionState) -> Bool {
+        switch (lhs, rhs) {
+        case (.noSession, .noSession):
+            return true
+        case (.activeSessionTransition, .activeSessionTransition):
+            return true
+        case (.activeSession(let lhsSession), .activeSession(let rhsSession)):
+            return lhsSession.sessionId() == rhsSession.sessionId()
+        default:
+            return false
         }
-    }
-}
-
-extension CustomLabelModel {
-
-    struct Dependencies {
-        let appContext: AppContext = .shared
     }
 }

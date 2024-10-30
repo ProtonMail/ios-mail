@@ -77,21 +77,20 @@ private struct RootView: View {
     @ViewBuilder
     private func mainView() -> some View {
         switch appContext.sessionState {
-        case .idle:
-            if let activeUserSession = appContext.activeUserSession {
-                HomeScreen(
-                    customLabelModel: customLabelModel,
-                    appContext: appContext,
-                    userSession: activeUserSession
-                )
-            } else {
-                appContext
-                    .accountAuthCoordinator
-                    .accountView()
-            }
-        case .loading:
+        case .noSession:
+            appContext
+                .accountAuthCoordinator
+                .accountView()
+
+        case .activeSession(let activeUserSession):
+            HomeScreen(
+                customLabelModel: customLabelModel,
+                appContext: appContext,
+                userSession: activeUserSession
+            )
+
+        case .activeSessionTransition:
             EmptyView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }

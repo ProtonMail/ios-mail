@@ -45,7 +45,7 @@ struct MoveToFolderModel {
 
     private func fetchMovableFolders() async -> [PMCustomFolder] {
         do {
-            guard let userSession = dependencies.appContext.activeUserSession else { return [] }
+            guard case .activeSession(let userSession) = dependencies.appContext.sessionState else { return [] }
             return try await userSession.movableFolders()
         } catch {
             AppLogger.log(error: error)

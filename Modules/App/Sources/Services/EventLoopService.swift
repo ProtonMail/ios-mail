@@ -36,9 +36,9 @@ final class EventLoopService: @unchecked Sendable {
     init(appContext: AppContext, eventLoopProvider: EventLoopProvider) {
         self.appContext = appContext
         self.eventLoopProvider = eventLoopProvider
-        
+
         appContext
-            .$activeUserSession
+            .$sessionState
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.updateTimerStatus()
