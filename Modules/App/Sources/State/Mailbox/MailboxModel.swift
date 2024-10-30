@@ -45,6 +45,7 @@ final class MailboxModel: ObservableObject {
     private var paginatorCallback: LiveQueryCallbackWrapper = .init()
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
+    private var readActionPerformer: ReadActionPerformer?
     private var cancellables = Set<AnyCancellable>()
 
     @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
@@ -163,6 +164,7 @@ extension MailboxModel {
             ? try await Mailbox.inbox(ctx: userSession)
             : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
             self.mailbox = mailbox
+            self.readActionPerformer = .init(mailbox: mailbox)
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
 
             if mailbox.viewMode() == .messages {
@@ -359,8 +361,12 @@ extension MailboxModel {
 
     func onMailboxItemAction(_ action: Action, itemIds: [ID], toastStateStore: ToastStateStore) {
         switch action {
-        case .deletePermanently, .markAsRead, .markAsUnread, .moveToArchive, .moveToInbox, .moveToSpam, .moveToTrash:
+        case .deletePermanently, .moveToArchive, .moveToInbox, .moveToSpam, .moveToTrash:
             toastStateStore.present(toast: .comingSoon)
+        case .markAsRead:
+            markAsRead(ids: itemIds)
+        case .markAsUnread:
+            markAsUnread(ids: itemIds)
         case .star:
             actionStar(ids: itemIds)
         case .unstar:
@@ -374,6 +380,14 @@ extension MailboxModel {
 // MARK: conversation actions
 
 extension MailboxModel {
+
+    private func markAsRead(ids: [ID]) {
+        readActionPerformer?.markAsRead(itemsWithIDs: ids, itemType: viewMode.itemType)
+    }
+
+    private func markAsUnread(ids: [ID]) {
+        readActionPerformer?.markAsUnread(itemsWithIDs: ids, itemType: viewMode.itemType)
+    }
 
     private func actionStar(ids: [ID]) {
         starActionPerformer.star(itemsWithIDs: ids, itemType: viewMode.itemType)
