@@ -1,0 +1,9 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Composer" : {
+      "comment" : "This is a testing string."
+    }
+  },
+  "version" : "1.0"
+}

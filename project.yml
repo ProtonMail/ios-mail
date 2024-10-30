@@ -20,6 +20,9 @@ packages:
   InboxContacts:
     path: Modules/InboxContacts
     group: Modules
+  InboxComposer:
+    path: Modules/InboxComposer
+    group: Modules
   InboxCore:
     path: Modules/InboxCore
     group: Modules
@@ -130,6 +133,7 @@ targets:
     dependencies:
       - package: Collections
       - package: InboxContacts
+      - package: InboxComposer
       - package: InboxCore
       - package: InboxCoreUI
       - package: InboxDesignSystem
