@@ -112,42 +112,44 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     }
 
     func testNavigation_WhenMessageIsStarred_ItEmitsDismissNavigation() {
-        let ids: [ID] = [.init(value: 11),. init(value: 1)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionSelected(.star))
-
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
+        test(
+            action: .star,
+            itemType: .message,
+            verifyActionInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
+        )
     }
 
     func testNavigation_WhenMessageIsUnstarred_ItEmitsDismissNavigation() {
-        let ids: [ID] = [.init(value: 11),. init(value: 1)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionSelected(.unstar))
-
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
+        test(
+            action: .unstar,
+            itemType: .message,
+            verifyActionInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
+        )
     }
 
     func testNavigation_WhenConversationIsStarred_ItEmitsDismissNavigation() {
-        let ids: [ID] = [.init(value: 11),. init(value: 1)]
-        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionSelected(.star))
-
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarConversation, ids)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
+        test(
+            action: .star,
+            itemType: .conversation,
+            verifyActionInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
+        )
     }
 
     func testNavigation_WhenConversationIsUnstarred_ItEmitsDismissNavigation() {
+        test(
+            action: .unstar,
+            itemType: .conversation,
+            verifyActionInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
+        )
+    }
+
+    private func test(action: MailboxItemAction_v2, itemType: MailboxItemType, verifyActionInvoked: () -> [ID]) {
         let ids: [ID] = [.init(value: 11),. init(value: 1)]
-        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
+        let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(.star))
+        sut.handle(action: .mailboxItemActionSelected(action))
 
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarConversation, ids)
+        XCTAssertEqual(verifyActionInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
