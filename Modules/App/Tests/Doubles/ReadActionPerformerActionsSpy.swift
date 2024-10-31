@@ -38,4 +38,5 @@ class ReadActionPerformerActionsSpy {
             self.markConversationAsUnreadInvoked = ids
         }
     )
+
 }
