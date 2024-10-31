@@ -20,11 +20,47 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
+protocol StateStore: ObservableObject {
+    associatedtype State
+    associatedtype Action
+
+    var state: State { get set }
+    func handle(action: Action)
+
+    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value>
+}
+
+extension StateStore {
+    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value> {
+        Binding(
+            get: { self.state[keyPath: keyPath] },
+            set: { self.state[keyPath: keyPath] = $0 }
+        )
+    }
+}
+
+struct WithStateStore<Store: StateStore, Content: View>: View {
+    @StateObject var store: Store
+    let content: (Store.State, Store) -> Content
+
+    init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
+        self._store = .init(wrappedValue: store)
+        self.content = content
+    }
+
+    var body: some View {
+        content(store.state, store)
+    }
+}
+
 struct MailboxActionBarView: View {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
-    @StateObject var store: MailboxActionBarStateStore
+    private let state: MailboxActionBarState
+    private let availableActions: AvailableMailboxActionBarActions
+    private let mailUserSession: MailUserSession
+    private let starActionPerformerActions: StarActionPerformerActions
 
     init(
         state: MailboxActionBarState,
@@ -34,20 +70,34 @@ struct MailboxActionBarView: View {
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
-        self._store = StateObject(wrappedValue: .init(
+        self.state = state
+        self.availableActions = availableActions
+        self.mailUserSession = mailUserSession
+        self.starActionPerformerActions = starActionPerformerActions
+    }
+
+    var body: some View {
+        WithStateStore(store: MailboxActionBarStateStore(
             state: state,
             availableActions: availableActions,
             starActionPerformerActions: starActionPerformerActions,
             mailUserSession: mailUserSession
-        ))
-    }
-
-    var body: some View {
-        BottomActionBarView(actions: store.state.bottomBarActions) { action in
-            store.handle(action: .actionSelected(action, ids: selectedItemsIDs, mailbox: mailbox, itemType: itemType))
-        }
-        .onChange(of: selectedItems) { oldValue, newValue in
-            if oldValue != newValue {
+        )) { state, store in
+            BottomActionBarView(actions: state.bottomBarActions) { action in
+                store.handle(action: .actionSelected(action, ids: selectedItemsIDs, mailbox: mailbox, itemType: itemType))
+            }
+            .onChange(of: selectedItems) { oldValue, newValue in
+                if oldValue != newValue {
+                    store.handle(action:
+                        .mailboxItemsSelectionUpdated(
+                            selectedItemsIDs,
+                            mailbox: mailbox,
+                            itemType: itemType
+                        )
+                    )
+                }
+            }
+            .onLoad {
                 store.handle(
                     action: .mailboxItemsSelectionUpdated(
                         selectedItemsIDs,
@@ -56,26 +106,22 @@ struct MailboxActionBarView: View {
                     )
                 )
             }
-        }
-        .onLoad {
-            store.handle(action: .mailboxItemsSelectionUpdated(selectedItemsIDs, mailbox: mailbox, itemType: itemType))
-        }
-        .sheet(item: $store.state.labelAsSheetPresented) { input in
-            labelAsSheet(input: input)
-        }
-        .sheet(item: $store.state.moveToSheetPresented) { input in
-            moveToSheet(input: input)
-        }
-        .sheet(item: $store.state.moreActionSheetPresented) { state in
-            MailboxActionBarMoreSheet(state: state) { action in
-                store.handle(
-                    action: .moreSheetAction(
-                        action,
-                        ids: selectedItemsIDs,
-                        mailbox: mailbox,
-                        itemType: itemType
+            .sheet(item: store.binding(\.labelAsSheetPresented)) { input in
+                labelAsSheet(input: input, actionHandler: store.handle)
+            }
+            .sheet(item: store.binding(\.moveToSheetPresented)) { input in
+                moveToSheet(input: input, actionHandler: store.handle)
+            }
+            .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
+                MailboxActionBarMoreSheet(state: state) { action in
+                    store.handle(action: .moreSheetAction(
+                            action,
+                            ids: selectedItemsIDs,
+                            mailbox: mailbox,
+                            itemType: itemType
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -95,24 +141,30 @@ struct MailboxActionBarView: View {
         }
     }
 
-    private func labelAsSheet(input: ActionSheetInput) -> some View {
+    private func labelAsSheet(
+        input: ActionSheetInput,
+        actionHandler: @escaping (MailboxActionBarAction) -> Void
+    ) -> some View {
         let model = LabelAsSheetModel(
             input: input,
             mailbox: mailbox,
             availableLabelAsActions: .productionInstance
         ) {
-            store.handle(action: .dismissLabelAsSheet)
+            actionHandler(.dismissLabelAsSheet)
         }
         return LabelAsSheet(model: model)
     }
 
-    private func moveToSheet(input: ActionSheetInput) -> some View {
+    private func moveToSheet(
+        input: ActionSheetInput,
+        actionHandler: @escaping (MailboxActionBarAction) -> Void
+    ) -> some View {
         let model = MoveToSheetModel(
             input: input,
             mailbox: mailbox,
             availableMoveToActions: .productionInstance
         ) {
-            store.handle(action: .dismissMoveToSheet)
+            actionHandler(.dismissMoveToSheet)
         }
         return MoveToSheet(model: model)
     }

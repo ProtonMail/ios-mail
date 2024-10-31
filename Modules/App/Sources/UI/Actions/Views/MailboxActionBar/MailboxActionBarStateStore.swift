@@ -19,15 +19,17 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-final class MailboxActionBarStateStore: ObservableObject {
+final class MailboxActionBarStateStore: StateStore {
     @Published var state: MailboxActionBarState
     private let actionsProvider: MailboxActionBarActionsProvider
     private let starActionPerformer: StarActionPerformer
+//    private let readActionPerformer: ReadActionPerformer
 
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
         starActionPerformerActions: StarActionPerformerActions,
+//        readActionPerformerActions: ReadActionPerformerActions,
         mailUserSession: MailUserSession
     ) {
         self.state = state
