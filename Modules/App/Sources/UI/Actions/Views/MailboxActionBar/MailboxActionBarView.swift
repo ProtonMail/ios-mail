@@ -61,11 +61,13 @@ struct MailboxActionBarView: View {
     private let availableActions: AvailableMailboxActionBarActions
     private let mailUserSession: MailUserSession
     private let starActionPerformerActions: StarActionPerformerActions
+    private let readActionPerformerActions: ReadActionPerformerActions
 
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance(),
+        readActionPerformerActions: ReadActionPerformerActions = .productionInstance(),
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
@@ -74,14 +76,17 @@ struct MailboxActionBarView: View {
         self.availableActions = availableActions
         self.mailUserSession = mailUserSession
         self.starActionPerformerActions = starActionPerformerActions
+        self.readActionPerformerActions = readActionPerformerActions
     }
 
     var body: some View {
         WithStateStore(store: MailboxActionBarStateStore(
             state: state,
             availableActions: availableActions,
-            starActionPerformerActions: starActionPerformerActions,
-            mailUserSession: mailUserSession
+            starActionPerformerActions: starActionPerformerActions, 
+            readActionPerformerActions: readActionPerformerActions,
+            mailUserSession: mailUserSession,
+            mailbox: mailbox
         )) { state, store in
             BottomActionBarView(actions: state.bottomBarActions) { action in
                 store.handle(action: .actionSelected(action, ids: selectedItemsIDs, mailbox: mailbox, itemType: itemType))

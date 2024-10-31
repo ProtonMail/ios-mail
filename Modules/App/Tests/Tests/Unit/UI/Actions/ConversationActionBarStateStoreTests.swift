@@ -48,7 +48,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.count, 0)
 
-        sut.handle(action: .onLoad(.testData))
+        sut.handle(action: .onLoad(.dummy))
 
         XCTAssertEqual(sut.state, [.labelAs, .markUnread])
     }

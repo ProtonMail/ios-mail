@@ -23,14 +23,15 @@ final class MailboxActionBarStateStore: StateStore {
     @Published var state: MailboxActionBarState
     private let actionsProvider: MailboxActionBarActionsProvider
     private let starActionPerformer: StarActionPerformer
-//    private let readActionPerformer: ReadActionPerformer
+    private let readActionPerformer: ReadActionPerformer
 
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
         starActionPerformerActions: StarActionPerformerActions,
-//        readActionPerformerActions: ReadActionPerformerActions,
-        mailUserSession: MailUserSession
+        readActionPerformerActions: ReadActionPerformerActions,
+        mailUserSession: MailUserSession,
+        mailbox: Mailbox
     ) {
         self.state = state
         self.actionsProvider = .init(availableActions: availableActions)
@@ -38,6 +39,7 @@ final class MailboxActionBarStateStore: StateStore {
             mailUserSession: mailUserSession,
             starActionPerformerActions: starActionPerformerActions
         )
+        self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
     }
 
     func handle(action: MailboxActionBarAction) {
@@ -75,6 +77,10 @@ final class MailboxActionBarStateStore: StateStore {
             starActionPerformer.star(itemsWithIDs: ids, itemType: itemType)
         case .unstar:
             starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemType)
+        case .markRead:
+            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemType)
+        case .markUnread:
+            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemType)
         default:
             break // FIXME: - Handle rest of the actions here
         }

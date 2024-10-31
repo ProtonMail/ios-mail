@@ -38,7 +38,13 @@ enum MailboxActionBarPreviewProvider {
     static func availableActions() -> AvailableMailboxActionBarActions {
         let stub = AllBottomBarMessageActions(
             hiddenBottomBarActions: [],
-            visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
+            visibleBottomBarActions: [
+                .markRead,
+                .moveTo,
+                .labelAs,
+                .moveToSystemFolder(.archive),
+                .more
+            ]
         )
         return .init(
             message: { _, _ in stub },

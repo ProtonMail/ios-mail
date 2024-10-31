@@ -20,6 +20,23 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
+class MailboxSpy: Mailbox {
+    override func viewMode() -> ViewMode {
+        _viewMode
+    }
+
+    private var _viewMode: ViewMode
+
+    init(viewMode: ViewMode) {
+        self._viewMode = viewMode
+        super.init(noPointer: .init())
+    }
+    
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
+}
+
 class MailboxActionBarStateStoreTests: BaseTestCase {
 
     var sut: MailboxActionBarStateStore!
@@ -28,6 +45,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var invokedAvailableConversationActionsWithIDs: [[ID]]!
     var stubbedAvailableConversationActions: AllBottomBarMessageActions!
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
+    var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -35,6 +53,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         stubbedAvailableMessageActions = .testData
         invokedAvailableConversationActionsWithIDs = []
         starActionPerformerActionsSpy = .init()
+        readActionPerformerActionsSpy = .init()
 
         sut = MailboxActionBarStateStore(
             state: .initial,
@@ -51,7 +70,9 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                 }
             ), 
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            mailUserSession: .dummy
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
+            mailUserSession: .dummy,
+            mailbox: .dummy
         )
     }
 
@@ -71,7 +92,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 11)]
 
         sut.handle(
-            action: .mailboxItemsSelectionUpdated(ids, mailbox: .testData, itemType: .message)
+            action: .mailboxItemsSelectionUpdated(ids, mailbox: .dummy, itemType: .message)
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
@@ -91,7 +112,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 22)]
 
         sut.handle(
-            action: .mailboxItemsSelectionUpdated(ids, mailbox: .testData, itemType: .conversation)
+            action: .mailboxItemsSelectionUpdated(ids, mailbox: .dummy, itemType: .conversation)
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
@@ -105,7 +126,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
     func testState_WhenMailboxItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
         sut.handle(
-            action: .mailboxItemsSelectionUpdated([], mailbox: .testData, itemType: .message)
+            action: .mailboxItemsSelectionUpdated([], mailbox: .dummy, itemType: .message)
         )
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
@@ -115,7 +136,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertNil(sut.state.moveToSheetPresented)
 
         sut.handle(action: .actionSelected(
-            .moveTo, ids: [.init(value: 7)], mailbox: .testData, itemType: .message
+            .moveTo, ids: [.init(value: 7)], mailbox: .dummy, itemType: .message
         ))
 
         XCTAssertEqual(sut.state.moveToSheetPresented, .init(ids: [.init(value: 7)], type: .message))
@@ -131,7 +152,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertNil(sut.state.labelAsSheetPresented)
 
         sut.handle(action: .actionSelected(
-            .labelAs, ids: ids, mailbox: .testData, itemType: .conversation
+            .labelAs, ids: ids, mailbox: .dummy, itemType: .conversation
         ))
 
         XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .conversation))
@@ -146,8 +167,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertNil(sut.state.moreActionSheetPresented)
 
-        sut.handle(action: .mailboxItemsSelectionUpdated(ids, mailbox: .testData, itemType: .message))
-        sut.handle(action: .actionSelected(.more, ids: ids, mailbox: .testData, itemType: .message))
+        sut.handle(action: .mailboxItemsSelectionUpdated(ids, mailbox: .dummy, itemType: .message))
+        sut.handle(action: .actionSelected(.more, ids: ids, mailbox: .dummy, itemType: .message))
 
         XCTAssertEqual(sut.state.moreActionSheetPresented, .init(
             selectedItemsIDs: [.init(value: 9)],
@@ -163,7 +184,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     func testState_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() {
         let ids: [ID] = [.init(value: 7)]
 
-        sut.handle(action: .moreSheetAction(.labelAs, ids: ids, mailbox: .testData, itemType: .message))
+        sut.handle(action: .moreSheetAction(.labelAs, ids: ids, mailbox: .dummy, itemType: .message))
 
         XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .message))
     }
@@ -171,7 +192,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     func testState_WhenStarActionIsApplied_ItStarsCorrectMessages() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.star, ids: ids, mailbox: .testData, itemType: .message))
+        sut.handle(action: .actionSelected(.star, ids: ids, mailbox: .dummy, itemType: .message))
 
         XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
     }
@@ -179,11 +200,27 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarCorrectMessage() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.more, ids: ids, mailbox: .testData, itemType: .message))
+        sut.handle(action: .actionSelected(.more, ids: ids, mailbox: .dummy, itemType: .message))
         XCTAssertNotNil(sut.state.moreActionSheetPresented)
 
-        sut.handle(action: .moreSheetAction(.unstar, ids: ids, mailbox: .testData, itemType: .message))
+        sut.handle(action: .moreSheetAction(.unstar, ids: ids, mailbox: .dummy, itemType: .message))
         XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
+    }
+
+    func testState_WhenReadActionIsApplied_ItMarkMessageAsRead() {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+
+        sut.handle(action: .actionSelected(.markRead, ids: ids, mailbox: .dummy, itemType: .message))
+
+        XCTAssertEqual(readActionPerformerActionsSpy.markMessageAsReadInvoked, ids)
+    }
+
+    func testState_WhenUnreadActionIsApplied_ItMarkConversationAsUnread() {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+
+        sut.handle(action: .actionSelected(.markUnread, ids: ids, mailbox: .dummy, itemType: .conversation))
+
+        XCTAssertEqual(readActionPerformerActionsSpy.markConversationAsUnreadInvoked, ids)
     }
 
 }
