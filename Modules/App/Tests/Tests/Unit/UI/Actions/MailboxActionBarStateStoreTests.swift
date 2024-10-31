@@ -20,23 +20,6 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class MailboxSpy: Mailbox {
-    override func viewMode() -> ViewMode {
-        _viewMode
-    }
-
-    private var _viewMode: ViewMode
-
-    init(viewMode: ViewMode) {
-        self._viewMode = viewMode
-        super.init(noPointer: .init())
-    }
-    
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
-    }
-}
-
 class MailboxActionBarStateStoreTests: BaseTestCase {
 
     var sut: MailboxActionBarStateStore!
@@ -230,7 +213,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             mailUserSession: .dummy,
-            mailbox: MailboxSpy(viewMode: viewMode)
+            mailbox: MailboxStub(viewMode: viewMode)
         )
     }
 

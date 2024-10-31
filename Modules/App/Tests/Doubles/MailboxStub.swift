@@ -15,20 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxTesting
 import proton_app_uniffi
 
-class MailboxActionBarViewSnapshotTests: BaseTestCase {
-
-    func testMailboxActionBarLayoutsCorrectly() {
-        let sut = MailboxActionBarView(
-            state: MailboxActionBarPreviewProvider.state(),
-            availableActions: MailboxActionBarPreviewProvider.availableActions(),
-            mailUserSession: .dummy,
-            selectedItems: .constant([.testData(id: 1), .testData(id: 2), .testData(id: 3)])
-        ).environmentObject(MailboxStub(viewMode: .messages) as Mailbox)
-        assertSnapshotsOnIPhoneX(of: sut, named: "mailbox_action_bar")
+class MailboxStub: Mailbox {
+    override func viewMode() -> ViewMode {
+        _viewMode
     }
 
+    private var _viewMode: ViewMode
+
+    init(viewMode: ViewMode) {
+        self._viewMode = viewMode
+        super.init(noPointer: .init())
+    }
+
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
 }
