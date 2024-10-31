@@ -25,8 +25,8 @@ protocol StateStore: ObservableObject {
     associatedtype Action
 
     var state: State { get set }
-    func handle(action: Action)
 
+    func handle(action: Action)
     func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value>
 }
 
@@ -39,7 +39,7 @@ extension StateStore {
     }
 }
 
-struct WithStateStore<Store: StateStore, Content: View>: View {
+struct StoreView<Store: StateStore, Content: View>: View {
     @StateObject var store: Store
     let content: (Store.State, Store) -> Content
 
@@ -80,7 +80,7 @@ struct MailboxActionBarView: View {
     }
 
     var body: some View {
-        WithStateStore(store: MailboxActionBarStateStore(
+        StoreView(store: MailboxActionBarStateStore(
             state: state,
             availableActions: availableActions,
             starActionPerformerActions: starActionPerformerActions, 
@@ -89,27 +89,15 @@ struct MailboxActionBarView: View {
             mailbox: mailbox
         )) { state, store in
             BottomActionBarView(actions: state.bottomBarActions) { action in
-                store.handle(action: .actionSelected(action, ids: selectedItemsIDs, mailbox: mailbox, itemType: itemType))
+                store.handle(action: .actionSelected(action, ids: selectedItemsIDs))
             }
             .onChange(of: selectedItems) { oldValue, newValue in
                 if oldValue != newValue {
-                    store.handle(action:
-                        .mailboxItemsSelectionUpdated(
-                            selectedItemsIDs,
-                            mailbox: mailbox,
-                            itemType: itemType
-                        )
-                    )
+                    store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
                 }
             }
             .onLoad {
-                store.handle(
-                    action: .mailboxItemsSelectionUpdated(
-                        selectedItemsIDs,
-                        mailbox: mailbox,
-                        itemType: itemType
-                    )
-                )
+                store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
             }
             .sheet(item: store.binding(\.labelAsSheetPresented)) { input in
                 labelAsSheet(input: input, actionHandler: store.handle)
@@ -119,13 +107,7 @@ struct MailboxActionBarView: View {
             }
             .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                 MailboxActionBarMoreSheet(state: state) { action in
-                    store.handle(action: .moreSheetAction(
-                            action,
-                            ids: selectedItemsIDs,
-                            mailbox: mailbox,
-                            itemType: itemType
-                        )
-                    )
+                    store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                 }
             }
         }

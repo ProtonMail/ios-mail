@@ -29,3 +29,9 @@ extension ViewMode {
     }
 
 }
+
+extension Mailbox {
+    var itemType: MailboxItemType {
+        viewMode().itemType
+    }
+}

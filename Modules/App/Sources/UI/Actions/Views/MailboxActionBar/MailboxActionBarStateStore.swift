@@ -24,6 +24,7 @@ final class MailboxActionBarStateStore: StateStore {
     private let actionsProvider: MailboxActionBarActionsProvider
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
+    private let mailbox: Mailbox
 
     init(
         state: MailboxActionBarState,
@@ -34,33 +35,40 @@ final class MailboxActionBarStateStore: StateStore {
         mailbox: Mailbox
     ) {
         self.state = state
-        self.actionsProvider = .init(availableActions: availableActions)
+        self.actionsProvider = .init(
+            availableActions: availableActions,
+            mailbox: mailbox
+        )
         self.starActionPerformer = .init(
             mailUserSession: mailUserSession,
             starActionPerformerActions: starActionPerformerActions
         )
-        self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
+        self.readActionPerformer = .init(
+            mailbox: mailbox,
+            readActionPerformerActions: readActionPerformerActions
+        )
+        self.mailbox = mailbox
     }
 
     func handle(action: MailboxActionBarAction) {
         switch action {
-        case .mailboxItemsSelectionUpdated(let ids, let mailbox, let itemType):
-            fetchAvailableBottomBarActions(for: ids, mailbox: mailbox, itemType: itemType)
-        case .actionSelected(let action, let ids, let mailbox, let itemType):
-            handle(action: action, ids: ids, mailbox: mailbox, itemType: itemType)
+        case .mailboxItemsSelectionUpdated(let ids):
+            fetchAvailableBottomBarActions(for: ids)
+        case .actionSelected(let action, let ids):
+            handle(action: action, ids: ids)
         case .dismissLabelAsSheet:
             state = state.copy(\.labelAsSheetPresented, to: nil)
         case .dismissMoveToSheet:
             state = state.copy(\.moveToSheetPresented, to: nil)
-        case .moreSheetAction(let action, let ids, let mailbox, let itemType):
+        case .moreSheetAction(let action, let ids):
             state = state.copy(\.moreActionSheetPresented, to: nil)
-            handle(action: action, ids: ids, mailbox: mailbox, itemType: itemType)
+            handle(action: action, ids: ids)
         }
     }
 
     // MARK: - Private
 
-    private func handle(action: BottomBarAction, ids: [ID], mailbox: Mailbox, itemType: MailboxItemType) {
+    private func handle(action: BottomBarAction, ids: [ID]) {
         switch action {
         case .more:
             let moreActionSheetState = MailboxActionBarMoreSheetState(
@@ -70,26 +78,26 @@ final class MailboxActionBarStateStore: StateStore {
             )
             state = state.copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
-            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: itemType))
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
         case .moveTo:
-            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: itemType))
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
         case .star:
-            starActionPerformer.star(itemsWithIDs: ids, itemType: itemType)
+            starActionPerformer.star(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .unstar:
-            starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemType)
+            starActionPerformer.unstar(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .markRead:
-            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemType)
+            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .markUnread:
-            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemType)
+            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: mailbox.itemType)
         default:
             break // FIXME: - Handle rest of the actions here
         }
     }
 
-    private func fetchAvailableBottomBarActions(for ids: [ID], mailbox: Mailbox, itemType: MailboxItemType) {
+    private func fetchAvailableBottomBarActions(for ids: [ID]) {
         guard !ids.isEmpty else { return }
         Task {
-            let actions = await actionsProvider.actions(for: mailbox, ids: ids, itemType: itemType)
+            let actions = await actionsProvider.actions(forItemsWith: ids)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateActions(actions: actions)
             }))
