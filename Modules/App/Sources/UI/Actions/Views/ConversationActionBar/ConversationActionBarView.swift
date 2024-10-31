@@ -20,11 +20,19 @@ import SwiftUI
 
 struct ConversationActionBarView: View {
     @StateObject var store: ConversationActionBarStateStore
-    private let mailbox: Mailbox
 
-    init(store: ConversationActionBarStateStore, mailbox: Mailbox) {
-        self._store = StateObject(wrappedValue: store)
-        self.mailbox = mailbox
+    init(
+        conversationID: ID,
+        bottomBarConversationActionsProvider: @escaping BottomBarActionsProvider,
+        mailbox: Mailbox,
+        handleAction: @escaping (BottomBarAction) -> Void
+    ) {
+        self._store = StateObject(wrappedValue: .init(
+            conversationID: conversationID,
+            bottomBarConversationActionsProvider: bottomBarConversationActionsProvider,
+            mailbox: mailbox,
+            handleAction: handleAction
+        ))
     }
 
     var body: some View {
@@ -32,14 +40,11 @@ struct ConversationActionBarView: View {
             store.handle(action: .actionSelected(action))
         }
         .onLoad {
-            store.handle(action: .onLoad(mailbox))
+            store.handle(action: .onLoad)
         }
     }
 }
 
 #Preview {
-    ConversationActionBarView(
-        store: ConversationActionBarViewPreviewDataProvider.store(),
-        mailbox: .init(noPointer: .init())
-    )
+    ConversationActionBarViewPreviewDataProvider.view()
 }

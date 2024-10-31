@@ -35,7 +35,8 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
             conversationID: .init(value: 1),
             bottomBarConversationActionsProvider: { _, _ in
                 self.stubbedBottomBarActions
-            },
+            }, 
+            mailbox: .dummy,
             handleAction: { action in self.handleActionSpy.append(action) }
         )
     }
@@ -48,7 +49,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.count, 0)
 
-        sut.handle(action: .onLoad(.dummy))
+        sut.handle(action: .onLoad)
 
         XCTAssertEqual(sut.state, [.labelAs, .markUnread])
     }

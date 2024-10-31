@@ -24,22 +24,25 @@ class ConversationActionBarStateStore: ObservableObject {
 
     private let conversationID: ID
     private let bottomBarConversationActionsProvider: BottomBarActionsProvider
+    private let mailbox: Mailbox
     private let handleAction: (BottomBarAction) -> Void
 
     init(
         conversationID: ID,
         bottomBarConversationActionsProvider: @escaping BottomBarActionsProvider,
+        mailbox: Mailbox,
         handleAction: @escaping (BottomBarAction) -> Void
     ) {
         self.conversationID = conversationID
         self.bottomBarConversationActionsProvider = bottomBarConversationActionsProvider
+        self.mailbox = mailbox
         self.handleAction = handleAction
     }
 
     func handle(action: ConversationActionBarAction) {
         switch action {
-        case .onLoad(let mailbox):
-            fetchActions(mailbox: mailbox)
+        case .onLoad:
+            fetchActions()
         case .actionSelected(let action):
             handleAction(action)
         }
@@ -47,7 +50,7 @@ class ConversationActionBarStateStore: ObservableObject {
 
     // MARK: - Private
 
-    private func fetchActions(mailbox: Mailbox) {
+    private func fetchActions() {
         Task {
             let actions = try! await bottomBarConversationActionsProvider(mailbox, [conversationID])
                 .visibleBottomBarActions

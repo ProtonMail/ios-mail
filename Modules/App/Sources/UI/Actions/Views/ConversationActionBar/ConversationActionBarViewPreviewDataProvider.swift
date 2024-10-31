@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import SwiftUI
 import proton_app_uniffi
 
 enum ConversationActionBarViewPreviewDataProvider {
 
-    static func store() -> ConversationActionBarStateStore {
-        .init(
+    @MainActor
+    static func view() -> ConversationActionBarView {
+        ConversationActionBarView(
             conversationID: .init(value: 1),
             bottomBarConversationActionsProvider: { _, _ in
                 return .init(
@@ -28,6 +30,7 @@ enum ConversationActionBarViewPreviewDataProvider {
                     visibleBottomBarActions: [.markRead, .star, .moveTo, .more]
                 )
             },
+            mailbox: .init(noPointer: .init()),
             handleAction: { _ in }
         )
     }

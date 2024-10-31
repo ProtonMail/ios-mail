@@ -33,12 +33,10 @@ struct ConversationDetailScreen: View {
             conversationView
             if let mailbox = model.mailbox, let conversationID = model.conversationID {
                 ConversationActionBarView(
-                    store: .init(
-                        conversationID: conversationID,
-                        bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
-                        handleAction: { action in model.handleConversation(action: action) }
-                    ),
-                    mailbox: mailbox
+                    conversationID: conversationID,
+                    bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
+                    mailbox: mailbox,
+                    handleAction: { action in model.handleConversation(action: action) }
                 )
             }
         }.actionSheetsFlow(
