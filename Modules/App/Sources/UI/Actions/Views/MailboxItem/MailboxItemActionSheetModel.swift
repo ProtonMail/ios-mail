@@ -56,21 +56,13 @@ class MailboxItemActionSheetModel: ObservableObject {
             case .labelAs:
                 navigation(.labelAs)
             case .star:
-                starActionPerformer.star(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
-                    self?.dismiss()
-                }
+                performAction(action: starActionPerformer.star, ids: input.ids, itemType: input.type)
             case .unstar:
-                starActionPerformer.unstar(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
-                    self?.dismiss()
-                }
+                performAction(action: starActionPerformer.unstar, ids: input.ids, itemType: input.type)
             case .markRead:
-                readActionPerformer.markAsRead(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
-                    self?.dismiss()
-                }
+                performAction(action: readActionPerformer.markAsRead, ids: input.ids, itemType: input.type)
             case .markUnread:
-                readActionPerformer.markAsUnread(itemsWithIDs: input.ids, itemType: input.type) { [weak self] in
-                    self?.dismiss()
-                }
+                performAction(action: readActionPerformer.markAsUnread, ids: input.ids, itemType: input.type)
             default:
                 break // FIXME: - Handle rest of actions here
             }
@@ -85,6 +77,16 @@ class MailboxItemActionSheetModel: ObservableObject {
     }
 
     // MARK: - Private
+
+    private func performAction(
+        action: ([ID], MailboxItemType, (() -> Void)?) -> Void,
+        ids: [ID],
+        itemType: MailboxItemType
+    ) {
+        action(ids, itemType) { [weak self] in
+            self?.dismiss()
+        }
+    }
 
     private func dismiss() {
         Dispatcher.dispatchOnMain(.init(block: { [weak self] in
