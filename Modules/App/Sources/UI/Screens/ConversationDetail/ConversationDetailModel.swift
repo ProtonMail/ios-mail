@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 import InboxCore
+import proton_app_uniffi
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
