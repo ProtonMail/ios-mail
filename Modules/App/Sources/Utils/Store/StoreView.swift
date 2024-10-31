@@ -19,7 +19,7 @@ import SwiftUI
 
 struct StoreView<Store: StateStore, Content: View>: View {
     @StateObject var store: Store
-    let content: (Store.State, Store) -> Content
+    private let content: (Store.State, Store) -> Content
 
     init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
         self._store = .init(wrappedValue: store)

@@ -164,7 +164,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
     }
 
-    func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarCorrectMessage() {
+    func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarsCorrectMessage() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
@@ -175,7 +175,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
     }
 
-    func testState_WhenReadActionIsApplied_ItMarkMessageAsRead() {
+    func testState_WhenReadActionIsApplied_ItMarksMessageAsRead() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
@@ -184,7 +184,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(readActionPerformerActionsSpy.markMessageAsReadInvoked, ids)
     }
 
-    func testState_WhenUnreadActionIsApplied_ItMarkConversationAsUnread() {
+    func testState_WhenUnreadActionIsApplied_ItMarksConversationAsUnread() {
         sut = makeSUT(viewMode: .conversations)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
