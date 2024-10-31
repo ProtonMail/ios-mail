@@ -20,39 +20,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-protocol StateStore: ObservableObject {
-    associatedtype State
-    associatedtype Action
-
-    var state: State { get set }
-
-    func handle(action: Action)
-    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value>
-}
-
-extension StateStore {
-    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value> {
-        Binding(
-            get: { self.state[keyPath: keyPath] },
-            set: { self.state[keyPath: keyPath] = $0 }
-        )
-    }
-}
-
-struct StoreView<Store: StateStore, Content: View>: View {
-    @StateObject var store: Store
-    let content: (Store.State, Store) -> Content
-
-    init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
-        self._store = .init(wrappedValue: store)
-        self.content = content
-    }
-
-    var body: some View {
-        content(store.state, store)
-    }
-}
-
 struct MailboxActionBarView: View {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
