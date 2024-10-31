@@ -17,15 +17,10 @@
 
 import proton_app_uniffi
 
-extension ViewMode {
+extension Mailbox {
 
     var itemType: MailboxItemType {
-        switch self {
-        case .conversations:
-            return .conversation
-        case .messages:
-            return .message
-        }
+        viewMode().itemType
     }
 
 }
