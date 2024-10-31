@@ -117,6 +117,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             starConversation()
         case .unstar:
             unstarConversation()
+        case .markRead:
+            markConversationAsRead()
+        case .markUnread:
+            markConversationAsUnread()
         default:
             break
         }
@@ -138,6 +142,18 @@ extension ConversationDetailModel {
 
     private func unstarConversation() {
         starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+    }
+
+    private func markConversationAsRead() {
+        guard let mailbox else { return }
+        ReadActionPerformer(mailbox: mailbox)
+            .markAsRead(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+    }
+
+    private func markConversationAsUnread() {
+        guard let mailbox else { return }
+        ReadActionPerformer(mailbox: mailbox)
+            .markAsUnread(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
 
     private func initialiseMailbox() async throws -> Mailbox {
