@@ -36,7 +36,7 @@ final class ContactsScreenSnapshotTests: XCTestCase {
 
     private func makeSUT(items: [GroupedContacts]) -> ContactsScreen {
         ContactsScreen(
-            state: .init(items: items),
+            state: .init(search: .initial, items: items),
             mailUserSession: .testInstance(),
             contactsProvider: .previewInstance()
         )

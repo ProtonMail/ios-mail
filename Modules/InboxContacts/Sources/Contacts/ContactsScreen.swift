@@ -23,6 +23,12 @@ import SwiftUI
 
 public struct ContactsScreen: View {
     public struct State: Copying, Equatable {
+        public struct Search: Equatable {
+            var text: String
+            var isActive: Bool
+        }
+
+        var search: Search
         var items: [GroupedContacts]
     }
 

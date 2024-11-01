@@ -45,6 +45,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     func testState_ItHasCorrectInitialState() {
         let expectedState = ContactsScreen.State(
+            search: .init(text: "", isActive: false),
             items: []
         )
 
@@ -73,7 +74,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(items: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .initial, items: groupedItems))
     }
 
 }

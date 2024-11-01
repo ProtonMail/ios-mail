@@ -18,7 +18,15 @@
 extension ContactsScreen.State {
 
     public static var initial: Self {
-        .init(items: [])
+        .init(search: .initial, items: [])
+    }
+
+}
+
+extension ContactsScreen.State.Search {
+
+    static var initial: Self {
+        .init(text: "", isActive: false)
     }
 
 }
