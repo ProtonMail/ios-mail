@@ -17,20 +17,25 @@
 
 @testable import InboxContacts
 import InboxSnapshotTesting
+import proton_app_uniffi
 import XCTest
 
 final class ContactsScreenSnapshotTests: XCTestCase {
 
     @MainActor
-    func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async {
-        let repository = GroupedContactsRepositoryPreview()
-        let state = await repository.allContacts()
+    func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
+        let provider = GroupedContactsProvider.previewInstance()
+        let state = try await provider.allContacts(.testInstance())
 
-        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: state, repository: repository))
+        assertSnapshotsOnIPhoneX(of: makeSUT(state: state))
     }
 
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: ContactsScreen(state: [], repository: GroupedContactsRepositoryPreview()))
+        assertSnapshotsOnIPhoneX(of: makeSUT(state: []))
+    }
+
+    private func makeSUT(state: [GroupedContacts]) -> ContactsScreen {
+        ContactsScreen(state: state, mailUserSession: .testInstance(), contactsProvider: .previewInstance())
     }
 
 }

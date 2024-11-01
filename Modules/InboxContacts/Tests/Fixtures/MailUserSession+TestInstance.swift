@@ -17,10 +17,10 @@
 
 import proton_app_uniffi
 
-extension GroupedContactsRepository {
+extension MailUserSession {
 
-    public static func productionInstance(mailUserSession: MailUserSession) -> Self {
-        .init(mailUserSession: mailUserSession, allContacts: contactList(session:))
+    static func testInstance() -> MailUserSession {
+        .init(noPointer: .init())
     }
 
 }

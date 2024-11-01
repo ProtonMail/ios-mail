@@ -42,8 +42,9 @@ final class HomeScreenModalFactoryTests: XCTestCase {
 
     // MARK: - Private
 
+    @MainActor
     private func modal(for state: HomeScreen.ModalState) async throws -> InspectableView<ViewType.ClassifiedView> {
-        let factory = HomeScreenModalFactory(contactsRepository: GroupedContactsRepositoryPreview())
-        return try await factory.makeModal(for: state).inspect()
+        let factory = HomeScreenModalFactory(mailUserSession: .init(noPointer: .init()))
+        return try factory.makeModal(for: state).inspect()
     }
 }

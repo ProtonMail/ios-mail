@@ -25,8 +25,14 @@ public struct ContactsScreen: View {
     @StateObject private var store: ContactsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
-    public init(state: [GroupedContacts] = [], repository: GroupedContactsProviding) {
-        _store = .init(wrappedValue: .init(state: state, repository: repository))
+    public init(
+        state: [GroupedContacts] = [],
+        mailUserSession: MailUserSession,
+        contactsProvider: GroupedContactsProvider
+    ) {
+        _store = .init(
+            wrappedValue: .init(state: state, mailUserSession: mailUserSession, contactsProvider: contactsProvider)
+        )
     }
 
     public var body: some View {
@@ -40,5 +46,8 @@ public struct ContactsScreen: View {
 }
 
 #Preview {
-    ContactsScreen(repository: GroupedContactsRepositoryPreview())
+    ContactsScreen(
+        mailUserSession: .init(noPointer: .init()),
+        contactsProvider: .previewInstance()
+    )
 }

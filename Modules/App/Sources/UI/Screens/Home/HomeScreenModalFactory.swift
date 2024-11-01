@@ -16,20 +16,24 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxContacts
+import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 struct HomeScreenModalFactory {
-    private let contactsRepository: GroupedContactsProviding
+    private let makeContactsScreen: () -> ContactsScreen
 
-    init(contactsRepository: GroupedContactsProviding) {
-        self.contactsRepository = contactsRepository
+    init(mailUserSession: MailUserSession) {
+        self.makeContactsScreen = {
+            ContactsScreen(mailUserSession: mailUserSession, contactsProvider: .productionInstance())
+        }
     }
 
     @MainActor @ViewBuilder
     func makeModal(for state: HomeScreen.ModalState) -> some View {
         switch state {
         case .contacts:
-            ContactsScreen(repository: contactsRepository)
+            makeContactsScreen()
         case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
         case .settings:

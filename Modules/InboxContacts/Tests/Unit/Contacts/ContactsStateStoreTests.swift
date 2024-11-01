@@ -24,16 +24,21 @@ import XCTest
 final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
-    private var repositorySpy: GroupedContactsRepositorySpy!
+    var stubbedContacts: [GroupedContacts]!
 
     override func setUp() {
         super.setUp()
-        repositorySpy = .init()
-        sut = .init(state: [], repository: repositorySpy)
+        stubbedContacts = []
+
+        sut = .init(
+            state: [],
+            mailUserSession: .testInstance(),
+            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
+        )
     }
 
     override func tearDown() {
-        repositorySpy = nil
+        stubbedContacts = nil
         sut = nil
         super.tearDown()
     }
@@ -60,23 +65,11 @@ final class ContactsStateStoreTests: BaseTestCase {
                 ]
             )
         ]
-        repositorySpy.stubbedContacts = groupedItems
+        stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
 
         XCTAssertEqual(sut.state, groupedItems)
-    }
-
-}
-
-private class GroupedContactsRepositorySpy: GroupedContactsProviding {
-
-    var stubbedContacts: [GroupedContacts] = []
-
-    // MARK: - GroupedContactsProviding
-
-    func allContacts() async -> [GroupedContacts] {
-        stubbedContacts
     }
 
 }

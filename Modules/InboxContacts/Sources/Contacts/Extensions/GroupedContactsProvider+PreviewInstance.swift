@@ -17,12 +17,13 @@
 
 import proton_app_uniffi
 
-struct GroupedContactsRepositoryPreview: GroupedContactsProviding {
-    init() {}
+extension GroupedContactsProvider {
 
-    // MARK: - GroupedContactsProviding
+    static func previewInstance() -> Self {
+        .init(allContacts: { _ in stubbedContacts })
+    }
 
-    func allContacts() async -> [GroupedContacts] {
+    private static var stubbedContacts: [GroupedContacts] {
         [
             .init(
                 groupedBy: "#",
@@ -809,6 +810,7 @@ struct GroupedContactsRepositoryPreview: GroupedContactsProviding {
             )
         ]
     }
+
 }
 
 extension ContactItem {

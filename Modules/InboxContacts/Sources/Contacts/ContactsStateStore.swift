@@ -26,11 +26,15 @@ final class ContactsStateStore: ObservableObject {
 
     @Published var state: [GroupedContacts]
 
-    private let repository: GroupedContactsProviding
+    private let repository: GroupedContactsRepository
 
-    init(state: [GroupedContacts], repository: GroupedContactsProviding) {
+    init(
+        state: [GroupedContacts],
+        mailUserSession: MailUserSession,
+        contactsProvider: GroupedContactsProvider
+    ) {
         self.state = state
-        self.repository = repository
+        self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsProvider)
     }
 
     func handle(action: Action) {

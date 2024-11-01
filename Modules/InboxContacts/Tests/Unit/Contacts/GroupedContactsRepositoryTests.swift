@@ -29,9 +29,10 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
     override func setUp() {
         super.setUp()
         stubbedContacts = []
+
         sut = .init(
             mailUserSession: MailUserSession(noPointer: .init()),
-            allContacts: { _ in self.stubbedContacts }
+            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
         )
     }
 
