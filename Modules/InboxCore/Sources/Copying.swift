@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-protocol Copying {}
+public protocol Copying {}
 
 extension Copying {
 
-    func copy<Value>(_ path: WritableKeyPath<Self, Value>, to value: Value) -> Self {
+    public func copy<Value>(_ path: WritableKeyPath<Self, Value>, to value: Value) -> Self {
         var clone = self
         clone[keyPath: path] = value
         return clone

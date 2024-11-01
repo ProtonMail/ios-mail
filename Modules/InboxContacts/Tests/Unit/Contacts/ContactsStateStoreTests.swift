@@ -31,7 +31,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = []
 
         sut = .init(
-            state: [],
+            state: .initial,
             mailUserSession: .testInstance(),
             contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
         )
@@ -43,11 +43,15 @@ final class ContactsStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
-    func testState_ItHasNoItems() {
-        XCTAssertEqual(sut.state, [])
+    func testState_ItHasCorrectInitialState() {
+        let expectedState = ContactsScreen.State(
+            items: []
+        )
+
+        XCTAssertEqual(sut.state, expectedState)
     }
 
-    func testState_WhenOnLoad_ItHas2GroupedItems() {
+    func testState_WhenOnLoad_ItHasCorrectStateWith2GroupedItems() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -69,7 +73,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, groupedItems)
+        XCTAssertEqual(sut.state, .init(items: groupedItems))
     }
 
 }

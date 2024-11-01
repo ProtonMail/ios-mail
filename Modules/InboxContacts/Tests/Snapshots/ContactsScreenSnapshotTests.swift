@@ -25,17 +25,21 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     @MainActor
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
         let provider = GroupedContactsProvider.previewInstance()
-        let state = try await provider.allContacts(.testInstance())
+        let items = try await provider.allContacts(.testInstance())
 
-        assertSnapshotsOnIPhoneX(of: makeSUT(state: state))
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: makeSUT(state: []))
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: []))
     }
 
-    private func makeSUT(state: [GroupedContacts]) -> ContactsScreen {
-        ContactsScreen(state: state, mailUserSession: .testInstance(), contactsProvider: .previewInstance())
+    private func makeSUT(items: [GroupedContacts]) -> ContactsScreen {
+        ContactsScreen(
+            state: .init(items: items),
+            mailUserSession: .testInstance(),
+            contactsProvider: .previewInstance()
+        )
     }
 
 }

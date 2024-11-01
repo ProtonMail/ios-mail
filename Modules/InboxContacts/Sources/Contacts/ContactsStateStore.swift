@@ -24,12 +24,12 @@ final class ContactsStateStore: ObservableObject {
         case onLoad
     }
 
-    @Published var state: [GroupedContacts]
+    @Published var state: ContactsScreen.State
 
     private let repository: GroupedContactsRepository
 
     init(
-        state: [GroupedContacts],
+        state: ContactsScreen.State,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider
     ) {
@@ -43,10 +43,14 @@ final class ContactsStateStore: ObservableObject {
             Task {
                 let contacts = await repository.allContacts()
                 let updateStateWorkItem = DispatchWorkItem { [weak self] in
-                    self?.state = contacts
+                    self?.updateState(with: contacts)
                 }
                 Dispatcher.dispatchOnMain(updateStateWorkItem)
             }
         }
+    }
+
+    private func updateState(with items: [GroupedContacts]) {
+        state = state.copy(\.items, to: items)
     }
 }

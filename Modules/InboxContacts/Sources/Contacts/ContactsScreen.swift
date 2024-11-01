@@ -22,11 +22,15 @@ import proton_app_uniffi
 import SwiftUI
 
 public struct ContactsScreen: View {
+    public struct State: Copying, Equatable {
+        var items: [GroupedContacts]
+    }
+
     @StateObject private var store: ContactsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     public init(
-        state: [GroupedContacts] = [],
+        state: State = .initial,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider
     ) {
@@ -37,7 +41,7 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: store.state)
+            ContactsControllerRepresentable(contacts: store.state.items)
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }

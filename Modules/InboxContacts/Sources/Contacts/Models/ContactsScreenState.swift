@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+extension ContactsScreen.State {
 
-struct MoveToState: Copying {
-    var moveToSystemFolderActions: [MoveToSystemFolder]
-    var moveToCustomFolderActions: [MoveToCustomFolder]
-    var createFolderLabelPresented: Bool
+    public static var initial: Self {
+        .init(items: [])
+    }
+
 }
