@@ -52,6 +52,7 @@ public struct ContactsScreen: View {
                 .navigationTitle(L10n.Contacts.title.string)
         }
         .onLoad { store.handle(action: .onLoad) }
+        .searchable(text: $store.state.search.text)
     }
 }
 
