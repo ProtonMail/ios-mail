@@ -37,7 +37,7 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: store.state, backgroundColor: DS.Color.BackgroundInverted.norm)
+            ContactsControllerRepresentable(contacts: store.state)
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }

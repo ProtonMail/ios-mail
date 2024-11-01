@@ -28,9 +28,8 @@ final class ContactsController: UITableViewController {
         }
     }
 
-    init(contacts: [GroupedContacts], backgroundColor: Color) {
+    init(contacts: [GroupedContacts]) {
         self.groupedContacts = contacts
-        self.backgroundColor = backgroundColor
         super.init(style: .insetGrouped)
     }
 
@@ -75,10 +74,8 @@ final class ContactsController: UITableViewController {
 
     // MARK: - Private
 
-    private let backgroundColor: Color
-
     private func setUpTableView() {
-        tableView.backgroundColor = UIColor(backgroundColor)
+        tableView.backgroundColor = UIColor(DS.Color.BackgroundInverted.norm)
         tableView.directionalLayoutMargins = .init(vertical: .zero, horizontal: DS.Spacing.large)
         tableView.sectionFooterHeight = .zero
         tableView.sectionHeaderHeight = DS.Spacing.large

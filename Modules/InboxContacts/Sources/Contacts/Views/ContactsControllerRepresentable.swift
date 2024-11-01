@@ -21,12 +21,11 @@ import SwiftUI
 
 struct ContactsControllerRepresentable: UIViewControllerRepresentable {
     let contacts: [GroupedContacts]
-    let backgroundColor: Color
 
     // MARK: - UIViewControllerRepresentable
 
     func makeUIViewController(context: Context) -> ContactsController {
-        ContactsController(contacts: contacts, backgroundColor: backgroundColor)
+        ContactsController(contacts: contacts)
     }
 
     func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
