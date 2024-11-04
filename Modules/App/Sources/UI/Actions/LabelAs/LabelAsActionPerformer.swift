@@ -1,0 +1,58 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import proton_app_uniffi
+
+struct MarkAsReadInput {
+    let itemType: MailboxItemType
+    let itemsIDs: [ID]
+    let selectedLabelsIDs: [ID]
+    let partiallySelectedLabelsIDs: [ID]
+    let archive: Bool
+}
+
+struct LabelAsActionPerformer {
+    private let mailbox: Mailbox
+    private let labelAsActions: LabelAsActions
+
+    init(mailbox: Mailbox, labelAsActions: LabelAsActions) {
+        self.mailbox = mailbox
+        self.labelAsActions = labelAsActions
+    }
+
+    func labelAs(input: MarkAsReadInput) async {
+        let labelAsAction = labelAsAction(itemType: input.itemType)
+        _ = try! await labelAsAction(
+            mailbox,
+            input.itemsIDs,
+            input.selectedLabelsIDs,
+            input.partiallySelectedLabelsIDs,
+            input.archive
+        )
+    }
+
+    // MARK: - Private
+
+    private func labelAsAction(itemType: MailboxItemType) -> LabelAsActionClosure {
+        switch itemType {
+        case .message:
+            labelAsActions.labelMessagesAs
+        case .conversation:
+            labelAsActions.labelConversationsAs
+        }
+    }
+}
