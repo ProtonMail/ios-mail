@@ -157,7 +157,7 @@ extension ConversationDetailModel {
     }
 
     private func initialiseMailbox() async throws -> Mailbox {
-        guard case .activeSession(let userSession) = dependencies.appContext.sessionState else {
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
             throw ConversationModelError.noActiveSessionFound
         }
         let newMailbox: Mailbox

@@ -186,7 +186,7 @@ private extension MailUserSession {
     static func testInstance() throws -> MailUserSession {
         let appContext = AppContext.shared
 
-        guard case .activeSession(let userSession) = appContext.sessionState else {
+        guard let userSession = appContext.sessionState.userSession else {
             return try newUserSession()
         }
 

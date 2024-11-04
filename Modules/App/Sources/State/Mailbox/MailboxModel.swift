@@ -158,7 +158,7 @@ extension MailboxModel {
     }
 
     private func updateMailboxAndPaginator() async {
-        guard case .activeSession(let userSession) = dependencies.appContext.sessionState else { return }
+        guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
             await paginatedDataSource.resetToInitialState()

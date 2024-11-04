@@ -30,7 +30,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     }
 
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
-        guard case .activeSession(let userSession) = dependencies.appContext.sessionState else { return }
+        guard let userSession = dependencies.appContext.sessionState.userSession else { return }
 
         guard let appConfig = dependencies.appConfigService.appConfig else { return }
         let domain = appConfig.environment.domain

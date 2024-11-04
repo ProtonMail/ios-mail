@@ -24,7 +24,7 @@ final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
 
     var userSession: MailUserSession {
-        guard case .activeSession(let userSession) = sessionState else {
+        guard let userSession = sessionState.userSession else {
             fatalError("Can not find active session.")
         }
 
@@ -209,7 +209,7 @@ extension AppContext: EventLoopProvider {
 
     func pollEventsAsync() async {
         do {
-            guard case .activeSession(let userSession) = sessionState else {
+            guard let userSession = sessionState.userSession else {
                 AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
                 return
             }
