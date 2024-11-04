@@ -1289,7 +1289,7 @@
  The title of the star action in action sheet
  VoiceOver title of star button in the message view
 */
-"Star" = "Bintang";
+"Star" = "Bintangi";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Hapus bintang";

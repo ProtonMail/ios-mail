@@ -1427,7 +1427,7 @@
 "Creating label not allowed" = "No es permet crear l'etiqueta.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Milloreu a un pla de pagament per utilitzar més de 3 carpetes.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
@@ -2124,7 +2124,7 @@
 "Set your own schedule" = "Establiu la vostra pròpia planificació.";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquegeu la programació de missatges personalitzada i altres avantatges quan milloreu el pla.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Millora ara";
@@ -2274,7 +2274,7 @@
 "Clear out the junk" = "Neteja la brossa";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Esborreu automàticament els missatges de més de 30 dies a la paperera i el correu brossa. Gaudiu d'aquest i d'altres avantatges quan milloreu.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Fins a 3 TB d'emmagatzematge";
@@ -2406,7 +2406,7 @@
 "Want to snooze any time?" = "Voleu posposar en algun moment?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de posposició personalitzats quan milloreu el vostre pla.";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";
@@ -2574,7 +2574,7 @@
 "Group your contacts" = "Agrupeu els vostres contactes";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Envieu fàcilment correus electrònics a un grup i gaudiu d'altres característiques prèmium amb %@.";
 
 /* Title of the upsell page */
 "Need more labels or folders?" = "Necessiteu més etiquetes o carpetes?";
@@ -2586,7 +2586,7 @@
 "Customize your signature" = "Personalitzeu la vostra firma";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Utilitzeu la vostra pròpia signatura mòbil i gaudiu d'altres característiques prèmium amb %@.";
 
 /* Title of the upsell page */
 "Schedule now, send later" = "Programeu ara i envieu més tard";
