@@ -27,17 +27,24 @@ class LabelAsSheetModelTests: BaseTestCase {
     var invokedDismissCount: Int!
     var stubbedLabelAsActions: [LabelAsAction]!
 
+    private var invokedLabelMessage: [LabelAsExecutedWithData]!
+    private var invokedLabelConversation: [LabelAsExecutedWithData]!
+
     override func setUp() {
         super.setUp()
 
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
+        invokedLabelMessage = []
+        invokedLabelConversation = []
         invokedDismissCount = 0
     }
 
     override func tearDown() {
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
+        invokedLabelMessage = nil
+        invokedLabelConversation = nil
         invokedDismissCount = nil
         stubbedLabelAsActions = nil
 
@@ -103,12 +110,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         stubbedLabelAsActions = [IsSelected.partial, .selected, .unselected]
             .enumerated()
             .map { index, status in
-                .init(
-                    labelId: .init(value: UInt64(index)),
-                    name: .notUsed,
-                    color: .init(value: .notUsed),
-                    isSelected: status
-                )
+                .testData(id: .init(value: UInt64(index)), isSelected: status)
             }
         let firstLabel = stubbedLabelAsActions[0]
         let secondLabel = stubbedLabelAsActions[1]
@@ -139,6 +141,14 @@ class LabelAsSheetModelTests: BaseTestCase {
         ))
     }
 
+    func test_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsMessage() {
+        testLabelAs(itemType: .message) { invokedLabelMessage }
+    }
+
+    func test_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsConversation() {
+        testLabelAs(itemType: .conversation) { invokedLabelConversation }
+    }
+
     // MARK: - Private
 
     private func sut(ids: [ID], type: MailboxItemType) -> LabelAsSheetModel {
@@ -155,8 +165,63 @@ class LabelAsSheetModelTests: BaseTestCase {
                     return self.stubbedLabelAsActions
                 }
             ), 
+            labelAsActions: .init(
+                labelMessagesAs: { _, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
+                    self.invokedLabelMessage.append(.init(
+                        itemsIDs: ids,
+                        selectedLabelIDs: selectedLabelIDs,
+                        partiallySelectedLabelIDs: partiallySelectedLabelIDs,
+                        archive: archive
+                    ))
+
+                    return false
+                },
+                labelConversationsAs: { mailbox, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
+                    self.invokedLabelConversation.append(.init(
+                        itemsIDs: ids,
+                        selectedLabelIDs: selectedLabelIDs,
+                        partiallySelectedLabelIDs: partiallySelectedLabelIDs,
+                        archive: archive
+                    ))
+
+                    return false
+                }
+            ),
             dismiss: { self.invokedDismissCount += 1 }
         )
+    }
+
+    private func testLabelAs(itemType: MailboxItemType, spyToVerify: () -> [LabelAsExecutedWithData]) {
+        let selectedLabelID: ID = .init(value: 2)
+        let partiallySelectedLabelID: ID = .init(value: 4)
+        stubbedLabelAsActions = [
+            .testData(id: selectedLabelID, isSelected: .selected),
+            .testData(id: partiallySelectedLabelID, isSelected: .partial),
+            .testData(id: .random(), isSelected: .unselected)
+        ]
+
+        let itemsIDs: [ID] = [.init(value: 1), .init(value: 3)]
+        let sut = sut(ids: itemsIDs, type: itemType)
+
+        sut.handle(action: .viewAppear)
+        sut.handle(action: .toggleSwitch)
+        sut.handle(action: .doneButtonTapped)
+
+        XCTAssertEqual(spyToVerify(), [
+            .init(
+                itemsIDs: itemsIDs,
+                selectedLabelIDs: [selectedLabelID],
+                partiallySelectedLabelIDs: [partiallySelectedLabelID],
+                archive: true
+            )
+        ])
+    }
+
+    private struct LabelAsExecutedWithData: Equatable {
+        let itemsIDs: [ID]
+        let selectedLabelIDs: [ID]
+        let partiallySelectedLabelIDs: [ID]
+        let archive: Bool
     }
 
 }
@@ -164,5 +229,9 @@ class LabelAsSheetModelTests: BaseTestCase {
 private extension LabelAsAction {
     func copy(isSelected: IsSelected) -> Self {
         .init(labelId: labelId, name: name, color: color, isSelected: isSelected)
+    }
+
+    static func testData(id: ID, isSelected: IsSelected) -> Self {
+        .init(labelId: id, name: .notUsed, color: .init(value: .notUsed), isSelected: isSelected)
     }
 }

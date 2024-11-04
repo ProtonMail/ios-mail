@@ -102,7 +102,8 @@ struct MailboxActionBarView: View {
         let model = LabelAsSheetModel(
             input: input,
             mailbox: mailbox,
-            availableLabelAsActions: .productionInstance
+            availableLabelAsActions: .productionInstance, 
+            labelAsActions: .productionInstance
         ) {
             actionHandler(.dismissLabelAsSheet)
         }

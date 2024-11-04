@@ -32,10 +32,17 @@ struct LabelAsActions {
 
 extension LabelAsActions {
 
-    static func productionInstance() -> Self {
+    static var productionInstance: Self {
         .init(
             labelMessagesAs: proton_app_uniffi.labelMessagesAs,
             labelConversationsAs: proton_app_uniffi.labelConversationsAs
+        )
+    }
+
+    static var dummy: Self {
+        .init(
+            labelMessagesAs: { _, _, _, _, _ in false },
+            labelConversationsAs: { _, _, _, _, _ in false }
         )
     }
 

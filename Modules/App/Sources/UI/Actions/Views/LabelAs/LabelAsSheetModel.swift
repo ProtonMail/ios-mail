@@ -24,16 +24,19 @@ class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
     private let input: ActionSheetInput
     private let actionsProvider: LabelAsActionsProvider
+    private let labelAsActionPerformer: LabelAsActionPerformer
     private let dismiss: () -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox, 
         availableLabelAsActions: AvailableLabelAsActions,
+        labelAsActions: LabelAsActions,
         dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.actionsProvider = .init(mailbox: mailbox, availableLabelAsActions: availableLabelAsActions)
+        self.labelAsActionPerformer = .init(mailbox: mailbox, labelAsActions: labelAsActions)
         self.dismiss = dismiss
     }
 
@@ -48,7 +51,7 @@ class LabelAsSheetModel: ObservableObject {
         case .createLabelButtonTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         case .doneButtonTapped:
-            dismiss()
+            executeLabelAsAction()
         }
     }
 
@@ -60,6 +63,19 @@ class LabelAsSheetModel: ObservableObject {
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(labels: labels)
             }))
+        }
+    }
+
+    private func executeLabelAsAction() {
+        Task {
+            await labelAsActionPerformer.labelAs(input: .init(
+                itemType: input.type,
+                itemsIDs: input.id,
+                selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
+                partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
+                archive: state.shouldArchive
+            ))
+            dismiss()
         }
     }
 

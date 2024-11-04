@@ -79,7 +79,8 @@ private struct MailboxActionSheets: ViewModifier {
         let model = LabelAsSheetModel(
             input: input,
             mailbox: mailbox(),
-            availableLabelAsActions: .productionInstance
+            availableLabelAsActions: .productionInstance, 
+            labelAsActions: .productionInstance
         ) {
             state = state.dismissed()
         }
