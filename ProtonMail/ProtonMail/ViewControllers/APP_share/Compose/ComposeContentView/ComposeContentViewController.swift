@@ -813,8 +813,6 @@ extension ComposeContentViewController {
 // MARK: - view extensions
 
 extension ComposeContentViewController: ComposeViewDelegate {
-    func composeViewWillPresentSubview() {}
-    func composeViewWillDismissSubview() {}
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
