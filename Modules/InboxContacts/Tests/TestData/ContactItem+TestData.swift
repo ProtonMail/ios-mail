@@ -67,12 +67,48 @@ extension ContactItem {
         )
     }
 
+    static var alexAbrams: Self {
+        .init(
+            id: 13,
+            name: "Alex Abrams",
+            avatarInformation: .init(text: "AA", color: "#FF5733"),
+            emails: [
+                .init(id: 13, email: "alex.abrams@gmail.com"),
+                .init(id: 14, email: "alex.andrews@pm.me")
+            ]
+        )
+    }
+
     static var bobAinsworth: Self {
         .init(
             id: 1,
             name: "Bob Ainsworth",
             avatarInformation: .init(text: "BA", color: "#FF33A1"),
             emails: []
+        )
+    }
+
+    static var evanAndrage: Self {
+        .init(
+            id: 11,
+            name: "😊 Evan Andrage",
+            avatarInformation: .init(text: "EA", color: "#FF5733"),
+            emails: [
+                .init(id: 11, email: "evan.andrage@outlook.com"),
+                .init(id: 12, email: "e.andrage@gmail.com")
+            ]
+        )
+    }
+
+    static var elenaErickson: Self {
+        .init(
+            id: 12,
+            name: "🌟 Elena Erickson",
+            avatarInformation: .init(text: "EE", color: "#33A1FF"),
+            emails: [
+                .init(id: 21, email: "elena.erickson@example.com"),
+                .init(id: 22, email: "elena.e@yahoo.com")
+            ]
         )
     }
 
