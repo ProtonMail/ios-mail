@@ -2223,10 +2223,10 @@
 "No results found" = "Ingen resultater funnet";
 
 /* The title of the setting of the auto-delete option */
-"Auto-delete" = "Autoslett";
+"Auto-delete" = "Automatisk sletting";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Autoslett uønskede meldinger";
+"Auto-delete unwanted messages" = "Automatisk sletting av uønskede meldinger";
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.";
