@@ -46,13 +46,13 @@ final class ContactsStateStoreTests: BaseTestCase {
     func testState_ItHasCorrectInitialState() {
         let expectedState = ContactsScreen.State(
             search: .init(text: "", isActive: false),
-            items: []
+            allItems: []
         )
 
         XCTAssertEqual(sut.state, expectedState)
     }
 
-    func testState_WhenOnLoad_ItHasCorrectStateWith2GroupedItems() {
+    func testState_WhenOnLoad_ItHasCorrectStateWithTwoGroupedItems() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -74,7 +74,6 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, items: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
     }
-
 }

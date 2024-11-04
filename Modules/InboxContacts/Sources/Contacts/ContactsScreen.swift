@@ -29,7 +29,7 @@ public struct ContactsScreen: View {
         }
 
         var search: Search
-        var items: [GroupedContacts]
+        var allItems: [GroupedContacts]
     }
 
     @StateObject private var store: ContactsStateStore
@@ -47,7 +47,7 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: store.state.items)
+            ContactsControllerRepresentable(contacts: store.state.allItems)
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }

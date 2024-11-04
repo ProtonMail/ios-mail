@@ -51,6 +51,6 @@ final class ContactsStateStore: ObservableObject {
     }
 
     private func updateState(with items: [GroupedContacts]) {
-        state = state.copy(\.items, to: items)
+        state = state.copy(\.allItems, to: items)
     }
 }

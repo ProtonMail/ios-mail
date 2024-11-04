@@ -18,7 +18,7 @@
 extension ContactsScreen.State {
 
     public static var initial: Self {
-        .init(search: .initial, items: [])
+        .init(search: .initial, allItems: [])
     }
 
 }
