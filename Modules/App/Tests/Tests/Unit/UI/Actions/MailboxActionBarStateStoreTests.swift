@@ -141,7 +141,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             moreSheetOnlyActions: [
                 .notSpam,
                 .permanentDelete,
-                .moveToSystemFolder(.init(localId: .init(value: 6), systemLabel: .archive))
+                .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .archive))
             ]
         ))
     }

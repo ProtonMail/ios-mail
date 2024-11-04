@@ -27,15 +27,14 @@ enum MoveToSheetPreviewProvider {
             availableMoveToActions: .init(
                 message: { _, _ in
                     [
-                        .systemFolder(.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)),
-                        .systemFolder(.init(localId: .init(value: 2), name: .archive, isSelected: .unselected)),
+                        .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
+                        .systemFolder(.init(localId: .init(value: 2), name: .archive)),
                         .customFolder(customFoldersTree),
                         .customFolder(.init(
                             localId: .init(value: 6),
                             name: "4",
                             color: .init(value: "#9E221A"),
-                            children: [],
-                            isSelected: .unselected
+                            children: []
                         ))
                     ]
                 },
@@ -60,14 +59,11 @@ enum MoveToSheetPreviewProvider {
                             localId: .init(value: 5),
                             name: "3",
                             color: .init(value: "#9E329A"),
-                            children: [],
-                            isSelected: .selected
+                            children: []
                         )
-                    ],
-                    isSelected: .unselected
+                    ]
                 )
-            ],
-            isSelected: .unselected
+            ]
         )
     }
 

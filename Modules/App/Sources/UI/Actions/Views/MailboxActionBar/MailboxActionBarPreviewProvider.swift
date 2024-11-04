@@ -42,7 +42,7 @@ enum MailboxActionBarPreviewProvider {
                 .markRead,
                 .moveTo,
                 .labelAs,
-                .moveToSystemFolder(.archive),
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
                 .more
             ]
         )

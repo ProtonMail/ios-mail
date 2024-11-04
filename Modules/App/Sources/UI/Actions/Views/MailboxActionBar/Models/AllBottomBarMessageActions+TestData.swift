@@ -21,7 +21,11 @@ extension AllBottomBarMessageActions {
 
     static var testData: Self {
         .init(
-            hiddenBottomBarActions: [.notSpam, .permanentDelete, .moveToSystemFolder(.archive)],
+            hiddenBottomBarActions: [
+                .notSpam,
+                .permanentDelete,
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
+            ],
             visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
         )
     }

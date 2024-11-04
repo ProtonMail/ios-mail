@@ -62,7 +62,7 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
 
     var availableActions: AvailableActions {
         .init(
-            replyActions: replyActions,
+            replyActions: nil,
             mailboxItemActions: conversationActions.map(\.action),
             moveActions: moveActions.map(\.moveToAction),
             generalActions: generalActions
@@ -71,10 +71,15 @@ extension ConversationAvailableActions: AvailableActionsConvertible {
 
 }
 
-private extension MovableSystemFolderAction {
+private extension MoveItemAction {
 
     var moveToAction: MoveToAction {
-        .system(.init(localId: localId, systemLabel: name.moveToSystemFolderLabel))
+        switch self {
+        case .moveToSystemFolder(let systemFolder):
+            return .system(.init(localId: systemFolder.localId, systemLabel: systemFolder.name.moveToSystemFolderLabel))
+        case .moveTo:
+            return .moveTo
+        }
     }
 
 }

@@ -74,7 +74,7 @@ private extension MoveAction {
         guard case .systemFolder(let model) = self else {
             return nil
         }
-        return .init(id: model.localId, label: model.name.moveToSystemFolderLabel, isSelected: model.isSelected)
+        return .init(id: model.localId, label: model.name.moveToSystemFolderLabel)
     }
 
     var moveToCustomFolder: MoveToCustomFolder? {
@@ -93,7 +93,6 @@ private extension CustomFolderAction {
             id: localId,
             name: name,
             color: color.map { hexColor in Color(hex: hexColor.value) } ?? DS.Color.Icon.norm,
-            isSelected: isSelected,
             children: children.map(\.moveToCustomFolder)
         )
     }

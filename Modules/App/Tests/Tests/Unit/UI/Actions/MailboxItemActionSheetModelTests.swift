@@ -59,7 +59,10 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         stubbedMessageActions = .init(
             replyActions: [.reply],
             messageActions: [.delete],
-            moveActions: [.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)],
+            moveActions: [
+                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), 
+                .moveTo
+            ],
             generalActions: [.print]
         )
 
@@ -76,7 +79,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
             availableActions: .init(
                 replyActions: [.reply],
                 mailboxItemActions: [.delete],
-                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox))],
+                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox)), .moveTo],
                 generalActions: [.print]
             )
         ))
@@ -84,9 +87,11 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
     func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
         stubbedConversationActions = .init(
-            replyActions: [.forward],
             conversationActions: [.labelAs],
-            moveActions: [.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)],
+            moveActions: [
+                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+                .moveTo
+            ],
             generalActions: [.saveAsPdf]
         )
 
@@ -101,9 +106,9 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         XCTAssertEqual(sut.state, .init(
             title: title,
             availableActions: .init(
-                replyActions: [.forward],
+                replyActions: nil,
                 mailboxItemActions: [.labelAs],
-                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox))],
+                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox)), .moveTo],
                 generalActions: [.saveAsPdf]
             )
         ))

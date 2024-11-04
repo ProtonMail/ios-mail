@@ -33,13 +33,12 @@ class MoveToSheetModelTests: BaseTestCase {
         invokedAvailableActionsWithConversationIDs = []
         invokedDismissCount = 0
         stubbedMoveToActions = [
-            .systemFolder(.init(localId: .init(value: 1), name: .inbox, isSelected: .unselected)),
+            .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
             .customFolder(.init(
                 localId: .init(value: 2),
                 name: "Private",
                 color: nil,
-                children: [],
-                isSelected: .selected
+                children: []
             ))
         ]
     }

@@ -98,7 +98,7 @@ private extension MoveToSystemFolder {
             id: id,
             visualAsset: .image(label.icon, color: DS.Color.Icon.norm),
             title: label.humanReadable.string,
-            isSelected: isSelected,
+            isSelected: .unselected,
             leadingSpacing: .zero
         )
     }
@@ -112,8 +112,8 @@ private extension Array where Element == MoveToCustomFolder {
             let displayData = ActionSelectableButtonDisplayData(
                 id: item.id,
                 visualAsset: .image(item.children.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders, color: item.color),
-                title: item.name,
-                isSelected: item.isSelected,
+                title: item.name, 
+                isSelected: .unselected,
                 leadingSpacing: spacing
             )
             return [displayData] + item.children.displayData(spacing: spacing + DS.Spacing.large)

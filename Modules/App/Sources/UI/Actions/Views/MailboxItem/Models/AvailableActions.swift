@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 struct AvailableActions: Equatable {
-    let replyActions: [ReplyAction]
+    let replyActions: [ReplyAction]?
     let mailboxItemActions: [MailboxItemAction_v2]
     let moveActions: [MoveToAction]
     let generalActions: [GeneralActions]

@@ -22,6 +22,5 @@ struct MoveToCustomFolder {
     let id: ID
     let name: String
     let color: Color
-    let isSelected: IsSelected
     let children: [MoveToCustomFolder]
 }

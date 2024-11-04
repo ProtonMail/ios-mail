@@ -27,10 +27,11 @@ enum MailboxItemActionSheetPreviewProvider {
                     replyActions: [.reply, .forward, .replyAll],
                     messageActions: [.markUnread, .star, .pin, .labelAs],
                     moveActions: [
-                        .init(localId: .init(value: 1), name: .inbox, isSelected: .unselected),
-                        .init(localId: .init(value: 2), name: .archive, isSelected: .unselected),
-                        .init(localId: .init(value: 3), name: .spam, isSelected: .unselected),
-                        .init(localId: .init(value: 4), name: .trash, isSelected: .unselected),
+                        .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+                        .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
+                        .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
+                        .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
+                        .moveTo
                     ],
                     generalActions: [
                         .viewMessageInLightMode,
@@ -43,7 +44,6 @@ enum MailboxItemActionSheetPreviewProvider {
                     ]
                 ) },
                 conversation: { _, _ in .init(
-                    replyActions: [],
                     conversationActions: [],
                     moveActions: [],
                     generalActions: []

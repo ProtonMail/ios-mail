@@ -20,5 +20,4 @@ import proton_app_uniffi
 struct MoveToSystemFolder {
     let id: ID
     let label: MoveToSystemFolderLabel
-    let isSelected: IsSelected
 }

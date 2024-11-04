@@ -31,7 +31,10 @@ struct MailboxItemActionSheet: View {
         ClosableScreen {
             ScrollView {
                 VStack(spacing: DS.Spacing.standard) {
-                    replyButtonsSection()
+                    if let replyActions = model.state.availableActions.replyActions {
+                        replyButtonsSection(replyActions)
+                    }
+
                     mailboxItemActionsSection()
                     moveToActionsSection()
                     section(displayData: model.state.availableActions.generalActions.map(\.displayData))
@@ -46,9 +49,9 @@ struct MailboxItemActionSheet: View {
 
     // MARK: - Private
 
-    private func replyButtonsSection() -> some View {
+    private func replyButtonsSection(_ actions: [ReplyAction]) -> some View {
         HStack(spacing: DS.Spacing.standard) {
-            ForEach(model.state.availableActions.replyActions, id: \.self) { action in
+            ForEach(actions, id: \.self) { action in
                 replyButton(action: action)
             }
         }
