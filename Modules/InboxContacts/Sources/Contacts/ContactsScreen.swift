@@ -62,12 +62,12 @@ public struct ContactsScreen: View {
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }
-        .onLoad { store.handle(action: .onLoad) }
         .searchable(
             text: $store.state.search.query,
             isPresented: $store.state.search.isActive,
             placement: .navigationBarDrawer(displayMode: .always)
         )
+        .onLoad { store.handle(action: .onLoad) }
     }
 }
 
