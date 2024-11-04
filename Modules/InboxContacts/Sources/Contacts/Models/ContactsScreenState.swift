@@ -26,7 +26,7 @@ extension ContactsScreen.State {
 extension ContactsScreen.State.Search {
 
     static var initial: Self {
-        .init(text: "", isActive: false)
+        .init(query: "", isActive: false)
     }
 
 }

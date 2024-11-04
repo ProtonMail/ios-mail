@@ -19,8 +19,8 @@
 
 extension ContactsScreen.State.Search {
 
-    static func active(text: String) -> Self {
-        .init(text: text, isActive: true)
+    static func active(query: String) -> Self {
+        .init(query: query, isActive: true)
     }
 
 }

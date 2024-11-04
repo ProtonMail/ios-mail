@@ -33,21 +33,21 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     func testContactsScreenWithSearchPhraseMatching5ItemsLayoutsCorrectOnIphoneX() async throws {
         let items = try await allContacts()
 
-        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: "Ti"), items: items))
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Ti"), items: items))
     }
 
     @MainActor
     func testContactsScreenWithNonMatchingSearchPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = try await allContacts()
 
-        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: "Tix"), items: items))
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Tix"), items: items))
     }
 
     @MainActor
     func testContactsScreenWithActiveSearchButEmptyPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = try await allContacts()
 
-        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: ""), items: items))
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: ""), items: items))
     }
 
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {

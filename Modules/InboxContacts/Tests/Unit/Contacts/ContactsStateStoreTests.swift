@@ -41,7 +41,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     func testState_ItHasCorrectInitialState() {
         let expectedState = ContactsScreen.State(
-            search: .init(text: "", isActive: false),
+            search: .init(query: "", isActive: false),
             allItems: []
         )
 
@@ -76,7 +76,7 @@ final class ContactsStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenOnLoadAndContainsSpecificSearchPhrase_ItHasCorrectState() {
-        sut = makeSUT(search: .active(text: "Andr"))
+        sut = makeSUT(search: .active(query: "Andr"))
 
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -116,12 +116,12 @@ final class ContactsStateStoreTests: BaseTestCase {
             )
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .init(text: "Andr", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .init(query: "Andr", isActive: true), allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, expectedDisplayItems)
     }
 
     func testState_WhenOnLoadAndSearchIsActiveButEmptySearchPhrase_ItHasCorrectState() {
-        sut = makeSUT(search: .active(text: ""))
+        sut = makeSUT(search: .active(query: ""))
 
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -151,7 +151,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(search: .init(text: "", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .init(query: "", isActive: true), allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
     }
 

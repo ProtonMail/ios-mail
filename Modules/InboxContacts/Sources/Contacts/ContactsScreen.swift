@@ -24,7 +24,7 @@ import SwiftUI
 public struct ContactsScreen: View {
     public struct State: Copying, Equatable {
         public struct Search: Equatable {
-            var text: String
+            var query: String
             var isActive: Bool
         }
 
@@ -36,7 +36,7 @@ public struct ContactsScreen: View {
             }
 
             let filteredItems = ContactsFilterStrategy
-                .filter(searchPhrase: search.text, items: allItems)
+                .filter(searchPhrase: search.query, items: allItems)
                 .flatMap(\.item)
 
             return [.init(groupedBy: "", item: filteredItems)]
@@ -63,7 +63,7 @@ public struct ContactsScreen: View {
                 .navigationTitle(L10n.Contacts.title.string)
         }
         .onLoad { store.handle(action: .onLoad) }
-        .searchable(text: $store.state.search.text, isPresented: $store.state.search.isActive)
+        .searchable(text: $store.state.search.query, isPresented: $store.state.search.isActive)
     }
 }
 
