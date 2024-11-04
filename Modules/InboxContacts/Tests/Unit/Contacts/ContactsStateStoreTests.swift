@@ -30,11 +30,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         super.setUp()
         stubbedContacts = []
 
-        sut = .init(
-            state: .initial,
-            mailUserSession: .testInstance(),
-            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
-        )
+        sut = makeSUT(search: .initial)
     }
 
     override func tearDown() {
@@ -50,9 +46,10 @@ final class ContactsStateStoreTests: BaseTestCase {
         )
 
         XCTAssertEqual(sut.state, expectedState)
+        XCTAssertEqual(sut.state.displayItems, expectedState.allItems)
     }
 
-    func testState_WhenOnLoad_ItHasCorrectStateWithTwoGroupedItems() {
+    func testState_WhenOnLoad_ItHasCorrectState() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -75,5 +72,97 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
+        XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
     }
+
+    func testState_WhenOnLoadAndContainsSpecificSearchPhrase_ItHasCorrectState() {
+        sut = makeSUT(search: .active(text: "Andr"))
+
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            ),
+            .init(
+                groupedBy: "E",
+                item: [
+                    .contact(.evanAndrage),
+                    .contact(.elenaErickson)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+
+        let expectedDisplayItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "",
+                item: [
+                    .contact(.andrewAllen),
+                    .contact(.evanAndrage)
+                ]
+            )
+        ]
+
+        XCTAssertEqual(sut.state, .init(search: .init(text: "Andr", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(sut.state.displayItems, expectedDisplayItems)
+    }
+
+    func testState_WhenOnLoadAndSearchIsActiveButEmptySearchPhrase_ItHasCorrectState() {
+        sut = makeSUT(search: .active(text: ""))
+
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            ),
+            .init(
+                groupedBy: "E",
+                item: [
+                    .contact(.evanAndrage),
+                    .contact(.elenaErickson)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+
+        XCTAssertEqual(sut.state, .init(search: .init(text: "", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
+    }
+
+    // MARK: - Private
+
+    private func makeSUT(search: ContactsScreen.State.Search) -> ContactsStateStore {
+        .init(
+            state: .init(search: search, allItems: []),
+            mailUserSession: .testInstance(),
+            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
+        )
+    }
+
 }

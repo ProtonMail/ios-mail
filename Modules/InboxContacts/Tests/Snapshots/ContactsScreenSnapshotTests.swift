@@ -24,22 +24,51 @@ final class ContactsScreenSnapshotTests: XCTestCase {
 
     @MainActor
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
-        let provider = GroupedContactsProvider.previewInstance()
-        let items = try await provider.allContacts(.testInstance())
+        let items = try await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
+    }
+
+    @MainActor
+    func testContactsScreenWithSearchPhraseMatching5ItemsLayoutsCorrectOnIphoneX() async throws {
+        let items = try await allContacts()
+
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: "Ti"), items: items))
+    }
+
+    @MainActor
+    func testContactsScreenWithNonMatchingSearchPhraseLayoutsCorrectOnIphoneX() async throws {
+        let items = try await allContacts()
+
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: "Tix"), items: items))
+    }
+
+    @MainActor
+    func testContactsScreenWithActiveSearchButEmptyPhraseLayoutsCorrectOnIphoneX() async throws {
+        let items = try await allContacts()
+
+        assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(text: ""), items: items))
     }
 
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {
         assertSnapshotsOnIPhoneX(of: makeSUT(items: []))
     }
 
-    private func makeSUT(items: [GroupedContacts]) -> ContactsScreen {
+    // MARK: - Private
+
+    private func makeSUT(search: ContactsScreen.State.Search = .initial, items: [GroupedContacts]) -> ContactsScreen {
         ContactsScreen(
-            state: .init(search: .initial, allItems: items),
+            state: .init(search: search, allItems: items),
             mailUserSession: .testInstance(),
             contactsProvider: .previewInstance()
         )
+    }
+
+    private func allContacts() async throws -> [GroupedContacts] {
+        let provider = GroupedContactsProvider.previewInstance()
+        let items = try await provider.allContacts(.testInstance())
+
+        return items
     }
 
 }

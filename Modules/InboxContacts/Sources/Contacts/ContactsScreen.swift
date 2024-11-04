@@ -30,6 +30,17 @@ public struct ContactsScreen: View {
 
         var search: Search
         var allItems: [GroupedContacts]
+        var displayItems: [GroupedContacts] {
+            guard search.isActive else {
+                return allItems
+            }
+
+            let filteredItems = ContactsFilterStrategy
+                .filter(searchPhrase: search.text, items: allItems)
+                .flatMap(\.item)
+
+            return [.init(groupedBy: "", item: filteredItems)]
+        }
     }
 
     @StateObject private var store: ContactsStateStore
@@ -47,12 +58,12 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: store.state.allItems)
+            ContactsControllerRepresentable(contacts: store.state.displayItems)
                 .ignoresSafeArea()
                 .navigationTitle(L10n.Contacts.title.string)
         }
         .onLoad { store.handle(action: .onLoad) }
-        .searchable(text: $store.state.search.text)
+        .searchable(text: $store.state.search.text, isPresented: $store.state.search.isActive)
     }
 }
 
