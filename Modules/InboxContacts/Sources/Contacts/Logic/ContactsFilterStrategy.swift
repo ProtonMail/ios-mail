@@ -23,7 +23,7 @@ enum ContactsFilterStrategy {
             return items
         }
 
-        let isMatchingPhrase: (String) -> Bool = { value in
+        let containsSearchPhrase: (String) -> Bool = { value in
             value.range(of: searchPhrase, options: .caseInsensitive) != nil
         }
 
@@ -31,13 +31,13 @@ enum ContactsFilterStrategy {
             let filteredItems = groupedContacts.item.filter { item in
                 switch item {
                 case .contact(let contact):
-                    let isMatchingName = isMatchingPhrase(contact.name)
-                    let isMatchingOneOfEmails = contact.emails
-                        .contains { contactEmail in isMatchingPhrase(contactEmail.email) }
+                    let isMatchingOneOfEmails: ([ContactEmailItem]) -> Bool = { contactEmails in
+                        contactEmails.contains { contactEmail in containsSearchPhrase(contactEmail.email) }
+                    }
 
-                    return isMatchingName || isMatchingOneOfEmails
+                    return containsSearchPhrase(contact.name) || isMatchingOneOfEmails(contact.emails)
                 case .group(let group):
-                    return isMatchingPhrase(group.name)
+                    return containsSearchPhrase(group.name)
                 }
             }
 
