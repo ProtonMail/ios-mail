@@ -23,7 +23,7 @@ struct StarActionPerformer {
 
     init(
         mailUserSession: MailUserSession,
-        starActionPerformerActions: StarActionPerformerActions = .productionInstance()
+        starActionPerformerActions: StarActionPerformerActions = .productionInstance
     ) {
         self.mailUserSession = mailUserSession
         self.starActionPerformerActions = starActionPerformerActions

@@ -27,7 +27,7 @@ struct ReadActionPerformerActions {
 
 extension ReadActionPerformerActions {
 
-    static func productionInstance() -> Self {
+    static var productionInstance: Self {
         .init(
             markMessageAsRead: markMessagesRead,
             markConversationAsRead: markConversationsAsRead,

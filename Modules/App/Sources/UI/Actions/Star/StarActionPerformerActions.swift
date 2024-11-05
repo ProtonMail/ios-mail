@@ -27,7 +27,7 @@ struct StarActionPerformerActions {
 
 extension StarActionPerformerActions {
 
-    static func productionInstance() -> StarActionPerformerActions {
+    static var productionInstance: StarActionPerformerActions {
         .init(
             starMessage: starMessages,
             starConversation: starConversations,

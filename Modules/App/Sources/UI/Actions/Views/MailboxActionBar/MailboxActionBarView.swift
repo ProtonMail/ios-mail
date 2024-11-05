@@ -33,8 +33,8 @@ struct MailboxActionBarView: View {
     init(
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
-        starActionPerformerActions: StarActionPerformerActions = .productionInstance(),
-        readActionPerformerActions: ReadActionPerformerActions = .productionInstance(),
+        starActionPerformerActions: StarActionPerformerActions = .productionInstance,
+        readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {

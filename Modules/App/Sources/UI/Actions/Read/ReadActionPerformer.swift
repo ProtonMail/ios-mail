@@ -23,7 +23,7 @@ struct ReadActionPerformer {
 
     init(
         mailbox: Mailbox,
-        readActionPerformerActions: ReadActionPerformerActions = .productionInstance()
+        readActionPerformerActions: ReadActionPerformerActions = .productionInstance
     ) {
         self.mailbox = mailbox
         self.readActionPerformerActions = readActionPerformerActions

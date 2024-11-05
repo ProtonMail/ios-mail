@@ -53,8 +53,8 @@ private struct MailboxActionSheets: ViewModifier {
             input: input,
             mailbox: mailbox(),
             actionsProvider: .productionInstance,
-            starActionPerformerActions: .productionInstance(), 
-            readActionPerformerActions: .productionInstance(),
+            starActionPerformerActions: .productionInstance,
+            readActionPerformerActions: .productionInstance, 
             mailUserSession: AppContext.shared.userSession
         ) { navigation in
             switch navigation {
