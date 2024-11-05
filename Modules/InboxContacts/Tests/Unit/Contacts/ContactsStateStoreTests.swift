@@ -155,6 +155,89 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
     }
 
+    func testState_WhenDeleteTwoItemsWhenSearchIsInactive_ItUpdatesStateCorrectly() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onDeleteItem(.group(.advisorsGroup)))
+        sut.handle(action: .onDeleteItem(.contact(.andrewAllen)))
+
+        let expectedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems))
+        XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
+    }
+
+    func testState_WhenDeleteOneItemWhenSearchIsActive_ItUpdatesStateCorrectly() {
+        sut = makeSUT(search: .active(query: ""))
+
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onDeleteItem(.contact(.vip)))
+
+        let expectedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "A",
+                item: [
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+
+        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems))
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: expectedItems.flatMap(\.item))])
+    }
+
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {

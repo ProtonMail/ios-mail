@@ -15,21 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import proton_app_uniffi
-import SwiftUI
 
-struct ContactsControllerRepresentable: UIViewControllerRepresentable {
-    let contacts: [GroupedContacts]
-    let onDeleteItem: (ContactItemType) -> Void
+extension GroupedContacts {
 
-    // MARK: - UIViewControllerRepresentable
-
-    func makeUIViewController(context: Context) -> ContactsController {
-        ContactsController(contacts: contacts, onDeleteItem: onDeleteItem)
+    func copy(items: [ContactItemType]) -> Self {
+        .init(groupedBy: groupedBy, item: items)
     }
 
-    func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
-        uiViewController.groupedContacts = contacts
-    }
 }

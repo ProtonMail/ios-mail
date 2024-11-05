@@ -21,6 +21,7 @@ import SwiftUI
 
 final class ContactsStateStore: ObservableObject {
     enum Action {
+        case onDeleteItem(ContactItemType)
         case onLoad
     }
 
@@ -39,6 +40,8 @@ final class ContactsStateStore: ObservableObject {
 
     func handle(action: Action) {
         switch action {
+        case .onDeleteItem(let item):
+            updateState(with: deleting(item: item, from: state.allItems))
         case .onLoad:
             Task {
                 let contacts = await repository.allContacts()
@@ -50,7 +53,16 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
+    // MARK: - Private
+
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
+    }
+
+    private func deleting(item: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
+        items.compactMap { contactGroup in
+            let filteredItems = contactGroup.item.filter { $0 != item }
+            return filteredItems.isEmpty ? nil : contactGroup.copy(items: filteredItems)
+        }
     }
 }

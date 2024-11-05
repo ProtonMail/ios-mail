@@ -38,9 +38,12 @@ public struct ContactsScreen: View {
 
     public var body: some View {
         NavigationStack {
-            ContactsControllerRepresentable(contacts: store.state.displayItems)
-                .ignoresSafeArea()
-                .navigationTitle(L10n.Contacts.title.string)
+            ContactsControllerRepresentable(
+                contacts: store.state.displayItems,
+                onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) }
+            )
+            .ignoresSafeArea()
+            .navigationTitle(L10n.Contacts.title.string)
         }
         .searchable(
             text: $store.state.search.query,

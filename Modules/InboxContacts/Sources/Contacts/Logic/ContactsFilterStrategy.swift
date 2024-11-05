@@ -45,11 +45,3 @@ enum ContactsFilterStrategy {
         }
     }
 }
-
-private extension GroupedContacts {
-
-    func copy(items: [ContactItemType]) -> Self {
-        .init(groupedBy: groupedBy, item: items)
-    }
-
-}

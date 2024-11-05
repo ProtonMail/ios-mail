@@ -28,8 +28,9 @@ final class ContactsController: UITableViewController {
         }
     }
 
-    init(contacts: [GroupedContacts]) {
+    init(contacts: [GroupedContacts], onDeleteItem: @escaping (ContactItemType) -> Void) {
         self.groupedContacts = contacts
+        self.onDeleteItem = onDeleteItem
         super.init(style: .insetGrouped)
     }
 
@@ -68,11 +69,26 @@ final class ContactsController: UITableViewController {
         }
     }
 
+    override func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath
+    ) {
+        if editingStyle == .delete {
+            let section = groupedContacts[indexPath.section]
+            let item = section.item[indexPath.row]
+
+            onDeleteItem(item)
+        }
+    }
+
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         groupedContacts.map(\.groupedBy)
     }
 
     // MARK: - Private
+
+    private let onDeleteItem: (ContactItemType) -> Void
 
     private func setUpTableView() {
         tableView.backgroundColor = UIColor(DS.Color.BackgroundInverted.norm)
