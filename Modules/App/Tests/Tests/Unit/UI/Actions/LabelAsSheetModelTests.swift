@@ -215,6 +215,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                 archive: true
             )
         ])
+        XCTAssertEqual(invokedDismissCount, 1)
     }
 
     private struct LabelAsExecutedWithData: Equatable {

@@ -17,15 +17,15 @@
 
 import proton_app_uniffi
 
-struct MarkAsReadInput {
-    let itemType: MailboxItemType
-    let itemsIDs: [ID]
-    let selectedLabelsIDs: [ID]
-    let partiallySelectedLabelsIDs: [ID]
-    let archive: Bool
-}
-
 struct LabelAsActionPerformer {
+    struct Input {
+        let itemType: MailboxItemType
+        let itemsIDs: [ID]
+        let selectedLabelsIDs: [ID]
+        let partiallySelectedLabelsIDs: [ID]
+        let archive: Bool
+    }
+
     private let mailbox: Mailbox
     private let labelAsActions: LabelAsActions
 
@@ -34,7 +34,7 @@ struct LabelAsActionPerformer {
         self.labelAsActions = labelAsActions
     }
 
-    func labelAs(input: MarkAsReadInput) async {
+    func labelAs(input: Input) async {
         let labelAsAction = labelAsAction(itemType: input.itemType)
         _ = try! await labelAsAction(
             mailbox,
