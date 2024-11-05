@@ -22,32 +22,11 @@ import proton_app_uniffi
 import SwiftUI
 
 public struct ContactsScreen: View {
-    public struct State: Copying, Equatable {
-        public struct Search: Equatable {
-            var query: String
-            var isActive: Bool
-        }
-
-        var search: Search
-        var allItems: [GroupedContacts]
-        var displayItems: [GroupedContacts] {
-            guard search.isActive else {
-                return allItems
-            }
-
-            let filteredItems = ContactsFilterStrategy
-                .filter(searchPhrase: search.query, items: allItems)
-                .flatMap(\.item)
-
-            return [.init(groupedBy: "", item: filteredItems)]
-        }
-    }
-
     @StateObject private var store: ContactsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     public init(
-        state: State = .initial,
+        state: ContactsScreenState = .initial,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider
     ) {

@@ -24,12 +24,12 @@ final class ContactsStateStore: ObservableObject {
         case onLoad
     }
 
-    @Published var state: ContactsScreen.State
+    @Published var state: ContactsScreenState
 
     private let repository: GroupedContactsRepository
 
     init(
-        state: ContactsScreen.State,
+        state: ContactsScreenState,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider
     ) {

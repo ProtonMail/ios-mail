@@ -40,7 +40,7 @@ final class ContactsStateStoreTests: BaseTestCase {
     }
 
     func testState_ItHasCorrectInitialState() {
-        let expectedState = ContactsScreen.State(
+        let expectedState = ContactsScreenState(
             search: .init(query: "", isActive: false),
             allItems: []
         )
@@ -157,7 +157,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func makeSUT(search: ContactsScreen.State.Search) -> ContactsStateStore {
+    private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {
         .init(
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),

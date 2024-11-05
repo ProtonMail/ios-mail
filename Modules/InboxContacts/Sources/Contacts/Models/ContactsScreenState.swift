@@ -15,7 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-extension ContactsScreen.State {
+import InboxCore
+import proton_app_uniffi
+
+public struct ContactsScreenState: Copying, Equatable {
+    public struct Search: Equatable {
+        var query: String
+        var isActive: Bool
+    }
+
+    var search: Search
+    var allItems: [GroupedContacts]
+    var displayItems: [GroupedContacts] {
+        guard search.isActive else {
+            return allItems
+        }
+
+        let filteredItems = ContactsFilterStrategy
+            .filter(searchPhrase: search.query, items: allItems)
+            .flatMap(\.item)
+
+        return [.init(groupedBy: "", item: filteredItems)]
+    }
+}
+
+extension ContactsScreenState {
 
     public static var initial: Self {
         .init(search: .initial, allItems: [])
@@ -23,7 +47,7 @@ extension ContactsScreen.State {
 
 }
 
-extension ContactsScreen.State.Search {
+extension ContactsScreenState.Search {
 
     static var initial: Self {
         .init(query: "", isActive: false)
