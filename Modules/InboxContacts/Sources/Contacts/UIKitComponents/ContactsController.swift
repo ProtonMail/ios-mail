@@ -42,7 +42,7 @@ final class ContactsController: UITableViewController {
         setUpTableView()
     }
 
-    // MARK: - UITableViewController
+    // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         groupedContacts.count
