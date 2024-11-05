@@ -69,8 +69,8 @@ public enum PlanUpsell: String, CaseIterable {
                 .init(icon: \.brandProtonMail, description: L10n.PremiumPerks.mailAndPremiumFeatures),
                 .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharing),
                 .init(icon: \.brandProtonDrive, description: L10n.PremiumPerks.driveWithVersionHistory),
-                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.passWithUnlimitedAliases),
-                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpnHighSpeedServers)
+                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.pass),
+                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpn)
             ]
         case .duo2024:
             return [
@@ -81,8 +81,8 @@ public enum PlanUpsell: String, CaseIterable {
                 .init(icon: \.brandProtonMail, description: L10n.PremiumPerks.mailAndPremiumFeatures),
                 .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharing),
                 .init(icon: \.brandProtonDrive, description: L10n.PremiumPerks.driveWithVersionHistory),
-                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.passWithUnlimitedAliases),
-                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpnHighSpeedServers)
+                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.pass),
+                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpn)
             ]
         case .family2022:
             return [
@@ -93,8 +93,8 @@ public enum PlanUpsell: String, CaseIterable {
                 .init(icon: \.brandProtonMail, description: L10n.PremiumPerks.mailAndPremiumFeatures),
                 .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharing),
                 .init(icon: \.brandProtonDrive, description: L10n.PremiumPerks.driveWithVersionHistory),
-                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.passWithUnlimitedAliases),
-                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpnHighSpeedServers)
+                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.pass),
+                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpn)
             ]
         case .visionary2022:
             return [
@@ -105,15 +105,15 @@ public enum PlanUpsell: String, CaseIterable {
                 .init(icon: \.brandProtonMail, description: L10n.PremiumPerks.mailAndPremiumFeatures),
                 .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharing),
                 .init(icon: \.brandProtonDrive, description: L10n.PremiumPerks.driveWithVersionHistory),
-                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.passWithUnlimitedAliases),
-                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpnHighSpeedServers)
+                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.pass),
+                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpn)
             ]
         case .mailpro2022:
             return [
                 .init(icon: \.storage, description: String(format: L10n.PremiumPerks.nGBStoragePerUser, 15)),
                 .init(icon: \.envelopes, description: String(format: L10n.PremiumPerks.nEmailAddressesPerUser, 10)),
                 .init(icon: \.folders, description: L10n.PremiumPerks.unlimitedFoldersAndLabels),
-                .init(icon: \.globe, description: String(format: L10n.PremiumPerks.nCustomEmailDmains, 10)),
+                .init(icon: \.globe, description: String(format: L10n.PremiumPerks.nCustomEmailDmains, 3)),
                 .init(icon: \.envelopeArrowUpAndRight, description: L10n.PremiumPerks.automaticEmailForwarding),
                 .init(icon: \.calendarGrid, description: String(format: PUITranslations._details_n_calendars_per_user.l10n, 25)),
                 .init(icon: \.calendarCheckmark, description: L10n.PremiumPerks.colleaguesAvailability),
@@ -143,10 +143,10 @@ public enum PlanUpsell: String, CaseIterable {
                 .init(icon: \.globe, description: String(format: L10n.PremiumPerks.nCustomEmailDmains, 15)),
                 .init(icon: \.users, description: String(format: PUITranslations._details_n_calendars_per_user.l10n, 25)),
                 .init(icon: \.envelopeArrowUpAndRight, description: L10n.PremiumPerks.automaticEmailForwarding),
-                .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharingAndAvailability),
+                .init(icon: \.brandProtonCalendar, description: L10n.PremiumPerks.calendarSharing),
                 .init(icon: \.brandProtonDrive, description: L10n.PremiumPerks.driveWithVersionHistory),
-                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.passWithUnlimitedAliases),
-                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpnHighSpeedServers),
+                .init(icon: \.brandProtonPass, description: L10n.PremiumPerks.pass),
+                .init(icon: \.brandProtonVpn, description: L10n.PremiumPerks.vpn),
                 .init(icon: \.shieldHalfFilled, description: L10n.PremiumPerks.sentinelProgram),
                 .init(icon: \.lifeRing, description: PUITranslations._plan_details_priority_support.l10n)
             ]

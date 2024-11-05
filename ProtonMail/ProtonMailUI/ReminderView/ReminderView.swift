@@ -117,23 +117,25 @@ public struct ReminderView: View {
     }
 
     private var listView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(0..<perks.count, id: \.self) { index in
-                HStack(alignment: .center, spacing: 8) {
-                    Image(uiImage: IconProvider[dynamicMember: perks[index].icon])
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                        .foregroundColor(ColorProvider.IconAccent)
-
-                    Text(perks[index].description)
-                        .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 56, alignment: .leading)
-                        .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
-                        .lineLimit(2)
-                        .listRowSeparator(.hidden)
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading) {
+                ForEach(0..<perks.count, id: \.self) { index in
+                    HStack(alignment: .center, spacing: 8) {
+                        Image(uiImage: IconProvider[dynamicMember: perks[index].icon])
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(ColorProvider.IconAccent)
+                        
+                        Text(perks[index].description)
+                            .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 56, alignment: .leading)
+                            .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
+                            .lineLimit(2)
+                            .listRowSeparator(.hidden)
+                    }
+                    .padding([.leading, .trailing], 8)
+                    .background(index % 2 == 0 ? Color(ColorProvider.BackgroundSecondary) : .clear)
+                    .cornerRadius(index % 2 == 0 ? 8 : 0)
                 }
-                .padding([.leading, .trailing], 8)
-                .background(index % 2 == 0 ? Color(ColorProvider.BackgroundSecondary) : .clear)
-                .cornerRadius(index % 2 == 0 ? 8 : 0)
             }
         }
     }

@@ -1556,6 +1556,8 @@ extension MailboxViewModel {
             if let error {
                 let message = "Failed to update AutoDowngradeReminder feature flag: \(error)"
                 SystemLogger.log(message: message, isError: true)
+            } else {
+                self.user.refreshFeatureFlags()
             }
         }
     }
