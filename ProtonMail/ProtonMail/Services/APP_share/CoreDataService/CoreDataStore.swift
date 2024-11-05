@@ -147,16 +147,8 @@ final class CoreDataStore {
     }
 
     private func shouldIgnore(error: Error) -> Bool {
-        #if DEBUG
-        guard ProcessInfo.isRunningUnitTests else {
-            return false
-        }
-
         let nsError = error as NSError
         return nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileReadNoSuchFileError
-        #else
-        return false
-        #endif
     }
 
     private func getManagedObjectModel() -> NSManagedObjectModel? {

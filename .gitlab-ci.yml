@@ -12,18 +12,18 @@ include:
 
   - component: gitlab.protontech.ch/tpe/test-scripts/slack@0.0.2
 
-  # - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
-  #   inputs:
-  #     cleanup-stage: cleanup
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+    inputs:
+      cleanup-stage: cleanup
 
-  # - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
-  #   inputs:
-  #     cleanup-stage: cleanup
-  #     deploy: manual
-  #     cleanup: manual
-  #     images: $IMAGES
-  #     key: customenv$CI_PIPELINE_ID
-  #     suffix: ":custom"
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+    inputs:
+      cleanup-stage: cleanup
+      deploy: manual
+      cleanup: manual
+      images: $IMAGES
+      key: customenv$CI_PIPELINE_ID
+      suffix: ":custom"
 
 variables:
   LANG: "en_US.UTF-8"
@@ -37,11 +37,11 @@ variables:
 stages:
   - i18n
   - scan
-  # - deploy
+  - deploy
   - build
   - test
   - report
-  # - cleanup
+  - cleanup
   - distribute
   - bot
 
@@ -134,7 +134,7 @@ test:unit:
 .test:ui:
   extends: .macos_job
   dependencies:
-    # - atlas:deploy:pipenv
+    - atlas:deploy:pipenv
     - build:debug:for-testing
   stage: test
   artifacts:
@@ -153,29 +153,29 @@ test:unit:
   tags:
     - iOS_UITEST
 
-# test:ui:smoke:
-#   extends: .test:ui
-#   except:
-#     - schedules
-#   only:
-#     refs:
-#       - master
-#       - main
-#       - develop
-#       - /^release\/.*$/
-#       - merge_requests
-#   artifacts:
-#     reports:
-#       coverage_report:
-#         coverage_format: cobertura
-#         path: test_output/slatherOutput/cobertura.xml
-#   script:
-#     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
-#     - cd ProtonMail
-#     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
-#     - ../Scripts/generate_code_coverage_report.sh
-#   tags:
-#     - iOS_GENERAL
+test:ui:smoke:
+  extends: .test:ui
+  except:
+    - schedules
+  only:
+    refs:
+      - master
+      - main
+      - develop
+      - /^release\/.*$/
+      - merge_requests
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
+  script:
+    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
+    - cd ProtonMail
+    - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
+    - ../Scripts/generate_code_coverage_report.sh
+  tags:
+    - iOS_GENERAL
 
 test:ui:sanity:
   extends: .test:ui
