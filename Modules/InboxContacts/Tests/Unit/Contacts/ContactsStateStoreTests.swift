@@ -25,17 +25,18 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
     var stubbedContacts: [GroupedContacts]!
-    var deletedContactsSpy: [Id]!
+    var deleteContactsSpy: [Id]!
 
     override func setUp() {
         super.setUp()
         stubbedContacts = []
-        deletedContactsSpy = []
+        deleteContactsSpy = []
 
         sut = makeSUT(search: .initial)
     }
 
     override func tearDown() {
+        deleteContactsSpy = nil
         stubbedContacts = nil
         sut = nil
         super.tearDown()
@@ -50,6 +51,8 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state, expectedState)
         XCTAssertEqual(sut.state.displayItems, expectedState.allItems)
     }
+
+    // MARK: - `onLoad` action
 
     func testOnLoadAction_ItLoadsAllContacts() {
         let groupedItems: [GroupedContacts] = [
@@ -75,6 +78,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
+        XCTAssertEqual(deleteContactsSpy, [])
     }
 
     func testOnLoadAction_WhenContainsSpecificSearchPhrase_ItDisplaysFilteredItemsInOneSection() {
@@ -120,6 +124,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .init(query: "Andr", isActive: true), allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, expectedDisplayItems)
+        XCTAssertEqual(deleteContactsSpy, [])
     }
 
     func testOnLoad_WhenSearchIsActiveButEmptySearchPhrase_ItDisplaysAllItemsInOneSection() {
@@ -155,9 +160,10 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .init(query: "", isActive: true), allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
+        XCTAssertEqual(deleteContactsSpy, [])
     }
 
-    // MARK: - onDeleteItem
+    // MARK: - `onDeleteItem` action
 
     func testOnDeleteItemActionForTwoItems_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
         let groupedItems: [GroupedContacts] = [
@@ -201,7 +207,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems))
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
-        XCTAssertEqual(deletedContactsSpy, [ContactItem.andrewAllen.id])
+        XCTAssertEqual(deleteContactsSpy, [ContactItem.andrewAllen.id])
     }
 
     func testOnDeleteItemActionForOneItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
@@ -241,7 +247,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems))
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: expectedItems.flatMap(\.item))])
-        XCTAssertEqual(deletedContactsSpy, [ContactItem.vip.id])
+        XCTAssertEqual(deleteContactsSpy, [ContactItem.vip.id])
     }
 
     // MARK: - Private
@@ -251,7 +257,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),
             contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
-            contactsDeleter: .init(delete: { id, _ in self.deletedContactsSpy.append(id) })
+            contactsDeleter: .init(delete: { id, _ in self.deleteContactsSpy.append(id) })
         )
     }
 
