@@ -49,7 +49,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, expectedState.allItems)
     }
 
-    func testState_WhenOnLoad_ItHasCorrectState() {
+    func testOnLoadAction_ItLoadsAllContacts() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -75,7 +75,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
     }
 
-    func testState_WhenOnLoadAndContainsSpecificSearchPhrase_ItHasCorrectState() {
+    func testOnLoadAction_WhenContainsSpecificSearchPhrase_ItDisplaysFilteredItemsInOneSection() {
         sut = makeSUT(search: .active(query: "Andr"))
 
         let groupedItems: [GroupedContacts] = [
@@ -120,7 +120,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, expectedDisplayItems)
     }
 
-    func testState_WhenOnLoadAndSearchIsActiveButEmptySearchPhrase_ItHasCorrectState() {
+    func testOnLoad_WhenSearchIsActiveButEmptySearchPhrase_ItDisplaysAllItemsInOneSection() {
         sut = makeSUT(search: .active(query: ""))
 
         let groupedItems: [GroupedContacts] = [
@@ -155,7 +155,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
     }
 
-    func testState_WhenDeleteTwoItemsWhenSearchIsInactive_ItUpdatesStateCorrectly() {
+    func testDeleteActionForTwoItems_WhenSearchIsInactive_ItUpdatesStateCorrectly() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -199,7 +199,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
     }
 
-    func testState_WhenDeleteOneItemWhenSearchIsActive_ItUpdatesStateCorrectly() {
+    func testDeleteActionForOneItem_WhenSearchIsActive_ItUpdatesStateCorrectly() {
         sut = makeSUT(search: .active(query: ""))
 
         let groupedItems: [GroupedContacts] = [
