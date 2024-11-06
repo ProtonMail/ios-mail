@@ -47,7 +47,7 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
         )
         
         let sender = UITestActionSheetParticipantEntry(
-            avatarText: "T",
+            avatarText: "TF",
             participantName: "Test Free Account",
             participantAddress: "notsofree@proton.black"
         )
@@ -121,7 +121,7 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
         )
         
         let recipient = UITestActionSheetParticipantEntry(
-            avatarText: "Y",
+            avatarText: "YB",
             participantName: "Young Bee",
             participantAddress: "youngbee@proton.black"
         )
@@ -165,7 +165,7 @@ final class ConversationDetailBottomSheetParticipantTests: PMUIMockedNetworkTest
         )
         
         let sender = UITestActionSheetParticipantEntry(
-            avatarText: "Y",
+            avatarText: "YB",
             participantName: "Young Bee",
             participantAddress: "youngbee@proton.black"
         )

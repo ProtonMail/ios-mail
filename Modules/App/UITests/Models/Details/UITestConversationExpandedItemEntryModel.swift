@@ -23,8 +23,12 @@ struct UITestConversationExpandedItemEntryModel: ApplicationHolder {
     
     // MARK: UI Elements
     
+    private var parent: XCUIElement {
+        application.otherElements[Identifiers.parent]
+    }
+    
     private var rootItem: XCUIElement {
-        application.otherElements["\(Identifiers.rootItem)#\(index)"]
+        parent.otherElements["\(Identifiers.rootItem)#\(index)"]
     }
     
     private var senderName: XCUIElement {
@@ -50,37 +54,47 @@ struct UITestConversationExpandedItemEntryModel: ApplicationHolder {
     // MARK: - Actions
     
     func toggleItem() {
-        senderName.tap()
+        withItemDisplayed { senderName.tap() }
     }
     
     func tapThreeDots() {
-        threeDotsButton.tap()
+        withItemDisplayed { threeDotsButton.tap() }
+    }
+    
+    private func scrollTo() -> Bool {
+        UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent)
     }
     
     // MARK: - Assertions
     
     func isDisplayed() {
-        XCTAssertTrue(rootItem.waitUntilShown())
+        withItemDisplayed { XCTAssertTrue(rootItem.waitUntilShown()) }
     }
     
     func hasSenderName(_ name: String) {
-        XCTAssertEqual(senderName.label, name)
+        withItemDisplayed { XCTAssertEqual(senderName.label, name) }
     }
     
     func hasSenderAddress(_ address: String) {
-        XCTAssertEqual(senderAddress.label, address)
+        withItemDisplayed { XCTAssertEqual(senderAddress.label, address) }
     }
     
     func hasDate(_ date: String) {
-        XCTAssertEqual(dateText.label, date)
+        withItemDisplayed { XCTAssertEqual(dateText.label, date) }
     }
     
     func hasRecipientsSummary(_ value: String) {
-        XCTAssertEqual(recipientsSummary.label, value)
+        withItemDisplayed { XCTAssertEqual(recipientsSummary.label, value) }
+    }
+    
+    func withItemDisplayed(block: () -> Void) {
+        XCTAssertTrue(scrollTo())
+        block()
     }
 }
 
 private struct Identifiers {
+    static let parent = "detail.rootItem"
     static let rootItem = "detail.cell.expanded"
     static let senderName = "detail.header.sender.name"
     static let senderAddress = "detail.header.sender.address"

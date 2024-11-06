@@ -23,8 +23,12 @@ struct UITestConversationCollapsedItemEntryModel: ApplicationHolder {
     
     // MARK: UI Elements
     
+    private var parent: XCUIElement {
+        application.otherElements[Identifiers.parent]
+    }
+    
     private var rootItem: XCUIElement {
-        application.otherElements["\(Identifiers.rootItem)#\(index)"]
+        parent.otherElements["\(Identifiers.rootItem)#\(index)"]
     }
     
     private var senderName: XCUIElement {
@@ -42,29 +46,39 @@ struct UITestConversationCollapsedItemEntryModel: ApplicationHolder {
     // MARK: - Actions
     
     func toggleItem() {
-        rootItem.tap()
+        withItemDisplayed { rootItem.tap() }
+    }
+    
+    private func scrollTo() -> Bool {
+        UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent)
     }
     
     // MARK: - Assertions
     
     func isDisplayed() {
-        XCTAssertTrue(rootItem.exists)
+        withItemDisplayed { XCTAssertTrue(rootItem.exists) }
     }
     
     func hasSenderName(_ name: String) {
-        XCTAssertEqual(senderName.label, name)
+        withItemDisplayed { XCTAssertEqual(senderName.label, name) }
     }
     
     func hasDate(_ date: String) {
-        XCTAssertEqual(dateText.label, date)
+        withItemDisplayed { XCTAssertEqual(dateText.label, date) }
     }
     
     func hasPreview(_ value: String) {
-        XCTAssertEqual(preview.label, value)
+        withItemDisplayed { XCTAssertEqual(preview.label, value) }
+    }
+    
+    func withItemDisplayed(block: () -> Void) {
+        XCTAssertTrue(scrollTo())
+        block()
     }
 }
 
 private struct Identifiers {
+    static let parent = "detail.rootItem"
     static let rootItem = "detail.cell.collapsed"
     static let senderName = "detail.cell.collapsed.sender.name"
     static let date = "detail.cell.collapsed.date"

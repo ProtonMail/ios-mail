@@ -39,10 +39,6 @@ extension MailboxRobot {
         actionsGroup.buttons[Identifiers.button4]
     }
 
-    private var actionButton5: XCUIElement {
-        actionsGroup.buttons[Identifiers.button5]
-    }
-
     func tapAction1() {
         actionButton1.tap()
     }
@@ -59,16 +55,11 @@ extension MailboxRobot {
         actionButton4.tap()
     }
 
-    func tapAction5() {
-        actionButton5.tap()
-    }
-
     func verifyActionBarElements() {
         XCTAssertTrue(actionButton1.isHittable)
         XCTAssertTrue(actionButton2.isHittable)
         XCTAssertTrue(actionButton3.isHittable)
         XCTAssertTrue(actionButton4.isHittable)
-        XCTAssertTrue(actionButton5.isHittable)
     }
 
     func verifyActionBarNotShown() {
@@ -82,5 +73,4 @@ private struct Identifiers {
     static let button2 = "mailbox.actionBar.button2"
     static let button3 = "mailbox.actionBar.button3"
     static let button4 = "mailbox.actionBar.button4"
-    static let button5 = "mailbox.actionBar.button5"
 }
