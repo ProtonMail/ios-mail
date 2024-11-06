@@ -36,7 +36,8 @@ public struct ContactsScreen: View {
                 state: state,
                 mailUserSession: mailUserSession,
                 contactsProvider: contactsProvider,
-                contactsDeleter: .productionInstance()
+                contactsDeleter: .productionInstance(),
+                contactGroupDeleter: .productionInstance()
             )
         )
     }
