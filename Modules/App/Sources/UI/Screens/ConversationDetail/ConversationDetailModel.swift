@@ -30,6 +30,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
     @Published var actionSheets: MailboxActionSheetsState = .initial()
+    @Published var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
 
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
@@ -121,8 +122,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             markConversationAsRead()
         case .markUnread:
             markConversationAsUnread()
+        case .permanentDelete:
+            deleteConfirmationAlert = .deleteConfirmation()
         default:
             break
+        }
+    }
+
+    func handle(action: DeleteConfirmationAlertAction) {
+        deleteConfirmationAlert = nil
+        if action == .delete, let mailbox {
+            DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
+                .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
         }
     }
 }

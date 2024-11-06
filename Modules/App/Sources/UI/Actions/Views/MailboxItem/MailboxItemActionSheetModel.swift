@@ -132,7 +132,7 @@ private extension MailboxItemActionSheetState {
     }
 }
 
-private extension AlertViewModel {
+extension AlertViewModel {
 
     static func deleteConfirmation() -> AlertViewModel<DeleteConfirmationAlertAction> {
         .init(

@@ -43,6 +43,10 @@ struct ConversationDetailScreen: View {
             mailbox: { model.mailbox.unsafelyUnwrapped },
             state: $model.actionSheets
         )
+        .alert(
+            model: $model.deleteConfirmationAlert,
+            handleAction: { action in model.handle(action: action) }
+        )
     }
 
     private var conversationView: some View {
