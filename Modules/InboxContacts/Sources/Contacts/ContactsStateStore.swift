@@ -29,6 +29,7 @@ final class ContactsStateStore: ObservableObject {
 
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactDeleterAdapter
+    private let contactGroupDeleter: ContactGroupDeleterAdapter
 
     init(
         state: ContactsScreenState,
@@ -40,6 +41,7 @@ final class ContactsStateStore: ObservableObject {
         self.state = state
         self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsProvider)
         self.contactDeleter = .init(mailUserSession: mailUserSession, contactDeleter: contactsDeleter)
+        self.contactGroupDeleter = .init(mailUserSession: mailUserSession, contactGroupDeleter: contactGroupDeleter)
     }
 
     func handle(action: Action) {
@@ -52,8 +54,10 @@ final class ContactsStateStore: ObservableObject {
                 Task {
                     try await contactDeleter.delete(contactID: contactItem.id)
                 }
-            case .group:
-                break
+            case .group(let contactGroupItem):
+                Task {
+                    try await contactGroupDeleter.delete(contactGroupID: contactGroupItem.id)
+                }
             }
         case .onLoad:
             Task {
