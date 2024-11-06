@@ -47,33 +47,23 @@ final class ContactsStateStore: ObservableObject {
     func handle(action: Action) {
         switch action {
         case .onDeleteItem(let item):
-            updateState(with: deleting(item: item, from: state.allItems))
-
-            switch item {
-            case .contact(let contactItem):
-                Task {
-                    try await contactDeleter.delete(contactID: contactItem.id)
-                }
-            case .group(let contactGroupItem):
-                Task {
-                    try await contactGroupDeleter.delete(contactGroupID: contactGroupItem.id)
-                }
-            }
+            delete(item: item)
         case .onLoad:
-            Task {
-                let contacts = await repository.allContacts()
-                let updateStateWorkItem = DispatchWorkItem { [weak self] in
-                    self?.updateState(with: contacts)
-                }
-                Dispatcher.dispatchOnMain(updateStateWorkItem)
-            }
+            loadAllContacts()
         }
     }
 
     // MARK: - Private
 
-    private func updateState(with items: [GroupedContacts]) {
-        state = state.copy(\.allItems, to: items)
+    private func delete(item: ContactItemType) {
+        updateState(with: deleting(item: item, from: state.allItems))
+
+        switch item {
+        case .contact(let contactItem):
+            deleteContact(id: contactItem.id)
+        case .group(let contactGroupItem):
+            deleteContactGroup(id: contactGroupItem.id)
+        }
     }
 
     private func deleting(item: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
@@ -81,5 +71,31 @@ final class ContactsStateStore: ObservableObject {
             let filteredItems = contactGroup.item.filter { $0 != item }
             return filteredItems.isEmpty ? nil : contactGroup.copy(items: filteredItems)
         }
+    }
+
+    private func deleteContact(id: Id) {
+        Task {
+            try await contactDeleter.delete(contactID: id)
+        }
+    }
+
+    private func deleteContactGroup(id: Id) {
+        Task {
+            try await contactGroupDeleter.delete(contactGroupID: id)
+        }
+    }
+
+    private func loadAllContacts() {
+        Task {
+            let contacts = await repository.allContacts()
+            let updateStateWorkItem = DispatchWorkItem { [weak self] in
+                self?.updateState(with: contacts)
+            }
+            Dispatcher.dispatchOnMain(updateStateWorkItem)
+        }
+    }
+
+    private func updateState(with items: [GroupedContacts]) {
+        state = state.copy(\.allItems, to: items)
     }
 }
