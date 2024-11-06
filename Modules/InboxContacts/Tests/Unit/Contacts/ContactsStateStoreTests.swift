@@ -25,10 +25,12 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
     var stubbedContacts: [GroupedContacts]!
+    var deletedContactsSpy: [Id]!
 
     override func setUp() {
         super.setUp()
         stubbedContacts = []
+        deletedContactsSpy = []
 
         sut = makeSUT(search: .initial)
     }
@@ -155,7 +157,9 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
     }
 
-    func testDeleteActionForTwoItems_WhenSearchIsInactive_ItUpdatesStateCorrectly() {
+    // MARK: - onDeleteItem
+
+    func testOnDeleteItemActionForTwoItems_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -197,9 +201,10 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems))
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
+        XCTAssertEqual(deletedContactsSpy, [ContactItem.andrewAllen.id])
     }
 
-    func testDeleteActionForOneItem_WhenSearchIsActive_ItUpdatesStateCorrectly() {
+    func testOnDeleteItemActionForOneItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
         sut = makeSUT(search: .active(query: ""))
 
         let groupedItems: [GroupedContacts] = [
@@ -236,6 +241,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems))
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: expectedItems.flatMap(\.item))])
+        XCTAssertEqual(deletedContactsSpy, [ContactItem.vip.id])
     }
 
     // MARK: - Private
@@ -244,7 +250,8 @@ final class ContactsStateStoreTests: BaseTestCase {
         .init(
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),
-            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
+            contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
+            contactsDeleter: .init(delete: { id, _ in self.deletedContactsSpy.append(id) })
         )
     }
 

@@ -32,7 +32,12 @@ public struct ContactsScreen: View {
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
         _store = .init(
-            wrappedValue: .init(state: state, mailUserSession: mailUserSession, contactsProvider: contactsProvider)
+            wrappedValue: .init(
+                state: state,
+                mailUserSession: mailUserSession,
+                contactsProvider: contactsProvider,
+                contactsDeleter: .productionInstance()
+            )
         )
     }
 

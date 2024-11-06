@@ -32,7 +32,8 @@ final class ContactsStateStore: ObservableObject {
     init(
         state: ContactsScreenState,
         mailUserSession: MailUserSession,
-        contactsProvider: GroupedContactsProvider
+        contactsProvider: GroupedContactsProvider,
+        contactsDeleter: ContactDeleter
     ) {
         self.state = state
         self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsProvider)
