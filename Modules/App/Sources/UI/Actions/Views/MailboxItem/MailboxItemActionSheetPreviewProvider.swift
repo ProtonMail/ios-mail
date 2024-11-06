@@ -60,7 +60,8 @@ enum MailboxItemActionSheetPreviewProvider {
                 markConversationAsRead: { _, _ in },
                 markMessageAsUnread: { _, _ in },
                 markConversationAsUnread: { _, _ in }
-            ),
+            ), 
+            deleteActions: .dummy,
             mailUserSession: MailUserSession(noPointer: .init()),
             navigation: { _ in }
         )

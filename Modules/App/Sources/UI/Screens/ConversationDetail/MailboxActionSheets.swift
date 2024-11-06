@@ -55,6 +55,7 @@ private struct MailboxActionSheets: ViewModifier {
             actionsProvider: .productionInstance,
             starActionPerformerActions: .productionInstance,
             readActionPerformerActions: .productionInstance, 
+            deleteActions: .productionInstance,
             mailUserSession: AppContext.shared.userSession
         ) { navigation in
             switch navigation {

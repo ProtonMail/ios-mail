@@ -15,11 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-enum MailboxItemActionSheetAction {
-    case viewAppear
-    case mailboxItemActionSelected(MailboxItemAction_v2)
-    case moveTo(MoveToAction)
-    case alertActionTapped(DeleteConfirmationAlertAction)
+typealias DeleteActionClosure = (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
+
+struct DeleteActions {
+    let message: DeleteActionClosure
+    let conversation: DeleteActionClosure
+}
+
+extension DeleteActions {
+
+    static var productionInstance: Self {
+        .init(
+            message: deleteMessages,
+            conversation: deleteConversations
+        )
+    }
+
+    static var dummy: Self {
+        .init(
+            message: { _, _ in },
+            conversation: { _, _ in }
+        )
+    }
+
 }

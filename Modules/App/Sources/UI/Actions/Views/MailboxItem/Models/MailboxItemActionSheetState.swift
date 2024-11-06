@@ -15,9 +15,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxCore
+import SwiftUI
 
-struct MailboxItemActionSheetState: Equatable {
+protocol AlertActionViewModel: Hashable {
+    var title: String { get }
+    var buttonRole: ButtonRole { get }
+}
+
+struct AlertViewModel<Action: AlertActionViewModel>: Equatable {
     let title: String
-    let availableActions: AvailableActions
+    let message: String?
+    let actions: [Action]
+}
+
+enum DeleteConfirmationAlertAction: AlertActionViewModel {
+    case cancel
+    case delete
+
+    var title: String {
+        switch self {
+        case .cancel:
+            "Cancel"
+        case .delete:
+            "Delete"
+        }
+    }
+
+    var buttonRole: ButtonRole {
+        switch self {
+        case .cancel:
+            return .cancel
+        case .delete:
+            return .destructive
+        }
+    }
+}
+
+struct MailboxItemActionSheetState: Equatable, Copying {
+    let title: String
+    var availableActions: AvailableActions
+    var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
 }

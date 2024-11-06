@@ -43,8 +43,17 @@ struct MailboxItemActionSheet: View {
             .background(DS.Color.Background.secondary)
             .navigationTitle(model.state.title)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { model.handle(action: .viewAppear) }
-        }
+            .alert(model: $model.state.deleteConfirmationAlert) { action in
+                model.handle(action: .alertActionTapped(action))
+            }
+        }.onLoad { model.handle(action: .viewAppear) }
+    }
+
+    private var isDeleteConfirmationAlertPresented: Binding<Bool> {
+        .init(
+            get: { model.state.deleteConfirmationAlert != nil },
+            set: { _ in }
+        )
     }
 
     // MARK: - Private
@@ -115,4 +124,56 @@ struct MailboxItemActionSheet: View {
 
 #Preview {
     MailboxItemActionSheet(model: MailboxItemActionSheetPreviewProvider.testData())
+}
+
+extension View {
+    func alert<AlertAction: AlertActionViewModel>(
+        model: Binding<AlertViewModel<AlertAction>?>,
+        handleAction: @escaping (AlertAction) -> Void
+    ) -> some View {
+        modifier(AlertViewModifier(model: model, handleAction: handleAction))
+    }
+}
+
+struct AlertViewModifier<AlertAction: AlertActionViewModel>: ViewModifier {
+    @Binding private var model: AlertViewModel<AlertAction>?
+    private let handleAction: (AlertAction) -> Void
+
+    init(model: Binding<AlertViewModel<AlertAction>?>, handleAction: @escaping (AlertAction) -> Void) {
+        self._model = model
+        self.handleAction = handleAction
+    }
+
+    func body(content: Content) -> some View {
+        if let model {
+            content.alert(
+                model.title,
+                isPresented: isPresented,
+                presenting: model,
+                actions: { model in
+                    ForEach(model.actions, id: \.self) { action in
+                        Button(action.title, role: action.buttonRole) {
+                            handleAction(action)
+                        }
+                    }
+                },
+                message: { model in
+                    if let message = model.message {
+                        Text(message)
+                    }
+                }
+            )
+        } else {
+            content
+        }
+    }
+
+    // MARK: - Private
+
+    private var isPresented: Binding<Bool> {
+        .init(
+            get: { model != nil },
+            set: { _ in }
+        )
+    }
 }

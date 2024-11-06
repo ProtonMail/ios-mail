@@ -17,6 +17,22 @@
 
 @testable import ProtonMail
 
+class DeleteActionsSpy {
+
+    private(set) var deletedMessagesWithIDs: [ID] = []
+    private(set) var deletedConversationsWithIDs: [ID] = []
+
+    private(set) lazy var testingInstance = DeleteActions(
+        message: { _, ids in
+            self.deletedMessagesWithIDs = ids
+        },
+        conversation: { _, ids in
+            self.deletedConversationsWithIDs = ids
+        }
+    )
+
+}
+
 class ReadActionPerformerActionsSpy {
 
     private(set) var markMessageAsReadInvoked: [ID] = []

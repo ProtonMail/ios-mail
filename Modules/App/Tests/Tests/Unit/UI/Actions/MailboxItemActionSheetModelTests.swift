@@ -30,6 +30,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
+    var deleteActionsSpy: DeleteActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -40,6 +41,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         starActionPerformerActionsSpy = .init()
         readActionPerformerActionsSpy = .init()
+        deleteActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -53,6 +55,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         starActionPerformerActionsSpy = nil
         readActionPerformerActionsSpy = nil
+        deleteActionsSpy = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -186,6 +189,20 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         )
     }
 
+    func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
+        testDeletionFlow(
+            itemType: .conversation,
+            verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
+        )
+    }
+
+    func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
+        testDeletionFlow(
+            itemType: .message,
+            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
+        )
+    }
+
     // MARK: - Private
 
     private func test(action: MailboxItemAction_v2, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
@@ -193,6 +210,20 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(action))
+
+        XCTAssertEqual(verifyInvoked(), ids)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
+    }
+
+    private func testDeletionFlow(itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
+        let ids: [ID] = [.init(value: 55), .init(value: 5)]
+        let sut = sut(ids: ids, type: itemType, title: .notUsed)
+
+        sut.handle(action: .mailboxItemActionSelected(.delete))
+
+        XCTAssertNotNil(sut.state.deleteConfirmationAlert) // FIXME: - Update later
+
+        sut.handle(action: .alertActionTapped(.delete))
 
         XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
@@ -213,7 +244,8 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
                 }
             ), 
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance, 
-            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
+            deleteActions: deleteActionsSpy.testingInstance,
             mailUserSession: .dummy,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )

@@ -25,6 +25,7 @@ class MailboxItemActionSheetModel: ObservableObject {
     private let input: MailboxItemActionSheetInput
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
+    private let deleteActionPerformer: DeleteActionPerformer
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
@@ -33,6 +34,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         actionsProvider: ActionsProvider,
         starActionPerformerActions: StarActionPerformerActions,
         readActionPerformerActions: ReadActionPerformerActions,
+        deleteActions: DeleteActions,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -43,6 +45,7 @@ class MailboxItemActionSheetModel: ObservableObject {
             starActionPerformerActions: starActionPerformerActions
         )
         self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
+        self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.state = .initial(title: input.title)
         self.navigation = navigation
     }
@@ -63,6 +66,8 @@ class MailboxItemActionSheetModel: ObservableObject {
                 performAction(action: readActionPerformer.markAsRead, ids: input.ids, itemType: input.type)
             case .markUnread:
                 performAction(action: readActionPerformer.markAsUnread, ids: input.ids, itemType: input.type)
+            case .delete:
+                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation())
             default:
                 break // FIXME: - Handle rest of actions here
             }
@@ -72,6 +77,11 @@ class MailboxItemActionSheetModel: ObservableObject {
                 navigation(.moveTo)
             default:
                 break // FIXME: - Handle rest of actions here
+            }
+        case .alertActionTapped(let action):
+            state = state.copy(\.deleteConfirmationAlert, to: nil)
+            if case .delete = action {
+                performAction(action: deleteActionPerformer.delete, ids: input.ids, itemType: input.type)
             }
         }
     }
@@ -104,7 +114,7 @@ class MailboxItemActionSheetModel: ObservableObject {
     }
 
     private func update(actions: AvailableActions) {
-        state = state.copy(availableActions: actions)
+        state = state.copy(\.availableActions, to: actions)
     }
 }
 
@@ -120,8 +130,16 @@ private extension MailboxItemActionSheetState {
             )
         )
     }
+}
 
-    func copy(availableActions: AvailableActions) -> Self {
-        .init(title: title, availableActions: availableActions)
+private extension AlertViewModel {
+
+    static func deleteConfirmation() -> AlertViewModel<DeleteConfirmationAlertAction> {
+        .init(
+            title: "Delete?", // FIXME: - To localize
+            message: "Are you sure you want to delete these X messages", // FIXME: - To localize
+            actions: [.cancel, .delete]
+        )
     }
+
 }
