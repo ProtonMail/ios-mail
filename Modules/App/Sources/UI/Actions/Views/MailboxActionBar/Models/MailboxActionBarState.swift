@@ -23,6 +23,7 @@ struct MailboxActionBarState: Copying, Equatable {
     var moreActionSheetPresented: MailboxActionBarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
+    var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
 }
 
 extension MailboxActionBarState {
@@ -32,7 +33,8 @@ extension MailboxActionBarState {
             moreSheetOnlyActions: [],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
-            moveToSheetPresented: nil
+            moveToSheetPresented: nil,
+            deleteConfirmationAlert: nil
         )
     }
 }

@@ -23,4 +23,5 @@ enum MailboxActionBarAction {
     case moreSheetAction(BottomBarAction, ids: [ID])
     case dismissLabelAsSheet
     case dismissMoveToSheet
+    case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID])
 }

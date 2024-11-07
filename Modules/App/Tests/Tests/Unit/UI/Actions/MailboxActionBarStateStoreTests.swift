@@ -29,6 +29,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var stubbedAvailableConversationActions: AllBottomBarMessageActions!
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
+    var deleteActionsSpy: DeleteActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -37,6 +38,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         invokedAvailableConversationActionsWithIDs = []
         starActionPerformerActionsSpy = .init()
         readActionPerformerActionsSpy = .init()
+        deleteActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -46,6 +48,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         invokedAvailableConversationActionsWithIDs = nil
         starActionPerformerActionsSpy = nil
         readActionPerformerActionsSpy = nil
+        deleteActionsSpy = nil
 
         super.tearDown()
     }
@@ -193,6 +196,20 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(readActionPerformerActionsSpy.markConversationAsUnreadInvoked, ids)
     }
 
+    func testState_WhenDeleteActionIsApplied_ItDeletesMessage() { // FIXME: - Update test name
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+        sut = makeSUT(viewMode: .messages)
+
+        sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
+
+        XCTAssertNotNil(sut.state.deleteConfirmationAlert) // FIXME: - Update the test
+
+        sut.handle(action: .alertActionTapped(.delete, ids: ids))
+
+        XCTAssertNil(sut.state.deleteConfirmationAlert)
+        XCTAssertEqual(deleteActionsSpy.deletedMessagesWithIDs, ids)
+    }
+
     // MARK: - Private
 
     private func makeSUT(viewMode: ViewMode) -> MailboxActionBarStateStore {
@@ -211,7 +228,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                 }
             ),
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
+            deleteActions: deleteActionsSpy.testingInstance,
             mailUserSession: .dummy,
             mailbox: MailboxStub(viewMode: viewMode)
         )

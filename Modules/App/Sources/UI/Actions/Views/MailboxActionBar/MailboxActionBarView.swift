@@ -26,6 +26,7 @@ struct MailboxActionBarView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let state: MailboxActionBarState
     private let availableActions: AvailableMailboxActionBarActions
+    private let deleteActions: DeleteActions
     private let mailUserSession: MailUserSession
     private let starActionPerformerActions: StarActionPerformerActions
     private let readActionPerformerActions: ReadActionPerformerActions
@@ -35,12 +36,14 @@ struct MailboxActionBarView: View {
         availableActions: AvailableMailboxActionBarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
+        deleteActions: DeleteActions = .productionInstance,
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
         self.state = state
         self.availableActions = availableActions
+        self.deleteActions = deleteActions
         self.mailUserSession = mailUserSession
         self.starActionPerformerActions = starActionPerformerActions
         self.readActionPerformerActions = readActionPerformerActions
@@ -51,7 +54,8 @@ struct MailboxActionBarView: View {
             state: state,
             availableActions: availableActions,
             starActionPerformerActions: starActionPerformerActions, 
-            readActionPerformerActions: readActionPerformerActions,
+            readActionPerformerActions: readActionPerformerActions, 
+            deleteActions: deleteActions,
             mailUserSession: mailUserSession,
             mailbox: mailbox
         )) { state, store in
@@ -76,6 +80,9 @@ struct MailboxActionBarView: View {
                 MailboxActionBarMoreSheet(state: state) { action in
                     store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                 }
+            }
+            .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
+                store.handle(action: .alertActionTapped(action, ids: selectedItemsIDs))
             }
         }
     }
