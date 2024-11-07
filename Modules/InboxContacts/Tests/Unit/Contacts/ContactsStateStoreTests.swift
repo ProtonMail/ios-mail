@@ -25,6 +25,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
     var stubbedContacts: [GroupedContacts]!
+    var liveQueryCallbackWrapper: ContactsLiveQueryCallbackWrapper?
     fileprivate var deleterSpy: DeleterSpy!
 
     override func setUp() {
@@ -36,6 +37,7 @@ final class ContactsStateStoreTests: BaseTestCase {
     }
 
     override func tearDown() {
+        liveQueryCallbackWrapper = nil
         deleterSpy = nil
         stubbedContacts = nil
         sut = nil
@@ -281,6 +283,8 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(.contact(.vip)))
 
+        liveQueryCallbackWrapper?.onUpdate(items: groupedItems)
+
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
@@ -313,6 +317,8 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(.group(.advisorsGroup)))
 
+        liveQueryCallbackWrapper?.onUpdate(items: groupedItems)
+
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
@@ -339,7 +345,12 @@ final class ContactsStateStoreTests: BaseTestCase {
                 if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
                     throw error
                 }
-            })
+            }),
+            contactsLiveQueryFactory: {
+                let wrapper = ContactsLiveQueryCallbackWrapper()
+                self.liveQueryCallbackWrapper = wrapper
+                return wrapper
+            }
         )
     }
 

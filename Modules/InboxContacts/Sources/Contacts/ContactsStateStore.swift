@@ -30,18 +30,22 @@ final class ContactsStateStore: ObservableObject {
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactDeleterAdapter
     private let contactGroupDeleter: ContactGroupDeleterAdapter
+    private let contactsLiveQueryFactory: () -> ContactsLiveQueryCallbackWrapper
 
     init(
         state: ContactsScreenState,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider,
         contactsDeleter: ContactDeleter,
-        contactGroupDeleter: ContactGroupDeleter
+        contactGroupDeleter: ContactGroupDeleter,
+        contactsLiveQueryFactory: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
         self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsProvider)
         self.contactDeleter = .init(mailUserSession: mailUserSession, contactDeleter: contactsDeleter)
         self.contactGroupDeleter = .init(mailUserSession: mailUserSession, contactGroupDeleter: contactGroupDeleter)
+        self.contactsLiveQueryFactory = contactsLiveQueryFactory
+        setUpLiveQueryUpdates()
     }
 
     func handle(action: Action) {
@@ -75,39 +79,35 @@ final class ContactsStateStore: ObservableObject {
 
     private func deleteContact(id: Id) {
         Task {
-            do {
-                try await contactDeleter.delete(contactID: id)
-            } catch {
-                await refreshAllContacts()
-            }
+            try await contactDeleter.delete(contactID: id)
         }
     }
 
     private func deleteContactGroup(id: Id) {
         Task {
-            do {
-                try await contactGroupDeleter.delete(contactGroupID: id)
-            } catch {
-                await refreshAllContacts()
-            }
+            try await contactGroupDeleter.delete(contactGroupID: id)
         }
     }
 
     private func loadAllContacts() {
         Task {
-            await refreshAllContacts()
+            let contacts = await repository.allContacts()
+            let updateStateWorkItem = DispatchWorkItem { [weak self] in
+                self?.updateState(with: contacts)
+            }
+            Dispatcher.dispatchOnMain(updateStateWorkItem)
         }
-    }
-
-    private func refreshAllContacts() async {
-        let contacts = await repository.allContacts()
-        let updateStateWorkItem = DispatchWorkItem { [weak self] in
-            self?.updateState(with: contacts)
-        }
-        Dispatcher.dispatchOnMain(updateStateWorkItem)
     }
 
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
+    }
+
+    private func setUpLiveQueryUpdates() {
+        let liveQueryCallback = contactsLiveQueryFactory()
+
+        liveQueryCallback.delegate = { [weak self] updatedItems in
+            self?.updateState(with: updatedItems)
+        }
     }
 }
