@@ -257,7 +257,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
-    func testOnDeleteItemActionForOneItem_AndContactDeletionFails_ItRevertsStateToThePrevious() {
+    func testOnDeleteItemActionForOneItem_AndContactDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -291,7 +291,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
-    func testOnDeleteItemActionForOneItem_AndContactGroupDeletionFails_ItRevertsStateToThePrevious() {
+    func testOnDeleteItemActionForOneItem_AndContactGroupDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",

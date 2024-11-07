@@ -70,9 +70,9 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
-    private func deleting(item: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
+    private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
         items.compactMap { contactGroup in
-            let filteredItems = contactGroup.item.filter { $0 != item }
+            let filteredItems = contactGroup.item.filter { item in item != itemToDelete }
             return filteredItems.isEmpty ? nil : contactGroup.copy(items: filteredItems)
         }
     }
