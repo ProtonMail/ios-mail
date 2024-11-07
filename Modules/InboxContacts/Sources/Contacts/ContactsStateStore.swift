@@ -85,7 +85,11 @@ final class ContactsStateStore: ObservableObject {
 
     private func deleteContactGroup(id: Id) {
         Task {
-            try await contactGroupDeleter.delete(contactGroupID: id)
+            do {
+                try await contactGroupDeleter.delete(contactGroupID: id)
+            } catch {
+                await refreshAllContacts()
+            }
         }
     }
 
