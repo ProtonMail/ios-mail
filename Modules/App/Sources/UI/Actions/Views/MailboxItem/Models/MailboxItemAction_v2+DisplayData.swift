@@ -36,7 +36,7 @@ extension MailboxItemAction_v2 {
         case .markUnread:
             .init(title: L10n.Action.markAsUnread, image: DS.Icon.icEnvelopeOpen)
         case .delete:
-            .init(title: L10n.Action.deletePermanently, image: DS.Icon.icTrash)
+            .init(title: L10n.Action.deletePermanently, image: DS.Icon.icTrashCross)
         }
     }
 
