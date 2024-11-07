@@ -320,7 +320,6 @@
     },
     "search.dismiss" : {
       "comment" : "Search screen dismiss",
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
