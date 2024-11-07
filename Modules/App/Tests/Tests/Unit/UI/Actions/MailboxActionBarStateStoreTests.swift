@@ -196,13 +196,13 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(readActionPerformerActionsSpy.markConversationAsUnreadInvoked, ids)
     }
 
-    func testState_WhenDeleteActionIsApplied_ItDeletesMessage() { // FIXME: - Update test name
+    func testAction_WhenDeleteActionIsApplied_ItDeletesMessage() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         sut = makeSUT(viewMode: .messages)
 
         sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
 
-        XCTAssertNotNil(sut.state.deleteConfirmationAlert) // FIXME: - Update the test
+        XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count))
 
         sut.handle(action: .alertActionTapped(.delete, ids: ids))
 

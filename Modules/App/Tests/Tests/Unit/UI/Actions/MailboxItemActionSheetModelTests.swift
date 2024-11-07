@@ -221,7 +221,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .mailboxItemActionSelected(.delete))
 
-        XCTAssertNotNil(sut.state.deleteConfirmationAlert) // FIXME: - Update later
+        XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count))
 
         sut.handle(action: .alertActionTapped(.delete))
 

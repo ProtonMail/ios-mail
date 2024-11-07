@@ -153,6 +153,24 @@ enum L10n {
             "Also archive?",
             comment: "Title of switcher in the label as action sheet."
         )
+
+        enum Delete {
+            enum Alert {
+                static func title(itemsCount: Int) -> LocalizedStringResource {
+                    .init(
+                        "Delete \(itemsCount) messages",
+                        comment: "Title of alert action displayed after delete permanently action tap."
+                    )
+                }
+
+                static func message(itemsCount: Int) -> LocalizedStringResource {
+                    .init(
+                        "Are you sure you want to delete these \(itemsCount) messages permanently?",
+                        comment: "Title of alert action displayed after delete permanently action tap."
+                    )
+                }
+            }
+        }
     }
 
     enum Common {
@@ -317,7 +335,8 @@ enum L10n {
             comment: "Search textbox placeholder"
         )
         static let cancel = LocalizedStringResource(
-            "Cancel",
+            "search.dismiss",
+            defaultValue: "Cancel",
             comment: "Search screen dismiss"
         )
         static let noResultsTitle = LocalizedStringResource(

@@ -106,7 +106,7 @@ final class MailboxActionBarStateStore: StateStore {
             dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .permanentDelete:
-            state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation())
+            state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: ids.count))
         default:
             break // FIXME: - Handle rest of the actions here
         }

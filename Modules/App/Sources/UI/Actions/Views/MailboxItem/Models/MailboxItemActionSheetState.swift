@@ -24,8 +24,8 @@ protocol AlertActionViewModel: Hashable {
 }
 
 struct AlertViewModel<Action: AlertActionViewModel>: Equatable {
-    let title: String
-    let message: String?
+    let title: LocalizedStringResource
+    let message: LocalizedStringResource?
     let actions: [Action]
 }
 

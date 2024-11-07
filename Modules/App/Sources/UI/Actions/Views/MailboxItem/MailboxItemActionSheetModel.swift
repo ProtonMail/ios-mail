@@ -67,7 +67,7 @@ class MailboxItemActionSheetModel: ObservableObject {
             case .markUnread:
                 performAction(action: readActionPerformer.markAsUnread, ids: input.ids, itemType: input.type)
             case .delete:
-                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation())
+                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
             default:
                 break // FIXME: - Handle rest of actions here
             }
@@ -134,10 +134,10 @@ private extension MailboxItemActionSheetState {
 
 extension AlertViewModel {
 
-    static func deleteConfirmation() -> AlertViewModel<DeleteConfirmationAlertAction> {
+    static func deleteConfirmation(itemsCount: Int) -> AlertViewModel<DeleteConfirmationAlertAction> {
         .init(
-            title: "Delete?", // FIXME: - To localize
-            message: "Are you sure you want to delete these X messages", // FIXME: - To localize
+            title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
+            message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
             actions: [.cancel, .delete]
         )
     }

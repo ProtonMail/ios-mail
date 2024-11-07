@@ -38,7 +38,7 @@ struct AlertViewModifier<AlertAction: AlertActionViewModel>: ViewModifier {
     func body(content: Content) -> some View {
         if let model {
             content.alert(
-                model.title,
+                model.title.string,
                 isPresented: isPresented,
                 presenting: model,
                 actions: { model in

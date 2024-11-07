@@ -57,6 +57,29 @@
     "Archive" : {
       "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet."
     },
+    "Are you sure you want to delete these %lld messages permanently?" : {
+      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Are you sure you want to delete this message permanently?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Are you sure you want to delete these %lld messages permanently?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Automatic actions and sorting" : {
       "comment" : "Subtitle of the Filters settings item."
     },
@@ -110,6 +133,29 @@
     },
     "Delete" : {
       "comment" : "`Delete` action title."
+    },
+    "Delete %lld messages" : {
+      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete message"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Delete %lld messages"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Delete permanently" : {
       "comment" : "Action title for permanent deletion of message/conversation in the action sheet."
@@ -271,6 +317,18 @@
     },
     "Search" : {
       "comment" : "Search textbox placeholder"
+    },
+    "search.dismiss" : {
+      "comment" : "Search screen dismiss",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar."

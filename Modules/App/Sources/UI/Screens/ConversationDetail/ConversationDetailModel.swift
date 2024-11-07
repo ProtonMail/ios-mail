@@ -123,7 +123,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .markUnread:
             markConversationAsUnread()
         case .permanentDelete:
-            deleteConfirmationAlert = .deleteConfirmation()
+            deleteConfirmationAlert = .deleteConfirmation(itemsCount: 1)
         default:
             break
         }
