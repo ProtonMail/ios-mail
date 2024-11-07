@@ -22,7 +22,7 @@ extension AllBottomBarMessageActions {
     static var testData: Self {
         .init(
             hiddenBottomBarActions: [
-                .notSpam,
+                .notSpam(.init(localId: .random(), name: .inbox)),
                 .permanentDelete,
                 .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
             ],

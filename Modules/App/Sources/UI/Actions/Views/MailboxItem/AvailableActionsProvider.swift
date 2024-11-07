@@ -76,10 +76,22 @@ private extension MoveItemAction {
     var moveToAction: MoveToAction {
         switch self {
         case .moveToSystemFolder(let systemFolder):
-            return .system(.init(localId: systemFolder.localId, systemLabel: systemFolder.name.moveToSystemFolderLabel))
+            return .system(systemFolder.moveToSystemFolderLocation)
         case .moveTo:
             return .moveTo
+        case .notSpam(let systemFolder):
+            return .notSpam(systemFolder.moveToSystemFolderLocation)
+        case .permanentDelete:
+            return .permanentDelete
         }
+    }
+
+}
+
+private extension MovableSystemFolderAction {
+
+    var moveToSystemFolderLocation: MoveToSystemFolderLocation {
+        .init(localId: localId, systemLabel: name.moveToSystemFolderLabel)
     }
 
 }

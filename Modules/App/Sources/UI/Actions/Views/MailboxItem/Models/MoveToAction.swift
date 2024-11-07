@@ -18,6 +18,8 @@
 import Foundation
 
 enum MoveToAction: Equatable {
+    case notSpam(MoveToSystemFolderLocation)
     case system(MoveToSystemFolderLocation)
     case moveTo
+    case permanentDelete
 }

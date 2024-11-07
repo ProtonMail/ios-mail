@@ -34,6 +34,10 @@ extension MoveToAction {
             }
         case .moveTo:
             .init(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn)
+        case .notSpam:
+            .init(title: L10n.Action.notSpam, image: DS.Icon.icNotSpam)
+        case .permanentDelete:
+            .init(title: L10n.Action.deletePermanently, image: DS.Icon.icTrashCross)
         }
     }
 

@@ -54,7 +54,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         sut = makeSUT(viewMode: .messages)
         stubbedAvailableMessageActions = .init(
             hiddenBottomBarActions: [.labelAs, .markRead],
-            visibleBottomBarActions: [.notSpam]
+            visibleBottomBarActions: [.notSpam(.init(localId: .init(value: 1), name: .inbox))]
         )
 
         let ids: [ID] = [.init(value: 11)]
@@ -73,7 +73,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .conversations)
         stubbedAvailableConversationActions = .init(
-            hiddenBottomBarActions: [.notSpam, .permanentDelete],
+            hiddenBottomBarActions: [.notSpam(.init(localId: .init(value: 1), name: .inbox)), .permanentDelete],
             visibleBottomBarActions: [.more]
         )
         let ids: [ID] = [.init(value: 22)]
