@@ -86,27 +86,24 @@ final class MailboxActionBarStateStore: StateStore {
                 moreSheetOnlyActions: state.moreSheetOnlyActions
             )
             state = state
-                .copy(\.moreActionSheetPresented, to: nil)
                 .copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
-            state = state
-                .copy(\.moreActionSheetPresented, to: nil)
-                .copy(\.labelAsSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
+            dismissMoreActionSheet()
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
         case .moveTo:
-            state = state
-                .copy(\.moreActionSheetPresented, to: nil)
-                .copy(\.moveToSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
+            dismissMoreActionSheet()
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
         case .star:
-            state = state.copy(\.moreActionSheetPresented, to: nil)
+            dismissMoreActionSheet()
             starActionPerformer.star(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .unstar:
-            state = state.copy(\.moreActionSheetPresented, to: nil)
+            dismissMoreActionSheet()
             starActionPerformer.unstar(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .markRead:
-            state = state.copy(\.moreActionSheetPresented, to: nil)
+            dismissMoreActionSheet()
             readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .markUnread:
-            state = state.copy(\.moreActionSheetPresented, to: nil)
+            dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: mailbox.itemType)
         case .permanentDelete:
             state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation())
@@ -129,6 +126,10 @@ final class MailboxActionBarStateStore: StateStore {
         state = state
             .copy(\.bottomBarActions, to: actions.visibleBottomBarActions.compactMap(\.action))
             .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
+    }
+
+    private func dismissMoreActionSheet() {
+        state = state.copy(\.moreActionSheetPresented, to: nil)
     }
 }
 

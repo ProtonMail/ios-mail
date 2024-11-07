@@ -157,6 +157,8 @@ enum L10n {
 
     enum Common {
         static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
+        static let cancel = LocalizedStringResource("Cancel", comment: "`Cancel` action title.")
+        static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
     }
 
     enum Labels {

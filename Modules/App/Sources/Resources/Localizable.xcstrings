@@ -73,7 +73,7 @@
       "comment" : "Action title for calling phone number in the address action sheet."
     },
     "Cancel" : {
-      "comment" : "Search screen dismiss"
+      "comment" : "`Cancel` action title."
     },
     "Cc" : {
       "comment" : "`CC` in the messsage details."
@@ -107,6 +107,9 @@
     },
     "Date" : {
       "comment" : "`Date` in the message details."
+    },
+    "Delete" : {
+      "comment" : "`Delete` action title."
     },
     "Delete permanently" : {
       "comment" : "Action title for permanent deletion of message/conversation in the action sheet."
