@@ -75,7 +75,11 @@ final class ContactsStateStore: ObservableObject {
 
     private func deleteContact(id: Id) {
         Task {
-            try await contactDeleter.delete(contactID: id)
+            do {
+                try await contactDeleter.delete(contactID: id)
+            } catch {
+                await refreshAllContacts()
+            }
         }
     }
 
@@ -87,12 +91,16 @@ final class ContactsStateStore: ObservableObject {
 
     private func loadAllContacts() {
         Task {
-            let contacts = await repository.allContacts()
-            let updateStateWorkItem = DispatchWorkItem { [weak self] in
-                self?.updateState(with: contacts)
-            }
-            Dispatcher.dispatchOnMain(updateStateWorkItem)
+            await refreshAllContacts()
         }
+    }
+
+    private func refreshAllContacts() async {
+        let contacts = await repository.allContacts()
+        let updateStateWorkItem = DispatchWorkItem { [weak self] in
+            self?.updateState(with: contacts)
+        }
+        Dispatcher.dispatchOnMain(updateStateWorkItem)
     }
 
     private func updateState(with items: [GroupedContacts]) {
