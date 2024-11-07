@@ -205,7 +205,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func test(action: MailboxItemAction_v2, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
+    private func test(action: MailboxItemAction, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 

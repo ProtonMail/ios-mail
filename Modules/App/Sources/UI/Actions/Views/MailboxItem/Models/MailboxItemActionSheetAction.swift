@@ -19,7 +19,7 @@ import Foundation
 
 enum MailboxItemActionSheetAction {
     case viewAppear
-    case mailboxItemActionSelected(MailboxItemAction_v2)
+    case mailboxItemActionSelected(MailboxItemAction)
     case moveTo(MoveToAction)
     case alertActionTapped(DeleteConfirmationAlertAction)
 }

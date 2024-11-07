@@ -17,8 +17,7 @@
 
 import Foundation
 
-// FIXME: - Rename to "MailboxItemAction"
-enum MailboxItemAction_v2: Equatable {
+enum MailboxItemAction: Equatable {
     case star
     case unstar
     case pin

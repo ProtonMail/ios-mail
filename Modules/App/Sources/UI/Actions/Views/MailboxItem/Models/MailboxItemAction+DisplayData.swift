@@ -17,7 +17,7 @@
 
 import InboxDesignSystem
 
-extension MailboxItemAction_v2 {
+extension MailboxItemAction {
 
     var displayData: ActionDisplayData {
         switch self {
