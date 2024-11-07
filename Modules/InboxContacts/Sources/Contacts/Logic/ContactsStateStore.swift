@@ -35,15 +35,16 @@ final class ContactsStateStore: ObservableObject {
     init(
         state: ContactsScreenState,
         mailUserSession: MailUserSession,
-        contactsProvider: GroupedContactsProvider,
-        contactsDeleter: ContactDeleter,
-        contactGroupDeleter: ContactGroupDeleter,
+        contactsWrappers: RustContactsWrappers,
         contactsLiveQueryFactory: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
-        self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsProvider)
-        self.contactDeleter = .init(mailUserSession: mailUserSession, contactDeleter: contactsDeleter)
-        self.contactGroupDeleter = .init(mailUserSession: mailUserSession, contactGroupDeleter: contactGroupDeleter)
+        self.repository = .init(mailUserSession: mailUserSession, contactsProvider: contactsWrappers.contactsProvider)
+        self.contactDeleter = .init(mailUserSession: mailUserSession, contactDeleter: contactsWrappers.contactDeleter)
+        self.contactGroupDeleter = .init(
+            mailUserSession: mailUserSession,
+            contactGroupDeleter: contactsWrappers.contactGroupDeleter
+        )
         self.contactsLiveQueryFactory = contactsLiveQueryFactory
         setUpLiveQueryUpdates()
     }

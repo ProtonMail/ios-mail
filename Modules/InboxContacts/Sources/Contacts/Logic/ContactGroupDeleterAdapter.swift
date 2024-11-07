@@ -30,15 +30,3 @@ struct ContactGroupDeleterAdapter {
         try await contactGroupDeleter.delete(contactGroupID, mailUserSession)
     }
 }
-
-struct ContactGroupDeleter {
-    let delete: (_ contactGroupID: Id, _ session: MailUserSession) async throws -> Void
-}
-
-extension ContactGroupDeleter {
-
-    static func productionInstance() -> Self {
-        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
-    }
-
-}

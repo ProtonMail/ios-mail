@@ -17,14 +17,44 @@
 
 import proton_app_uniffi
 
+struct RustContactsWrappers {
+    let contactsProvider: GroupedContactsProvider
+    let contactDeleter: ContactDeleter
+    let contactGroupDeleter: ContactGroupDeleter
+}
+
 public struct GroupedContactsProvider {
     public let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+}
+
+struct ContactDeleter {
+    let delete: (_ contactID: Id, _ session: MailUserSession) async throws -> Void
+}
+
+struct ContactGroupDeleter {
+    let delete: (_ contactGroupID: Id, _ session: MailUserSession) async throws -> Void
 }
 
 extension GroupedContactsProvider {
 
     public static func productionInstance() -> Self {
         .init(allContacts: contactList(session:))
+    }
+
+}
+
+extension ContactDeleter {
+
+    static func productionInstance() -> Self {
+        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
+    }
+
+}
+
+extension ContactGroupDeleter {
+
+    static func productionInstance() -> Self {
+        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
     }
 
 }

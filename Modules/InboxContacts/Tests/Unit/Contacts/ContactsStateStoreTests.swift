@@ -331,21 +331,23 @@ final class ContactsStateStoreTests: BaseTestCase {
         .init(
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),
-            contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
-            contactsDeleter: .init(delete: { id, _ in
-                self.deleterSpy.deleteContactCalls.append(id)
+            contactsWrappers: .init(
+                contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
+                contactDeleter: .init(delete: { id, _ in
+                    self.deleterSpy.deleteContactCalls.append(id)
 
-                if let error = self.deleterSpy.stubbedDeleteContactsErrors[id] {
-                    throw error
-                }
-            }),
-            contactGroupDeleter: .init(delete: { id, _ in
-                self.deleterSpy.deleteContactGroupCalls.append(id)
+                    if let error = self.deleterSpy.stubbedDeleteContactsErrors[id] {
+                        throw error
+                    }
+                }),
+                contactGroupDeleter: .init(delete: { id, _ in
+                    self.deleterSpy.deleteContactGroupCalls.append(id)
 
-                if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
-                    throw error
-                }
-            }),
+                    if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
+                        throw error
+                    }
+                })
+            ),
             contactsLiveQueryFactory: {
                 let wrapper = ContactsLiveQueryCallbackWrapper()
                 self.liveQueryCallbackWrapper = wrapper
