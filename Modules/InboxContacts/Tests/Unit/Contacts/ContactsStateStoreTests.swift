@@ -255,6 +255,38 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
+    func testOnDeleteItemActionForOneItem_AndContactDeletionFails_ItRevertsStateToThePrevious() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        deleterSpy.stubbedDeleteContactsErrors = [
+            ContactItem.vip.id: NSError(domain: "Network error", code: 1_911)
+        ]
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onDeleteItem(.contact(.vip)))
+
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
+        XCTAssertEqual(sut.state.displayItems, groupedItems)
+        XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
+        XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
+    }
+
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {
