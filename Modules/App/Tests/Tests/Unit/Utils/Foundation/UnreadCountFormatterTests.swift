@@ -33,6 +33,25 @@ final class UnreadCountFormatterTests: XCTestCase {
 
     func testString_ForGivenCountAndMaxCount_HasCorrectValue() {
         let testCases: [TestCase] = [
+            .init(given: .init(count: 0, maxCount: 1), expected: "0"),
+            .init(given: .init(count: 101, maxCount: 999), expected: "101"),
+            .init(given: .init(count: 0, maxCount: 0), expected: "0"),
+            .init(given: .init(count: 99, maxCount: 99), expected: "99"),
+            .init(given: .init(count: 1, maxCount: 0), expected: "0+"),
+            .init(given: .init(count: 1_000, maxCount: 999), expected: "999+"),
+        ]
+        
+        testCases.forEach { testCase in
+            let formattedCount = UnreadCountFormatter.string(
+                count: testCase.given.count,
+                maxCount: testCase.given.maxCount
+            )
+            XCTAssertEqual(formattedCount, testCase.expected!)
+        }
+    }
+
+    func testStringIfGreaterThan0_ForGivenCountAndMaxCount_HasCorrectValue() {
+        let testCases: [TestCase] = [
             .init(given: .init(count: 0, maxCount: 1), expected: nil),
             .init(given: .init(count: 101, maxCount: 999), expected: "101"),
             .init(given: .init(count: 0, maxCount: 0), expected: nil),
@@ -42,7 +61,7 @@ final class UnreadCountFormatterTests: XCTestCase {
         ]
 
         testCases.forEach { testCase in
-            let formattedCount = UnreadCountFormatter.string(
+            let formattedCount = UnreadCountFormatter.stringIfGreaterThan0(
                 count: testCase.given.count,
                 maxCount: testCase.given.maxCount
             )
