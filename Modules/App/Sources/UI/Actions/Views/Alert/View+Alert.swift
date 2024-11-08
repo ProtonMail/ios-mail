@@ -62,9 +62,8 @@ struct AlertViewModifier<AlertAction: AlertActionViewModel>: ViewModifier {
     // MARK: - Private
 
     private var isPresented: Binding<Bool> {
-        .init(
-            get: { model != nil },
-            set: { _ in }
-        )
+        .readonly {
+            model != nil
+        }
     }
 }
