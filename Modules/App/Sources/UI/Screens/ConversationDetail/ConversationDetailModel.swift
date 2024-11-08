@@ -259,7 +259,7 @@ extension ConversationDetailModel {
     private func readLiveQueryValues() async -> [MessageCellUIModel] {
         do {
             guard let mailbox, let messagesLiveQuery else {
-                let msg = "no mailbox object or message live query"
+                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or message live query"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return []
             }

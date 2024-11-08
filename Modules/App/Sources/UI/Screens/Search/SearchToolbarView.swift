@@ -76,6 +76,7 @@ struct SearchToolbarView: View {
     private var searchTextField: some View {
         HStack(spacing: 0) {
             Image(DS.Icon.icMagnifier)
+                .resizable()
                 .square(size: Layout.iconSquareSize)
                 .foregroundStyle(DS.Color.Icon.hint)
                 .padding(.leading, DS.Spacing.moderatelyLarge)
@@ -84,6 +85,7 @@ struct SearchToolbarView: View {
                 .font(.body)
                 .padding(.leading, DS.Spacing.standard)
                 .frame(maxHeight: Layout.searchBarHeight)
+                .textInputAutocapitalization(.never)
                 .focused($isFocused)
                 .submitLabel(.search)
                 .onSubmitWrapper(query: $textFieldState.searchText) { query in
@@ -95,10 +97,12 @@ struct SearchToolbarView: View {
                     textFieldState.searchText = ""
                 } label: {
                     Image(DS.Icon.icCrossCircleFilled)
+                        .resizable()
                         .square(size: Layout.iconSquareSize)
                         .foregroundStyle(DS.Color.Icon.hint)
                 }
-                .padding(.trailing, DS.Spacing.mediumLight)
+                .padding(.trailing, DS.Spacing.mediumLight - Layout.searchBarCornerRadius/2)
+                .frame(height: Layout.buttonHeight)
             }
         }
         .background(DS.Color.Background.deep)
@@ -124,5 +128,8 @@ private extension SearchToolbarView {
             searchBarHeight / 2
         }
         static let iconSquareSize: CGFloat = 20
+        static var buttonHeight: CGFloat {
+            searchBarHeight - 4.0
+        }
     }
 }
