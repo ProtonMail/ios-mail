@@ -24,13 +24,13 @@ extension MoveToAction {
         case .system(let systemFolder):
             switch systemFolder.systemLabel {
             case .inbox:
-                .init(title: L10n.Mailbox.SystemFolder.inbox, image: DS.Icon.icInbox)
+                .init(title: L10n.Action.moveToInbox, image: DS.Icon.icInbox)
             case .archive:
                 .init(title: L10n.Mailbox.SystemFolder.archive, image: DS.Icon.icArchiveBox)
             case .spam:
-                .init(title: L10n.Mailbox.SystemFolder.spam, image: DS.Icon.icFire)
+                .init(title: L10n.Action.moveToSpam, image: DS.Icon.icFire)
             case .trash:
-                .init(title: L10n.Mailbox.SystemFolder.trash, image: DS.Icon.icTrash)
+                .init(title: L10n.Action.moveToTrash, image: DS.Icon.icTrash)
             }
         case .moveTo:
             .init(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn)
