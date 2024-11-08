@@ -31,6 +31,7 @@ final class ContactsStateStore: ObservableObject {
     private let contactDeleter: ContactDeleterAdapter
     private let contactGroupDeleter: ContactGroupDeleterAdapter
     private let contactsLiveQueryFactory: () -> ContactsLiveQueryCallbackWrapper
+    private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
 
     init(
         state: ContactsScreenState,
@@ -43,6 +44,7 @@ final class ContactsStateStore: ObservableObject {
         self.contactDeleter = .init(mailUserSession: session, contactDeleter: wrappers.contactDeleter)
         self.contactGroupDeleter = .init(mailUserSession: session, contactGroupDeleter: wrappers.contactGroupDeleter)
         self.contactsLiveQueryFactory = contactsLiveQueryFactory
+        self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
         setUpLiveQueryUpdates()
     }
 
@@ -103,9 +105,12 @@ final class ContactsStateStore: ObservableObject {
 
     private func setUpLiveQueryUpdates() {
         let liveQueryCallback = contactsLiveQueryFactory()
-
         liveQueryCallback.delegate = { [weak self] updatedItems in
             self?.updateState(with: updatedItems)
+        }
+
+        Task {
+            try await watchContacts(liveQueryCallback)
         }
     }
 }

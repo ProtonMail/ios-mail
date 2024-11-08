@@ -21,10 +21,18 @@ struct RustContactsWrappers {
     let contactsProvider: GroupedContactsProvider
     let contactDeleter: ContactDeleter
     let contactGroupDeleter: ContactGroupDeleter
+    let contactsWatcher: ContactsWatcher
 }
 
 public struct GroupedContactsProvider {
     public let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+}
+
+public struct ContactsWatcher {
+    public let watch: (
+        _ session: MailUserSession,
+        _ callback: ContactsLiveQueryCallback
+    ) async throws -> WatchedContactList
 }
 
 struct ContactDeleter {
@@ -55,6 +63,14 @@ extension ContactGroupDeleter {
 
     static func productionInstance() -> Self {
         .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
+    }
+
+}
+
+extension ContactsWatcher {
+
+    public static func productionInstance() -> Self {
+        .init(watch: watchContactList(session:callback:))
     }
 
 }

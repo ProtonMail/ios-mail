@@ -17,14 +17,10 @@
 
 import proton_app_uniffi
 
-final class ContactsLiveQueryCallbackWrapper: ContactsLiveQueryCallback {
+extension ContactsWatcher {
 
-    var delegate: (([GroupedContacts]) -> Void)?
-
-    // MARK: - RustContactsLiveQueryCallback
-
-    func onUpdate(contacts: [GroupedContacts]) {
-        delegate?(contacts)
+    static func previewInstance() -> Self {
+        .init(watch: { _, _ in .init(contactList: [], handle: .init(noPointer: .init())) })
     }
 
 }

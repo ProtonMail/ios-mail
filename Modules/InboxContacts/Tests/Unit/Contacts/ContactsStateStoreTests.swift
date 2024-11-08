@@ -25,6 +25,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     var sut: ContactsStateStore!
     var stubbedContacts: [GroupedContacts]!
+    var watchContactsCallback: ContactsLiveQueryCallback?
     var liveQueryCallbackWrapper: ContactsLiveQueryCallbackWrapper?
     fileprivate var deleterSpy: DeleterSpy!
 
@@ -37,8 +38,9 @@ final class ContactsStateStoreTests: BaseTestCase {
     }
 
     override func tearDown() {
-        liveQueryCallbackWrapper = nil
         deleterSpy = nil
+        liveQueryCallbackWrapper = nil
+        watchContactsCallback = nil
         stubbedContacts = nil
         sut = nil
         super.tearDown()
@@ -52,6 +54,12 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, expectedState)
         XCTAssertEqual(sut.state.displayItems, expectedState.allItems)
+    }
+
+    func testInit_ItStartsWatchingContacts() throws {
+        let callbackWrapper = try XCTUnwrap(liveQueryCallbackWrapper)
+
+        XCTAssertIdentical(callbackWrapper, watchContactsCallback)
     }
 
     // MARK: - `onLoad` action
@@ -283,7 +291,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(.contact(.vip)))
 
-        liveQueryCallbackWrapper?.onUpdate(items: groupedItems)
+        liveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
@@ -317,7 +325,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(.group(.advisorsGroup)))
 
-        liveQueryCallbackWrapper?.onUpdate(items: groupedItems)
+        liveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
@@ -346,6 +354,10 @@ final class ContactsStateStoreTests: BaseTestCase {
                     if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
                         throw error
                     }
+                }),
+                contactsWatcher: .init(watch: { _, callback in
+                    self.watchContactsCallback = callback
+                    return WatchedContactList(contactList: [], handle: .init(noPointer: .init()))
                 })
             ),
             contactsLiveQueryFactory: {

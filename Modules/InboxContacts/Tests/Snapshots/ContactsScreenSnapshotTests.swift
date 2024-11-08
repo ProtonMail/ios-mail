@@ -60,7 +60,8 @@ final class ContactsScreenSnapshotTests: XCTestCase {
         ContactsScreen(
             state: .init(search: search, allItems: items),
             mailUserSession: .testInstance(),
-            contactsProvider: .previewInstance()
+            contactsProvider: .previewInstance(),
+            contactsWatcher: .previewInstance()
         )
     }
 
