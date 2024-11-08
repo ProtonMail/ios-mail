@@ -348,20 +348,20 @@ final class ContactsStateStoreTests: BaseTestCase {
             mailUserSession: .testInstance(),
             contactsWrappers: .init(
                 contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
-                contactDeleter: .init(delete: { id, _ in
+                contactDeleter: { id, _ in
                     self.deleterSpy.deleteContactCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactsErrors[id] {
                         throw error
                     }
-                }),
-                contactGroupDeleter: .init(delete: { id, _ in
+                },
+                contactGroupDeleter: { id, _ in
                     self.deleterSpy.deleteContactGroupCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
                         throw error
                     }
-                }),
+                },
                 contactsWatcher: .init(watch: { _, callback in
                     self.watchContactsCallback = callback
                     return WatchedContactList(contactList: [], handle: .init(noPointer: .init()))

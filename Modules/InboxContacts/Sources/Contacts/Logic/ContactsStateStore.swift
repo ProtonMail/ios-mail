@@ -28,8 +28,8 @@ final class ContactsStateStore: ObservableObject {
     @Published var state: ContactsScreenState
 
     private let repository: GroupedContactsRepository
-    private let contactDeleter: ContactDeleterAdapter
-    private let contactGroupDeleter: ContactGroupDeleterAdapter
+    private let contactDeleter: ContactItemDeleterAdapter
+    private let contactGroupDeleter: ContactItemDeleterAdapter
     private let contactsLiveQueryFactory: () -> ContactsLiveQueryCallbackWrapper
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
 
@@ -41,8 +41,8 @@ final class ContactsStateStore: ObservableObject {
     ) {
         self.state = state
         self.repository = .init(mailUserSession: session, contactsProvider: wrappers.contactsProvider)
-        self.contactDeleter = .init(mailUserSession: session, contactDeleter: wrappers.contactDeleter)
-        self.contactGroupDeleter = .init(mailUserSession: session, contactGroupDeleter: wrappers.contactGroupDeleter)
+        self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
+        self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
         self.contactsLiveQueryFactory = contactsLiveQueryFactory
         self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
     }
@@ -79,13 +79,13 @@ final class ContactsStateStore: ObservableObject {
 
     private func deleteContact(id: Id) {
         Task {
-            try await contactDeleter.delete(contactID: id)
+            try await contactDeleter.delete(itemID: id)
         }
     }
 
     private func deleteContactGroup(id: Id) {
         Task {
-            try await contactGroupDeleter.delete(contactGroupID: id)
+            try await contactGroupDeleter.delete(itemID: id)
         }
     }
 

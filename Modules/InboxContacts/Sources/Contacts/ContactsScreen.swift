@@ -36,10 +36,8 @@ public struct ContactsScreen: View {
             wrappedValue: .init(
                 state: state,
                 mailUserSession: mailUserSession,
-                contactsWrappers: .init(
+                contactsWrappers: .productionInstance(
                     contactsProvider: contactsProvider,
-                    contactDeleter: .productionInstance(),
-                    contactGroupDeleter: .productionInstance(),
                     contactsWatcher: contactsWatcher
                 )
             )
