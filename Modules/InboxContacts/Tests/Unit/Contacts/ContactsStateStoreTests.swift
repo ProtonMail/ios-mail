@@ -206,8 +206,8 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
-        sut.handle(action: .onDeleteItem(.group(.advisorsGroup)))
-        sut.handle(action: .onDeleteItem(.contact(.andrewAllen)))
+        let updatedItems = simulateSuccessfulOnDeleteItemAction(.group(.advisorsGroup), from: groupedItems)
+        simulateSuccessfulOnDeleteItemAction(.contact(.andrewAllen), from: updatedItems)
 
         let expectedItems: [GroupedContacts] = [
             .init(
@@ -253,7 +253,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
-        sut.handle(action: .onDeleteItem(.contact(.vip)))
+        simulateSuccessfulOnDeleteItemAction(.contact(.vip), from: groupedItems)
 
         let expectedItems: [GroupedContacts] = [
             .init(
@@ -373,6 +373,27 @@ final class ContactsStateStoreTests: BaseTestCase {
                 return wrapper
             }
         )
+    }
+
+    @discardableResult
+    private func simulateSuccessfulOnDeleteItemAction(
+        _ item: ContactItemType,
+        from groupedContacts: [GroupedContacts]
+    ) -> [GroupedContacts] {
+        sut.handle(action: .onDeleteItem(item))
+
+        let itemsWithoutDeleteItems = deleting(item: item, from: groupedContacts)
+
+        liveQueryCallbackWrapperSpy?.onUpdate(contacts: itemsWithoutDeleteItems)
+
+        return itemsWithoutDeleteItems
+    }
+
+    private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
+        items.compactMap { groupedContacts in
+            let filteredItems = groupedContacts.item.filter { item in item != itemToDelete }
+            return filteredItems.isEmpty ? nil : groupedContacts.copy(items: filteredItems)
+        }
     }
 
 }

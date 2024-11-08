@@ -60,20 +60,11 @@ final class ContactsStateStore: ObservableObject {
     // MARK: - Private
 
     private func delete(item: ContactItemType) {
-        updateState(with: deleting(item: item, from: state.allItems))
-
         switch item {
         case .contact(let contactItem):
             deleteContact(id: contactItem.id)
         case .group(let contactGroupItem):
             deleteContactGroup(id: contactGroupItem.id)
-        }
-    }
-
-    private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
-        items.compactMap { groupedContacts in
-            let filteredItems = groupedContacts.item.filter { item in item != itemToDelete }
-            return filteredItems.isEmpty ? nil : groupedContacts.copy(items: filteredItems)
         }
     }
 
