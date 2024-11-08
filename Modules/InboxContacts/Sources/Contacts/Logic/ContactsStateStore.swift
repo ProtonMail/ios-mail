@@ -71,9 +71,9 @@ final class ContactsStateStore: ObservableObject {
     }
 
     private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
-        items.compactMap { contactGroup in
-            let filteredItems = contactGroup.item.filter { item in item != itemToDelete }
-            return filteredItems.isEmpty ? nil : contactGroup.copy(items: filteredItems)
+        items.compactMap { groupedContacts in
+            let filteredItems = groupedContacts.item.filter { item in item != itemToDelete }
+            return filteredItems.isEmpty ? nil : groupedContacts.copy(items: filteredItems)
         }
     }
 
@@ -89,6 +89,17 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
+    private func startWatchingUpdates() {
+        let liveQueryCallback = contactsLiveQueryFactory()
+        liveQueryCallback.delegate = { [weak self] updatedItems in
+            self?.updateState(with: updatedItems)
+        }
+
+        Task {
+            try await watchContacts(liveQueryCallback)
+        }
+    }
+
     private func loadAllContacts() {
         Task {
             let contacts = await repository.allContacts()
@@ -101,16 +112,5 @@ final class ContactsStateStore: ObservableObject {
 
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
-    }
-
-    private func startWatchingUpdates() {
-        let liveQueryCallback = contactsLiveQueryFactory()
-        liveQueryCallback.delegate = { [weak self] updatedItems in
-            self?.updateState(with: updatedItems)
-        }
-
-        Task {
-            try await watchContacts(liveQueryCallback)
-        }
     }
 }
