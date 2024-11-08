@@ -54,7 +54,7 @@ extension GroupedContactsProvider {
 extension ContactDeleter {
 
     static func productionInstance() -> Self {
-        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
+        .init(delete: deleteContact(contactId:session:))
     }
 
 }
