@@ -73,7 +73,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         let title = "Message title"
         let sut = sut(ids: messagesIDs, type: .message, title: title)
 
-        sut.handle(action: .viewAppear)
+        sut.handle(action: .onLoad)
 
         XCTAssertEqual(invokedWithMessagesIDs, messagesIDs)
         XCTAssertEqual(invokedWithConversationIDs, [])
@@ -102,7 +102,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         let title = "Conversation title"
         let sut = sut(ids: conversationIDs, type: .conversation, title: title)
 
-        sut.handle(action: .viewAppear)
+        sut.handle(action: .onLoad)
 
         XCTAssertEqual(invokedWithMessagesIDs, [])
         XCTAssertEqual(invokedWithConversationIDs, conversationIDs)

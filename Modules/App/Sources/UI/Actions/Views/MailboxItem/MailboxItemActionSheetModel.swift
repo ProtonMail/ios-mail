@@ -52,7 +52,7 @@ class MailboxItemActionSheetModel: ObservableObject {
 
     func handle(action: MailboxItemActionSheetAction) {
         switch action {
-        case .viewAppear:
+        case .onLoad:
             loadActions()
         case .mailboxItemActionSelected(let action):
             switch action {

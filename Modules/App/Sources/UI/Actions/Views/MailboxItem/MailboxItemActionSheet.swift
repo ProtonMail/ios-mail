@@ -46,14 +46,7 @@ struct MailboxItemActionSheet: View {
             .alert(model: $model.state.deleteConfirmationAlert) { action in
                 model.handle(action: .alertActionTapped(action))
             }
-        }.onLoad { model.handle(action: .viewAppear) }
-    }
-
-    private var isDeleteConfirmationAlertPresented: Binding<Bool> {
-        .init(
-            get: { model.state.deleteConfirmationAlert != nil },
-            set: { _ in }
-        )
+        }.onLoad { model.handle(action: .onLoad) }
     }
 
     // MARK: - Private
