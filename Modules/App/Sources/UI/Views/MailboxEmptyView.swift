@@ -19,15 +19,29 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxEmptyView: View {
+    let isUnreadFilterOn: Bool
+    @State private(set) var staticTitle: String
+
+    init(isUnreadFilterOn: Bool) {
+        self.isUnreadFilterOn = isUnreadFilterOn
+        self._staticTitle = .init(
+            initialValue: isUnreadFilterOn
+            ? L10n.Mailbox.EmptyState.titleForUnread.string
+            : L10n.Mailbox.EmptyState.title.string
+        )
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            Text(L10n.Mailbox.EmptyState.title)
+            Image(DS.Images.emptyMailbox)
+                .resizable()
+                .square(size: 128)
+            Text(staticTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
-                .foregroundStyle(DS.Color.Text.weak)
+                .foregroundStyle(DS.Color.Text.norm)
                 .multilineTextAlignment(.center)
-                .padding(.top, DS.Spacing.large)
+                .padding(.top, DS.Spacing.extraLarge)
                 .accessibilityIdentifier(MailboxEmptyViewIdentifiers.emptyTitle)
             Text(L10n.Mailbox.EmptyState.message)
                 .font(.subheadline)
@@ -48,4 +62,8 @@ private struct MailboxEmptyViewIdentifiers {
     static let rootItem = "mailbox.empty.rootItem"
     static let emptyTitle = "mailbox.empty.title"
     static let emptyDescription = "mailbox.empty.description"
+}
+
+#Preview {
+    MailboxEmptyView(isUnreadFilterOn: false)
 }

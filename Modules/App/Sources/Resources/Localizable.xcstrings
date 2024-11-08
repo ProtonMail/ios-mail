@@ -221,11 +221,14 @@
     "Move to…" : {
       "comment" : "Action title for moving message/conversation in the action sheet."
     },
-    "No emails yet" : {
-      "comment" : "Mailbox empty state title."
-    },
     "No matches" : {
       "comment" : "Search result is empty title"
+    },
+    "No messages" : {
+      "comment" : "Mailbox empty state title."
+    },
+    "No unread messages" : {
+      "comment" : "Mailbox empty state title when unread filter is enabled."
     },
     "Not spam" : {
       "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet."
@@ -268,6 +271,12 @@
     },
     "Search" : {
       "comment" : "Search textbox placeholder"
+    },
+    "Seems like you are all caught up for now" : {
+      "comment" : "Mailbox empty state message."
+    },
+    "Select all" : {
+      "comment" : "Button title allowing to select all items in a mailbox."
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar."
@@ -325,9 +334,6 @@
     },
     "View message in light mode" : {
       "comment" : "Action title for viewing given message in light mode in the action sheet."
-    },
-    "Why not take a breather or check back later?" : {
-      "comment" : "Mailbox empty state message."
     },
     "You can either update your search query or clear it." : {
       "comment" : "Search result is empty subtitle"

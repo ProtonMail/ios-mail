@@ -21,55 +21,125 @@ import SwiftUI
 struct UnreadFilterBarView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ScaledMetric var scale: CGFloat = 1
-    @Binding var isSelected: Bool
-    let unread: UInt64
+
+    @Binding var state: FilterBarState
 
     var body: some View {
-        if let unreadFormatted = UnreadCountFormatter.string(count: unread, maxCount: 99) {
-            HStack {
-                Button {
-                    toastStateStore.present(toast: .comingSoon)
-                } label: {
-                    HStack(spacing: DS.Spacing.small) {
-                        Text(L10n.Mailbox.unread)
-                            .font(.footnote)
-                            .foregroundStyle(DS.Color.Text.weak)
-                            .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
-                        Text(unreadFormatted)
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundStyle(DS.Color.Text.norm)
-                            .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
-                    }
-                }
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-                .padding(.vertical, DS.Spacing.standard)
-                .padding(.horizontal, DS.Spacing.medium*scale)
-                .background(
-                    RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
-                        .fill(isSelected ? DS.Color.Background.secondary : DS.Color.Background.norm)
-                )
-                .overlay {
-                    RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
-                        .stroke(DS.Color.Border.norm)
-                }
-                Spacer()
+        HStack {
+            switch state.visibilityMode {
+            case .regular:
+                unreadButton()
+            case .selectionMode:
+                selectAllButton()
             }
-            .padding(.horizontal, DS.Spacing.large)
-            .padding(.vertical, DS.Spacing.standard)
-            .background(DS.Color.Background.norm)
-            .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
+
+            Spacer()
+        }
+        .padding(.horizontal, DS.Spacing.large)
+        .padding(.vertical, DS.Spacing.standard)
+        .background(DS.Color.Background.norm)
+        .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
+    }
+
+    private func unreadButton() -> some View {
+        Button {
+            state.isUnreadButtonSelected.toggle()
+        } label: {
+            HStack(spacing: DS.Spacing.small) {
+                Image(DS.Icon.icEnvelopeDot)
+                    .resizable()
+                    .square(size: 16)
+                    .tint(DS.Color.Icon.norm)
+
+                Text(L10n.Mailbox.unread)
+                    .font(.footnote)
+                    .foregroundStyle(DS.Color.Text.weak)
+                    .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
+                Text(state.unreadCount.string)
+                    .font(.footnote)
+                    .foregroundStyle(DS.Color.Text.weak)
+                    .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
+            }
+        }
+        .accessibilityAddTraits(state.isUnreadButtonSelected ? .isSelected : [])
+        .padding(.vertical, DS.Spacing.standard)
+        .padding(.horizontal, DS.Spacing.medium*scale)
+        .background(
+            RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
+                .fill(state.isUnreadButtonSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
+                .stroke(DS.Color.Border.norm)
+        }
+    }
+
+    private func selectAllButton() -> some View {
+        Button {
+            toastStateStore.present(toast: .comingSoon)
+        } label: {
+            HStack(spacing: DS.Spacing.small) {
+                Image(DS.Icon.icCheckmarkCircle)
+                    .resizable()
+                    .square(size: 16)
+                    .tint(DS.Color.Icon.norm)
+
+                Text(L10n.Mailbox.selectAll)
+                    .font(.footnote)
+                    .foregroundStyle(DS.Color.Text.weak)
+            }
+        }
+        .padding(.vertical, DS.Spacing.standard)
+        .padding(.horizontal, DS.Spacing.medium*scale)
+        .overlay {
+            RoundedRectangle(cornerRadius: DS.Radius.huge*scale, style: .continuous)
+                .stroke(DS.Color.Border.norm)
         }
     }
 }
 
+enum FilterBarVivibilityMode {
+    case regular
+    case selectionMode
+}
+
+enum UnreadCounterState {
+    case knwon(unreadCount: UInt64)
+    case unknown
+
+    var string: String {
+        switch self {
+        case .knwon(let unreadCount):
+            UnreadCountFormatter.string(count: unreadCount, maxCount: 99)
+        case .unknown:
+            "-".notLocalized
+        }
+    }
+}
+
+struct FilterBarState {
+    var visibilityMode: FilterBarVivibilityMode = .regular
+    var isUnreadButtonSelected: Bool = false
+    var unreadCount: UnreadCounterState = .unknown
+}
+
+private struct UnreadFilterIdentifiers {
+    static let rootElement = "unread.filter.button"
+    static let countLabel = "unread.filter.label"
+    static let countValue = "unread.filter.value"
+}
+
+
 #Preview {
     struct Preview: View {
-        @State var isSelected = false
+        @State var stateRegular: FilterBarState = .init(visibilityMode: .regular, unreadCount: .knwon(unreadCount: 3))
+        @State var stateRegularUnknownCount: FilterBarState = .init(visibilityMode: .regular, unreadCount: .unknown)
+        @State var stateSelectionMode: FilterBarState = .init(visibilityMode: .selectionMode)
         var body: some View {
             VStack {
-                UnreadFilterBarView(isSelected: $isSelected, unread: 0)
-                UnreadFilterBarView(isSelected: $isSelected, unread: 187)
+                UnreadFilterBarView(state: $stateRegular)
+                UnreadFilterBarView(state: $stateRegularUnknownCount)
+                UnreadFilterBarView(state: $stateSelectionMode)
             }
             .border(.red)
         }
@@ -78,8 +148,3 @@ struct UnreadFilterBarView: View {
     return Preview()
 }
 
-private struct UnreadFilterIdentifiers {
-    static let rootElement = "unread.filter.button"
-    static let countLabel = "unread.filter.label"
-    static let countValue = "unread.filter.value"
-}
