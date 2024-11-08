@@ -45,7 +45,6 @@ final class ContactsStateStore: ObservableObject {
         self.contactGroupDeleter = .init(mailUserSession: session, contactGroupDeleter: wrappers.contactGroupDeleter)
         self.contactsLiveQueryFactory = contactsLiveQueryFactory
         self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
-        setUpLiveQueryUpdates()
     }
 
     func handle(action: Action) {
@@ -53,6 +52,7 @@ final class ContactsStateStore: ObservableObject {
         case .onDeleteItem(let item):
             delete(item: item)
         case .onLoad:
+            startWatchingUpdates()
             loadAllContacts()
         }
     }
@@ -103,7 +103,7 @@ final class ContactsStateStore: ObservableObject {
         state = state.copy(\.allItems, to: items)
     }
 
-    private func setUpLiveQueryUpdates() {
+    private func startWatchingUpdates() {
         let liveQueryCallback = contactsLiveQueryFactory()
         liveQueryCallback.delegate = { [weak self] updatedItems in
             self?.updateState(with: updatedItems)
