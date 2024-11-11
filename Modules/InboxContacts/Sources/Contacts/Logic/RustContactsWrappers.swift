@@ -17,12 +17,12 @@
 
 import proton_app_uniffi
 
-typealias DeleteContactItemType = (_ id: Id, _ session: MailUserSession) async throws -> Void
+typealias DeleteContactItem = (_ id: Id, _ session: MailUserSession) async throws -> Void
 
 struct RustContactsWrappers {
     let contactsProvider: GroupedContactsProvider
-    let contactDeleter: DeleteContactItemType
-    let contactGroupDeleter: DeleteContactItemType
+    let contactDeleter: DeleteContactItem
+    let contactGroupDeleter: DeleteContactItem
     let contactsWatcher: ContactsWatcher
 }
 

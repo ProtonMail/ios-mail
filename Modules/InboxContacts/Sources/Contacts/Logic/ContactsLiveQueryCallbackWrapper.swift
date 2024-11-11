@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 final class ContactsLiveQueryCallbackWrapper: ContactsLiveQueryCallback {
-
     var delegate: (([GroupedContacts]) -> Void)?
 
     // MARK: - RustContactsLiveQueryCallback
@@ -26,5 +25,4 @@ final class ContactsLiveQueryCallbackWrapper: ContactsLiveQueryCallback {
     func onUpdate(contacts: [GroupedContacts]) {
         delegate?(contacts)
     }
-
 }

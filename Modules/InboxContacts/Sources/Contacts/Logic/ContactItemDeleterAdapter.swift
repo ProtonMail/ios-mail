@@ -19,9 +19,9 @@ import proton_app_uniffi
 
 struct ContactItemDeleterAdapter {
     private let mailUserSession: MailUserSession
-    private let deleteItem: DeleteContactItemType
+    private let deleteItem: DeleteContactItem
 
-    init(mailUserSession: MailUserSession, deleteItem: @escaping DeleteContactItemType) {
+    init(mailUserSession: MailUserSession, deleteItem: @escaping DeleteContactItem) {
         self.mailUserSession = mailUserSession
         self.deleteItem = deleteItem
     }
