@@ -30,20 +30,21 @@ final class ContactsStateStore: ObservableObject {
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactItemDeleterAdapter
     private let contactGroupDeleter: ContactItemDeleterAdapter
-    private let contactsLiveQueryFactory: () -> ContactsLiveQueryCallbackWrapper
+    private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
+    private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
 
     init(
         state: ContactsScreenState,
         mailUserSession session: MailUserSession,
         contactsWrappers wrappers: RustContactsWrappers,
-        contactsLiveQueryFactory: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
+        makeContactsLiveQuery: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
         self.repository = .init(mailUserSession: session, contactsProvider: wrappers.contactsProvider)
         self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
         self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
-        self.contactsLiveQueryFactory = contactsLiveQueryFactory
+        self.makeContactsLiveQuery = makeContactsLiveQuery
         self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
     }
 
@@ -81,13 +82,12 @@ final class ContactsStateStore: ObservableObject {
     }
 
     private func startWatchingUpdates() {
-        let liveQueryCallback = contactsLiveQueryFactory()
-        liveQueryCallback.delegate = { [weak self] updatedItems in
+        contactsLiveQueryCallback.delegate = { [weak self] updatedItems in
             self?.updateState(with: updatedItems)
         }
 
         Task {
-            try await watchContacts(liveQueryCallback)
+            try await watchContacts(contactsLiveQueryCallback)
         }
     }
 

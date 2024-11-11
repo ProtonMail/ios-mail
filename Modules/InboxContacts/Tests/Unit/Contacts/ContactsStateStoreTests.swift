@@ -367,7 +367,7 @@ final class ContactsStateStoreTests: BaseTestCase {
                     return WatchedContactList(contactList: [], handle: .init(noPointer: .init()))
                 })
             ),
-            contactsLiveQueryFactory: {
+            makeContactsLiveQuery: {
                 let wrapper = ContactsLiveQueryCallbackWrapper()
                 self.createdLiveQueryCallbackWrapper = wrapper
                 return wrapper
