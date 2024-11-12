@@ -53,12 +53,25 @@ public struct ContactsScreen: View {
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
         }
+        .deletionAlert(
+            alert: DeleteConfirmationAlertFactory.make(for: store.state.itemToDelete),
+            isPresented: isDeletionItemAlertPresented,
+            confirm: { store.handle(action: .onDeleteItemAlertAction(.confirm)) },
+            cancel: { store.handle(action: .onDeleteItemAlertAction(.cancel)) }
+        )
         .searchable(
             text: $store.state.search.query,
             isPresented: $store.state.search.isActive,
             placement: .navigationBarDrawer(displayMode: .always)
         )
         .onLoad { store.handle(action: .onLoad) }
+    }
+
+    private var isDeletionItemAlertPresented: Binding<Bool> {
+        .init(
+            get: { store.state.itemToDelete != nil },
+            set: { _ in }
+        )
     }
 }
 

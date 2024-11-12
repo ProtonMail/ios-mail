@@ -185,7 +185,8 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     // MARK: - `onDeleteItem` action
 
-    func testOnDeleteItemActionForTwoItems_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactAndContactGroupDeletions() {
+    func testOnDeleteItemActionForGroupItem_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactGroupDeletions() {
+        let itemToDelete: ContactItemType = .group(.advisorsGroup)
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -206,8 +207,12 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
-        let updatedItems = simulateSuccessfulOnDeleteItemAction(.group(.advisorsGroup), from: groupedItems)
-        simulateSuccessfulOnDeleteItemAction(.contact(.andrewAllen), from: updatedItems)
+        sut.handle(action: .onDeleteItem(itemToDelete))
+
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: itemToDelete))
+        XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
+
+        simulateSuccessfulOnDeleteItemAlertAction(.group(.advisorsGroup), from: groupedItems)
 
         let expectedItems: [GroupedContacts] = [
             .init(
@@ -220,25 +225,27 @@ final class ContactsStateStoreTests: BaseTestCase {
                 groupedBy: "A",
                 item: [
                     .contact(.aliceAdams),
+                    .contact(.andrewAllen),
                     .contact(.amandaArcher)
                 ]
             )
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems))
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems, itemToDelete: nil))
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
-        XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.andrewAllen.id])
+        XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [ContactGroupItem.advisorsGroup.id])
     }
 
-    func testOnDeleteItemActionForOneItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
+    func testOnDeleteItemActionForContactItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() {
         sut = makeSUT(search: .active(query: ""))
 
+        let itemToDelete: ContactItemType = .contact(.vip)
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
                 item: [
-                    .contact(.vip),
+                    itemToDelete,
                 ]
             ),
             .init(
@@ -253,7 +260,14 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
-        simulateSuccessfulOnDeleteItemAction(.contact(.vip), from: groupedItems)
+        sut.handle(action: .onDeleteItem(.contact(.vip)))
+
+        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: groupedItems, itemToDelete: itemToDelete))
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: groupedItems.flatMap(\.item))])
+        XCTAssertEqual(deleterSpy.deleteContactCalls, [])
+        XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
+
+        simulateSuccessfulOnDeleteItemAlertAction(.contact(.vip), from: groupedItems)
 
         let expectedItems: [GroupedContacts] = [
             .init(
@@ -266,18 +280,19 @@ final class ContactsStateStoreTests: BaseTestCase {
             )
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems))
+        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems, itemToDelete: nil))
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: expectedItems.flatMap(\.item))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
-    func testOnDeleteItemActionForOneItem_AndContactDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
+    func testOnDeleteItemActionForContactItem_AndContactDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
+        let itemToDelete: ContactItemType = .contact(.vip)
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
                 item: [
-                    .contact(.vip),
+                    itemToDelete,
                 ]
             ),
             .init(
@@ -296,17 +311,19 @@ final class ContactsStateStoreTests: BaseTestCase {
         ]
 
         sut.handle(action: .onLoad)
-        sut.handle(action: .onDeleteItem(.contact(.vip)))
+        sut.handle(action: .onDeleteItem(itemToDelete))
+        sut.handle(action: .onDeleteItemAlertAction(.confirm))
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
-    func testOnDeleteItemActionForOneItem_AndContactGroupDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
+    func testOnDeleteItemActionForContactGroupItem_AndContactGroupDeletionFails_ItRevertsStateToTheOneBeforeDeletion() {
+        let itemToDelete: ContactItemType = .group(.advisorsGroup)
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -317,7 +334,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "A",
                 item: [
-                    .group(.advisorsGroup),
+                    itemToDelete,
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
                 ]
@@ -330,14 +347,47 @@ final class ContactsStateStoreTests: BaseTestCase {
         ]
 
         sut.handle(action: .onLoad)
-        sut.handle(action: .onDeleteItem(.group(.advisorsGroup)))
+        sut.handle(action: .onDeleteItem(itemToDelete))
+        sut.handle(action: .onDeleteItemAlertAction(.confirm))
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [ContactGroupItem.advisorsGroup.id])
+    }
+
+    func testOnDeleteItemActionForContactGroupItem_AndCancelsDeletion_ItDoesNotTriggerContactGroupDeletion() {
+        let itemToDelete: ContactItemType = .group(.advisorsGroup)
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    itemToDelete,
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onDeleteItem(itemToDelete))
+        sut.handle(action: .onDeleteItemAlertAction(.cancel))
+
+        createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
+
+        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
+        XCTAssertEqual(sut.state.displayItems, groupedItems)
+        XCTAssertEqual(deleterSpy.deleteContactCalls, [])
+        XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
     // MARK: - Private
@@ -375,18 +425,15 @@ final class ContactsStateStoreTests: BaseTestCase {
         )
     }
 
-    @discardableResult
-    private func simulateSuccessfulOnDeleteItemAction(
+    private func simulateSuccessfulOnDeleteItemAlertAction(
         _ item: ContactItemType,
         from groupedContacts: [GroupedContacts]
-    ) -> [GroupedContacts] {
-        sut.handle(action: .onDeleteItem(item))
+    ) {
+        sut.handle(action: .onDeleteItemAlertAction(.confirm))
 
         let updatedItems = deleting(item: item, from: groupedContacts)
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: updatedItems)
-
-        return updatedItems
     }
 
     private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
