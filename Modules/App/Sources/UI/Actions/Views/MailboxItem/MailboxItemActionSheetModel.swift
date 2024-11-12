@@ -26,6 +26,7 @@ class MailboxItemActionSheetModel: ObservableObject {
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionPerformer: DeleteActionPerformer
+    private let moveToActionPerformer: MoveToActionPerformer
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
@@ -35,6 +36,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         starActionPerformerActions: StarActionPerformerActions,
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
+        moveToActions: MoveToActions,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -46,6 +48,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         )
         self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
+        self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.state = .initial(title: input.title)
         self.navigation = navigation
     }
@@ -77,8 +80,8 @@ class MailboxItemActionSheetModel: ObservableObject {
                 navigation(.moveTo)
             case .permanentDelete:
                 state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
-            default:
-                break // FIXME: - Handle rest of actions here
+            case .notSpam(let label), .system(let label):
+                performMoveToAction(destination: label, ids: input.ids, itemType: input.type)
             }
         case .alertActionTapped(let action):
             state = state.copy(\.deleteConfirmationAlert, to: nil)
@@ -89,6 +92,13 @@ class MailboxItemActionSheetModel: ObservableObject {
     }
 
     // MARK: - Private
+
+    private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID], itemType: MailboxItemType) {
+        Task {
+            await moveToActionPerformer.moveTo(destinationID: destination.localId, itemsIDs: ids, itemType: itemType)
+            dismiss()
+        }
+    }
 
     private func performAction(
         action: ([ID], MailboxItemType, (() -> Void)?) -> Void,

@@ -31,6 +31,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
+    var moveToActionsSpy: MoveToActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -42,6 +43,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         starActionPerformerActionsSpy = .init()
         readActionPerformerActionsSpy = .init()
         deleteActionsSpy = .init()
+        moveToActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -56,6 +58,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         starActionPerformerActionsSpy = nil
         readActionPerformerActionsSpy = nil
         deleteActionsSpy = nil
+        moveToActionsSpy = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -213,6 +216,22 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         )
     }
 
+    func testAction_WhenMessageIsMovedOutOfSpam_ItMovesMessageOutOfSpam() throws {
+        try testMoveToAction(
+            itemType: .message,
+            action: .notSpam(.init(localId: .init(value: 1), systemLabel: .inbox)),
+            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage }
+        )
+    }
+
+    func testAction_WhenConversationIsMovedToInbox_ItMovesConversationToInbox() throws {
+        try testMoveToAction(
+            itemType: .conversation,
+            action: .system(.init(localId: .init(value: 1), systemLabel: .inbox)),
+            verifyInvoked: { moveToActionsSpy.invokedMoveToConversation }
+        )
+    }
+
     // MARK: - Private
 
     private func test(action: MailboxItemAction, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
@@ -243,6 +262,21 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
+    private func testMoveToAction(
+        itemType: MailboxItemType,
+        action: MoveToAction,
+        verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments]
+    ) throws {
+        let ids: [ID] = [.init(value: 1), .init(value: 7)]
+        let sut = sut(ids: ids, type: itemType, title: .notUsed)
+
+        sut.handle(action: .moveTo(action))
+
+        let destinationID = try XCTUnwrap(action.destination?.localId)
+
+        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destinationID, itemsIDs: ids)])
+    }
+
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
         MailboxItemActionSheetModel(
             input: .init(ids: ids, type: type, title: title),
@@ -260,9 +294,23 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance, 
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
             deleteActions: deleteActionsSpy.testingInstance,
+            moveToActions: moveToActionsSpy.testingInstance,
             mailUserSession: .dummy,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
+    }
+
+}
+
+private extension MoveToAction {
+
+    var destination: MoveToSystemFolderLocation? {
+        switch self {
+        case .system(let label), .notSpam(let label):
+            return label
+        case .moveTo, .permanentDelete:
+            return nil
+        }
     }
 
 }

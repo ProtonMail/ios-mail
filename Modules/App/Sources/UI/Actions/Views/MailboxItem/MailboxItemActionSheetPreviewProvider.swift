@@ -61,7 +61,8 @@ enum MailboxItemActionSheetPreviewProvider {
                 markMessageAsUnread: { _, _ in },
                 markConversationAsUnread: { _, _ in }
             ), 
-            deleteActions: .dummy,
+            deleteActions: .dummy, 
+            moveToActions: .dummy,
             mailUserSession: MailUserSession(noPointer: .init()),
             navigation: { _ in }
         )

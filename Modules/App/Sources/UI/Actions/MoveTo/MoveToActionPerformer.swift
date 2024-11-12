@@ -26,7 +26,7 @@ struct MoveToActionPerformer {
         self.moveToActions = moveToActions
     }
 
-    func labelAs(itemType: MailboxItemType, destinationID: ID, itemsIDs: [ID]) async {
+    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async {
         let moveToAction = moveToAction(itemType: itemType)
         try! await moveToAction(mailbox, destinationID, itemsIDs)
     }
