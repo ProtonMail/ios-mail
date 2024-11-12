@@ -147,6 +147,7 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
         MailboxActionBarView(
             state: .initial,
             availableActions: .productionInstance,
+            itemTypeForActionBar: config.itemTypeForActionBar,
             selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
         )
         .opacity(selectionState.hasItems ? 1 : 0)
@@ -204,6 +205,7 @@ private extension SelectionModeState {
             return .init(
                 dataSource: dataSource,
                 selectionState: selectionState,
+                itemTypeForActionBar: .conversation,
                 swipeActions: .init(leadingSwipe: { .toggleReadStatus }, trailingSwipe: { .moveToTrash })
             )
         }

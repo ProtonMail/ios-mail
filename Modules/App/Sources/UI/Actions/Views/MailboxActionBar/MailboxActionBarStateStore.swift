@@ -25,6 +25,7 @@ final class MailboxActionBarStateStore: StateStore {
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionsPerformer: DeleteActionPerformer
+    private let itemTypeForActionBar: MailboxItemType
     private let mailbox: Mailbox
 
     init(
@@ -33,12 +34,15 @@ final class MailboxActionBarStateStore: StateStore {
         starActionPerformerActions: StarActionPerformerActions,
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
+        itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
         mailbox: Mailbox
     ) {
         self.state = state
+        self.itemTypeForActionBar = itemTypeForActionBar
         self.actionsProvider = .init(
             availableActions: availableActions,
+            itemTypeForActionBar: itemTypeForActionBar,
             mailbox: mailbox
         )
         self.starActionPerformer = .init(
@@ -89,24 +93,25 @@ final class MailboxActionBarStateStore: StateStore {
                 .copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
             dismissMoreActionSheet()
-            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
+            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: itemTypeForActionBar))
         case .moveTo:
             dismissMoreActionSheet()
-            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: mailbox.itemType))
+            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: itemTypeForActionBar))
         case .star:
             dismissMoreActionSheet()
-            starActionPerformer.star(itemsWithIDs: ids, itemType: mailbox.itemType)
+            starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .unstar:
             dismissMoreActionSheet()
-            starActionPerformer.unstar(itemsWithIDs: ids, itemType: mailbox.itemType)
+            starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markRead:
             dismissMoreActionSheet()
-            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: mailbox.itemType)
+            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markUnread:
             dismissMoreActionSheet()
-            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: mailbox.itemType)
+            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
             state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: ids.count))
+
         default:
             break // FIXME: - Handle rest of the actions here
         }

@@ -25,6 +25,7 @@ class MailboxActionBarViewSnapshotTests: BaseTestCase {
         let sut = MailboxActionBarView(
             state: MailboxActionBarPreviewProvider.state(),
             availableActions: MailboxActionBarPreviewProvider.availableActions(),
+            itemTypeForActionBar: .conversation,
             mailUserSession: .dummy,
             selectedItems: .constant([.testData(id: 1), .testData(id: 2), .testData(id: 3)])
         ).environmentObject(MailboxStub(viewMode: .messages) as Mailbox)

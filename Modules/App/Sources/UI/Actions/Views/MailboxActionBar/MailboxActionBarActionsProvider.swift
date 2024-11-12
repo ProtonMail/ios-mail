@@ -19,14 +19,15 @@ import proton_app_uniffi
 
 struct MailboxActionBarActionsProvider {
     let availableActions: AvailableMailboxActionBarActions
+    let itemTypeForActionBar: MailboxItemType
     let mailbox: Mailbox
 
     func actions(forItemsWith ids: [ID]) async -> AllBottomBarMessageActions {
-        switch mailbox.viewMode() {
-            case .messages:
-                try! await availableActions.message(mailbox, ids)
-            case .conversations:
-                try! await availableActions.conversation(mailbox, ids)
+        switch itemTypeForActionBar {
+        case .message:
+            try! await availableActions.message(mailbox, ids)
+        case .conversation:
+            try! await availableActions.conversation(mailbox, ids)
         }
     }
 }

@@ -230,6 +230,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
             deleteActions: deleteActionsSpy.testingInstance,
+            itemTypeForActionBar: viewMode.itemType,
             mailUserSession: .dummy,
             mailbox: MailboxStub(viewMode: viewMode)
         )

@@ -22,6 +22,8 @@ struct MailboxItemsListViewConfiguration {
     let dataSource: PaginatedListDataSource<MailboxItemCellUIModel>
     /// Item selection observed to manage the selection state.
     let selectionState: SelectionModeState
+    /// Determines whether the actions are for messages or conversations
+    let itemTypeForActionBar: MailboxItemType
     /// Swipe actions to be applied to the cells. If  `nil` no actions are configured.
     var swipeActions: MailboxItemsListSwipeActions?
     /// Listener for events related to the list.

@@ -54,7 +54,7 @@ final class MailboxModel: ObservableObject {
         dependencies.appContext.userSession
     }
 
-    private var viewMode: ViewMode {
+    var viewMode: ViewMode {
         mailbox?.viewMode() ?? .conversations
     }
 
