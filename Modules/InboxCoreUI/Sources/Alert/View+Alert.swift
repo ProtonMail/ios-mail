@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
+import InboxCore
 import SwiftUI
 
 extension View {
-    func alert<AlertAction: AlertActionViewModel>(
+    public func alert<AlertAction: AlertActionViewModel>(
         model: Binding<AlertViewModel<AlertAction>?>,
         handleAction: @escaping (AlertAction) -> Void
     ) -> some View {
