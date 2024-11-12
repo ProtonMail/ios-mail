@@ -192,6 +192,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
         testDeletionFlow(
             itemType: .conversation,
+            action: .mailboxItemActionSelected(.delete),
             verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
         )
     }
@@ -199,6 +200,15 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
+            action: .mailboxItemActionSelected(.delete),
+            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
+        )
+    }
+
+    func testMoveToDeleteAction_WhenMeesageIsDeleted_ItDeletesMessage() {
+        testDeletionFlow(
+            itemType: .message,
+            action: .moveTo(.permanentDelete),
             verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
         )
     }
@@ -215,11 +225,15 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
-    private func testDeletionFlow(itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
+    private func testDeletionFlow(
+        itemType: MailboxItemType,
+        action: MailboxItemActionSheetAction,
+        verifyInvoked: () -> [ID]
+    ) {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(.delete))
+        sut.handle(action: action)
 
         XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count))
 

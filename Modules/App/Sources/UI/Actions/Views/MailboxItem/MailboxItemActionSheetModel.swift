@@ -68,13 +68,15 @@ class MailboxItemActionSheetModel: ObservableObject {
                 performAction(action: readActionPerformer.markAsUnread, ids: input.ids, itemType: input.type)
             case .delete:
                 state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
-            default:
-                break // FIXME: - Handle rest of actions here
+            case .pin, .unpin:
+                break
             }
         case .moveTo(let action):
             switch action {
             case .moveTo:
                 navigation(.moveTo)
+            case .permanentDelete:
+                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
             default:
                 break // FIXME: - Handle rest of actions here
             }
