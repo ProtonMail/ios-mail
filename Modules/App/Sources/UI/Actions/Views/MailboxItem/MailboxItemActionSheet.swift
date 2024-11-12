@@ -21,32 +21,72 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MailboxItemActionSheet: View {
-    @StateObject var model: MailboxItemActionSheetModel
+    @EnvironmentObject var toastStateStore: ToastStateStore
+    private let input: MailboxItemActionSheetInput
+    private let mailbox: Mailbox
+    private let actionsProvider: ActionsProvider
+    private let starActionPerformerActions: StarActionPerformerActions
+    private let readActionPerformerActions: ReadActionPerformerActions
+    private let deleteActions: DeleteActions
+    private let moveToActions: MoveToActions
+    private let mailUserSession: MailUserSession
+    private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
-    init(model: MailboxItemActionSheetModel) {
-        _model = .init(wrappedValue: model)
+    init(
+        input: MailboxItemActionSheetInput,
+        mailbox: Mailbox,
+        actionsProvider: ActionsProvider,
+        starActionPerformerActions: StarActionPerformerActions,
+        readActionPerformerActions: ReadActionPerformerActions,
+        deleteActions: DeleteActions,
+        moveToActions: MoveToActions,
+        mailUserSession: MailUserSession,
+        navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
+    ) {
+        self.input = input
+        self.mailbox = mailbox
+        self.actionsProvider = actionsProvider
+        self.starActionPerformerActions = starActionPerformerActions
+        self.readActionPerformerActions = readActionPerformerActions
+        self.deleteActions = deleteActions
+        self.moveToActions = moveToActions
+        self.mailUserSession = mailUserSession
+        self.navigation = navigation
     }
 
     var body: some View {
-        ClosableScreen {
-            ScrollView {
-                VStack(spacing: DS.Spacing.standard) {
-                    if let replyActions = model.state.availableActions.replyActions {
-                        replyButtonsSection(replyActions)
-                    }
+        StoreView(store: MailboxItemActionSheetModel(
+            input: input,
+            mailbox: mailbox,
+            actionsProvider: actionsProvider,
+            starActionPerformerActions: starActionPerformerActions,
+            readActionPerformerActions: readActionPerformerActions,
+            deleteActions: deleteActions,
+            moveToActions: moveToActions,
+            mailUserSession: mailUserSession,
+            toastStateStore: toastStateStore,
+            navigation: navigation
+        )) { state, store in
+            ClosableScreen {
+                ScrollView {
+                    VStack(spacing: DS.Spacing.standard) {
+                        if let replyActions = state.availableActions.replyActions {
+                            replyButtonsSection(replyActions)
+                        }
 
-                    mailboxItemActionsSection()
-                    moveToActionsSection()
-                    section(displayData: model.state.availableActions.generalActions.map(\.displayData))
-                }.padding(.all, DS.Spacing.large)
-            }
-            .background(DS.Color.Background.secondary)
-            .navigationTitle(model.state.title)
-            .navigationBarTitleDisplayMode(.inline)
-            .alert(model: $model.state.deleteConfirmationAlert) { action in
-                model.handle(action: .alertActionTapped(action))
-            }
-        }.onLoad { model.handle(action: .onLoad) }
+                        mailboxItemActionsSection(state: state, store: store)
+                        moveToActionsSection(state: state, store: store)
+                        section(displayData: state.availableActions.generalActions.map(\.displayData))
+                    }.padding(.all, DS.Spacing.large)
+                }
+                .background(DS.Color.Background.secondary)
+                .navigationTitle(state.title)
+                .navigationBarTitleDisplayMode(.inline)
+                .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
+                    store.handle(action: .alertActionTapped(action))
+                }
+            }.onLoad { store.handle(action: .onLoad) }
+        }
     }
 
     // MARK: - Private
@@ -59,25 +99,31 @@ struct MailboxItemActionSheet: View {
         }
     }
 
-    private func mailboxItemActionsSection() -> some View {
+    private func mailboxItemActionsSection(
+        state: MailboxItemActionSheetState,
+        store: MailboxItemActionSheetModel
+    ) -> some View {
         ActionSheetSection {
-            ForEachLast(collection: model.state.availableActions.mailboxItemActions) { action, isLast in
+            ForEachLast(collection: state.availableActions.mailboxItemActions) { action, isLast in
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { model.handle(action: .mailboxItemActionSelected(action)) }
+                    action: { store.handle(action: .mailboxItemActionSelected(action)) }
                 )
             }
         }
     }
 
-    private func moveToActionsSection() -> some View {
+    private func moveToActionsSection(
+        state: MailboxItemActionSheetState,
+        store: MailboxItemActionSheetModel
+    ) -> some View {
         ActionSheetSection {
-            ForEachLast(collection: model.state.availableActions.moveActions) { action, isLast in
+            ForEachLast(collection: state.availableActions.moveActions) { action, isLast in
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { model.handle(action: .moveTo(action)) }
+                    action: { store.handle(action: .moveTo(action)) }
                 )
             }
         }
@@ -89,14 +135,14 @@ struct MailboxItemActionSheet: View {
                 ActionSheetImageButton(
                     displayData: displayData,
                     displayBottomSeparator: !isLast,
-                    action: { print("Action: \(displayData.title.string)") }
+                    action: { toastStateStore.present(toast: .comingSoon) }
                 )
             }
         }
     }
 
     private func replyButton(action: ReplyAction) -> some View {
-        Button(action: { print("Action: \(action.displayData.title) tapped") }) {
+        Button(action: { toastStateStore.present(toast: .comingSoon) }) {
             VStack(spacing: DS.Spacing.standard) {
                 Image(action.displayData.image)
                     .resizable()
@@ -116,5 +162,31 @@ struct MailboxItemActionSheet: View {
 }
 
 #Preview {
-    MailboxItemActionSheet(model: MailboxItemActionSheetPreviewProvider.testData())
+    MailboxItemActionSheet(
+        input: .init(ids: [], type: .message, title: "Hello there".notLocalized),
+        mailbox: .dummy,
+        actionsProvider: .dummy,
+        starActionPerformerActions: .dummy,
+        readActionPerformerActions: .dummy,
+        deleteActions: .dummy,
+        moveToActions: .dummy,
+        mailUserSession: .dummy,
+        navigation: { _ in }
+    )
+}
+
+extension Mailbox {
+
+    static var dummy: Mailbox {
+        .init(noPointer: .init())
+    }
+
+}
+
+extension MailUserSession {
+
+    static var dummy: MailUserSession {
+        .init(noPointer: .init())
+    }
+
 }

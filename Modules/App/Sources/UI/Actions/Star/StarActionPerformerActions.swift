@@ -36,4 +36,13 @@ extension StarActionPerformerActions {
         )
     }
 
+    static var dummy: StarActionPerformerActions {
+        .init(
+            starMessage: { _, _ in },
+            starConversation: { _, _ in },
+            unstarMessage: { _, _ in },
+            unstarConversation: { _, _ in }
+        )
+    }
+
 }

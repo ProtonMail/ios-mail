@@ -19,7 +19,8 @@ import Combine
 import InboxCore
 import proton_app_uniffi
 
-class MailboxItemActionSheetModel: ObservableObject {
+// FIXME: - Rename
+class MailboxItemActionSheetModel: StateStore {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
@@ -27,6 +28,7 @@ class MailboxItemActionSheetModel: ObservableObject {
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionPerformer: DeleteActionPerformer
     private let moveToActionPerformer: MoveToActionPerformer
+    private let toastStateStore: ToastStateStore
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
@@ -38,6 +40,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
         mailUserSession: MailUserSession,
+        toastStateStore: ToastStateStore,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
         self.input = input
@@ -50,6 +53,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.state = .initial(title: input.title)
+        self.toastStateStore = toastStateStore
         self.navigation = navigation
     }
 
@@ -87,6 +91,7 @@ class MailboxItemActionSheetModel: ObservableObject {
             state = state.copy(\.deleteConfirmationAlert, to: nil)
             if case .delete = action {
                 performAction(action: deleteActionPerformer.delete, ids: input.ids, itemType: input.type)
+                presentDeletedToast()
             }
         }
     }
@@ -97,6 +102,7 @@ class MailboxItemActionSheetModel: ObservableObject {
         Task {
             await moveToActionPerformer.moveTo(destinationID: destination.localId, itemsIDs: ids, itemType: itemType)
             dismiss()
+            presentMoveToToast(destination: destination)
         }
     }
 
@@ -113,6 +119,20 @@ class MailboxItemActionSheetModel: ObservableObject {
     private func dismiss() {
         Dispatcher.dispatchOnMain(.init(block: { [weak self] in
             self?.navigation(.dismiss)
+        }))
+    }
+
+    private func presentMoveToToast(destination: MoveToSystemFolderLocation) {
+        presentToast(toast: .moveTo(destination: destination))
+    }
+
+    private func presentDeletedToast() {
+        presentToast(toast: .deleted())
+    }
+
+    private func presentToast(toast: Toast) {
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            self?.toastStateStore.present(toast: toast)
         }))
     }
 
@@ -144,7 +164,19 @@ private extension MailboxItemActionSheetState {
     }
 }
 
-extension AlertViewModel {
+extension Toast { // FIXME: - Move to separate file
+
+    static func moveTo(destination: MoveToSystemFolderLocation) -> Toast {
+        .information(message: "Moved to \(destination.systemLabel.humanReadable.string).".notLocalized) // FIXME: - Localize
+    }
+
+    static func deleted() -> Toast {
+        .information(message: "Deleted.") // FIXME: - Localize
+    }
+
+}
+
+extension AlertViewModel { // FIXME: - Move to separate file
 
     static func deleteConfirmation(itemsCount: Int) -> AlertViewModel<DeleteConfirmationAlertAction> {
         .init(

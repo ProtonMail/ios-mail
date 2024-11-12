@@ -36,4 +36,13 @@ extension ReadActionPerformerActions {
         )
     }
 
+    static var dummy: Self {
+        .init(
+            markMessageAsRead: { _, _ in } ,
+            markConversationAsRead: { _, _ in },
+            markMessageAsUnread: { _, _ in },
+            markConversationAsUnread: { _, _ in }
+        )
+    }
+
 }

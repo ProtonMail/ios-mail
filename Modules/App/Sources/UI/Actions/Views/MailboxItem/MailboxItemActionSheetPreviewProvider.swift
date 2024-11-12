@@ -17,6 +17,7 @@
 
 import proton_app_uniffi
 
+// FIXME: - Not needed anymore
 enum MailboxItemActionSheetPreviewProvider {
     static func testData() -> MailboxItemActionSheetModel {
         MailboxItemActionSheetModel(
@@ -64,6 +65,7 @@ enum MailboxItemActionSheetPreviewProvider {
             deleteActions: .dummy, 
             moveToActions: .dummy,
             mailUserSession: MailUserSession(noPointer: .init()),
+            toastStateStore: .init(initialState: .initial),
             navigation: { _ in }
         )
     }

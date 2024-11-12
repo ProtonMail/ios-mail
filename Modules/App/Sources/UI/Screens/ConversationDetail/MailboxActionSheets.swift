@@ -49,16 +49,7 @@ private struct MailboxActionSheets: ViewModifier {
 
     @MainActor
     private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
-        let model = MailboxItemActionSheetModel(
-            input: input,
-            mailbox: mailbox(),
-            actionsProvider: .productionInstance,
-            starActionPerformerActions: .productionInstance,
-            readActionPerformerActions: .productionInstance, 
-            deleteActions: .productionInstance, 
-            moveToActions: .productionInstance,
-            mailUserSession: AppContext.shared.userSession
-        ) { navigation in
+        let navigation: (MailboxItemActionSheetNavigation) -> Void = { navigation in
             switch navigation {
             case .labelAs:
                 state = state
@@ -72,8 +63,17 @@ private struct MailboxActionSheets: ViewModifier {
                 state = state.copy(\.mailbox, to: nil)
             }
         }
-        return MailboxItemActionSheet(model: model)
-            .pickerViewStyle([.large])
+        return MailboxItemActionSheet(
+            input: input,
+            mailbox: mailbox(),
+            actionsProvider: .productionInstance,
+            starActionPerformerActions: .productionInstance,
+            readActionPerformerActions: .productionInstance,
+            deleteActions: .productionInstance,
+            moveToActions: .productionInstance,
+            mailUserSession: AppContext.shared.userSession,
+            navigation: navigation
+        ).pickerViewStyle([.large])
     }
 
     @MainActor

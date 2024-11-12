@@ -32,6 +32,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
     var moveToActionsSpy: MoveToActionsSpy!
+    var toastStateStore: ToastStateStore!
 
     override func setUp() {
         super.setUp()
@@ -44,6 +45,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         readActionPerformerActionsSpy = .init()
         deleteActionsSpy = .init()
         moveToActionsSpy = .init()
+        toastStateStore = .init(initialState: .initial)
     }
 
     override func tearDown() {
@@ -59,6 +61,7 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         readActionPerformerActionsSpy = nil
         deleteActionsSpy = nil
         moveToActionsSpy = nil
+        toastStateStore = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -260,6 +263,8 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [.dismiss])
+
+        XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
     }
 
     private func testMoveToAction(
@@ -272,9 +277,11 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         sut.handle(action: .moveTo(action))
 
-        let destinationID = try XCTUnwrap(action.destination?.localId)
+        let destination = try XCTUnwrap(action.destination)
 
-        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destinationID, itemsIDs: ids)])
+        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: ids)])
+
+        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destination: destination)])
     }
 
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
@@ -295,7 +302,8 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
             deleteActions: deleteActionsSpy.testingInstance,
             moveToActions: moveToActionsSpy.testingInstance,
-            mailUserSession: .dummy,
+            mailUserSession: .dummy, 
+            toastStateStore: toastStateStore,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
     }
