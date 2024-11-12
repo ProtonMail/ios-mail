@@ -30,13 +30,23 @@ import SwiftUI
  */
 struct OnSearchSubmitWrapper: ViewModifier {
     final class CallbackWrapper {
-        var query: String = ""
+        var query: String
         var onQuerySubmmitted: ((String) -> Void)?
+
+        init(query: String) {
+            self.query = query
+        }
     }
 
-    @State var wrapper = CallbackWrapper()
+    @State var wrapper: CallbackWrapper
     @Binding var query: String
     let onQuerySubmmitted: (String) -> Void
+
+    init(query: Binding<String>, onQuerySubmmitted: @escaping (String) -> Void) {
+        self.wrapper = .init(query: query.wrappedValue)
+        self._query = query
+        self.onQuerySubmmitted = onQuerySubmmitted
+    }
 
     func body(content: Content) -> some View {
         content

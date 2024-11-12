@@ -57,11 +57,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             guard let self else { return }
             Task {
                 AppLogger.log(message: "search paginator callback", category: .search)
-                guard let searchPaginator = self.searchPaginator else { return }
-                let messages = try await searchPaginator.reload()
-                let items = self.mailboxItems(messages: messages)
-                AppLogger.log(message: "refreshed results before: \(self.paginatedDataSource.state.items.count) after: \(items.count)", category: .search)
-                await self.paginatedDataSource.updateItems(items)
+                await self.refreshMailboxItems()
             }
         }
     }
@@ -69,7 +65,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private func setUpBindings() {
         selectionMode
             .selectionState
-            .$hasItems
+            .$selectedItems
+            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
                 Task {
@@ -137,7 +134,10 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         do {
             let messages = try await searchPaginator.reload()
             let items = mailboxItems(messages: messages)
+            AppLogger.log(message: "refreshed results before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .search)
             await paginatedDataSource.updateItems(items)
+
+            await selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
         } catch {
             AppLogger.log(error: error, category: .search)
         }

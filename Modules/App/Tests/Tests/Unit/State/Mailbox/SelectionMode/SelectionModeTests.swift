@@ -77,7 +77,8 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.selectedItems, Set())
     }
 
-    func testRefreshSelectedItemsStatus_whenStatusDoesChange_itKeepsTheSelectionStatus() {
+    @MainActor 
+    func testRefreshSelectedItemsStatus_whenStatusDoesChange_itKeepsTheSameItemSelectionWithNewStatus() {
         let items: [MailboxSelectedItem] = [
             .testData(id: 1, isRead: false, isStarred: false),
             .testData(id: 2, isRead: false, isStarred: false),
@@ -86,17 +87,23 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
 
-        sut.selectionModifier.refreshSelectedItemsStatus { _ in
-            let newItems = items.map {
-                MailboxSelectedItem(id: $0.id, isRead: !$0.isRead, isStarred: !$0.isStarred)
-            }
-            return Set(newItems)
-        }
+        sut.selectionModifier.refreshSelectedItemsStatus(
+            newMailboxItems: [
+                makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true),
+                makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true)
+            ]
+        )
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(Set(sut.selectionState.selectedItems.map(\.id)), Set(items.map(\.id)))
+
+        sut.selectionState.selectedItems.forEach { selectedItem in
+            XCTAssertEqual(selectedItem.isRead, true)
+            XCTAssertEqual(selectedItem.isStarred, true)
+        }
     }
 
-    func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSelectionStatus() {
+    @MainActor 
+    func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSameItemSelection() {
         let items: [MailboxSelectedItem] = [
             .testData(id: 1, isRead: true, isStarred: true),
             .testData(id: 2, isRead: true, isStarred: true),
@@ -105,13 +112,16 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
 
-        sut.selectionModifier.refreshSelectedItemsStatus { _ in
-            return Set(items)
-        }
+        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [
+            makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true),
+            makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true)
+        ])
+
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
     }
 
+    @MainActor 
     func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
         let item1 = MailboxSelectedItem.testData(id: 1, isRead: true, isStarred: true)
         let item2 = MailboxSelectedItem.testData(id: 2, isRead: true, isStarred: true)
@@ -119,33 +129,20 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, [item1, item2])
 
-        sut.selectionModifier.refreshSelectedItemsStatus { _ in
-            return [item1]
-        }
+        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true)])
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, [item1])
 
-        sut.selectionModifier.refreshSelectedItemsStatus { _ in
-            return []
-        }
+        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [])
         XCTAssertEqual(sut.selectionState.hasItems, false)
         XCTAssertEqual(sut.selectionState.selectedItems, [])
     }
 
-    func testRefreshSelectedItemsStatus_whenSelectedItemsDoNotChange_itDoesNotTriggerHasSelectedItemsPublisher() {
-        let items: [MailboxSelectedItem] = [
-            .testData(id: 1, isRead: true, isStarred: true),
-            .testData(id: 2, isRead: true, isStarred: true),
-        ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
-
-        let observation = sut.selectionState.$hasItems.dropFirst().sink { newValue in
-            XCTFail("hasSelectedItems should not send a value if it does not change the value")
-        }
-
-        sut.selectionModifier.refreshSelectedItemsStatus { _ in
-            return Set(items)
-        }
+    @MainActor 
+    func testRefreshSelectedItemsStatus_whenMoreItemsAreReturned_itDoesNotAddTheNewItemsToTheSelection() {
+        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true)])
+        XCTAssertEqual(sut.selectionState.hasItems, false)
+        XCTAssertEqual(sut.selectionState.selectedItems, [])
     }
 
     func testExitSelectionMode_itRemovesAllSelectedItems() {
@@ -159,5 +156,30 @@ final class SelectionModeTests: XCTestCase {
         sut.selectionModifier.exitSelectionMode()
         XCTAssertEqual(sut.selectionState.hasItems, false)
         XCTAssertEqual(sut.selectionState.selectedItems, [])
+    }
+}
+
+extension SelectionModeTests {
+
+    private func makeMailboxItemCellUIModel(id: UInt64, isRead: Bool, isStarred: Bool) -> MailboxItemCellUIModel {
+        MailboxItemCellUIModel(
+            id: .init(value: id),
+            conversationID: .random(),
+            type: .conversation,
+            avatar: .init(info: .init(initials: "", color: .blue), type: .other),
+            emails: "",
+            subject: "",
+            date: Date(),
+            locationIcon: nil,
+            isRead: isRead,
+            isStarred: isStarred,
+            isSelected: [false, false, Bool.random()].randomElement()!,
+            isSenderProtonOfficial: Bool.random(),
+            messagesCount: [0, 2, 3].randomElement()!,
+            labelUIModel: .init(labelModels: []),
+            attachmentsUIModel: .init(),
+            expirationDate: nil,
+            snoozeDate: nil
+        )
     }
 }

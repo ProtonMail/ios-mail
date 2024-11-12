@@ -134,12 +134,11 @@ extension MailboxModel {
 
         selectionMode
             .selectionState
-            .$hasItems
-            .sink { [weak self] hasItems in
+            .$selectedItems
+            .removeDuplicates()
+            .sink { [weak self] _ in
                 Task {
-                    self?.state.filterBar.visibilityMode = hasItems ? .selectionMode : .regular
-                    self?.updateMailboxTitle()
-                    await self?.refreshMailboxItems()
+                    await self?.onSelectedItemsChange()
                 }
             }
             .store(in: &cancellables)
@@ -152,6 +151,12 @@ extension MailboxModel {
                 await self?.refreshMailboxItems()
             }
         }
+    }
+
+    private func onSelectedItemsChange() async {
+        state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        updateMailboxTitle()
+        await refreshMailboxItems()
     }
 
     private func updateMailboxTitle() {
@@ -259,12 +264,7 @@ extension MailboxModel {
             await refreshConversations()
         }
 
-        selectionMode.selectionModifier.refreshSelectedItemsStatus { itemIds in
-            let selectedItems = paginatedDataSource.state.items
-                .filter { itemIds.contains($0.id) }
-                .map { $0.toSelectedItem() }
-            return Set(selectedItems)
-        }
+        selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
     }
 
     private func refreshMessage() async {
