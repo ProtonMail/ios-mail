@@ -21,30 +21,33 @@ import XCTest
 
 final class DeleteConfirmationAlertFactoryTests: XCTestCase {
 
-    func testMakeAlertForContact_ItReturnsCorrectAlert() {
+    func testMakeAlertForContact_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .contact(.vip)
 
-        let alert = DeleteConfirmationAlertFactory.make(for: itemToDelete)
+        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete))
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.Contact.title)
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.Contact.message)
+        XCTAssertEqual(alert.actions, [.confirm, .cancel])
+        XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.confirm, L10n.Contacts.DeletionAlert.cancel])
+        XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
 
-    func testMakeAlertForContactGroup_ItReturnsCorrectAlert() {
+    func testMakeAlertForContactGroup_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
 
-        let alert = DeleteConfirmationAlertFactory.make(for: itemToDelete)
+        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete))
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.ContactGroup.title)
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.ContactGroup.message)
+        XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.confirm, L10n.Contacts.DeletionAlert.cancel])
+        XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
 
-    func testMakeAlertForNil_ItReturnsCorrectAlert() {
-        let itemToDelete: ContactItemType? = nil
+    func testMakeAlertForNil_ItReturnsNil() {
+        let alert = DeleteConfirmationAlertFactory.make(for: nil)
 
-        let alert = DeleteConfirmationAlertFactory.make(for: itemToDelete)
-
-        XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.Contact.title)
-        XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.Contact.message)
+        XCTAssertNil(alert)
     }
+
 }

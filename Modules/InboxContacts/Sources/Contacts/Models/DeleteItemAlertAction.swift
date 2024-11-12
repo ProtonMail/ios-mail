@@ -15,9 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxCoreUI
+import SwiftUI
 
-struct Alert {
-    let title: LocalizedStringResource
-    let message: LocalizedStringResource
+enum DeleteItemAlertAction: AlertActionViewModel {
+    case cancel
+    case confirm
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .cancel:
+            L10n.Contacts.DeletionAlert.cancel
+        case .confirm:
+            L10n.Contacts.DeletionAlert.confirm
+        }
+    }
+
+    var buttonRole: ButtonRole {
+        switch self {
+        case .cancel:
+            return .cancel
+        case .confirm:
+            return .destructive
+        }
+    }
 }

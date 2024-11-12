@@ -20,11 +20,6 @@ import proton_app_uniffi
 import SwiftUI
 
 final class ContactsStateStore: ObservableObject {
-    enum DeleteItemAlertAction {
-        case confirm
-        case cancel
-    }
-
     enum Action {
         case onDeleteItem(ContactItemType)
         case onDeleteItemAlertAction(DeleteItemAlertAction)
