@@ -69,21 +69,32 @@ final class ContactsController: UITableViewController {
         }
     }
 
-    override func tableView(
-        _ tableView: UITableView,
-        commit editingStyle: UITableViewCell.EditingStyle,
-        forRowAt indexPath: IndexPath
-    ) {
-        if editingStyle == .delete {
-            let section = groupedContacts[indexPath.section]
-            let item = section.item[indexPath.row]
-
-            onDeleteItem(item)
-        }
-    }
-
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         groupedContacts.map(\.groupedBy)
+    }
+
+    // MARK: - UITableViewDelegate
+
+    override func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let section = groupedContacts[indexPath.section]
+        let item = section.item[indexPath.row]
+
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: nil
+        ) { [weak self] _, _, completionHandler in
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            self?.onDeleteItem(item)
+            completionHandler(true)
+        }
+        deleteAction.backgroundColor = UIColor(DS.Color.Notification.error)
+        deleteAction.image = UIImage(resource: DS.Icon.icTrash)
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
     // MARK: - Private
