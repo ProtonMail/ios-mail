@@ -68,10 +68,7 @@ public struct ContactsScreen: View {
     }
 
     private var isDeletionItemAlertPresented: Binding<Bool> {
-        .init(
-            get: { store.state.itemToDelete != nil },
-            set: { _ in }
-        )
+        .readonly { store.state.itemToDelete != nil }
     }
 }
 

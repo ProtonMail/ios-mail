@@ -19,7 +19,7 @@ import SwiftUI
 
 extension Binding {
 
-    static func readonly(get: @escaping () -> Value) -> Binding<Value> {
+    public static func readonly(get: @escaping () -> Value) -> Binding<Value> {
         .init(
             get: get,
             set: { _ in }
