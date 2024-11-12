@@ -1427,10 +1427,10 @@
 "Creating label not allowed" = "Label aanmaken is niet toegestaan";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 mappen te gebruiken";
+"Please upgrade to a paid plan to use more than 3 folders" = "Upgraden naar een betaald abonnement om meer dan 3 mappen te gebruiken";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 labels te gebruiken";
+"Please upgrade to a paid plan to use more than 3 labels" = "Upgraden naar een betaald abonnement om meer dan 3 labels te gebruiken";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Maak verbinding en probeer het opnieuw";
