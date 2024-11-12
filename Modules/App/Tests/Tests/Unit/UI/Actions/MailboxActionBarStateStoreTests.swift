@@ -57,7 +57,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         sut = makeSUT(viewMode: .messages)
         stubbedAvailableMessageActions = .init(
             hiddenBottomBarActions: [.labelAs, .markRead],
-            visibleBottomBarActions: [.notSpam(.init(localId: .init(value: 1), name: .inbox))]
+            visibleBottomBarActions: [.notSpam(.testInbox)]
         )
 
         let ids: [ID] = [.init(value: 11)]
@@ -68,7 +68,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 0)
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.first, ids)
         XCTAssertEqual(sut.state, .init(
-            bottomBarActions: [.notSpam],
+            bottomBarActions: [.notSpam(.testInbox)],
             moreSheetOnlyActions: [.labelAs, .markRead]
         ))
     }
@@ -76,7 +76,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .conversations)
         stubbedAvailableConversationActions = .init(
-            hiddenBottomBarActions: [.notSpam(.init(localId: .init(value: 1), name: .inbox)), .permanentDelete],
+            hiddenBottomBarActions: [.notSpam(.testInbox), .permanentDelete],
             visibleBottomBarActions: [.more]
         )
         let ids: [ID] = [.init(value: 22)]
@@ -88,7 +88,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.first, ids)
         XCTAssertEqual(sut.state, .init(
             bottomBarActions: [.more],
-            moreSheetOnlyActions: [.notSpam, .permanentDelete]
+            moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete]
         ))
     }
 
@@ -142,7 +142,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             selectedItemsIDs: [.init(value: 9)],
             bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
             moreSheetOnlyActions: [
-                .notSpam,
+                .notSpam(.testInbox),
                 .permanentDelete,
                 .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .archive))
             ]
@@ -233,6 +233,18 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             itemTypeForActionBar: viewMode.itemType,
             mailUserSession: .dummy,
             mailbox: MailboxStub(viewMode: viewMode)
+        )
+    }
+
+}
+
+// FIXME: - Move to separate file
+extension MoveToSystemFolderLocation {
+
+    static var testInbox: Self {
+        .init(
+            localId: MovableSystemFolderAction.testInbox.localId,
+            systemLabel: MovableSystemFolderAction.testInbox.name.moveToSystemFolderLabel
         )
     }
 

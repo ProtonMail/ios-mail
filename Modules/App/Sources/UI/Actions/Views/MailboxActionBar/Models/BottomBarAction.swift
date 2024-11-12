@@ -24,7 +24,7 @@ enum BottomBarAction: Hashable {
     case more
     case moveTo
     case moveToSystemFolder(MoveToSystemFolderLocation)
-    case notSpam
+    case notSpam(MoveToSystemFolderLocation)
     case permanentDelete
     case star
     case unstar

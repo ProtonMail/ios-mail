@@ -32,12 +32,9 @@ extension BottomBarActions {
         case .moveTo:
             return .moveTo
         case .moveToSystemFolder(let label):
-            return .moveToSystemFolder(.init(
-                localId: label.localId,
-                systemLabel: label.name.moveToSystemFolderLabel
-            ))
-        case .notSpam:
-            return .notSpam
+            return .moveToSystemFolder(.init(localId: label.localId, systemLabel: label.name.moveToSystemFolderLabel))
+        case .notSpam(let label):
+            return .notSpam(.init(localId: label.localId, systemLabel: label.name.moveToSystemFolderLabel))
         case .permanentDelete:
             return .permanentDelete
         case .star:

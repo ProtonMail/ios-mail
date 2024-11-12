@@ -28,7 +28,9 @@ enum MailboxActionBarPreviewProvider {
                 .moveToSystemFolder(.init(localId: .init(value: 1), systemLabel: .archive)),
                 .more
             ],
-            moreSheetOnlyActions: [.notSpam, .permanentDelete, .star],
+            moreSheetOnlyActions: [
+                .notSpam(.init(localId: .init(value: 1), systemLabel: .inbox)), .permanentDelete, .star
+            ],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
             moveToSheetPresented: nil

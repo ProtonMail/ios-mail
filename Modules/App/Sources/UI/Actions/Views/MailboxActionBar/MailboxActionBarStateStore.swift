@@ -70,12 +70,7 @@ final class MailboxActionBarStateStore: StateStore {
         case .moreSheetAction(let action, let ids):
             handle(action: action, ids: ids)
         case .alertActionTapped(let action, let ids):
-            state = state
-                .copy(\.moreActionSheetPresented, to: nil)
-                .copy(\.deleteConfirmationAlert, to: nil)
-            if case .delete = action {
-                deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: mailbox.itemType)
-            }
+            handle(action: action, ids: ids, itemType: itemTypeForActionBar)
         }
     }
 
@@ -110,10 +105,25 @@ final class MailboxActionBarStateStore: StateStore {
             dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
-            state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: ids.count))
+            let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel<DeleteConfirmationAlertAction>?> =
+                state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
+            state = state.copy(keyPath, to: .deleteConfirmation(itemsCount: ids.count))
+        case .moveToSystemFolder, .notSpam:
+            break
+        }
+    }
 
-        default:
-            break // FIXME: - Handle rest of the actions here
+    private func handle(action: DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType) {
+        state = state
+            .copy(\.deleteConfirmationAlert, to: nil)
+            .copy(\.moreDeleteConfirmationAlert, to: nil)
+        switch action {
+        case .delete:
+            state = state
+                .copy(\.moreActionSheetPresented, to: nil)
+            deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
+        case .cancel:
+            break
         }
     }
 

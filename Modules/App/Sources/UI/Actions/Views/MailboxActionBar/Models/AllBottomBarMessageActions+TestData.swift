@@ -22,12 +22,20 @@ extension AllBottomBarMessageActions {
     static var testData: Self {
         .init(
             hiddenBottomBarActions: [
-                .notSpam(.init(localId: .random(), name: .inbox)),
+                .notSpam(.testInbox),
                 .permanentDelete,
                 .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
             ],
             visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
         )
+    }
+
+}
+
+extension MovableSystemFolderAction {
+
+    static var testInbox: Self {
+        .init(localId: .init(value: 999), name: .inbox)
     }
 
 }
