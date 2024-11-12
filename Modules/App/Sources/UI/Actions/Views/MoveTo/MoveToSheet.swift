@@ -21,58 +21,77 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MoveToSheet: View {
-    @StateObject var model: MoveToSheetModel
+    @EnvironmentObject var toastStateStore: ToastStateStore
+    private let input: ActionSheetInput
+    private let mailbox: Mailbox
+    private let availableMoveToActions: AvailableMoveToActions
+    private let dismiss: () -> Void
 
-    init(model: MoveToSheetModel) {
-        self._model = StateObject(wrappedValue: model)
+    init(
+        input: ActionSheetInput,
+        mailbox: Mailbox,
+        availableMoveToActions: AvailableMoveToActions,
+        dismiss: @escaping () -> Void
+    ) {
+        self.input = input
+        self.mailbox = mailbox
+        self.availableMoveToActions = availableMoveToActions
+        self.dismiss = dismiss
     }
 
     var body: some View {
-        ClosableScreen {
-            ScrollView {
-                VStack(spacing: DS.Spacing.large) {
-                    moveToCustomFolderSection()
-                    moveToSystemFolderSection()
+        StoreView(store: MoveToSheetModel(
+            input: input,
+            mailbox: mailbox,
+            availableMoveToActions: availableMoveToActions,
+            dismiss: dismiss
+        )) { state, store in
+            ClosableScreen {
+                ScrollView {
+                    VStack(spacing: DS.Spacing.large) {
+                        moveToCustomFolderSection(state: state, store: store)
+                        moveToSystemFolderSection(state: state, store: store)
+                    }
+                    .padding(.all, DS.Spacing.large)
                 }
-                .padding(.all, DS.Spacing.large)
-            }
-            .background(DS.Color.Background.secondary)
-            .navigationTitle(L10n.Action.moveTo.string)
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear { model.handle(action: .viewAppear) }
-            .sheet(isPresented: $model.state.createFolderLabelPresented) {
-                CreateFolderOrLabelScreen()
+                .background(DS.Color.Background.secondary)
+                .navigationTitle(L10n.Action.moveTo.string)
+                .navigationBarTitleDisplayMode(.inline)
+                .onAppear { store.handle(action: .viewAppear) }
+                .sheet(isPresented: store.binding(\.createFolderLabelPresented)) {
+                    CreateFolderOrLabelScreen()
+                }
             }
         }
     }
 
     // MARK: - Private
 
-    private func moveToSystemFolderSection() -> some View {
+    private func moveToSystemFolderSection(state: MoveToState, store: MoveToSheetModel) -> some View {
         ActionSheetSection {
-            ForEachLast(collection: model.state.moveToSystemFolderActions) { moveToSystemFolder, isLast in
+            ForEachLast(collection: state.moveToSystemFolderActions) { moveToSystemFolder, isLast in
                 ActionSheetSelectableButton(
                     displayData: moveToSystemFolder.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { model.handle(action: .folderTapped(id: moveToSystemFolder.id)) }
+                    action: { store.handle(action: .folderTapped(id: moveToSystemFolder.id)) }
                 )
             }
         }
     }
 
-    private func moveToCustomFolderSection() -> some View {
+    private func moveToCustomFolderSection(state: MoveToState, store: MoveToSheetModel) -> some View {
         ActionSheetSection {
             VStack(spacing: .zero) {
-                ForEach(model.state.moveToCustomFolderActions.displayData(spacing: .zero)) { displayModel in
+                ForEach(state.moveToCustomFolderActions.displayData(spacing: .zero)) { displayModel in
                     ActionSheetSelectableButton(
                         displayData: displayModel,
                         displayBottomSeparator: true,
-                        action: { model.handle(action: .folderTapped(id: displayModel.id)) }
+                        action: { store.handle(action: .folderTapped(id: displayModel.id)) }
                     )
                 }
                 ActionSheetButton(
                     displayBottomSeparator: false,
-                    action: { model.handle(action: .createFolderTapped) }
+                    action: { store.handle(action: .createFolderTapped) }
                 ) {
                     HStack {
                         Image(DS.Icon.icPlus)
@@ -123,5 +142,10 @@ private extension Array where Element == MoveToCustomFolder {
 }
 
 #Preview {
-    MoveToSheet(model: MoveToSheetPreviewProvider.testModel)
+    MoveToSheet(
+        input: .init(ids: [], type: .message),
+        mailbox: .dummy,
+        availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
+        dismiss: {}
+    )
 }

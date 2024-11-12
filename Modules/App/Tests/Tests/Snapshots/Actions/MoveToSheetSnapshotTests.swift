@@ -22,7 +22,12 @@ import XCTest
 class MoveToSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
-        let sut = MoveToSheet(model: MoveToSheetPreviewProvider.testModel)
+        let sut = MoveToSheet(
+            input: .init(ids: [], type: .message),
+            mailbox: .dummy,
+            availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
+            dismiss: { }
+        )
         assertSnapshotsOnIPhoneX(of: sut, named: "move_to_sheet")
     }
 

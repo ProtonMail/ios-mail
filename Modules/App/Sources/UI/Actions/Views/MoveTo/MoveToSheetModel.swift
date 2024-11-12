@@ -21,7 +21,7 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-class MoveToSheetModel: ObservableObject {
+class MoveToSheetModel: StateStore { // FIXME: - Rename
     @Published var state: MoveToState = .initial
 
     private let input: ActionSheetInput

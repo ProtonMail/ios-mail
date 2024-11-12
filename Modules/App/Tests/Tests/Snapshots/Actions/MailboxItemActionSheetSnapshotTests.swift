@@ -25,40 +25,14 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
         let sut = MailboxItemActionSheet(
             input: .init(ids: [], type: .message, title: "Hello".notLocalized),
             mailbox: .dummy,
-            actionsProvider: ActionsProvider(
-                message: { _, _ in .init(
-                    replyActions: [.reply, .forward, .replyAll],
-                    messageActions: [.markUnread, .star, .pin, .labelAs],
-                    moveActions: [
-                        .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                        .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
-                        .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
-                        .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
-                        .moveTo
-                    ],
-                    generalActions: [
-                        .viewMessageInLightMode,
-                        .viewMessageInDarkMode,
-                        .saveAsPdf,
-                        .print,
-                        .viewHeaders,
-                        .viewHtml,
-                        .reportPhishing
-                    ]
-                ) },
-                conversation: { _, _ in .init(
-                    conversationActions: [],
-                    moveActions: [],
-                    generalActions: []
-                ) }
-            ),
+            actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
             starActionPerformerActions: .dummy,
             readActionPerformerActions: .dummy,
             deleteActions: .dummy,
             moveToActions: .dummy,
             mailUserSession: .dummy,
             navigation: { _ in }
-        )
+        ).environmentObject(ToastStateStore(initialState: .initial))
 
         assertSnapshotsOnIPhoneX(of: sut)
     }

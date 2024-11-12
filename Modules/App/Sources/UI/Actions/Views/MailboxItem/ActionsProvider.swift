@@ -31,11 +31,4 @@ extension ActionsProvider {
         )
     }
 
-    static var dummy: ActionsProvider {
-        .init(
-            message: { _, _ in .init(replyActions: [], messageActions: [], moveActions: [], generalActions: []) },
-            conversation: { _, _ in .init(conversationActions: [], moveActions: [], generalActions: []) }
-        )
-    }
-
 }

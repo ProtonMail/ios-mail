@@ -165,7 +165,7 @@ struct MailboxItemActionSheet: View {
     MailboxItemActionSheet(
         input: .init(ids: [], type: .message, title: "Hello there".notLocalized),
         mailbox: .dummy,
-        actionsProvider: .dummy,
+        actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
         starActionPerformerActions: .dummy,
         readActionPerformerActions: .dummy,
         deleteActions: .dummy,

@@ -91,14 +91,9 @@ private struct MailboxActionSheets: ViewModifier {
 
     @MainActor
     private func moveToActionPicker(input: ActionSheetInput) -> some View {
-        let model = MoveToSheetModel(
-            input: input,
-            mailbox: mailbox(),
-            availableMoveToActions: .productionInstance
-        ) {
+        MoveToSheet(input: input, mailbox: mailbox(), availableMoveToActions: .productionInstance) {
             state = state.dismissed()
         }
-        return MoveToSheet(model: model)
     }
 
     private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {

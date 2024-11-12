@@ -19,54 +19,33 @@ import proton_app_uniffi
 
 // FIXME: - Not needed anymore
 enum MailboxItemActionSheetPreviewProvider {
-    static func testData() -> MailboxItemActionSheetModel {
-        MailboxItemActionSheetModel(
-            input: .init(ids: [], type: .message, title: "Hello".notLocalized),
-            mailbox: .init(noPointer: .init()),
-            actionsProvider: ActionsProvider(
-                message: { _, _ in .init(
-                    replyActions: [.reply, .forward, .replyAll],
-                    messageActions: [.markUnread, .star, .pin, .labelAs],
-                    moveActions: [
-                        .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                        .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
-                        .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
-                        .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
-                        .moveTo
-                    ],
-                    generalActions: [
-                        .viewMessageInLightMode,
-                        .viewMessageInDarkMode,
-                        .saveAsPdf,
-                        .print,
-                        .viewHeaders,
-                        .viewHtml,
-                        .reportPhishing
-                    ]
-                ) },
-                conversation: { _, _ in .init(
-                    conversationActions: [],
-                    moveActions: [],
-                    generalActions: []
-                ) }
-            ),
-            starActionPerformerActions: .init(
-                starMessage: { _, _ in },
-                starConversation: { _, _ in },
-                unstarMessage: { _, _ in },
-                unstarConversation: { _, _ in }
-            ), 
-            readActionPerformerActions: .init( 
-                markMessageAsRead: { _, _ in },
-                markConversationAsRead: { _, _ in },
-                markMessageAsUnread: { _, _ in },
-                markConversationAsUnread: { _, _ in }
-            ), 
-            deleteActions: .dummy, 
-            moveToActions: .dummy,
-            mailUserSession: MailUserSession(noPointer: .init()),
-            toastStateStore: .init(initialState: .initial),
-            navigation: { _ in }
+    static func actionsProvider() -> ActionsProvider {
+        ActionsProvider(
+            message: { _, _ in .init(
+                replyActions: [.reply, .forward, .replyAll],
+                messageActions: [.markUnread, .star, .pin, .labelAs],
+                moveActions: [
+                    .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+                    .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
+                    .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
+                    .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
+                    .moveTo
+                ],
+                generalActions: [
+                    .viewMessageInLightMode,
+                    .viewMessageInDarkMode,
+                    .saveAsPdf,
+                    .print,
+                    .viewHeaders,
+                    .viewHtml,
+                    .reportPhishing
+                ]
+            )},
+            conversation: { _, _ in .init(
+                conversationActions: [],
+                moveActions: [],
+                generalActions: []
+            )}
         )
     }
 }
