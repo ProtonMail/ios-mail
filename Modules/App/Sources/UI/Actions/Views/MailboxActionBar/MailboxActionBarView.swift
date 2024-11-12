@@ -125,7 +125,12 @@ struct MailboxActionBarView: View {
         input: ActionSheetInput,
         actionHandler: @escaping (MailboxActionBarAction) -> Void
     ) -> some View {
-        MoveToSheet(input: input, mailbox: mailbox, availableMoveToActions: .productionInstance) {
+        MoveToSheet(
+            input: input,
+            mailbox: mailbox,
+            availableMoveToActions: .productionInstance,
+            moveToActions: .productionInstance
+        ) {
             actionHandler(.dismissMoveToSheet)
         }
     }

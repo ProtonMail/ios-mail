@@ -281,7 +281,9 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
 
         XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: ids)])
 
-        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destination: destination)])
+        XCTAssertEqual(toastStateStore.state.toasts, [
+            .moveTo(destinationName: destination.systemLabel.humanReadable.string)
+        ])
     }
 
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {

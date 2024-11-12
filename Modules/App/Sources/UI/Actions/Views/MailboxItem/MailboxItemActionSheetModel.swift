@@ -123,7 +123,7 @@ class MailboxItemActionSheetModel: StateStore {
     }
 
     private func presentMoveToToast(destination: MoveToSystemFolderLocation) {
-        presentToast(toast: .moveTo(destination: destination))
+        presentToast(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
     }
 
     private func presentDeletedToast() {
@@ -166,8 +166,8 @@ private extension MailboxItemActionSheetState {
 
 extension Toast { // FIXME: - Move to separate file
 
-    static func moveTo(destination: MoveToSystemFolderLocation) -> Toast {
-        .information(message: "Moved to \(destination.systemLabel.humanReadable.string).".notLocalized) // FIXME: - Localize
+    static func moveTo(destinationName: String) -> Toast {
+        .information(message: "Moved to \(destinationName).".notLocalized) // FIXME: - Localize
     }
 
     static func deleted() -> Toast {

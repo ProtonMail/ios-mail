@@ -17,9 +17,7 @@
 
 import Foundation
 
-enum MoveToSheetAction {
-    case viewAppear
-    case customFolderTapped(MoveToCustomFolderMetadata)
-    case systemFolderTapped(MoveToSystemFolder)
-    case createFolderTapped
+struct MoveToCustomFolderMetadata {
+    let id: ID
+    let name: String
 }

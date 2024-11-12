@@ -25,17 +25,20 @@ struct MoveToSheet: View {
     private let input: ActionSheetInput
     private let mailbox: Mailbox
     private let availableMoveToActions: AvailableMoveToActions
+    private let moveToActions: MoveToActions
     private let dismiss: () -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
+        moveToActions: MoveToActions,
         dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.mailbox = mailbox
         self.availableMoveToActions = availableMoveToActions
+        self.moveToActions = moveToActions
         self.dismiss = dismiss
     }
 
@@ -43,7 +46,9 @@ struct MoveToSheet: View {
         StoreView(store: MoveToSheetModel(
             input: input,
             mailbox: mailbox,
-            availableMoveToActions: availableMoveToActions,
+            availableMoveToActions: availableMoveToActions, 
+            toastStateStore: toastStateStore, 
+            moveToActions: moveToActions,
             dismiss: dismiss
         )) { state, store in
             ClosableScreen {
@@ -73,7 +78,7 @@ struct MoveToSheet: View {
                 ActionSheetSelectableButton(
                     displayData: moveToSystemFolder.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { store.handle(action: .folderTapped(id: moveToSystemFolder.id)) }
+                    action: { store.handle(action: .systemFolderTapped(moveToSystemFolder)) }
                 )
             }
         }
@@ -82,11 +87,15 @@ struct MoveToSheet: View {
     private func moveToCustomFolderSection(state: MoveToState, store: MoveToSheetModel) -> some View {
         ActionSheetSection {
             VStack(spacing: .zero) {
-                ForEach(state.moveToCustomFolderActions.displayData(spacing: .zero)) { displayModel in
+                ForEach(
+                    state.moveToCustomFolderActions.displayData(spacing: .zero)
+                ) { displayModel in
                     ActionSheetSelectableButton(
                         displayData: displayModel,
                         displayBottomSeparator: true,
-                        action: { store.handle(action: .folderTapped(id: displayModel.id)) }
+                        action: { store.handle(
+                            action: .customFolderTapped(.init(id: displayModel.id, name: displayModel.title))
+                        )}
                     )
                 }
                 ActionSheetButton(
@@ -145,7 +154,8 @@ private extension Array where Element == MoveToCustomFolder {
     MoveToSheet(
         input: .init(ids: [], type: .message),
         mailbox: .dummy,
-        availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
+        availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions, 
+        moveToActions: .dummy,
         dismiss: {}
     )
 }

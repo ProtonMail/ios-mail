@@ -26,16 +26,22 @@ class MoveToSheetModel: StateStore { // FIXME: - Rename
 
     private let input: ActionSheetInput
     private let moveToActionsProvider: MoveToActionsProvider
+    private let toastStateStore: ToastStateStore
+    private let moveToActionPerformer: MoveToActionPerformer
     private let dismiss: () -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
+        toastStateStore: ToastStateStore,
+        moveToActions: MoveToActions,
         dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
+        self.toastStateStore = toastStateStore
+        self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.dismiss = dismiss
     }
 
@@ -43,14 +49,26 @@ class MoveToSheetModel: StateStore { // FIXME: - Rename
         switch action {
         case .viewAppear:
             loadMoveToActions()
-        case .folderTapped:
-            dismiss()
+        case .customFolderTapped(let customFolder):
+            moveTo(desintationID: customFolder.id, destinationName: customFolder.name)
+        case .systemFolderTapped(let systemFolder):
+            moveTo(desintationID: systemFolder.id, destinationName: systemFolder.label.humanReadable.string)
         case .createFolderTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         }
     }
 
     // MARK: - Private
+
+    private func moveTo(desintationID: ID, destinationName: String) {
+        Task {
+            await moveToActionPerformer.moveTo(destinationID: desintationID, itemsIDs: input.ids, itemType: input.type)
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.toastStateStore.present(toast: .moveTo(destinationName: destinationName))
+                self?.dismiss()
+            }))
+        }
+    }
 
     private func loadMoveToActions() {
         Task {

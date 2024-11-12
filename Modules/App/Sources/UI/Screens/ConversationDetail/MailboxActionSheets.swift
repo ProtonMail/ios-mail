@@ -91,7 +91,12 @@ private struct MailboxActionSheets: ViewModifier {
 
     @MainActor
     private func moveToActionPicker(input: ActionSheetInput) -> some View {
-        MoveToSheet(input: input, mailbox: mailbox(), availableMoveToActions: .productionInstance) {
+        MoveToSheet(
+            input: input,
+            mailbox: mailbox(),
+            availableMoveToActions: .productionInstance,
+            moveToActions: .productionInstance
+        ) {
             state = state.dismissed()
         }
     }

@@ -26,6 +26,8 @@ class MoveToSheetModelTests: BaseTestCase {
     var invokedAvailableActionsWithConversationIDs: [ID]!
     var invokedDismissCount: Int!
     var stubbedMoveToActions: [MoveAction]!
+    var toastStateStore: ToastStateStore!
+    var moveToActionsSpy: MoveToActionsSpy!
 
     override func setUp() {
         super.setUp()
@@ -41,6 +43,8 @@ class MoveToSheetModelTests: BaseTestCase {
                 children: []
             ))
         ]
+        toastStateStore = .init(initialState: .initial)
+        moveToActionsSpy = .init()
     }
 
     override func tearDown() {
@@ -48,6 +52,8 @@ class MoveToSheetModelTests: BaseTestCase {
         invokedAvailableActionsWithConversationIDs = nil
         invokedDismissCount = nil
         stubbedMoveToActions = nil
+        toastStateStore = nil
+        moveToActionsSpy = nil
 
         super.tearDown()
     }
@@ -80,11 +86,27 @@ class MoveToSheetModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.createFolderLabelPresented)
     }
 
-    func testNavigation_WhenMoveToActionIsHandled_ItDismissesSelf() {
-        let sut = sut(input: .init(ids: [], type: .message))
+    func testAction_WhenCustomFolderIsTapped_ItMovesConversationToCustomFolder() {
+        let sut = sut(input: .init(ids: [.init(value: 2)], type: .conversation))
 
-        sut.handle(action: .folderTapped(id: .random()))
+        sut.handle(action: .customFolderTapped(.init(id: .init(value: 1), name: "Private")))
 
+        XCTAssertEqual(moveToActionsSpy.invokedMoveToConversation, [
+            .init(destinationID: .init(value: 1), itemsIDs: [.init(value: 2)])
+        ])
+        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Private")])
+        XCTAssertEqual(invokedDismissCount, 1)
+    }
+
+    func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
+        let sut = sut(input: .init(ids: [.init(value: 1)], type: .message))
+
+        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+
+        XCTAssertEqual(moveToActionsSpy.invokedMoveToMessage, [
+            .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
+        ])
+        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Inbox")])
         XCTAssertEqual(invokedDismissCount, 1)
     }
 
@@ -103,7 +125,9 @@ class MoveToSheetModelTests: BaseTestCase {
                     self.invokedAvailableActionsWithConversationIDs = ids
                     return []
                 }
-            ),
+            ), 
+            toastStateStore: toastStateStore,
+            moveToActions: moveToActionsSpy.testingInstance,
             dismiss: { self.invokedDismissCount += 1 }
         )
     }
