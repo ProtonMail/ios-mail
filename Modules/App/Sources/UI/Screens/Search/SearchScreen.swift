@@ -78,6 +78,7 @@ struct SearchScreen: View {
         .init(
             dataSource: model.paginatedDataSource,
             selectionState: model.selectionMode.selectionState,
+            itemTypeForActionBar: .message,
             cellEventHandler: .init(onCellEvent: handleResultCellEvent)
         )
     }

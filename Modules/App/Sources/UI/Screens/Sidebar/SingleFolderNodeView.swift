@@ -72,7 +72,7 @@ struct SingleFolderNodeView: View {
                         .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.chevronItem)
                     }
                     VStack {
-                        if let unreadFormatted = UnreadCountFormatter.string(count: folder.unreadCount) {
+                        if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: folder.unreadCount) {
                             Text(unreadFormatted)
                                 .foregroundStyle(
                                     folder.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak

@@ -17,16 +17,10 @@
 
 import proton_app_uniffi
 
-struct ContactDeleterAdapter {
-    private let mailUserSession: MailUserSession
-    private let contactDeleter: ContactDeleter
+extension ContactsWatcher {
 
-    init(mailUserSession: MailUserSession, contactDeleter: ContactDeleter) {
-        self.mailUserSession = mailUserSession
-        self.contactDeleter = contactDeleter
+    static func previewInstance() -> Self {
+        .init(watch: { _, _ in .init(contactList: [], handle: .init(noPointer: .init())) })
     }
 
-    func delete(contactID: Id) async throws {
-        try await contactDeleter.delete(contactID, mailUserSession)
-    }
 }

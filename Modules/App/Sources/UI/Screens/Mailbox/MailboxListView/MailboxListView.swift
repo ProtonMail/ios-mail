@@ -36,23 +36,19 @@ struct MailboxListView: View {
     }
 
     var body: some View {
-        MailboxItemsListView(
-            config: mailboxItemListViewConfiguration(),
-            headerView:  { unreadFilterView() },
-            emptyView: { MailboxEmptyView() }
-        )
-        .injectIfNotNil(model.mailbox)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onChange(of: model.selectedMailbox) { _, _ in
-            self.isListAtTop = true
-        }
-        .task {
-            guard !didAppearBefore else { return }
-            didAppearBefore = true
-            await model.onViewDidAppear()
-        }
-    }
+        VStack(spacing: .zero) {
+            unreadFilterView()
+                .background(
+                    DS.Color.Background.norm
+                        .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
+                )
+                .zIndex(1)
 
+            mailboxListView()
+
+        }
+        .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
+    }
 }
 
 extension MailboxListView {
@@ -66,7 +62,8 @@ extension MailboxListView {
     private func mailboxItemListViewConfiguration() -> MailboxItemsListViewConfiguration {
         var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
-            selectionState: model.selectionMode.selectionState
+            selectionState: model.selectionMode.selectionState,
+            itemTypeForActionBar: model.viewMode.itemType
         )
 
         config.swipeActions = .init(
@@ -102,12 +99,34 @@ extension MailboxListView {
         return config
     }
 
+    private func mailboxListView() -> some View {
+        MailboxItemsListView(
+            config: mailboxItemListViewConfiguration(),
+            headerView:  { EmptyView() },
+            emptyView: { MailboxEmptyView(isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected) }
+        )
+        .injectIfNotNil(model.mailbox)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onChange(of: model.selectedMailbox) { _, _ in
+            self.isListAtTop = true
+        }
+        .onChange(of: model.state.filterBar.isUnreadButtonSelected) { _, _ in
+            self.isListAtTop = true
+        }
+        .onLoad {
+            model.onLoad()
+        }
+    }
+
+    private func unreadBarShadow() -> some View {
+        Color
+            .black
+            .opacity(0.1)
+            .frame(height: 2)
+    }
+
     private func unreadFilterView() -> some View {
-        UnreadFilterBarView(isSelected: $model.state.isUnreadSelected, unread: model.state.unreadItemsCount)
-            .buttonStyle(PlainButtonStyle())
-            .listRowBackground(DS.Color.Background.norm)
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
+        UnreadFilterBarView(state: $model.state.filterBar)
     }
 }
 

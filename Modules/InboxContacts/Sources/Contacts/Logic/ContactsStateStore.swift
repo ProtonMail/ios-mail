@@ -28,22 +28,24 @@ final class ContactsStateStore: ObservableObject {
     @Published var state: ContactsScreenState
 
     private let repository: GroupedContactsRepository
-    private let contactDeleter: ContactDeleterAdapter
-    private let contactGroupDeleter: ContactGroupDeleterAdapter
-    private let contactsLiveQueryFactory: () -> ContactsLiveQueryCallbackWrapper
+    private let contactDeleter: ContactItemDeleterAdapter
+    private let contactGroupDeleter: ContactItemDeleterAdapter
+    private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
+    private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
+    private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
 
     init(
         state: ContactsScreenState,
         mailUserSession session: MailUserSession,
         contactsWrappers wrappers: RustContactsWrappers,
-        contactsLiveQueryFactory: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
+        makeContactsLiveQuery: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
         self.repository = .init(mailUserSession: session, contactsProvider: wrappers.contactsProvider)
-        self.contactDeleter = .init(mailUserSession: session, contactDeleter: wrappers.contactDeleter)
-        self.contactGroupDeleter = .init(mailUserSession: session, contactGroupDeleter: wrappers.contactGroupDeleter)
-        self.contactsLiveQueryFactory = contactsLiveQueryFactory
-        setUpLiveQueryUpdates()
+        self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
+        self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
+        self.makeContactsLiveQuery = makeContactsLiveQuery
+        self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
     }
 
     func handle(action: Action) {
@@ -51,6 +53,7 @@ final class ContactsStateStore: ObservableObject {
         case .onDeleteItem(let item):
             delete(item: item)
         case .onLoad:
+            startWatchingUpdates()
             loadAllContacts()
         }
     }
@@ -58,8 +61,6 @@ final class ContactsStateStore: ObservableObject {
     // MARK: - Private
 
     private func delete(item: ContactItemType) {
-        updateState(with: deleting(item: item, from: state.allItems))
-
         switch item {
         case .contact(let contactItem):
             deleteContact(id: contactItem.id)
@@ -68,22 +69,25 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
-    private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
-        items.compactMap { contactGroup in
-            let filteredItems = contactGroup.item.filter { item in item != itemToDelete }
-            return filteredItems.isEmpty ? nil : contactGroup.copy(items: filteredItems)
-        }
-    }
-
     private func deleteContact(id: Id) {
         Task {
-            try await contactDeleter.delete(contactID: id)
+            try await contactDeleter.delete(itemID: id)
         }
     }
 
     private func deleteContactGroup(id: Id) {
         Task {
-            try await contactGroupDeleter.delete(contactGroupID: id)
+            try await contactGroupDeleter.delete(itemID: id)
+        }
+    }
+
+    private func startWatchingUpdates() {
+        contactsLiveQueryCallback.delegate = { [weak self] updatedItems in
+            self?.updateState(with: updatedItems)
+        }
+
+        Task {
+            try await watchContacts(contactsLiveQueryCallback)
         }
     }
 
@@ -99,13 +103,5 @@ final class ContactsStateStore: ObservableObject {
 
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
-    }
-
-    private func setUpLiveQueryUpdates() {
-        let liveQueryCallback = contactsLiveQueryFactory()
-
-        liveQueryCallback.delegate = { [weak self] updatedItems in
-            self?.updateState(with: updatedItems)
-        }
     }
 }

@@ -53,7 +53,7 @@ extension PMCustomLabel {
             id: id,
             color: color.value,
             name: name,
-            unreadCount: UnreadCountFormatter.string(count: unread),
+            unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: unread),
             isSelected: false
         )
     }
@@ -70,7 +70,7 @@ extension PMSystemLabel {
         return .init(
             id: id,
             type: systemFolder,
-            unreadCount: UnreadCountFormatter.string(count: unread),
+            unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: unread),
             isSelected: false
         )
     }

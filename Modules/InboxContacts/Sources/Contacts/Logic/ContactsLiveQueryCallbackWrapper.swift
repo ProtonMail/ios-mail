@@ -17,19 +17,12 @@
 
 import proton_app_uniffi
 
-// FIXME: Use RustSDK's implementation here instead
-public protocol RustContactsLiveQueryCallback: AnyObject {
-    func onUpdate(items: [GroupedContacts])
-}
-
-final class ContactsLiveQueryCallbackWrapper: RustContactsLiveQueryCallback {
-
+final class ContactsLiveQueryCallbackWrapper: ContactsLiveQueryCallback {
     var delegate: (([GroupedContacts]) -> Void)?
 
     // MARK: - RustContactsLiveQueryCallback
 
-    func onUpdate(items: [GroupedContacts]) {
-        delegate?(items)
+    func onUpdate(contacts: [GroupedContacts]) {
+        delegate?(contacts)
     }
-
 }

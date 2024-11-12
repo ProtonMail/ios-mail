@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import Foundation
 
 /**
  This class wraps the mailbox item selection state and its modifier.
@@ -41,11 +41,10 @@ final class SelectionMode {
  This class is agnostic of Messages and Conversations and so it works for both.
  */
 final class SelectionModeState: ObservableObject {
-    @Published fileprivate(set) var hasItems: Bool
+    var hasItems: Bool { !selectedItems.isEmpty }
     @Published fileprivate(set) var selectedItems: Set<MailboxSelectedItem>
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
-        self.hasItems = false
         self.selectedItems = selectedItems
     }
 }
@@ -53,7 +52,7 @@ final class SelectionModeState: ObservableObject {
 /**
  Responsible for updating the `SelectionModeState`
  */
-final class SelectionModeStateModifier {
+final class SelectionModeStateModifier: @unchecked Sendable {
     let state: SelectionModeState
 
     init(state: SelectionModeState) {
@@ -62,39 +61,27 @@ final class SelectionModeStateModifier {
 
     func addMailboxItem(_ item: MailboxSelectedItem) {
         state.selectedItems.insert(item)
-        state.hasItems = true
     }
 
     func removeMailboxItem(_ item: MailboxSelectedItem) {
         state.selectedItems.remove(item)
-        state.hasItems = !state.selectedItems.isEmpty
     }
 
     func exitSelectionMode() {
         state.selectedItems.removeAll()
-        state.hasItems = false
     }
 
     /**
-     Call this method to refresh the status of the selected items when their status might have changed.
-     - Parameter itemProvider: closure that given a collection of item ids, returns the newest status of those items.
-
-     - If `itemProvider` does not return one of the selected items, this will be removed from the selection collection. The reason
-     being that the item might not exist anymore.
-     - If `itemProvider` returns one item that did not belong to the selection collection, that item won't be added to the collection. New
-     items should be added calling  `addMailboxItem`.
+     Call this method to refresh the status of the selected items when the mailbox item collection changes.
+     - Parameter newMailboxItems: collection of mailbox items that can affect the status of the selected items.
      */
-    func refreshSelectedItemsStatus(itemProvider: (_ mailboxItemIDs: [ID]) -> Set<MailboxSelectedItem> ) {
-        let returnedItems = itemProvider(state.selectedItems.map(\.id))
-        let selectedItemsNewStatus = returnedItems.union(returnedItems)
-        state.selectedItems.removeAll()
-        state.selectedItems = selectedItemsNewStatus
+    @MainActor
+    func refreshSelectedItemsStatus(newMailboxItems: [MailboxItemCellUIModel]) {
+        let currentSelectedIds = state.selectedItems.map(\.id)
+        let matchingItems = newMailboxItems
+            .filter { currentSelectedIds.contains($0.id) }
+            .map { $0.toSelectedItem() }
 
-        // Given that this method can be frequently called, we only change the `hasSelectedItems` property
-        // if the value changes to avoid potential infinite loops with observers.
-        let newHasSelectedItemsValue = !state.selectedItems.isEmpty
-        if state.hasItems != newHasSelectedItemsValue {
-            state.hasItems = newHasSelectedItemsValue
-        }
+        state.selectedItems = Set(matchingItems)
     }
 }

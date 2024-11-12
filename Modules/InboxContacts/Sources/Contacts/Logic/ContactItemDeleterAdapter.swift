@@ -17,16 +17,16 @@
 
 import proton_app_uniffi
 
-struct ContactGroupDeleterAdapter {
+struct ContactItemDeleterAdapter {
     private let mailUserSession: MailUserSession
-    private let contactGroupDeleter: ContactGroupDeleter
+    private let deleteItem: DeleteContactItem
 
-    init(mailUserSession: MailUserSession, contactGroupDeleter: ContactGroupDeleter) {
+    init(mailUserSession: MailUserSession, deleteItem: @escaping DeleteContactItem) {
         self.mailUserSession = mailUserSession
-        self.contactGroupDeleter = contactGroupDeleter
+        self.deleteItem = deleteItem
     }
 
-    func delete(contactGroupID: Id) async throws {
-        try await contactGroupDeleter.delete(contactGroupID, mailUserSession)
+    func delete(itemID: Id) async throws {
+        try await deleteItem(itemID, mailUserSession)
     }
 }

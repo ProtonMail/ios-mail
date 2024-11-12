@@ -25,6 +25,7 @@ struct MailboxActionBarView: View {
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let state: MailboxActionBarState
+    private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableMailboxActionBarActions
     private let deleteActions: DeleteActions
     private let mailUserSession: MailUserSession
@@ -37,11 +38,13 @@ struct MailboxActionBarView: View {
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
         deleteActions: DeleteActions = .productionInstance,
+        itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
         self.state = state
+        self.itemTypeForActionBar = itemTypeForActionBar
         self.availableActions = availableActions
         self.deleteActions = deleteActions
         self.mailUserSession = mailUserSession
@@ -54,8 +57,9 @@ struct MailboxActionBarView: View {
             state: state,
             availableActions: availableActions,
             starActionPerformerActions: starActionPerformerActions, 
-            readActionPerformerActions: readActionPerformerActions, 
+            readActionPerformerActions: readActionPerformerActions,
             deleteActions: deleteActions,
+            itemTypeForActionBar: itemTypeForActionBar,
             mailUserSession: mailUserSession,
             mailbox: mailbox
         )) { state, store in
@@ -136,6 +140,7 @@ struct MailboxActionBarView: View {
     MailboxActionBarView(
         state: MailboxActionBarPreviewProvider.state(),
         availableActions: MailboxActionBarPreviewProvider.availableActions(),
+        itemTypeForActionBar: .conversation,
         selectedItems: .constant([])
     )
 }

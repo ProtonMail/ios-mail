@@ -17,22 +17,40 @@
 
 import proton_app_uniffi
 
+typealias DeleteContactItem = (_ id: Id, _ session: MailUserSession) async throws -> Void
+
 struct RustContactsWrappers {
     let contactsProvider: GroupedContactsProvider
-    let contactDeleter: ContactDeleter
-    let contactGroupDeleter: ContactGroupDeleter
+    let contactDeleter: DeleteContactItem
+    let contactGroupDeleter: DeleteContactItem
+    let contactsWatcher: ContactsWatcher
+}
+
+extension RustContactsWrappers {
+
+    static func productionInstance(
+        contactsProvider: GroupedContactsProvider,
+        contactsWatcher: ContactsWatcher
+    ) -> Self {
+        .init(
+            contactsProvider: contactsProvider,
+            contactDeleter: deleteContact(contactId:session:),
+            contactGroupDeleter: { _, _ in },
+            contactsWatcher: contactsWatcher
+        )
+    }
+
 }
 
 public struct GroupedContactsProvider {
     public let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
 }
 
-struct ContactDeleter {
-    let delete: (_ contactID: Id, _ session: MailUserSession) async throws -> Void
-}
-
-struct ContactGroupDeleter {
-    let delete: (_ contactGroupID: Id, _ session: MailUserSession) async throws -> Void
+public struct ContactsWatcher {
+    public let watch: (
+        _ session: MailUserSession,
+        _ callback: ContactsLiveQueryCallback
+    ) async throws -> WatchedContactList
 }
 
 extension GroupedContactsProvider {
@@ -43,18 +61,10 @@ extension GroupedContactsProvider {
 
 }
 
-extension ContactDeleter {
+extension ContactsWatcher {
 
-    static func productionInstance() -> Self {
-        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
-    }
-
-}
-
-extension ContactGroupDeleter {
-
-    static func productionInstance() -> Self {
-        .init(delete: { _, _ in }) // FIXME: Use RustSDK's implementation here
+    public static func productionInstance() -> Self {
+        .init(watch: watchContactList(session:callback:))
     }
 
 }

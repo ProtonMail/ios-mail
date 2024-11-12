@@ -194,10 +194,14 @@ enum L10n {
     enum Mailbox {
         enum EmptyState {
             static let message = LocalizedStringResource(
-                "Why not take a breather or check back later?",
+                "Seems like you are all caught up for now",
                 comment: "Mailbox empty state message."
             )
-            static let title = LocalizedStringResource("No emails yet", comment: "Mailbox empty state title.")
+            static let title = LocalizedStringResource("No messages", comment: "Mailbox empty state title.")
+            static let titleForUnread = LocalizedStringResource(
+                "No unread messages",
+                comment: "Mailbox empty state title when unread filter is enabled."
+            )
         }
 
         enum Item {
@@ -304,6 +308,10 @@ enum L10n {
         static let unread = LocalizedStringResource(
             "Unread",
             comment: "Badge title indicating how many emails are unread in given system folder."
+        )
+        static let selectAll = LocalizedStringResource(
+            "Select all",
+            comment: "Button title allowing to select all items in a mailbox."
         )
     }
 

@@ -24,7 +24,7 @@ struct MailboxConversationMessageCountView: View {
     private let cornerRadius = 6.0
 
     var body: some View {
-        if let unreadFormatted = UnreadCountFormatter.string(count: messagesCount) {
+        if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: messagesCount) {
             Text(unreadFormatted)
                 .font(.footnote)
                 .fontWeight(.semibold)

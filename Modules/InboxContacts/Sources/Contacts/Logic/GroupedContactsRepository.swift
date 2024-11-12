@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-public struct GroupedContactsRepository {
+struct GroupedContactsRepository {
     private let mailUserSession: MailUserSession
     private let contactsProvider: GroupedContactsProvider
 
@@ -26,7 +26,7 @@ public struct GroupedContactsRepository {
         self.contactsProvider = contactsProvider
     }
 
-    public func allContacts() async -> [GroupedContacts] {
+    func allContacts() async -> [GroupedContacts] {
         try! await contactsProvider.allContacts(mailUserSession)
     }
 }

@@ -54,7 +54,7 @@ final class MailboxModel: ObservableObject {
         dependencies.appContext.userSession
     }
 
-    private var viewMode: ViewMode {
+    var viewMode: ViewMode {
         mailbox?.viewMode() ?? .conversations
     }
 
@@ -98,8 +98,10 @@ final class MailboxModel: ObservableObject {
         AppLogger.log(message: "MailboxModel deinit", category: .mailbox)
     }
 
-    func onViewDidAppear() async {
-        await updateMailboxAndPaginator()
+    func onLoad() {
+        Task {
+            await updateMailboxAndPaginator()
+        }
     }
 }
 
@@ -132,11 +134,11 @@ extension MailboxModel {
 
         selectionMode
             .selectionState
-            .$hasItems
-            .sink { [weak self] hasItems in
+            .$selectedItems
+            .removeDuplicates()
+            .sink { [weak self] _ in
                 Task {
-                    self?.updateMailboxTitle()
-                    await self?.refreshMailboxItems()
+                    await self?.onSelectedItemsChange()
                 }
             }
             .store(in: &cancellables)
@@ -151,16 +153,23 @@ extension MailboxModel {
         }
     }
 
+    private func onSelectedItemsChange() async {
+        state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        updateMailboxTitle()
+        await refreshMailboxItems()
+    }
+
     private func updateMailboxTitle() {
         state.mailboxTitle = selectionMode.selectionState.hasItems
         ? selectionMode.selectionState.title
         : selectedMailbox.name
     }
 
-    private func updateMailboxAndPaginator() async {
+    private func updateMailboxAndPaginator(resetUnreadCount: Bool = true) async {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
+            if resetUnreadCount { state.filterBar.unreadCount = .unknown }
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox
@@ -174,14 +183,14 @@ extension MailboxModel {
                 messagePaginator = try await paginateMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    filter: .init(unread: nil),
+                    filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
                     callback: paginatorCallback
                 )
             } else {
                 conversationPaginator = try await paginateConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(), 
-                    filter: .init(unread: nil),
+                    filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
                     callback: paginatorCallback
                 )
             }
@@ -190,7 +199,7 @@ extension MailboxModel {
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
                 await MainActor.run {
-                    self?.state.unreadItemsCount = unreadCount
+                    self?.state.filterBar.unreadCount = .knwon(unreadCount: unreadCount)
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
@@ -216,7 +225,7 @@ extension MailboxModel {
             result = mailbox.viewMode() == .messages
             ? try await fetchNextPageMessages(currentPage: currentPage)
             : try await fetchNextPageConversations(currentPage: currentPage)
-            AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items", category: .mailbox)
+            AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
             return result
         } catch {
             AppLogger.log(error: error, category: .mailbox)
@@ -255,12 +264,7 @@ extension MailboxModel {
             await refreshConversations()
         }
 
-        selectionMode.selectionModifier.refreshSelectedItemsStatus { itemIds in
-            let selectedItems = paginatedDataSource.state.items
-                .filter { itemIds.contains($0.id) }
-                .map { $0.toSelectedItem() }
-            return Set(selectedItems)
-        }
+        selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
     }
 
     private func refreshMessage() async {
@@ -320,6 +324,17 @@ extension MailboxModel {
     }
 }
 
+// MARK: Filtering
+
+extension MailboxModel {
+
+    func onUnreadFilterChange() {
+        Task {
+            AppLogger.log(message: "unread filter has changed to \(state.filterBar.isUnreadButtonSelected)", category: .mailbox)
+            await self.updateMailboxAndPaginator(resetUnreadCount: false)
+        }
+    }
+}
 
 // MARK: View actions
 
@@ -532,8 +547,7 @@ extension MailboxModel {
 
     struct State {
         var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
-        var unreadItemsCount: UInt64 = 0
-        var isUnreadSelected: Bool = false
+        var filterBar: FilterBarState = .init()
 
         // Navigation properties
         var attachmentPresented: AttachmentViewConfig?
