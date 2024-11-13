@@ -19,6 +19,8 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
+typealias ContactItemAction = (ContactItemType) -> Void
+
 final class ContactsController: UITableViewController {
 
     var groupedContacts: [GroupedContacts] {
@@ -28,9 +30,14 @@ final class ContactsController: UITableViewController {
         }
     }
 
-    init(contacts: [GroupedContacts], onDeleteItem: @escaping (ContactItemType) -> Void) {
+    init(
+        contacts: [GroupedContacts],
+        onDeleteItem: @escaping ContactItemAction,
+        onTapItem: @escaping ContactItemAction
+    ) {
         self.groupedContacts = contacts
         self.onDeleteItem = onDeleteItem
+        self.onTapItem = onTapItem
         super.init(style: .insetGrouped)
     }
 
@@ -75,6 +82,13 @@ final class ContactsController: UITableViewController {
 
     // MARK: - UITableViewDelegate
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = groupedContacts[indexPath.section]
+        let contactItem = section.item[indexPath.row]
+
+        onTapItem(contactItem)
+    }
+
     override func tableView(
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
@@ -99,7 +113,8 @@ final class ContactsController: UITableViewController {
 
     // MARK: - Private
 
-    private let onDeleteItem: (ContactItemType) -> Void
+    private let onDeleteItem: ContactItemAction
+    private let onTapItem: ContactItemAction
 
     private func setUpTableView() {
         tableView.backgroundColor = UIColor(DS.Color.BackgroundInverted.norm)

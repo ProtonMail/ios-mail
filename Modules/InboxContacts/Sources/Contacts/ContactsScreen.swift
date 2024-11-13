@@ -48,7 +48,8 @@ public struct ContactsScreen: View {
         NavigationStack {
             ContactsControllerRepresentable(
                 contacts: store.state.displayItems,
-                onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) }
+                onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) },
+                onTapItem: { _ in }
             )
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)

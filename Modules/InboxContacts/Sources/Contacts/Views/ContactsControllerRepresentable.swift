@@ -21,12 +21,13 @@ import SwiftUI
 
 struct ContactsControllerRepresentable: UIViewControllerRepresentable {
     let contacts: [GroupedContacts]
-    let onDeleteItem: (ContactItemType) -> Void
+    let onDeleteItem: ContactItemAction
+    let onTapItem: ContactItemAction
 
     // MARK: - UIViewControllerRepresentable
 
     func makeUIViewController(context: Context) -> ContactsController {
-        ContactsController(contacts: contacts, onDeleteItem: onDeleteItem)
+        ContactsController(contacts: contacts, onDeleteItem: onDeleteItem, onTapItem: onTapItem)
     }
 
     func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
