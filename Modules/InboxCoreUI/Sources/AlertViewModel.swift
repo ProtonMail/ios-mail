@@ -17,13 +17,19 @@
 
 import SwiftUI
 
-extension Binding {
+public protocol AlertActionViewModel: Hashable {
+    var title: LocalizedStringResource { get }
+    var buttonRole: ButtonRole { get }
+}
 
-    static func readonly(get: @escaping () -> Value) -> Binding<Value> {
-        .init(
-            get: get,
-            set: { _ in }
-        )
+public struct AlertViewModel<Action: AlertActionViewModel>: Equatable {
+    public let title: LocalizedStringResource
+    public let message: LocalizedStringResource?
+    public let actions: [Action]
+
+    public init(title: LocalizedStringResource, message: LocalizedStringResource?, actions: [Action]) {
+        self.title = title
+        self.message = message
+        self.actions = actions
     }
-
 }

@@ -53,12 +53,21 @@ public struct ContactsScreen: View {
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
         }
+        .alert(model: deletionAlert) { action in
+            store.handle(action: .onDeleteItemAlertAction(action))
+        }
         .searchable(
             text: $store.state.search.query,
             isPresented: $store.state.search.isActive,
             placement: .navigationBarDrawer(displayMode: .always)
         )
         .onLoad { store.handle(action: .onLoad) }
+    }
+
+    // MARK: - Private
+
+    private var deletionAlert: Binding<AlertViewModel<DeleteItemAlertAction>?> {
+        .readonly { store.state.itemToDelete.map(DeleteConfirmationAlertFactory.make) }
     }
 }
 

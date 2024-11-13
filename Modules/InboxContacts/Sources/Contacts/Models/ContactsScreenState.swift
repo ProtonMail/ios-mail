@@ -26,6 +26,7 @@ public struct ContactsScreenState: Copying, Equatable {
 
     var search: Search
     var allItems: [GroupedContacts]
+    var itemToDelete: ContactItemType?
     var displayItems: [GroupedContacts] {
         guard search.isActive else {
             return allItems
@@ -42,7 +43,7 @@ public struct ContactsScreenState: Copying, Equatable {
 extension ContactsScreenState {
 
     public static var initial: Self {
-        .init(search: .initial, allItems: [])
+        .init(search: .initial, allItems: [], itemToDelete: nil)
     }
 
 }

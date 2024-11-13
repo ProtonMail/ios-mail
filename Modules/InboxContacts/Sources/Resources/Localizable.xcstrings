@@ -24,8 +24,26 @@
         }
       }
     },
+    "Cancel" : {
+      "comment" : "Action title for cancelling deletion of given item."
+    },
+    "Confirm" : {
+      "comment" : "Action title for confirming deletion of given item."
+    },
     "Contacts" : {
       "comment" : "Title of the contacts screen that displays contacts and contact groups."
+    },
+    "Delete contact" : {
+      "comment" : "Title for the alert shown when deleting a contact."
+    },
+    "Delete contact group" : {
+      "comment" : "Title for the alert shown when deleting a contact group."
+    },
+    "Deleting the contact group will reload the list and no longer show the contact group." : {
+      "comment" : "Message for the alert shown when deleting a contact group."
+    },
+    "Deleting the contact will reload the list and no longer show the contact." : {
+      "comment" : "Message for the alert shown when deleting a contact."
     },
     "No contacts yet" : {
       "comment" : "Contacts screen's empty state title."

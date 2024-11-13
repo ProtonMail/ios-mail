@@ -46,5 +46,44 @@ enum L10n {
                 comment: "Contact group row subtitle."
             )
         }
+
+        enum DeletionAlert {
+            static let cancel = LocalizedStringResource(
+                "Cancel",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Action title for cancelling deletion of given item."
+            )
+            static let confirm = LocalizedStringResource(
+                "Confirm",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Action title for confirming deletion of given item."
+            )
+
+            enum Contact {
+                static let title = LocalizedStringResource(
+                    "Delete contact",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Title for the alert shown when deleting a contact."
+                )
+                static let message = LocalizedStringResource(
+                    "Deleting the contact will reload the list and no longer show the contact.",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Message for the alert shown when deleting a contact."
+                )
+            }
+
+            enum ContactGroup {
+                static let title = LocalizedStringResource(
+                    "Delete contact group",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Title for the alert shown when deleting a contact group."
+                )
+                static let message = LocalizedStringResource(
+                    "Deleting the contact group will reload the list and no longer show the contact group.",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Message for the alert shown when deleting a contact group."
+                )
+            }
+        }
     }
 }

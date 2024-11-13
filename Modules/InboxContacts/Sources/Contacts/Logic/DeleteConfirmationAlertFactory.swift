@@ -15,12 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import InboxCoreUI
-import SwiftUI
+import proton_app_uniffi
 
-struct MailboxItemActionSheetState: Equatable, Copying {
-    let title: String
-    var availableActions: AvailableActions
-    var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
+enum DeleteConfirmationAlertFactory {
+    static func make(for itemToDelete: ContactItemType) -> AlertViewModel<DeleteItemAlertAction> {
+        let actions: [DeleteItemAlertAction] = [.confirm, .cancel]
+
+        switch itemToDelete {
+        case .contact:
+            return .init(
+                title: L10n.Contacts.DeletionAlert.Contact.title,
+                message: L10n.Contacts.DeletionAlert.Contact.message,
+                actions: actions
+            )
+        case .group:
+            return .init(
+                title: L10n.Contacts.DeletionAlert.ContactGroup.title,
+                message: L10n.Contacts.DeletionAlert.ContactGroup.message,
+                actions: actions
+            )
+        }
+    }
 }

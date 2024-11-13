@@ -9,9 +9,9 @@ let package = Package(
     products: [
         .library(name: "InboxCoreUI", targets: ["InboxCoreUI"])
     ],
-    dependencies: [],
+    dependencies: [.package(path: "../InboxCore")],
     targets: [
-        .target(name: "InboxCoreUI"),
+        .target(name: "InboxCoreUI", dependencies: ["InboxCore"]),
         .testTarget(name: "InboxCoreUITests", dependencies: [.target(name: "InboxCoreUI")])
     ]
 )

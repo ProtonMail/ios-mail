@@ -20,6 +20,7 @@ import proton_app_uniffi
 import XCTest
 
 final class ContactsFilterStrategyTests: XCTestCase {
+
     func testFilter_ForEmptyStringSearchPhrase_ReturnsAllResults() {
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -141,4 +142,5 @@ final class ContactsFilterStrategyTests: XCTestCase {
 
         XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "Andr", items: groupedItems), expectedItems)
     }
+
 }

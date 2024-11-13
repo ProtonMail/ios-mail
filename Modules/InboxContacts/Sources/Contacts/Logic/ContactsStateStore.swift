@@ -22,6 +22,7 @@ import SwiftUI
 final class ContactsStateStore: ObservableObject {
     enum Action {
         case onDeleteItem(ContactItemType)
+        case onDeleteItemAlertAction(DeleteItemAlertAction)
         case onLoad
     }
 
@@ -50,8 +51,10 @@ final class ContactsStateStore: ObservableObject {
 
     func handle(action: Action) {
         switch action {
+        case .onDeleteItemAlertAction(let alertAction):
+            handle(alertAction: alertAction)
         case .onDeleteItem(let item):
-            delete(item: item)
+            state = state.copy(\.itemToDelete, to: item)
         case .onLoad:
             startWatchingUpdates()
             loadAllContacts()
@@ -59,6 +62,19 @@ final class ContactsStateStore: ObservableObject {
     }
 
     // MARK: - Private
+
+    private func handle(alertAction: DeleteItemAlertAction) {
+        switch alertAction {
+        case .confirm:
+            if let item = state.itemToDelete {
+                delete(item: item)
+            }
+        case .cancel:
+            break
+        }
+
+        state = state.copy(\.itemToDelete, to: nil)
+    }
 
     private func delete(item: ContactItemType) {
         switch item {
