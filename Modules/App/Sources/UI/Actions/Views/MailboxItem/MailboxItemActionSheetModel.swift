@@ -99,13 +99,16 @@ class MailboxItemActionSheetModel: StateStore {
     // MARK: - Private
 
     private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID], itemType: MailboxItemType) {
-        moveToActionPerformer.moveTo(
-            destinationID: destination.localId,
-            itemsIDs: ids,
-            itemType: itemType
-        ) { [weak self] in
-            self?.dismiss()
-            self?.presentMoveToToast(destination: destination)
+        Task {
+            await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: ids,
+                itemType: itemType
+            )
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.presentMoveToToast(destination: destination)
+                self?.dismiss()
+            }))
         }
     }
 

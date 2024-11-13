@@ -159,13 +159,14 @@ extension ConversationDetailModel {
     private func moveConversation(destination: MoveToSystemFolderLocation, toastStateStore: ToastStateStore) {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
-        moveToActionPerformer.moveTo(
-            destinationID: destination.localId,
-            itemsIDs: [conversationID.unsafelyUnwrapped],
-            itemType: .conversation
-        ) { [weak toastStateStore] in
+        Task {
+            await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: [conversationID.unsafelyUnwrapped],
+                itemType: .conversation
+            )
             Dispatcher.dispatchOnMain(.init(block: {
-                toastStateStore?.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+                toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
             }))
         }
     }

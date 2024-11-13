@@ -123,12 +123,13 @@ final class MailboxActionBarStateStore: StateStore {
     }
 
     private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID]) {
-        moveToActionPerformer.moveTo(
-            destinationID: destination.localId,
-            itemsIDs: ids,
-            itemType: itemTypeForActionBar
-        ) { [weak self] in
-            Dispatcher.dispatchOnMain(.init(block: {
+        Task {
+            await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: ids,
+                itemType: itemTypeForActionBar
+            )
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.itemMoved(destination: destination)
             }))
         }

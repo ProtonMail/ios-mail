@@ -26,12 +26,9 @@ struct MoveToActionPerformer {
         self.moveToActions = moveToActions
     }
 
-    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
-        Task {
-            let moveToAction = moveToAction(itemType: itemType)
-            try! await moveToAction(mailbox, destinationID, itemsIDs)
-            completion?()
-        }
+    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async {
+        let moveToAction = moveToAction(itemType: itemType)
+        try! await moveToAction(mailbox, destinationID, itemsIDs)
     }
 
     // MARK: - Private

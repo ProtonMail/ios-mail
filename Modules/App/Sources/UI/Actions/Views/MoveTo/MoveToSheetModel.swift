@@ -61,12 +61,13 @@ class MoveToSheetModel: StateStore { // FIXME: - Rename
     // MARK: - Private
 
     private func moveTo(desintationID: ID, destinationName: String) {
-        moveToActionPerformer.moveTo(
-            destinationID: desintationID,
-            itemsIDs: input.ids,
-            itemType: input.type
-        ) { [weak self] in
-            Dispatcher.dispatchOnMain(.init(block: {
+        Task {
+            await moveToActionPerformer.moveTo(
+                destinationID: desintationID,
+                itemsIDs: input.ids,
+                itemType: input.type
+            )
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.toastStateStore.present(toast: .moveTo(destinationName: destinationName))
                 self?.dismiss()
             }))
