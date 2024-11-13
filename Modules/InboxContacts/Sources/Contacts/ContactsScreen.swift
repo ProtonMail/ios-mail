@@ -45,14 +45,17 @@ public struct ContactsScreen: View {
     }
 
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: navigationPath) {
             ContactsControllerRepresentable(
                 contacts: store.state.displayItems,
                 onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) },
-                onTapItem: { _ in }
+                onTapItem: { item in store.handle(action: .onTapItem(item)) }
             )
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
+            .navigationDestination(for: Route.self) { route in
+                route.view()
+            }
         }
         .alert(model: deletionAlert) { action in
             store.handle(action: .onDeleteItemAlertAction(action))
@@ -66,6 +69,13 @@ public struct ContactsScreen: View {
     }
 
     // MARK: - Private
+
+    private var navigationPath: Binding<[Route]> {
+        .init(
+            get: { store.router.stack },
+            set: { newStack in store.router.stack = newStack }
+        )
+    }
 
     private var deletionAlert: Binding<AlertViewModel<DeleteItemAlertAction>?> {
         .readonly { store.state.itemToDelete.map(DeleteConfirmationAlertFactory.make) }

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCore
 import proton_app_uniffi
 import SwiftUI
@@ -23,10 +24,13 @@ final class ContactsStateStore: ObservableObject {
     enum Action {
         case onDeleteItem(ContactItemType)
         case onDeleteItemAlertAction(DeleteItemAlertAction)
+        case onTapItem(ContactItemType)
         case onLoad
     }
 
     @Published var state: ContactsScreenState
+
+    let router = Router()
 
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactItemDeleterAdapter
@@ -34,6 +38,7 @@ final class ContactsStateStore: ObservableObject {
     private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
     private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
+    private var cancellables: Set<AnyCancellable> = Set()
 
     init(
         state: ContactsScreenState,
@@ -47,6 +52,7 @@ final class ContactsStateStore: ObservableObject {
         self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
         self.makeContactsLiveQuery = makeContactsLiveQuery
         self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
+        setUpNestedObservableObjectUpdates()
     }
 
     func handle(action: Action) {
@@ -55,6 +61,8 @@ final class ContactsStateStore: ObservableObject {
             handle(alertAction: alertAction)
         case .onDeleteItem(let item):
             state = state.copy(\.itemToDelete, to: item)
+        case .onTapItem(let item):
+            goToDetails(item: item)
         case .onLoad:
             startWatchingUpdates()
             loadAllContacts()
@@ -117,7 +125,22 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
+    private func goToDetails(item: ContactItemType) {
+        switch item {
+        case .contact(let contactItem):
+            router.go(to: .contactDetails(id: contactItem.id))
+        case .group(let contactGroupItem):
+            router.go(to: .contactGroupDetails(id: contactGroupItem.id))
+        }
+    }
+
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
+    }
+
+    private func setUpNestedObservableObjectUpdates() {
+        router.objectWillChange
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
     }
 }

@@ -390,6 +390,60 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
 
+    // MARK: - `onTapItem` action
+
+    func testOnTapItemAction_WhenTapOnContact_ItNavigatesToContactDetails() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onTapItem(.contact(.amandaArcher)))
+
+        XCTAssertEqual(sut.router.stack, [.contactDetails(id: ContactItem.amandaArcher.id)])
+    }
+
+    func testOnTapItemAction_WhenTapOnContactGroup_ItNavigatesToContactGroupDetails() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                item: [
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher)
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onTapItem(.group(.advisorsGroup)))
+
+        XCTAssertEqual(sut.router.stack, [.contactGroupDetails(id: ContactGroupItem.advisorsGroup.id)])
+    }
+
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {

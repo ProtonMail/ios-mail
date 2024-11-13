@@ -16,7 +16,8 @@ let package = Package(
         .package(path: "../InboxDesignSystem"),
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
-        .package(path: "../../ProtonPackages/proton_app_uniffi")
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
+        .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.11")
     ],
     targets: [
         .target(
@@ -31,7 +32,8 @@ let package = Package(
             dependencies: [
                 .target(name: "InboxContacts"),
                 .product(name: "InboxSnapshotTesting", package: "InboxSnapshotTesting"),
-                .product(name: "InboxTesting", package: "InboxTesting")
+                .product(name: "InboxTesting", package: "InboxTesting"),
+                .product(name: "ViewInspector", package: "ViewInspector")
             ]
         )
     ]
