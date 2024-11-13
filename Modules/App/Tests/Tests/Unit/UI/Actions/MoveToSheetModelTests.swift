@@ -20,7 +20,7 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class MoveToSheetModelTests: BaseTestCase {
+class MoveToSheetStateStoreTests: BaseTestCase {
 
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
@@ -112,7 +112,7 @@ class MoveToSheetModelTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func sut(input: ActionSheetInput) -> MoveToSheetModel {
+    private func sut(input: ActionSheetInput) -> MoveToSheetStateStore {
         .init(
             input: input,
             mailbox: .init(noPointer: .init()),

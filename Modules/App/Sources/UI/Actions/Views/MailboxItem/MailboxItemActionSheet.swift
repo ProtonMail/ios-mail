@@ -55,7 +55,7 @@ struct MailboxItemActionSheet: View {
     }
 
     var body: some View {
-        StoreView(store: MailboxItemActionSheetModel(
+        StoreView(store: MailboxItemActionSheetStateStore(
             input: input,
             mailbox: mailbox,
             actionsProvider: actionsProvider,
@@ -101,7 +101,7 @@ struct MailboxItemActionSheet: View {
 
     private func mailboxItemActionsSection(
         state: MailboxItemActionSheetState,
-        store: MailboxItemActionSheetModel
+        store: MailboxItemActionSheetStateStore
     ) -> some View {
         ActionSheetSection {
             ForEachLast(collection: state.availableActions.mailboxItemActions) { action, isLast in
@@ -116,7 +116,7 @@ struct MailboxItemActionSheet: View {
 
     private func moveToActionsSection(
         state: MailboxItemActionSheetState,
-        store: MailboxItemActionSheetModel
+        store: MailboxItemActionSheetStateStore
     ) -> some View {
         ActionSheetSection {
             ForEachLast(collection: state.availableActions.moveActions) { action, isLast in

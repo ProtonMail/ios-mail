@@ -427,6 +427,19 @@ enum L10n {
         )
     }
 
+    enum Toast {
+        static let deleted = LocalizedStringResource(
+            "Deleted.",
+            comment: "Title of information toast about a message deletion"
+        )
+        static func movedTo(destination: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Moved to \(destination).",
+                comment: "Title of a message move information toast"
+            )
+        }
+    }
+
     enum CreateFolderOrLabel {
         static let title = LocalizedStringResource(
             "Create folder or label",

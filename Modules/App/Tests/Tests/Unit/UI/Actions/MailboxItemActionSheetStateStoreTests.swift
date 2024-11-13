@@ -20,7 +20,7 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class MailboxItemActionSheetModelTests: BaseTestCase {
+class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
     var invokedWithMessagesIDs: [ID]!
     var invokedWithConversationIDs: [ID]!
@@ -286,8 +286,8 @@ class MailboxItemActionSheetModelTests: BaseTestCase {
         ])
     }
 
-    private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetModel {
-        MailboxItemActionSheetModel(
+    private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
+        MailboxItemActionSheetStateStore(
             input: .init(ids: ids, type: type, title: title),
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(

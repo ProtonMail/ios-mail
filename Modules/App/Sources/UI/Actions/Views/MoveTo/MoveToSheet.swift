@@ -43,7 +43,7 @@ struct MoveToSheet: View {
     }
 
     var body: some View {
-        StoreView(store: MoveToSheetModel(
+        StoreView(store: MoveToSheetStateStore(
             input: input,
             mailbox: mailbox,
             availableMoveToActions: availableMoveToActions, 
@@ -72,7 +72,7 @@ struct MoveToSheet: View {
 
     // MARK: - Private
 
-    private func moveToSystemFolderSection(state: MoveToState, store: MoveToSheetModel) -> some View {
+    private func moveToSystemFolderSection(state: MoveToState, store: MoveToSheetStateStore) -> some View {
         ActionSheetSection {
             ForEachLast(collection: state.moveToSystemFolderActions) { moveToSystemFolder, isLast in
                 ActionSheetSelectableButton(
@@ -84,7 +84,7 @@ struct MoveToSheet: View {
         }
     }
 
-    private func moveToCustomFolderSection(state: MoveToState, store: MoveToSheetModel) -> some View {
+    private func moveToCustomFolderSection(state: MoveToState, store: MoveToSheetStateStore) -> some View {
         ActionSheetSection {
             VStack(spacing: .zero) {
                 ForEach(

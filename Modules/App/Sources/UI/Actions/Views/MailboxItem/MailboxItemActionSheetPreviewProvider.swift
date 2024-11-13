@@ -17,7 +17,6 @@
 
 import proton_app_uniffi
 
-// FIXME: - Not needed anymore
 enum MailboxItemActionSheetPreviewProvider {
     static func actionsProvider() -> ActionsProvider {
         ActionsProvider(

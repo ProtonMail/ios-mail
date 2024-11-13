@@ -160,6 +160,9 @@
     "Delete permanently" : {
       "comment" : "Action title for permanent deletion of message/conversation in the action sheet."
     },
+    "Deleted." : {
+      "comment" : "Title of information toast about a message deletion"
+    },
     "Done" : {
       "comment" : "`Done` action title."
     },
@@ -270,6 +273,9 @@
     "Move to…" : {
       "comment" : "Action title for moving message/conversation in the action sheet."
     },
+    "Moved to %@." : {
+      "comment" : "Title of a message move information toast"
+    },
     "No matches" : {
       "comment" : "Search result is empty title"
     },
@@ -321,12 +327,6 @@
     "Search" : {
       "comment" : "Search textbox placeholder"
     },
-    "Seems like you are all caught up for now" : {
-      "comment" : "Mailbox empty state message."
-    },
-    "Select all" : {
-      "comment" : "Button title allowing to select all items in a mailbox."
-    },
     "search.dismiss" : {
       "comment" : "Search screen dismiss",
       "localizations" : {
@@ -337,6 +337,12 @@
           }
         }
       }
+    },
+    "Seems like you are all caught up for now" : {
+      "comment" : "Mailbox empty state message."
+    },
+    "Select all" : {
+      "comment" : "Button title allowing to select all items in a mailbox."
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar."

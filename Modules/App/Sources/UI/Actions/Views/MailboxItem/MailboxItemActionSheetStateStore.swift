@@ -20,8 +20,7 @@ import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 
-// FIXME: - Rename
-class MailboxItemActionSheetModel: StateStore {
+class MailboxItemActionSheetStateStore: StateStore {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
     private let input: MailboxItemActionSheetInput
@@ -178,28 +177,4 @@ private extension MailboxItemActionSheetState {
             )
         )
     }
-}
-
-extension Toast { // FIXME: - Move to separate file
-
-    static func moveTo(destinationName: String) -> Toast {
-        .information(message: "Moved to \(destinationName).".notLocalized) // FIXME: - Localize
-    }
-
-    static func deleted() -> Toast {
-        .information(message: "Deleted.") // FIXME: - Localize
-    }
-
-}
-
-extension AlertViewModel { // FIXME: - Move to separate file
-
-    static func deleteConfirmation(itemsCount: Int) -> AlertViewModel<DeleteConfirmationAlertAction> {
-        .init(
-            title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
-            message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
-            actions: [.cancel, .delete]
-        )
-    }
-
 }
