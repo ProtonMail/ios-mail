@@ -130,14 +130,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func handle(action: DeleteConfirmationAlertAction) {
+    func handle(action: DeleteConfirmationAlertAction, toastStateStore: ToastStateStore) {
         deleteConfirmationAlert = nil
         if action == .delete, let mailbox {
             Task {
                 await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
                     .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
                 Dispatcher.dispatchOnMain(.init(block: {
-                    // FIXME: - Present alert here
+                    toastStateStore.present(toast: .deleted())
                 }))
             }
         }

@@ -48,7 +48,7 @@ struct ConversationDetailScreen: View {
         )
         .alert(
             model: $model.deleteConfirmationAlert,
-            handleAction: { action in model.handle(action: action) }
+            handleAction: { action in model.handle(action: action, toastStateStore: toastStateStore) }
         )
     }
 
