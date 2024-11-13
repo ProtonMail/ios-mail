@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-class Router: ObservableObject {
+final class Router: ObservableObject {
     @Published var stack: [Route]
 
     init() {
