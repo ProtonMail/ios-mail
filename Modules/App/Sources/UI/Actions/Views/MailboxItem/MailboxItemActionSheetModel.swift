@@ -85,8 +85,8 @@ class MailboxItemActionSheetModel: StateStore {
                 navigation(.moveTo)
             case .permanentDelete:
                 state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
-            case .notSpam(let label), .system(let label):
-                performMoveToAction(destination: label, ids: input.ids, itemType: input.type)
+            case .notSpam(let model), .system(let model):
+                performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
             }
         case .alertActionTapped(let action):
             state = state.copy(\.deleteConfirmationAlert, to: nil)

@@ -31,10 +31,10 @@ extension BottomBarActions {
             return .more
         case .moveTo:
             return .moveTo
-        case .moveToSystemFolder(let label):
-            return .moveToSystemFolder(.init(localId: label.localId, systemLabel: label.name.moveToSystemFolderLabel))
-        case .notSpam(let label):
-            return .notSpam(.init(localId: label.localId, systemLabel: label.name.moveToSystemFolderLabel))
+        case .moveToSystemFolder(let model):
+            return .moveToSystemFolder(.init(localId: model.localId, systemLabel: model.name.moveToSystemFolderLabel))
+        case .notSpam(let model):
+            return .notSpam(.init(localId: model.localId, systemLabel: model.name.moveToSystemFolderLabel))
         case .permanentDelete:
             return .permanentDelete
         case .star:

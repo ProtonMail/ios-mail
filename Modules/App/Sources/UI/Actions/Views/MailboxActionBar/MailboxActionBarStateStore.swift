@@ -116,9 +116,9 @@ final class MailboxActionBarStateStore: StateStore {
             let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel<DeleteConfirmationAlertAction>?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
             state = state.copy(keyPath, to: .deleteConfirmation(itemsCount: ids.count))
-        case .moveToSystemFolder(let label), .notSpam(let label):
-            performMoveToAction(destination: label, ids: ids)
-            toastStateStore.present(toast: .moveTo(destinationName: label.systemLabel.humanReadable.string))
+        case .moveToSystemFolder(let model), .notSpam(let model):
+            performMoveToAction(destination: model, ids: ids)
+            toastStateStore.present(toast: .moveTo(destinationName: model.systemLabel.humanReadable.string))
         }
     }
 
