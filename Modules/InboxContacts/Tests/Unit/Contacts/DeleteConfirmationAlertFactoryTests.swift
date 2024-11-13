@@ -44,10 +44,4 @@ final class DeleteConfirmationAlertFactoryTests: XCTestCase {
         XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
 
-    func testMakeAlertForNil_ItReturnsNil() {
-        let alert = DeleteConfirmationAlertFactory.make(for: nil)
-
-        XCTAssertNil(alert)
-    }
-
 }
