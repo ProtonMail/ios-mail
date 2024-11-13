@@ -23,6 +23,7 @@ import SwiftUI
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
     @State private var animateViewIn: Bool = false
+    @EnvironmentObject var toastStateStore: ToastStateStore
 
     init(seed: ConversationDetailSeed) {
         self._model = StateObject(wrappedValue: .init(seed: seed))
@@ -36,7 +37,9 @@ struct ConversationDetailScreen: View {
                     conversationID: conversationID,
                     bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
                     mailbox: mailbox,
-                    handleAction: { action in model.handleConversation(action: action) }
+                    handleAction: { action in
+                        model.handleConversation(action: action, toastStateStore: toastStateStore)
+                    }
                 )
             }
         }.actionSheetsFlow(

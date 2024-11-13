@@ -103,7 +103,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
-    func handleConversation(action: BottomBarAction) {
+    func handleConversation(action: BottomBarAction, toastStateStore: ToastStateStore) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
@@ -124,8 +124,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             markConversationAsUnread()
         case .permanentDelete:
             deleteConfirmationAlert = .deleteConfirmation(itemsCount: 1)
-        default:
-            break
+        case .moveToSystemFolder(let label), .notSpam(let label):
+            moveConversation(destination: label, toastStateStore: toastStateStore)
         }
     }
 
@@ -153,6 +153,20 @@ extension ConversationDetailModel {
 
     private func unstarConversation() {
         starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+    }
+
+    private func moveConversation(destination: MoveToSystemFolderLocation, toastStateStore: ToastStateStore) {
+        guard let mailbox else { return }
+        let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
+        moveToActionPerformer.moveTo(
+            destinationID: destination.localId,
+            itemsIDs: [conversationID.unsafelyUnwrapped],
+            itemType: .conversation
+        ) { [weak toastStateStore] in
+            Dispatcher.dispatchOnMain(.init(block: {
+                toastStateStore?.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+            }))
+        }
     }
 
     private func markConversationAsRead() {

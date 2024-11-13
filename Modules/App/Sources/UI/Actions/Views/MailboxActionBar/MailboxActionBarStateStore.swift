@@ -117,6 +117,7 @@ final class MailboxActionBarStateStore: StateStore {
             state = state.copy(keyPath, to: .deleteConfirmation(itemsCount: ids.count))
         case .moveToSystemFolder(let label), .notSpam(let label):
             performMoveToAction(destination: label, ids: ids)
+            toastStateStore.present(toast: .moveTo(destinationName: label.systemLabel.humanReadable.string))
         }
     }
 
@@ -169,14 +170,13 @@ final class MailboxActionBarStateStore: StateStore {
     }
 
     private func itemDeleted() {
-        state = state
-            .copy(\.moreActionSheetPresented, to: nil)
         toastStateStore.present(toast: .deleted())
+        dismissMoreActionSheet()
     }
 
     private func itemMoved(destination: MoveToSystemFolderLocation) {
-        dismissMoreActionSheet()
         toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+        dismissMoreActionSheet()
     }
 }
 
