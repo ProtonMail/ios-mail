@@ -133,8 +133,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func handle(action: DeleteConfirmationAlertAction) {
         deleteConfirmationAlert = nil
         if action == .delete, let mailbox {
-            DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
-                .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+            Task {
+                await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
+                    .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+                Dispatcher.dispatchOnMain(.init(block: {
+                    // FIXME: - Present alert here
+                }))
+            }
         }
     }
 }

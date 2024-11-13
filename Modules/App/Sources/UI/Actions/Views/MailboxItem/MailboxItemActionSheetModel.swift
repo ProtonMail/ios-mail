@@ -113,9 +113,12 @@ class MailboxItemActionSheetModel: StateStore {
     }
 
     private func performDeleteAction(itemsIDs: [ID], itemType: MailboxItemType) {
-        deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType) { [weak self] in
-            self?.dismiss()
-            self?.presentDeletedToast()
+        Task {
+            await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType)
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.presentDeletedToast()
+                self?.dismiss()
+            }))
         }
     }
 

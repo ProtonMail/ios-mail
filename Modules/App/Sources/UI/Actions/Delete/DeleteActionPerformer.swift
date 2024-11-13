@@ -26,11 +26,8 @@ struct DeleteActionPerformer {
         self.deleteActions = deleteActions
     }
 
-    func delete(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
-        Task {
-            await try! deleteAction(for: itemType)(mailbox, ids)
-            completion?()
-        }
+    func delete(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
+        try! await deleteAction(for: itemType)(mailbox, ids)
     }
 
     // MARK: - Private

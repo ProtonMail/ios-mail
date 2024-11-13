@@ -141,8 +141,9 @@ final class MailboxActionBarStateStore: StateStore {
             .copy(\.moreDeleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
-            deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType) { [weak self] in
-                Dispatcher.dispatchOnMain(.init(block: {
+            Task {
+                await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                     self?.itemDeleted()
                 }))
             }
