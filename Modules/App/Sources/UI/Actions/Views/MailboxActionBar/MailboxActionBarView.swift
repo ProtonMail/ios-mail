@@ -28,6 +28,7 @@ struct MailboxActionBarView: View {
     private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableMailboxActionBarActions
     private let deleteActions: DeleteActions
+    private let moveToActions: MoveToActions
     private let mailUserSession: MailUserSession
     private let starActionPerformerActions: StarActionPerformerActions
     private let readActionPerformerActions: ReadActionPerformerActions
@@ -38,6 +39,7 @@ struct MailboxActionBarView: View {
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
         deleteActions: DeleteActions = .productionInstance,
+        moveToActions: MoveToActions = .productionInstance,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession = AppContext.shared.userSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
@@ -47,6 +49,7 @@ struct MailboxActionBarView: View {
         self.itemTypeForActionBar = itemTypeForActionBar
         self.availableActions = availableActions
         self.deleteActions = deleteActions
+        self.moveToActions = moveToActions
         self.mailUserSession = mailUserSession
         self.starActionPerformerActions = starActionPerformerActions
         self.readActionPerformerActions = readActionPerformerActions
@@ -58,10 +61,12 @@ struct MailboxActionBarView: View {
             availableActions: availableActions,
             starActionPerformerActions: starActionPerformerActions, 
             readActionPerformerActions: readActionPerformerActions,
-            deleteActions: deleteActions,
+            deleteActions: deleteActions, 
+            moveToActions: moveToActions,
             itemTypeForActionBar: itemTypeForActionBar,
             mailUserSession: mailUserSession,
-            mailbox: mailbox
+            mailbox: mailbox,
+            toastStateStore: toastStateStore
         )) { state, store in
             BottomActionBarView(actions: state.bottomBarActions) { action in
                 store.handle(action: .actionSelected(action, ids: selectedItemsIDs))

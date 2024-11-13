@@ -30,6 +30,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
+    var moveToActionsSpy: MoveToActionsSpy!
+    var toastStateStore: ToastStateStore!
 
     override func setUp() {
         super.setUp()
@@ -39,6 +41,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         starActionPerformerActionsSpy = .init()
         readActionPerformerActionsSpy = .init()
         deleteActionsSpy = .init()
+        moveToActionsSpy = .init()
+        toastStateStore = .init(initialState: .initial)
     }
 
     override func tearDown() {
@@ -49,6 +53,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         starActionPerformerActionsSpy = nil
         readActionPerformerActionsSpy = nil
         deleteActionsSpy = nil
+        moveToActionsSpy = nil
+        toastStateStore = nil
 
         super.tearDown()
     }
@@ -208,6 +214,24 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertNil(sut.state.deleteConfirmationAlert)
         XCTAssertEqual(deleteActionsSpy.deletedMessagesWithIDs, ids)
+        XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
+    }
+
+    func testAction_WhenMoveToInboxIsTapped_ItMovesMessage() {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+        let systemFolder = MoveToSystemFolderLocation.testInbox
+        sut = makeSUT(viewMode: .messages)
+
+        sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [.moveTo(destinationName: systemFolder.systemLabel.humanReadable.string)]
+        )
+        XCTAssertEqual(
+            moveToActionsSpy.invokedMoveToMessage,
+            [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
+        )
     }
 
     // MARK: - Private
@@ -230,9 +254,11 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
             deleteActions: deleteActionsSpy.testingInstance,
+            moveToActions: moveToActionsSpy.testingInstance,
             itemTypeForActionBar: viewMode.itemType,
             mailUserSession: .dummy,
-            mailbox: MailboxStub(viewMode: viewMode)
+            mailbox: MailboxStub(viewMode: viewMode), 
+            toastStateStore: toastStateStore
         )
     }
 

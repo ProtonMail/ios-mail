@@ -21,12 +21,15 @@ import SwiftUI
 
 final class MailboxActionBarStateStore: StateStore {
     @Published var state: MailboxActionBarState
+
     private let actionsProvider: MailboxActionBarActionsProvider
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionsPerformer: DeleteActionPerformer
+    private let moveToActionPerformer: MoveToActionPerformer
     private let itemTypeForActionBar: MailboxItemType
     private let mailbox: Mailbox
+    private let toastStateStore: ToastStateStore
 
     init(
         state: MailboxActionBarState,
@@ -34,9 +37,11 @@ final class MailboxActionBarStateStore: StateStore {
         starActionPerformerActions: StarActionPerformerActions,
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
+        moveToActions: MoveToActions,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
-        mailbox: Mailbox
+        mailbox: Mailbox,
+        toastStateStore: ToastStateStore
     ) {
         self.state = state
         self.itemTypeForActionBar = itemTypeForActionBar
@@ -54,7 +59,9 @@ final class MailboxActionBarStateStore: StateStore {
             readActionPerformerActions: readActionPerformerActions
         )
         self.deleteActionsPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
+        self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.mailbox = mailbox
+        self.toastStateStore = toastStateStore
     }
 
     func handle(action: MailboxActionBarAction) {
@@ -108,8 +115,20 @@ final class MailboxActionBarStateStore: StateStore {
             let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel<DeleteConfirmationAlertAction>?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
             state = state.copy(keyPath, to: .deleteConfirmation(itemsCount: ids.count))
-        case .moveToSystemFolder, .notSpam:
-            break
+        case .moveToSystemFolder(let label), .notSpam(let label):
+            performMoveToAction(destination: label, ids: ids)
+        }
+    }
+
+    private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID]) {
+        moveToActionPerformer.moveTo(
+            destinationID: destination.localId,
+            itemsIDs: ids,
+            itemType: itemTypeForActionBar
+        ) { [weak self] in
+            Dispatcher.dispatchOnMain(.init(block: {
+                self?.itemMoved(destination: destination)
+            }))
         }
     }
 
@@ -119,9 +138,11 @@ final class MailboxActionBarStateStore: StateStore {
             .copy(\.moreDeleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
-            state = state
-                .copy(\.moreActionSheetPresented, to: nil)
-            deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
+            deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType) { [weak self] in
+                Dispatcher.dispatchOnMain(.init(block: {
+                    self?.itemDeleted()
+                }))
+            }
         case .cancel:
             break
         }
@@ -145,6 +166,17 @@ final class MailboxActionBarStateStore: StateStore {
 
     private func dismissMoreActionSheet() {
         state = state.copy(\.moreActionSheetPresented, to: nil)
+    }
+
+    private func itemDeleted() {
+        state = state
+            .copy(\.moreActionSheetPresented, to: nil)
+        toastStateStore.present(toast: .deleted())
+    }
+
+    private func itemMoved(destination: MoveToSystemFolderLocation) {
+        dismissMoreActionSheet()
+        toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
     }
 }
 

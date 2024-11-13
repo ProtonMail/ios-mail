@@ -90,8 +90,7 @@ class MailboxItemActionSheetModel: StateStore {
         case .alertActionTapped(let action):
             state = state.copy(\.deleteConfirmationAlert, to: nil)
             if case .delete = action {
-                performAction(action: deleteActionPerformer.delete, ids: input.ids, itemType: input.type)
-                presentDeletedToast()
+                performDeleteAction(itemsIDs: input.ids, itemType: input.type)
             }
         }
     }
@@ -99,10 +98,20 @@ class MailboxItemActionSheetModel: StateStore {
     // MARK: - Private
 
     private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID], itemType: MailboxItemType) {
-        Task {
-            await moveToActionPerformer.moveTo(destinationID: destination.localId, itemsIDs: ids, itemType: itemType)
-            dismiss()
-            presentMoveToToast(destination: destination)
+        moveToActionPerformer.moveTo(
+            destinationID: destination.localId,
+            itemsIDs: ids,
+            itemType: itemType
+        ) { [weak self] in
+            self?.dismiss()
+            self?.presentMoveToToast(destination: destination)
+        }
+    }
+
+    private func performDeleteAction(itemsIDs: [ID], itemType: MailboxItemType) {
+        deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType) { [weak self] in
+            self?.dismiss()
+            self?.presentDeletedToast()
         }
     }
 

@@ -28,7 +28,10 @@ class MailboxActionBarViewSnapshotTests: BaseTestCase {
             itemTypeForActionBar: .conversation,
             mailUserSession: .dummy,
             selectedItems: .constant([.testData(id: 1), .testData(id: 2), .testData(id: 3)])
-        ).environmentObject(MailboxStub(viewMode: .messages) as Mailbox)
+        )
+        .environmentObject(MailboxStub(viewMode: .messages) as Mailbox)
+        .environmentObject(ToastStateStore(initialState: .initial))
+
         assertSnapshotsOnIPhoneX(of: sut, named: "mailbox_action_bar")
     }
 
