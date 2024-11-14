@@ -35,6 +35,7 @@ public extension DS.Color {
         public static let minus10 = Color(.brandMinus10)
         public static let minus20 = Color(.brandMinus20)
         public static let minus30 = Color(.brandMinus30)
+        public static let minus40 = Color(.brandMinus40)
     }
 
     enum Global {
@@ -52,21 +53,32 @@ public extension DS.Color {
         public static let accent = Color(.brandNorm)
     }
 
-    enum Interaction {
-        public static let norm = Color(.interactionNorm)
-        public static let pressed = Color(.interactionPressed)
-        public static let disabled = Color(.interactionDisabled)
+    enum InteractionBrand {
+        public static let norm = Color(.interactionBrandNorm)
+        public static let pressed = Color(.interactionBrandPressed)
+        public static let disabled = Color(.interactionBrandDisabled)
     }
 
-    enum InteractionStrong {
-        public static let norm = Color(.interactionStrongNorm)
-        public static let pressed = Color(.interactionStrongPressed)
+    enum InteractionBrandStrong {
+        public static let norm = Color(.interactionBrandStrongNorm)
+        public static let pressed = Color(.interactionBrandStrongPressed)
+    }
+
+    enum InteractionBrandWeak {
+        public static let norm = Color(.interactionBrandWeakNorm)
+        public static let pressed = Color(.interactionBrandWeakPressed)
+        public static let disabled = Color(.interactionBrandWeakDisabled)
     }
 
     enum InteractionWeak {
-        public static let norm = Color(.shade10)
+        public static let norm = Color(.interactionWeakNorm)
         public static let pressed = Color(.interactionWeakPressed)
-        public static let disabled = Color(.shade10)
+        public static let disabled = Color(.interactionWeakDisabled)
+    }
+
+    enum InteractionFab {
+        public static let norm = Color(.interactionFabNorm)
+        public static let pressed = Color(.interactionFabPressed)
     }
 
     enum Notification {

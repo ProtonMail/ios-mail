@@ -135,7 +135,7 @@ private struct PurpleButtonStyle: ButtonStyle {
             .frame(height: 44)
             .frame(maxWidth: .infinity)
             .background(
-                configuration.isPressed ? DS.Color.Interaction.pressed : DS.Color.Interaction.norm,
+                configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm,
                 in: RoundedRectangle(cornerRadius: DS.Radius.huge)
             )
     }

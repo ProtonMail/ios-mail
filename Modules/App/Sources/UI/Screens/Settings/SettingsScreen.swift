@@ -149,7 +149,7 @@ struct SettingsScreen: View {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
                 Text(L10n.Common.done)
-                    .foregroundStyle(DS.Color.Interaction.norm)
+                    .foregroundStyle(DS.Color.InteractionBrand.norm)
             }
         }
     }

@@ -43,7 +43,7 @@ struct OnboardingDotsIndexView: View {
     private let dotSize: CGFloat = 4
 
     private func color(forIndex index: Int) -> Color {
-        selectedPageIndex == index ? DS.Color.Interaction.norm : DS.Color.Shade.shade40
+        selectedPageIndex == index ? DS.Color.InteractionBrand.norm : DS.Color.Shade.shade40
     }
 
     private func width(forIndex index: Int) -> CGFloat {
