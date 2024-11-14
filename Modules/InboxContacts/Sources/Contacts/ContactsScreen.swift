@@ -25,6 +25,8 @@ public struct ContactsScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @StateObject private var store: ContactsStateStore
 
+    var onLoad: ((Self) -> Void)?
+
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     public init(
         state: ContactsScreenState = .initial,
@@ -45,8 +47,6 @@ public struct ContactsScreen: View {
         )
     }
 
-    var onLoad: ((Self) -> Void)?
-
     public var body: some View {
         NavigationStack(path: navigationPath) {
             ContactsControllerRepresentable(
@@ -60,7 +60,7 @@ public struct ContactsScreen: View {
                 route.view()
             }
             .toolbar {
-                ToolbarFactory.item(imageResource: DS.Icon.icCross) {
+                ToolbarItemFactory.leading(DS.Icon.icCross) {
                     dismiss()
                 }
             }
@@ -99,15 +99,4 @@ public struct ContactsScreen: View {
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance()
     )
-}
-
-enum ToolbarFactory {
-    static func item(imageResource: ImageResource, action: @escaping () -> Void) -> some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button(action: action) {
-                Image(imageResource)
-                    .foregroundStyle(DS.Color.Icon.weak)
-            }
-        }
-    }
 }
