@@ -22,6 +22,7 @@ import proton_app_uniffi
 import SwiftUI
 
 public struct ContactsScreen: View {
+    @Environment(\.dismissTestable) var dismiss: Dismissable
     @StateObject private var store: ContactsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
@@ -57,6 +58,14 @@ public struct ContactsScreen: View {
             .navigationTitle(L10n.Contacts.title.string)
             .navigationDestination(for: Route.self) { route in
                 route.view()
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { dismiss() }) {
+                        Image(DS.Icon.icCross)
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                }
             }
         }
         .alert(model: deletionAlert) { action in
