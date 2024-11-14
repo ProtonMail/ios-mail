@@ -23,15 +23,15 @@ enum DeleteConfirmationAlertFactory {
         let actions: [DeleteItemAlertAction] = [.confirm, .cancel]
 
         switch itemToDelete {
-        case .contact:
+        case .contact(let contactItem):
             return .init(
-                title: L10n.Contacts.DeletionAlert.Contact.title,
+                title: L10n.Contacts.DeletionAlert.title(name: contactItem.name),
                 message: L10n.Contacts.DeletionAlert.Contact.message,
                 actions: actions
             )
-        case .group:
+        case .group(let groupItem):
             return .init(
-                title: L10n.Contacts.DeletionAlert.ContactGroup.title,
+                title: L10n.Contacts.DeletionAlert.title(name: groupItem.name),
                 message: L10n.Contacts.DeletionAlert.ContactGroup.message,
                 actions: actions
             )

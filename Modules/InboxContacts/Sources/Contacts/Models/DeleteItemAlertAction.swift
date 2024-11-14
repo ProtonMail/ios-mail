@@ -27,7 +27,7 @@ enum DeleteItemAlertAction: AlertActionViewModel {
         case .cancel:
             L10n.Contacts.DeletionAlert.cancel
         case .confirm:
-            L10n.Contacts.DeletionAlert.confirm
+            L10n.Contacts.DeletionAlert.delete
         }
     }
 

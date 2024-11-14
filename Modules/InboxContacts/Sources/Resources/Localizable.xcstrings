@@ -27,29 +27,26 @@
     "Cancel" : {
       "comment" : "Action title for cancelling deletion of given item."
     },
-    "Confirm" : {
-      "comment" : "Action title for confirming deletion of given item."
-    },
     "Contacts" : {
       "comment" : "Title of the contacts screen that displays contacts and contact groups."
     },
-    "Delete contact" : {
-      "comment" : "Title for the alert shown when deleting a contact."
+    "Delete" : {
+      "comment" : "Action title for confirming deletion of given item."
     },
-    "Delete contact group" : {
-      "comment" : "Title for the alert shown when deleting a contact group."
-    },
-    "Deleting the contact group will reload the list and no longer show the contact group." : {
-      "comment" : "Message for the alert shown when deleting a contact group."
-    },
-    "Deleting the contact will reload the list and no longer show the contact." : {
-      "comment" : "Message for the alert shown when deleting a contact."
+    "Delete %@" : {
+      "comment" : "Title for the alert shown when deleting a contact or contact group."
     },
     "No contacts yet" : {
       "comment" : "Contacts screen's empty state title."
     },
     "Tap + to add your first contact." : {
       "comment" : "Contacts screen's empty state subtitle."
+    },
+    "This contact group will be deleted from your contact list." : {
+      "comment" : "Message for the alert shown when deleting a contact group."
+    },
+    "This contact will be deleted from your contact list." : {
+      "comment" : "Message for the alert shown when deleting a contact."
     }
   },
   "version" : "1.0"

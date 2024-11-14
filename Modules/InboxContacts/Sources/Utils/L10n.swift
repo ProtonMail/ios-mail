@@ -53,33 +53,29 @@ enum L10n {
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Action title for cancelling deletion of given item."
             )
-            static let confirm = LocalizedStringResource(
-                "Confirm",
+            static let delete = LocalizedStringResource(
+                "Delete",
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Action title for confirming deletion of given item."
             )
-
-            enum Contact {
-                static let title = LocalizedStringResource(
-                    "Delete contact",
+            static func title(name: String) -> LocalizedStringResource {
+                LocalizedStringResource(
+                    "Delete \(name)",
                     bundle: .atURL(Bundle.module.bundleURL),
-                    comment: "Title for the alert shown when deleting a contact."
+                    comment: "Title for the alert shown when deleting a contact or contact group."
                 )
+            }
+            enum Contact {
                 static let message = LocalizedStringResource(
-                    "Deleting the contact will reload the list and no longer show the contact.",
+                    "This contact will be deleted from your contact list.",
                     bundle: .atURL(Bundle.module.bundleURL),
                     comment: "Message for the alert shown when deleting a contact."
                 )
             }
 
             enum ContactGroup {
-                static let title = LocalizedStringResource(
-                    "Delete contact group",
-                    bundle: .atURL(Bundle.module.bundleURL),
-                    comment: "Title for the alert shown when deleting a contact group."
-                )
                 static let message = LocalizedStringResource(
-                    "Deleting the contact group will reload the list and no longer show the contact group.",
+                    "This contact group will be deleted from your contact list.",
                     bundle: .atURL(Bundle.module.bundleURL),
                     comment: "Message for the alert shown when deleting a contact group."
                 )
