@@ -60,11 +60,8 @@ public struct ContactsScreen: View {
                 route.view()
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(DS.Icon.icCross)
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
+                ToolbarFactory.item(imageResource: DS.Icon.icCross) {
+                    dismiss()
                 }
             }
         }
@@ -102,4 +99,15 @@ public struct ContactsScreen: View {
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance()
     )
+}
+
+enum ToolbarFactory {
+    static func item(imageResource: ImageResource, action: @escaping () -> Void) -> some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button(action: action) {
+                Image(imageResource)
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
 }
