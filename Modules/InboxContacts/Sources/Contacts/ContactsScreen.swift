@@ -44,6 +44,8 @@ public struct ContactsScreen: View {
         )
     }
 
+    var onLoad: ((Self) -> Void)?
+
     public var body: some View {
         NavigationStack(path: navigationPath) {
             ContactsControllerRepresentable(
@@ -65,7 +67,10 @@ public struct ContactsScreen: View {
             isPresented: $store.state.search.isActive,
             placement: .navigationBarDrawer(displayMode: .always)
         )
-        .onLoad { store.handle(action: .onLoad) }
+        .onLoad {
+            store.handle(action: .onLoad)
+            onLoad?(self)
+        }
     }
 
     // MARK: - Private

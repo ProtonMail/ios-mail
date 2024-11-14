@@ -153,15 +153,3 @@ private extension InspectableView where View == ViewType.View<OnboardingScreen> 
     }
 
 }
-
-private class DismissSpy: Dismissable {
-
-    private(set) var callsCount: Int = 0
-
-    // MARK: - Dismissable
-
-    func callAsFunction() {
-        callsCount += 1
-    }
-
-}

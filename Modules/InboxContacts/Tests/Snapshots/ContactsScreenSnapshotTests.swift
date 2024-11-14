@@ -57,12 +57,7 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search = .initial, items: [GroupedContacts]) -> ContactsScreen {
-        ContactsScreen(
-            state: .init(search: search, allItems: items, itemToDelete: nil),
-            mailUserSession: .testInstance(),
-            contactsProvider: .previewInstance(),
-            contactsWatcher: .previewInstance()
-        )
+        .testInstance(search: search, items: items)
     }
 
     private func allContacts() async throws -> [GroupedContacts] {

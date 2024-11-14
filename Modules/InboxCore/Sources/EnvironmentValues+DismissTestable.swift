@@ -19,7 +19,7 @@ import SwiftUI
 
 extension EnvironmentValues {
 
-    var dismissTestable: Dismissable {
+    public var dismissTestable: Dismissable {
         get { isTestingTarget ? self[DismissKey.self] : dismiss }
         set { self[DismissKey.self] = newValue }
     }
@@ -32,7 +32,7 @@ extension EnvironmentValues {
 
 }
 
-protocol Dismissable {
+public protocol Dismissable {
     func callAsFunction()
 }
 
