@@ -75,7 +75,9 @@ class LabelAsSheetModel: ObservableObject {
                 partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
                 archive: state.shouldArchive
             ))
-            dismiss()
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.dismiss()
+            }))
         }
     }
 
