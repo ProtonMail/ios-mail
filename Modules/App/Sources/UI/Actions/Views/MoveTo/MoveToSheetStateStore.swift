@@ -50,9 +50,9 @@ class MoveToSheetStateStore: StateStore {
         case .viewAppear:
             loadMoveToActions()
         case .customFolderTapped(let customFolder):
-            moveTo(desintationID: customFolder.id, destinationName: customFolder.name)
+            moveTo(destinationID: customFolder.id, destinationName: customFolder.name)
         case .systemFolderTapped(let systemFolder):
-            moveTo(desintationID: systemFolder.id, destinationName: systemFolder.label.humanReadable.string)
+            moveTo(destinationID: systemFolder.id, destinationName: systemFolder.label.humanReadable.string)
         case .createFolderTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         }
@@ -60,10 +60,10 @@ class MoveToSheetStateStore: StateStore {
 
     // MARK: - Private
 
-    private func moveTo(desintationID: ID, destinationName: String) {
+    private func moveTo(destinationID: ID, destinationName: String) {
         Task {
             await moveToActionPerformer.moveTo(
-                destinationID: desintationID,
+                destinationID: destinationID,
                 itemsIDs: input.ids,
                 itemType: input.type
             )
