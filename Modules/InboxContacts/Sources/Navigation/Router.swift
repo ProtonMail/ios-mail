@@ -27,4 +27,8 @@ final class Router: ObservableObject {
     func go(to route: Route) {
         stack.append(route)
     }
+
+    func goBack() {
+        stack.removeLast()
+    }
 }

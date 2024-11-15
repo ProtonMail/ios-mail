@@ -61,7 +61,7 @@ public struct ContactsScreen: View {
                     .view()
                     .navigationBarBackButtonHidden()
                     .toolbar {
-                        ToolbarItemFactory.back { /*FIXME: Implement back action*/ }
+                        ToolbarItemFactory.back { store.router.goBack() }
                     }
             }
             .toolbar {

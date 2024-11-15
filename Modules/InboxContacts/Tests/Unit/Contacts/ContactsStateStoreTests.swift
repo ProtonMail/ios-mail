@@ -444,6 +444,26 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.router.stack, [.contactGroupDetails(id: ContactGroupItem.advisorsGroup.id)])
     }
 
+    // MARK: - `goBack` action
+
+    func testGoBack_ItCleansUpTheStack() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                item: [
+                    .contact(.vip),
+                ]
+            )
+        ]
+        stubbedContacts = groupedItems
+
+        sut.handle(action: .onLoad)
+        sut.handle(action: .onTapItem(.contact(.vip)))
+        sut.handle(action: .goBack)
+
+        XCTAssertEqual(sut.router.stack, [])
+    }
+
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {

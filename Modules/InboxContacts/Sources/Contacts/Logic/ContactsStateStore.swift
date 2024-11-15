@@ -22,6 +22,7 @@ import SwiftUI
 
 final class ContactsStateStore: ObservableObject {
     enum Action {
+        case goBack
         case onDeleteItem(ContactItemType)
         case onDeleteItemAlertAction(DeleteItemAlertAction)
         case onTapItem(ContactItemType)
@@ -57,6 +58,8 @@ final class ContactsStateStore: ObservableObject {
 
     func handle(action: Action) {
         switch action {
+        case .goBack:
+            router.goBack()
         case .onDeleteItemAlertAction(let alertAction):
             handle(alertAction: alertAction)
         case .onDeleteItem(let item):
