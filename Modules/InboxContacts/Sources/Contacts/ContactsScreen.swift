@@ -57,7 +57,12 @@ public struct ContactsScreen: View {
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
             .navigationDestination(for: Route.self) { route in
-                route.view()
+                route
+                    .view()
+                    .navigationBarBackButtonHidden()
+                    .toolbar {
+                        ToolbarItemFactory.back { /*FIXME: Implement back action*/ }
+                    }
             }
             .toolbar {
                 ToolbarItemFactory.leading(DS.Icon.icCross) {
