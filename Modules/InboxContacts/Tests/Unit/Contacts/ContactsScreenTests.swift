@@ -80,22 +80,11 @@ class ContactsScreenTests: BaseTestCase {
 private extension InspectableView where View == ViewType.View<ContactsScreen> {
 
     func simulateTapOnClose() throws {
-        let toolbar = try navigationStack().find(ContactsControllerRepresentable.self).toolbar()
-        let closeButton = toolbar
-            .findAll(ViewType.Button.self) { button in
-                let buttonWithCloseImages = button
-                    .findAll(Image.self) { image in
-                        try image.actualView() == Image(DS.Icon.icCross)
-                    }
-                    .first
+        let toolbar = try XCTUnwrap(try find(ContactsControllerRepresentable.self).findToolbars().first)
 
-                return buttonWithCloseImages != nil
-            }
-            .first
+        let closeButton = try toolbar.find(buttonWithImage: DS.Icon.icCross)
 
-        let unwrappedCloseButton = try XCTUnwrap(closeButton)
-
-        try unwrappedCloseButton.tap()
+        try closeButton.tap()
     }
 
 }
