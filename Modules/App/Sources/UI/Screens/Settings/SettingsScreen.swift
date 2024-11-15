@@ -53,7 +53,7 @@ struct SettingsScreen: View {
                     .edgesIgnoringSafeArea(.bottom)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
-                        ToolbarItemFactory.leading(DS.Icon.icChevronTinyLeft) {
+                        ToolbarItemFactory.back {
                             popWebPage()
                         }
                         doneToolbarItem()

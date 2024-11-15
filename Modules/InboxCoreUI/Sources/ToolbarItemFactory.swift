@@ -19,6 +19,10 @@ import InboxDesignSystem
 import SwiftUI
 
 public enum ToolbarItemFactory {
+    public static func back(action: @escaping () -> Void) -> some ToolbarContent {
+        leading(DS.Icon.icChevronTinyLeft, action: action)
+    }
+
     public static func leading(_ imageResource: ImageResource, action: @escaping () -> Void) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button(action: action) {
@@ -28,4 +32,3 @@ public enum ToolbarItemFactory {
         }
     }
 }
-
