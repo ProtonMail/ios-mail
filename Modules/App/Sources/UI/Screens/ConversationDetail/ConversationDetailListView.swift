@@ -24,7 +24,6 @@ struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     @State private var showMessageActionPicker: Bool = false
-    @Environment(\.dismiss) var dismiss
 
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
