@@ -37,6 +37,7 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
 
             return decryptedBody.body
         } catch {
+            AppLogger.log(error: error, category: .conversationDetail)
             return nil
         }
     }

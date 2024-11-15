@@ -136,7 +136,7 @@ struct OnboardingScreen: View {
                     .foregroundColor(DS.Color.Text.inverted)
                     .frame(height: 44)
                     .frame(maxWidth: .infinity)
-                    .background(DS.Color.Interaction.norm, in: RoundedRectangle(cornerRadius: DS.Radius.huge))
+                    .background(DS.Color.InteractionBrand.norm, in: RoundedRectangle(cornerRadius: DS.Radius.huge))
                     .padding(.horizontal, DS.Spacing.large)
             }
         )

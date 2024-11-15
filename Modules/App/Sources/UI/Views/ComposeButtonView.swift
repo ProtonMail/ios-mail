@@ -57,7 +57,7 @@ private struct ComposeButtonStyle: ButtonStyle {
             .label
             .padding(.horizontal, DS.Spacing.large)
             .padding(.vertical, DS.Spacing.moderatelyLarge)
-            .background(configuration.isPressed ? DS.Color.InteractionStrong.pressed : DS.Color.InteractionStrong.norm)
+            .background(configuration.isPressed ? DS.Color.InteractionBrandStrong.pressed : DS.Color.InteractionBrandStrong.norm)
             .foregroundColor(Color.white)
             .clipShape(Capsule(style: .continuous))
             .shadow(color: .black.opacity(0.2), radius: 10)
