@@ -24,9 +24,11 @@ struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
     @State private var animateViewIn: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Binding private var navigationPath: NavigationPath
 
-    init(seed: ConversationDetailSeed) {
+    init(seed: ConversationDetailSeed, navigationPath: Binding<NavigationPath>) {
         self._model = StateObject(wrappedValue: .init(seed: seed))
+        self._navigationPath = .init(projectedValue: navigationPath)
     }
 
     var body: some View {
@@ -38,7 +40,11 @@ struct ConversationDetailScreen: View {
                     bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
                     mailbox: mailbox,
                     handleAction: { action in
-                        model.handleConversation(action: action, toastStateStore: toastStateStore)
+                        model.handleConversation(
+                            action: action,
+                            toastStateStore: toastStateStore,
+                            goBack: { navigationPath.removeLast() }
+                        )
                     }
                 )
             }
@@ -48,7 +54,11 @@ struct ConversationDetailScreen: View {
         )
         .alert(
             model: $model.deleteConfirmationAlert,
-            handleAction: { action in model.handle(action: action, toastStateStore: toastStateStore) }
+            handleAction: { action in model.handle(
+                action: action,
+                toastStateStore: toastStateStore,
+                goBack: { navigationPath.removeLast() }
+            )}
         )
     }
 
@@ -176,7 +186,7 @@ private extension View {
                         snoozeDate: nil
                     ),
                     selectedMailbox: .inbox
-                )
+                ), navigationPath: .constant(.init())
         )
     }
 }
@@ -188,7 +198,7 @@ private extension View {
                 remoteID: .init(value: 0),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                 sender: "him"
-            ))
+            )), navigationPath: .constant(.init())
         )
     }
 }

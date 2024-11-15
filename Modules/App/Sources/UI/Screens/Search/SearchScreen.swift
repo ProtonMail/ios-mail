@@ -114,6 +114,9 @@ struct SearchScreen: View {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: model.selectedMailbox))
+        ConversationDetailScreen(
+            seed: .mailboxItem(item: uiModel, selectedMailbox: model.selectedMailbox),
+            navigationPath: $model.state.navigationPath
+        )
     }
 }

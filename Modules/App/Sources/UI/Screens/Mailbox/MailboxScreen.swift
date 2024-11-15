@@ -135,14 +135,17 @@ extension MailboxScreen {
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
         SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
+            ConversationDetailScreen(
+                seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox),
+                navigationPath: $mailboxModel.state.navigationPath
+            )
         }
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(seed: .message(seed))
+            ConversationDetailScreen(seed: .message(seed), navigationPath: $mailboxModel.state.navigationPath)
         }
     }
 }

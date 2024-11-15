@@ -104,7 +104,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
-    func handleConversation(action: BottomBarAction, toastStateStore: ToastStateStore) {
+    func handleConversation(action: BottomBarAction, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
@@ -122,15 +122,19 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .markRead:
             markConversationAsRead()
         case .markUnread:
-            markConversationAsUnread()
+            markConversationAsUnread(goBack: goBack)
         case .permanentDelete:
             deleteConfirmationAlert = .deleteConfirmation(itemsCount: 1)
         case .moveToSystemFolder(let label), .notSpam(let label):
-            moveConversation(destination: label, toastStateStore: toastStateStore)
+            moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
         }
     }
 
-    func handle(action: DeleteConfirmationAlertAction, toastStateStore: ToastStateStore) {
+    func handle(
+        action: DeleteConfirmationAlertAction,
+        toastStateStore: ToastStateStore,
+        goBack: @escaping () -> Void
+    ) {
         deleteConfirmationAlert = nil
         if action == .delete, let mailbox {
             Task {
@@ -138,6 +142,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                     .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
                 Dispatcher.dispatchOnMain(.init(block: {
                     toastStateStore.present(toast: .deleted())
+                    goBack()
                 }))
             }
         }
@@ -161,7 +166,11 @@ extension ConversationDetailModel {
         starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
 
-    private func moveConversation(destination: MoveToSystemFolderLocation, toastStateStore: ToastStateStore) {
+    private func moveConversation(
+        destination: MoveToSystemFolderLocation,
+        toastStateStore: ToastStateStore,
+        goBack: @escaping () -> Void
+    ) {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
         Task {
@@ -172,6 +181,7 @@ extension ConversationDetailModel {
             )
             Dispatcher.dispatchOnMain(.init(block: {
                 toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+                goBack()
             }))
         }
     }
@@ -182,10 +192,11 @@ extension ConversationDetailModel {
             .markAsRead(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
 
-    private func markConversationAsUnread() {
+    private func markConversationAsUnread(goBack: () -> Void) {
         guard let mailbox else { return }
         ReadActionPerformer(mailbox: mailbox)
             .markAsUnread(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+        goBack()
     }
 
     private func initialiseMailbox() async throws -> Mailbox {
