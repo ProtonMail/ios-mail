@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ViewInspector
-import SwiftUI
 import InboxCoreUI
+import SwiftUI
 
 extension InspectableView {
 
