@@ -1148,10 +1148,10 @@
 "Insecure connection" = "Connexió insegura";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "No s'ha pogut validar el certificat TLS. La vostra connexió pot estar sent supervisada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\nCanvieu de xarxa immediatament.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "No s'ha pogut validar el certificat TLS. La vostra connexió pot estar sent monitoritzada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.\n\nCanvieu de xarxa immediatament.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "No s'ha pogut validar el certificat TLS. La vostra connexió pot estar sent supervisada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "No s'ha pogut validar el certificat TLS. La vostra connexió pot estar sent monitoritzada i l'aplicació s'ha bloquejat temporalment per la vostra seguretat.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Desactiva la Validació";
@@ -1430,7 +1430,7 @@
 "Please upgrade to a paid plan to use more than 3 folders" = "Milloreu a un pla de pagament per utilitzar més de 3 carpetes.";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Milloreu a un pla de pagament per utilitzar més de 3 etiquetes.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Connecteu-vos i torneu-ho a intentar.";
@@ -1831,7 +1831,7 @@
 "Sized for reading" = "Mida adaptada per llegir";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Ara el text del cos dels vostres correus electrònics també es mostrarà a la mida de lectura que preferiu.";
 
 /* Title of the banner alert */
 "Your storage is full" = "L'emmagatzematge és ple.";
@@ -1846,13 +1846,13 @@
 "To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "Per carregar fitxers, allibereu espai o milloreu el pla per obtenir més emmagatzematge.";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "Milloreu el pla per restaurar l'accés complet i per evitar la pèrdua de dades.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "Per evitar la pèrdua de dades, demaneu al vostre administrador que millori el pla.";
 
 /* Upgrade button action */
 "Upgrade" = "Millora";
@@ -2292,7 +2292,7 @@
 "Please retry after all attachments are uploaded." = "Torneu-ho a provar després de carregar tots els adjunts.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "No s'admet l'enviament amb l'extensió per compartir fora de línia.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom a mostrar";
@@ -2505,25 +2505,25 @@
 "%ux more storage" = "%u vegades més emmagatzematge";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Obteniu %u GB: molt espai per emmagatzemar de manera segura els vostres missatges, fitxers i fotos";
 
 /* Description of a feature of a paid subscription */
 "%ux more email addresses" = "%u vegades més adreces de correu electrònic";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Creeu fins a %u adreces de correu electrònic, incloses les @pm.me, per satisfer les vostres necessitats.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Connecteu el vostre propi domini i envieu els vostres correus electrònics professionals o de marca de manera segura.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Obriu el vostre correu electrònic i calendari amb un sol clic i eviteu les distraccions del navegador.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Organitzeu els vostres correus electrònics mitjançant el vostre sistema de fitxers i etiquetatge preferit.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Gaudiu d'un temps de resposta més ràpid per part del personal de suport dedicat en cas que sorgeixi algun problema.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anònima";
@@ -2547,7 +2547,7 @@
 "Free" = "Gratuït";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Es renova automàticament al mateix preu i condicions tret que es cancel·li.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mes";
@@ -2565,10 +2565,10 @@
 "Purchase already in progress" = "La compra ja està en curs";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "Buida la paperera i el correu brossa";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Gaudiu d’una bústia més ordenada i dels avantatges d’altres funcions prèmium amb %@.";
 
 /* Title of the upsell page */
 "Group your contacts" = "Agrupeu els vostres contactes";
@@ -2580,7 +2580,7 @@
 "Need more labels or folders?" = "Necessiteu més etiquetes o carpetes?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Obteniu-les i altres funcions prèmium quan actualitzeu a %@.";
 
 /* Title of the upsell page */
 "Customize your signature" = "Personalitzeu la vostra firma";
@@ -2592,13 +2592,13 @@
 "Schedule now, send later" = "Programeu ara i envieu més tard";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Gaudiu de la personalització de l'hora d'enviament i altres funcions prèmium amb %@.";
 
 /* Title of the upsell page */
 "Bad time for this email?" = "Mal moment per a aquest correu?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Personalitzeu les posposicions com desitgeu i molt més amb %@.";
 
 /* Title of the upsell page */
 "Choose a plan" = "Trieu un pla";

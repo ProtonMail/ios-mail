@@ -2475,7 +2475,7 @@
 "15 GB storage" = "15 GB przestrzeni dyskowej";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u adresów e-mail";
+"%u email addresses" = "%u email addresses";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain" = "Niestandardowa domena";
@@ -2484,7 +2484,7 @@
 "Custom email domain support" = "Wsparcie dla niestandardowej domeny";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u osobistych kalendarzy";
+"%u personal calendars" = "%u personal calendars";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB przestrzeń dyskowa i 1 adres";
@@ -2610,7 +2610,7 @@
 "Best value" = "Najlepsza oferta";
 
 /* Button to expand the feature list */
-"%u more features" = "%u funkcji więcej";
+"%u more features" = "%u more features";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Płatne %1$@ co %2$@";
