@@ -86,6 +86,7 @@ struct SearchToolbarView: View {
                 .padding(.leading, DS.Spacing.standard)
                 .frame(maxHeight: Layout.searchBarHeight)
                 .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
                 .focused($isFocused)
                 .submitLabel(.search)
                 .onSubmitWrapper(query: $textFieldState.searchText) { query in
