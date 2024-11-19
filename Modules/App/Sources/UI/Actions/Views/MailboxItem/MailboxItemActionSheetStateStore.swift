@@ -66,13 +66,33 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .labelAs:
                 navigation(.labelAs)
             case .star:
-                performAction(action: starActionPerformer.star, ids: input.ids, itemType: input.type)
+                performAction(
+                    action: starActionPerformer.star,
+                    ids: input.ids,
+                    itemType: input.type,
+                    navigation: .dismiss
+                )
             case .unstar:
-                performAction(action: starActionPerformer.unstar, ids: input.ids, itemType: input.type)
+                performAction(
+                    action: starActionPerformer.unstar,
+                    ids: input.ids,
+                    itemType: input.type,
+                    navigation: .dismiss
+                )
             case .markRead:
-                performAction(action: readActionPerformer.markAsRead, ids: input.ids, itemType: input.type)
+                performAction(
+                    action: readActionPerformer.markAsRead,
+                    ids: input.ids,
+                    itemType: input.type,
+                    navigation: .dismiss
+                )
             case .markUnread:
-                performAction(action: readActionPerformer.markAsUnread, ids: input.ids, itemType: input.type)
+                performAction(
+                    action: readActionPerformer.markAsUnread,
+                    ids: input.ids,
+                    itemType: input.type,
+                    navigation: input.type.dismissNavigation
+                )
             case .delete:
                 state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
             case .pin, .unpin:
@@ -97,7 +117,11 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     // MARK: - Private
 
-    private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID], itemType: MailboxItemType) {
+    private func performMoveToAction(
+        destination: MoveToSystemFolderLocation,
+        ids: [ID],
+        itemType: MailboxItemType
+    ) {
         Task {
             await moveToActionPerformer.moveTo(
                 destinationID: destination.localId,
@@ -106,7 +130,7 @@ class MailboxItemActionSheetStateStore: StateStore {
             )
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.presentMoveToToast(destination: destination)
-                self?.dismiss()
+                self?.navigation(itemType.dismissNavigation)
             }))
         }
     }
@@ -116,7 +140,7 @@ class MailboxItemActionSheetStateStore: StateStore {
             await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.presentDeletedToast()
-                self?.dismiss()
+                self?.navigation(itemType.dismissNavigation)
             }))
         }
     }
@@ -124,17 +148,14 @@ class MailboxItemActionSheetStateStore: StateStore {
     private func performAction(
         action: ([ID], MailboxItemType, (() -> Void)?) -> Void,
         ids: [ID],
-        itemType: MailboxItemType
+        itemType: MailboxItemType,
+        navigation: MailboxItemActionSheetNavigation
     ) {
-        action(ids, itemType) { [weak self] in
-            self?.dismiss()
+        action(ids, itemType) {
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                self?.navigation(navigation)
+            }))
         }
-    }
-
-    private func dismiss() {
-        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-            self?.navigation(.dismiss)
-        }))
     }
 
     private func presentMoveToToast(destination: MoveToSystemFolderLocation) {
@@ -177,4 +198,17 @@ private extension MailboxItemActionSheetState {
             )
         )
     }
+}
+
+private extension MailboxItemType {
+
+    var dismissNavigation: MailboxItemActionSheetNavigation {
+        switch self {
+        case .conversation:
+            return .dismissAndGoBack
+        case .message:
+            return .dismiss
+        }
+    }
+
 }

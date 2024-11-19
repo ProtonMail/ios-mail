@@ -134,7 +134,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testStarAction_WhenMessageIsStarred_ItStarsMessage() {
         test(
             action: .star,
-            itemType: .message,
+            itemType: .message, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
         )
     }
@@ -142,7 +143,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testUnstarAction_WhenMessageIsUnstarred_ItUnstarsMessage() {
         test(
             action: .unstar,
-            itemType: .message,
+            itemType: .message, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
         )
     }
@@ -150,7 +152,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testStarAction_WhenConversationIsStarred_ItStarsConversation() {
         test(
             action: .star,
-            itemType: .conversation,
+            itemType: .conversation, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
         )
     }
@@ -158,7 +161,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testUnstarAction_WhenConversationIsUnstarred_ItUnstarsConversation() {
         test(
             action: .unstar,
-            itemType: .conversation,
+            itemType: .conversation, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
         )
     }
@@ -166,7 +170,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testMarkAsReadAction_WhenMessageIsMarkedAsRead_ItMarksMessageAsRead() {
         test(
             action: .markRead,
-            itemType: .message,
+            itemType: .message, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { readActionPerformerActionsSpy.markMessageAsReadInvoked }
         )
     }
@@ -174,7 +179,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testMarkAsReadAction_WhenConversationIsMarkedAsRead_ItMarksConversationAsRead() {
         test(
             action: .markRead,
-            itemType: .conversation,
+            itemType: .conversation, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { readActionPerformerActionsSpy.markConversationAsReadInvoked }
         )
     }
@@ -182,7 +188,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testMarkAsUnreadAction_WhenMessageIsMarkedAsUnread_ItMarksMessageAsUnread() {
         test(
             action: .markUnread,
-            itemType: .message,
+            itemType: .message, 
+            expectedNavigation: .dismiss,
             verifyInvoked: { readActionPerformerActionsSpy.markMessageAsUnreadInvoked }
         )
     }
@@ -190,7 +197,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testMarkAsUnreadAction_WhenConversationIsMarkedAsUnread_ItMarksConversationAsUnread() {
         test(
             action: .markUnread,
-            itemType: .conversation,
+            itemType: .conversation, 
+            expectedNavigation: .dismissAndGoBack,
             verifyInvoked: { readActionPerformerActionsSpy.markConversationAsUnreadInvoked }
         )
     }
@@ -199,6 +207,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         testDeletionFlow(
             itemType: .conversation,
             action: .mailboxItemActionSelected(.delete),
+            expectedNavigation: .dismissAndGoBack,
             verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
         )
     }
@@ -206,7 +215,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
-            action: .mailboxItemActionSelected(.delete),
+            action: .mailboxItemActionSelected(.delete), 
+            expectedNavigation: .dismiss,
             verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
         )
     }
@@ -214,7 +224,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testMoveToDeleteAction_WhenMeesageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
-            action: .moveTo(.permanentDelete),
+            action: .moveTo(.permanentDelete), 
+            expectedNavigation: .dismiss,
             verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
         )
     }
@@ -237,19 +248,25 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func test(action: MailboxItemAction, itemType: MailboxItemType, verifyInvoked: () -> [ID]) {
+    private func test(
+        action: MailboxItemAction,
+        itemType: MailboxItemType,
+        expectedNavigation: MailboxItemActionSheetNavigation,
+        verifyInvoked: () -> [ID]
+    ) {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(action))
 
         XCTAssertEqual(verifyInvoked(), ids)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
+        XCTAssertEqual(spiedNavigation, [expectedNavigation])
     }
 
     private func testDeletionFlow(
         itemType: MailboxItemType,
         action: MailboxItemActionSheetAction,
+        expectedNavigation: MailboxItemActionSheetNavigation,
         verifyInvoked: () -> [ID]
     ) {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
@@ -262,7 +279,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         sut.handle(action: .alertActionTapped(.delete))
 
         XCTAssertEqual(verifyInvoked(), ids)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
+        XCTAssertEqual(spiedNavigation, [expectedNavigation])
 
         XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
     }

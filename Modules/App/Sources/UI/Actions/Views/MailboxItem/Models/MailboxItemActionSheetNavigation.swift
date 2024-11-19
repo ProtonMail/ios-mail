@@ -19,6 +19,7 @@ import Foundation
 
 enum MailboxItemActionSheetNavigation: Equatable {
     case dismiss
+    case dismissAndGoBack
     case labelAs
     case moveTo
 }

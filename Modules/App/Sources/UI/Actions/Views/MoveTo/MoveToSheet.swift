@@ -26,20 +26,20 @@ struct MoveToSheet: View {
     private let mailbox: Mailbox
     private let availableMoveToActions: AvailableMoveToActions
     private let moveToActions: MoveToActions
-    private let dismiss: () -> Void
+    private let navigation: (MoveToSheetNavigation) -> Void
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
         moveToActions: MoveToActions,
-        dismiss: @escaping () -> Void
+        navigation: @escaping (MoveToSheetNavigation) -> Void
     ) {
         self.input = input
         self.mailbox = mailbox
         self.availableMoveToActions = availableMoveToActions
         self.moveToActions = moveToActions
-        self.dismiss = dismiss
+        self.navigation = navigation
     }
 
     var body: some View {
@@ -49,7 +49,7 @@ struct MoveToSheet: View {
             availableMoveToActions: availableMoveToActions, 
             toastStateStore: toastStateStore, 
             moveToActions: moveToActions,
-            dismiss: dismiss
+            navigation: navigation
         )) { state, store in
             ClosableScreen {
                 ScrollView {
@@ -156,6 +156,6 @@ private extension Array where Element == MoveToCustomFolder {
         mailbox: .dummy,
         availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions, 
         moveToActions: .dummy,
-        dismiss: {}
+        navigation: { _ in }
     )
 }

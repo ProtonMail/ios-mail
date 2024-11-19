@@ -18,6 +18,6 @@
 import Foundation
 
 enum MoveToSheetNavigation {
-    case createFolder
+    case dismissAndGoBack
     case dismiss
 }

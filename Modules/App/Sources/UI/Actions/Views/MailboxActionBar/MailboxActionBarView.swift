@@ -138,7 +138,7 @@ struct MailboxActionBarView: View {
             mailbox: mailbox,
             availableMoveToActions: .productionInstance,
             moveToActions: .productionInstance
-        ) {
+        ) { _ in
             actionHandler(.dismissMoveToSheet)
         }
     }

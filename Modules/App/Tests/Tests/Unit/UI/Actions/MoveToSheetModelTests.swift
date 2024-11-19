@@ -24,7 +24,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
-    var invokedDismissCount: Int!
+    var invokedNavigation: [MoveToSheetNavigation]!
     var stubbedMoveToActions: [MoveAction]!
     var toastStateStore: ToastStateStore!
     var moveToActionsSpy: MoveToActionsSpy!
@@ -33,7 +33,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         super.setUp()
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
-        invokedDismissCount = 0
+        invokedNavigation = []
         stubbedMoveToActions = [
             .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
             .customFolder(.init(
@@ -50,7 +50,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     override func tearDown() {
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
-        invokedDismissCount = nil
+        invokedNavigation = nil
         stubbedMoveToActions = nil
         toastStateStore = nil
         moveToActionsSpy = nil
@@ -95,7 +95,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             .init(destinationID: .init(value: 1), itemsIDs: [.init(value: 2)])
         ])
         XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Private")])
-        XCTAssertEqual(invokedDismissCount, 1)
+        XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
     }
 
     func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
@@ -107,7 +107,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
         ])
         XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Inbox")])
-        XCTAssertEqual(invokedDismissCount, 1)
+        XCTAssertEqual(invokedNavigation, [.dismiss])
     }
 
     // MARK: - Private
@@ -128,7 +128,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             ), 
             toastStateStore: toastStateStore,
             moveToActions: moveToActionsSpy.testingInstance,
-            dismiss: { self.invokedDismissCount += 1 }
+            navigation: { self.invokedNavigation.append($0) }
         )
     }
 

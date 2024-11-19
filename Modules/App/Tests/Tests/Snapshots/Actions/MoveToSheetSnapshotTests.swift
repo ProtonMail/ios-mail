@@ -27,7 +27,7 @@ class MoveToSheetSnapshotTests: BaseTestCase {
             mailbox: .dummy,
             availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,  
             moveToActions: .dummy,
-            dismiss: { }
+            navigation: { _ in }
         ).environmentObject(ToastStateStore(initialState: .initial))
         assertSnapshotsOnIPhoneX(of: sut, named: "move_to_sheet")
     }

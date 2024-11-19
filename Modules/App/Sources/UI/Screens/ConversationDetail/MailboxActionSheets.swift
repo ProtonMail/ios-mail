@@ -26,18 +26,28 @@ struct MailboxActionSheetsState: Copying {
 }
 
 extension View {
-    func actionSheetsFlow(mailbox: @escaping () -> Mailbox, state: Binding<MailboxActionSheetsState>) -> some View {
-        modifier(MailboxActionSheets(mailbox: mailbox, state: state))
+    func actionSheetsFlow(
+        mailbox: @escaping () -> Mailbox,
+        state: Binding<MailboxActionSheetsState>,
+        goBackNavigation: (() -> Void)? = nil
+    ) -> some View {
+        modifier(MailboxActionSheets(mailbox: mailbox, state: state, goBackNavigation: goBackNavigation))
     }
 }
 
 private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     private let mailbox: () -> Mailbox
+    private let goBackNavigation: (() -> Void)?
 
-    init(mailbox: @escaping () -> Mailbox, state: Binding<MailboxActionSheetsState>) {
+    init(
+        mailbox: @escaping () -> Mailbox, 
+        state: Binding<MailboxActionSheetsState>,
+        goBackNavigation: (() -> Void)?
+    ) {
         self.mailbox = mailbox
         self._state = state
+        self.goBackNavigation = goBackNavigation
     }
 
     func body(content: Content) -> some View {
@@ -61,6 +71,9 @@ private struct MailboxActionSheets: ViewModifier {
                     .copy(\.mailbox, to: nil)
             case .dismiss:
                 state = state.copy(\.mailbox, to: nil)
+            case .dismissAndGoBack:
+                state = state.copy(\.mailbox, to: nil)
+                goBackNavigation?()
             }
         }
         return MailboxItemActionSheet(
@@ -96,8 +109,14 @@ private struct MailboxActionSheets: ViewModifier {
             mailbox: mailbox(),
             availableMoveToActions: .productionInstance,
             moveToActions: .productionInstance
-        ) {
+        ) { navigation in
             state = state.dismissed()
+            switch navigation {
+            case .dismissAndGoBack:
+                goBackNavigation?()
+            case .dismiss:
+                break
+            }
         }
     }
 

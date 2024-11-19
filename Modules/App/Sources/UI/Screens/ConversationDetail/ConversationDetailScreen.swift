@@ -50,7 +50,8 @@ struct ConversationDetailScreen: View {
             }
         }.actionSheetsFlow(
             mailbox: { model.mailbox.unsafelyUnwrapped },
-            state: $model.actionSheets
+            state: $model.actionSheets,
+            goBackNavigation: { navigationPath.removeLast() }
         )
         .alert(
             model: $model.deleteConfirmationAlert,

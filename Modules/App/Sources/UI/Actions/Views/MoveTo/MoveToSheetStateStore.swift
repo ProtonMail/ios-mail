@@ -28,7 +28,7 @@ class MoveToSheetStateStore: StateStore {
     private let moveToActionsProvider: MoveToActionsProvider
     private let toastStateStore: ToastStateStore
     private let moveToActionPerformer: MoveToActionPerformer
-    private let dismiss: () -> Void
+    private let navigation: (MoveToSheetNavigation) -> Void
 
     init(
         input: ActionSheetInput,
@@ -36,13 +36,13 @@ class MoveToSheetStateStore: StateStore {
         availableMoveToActions: AvailableMoveToActions,
         toastStateStore: ToastStateStore,
         moveToActions: MoveToActions,
-        dismiss: @escaping () -> Void
+        navigation: @escaping (MoveToSheetNavigation) -> Void
     ) {
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
         self.toastStateStore = toastStateStore
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
-        self.dismiss = dismiss
+        self.navigation = navigation
     }
 
     func handle(action: MoveToSheetAction) {
@@ -67,9 +67,9 @@ class MoveToSheetStateStore: StateStore {
                 itemsIDs: input.ids,
                 itemType: input.type
             )
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            Dispatcher.dispatchOnMain(.init(block: { [weak self, input] in
                 self?.toastStateStore.present(toast: .moveTo(destinationName: destinationName))
-                self?.dismiss()
+                self?.navigation(input.type.navigation)
             }))
         }
     }
@@ -125,4 +125,17 @@ private extension MoveToState {
     static var initial: Self {
         .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
     }
+}
+
+private extension MailboxItemType {
+
+    var navigation: MoveToSheetNavigation {
+        switch self {
+        case .conversation:
+            return .dismissAndGoBack
+        case .message:
+            return .dismiss
+        }
+    }
+
 }
