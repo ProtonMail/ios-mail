@@ -37,9 +37,10 @@ final class ContactsStateStore: ObservableObject {
     private let contactDeleter: ContactItemDeleterAdapter
     private let contactGroupDeleter: ContactItemDeleterAdapter
     private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
-    private let watchContacts: (ContactsLiveQueryCallback) async throws -> Void
+    private let watchContacts: (ContactsLiveQueryCallback) async throws -> WatchedContactList
     private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
     private var cancellables: Set<AnyCancellable> = Set()
+    private var watchContactsResult: WatchedContactList?
 
     init(
         state: ContactsScreenState,
@@ -52,7 +53,7 @@ final class ContactsStateStore: ObservableObject {
         self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
         self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
         self.makeContactsLiveQuery = makeContactsLiveQuery
-        self.watchContacts = { callback in _ = try await wrappers.contactsWatcher.watch(session, callback) }
+        self.watchContacts = { callback in try await wrappers.contactsWatcher.watch(session, callback) }
         setUpNestedObservableObjectUpdates()
     }
 
@@ -114,7 +115,7 @@ final class ContactsStateStore: ObservableObject {
         }
 
         Task {
-            try await watchContacts(contactsLiveQueryCallback)
+            watchContactsResult = try await watchContacts(contactsLiveQueryCallback)
         }
     }
 
