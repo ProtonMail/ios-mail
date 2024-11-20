@@ -40,7 +40,7 @@ final class ContactsStateStore: ObservableObject {
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> WatchedContactList
     private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
     private var cancellables: Set<AnyCancellable> = Set()
-    private var watchContactsResult: WatchedContactList?
+    private var watchContactsConnection: WatchedContactList?
 
     init(
         state: ContactsScreenState,
@@ -115,7 +115,7 @@ final class ContactsStateStore: ObservableObject {
         }
 
         Task {
-            watchContactsResult = try await watchContacts(contactsLiveQueryCallback)
+            watchContactsConnection = try await watchContacts(contactsLiveQueryCallback)
         }
     }
 
