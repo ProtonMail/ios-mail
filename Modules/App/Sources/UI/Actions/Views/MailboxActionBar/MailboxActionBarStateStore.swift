@@ -96,10 +96,12 @@ final class MailboxActionBarStateStore: StateStore {
                 .copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
             dismissMoreActionSheet()
-            state = state.copy(\.labelAsSheetPresented, to: .init(ids: ids, type: itemTypeForActionBar))
+            state = state
+                .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, type: itemTypeForActionBar))
         case .moveTo:
             dismissMoreActionSheet()
-            state = state.copy(\.moveToSheetPresented, to: .init(ids: ids, type: itemTypeForActionBar))
+            state = state
+                .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, type: itemTypeForActionBar))
         case .star:
             dismissMoreActionSheet()
             starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)

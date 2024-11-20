@@ -113,7 +113,10 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)]))
 
-        XCTAssertEqual(sut.state.moveToSheetPresented, .init(ids: [.init(value: 7)], type: .message))
+        XCTAssertEqual(
+            sut.state.moveToSheetPresented,
+            .init(sheetType: .moveTo, ids: [.init(value: 7)], type: .message)
+        )
 
         sut.handle(action: .dismissMoveToSheet)
 
@@ -128,7 +131,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         sut.handle(action: .actionSelected(.labelAs, ids: ids))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .conversation))
+        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, type: .conversation))
 
         sut.handle(action: .dismissLabelAsSheet)
 
@@ -161,7 +164,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         sut.handle(action: .moreSheetAction(.labelAs, ids: ids))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(ids: ids, type: .message))
+        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, type: .message))
     }
 
     func testState_WhenStarActionIsApplied_ItStarsCorrectMessages() {

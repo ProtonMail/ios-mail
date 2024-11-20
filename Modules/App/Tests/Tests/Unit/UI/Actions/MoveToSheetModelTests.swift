@@ -60,7 +60,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
     func testState_WhenMailboxTypeIsMessageAndViewAppear_ItReturnsMoveToActions() {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
-        let sut = sut(input: .init(ids: ids, type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .message))
 
         sut.handle(action: .viewAppear)
 
@@ -70,7 +70,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
     func testState_WhenMailboxTypeIsConversationAndViewAppear_ItReturnsMoveToActions() {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
-        let sut = sut(input: .init(ids: ids, type: .conversation))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .conversation))
 
         sut.handle(action: .viewAppear)
 
@@ -79,7 +79,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() {
-        let sut = sut(input: .init(ids: [], type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [], type: .message))
 
         sut.handle(action: .createFolderTapped)
 
@@ -87,7 +87,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     }
 
     func testAction_WhenCustomFolderIsTapped_ItMovesConversationToCustomFolder() {
-        let sut = sut(input: .init(ids: [.init(value: 2)], type: .conversation))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 2)], type: .conversation))
 
         sut.handle(action: .customFolderTapped(.init(id: .init(value: 1), name: "Private")))
 
@@ -99,7 +99,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     }
 
     func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
-        let sut = sut(input: .init(ids: [.init(value: 1)], type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message))
 
         sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
