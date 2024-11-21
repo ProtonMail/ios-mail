@@ -199,7 +199,7 @@ private extension SelectionModeState {
             let selectionState = SelectionModeState()
 
             let actionBar = MailboxItemsListActionBar(
-                selectedMailbox: .inbox, customLabelModel: .init(), mailboxActionable: EmptyMailboxActionable()
+                selectedMailbox: .inbox, customLabelModel: .init()
             )
 
             return .init(
