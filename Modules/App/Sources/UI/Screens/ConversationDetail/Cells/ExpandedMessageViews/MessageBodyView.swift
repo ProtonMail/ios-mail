@@ -67,6 +67,8 @@ struct MessageBodyView: View {
 
             MessageBodyReaderView(
                 bodyContentHeight: $bodyContentHeight,
+                mailbox: mailbox,
+                messageID: uiModel.id,
                 html: body,
                 urlOpener: urlOpener,
                 htmlLoaded: htmlLoaded

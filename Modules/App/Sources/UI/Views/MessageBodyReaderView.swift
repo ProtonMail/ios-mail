@@ -16,11 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 import WebKit
 
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
+    let mailbox: Mailbox
+    let messageID: ID
     let html: String
     let urlOpener: URLOpenerProtocol
     let htmlLoaded: () -> Void
@@ -29,10 +32,13 @@ struct MessageBodyReaderView: UIViewRepresentable {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
+        config.setURLSchemeHandler(
+            CIDSchemeHandler(mailbox: mailbox, messageID: messageID),
+            forURLScheme: CIDSchemeHandler.handlerScheme
+        )
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
-
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
