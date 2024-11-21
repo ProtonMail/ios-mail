@@ -169,7 +169,10 @@ extension MailboxModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
-            if resetUnreadCount { state.filterBar.unreadCount = .unknown }
+            if resetUnreadCount {
+                state.filterBar.unreadCount = .unknown
+                unreadCountLiveQuery = nil
+            }
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox
