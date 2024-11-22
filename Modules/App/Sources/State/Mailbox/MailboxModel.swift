@@ -169,7 +169,10 @@ extension MailboxModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
-            if resetUnreadCount { state.filterBar.unreadCount = .unknown }
+            if resetUnreadCount {
+                state.filterBar.unreadCount = .unknown
+                unreadCountLiveQuery = nil
+            }
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox
@@ -421,126 +424,6 @@ extension MailboxModel {
         starActionPerformer.unstar(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
 
-    private func actionDelete(ids: [ID]) {
-        AppLogger.log(message: "Conversation deletion \(ids)...", category: .mailboxActions)
-        guard let mailbox else { return }
-        Task {
-            do {
-                try await deleteConversations(mailbox: mailbox, conversationIds: ids)
-            } catch {
-                AppLogger.log(error: error, category: .mailboxActions)
-            }
-        }
-    }
-
-    private func actionMoveTo(systemFolder: SystemFolderLabel, ids: [ID]) {
-        actionMoveTo(labelId: .init(value: UInt64(systemFolder.rawValue)), ids: ids)
-    }
-
-    private func actionMoveTo(labelId: ID, ids: [ID]) {
-        guard let mailbox else { return }
-        Task {
-            do {
-                try await moveConversations(mailbox: mailbox, labelId: labelId, ids: ids)
-            } catch {
-                AppLogger.log(error: error, category: .mailboxActions)
-            }
-        }
-    }
-
-    private func actionUpdateReadStatus(to newStatus: MailboxReadStatus, for ids: [ID]) {
-        AppLogger.log(message: "Conversation set read status \(ids)...", category: .mailboxActions)
-        guard let mailbox else { return }
-        do {
-            if case .read = newStatus {
-                Task {
-                    do {
-                        try await markConversationsAsRead(mailbox: mailbox, ids: ids)
-                    } catch {
-                        AppLogger.log(error: error, category: .mailboxActions)
-                    }
-                }
-            } else if case .unread = newStatus {
-                Task {
-                    do {
-                        try await markConversationsAsUnread(mailbox: mailbox, ids: ids)
-                    } catch {
-                        AppLogger.log(error: error, category: .mailboxActions)
-                    }
-                }
-            }
-        }
-    }
-
-    private func actionApplyLabels(_ selectedLabels: Set<ID>, to ids: [ID]) {
-        let selectedConversations = paginatedDataSource.state.items.filter({ $0.isSelected })
-        if viewMode == .conversations {
-            do {
-                let existingLabelsInConversations = selectedConversations
-                    .map(\.labelUIModel.allLabelIds)
-                    .reduce(Set<ID>(), { $0.union($1) })
-
-                existingLabelsInConversations.forEach { labelId in
-                    Task {
-                        do {
-                            try await removeLabelFromConversations(
-                                session: userSession,
-                                labelId: labelId,
-                                ids: selectedConversations.map(\.id)
-                            )
-                        } catch {
-                            AppLogger.log(error: error, category: .mailboxActions)
-                        }
-                    }
-                }
-
-                selectedLabels.forEach { labelId in
-                    Task {
-                        do {
-                            try await applyLabelToConversations(
-                                session: userSession,
-                                labelId: labelId,
-                                ids: selectedConversations.map(\.id)
-                            )
-                        } catch {
-                            AppLogger.log(error: error, category: .mailboxActions)
-                        }
-                    }
-                }
-            }
-        } else {
-            // TODO: actions for messages not ready
-        }
-    }
-}
-
-// MARK: MailboxActionable
-
-extension MailboxModel: MailboxActionable {
-    
-    func labelsOfSelectedItems() -> [Set<ID>] {
-        paginatedDataSource.state.items.filter({ $0.isSelected }).map(\.labelUIModel.allLabelIds)
-    }
-
-    func onActionTap(_ action: Action, toastStateStore: ToastStateStore) {
-        onMailboxItemAction(
-            action,
-            itemIds: selectionMode.selectionState.selectedItems.map(\.id),
-            toastStateStore: toastStateStore
-        )
-    }
-
-    func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {
-        let selectedItemIds = selectionMode.selectionState.selectedItems.map(\.id)
-        actionApplyLabels(labelIds, to: selectedItemIds)
-        if alsoArchive {
-            actionMoveTo(systemFolder: .archive, ids: selectedItemIds)
-        }
-    }
-
-    func onFolderSelected(labelId: ID) {
-        actionMoveTo(labelId: labelId, ids: selectionMode.selectionState.selectedItems.map(\.id))
-    }
 }
 
 extension MailboxModel {

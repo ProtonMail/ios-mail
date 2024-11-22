@@ -51,7 +51,6 @@ final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecke
     /// - Parameter updatedItems: new list of items. The list can't be empty
     @MainActor
     func updateItems(_ updatedItems: [Item]) async {
-        guard !updatedItems.isEmpty else { return }
         state.items = updatedItems
     }
 

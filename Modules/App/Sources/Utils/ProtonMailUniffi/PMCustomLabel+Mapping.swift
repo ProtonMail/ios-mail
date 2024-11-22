@@ -19,24 +19,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-extension PMCustomLabel {
-
-    // MARK: - UI
-
-    func toLabelPickerCellUIModel(selectedIds: [Id: Quantifier]) -> LabelPickerCellUIModel {
-        let quantifier = selectedIds[id] ?? .none
-
-        return LabelPickerCellUIModel(
-            id: id,
-            name: name,
-            color: Color(hex: color.value),
-            itemsWithLabel: quantifier
-        )
-    }
-
-}
-
-
 extension PMCustomFolder {
 
     var childLevel: Int {

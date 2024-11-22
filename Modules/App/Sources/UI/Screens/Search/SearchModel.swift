@@ -194,22 +194,6 @@ extension SearchModel {
     }
 }
 
-extension SearchModel: MailboxActionable {
-
-    @MainActor
-    func labelsOfSelectedItems() -> [Set<ID>] { [] }
-
-    @MainActor
-    func onActionTap(_ action: Action, toastStateStore: ToastStateStore) {}
-
-    @MainActor
-    func onLabelsSelected(labelIds: Set<ID>, alsoArchive: Bool) {}
-
-    @MainActor
-    func onFolderSelected(labelId: ID) {}
-
-}
-
 extension SearchModel {
 
     struct State {

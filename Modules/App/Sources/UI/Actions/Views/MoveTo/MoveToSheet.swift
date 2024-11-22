@@ -152,7 +152,7 @@ private extension Array where Element == MoveToCustomFolder {
 
 #Preview {
     MoveToSheet(
-        input: .init(ids: [], type: .message),
+        input: .init(sheetType: .moveTo, ids: [], type: .message),
         mailbox: .dummy,
         availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions, 
         moveToActions: .dummy,

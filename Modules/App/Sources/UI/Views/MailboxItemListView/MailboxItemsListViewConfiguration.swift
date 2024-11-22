@@ -35,7 +35,6 @@ struct MailboxItemsListViewConfiguration {
 struct MailboxItemsListActionBar {
     let selectedMailbox: SelectedMailbox
     let customLabelModel: CustomLabelModel
-    let mailboxActionable: MailboxActionable
 }
 
 struct MailboxItemsListSwipeActions {

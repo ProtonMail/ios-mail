@@ -70,7 +70,7 @@ class LabelAsSheetModel: ObservableObject {
         Task {
             await labelAsActionPerformer.labelAs(input: .init(
                 itemType: input.type,
-                itemsIDs: input.id,
+                itemsIDs: input.ids,
                 selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
                 partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
                 archive: state.shouldArchive

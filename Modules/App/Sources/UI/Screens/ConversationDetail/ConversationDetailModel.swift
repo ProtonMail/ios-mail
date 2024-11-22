@@ -108,13 +108,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
-            actionSheets = actionSheets.copy(\.labelAs, to: .init(ids: [conversationID], type: .conversation))
+            actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
             actionSheets = actionSheets
                 .copy(\.mailbox, to: .init(ids: [conversationID], type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets = actionSheets
-                .copy(\.moveTo, to: .init(ids: [conversationID], type: .conversation))
+                .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
         case .star:
             starConversation()
         case .unstar:

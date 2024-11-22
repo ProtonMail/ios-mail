@@ -18,12 +18,18 @@
 import Foundation
 
 struct ActionSheetInput: Hashable, Identifiable {
+    let sheetType: ActionSheetType
     let ids: [ID]
     let type: MailboxItemType
 
+    enum ActionSheetType: Equatable {
+        case moveTo
+        case labelAs
+    }
+
     // MARK: - Identifiable
 
-    var id: [ID] {
-        ids
+    var id: ActionSheetType {
+        sheetType
     }
 }
