@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
+import InboxComposer
 import InboxCore
 import InboxDesignSystem
 import SwiftUI
@@ -26,6 +27,7 @@ struct MailboxScreen: View {
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isSearchPresented = false
+    @State private var isComposerPresented = false
     @State private var isOnboardingPresented = false
     private var customLabelModel: CustomLabelModel
     private let onboardingStore: OnboardingStore
@@ -72,6 +74,9 @@ struct MailboxScreen: View {
                 }
                 .navigationDestination(for: MailboxMessageSeed.self) { seed in
                     messageSeedDestination(seed: seed)
+                }
+                .sheet(isPresented: $isComposerPresented) {
+                    ComposerScreen()
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -124,6 +129,7 @@ extension MailboxScreen {
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
             toastStateStore.present(toast: .comingSoon)
+//            isComposerPresented.toggle()
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)

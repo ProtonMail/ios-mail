@@ -15,12 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import InboxComposer
+import Foundation
 
-final class InboxComposerTests: XCTestCase {
-
-    func test_example() {
-      XCTAssertEqual(1 + 1, 2)
-    }
+struct ComposerState: Equatable {
+    var recipients: [RecipientUIModel]
 }
