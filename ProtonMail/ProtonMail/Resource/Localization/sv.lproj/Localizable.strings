@@ -1893,7 +1893,7 @@
 "Unblock" = "Avblockera";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "Ditt schema är värt att skydda.";
 
 /* Subheadline of the Calendar landing page */
 "Your calendar is a record of your life, Proton Calendar helps keep it private." = "Din kalender är ett register över ditt liv, Proton Calendar hjälper till att hålla den privat.";
@@ -2403,10 +2403,10 @@
 "Please select a time in the future" = "Välj en tid i framtiden";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Vill du snooze när som helst?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Lås upp anpassade snoozetider när du uppgraderar";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Upp till 15 e-postadresser/alias";
@@ -2514,7 +2514,7 @@
 "Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Skapa upp till %u e-postadresser, inklusive @pm.me, för att möta dina behov.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Anslut din egen domän och skicka dina professionella eller varumärkesanpassade e-postmeddelanden säkert.";
 
 /* Description of a feature of a paid subscription */
 "Open your email and calendar with one click and avoid browser distractions." = "Öppna din e-post och kalender med ett klick och undvik webbläsarens distraktioner.";
@@ -2592,13 +2592,13 @@
 "Schedule now, send later" = "Schemalägg nu, skicka senare";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Njut av anpassad schemasändning och andra premiumfunktioner med %@.";
 
 /* Title of the upsell page */
 "Bad time for this email?" = "Olämplig tidpunkt för detta e-postmeddelande?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooza det för en tid som du väljer. Få anpassad snooze och mer med %@.";
 
 /* Title of the upsell page */
 "Choose a plan" = "Välj ett paket";

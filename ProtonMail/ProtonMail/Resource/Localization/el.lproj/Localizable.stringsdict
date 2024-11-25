@@ -41,7 +41,7 @@
       <key>newemails</key>
       <dict>
         <key>one</key>
-        <string>Έχετε %d νέα E-mail!</string>
+        <string>Έχετε %d νέο E-mail!</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
@@ -61,7 +61,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>η εφαρμογή παρακολούθησης email %d αποκλείστηκε</string>
+        <string>%d εφαρμογή παρακολούθησης email αποκλείστηκε</string>
         <key>other</key>
         <string>%d εφαρμογές παρακολούθησης email αποκλείστηκαν</string>
       </dict>
@@ -73,13 +73,13 @@
       <key>selected</key>
       <dict>
         <key>one</key>
-        <string>%d επιλεγμένο/α</string>
+        <string>%d επιλεγμένο</string>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>%d επιλεγμένο/α</string>
+        <string>%d επιλεγμένα</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>

@@ -1424,10 +1424,10 @@
 "Creating folder not allowed" = "Ustvarjanje mape ni dovoljeno.";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Ustvarjanje oznake ni dovoljeno";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Za uporabo več kot treh map nadgradite na plačljiv paket";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Za uporabo več kot treh oznak nadgradite na plačljiv paket.";
@@ -2601,7 +2601,7 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Izberite si paket";
 
 /* Refers to an annual billing cycle */
 "Annual" = "Letno";
