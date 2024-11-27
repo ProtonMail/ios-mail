@@ -178,6 +178,7 @@ extension EventsService {
             }
         
             let eventID = self.dependencies.lastUpdatedStore.lastEventID(userID: userManager.userID)
+            SystemLogger.log(message: "Fetching events since \(eventID)", category: .mailboxRefresh)
             let eventAPI = EventCheckRequest(eventID: eventID, discardContactsMetadata: discardContactsMetadata)
             userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, eventsRes in
 
@@ -224,6 +225,7 @@ extension EventsService {
                         self.processEvents(messageCounts: eventsRes.messageCounts)
                         self.processEvents(conversationCounts: eventsRes.conversationCounts)
                         self.processEvents(space: eventsRes.usedSpace)
+                        SystemLogger.log(message: "Fetched events up to \(eventsRes.eventID)", category: .mailboxRefresh)
                         self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
 
                         let outMessages = messageEvents

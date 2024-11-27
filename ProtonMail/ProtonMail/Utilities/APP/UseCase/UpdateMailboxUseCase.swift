@@ -52,7 +52,13 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     }
 
     override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
+        SystemLogger.log(
+            message: "Requested update, labelID: \(params.labelID), unreadOnly: \(params.showUnreadOnly), cleanFetch: \(params.isCleanFetch), fetchMessagesAtTheEnd: \(params.fetchMessagesAtTheEnd)",
+            category: .mailboxRefresh
+        )
+
         if self.isFetching {
+            SystemLogger.log(message: "Already fetching", category: .mailboxRefresh)
             callback(.success)
             return
         }
@@ -206,11 +212,15 @@ extension UpdateMailbox {
                 }
         } else {
             self.dependencies.fetchLatestEventID.execute(params: ()) { [weak self] fetchLatestEventIDResult in
-                if let error = fetchLatestEventIDResult.error {
-                    assertionFailure("\(error)")
+                switch fetchLatestEventIDResult {
+                case .success(let response):
+                    SystemLogger.log(message: "Latest eventID: \(response.eventID)", category: .mailboxRefresh)
+                case .failure(let error):
+                    SystemLogger.log(error: error, category: .mailboxRefresh)
                 }
 
                 guard let localSelf = self else {
+                    SystemLogger.log(message: "Mailbox update taking longer than usual", category: .mailboxRefresh)
                     completion(fetchLatestEventIDResult.error)
                     return
                 }
@@ -221,7 +231,12 @@ extension UpdateMailbox {
                                         before: 0,
                                         unreadOnly: unreadOnly,
                                         shouldReset: true) { [weak localSelf] result in
+                        if let error = result.error {
+                            SystemLogger.log(error: error, category: .mailboxRefresh)
+                        }
+
                         guard let localSelf = localSelf else {
+                            SystemLogger.log(message: "Mailbox update taking longer than expected", category: .mailboxRefresh)
                             completion(result.error)
                             return
                         }
@@ -261,12 +276,14 @@ extension UpdateMailbox {
 
             if let refresh = res["Refresh"] as? Int, refresh > 0 {
                 // the client has to re-fetch all models/collection and get the last EventID
+                SystemLogger.log(message: "Refreshing events", category: .mailboxRefresh)
                 cleanFetch(params: params, callback: callback)
                 return
             }
 
             if let more = res["More"] as? Int, more > 0 {
                 // it means the client need to call the events route again to receive more updates.
+                SystemLogger.log(message: "Need to fetch more events", category: .mailboxRefresh)
                 fetchEvents(params: params, callback: callback)
                 return
             }
