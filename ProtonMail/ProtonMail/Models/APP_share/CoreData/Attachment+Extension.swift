@@ -155,23 +155,23 @@ extension Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (
+    func toAttachment(
         _ context: NSManagedObjectContext,
         fileName: String,
         type: String,
         stripMetadata: Bool,
         cid: String?,
         isInline: Bool
-    ) -> AttachmentEntity?
+    ) -> AttachmentEntity
 }
 
 // THIS IS CALLED FOR CAMERA
 extension UIImage: AttachmentConvertible {
     var dataSize: Int {
-        return self.toData()?.count ?? 0
+        toData().count
     }
-    private func toData() -> Data? {
-        return self.jpegData(compressionQuality: 0)
+    private func toData() -> Data {
+        jpegData(compressionQuality: 0)!
     }
     func toAttachment(
         _ context: NSManagedObjectContext,
@@ -180,12 +180,10 @@ extension UIImage: AttachmentConvertible {
         stripMetadata: Bool,
         cid: String?,
         isInline: Bool
-    ) -> AttachmentEntity? {
-        guard let fileData = toData() else {
-            return nil
-        }
-        var result: AttachmentEntity?
-        context.performAndWait {
+    ) -> AttachmentEntity {
+        let fileData = toData()
+
+        return context.performAndWait {
             let attachment = Attachment(context: context)
             attachment.attachmentID = "0"
             attachment.fileName = fileName
@@ -206,9 +204,8 @@ extension UIImage: AttachmentConvertible {
             }
 
             _ = context.saveUpstreamIfNeeded()
-            result = .init(attachment)
+            return .init(attachment)
         }
-        return result
     }
 }
 
@@ -225,8 +222,7 @@ extension Data: AttachmentConvertible {
         stripMetadata: Bool,
         cid: String? = nil,
         isInline: Bool = false
-    ) -> AttachmentEntity? {
-        var result: AttachmentEntity?
+    ) -> AttachmentEntity {
         context.performAndWait {
             let attachment = Attachment(context: context)
             attachment.attachmentID = "0"
@@ -247,9 +243,8 @@ extension Data: AttachmentConvertible {
                 attachment.setupHeaderInfo(isInline: true, contentID: cid ?? UUID().uuidString)
             }
             _ = context.saveUpstreamIfNeeded()
-            result = .init(attachment)
+            return .init(attachment)
         }
-        return result
     }
 }
 
@@ -262,8 +257,7 @@ extension URL: AttachmentConvertible {
         stripMetadata: Bool,
         cid: String? = nil,
         isInline: Bool = false
-    ) -> AttachmentEntity? {
-        var result: AttachmentEntity?
+    ) -> AttachmentEntity {
         context.performAndWait {
             let attachment = Attachment(context: context)
             attachment.attachmentID = "0"
@@ -283,9 +277,8 @@ extension URL: AttachmentConvertible {
                 attachment.setupHeaderInfo(isInline: true, contentID: UUID().uuidString)
             }
             _ = context.saveUpstreamIfNeeded()
-            result = .init(attachment)
+            return .init(attachment)
         }
-        return result
     }
 
     var dataSize: Int {
