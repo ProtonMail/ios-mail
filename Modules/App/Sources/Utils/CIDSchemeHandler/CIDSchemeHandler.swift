@@ -50,14 +50,14 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
         let cid = url.absoluteString
             .replacingOccurrences(of: "\(Self.handlerScheme):", with: "")
 
-        image(url: url, cid: cid, urlSchemeTask: urlSchemeTask)
+        finishTaskWithImage(url: url, cid: cid, urlSchemeTask: urlSchemeTask)
     }
 
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 
     // MARK: - Private
 
-    private func image(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
+    private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
         Task {
             let image = try? await embeddedImageRepository.embeddedImage(messageID: messageID, cid: cid)
             if let image {
