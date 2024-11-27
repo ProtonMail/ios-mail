@@ -73,7 +73,7 @@ struct ExpandedMessageCell: View {
                         onEvent(.onRecipientTap(recipient))
                     }
                 })
-                AttachmentsCarouselView(
+                MessageBodyAttachmentsView(
                     attachments: uiModel.messageDetails.attachments,
                     mailbox: mailbox,
                     attachmentToOpen: $attachmentToOpen
