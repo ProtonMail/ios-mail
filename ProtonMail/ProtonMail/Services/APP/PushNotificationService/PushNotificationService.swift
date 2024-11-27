@@ -68,10 +68,6 @@ final class PushNotificationService: NSObject {
                 return
             }
             DispatchQueue.main.async {
-                SystemLogger.log(
-                    message: "Requesting system to register for remote notifications (caller: \(caller))",
-                    category: .pushNotification
-                )
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
