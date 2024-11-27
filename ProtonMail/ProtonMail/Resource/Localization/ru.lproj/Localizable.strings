@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u адресов электронной почты";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Пользовательский домен электронной почты";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Поддержка пользовательских доменов электронной почты";

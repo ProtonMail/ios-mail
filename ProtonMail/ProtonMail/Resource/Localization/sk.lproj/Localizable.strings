@@ -1498,7 +1498,7 @@
 "Label as" = "Označiť ako";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Taktiež archivovať?";
+"Also archive?" = "Aj archivované?";
 
 /* No comment provided by engineer. */
 "New Label" = "Nový štítok";

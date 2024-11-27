@@ -1421,16 +1421,16 @@
 "Inherited from parent folder" = "親フォルダーから継承";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "フォルダの作成は許可されていません";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "ラベルの作成は許可されていません";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "3 つ以上のフォルダを使う場合は有料プランへアップグレードしてください";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "3 つ以上のラベルを使う場合は有料プランへアップグレードしてください";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "接続して再試行してください";
@@ -1828,31 +1828,31 @@
 "Get more storage" = "ストレージを増やす";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "読むのに適したサイズ";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "これで、メールの本文があなたの好みの文字サイズで表示されるようになります。";
 
 /* Title of the banner alert */
 "Your storage is full" = "ストレージがいっぱいです";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "サブスクリプションは終了しました";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "アカウントは削除のリスクがあります";
 
 /* Description of the banner alert */
-"To send or receive emails, free up space or upgrade for more storage." = "To send or receive emails, free up space or upgrade for more storage.";
+"To send or receive emails, free up space or upgrade for more storage." = "メールを送受信するには、スペースを空けるか、ストレージを増やすためにアップグレードしてください。";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "ファイルをアップロードするには、スペースを空けるか、ストレージを増やすためにアップグレードしてください。";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "フルアクセスを復元し、データの損失を避けるためにアップグレードしてください。";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "データの損失を避けるために、アップグレードを管理者に要求してください。";
 
 /* Upgrade button action */
 "Upgrade" = "アップグレード";
@@ -1893,10 +1893,10 @@
 "Unblock" = "ブロックを解除する";
 
 /* Headline of the Calendar landing page */
-"Your schedule is worth protecting" = "Your schedule is worth protecting";
+"Your schedule is worth protecting" = "スケジュールは守る価値があります";
 
 /* Subheadline of the Calendar landing page */
-"Your calendar is a record of your life, Proton Calendar helps keep it private." = "Your calendar is a record of your life, Proton Calendar helps keep it private.";
+"Your calendar is a record of your life, Proton Calendar helps keep it private." = "カレンダーは人生の記録で、Protonカレンダーはそれをプライベートに保ちます。";
 
 /* Button to open the App Store page for Proton Calendar */
 "Get Proton Calendar app" = "Proton Calendar アプリを入手";
@@ -1926,10 +1926,10 @@
 "Show less" = "詳細を非表示";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "このイベントはすでに終了しています";
 
 /* Text shown when opening an invitation for a cancelled event */
-"This event has been cancelled" = "This event has been cancelled";
+"This event has been cancelled" = "このイベントはキャンセルされました";
 
 /* Prompt above yes/no/maybe buttons */
 "Attending?" = "参加しますか？";
@@ -1950,7 +1950,7 @@
 "No, I won't attend" = "いいえ、参加しません";
 
 /* Neither confirm nor deny attending an event */
-"I might attend" = "I might attend";
+"I might attend" = "参加します";
 
 /* Information that the user is an optional participant */
 "(Attendance optional)" = "(参加は任意です)";
@@ -1989,13 +1989,13 @@
 "You are invited to %@" = "%@ に招待されています";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "場所：\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "詳細：\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@はキャンセルされました";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: %@ の予定への招待";
@@ -2004,10 +2004,10 @@
 "Re: Invitation for an event starting on %@" = "Re: %@ から始まる予定への招待";
 
 /* Occurring every day */
-"Daily" = "Daily";
+"Daily" = "毎日";
 
 /* Occurring every week */
-"Weekly" = "Weekly";
+"Weekly" = "毎週";
 
 /* Occurring every month */
 "Monthly" = "毎月";
@@ -2031,19 +2031,19 @@
 "last" = "最終";
 
 /* Title of the spotlight view */
-"Easily RSVP to events" = "Easily RSVP to events";
+"Easily RSVP to events" = "イベントに簡単にRSVPできます";
 
 /* Body of the spotlight view */
-"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
+"Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "招待に応答したり、Protonカレンダーでイベントを表示するのに、ワンタップで操作できます。 ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "最大ストレージ";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "ストレージ：%@がいっぱいです";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "ドライブ：%@がいっぱいです";
 
 /* Official badge next to sender's name */
 "Official" = "公式";
@@ -2082,19 +2082,19 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先のメールアドレスの自動補完を利用することができます。";
 
 /* contacts auto import title in settings */
-"Auto-import device contacts" = "Auto-import device contacts";
+"Auto-import device contacts" = "自動デバイス連絡先取り込み";
 
 /* contacts auto import footer in settings */
-"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "Turn this feature on to automatically add new contacts from your device to the Proton Mail app.";
+"Turn this feature on to automatically add new contacts from your device to the Proton Mail app." = "この機能をオンにすると自動でデバイスから新しい連絡先をProtonメールアプリに追加します。";
 
 /* Auto import alert title */
-"Auto-import enabled" = "Auto-import enabled";
+"Auto-import enabled" = "自動取り込み有効化";
 
 /* Auto import alert message */
-"The initial import may take some time and will only occur when the app is in the foreground." = "The initial import may take some time and will only occur when the app is in the foreground.";
+"The initial import may take some time and will only occur when the app is in the foreground." = "アプリが最前面にある時のみ初回インポートが実行され、完了までに時間がかかる場合があります。";
 
 /* Alert to ask user to reauthorise access to contacts */
-"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission.";
+"Access to contacts was disabled. To enable auto-import, go to settings and enable contact permission." = "連絡先へのアクセスが無効になっています。自動インポートを有効にするには、設定に移動して連絡先の許可を有効にしてください。";
 
 /* Settings lock protection section */
 "Protection" = "保護";
@@ -2121,31 +2121,31 @@
 "As scheduled" = "スケジュール通り";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "予約を設定";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "プランをアップグレードした時、カスタムメッセージ予約とその他の機能がアンロックされます。";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "今すぐアップグレード";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "メッセージをいつでも予約できます";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "無制限のフォルダとラベル";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "500 GBまでのストレージ容量";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "15 個までのメールアドレス";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "3 つまでのカスタムメールドメイン";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "メールエイリアスを非表示にする";
 
 /* One of schedule time options */
 "In the morning" = "午前中";
@@ -2172,13 +2172,13 @@
 "Automatically show the next email when an open email is deleted, archived, or moved." = "開いているメールが削除、アーカイブ、または移動されたときに自動的に次のメールを表示します。";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "機能をオン";
 
 /* The content of the jump to next message spotlight. */
-"View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
+"View the next email in your inbox when you delete or move the current email." = "現在のメールを削除や移動した時、受信箱の次のメールを表示します";
 
 /* The title of the jump to next message spotlight. */
-"Read emails faster" = "Read emails faster";
+"Read emails faster" = "メールをもっと早く読む";
 
 /* Message for error when app set up at launch fails */
 "An unexpected error occurred, please contact support.\nError: %@" = "予期しないエラーが発生しました。サポートにお問い合わせください。\nエラー: %@";
@@ -2262,25 +2262,25 @@
 "Empty trash" = "ごみ箱を空にする";
 
 /* Alert prompting to update Calendar */
-"Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
+"Download the latest version of the Proton Calendar to open this event" = "このイベントを開くにはProtonカレンダーの最新版をダウンロードしてください";
 
 /* Button to open App Store */
-"Download in App Store" = "Download in App Store";
+"Download in App Store" = "App Storeでダウンロード";
 
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar で開く";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "ゴミ箱を空にする";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "30 日以上前のメッセージをゴミ箱とスパムから自動的に削除します。アップグレードすると、この機能やその他の特典をお楽しみいただけます。";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "最大 3 TBのストレージ";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "カスタムメールドメイン";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "送信者変更";
@@ -2289,10 +2289,10 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "このメッセージの元の送信者はもう無効です。メッセージは既定のアドレス %@ から送信されます。";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "全ての添付ファイルがアップロードされた後に再度お試しください。";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "共有拡張機能を使用しての送信は、オフラインではサポートされていません。";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "表示名";
@@ -2319,10 +2319,10 @@
 "Select all" = "すべて選択";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "全ての選択を解除";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
-"Maximum selection reached" = "Maximum selection reached";
+"Maximum selection reached" = "選択の最大数に達しました";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "宛先が未入力です";
@@ -2370,52 +2370,52 @@
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "これでメーリングリストからの登録が解除されます。送信者には、今後このアドレスにメールを送信しないよう通知されます。";
 
 /* Alert telling the user that we are unable to preview this attachment */
-"Unable to preview this attachment" = "Unable to preview this attachment";
+"Unable to preview this attachment" = "添付ファイルをプレビューできません";
 
 /* Title for banner saying that we are currently downloading the attachment to preview it */
 "Downloading attachment" = "添付ファイルのダウンロード";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Snoozed until %@";
+"Snoozed until %@" = "%@までスヌーズ";
 
 /* The title of the button in the banner that is shown in the message detail view. */
 "Unsnooze" = "スヌーズを解除";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Snooze until %@";
+"Snooze until %@" = "%@までスヌーズ";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversation unsnoozed";
+"Conversation unsnoozed" = "会話のスヌーズ解除";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Snooze until...";
+"Snooze until..." = "…までスヌーズ";
 
 /* One of snooze option shows in action sheet */
-"Later this week" = "Later this week";
+"Later this week" = "今週の後半";
 
 /* One of snooze option shows in action sheet */
-"This weekend" = "This weekend";
+"This weekend" = "今週末";
 
 /* One of snooze option shows in action sheet */
 "Next week" = "次の週";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Please select a time in the future";
+"Please select a time in the future" = "時間を選択してください";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "いつでもスヌーズにしたいですか？";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "アップグレードするとカスタムスヌーズがアンロックされます";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "15 個までのメールアドレス・エイリアス";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
-"Add it as attachment" = "Add it as attachment";
+"Add it as attachment" = "添付ファイルとして追加";
 
 /* The title in setting page */
 "Swipe to next message" = "スワイプで次のメッセージへ移動";
@@ -2424,31 +2424,31 @@
 "Allow navigating through messages by swiping left or right." = "左右にスワイプしてメッセージ間を移動できます。";
 
 /* The title of the spotlight of the auto import contacts. */
-"Your contacts at your fingertips" = "Your contacts at your fingertips";
+"Your contacts at your fingertips" = "連絡先はすぐそこに";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "No need to leave the app to find an email address. Sync contacts from your device to Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "メールアドレスを見つけるためにアプリを離れる必要はありません。デバイスから連絡先をProton Mailに同期してください。";
 
 /* The title of the button of the spotlight of the auto import contacts. */
-"Enable auto-import" = "Enable auto-import";
+"Enable auto-import" = "自動インポートを有効";
 
 /* The title for no contact hint view */
-"No contacts yet" = "No contacts yet";
+"No contacts yet" = "まだ連絡先がありません";
 
 /* The description for no contact hint view */
-"Import contacts from your device to send emails and invites with ease." = "Import contacts from your device to send emails and invites with ease.";
+"Import contacts from your device to send emails and invites with ease." = "デバイスから連絡先をインポートして、簡単にメールや招待状を送信しましょう。";
 
 /* Button title for no contact hint view */
-"Auto-import contacts" = "Auto-import contacts";
+"Auto-import contacts" = "自動連絡先インポート";
 
 /* A title show to user after auto import button is clicked but contacts hasn't imported yet */
-"Importing your contacts" = "Importing your contacts";
+"Importing your contacts" = "連絡先をインポートしています";
 
 /* A message show to user after auto import button is clicked but contacts hasn't imported yet */
-"Your contacts will appear here shortly." = "Your contacts will appear here shortly.";
+"Your contacts will appear here shortly." = "まもなくここに連絡先が表示されます。";
 
 /* The title of the dismissable banner in the contacts view. */
-"Automatically add new contacts from your device." = "Automatically add new contacts from your device.";
+"Automatically add new contacts from your device." = "デバイスから自動で新しい連絡先が追加されます。";
 
 /* The title of the privacy and data in the account setting. */
 "Privacy and data" = "プライバシーとデータ";
@@ -2478,10 +2478,10 @@
 "%u email addresses" = "%u メールアドレス";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "カスタムメールドメイン";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain support" = "Custom email domain support";
+"Custom email domain support" = "カスタムメールドメインサポート";
 
 /* Description of a feature of a paid subscription */
 "%u personal calendars" = "%u 件の個人カレンダー";
@@ -2490,40 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB のストレージと 1 つのメールアカウント";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "エンドツーエンド暗号化";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "デスクトップアプリへアクセス";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "優先カスタマーサポート";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"+%u premium features" = "+ %u 個のプレミアム機能";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%u倍のストレージ容量";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "%u GBを獲得 ー メッセージ、ファイル、写真を安全に保存するための十分なスペース";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%u倍のより多くのメールアドレス";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "最大%u個のメールアドレスを作成できます。@pm.meのアドレスも含めて、ニーズに応じてご利用ください。";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "独自ドメインを接続し、プロフェッショナルまたはブランド化されたメールを安全に送信します。";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "ワンクリックでメールとカレンダーを開き、ブラウザの気を散らす要素を避けましょう。";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "メールを好みのファイリングとラベリングシステムで整理しましょう。";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "問題が発生した場合、専任のサポートスタッフから迅速な対応をお楽しみいただけます。";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名の情報収集";
@@ -2538,16 +2538,16 @@
 "If the app crashes, a report will be sent to our engineers with details of the cause. These will only be used to improve the app." = "アプリのクラッシュ時に、原因の詳細を記載したレポートをエンジニアに送信します。レポートはアプリの改善にのみ使用されます。";
 
 /* Title of the upsell page. */
-"Upgrade to %@" = "Upgrade to %@";
+"Upgrade to %@" = "%@にアップグレード";
 
 /* Subtitle of the upsell page. */
-"To unlock more storage and premium features." = "To unlock more storage and premium features.";
+"To unlock more storage and premium features." = "より多くの容量とプレミアム機能をアンロックするために";
 
 /* Shorthand for the free plan, as opposed to a paid plan */
 "Free" = "無料";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "キャンセルするまで同じ金額、同じ期間で自動更新されます。";
 
 /* Displayed next to the monthly price */
 "/month" = "/月";
@@ -2556,64 +2556,64 @@
 "Get %@" = "%@ を入手";
 
 /* In the context of a discount */
-"Save %u%%" = "Save %u%%";
+"Save %u%%" = "%u%%節約";
 
 /* Error when trying to purchase an invalid product */
-"Invalid product ID: $@" = "Invalid product ID: $@";
+"Invalid product ID: $@" = "無効なプロダクトID：$@";
 
 /* Error when the user tries to purchase a plan before the current transaction is finished */
-"Purchase already in progress" = "Purchase already in progress";
+"Purchase already in progress" = "購入手続きはすでに進行中です";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "古いゴミやスパムを片付ける";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "メールボックスを整理し、他のプレミアム機能を %@ でお楽しみください。";
 
 /* Title of the upsell page */
-"Group your contacts" = "Group your contacts";
+"Group your contacts" = "連絡先グループ";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "グループに簡単にメールを送信し、他のプレミアム機能を%@でお楽しみください。";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "もっとラベルやフォルダが必要ですか？";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "%@にアップグレードして、それらも他のプレミアム機能も獲得。";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "署名のカスタマイズ";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "自分のモバイル署名を使用し、%@ の他のプレミアム機能をお楽しみください。";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "今すぐ予約して、あとで送信";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "%@でカスタム予約送信と他のプレミアム機能をお楽しみください。";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "このメールを送るのに悪いタイミングですか？";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "任意の時間でスヌーズを設定できます。%@を使ってカスタムスヌーズなどの機能を利用しましょう。";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "プランを選択";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "年間";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "ベストな価値";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u 以上の機能";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "毎%2$@に%1$@の支払い";
 
 /* In the list of premium plan features */
 "Premium value included" = "プレミアム機能をを含む";

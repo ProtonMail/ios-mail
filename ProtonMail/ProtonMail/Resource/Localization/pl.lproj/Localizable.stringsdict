@@ -273,13 +273,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%1$d wiadomość została przeniesiona do folderu %2$@</string>
+        <string>Przeniesiono %1$d wiadomość do folderu %2$@</string>
         <key>few</key>
-        <string>%1$d wiadomości zostały przeniesione do folderu %2$@</string>
+        <string>Przeniesiono %1$d wiadomości do folderu %2$@</string>
         <key>many</key>
-        <string>%1$d wiadomości zostało przeniesionych do folderu %2$@</string>
+        <string>Przeniesiono %1$d wiadomości do folderu %2$@</string>
         <key>other</key>
-        <string>%1$d wiadomości zostało przeniesionych do folderu %2$@</string>
+        <string>Przeniesiono %1$d wiadomości do folderu %2$@</string>
       </dict>
     </dict>
     <key>%1$d conversation moved to %2$@</key>
@@ -293,13 +293,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%1$d wątek został przeniesiony do folderu %2$@</string>
+        <string>Przeniesiono %1$d wątek do folderu %2$@</string>
         <key>few</key>
-        <string>%1$d wątki zostały przeniesione do folderu %2$@</string>
+        <string>Przeniesiono %1$d wątki do folderu %2$@</string>
         <key>many</key>
-        <string>%1$d wątków zostało przeniesionych do folderu %2$@</string>
+        <string>Przeniesiono %1$d wątków do folderu %2$@</string>
         <key>other</key>
-        <string>%1$d wątków zostało przeniesionych do folderu %2$@</string>
+        <string>Przeniesiono %1$d wątków do folderu %2$@</string>
       </dict>
     </dict>
     <key>%d message labeled</key>
@@ -413,13 +413,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d wiadomość została przeniesiona do Szkiców</string>
+        <string>Przeniesiono %d wiadomość do Szkiców</string>
         <key>few</key>
-        <string>%d wiadomości zostały przeniesione do Szkiców</string>
+        <string>Przeniesiono %d wiadomości do Szkiców</string>
         <key>many</key>
-        <string>%d wiadomości zostało przeniesionych do Szkiców</string>
+        <string>Przeniesiono %d wiadomości do Szkiców</string>
         <key>other</key>
-        <string>%d wiadomości zostało przeniesionych do Szkiców</string>
+        <string>Przeniesiono %d wiadomości do Szkiców</string>
       </dict>
     </dict>
     <key>%d seconds</key>

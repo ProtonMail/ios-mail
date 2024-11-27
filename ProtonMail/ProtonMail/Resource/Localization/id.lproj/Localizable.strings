@@ -307,7 +307,7 @@
 "Phone" = "Telepon";
 
 /* default vcard types */
-"Mobile" = "Mobile";
+"Mobile" = "Seluler";
 
 /* default vcard types */
 "Fax" = "Faks";
@@ -2586,7 +2586,7 @@
 "Customize your signature" = "Atur tanda tangan Anda";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda sendiri dan nikmati fitur premium lainnya dengan %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda dan nikmati berbagai fitur premium lainnya dengan %@.";
 
 /* Title of the upsell page */
 "Schedule now, send later" = "Jadwalkan sekarang, kirim nanti";

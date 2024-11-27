@@ -1205,7 +1205,7 @@
 "Addresses" = "Adreces";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Posposa";
+"Snooze" = "Posa en pausa";
 
 /* cell title in device settings */
 "Mailbox" = "Bústia de correu";
@@ -1615,7 +1615,7 @@
 "Cannot empty folder right now." = "No es pot buidar la carpeta ara mateix.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Esteu segur que voleu eliminar permanentment tots els missatges a «%@»?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Segur que voleu eliminar permanentment tots els missatges dins de «%@»?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Mostra el missatge complet]";
@@ -1852,7 +1852,7 @@
 "Upgrade to restore full access and to avoid data loss." = "Milloreu el pla per restaurar l'accés complet i per evitar la pèrdua de dades.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "Per evitar la pèrdua de dades, demaneu al vostre administrador que millori el pla.";
+"To avoid data loss, ask your admin to upgrade." = "Per evitar la pèrdua de dades, demaneu a l'administrador que millori el pla.";
 
 /* Upgrade button action */
 "Upgrade" = "Millora";
@@ -2376,19 +2376,19 @@
 "Downloading attachment" = "S'està descarregant l'adjunt.";
 
 /* The banner title that is shown in the message detail view. */
-"Snoozed until %@" = "Posposat fins a %@";
+"Snoozed until %@" = "En pausa fins a %@";
 
 /* The title of the button in the banner that is shown in the message detail view. */
-"Unsnooze" = "Deixa de posposar";
+"Unsnooze" = "Deixa de posar en pausa";
 
 /* A message shows to user after snoozing a conversation on the bottom banner the placeholder is a date, example, Snoozed until Tue, Apr 25, 08:00 */
-"Snooze until %@" = "Posposat fins a %@";
+"Snooze until %@" = "Posa en pausa fins a %@";
 
 /* Notification banner when user unsnooze a conversation */
-"Conversation unsnoozed" = "Conversa posposada";
+"Conversation unsnoozed" = "Conversa en pausa";
 
 /* The title of snooze config in action sheet */
-"Snooze until..." = "Posposa fins...";
+"Snooze until..." = "Posa en pausa fins...";
 
 /* One of snooze option shows in action sheet */
 "Later this week" = "Més tard aquesta setmana";
@@ -2403,10 +2403,10 @@
 "Please select a time in the future" = "Seleccioneu una hora en el futur";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Voleu posposar en algun moment?";
+"Want to snooze any time?" = "Voleu posar en pausa en algun moment?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de posposició personalitzats quan milloreu el vostre pla.";
+"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de pausa personalitzats quan milloreu el vostre pla.";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";
@@ -2598,7 +2598,7 @@
 "Bad time for this email?" = "Mal moment per a aquest correu?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Personalitzeu les posposicions com desitgeu i molt més amb %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Personalitzeu les pauses com desitgeu i molt més amb %@.";
 
 /* Title of the upsell page */
 "Choose a plan" = "Trieu un pla";

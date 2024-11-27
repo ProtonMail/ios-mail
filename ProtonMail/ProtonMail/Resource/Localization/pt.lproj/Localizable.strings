@@ -79,7 +79,7 @@
  mail location desc
  menu title
 */
-"Trash" = "Lixo";
+"Trash" = "Lixeira";
 
 /* menu title */
 "Spam" = "Spam";
@@ -400,7 +400,7 @@
 "Alert" = "Alerta";
 
 /* Done action */
-"Done" = "Concluído";
+"Done" = "Terminado";
 
 /*
  Button to cancel encrypted search
@@ -808,10 +808,10 @@
 "Storage Warning" = "Aviso de armazenamento";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Utilizou todo o seu espaço de armazenamento (%@). Efetue um upgrade ao seu plano para continuar a enviar e receber e-mails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Utilizou todo o seu espaço de armazenamento (%@). Melhore o seu plano para continuar a enviar e receber e-mails.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Utilizou %1$d%% do seu espaço de armazenamento (%2$@). Faça um upgrade do seu plano para continuar a enviar e receber e-mails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Utilizou %1$d%% do seu espaço de armazenamento (%2$@). Melhore o seu plano para continuar a enviar e receber e-mails.";
 
 /* Alert title */
 "Storage full" = "Armazenamento cheio";
@@ -823,7 +823,7 @@
 "Please upgrade your plan" = "Actualize o seu plano";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Faça upgrade ao seu plano para continuar a enviar e receber e-mails.";
+"Please upgrade your plan to continue to send and receive emails." = "Melhore o seu plano para continuar a enviar e receber e-mails.";
 
 /* Title */
 "Warning" = "Aviso";
@@ -1307,7 +1307,7 @@
  Push notification action move to trash
  The title of the remove action in action sheet
 */
-"Move to trash" = "Mover para o lixo";
+"Move to trash" = "Mover para a lixeira";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Mover para a caixa de entrada";
@@ -1454,10 +1454,10 @@
 "Load embedded images" = "Carregar as imagens incorporadas";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Esta conversação contém mensagens do Lixo";
+"This conversation contains trashed messages" = "Esta conversação contém mensagens da lixeira.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Esta conversa contém mensagens que não estão no lixo.";
+"This conversation contains non-trashed messages." = "Esta conversa contém mensagens que não estão na lixeira.";
 
 /* No comment provided by engineer. */
 "Message actions" = "Ações das mensagens";
@@ -1585,7 +1585,7 @@
 "Always off" = "Sempre desligado";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Mensagem movida para o lixo";
+"Message moved to trash" = "Mensagem movida para a lixeira";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 mensagem movida para Arquivo";
@@ -1600,10 +1600,10 @@
 "Compose message" = "Compor uma mensagem";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Esvaziar Lixo";
+"Empty Trash" = "Esvaziar a lixeira";
 
 /* Alert title */
-"Empty trash folder" = "Esvaziar a pasta de Lixo";
+"Empty trash folder" = "Esvaziar a lixeira";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Esvaziar spam";
@@ -2229,13 +2229,13 @@
 "Auto-delete unwanted messages" = "Eliminar as mensagens indesejadas automaticamente";
 
 /* The footer title of the setting row of the auto delete option */
-"Messages in trash or spam longer than 30 days will be automatically deleted." = "As mensagens no lixo ou spam com mais de 30 dias serão automaticamente eliminadas.";
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "As mensagens na lixeira ou no spam com mais de 30 dias serão automaticamente eliminadas.";
 
 /* Title of the alert to confirm enabling of the auto delete option */
 "Delete messages?" = "Eliminar as mensagens?";
 
 /* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esta ação elimina todas as mensagens que se encontram no lixo ou no spam há mais de 30 dias, incluindo as mensagens que se encontram atualmente nestas pastas.";
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Isto eliminará todas as mensagens que estão na lixeira ou no spam há mais de 30 dias, incluindo mensagens actualmente nestas pastas.";
 
 /*
  Button to enable encrypted search
@@ -2244,7 +2244,7 @@
 "Enable" = "Ativar";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Atualize para eliminar automaticamente as mensagens que estão no lixo ou no spam há mais de 30 dias.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Melhore para eliminar automaticamente as mensagens que estão na lixeira ou no spam há mais de 30 dias.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimine automaticamente as mensagens que se encontram na lixeira e no spam há mais de 30 dias.";
@@ -2253,13 +2253,13 @@
 "No, thanks" = "Não, obrigado";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "As mensagens que estiverem no lixo e no spam há mais de 30 dias serão automaticamente eliminadas.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "As mensagens que estiverem na lixeira e no spam há mais de 30 dias serão automaticamente eliminadas.";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "Esvaziar spam";
 
 /* Title of button to empty trash folder */
-"Empty trash" = "Esvaziar lixo";
+"Empty trash" = "Esvaziar a lixeira";
 
 /* Alert prompting to update Calendar */
 "Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
@@ -2604,7 +2604,7 @@
 "Choose a plan" = "Escolha um plano";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Anual";
 
 /* Label on the Proton Unlimited plan */
 "Best value" = "Best value";

@@ -2187,7 +2187,7 @@
 "Insufficient disk space" = "Ανεπαρκής χώρος στον δίσκο";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Δεν είναι δυνατό το άνοιγμα της εφαρμογής λόγω ανεπαρκούς χώρου στο δίσκο. Διαγράψτε ορισμένα δεδομένα και προσπαθήστε ξανά";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Δεν είναι δυνατό το άνοιγμα της εφαρμογής λόγω ανεπαρκούς χώρου στο δίσκο. Διαγράψτε μερικά δεδομένα και προσπαθήστε ξανά";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Αδυναμία ανοίγματος μηνύματος, δοκιμάστε ξανά.";
@@ -2247,7 +2247,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash and spam for more than 30 days." = "Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Αυτόματη οριστική διαγραφή μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Όχι, ευχαριστώ";
@@ -2427,7 +2427,7 @@
 "Your contacts at your fingertips" = "Οι επαφές σας στα χέρια σας";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δε χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δεν χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
 "Enable auto-import" = "Ενεργοποίηση Αυτόματης Εισαγωγής";
@@ -2472,7 +2472,7 @@
 "Security keys" = "Κλειδιά ασφαλείας";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB αποθηκευτικός χώρος";
+"15 GB storage" = "15 GB αποθηκευτικού χώρου";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
@@ -2580,7 +2580,7 @@
 "Need more labels or folders?" = "Χρειάζεστε περισσότερες ετικέτες ή φακέλους;";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Αποκτήστε τα και άλλες premium δυνατότητες κατά την αναβάθμιση στο %@.";
+"Get them and other premium features when you upgrade to %@." = "Αποκτήστε αυτά και άλλες premium δυνατότητες με αναβάθμιση σε %@.";
 
 /* Title of the upsell page */
 "Customize your signature" = "Προσαρμόστε την υπογραφή σας";
