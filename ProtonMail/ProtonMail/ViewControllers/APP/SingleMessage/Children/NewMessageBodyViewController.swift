@@ -398,11 +398,6 @@ class NewMessageBodyViewController: UIViewController {
                     category: .dynamicFontSize
                 )
                 resetMessageContentFontSize()
-            } else {
-                SystemLogger.log(
-                    message: "Using default content size category, no adjustment needed",
-                    category: .dynamicFontSize
-                )
             }
         } else {
             SystemLogger.log(message: "Adjusting content size category", category: .dynamicFontSize)
