@@ -1376,16 +1376,6 @@ class MockUpdateMailboxSourceProtocol: UpdateMailboxSourceProtocol {
         locationViewModeStub()
     }
 
-    @PropertyStub(\MockUpdateMailboxSourceProtocol.isConversationModeEnabled, initialGet: Bool()) var isConversationModeEnabledStub
-    var isConversationModeEnabled: Bool {
-        isConversationModeEnabledStub()
-    }
-
-    @PropertyStub(\MockUpdateMailboxSourceProtocol.messageLocation, initialGet: nil) var messageLocationStub
-    var messageLocation: Message.Location? {
-        messageLocationStub()
-    }
-
 }
 
 class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
