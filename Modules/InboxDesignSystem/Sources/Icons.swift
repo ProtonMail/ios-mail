@@ -31,6 +31,7 @@ public extension DS.Icon {
     static let icCrossBig = ImageResource.icCrossBig
     static let icCrossCircleFilled = ImageResource.icCrossCircleFilled
     static let icEnvelopes = ImageResource.icEnvelopes
+    static let icExclamationCircle = ImageResource.icExclamationCircle
     static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
     static let icFilter = ImageResource.icFilter
@@ -40,6 +41,7 @@ public extension DS.Icon {
     static let icFolders = ImageResource.icFolders
     static let icHamburguer = ImageResource.icHamburger
     static let icInbox = ImageResource.icInbox
+    static let icLockFilled = ImageResource.icLockFilled
     static let icMagnifier = ImageResource.icMagnifier
     static let icMobile = ImageResource.icMobile
     static let icMoon = ImageResource.icMoon
@@ -59,6 +61,7 @@ public extension DS.Icon {
     static let icTrash = ImageResource.icTrash
     static let icTrashCross = ImageResource.icTrashCross
     static let icUsers = ImageResource.icUsers
+    static let icUsersFilled = ImageResource.icUsersFilled
     static let icSignOut = ImageResource.icArrowOutFromRectangle
 }
 
