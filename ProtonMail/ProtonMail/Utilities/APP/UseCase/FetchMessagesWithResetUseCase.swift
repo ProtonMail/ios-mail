@@ -49,18 +49,14 @@ extension FetchMessagesWithReset {
                         .execute(
                             params: .init(
                                 labelID: params.labelID,
-                                endTime: params.endTime,
+                                endTime: 0,
                                 isUnread: params.fetchOnlyUnreadMessages,
                                 onMessagesRequestSuccess: {
                                     self.removePersistedMessages()
                                 }
                             )
                         ) { result in
-                            if let error = result.error {
-                                callback(.failure(error))
-                            } else {
-                                callback(.success(()))
-                            }
+                            callback(result)
                         }
                 }
             }
@@ -92,7 +88,6 @@ extension FetchMessagesWithReset {
 
     struct Params {
         let labelID: LabelID
-        let endTime: Int
         let fetchOnlyUnreadMessages: Bool
         let refetchContacts: Bool
     }

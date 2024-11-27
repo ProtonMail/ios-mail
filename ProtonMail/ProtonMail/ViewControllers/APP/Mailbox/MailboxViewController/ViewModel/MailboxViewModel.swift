@@ -933,7 +933,6 @@ extension MailboxViewModel {
     func updateMailbox(
         showUnreadOnly: Bool,
         isCleanFetch: Bool,
-        time: Int = 0,
         errorHandler: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) {
@@ -965,7 +964,6 @@ extension MailboxViewModel {
                 labelID: queryLabel,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
-                time: time,
                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
                 errorHandler: errorHandler,
                 userID: user.userID

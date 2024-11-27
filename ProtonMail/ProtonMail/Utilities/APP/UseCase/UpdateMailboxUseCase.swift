@@ -68,8 +68,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     /// Scheduled task to update inbox / event data
     private func scheduledFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         guard self.isEventIDValid else {
-            self.fetchDataWithReset(time: params.time,
-                                    labelID: params.labelID,
+            self.fetchDataWithReset(labelID: params.labelID,
                                     cleanContact: false,
                                     unreadOnly: false) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -84,8 +83,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
 
     /// Fetch data with cache cleaning
     private func cleanFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
-        self.fetchDataWithReset(time: params.time,
-                                labelID: params.labelID,
+        self.fetchDataWithReset(labelID: params.labelID,
                                 cleanContact: true,
                                 unreadOnly: params.showUnreadOnly) { [weak self] error in
             self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -140,8 +138,7 @@ extension UpdateMailbox {
             }
     }
 
-    private func fetchMessages(time: Int,
-                               labelID: LabelID,
+    private func fetchMessages(labelID: LabelID,
                                forceClean: Bool,
                                isUnread: Bool,
                                completion: @escaping (Error?) -> Void) {
@@ -152,7 +149,7 @@ extension UpdateMailbox {
                 .execute(
                     params: .init(
                         labelID: labelID,
-                        endTime: time,
+                        endTime: 0,
                         isUnread: isUnread,
                         onMessagesRequestSuccess: nil
                     ),
@@ -164,7 +161,7 @@ extension UpdateMailbox {
             self.dependencies
                 .conversationProvider
                 .fetchConversations(for: labelID,
-                                    before: time,
+                                    before: 0,
                                     unreadOnly: isUnread,
                                     shouldReset: forceClean) { result in
                     switch result {
@@ -180,8 +177,7 @@ extension UpdateMailbox {
         }
     }
 
-    private func fetchDataWithReset(time: Int,
-                                    labelID: LabelID,
+    private func fetchDataWithReset(labelID: LabelID,
                                     cleanContact: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
@@ -201,7 +197,6 @@ extension UpdateMailbox {
         if !shouldFetchConversations {
             let params = FetchMessagesWithReset.Params(
                 labelID: labelID,
-                endTime: time,
                 fetchOnlyUnreadMessages: unreadOnly,
                 refetchContacts: cleanContact
             )
@@ -225,7 +220,7 @@ extension UpdateMailbox {
                 localSelf.dependencies
                     .conversationProvider
                     .fetchConversations(for: labelID,
-                                        before: time,
+                                        before: 0,
                                         unreadOnly: unreadOnly,
                                         shouldReset: true) { [weak localSelf] result in
                         guard let localSelf = localSelf else {
@@ -283,7 +278,6 @@ extension UpdateMailbox {
 
         if params.fetchMessagesAtTheEnd {
             self.fetchMessages(
-                time: 0,
                 labelID: params.labelID,
                 forceClean: false,
                 isUnread: params.showUnreadOnly
@@ -306,7 +300,6 @@ extension UpdateMailbox {
         let labelID: LabelID
         let showUnreadOnly: Bool
         let isCleanFetch: Bool
-        let time: Int
         let fetchMessagesAtTheEnd: Bool
         let errorHandler: ErrorHandler
         let userID: UserID

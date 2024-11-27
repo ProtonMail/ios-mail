@@ -582,7 +582,6 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             labelID: LabelID("TestID"),
             showUnreadOnly: showUnreadOnly,
             isCleanFetch: isCleanFetch,
-            time: 0,
             fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
             errorHandler: errorHandler,
             userID: ""
