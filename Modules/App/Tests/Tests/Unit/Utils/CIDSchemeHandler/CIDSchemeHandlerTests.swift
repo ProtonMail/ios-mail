@@ -107,7 +107,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
 
 }
 
-class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
+private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
 
     private(set) var didInvokeDidReceiveResponse: [URLResponse] = []
     private(set) var didInvokeDidReceivedData: [Data] = []
