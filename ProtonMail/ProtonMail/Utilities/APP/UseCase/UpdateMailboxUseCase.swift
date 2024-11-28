@@ -78,7 +78,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
             return
         }
 
-        fetchEvents(notificationMessageID: self.notificationMessageID, params: params, callback: callback)
+        fetchEvents(params: params, callback: callback)
     }
 
     /// Fetch data with cache cleaning
@@ -125,9 +125,7 @@ extension UpdateMailbox {
         self.dependencies.messageDataService.pushNotificationMessageID = nil
     }
 
-    private func fetchEvents(notificationMessageID: MessageID?,
-                             params: Parameters,
-                             callback: @escaping UseCase<Void, Parameters>.Callback) {
+    private func fetchEvents(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         self.dependencies.eventService
             .fetchEvents(
                 byLabel: params.labelID,
@@ -269,9 +267,7 @@ extension UpdateMailbox {
 
             if let more = res["More"] as? Int, more > 0 {
                 // it means the client need to call the events route again to receive more updates.
-                self.fetchEvents(notificationMessageID: self.notificationMessageID,
-                                 params: params,
-                                 callback: callback)
+                fetchEvents(params: params, callback: callback)
                 return
             }
         }
