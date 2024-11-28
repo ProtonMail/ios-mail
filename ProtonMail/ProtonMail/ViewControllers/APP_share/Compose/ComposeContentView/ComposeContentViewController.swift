@@ -477,7 +477,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     // MARK: - HtmlEditorBehaviourDelegate
 
-    func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?) {
+    func addInlineAttachment(cid: String, name: String, data: Data) {
         // Data.toAttachment will automatically increment number of attachments in the message
         viewModel.composerMessageHelper.addAttachment(
             data: data,
@@ -488,17 +488,15 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             cid: cid
         ) { _ in
             self.viewModel.updateDraft()
-            completion?()
         }
     }
 
-    func removeInlineAttachment(_ cid: String, completion: (() -> Void)?) {
+    func removeInlineAttachment(_ cid: String) {
         viewModel.composerMessageHelper.removeAttachment(
             cid: cid,
             isRealAttachment: true
         ) { [weak self] in
             self?.viewModel.updateDraft()
-            completion?()
         }
     }
 
