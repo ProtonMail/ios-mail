@@ -29,9 +29,9 @@ class CIDSchemeHandlerTests: BaseTestCase {
     }
 
     var sut: CIDSchemeHandler!
-    var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
     var embeddedImageProviderInvoked: [EmbeddedImageInvokeSpy]!
     var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
+    private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
     var stubbedMessageID: ID {
         .init(value: 7)
