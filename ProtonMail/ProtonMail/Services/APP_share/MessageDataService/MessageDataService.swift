@@ -234,7 +234,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func isEventIDValid() -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
-        return eventID != "" && eventID != "0"
+        let isValid = eventID != "" && eventID != "0"
+        if !isValid {
+            SystemLogger.log(message: "Unexpected eventID: \(eventID)")
+        }
+        return isValid
     }
 
     /// Sync mail setting when user in composer
