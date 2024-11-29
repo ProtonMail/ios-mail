@@ -40,6 +40,21 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 
     // MARK: - WKURLSchemeHandler
 
+    /// Handles custom `cid` schemes in the HTML body loaded into the `WKWebView`.
+    ///
+    /// This method is invoked by the `WKWebView` when a resource with a `cid` scheme is requested.
+    /// The `cid` scheme is used to reference inline resources, such as images within
+    /// HTML content, and connect them with correct message attachments.
+    /// The function retrieves the requested resource from the Rust SDK and provides it to the web view as a response.
+    ///
+    /// Example HTML with cid scheme
+    ///
+    /// <div style="font-family: Arial, sans-serif; font-size: 14px;">
+    ///    Here is embedded image -> <img alt="embedded_image.png" src="cid:43affe26@protonmail.com">
+    /// </div>
+    ///
+    /// In above's case when html is loaded to the web view and this handler is registered as cid scheme handler for web view,
+    /// it will call this function where the `urlSchemeTask` requested URL will be `cid:43affe26@protonmail.com`
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         let url = urlSchemeTask.request.url
         guard let url, url.scheme == Self.handlerScheme else {
@@ -59,8 +74,7 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 
     private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
         Task {
-            let image = try? await embeddedImageRepository.embeddedImage(messageID: messageID, cid: cid)
-            if let image {
+            if let image = try? await embeddedImageRepository.embeddedImage(messageID: messageID, cid: cid) {
                 let response = URLResponse(
                     url: url,
                     mimeType: image.mimeType,
