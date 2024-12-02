@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Inserisci Email di Notifica…";
 
-/* Placeholder */
-"Current password" = "Password attuale";
-
-/* Placeholder */
-"New password" = "Nuova password";
-
-/* Placeholder */
-"Confirm new password" = "Conferma la nuova password";
-
 /* Settings row */
 "Remove image metadata" = "Rimuovi meta-dati dell'immagine";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Rimuovi formattazione";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Aggiungi organizzazione";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Vuoi annullare l'operazione?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contatto salvato, verrà sincronizzato quando la connessione sarà disponibile";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contatto eliminato, verrà sincronizzato quando la connessione sarà disponibile";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Carica i contenuti remoti";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Cambia la password";
-
-/* Title */
-"Current sign-in password" = "Password di accesso attuale";
-
-/* Title */
-"New sign-in password" = "Nuova password di accesso";
-
-/* Title */
-"Confirm new sign-in password" = "Conferma la nuova password di accesso";
-
-/* Title */
-"New mailbox password" = "Nuova password della casella di posta";
-
-/* Title */
-"Confirm new mailbox password" = "Conferma la nuova password della casella di posta";
 
 /* Title */
 "Star/unstar" = "Segna come importante/non importante";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Preso dalla cartella principale";
 
+/* Alert title */
+"Creating folder not allowed" = "La creazione della cartella non è consentita";
+
+/* Alert title */
+"Creating label not allowed" = "La creazione dell'etichetta non è consentita";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Sei pregato di passare a un piano a pagamento per usare più di 3 cartelle";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Sei pregato di passare a un piano a pagamento per usare più di 3 etichette";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Sei pregato di connetterti e riprovare";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Come programmato";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Imposta la tua programmazione";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Sblocca la programmazione dei messaggi personalizzata e altri vantaggi quando effettui l'upgrade del tuo piano.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Effettua l'upgrade ora";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programma l'invio dei messaggi in qualunque momento";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Cartelle ed etichette illimitate";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Fino a 500 GB di spazio di archiviazione";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Fino a 15 indirizzi email";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Fino a 3 domini email personalizzati";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Alias Hide My Email";
+
 /* One of schedule time options */
 "In the morning" = "La mattina";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Apri in Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Effettua l'upgrade ora";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Cancella i messaggi indesiderati";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Cancella automaticamente i messaggi indesiderati e cestinati più vecchi di 30 giorni. Usufruisci di questo e altri benefici quando effettui l'upgrade.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Fino a 3 TB di spazio di archiviazione";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Domini email personalizzati";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Mittente cambiato";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Disabilita codice PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Imposta codice PIN";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Seleziona una data nel futuro";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Vuoi posticipare in qualsiasi momento?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Sblocca i periodi di posticipazione personalizzati quando effettui l'upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Fino a 15 alias/indirizzi email";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Cartelle, etichette e filtri illimitati";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Aggiungilo come allegato";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Cambia la password della casella di posta";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Cambia la password";
+
 /* settings general section title */
 "Security keys" = "Chiavi di sicurezza";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u indirizzi email";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "Dominio email personalizzato";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Supporto per domini di posta elettronica personalizzati";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB di spazio di archiviazione e 1 email";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Crittografia end-to-end";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Accesso all'app desktop";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Assistenza clienti prioritaria";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u funzionalità premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux spazio di archiviazione in più";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Ottieni %u GB: tanto spazio per archiviare in modo sicuro messaggi, file e foto";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux indirizzi email in più";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Crea fino a %u indirizzi email, inclusi quelli @pm.me, per soddisfare le tue esigenze.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Collega il tuo dominio e invia le tue email professionali o brandizzate in tutta sicurezza.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Apri la tua posta elettronica e il tuo calendario con un clic ed evita le distrazioni del browser.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organizza le tue email utilizzando il tuo sistema di archiviazione ed etichettatura preferito.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Goditi tempi di risposta più rapidi da parte del personale di supporto dedicato in caso di problemi.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetria anonima";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Per sbloccare più spazio di archiviazione e funzionalità premium.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Free";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Rinnovo automatico allo stesso prezzo e termini, salvo disdetta.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mese";

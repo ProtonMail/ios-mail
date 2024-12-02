@@ -4,6 +4,7 @@ import LocalAuthentication
 import Network
 import ProtonCoreCrypto
 import ProtonCoreEnvironment
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices

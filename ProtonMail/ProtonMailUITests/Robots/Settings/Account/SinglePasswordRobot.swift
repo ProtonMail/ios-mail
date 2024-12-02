@@ -10,10 +10,10 @@ import fusion
 import ProtonCoreQuarkCommands
 
 fileprivate struct id {
-    static let currentPasswordSecureTextFieldIdentifier = LocalString._settings_current_password
-    static let newPasswordSecureTextFieldIdentifier = LocalString._settings_new_password
-    static let confirmNewPasswordSecureTextFieldIdentifier = LocalString._settings_confirm_new_password
-    static let saveNavBarButtonIdentifier = LocalString._general_save_action
+    static let currentPasswordSecureTextFieldIdentifier = "Current password"
+    static let newPasswordSecureTextFieldIdentifier = "New password"
+    static let confirmNewPasswordSecureTextFieldIdentifier = "Confirm new password"
+    static let saveNavBarButtonIdentifier = "Save"
 }
 
 /**

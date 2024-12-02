@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Mata in e-postavisering…";
 
-/* Placeholder */
-"Current password" = "Nuvarande lösenord";
-
-/* Placeholder */
-"New password" = "Nytt lösenord";
-
-/* Placeholder */
-"Confirm new password" = "Bekräfta nytt lösenord";
-
 /* Settings row */
 "Remove image metadata" = "Ta bort bild-metadata";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Rensa stil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Lägg till organisation";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt sparad, synkroniseras när anslutning är tillgänglig";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt borttagen, kommer att synkroniseras när anslutning är tillgänglig";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Ladda fjärrinnehåll";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Ändra lösenord";
-
-/* Title */
-"Current sign-in password" = "Nuvarande inloggningslösenord";
-
-/* Title */
-"New sign-in password" = "Nytt inloggningslösenord";
-
-/* Title */
-"Confirm new sign-in password" = "Bekräfta nytt inloggningslösenord";
-
-/* Title */
-"New mailbox password" = "Nytt lösenord för brevlådan";
-
-/* Title */
-"Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlåda";
 
 /* Title */
 "Star/unstar" = "Stjärnmärk/ta bort stjärnmärkning";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Ärvd från överordnad mapp";
 
+/* Alert title */
+"Creating folder not allowed" = "Det är inte tillåtet att skapa mapp";
+
+/* Alert title */
+"Creating label not allowed" = "Det är inte tillåtet att skapa etikett";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Uppgradera till ett betalt paket för att använda fler än 3 etiketter";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Anslut och försök igen";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Enligt schema";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Ställ in ditt eget schema";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Uppgradera nu";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schemalägg meddelanden när som helst";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Obegränsat antal mappar och etiketter";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Upp till 500 GB lagringsutrymme";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Upp till 15 e-postadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Upp till 3 anpassade e-postdomäner";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide-my-email-alias";
+
 /* One of schedule time options */
 "In the morning" = "På morgonen";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Öppna i Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Uppgradera nu";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Rensa bort skräpet";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Rensa automatiskt bort meddelanden som är äldre än 30 dagar från papperskorg och skräppost. Njut av denna och andra fördelar när du uppgraderar.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Upp till 3 TB lagringsutrymme";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Anpassade e-domäner";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Avsändare ändrad";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Inaktivera PIN-kod";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Ställ in PIN-kod";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Välj en tid i framtiden";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Upp till 15 e-postadresser/alias";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Lägg till det som bilaga";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Ändra lösenord för brevlådan";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Ändra lösenord";
+
 /* settings general section title */
 "Security keys" = "Säkerhetsnycklar";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u e-postadresser";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "Anpassad e-postdomän";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Stöd för anpassad e-postdomän";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB lagringsutrymme och 1 e-post";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end-kryptering";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Åtkomst till app för stationär dator";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prioriterad kundsupport";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunktioner";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux mer lagringsutrymme";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Få %u GB – gott om utrymme för att säkert lagra dina meddelanden, filer och foton";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux fler e-postadresser";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Skapa upp till %u e-postadresser, inklusive @pm.me, för att möta dina behov.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Öppna din e-post och kalender med ett klick och undvik webbläsarens distraktioner.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organisera din e-post med ditt föredragna arkiverings- och etikettsystem.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Njut av snabbare svarstid från dedikerad supportpersonal om ett problem skulle uppstå.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "För att låsa upp mer lagringsutrymme och premiumfunktioner.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratis";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/månad";

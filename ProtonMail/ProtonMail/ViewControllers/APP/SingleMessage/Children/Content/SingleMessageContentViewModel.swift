@@ -121,7 +121,6 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProviderProtocol,
          dependencies: Dependencies,
-         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void) {
         self.context = context
         self.user = user

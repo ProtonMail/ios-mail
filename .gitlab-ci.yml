@@ -1,9 +1,6 @@
 include:
   - local: ".gitlab-ci.d/i18n.yml"
 
-  - project: 'proton/devops/atlas-deploy'
-    file: '/scenarios/pipeline-env.yml'
-
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
@@ -13,23 +10,38 @@ include:
       run-gitleaks-no-git-scan: false
       stage: scan
 
+  - component: gitlab.protontech.ch/tpe/test-scripts/slack@0.0.2
+
+  # - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+  #   inputs:
+  #     cleanup-stage: cleanup
+
+  # - component: gitlab.protontech.ch/proton/devops/cicd-components/kubernetes/atlas-deploy/pipenv@0.7.0
+  #   inputs:
+  #     cleanup-stage: cleanup
+  #     deploy: manual
+  #     cleanup: manual
+  #     images: $IMAGES
+  #     key: customenv$CI_PIPELINE_ID
+  #     suffix: ":custom"
+
 variables:
   LANG: "en_US.UTF-8"
   MINT_PATH: "$CI_PROJECT_DIR/ci-cache/mint"
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_ENV: "true"
   GIT_SUBMODULE_STRATEGY: recursive
+  IMAGES: $IMAGES
 
 # See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
 stages:
   - i18n
   - scan
+  # - deploy
   - build
-  - deploy
   - test
   - report
-  - cleanup
+  # - cleanup
   - distribute
   - bot
 
@@ -122,7 +134,7 @@ test:unit:
 .test:ui:
   extends: .macos_job
   dependencies:
-    - deploy:review
+    # - atlas:deploy:pipenv
     - build:debug:for-testing
   stage: test
   artifacts:
@@ -141,29 +153,29 @@ test:unit:
   tags:
     - iOS_UITEST
 
-test:ui:smoke:
-  extends: .test:ui
-  except:
-    - schedules
-  only:
-    refs:
-      - master
-      - main
-      - develop
-      - /^release\/.*$/
-      - merge_requests
-  artifacts:
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: test_output/slatherOutput/cobertura.xml
-  script:
-    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
-    - cd ProtonMail
-    - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
-    - ../Scripts/generate_code_coverage_report.sh
-  tags:
-    - iOS_GENERAL
+# test:ui:smoke:
+#   extends: .test:ui
+#   except:
+#     - schedules
+#   only:
+#     refs:
+#       - master
+#       - main
+#       - develop
+#       - /^release\/.*$/
+#       - merge_requests
+#   artifacts:
+#     reports:
+#       coverage_report:
+#         coverage_format: cobertura
+#         path: test_output/slatherOutput/cobertura.xml
+#   script:
+#     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
+#     - cd ProtonMail
+#     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
+#     - ../Scripts/generate_code_coverage_report.sh
+#   tags:
+#     - iOS_GENERAL
 
 test:ui:sanity:
   extends: .test:ui
@@ -218,9 +230,11 @@ test:ui:monkey:
 
 .report:slack:
   stage: report
-  image:
-    name: $CI_REGISTRY/tpe/test-scripts
-    pull_policy: always
+  extends:
+    - .reporting:slack
+  variables:
+    FOLDER_PATH: "test_output/TestResults/"
+    PLATFORM: "ios"
   allow_failure: true
   tags:
     - shared-small
@@ -233,12 +247,9 @@ report:slack:feature:
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
       when: always
-  script:
-    - test_reporter.py
-      --path test_output/TestResults/
-      --platform ios
-      --job-name $TEST_PLAN
-      --slack-channel "$SLACK_CHANNEL"
+  variables:
+    SLACK_CHANNEL: "$SLACK_CHANNEL"
+    JOB_NAME: "$TEST_PLAN"
 
 report:slack:monkey:
   dependencies:
@@ -247,12 +258,9 @@ report:slack:monkey:
   rules:
     - if: '$TEST_TYPE == "monkey"'
       when: always
-  script:
-    - test_reporter.py
-      --path test_output/TestResults/
-      --platform ios
-      --job-name Mail-iOS-Monkey-tests
-      --slack-channel mail-ios-uitests
+  variables:
+    SLACK_CHANNEL: "mail-ios-uitests"
+    JOB_NAME: "Mail-iOS-Monkey-tests"
 
 .report:testmo:
   extends: .testmo-upload

@@ -26,7 +26,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     private var fetchMessageWithReset: MockFetchMessagesWithReset!
     private var fetchMessage: MockFetchMessages!
     private var fetchLatestEventID: MockFetchLatestEventId!
-    private var mailboxSource: MockUpdateMailboxSource!
+    private var mailboxSource: MockUpdateMailboxSourceProtocol!
     private var internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol!
     private var testContainer: TestContainer!
     private var sut: UpdateMailbox!
@@ -39,7 +39,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessageWithReset = MockFetchMessagesWithReset()
         self.fetchMessage = MockFetchMessages()
         self.fetchLatestEventID = MockFetchLatestEventId()
-        self.mailboxSource = MockUpdateMailboxSource()
+        self.mailboxSource = .init()
         self.internetConnectionStatusProvider = MockInternetConnectionStatusProviderProtocol()
         testContainer = .init()
         self.sut = UpdateMailbox(
@@ -84,8 +84,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
@@ -125,8 +124,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         messageDataService.hasValidEventID = isEventIDValid
-        mailboxSource.currentViewMode = .conversation
-        mailboxSource.locationViewMode = .conversation
+        mailboxSource.locationViewModeStub.fixture = .conversation
         sut.setup(isFetching: false)
 
         eventService.callFetchEvents.bodyIs { times, _, _, _, completion in
@@ -168,8 +166,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
@@ -217,8 +214,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = false
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
@@ -262,8 +258,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
@@ -305,8 +300,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
@@ -347,8 +341,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .singleMessage
-        self.mailboxSource.locationViewMode = .singleMessage
+        self.mailboxSource.locationViewModeStub.fixture = .singleMessage
         self.sut.setup(isFetching: false)
 
         let eventExpected = expectation(description: "Fetch event")
@@ -388,8 +381,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
@@ -434,8 +426,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .singleMessage
-        self.mailboxSource.locationViewMode = .singleMessage
+        self.mailboxSource.locationViewModeStub.fixture = .singleMessage
         self.sut.setup(isFetching: false)
 
         self.eventService.callFetchEvents.bodyIs { _, _, _, _, completion in
@@ -470,8 +461,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: true)
 
         self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
@@ -505,8 +495,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = false
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: true)
 
         self.conversationProvider.fetchConversationsStub.bodyIs { _, _, _, _, shouldReset, completion in
@@ -544,8 +533,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         let isEventIDValid = true
         let fetchMessagesAtTheEnd = true
         self.messageDataService.hasValidEventID = isEventIDValid
-        self.mailboxSource.currentViewMode = .conversation
-        self.mailboxSource.locationViewMode = .conversation
+        self.mailboxSource.locationViewModeStub.fixture = .conversation
         self.sut.setup(isFetching: false)
 
         let conversationExpected = expectation(description: "Fetch conversation")
@@ -600,9 +588,4 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
             userID: ""
         )
     }
-}
-
-fileprivate final class MockUpdateMailboxSource: UpdateMailboxSourceProtocol {
-    var currentViewMode: ViewMode = .conversation
-    var locationViewMode: ViewMode = .conversation
 }

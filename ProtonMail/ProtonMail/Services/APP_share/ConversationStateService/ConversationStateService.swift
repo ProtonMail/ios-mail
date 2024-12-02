@@ -5,7 +5,7 @@ protocol ConversationStateProviderProtocol: AnyObject {
     func add(delegate: ConversationStateServiceDelegate)
 }
 
-class ConversationStateService: ConversationStateProviderProtocol, ViewModeDataSource {
+class ConversationStateService: ConversationStateProviderProtocol {
 
     var viewMode: ViewMode {
         didSet {

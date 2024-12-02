@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreTestingToolkitUnitTestsDoh
 import ProtonCoreTestingToolkitUnitTestsServices
 @testable import ProtonMail
 import WebKit
@@ -32,6 +33,8 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
         navigationDelegateMock = .init()
         container = .init()
         apiMock = .init()
+
+        apiMock.dohInterfaceStub.fixture = DohMock()
 
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.phoneNumber, .link]

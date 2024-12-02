@@ -51,12 +51,6 @@ class LocalizedString {
     lazy var _settings_notification_email_switch_title = NSLocalizedString("Enable email notices", comment: "Title")
     /// "Input Notification Email…"
     lazy var _settings_notification_email_placeholder = NSLocalizedString("Input Notification Email…", comment: "place holder")
-    /// "Current password"
-    lazy var _settings_current_password = NSLocalizedString("Current password", comment: "Placeholder")
-    /// "New password"
-    lazy var _settings_new_password = NSLocalizedString("New password", comment: "Placeholder")
-    /// "Confirm new password"
-    lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
     /// "Remove image metadata"
     lazy var _strip_metadata = NSLocalizedString("Remove image metadata", comment: "Settings row")
     /// "Remove image metadata"
@@ -494,23 +488,6 @@ class LocalizedString {
     lazy var _unknown_error = NSLocalizedString("Unknown Error", comment: "Error")
     /// "Load remote content"
     lazy var _load_remote_content = NSLocalizedString("Load remote content", comment: "Action")
-
-    lazy var _setting_change_password = NSLocalizedString("Change password", comment: "title")
-
-    /// "Current signin password"
-    lazy var _current_signin_password = NSLocalizedString("Current sign-in password", comment: "Title")
-
-    /// "New signin password"
-    lazy var _new_signin_password = NSLocalizedString("New sign-in password", comment: "Title")
-
-    /// "Confirm new signin password"
-    lazy var _confirm_new_signin_password = NSLocalizedString("Confirm new sign-in password", comment: "Title")
-
-    /// "New mailbox password"
-    lazy var _new_mailbox_password = NSLocalizedString("New mailbox password", comment: "Title")
-
-    /// "Confirm new mailbox password"
-    lazy var _confirm_new_mailbox_password = NSLocalizedString("Confirm new mailbox password", comment: "Title")
 
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
@@ -1664,11 +1641,24 @@ enum L10n {
     enum PremiumPerks {
         static let storage = NSLocalizedString("15 GB storage", comment: "Description of a feature of a paid subscription")
         static let emailAddresses = NSLocalizedString("%u email addresses", comment: "Description of a feature of a paid subscription")
-        static let customEmailDomain = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomain = NSLocalizedString("Custom email domain", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomainSupport = NSLocalizedString("Custom email domain support", comment: "Description of a feature of a paid subscription")
         static let personalCalendars = NSLocalizedString("%u personal calendars", comment: "Description of a feature of a paid subscription")
         static let freePlanPerk = NSLocalizedString("1 GB Storage and 1 email", comment: "Description of a feature of a paid subscription")
         static let endToEndEncryption = NSLocalizedString("End-to-end encryption", comment: "Description of a feature of a paid subscription")
+        static let desktopApp = NSLocalizedString("Access to desktop app", comment: "Description of a feature of a paid subscription")
+        static let priorityCustomerSupport = NSLocalizedString("Priority customer support", comment: "Description of a feature of a paid subscription")
         static let other = NSLocalizedString("+%u premium features", comment: "Description of a feature of a paid subscription")
+
+        // carousel
+        static let nTimesMoreStorage = NSLocalizedString("%ux more storage", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreStorageDesc = NSLocalizedString("Get %u GB—plenty of space to securely store your messages, files, and photos", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreAddresses = NSLocalizedString("%ux more email addresses", comment: "Description of a feature of a paid subscription")
+        static let nTimesMoreAddressesDesc = NSLocalizedString("Create up to %u email addresses, including @pm.me ones, to meet your needs.", comment: "Description of a feature of a paid subscription")
+        static let customEmailDomainDesc = NSLocalizedString("Connect your own domain and send your professional or branded emails securely.", comment: "Description of a feature of a paid subscription")
+        static let desktopAppDesc = NSLocalizedString("Open your email and calendar with one click and avoid browser distractions.", comment: "Description of a feature of a paid subscription")
+        static let labelsDesc = NSLocalizedString("Organize your emails using your preferred filing and labeling system.", comment: "Description of a feature of a paid subscription")
+        static let customerSupportDesc = NSLocalizedString("Enjoy faster response time from dedicated support staff should an issue arise.", comment: "Description of a feature of a paid subscription")
     }
 
     struct PrivacyAndDataSettings {
@@ -1681,6 +1671,8 @@ enum L10n {
     enum Upsell {
         static let upgradeToPlan = NSLocalizedString("Upgrade to %@", comment: "Title of the upsell page.")
         static let mailPlusDescription = NSLocalizedString("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+        static let freePlan = NSLocalizedString("Free", comment: "Shorthand for the free plan, as opposed to a paid plan")
+        static let autoRenewalNotice = NSLocalizedString("Auto-renews at the same price and terms unless canceled.", comment: "Auto-renewal notice")
         static let perMonth = NSLocalizedString("/month", comment: "Displayed next to the monthly price")
         static let getPlan = NSLocalizedString("Get %@", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")

@@ -234,9 +234,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
 
     var locationViewMode: ViewMode {
         let singleMessageOnlyLabels: [Message.Location] = [.draft, .sent, .scheduled]
-        if let location = Message.Location(labelID),
-           singleMessageOnlyLabels.contains(location),
-           self.conversationStateProvider.viewMode == .conversation {
+        if let location = Message.Location(labelID), singleMessageOnlyLabels.contains(location) {
             return .singleMessage
         }
         return self.conversationStateProvider.viewMode
@@ -904,7 +902,7 @@ extension MailboxViewModel {
         dependencies.queueManager.queuedMessageIds().contains(messageID.rawValue)
     }
 
-    func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
+    func fetchMessages(time: Int, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
         case .singleMessage:
             dependencies.fetchMessages
@@ -921,7 +919,7 @@ extension MailboxViewModel {
                     }
                 )
         case .conversation:
-            conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
+            conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: false) { result in
                 switch result {
                 case .success:
                     completion(nil)

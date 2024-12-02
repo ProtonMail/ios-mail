@@ -66,10 +66,18 @@ public final class UpsellPageModel: ObservableObject {
         }
     }
 
+    public enum Variant {
+        case plain
+        case comparison
+        case carousel
+    }
+
     public let plan: Plan
+    public let variant: Variant
     @Published public var isBusy = false
 
-    public init(plan: Plan) {
+    public init(plan: Plan, variant: Variant) {
         self.plan = plan
+        self.variant = variant
     }
 }

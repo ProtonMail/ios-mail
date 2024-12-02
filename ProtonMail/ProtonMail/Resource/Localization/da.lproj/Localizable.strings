@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Angiv notifikations-e-mail…";
 
-/* Placeholder */
-"Current password" = "Aktuel adgangskode";
-
-/* Placeholder */
-"New password" = "Ny adgangskode";
-
-/* Placeholder */
-"Confirm new password" = "Bekræft ny adgangskode";
-
 /* Settings row */
 "Remove image metadata" = "Fjern metadata fra billede";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Ryd stil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Tilføj organisation";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Annullér processen?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt gemt. Den synkroniseres, når forbindelse bliver tilgængelig";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt slettet. Den synkroniseres, når forbindelse bliver tilgængelig";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Indlæs eksternt indhold";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Skift adgangskode";
-
-/* Title */
-"Current sign-in password" = "Nuværende login-adgangskode";
-
-/* Title */
-"New sign-in password" = "Ny login-adgangskode";
-
-/* Title */
-"Confirm new sign-in password" = "Bekræft ny login-adgangskode";
-
-/* Title */
-"New mailbox password" = "Ny postkasseadgangskode";
-
-/* Title */
-"Confirm new mailbox password" = "Bekræft ny postkasseadgangskode";
 
 /* Title */
 "Star/unstar" = "Tilføj stjerne/Fjern stjerne";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Nedarvet fra overordnet mappe";
 
+/* Alert title */
+"Creating folder not allowed" = "Oprettelse af mappe ikke tilladt";
+
+/* Alert title */
+"Creating label not allowed" = "Oprettelse af etiket ikke tilladt";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Opgradér til et betalt abonnement for at bruge mere end 3 mapper";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Opgradér til et betalt abonnement for at bruge mere end 3 etiketter";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Forbind og prøv igen";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Som planlagt";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Indstil din egen tidsplan";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Lås op for brugertilpasset planlægning af beskeder og andre fordele ved at opgradere dit abonnement.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Opgradér nu";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Planlæg beskeder når som helst";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Ubegrænset mapper og etiketter";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Op til 500 GB lagerplads";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Op til 15 e-mailadresser";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Op til 3 brugertilpassede e-mail-domæner";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email-aliasser";
+
 /* One of schedule time options */
 "In the morning" = "Om morgenen";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Åbn i Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Opgradér nu";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Ryd ud i affaldet";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Fjern automatisk beskeder, der er ældre end 30 dage, fra papirkurven og spam. Nyd dette og andre fordele, når du opgraderer.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Op til 3 TB lagerplads";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Tilpassede e-maildomæner";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Afsender ændret";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivér pinkode";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Angiv pinkode";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Vælg et tidspunkt i fremtiden";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Udsæt tiden når som helst?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Lås op for tilpassede udsættelsestider, når du opgraderer";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Op til 15 e-mailadresser/aliasser";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Ubegrænsede mapper, etiketter og filtre";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Tilføj som vedhæftet fil";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Skift postkasseadgangskode";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Skift adgangskode";
+
 /* settings general section title */
 "Security keys" = "Sikkerhedsnøgler";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u e-mailadresser";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "Tilpasset e-maildomæne";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Understøttelse af brugerdefinerede e-maildomæner";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB lagerplads og 1 e-mail";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end kryptering";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Adgang til skrivebords-app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prioriteret kundesupport";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium-funktioner";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux mere lagerplads";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Få %u GB—rigelig plads til sikker opbevaring af dine beskeder, filer og fotos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux flere e-mailadresser";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Opret op til %u e-mailadresser, herunder dem med @pm.me, for at opfylde dine behov.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Tilslut dit eget domæne, og send dine professionelle eller brandede e-mails sikkert.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Åbn din e-mail og kalender med et enkelt klik, og undgå at blive distraheret af browseren.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonym telemetri";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "For at få mere lagerplads og premium-funktioner.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratis";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Fornyes automatisk til samme pris og vilkår, medmindre aftalen opsiges.";
 
 /* Displayed next to the monthly price */
 "/month" = "/måned";

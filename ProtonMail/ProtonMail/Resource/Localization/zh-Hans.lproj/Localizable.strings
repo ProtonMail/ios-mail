@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "输入通知邮箱…";
 
-/* Placeholder */
-"Current password" = "当前密码";
-
-/* Placeholder */
-"New password" = "新密码";
-
-/* Placeholder */
-"Confirm new password" = "确认新密码";
-
 /* Settings row */
 "Remove image metadata" = "移除图片元数据";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "添加单位";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "是否取消该进程？";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "联系人已保存，联网后将同步";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "联系人已删除，联网后将同步";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "加载外链内容";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "更改密码";
-
-/* Title */
-"Current sign-in password" = "当前登录密码";
-
-/* Title */
-"New sign-in password" = "新建登录密码";
-
-/* Title */
-"Confirm new sign-in password" = "确认新登录密码";
-
-/* Title */
-"New mailbox password" = "新邮箱密码";
-
-/* Title */
-"Confirm new mailbox password" = "确认新邮箱密码";
 
 /* Title */
 "Star/unstar" = "星标/取消星标";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "与上层文件夹一致";
 
+/* Alert title */
+"Creating folder not allowed" = "未能创建文件夹";
+
+/* Alert title */
+"Creating label not allowed" = "未能创建标签";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "请开通付费账户以使用 3 个以上文件夹";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "请开通付费账户以使用 3 个以上标签";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "请连接网络并重试";
 
@@ -1846,10 +1828,10 @@
 "Get more storage" = "获得更多存储空间";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "已缩放以供阅读";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "现在您的邮件正文也会显示在您首选的阅读大小中。";
 
 /* Title of the banner alert */
 "Your storage is full" = "您的存储空间已满";
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "按原定时间";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "设置您自己的日程表";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "立即升级账户";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "文件夹和标签不限量";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "高达 500 GB 存储空间";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "高达 15 个邮箱别名";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "高达 3 个自定义邮箱域名";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide-my-email 邮箱别名";
+
 /* One of schedule time options */
 "In the morning" = "早晨";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "在 Proton Calendar 中打开";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "立即升级账户";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "邮件也需辞旧迎新";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "最高 3 TB 存储空间";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "自定义电子邮件域名";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "发件地址已更改";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "关闭解锁密码";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "设置解锁密码";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "请选择将来的时间点";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Want to snooze any time?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "不限量文件夹、标签和筛选规则";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "作为附件添加";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "更改邮箱密码";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "更改密码";
+
 /* settings general section title */
 "Security keys" = "安全密钥";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u 个邮箱地址";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "自有域名支持";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end encryption";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Access to desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "优先客服支持";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "匿名遥测";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "解锁更多存储和高级功能。";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "免费";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/月";
@@ -2526,16 +2604,16 @@
 "Choose a plan" = "Choose a plan";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "按年";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "超值";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "每次 %1$@ 计费周期 %2$@";
 
 /* In the list of premium plan features */
 "Premium value included" = "Premium value included";

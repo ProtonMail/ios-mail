@@ -19,7 +19,7 @@ import ProtonCorePayments
 import ProtonMailUI
 
 struct UpsellPageFactory {
-    typealias Dependencies = AnyObject & HasStoreKitManagerProtocol
+    typealias Dependencies = AnyObject & HasFeatureFlagProvider & HasStoreKitManagerProtocol
 
     private unowned let dependencies: Dependencies
 
@@ -33,7 +33,7 @@ struct UpsellPageFactory {
     private let hardCodedPerks: [UpsellPageModel.Perk] = [
         .init(icon: \.storage, description: L10n.PremiumPerks.storage),
         .init(icon: \.inbox, description: String(format: L10n.PremiumPerks.emailAddresses, 10)),
-        .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomain),
+        .init(icon: \.globe, description: L10n.PremiumPerks.customEmailDomainSupport),
         .init(icon: \.gift, description: String(format: L10n.PremiumPerks.other, 7))
     ]
 
@@ -42,7 +42,10 @@ struct UpsellPageFactory {
     }
 
     @MainActor
-    func makeUpsellPageModel(for plan: AvailablePlans.AvailablePlan) -> UpsellPageModel {
+    func makeUpsellPageModel(
+        for plan: AvailablePlans.AvailablePlan,
+        entryPoint: UpsellPageEntryPoint
+    ) -> UpsellPageModel {
         let storeKitManager = dependencies.storeKitManager
 
         let billingCycles: [SubscriptionBillingCycle] = plan.instances.compactMap { instance in
@@ -94,12 +97,33 @@ struct UpsellPageFactory {
             )
         }
 
+        let variant = determineUpsellPageVariant(entryPoint: entryPoint)
+
         return .init(
             plan: .init(
                 name: plan.title,
                 perks: hardCodedPerks,
                 purchasingOptions: purchasingOptions
-            )
+            ),
+            variant: variant
         )
+    }
+
+    private func determineUpsellPageVariant(entryPoint: UpsellPageEntryPoint) -> UpsellPageModel.Variant {
+        switch entryPoint {
+        case .header:
+            let experimentFeatureFlag = dependencies.featureFlagProvider.getFlag(.headerUpsellExperiment1)
+
+            switch experimentFeatureFlag?.variant?.name {
+            case "comparison":
+                return .comparison
+            case "carousel":
+                return .carousel
+            default:
+                return .plain
+            }
+        case .autoDelete, .contactGroups, .folders, .labels, .mobileSignature, .postOnboarding, .scheduleSend, .snooze:
+            return .plain
+        }
     }
 }

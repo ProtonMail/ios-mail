@@ -70,7 +70,7 @@ struct OnboardingUpsellPageFactory {
     @MainActor
     func makeOnboardingUpsellPageModel(for plans: [AvailablePlans.AvailablePlan]) -> OnboardingUpsellPageModel {
         let upsellPageModels: [UpsellPageModel] = plans.map {
-            dependencies.upsellPageFactory.makeUpsellPageModel(for: $0)
+            dependencies.upsellPageFactory.makeUpsellPageModel(for: $0, entryPoint: .postOnboarding)
         }
 
         let tiles: [OnboardingUpsellPageModel.TileModel] = upsellPageModels.compactMap { upsellPageModel in

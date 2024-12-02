@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Εισαγωγή E-mail ειδοποίησης…";
 
-/* Placeholder */
-"Current password" = "Τρέχων κωδικός πρόσβασης";
-
-/* Placeholder */
-"New password" = "Νέος κωδικός";
-
-/* Placeholder */
-"Confirm new password" = "Επιβεβαίωση νέου κωδικού";
-
 /* Settings row */
 "Remove image metadata" = "Αφαίρεση μετα-δεδομένων εικόνας";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Καθαρό Στύλ";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Προσθήκη οργανισμού";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Θέλετε να ακυρώσετε την διαδικασία;";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Η επαφή αποθηκεύτηκε, θα συγχρονιστεί όταν υπάρξει διαθέσιμη σύνδεση";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Η επαφή διαγράφηκε, θα συγχρονιστεί όταν υπάρξει διαθέσιμη σύνδεση";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Φόρτωση απομακρυσμένου περιεχομένου";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Αλλαγή κωδικού πρόσβασης";
-
-/* Title */
-"Current sign-in password" = "Τρέχων κωδικός εισόδου";
-
-/* Title */
-"New sign-in password" = "Νέος κωδικός εισόδου";
-
-/* Title */
-"Confirm new sign-in password" = "Επιβεβαίωση νέου κωδικού εισόδου";
-
-/* Title */
-"New mailbox password" = "Νέος Κωδικός Θυρίδας";
-
-/* Title */
-"Confirm new mailbox password" = "Επιβεβαίωση νέου κωδικού πρόσβασης θυρίδας";
 
 /* Title */
 "Star/unstar" = "Με/χωρίς αστέρι";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Κληρονoμήθηκαν από το γονικό φάκελο";
 
+/* Alert title */
+"Creating folder not allowed" = "Δεν επιτρέπεται η δημιουργία φακέλου";
+
+/* Alert title */
+"Creating label not allowed" = "Δεν επιτρέπεται η δημιουργία ετικέτας";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Για χρήση άνω των 3 ετικετών, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Παρακαλούμε συνδεθήτε και ξαναπροσπαθήσετε";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Όπως έχει προγραμματιστεί";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Ορίστε το δικό σας πρόγραμμα";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Ξεκλειδώστε προσαρμοσμένο προγραμματισμό μηνυμάτων και άλλα οφέλη όταν αναβαθμίζετε το πρόγραμμά σας.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Αναβάθμιση τώρα";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Προγραμματισμός μηνυμάτων ανά πάσα στιγμή";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Απεριόριστοι φάκελοι και ετικέτες";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Έως 500 GB αποθηκευτικού χώρου";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Έως 15 διευθύνσεις ηλεκτρονικού ταχυδρομείου";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Έως 3 προσαρμοσμένους τομείς ηλεκτρονικού ταχυδρομείου";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email ψευδώνυμα";
+
 /* One of schedule time options */
 "In the morning" = "Το πρωί";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Άνοιγμα στο Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Αναβάθμιση τώρα";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Ξεφορτωθείτε τη σαβούρα";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Αυτόματη εκκαθάριση μηνυμάτων παλαιότερων των 30 ημερών από τα Διαγραμμένα και τα Ενοχλητικά. Απολαύστε αυτό και άλλα πλεονεκτήματα όταν αναβαθμίσετε.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Έως 3 TB αποθηκευτικού χώρου";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Ο αποστολέας άλλαξε";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Απενεργοποίηση του κωδικού PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Ορισμός κωδικού PIN";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Επιλέξτε μια μελλοντική ώρα";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Θέλετε να κάνετε αναβολή ανά πάσα στιγμή;";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Ξεκλειδώστε προσαρμοσμένους χρόνους αναβολής όταν αναβαθμίσετε";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Έως 15 διευθύνσεις ηλεκτρονικού ταχυδρομείου/ψευδώνυμα";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Προσθήκη ως συνημμένο";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Αλλαγή κωδικού γραμματοκιβωτίου";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Αλλαγή κωδικού πρόσβασης";
+
 /* settings general section title */
 "Security keys" = "Κλειδιά ασφαλείας";
 
@@ -2442,16 +2478,52 @@
 "%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Προσαρμοσμένος τομέας ηλεκτρονικού ταχυδρομείου";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
 "%u personal calendars" = "%u προσωπικά ημερολόγια";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB αποθηκευτικού χώρου και 1 email";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Διατερματική κρυπτογράφηση";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Access to desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium χαρακτηριστικά";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Δωρεάν";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί.";
 
 /* Displayed next to the monthly price */
 "/month" = "/μήνα";
@@ -2532,10 +2610,10 @@
 "Best value" = "Βέλτιστη προσφορά";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u περισσότερα χαρακτηριστικά";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Χρεώνεται σε %1$@ κάθε %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Περιλαμβάνεται premium αξία";

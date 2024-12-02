@@ -52,7 +52,15 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
     init(userKeys: UserKeys, imageProxy: ImageProxy) {
         self.userKeys = userKeys
         self.imageProxy = imageProxy
+
         super.init()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pasteboardDidChange),
+            name: UIPasteboard.changedNotification,
+            object: nil
+        )
     }
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
@@ -82,6 +90,64 @@ class SecureLoaderSchemeHandler: NSObject, WKURLSchemeHandler {
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         // recorded the request that should be stopped.
         shouldBeStoppedTasks.append(urlSchemeTask)
+    }
+
+    @objc
+    private func pasteboardDidChange(_ notification: Notification) {
+        guard
+            notification.userInfo?[UIPasteboard.changedTypesAddedUserInfoKey] != nil,
+            let pasteboard = notification.object as? UIPasteboard
+        else {
+            return
+        }
+
+        replaceCopiedURLWithActualImage(in: pasteboard)
+    }
+
+    private func replaceCopiedURLWithActualImage(in pasteboard: UIPasteboard) {
+        guard let url = pasteboard.url else {
+            return
+        }
+
+        let completion: (Data?) -> Void = { data in
+            guard let data else {
+                return
+            }
+
+            pasteboard.image = UIImage(data: data)
+        }
+
+        switch url.scheme {
+        case HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue, HTTPRequestSecureLoader.imageCacheScheme:
+            putEmbeddedImageInThePasteboard(embeddedImageURL: url, completion: completion)
+        case HTTPRequestSecureLoader.ProtonScheme.https.rawValue, HTTPRequestSecureLoader.ProtonScheme.http.rawValue:
+            putRemoteImageInThePasteboard(remoteImageURL: url, completion: completion)
+        default:
+            break
+        }
+    }
+
+    private func putEmbeddedImageInThePasteboard(embeddedImageURL: URL, completion: @escaping (Data?) -> Void) {
+        guard
+            let id = embeddedImageURL.host,
+            let keyPacket = contents?.webImages?.embeddedImages.first(where: { $0.id == AttachmentID(id) })?.keyPacket
+        else {
+            return
+        }
+
+        loadEmbeddedImageFromCache(attachmentID: id, userKeys: userKeys, keyPacket: keyPacket, completion: completion)
+    }
+
+    private func putRemoteImageInThePasteboard(remoteImageURL: URL, completion: @escaping (Data?) -> Void) {
+        imageProxy.fetchRemoteImageIfNeeded(url: remoteImageURL) { result in
+            switch result {
+            case .success(let remoteImage):
+                completion(remoteImage.data)
+            case .failure(let error):
+                SystemLogger.log(error: error)
+                completion(nil)
+            }
+        }
     }
 }
 
@@ -132,15 +198,17 @@ extension SecureLoaderSchemeHandler {
             let path = FileManager.default.attachmentDirectory.appendingPathComponent(attachmentID)
 
             do {
-                let encoded = try AttachmentDecrypter.decryptAndEncode(
+                let data = try AttachmentDecrypter.decrypt(
                     fileUrl: path,
                     attachmentKeyPacket: keyPacket,
                     userKeys: userKeys
                 )
                 DispatchQueue.main.async {
-                    completion(Data(base64Encoded: encoded, options: .ignoreUnknownCharacters))
+                    completion(data)
                 }
             } catch {
+                SystemLogger.log(error: error)
+
                 DispatchQueue.main.async {
                     completion(nil)
                 }

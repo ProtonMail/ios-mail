@@ -21,6 +21,15 @@ import ProtonCoreKeymaker
 enum AppAccess: Equatable {
     case accessGranted
     case accessDenied(reason: DeniedAccessReason)
+
+    var localizedDescription: String {
+        switch self {
+        case .accessGranted:
+            return "App is unlocked."
+        case .accessDenied(let reason):
+            return "App is locked. \(reason.localizedDescription)"
+        }
+    }
 }
 
 enum DeniedAccessReason {
@@ -28,6 +37,15 @@ enum DeniedAccessReason {
     case noAuthenticatedAccountFound
     // There is an autheticated account but the user has to pass the lock protection
     case lockProtectionRequired
+
+    var localizedDescription: String {
+        switch self {
+        case .noAuthenticatedAccountFound:
+            return "No account found."
+        case .lockProtectionRequired:
+            return "App needs to be unlocked by the user."
+        }
+    }
 }
 
 final class AppAccessResolver {

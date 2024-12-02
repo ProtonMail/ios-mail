@@ -62,7 +62,7 @@ final class UpsellPageFactoryTests: XCTestCase {
         let planData = try JSONSerialization.data(withJSONObject: planJSON)
         let plan = try JSONDecoder.decapitalisingFirstLetter.decode(AvailablePlans.AvailablePlan.self, from: planData)
 
-        let pageModel = sut.makeUpsellPageModel(for: plan)
+        let pageModel = sut.makeUpsellPageModel(for: plan, entryPoint: .header)
 
         let expectedPlan = UpsellPageModel.Plan(
             name: "Mail Plus",

@@ -21,13 +21,13 @@ extension AnswerInvitationUseCase {
     struct DateFormatterProvider: DateFormatterProviding {
         func timeFormatter(userID: String, with timeZone: TimeZone) -> DateFormatter {
             let dateFormatter = DateFormatter()
+            dateFormatter.timeStyle = .short
             dateFormatter.timeZone = timeZone
             return dateFormatter
         }
 
         func dayFormatter() -> DateFormatter {
             let formatter = DateFormatter()
-            formatter.locale = Locale(identifier: "en_US_POSIX")
             formatter.dateStyle = .full
             formatter.timeStyle = .none
             return formatter

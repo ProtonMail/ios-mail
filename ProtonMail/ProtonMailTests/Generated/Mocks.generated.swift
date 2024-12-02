@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import BackgroundTasks
 import CoreData
@@ -6,6 +6,7 @@ import LocalAuthentication
 import Network
 import ProtonCoreCrypto
 import ProtonCoreEnvironment
+import ProtonCoreFeatureFlags
 import ProtonCoreKeymaker
 import ProtonCorePaymentsUI
 import ProtonCoreServices
@@ -446,6 +447,11 @@ class MockFeatureFlagProvider: FeatureFlagProvider {
     @FuncStub(MockFeatureFlagProvider.isEnabled, initialReturn: Bool()) var isEnabledStub
     func isEnabled(_ featureFlag: MailFeatureFlag) -> Bool {
         isEnabledStub(featureFlag)
+    }
+
+    @FuncStub(MockFeatureFlagProvider.getFlag, initialReturn: nil) var getFlagStub
+    func getFlag(_ featureFlag: MailFeatureFlag) -> ProtonCoreFeatureFlags.FeatureFlag? {
+        getFlagStub(featureFlag)
     }
 
 }
@@ -1259,11 +1265,6 @@ class MockURLOpener: URLOpener {
         openStub(url)
     }
 
-    @FuncStub(MockURLOpener.openAsync, initialReturn: Bool()) var openAsyncStub
-    func openAsync(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) -> Bool {
-        openAsyncStub(url, options)
-    }
-
 }
 
 class MockURLSessionProtocol: URLSessionProtocol {
@@ -1369,45 +1370,20 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
-class MockUserCachedStatusProvider: UserCachedStatusProvider {
-    @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
-    var lastDraftMessageID: String? {
-        get {
-            lastDraftMessageIDStub()
-        }
-        set {
-            lastDraftMessageIDStub(newValue)
-        }
+class MockUpdateMailboxSourceProtocol: UpdateMailboxSourceProtocol {
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.locationViewMode, initialGet: .conversation) var locationViewModeStub
+    var locationViewMode: ViewMode {
+        locationViewModeStub()
     }
 
-    @FuncStub(MockUserCachedStatusProvider.getDefaultSignaureSwitchStatus, initialReturn: nil) var getDefaultSignaureSwitchStatusStub
-    func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
-        getDefaultSignaureSwitchStatusStub(uid)
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.isConversationModeEnabled, initialGet: Bool()) var isConversationModeEnabledStub
+    var isConversationModeEnabled: Bool {
+        isConversationModeEnabledStub()
     }
 
-    @FuncStub(MockUserCachedStatusProvider.setDefaultSignatureSwitchStatus) var setDefaultSignatureSwitchStatusStub
-    func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
-        setDefaultSignatureSwitchStatusStub(uid, value)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.removeDefaultSignatureSwitchStatus) var removeDefaultSignatureSwitchStatusStub
-    func removeDefaultSignatureSwitchStatus(uid: String) {
-        removeDefaultSignatureSwitchStatusStub(uid)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.getIsCheckSpaceDisabledStatus, initialReturn: nil) var getIsCheckSpaceDisabledStatusStub
-    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool? {
-        getIsCheckSpaceDisabledStatusStub(uid)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.setIsCheckSpaceDisabledStatus) var setIsCheckSpaceDisabledStatusStub
-    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool) {
-        setIsCheckSpaceDisabledStatusStub(uid, value)
-    }
-
-    @FuncStub(MockUserCachedStatusProvider.removeIsCheckSpaceDisabledStatus) var removeIsCheckSpaceDisabledStatusStub
-    func removeIsCheckSpaceDisabledStatus(uid: String) {
-        removeIsCheckSpaceDisabledStatusStub(uid)
+    @PropertyStub(\MockUpdateMailboxSourceProtocol.messageLocation, initialGet: nil) var messageLocationStub
+    var messageLocation: Message.Location? {
+        messageLocationStub()
     }
 
 }
