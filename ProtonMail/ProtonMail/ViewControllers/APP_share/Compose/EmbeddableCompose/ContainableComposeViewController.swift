@@ -271,6 +271,8 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
 
     override func startSendingMessage() {
         guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            SystemLogger.log(message: "Not connected", category: .sendMessage)
+
             let alert = UIAlertController(
                 title: L10n.Compose.sendingWithShareExtensionWhileOfflineIsNotSupported,
                 message: nil,

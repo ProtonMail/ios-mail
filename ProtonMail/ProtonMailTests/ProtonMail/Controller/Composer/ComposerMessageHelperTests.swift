@@ -328,17 +328,13 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     func testAddPublicKeyIfNeeded_andSameKeyWillNotBeAttachedTwice() throws {
         sut.setNewMessage(objectID: testMessage.objectID)
-        let e = expectation(description: "Closure is called")
         let testData = String.randomString(40).data(using: .utf8)!
         let email = "test@proton.me"
         let fingerprint = String.randomString(40)
         let fileName = "publicKey - \(email) - \(fingerprint).asc"
 
-        sut.addPublicKeyIfNeeded(email: email, fingerprint: fingerprint, data: testData, shouldStripMetaDate: false) { attachment in
-            XCTAssertNotNil(attachment)
-            e.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let addedAttachment = try sut.addPublicKeyIfNeeded(email: email, fingerprint: fingerprint, data: testData, shouldStripMetaDate: false)
+        XCTAssertNotNil(addedAttachment)
 
         XCTAssertTrue(messageDataServiceMock.callUpload.wasCalledExactlyOnce)
         XCTAssertEqual(sut.draft?.numAttachments, 1)
@@ -348,12 +344,8 @@ final class ComposerMessageHelperTests: XCTestCase {
         XCTAssertEqual(attachment.rawMimeType, "application/pgp-keys")
 
         // Add same attachment twice
-        let e2 = expectation(description: "Closure is called")
-        sut.addPublicKeyIfNeeded(email: email, fingerprint: fingerprint, data: testData, shouldStripMetaDate: false) { attachment in
-            XCTAssertNil(attachment)
-            e2.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let addedAttachment2 = try sut.addPublicKeyIfNeeded(email: email, fingerprint: fingerprint, data: testData, shouldStripMetaDate: false)
+        XCTAssertNil(addedAttachment2)
 
         XCTAssertTrue(messageDataServiceMock.callUpload.wasCalledExactlyOnce)
         XCTAssertEqual(sut.draft?.numAttachments, 1)
