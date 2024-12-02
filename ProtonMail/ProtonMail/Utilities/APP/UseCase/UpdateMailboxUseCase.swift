@@ -23,8 +23,6 @@ typealias UpdateMailboxUseCase = UseCase<Void, UpdateMailbox.Parameters>
 // sourcery: mock
 protocol UpdateMailboxSourceProtocol: AnyObject {
     var locationViewMode: ViewMode { get }
-    var isConversationModeEnabled: Bool { get }
-    var messageLocation: Message.Location? { get }
 }
 
 final class UpdateMailbox: UpdateMailboxUseCase {
@@ -33,7 +31,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     private(set) var isFetching = false
     private let dependencies: Dependencies
     private let serverNotice: ServerNotice
-    private weak var sourceDelegate: UpdateMailboxSourceProtocol?
+    private weak var sourceDelegate: UpdateMailboxSourceProtocol!
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -120,11 +118,7 @@ extension UpdateMailbox {
     }
 
     private var locationViewMode: ViewMode {
-        guard let source = self.sourceDelegate else {
-            assert(false, "Needs to set up source")
-            return .conversation
-        }
-        return source.locationViewMode
+        sourceDelegate.locationViewMode
     }
 
     private func resetNotificationMessage() {
@@ -185,20 +179,8 @@ extension UpdateMailbox {
                                     cleanContact: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
-        let shouldFetchConversations: Bool
-
         switch self.locationViewMode {
         case .singleMessage:
-            if let sourceDelegate, sourceDelegate.messageLocation == .sent && sourceDelegate.isConversationModeEnabled {
-                shouldFetchConversations = true
-            } else {
-                shouldFetchConversations = false
-            }
-        case .conversation:
-            shouldFetchConversations = true
-        }
-
-        if !shouldFetchConversations {
             let params = FetchMessagesWithReset.Params(
                 labelID: labelID,
                 fetchOnlyUnreadMessages: unreadOnly,
@@ -210,7 +192,7 @@ extension UpdateMailbox {
                 .execute(params: params) { result in
                     completion(result.error)
                 }
-        } else {
+        case .conversation:
             self.dependencies.fetchLatestEventID.execute(params: ()) { [weak self] fetchLatestEventIDResult in
                 switch fetchLatestEventIDResult {
                 case .success(let response):
