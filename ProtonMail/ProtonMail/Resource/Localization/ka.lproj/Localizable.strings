@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "შეიყვანეთ გაფრთხილების ელფოსტა …";
 
-/* Placeholder */
-"Current password" = "მიმდინარე პაროლი";
-
-/* Placeholder */
-"New password" = "ახალი პაროლი";
-
-/* Placeholder */
-"Confirm new password" = "დაადასტურეთ ახალი პაროლი";
-
 /* Settings row */
 "Remove image metadata" = "გამოსახულების მეტამონაცემების წაშლა";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "სტილის გასუფთავება";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "ორგანიზაციის დამატება";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "გნებავთ პროცესის გაუქმება?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "კონტაქტი შენახულია. დასინქრონდება ინტერნეტკავშირის აღდგენის შემდეგ";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "კონტაქტი წაშლილია. დასინქრონდება ინტერნეტ-კავშირის აღდგენის შემდეგ";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "გარე შემცველობის ჩატვირთვა";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "პაროლის შეცვლა";
-
-/* Title */
-"Current sign-in password" = "შესვლის მიმდინარე პაროლი";
-
-/* Title */
-"New sign-in password" = "შესვლის ახალი პაროლი";
-
-/* Title */
-"Confirm new sign-in password" = "დაადასტურეთ შესვლის ახალი პაროლი";
-
-/* Title */
-"New mailbox password" = "საფოსტო ყუთის ახალი პაროლი";
-
-/* Title */
-"Confirm new mailbox password" = "დაადასტურეთ საფოსტო ყუთის ახალი პაროლი";
 
 /* Title */
 "Star/unstar" = "ვარსკვლავის დაყენება/მოცილება";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "მემკვიდრეობით მშობელი საქაღალდისგან";
 
+/* Alert title */
+"Creating folder not allowed" = "საქაღალდის შექმნა აკრძალულია";
+
+/* Alert title */
+"Creating label not allowed" = "ჭდის შექმნა დაუშვებელია";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "სამზე მეტი საქაღალდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "სამზე მეტი ჭდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "დაუკავშირდით და თავიდან სცადეთ";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "როგორც დაგეგმილია";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "თქვენი განრიგის დაყენება";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "განბლოკეთ შეტყობინებების მორგებული დაგეგმვა და სხვა უპირატესობები თქვენი გეგმის განახლებისას.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "ტარიფის განახლება";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "შეტყობინებების განრიგში ნებისმიერ დროს ჩასმა";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500გბ-მდე საცავი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "15-მდე ელფოსტის მისამართი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "ელფოსტის 3-მდე ხელით მითითებული დომენი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide-my-email-ის ფსევდონიმები";
+
 /* One of schedule time options */
 "In the morning" = "დილით";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar-ში გახსნა";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "ტარიფის განახლება";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "ნაგვის მოსუფთავება";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "შეტყობინებების სპამიდან და ნაგვის ყუთიდან 30 დღეში ავტომატური წაშლა. ისიამოვნეთ ამ და სხვა ფასიანი თვისებებით, როცა პაკეტს ასწევთ.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "3ტბ-მდე საცავი";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "თქვენი ელფოსტის დომენები";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "გამგზავნი შეიცვალა";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN-კოდის გათიშვა";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "დააყენეთ PIN კოდი";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "აირჩიეთ დრო მომავალში";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "გნებავთ, დროებით დაადუმოთ ნებისმიერ დროს?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "განბლოკეთ მომხმარებლის დროებით დადუმების დროებით, როცა თქვენს სატარიფო გეგმას ასწევთ";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "15-მდე ელფოსტის მისამართი/ფსევდონიმი";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "დამატება მიმაგრებულ ფაილად";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "პაროლის შეცვლა";
+
 /* settings general section title */
 "Security keys" = "უსაფრთხოების გასაღებები";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u ელფოსტის მისამართი";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "თქვენი ელფოსტის დომენი";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "თქვენი ელფოსტის დომენების მხარდაჭერა";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 გბ საცავი და 1 ელფოსტა";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "გამჭოლი დაშიფვრა";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "წვდომა კომპიუტერის აპთან";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "მომხმარებლის პრიორიტეტული მხარდაჭერა";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ფასიანი ფუნქცია";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u-ჯერ მეტი საცავი";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u-ჯერ მეტი ელფოსტის მისამართი";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "გახსენით თქვენი ელფოსტა და კალენდარი ერთი წკაპით და აიცილეთ თავიდან ბრაუზერის ელემენტები.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "დააორგანიზეთ თქვენი ელფოსტა თქვენთვის მოსახერხებელი შევსებსა და ჭდეების სისტემით.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "ანონიმური ტელემეტრია";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "მეტი საცავი და ფასიანი თვისებების მისაღებად.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "უფასო";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "ავტომატურად განახლდება იგივე ფასით და პირობებით, თუ არ გააუქმებთ.";
 
 /* Displayed next to the monthly price */
 "/month" = "/თვე";

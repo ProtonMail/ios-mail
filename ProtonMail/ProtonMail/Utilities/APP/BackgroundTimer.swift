@@ -34,14 +34,14 @@ final class BackgroundTimer {
         userDefaults.set(date ?? Date(), forKey: Self.lastForegroundDateKey)
     }
 
-    var wasInBackgroundForMoreThanOneHour: Bool {
+    var wasInBackgroundLongEnoughForDataToBecomeOutdated: Bool {
         guard let lastForegroundDate = userDefaults.value(forKey: Self.lastForegroundDateKey) as? Date else {
             return false
         }
-        return Date() >= lastForegroundDate.addingTimeInterval(TimeInterval.oneHour)
+        return Date().timeIntervalSince(lastForegroundDate) >= .oneWeek
     }
 }
 
 private extension TimeInterval {
-    static let oneHour: TimeInterval = 3_600
+    static let oneWeek: TimeInterval = 60 * 60 * 24 * 7
 }

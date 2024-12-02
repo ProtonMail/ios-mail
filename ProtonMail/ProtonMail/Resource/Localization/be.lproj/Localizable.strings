@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Увядзіце электронную пошту для апавяшчэння…";
 
-/* Placeholder */
-"Current password" = "Бягучы пароль";
-
-/* Placeholder */
-"New password" = "Новы пароль";
-
-/* Placeholder */
-"Confirm new password" = "Пацвердзіць новы пароль";
-
 /* Settings row */
 "Remove image metadata" = "Выдаліць метаданыя відарыса";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Ачысціць стыль";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Дадаць арганізацыю";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Вы сапраўды хочаце скасаваць працэс?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Кантакт захаваны і будзе сінхранізаваны пры аднаўленні падключэння да інтэрнэту";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Кантакт выдалены і будзе сінхранізаваны, калі падключэнне стане даступным";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Загрузіць аддаленае змесціва";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Змяніць пароль";
-
-/* Title */
-"Current sign-in password" = "Бягучы пароль уваходу";
-
-/* Title */
-"New sign-in password" = "Новы пароль уваходу";
-
-/* Title */
-"Confirm new sign-in password" = "Пацвердзіць новы пароль уваходу";
-
-/* Title */
-"New mailbox password" = "Новы пароль паштовай скрыні";
-
-/* Title */
-"Confirm new mailbox password" = "Пацвердзіць новы пароль паштовай скрыні";
 
 /* Title */
 "Star/unstar" = "Паставіць/прыбраць зорачку";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Унаследавана ад бацькоўскай папкі";
 
+/* Alert title */
+"Creating folder not allowed" = "Стварэнне папкі забаронена";
+
+/* Alert title */
+"Creating label not allowed" = "Стварэнне меткі забаронена";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 меткі";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Падключыцеся і паўтарыце спробу";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Як запланавана";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Прызначэнне свайго ўласнага раскладу";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Разблакіруйце магчымасць ствараць уласны расклад адпраўкі паведамленняў і іншыя перавагі пасля паляпшэння свайго тарыфнага плана.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Палепшыць зараз";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Заплануйце адпраўку паведамленняў у любы час";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Неабмежаваная колькасць папак і метак";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Да 500 ГБ сховішча";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Да 15 адрасоў электроннай пошты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Да 3 карыстальніцкі даменаў электроннай пошты";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Схаваць мае псеўданімы электроннай пошты";
+
 /* One of schedule time options */
 "In the morning" = "Раніцай";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Адкрыць у Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Палепшыць зараз";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Ачысціць непажаданую пошту";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Аўтаматычна ачышчае паведамленні, якія старэйшыя за 30 дзён са сметніцы і спаму. Атрымлівайце асалоду ад гэтай і іншых пераваг пасля паляпшэння тарыфнага плана.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Да 3 ТБ сховішча";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Карыстальніцкія дамены электроннай пошты";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Адпраўнік зменены";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Адключэнне PIN-кода";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Задаць PIN-код";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Выберыце час у будучыні";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Хочаце адкладаць у любы час?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Разблакіруйце карыстальніцкі час адкладання пасля паляпшэння тарыфнага плана";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Да 15 адрасоў электроннай пошты/псеўданімаў";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Неабмежаваная колькасць папак, метак і фільтраў";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Дадаць як далучэнне";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Змяніць пароль паштовай скрыні";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Змяніць пароль";
+
 /* settings general section title */
 "Security keys" = "Ключы бяспекі";
 
@@ -2442,16 +2478,52 @@
 "%u email addresses" = "%u адрасоў электроннай пошты";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Карыстальніцкі дамен электроннай пошты";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Падтрымка карыстальніцкіх даменаў";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u асабістыя календары";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 ГБ сховішча і 1 электронная пошта";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Скразное шыфраванне";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Доступ да настольнай праграмы";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Прыярытэтная падтрымка кліентаў";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "І яшчэ %u прэміяльныя функцыі";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "У %u разы больш сховішча";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Атрымайце %u ГБ прасторы, якой будзе дастаткова для захоўвання вашых паведамленняў, файлаў і фатаграфій";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "У %u разы больш адрасоў электроннай пошты";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Стварайце да %u адрасоў электроннай пошты, уключаючы @pm.me для задавальнення вашых патрэб.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Падключайце свой уласны дамен і бяспечна адпраўляйце брэндзіраваныя або прафесійныя лісты.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Не рабіце лішнія дзеянні ў браўзеры, а адкрывайце вашу электронную пошту і каляндар адным націскам.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Парадкуйце свае электронныя лісты выкарыстоўваючы пажаданую сістэму захоўвання і маркіроўкі.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Атрымлівайце асалоду ад прыярытэтнай падтрымкі ў выпадку ўзнікнення праблем.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ананімная тэлеметрыя";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Для разблакіроўкі большага памеру сховішча і прэміяльных функцый.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Бясплатна";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Аўтаматычнае падаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана.";
 
 /* Displayed next to the monthly price */
 "/month" = "/месяц";
@@ -2532,10 +2610,10 @@
 "Best value" = "Лепшыя суадносіны кошту і якасці";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "Яшчэ функцый %u";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Спаганяецца сума ў памеры %1$@ кожныя %2$@";
+"Billed at %1$@ every %2$@" = "Спаганяецца сума ў памеры %1$@ з інтэрвалам аплаты раз у %2$@";
 
 /* In the list of premium plan features */
 "Premium value included" = "Уключаны прэміяльны функцыянал";

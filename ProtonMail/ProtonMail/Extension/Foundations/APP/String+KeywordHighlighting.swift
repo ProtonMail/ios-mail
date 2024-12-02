@@ -47,7 +47,7 @@ extension String {
         }
 
         func usingCSS(keywords: [String]) -> String {
-            guard !keywords.isEmpty, UserInfo.isBodySearchKeywordHighlightEnabled else {
+            guard !keywords.isEmpty else {
                 return originalString
             }
 

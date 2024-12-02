@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "알림 이메일을 입력해주세요…";
 
-/* Placeholder */
-"Current password" = "현재 비밀번호";
-
-/* Placeholder */
-"New password" = "새 비밀번호";
-
-/* Placeholder */
-"Confirm new password" = "새 비밀번호 확인";
-
 /* Settings row */
 "Remove image metadata" = "이미지 메타데이터 삭제";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "서식 삭제";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "조직 추가";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "결제를 취소하시겠습니까?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "연락처가 저장되었습니다. 연결이 가능하면 동기화됩니다.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "연락처가 삭제되었습니다. 연결이 가능하면 동기화됩니다.";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "외부 콘텐츠 로드";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "비밀번호 변경";
-
-/* Title */
-"Current sign-in password" = "현재 로그인 비밀번호";
-
-/* Title */
-"New sign-in password" = "새로운 로그인 비밀번호";
-
-/* Title */
-"Confirm new sign-in password" = "새로운 로그인 비밀번호 확인";
-
-/* Title */
-"New mailbox password" = "새 메일함 비밀번호";
-
-/* Title */
-"Confirm new mailbox password" = "새로운 메일함 비밀번호 확인";
 
 /* Title */
 "Star/unstar" = "별표/별표 해제";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "상위폴더에 상속되어 있습니다";
 
+/* Alert title */
+"Creating folder not allowed" = "폴더 생성이 허용되지 않았습니다.";
+
+/* Alert title */
+"Creating label not allowed" = "라벨 생성이 허용되지 않았습니다.";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "3개 이상의 폴더를 사용하려면 요금제 업그레이드가 필요합니다";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "3개 이상의 라벨을 사용하려면 요금제 업그레이드가 필요합니다";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "연결 후 다시 시도하세요";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "예정됨";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "나만의 스케쥴 설정";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "플랜을 업그레이드 하여 사용자 지정 메시지 스케줄과 다른 혜택을 잠금 해제하세요.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "지금 업그레이드";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "언제든지 메시지를 예약하세요";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "무제한 폴더 및 라벨";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "최대 500 GB 저장공간";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "최대 15개의 이메일 주소";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "최대 3개 사용자 지정 이메일 도메인";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "나의 이메일 숨기기 별칭";
+
 /* One of schedule time options */
 "In the morning" = "아침";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar에서 열기";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "지금 업그레이드";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "정크 삭제";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "휴지통과 스팸함의 30일 이상 된 메시지를 자동으로 삭제합니다. 업그레이드하여 이 기능과 다른 혜택들을 누려보세요.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "최대 3 TB 스토리지";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "사용자 지정 이메일 도메인";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "발신자가 변경됨";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN 코드로 액세스를 비활성화";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "PIN 코드 설정";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "미래의 시간을 선택해주세요.";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "항상 방해 금지 상태로 전환하시겠어요?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "업그레이드로 사용자 지정 방해 금지 모드를 잠금 해제하세요";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "최대 15개 이메일 주소/별칭";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "무제한 폴더, 라벨, 필터";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "첨부 파일로 추가";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "메일함 비밀번호 변경";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "비밀번호 변경";
+
 /* settings general section title */
 "Security keys" = "보안 키";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "이메일 주소 %u개";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "사용자 지정 이메일 도메인";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "사용자 지정 이메일 도메인 지원";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GB 스토리지 및 1개 메일";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "종단간 암호화";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "데스크톱 앱으로 접근";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "고객 지원 우선 순위 제공";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%u배 더 많은 스토리지";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "%u GB 얻기 — 나의 메시지, 파일, 사진을 안전하게 보관하지 위한 충분한 공간";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%u배 많은 이메일 주소";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "나의 요구에 충족하는 @pm.me 도메인을 포함한 최대 %u개 이메일 주소를 생성하세요.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "도메인을 연결하고 전문 및 브랜드 이메일을 안전하게 전송하세요.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "한 번의 클릭으로 이메일 및 캘린더를 열어 브라우저 방해를 피해보세요.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "지정 필터 및 라벨링 시스템으로 편지함을 정리하세요.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "문제가 발생했을 때 전담 지원 직원의 더 빠른 응답 시간을 누려보세요.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "익명 원격 측정";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "더 많은 저장 공간과 프리미엄 기능을 잠금 해제하기 위해.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "무료";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "취소되기 전까지 같은 가격과 규정으로 갱신됩니다.";
 
 /* Displayed next to the monthly price */
 "/month" = "/월간";

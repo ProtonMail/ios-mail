@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Introducere e-mail de notificare…";
 
-/* Placeholder */
-"Current password" = "Parola actuală";
-
-/* Placeholder */
-"New password" = "Parola nouă";
-
-/* Placeholder */
-"Confirm new password" = "Confirmare parola nouă";
-
 /* Settings row */
 "Remove image metadata" = "Eliminare metadate din imagini";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Eliminare stil";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Adăugare organizaţie";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Doriți anularea procesului?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Contact salvat. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Contact șters. Va fi sincronizat atunci când conexiunea este disponibilă.";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Încărcare conținut extern";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Schimbare parolă";
-
-/* Title */
-"Current sign-in password" = "Parola actuală de conectare";
-
-/* Title */
-"New sign-in password" = "Parola nouă de conectare";
-
-/* Title */
-"Confirm new sign-in password" = "Confirmare parolă nouă de conectare";
-
-/* Title */
-"New mailbox password" = "Parola nouă mesaje";
-
-/* Title */
-"Confirm new mailbox password" = "Confirmare parolă nouă mesaje";
 
 /* Title */
 "Star/unstar" = "Cu stea/Fără stea";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Moştenit de la folderul părinte";
 
+/* Alert title */
+"Creating folder not allowed" = "Crearea folderului nu este permisă";
+
+/* Alert title */
+"Creating label not allowed" = "Crearea etichetei nu este permisă";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 foldere.";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 etichete.";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Conectați-vă și reîncercați.";
 
@@ -1861,7 +1843,7 @@
 "Your account is at risk of deletion" = "Contul riscă să fie șters";
 
 /* Description of the banner alert */
-"To send or receive emails, free up space or upgrade for more storage." = "Pentru a trimite sau primi mesaje, eliberați spațiu sau treceți la alt tip de plan pentru mai mult spațiu de stocare.";
+"To send or receive emails, free up space or upgrade for more storage." = "Pentru a trimite sau primi mesaje, eliberați spațiu sau treceți la un plan cu plată pentru a obține mai mult spațiu.";
 
 /* Description of the banner alert */
 "To upload files, free up space or upgrade for more storage." = "Pentru a încărca fișiere, eliberați spațiu sau modificați tipul de abonament pentru mai mult spațiu de stocare.";
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Ca programat";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Setați-vă programarea dorită";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Deblocați programarea personalizată a mesajelor și alte avantaje trecând la un plan cu plată.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Modificare";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Programați mesajele oricând";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Foldere și etichete nelimitate";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Până la 500 GiB spațiu de stocare";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Până la 15 adrese de e-mail";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Până la 3 domenii de e-mail personale";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Aliasuri hide-my-email";
+
 /* One of schedule time options */
 "In the morning" = "Dimineața";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Deschidere în Proton Calendar";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Modificare";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Eliminați mesajele inutile";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Ștergeți automat mesajele mai vechi de 30 de zile din folderul «Gunoi» și «Nedorite». Bucurați-vă de aceste opțiuni și altele dacă alegeți un cont cu plată.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Până la 3 TiB spațiu de stocare";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Domenii personale de e-mail";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Expeditor schimbat";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Dezactivare cod PIN";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Setare cod PIN";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Selectare o dată disponibilă";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Doriți să modificați perioada de amânare?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Deblocați amânări personalizate când treceți la un plan cu plată";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Până la 15 adrese de e-mail/aliasuri";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Foldere, etichete și filtre nelimitate";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Adăugare ca atașament";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Schimbare parolă mesaje";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Schimbare parolă";
+
 /* settings general section title */
 "Security keys" = "Chei de securitate";
 
@@ -2440,6 +2476,9 @@
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u adrese de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Custom email domain" = "Domeniu personal de e-mail";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Suport pentru domeniu personal de e-mail";
@@ -2451,7 +2490,40 @@
 "1 GB Storage and 1 email" = "1 GiB spațiu de stocare și o adresă de e-mail";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Criptare bilaterală";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Acces la aplicația desktop";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Asistență prioritară clienți";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "Peste %u funcții premium";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "De %ux mai mult spațiu de stocare";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Obțineți %u GiB — spațiu suficient pentru a vă stoca în siguranță mesajele, fișierele și fotografiile.";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "De %ux mai multe adrese de e-mail";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Creați până la %u adrese de e-mail, inclusiv cea @pm.me, pentru nevoile personale.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Conectați-vă propriul domeniu și transmiteți-vă în siguranță mesajele de afaceri sau de marcă.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Deschideți-vă e-mailul și calendarul cu un singur clic și evitați distragerile din navigatorul web.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organizați-vă mesajele folosindu-vă sistemul preferat de aranjare și etichetare.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Beneficiați de un timp de răspuns mai rapid din partea personalului de asistență dedicat în cazul în care apare o problemă.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Telemetrie anonimă";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Pentru a debloca mai mult spațiu și funcții premium.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Gratuit";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Se reînnoiește automat la același preț și condiții, dacă nu este anulat.";
 
 /* Displayed next to the monthly price */
 "/month" = "/lună";

@@ -84,8 +84,6 @@ final class Launch {
 extension Launch: LaunchService {
 
     func start() throws {
-        SystemLogger.log(message: "Launch start", category: .appLifeCycle)
-
         /// Try to load the main key into memory. If App Key is enabled the main key
         /// will not be available until the user unlocks the application.
         _ = dependencies.keyMaker.mainKeyExists()

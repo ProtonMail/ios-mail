@@ -105,8 +105,12 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
         }
     }
 
-    private func log(message: String, isError: Bool = false) {
-        SystemLogger.log(message: message, category: .connectionStatus, isError: isError)
+    private func log(message: String) {
+        SystemLogger.log(message: message, category: .connectionStatus)
+    }
+
+    private func log(error: String) {
+        SystemLogger.log(message: error, category: .connectionStatus, isError: true)
     }
 }
 
@@ -114,7 +118,6 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
 extension InternetConnectionStatusProvider {
     private func startPathMonitor(_ monitor: ConnectionMonitor) {
         monitor.pathUpdateClosure = { [weak self] path in
-            self?.log(message: "Path update")
             self?.updateStatusFrom(path: path)
         }
         monitor.start(queue: monitorQueue)
@@ -222,7 +225,7 @@ extension InternetConnectionStatusProvider {
             defer {
                 monitorQueue.async {
                     self.status = hasConnection ? .connected : .notConnected
-                    self.log(message: "Update status to \(self.status) according to ping result", isError: false)
+                    self.log(message: "Update status to \(self.status) according to ping result")
                 }
             }
             let tooManyRedirectionsError = -1_007
@@ -232,7 +235,7 @@ extension InternetConnectionStatusProvider {
                 hasConnection = true
                 return
             } catch {
-                log(message: "Ping proton server failed: \(error)", isError: true)
+                log(error: "Ping proton server failed: \(error)")
                 if error.bestShotAtReasonableErrorCode == tooManyRedirectionsError {
                     hasConnection = true
                     return
@@ -244,7 +247,7 @@ extension InternetConnectionStatusProvider {
                 hasConnection = true
                 return
             } catch {
-                log(message: "Ping proton status page failed: \(error)", isError: true)
+                log(error: "Ping proton status page failed: \(error)")
                 if error.bestShotAtReasonableErrorCode == tooManyRedirectionsError {
                     hasConnection = true
                     return

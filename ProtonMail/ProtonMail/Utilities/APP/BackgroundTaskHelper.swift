@@ -39,13 +39,11 @@ final class BackgroundTaskHelper {
                           self.dependencies.usersManager.hasUsers(),
                           let activeUser = self.dependencies.usersManager.firstUser else {
                         task.setTaskCompleted(success: true)
-                        Self.log(message: "Background task can not continue: \(task.identifier)")
                         return
                     }
                     self.currentBackgroundTask = task
                     task.expirationHandler = {
                         // Stop fetch event loop
-                        Self.log(message: "Background task expired: \(task.identifier)")
                         self.currentBackgroundTask = nil
                     }
                     self.fetchEvents(user: activeUser)
@@ -78,7 +76,6 @@ final class BackgroundTaskHelper {
             forTaskWithIdentifier: task.identifier,
             using: nil
         ) { task in
-            Self.log(message: "Background task starts: \(task.identifier)")
             handler(task)
         }
     }
@@ -90,13 +87,9 @@ final class BackgroundTaskHelper {
         let request = makeRequest(for: task)
         do {
             try scheduler.submit(request)
-            Self.log(message: "Background task is scheduled: \(task.identifier)")
             return true
         } catch {
-            Self.log(
-                message: "Background task is failed to be scheduled: \(task.identifier), error: \(error)",
-                isError: true
-            )
+            SystemLogger.log(error: error)
             return false
         }
     }
@@ -105,13 +98,8 @@ final class BackgroundTaskHelper {
         switch task {
         case .eventLoop:
             let request = BGAppRefreshTaskRequest(identifier: task.identifier)
-            Self.log(message: "Make background refresh task: \(task.identifier)")
             return request
         }
-    }
-
-    private static func log(message: String, isError: Bool = false) {
-        SystemLogger.log(message: message, category: .backgroundTask, isError: isError)
     }
 }
 

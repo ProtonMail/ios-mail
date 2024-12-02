@@ -24,11 +24,6 @@ enum AttachmentDecrypterError: Error {
 
 struct AttachmentDecrypter {
 
-    static func decryptAndEncode(fileUrl: URL, attachmentKeyPacket: String?, userKeys: UserKeys) throws -> String {
-        let data = try decrypt(fileUrl: fileUrl, attachmentKeyPacket: attachmentKeyPacket, userKeys: userKeys)
-        return data.base64EncodedString(options: .lineLength64Characters)
-    }
-
     static func decrypt(fileUrl: URL, attachmentKeyPacket: String?, userKeys: UserKeys) throws -> Data {
         guard
             let keyPacket = attachmentKeyPacket,

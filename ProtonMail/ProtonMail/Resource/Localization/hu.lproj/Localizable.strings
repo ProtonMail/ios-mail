@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Írja be az értesítési e-mail címet…";
 
-/* Placeholder */
-"Current password" = "Jelenlegi jelszó";
-
-/* Placeholder */
-"New password" = "Új jelszó";
-
-/* Placeholder */
-"Confirm new password" = "Új jelszó megerősítése";
-
 /* Settings row */
 "Remove image metadata" = "Metaadatok eltávolítása a képből";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Letisztult Stílus";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Szervezet hozzáadása";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Megszakítja a folyamatot?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Névjegy elmentve. A kapcsolat helyreállásakor lesz szinkronizálva.";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Névjegy törölve. A kapcsolat helyreállásakor lesz szinkronizálva";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Távoli tartalom betöltése";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Jelszó módosítása";
-
-/* Title */
-"Current sign-in password" = "Jelenlegi belépési jelszó";
-
-/* Title */
-"New sign-in password" = "Új belépési jelszó";
-
-/* Title */
-"Confirm new sign-in password" = "Új belépési jelszó megerősítése";
-
-/* Title */
-"New mailbox password" = "Új e-mail titkosítási jelszó";
-
-/* Title */
-"Confirm new mailbox password" = "Új e-mail jelszó megerősítése";
 
 /* Title */
 "Star/unstar" = "Csillagozás/Vagy nem";
@@ -841,7 +811,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Felhasználta az összes rendelkezésre álló tárhelyét (%@). Fizessen elő egy nagyobb csomagra, hogy továbbra is küldeni és fogadni tudjon e-maileket.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "A rendelkezésre álló tárhely %1$d%%-át felhasználta (%2$@). Váltson egy nagyobb csomagra, hogy továbbra is tudjon küldeni és fogadni üzeneteket.";
 
 /* Alert title */
 "Storage full" = "Tárhely megtelt";
@@ -1196,7 +1166,7 @@
 "Limit reached" = "Korlát elérve";
 
 /* Alert when the free account limit is reached */
-"Only two free accounts can be added" = "Only two free accounts can be added";
+"Only two free accounts can be added" = "Csak 2 ingyenes fiókot lehet hozzáadni";
 
 /* section title in settings */
 "Account settings" = "Fiók beállítások";
@@ -1301,7 +1271,7 @@
 "unread" = "olvasatlan";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Updated >1 hour ago";
+"Updated >1 hour ago" = "Kevesebb mint 1 órája frissítve";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Most frissítve";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Örökölve a tartalmazó mappáról";
 
+/* Alert title */
+"Creating folder not allowed" = "Mappa létrehozása nem engedélyezett";
+
+/* Alert title */
+"Creating label not allowed" = "Címke létrehozása nem engedélyezett";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Váltson előfizetéses csomagra, hogy 3-nál több mappát használhasson";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Váltson előfizetéses csomagra, hogy 3-nál több címkét használhasson";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Kérjük, csatlakozzon és próbálja meg újra";
 
@@ -1501,7 +1483,7 @@
 /* No comment provided by engineer. */
 "Report phishing" = "Adathalászat bejelentése";
 
-"Not spam (move to inbox)" = "Not spam (move to inbox)";
+"Not spam (move to inbox)" = "Nem levélszemét (áthelyezés a bejövő üzenetek közé)";
 
 /* No comment provided by engineer. */
 "Move to" = "Mozgatás ide";
@@ -1633,7 +1615,7 @@
 "Cannot empty folder right now." = "Jelenleg nem lehet kiüríteni a mappát.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Biztos, hogy véglegesen törli az összes üzenetet a \"%@\" mappából?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Teljes üzenet megtekintése]";
@@ -1825,7 +1807,7 @@
 "You can now choose and rearrange the actions in this bar" = "Most már kiválaszthatja és újrarendezheti a műveleteket ezen az eszköztáron";
 
 /* Title of the banner alert */
-"Your Mail storage is %@ full" = "Your Mail storage is %@ full";
+"Your Mail storage is %@ full" = "Az ön Mail tárhelye %@ tele van.";
 
 /* Title of the banner alert */
 "Your Drive storage is %@ full" = "A drive tárhelye %@ megtelt";
@@ -1837,7 +1819,7 @@
 "Your Drive storage is full" = "A drive tárhelye megtelt";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Upgrade to get more storage.";
+"Upgrade to get more storage." = "Fizessen elő több tárhelyért.";
 
 /* Get more storage button action */
 "Not now" = "Most nem";
@@ -1846,7 +1828,7 @@
 "Get more storage" = "További tárhely igénylése";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Olvasásra méretezve";
 
 /* Spotlight body */
 "Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
@@ -1855,10 +1837,10 @@
 "Your storage is full" = "A tárhelye megtelt";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "Az ön előfizetése lejárt";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "Az ön fiókját a törlés veszélye fenyegeti";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "To send or receive emails, free up space or upgrade for more storage.";
@@ -1944,10 +1926,10 @@
 "Show less" = "Kevesebb mutatása";
 
 /* Text shown when opening an invitation for a past event */
-"This event already ended" = "This event already ended";
+"This event already ended" = "Ez az esemény már véget ért";
 
 /* Text shown when opening an invitation for a cancelled event */
-"This event has been cancelled" = "This event has been cancelled";
+"This event has been cancelled" = "Ezt az eseményt törölték";
 
 /* Prompt above yes/no/maybe buttons */
 "Attending?" = "Részt vesz?";
@@ -2007,13 +1989,13 @@
 "You are invited to %@" = "Meghívást kapott: %@";
 
 /* Part of the body of the email sent to the participants that indicates the event's location */
-"LOCATION:\n%@" = "LOCATION:\n%@";
+"LOCATION:\n%@" = "HELY:\n%@";
 
 /* Part of the body of the email sent to the participants that indicates the event's notes */
-"DESCRIPTION:\n%@" = "DESCRIPTION:\n%@";
+"DESCRIPTION:\n%@" = "LEÍRÁS:\n%@";
 
 /* Body of the email sent to the participants that indicates the event has been cancelled */
-"%@ was cancelled." = "%@ was cancelled.";
+"%@ was cancelled." = "%@ lemondva.";
 
 /* Subject of the email sent to the participants invited to a given all-day single event after answering */
 "Re: Invitation for an event on %@" = "Re: Meghívás egy eseményre ekkorra: %@";
@@ -2055,13 +2037,13 @@
 "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. " = "Now you can respond to an invitation or view the event in Proton Calendar with just one tap. ";
 
 /* Menu title */
-"Max Storage" = "Max Storage";
+"Max Storage" = "Maximum Tárhely";
 
 /* Cell title that shows the percentage of the storage */
-"Storage: %@ full" = "Storage: %@ full";
+"Storage: %@ full" = "Tárhely: %@ tele";
 
 /* Cell title that shows the percentage of the storage */
-"Drive: %@ full" = "Drive: %@ full";
+"Drive: %@ full" = "Drive: %@ tele";
 
 /* Official badge next to sender's name */
 "Official" = "Hivatalos";
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Terv szerint";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Váltás nagyobb csomagra";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Üzenetek ütemezése bármikor";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Korlátlan mappák és címkék";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Akár 500 GB tárhely";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Akár 15 e-mail cím";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Akár 3 saját e-mail domain név";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "E-mail álnevek elrejtése";
+
 /* One of schedule time options */
 "In the morning" = "Reggel";
 
@@ -2157,13 +2166,13 @@
 "Got it" = "Rendben!";
 
 /* The title of the setting of the next msg after move */
-"Jump to next email" = "Jump to next email";
+"Jump to next email" = "Ugrás a következő e-mailre";
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Automatically show the next email when an open email is deleted, archived, or moved." = "Automatically show the next email when an open email is deleted, archived, or moved.";
 
 /* The title of the button of the jump to next message spotlight. */
-"Turn on feature" = "Turn on feature";
+"Turn on feature" = "Funkció bekapcsolása";
 
 /* The content of the jump to next message spotlight. */
 "View the next email in your inbox when you delete or move the current email." = "View the next email in your inbox when you delete or move the current email.";
@@ -2175,7 +2184,7 @@
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "Nincs elég szabad lemezterület";
 
 /* Message for error when app set up at launch fails */
 "The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
@@ -2256,13 +2265,22 @@
 "Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
 
 /* Button to open App Store */
-"Download in App Store" = "Download in App Store";
+"Download in App Store" = "Letöltés az App Store-ból";
 
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Megnyitás a Proton Calendarban";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Váltás nagyobb csomagra";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Szabaduljon meg a szeméttől";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Törölje automatikusan a 30 napnál régebben a lomtárba vagy a levélszemét mappába került leveleket. Ehhez a lehetőséghez és további előnyökhöz, váltson nagyobb csomagra.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Akár 3 TB tárhely";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Saját domain nevek";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Feladó megváltoztatva";
@@ -2271,7 +2289,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Az üzenet eredeti feladója már érvénytelen. Az üzenet a jelenlegi alapértelmezett címével kerül elküldésre: %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Please retry after all attachments are uploaded.";
+"Please retry after all attachments are uploaded." = "Kérjük probálja meg újra miután minden melléklet fel lett töltve.";
 
 /* Alert title */
 "Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
@@ -2301,7 +2319,7 @@
 "Select all" = "Összes kijelölése";
 
 /* The title of unselect all button for select all messages feature */
-"Unselect all" = "Unselect all";
+"Unselect all" = "Összes kijelölés megszüntetése";
 
 /* Warning message will be shown to user when user try to select more than acceptable message */
 "Maximum selection reached" = "Maximum selection reached";
@@ -2310,9 +2328,9 @@
 "No Recipient" = "Nincs címzett";
 
 /* The title of PIN code disable view */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "PIN kód kikapcsolása";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "PIN kód beállítása";
 
 /*
@@ -2337,7 +2355,7 @@
 "The PIN codes must match!" = "A PIN kódoknak egyeznie kell!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Kérjük írja be a régi PIN kódót ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "PIN kód megváltoztatása";
@@ -2383,6 +2401,18 @@
 
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Kérjük, válasszon egy jövőbeli időpontot";
+
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Tetszőleges szüneteltetést szeretne?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Egyedi szüneteltetési idők használatához váltson nagyobb csomagra";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Akár 15 e-mail cím/álnév";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Korlátlan számú mappa, címke és szűrő";
 
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Add it as attachment";
@@ -2432,8 +2462,14 @@
 /* settings general section title */
 "Change mailbox password" = "E-mail titkosítási jelszó módosítása";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Jelszó módosítása";
+
 /* settings general section title */
-"Security keys" = "Security keys";
+"Security keys" = "Hitelesítési kulcsok";
 
 /* Description of a feature of a paid subscription */
 "15 GB storage" = "15 GB tárhely";
@@ -2442,16 +2478,52 @@
 "%u email addresses" = "%u e-mail cím";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Custom email domain";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Custom email domain support";
 
 /* Description of a feature of a paid subscription */
 "%u personal calendars" = "%u personal calendars";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB tárhely és 1 e-mail";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"End-to-end encryption" = "Végpontok közti titkosítás";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Access to desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Elsőbbségi felhasználói támogatás";
+
+/* Description of a feature of a paid subscription */
+"+%u premium features" = "+%u prémium funkciók";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Névtelen adatgyűjtés";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "To unlock more storage and premium features.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Ingyenes";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
 
 /* Displayed next to the monthly price */
 "/month" = "/hó";
@@ -2523,13 +2601,13 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Előfizetés kiválasztása";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Éves";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Legjobb ár-érték arány";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";

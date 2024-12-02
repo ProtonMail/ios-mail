@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ProtonMail/apple-fusion",
         "state": {
           "branch": null,
-          "revision": "0abfcfa5dc4e4436e6460fc9f9b91f937c0bf03b",
-          "version": "2.1.1"
+          "revision": "5f680d98dadbddab36a207b436a6291d86a5523a",
+          "version": "2.1.2"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift",
         "state": {
           "branch": null,
-          "revision": "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
-          "version": "1.8.2"
+          "revision": "678d442c6f7828def400a70ae15968aef67ef52d",
+          "version": "1.8.3"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
         "state": {
           "branch": null,
-          "revision": "f627d00718033c3d7888acd5f4e3524a843db1cf",
-          "version": "1.0.2"
+          "revision": "7eb73c5d28c87dd6c4bac805aa28f757648aa92c",
+          "version": "1.1.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
         "state": {
           "branch": null,
-          "revision": "9011efa9720d74b465276e9222c756298f6b1455",
-          "version": "26.1.0"
+          "revision": "1bdd4a9419b1c4515f3bff1f93e0273a86b1fc29",
+          "version": "26.3.2"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
         "state": {
           "branch": null,
-          "revision": "354d65e2e75add0ba9299e615a3c850639a150a2",
-          "version": "2.2.0"
+          "revision": "55283dcc5b600bac0bba09253ee40d6a483bcc44",
+          "version": "2.3.0"
         }
       },
       {
@@ -132,8 +132,8 @@
         "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
         "state": {
           "branch": null,
-          "revision": "c9a692ba837f4832ec7ce6378c071cb91cb55f92",
-          "version": "8.29.0"
+          "revision": "5575af93efb776414f243e93d6af9f6258dc539a",
+          "version": "8.36.0"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
         "state": {
           "branch": null,
-          "revision": "c097f955b4e724690f0fc8ffb7a6d4b881c9c4e3",
-          "version": "1.17.2"
+          "revision": "7b0bbbae90c41f848f90ac7b4df6c4f50068256d",
+          "version": "1.17.5"
         }
       },
       {
@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/swiftlang/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
-          "version": "600.0.0-prerelease-2024-07-30"
+          "revision": "0687f71944021d616d34d922343dcef086855920",
+          "version": "600.0.1"
         }
       },
       {

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Bildirim e-posta adresini yazın…";
 
-/* Placeholder */
-"Current password" = "Geçerli parola";
-
-/* Placeholder */
-"New password" = "Yeni parola";
-
-/* Placeholder */
-"Confirm new password" = "Yeni parola onayı";
-
 /* Settings row */
 "Remove image metadata" = "Görsel üst verilerini kaldır";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Biçemi temizle";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Kuruluş ekle";
 
 /* new contacts add Nickname */
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kişi kaydedildi. Bağlantı kurulduğunda eşitlenecek";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kişi silindi. Bağlantı kurulduğunda eşitlenecek";
 
 /*
@@ -693,27 +684,6 @@
 */
 "Load remote content" = "Uzak içeriği yükle";
 
-/*
- settings general section title
- title
-*/
-"Change password" = "Parolayı değiştir";
-
-/* Title */
-"Current sign-in password" = "Geçerli oturum açma parolası";
-
-/* Title */
-"New sign-in password" = "Yeni oturum açma parolası";
-
-/* Title */
-"Confirm new sign-in password" = "Yeni oturum açma parolası onayı";
-
-/* Title */
-"New mailbox password" = "Yeni posta kutusu parolası";
-
-/* Title */
-"Confirm new mailbox password" = "Yeni posta kutusu parolası onayı";
-
 /* Title */
 "Star/unstar" = "Yıldız koy/kaldır";
 
@@ -748,7 +718,7 @@
 "File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu düzenlemek için iletileri dosyalayın, etiketleyin ve renklendirin.";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış İnternet fikrine hoş geldiniz.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış internet fikrine hoş geldiniz.";
 
 /* skip button title in onboarding page */
 "Skip" = "Atla";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Üst klasörden devralındı";
 
+/* Alert title */
+"Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
+
+/* Alert title */
+"Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Lütfen 3 klasörden fazlasını kullanabilmek için ücretli bir tarifeye geçin";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Lütfen 3 etiketten fazlasını kullanabilmek için ücretli bir tarifeye geçin";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Zamanlandığı gibi";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Kendi zamanlamanızı yapın";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve diğer ek faydalara erişebilirsiniz.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Şimdi yükselt";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Sınırsız sayıda klasör ve etiket";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500 GB depolama alanına kadar";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "15 e-posta adresine kadar";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "3 özel e-posta etki alanına kadar";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email takma adları";
+
 /* One of schedule time options */
 "In the morning" = "Sabahları";
 
@@ -2205,7 +2214,7 @@
 "Bug Report Place Holder" = "---Size yardımcı olabilmemiz için lütfen olabildiğince çok ayrıntı verin---\n\nÖzet:\n\nSorun bir kereden fazla oldu mu: Evet/Hayır\nSorunu yeniden oluşturma adımları:\nBeklenen sonuç:\nGerçekleşen sonuç:\nYorumlar:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Günlükler eklensin";
+"Include logs" = "Günlük eklensin";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Proton Calendar ile aç";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Şimdi yükselt";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Çöpleri temizleyin";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Çöp ve istenmeyen kutularındaki 30 günden eski iletileri otomatik olarak temizleyin. Tarifenizi yükselterek bunun gibi başka ek faydalardan yararlanın.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "3 TB depolama alanına kadar";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Özel e-posta etki alanları";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Gönderici değiştirildi";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "PIN kodunu kullanımdan kaldır";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "PIN kodu ayarla";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Lütfen gelecekte bir zaman seçin";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "İstediğiniz zamana ertelemek ister misiniz?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Özel erteleme zamanları ayarlayabilmek için tarifenizi yükseltin";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "15 e-posta adresi veya takma adına kadar";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Sınırsız sayıda klasör, etiket ve süzgeç";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Dosya olarak ekle";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Posta kutusu parolasını değiştir";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Parolayı değiştir";
+
 /* settings general section title */
 "Security keys" = "Güvenlik anahtarları";
 
@@ -2442,16 +2478,52 @@
 "%u email addresses" = "%u e-posta adresi";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Özel e-posta etki alanı";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Özel e-posta etki alanı desteği";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u kişisel takvim";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 GB depolama alanı ve 1 e-posta adresi";
+
+/* Description of a feature of a paid subscription */
+"End-to-end encryption" = "Uçtan uca şifreleme";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Masaüstü uygulamasına erişim";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Öncelikli müşteri desteği";
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ücretli özellikler";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux daha fazla depolama alanı";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "%u GB edinin. İletilerinizi, dosyalarınızı ve fotoğraflarınızı güvenle depolamak için bolca alan";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux daha fazla e-posta adresi";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Gereksinimleriniz için @pm.me ile birlikte %u taneye kadar e-posta adresi oluşturun.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Kendi etki alanınızı bağlayın ve profesyonel veya markalı e-postalarınızı güvenli olarak gönderin.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Tek tıklamayla e-postanızı ve takviminizi açın ve tarayıcınızdaki dikkat dağıtıcı şeylerden uzak durun.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "E-postalarınızı kendi dosyalama ve etiketleme sisteminize göre düzenleyin.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Bir sorunla karşılaşırsanız, size özel destek personelimizden daha hızlı yanıt almanın tadını çıkarın.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonim kullanım verileri";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Daha fazla depolama alanı ve ücretli özellikler alın.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Ücretsiz";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "İptal edilmediği sürece aynı fiyat ve koşullarla otomatik olarak yenilenir.";
 
 /* Displayed next to the monthly price */
 "/month" = "/ay";
@@ -2523,19 +2601,19 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "İstediğiniz bir zamana erteleyin. %@ ile özel erteleme ve diğer özellikleri edinin.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Bir tarife seçin";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Yıllık";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "En iyi değer";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u ek özellik";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "%1$@ zamanında %2$@ bir faturalanır";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Ücretli özelliklerle birlikte";

@@ -31,15 +31,6 @@
 /* place holder */
 "Input Notification Email…" = "Zadajte email na zasielanie notifikácií…";
 
-/* Placeholder */
-"Current password" = "Aktuálne heslo";
-
-/* Placeholder */
-"New password" = "Nové heslo";
-
-/* Placeholder */
-"Confirm new password" = "Potvrďte nové heslo";
-
 /* Settings row */
 "Remove image metadata" = "Odstrániť metadáta obrázku";
 
@@ -264,7 +255,7 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Zmazať štýl";
 
-/* new contacts add Organization  */
+/* new contacts add Organization */
 "Add organization" = "Pridať organizáciu";
 
 /* new contacts add Nickname */
@@ -509,7 +500,7 @@
 "Confirmation" = "Potvrdenie";
 
 /* Action */
-"Draft" = "Rozpísať";
+"Draft" = "Koncept";
 
 /* Title */
 "The request timed out." = "Požiadavka vypršala.";
@@ -586,10 +577,10 @@
 /* Description */
 "Do you want to cancel the process?" = "Chcete prerušiť tento proces?";
 
-/* Hint when users create / edit contact offline  */
+/* Hint when users create / edit contact offline */
 "Contact saved, will be synced when connection is available" = "Kontakt bol uložený, bude synchronizovaný po pripojení na internet";
 
-/* Hint when users delete contact offline  */
+/* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "Kontakt vymazaný, bude synchronizovaný keď bude dostupné pripojenie";
 
 /*
@@ -692,27 +683,6 @@
  The title of loading remote content banner.
 */
 "Load remote content" = "Načítať vzdialený obsah";
-
-/*
- settings general section title
- title
-*/
-"Change password" = "Zmeniť heslo";
-
-/* Title */
-"Current sign-in password" = "Aktuálne prihlasovacie heslo";
-
-/* Title */
-"New sign-in password" = "Nové prihlasovacie heslo";
-
-/* Title */
-"Confirm new sign-in password" = "Potvrdiť nové prihlasovacie heslo";
-
-/* Title */
-"New mailbox password" = "Nové heslo k poštovej schránke";
-
-/* Title */
-"Confirm new mailbox password" = "Potvrdiť nové heslo k poštovej schránke";
 
 /* Title */
 "Star/unstar" = "Pridať/odobrať hviezdičku";
@@ -1450,6 +1420,18 @@
 /* A label message */
 "Inherited from parent folder" = "Zdedené z nadradeného priečinka";
 
+/* Alert title */
+"Creating folder not allowed" = "Vytvorenie priečinka nie je povolené";
+
+/* Alert title */
+"Creating label not allowed" = "Vytvorenie štítku nie je povolené";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Ak chcete používať viac ako 3 priečinky, prejdite na platený plán, prosím";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Ak chcete používať viac ako 3 štítky, prejdite na platený plán, prosím";
+
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Prosím pripojte sa a skúste to znova";
 
@@ -2138,6 +2120,33 @@
 /* One of the schedule time options */
 "As scheduled" = "Podľa plánu";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Nastavte si vlastný rozvrh";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Odomknite vlastné plánovanie správ a ďalšie výhody navýšením vášho plánu.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Navýšiť teraz";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Plánovanie správ v ľubovoľnom čase";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Neobmedzené množstvo priečinkov a štítkov";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Až do 500 GB úložiska";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Až do 15 emailových adries";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Až do 3 vlastných emailových domén";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide-my-email aliasy";
+
 /* One of schedule time options */
 "In the morning" = "Ráno";
 
@@ -2261,8 +2270,17 @@
 /* Button to open the Calendar app */
 "Open in Proton Calendar" = "Otvoriť v Proton kalendári";
 
-/* Title of button to upgrade to a paid plan */
-"Upgrade now" = "Navýšiť teraz";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Zbavte sa zbytočností";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatické odstraňovanie správ starších ako 30 dní z koša a spamu. Využívajte túto a ďalšie výhody, keď upgradujete.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Až do 3 TB úložiska";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Vlastné emailové domény";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Odosielateľ zmenený";
@@ -2312,7 +2330,7 @@
 /* The title of PIN code disable view */
 "Disable PIN code" = "Deaktivovať PIN kód";
 
-/* The title of PIN code setup1 view  */
+/* The title of PIN code setup1 view */
 "Set PIN code" = "Nastaviť PIN kód";
 
 /*
@@ -2384,6 +2402,18 @@
 /* An error message will be shown to user when user select past snooze time */
 "Please select a time in the future" = "Vyberte prosím čas v budúcnosti";
 
+/* The title of snooze promotion view */
+"Want to snooze any time?" = "Chcete kedykoľvek odložiť?";
+
+/* The content description of snooze promotion view */
+"Unlock custom snooze times when you upgrade" = "Odomknite vlastné časy odloženia, keď upgradujete";
+
+/* The benefit item for snooze promotion view */
+"Up to 15 email addresses/aliases" = "Až 15 emailových adries/aliasov";
+
+/* The benefit item for snooze promotion view */
+"Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
+
 /* The title of the action option that will make the inline attachment as normal attachment. */
 "Add it as attachment" = "Pridať ako prílohu";
 
@@ -2432,6 +2462,12 @@
 /* settings general section title */
 "Change mailbox password" = "Zmeniť heslo k poštovej schránke";
 
+/*
+ settings general section title
+ title
+*/
+"Change password" = "Zmeniť heslo";
+
 /* settings general section title */
 "Security keys" = "Bezpečnostné kľúče";
 
@@ -2442,16 +2478,52 @@
 "%u email addresses" = "%u emailových adries";
 
 /* Description of a feature of a paid subscription */
+"Custom email domain" = "Vlastná emailová doména";
+
+/* Description of a feature of a paid subscription */
 "Custom email domain support" = "Podpora vlastnej emailovej domény";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u osobných kalendárov";
+"%u personal calendars" = "%u osobné kalendáre";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB úložisko a 1 email";
 
 /* Description of a feature of a paid subscription */
+"End-to-end encryption" = "End-to-end šifrovanie";
+
+/* Description of a feature of a paid subscription */
+"Access to desktop app" = "Access to desktop app";
+
+/* Description of a feature of a paid subscription */
+"Priority customer support" = "Prioritná zákaznícka podpora";
+
+/* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcií";
+
+/* Description of a feature of a paid subscription */
+"%ux more storage" = "%ux more storage";
+
+/* Description of a feature of a paid subscription */
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+
+/* Description of a feature of a paid subscription */
+"%ux more email addresses" = "%ux more email addresses";
+
+/* Description of a feature of a paid subscription */
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+
+/* Description of a feature of a paid subscription */
+"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+
+/* Description of a feature of a paid subscription */
+"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+
+/* Description of a feature of a paid subscription */
+"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+
+/* Description of a feature of a paid subscription */
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";
@@ -2470,6 +2542,12 @@
 
 /* Subtitle of the upsell page. */
 "To unlock more storage and premium features." = "Na získanie väčšieho úložiska a prémiových funkcií.";
+
+/* Shorthand for the free plan, as opposed to a paid plan */
+"Free" = "Zdarma";
+
+/* Auto-renewal notice */
+"Auto-renews at the same price and terms unless canceled." = "Automatické obnovenie za rovnakú cenu a za rovnakých podmienok až pokým nedôjde k zrušeniu.";
 
 /* Displayed next to the monthly price */
 "/month" = "/mesiac";

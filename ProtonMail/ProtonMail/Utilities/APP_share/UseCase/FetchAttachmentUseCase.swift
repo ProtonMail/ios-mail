@@ -63,10 +63,10 @@ final class FetchAttachment: FetchAttachmentUseCase {
                             )
                             callback(.success(attachmentFile))
                         } catch {
-                            callback(.failure(FetchAttachmentError(attachmentID: params.attachmentID, error: error)))
+                            callback(.failure(error))
                         }
                     case .failure(let error):
-                        callback(.failure(FetchAttachmentError(attachmentID: params.attachmentID, error: error)))
+                        callback(.failure(error))
                     }
                 }
             }
@@ -115,13 +115,4 @@ struct AttachmentFile {
     /// Path to the local file where the attachment can be found
     let fileUrl: URL
     let data: Data
-}
-
-struct FetchAttachmentError: LocalizedError {
-    let attachmentID: AttachmentID
-    let error: Error
-
-    var errorDescription: String? {
-        "FetchAttachmentError: \(error as NSError)"
-    }
 }

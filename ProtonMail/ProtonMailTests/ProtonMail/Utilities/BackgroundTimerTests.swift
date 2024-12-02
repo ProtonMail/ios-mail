@@ -22,6 +22,8 @@ final class BackgroundTimerTests: XCTestCase {
     var sut: BackgroundTimer!
     var userDefaults: UserDefaults!
 
+    private let calendar = Calendar.autoupdatingCurrent
+
     override func setUp() {
         super.setUp()
         userDefaults = UserDefaults(suiteName: #fileID)
@@ -36,21 +38,23 @@ final class BackgroundTimerTests: XCTestCase {
     }
 
     func testShouldReturnFalseWhenNotSet() {
-        XCTAssertFalse(sut.wasInBackgroundForMoreThanOneHour)
+        XCTAssertFalse(sut.wasInBackgroundLongEnoughForDataToBecomeOutdated)
     }
 
-    func testDateLessThanOneHourShouldReturnFalse() {
+    func testWhenDateIsNow_thenShouldReturnFalse() {
         sut.willEnterBackgroundOrTerminate(date: Date())
-        XCTAssertFalse(sut.wasInBackgroundForMoreThanOneHour)
+        XCTAssertFalse(sut.wasInBackgroundLongEnoughForDataToBecomeOutdated)
     }
 
-    func testDateEqualToOneHourShouldReturnTrue() {
-        sut.willEnterBackgroundOrTerminate(date: Date().addingTimeInterval(-3600))
-        XCTAssertTrue(sut.wasInBackgroundForMoreThanOneHour)
+    func testWhen6DaysHavePassed_thenShouldReturnFalse() {
+        let lastForegroundDate = calendar.date(byAdding: .day, value: -6, to: .now)
+        sut.willEnterBackgroundOrTerminate(date: lastForegroundDate)
+        XCTAssertFalse(sut.wasInBackgroundLongEnoughForDataToBecomeOutdated)
     }
 
-    func testDateMoreThanOneHourShouldReturnTrue() {
-        sut.willEnterBackgroundOrTerminate(date: Date().addingTimeInterval(-7200))
-        XCTAssertTrue(sut.wasInBackgroundForMoreThanOneHour)
+    func testWhen7DaysHavePassed_thenShouldReturnTrue() {
+        let lastForegroundDate = calendar.date(byAdding: .day, value: -7, to: .now)
+        sut.willEnterBackgroundOrTerminate(date: lastForegroundDate)
+        XCTAssertTrue(sut.wasInBackgroundLongEnoughForDataToBecomeOutdated)
     }
 }

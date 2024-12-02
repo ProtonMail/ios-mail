@@ -32,16 +32,18 @@ final class UpsellTelemetryReporter {
         }
     }
 
-    private var planBeforeUpgrade: String?
     private var entryPoint: UpsellPageEntryPoint?
+    private var planBeforeUpgrade: String?
+    private var upsellPageVariant: UpsellPageModel.Variant?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func prepare(entryPoint: UpsellPageEntryPoint) {
+    func prepare(entryPoint: UpsellPageEntryPoint, upsellPageVariant: UpsellPageModel.Variant) {
         self.entryPoint = entryPoint
         planBeforeUpgrade = plansDataSource?.currentPlan?.subscriptions.compactMap(\.name).first ?? "free"
+        self.upsellPageVariant = upsellPageVariant
     }
 
     func upsellPageDisplayed() async {
@@ -86,8 +88,7 @@ final class UpsellTelemetryReporter {
             entryPoint: entryPoint?.dimensionName,
             planBeforeUpgrade: planBeforeUpgrade ?? "unknown",
             daysSinceAccountCreation: accountAgeBracket(),
-            upsellModalVersion: upsellModalVersion,
-            selectedPlan: nil
+            upsellModalVersion: "\(upsellPageVariant?.dimensionName ?? "unknown").1"
         )
 
         if let storeKitProductId, let (selectedPlan, selectedCycle) = parsePlanNameAndCycle(from: storeKitProductId) {
@@ -173,10 +174,6 @@ private extension UpsellTelemetryReporter {
         "mail.any.upsell"
     }
 
-    var upsellModalVersion: String {
-        "A.1"
-    }
-
     func accountAgeBracket(for accountAgeInDays: Int) -> String {
         let validBrackets: [ClosedRange<Int>] = [
             1...3,
@@ -227,6 +224,19 @@ private extension UpsellPageEntryPoint {
             return "schedule_send"
         case .snooze:
             return "snooze"
+        }
+    }
+}
+
+private extension UpsellPageModel.Variant {
+    var dimensionName: String {
+        switch self {
+        case .plain:
+            return "A"
+        case .comparison:
+            return "B"
+        case .carousel:
+            return "C"
         }
     }
 }

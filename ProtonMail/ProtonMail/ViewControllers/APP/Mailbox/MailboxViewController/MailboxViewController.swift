@@ -130,6 +130,10 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     var shouldAnimateSkeletonLoading = false {
         didSet {
+            SystemLogger.log(
+                message: "Placeholder cells \(shouldAnimateSkeletonLoading ? "on" : "off")",
+                category: .mailboxRefresh
+            )
             if shouldAnimateSkeletonLoading {
                 viewModel.diffableDataSource?.animateSkeletonLoading()
             } else {
@@ -137,7 +141,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             }
         }
     }
-    private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
         unreadFilterButton?.isSelected ?? false
     }
@@ -212,8 +215,9 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         stopAutoFetch()
     }
 
-    private func refetchAllIfNeeded() {
-        if BackgroundTimer.shared.wasInBackgroundForMoreThanOneHour {
+    private func refetchAllIfNeeded(caller: StaticString = #function) {
+        if BackgroundTimer.shared.wasInBackgroundLongEnoughForDataToBecomeOutdated {
+            SystemLogger.log(message: "refetchAllIfNeeded called by \(caller)", category: .mailboxRefresh)
             pullDown()
             BackgroundTimer.shared.updateLastForegroundDate()
         }
@@ -716,7 +720,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
-                                    forceClean: false,
                                     isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
@@ -934,29 +937,38 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     }
 
     private func forceRefreshAllMessages() {
-        guard !self.viewModel.isFetchingMessage else { return }
-        self.shouldKeepSkeletonUntilManualDismissal = true
+        SystemLogger.log(message: "Will refresh all messages", category: .mailboxRefresh)
 
+        guard !self.viewModel.isFetchingMessage else {
+            SystemLogger.log(message: "Fetch already in progress", category: .mailboxRefresh)
+            return
+        }
         shouldAnimateSkeletonLoading = true
 
         stopAutoFetch()
 
+        let startTime = Date()
+        SystemLogger.log(message: "Refresh started", category: .mailboxRefresh)
+
         self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: true) {  [weak self] error in
+            SystemLogger.log(error: error, category: .mailboxRefresh)
+
             DispatchQueue.main.async {
                 self?.handleRequestError(error as NSError)
             }
         } completion: { [weak self] in
+            let timeElapsed = Date().timeIntervalSince(startTime)
+            SystemLogger.log(message: "Refresh finished in \(timeElapsed)", category: .mailboxRefresh)
+
             delay(0.5) {
                 self?.shouldAnimateSkeletonLoading = false
-                self?.shouldKeepSkeletonUntilManualDismissal = false
 
                 self?.endRefreshSpinner()
                 self?.showNoResultLabelIfNeeded()
                 self?.updateLastUpdateTimeLabel()
+                self?.startAutoFetch(false)
             }
-            self?.startAutoFetch(false)
         }
-
     }
 
     fileprivate func showNoResultLabelIfNeeded() {
@@ -2393,7 +2405,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         removeDeletedIDFromSelectedItem(snapshot: remappedSnapshot)
-        if shouldKeepSkeletonUntilManualDismissal {
+        if shouldAnimateSkeletonLoading {
             viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             return
         }
@@ -2488,7 +2500,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.tableView.showLoadingFooter()
             self.viewModel.fetchMessages(
                 time: Int(date.timeIntervalSince1970),
-                forceClean: false,
                 isUnread: self.isShowingUnreadMessageOnly
             ) { error in
                 DispatchQueue.main.async {
@@ -2554,7 +2565,6 @@ extension MailboxViewController: UITableViewDelegate {
                     let unixTimt: Int = (endTime == Date.distantPast ) ? 0 : Int(endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(
                         time: unixTimt,
-                        forceClean: false,
                         isUnread: self.isShowingUnreadMessageOnly
                     ) { error in
                         DispatchQueue.main.async {

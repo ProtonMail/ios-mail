@@ -1,2 +1,3 @@
 ignore:
   - vulnerability: GHSA-grv7-fg5c-xmjg
+  - vulnerability: CVE-2023-36826

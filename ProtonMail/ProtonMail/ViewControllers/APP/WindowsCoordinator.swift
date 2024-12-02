@@ -151,7 +151,7 @@ final class WindowsCoordinator {
 
     private func evaluateAccessAtLaunch() {
         let appAccessAtLaunch = dependencies.appAccessResolver.evaluateAppAccessAtLaunch()
-        SystemLogger.log(message: "App access at launch: \(appAccessAtLaunch)", category: .appLock)
+        SystemLogger.log(message: appAccessAtLaunch.localizedDescription, category: .appLock)
         switch appAccessAtLaunch {
         case .accessGranted:
             handleAppAccessGrantedAtLaunch()
@@ -165,7 +165,7 @@ final class WindowsCoordinator {
             .appAccessResolver
             .deniedAccessPublisher
             .sink { reason in
-                SystemLogger.log(message: "Denied access event: \(reason)", category: .appLock)
+                SystemLogger.log(message: reason.localizedDescription, category: .appLock)
                 self.handleAppAccessDenied(deniedAccess: reason)
             }
             .store(in: &cancellables)
