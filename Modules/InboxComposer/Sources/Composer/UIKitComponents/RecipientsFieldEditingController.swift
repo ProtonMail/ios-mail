@@ -20,6 +20,7 @@ import InboxCoreUI
 import UIKit
 
 enum RecipientsFieldEditingEvent {
+    case onInputChange(text: String)
     case onRecipientSelected(index: Int)
     case onReturnKeyPressed(text: String)
     case onDeleteKeyPressedInsideEmptyInputField
@@ -43,15 +44,24 @@ final class RecipientsFieldEditingController: UIViewController {
         }
     }
 
-    var recipients: [RecipientUIModel] = [] {
+    var state: RecipientFieldState {
         didSet {
-            if oldValue != recipients {
-                cellUIModels = recipients.map { RecipientCellUIModel.recipient($0) } + [.cursor]
+            if oldValue.recipients != state.recipients {
+                cellUIModels = state.recipients.map { RecipientCellUIModel.recipient($0) } + [.cursor]
+            } else if oldValue.controllerState == .contactPicker && state.controllerState == .editing {
+                reloadCollectionItems()
             }
         }
     }
 
     var onEvent: ((RecipientsFieldEditingEvent) -> Void)?
+
+    init(state: RecipientFieldState) {
+        self.state = state
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) { nil }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +114,10 @@ final class RecipientsFieldEditingController: UIViewController {
             self.scrollToLast(animated: false)
         }
     }
+
+    func clearCursor() {
+        visibleCursorCells().forEach { $0.clearText() }
+    }
 }
 
 // MARK: Private functions
@@ -132,7 +146,7 @@ extension RecipientsFieldEditingController {
     }
 
     private func manageFocusAfterReload() {
-        if recipients.noneIsSelected { setFocusOnCursor() }
+        if state.recipients.noneIsSelected { setFocusOnCursor() }
     }
 
     private func visibleCursorCells() -> [RecipientCursorCell] {
@@ -185,15 +199,17 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
         cursorCell.onEvent = { [weak self] event in
             guard let self else { return }
             switch event {
+            case .onTextChanged(let text):
+                onEvent?(.onInputChange(text: text))
             case .onDeleteKeyPressedOnEmptyTextField:
                 if !cellUIModels.filter(\.isRecipient).isEmpty { removeFocusFromCursor() }
                 onEvent?(.onDeleteKeyPressedInsideEmptyInputField)
             case .onReturnKeyPressed(let text):
-                visibleCursorCells().forEach { $0.clearText() }
+                clearCursor()
                 onEvent?(.onReturnKeyPressed(text: text))
             }
         }
-        cursorCell.configure(maxWidth: collectionContentWidth())
+        cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input, state: state.controllerState)
         return cursorCell
     }
 

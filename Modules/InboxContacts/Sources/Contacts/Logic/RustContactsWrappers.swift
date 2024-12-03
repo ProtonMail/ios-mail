@@ -39,7 +39,6 @@ extension RustContactsWrappers {
             contactsWatcher: contactsWatcher
         )
     }
-
 }
 
 public struct GroupedContactsProvider {

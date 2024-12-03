@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
 
 public struct ComposerScreen: View {
@@ -26,16 +27,14 @@ public struct ComposerScreen: View {
 
     public var body: some View {
         VStack {
-            HStack {
-                Button { model.addRandomRecipient() } label: {
-                    Text("ADD RANDOM CONTACT".notLocalized)
-                }
-            }
-
             ComposerControllerRepresentable(state: model.state) { event in
                 switch event {
                 case let .recipientFieldEvent(recipientFieldEvent, group):
                     switch recipientFieldEvent {
+                    case .onFieldTap:
+                        model.startEditingRecipients(for: group)
+                    case .onInputChange(let text):
+                        model.matchContact(group: group, text: text)
                     case .onRecipientSelected(let index):
                         model.recipientToggleSelection(group: group, index: index)
                     case .onReturnKeyPressed(let text):
@@ -45,13 +44,28 @@ public struct ComposerScreen: View {
                     case .onDeleteKeyPressedOutsideInputField:
                         model.removeSelectedRecipients(group: group)
                     case .onDidEndEditing:
-                        model.onClearSelected(group: group)
+                        model.finishEditing(group: group)
+                    }
+
+                case let .contactPickerEvent(event, group):
+                    switch event {
+                    case .onInputChange(let text):
+                        model.matchContact(group: group, text: text)
+                    case .onContactSelected(let contact):
+                        model.addContact(group: group, contact: contact)
+                    }
+
+                case .onBodyTap:
+                    DispatchQueue.main.async {
+                        model.state.toRecipients = model.state.toRecipients.copy(\.controllerState, to: .idle) // FIXME: group
                     }
                 }
             }
 
             Spacer()
         }
+        .padding(.top, DS.Spacing.extraLarge)
+        .background(DS.Color.Background.norm)
     }
 }
 

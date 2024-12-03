@@ -17,6 +17,8 @@
 
 import UIKit
 
+extension UICollectionViewCell: Reusable {}
+
 extension UICollectionView {
 
     public func register<T: UICollectionViewCell>(cellType: T.Type) {
@@ -28,13 +30,4 @@ extension UICollectionView {
 
         return cell as! T
     }
-
-}
-
-extension UICollectionReusableView {
-
-    public static var reuseIdentifier: String {
-        String(describing: self)
-    }
-
 }

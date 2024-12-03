@@ -15,45 +15,86 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxCore
+import SwiftUI
 
 final class ComposerModel: ObservableObject {
     @Published var state: ComposerState
+    private var contactProvider: ComposerContactProvider
 
-    init(state: ComposerState = .init(recipients: [])) {
+    init(state: ComposerState = .initial, contactProvider: ComposerContactProvider = .mockInstance) {
         self.state = state
+        self.contactProvider = contactProvider
+    }
+
+    func startEditingRecipients(for group: RecipientGroupType) {
+        state.overrideRecipientState(for: group) {
+            $0.copy(\.controllerState, to: .editing)
+        }
+        state.editingRecipientsGroup = group
+    }
+
+    @MainActor
+    func matchContact(group: RecipientGroupType, text: String) {
+        let matchingContacts = contactProvider.filter(with: text)
+        let newState: RecipientControllerStateType = matchingContacts.isEmpty ? .editing : .contactPicker
+        state.overrideRecipientState(for: group) {
+            $0.copy(\.controllerState, to: newState)
+                .copy(\.input, to: text)
+                .copy(\.matchingContacts, to: matchingContacts)
+        }
     }
 
     func recipientToggleSelection(group: RecipientGroupType, index: Int) {
-        // FIXME: take group into account
-        state.recipients[index].isSelected.toggle()
+        state.updateRecipientState(for: group) { $0.recipients[index].isSelected.toggle() }
     }
 
     func removeSelectedRecipients(group: RecipientGroupType) {
-        // FIXME: take group into account
-        state.recipients = state.recipients.filter { $0.isSelected == false }
-    }
-
-    func onClearSelected(group: RecipientGroupType) {
-        // FIXME: take group into account
-        var recipients = state.recipients
-        recipients.indices.forEach { recipients[$0].isSelected = false }
-        state.recipients = recipients
+        state.updateRecipientState(for: group) { $0.recipients = $0.recipients.filter { $0.isSelected == false } }
     }
 
     func selectLastRecipient(group: RecipientGroupType) {
-        // FIXME: take group into account
-        guard !state.recipients.isEmpty else { return }
-        state.recipients[state.recipients.count - 1].isSelected = true
+        state.updateRecipientState(for: group) {
+            guard !$0.recipients.isEmpty else { return }
+            $0.recipients[$0.recipients.count - 1].isSelected = true
+        }
     }
 
     func addRecipient(group: RecipientGroupType, address: String) {
-        // FIXME: take group into account, call the SDK
+        // FIXME: call the SDK
         let newRecipient = RecipientUIModel(type: .single, address: address, isSelected: false, isValid: false, isEncrypted: false)
-        state.recipients.append(newRecipient)
+        state.overrideRecipientState(for: group) {
+            $0.copy(\.recipients, to: $0.recipients + [newRecipient])
+                .copy(\.input, to: .empty)
+        }
     }
 
-    func addRandomRecipient() {
-        state.recipients.append(ComposerScreenPreviewProvider.makeRandom(suffix: String(state.recipients.count)))
+    func addContact(group: RecipientGroupType, contact: ComposerContact) {
+        // FIXME: create the correct recipient model, call the SDK
+        let newRecipient = RecipientUIModel(
+            type: contact.type.isGroup ? .group : .single,
+            address: contact.type.isGroup ? contact.uiModel.title : contact.uiModel.subtitle,
+            isSelected: false,
+            isValid: true,
+            isEncrypted: false
+        )
+
+        state.overrideRecipientState(for: group) {
+            $0.copy(\.recipients, to: $0.recipients + [newRecipient])
+                .copy(\.input, to: .empty)
+                .copy(\.controllerState, to: .editing)
+        }
+    }
+
+    func finishEditing(group: RecipientGroupType) {
+        state.overrideRecipientState(for: group) {
+            var newRecipients = $0.recipients
+            $0.recipients.indices.forEach { newRecipients[$0].isSelected = false }
+            return $0
+                .copy(\.recipients, to: newRecipients)
+                .copy(\.input, to: .empty)
+                .copy(\.controllerState, to: .idle)
+        }
+        state.editingRecipientsGroup = nil
     }
 }

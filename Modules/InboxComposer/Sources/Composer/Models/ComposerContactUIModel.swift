@@ -15,21 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-enum RecipientGroupType {
-    case to
-    case cc
-    case bcc
-
-    var string: String {
-        switch self {
-        case .to:
-            "To:"
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
-    }
+struct ComposerContactUIModel {
+    let avatar: ComposerContactAvatar
+    let avatarColor: Color
+    let isGroup: Bool
+    let title: String
+    let subtitle: String
 }

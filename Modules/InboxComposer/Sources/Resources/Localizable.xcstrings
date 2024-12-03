@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld members" : {
+      "comment" : "Contact group row subtitle in contact picker."
+    },
     "Composer" : {
       "comment" : "This is a testing string."
     }

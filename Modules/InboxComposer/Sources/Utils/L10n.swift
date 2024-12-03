@@ -27,5 +27,13 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "This is a testing string."
         )
+
+        static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(membersCount) members",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Contact group row subtitle in contact picker."
+            )
+        }
     }
 }

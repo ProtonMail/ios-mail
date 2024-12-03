@@ -20,17 +20,21 @@ import UIKit
 
 enum ComposerControllerEvent {
     case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
+    case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
+    case onBodyTap
 }
 
 final class ComposerController: UIViewController {
     private let composerStack = SubviewFactory.composerStack
-    private let toField = RecipientsFieldController(title: "To:".notLocalized, recipients: [])
+    private let contactPicker = ContactPickerController()
+    private let toField = RecipientsFieldController(group: .to)
     private let fakeBodyView = SubviewFactory.textView
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
         didSet {
-            toField.recipients = state.recipients
+            toField.state = state.toRecipients
+            contactPicker.recipientsFieldState = state.editingRecipientFieldState
         }
     }
 
@@ -49,12 +53,21 @@ final class ComposerController: UIViewController {
     }
 
     func setUpUI() {
+        view.backgroundColor = UIColor(DS.Color.Background.norm)
+
         composerStack.addArrangedSubview(toField.view)
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(fakeBodyView)
         view.addSubview(composerStack)
 
+        contactPicker.view.isHidden = true
+        view.addSubview(contactPicker.view)
+
         toField.onEvent = { [weak self] in self?.onEvent(.recipientFieldEvent($0, .to)) }
+        contactPicker.onEvent = { [weak self] event in
+            guard let group = self?.state.editingRecipientsGroup else { return }
+            self?.onEvent(.contactPickerEvent(event, group))
+        }
         fakeBodyView.delegate = self
     }
 
@@ -62,12 +75,14 @@ final class ComposerController: UIViewController {
         toField.view.setContentHuggingPriority(.required, for: .horizontal)
         toField.view.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        NSLayoutConstraint.activate([
-            composerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            composerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            composerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            composerStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
+        [contactPicker.view, composerStack].forEach {
+            NSLayoutConstraint.activate([
+                $0.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                $0.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                $0.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                $0.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ])
+        }
     }
 }
 
@@ -75,7 +90,7 @@ extension ComposerController: UITextViewDelegate {
 
     // FIXME: This is a momentary hack to manage focus for those views that are not just one single textfield component
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        toField.setIdleState()
+        onEvent(.onBodyTap)
         return true
     }
 }
@@ -97,6 +112,7 @@ extension ComposerController {
             let view = UITextView()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.text = "I'll be there!\n\nYours sincerely"
+            view.backgroundColor = .clear
             return view
         }
     }

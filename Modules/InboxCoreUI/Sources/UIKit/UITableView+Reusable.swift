@@ -15,8 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-struct ComposerState: Equatable {
-    var recipients: [RecipientUIModel]
+extension UITableViewCell: Reusable {}
+
+extension UITableView {
+
+    public func registerCell<T: UITableViewCell>(_ cellType: T.Type) {
+        register(cellType, forCellReuseIdentifier: cellType.reuseIdentifier)
+    }
+
+    public func dequeueCell<T: UITableViewCell>(_ cellType: T.Type) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: cellType.reuseIdentifier) as? T else {
+            fatalError("Could not dequeue cell with reuse identifier: \(cellType.reuseIdentifier)")
+        }
+        return cell
+    }
 }

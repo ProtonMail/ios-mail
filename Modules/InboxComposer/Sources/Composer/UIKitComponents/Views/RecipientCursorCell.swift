@@ -15,18 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 import UIKit
 
 enum RecipientCursorCellEvent {
+    case onTextChanged(text: String)
     case onReturnKeyPressed(text: String)
     case onDeleteKeyPressedOnEmptyTextField
 }
 
 final class RecipientCursorCell: UICollectionViewCell {
-    private let textField = SubviewFactory.textField
+    private let textField = CursorTextField()
     var onEvent: ((RecipientCursorCellEvent) -> Void)?
 
     private var widthConstraint: NSLayoutConstraint?
@@ -44,6 +46,9 @@ final class RecipientCursorCell: UICollectionViewCell {
         contentView.addSubview(textField)
 
         textField.delegate = self
+        textField.onTextChanged = { [weak self] text in
+            self?.onEvent?(.onTextChanged(text: text ?? .empty))
+        }
         textField.onDeleteBackwardWhenEmpty = { [weak self] in
             self?.onEvent?(.onDeleteKeyPressedOnEmptyTextField)
         }
@@ -56,7 +61,7 @@ final class RecipientCursorCell: UICollectionViewCell {
 
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -1),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
@@ -66,6 +71,7 @@ final class RecipientCursorCell: UICollectionViewCell {
     }
 
     func setFocus() {
+        guard !textField.isFirstResponder else { return }
         textField.becomeFirstResponder()
     }
 
@@ -73,7 +79,8 @@ final class RecipientCursorCell: UICollectionViewCell {
         textField.resignFirstResponder()
     }
 
-    func configure(maxWidth: CGFloat) {
+    func configure(maxWidth: CGFloat, input: String, state: RecipientControllerStateType) {
+        textField.text = input
         widthConstraint?.constant = maxWidth
     }
 }
@@ -88,30 +95,38 @@ extension RecipientCursorCell: UITextFieldDelegate {
     }
 }
 
-extension RecipientCursorCell {
-
-    private enum SubviewFactory {
-
-        static var textField: RecipientCursorTextField {
-            let view = RecipientCursorTextField()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.autocapitalizationType = .none
-            view.autocorrectionType = .no
-            view.spellCheckingType = .no
-            view.keyboardType = .emailAddress
-            view.tintColor = UIColor(DS.Color.Icon.accent)
-            return view
-        }
-    }
-}
-
-final class RecipientCursorTextField: UITextField {
+final class CursorTextField: UITextField {
+    var onTextChanged: ((_ text: String?) -> Void)?
     var onDeleteBackwardWhenEmpty: (() -> Void)?
+
+    init() {
+        super.init(frame: .zero)
+        setUpUI()
+    }
+
+    required init?(coder: NSCoder) { nil }
+
+    private func setUpUI() {
+        translatesAutoresizingMaskIntoConstraints = false
+        font = UIFont.preferredFont(forTextStyle: .subheadline)
+        textColor = UIColor(DS.Color.Text.norm)
+        autocapitalizationType = .none
+        autocorrectionType = .no
+        spellCheckingType = .no
+        keyboardType = .emailAddress
+        tintColor = UIColor(DS.Color.Icon.accent)
+        addTarget(self, action: #selector(CursorTextField.textFieldDidChange(_:)), for: .editingChanged)
+    }
 
     override func deleteBackward() {
         if let text, text.isEmpty {
             onDeleteBackwardWhenEmpty?()
         }
         super.deleteBackward()
+    }
+
+    @objc
+    private func textFieldDidChange(_ textField: UITextField) {
+        onTextChanged?(text)
     }
 }
