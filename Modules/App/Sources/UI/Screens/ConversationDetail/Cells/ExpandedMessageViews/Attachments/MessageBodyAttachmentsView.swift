@@ -60,7 +60,7 @@ struct MessageBodyAttachmentsView: View {
     }
 
     private func attachmentsCountRow(isAttachmentsListOpen: Bool) -> some View {
-        Button(action: {
+        button(action: {
             withAnimation {
                 state = state.copy(\.listState, to: .long(isAttachmentsListOpen: !isAttachmentsListOpen))
             }
@@ -85,15 +85,10 @@ struct MessageBodyAttachmentsView: View {
                     .foregroundStyle(DS.Color.Icon.weak)
             }
         }
-        .padding(.vertical, DS.Spacing.mediumLight)
-        .padding(.leading, DS.Spacing.medium)
-        .padding(.trailing, DS.Spacing.large)
-        .background(DS.Color.InteractionWeak.norm)
-        .clipShape(Capsule())
     }
 
     private func attachmentButton(attachment: AttachmentDisplayModel) -> some View {
-        Button(action: { attachmentIDToOpen = attachment.id }) {
+        button(action: { attachmentIDToOpen = attachment.id }) {
             HStack(spacing: .zero) {
                 Image(attachment.mimeType.category.bigIcon)
                     .resizable()
@@ -109,12 +104,18 @@ struct MessageBodyAttachmentsView: View {
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.hint)
             }
-            .padding(.vertical, DS.Spacing.mediumLight) // FIXME: - Duplication
-            .padding(.leading, DS.Spacing.medium)
-            .padding(.trailing, DS.Spacing.large)
-            .background(DS.Color.InteractionWeak.norm)
-            .clipShape(Capsule())
         }
+    }
+
+    private func button<Content: View>(action: @escaping () -> Void, content: () -> Content) -> some View {
+        Button(action: { action() }) {
+            content()
+                .padding(.vertical, DS.Spacing.mediumLight)
+                .padding(.leading, DS.Spacing.medium)
+                .padding(.trailing, DS.Spacing.large)
+        }
+        .background(DS.Color.InteractionWeak.norm)
+        .clipShape(Capsule())
     }
 
     private var attachmentsCount: AttributedString {
