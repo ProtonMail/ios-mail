@@ -15,6 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UIKit
+import Foundation
 
-extension UITableViewCell: Reusable {}
+final class ComposerContactProvider {
+
+    private var contacts: [ComposerContact]
+
+    init(contacts: [ComposerContact]) {
+        self.contacts = contacts
+    }
+
+    func filter(with text: String) -> [ComposerContact] {
+        let textForMatching = text.toContactMatchFormat()
+        return contacts.filter { contact in
+            contact.toMatch.reduce(false) { $0 || $1.contains(textForMatching) }
+        }
+    }
+}

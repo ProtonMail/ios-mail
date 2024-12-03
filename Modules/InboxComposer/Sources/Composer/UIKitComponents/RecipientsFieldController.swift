@@ -18,12 +18,9 @@
 import InboxDesignSystem
 import UIKit
 
-enum RecipientsFieldControllerState {
-    case idle
-    case editing
-}
-
 enum RecipientsFieldEvent {
+    case onFieldTap
+    case onInputChange(text: String)
     case onRecipientSelected(index: Int)
     case onReturnKeyPressed(text: String)
     case onDeleteKeyPressedInsideEmptyInputField
@@ -34,28 +31,21 @@ enum RecipientsFieldEvent {
 final class RecipientsFieldController: UIViewController {
     private let label = SubviewFactory.title
     private let stack = SubviewFactory.stack
-    private let editingController = RecipientsFieldEditingController()
+    private let editingController: RecipientsFieldEditingController
     private let idleController = RecipientsFieldIdleController()
 
-    private var state: RecipientsFieldControllerState = .idle {
+    var state: RecipientFieldState {
         didSet {
             if oldValue != state { updateView(for: state) }
         }
     }
 
-    var recipients: [RecipientUIModel] {
-        didSet {
-            if oldValue != recipients {
-                updateView(for: state)
-            }
-        }
-    }
-
     var onEvent: ((RecipientsFieldEvent) -> Void)?
 
-    init(title: String, recipients: [RecipientUIModel]) {
-        self.recipients = recipients
-        label.text = title
+    init(group: RecipientGroupType) {
+        self.state = .initialState(group: group)
+        self.editingController = .init(state: self.state)
+        label.text = group.string
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -78,6 +68,8 @@ final class RecipientsFieldController: UIViewController {
 
         editingController.onEvent = {[weak self] event in
             switch event {
+            case .onInputChange(let text):
+                self?.onEvent?(.onInputChange(text: text))
             case .onRecipientSelected(let index):
                 self?.onEvent?(.onRecipientSelected(index: index))
             case .onReturnKeyPressed(let text):
@@ -109,33 +101,32 @@ final class RecipientsFieldController: UIViewController {
 
     @objc
     private func onIdleControllerTap() {
-        state = .editing
+        onEvent?(.onFieldTap)
     }
     
-    private func updateView(for state: RecipientsFieldControllerState) {
+    private func updateView(for state: RecipientFieldState) {
         updateView(for: state, noCellSelected: true)
     }
 
-    private func updateView(for state: RecipientsFieldControllerState, noCellSelected: Bool) {
-        idleController.view.isHidden = state == .editing
-        editingController.view.isHidden = state == .idle
-        switch state {
+    private func updateView(for state: RecipientFieldState, noCellSelected: Bool) {
+        idleController.view.isHidden = state.controllerState == .editing
+        editingController.view.isHidden = state.controllerState == .idle
+        switch state.controllerState {
         case .idle:
             editingController.scrollToLast()
-            idleController.configure(recipient: recipients.first, numExtra: recipients.count - 1)
+            editingController.clearCursor()
+            idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
             DispatchQueue.main.async {
                 self.onEvent?(.onDidEndEditing)
             }
         case .editing:
-            editingController.recipients = recipients
-            if recipients.filter(\.isSelected).isEmpty {
+            editingController.state = state
+            if state.recipients.filter(\.isSelected).isEmpty {
                 editingController.setFocus()
             }
+        case .contactPicker:
+            editingController.state = state
         }
-    }
-
-    func setIdleState() {
-        state = .idle
     }
 }
 
@@ -156,7 +147,7 @@ extension RecipientsFieldController {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.alignment = .center
             view.spacing = DS.Spacing.small
-            view.directionalLayoutMargins = .init(top: 0, leading: DS.Spacing.mediumLight, bottom: 0, trailing: DS.Spacing.mediumLight)
+            view.directionalLayoutMargins = .init(top: 0, leading: DS.Spacing.small, bottom: 0, trailing: DS.Spacing.small)
             view.isLayoutMarginsRelativeArrangement = true
             return view
         }

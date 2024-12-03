@@ -17,19 +17,9 @@
 
 import Foundation
 
-enum RecipientGroupType {
-    case to
-    case cc
-    case bcc
+extension String {
 
-    var string: String {
-        switch self {
-        case .to:
-            "To:"
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
+    func toContactMatchFormat() -> String {
+        self.lowercased()
     }
 }

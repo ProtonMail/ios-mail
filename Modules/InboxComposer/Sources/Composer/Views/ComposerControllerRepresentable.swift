@@ -30,21 +30,3 @@ struct ComposerControllerRepresentable: UIViewControllerRepresentable {
     }
 
 }
-
-#Preview {
-    struct Preview: View {
-        
-        var body: some View {
-            VStack {
-                ComposerControllerRepresentable(state: .init(recipients: [])) { event in
-                    print(event)
-                }
-                .border(.yellow)
-
-                Spacer()
-            }
-        }
-    }
-
-    return Preview()
-}

@@ -15,21 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-enum RecipientGroupType {
-    case to
-    case cc
-    case bcc
+protocol Reusable {
+    static var reuseIdentifier: String { get }
+}
 
-    var string: String {
-        switch self {
-        case .to:
-            "To:"
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
+extension Reusable where Self: UIView {
+
+    static var reuseIdentifier: String {
+        String(describing: self)
     }
+
 }

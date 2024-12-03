@@ -17,19 +17,8 @@
 
 import Foundation
 
-enum RecipientGroupType {
-    case to
-    case cc
-    case bcc
+protocol Filterable {
 
-    var string: String {
-        switch self {
-        case .to:
-            "To:"
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
-    }
+    /// Array of strings to be matched against for filtering purposes
+    var toMatch: [String] { get }
 }

@@ -17,19 +17,8 @@
 
 import Foundation
 
-enum RecipientGroupType {
-    case to
-    case cc
-    case bcc
-
-    var string: String {
-        switch self {
-        case .to:
-            "To:"
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
+extension String {
+    public static var empty: Self {
+        String()
     }
 }
