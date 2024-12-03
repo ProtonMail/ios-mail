@@ -4,6 +4,29 @@
     "(No Recipient)" : {
       "comment" : "No recipent placeholder."
     },
+    "%lld attachments" : {
+      "comment" : "The number of a message attachments.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld attachment"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld attachments"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld files" : {
       "comment" : "The number of attachments on conversation details screen.",
       "localizations" : {

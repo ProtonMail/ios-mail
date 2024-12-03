@@ -327,6 +327,9 @@ enum L10n {
             comment: "`Other` in the message details (e.g. starred, pinned messages)."
         )
         static let to = LocalizedStringResource("To", comment: "`To` in the message details.")
+        static func attachments(count: Int) -> LocalizedStringResource {
+            .init("\(count) attachments", comment: "The number of a message attachments.")
+        }
     }
 
     enum Folders {
