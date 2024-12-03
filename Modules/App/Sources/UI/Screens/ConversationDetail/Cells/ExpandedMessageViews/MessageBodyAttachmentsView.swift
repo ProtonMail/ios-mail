@@ -72,7 +72,7 @@ struct MessageBodyAttachmentsView: View {
                 Spacer()
                 Text(attachments.totalSizeDescription)
                     .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .foregroundStyle(DS.Color.Text.hint)
                     .padding(.trailing, DS.Spacing.mediumLight)
                 Image(DS.Icon.icChevronTinyDown)
                     .resizable()
