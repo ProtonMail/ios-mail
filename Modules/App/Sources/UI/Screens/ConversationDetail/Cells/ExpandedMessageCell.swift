@@ -94,7 +94,6 @@ struct ExpandedMessageCell: View {
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
             .padding(.top, cardCornerRadius)
-            .background(Color.red)
         }
         .overlay { borderOnTheSides(show: !isFirstCell) }
     }
