@@ -210,12 +210,3 @@ private struct ConversationDetailScreenIdentifiers {
     static let rootItem = "detail.rootItem"
     static let subjectText = "detail.subjectText"
 }
-
-// FIXME: - Move to separate file
-extension ID: Identifiable {
-
-    public var id: UInt64 {
-        value
-    }
-
-}
