@@ -73,9 +73,7 @@ struct ConversationDetailScreen: View {
                 VStack {
                     conversationDataView
                     ConversationDetailListView(model: model)
-                        .frame(maxHeight: .infinity)
                 }
-                .frame(minHeight: proxy.size.height)
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }

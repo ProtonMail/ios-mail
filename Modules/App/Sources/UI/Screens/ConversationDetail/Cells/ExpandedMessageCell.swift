@@ -88,14 +88,13 @@ struct ExpandedMessageCell: View {
                     htmlLoaded: htmlLoaded
                 )
 
-                Spacer()
-
                 MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
                     .padding(.top, DS.Spacing.moderatelyLarge)
                     .padding(.bottom, DS.Spacing.large)
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
             .padding(.top, cardCornerRadius)
+            .background(Color.red)
         }
         .overlay { borderOnTheSides(show: !isFirstCell) }
     }

@@ -69,8 +69,8 @@ struct ConversationDetailListView: View {
 
     private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
         ScrollViewReader { scrollView in
-            VStack(spacing: 0) {
-                LazyVStack(spacing: 0) {
+            VStack(spacing: .zero) {
+                LazyVStack(spacing: .zero) { // FIXME
                     ForEachEnumerated(previous, id: \.element.id) { cellUIModel, index in
                         switch cellUIModel.type {
                         case .collapsed(let uiModel):

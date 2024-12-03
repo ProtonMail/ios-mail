@@ -44,7 +44,6 @@ struct MessageBodyAttachmentsView: View {
             attachmentsCountRow()
             if isAttachmentsListOpen {
                 attachmentsList()
-                    .frame(maxHeight: isAttachmentsListOpen ? .infinity : .zero)
                     .transition(.opacity.combined(with: .move(edge: .top)))
                     .zIndex(-1)
             }
@@ -71,7 +70,7 @@ struct MessageBodyAttachmentsView: View {
                 Text(attachmentsCount)
                 Spacer()
                 Text(attachments.totalSizeDescription)
-                    .font(.footnote)
+                    .font(.caption)
                     .foregroundStyle(DS.Color.Text.hint)
                     .padding(.trailing, DS.Spacing.mediumLight)
                 Image(DS.Icon.icChevronTinyDown)
@@ -106,7 +105,7 @@ struct MessageBodyAttachmentsView: View {
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.hint)
             }
-            .padding(.vertical, DS.Spacing.mediumLight)
+            .padding(.vertical, DS.Spacing.mediumLight) // FIXME: - Duplication
             .padding(.leading, DS.Spacing.medium)
             .padding(.trailing, DS.Spacing.large)
             .background(DS.Color.InteractionWeak.norm)
@@ -171,5 +170,14 @@ private extension AttachmentDisplayModel {
                 .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
             ], attachmentIDToOpen: .constant(nil)
         )
+        MessageBodyAttachmentsView(attachments:
+            [
+                .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
+                .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
+                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
+                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
+            ], attachmentIDToOpen: .constant(nil)
+        )
+        Spacer()
     }
 }
