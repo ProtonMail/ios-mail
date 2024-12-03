@@ -74,7 +74,7 @@ struct ExpandedMessageCell: View {
                     }
                 })
                 MessageBodyAttachmentsView(
-                    attachments: uiModel.messageDetails.attachments,
+                    state: .state(attachments: uiModel.messageDetails.attachments),
                     attachmentIDToOpen: $attachmentIDToOpen
                 )
                     .padding(.top, DS.Spacing.extraLarge)
@@ -125,6 +125,17 @@ enum ExpandedMessageCellEvent {
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
+}
+
+extension MessageBodyAttachmentsState {
+
+    static func state(attachments: [AttachmentDisplayModel]) -> Self {
+        .init(
+            attachments: attachments,
+            listState: attachments.count > 3 ? .long(isAttachmentsListOpen: false) : .short
+        )
+    }
+
 }
 
 #Preview {

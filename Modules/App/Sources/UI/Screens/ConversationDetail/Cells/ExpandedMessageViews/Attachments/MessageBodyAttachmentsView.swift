@@ -20,28 +20,28 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MessageBodyAttachmentsView: View {
-    private let attachments: [AttachmentDisplayModel]
-    @State private var isAttachmentsListOpen: Bool = false
+    @State private var state: MessageBodyAttachmentsState
     @Binding var attachmentIDToOpen: ID?
 
-    init(attachments: [AttachmentDisplayModel], attachmentIDToOpen: Binding<ID?>) {
-        self.attachments = attachments
+    init(state: MessageBodyAttachmentsState, attachmentIDToOpen: Binding<ID?>) {
+        self.state = state
         self._attachmentIDToOpen = attachmentIDToOpen
     }
 
     var body: some View {
-        if attachments.count > 3 {
-            expandableAttachmentsList()
-        } else {
+        switch state.listState {
+        case .short:
             attachmentsList()
+        case .long(let isAttachmentsListOpen):
+            expandableAttachmentsList(isAttachmentsListOpen: isAttachmentsListOpen)
         }
     }
 
     // MARK: - Private
 
-    private func expandableAttachmentsList() -> some View {
+    private func expandableAttachmentsList(isAttachmentsListOpen: Bool) -> some View {
         VStack(spacing: DS.Spacing.standard) {
-            attachmentsCountRow()
+            attachmentsCountRow(isAttachmentsListOpen: isAttachmentsListOpen)
             if isAttachmentsListOpen {
                 attachmentsList()
                     .transition(.opacity.combined(with: .move(edge: .top)))
@@ -53,14 +53,18 @@ struct MessageBodyAttachmentsView: View {
 
     private func attachmentsList() -> some View {
         VStack(spacing: DS.Spacing.standard) {
-            ForEach(attachments, id: \.self) { attachment in
+            ForEach(state.attachments, id: \.self) { attachment in
                 attachmentButton(attachment: attachment)
             }
         }
     }
 
-    private func attachmentsCountRow() -> some View {
-        Button(action: { withAnimation { isAttachmentsListOpen.toggle() } }) {
+    private func attachmentsCountRow(isAttachmentsListOpen: Bool) -> some View {
+        Button(action: {
+            withAnimation {
+                state = state.copy(\.listState, to: .long(isAttachmentsListOpen: !isAttachmentsListOpen))
+            }
+        }) {
             HStack(spacing: .zero) {
                 Image(DS.Icon.icPaperClip)
                     .resizable()
@@ -69,7 +73,7 @@ struct MessageBodyAttachmentsView: View {
                     .padding(.trailing, DS.Spacing.medium)
                 Text(attachmentsCount)
                 Spacer()
-                Text(attachments.totalSizeDescription)
+                Text(state.attachments.totalSizeDescription)
                     .font(.caption)
                     .foregroundStyle(DS.Color.Text.hint)
                     .padding(.trailing, DS.Spacing.mediumLight)
@@ -114,10 +118,12 @@ struct MessageBodyAttachmentsView: View {
     }
 
     private var attachmentsCount: AttributedString {
-        var attributedString = AttributedString(localized: L10n.MessageDetails.attachments(count: attachments.count))
+        var attributedString = AttributedString(
+            localized: L10n.MessageDetails.attachments(count: state.attachments.count)
+        )
         attributedString.font = .footnote
         attributedString.foregroundColor = DS.Color.Text.weak
-        let numberRange = attributedString.range(of: "\(attachments.count)").unsafelyUnwrapped
+        let numberRange = attributedString.range(of: "\(state.attachments.count)").unsafelyUnwrapped
         attributedString[numberRange].font = .system(Font.TextStyle.footnote, weight: .bold)
         attributedString[numberRange].foregroundColor = DS.Color.Shade.shade100
         return attributedString
@@ -127,7 +133,7 @@ struct MessageBodyAttachmentsView: View {
 private enum Formatter {
     static let bytesFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.allowedUnits = [.useBytes, .useKB, .useMB, .useGB]
         formatter.countStyle = .file
         formatter.includesUnit = true
         return formatter
@@ -162,21 +168,9 @@ private extension AttachmentDisplayModel {
 
 #Preview {
     VStack {
-        MessageBodyAttachmentsView(attachments:
-            [
-                .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
-                .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
-                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
-                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
-            ], attachmentIDToOpen: .constant(nil)
-        )
-        MessageBodyAttachmentsView(attachments:
-            [
-                .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
-                .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
-                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
-                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
-            ], attachmentIDToOpen: .constant(nil)
+        MessageBodyAttachmentsView(
+            state: .init(attachments: .previewData, listState: .long(isAttachmentsListOpen: true)),
+            attachmentIDToOpen: .constant(nil)
         )
         Spacer()
     }
