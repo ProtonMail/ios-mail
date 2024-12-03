@@ -85,7 +85,7 @@ struct ConversationDetailListView: View {
                                 mailbox: model.mailbox.unsafelyUnwrapped,
                                 uiModel: uiModel,
                                 isFirstCell: index == 0,
-                                attachmentToOpen: $model.attachmentToOpen,
+                                attachmentIDToOpen: $model.attachmentIDToOpen,
                                 onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
                                 htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
                             )
@@ -100,7 +100,7 @@ struct ConversationDetailListView: View {
                     uiModel: last,
                     hasShadow: !previous.isEmpty,
                     isFirstCell: previous.isEmpty,
-                    attachmentToOpen: $model.attachmentToOpen,
+                    attachmentIDToOpen: $model.attachmentIDToOpen,
                     onEvent: { onExpandedMessageCellEvent($0, uiModel: last) },
                     htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: last.toActionMetadata()) }
                 )

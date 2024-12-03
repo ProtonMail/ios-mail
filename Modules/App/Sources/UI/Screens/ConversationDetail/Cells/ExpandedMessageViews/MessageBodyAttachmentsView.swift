@@ -20,15 +20,13 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MessageBodyAttachmentsView: View {
-    private let mailbox: Mailbox
     private let attachments: [AttachmentDisplayModel]
     @State private var isAttachmentsListOpen: Bool = false
-    @Binding var attachmentToOpen: AttachmentViewConfig?
+    @Binding var attachmentIDToOpen: ID?
 
-    init(attachments: [AttachmentDisplayModel], mailbox: Mailbox, attachmentToOpen: Binding<AttachmentViewConfig?>) {
+    init(attachments: [AttachmentDisplayModel], attachmentIDToOpen: Binding<ID?>) {
         self.attachments = attachments
-        self.mailbox = mailbox
-        self._attachmentToOpen = attachmentToOpen
+        self._attachmentIDToOpen = attachmentIDToOpen
     }
 
     var body: some View {
@@ -92,9 +90,7 @@ struct MessageBodyAttachmentsView: View {
     }
 
     private func attachmentButton(attachment: AttachmentDisplayModel) -> some View {
-        Button(action: {
-            attachmentToOpen = .init(id: attachment.id, mailbox: mailbox)
-        }) {
+        Button(action: { attachmentIDToOpen = attachment.id }) {
             HStack(spacing: .zero) {
                 Image(attachment.mimeType.category.bigIcon)
                     .resizable()
@@ -119,7 +115,7 @@ struct MessageBodyAttachmentsView: View {
     }
 
     private var attachmentsCount: AttributedString {
-        var attributedString = AttributedString("\(attachments.count) attachments")
+        var attributedString = AttributedString(localized: L10n.MessageDetails.attachments(count: attachments.count))
         attributedString.font = .footnote
         attributedString.foregroundColor = DS.Color.Text.weak
         let numberRange = attributedString.range(of: "\(attachments.count)").unsafelyUnwrapped
@@ -173,7 +169,7 @@ private extension AttachmentDisplayModel {
                 .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
                 .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
                 .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
-            ], mailbox: .init(noPointer: .init()), attachmentToOpen: .constant(nil)
+            ], attachmentIDToOpen: .constant(nil)
         )
     }
 }

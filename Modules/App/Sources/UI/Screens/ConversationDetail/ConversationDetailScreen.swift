@@ -61,8 +61,8 @@ struct ConversationDetailScreen: View {
                 goBack: { navigationPath.removeLast() }
             )}
         )
-        .fullScreenCover(item: $model.attachmentToOpen) { config in
-            AttachmentView(config: config)
+        .fullScreenCover(item: $model.attachmentIDToOpen) { id in
+            AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                 .edgesIgnoringSafeArea([.top, .bottom])
         }
     }
@@ -211,4 +211,13 @@ private extension View {
 private struct ConversationDetailScreenIdentifiers {
     static let rootItem = "detail.rootItem"
     static let subjectText = "detail.subjectText"
+}
+
+// FIXME: - Move to separate file
+extension ID: Identifiable {
+
+    public var id: UInt64 {
+        value
+    }
+
 }

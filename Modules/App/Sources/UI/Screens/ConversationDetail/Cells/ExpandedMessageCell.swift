@@ -24,7 +24,7 @@ struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
-    @Binding var attachmentToOpen: AttachmentViewConfig?
+    @Binding var attachmentIDToOpen: ID?
 
     private let hasShadow: Bool
 
@@ -39,7 +39,7 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
-        attachmentToOpen: Binding<AttachmentViewConfig?>,
+        attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
         htmlLoaded: @escaping () -> Void
     ) {
@@ -47,7 +47,7 @@ struct ExpandedMessageCell: View {
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
-        self._attachmentToOpen = attachmentToOpen
+        self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
         self.htmlLoaded = htmlLoaded
     }
@@ -75,8 +75,7 @@ struct ExpandedMessageCell: View {
                 })
                 MessageBodyAttachmentsView(
                     attachments: uiModel.messageDetails.attachments,
-                    mailbox: mailbox,
-                    attachmentToOpen: $attachmentToOpen
+                    attachmentIDToOpen: $attachmentIDToOpen
                 )
                     .padding(.all, DS.Spacing.large)
                 MessageBodyView(
@@ -147,7 +146,7 @@ enum ExpandedMessageCellEvent {
             ),
             hasShadow: false,
             isFirstCell: true, 
-            attachmentToOpen: .constant(nil),
+            attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
         )
@@ -161,7 +160,7 @@ enum ExpandedMessageCellEvent {
             ),
             hasShadow: true,
             isFirstCell: false, 
-            attachmentToOpen: .constant(nil),
+            attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
         )
