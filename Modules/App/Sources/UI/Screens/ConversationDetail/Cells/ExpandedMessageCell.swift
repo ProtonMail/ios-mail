@@ -78,7 +78,7 @@ struct ExpandedMessageCell: View {
                     mailbox: mailbox,
                     attachmentToOpen: $attachmentToOpen
                 )
-                    .padding(.vertical, DS.Spacing.large)
+                    .padding(.all, DS.Spacing.large)
                 MessageBodyView(
                     messageBody: uiModel.message,
                     messageId: uiModel.id,

@@ -22,6 +22,7 @@ import proton_app_uniffi
 struct MessageBodyAttachmentsView: View {
     private let mailbox: Mailbox
     private let attachments: [AttachmentDisplayModel]
+    @State private var isAttachmentsListOpen: Bool = false
     @Binding var attachmentToOpen: AttachmentViewConfig?
 
     init(attachments: [AttachmentDisplayModel], mailbox: Mailbox, attachmentToOpen: Binding<AttachmentViewConfig?>) {
@@ -31,62 +32,55 @@ struct MessageBodyAttachmentsView: View {
     }
 
     var body: some View {
-        VStack {
-            attachmentsCountRow(attachments: attachments)
-//            ForEach(attachments, id: \.self) { attachment in
-//                HStack(spacing: DS.Spacing.standard) {
-//                    attachmentButton(attachment: attachment)
-//                }
-//            }
+        if attachments.count > 3 {
+            expandableAttachmentsList()
+        } else {
+            attachmentsList()
         }
-//        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-//            ScrollView(.horizontal, showsIndicators: false) {
-//                HStack(spacing: DS.Spacing.standard) {
-//                    ForEach(attachments, id: \.self) { attachment in
-//                        attachmentButton(attachment: attachment)
-//                    }
-//                }
-//            }
-//            .contentMargins(.horizontal, DS.Spacing.large)
-//
-//            if attachments.count > 2 {
-//                HStack(spacing: DS.Spacing.small) {
-//                    Image(DS.Icon.icPaperClip)
-//                        .resizable()
-//                        .square(size: 14)
-//                    Text(attachments.totalSizeDescription)
-//                        .font(.footnote)
-//                        .foregroundStyle(DS.Color.Text.weak)
-//                }.padding(.horizontal, DS.Spacing.large)
-//            }
-//        }
     }
 
     // MARK: - Private
 
-    private func attachmentsCountRow(attachments: [AttachmentDisplayModel]) -> some View {
-        Button(action: {}) {
+    private func expandableAttachmentsList() -> some View {
+        VStack(spacing: DS.Spacing.standard) {
+            attachmentsCountRow()
+            if isAttachmentsListOpen {
+                attachmentsList()
+                    .frame(maxHeight: isAttachmentsListOpen ? .infinity : .zero)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .zIndex(-1)
+            }
+        }
+        .clipped()
+    }
+
+    private func attachmentsList() -> some View {
+        VStack(spacing: DS.Spacing.standard) {
+            ForEach(attachments, id: \.self) { attachment in
+                attachmentButton(attachment: attachment)
+            }
+        }
+    }
+
+    private func attachmentsCountRow() -> some View {
+        Button(action: { withAnimation { isAttachmentsListOpen.toggle() } }) {
             HStack(spacing: .zero) {
                 Image(DS.Icon.icPaperClip)
                     .resizable()
                     .square(size: 20)
                     .foregroundStyle(DS.Color.Icon.weak)
                     .padding(.trailing, DS.Spacing.medium)
-                Text("\(attachments.count) ")
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .foregroundStyle(DS.Color.Shade.shade100)
-                Text("attachments")
-                    .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
+                Text(attachmentsCount)
                 Spacer()
                 Text(attachments.totalSizeDescription)
                     .font(.footnote)
                     .foregroundStyle(DS.Color.Text.weak)
                     .padding(.trailing, DS.Spacing.mediumLight)
-                Image(DS.Icon.icChevronTinyUp)
+                Image(DS.Icon.icChevronTinyDown)
                     .resizable()
                     .square(size: 20)
+                    .rotationEffect(.degrees(isAttachmentsListOpen ? -180 : .zero))
+                    .animation(.easeInOut, value: isAttachmentsListOpen)
                     .foregroundStyle(DS.Color.Icon.weak)
             }
         }
@@ -123,6 +117,16 @@ struct MessageBodyAttachmentsView: View {
             .clipShape(Capsule())
         }
     }
+
+    private var attachmentsCount: AttributedString {
+        var attributedString = AttributedString("\(attachments.count) attachments")
+        attributedString.font = .footnote
+        attributedString.foregroundColor = DS.Color.Text.weak
+        let numberRange = attributedString.range(of: "\(attachments.count)").unsafelyUnwrapped
+        attributedString[numberRange].font = .system(Font.TextStyle.footnote, weight: .bold)
+        attributedString[numberRange].foregroundColor = DS.Color.Shade.shade100
+        return attributedString
+    }
 }
 
 private enum Formatter {
@@ -135,18 +139,7 @@ private enum Formatter {
     }()
 }
 
-#Preview {
-    MessageBodyAttachmentsView(attachments:
-        [
-            .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
-            .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
-            .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
-            .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
-        ], mailbox: .init(noPointer: .init()), attachmentToOpen: .constant(nil)
-    )
-}
-
-extension Array where Element == AttachmentDisplayModel {
+private extension Array where Element == AttachmentDisplayModel {
 
     var totalSize: Int64 {
         reduce(0) { result, next in
@@ -156,10 +149,10 @@ extension Array where Element == AttachmentDisplayModel {
 
 }
 
-extension Array where Element == AttachmentDisplayModel {
+private extension Array where Element == AttachmentDisplayModel {
 
     var totalSizeDescription: String {
-        "\(Formatter.bytesFormatter.string(fromByteCount: totalSize))".notLocalized
+        Formatter.bytesFormatter.string(fromByteCount: totalSize)
     }
 
 }
@@ -170,4 +163,17 @@ private extension AttachmentDisplayModel {
         Formatter.bytesFormatter.string(fromByteCount: Int64(size))
     }
 
+}
+
+#Preview {
+    VStack {
+        MessageBodyAttachmentsView(attachments:
+            [
+                .init(id: .init(value: 1), mimeType: .init(mime: "pdf", category: .pdf), name: "CV", size: 1200),
+                .init(id: .init(value: 2), mimeType: .init(mime: "img", category: .image), name: "My photo", size: 12000),
+                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Covering letter", size: 120000),
+                .init(id: .init(value: 3), mimeType: .init(mime: "doc", category: .pages), name: "Long long long long long long long long long long name", size: 120000),
+            ], mailbox: .init(noPointer: .init()), attachmentToOpen: .constant(nil)
+        )
+    }
 }
