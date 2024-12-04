@@ -21,6 +21,26 @@ import Foundation
 /// The generation happens automatically when adding/removing string below. All keys are added in alphabetical order.
 /// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
+    enum Composer {
+        static let send =  LocalizedStringResource(
+            "Send",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Message send button."
+        )
+
+        static let to =  LocalizedStringResource(
+            "To:",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer to recipients."
+        )
+
+        static let subject =  LocalizedStringResource(
+            "Subject:",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer subject."
+        )
+    }
+
     enum Contacts {
         static let title = LocalizedStringResource(
             "Composer",

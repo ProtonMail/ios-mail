@@ -15,21 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-enum RecipientGroupType: CaseIterable {
-    case to
-    case cc
-    case bcc
+extension UIViewController {
 
-    var string: String {
-        switch self {
-        case .to:
-            L10n.Composer.to.string
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
+    public func addViewController(_ childController: UIViewController, using embeddingMethod: (UIView) -> Void) {
+        addChild(childController)
+        embeddingMethod(childController.view)
+        childController.didMove(toParent: self)
     }
 }

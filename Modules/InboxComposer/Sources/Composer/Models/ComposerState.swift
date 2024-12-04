@@ -25,7 +25,7 @@ struct ComposerState: Equatable, Copying {
 
     var editingRecipientsGroup: RecipientGroupType?
     var editingRecipientFieldState: RecipientFieldState? {
-        guard let group = editingRecipientsGroup else { return nil } // let keyPath = ComposerState.groupKeyPaths[group] else { return nil }
+        guard let group = editingRecipientsGroup else { return nil }
         return self[keyPath: group.keyPath]
     }
 

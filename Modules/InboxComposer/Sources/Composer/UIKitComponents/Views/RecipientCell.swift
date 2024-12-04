@@ -21,7 +21,7 @@ import SwiftUI
 import UIKit
 
 final class RecipientCell: UICollectionViewCell {
-    private let recipientView = RecipientView()
+    private let recipientView = RecipientChipView()
     private var widthConstraint: NSLayoutConstraint?
 
     private var recipient: RecipientUIModel? {

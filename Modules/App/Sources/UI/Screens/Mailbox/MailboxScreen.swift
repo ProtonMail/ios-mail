@@ -128,8 +128,7 @@ extension MailboxScreen {
 
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
-            toastStateStore.present(toast: .comingSoon)
-//            isComposerPresented.toggle()
+            isComposerPresented.toggle()
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)

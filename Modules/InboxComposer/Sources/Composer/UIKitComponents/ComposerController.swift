@@ -21,19 +21,24 @@ import UIKit
 enum ComposerControllerEvent {
     case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
     case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
-    case onBodyTap
+    case onNonRecipientFieldStartEditing
 }
 
 final class ComposerController: UIViewController {
     private let composerStack = SubviewFactory.composerStack
     private let contactPicker = ContactPickerController()
-    private let toField = RecipientsFieldController(group: .to)
+    private let recipientsController = RecipientsViewController()
+    private let subject = SubjectFieldView()
     private let fakeBodyView = SubviewFactory.textView
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
         didSet {
-            toField.state = state.toRecipients
+            recipientsController.updateRecipientFieldStates(
+                to: state.toRecipients,
+                cc: state.ccRecipients,
+                bcc: state.bccRecipients
+            )
             contactPicker.recipientsFieldState = state.editingRecipientFieldState
         }
     }
@@ -52,10 +57,18 @@ final class ComposerController: UIViewController {
         setupConstraints()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        subject.delegate = self
+        fakeBodyView.delegate = self
+    }
+
     func setUpUI() {
         view.backgroundColor = UIColor(DS.Color.Background.norm)
 
-        composerStack.addArrangedSubview(toField.view)
+        addViewController(recipientsController, using: composerStack.addArrangedSubview)
+        composerStack.addArrangedSubview(ComposerSeparator())
+        composerStack.addArrangedSubview(subject)
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(fakeBodyView)
         view.addSubview(composerStack)
@@ -63,26 +76,31 @@ final class ComposerController: UIViewController {
         contactPicker.view.isHidden = true
         view.addSubview(contactPicker.view)
 
-        toField.onEvent = { [weak self] in self?.onEvent(.recipientFieldEvent($0, .to)) }
+        recipientsController.onEvent = {[weak self] event, group in self?.onEvent(.recipientFieldEvent(event, group)) }
         contactPicker.onEvent = { [weak self] event in
             guard let group = self?.state.editingRecipientsGroup else { return }
             self?.onEvent(.contactPickerEvent(event, group))
         }
-        fakeBodyView.delegate = self
     }
 
     func setupConstraints() {
-        toField.view.setContentHuggingPriority(.required, for: .horizontal)
-        toField.view.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         [contactPicker.view, composerStack].forEach {
             NSLayoutConstraint.activate([
                 $0.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 $0.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                $0.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                $0.topAnchor.constraint(equalTo: view.topAnchor),
+                $0.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
         }
+    }
+}
+
+extension ComposerController: UITextFieldDelegate {
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        onEvent(.onNonRecipientFieldStartEditing)
+        return true
     }
 }
 
@@ -90,7 +108,7 @@ extension ComposerController: UITextViewDelegate {
 
     // FIXME: This is a momentary hack to manage focus for those views that are not just one single textfield component
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        onEvent(.onBodyTap)
+        onEvent(.onNonRecipientFieldStartEditing)
         return true
     }
 }
@@ -105,13 +123,13 @@ extension ComposerController {
             view.axis = .vertical
             view.alignment = .fill
             view.distribution = .fill
+            view.spacing = 0
             return view
         }
 
         static var textView: UITextView {
             let view = UITextView()
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.text = "I'll be there!\n\nYours sincerely"
             view.backgroundColor = .clear
             return view
         }

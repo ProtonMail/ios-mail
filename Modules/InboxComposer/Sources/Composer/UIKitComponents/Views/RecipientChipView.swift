@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import UIKit
 
-final class RecipientView: UIView {
+final class RecipientChipView: UIView {
     private let stack = SubviewFactory.stack
     private let icon = SubviewFactory.icon
     private let label = SubviewFactory.label
@@ -80,7 +80,7 @@ final class RecipientView: UIView {
 }
 
 
-extension RecipientView {
+extension RecipientChipView {
 
     private enum SubviewFactory {
         static var icon: UIImageView {
@@ -108,5 +108,3 @@ extension RecipientView {
         }
     }
 }
-
-

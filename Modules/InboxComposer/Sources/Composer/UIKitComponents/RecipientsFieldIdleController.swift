@@ -19,7 +19,7 @@ import InboxDesignSystem
 import UIKit
 
 final class RecipientsFieldIdleController: UIViewController {
-    private let recipientView = RecipientView()
+    private let recipientView = RecipientChipView()
     private let extraRecipientsCount = ExtraRecipientsCountView()
     private var recipient: RecipientUIModel?
 

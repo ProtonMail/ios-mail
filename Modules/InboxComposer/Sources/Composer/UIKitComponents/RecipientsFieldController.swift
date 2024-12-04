@@ -25,7 +25,6 @@ enum RecipientsFieldEvent {
     case onReturnKeyPressed(text: String)
     case onDeleteKeyPressedInsideEmptyInputField
     case onDeleteKeyPressedOutsideInputField
-    case onDidEndEditing
 }
 
 final class RecipientsFieldController: UIViewController {
@@ -87,15 +86,16 @@ final class RecipientsFieldController: UIViewController {
     }
 
     private func setUpConstraints() {
+        let verticalMargin = DS.Spacing.small
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DS.Spacing.large),
-            label.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.mediumLight),
+            label.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.mediumLight + verticalMargin),
             stack.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
-            stack.topAnchor.constraint(equalTo: view.topAnchor),
+            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: verticalMargin),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalMargin),
         ])
     }
 
@@ -116,9 +116,6 @@ final class RecipientsFieldController: UIViewController {
             editingController.scrollToLast()
             editingController.clearCursor()
             idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
-            DispatchQueue.main.async {
-                self.onEvent?(.onDidEndEditing)
-            }
         case .editing:
             editingController.state = state
             if state.recipients.filter(\.isSelected).isEmpty {
@@ -134,12 +131,7 @@ extension RecipientsFieldController {
     private enum SubviewFactory {
 
         static var title: UILabel {
-            let view = UILabel()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.hint)
-            view.textAlignment = .center
-            return view
+            ComposerSubviewFactory.fieldTitle
         }
 
         static var stack: UIStackView {

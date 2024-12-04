@@ -71,7 +71,7 @@ final class ContactPickerController: UIViewController {
             label.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
             
             textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
-            textField.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.moderatelyLarge),
+            textField.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.standard),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
             textField.heightAnchor.constraint(equalToConstant: 20),
             
@@ -133,12 +133,7 @@ extension ContactPickerController {
     
     private enum SubviewFactory {
         static var title: UILabel {
-            let view = UILabel()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.hint)
-            view.textAlignment = .center
-            return view
+            ComposerSubviewFactory.fieldTitle
         }
 
         static var textField: CursorTextField {

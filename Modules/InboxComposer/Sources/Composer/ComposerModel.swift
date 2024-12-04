@@ -27,11 +27,26 @@ final class ComposerModel: ObservableObject {
         self.contactProvider = contactProvider
     }
 
+    func onLoad() {
+        startEditingRecipients(for: .to)
+    }
+
     func startEditingRecipients(for group: RecipientGroupType) {
-        state.overrideRecipientState(for: group) {
+        endEditingRecipients()
+
+        var newState = state
+        newState.overrideRecipientState(for: group) {
             $0.copy(\.controllerState, to: .editing)
         }
-        state.editingRecipientsGroup = group
+        newState = newState.copy(\.editingRecipientsGroup, to: group)
+        state = newState
+    }
+
+    func endEditingRecipients() {
+        state = state.copy(\.toRecipients, to: endEditing(group: state.toRecipients))
+            .copy(\.ccRecipients, to: endEditing(group: state.ccRecipients))
+            .copy(\.bccRecipients, to: endEditing(group: state.bccRecipients))
+            .copy(\.editingRecipientsGroup, to: nil)
     }
 
     @MainActor
@@ -86,15 +101,12 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func finishEditing(group: RecipientGroupType) {
-        state.overrideRecipientState(for: group) {
-            var newRecipients = $0.recipients
-            $0.recipients.indices.forEach { newRecipients[$0].isSelected = false }
-            return $0
-                .copy(\.recipients, to: newRecipients)
-                .copy(\.input, to: .empty)
-                .copy(\.controllerState, to: .idle)
-        }
-        state.editingRecipientsGroup = nil
+    private func endEditing(group: RecipientFieldState) -> RecipientFieldState {
+        var newRecipients = group.recipients
+        group.recipients.indices.forEach { newRecipients[$0].isSelected = false }
+        return group
+            .copy(\.recipients, to: newRecipients)
+            .copy(\.input, to: .empty)
+            .copy(\.controllerState, to: .idle)
     }
 }

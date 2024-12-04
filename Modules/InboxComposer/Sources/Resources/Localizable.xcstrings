@@ -6,6 +6,15 @@
     },
     "Composer" : {
       "comment" : "This is a testing string."
+    },
+    "Send" : {
+      "comment" : "Message send button."
+    },
+    "Subject:" : {
+      "comment" : "Composer subject."
+    },
+    "To:" : {
+      "comment" : "Composer to recipients."
     }
   },
   "version" : "1.0"

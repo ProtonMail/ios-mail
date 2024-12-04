@@ -15,21 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxDesignSystem
+import UIKit
 
-enum RecipientGroupType: CaseIterable {
-    case to
-    case cc
-    case bcc
+enum ComposerSubviewFactory {
 
-    var string: String {
-        switch self {
-        case .to:
-            L10n.Composer.to.string
-        case .cc:
-            "Cc:"
-        case .bcc:
-            "Bcc:"
-        }
+    static var fieldTitle: UILabel {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        view.textColor = UIColor(DS.Color.Text.hint)
+        return view
     }
 }
