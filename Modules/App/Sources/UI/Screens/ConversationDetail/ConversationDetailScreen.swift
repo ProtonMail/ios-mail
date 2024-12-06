@@ -130,7 +130,8 @@ struct ConversationDetailScreen: View {
             .font(.title2)
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.norm)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
 
