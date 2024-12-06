@@ -39,7 +39,6 @@ struct CollapsedMessageCell: View {
     }
 
     var body: some View {
-
         ZStack(alignment: .top) {
             messageCardTopView
             messageDataView

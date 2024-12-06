@@ -25,8 +25,8 @@ public extension DS.Shadows {
     static let liftedFull = Shadow.make(x: .zero, y: .zero, color: .shadowStrong)
     static let liftedTop = Shadow.make(x: .zero, y: -4, color: .shadowStrong)
     static let liftedBottom = Shadow.make(x: .zero, y: 4, color: .shadowStrong)
-    static let lifetedLeft = Shadow.make(x: -4, y: .zero, color: .shadowStrong)
-    static let lifetedRight = Shadow.make(x: 4, y: .zero, color: .shadowStrong)
+    static let liftedLeft = Shadow.make(x: -4, y: .zero, color: .shadowStrong)
+    static let liftedRight = Shadow.make(x: 4, y: .zero, color: .shadowStrong)
 
 }
 
