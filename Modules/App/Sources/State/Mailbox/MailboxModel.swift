@@ -50,10 +50,6 @@ final class MailboxModel: ObservableObject {
 
     @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
 
-    private var userSession: MailUserSession {
-        dependencies.appContext.userSession
-    }
-
     var viewMode: ViewMode {
         mailbox?.viewMode() ?? .conversations
     }

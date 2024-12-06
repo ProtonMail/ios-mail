@@ -29,11 +29,9 @@ struct MailboxScreen: View {
     @State private var isSearchPresented = false
     @State private var isComposerPresented = false
     @State private var isOnboardingPresented = false
-    private var customLabelModel: CustomLabelModel
     private let onboardingStore: OnboardingStore
 
     init(
-        customLabelModel: CustomLabelModel,
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         userDefaults: UserDefaults,
@@ -46,7 +44,6 @@ struct MailboxScreen: View {
                 openedItem: openedItem
             )
         )
-        self.customLabelModel = customLabelModel
         self.onboardingStore = .init(userDefaults: userDefaults)
     }
 
@@ -97,8 +94,7 @@ extension MailboxScreen {
         ZStack(alignment: .bottomTrailing) {
             MailboxListView(
                 isListAtTop: $isComposeButtonExpanded,
-                model: mailboxModel,
-                customLabelModel: customLabelModel
+                model: mailboxModel
             )
             composeButtonView
                 .accessibilitySortPriority(1)
@@ -159,11 +155,9 @@ extension MailboxScreen {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings()
-    let customLabelModel = CustomLabelModel()
     let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 
     return MailboxScreen(
-        customLabelModel: customLabelModel,
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
         userDefaults: userDefaults

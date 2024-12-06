@@ -30,7 +30,6 @@ class MailboxScreenTests: BaseTestCase {
         try await super.setUp()
         userDefaults = .clearedTestInstance()
         sut = MailboxScreen(
-            customLabelModel: CustomLabelModel(),
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox)),
             userDefaults: userDefaults

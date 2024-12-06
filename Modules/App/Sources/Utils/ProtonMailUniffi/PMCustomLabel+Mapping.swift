@@ -19,15 +19,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-extension PMCustomFolder {
-
-    var childLevel: Int {
-        guard let count = path?.components(separatedBy: "/").count else { return 0 }
-        return count - 1
-    }
-
-}
-
 extension PMCustomLabel {
 
     var sidebarLabel: SidebarLabel {

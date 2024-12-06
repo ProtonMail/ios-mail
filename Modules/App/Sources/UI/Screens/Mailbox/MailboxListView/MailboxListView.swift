@@ -24,15 +24,11 @@ struct MailboxListView: View {
     @EnvironmentObject private var userSettings: UserSettings
     @ObservedObject private var model: MailboxModel
 
-    @State private var didAppearBefore = false
-    @State private var pullToRefreshOffset: CGFloat = 0.0
     @Binding private var isListAtTop: Bool
-    private let customLabelModel: CustomLabelModel
 
-    init(isListAtTop: Binding<Bool>, model: MailboxModel, customLabelModel: CustomLabelModel) {
+    init(isListAtTop: Binding<Bool>, model: MailboxModel) {
         self._isListAtTop = isListAtTop
         self.model = model
-        self.customLabelModel = customLabelModel
     }
 
     var body: some View {
@@ -118,13 +114,6 @@ extension MailboxListView {
         }
     }
 
-    private func unreadBarShadow() -> some View {
-        Color
-            .black
-            .opacity(0.1)
-            .frame(height: 2)
-    }
-
     private func unreadFilterView() -> some View {
         UnreadFilterBarView(state: $model.state.filterBar)
     }
@@ -138,7 +127,6 @@ extension MailboxListView {
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route
-        ),
-        customLabelModel: CustomLabelModel()
+        )
     )
 }

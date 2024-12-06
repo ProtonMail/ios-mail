@@ -29,7 +29,6 @@ final class MailboxActionBarStateStore: StateStore {
     private let deleteActionsPerformer: DeleteActionPerformer
     private let moveToActionPerformer: MoveToActionPerformer
     private let itemTypeForActionBar: MailboxItemType
-    private let mailbox: Mailbox
     private let toastStateStore: ToastStateStore
 
     init(
@@ -61,7 +60,6 @@ final class MailboxActionBarStateStore: StateStore {
         )
         self.deleteActionsPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
-        self.mailbox = mailbox
         self.toastStateStore = toastStateStore
     }
 

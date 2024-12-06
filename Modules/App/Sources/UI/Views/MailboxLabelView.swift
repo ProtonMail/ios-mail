@@ -68,10 +68,6 @@ struct MailboxLabelView: View {
 
 struct MailboxLabelUIModel: Identifiable {
     let labelModels: [LabelUIModel]
-    
-    var allLabelIds: Set<ID> {
-        Set(labelModels.map(\.labelId))
-    }
 
     var id: ID {
         labelModels.first?.labelId ?? .random()

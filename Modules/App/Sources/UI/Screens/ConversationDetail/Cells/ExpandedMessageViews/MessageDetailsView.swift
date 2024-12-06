@@ -448,7 +448,4 @@ private struct MessageDetailsViewIdentifiers {
     
     static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
-    
-    static let expandedHeaderOtherLabel = "detail.header.expanded.other.label"
-    static let expandedHeaderOtherValue = "detail.header.expanded.other.value"
 }

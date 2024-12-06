@@ -20,7 +20,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MainToolbar: ViewModifier {
-    @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
 
@@ -127,10 +126,8 @@ enum MainToolbarEvent {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userSettings = UserSettings()
-    let customLabelModel = CustomLabelModel()
 
     return MailboxScreen(
-        customLabelModel: customLabelModel,
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
         userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped

@@ -198,10 +198,6 @@ private extension SelectionModeState {
         func makeConfiguration() -> MailboxItemsListViewConfiguration {
             let selectionState = SelectionModeState()
 
-            let actionBar = MailboxItemsListActionBar(
-                selectedMailbox: .inbox, customLabelModel: .init()
-            )
-
             return .init(
                 dataSource: dataSource,
                 selectionState: selectionState,

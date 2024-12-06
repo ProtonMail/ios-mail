@@ -26,12 +26,11 @@ struct ProtonMailApp: App {
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let userSettings = UserSettings()
-    private let customLabelModel = CustomLabelModel()
 
     var body: some Scene {
         WindowGroup {
             GeometryReader { proxy in
-                RootView(appContext: .shared, customLabelModel: customLabelModel)
+                RootView(appContext: .shared)
                     .environment(\.mainWindowSize, proxy.size)
                     .environmentObject(appUIStateStore)
                     .environmentObject(toastStateStore)
@@ -55,14 +54,9 @@ private struct RootView: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
-    @ObservedObject private var customLabelModel: CustomLabelModel
 
-    init(
-        appContext: AppContext,
-        customLabelModel: CustomLabelModel
-    ) {
+    init(appContext: AppContext) {
         self.appContext = appContext
-        self.customLabelModel = customLabelModel
     }
 
     var body: some View {
@@ -84,7 +78,6 @@ private struct RootView: View {
 
         case .activeSession(let activeUserSession):
             HomeScreen(
-                customLabelModel: customLabelModel,
                 appContext: appContext,
                 userSession: activeUserSession
             )

@@ -45,19 +45,6 @@ enum SidebarItem: Equatable, Identifiable {
         }
     }
 
-    func copy(isSelected: Bool) -> SidebarItem {
-        switch self {
-        case .system(let item):
-            return .system(item.copy(isSelected: isSelected))
-        case .label(let item):
-            return .label(item.copy(isSelected: isSelected))
-        case .folder(let item):
-            return .folder(item.copy(isSelected: isSelected))
-        case .other(let item):
-            return .other(item.copy(isSelected: isSelected))
-        }
-    }
-
     // MARK: - Identifiable
 
     var id: String {

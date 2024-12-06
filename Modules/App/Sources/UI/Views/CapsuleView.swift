@@ -39,21 +39,6 @@ struct CapsuleView: View {
         self.style = style
     }
 
-    private var minWidth: CGFloat? {
-        text.string.isEmpty ? nil : 30
-    }
-
-    private var padding: EdgeInsets {
-        text.string.isEmpty
-        ? .init(.zero)
-        : .init(
-            top: DS.Spacing.small,
-            leading: DS.Spacing.standard,
-            bottom: DS.Spacing.small,
-            trailing: DS.Spacing.standard
-        )
-    }
-
     var body: some View {
         HStack(spacing: DS.Spacing.small) {
             if let icon {

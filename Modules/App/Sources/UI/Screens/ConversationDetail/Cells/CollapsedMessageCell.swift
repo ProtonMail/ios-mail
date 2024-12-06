@@ -117,10 +117,6 @@ struct CollapsedMessageCellUIModel {
     let avatar: AvatarUIModel
 }
 
-enum CollapsedMessageCellEvent {
-    case onTap
-}
-
 #Preview {
     VStack(spacing: 0) {
         CollapsedMessageCell(uiModel: .init(

@@ -92,28 +92,6 @@ extension SidebarState {
         )
     }
 
-    func copy(createLabel: SidebarOtherItem) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
-        )
-    }
-
-    func copy(createFolder: SidebarOtherItem) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
-        )
-    }
-
 }
 
 private extension SidebarFolder {

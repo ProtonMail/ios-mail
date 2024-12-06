@@ -105,15 +105,6 @@ struct MailboxActionBarView: View {
         selectedItems.map(\.id)
     }
 
-    private var itemType: MailboxItemType {
-        switch mailbox.viewMode() {
-        case .conversations:
-            .conversation
-        case .messages:
-            .message
-        }
-    }
-
     private func labelAsSheet(
         input: ActionSheetInput,
         actionHandler: @escaping (MailboxActionBarAction) -> Void

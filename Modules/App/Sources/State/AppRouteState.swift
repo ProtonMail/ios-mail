@@ -24,7 +24,6 @@ final class AppRouteState: ObservableObject, Sendable {
     var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
         _route.projectedValue.compactMap(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
     }
-    private var cancellables = Set<AnyCancellable>()
 
     init(route: Route) {
         self.route = route
@@ -47,16 +46,6 @@ extension AppRouteState {
 enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
-
-    /// Determines if the route has a selected mailbox with inbox instead of a local label
-    var isInboxHardcoded: Bool {
-        switch selectedMailbox {
-        case .inbox:
-            return true
-        case .none, .systemFolder, .customLabel, .customFolder:
-            return false
-        }
-    }
 
     var selectedMailbox: SelectedMailbox? {
         if case .mailbox(let selectedMailbox) = self {

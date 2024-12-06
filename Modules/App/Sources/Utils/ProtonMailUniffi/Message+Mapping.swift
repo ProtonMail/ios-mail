@@ -125,14 +125,6 @@ extension Message {
 
 }
 
-private extension MessageDetail.Location {
-
-    static func noIconColor(name: LocalizedStringResource, icon: ImageResource) -> Self {
-        .init(name: name, icon: icon, iconColor: nil)
-    }
-
-}
-
 private extension AttachmentMetadata {
 
     var displayModel: AttachmentDisplayModel {

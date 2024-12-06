@@ -303,10 +303,6 @@ struct SidebarScreen: View {
             .padding(.bottom, DS.Spacing.extraLarge)
     }
 
-    private func closeSidebarAction() {
-        appUIStateStore.sidebarState.isOpen = false
-    }
-
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)

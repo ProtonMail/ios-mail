@@ -119,7 +119,4 @@ private struct Identifiers {
     
     static let dateLabel = "detail.header.expanded.date.label"
     static let dateText = "detail.header.expanded.date.value"
-    
-    static let otherLabel = "detail.header.expanded.other.label"
-    static let otherText = "detail.header.expanded.other.value"
 }

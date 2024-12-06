@@ -154,7 +154,6 @@ extension AppContext: AccountAuthDelegate {
 extension AppContext {
 
     struct Dependencies {
-        let fileManager: FileManager = .default
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
         let appConfigService: AppConfigService = AppConfigService.shared
@@ -181,10 +180,6 @@ final class UserContextInitializationDelegate: MailUserSessionInitializationCall
 
     func onStage(stage: proton_app_uniffi.MailUserSessionInitializationStage) {
         AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStage stage: \(stage)")
-    }
-
-    func onStageErr(stage: proton_app_uniffi.MailUserSessionInitializationStage, err: proton_app_uniffi.MailSessionError) {
-        AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStageError stage: \(stage) error: \(err)")
     }
 }
 

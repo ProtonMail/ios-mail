@@ -20,10 +20,6 @@ import SwiftUI
 
 extension View {
 
-    func shadow(_ shadow: Shadow) -> some View {
-        self.shadow(color: shadow.color, radius: shadow.blur, x: shadow.x, y: shadow.y)
-    }
-
     func shadow(_ shadow: Shadow, isVisible: Bool) -> some View {
         modifier(ConditionalShadow(shadow: shadow, isVisible: isVisible))
     }

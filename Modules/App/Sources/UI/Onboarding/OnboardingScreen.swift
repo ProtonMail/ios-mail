@@ -143,10 +143,6 @@ struct OnboardingScreen: View {
         .accessibilityIdentifier(OnboardingScreenIdentifiers.actionButton)
     }
 
-    private var hasNextPage: Bool {
-        state.selectedPageIndex < state.pages.count - 1
-    }
-
     private func spacing(height: CGFloat) -> some View {
         Spacer().frame(height: height)
     }

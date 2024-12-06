@@ -32,11 +32,6 @@ struct MailboxItemsListViewConfiguration {
     var cellEventHandler: MailboxItemsCellEventHandler?
 }
 
-struct MailboxItemsListActionBar {
-    let selectedMailbox: SelectedMailbox
-    let customLabelModel: CustomLabelModel
-}
-
 struct MailboxItemsListSwipeActions {
     let leadingSwipe: () -> SwipeAction
     let trailingSwipe: () -> SwipeAction

@@ -19,11 +19,9 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxEmptyView: View {
-    let isUnreadFilterOn: Bool
     @State private(set) var staticTitle: String
 
     init(isUnreadFilterOn: Bool) {
-        self.isUnreadFilterOn = isUnreadFilterOn
         self._staticTitle = .init(
             initialValue: isUnreadFilterOn
             ? L10n.Mailbox.EmptyState.titleForUnread.string

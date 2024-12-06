@@ -29,11 +29,3 @@ protocol SearchProtocol: Sendable {
 struct SearchOptions {
     let query: String
 }
-
-protocol SearchPaginator {
-    func hasNextPage() -> Bool
-    func nextPage() async throws -> [Message]
-    func reload() async throws -> [Message]
-    func resultCount() -> UInt32
-    func handle() -> WatchHandle
-}

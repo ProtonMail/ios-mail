@@ -90,11 +90,6 @@ final class ProtonRefreshControl: UIRefreshControl, ObservableObject {
         }
     }
 
-    private func updateSpinnerAlpha(with value: CGFloat) {
-        guard !isAnimating else { return }
-        spinnerAnimation.alpha = value
-    }
-
     func updateSpinnerProgressAndAlpha(withOffset offset: CGFloat) {
         guard !isAnimating else { return }
         let maxPullOffset: CGFloat = 150

@@ -37,7 +37,6 @@ struct HomeScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
     @State private var modalState: ModalState?
-    @ObservedObject private var customLabelModel: CustomLabelModel
     @ObservedObject private var appContext: AppContext
 
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
@@ -47,9 +46,8 @@ struct HomeScreen: View {
 
     @State var presentSignOutDialog = false
 
-    init(customLabelModel: CustomLabelModel, appContext: AppContext, userSession: MailUserSession) {
+    init(appContext: AppContext, userSession: MailUserSession) {
         _appRoute = .init(wrappedValue: .initialState)
-        self.customLabelModel = customLabelModel
         self.appContext = appContext
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
         self.makeSidebarScreen = { selectedItem in
@@ -72,14 +70,12 @@ struct HomeScreen: View {
             switch appRoute.route {
             case .mailbox:
                 MailboxScreen(
-                    customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
                     userDefaults: userDefaults
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
-                    customLabelModel: customLabelModel,
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
                     userDefaults: userDefaults,

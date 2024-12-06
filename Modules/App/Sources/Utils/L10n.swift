@@ -361,10 +361,6 @@ enum L10n {
     }
 
     enum Settings {
-        static let accountSettings = LocalizedStringResource(
-            "Account Settings",
-            comment: "Account settings screen title."
-        )
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."
