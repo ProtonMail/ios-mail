@@ -50,6 +50,29 @@
         }
       }
     },
+    "%lld messages" : {
+      "comment" : "Number of messages in a conversation.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld message"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld messages"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld Selected" : {
       "comment" : "Header indicating number of selected emails in given system folder."
     },

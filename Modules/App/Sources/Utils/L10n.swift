@@ -449,5 +449,8 @@ enum L10n {
     static func files(attachmentsCount: Int) -> LocalizedStringResource {
         .init("\(attachmentsCount) files", comment: "The number of attachments on conversation details screen.")
     }
+    static func messages(count: Int) -> LocalizedStringResource {
+        .init("\(count) messages", comment: "Number of messages in a conversation.")
+    }
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
 }

@@ -19,14 +19,19 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MailboxItemDetailToolbar: ViewModifier {
+struct ConversationToolbar<TrailingButton: View>: ViewModifier {
     @Environment(\.presentationMode) var presentationMode
-    let purpose: Purpose
-    let trailingItemAction: () -> Void
+    private let title: AttributedString
+    private let trailingButton: () -> TrailingButton
+
+    init(title: AttributedString, trailingButton: @escaping () -> TrailingButton) {
+        self.title = title
+        self.trailingButton = trailingButton
+    }
 
     func body(content: Content) -> some View {
         content
-            .navigationBarBackButtonHidden(true)
+            .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
@@ -35,81 +40,35 @@ struct MailboxItemDetailToolbar: ViewModifier {
                         HStack {
                             Spacer()
                             Image(DS.Icon.icChevronTinyLeft)
+                                .foregroundStyle(DS.Color.Icon.norm)
                         }
                         .padding(10)
                     })
                     .square(size: 40)
-                    .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.backButton)
                 }
+
                 ToolbarItem(placement: .principal) {
-                    purpose.principalView
+                    Text(title)
+                        .frame(maxWidth: .infinity)
+                        .lineLimit(1)
+                        .transition(.opacity)
+                        .animation(.default, value: title)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    purpose.trailingView {
-                        trailingItemAction()
-                    }
+                    trailingButton()
                 }
             }
-            .tint(DS.Color.Text.norm)
     }
-}
 
-extension MailboxItemDetailToolbar {
-
-    enum Purpose {
-        case itemDetail(isStarred: Bool)
-        case simpleNavigation(title: String)
-
-        @ViewBuilder
-        var principalView: some View {
-            switch self {
-            case .itemDetail:
-                EmptyView()
-            case .simpleNavigation(let title):
-                if title.isEmpty {
-                    EmptyView()
-                } else {
-                    VStack(alignment: .leading) {
-                        Text(title)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, DS.Spacing.medium)
-                }
-            }
-        }
-
-        @ViewBuilder
-        func trailingView(action: @escaping () -> Void) -> some View {
-            switch self {
-            case .itemDetail(let isStarred):
-                Button(action: {
-                    action()
-                }, label: {
-                    Image(isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                        .foregroundStyle(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                })
-                .accessibilityIdentifier(MailboxItemDetailToolbarIdentifiers.starButton)
-            case .simpleNavigation:
-                EmptyView()
-            }
-        }
-    }
 }
 
 extension View {
-    @MainActor
-    func navigationToolbar(
-        purpose: MailboxItemDetailToolbar.Purpose,
-        trailingItemAction: @escaping () -> Void
-    ) -> some View {
-        return self.modifier(MailboxItemDetailToolbar(purpose: purpose, trailingItemAction: trailingItemAction))
-    }
-}
 
-private struct MailboxItemDetailToolbarIdentifiers {
-    static let backButton = "detail.backButton"
-    static let starButton = "detail.starButton"
+    func conversationTopToolbar(
+        title: AttributedString,
+        trailingButton: @escaping () -> some View
+    ) -> some View {
+        modifier(ConversationToolbar(title: title, trailingButton: trailingButton))
+    }
 }

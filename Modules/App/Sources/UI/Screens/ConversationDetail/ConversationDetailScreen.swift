@@ -23,6 +23,7 @@ import SwiftUI
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
     @State private var animateViewIn: Bool = false
+    @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Binding private var navigationPath: NavigationPath
 
@@ -71,7 +72,11 @@ struct ConversationDetailScreen: View {
         GeometryReader { proxy in
             ScrollView {
                 VStack {
-                    conversationDataView
+                    ListHeaderView(isHeaderVisible: $isHeaderVisible, parentGeometry: proxy) {
+                        subjectView
+                            .padding(.top, DS.Spacing.medium)
+                            .padding(.horizontal, DS.Spacing.large)
+                    }
                     ConversationDetailListView(model: model)
                 }
                 .accessibilityElement(children: .contain)
@@ -79,9 +84,16 @@ struct ConversationDetailScreen: View {
             }
             .padding(.bottom, proxy.safeAreaInsets.bottom + 45)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationToolbar(
-                purpose: .itemDetail(isStarred: model.isStarred),
-                trailingItemAction: { model.toggleStarState() }
+            .conversationTopToolbar(
+                title: topToolbarTitle,
+                trailingButton: {
+                    Button(action: {
+                        model.toggleStarState()
+                    }, label: {
+                        Image(model.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                            .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+                    })
+                }
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
@@ -94,17 +106,23 @@ struct ConversationDetailScreen: View {
         }
     }
 
-    private var conversationDataView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            subjectView
-                .padding(.top, DS.Spacing.medium)
-                .padding(.horizontal, DS.Spacing.large)
+    private var topToolbarTitle: AttributedString {
+        guard model.state.messagesCount > 0 else { return .init(.empty) }
+        return isHeaderVisible ? attributedTopTitle : attributedNumberOfMessages
+    }
 
-            attachmentsAndLabelsView
-                .frame(height: 24)
-                .padding(.top, DS.Spacing.compact)
-                .removeViewIf(model.seed.hasNoAttachments && model.seed.labels.isEmpty)
-        }
+    private var attributedTopTitle: AttributedString {
+        var text = AttributedString(model.seed.subject)
+        text.font = .system(.body, weight: .semibold)
+        text.foregroundColor = DS.Color.Text.norm
+        return text
+    }
+
+    private var attributedNumberOfMessages: AttributedString {
+        var text = AttributedString(localized: L10n.messages(count: model.state.messagesCount))
+        text.font = .caption
+        text.foregroundColor = DS.Color.Text.weak
+        return text
     }
 
     private var subjectView: some View {
@@ -159,6 +177,20 @@ private extension View {
     func smoothScreenTransition() -> some View {
         self.modifier(ModifiersForSmoothScreenTransition())
     }
+}
+
+
+private extension ConversationDetailModel.State {
+
+    var messagesCount: Int {
+        switch self {
+        case .initial, .fetchingMessages:
+            0
+        case .messagesReady(let previous, let last):
+            (previous + [last]).count
+        }
+    }
+
 }
 
 #Preview("From Mailbox") {
