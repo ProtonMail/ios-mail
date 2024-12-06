@@ -70,13 +70,14 @@ extension AppLifeCycle {
         let appConfigService = AppConfigService.shared
         let testService = TestService.shared
         let appContext = AppContext.shared
+        let appIconBadgeService = AppIconBadgeService(appContext: appContext)
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
-            setUpServices: [appConfigService, testService, appContext],
+            setUpServices: [appConfigService, testService, appContext, appIconBadgeService],
             becomeActiveServices: [eventLoop],
-            enterBackgroundServices: [eventLoop],
+            enterBackgroundServices: [appIconBadgeService, eventLoop],
             terminateServices: []
         )
     }

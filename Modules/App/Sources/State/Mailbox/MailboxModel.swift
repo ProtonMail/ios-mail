@@ -204,7 +204,7 @@ extension MailboxModel {
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
                 await MainActor.run {
-                    self?.state.filterBar.unreadCount = .knwon(unreadCount: unreadCount)
+                    self?.state.filterBar.unreadCount = .known(unreadCount: unreadCount)
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()

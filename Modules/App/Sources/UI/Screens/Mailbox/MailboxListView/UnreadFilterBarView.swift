@@ -105,12 +105,12 @@ enum FilterBarVivibilityMode {
 }
 
 enum UnreadCounterState {
-    case knwon(unreadCount: UInt64)
+    case known(unreadCount: UInt64)
     case unknown
 
     var string: String {
         switch self {
-        case .knwon(let unreadCount):
+        case .known(let unreadCount):
             UnreadCountFormatter.string(count: unreadCount, maxCount: 99)
         case .unknown:
             "-".notLocalized
@@ -133,7 +133,7 @@ private struct UnreadFilterIdentifiers {
 
 #Preview {
     struct Preview: View {
-        @State var stateRegular: FilterBarState = .init(visibilityMode: .regular, unreadCount: .knwon(unreadCount: 3))
+        @State var stateRegular: FilterBarState = .init(visibilityMode: .regular, unreadCount: .known(unreadCount: 3))
         @State var stateRegularUnknownCount: FilterBarState = .init(visibilityMode: .regular, unreadCount: .unknown)
         @State var stateSelectionMode: FilterBarState = .init(visibilityMode: .selectionMode)
         var body: some View {
