@@ -19,24 +19,27 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct SingleFolderNodeView: View {
+struct SingleFolderNodeView<UnreadText: View>: View {
 
     private let folder: SidebarFolder
     private let padding: CGFloat
     private let selected: (SidebarFolder) -> Void
     private let toggle: (SidebarFolder, Bool) -> Void
+    private let unreadTextView: (_ count: String, _ isSelected: Bool) -> UnreadText
     @State private var isExpanded: Bool
 
     init(
         folder: SidebarFolder,
         padding: CGFloat = 0,
         selected: @escaping (SidebarFolder) -> Void,
-        toggle: @escaping (SidebarFolder, Bool) -> Void
+        toggle: @escaping (SidebarFolder, Bool) -> Void,
+        unreadTextView: @escaping (_ count: String, _ isSelected: Bool) -> UnreadText
     ) {
         self.folder = folder
         self.padding = padding
         self.selected = selected
         self.toggle = toggle
+        self.unreadTextView = unreadTextView
         self.isExpanded = folder.expanded
     }
 
@@ -73,12 +76,7 @@ struct SingleFolderNodeView: View {
                     }
                     VStack {
                         if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: folder.unreadCount) {
-                            Text(unreadFormatted)
-                                .foregroundStyle(
-                                    folder.isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak
-                                )
-                                .font(.caption)
-                                .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.badgeItem)
+                            unreadTextView(unreadFormatted, folder.isSelected)
                         }
                     }
                     .frame(width: 32, alignment: .trailing)
@@ -93,7 +91,8 @@ struct SingleFolderNodeView: View {
                         folder: childFolder,
                         padding: padding + DS.Spacing.large,
                         selected: selected,
-                        toggle: toggle
+                        toggle: toggle, 
+                        unreadTextView: unreadTextView
                     )
                 }
             }

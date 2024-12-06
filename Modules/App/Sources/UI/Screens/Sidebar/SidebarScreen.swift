@@ -165,7 +165,8 @@ struct SidebarScreen: View {
                 SingleFolderNodeView(
                     folder: folder,
                     selected: { folder in select(item: .folder(folder)) },
-                    toggle: { folder, expand in screenModel.handle(action: .toggle(folder: folder, expand: expand)) }
+                    toggle: { folder, expand in screenModel.handle(action: .toggle(folder: folder, expand: expand)) },
+                    unreadTextView: { count, isSelected in unreadLabel(unreadCount: count, isSelected: isSelected) }
                 )
             }
             createButton(
@@ -274,8 +275,9 @@ struct SidebarScreen: View {
 
     private func unreadLabel(unreadCount: String, isSelected: Bool) -> some View {
         Text(unreadCount)
-            .foregroundStyle(isSelected ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
-            .font(.caption)
+            .foregroundStyle(isSelected ? Color.red : DS.Color.Sidebar.textNorm)
+            .font(.footnote)
+            .fontWeight(.semibold)
             .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
     }
 
