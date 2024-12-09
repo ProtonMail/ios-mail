@@ -275,7 +275,7 @@ struct SidebarScreen: View {
 
     private func unreadLabel(unreadCount: String, isSelected: Bool) -> some View {
         Text(unreadCount)
-            .foregroundStyle(isSelected ? Color.red : DS.Color.Sidebar.textNorm)
+            .foregroundStyle(isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
             .font(.footnote)
             .fontWeight(.semibold)
             .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
