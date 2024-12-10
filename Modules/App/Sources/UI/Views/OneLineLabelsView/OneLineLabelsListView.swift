@@ -45,6 +45,7 @@ struct OneLineLabelsListView: View {
                     case .count(let count):
                         Text("+\(count)".notLocalized) // FIXME: - Reuse
                             .foregroundStyle(DS.Color.Text.weak)
+                            .fontWeight(.semibold)
                             .font(.caption)
                     }
                 }
