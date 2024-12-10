@@ -21,27 +21,27 @@ extension SidebarProtocol {
     func customFolders() async -> Result<[SidebarCustomFolder], ActionError> {
         switch await customFolders() {
         case .ok(let value):
-                .success(value)
+            Result.success(value)
         case .error(let error):
-                .failure(error)
+            Result.failure(error)
         }
     }
 
     func customLabels() async -> Result<[SidebarCustomLabel], ActionError> {
         switch await customLabels() {
         case .ok(let value):
-                .success(value)
+            Result.success(value)
         case .error(let error):
-                .failure(error)
+            Result.failure(error)
         }
     }
 
     func systemLabels() async -> Result<[SidebarSystemLabel], ActionError> {
         switch await systemLabels() {
         case .ok(let value):
-                .success(value)
+            Result.success(value)
         case .error(let error):
-                .failure(error)
+            Result.failure(error)
         }
     }
 }
