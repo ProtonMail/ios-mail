@@ -19,24 +19,24 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxConversationMessageCountView: View {
+    let isRead: Bool // FIXME: - Rename it
     let messagesCount: UInt64
-
-    private let cornerRadius = 6.0
 
     var body: some View {
         if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: messagesCount) {
             Text(unreadFormatted)
-                .font(.footnote)
+                .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundStyle(DS.Color.Text.weak)
+                .foregroundStyle(isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .padding(.vertical, DS.Spacing.tiny)
                 .padding(.horizontal, DS.Spacing.small)
-                .frame(minWidth: 20)
+                .frame(minWidth: 18)
                 .fixedSize()
                 .lineLimit(1)
-                .background(
-                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .fill(DS.Color.Background.secondary)
+                .background(DS.Color.Background.norm)
+                .overlay(
+                    RoundedRectangle(cornerRadius: DS.Radius.small)
+                        .stroke(isRead ? DS.Color.Icon.weak : DS.Color.Icon.norm, lineWidth: 1)
                 )
                 .accessibilityIdentifier(MailConversationMessageCountView.countText)
         }
@@ -45,10 +45,10 @@ struct MailboxConversationMessageCountView: View {
 
 #Preview {
     VStack(spacing: 10) {
-        MailboxConversationMessageCountView(messagesCount: 0)
-        MailboxConversationMessageCountView(messagesCount: 1)
-        MailboxConversationMessageCountView(messagesCount: 12)
-        MailboxConversationMessageCountView(messagesCount: 23889)
+        MailboxConversationMessageCountView(isRead: false, messagesCount: 0)
+        MailboxConversationMessageCountView(isRead: true, messagesCount: 1)
+        MailboxConversationMessageCountView(isRead: false, messagesCount: 12)
+        MailboxConversationMessageCountView(isRead: false, messagesCount: 23889)
     }
     .border(.purple)
 }
