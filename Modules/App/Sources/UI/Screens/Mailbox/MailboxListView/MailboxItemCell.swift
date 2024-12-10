@@ -40,7 +40,7 @@ struct MailboxItemCell: View {
             mailboxItemContentView
         }
         .padding(.horizontal, DS.Spacing.large)
-        .padding(.vertical, DS.Spacing.moderatelyLarge)
+        .padding(.vertical, DS.Spacing.medium)
         .background(uiModel.isSelected || isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
     }
 }
