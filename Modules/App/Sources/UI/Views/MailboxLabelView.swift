@@ -18,6 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
+// FIXME: - To remove
 struct MailboxLabelView: View {
     let uiModel: MailboxLabelUIModel
     let extraLabelsTextColor: Color
@@ -94,7 +95,7 @@ struct MailboxLabelUIModel: Identifiable {
     }
 }
 
-struct LabelUIModel {
+struct LabelUIModel: Hashable {
     let labelId: ID
     let text: String
     let color: Color

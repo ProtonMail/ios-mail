@@ -76,6 +76,11 @@ extension MailboxItemCell {
             })
 
             attachmentRowView
+
+            if !uiModel.labelUIModel.labelModels.isEmpty {
+                OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
+                    .padding(.top, DS.Spacing.standard)
+            }
         }
     }
 
@@ -111,10 +116,6 @@ extension MailboxItemCell {
                 .foregroundColor(textColor)
                 .layoutPriority(1)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.subjectText)
-            MailboxLabelView(uiModel: uiModel.labelUIModel, extraLabelsTextColor: textColor)
-                .padding(.leading, labelLeadingPadding)
-                .frame(minWidth: 70)
-                .removeViewIf(uiModel.labelUIModel.isEmpty)
 
             Spacer()
             Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
