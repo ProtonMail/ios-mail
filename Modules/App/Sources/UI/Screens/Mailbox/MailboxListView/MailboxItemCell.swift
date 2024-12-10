@@ -57,31 +57,26 @@ extension MailboxItemCell {
     }
 
     private var mailboxItemContentView: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                senderRowView
+        VStack(spacing: DS.Spacing.compact) {
+            senderRowView
+            VStack(spacing: DS.Spacing.small) {
                 subjectRowView
                 expirationRowView
                 snoozedRowView
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                onEvent(.onTap)
-            }
-            .onLongPressGesture(perform: {
-                onEvent(.onLongPress)
-            }, onPressingChanged: {
-                guard isParentListSelectionEmpty else { return }
-                isPressed = $0
-            })
-
             attachmentRowView
-
-            if !uiModel.labelUIModel.labelModels.isEmpty {
-                OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
-                    .padding(.top, DS.Spacing.standard)
-            }
+            labelsRowView
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onEvent(.onTap)
+        }
+        .onLongPressGesture(perform: {
+            onEvent(.onLongPress)
+        }, onPressingChanged: {
+            guard isParentListSelectionEmpty else { return }
+            isPressed = $0
+        })
     }
 
     private var senderRowView: some View {
@@ -128,7 +123,6 @@ extension MailboxItemCell {
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.starIcon)
         }
         .frame(height: 21.0)
-        .padding(.top, DS.Spacing.small)
     }
 
     @ViewBuilder
@@ -174,33 +168,41 @@ extension MailboxItemCell {
                     .fontWeight(.regular)
                     .foregroundStyle(uiModel.color)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, DS.Spacing.small)
             }
         }
     }
 
+    @ViewBuilder
     private var snoozedRowView: some View {
-        Text(uiModel.snoozeDate ?? "")
-            .font(.subheadline)
-            .fontWeight(.regular)
-            .foregroundStyle(DS.Color.Notification.warning)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, DS.Spacing.small)
-            .removeViewIf(uiModel.snoozeDate == nil)
+        if let snoozeDate = uiModel.snoozeDate {
+            Text(snoozeDate)
+                .font(.subheadline)
+                .fontWeight(.regular)
+                .foregroundStyle(DS.Color.Notification.warning)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
+    @ViewBuilder
     private var attachmentRowView: some View {
-        AttachmentsView(
-            uiModel: uiModel.attachmentsUIModel,
-            isAttachmentHighlightEnabled: isParentListSelectionEmpty,
-            onTapEvent: {
-                onEvent(.onAttachmentTap(attachmentID: $0))
-            }
-        )
-        .padding(.top, DS.Spacing.standard)
-        .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
+        if !uiModel.attachmentsUIModel.isEmpty {
+            AttachmentsView(
+                uiModel: uiModel.attachmentsUIModel,
+                isAttachmentHighlightEnabled: isParentListSelectionEmpty,
+                onTapEvent: {
+                    onEvent(.onAttachmentTap(attachmentID: $0))
+                }
+            )
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
+        }
+    }
+
+    @ViewBuilder
+    private var labelsRowView: some View {
+        if !uiModel.labelUIModel.labelModels.isEmpty {
+            OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
+        }
     }
 }
 
@@ -312,12 +314,8 @@ enum MailboxItemCellEvent {
 }
 
 #Preview {
-
-    return VStack {
-
+    VStack {
         MailboxItemCell(uiModel: MailboxItemCellUIModel.proton1, isParentListSelectionEmpty: true, onEvent: { _ in })
-
-        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton2, isParentListSelectionEmpty: true, onEvent: { _ in })
 
         MailboxItemCell(
             uiModel: .init(
@@ -377,6 +375,8 @@ enum MailboxItemCellEvent {
             isParentListSelectionEmpty: true,
             onEvent: { _ in }
         )
+
+        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton2, isParentListSelectionEmpty: true, onEvent: { _ in })
     }
 }
 
