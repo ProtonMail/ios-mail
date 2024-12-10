@@ -95,7 +95,7 @@ extension MailboxItemCell {
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .fontWeight(uiModel.isRead ? .semibold : .bold)
-                .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+                .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }
     }
