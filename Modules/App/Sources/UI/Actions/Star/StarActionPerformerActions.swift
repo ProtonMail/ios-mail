@@ -17,12 +17,14 @@
 
 import proton_app_uniffi
 
-struct StarActionPerformerActions {
-    let starMessage: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-    let starConversation: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
+typealias StarActionClosure = (_ session: MailUserSession, _ ids: [ID]) async -> VoidActionResult
 
-    let unstarMessage: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
-    let unstarConversation: (_ session: MailUserSession, _ ids: [ID]) async throws -> Void
+struct StarActionPerformerActions {
+    let starMessage: StarActionClosure
+    let starConversation: StarActionClosure
+
+    let unstarMessage: StarActionClosure
+    let unstarConversation: StarActionClosure
 }
 
 extension StarActionPerformerActions {
@@ -38,10 +40,10 @@ extension StarActionPerformerActions {
 
     static var dummy: StarActionPerformerActions {
         .init(
-            starMessage: { _, _ in },
-            starConversation: { _, _ in },
-            unstarMessage: { _, _ in },
-            unstarConversation: { _, _ in }
+            starMessage: { _, _ in .ok },
+            starConversation: { _, _ in .ok },
+            unstarMessage: { _, _ in .ok },
+            unstarConversation: { _, _ in .ok }
         )
     }
 

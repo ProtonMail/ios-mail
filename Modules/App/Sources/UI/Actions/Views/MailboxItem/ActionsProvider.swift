@@ -18,8 +18,8 @@
 import proton_app_uniffi
 
 struct ActionsProvider {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> MessageAvailableActions
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> ConversationAvailableActions
+    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async -> AvailableActionsForMessagesResult
+    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async -> AvailableActionsForConversationsResult
 }
 
 extension ActionsProvider {

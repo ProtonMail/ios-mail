@@ -48,18 +48,27 @@ struct StarActionPerformer {
     private func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await starActionPerformerActions.starMessage(mailUserSession, ids)
+            await execute(action: starActionPerformerActions.starMessage, on: ids)
         case .conversation:
-            try! await starActionPerformerActions.starConversation(mailUserSession, ids)
+            await execute(action: starActionPerformerActions.starConversation, on: ids)
         }
     }
 
     private func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await starActionPerformerActions.unstarMessage(mailUserSession, ids)
+            await execute(action: starActionPerformerActions.unstarMessage, on: ids)
         case .conversation:
-            try! await starActionPerformerActions.unstarConversation(mailUserSession, ids)
+            await execute(action: starActionPerformerActions.unstarConversation, on: ids)
+        }
+    }
+
+    private func execute(action: StarActionClosure, on ids: [ID]) async {
+        switch await action(mailUserSession, ids) {
+        case .ok:
+            break
+        case .error(let error):
+            fatalError("\(error)")
         }
     }
 }

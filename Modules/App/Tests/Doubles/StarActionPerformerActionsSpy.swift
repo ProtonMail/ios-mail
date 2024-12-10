@@ -26,15 +26,19 @@ class StarActionPerformerActionsSpy {
     private(set) lazy var testingInstance = StarActionPerformerActions(
         starMessage: { [weak self] _, messagesIDs in
             self?.invokedStarMessage = messagesIDs
+            return .ok
         },
         starConversation: { [weak self] _, conversationsIDs in
             self?.invokedStarConversation = conversationsIDs
+            return .ok
         },
         unstarMessage: { [weak self] _, messagesIDs in
             self?.invokedUnstarMessage = messagesIDs
+            return .ok
         },
         unstarConversation: { [weak self] _, conversationsIDs in
             self?.invokedUnstarConversation = conversationsIDs
+            return .ok
         }
     )
 }

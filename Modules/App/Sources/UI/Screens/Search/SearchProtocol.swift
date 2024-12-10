@@ -23,7 +23,7 @@ protocol SearchProtocol: Sendable {
       session: MailUserSession,
       options: SearchOptions,
       callback: LiveQueryCallback
-    ) async throws -> MessagePaginator
+    ) async -> PaginateSearchResult
 }
 
 struct SearchOptions {

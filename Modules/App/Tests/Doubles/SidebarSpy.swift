@@ -29,34 +29,35 @@ class SidebarSpy: SidebarProtocol {
 
     // MARK: - SidebarProtocol
 
-    func allCustomFolders() async throws -> [SidebarCustomFolder] {
-        stubbedCustomFolders
+    func allCustomFolders() async -> SidebarAllCustomFoldersResult {
+        .ok(stubbedCustomFolders)
     }
 
-    func collapseFolder(localId: ID) async throws {
+    func collapseFolder(localId: ID) async -> VoidActionResult {
         collapseFolderInvoked.append(localId)
+        return .ok
     }
 
-    func customFolders() async throws -> [SidebarCustomFolder] {
-        stubbedCustomFolders
+    func customFolders() async -> SidebarCustomFoldersResult {
+        .ok(stubbedCustomFolders)
     }
 
-    func expandFolder(localId: ID) async throws {
+    func expandFolder(localId: ID) async -> VoidActionResult {
         expandFolderInvoked.append(localId)
+        return .ok
     }
 
-    func customLabels() async throws -> [SidebarCustomLabel] {
-        stubbedCustomLabels
+    func customLabels() async -> SidebarCustomLabelsResult {
+        .ok(stubbedCustomLabels)
     }
 
-    func systemLabels() async throws -> [SidebarSystemLabel] {
-        stubbedSystemLabels
+    func systemLabels() async -> SidebarSystemLabelsResult {
+        .ok(stubbedSystemLabels)
     }
 
-    func watchLabels(labelType: LabelType, callback: LiveQueryCallback) async throws -> WatchHandle {
+    func watchLabels(labelType: LabelType, callback: LiveQueryCallback) async -> SidebarWatchLabelsResult {
         spiedWatchers[labelType] = callback
-
-        return WatchHandle(noPointer: .init())
+        return .ok(WatchHandle(noPointer: .init()))
     }
 
 }

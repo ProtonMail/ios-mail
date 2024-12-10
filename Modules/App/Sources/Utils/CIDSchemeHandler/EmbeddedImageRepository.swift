@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-typealias EmbeddedImageClosure = (_ mailbox: Mailbox, _ id: ID, _ cid: String) async throws -> EmbeddedAttachmentInfo
+typealias EmbeddedImageClosure = (_ mailbox: Mailbox, _ id: ID, _ cid: String) async -> GetEmbeddedAttachmentResult
 
 struct EmbeddedImageRepository {
     private let mailbox: Mailbox
@@ -29,8 +29,12 @@ struct EmbeddedImageRepository {
     }
 
     func embeddedImage(messageID: ID, cid: String) async throws -> EmbeddedImage {
-        let imageMetadata = try await embeddedImageProvider(mailbox, messageID, cid)
-        return imageMetadata.embeddedImage
+        switch await embeddedImageProvider(mailbox, messageID, cid) {
+        case .ok(let imageMetadata):
+            imageMetadata.embeddedImage
+        case .error(let error):
+            throw error
+        }
     }
 }
 

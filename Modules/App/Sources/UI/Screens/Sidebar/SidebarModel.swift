@@ -52,9 +52,9 @@ final class SidebarModel: Sendable, ObservableObject {
     private func changeVisibility(of folder: SidebarFolder, expand: Bool) {
         Task {
             if expand {
-                try? await sidebar.expandFolder(localId: folder.id)
+                _ = await sidebar.expandFolder(localId: folder.id)
             } else {
-                try? await sidebar.collapseFolder(localId: folder.id)
+                _ = await sidebar.collapseFolder(localId: folder.id)
             }
         }
     }
@@ -215,7 +215,7 @@ private class SidebarModelsObservation<Model>: LiveQueryCallback {
 
     private let sidebar: SidebarProtocol
     private let labelType: LabelType
-    private let updatedData: () async throws -> ([Model])
+    private let updatedData: () async -> Result<[Model], ActionError>
     private let dataUpdate: ([Model]) -> Void
 
     private var watchHandle: WatchHandle?
@@ -223,7 +223,7 @@ private class SidebarModelsObservation<Model>: LiveQueryCallback {
     init(
         sidebar: SidebarProtocol,
         labelType: LabelType,
-        updatedData: @escaping () async throws -> ([Model]),
+        updatedData: @escaping () async -> Result<[Model], ActionError>,
         dataUpdate: @escaping ([Model]) -> Void
     ) {
         self.sidebar = sidebar
@@ -245,13 +245,18 @@ private class SidebarModelsObservation<Model>: LiveQueryCallback {
 
     private func initLiveQuery() {
         Task {
-            watchHandle = try await sidebar.watchLabels(labelType: labelType, callback: self)
-            await emitUpdatedModelsIfAvailable()
+            switch await sidebar.watchLabels(labelType: labelType, callback: self) {
+            case .ok(let watchHandle):
+                self.watchHandle = watchHandle
+                await emitUpdatedModelsIfAvailable()
+            case .error:
+                break
+            }
         }
     }
 
     private func emitUpdatedModelsIfAvailable() async {
-        if let newData = try? await updatedData() {
+        if let newData = try? await updatedData().get() {
             dataUpdate(newData)
         }
     }

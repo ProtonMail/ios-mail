@@ -311,15 +311,15 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             actionsProvider: .init(
                 message: { _, ids in
                     self.invokedWithMessagesIDs = ids
-                    return self.stubbedMessageActions
+                    return .ok(self.stubbedMessageActions)
                 },
                 conversation: { _, ids in
                     self.invokedWithConversationIDs = ids
-                    return self.stubbedConversationActions
+                    return .ok(self.stubbedConversationActions)
                 }
-            ), 
-            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance, 
-            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
+            ),
+            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             deleteActions: deleteActionsSpy.testingInstance,
             moveToActions: moveToActionsSpy.testingInstance,
             mailUserSession: .dummy, 

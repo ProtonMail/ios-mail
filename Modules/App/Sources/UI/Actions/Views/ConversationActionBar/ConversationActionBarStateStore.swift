@@ -23,13 +23,13 @@ class ConversationActionBarStateStore: ObservableObject {
     @Published var state: [BottomBarAction] = []
 
     private let conversationID: ID
-    private let bottomBarConversationActionsProvider: BottomBarActionsProvider
+    private let bottomBarConversationActionsProvider: ConversationBottomBarActionsProvider
     private let mailbox: Mailbox
     private let handleAction: (BottomBarAction) -> Void
 
     init(
         conversationID: ID,
-        bottomBarConversationActionsProvider: @escaping BottomBarActionsProvider,
+        bottomBarConversationActionsProvider: @escaping ConversationBottomBarActionsProvider,
         mailbox: Mailbox,
         handleAction: @escaping (BottomBarAction) -> Void
     ) {
@@ -53,6 +53,7 @@ class ConversationActionBarStateStore: ObservableObject {
     private func fetchActions() {
         Task {
             let actions = try! await bottomBarConversationActionsProvider(mailbox, [conversationID])
+                .get()
                 .visibleBottomBarActions
                 .compactMap(\.action)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in

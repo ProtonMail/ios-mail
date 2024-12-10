@@ -40,7 +40,7 @@ packages:
     group: Modules
   Lottie:
     url: https://github.com/airbnb/lottie-ios.git
-    minorVersion: "4.5.0"    
+    minorVersion: "4.5.0"
   Nimble:
     url: https://github.com/Quick/Nimble
     minorVersion: "13.3.0"
@@ -70,14 +70,14 @@ configs:
 
 targets:
   ProtonMail:
-    type: application 
+    type: application
     platform: iOS
     supportedDestinations:
       - iOS
     deploymentTarget: 17.2
     scheme: {}
     attributes:
-      ProvisioningStyle: Manual    
+      ProvisioningStyle: Manual
     sources:
       - path: Modules/App/Sources
     settings:
@@ -106,7 +106,7 @@ targets:
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
           PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Distribution"
           PM_API_HOST: "proton.me"
-    info: 
+    info:
       path: Modules/App/Sources/SupportingFiles/Info.plist
       properties:
         CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
@@ -118,7 +118,7 @@ targets:
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
-        UILaunchScreen: 
+        UILaunchScreen:
           UILaunchScreen: []
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -137,15 +137,18 @@ targets:
       - package: Lottie
       - package: proton_app_uniffi
       - package: ProtonCoreET
-        products: 
+        products:
           - AccountLogin
           - AccountManager
       - package: SwiftUIIntrospect
+    preBuildScripts:
+      - name: Sourcery
+        script: /opt/homebrew/bin/sourcery --config sourcery/sourcery.yaml
 
   ProtonMailTest:
     type: bundle.unit-test
     platform: iOS
-    info: 
+    info:
       path: Modules/App/Tests/SupportingFiles/Info.plist
     sources:
       - path: Modules/App/Tests
@@ -159,6 +162,8 @@ targets:
       - package: ViewInspector
     scheme:
       gatherCoverageData: true
+      language: en
+      region: US
       testTargets:
         - name: ProtonMailTest
           parallelizable: true
@@ -169,7 +174,7 @@ targets:
   ProtonMailUITest:
     type: bundle.ui-testing
     platform: iOS
-    info: 
+    info:
       path: Modules/App/UITests/SupportingFiles/Info.plist
     sources:
       - path: Modules/App/UITests
@@ -180,11 +185,11 @@ targets:
       - package: SwiftNIO
         product: NIOCore
         product: NIOHTTP1
-      - package: SwiftNIOHTTP2 
+      - package: SwiftNIOHTTP2
         product: NIOHTTP2
     settings:
       configs:
-        UITests: 
+        UITests:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
     scheme: ProtonMailUITest
 

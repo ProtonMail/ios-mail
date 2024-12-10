@@ -29,12 +29,12 @@ final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
     }
 
     func load(attachmentId: ID) async {
-        do {
-            let result = try await mailbox.getAttachment(localAttachmentId: attachmentId)
+        switch await mailbox.getAttachment(localAttachmentId: attachmentId) {
+        case .ok(let result):
             let url = URL(fileURLWithPath: result.dataPath)
 
             await updateState(.attachmentReady(url))
-        } catch {
+        case .error(let error):
             await updateState(.error(error))
         }
     }
@@ -51,6 +51,6 @@ extension AttachmentViewLoader {
     enum State {
         case loading
         case attachmentReady(URL)
-        case error(Error)
+        case error(ActionError)
     }
 }

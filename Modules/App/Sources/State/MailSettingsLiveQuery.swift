@@ -63,8 +63,13 @@ final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailS
 
     private func setUpLiveQuery() {
         Task {
-            settingsWatcher = try! await watchMailSettings(ctx: userSession, callback: self)
-            settingsSubject.value = settingsWatcher.settings
+            switch await watchMailSettings(ctx: userSession, callback: self) {
+            case .ok(let settingsWatcher):
+                self.settingsWatcher = settingsWatcher
+                settingsSubject.value = settingsWatcher.settings
+            case .error(let error):
+                fatalError("\(error)")
+            }
         }
     }
 

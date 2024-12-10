@@ -20,7 +20,7 @@ import proton_app_uniffi
 enum MailboxItemActionSheetPreviewProvider {
     static func actionsProvider() -> ActionsProvider {
         ActionsProvider(
-            message: { _, _ in .init(
+            message: { _, _ in .ok(.init(
                 replyActions: [.reply, .forward, .replyAll],
                 messageActions: [.markUnread, .star, .pin, .labelAs],
                 moveActions: [
@@ -39,12 +39,12 @@ enum MailboxItemActionSheetPreviewProvider {
                     .viewHtml,
                     .reportPhishing
                 ]
-            )},
-            conversation: { _, _ in .init(
+            ))},
+            conversation: { _, _ in .ok(.init(
                 conversationActions: [],
                 moveActions: [],
                 generalActions: []
-            )}
+            ))}
         )
     }
 }

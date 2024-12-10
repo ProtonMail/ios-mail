@@ -1,0 +1,20 @@
+import Foundation
+import proton_app_uniffi
+
+{% for result in types.enums where result.accessLevel == "public" and result.name|hasSuffix:"Result" %}
+public extension {{ result.name }} {
+    func get() throws{% if result.cases[0].hasAssociatedValue %} -> {{ result.cases[0].associatedValues[0].typeName }}{% endif %} {
+        switch self {
+        {% if result.cases[0].hasAssociatedValue %}
+        case .ok(let value):
+            value
+        {% else %}
+        case .ok:
+            break
+        {% endif %}
+        case .error(let error):
+            throw error
+        }
+    }
+}
+{% endfor %}

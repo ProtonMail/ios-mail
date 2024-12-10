@@ -23,7 +23,7 @@ struct ConversationActionBarView: View {
 
     init(
         conversationID: ID,
-        bottomBarConversationActionsProvider: @escaping BottomBarActionsProvider,
+        bottomBarConversationActionsProvider: @escaping ConversationBottomBarActionsProvider,
         mailbox: Mailbox,
         handleAction: @escaping (BottomBarAction) -> Void
     ) {

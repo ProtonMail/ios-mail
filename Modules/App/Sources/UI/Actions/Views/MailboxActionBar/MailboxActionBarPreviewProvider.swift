@@ -49,8 +49,8 @@ enum MailboxActionBarPreviewProvider {
             ]
         )
         return .init(
-            message: { _, _ in stub },
-            conversation: { _, _ in stub }
+            message: { _, _ in .ok(stub) },
+            conversation: { _, _ in .ok(stub) }
         )
     }
 

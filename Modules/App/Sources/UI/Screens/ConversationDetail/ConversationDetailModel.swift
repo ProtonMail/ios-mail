@@ -94,10 +94,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
         guard let mailbox, metadata.unread else { return }
         Task {
-            try? await markMessagesRead(
-                mailbox: mailbox,
-                messageIds: [metadata.messageID]
-            )
+            _ = await markMessagesRead(mailbox: mailbox, messageIds: [metadata.messageID])
         }
     }
 
@@ -204,15 +201,21 @@ extension ConversationDetailModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else {
             throw ConversationModelError.noActiveSessionFound
         }
-        let newMailbox: Mailbox
+        let newMailboxResult: NewMailboxResult
         switch seed.selectedMailbox {
         case .inbox:
-            newMailbox = try await Mailbox.inbox(ctx: userSession)
+            newMailboxResult = await inboxMailbox(ctx: userSession)
         case .systemFolder, .customLabel, .customFolder:
-            newMailbox = try await Mailbox(ctx: userSession, labelId: seed.selectedMailbox.localId)
+            newMailboxResult = await newMailbox(ctx: userSession, labelId: seed.selectedMailbox.localId)
         }
-        mailbox = newMailbox
-        return newMailbox
+
+        switch newMailboxResult {
+        case .ok(let newMailbox):
+            self.mailbox = newMailbox
+            return newMailbox
+        case .error(let userSessionError):
+            throw userSessionError
+        }
     }
 
     private func conversationID() async throws -> ID {
@@ -226,22 +229,32 @@ extension ConversationDetailModel {
     }
 
     private func fetchMessage(with messageID: ID) async throws -> Message {
-        guard let message = try await message(session: dependencies.appContext.userSession, id: messageID) else {
+        switch await message(session: dependencies.appContext.userSession, id: messageID) {
+        case .error(let error):
+            throw error
+        case .ok(.none):
             throw ConversationModelError.noMessageFound(messageID: messageID)
+        case .ok(.some(let message)):
+            return message
         }
-
-        return message
     }
 
     private func createLiveQueryAndPrepareMessages(
         forConversationID conversationID: ID,
         mailbox: Mailbox
     ) async throws -> [MessageCellUIModel] {
-        messagesLiveQuery = try await watchConversation(
+        let watchConversationResult = await watchConversation(
             mailbox: mailbox,
             id: conversationID,
             callback: messageListCallback
         )
+
+        switch watchConversationResult {
+        case .ok(let watchedConversation):
+            messagesLiveQuery = watchedConversation
+        case .error(let actionError):
+            throw actionError
+        }
 
         /// We want to set the state to expanded before rendering the list to scroll to the correct position
         setRelevantMessageStateAsExpanded()
@@ -308,7 +321,7 @@ extension ConversationDetailModel {
                 return []
             }
             let conversationID = try await conversationID()
-            let messages = try await conversation(mailbox: mailbox, id: conversationID)?.messages ?? []
+            let messages = try await conversation(mailbox: mailbox, id: conversationID).get()?.messages ?? []
             guard let lastMessage = messages.last else { return [] }
             
             // list of messages except the last one

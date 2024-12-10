@@ -27,7 +27,12 @@ struct DeleteActionPerformer {
     }
 
     func delete(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
-        try! await deleteAction(for: itemType)(mailbox, ids)
+        switch await deleteAction(for: itemType)(mailbox, ids) {
+        case .ok:
+            break
+        case .error(let error):
+            fatalError("\(error)")
+        }
     }
 
     // MARK: - Private

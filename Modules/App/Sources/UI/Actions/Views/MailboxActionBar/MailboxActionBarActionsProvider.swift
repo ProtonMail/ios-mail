@@ -25,16 +25,16 @@ struct MailboxActionBarActionsProvider {
     func actions(forItemsWith ids: [ID]) async -> AllBottomBarMessageActions {
         switch itemTypeForActionBar {
         case .message:
-            try! await availableActions.message(mailbox, ids)
+            try! await availableActions.message(mailbox, ids).get()
         case .conversation:
-            try! await availableActions.conversation(mailbox, ids)
+            try! await availableActions.conversation(mailbox, ids).get()
         }
     }
 }
 
 struct AvailableMailboxActionBarActions {
-    let message: BottomBarActionsProvider
-    let conversation: BottomBarActionsProvider
+    let message: MessageBottomBarActionsProvider
+    let conversation: ConversationBottomBarActionsProvider
 }
 
 extension AvailableMailboxActionBarActions {
@@ -48,4 +48,5 @@ extension AvailableMailboxActionBarActions {
 
 }
 
-typealias BottomBarActionsProvider = (Mailbox, [Id]) async throws -> AllBottomBarMessageActions
+typealias MessageBottomBarActionsProvider = (Mailbox, [Id]) async -> AllAvailableBottomBarActionsForMessagesResult
+typealias ConversationBottomBarActionsProvider = (Mailbox, [Id]) async -> AllAvailableBottomBarActionsForConversationsResult

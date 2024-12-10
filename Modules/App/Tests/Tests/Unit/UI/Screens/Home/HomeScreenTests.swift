@@ -222,18 +222,22 @@ private extension MailUserSession {
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
-        let mailSession = try MailSession.create(
+        let mailSession = try createMailSession(
             params: params,
             keyChain: KeychainSDKWrapper(),
             networkCallback: nil
-        )
+        ).get()
 
         let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
-        let mailUserSession = try mailSession.userContextFromSession(session: storedSession)
 
-        return mailUserSession
+        switch mailSession.userContextFromSession(session: storedSession) {
+        case .ok(let mailUserSession):
+            return mailUserSession
+        case .error(let error):
+            throw error
+        }
     }
 
 }

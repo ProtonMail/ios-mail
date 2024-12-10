@@ -28,19 +28,20 @@ final class UnreadItemsCountLiveQuery: @unchecked Sendable {
     }
 
     func setUpLiveQuery() async {
-        do {
-            let liveQueryCallback = LiveQueryCallbackWrapper()
-            liveQueryCallback.delegate = { [weak self] in
-                guard let self else { return }
+        let liveQueryCallback = LiveQueryCallbackWrapper()
+        liveQueryCallback.delegate = { [weak self] in
+            guard let self else { return }
 
-                Task {
-                    await self.emitDataIfAvailable()
-                }
+            Task {
+                await self.emitDataIfAvailable()
             }
+        }
 
-            watchHandle = try await mailbox.watchUnreadCount(callback: liveQueryCallback)
+        switch await mailbox.watchUnreadCount(callback: liveQueryCallback) {
+        case .ok(let watchHandle):
+            self.watchHandle = watchHandle
             await emitDataIfAvailable()
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
         }
     }
@@ -48,10 +49,10 @@ final class UnreadItemsCountLiveQuery: @unchecked Sendable {
     // MARK: - Private
 
     private func emitDataIfAvailable() async {
-        do {
-            let unreadItemsCount = try await mailbox.unreadCount()
+        switch await mailbox.unreadCount() {
+        case .ok(let unreadItemsCount):
             await dataUpdate(unreadItemsCount)
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
         }
     }

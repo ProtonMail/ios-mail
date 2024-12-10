@@ -50,28 +50,29 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
         if let cachedImage = dependencies.cache.object(for: params.address) {
             return cachedImage
         }
-        do {
-            guard let userSession = dependencies.appContext.sessionState.userSession else {
-                return nil
-            }
-            guard let imageFilePath = try await userSession
-                .imageForSender(
-                    address: params.address,
-                    bimiSelector: params.bimiSelector,
-                    displaySenderImage: params.displaySenderImage,
-                    size: 128,
-                    mode: colorScheme == .dark ? "dark" : "light",
-                    format: "png"
-                )
-            else {
-                return nil
-            }
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
+            return nil
+        }
+        let senderImageResult = await userSession
+            .imageForSender(
+                address: params.address,
+                bimiSelector: params.bimiSelector,
+                displaySenderImage: params.displaySenderImage,
+                size: 128,
+                mode: colorScheme == .dark ? "dark" : "light",
+                format: "png"
+            )
+
+        switch senderImageResult {
+        case .ok(.some(let imageFilePath)):
             let image = UIImage(contentsOfFile: imageFilePath)
             if let image {
                 dependencies.cache.setObject(image, for: params.address)
             }
             return image
-        } catch {
+        case .ok(.none):
+            return nil
+        case .error(let error):
             AppLogger.log(error: error)
             return nil
         }

@@ -247,12 +247,12 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                 message: { _, ids in
                     self.invokedAvailableMessageActionsWithIDs.append(ids)
 
-                    return self.stubbedAvailableMessageActions
+                    return .ok(self.stubbedAvailableMessageActions)
                 },
                 conversation: { _, ids in
                     self.invokedAvailableConversationActionsWithIDs.append(ids)
 
-                    return self.stubbedAvailableConversationActions
+                    return .ok(self.stubbedAvailableConversationActions)
                 }
             ),
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,

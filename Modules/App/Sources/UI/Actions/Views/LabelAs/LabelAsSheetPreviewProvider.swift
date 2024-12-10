@@ -23,9 +23,9 @@ enum LabelAsSheetPreviewProvider {
             input: .init(sheetType: .labelAs, ids: [], type: .message),
             mailbox: .init(noPointer: .init()),
             availableLabelAsActions: .init(
-                message: { _, _ in testLabels() },
-                conversation: { _, _ in [] }
-            ), 
+                message: { _, _ in .ok(testLabels()) },
+                conversation: { _, _ in .ok([]) }
+            ),
             labelAsActions: .dummy,
             dismiss: { }
         )

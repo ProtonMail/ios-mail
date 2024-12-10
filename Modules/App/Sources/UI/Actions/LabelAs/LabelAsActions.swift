@@ -17,17 +17,17 @@
 
 import proton_app_uniffi
 
-typealias LabelAsActionClosure = (
+typealias LabelAsActionClosure<T> = (
     _ mailbox: Mailbox,
     _ ids: [ID],
     _ selectedLabelIDs: [ID],
     _ partiallySelectedLabelIDs: [ID],
     _ archive: Bool
-) async throws -> Bool
+) async -> T
 
 struct LabelAsActions {
-    let labelMessagesAs: LabelAsActionClosure
-    let labelConversationsAs: LabelAsActionClosure
+    let labelMessagesAs: LabelAsActionClosure<LabelMessagesAsResult>
+    let labelConversationsAs: LabelAsActionClosure<LabelConversationsAsResult>
 }
 
 extension LabelAsActions {
@@ -41,8 +41,8 @@ extension LabelAsActions {
 
     static var dummy: Self {
         .init(
-            labelMessagesAs: { _, _, _, _, _ in false },
-            labelConversationsAs: { _, _, _, _, _ in false }
+            labelMessagesAs: { _, _, _, _, _ in .ok(false) },
+            labelConversationsAs: { _, _, _, _, _ in .ok(false) }
         )
     }
 

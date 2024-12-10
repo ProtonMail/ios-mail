@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-typealias DeleteContactItem = (_ id: Id, _ session: MailUserSession) async throws -> Void
+typealias DeleteContactItem = (_ id: Id, _ session: MailUserSession) async -> VoidActionResult
 
 struct RustContactsWrappers {
     let contactsProvider: GroupedContactsProvider
@@ -35,16 +35,16 @@ extension RustContactsWrappers {
         .init(
             contactsProvider: contactsProvider,
             contactDeleter: deleteContact(contactId:session:),
-            contactGroupDeleter: { _, _ in },
+            contactGroupDeleter: { _, _ in .ok },
             contactsWatcher: contactsWatcher
         )
     }
 }
 
 public struct GroupedContactsProvider {
-    public let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+    public let allContacts: (_ userSession: MailUserSession) async -> ContactListResult
 
-    public init(allContacts: @escaping (MailUserSession) async throws -> [GroupedContacts]) {
+    public init(allContacts: @escaping (MailUserSession) async -> ContactListResult) {
         self.allContacts = allContacts
     }
 }
@@ -53,7 +53,7 @@ public struct ContactsWatcher {
     public let watch: (
         _ session: MailUserSession,
         _ callback: ContactsLiveQueryCallback
-    ) async throws -> WatchedContactList
+    ) async -> WatchContactListResult
 }
 
 extension GroupedContactsProvider {

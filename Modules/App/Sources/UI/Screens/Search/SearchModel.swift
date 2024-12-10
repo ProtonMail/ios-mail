@@ -78,24 +78,32 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func initialiseMailbox() {
         Task {
-            self.mailbox = try await Mailbox.allMail(ctx: dependencies.appContext.userSession)
+            switch await allMailMailbox(ctx: dependencies.appContext.userSession) {
+            case .ok(let mailbox):
+                self.mailbox = mailbox
+            case .error(let error):
+                AppLogger.log(error: error, category: .search)
+            }
         }
     }
 
     func searchText(_ text: String) {
         Task {
-            do {
-                let query = text.withoutWhitespace
-                searchPaginator?.handle().disconnect()
-                await paginatedDataSource.resetToInitialState()
-                searchPaginator = try await dependencies.searchProtocol.paginateSearch(
-                    session: dependencies.appContext.userSession,
-                    options: .init(query: query),
-                    callback: paginatorCallback
-                )
-                await paginatedDataSource.fetchInitialPage()
+            let query = text.withoutWhitespace
+            searchPaginator?.handle().disconnect()
+            await paginatedDataSource.resetToInitialState()
 
-            } catch {
+            let result = await dependencies.searchProtocol.paginateSearch(
+                session: dependencies.appContext.userSession,
+                options: .init(query: query),
+                callback: paginatorCallback
+            )
+
+            switch result {
+            case .ok(let searchPaginator):
+                self.searchPaginator = searchPaginator
+                await paginatedDataSource.fetchInitialPage()
+            case .error(let error):
                 AppLogger.log(error: error, category: .search)
             }
         }
@@ -103,8 +111,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func fetchNextPage(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
         let searchPaginator = searchPaginator.unsafelyUnwrapped
-        do {
-            let messages = try await searchPaginator.nextPage()
+        switch await searchPaginator.reload() {
+        case .ok(let messages):
             let items = mailboxItems(messages: messages)
             let result = PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult(
                 newItems: items,
@@ -112,7 +120,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             )
             AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .search)
             return result
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .search)
             return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
         }
@@ -131,14 +139,14 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func refreshMailboxItems() async {
         guard let searchPaginator else { return }
-        do {
-            let messages = try await searchPaginator.reload()
+        switch await searchPaginator.reload() {
+        case .ok(let messages):
             let items = mailboxItems(messages: messages)
             AppLogger.log(message: "refreshed results before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .search)
             await paginatedDataSource.updateItems(items)
 
             await selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .search)
         }
     }
@@ -212,7 +220,7 @@ extension SearchModel {
 
 struct SearchWrapper: SearchProtocol {
 
-    func paginateSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async throws -> MessagePaginator {
-        try await proton_app_uniffi.paginateSearch(session: session, options: .init(keywords: options.query), callback: callback)
+    func paginateSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async -> PaginateSearchResult {
+        await proton_app_uniffi.paginateSearch(session: session, options: .init(keywords: options.query), callback: callback)
     }
 }

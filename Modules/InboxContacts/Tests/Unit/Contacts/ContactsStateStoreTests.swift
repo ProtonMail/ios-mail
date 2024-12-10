@@ -471,22 +471,22 @@ final class ContactsStateStoreTests: BaseTestCase {
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),
             contactsWrappers: .init(
-                contactsProvider: .init(allContacts: { _ in self.stubbedContacts }),
-                contactDeleter: { id, _ in
+                contactsProvider: StaticGroupedContactsProvider { self.stubbedContacts },
+                contactDeleter: { id in
                     self.deleterSpy.deleteContactCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactsErrors[id] {
                         throw error
                     }
                 },
-                contactGroupDeleter: { id, _ in
+                contactGroupDeleter: { id in
                     self.deleterSpy.deleteContactGroupCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
                         throw error
                     }
                 },
-                contactsWatcher: .init(watch: { _, callback in
+                contactsWatcher: ContactsWatcherSpy(watchStub: { callback in
                     self.watchContactsCallback = callback
                     return WatchedContactList(contactList: [], handle: .init(noPointer: .init()))
                 })

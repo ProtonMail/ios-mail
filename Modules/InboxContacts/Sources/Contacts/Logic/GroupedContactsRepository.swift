@@ -27,6 +27,11 @@ struct GroupedContactsRepository {
     }
 
     func allContacts() async -> [GroupedContacts] {
-        try! await contactsProvider.allContacts(mailUserSession)
+        switch await contactsProvider.allContacts(mailUserSession) {
+        case .ok(let contacts):
+            return contacts
+        case .error(let error):
+            fatalError("\(error)")
+        }
     }
 }

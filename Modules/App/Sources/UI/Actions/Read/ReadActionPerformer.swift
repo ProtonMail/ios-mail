@@ -48,18 +48,27 @@ struct ReadActionPerformer {
     private func markAsRead(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await readActionPerformerActions.markMessageAsRead(mailbox, ids)
+            await execute(action: readActionPerformerActions.markMessageAsRead, on: ids)
         case .conversation:
-            try! await readActionPerformerActions.markConversationAsRead(mailbox, ids)
+            await execute(action: readActionPerformerActions.markConversationAsRead, on: ids)
         }
     }
 
     private func markAsUnread(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
-            try! await readActionPerformerActions.markMessageAsUnread(mailbox, ids)
+            await execute(action: readActionPerformerActions.markMessageAsUnread, on: ids)
         case .conversation:
-            try! await readActionPerformerActions.markConversationAsUnread(mailbox, ids)
+            await execute(action: readActionPerformerActions.markConversationAsUnread, on: ids)
+        }
+    }
+
+    private func execute(action: ReadActionClosure, on ids: [ID]) async {
+        switch await action(mailbox, ids) {
+        case .ok:
+            break
+        case .error(let error):
+            fatalError("\(error)")
         }
     }
 }

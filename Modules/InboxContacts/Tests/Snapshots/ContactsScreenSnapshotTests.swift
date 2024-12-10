@@ -24,28 +24,28 @@ final class ContactsScreenSnapshotTests: XCTestCase {
 
     @MainActor
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
-        let items = try await allContacts()
+        let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
     @MainActor
     func testContactsScreenWithSearchPhraseMatching5ItemsLayoutsCorrectOnIphoneX() async throws {
-        let items = try await allContacts()
+        let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Ti"), items: items))
     }
 
     @MainActor
     func testContactsScreenWithNonMatchingSearchPhraseLayoutsCorrectOnIphoneX() async throws {
-        let items = try await allContacts()
+        let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Tix"), items: items))
     }
 
     @MainActor
     func testContactsScreenWithActiveSearchButEmptyPhraseLayoutsCorrectOnIphoneX() async throws {
-        let items = try await allContacts()
+        let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: ""), items: items))
     }
@@ -60,11 +60,9 @@ final class ContactsScreenSnapshotTests: XCTestCase {
         .testInstance(search: search, items: items)
     }
 
-    private func allContacts() async throws -> [GroupedContacts] {
-        let provider = GroupedContactsProvider.previewInstance()
-        let items = try await provider.allContacts(.testInstance())
-
-        return items
+    private func allContacts() async -> [GroupedContacts] {
+        let provider = StaticGroupedContactsProvider.previewInstance()
+        return await provider.allContacts()
     }
 
 }

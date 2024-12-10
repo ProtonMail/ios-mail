@@ -27,26 +27,18 @@ struct MoveToActionsProvider {
     }
 
     func actions(for type: MailboxItemType, ids: [ID]) async -> [MoveAction] {
-        try! await actionsProvider(for: type)(mailbox, ids)
-    }
-
-    // MARK: - Private
-
-    private func actionsProvider(
-        for type: MailboxItemType
-    ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> [MoveAction] {
         switch type {
         case .message:
-            availableMoveToActions.message
+            try! await availableMoveToActions.message(mailbox, ids).get()
         case .conversation:
-            availableMoveToActions.conversation
+            try! await availableMoveToActions.conversation(mailbox, ids).get()
         }
     }
 }
 
 struct AvailableMoveToActions {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> [MoveAction]
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> [MoveAction]
+    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async -> AvailableMoveToActionsForMessagesResult
+    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async -> AvailableMoveToActionsForConversationsResult
 }
 
 extension AvailableMoveToActions {

@@ -24,19 +24,11 @@ struct AvailableActionsProvider {
     let mailbox: Mailbox
 
     func actions(for type: MailboxItemType, ids: [ID]) async -> AvailableActions {
-        try! await actionsProvider(for: type)(mailbox, ids).availableActions
-    }
-
-    // MARK: - Private
-
-    private func actionsProvider(
-        for type: MailboxItemType
-    ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> AvailableActionsConvertible {
         switch type {
-        case .message:
-            actionsProvider.message
         case .conversation:
-            actionsProvider.conversation
+            try! await actionsProvider.conversation(mailbox, ids).get().availableActions
+        case .message:
+            try! await actionsProvider.message(mailbox, ids).get().availableActions
         }
     }
 }

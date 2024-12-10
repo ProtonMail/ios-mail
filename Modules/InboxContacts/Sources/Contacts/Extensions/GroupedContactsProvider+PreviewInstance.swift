@@ -20,7 +20,7 @@ import proton_app_uniffi
 extension GroupedContactsProvider {
 
     static func previewInstance() -> Self {
-        .init(allContacts: { _ in stubbedContacts })
+        .init(allContacts: { _ in .ok(stubbedContacts) })
     }
 
     private static var stubbedContacts: [GroupedContacts] {

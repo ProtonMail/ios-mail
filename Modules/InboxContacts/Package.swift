@@ -17,12 +17,19 @@ let package = Package(
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
+        .package(path: "../../ProtonPackages/ProtonCoreET"),
         .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.11")
     ],
     targets: [
         .target(
             name: "InboxContacts",
-            dependencies: ["InboxCore", "InboxCoreUI", "InboxDesignSystem", "proton_app_uniffi"],
+            dependencies: [
+                "InboxCore",
+                "InboxCoreUI",
+                "InboxDesignSystem",
+                "proton_app_uniffi",
+                .product(name: "AccountLogin", package: "ProtonCoreET")
+            ],
             resources: [
                 .process("Resources")
             ]

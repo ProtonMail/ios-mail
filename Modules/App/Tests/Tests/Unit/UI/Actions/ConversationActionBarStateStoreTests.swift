@@ -34,7 +34,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
         sut = ConversationActionBarStateStore(
             conversationID: .init(value: 1),
             bottomBarConversationActionsProvider: { _, _ in
-                self.stubbedBottomBarActions
+                    .ok(self.stubbedBottomBarActions)
             }, 
             mailbox: .dummy,
             handleAction: { action in self.handleActionSpy.append(action) }

@@ -15,24 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import AccountLogin
+import Foundation
 import proton_app_uniffi
 
-enum ConversationActionBarViewPreviewDataProvider {
-
-    @MainActor
-    static func view() -> ConversationActionBarView {
-        ConversationActionBarView(
-            conversationID: .init(value: 1),
-            bottomBarConversationActionsProvider: { _, _ in
-                .ok(.init(
-                    hiddenBottomBarActions: [],
-                    visibleBottomBarActions: [.markRead, .star, .moveTo, .more]
-                ))
-            },
-            mailbox: .init(noPointer: .init()),
-            handleAction: { _ in }
-        )
+extension ActionError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let actionErrorReason):
+            actionErrorReason.errorMessage
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
     }
+}
 
+private extension ActionErrorReason {
+    var errorMessage: String {
+        // TODO: provide proper localized strings https://protonag.atlassian.net/browse/ET-1726
+        switch self {
+        case .unknownLabel:
+            "Unknown label"
+        case .unknownMessage:
+            "Unknown message"
+        case .unknownContentId:
+            "Unknown content ID"
+        }
+    }
 }

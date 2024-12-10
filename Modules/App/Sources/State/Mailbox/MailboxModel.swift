@@ -178,8 +178,8 @@ extension MailboxModel {
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox
-            ? try await Mailbox.inbox(ctx: userSession)
-            : try await Mailbox(ctx: userSession, labelId: selectedMailbox.localId)
+            ? try await inboxMailbox(ctx: userSession).get()
+            : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
             self.readActionPerformer = .init(mailbox: mailbox)
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
@@ -190,14 +190,14 @@ extension MailboxModel {
                     labelId: mailbox.labelId(),
                     filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
                     callback: paginatorCallback
-                )
+                ).get()
             } else {
                 conversationPaginator = try await paginateConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(), 
                     filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
                     callback: paginatorCallback
-                )
+                ).get()
             }
             await paginatedDataSource.fetchInitialPage()
 
@@ -208,12 +208,12 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-        } catch MailboxError.AppError(let errorMessage) {
+        } catch ActionError.other(.sessionExpired) {    // TODO: need to handle more cases
             // Session invalid error will fall here.
             // e.g. When the session has been invalidated while the app wasn't running
             // i.e. password changed, device session deleted.
             // It should be improved as part of the Error improvements epic.
-            AppLogger.log(message: errorMessage, category: .mailbox, isError: true)
+            AppLogger.log(message: "Invalid session", category: .mailbox, isError: true)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             fatalError("failed to instantiate the Mailbox or Paginator object")
@@ -245,9 +245,13 @@ extension MailboxModel {
         }
         AppLogger.logTemporarily(message: "fetching messages page \(currentPage)", category: .mailbox)
 
-        let messages = try await messagePaginator.nextPage()
-        let items = mailboxItems(messages: messages)
-        return .init(newItems: items, isLastPage: !messagePaginator.hasNextPage())
+        switch await messagePaginator.nextPage() {
+        case .ok(let messages):
+            let items = mailboxItems(messages: messages)
+            return .init(newItems: items, isLastPage: !messagePaginator.hasNextPage())
+        case .error(let error):
+            throw error
+        }
     }
 
     private func fetchNextPageConversations(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
@@ -257,9 +261,13 @@ extension MailboxModel {
         }
         AppLogger.logTemporarily(message: "fetching conversations page \(currentPage)", category: .mailbox)
 
-        let conversations = try await conversationPaginator.nextPage()
-        let items = mailboxItems(conversations: conversations)
-        return .init(newItems: items, isLastPage: !conversationPaginator.hasNextPage())
+        switch await conversationPaginator.nextPage() {
+        case .ok(let conversations):
+            let items = mailboxItems(conversations: conversations)
+            return .init(newItems: items, isLastPage: !conversationPaginator.hasNextPage())
+        case .error(let error):
+            throw error
+        }
     }
 
     private func refreshMailboxItems() async {
@@ -274,24 +282,24 @@ extension MailboxModel {
 
     private func refreshMessage() async {
         guard let messagePaginator else { return }
-        do {
-            let messages = try await messagePaginator.reload()
+        switch await messagePaginator.reload() {
+        case .ok(let messages):
             let items = mailboxItems(messages: messages)
             AppLogger.logTemporarily(message: "refreshed messages before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
             await paginatedDataSource.updateItems(items)
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
         }
     }
 
     private func refreshConversations() async {
         guard let conversationPaginator else { return }
-        do {
-            let conversations = try await conversationPaginator.reload()
+        switch await conversationPaginator.reload() {
+        case .ok(let conversations):
             let items = mailboxItems(conversations: conversations)
             AppLogger.logTemporarily(message: "refreshed conversations before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
             await paginatedDataSource.updateItems(items)
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
         }
     }

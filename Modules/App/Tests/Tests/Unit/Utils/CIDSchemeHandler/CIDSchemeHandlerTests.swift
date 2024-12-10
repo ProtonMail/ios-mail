@@ -31,7 +31,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
     var sut: CIDSchemeHandler!
     var embeddedImageProviderInvoked: [EmbeddedImageInvokeSpy]!
     var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
-    var stubbedError: NSError!
+    var stubbedError: ActionError!
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
     var stubbedMessageID: ID {
@@ -50,9 +50,9 @@ class CIDSchemeHandlerTests: BaseTestCase {
                 self.embeddedImageProviderInvoked.append(.init(id: id, cid: cid))
 
                 if let stubbedEmbeddedImage = self.stubbedEmbeddedImage {
-                    return stubbedEmbeddedImage
+                    return .ok(stubbedEmbeddedImage)
                 } else {
-                    throw self.stubbedError
+                    return .error(self.stubbedError)
                 }
             }
         )
@@ -78,7 +78,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
 
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() {
         let cidValue = "abcdef"
-        stubbedError = .init(domain: "", code: 999)
+        stubbedError = .reason(.unknownMessage)
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 

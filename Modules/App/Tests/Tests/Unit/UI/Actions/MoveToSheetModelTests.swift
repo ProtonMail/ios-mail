@@ -120,11 +120,11 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             availableMoveToActions: .init(
                 message: { _, ids in
                     self.invokedAvailableActionsWithMessagesIDs = ids
-                    return []
+                    return .ok([])
                 },
                 conversation: { _, ids in
                     self.invokedAvailableActionsWithConversationIDs = ids
-                    return []
+                    return .ok([])
                 }
             ), 
             toastStateStore: toastStateStore,

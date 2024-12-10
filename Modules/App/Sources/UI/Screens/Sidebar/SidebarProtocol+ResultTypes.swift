@@ -17,34 +17,31 @@
 
 import proton_app_uniffi
 
-struct MoveToActionPerformer {
-    private let mailbox: Mailbox
-    private let moveToActions: MoveToActions
-
-    init(mailbox: Mailbox, moveToActions: MoveToActions) {
-        self.mailbox = mailbox
-        self.moveToActions = moveToActions
-    }
-
-    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async {
-        let moveToAction = moveToAction(itemType: itemType)
-
-        switch await moveToAction(mailbox, destinationID, itemsIDs) {
-        case .ok:
-            break
+extension SidebarProtocol {
+    func customFolders() async -> Result<[SidebarCustomFolder], ActionError> {
+        switch await customFolders() {
+        case .ok(let value):
+                .success(value)
         case .error(let error):
-            fatalError("\(error)")
+                .failure(error)
         }
     }
 
-    // MARK: - Private
+    func customLabels() async -> Result<[SidebarCustomLabel], ActionError> {
+        switch await customLabels() {
+        case .ok(let value):
+                .success(value)
+        case .error(let error):
+                .failure(error)
+        }
+    }
 
-    private func moveToAction(itemType: MailboxItemType) -> MoveToActionClosure {
-        switch itemType {
-        case .message:
-            moveToActions.moveMessagesTo
-        case .conversation:
-            moveToActions.moveConversationsTo
+    func systemLabels() async -> Result<[SidebarSystemLabel], ActionError> {
+        switch await systemLabels() {
+        case .ok(let value):
+                .success(value)
+        case .error(let error):
+                .failure(error)
         }
     }
 }

@@ -92,18 +92,23 @@ final class AppContext: Sendable, ObservableObject {
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
-        _mailSession = try MailSession.create(
+        _mailSession = try createMailSession(
             params: params,
             keyChain: dependencies.keychain,
             networkCallback: dependencies.networkStatus
-        )
+        ).get()
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            sessionState = .activeSession(session: try mailSession.userContextFromSession(session: currentSession))
+            switch mailSession.userContextFromSession(session: currentSession) {
+            case .ok(let session):
+                sessionState = .activeSession(session: session)
+            case .error(let error):
+                throw error
+            }
         }
     }
 }
@@ -134,8 +139,12 @@ extension AppContext: AccountAuthDelegate {
     @MainActor
     private func initializeMailUserSession(session: StoredSession) async {
         do {
-            let newUserSession = try mailSession.userContextFromSession(session: session)
-            try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared)
+            switch mailSession.userContextFromSession(session: session) {
+            case .ok(let session):
+                try await session.initialize(cb: UserContextInitializationDelegate.shared).get()
+            case .error(let error):
+                throw error
+            }
         } catch {
             AppLogger.log(error: error, category: .userSessions)
         }
@@ -143,9 +152,10 @@ extension AppContext: AccountAuthDelegate {
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
-        do {
-            self.sessionState = .activeSession(session: try mailSession.userContextFromSession(session: session))
-        } catch {
+        switch mailSession.userContextFromSession(session: session) {
+        case .ok(let session):
+            self.sessionState = .activeSession(session: session)
+        case .error(let error):
             AppLogger.log(error: error, category: .userSessions)
         }
     }
@@ -214,10 +224,10 @@ extension AppContext: EventLoopProvider {
              Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
              */
             AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            try userSession.executePendingActions()
+            try userSession.executePendingActions().get()
 
             AppLogger.log(message: "poll events", category: .rustLibrary)
-            try await userSession.pollEvents()
+            try await userSession.pollEvents().get()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }

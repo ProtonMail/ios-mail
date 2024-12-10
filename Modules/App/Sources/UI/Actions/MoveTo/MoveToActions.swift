@@ -21,7 +21,7 @@ typealias MoveToActionClosure = (
     _ mailbox: Mailbox,
     _ destinationID: ID,
     _ itemsIDs: [ID]
-) async throws -> Void
+) async -> VoidActionResult
 
 struct MoveToActions {
     let moveMessagesTo: MoveToActionClosure
@@ -39,8 +39,8 @@ extension MoveToActions {
 
     static var dummy: Self {
         .init(
-            moveMessagesTo: { _, _, _ in },
-            moveConversationsTo: { _, _, _ in }
+            moveMessagesTo: { _, _, _ in .ok },
+            moveConversationsTo: { _, _, _ in .ok }
         )
     }
 

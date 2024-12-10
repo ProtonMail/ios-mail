@@ -42,12 +42,12 @@ struct LabelAsActionPerformer {
             input.selectedLabelsIDs,
             input.partiallySelectedLabelsIDs,
             input.archive
-        )
+        ).get()
     }
 
     // MARK: - Private
 
-    private func labelAsAction(itemType: MailboxItemType) -> LabelAsActionClosure {
+    private func labelAsAction(itemType: MailboxItemType) -> LabelAsActionClosure<LabelAsResult> {
         switch itemType {
         case .message:
             labelAsActions.labelMessagesAs
@@ -56,3 +56,10 @@ struct LabelAsActionPerformer {
         }
     }
 }
+
+private protocol LabelAsResult {
+    func get() throws -> Bool
+}
+
+extension LabelMessagesAsResult: LabelAsResult {}
+extension LabelConversationsAsResult: LabelAsResult {}

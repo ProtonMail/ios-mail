@@ -27,26 +27,18 @@ struct LabelAsActionsProvider {
     }
 
     func actions(for type: MailboxItemType, ids: [ID]) async -> [LabelAsAction] {
-        try! await actionsProvider(for: type)(mailbox, ids)
-    }
-
-    // MARK: - Private
-
-    private func actionsProvider(
-        for type: MailboxItemType
-    ) -> (_ mailbox: Mailbox, _ ids: [ID]) async throws -> [LabelAsAction] {
         switch type {
-        case .message:
-            availableLabelAsActions.message
         case .conversation:
-            availableLabelAsActions.conversation
+            try! await availableLabelAsActions.conversation(mailbox, ids).get()
+        case .message:
+            try! await availableLabelAsActions.message(mailbox, ids).get()
         }
     }
 }
 
 struct AvailableLabelAsActions {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> [LabelAsAction]
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> [LabelAsAction]
+    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async -> AvailableLabelAsActionsForMessagesResult
+    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async -> AvailableLabelAsActionsForConversationsResult
 }
 
 extension AvailableLabelAsActions {

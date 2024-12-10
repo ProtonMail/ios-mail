@@ -25,9 +25,11 @@ class DeleteActionsSpy {
     private(set) lazy var testingInstance = DeleteActions(
         message: { _, ids in
             self.deletedMessagesWithIDs = ids
+            return .ok
         },
         conversation: { _, ids in
             self.deletedConversationsWithIDs = ids
+            return .ok
         }
     )
 
@@ -43,15 +45,19 @@ class ReadActionPerformerActionsSpy {
     private(set) lazy var testingInstance = ReadActionPerformerActions(
         markMessageAsRead: { _, ids in
             self.markMessageAsReadInvoked = ids
+            return .ok
         },
         markConversationAsRead: { _, ids in
             self.markConversationAsReadInvoked = ids
+            return .ok
         },
         markMessageAsUnread: { _, ids in
             self.markMessageAsUnreadInvoked = ids
+            return .ok
         },
         markConversationAsUnread: { _, ids in
             self.markConversationAsUnreadInvoked = ids
+            return .ok
         }
     )
 

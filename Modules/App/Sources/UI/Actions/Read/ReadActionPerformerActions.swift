@@ -17,12 +17,14 @@
 
 import proton_app_uniffi
 
-struct ReadActionPerformerActions {
-    let markMessageAsRead: (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
-    let markConversationAsRead: (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
+typealias ReadActionClosure = (_ mailbox: Mailbox, _ ids: [ID]) async -> VoidActionResult
 
-    let markMessageAsUnread: (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
-    let markConversationAsUnread: (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
+struct ReadActionPerformerActions {
+    let markMessageAsRead: ReadActionClosure
+    let markConversationAsRead: ReadActionClosure
+
+    let markMessageAsUnread: ReadActionClosure
+    let markConversationAsUnread: ReadActionClosure
 }
 
 extension ReadActionPerformerActions {
@@ -38,10 +40,10 @@ extension ReadActionPerformerActions {
 
     static var dummy: Self {
         .init(
-            markMessageAsRead: { _, _ in } ,
-            markConversationAsRead: { _, _ in },
-            markMessageAsUnread: { _, _ in },
-            markConversationAsUnread: { _, _ in }
+            markMessageAsRead: { _, _ in .ok } ,
+            markConversationAsRead: { _, _ in .ok },
+            markMessageAsUnread: { _, _ in .ok },
+            markConversationAsUnread: { _, _ in .ok }
         )
     }
 

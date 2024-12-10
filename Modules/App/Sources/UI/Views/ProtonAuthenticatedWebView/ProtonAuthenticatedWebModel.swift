@@ -38,12 +38,12 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
         
         Task {
             await updateState(.forkingSession)
-            do {
-                let selectorToken = try await userSession.fork()
+            switch await userSession.fork() {
+            case .ok(let selectorToken):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
                 await updateState(.urlReady(url: url))
-            } catch {
+            case .error(let error):
                 AppLogger.log(error: error)
                 await updateState(.error(error))
             }

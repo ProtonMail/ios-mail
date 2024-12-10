@@ -53,7 +53,14 @@ final class ContactsStateStore: ObservableObject {
         self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
         self.contactGroupDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactGroupDeleter)
         self.makeContactsLiveQuery = makeContactsLiveQuery
-        self.watchContacts = { callback in try await wrappers.contactsWatcher.watch(session, callback) }
+        self.watchContacts = { callback in
+            switch await wrappers.contactsWatcher.watch(session, callback) {
+            case .ok(let watchedContactList):
+                watchedContactList
+            case .error(let error):
+                throw error
+            }
+        }
         setUpNestedObservableObjectUpdates()
     }
 

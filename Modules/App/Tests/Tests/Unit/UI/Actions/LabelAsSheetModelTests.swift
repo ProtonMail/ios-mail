@@ -158,11 +158,11 @@ class LabelAsSheetModelTests: BaseTestCase {
             availableLabelAsActions: .init(
                 message: { _, ids in
                     self.invokedAvailableActionsWithMessagesIDs = ids
-                    return self.stubbedLabelAsActions
+                    return .ok(self.stubbedLabelAsActions)
                 },
                 conversation: { _, ids in
                     self.invokedAvailableActionsWithConversationIDs = ids
-                    return self.stubbedLabelAsActions
+                    return .ok(self.stubbedLabelAsActions)
                 }
             ), 
             labelAsActions: .init(
@@ -174,7 +174,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                         archive: archive
                     ))
 
-                    return false
+                    return .ok(false)
                 },
                 labelConversationsAs: { mailbox, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
                     self.invokedLabelConversation.append(.init(
@@ -184,7 +184,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                         archive: archive
                     ))
 
-                    return false
+                    return .ok(false)
                 }
             ),
             dismiss: { self.invokedDismissCount += 1 }

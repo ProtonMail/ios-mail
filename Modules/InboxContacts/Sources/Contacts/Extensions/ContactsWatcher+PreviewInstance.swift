@@ -20,7 +20,7 @@ import proton_app_uniffi
 extension ContactsWatcher {
 
     static func previewInstance() -> Self {
-        .init(watch: { _, _ in .init(contactList: [], handle: .init(noPointer: .init())) })
+        .init(watch: { _, _ in .ok(.init(contactList: [], handle: .init(noPointer: .init()))) })
     }
 
 }

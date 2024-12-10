@@ -26,8 +26,8 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
     let contactsProvider: GroupedContactsProvider
 
     func allContacts() async -> [ComposerContact] {
-        do {
-            let groupedContacts = try await contactsProvider.allContacts(mailUserSession)
+        switch await contactsProvider.allContacts(mailUserSession) {
+        case .ok(let groupedContacts):
             let composerContacts = groupedContacts.flatMap { group in
                 group.item.flatMap { item in
                     switch item {
@@ -40,7 +40,7 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
                 }
             }
             return composerContacts
-        } catch {
+        case .error(let error):
             // AppLogger. // FIXME: move logger to InboxCore
             return []
         }

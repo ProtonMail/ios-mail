@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-typealias DeleteActionClosure = (_ mailbox: Mailbox, _ ids: [ID]) async throws -> Void
+typealias DeleteActionClosure = (_ mailbox: Mailbox, _ ids: [ID]) async -> VoidActionResult
 
 struct DeleteActions {
     let message: DeleteActionClosure
@@ -35,8 +35,8 @@ extension DeleteActions {
 
     static var dummy: Self {
         .init(
-            message: { _, _ in },
-            conversation: { _, _ in }
+            message: { _, _ in .ok },
+            conversation: { _, _ in .ok }
         )
     }
 
