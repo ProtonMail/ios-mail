@@ -16,24 +16,28 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import SwiftUI
+import struct SwiftUI.Color
 
 struct ComposerContact: Identifiable, Equatable, Filterable {
     let id: String
     let type: ComposerContactType
     let avatarColor: Color
 
-    init(type: ComposerContactType, avatarColor: Color? = nil) {
+    init(type: ComposerContactType, avatarColor: Color) {
         self.id = type.toMatch.joined(separator: ",")
         self.type = type
-        self.avatarColor = avatarColor ?? [.green, .blue, .purple, .orange, .red].randomElement()! // FIXME:
+        self.avatarColor = avatarColor
+    }
+
+    var name: String {
+        type.name
     }
 
     var toMatch: [String] {
         type.toMatch
     }
 
-    var uiModel: ComposerContactUIModel {
+    func toUIModel(alreadySelected: Bool = false) -> ComposerContactUIModel {
         switch type {
         case .single(let single):
             return ComposerContactUIModel(
@@ -41,7 +45,8 @@ struct ComposerContact: Identifiable, Equatable, Filterable {
                 avatarColor: avatarColor,
                 isGroup: false,
                 title: single.name,
-                subtitle: single.email
+                subtitle: single.email,
+                alreadySelected: alreadySelected
             )
         case .group(let group):
             return ComposerContactUIModel(
@@ -49,7 +54,8 @@ struct ComposerContact: Identifiable, Equatable, Filterable {
                 avatarColor: avatarColor,
                 isGroup: true,
                 title: group.name,
-                subtitle: L10n.Contacts.groupSubtitle(membersCount: group.totalMembers).string
+                subtitle: L10n.Contacts.groupSubtitle(membersCount: group.totalMembers).string,
+                alreadySelected: alreadySelected
             )
         }
     }
@@ -63,6 +69,13 @@ enum ComposerContactType: Equatable, Filterable {
         switch self {
         case .single: false
         case .group: true
+        }
+    }
+
+    var name: String {
+        switch self {
+        case .single(let single): single.name
+        case .group(let group): group.name
         }
     }
 

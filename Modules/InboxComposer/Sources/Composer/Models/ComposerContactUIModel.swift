@@ -23,4 +23,5 @@ struct ComposerContactUIModel {
     let isGroup: Bool
     let title: String
     let subtitle: String
+    let alreadySelected: Bool
 }

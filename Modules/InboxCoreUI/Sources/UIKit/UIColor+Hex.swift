@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import SwiftUI
 import UIKit
 
-extension UIColor {
+public extension UIColor {
 
     convenience init(hex: String) {
         self.init(Color(hex: hex))

@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "InboxComposer", targets: ["InboxComposer"]),
     ],
     dependencies: [
+        .package(path: "../InboxContacts"),
         .package(path: "../InboxCore"),
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxDesignSystem"),
@@ -20,7 +21,7 @@ let package = Package(
     targets: [
         .target(
             name: "InboxComposer",
-            dependencies: ["InboxCore", "InboxCoreUI", "InboxDesignSystem", "proton_app_uniffi"],
+            dependencies: ["InboxContacts", "InboxCore", "InboxCoreUI", "InboxDesignSystem", "proton_app_uniffi"],
             resources: [
                 .process("Resources")
             ]

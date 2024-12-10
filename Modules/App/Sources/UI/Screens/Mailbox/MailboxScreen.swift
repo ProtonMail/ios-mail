@@ -73,7 +73,7 @@ struct MailboxScreen: View {
                     messageSeedDestination(seed: seed)
                 }
                 .sheet(isPresented: $isComposerPresented) {
-                    ComposerScreen()
+                    ComposerScreen(contactProvider: .productionInstance(mailUserSession: mailboxModel.userSession))
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)

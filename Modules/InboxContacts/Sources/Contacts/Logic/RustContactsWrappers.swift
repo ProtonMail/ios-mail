@@ -43,6 +43,10 @@ extension RustContactsWrappers {
 
 public struct GroupedContactsProvider {
     public let allContacts: (_ userSession: MailUserSession) async throws -> [GroupedContacts]
+
+    public init(allContacts: @escaping (MailUserSession) async throws -> [GroupedContacts]) {
+        self.allContacts = allContacts
+    }
 }
 
 public struct ContactsWatcher {

@@ -16,21 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import proton_app_uniffi
 import SwiftUI
 
 final class ComposerModel: ObservableObject {
     @Published var state: ComposerState
     private var contactProvider: ComposerContactProvider
 
-    init(state: ComposerState = .initial, contactProvider: ComposerContactProvider = .mockInstance) {
+    init(state: ComposerState = .initial, contactProvider: ComposerContactProvider) {
         self.state = state
         self.contactProvider = contactProvider
     }
 
-    func onLoad() {
+    @MainActor
+    func onLoad() async {
         startEditingRecipients(for: .to)
+        await contactProvider.loadContacts()
     }
 
+    @MainActor
     func startEditingRecipients(for group: RecipientGroupType) {
         endEditingRecipients()
 
@@ -42,6 +46,7 @@ final class ComposerModel: ObservableObject {
         state = newState
     }
 
+    @MainActor
     func endEditingRecipients() {
         state = state.copy(\.toRecipients, to: endEditing(group: state.toRecipients))
             .copy(\.ccRecipients, to: endEditing(group: state.ccRecipients))
@@ -51,23 +56,33 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func matchContact(group: RecipientGroupType, text: String) {
-        let matchingContacts = contactProvider.filter(with: text)
-        let newState: RecipientControllerStateType = matchingContacts.isEmpty ? .editing : .contactPicker
-        state.overrideRecipientState(for: group) {
-            $0.copy(\.controllerState, to: newState)
-                .copy(\.input, to: text)
-                .copy(\.matchingContacts, to: matchingContacts)
+        state.overrideRecipientState(for: group) { $0.copy(\.input, to: text) }
+        guard !contactProvider.contacts.isEmpty else { return }
+
+        contactProvider.filter(with: text) {result in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                let newState: RecipientControllerStateType = result.matchingContacts.isEmpty ? .editing : .contactPicker
+                state.overrideRecipientState(for: group) {
+                    $0.copy(\.controllerState, to: newState)
+                        .copy(\.input, to: result.text)
+                        .copy(\.matchingContacts, to: result.matchingContacts)
+                }
+            }
         }
     }
 
+    @MainActor
     func recipientToggleSelection(group: RecipientGroupType, index: Int) {
         state.updateRecipientState(for: group) { $0.recipients[index].isSelected.toggle() }
     }
 
+    @MainActor
     func removeSelectedRecipients(group: RecipientGroupType) {
         state.updateRecipientState(for: group) { $0.recipients = $0.recipients.filter { $0.isSelected == false } }
     }
 
+    @MainActor
     func selectLastRecipient(group: RecipientGroupType) {
         state.updateRecipientState(for: group) {
             guard !$0.recipients.isEmpty else { return }
@@ -75,6 +90,7 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
     func addRecipient(group: RecipientGroupType, address: String) {
         // FIXME: call the SDK
         let newRecipient = RecipientUIModel(type: .single, address: address, isSelected: false, isValid: false, isEncrypted: false)
@@ -84,11 +100,12 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
     func addContact(group: RecipientGroupType, contact: ComposerContact) {
         // FIXME: create the correct recipient model, call the SDK
         let newRecipient = RecipientUIModel(
             type: contact.type.isGroup ? .group : .single,
-            address: contact.type.isGroup ? contact.uiModel.title : contact.uiModel.subtitle,
+            address: contact.type.isGroup ? contact.toUIModel().title : contact.toUIModel().subtitle,
             isSelected: false,
             isValid: true,
             isEncrypted: false

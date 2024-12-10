@@ -15,18 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-import InboxCoreUI
-import UIKit
+import Foundation
 
-enum ContactItemCellPresenter {
-    static func present(item: ContactItem, in cell: ContactCell) {
-        cell.avatarLabel.text = item.avatarInformation.text
-        cell.avatarLabel.backgroundColor = UIColor(hex: item.avatarInformation.color)
-
-        cell.labelsView.titleLabel.text = item.name
-
-        cell.labelsView.subtitleLabel.text = item.emails.first?.email
-        cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty
-    }
+protocol ComposerContactsDatasource {
+    func allContacts() async -> [ComposerContact]
 }

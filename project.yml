@@ -17,11 +17,11 @@ packages:
   Collections:
     url: https://github.com/apple/swift-collections.git
     minorVersion: "1.1.2"
-  InboxContacts:
-    path: Modules/InboxContacts
-    group: Modules
   InboxComposer:
     path: Modules/InboxComposer
+    group: Modules
+  InboxContacts:
+    path: Modules/InboxContacts
     group: Modules
   InboxCore:
     path: Modules/InboxCore
@@ -132,8 +132,8 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     dependencies:
       - package: Collections
-      - package: InboxContacts
       - package: InboxComposer
+      - package: InboxContacts
       - package: InboxCore
       - package: InboxCoreUI
       - package: InboxDesignSystem

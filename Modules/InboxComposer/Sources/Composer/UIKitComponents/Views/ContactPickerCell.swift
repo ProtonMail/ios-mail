@@ -24,6 +24,7 @@ final class ContactPickerCell: UITableViewCell {
     private let initials = SubviewFactory.label
     private let groupIcon = SubviewFactory.image
     private let labelsView = LabelsView()
+    private let checked = SubviewFactory.checked
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,7 +36,7 @@ final class ContactPickerCell: UITableViewCell {
 
     private func setUpUI() {
         [initials, groupIcon].forEach(avatarView.addSubview)
-        [avatarView, labelsView].forEach(contentView.addSubview)
+        [avatarView, labelsView, checked].forEach(contentView.addSubview)
     }
 
     private func setUpConstraints() {
@@ -47,8 +48,13 @@ final class ContactPickerCell: UITableViewCell {
 
             labelsView.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor),
             labelsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: DS.Spacing.medium),
-            labelsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DS.Spacing.large),
+            labelsView.trailingAnchor.constraint(equalTo: checked.leadingAnchor, constant: -DS.Spacing.large),
             labelsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DS.Spacing.medium),
+
+            checked.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DS.Spacing.large),
+            checked.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checked.widthAnchor.constraint(equalToConstant: 24),
+            checked.heightAnchor.constraint(equalToConstant: 24),
         ])
 
         [initials, groupIcon].forEach {
@@ -59,11 +65,17 @@ final class ContactPickerCell: UITableViewCell {
         }
     }
 
-    func configure(contact: ComposerContact) {
-        avatarView.backgroundColor = UIColor(contact.uiModel.avatarColor)
-        initials.text = contact.uiModel.isGroup ? "" : contact.uiModel.avatar.initials
-        groupIcon.isHidden = !contact.uiModel.isGroup
-        labelsView.configure(title: contact.uiModel.title, subtitle: contact.uiModel.subtitle)
+    func configure(uiModel: ComposerContactUIModel) {
+        avatarView.backgroundColor = UIColor(uiModel.avatarColor)
+        initials.text = uiModel.isGroup ? "" : uiModel.avatar.initials
+        groupIcon.isHidden = !uiModel.isGroup
+        labelsView.configure(
+            title: uiModel.title,
+            subtitle: uiModel.subtitle,
+            isSelected: uiModel.alreadySelected
+        )
+        checked.isHidden = !uiModel.alreadySelected
+        isUserInteractionEnabled = !uiModel.alreadySelected
     }
 }
 
@@ -93,6 +105,14 @@ extension ContactPickerCell {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.contentMode = .scaleAspectFit
             view.tintColor = UIColor(DS.Color.Text.inverted)
+            return view
+        }
+
+        static var checked: UIImageView {
+            let view = UIImageView(image: UIImage(resource: DS.Icon.icCheckmark))
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.contentMode = .scaleAspectFit
+            view.tintColor = UIColor(DS.Color.Icon.accent)
             return view
         }
     }
@@ -127,8 +147,9 @@ private final class LabelsView: UIView {
         stack.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
-    func configure(title: String, subtitle: String) {
+    func configure(title: String, subtitle: String, isSelected: Bool) {
         self.title.text = title
+        self.title.textColor = isSelected ? UIColor(DS.Color.Text.hint) : UIColor(DS.Color.Text.weak)
         self.subtitle.text = subtitle
     }
 }
@@ -147,7 +168,6 @@ private extension LabelsView {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.weak)
             return view
         }
 

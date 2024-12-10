@@ -115,7 +115,9 @@ extension ContactPickerController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(ContactPickerCell.self)
-        cell.configure(contact: contacts[indexPath.row])
+        let contact = contacts[indexPath.row]
+        let isContactAlreadySelected = false // FIXME: when RecipientFieldState reads recipients from the SDK data structure
+        cell.configure(uiModel: contact.toUIModel(alreadySelected: isContactAlreadySelected))
         cell.selectedBackgroundView = cellBackgroundView
         return cell
     }

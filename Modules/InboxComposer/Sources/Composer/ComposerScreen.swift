@@ -17,14 +17,15 @@
 
 import InboxCore
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @StateObject private var model: ComposerModel
 
-    public init() {
-        self._model = StateObject(wrappedValue: ComposerModel())
+    public init(contactProvider: ComposerContactProvider) {
+        self._model = StateObject(wrappedValue: ComposerModel(contactProvider: contactProvider))
     }
 
     public var body: some View {
@@ -63,7 +64,9 @@ public struct ComposerScreen: View {
                 }
             }
             .onLoad {
-                model.onLoad()
+                Task {
+                    await model.onLoad()
+                }
             }
 
             Spacer()
@@ -108,5 +111,5 @@ extension ComposerScreen {
 }
 
 #Preview {
-    ComposerScreen()
+    ComposerScreen(contactProvider: .mockInstance)
 }
