@@ -102,7 +102,7 @@ struct AttachmentCapsuleView: View {
     let onTapEvent: ((ID) -> Void)?
 
     private let padding = EdgeInsets(
-        top: DS.Spacing.standard, leading: Layout.capsuleHPadding, bottom: DS.Spacing.standard, trailing: Layout.capsuleHPadding
+        top: DS.Spacing.compact, leading: Layout.capsuleHPadding, bottom: DS.Spacing.compact, trailing: Layout.capsuleHPadding
     )
 
     var body: some View {
@@ -118,7 +118,7 @@ struct AttachmentCapsuleView: View {
                 Text(uiModel.name)
                     .font(.caption)
                     .fontWeight(.regular)
-                    .tint(DS.Color.Text.norm)
+                    .foregroundStyle(DS.Color.Text.weak)
                     .lineLimit(1)
                     .frame(maxWidth: maxWidth)
                     .fixedSize()
@@ -128,7 +128,7 @@ struct AttachmentCapsuleView: View {
             .background(
                 ZStack {
                     Capsule()
-                        .strokeBorder(DS.Color.Border.strong, lineWidth: 1)
+                        .strokeBorder(DS.Color.Border.norm, lineWidth: 1)
                 }
             )
         }
@@ -161,7 +161,7 @@ private struct AttachmentCapsuleStyle: ButtonStyle {
 fileprivate enum Layout {
     static let spacingBetweenCapsules = DS.Spacing.tiny
     static let extraAttachmentsViewWidth = 42.0
-    static let capsuleHPadding = DS.Spacing.medium
+    static let capsuleHPadding = DS.Spacing.standard
     static let capsuleIconSideSize = 14.0
     static let capsuleSpacing = DS.Spacing.standard
 }
