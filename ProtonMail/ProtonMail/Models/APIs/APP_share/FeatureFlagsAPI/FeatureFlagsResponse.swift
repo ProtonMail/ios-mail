@@ -88,4 +88,5 @@ class FeatureFlags {
     static let refetchEventsHourThreshold = FeatureFlag<Int>(code: .refetchEventsHourThreshold, defaultValue: 24)
     static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
     static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)
+    static let autoDowngradeReminder = FeatureFlag<Any>(code: .autoDowngradeReminder, defaultValue: [:])
 }
