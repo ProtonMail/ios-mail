@@ -58,7 +58,7 @@ struct AttachmentsView: View {
                 hStackWithAttachments(limit: 1, capsuleMaxWidth: spaceForCapsules)
             }
         }
-        .frame(height: 32)
+        .frame(height: 28)
     }
 
     func hStackWithAttachments(limit: Int, capsuleMaxWidth: CGFloat) -> some View {
