@@ -115,6 +115,7 @@ struct AttachmentCapsuleView: View {
                     .renderingMode(.original)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: Layout.capsuleIconSideSize, height: Layout.capsuleIconSideSize)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.small))
                 Text(uiModel.name)
                     .font(.caption)
                     .fontWeight(.regular)

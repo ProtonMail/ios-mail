@@ -33,7 +33,6 @@ struct MailboxConversationMessageCountView: View {
                 .frame(minWidth: 18)
                 .fixedSize()
                 .lineLimit(1)
-                .background(DS.Color.Background.norm)
                 .overlay(
                     RoundedRectangle(cornerRadius: DS.Radius.small)
                         .stroke(isRead ? DS.Color.Icon.weak : DS.Color.Icon.norm, lineWidth: 1)

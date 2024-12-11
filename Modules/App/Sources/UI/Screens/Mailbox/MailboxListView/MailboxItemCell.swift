@@ -41,7 +41,7 @@ struct MailboxItemCell: View {
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
-        .background(uiModel.isSelected || isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
+        .background(uiModel.isSelected || isPressed ? DS.Color.Brand.minus30 : DS.Color.Background.norm)
     }
 }
 
@@ -94,7 +94,7 @@ extension MailboxItemCell {
             Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
-                .fontWeight(uiModel.isRead ? .semibold : .bold)
+                .fontWeight(uiModel.isRead ? .regular : .bold)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }

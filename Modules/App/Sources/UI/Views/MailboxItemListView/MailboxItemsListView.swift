@@ -106,12 +106,10 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
             ) { action, itemId in
                 config.cellEventHandler?.onSwipeAction?(action, itemId)
             }
-
-            Spacer().frame(height: DS.Spacing.tiny)
         }
         .listRowBackground(Color.clear)
         .listRowInsets(
-            .init(top: 0, leading: DS.Spacing.tiny, bottom: 0, trailing: 0)
+            .init(top: DS.Spacing.tiny, leading: DS.Spacing.tiny, bottom: DS.Spacing.tiny, trailing: 0)
         )
         .listRowSeparator(.hidden)
         .compositingGroup()
