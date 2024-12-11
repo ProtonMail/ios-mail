@@ -178,7 +178,7 @@ extension MailboxModel {
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox
-            ? try await inboxMailbox(ctx: userSession).get()
+            ? try await newInboxMailbox(ctx: userSession).get()
             : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
             self.readActionPerformer = .init(mailbox: mailbox)

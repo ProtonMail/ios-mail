@@ -78,7 +78,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func initialiseMailbox() {
         Task {
-            switch await allMailMailbox(ctx: dependencies.appContext.userSession) {
+            switch await newAllMailMailbox(ctx: dependencies.appContext.userSession) {
             case .ok(let mailbox):
                 self.mailbox = mailbox
             case .error(let error):

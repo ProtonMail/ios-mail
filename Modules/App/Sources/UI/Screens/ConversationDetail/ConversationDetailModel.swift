@@ -204,7 +204,7 @@ extension ConversationDetailModel {
         let newMailboxResult: NewMailboxResult
         switch seed.selectedMailbox {
         case .inbox:
-            newMailboxResult = await inboxMailbox(ctx: userSession)
+            newMailboxResult = await newInboxMailbox(ctx: userSession)
         case .systemFolder, .customLabel, .customFolder:
             newMailboxResult = await newMailbox(ctx: userSession, labelId: seed.selectedMailbox.localId)
         }
