@@ -31,12 +31,11 @@ struct AvatarCheckboxView: View {
             if isSelected {
                 ZStack {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .fill(DS.Color.Background.norm)
-                        .stroke(DS.Color.Border.strong, lineWidth: 1)
+                        .fill(DS.Color.Brand.norm)
                         .overlay {
-                            Image(DS.Icon.icCheckmark)
+                            Image(DS.Icon.icCheckmarkBig)
                                 .resizable()
-                                .foregroundColor(DS.Color.Icon.norm)
+                                .foregroundColor(DS.Color.Icon.inverted)
                                 .padding(10)
                                 .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarChecked)
                         }

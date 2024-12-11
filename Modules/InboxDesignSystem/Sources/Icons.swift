@@ -14,6 +14,7 @@ public extension DS.Icon {
     static let icBookmark = ImageResource.icBookmark
     static let icBug = ImageResource.icBug
     static let icCheckmark = ImageResource.icCheckmark
+    static let icCheckmarkBig = ImageResource.icCheckmarkBig
     static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
     static let icChevronLeft = ImageResource.icChevronLeft
     static let icChevronDown = ImageResource.icChevronDown
