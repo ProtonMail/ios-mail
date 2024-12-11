@@ -29,7 +29,7 @@ struct ProtonOfficialBadgeView: View {
     }
 }
 
-struct SenderBadgeView: View {
+private struct SenderBadgeView: View {
     let color: Color
     let text: LocalizedStringResource
     let textColor: Color
@@ -42,10 +42,9 @@ struct SenderBadgeView: View {
             .padding(.vertical, DS.Spacing.tiny)
             .padding(.horizontal, DS.Spacing.compact)
             .lineLimit(1)
-            .background(
-                Capsule()
-                    .foregroundColor(color)
-            )
+            .background(color)
+            .clipShape(Capsule())
+            .overlay(Capsule().stroke(DS.Color.Background.norm, lineWidth: 1))
     }
 }
 
