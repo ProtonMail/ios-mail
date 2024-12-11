@@ -209,10 +209,6 @@ extension MailboxModel {
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
         } catch let error as ActionError where error == .other(.sessionExpired) {
-            // Session invalid error will fall here.
-            // e.g. When the session has been invalidated while the app wasn't running
-            // i.e. password changed, device session deleted.
-            // It should be improved as part of the Error improvements epic.
             AppLogger.log(error: error, category: .mailbox)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
