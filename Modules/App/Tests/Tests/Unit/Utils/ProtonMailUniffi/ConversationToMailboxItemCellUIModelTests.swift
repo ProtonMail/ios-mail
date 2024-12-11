@@ -46,7 +46,7 @@ final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
 
 }
 
-private extension MessageAddress {
+extension MessageSender {
 
     static func testData(name: String, address: String) -> Self {
         .init(
@@ -61,12 +61,25 @@ private extension MessageAddress {
 
 }
 
+extension MessageRecipient {
+
+    static func testData(name: String, address: String) -> Self {
+        .init(
+            address: address,
+            isProton: .random(),
+            name: name,
+            group: nil
+        )
+    }
+
+}
+
 private extension Conversation {
 
     static func testData(
         conversationId: UInt64 = UInt64.random(in: 0..<100),
-        senders: [MessageAddress] = [.testData(name: "", address: "sender@example.com")],
-        recipients: [MessageAddress] = [.testData(name: "", address: "recipient@example.com")]
+        senders: [MessageSender] = [.testData(name: "", address: "sender@example.com")],
+        recipients: [MessageRecipient] = [.testData(name: "", address: "recipient@example.com")]
     ) -> Self {
         .init(
             id: .init(value: conversationId),

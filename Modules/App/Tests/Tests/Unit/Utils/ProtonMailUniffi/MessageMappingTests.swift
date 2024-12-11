@@ -20,10 +20,10 @@ import proton_app_uniffi
 import XCTest
 
 final class MessageMappingTests: XCTestCase {
-    private let recipient1: MessageAddress = .testData(name: "The Rec.A", address: "a@example.com")
-    private let recipient2: MessageAddress = .testData(name: "", address: "b@example.com")
-    private let recipient3: MessageAddress = .testData(name: "The Rec.C", address: "c@example.com")
-    private let sender: MessageAddress = .testData(name: "", address: "sender@example.com")
+    private let recipient1: MessageRecipient = .testData(name: "The Rec.A", address: "a@example.com")
+    private let recipient2: MessageRecipient = .testData(name: "", address: "b@example.com")
+    private let recipient3: MessageRecipient = .testData(name: "The Rec.C", address: "c@example.com")
+    private let sender: MessageSender = .testData(name: "", address: "sender@example.com")
 
     func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() {
         let message = Message.testData(messageId: 33)
@@ -85,29 +85,14 @@ private extension Message {
 
 }
 
-private extension MessageAddress {
-
-    static func testData(name: String, address: String) -> Self {
-        .init(
-            address: address,
-            bimiSelector: nil,
-            displaySenderImage: .random(),
-            isProton: .random(),
-            isSimpleLogin: .random(),
-            name: name
-        )
-    }
-
-}
-
 private extension Message {
 
     static func testData(
         messageId: UInt64 = UInt64.random(in: 0..<100),
-        to: [MessageAddress] = [],
-        cc: [MessageAddress] = [],
-        bcc: [MessageAddress] = [],
-        sender: MessageAddress = .testData(name: "", address: "sender@example.com")
+        to: [MessageRecipient] = [],
+        cc: [MessageRecipient] = [],
+        bcc: [MessageRecipient] = [],
+        sender: MessageSender = .testData(name: "", address: "sender@example.com")
     ) -> Self {
         .init(
             id: .init(value: messageId),

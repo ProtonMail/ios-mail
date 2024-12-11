@@ -56,9 +56,6 @@
     "Account" : {
       "comment" : "Title of a section in Settings."
     },
-    "Account Settings" : {
-      "comment" : "Account settings screen title."
-    },
     "Add to contacts" : {
       "comment" : "Action title for adding email address to contacts in the address action sheet."
     },

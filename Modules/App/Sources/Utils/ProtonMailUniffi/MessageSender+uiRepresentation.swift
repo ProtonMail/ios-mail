@@ -17,16 +17,17 @@
 
 import proton_app_uniffi
 
-extension MessageAddress {
+extension MessageSender {
 
-    var senderAvatar: AvatarUIModel {
-        let type: AvatarViewType = .sender(params: .init(
-            address: address,
-            bimiSelector: bimiSelector,
-            displaySenderImage: displaySenderImage
-        ))
+    var uiRepresentation: String {
+        !name.isEmpty ? name : address
+    }
+}
 
-        return .init(info: avatarInfo, type: type)
+extension Array where Element == MessageSender {
+
+    var addressUIRepresentation: String {
+        map(\.uiRepresentation).joined(separator: ", ")
     }
 
 }

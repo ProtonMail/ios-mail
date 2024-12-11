@@ -17,17 +17,9 @@
 
 import proton_app_uniffi
 
-extension MessageAddress {
+extension MessageRecipient {
 
     var uiRepresentation: String {
         !name.isEmpty ? name : address
     }
-}
-
-extension Array where Element == MessageAddress {
-
-    var addressUIRepresentation: String {
-        map(\.uiRepresentation).joined(separator: ", ")
-    }
-
 }

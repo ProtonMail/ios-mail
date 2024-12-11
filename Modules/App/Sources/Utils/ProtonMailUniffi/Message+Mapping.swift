@@ -21,7 +21,7 @@ import SwiftUI
 
 extension Message {
 
-    var allRecipients: [MessageAddress] {
+    var allRecipients: [MessageRecipient] {
         toList + ccList + bccList
     }
 
@@ -118,7 +118,7 @@ extension Message {
     }
 
     private var allRecipientsAvatar: AvatarUIModel {
-        let avatarInformation = avatarInformationFromMessageAddresses(addressList: allRecipients)
+        let avatarInformation = avatarInformationFromMessageRecipients(addressList: allRecipients)
 
         return .init(info: avatarInformation.info, type: .other)
     }
