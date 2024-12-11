@@ -1,7 +1,7 @@
 import Foundation
 import proton_app_uniffi
 
-{% for result in types.enums where result.accessLevel == "public" and result.name|hasSuffix:"Result" %}
+{% for result in types.enums where result.accessLevel == "public" and result.name|hasSuffix:"Result" and result.cases[1].associatedValues[0].type.based.LocalizedError %}
 public extension {{ result.name }} {
     func get() throws{% if result.cases[0].hasAssociatedValue %} -> {{ result.cases[0].associatedValues[0].typeName }}{% endif %} {
         switch self {

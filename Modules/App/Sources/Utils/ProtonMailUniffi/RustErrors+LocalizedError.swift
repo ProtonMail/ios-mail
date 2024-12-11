@@ -18,27 +18,6 @@
 import Foundation
 import proton_app_uniffi
 
-extension DraftError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .reason(let draftErrorReason):
-            draftErrorReason.errorMessage
-        case .other(let protonError):
-            protonError.localizedDescription
-        }
-    }
-}
-
-private extension DraftErrorReason {
-    var errorMessage: String {
-        switch self {
-        case .unknownMimeType:
-            // TODO: provide proper localized strings https://protonag.atlassian.net/browse/ET-1726
-            "Unknown MIME type"
-        }
-    }
-}
-
 extension EventError: LocalizedError {
     public var errorDescription: String? {
         switch self {
