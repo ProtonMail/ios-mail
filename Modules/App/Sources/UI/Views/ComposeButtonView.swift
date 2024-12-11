@@ -59,7 +59,7 @@ private struct ComposeButtonStyle: ButtonStyle {
             .padding(.vertical, DS.Spacing.moderatelyLarge)
             .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)
             .clipShape(Capsule(style: .continuous))
-            .shadow(DS.Shadows.liftedFull)
+            .shadow(DS.Shadows.liftedFull, isVisible: true)
             .animation(animation, value: isExpanded)
     }
 }

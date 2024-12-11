@@ -149,9 +149,8 @@ private struct AttachmentCapsuleStyle: ButtonStyle {
             configuration
                 .label
                 .background(
-                    configuration.isPressed
-                    ? Capsule().fill(DS.Color.Background.deep)
-                    : Capsule().fill(DS.Color.Background.norm)
+                    Capsule()
+                        .fill(configuration.isPressed ? DS.Color.Background.deep : Color.clear)
                 )
         } else {
             configuration.label
