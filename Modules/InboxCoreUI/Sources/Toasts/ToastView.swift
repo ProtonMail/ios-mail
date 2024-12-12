@@ -15,15 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct ToastView: View {
+public struct ToastView: View {
     let model: Toast
     let didSwipeDown: () -> Void
 
-    var body: some View {
+    public init(model: Toast, didSwipeDown: @escaping () -> Void) {
+        self.model = model
+        self.didSwipeDown = didSwipeDown
+    }
+
+    public var body: some View {
         VStack {
             switch model.button {
             case .none:

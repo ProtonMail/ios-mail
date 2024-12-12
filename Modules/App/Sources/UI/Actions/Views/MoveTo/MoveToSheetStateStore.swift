@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI

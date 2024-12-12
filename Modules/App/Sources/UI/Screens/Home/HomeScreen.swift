@@ -17,6 +17,7 @@
 
 import AccountLogin
 import InboxContacts
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 

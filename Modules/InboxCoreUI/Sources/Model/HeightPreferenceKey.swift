@@ -17,6 +17,10 @@
 
 import SwiftUI
 
-extension Animation {
-    static let toastAnimation = Animation.easeInOut(duration: 0.4)
+public struct HeightPreferenceKey: PreferenceKey {
+    public static let defaultValue: CGFloat = 0
+
+    public static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
 }

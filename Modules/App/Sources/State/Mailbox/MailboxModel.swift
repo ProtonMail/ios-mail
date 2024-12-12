@@ -17,6 +17,7 @@
 
 import AccountManager
 import Combine
+import InboxCoreUI
 import Foundation
 import SwiftUI
 import proton_app_uniffi

@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct Toast: Hashable {
+public struct Toast: Hashable {
     let title: String?
     let message: String
     let button: Button?
@@ -56,7 +56,7 @@ struct Toast: Hashable {
     }
 }
 
-extension Toast {
+public extension Toast {
 
     static var comingSoon: Self {
         .information(message: "Coming soon")

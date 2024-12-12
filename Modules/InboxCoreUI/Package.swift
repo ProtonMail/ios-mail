@@ -9,9 +9,29 @@ let package = Package(
     products: [
         .library(name: "InboxCoreUI", targets: ["InboxCoreUI"])
     ],
-    dependencies: [.package(path: "../InboxCore")],
+    dependencies: [
+        .package(path: "../InboxCore"),
+        .package(path: "../InboxDesignSystem"),
+        .package(path: "../InboxTesting"),
+        .package(path: "../InboxSnapshotTesting"),
+        .package(url: "https://github.com/apple/swift-collections.git", exact: "1.1.2"),
+    ],
     targets: [
-        .target(name: "InboxCoreUI", dependencies: ["InboxCore"]),
-        .testTarget(name: "InboxCoreUITests", dependencies: [.target(name: "InboxCoreUI")])
+        .target(
+            name: "InboxCoreUI",
+            dependencies: [
+                "InboxCore",
+                "InboxDesignSystem",
+                .product(name: "Collections", package: "swift-collections"),
+            ]
+        ),
+        .testTarget(
+            name: "InboxCoreUITests",
+            dependencies: [
+                .target(name: "InboxCoreUI"),
+                .product(name: "InboxTesting", package: "InboxTesting"),
+                .product(name: "InboxSnapshotTesting", package: "InboxSnapshotTesting"),
+            ]
+        )
     ]
 )

@@ -15,38 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import OrderedCollections
+import SwiftUI
 
-final class ToastStateStore: ObservableObject {
-    struct State {
-        var toasts: OrderedSet<Toast>
-        var toastHeights: [Toast: CGFloat]
-
-        var maxHeight: CGFloat {
-            toastHeights.values.max() ?? .zero
-        }
-    }
-
-    @Published var state: State
-
-    init(initialState: State) {
-        self.state = initialState
-    }
-
-    func present(toast: Toast) {
-        state.toasts.append(toast)
-    }
-
-    func dismiss(toast: Toast) {
-        state.toasts.remove(toast)
-    }
-}
-
-extension ToastStateStore.State {
-
-    static var initial: Self {
-        .init(toasts: [], toastHeights: [:])
-    }
-
+extension Animation {
+    public static let toastAnimation = Animation.easeInOut(duration: 0.4)
 }

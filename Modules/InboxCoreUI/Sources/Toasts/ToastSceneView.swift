@@ -19,10 +19,12 @@ import InboxCore
 import OrderedCollections
 import SwiftUI
 
-struct ToastSceneView: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
+public struct ToastSceneView: View {
+    @EnvironmentObject public var toastStateStore: ToastStateStore
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Color.clear
             .ignoresSafeArea(.all)
             .toastView(state: $toastStateStore.state)

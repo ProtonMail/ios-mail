@@ -14,9 +14,6 @@ options:
     cp ./scripts/templates/IDETemplateMacros.plist ProtonMail.xcodeproj/xcshareddata/
 
 packages:
-  Collections:
-    url: https://github.com/apple/swift-collections.git
-    minorVersion: "1.1.2"
   InboxComposer:
     path: Modules/InboxComposer
     group: Modules
@@ -131,7 +128,6 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
     dependencies:
-      - package: Collections
       - package: InboxComposer
       - package: InboxContacts
       - package: InboxCore
