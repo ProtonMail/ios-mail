@@ -36,6 +36,7 @@ struct ComposeButtonView: View {
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(DS.Color.Brand.norm)
+                        .padding(.trailing, DS.Spacing.small)
                         .transition(.move(edge: .trailing).combined(with: .opacity))
                         .accessibilityIdentifier(ComposeButtonIdentifiers.text)
                 }
@@ -55,8 +56,7 @@ private struct ComposeButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         return configuration
             .label
-            .padding(.horizontal, DS.Spacing.large)
-            .padding(.vertical, DS.Spacing.moderatelyLarge)
+            .padding(.all, DS.Spacing.moderatelyLarge)
             .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)
             .clipShape(Capsule(style: .continuous))
             .shadow(DS.Shadows.liftedFull, isVisible: true)
