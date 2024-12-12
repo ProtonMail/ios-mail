@@ -44,12 +44,13 @@ struct MessageDetailsView: View {
                 .square(size: 40)
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 senderNameView
-                HStack(spacing: DS.Spacing.standard) {
+                HStack(spacing: .zero) {
                     VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                         senderAddressView
                         recipientsView
                     }
                     Spacer()
+                        .frame(width: DS.Spacing.moderatelyLarge)
                     headerActionsView
                 }
             }
@@ -100,7 +101,7 @@ struct MessageDetailsView: View {
                     .lineLimit(1)
                     .foregroundColor(DS.Color.Text.weak)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                Image(isHeaderCollapsed ?  DS.Icon.icChevronTinyDown : DS.Icon.icChevronTinyUp)
+                Image(isHeaderCollapsed ? DS.Icon.icChevronDownFilled : DS.Icon.icChevronUpFilled)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .square(size: 16)
