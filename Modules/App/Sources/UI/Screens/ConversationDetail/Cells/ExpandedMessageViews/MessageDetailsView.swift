@@ -44,12 +44,16 @@ struct MessageDetailsView: View {
                 .square(size: 40)
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 senderNameView
-                senderAddressView
-                recipientsView
+                HStack(spacing: DS.Spacing.standard) {
+                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                        senderAddressView
+                        recipientsView
+                    }
+                    Spacer()
+                    headerActionsView
+                }
             }
             .padding(.leading, DS.Spacing.large)
-            Spacer()
-            headerActionsView
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -68,6 +72,7 @@ struct MessageDetailsView: View {
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
+            Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.weak)
@@ -105,7 +110,7 @@ struct MessageDetailsView: View {
     }
 
     private var headerActionsView: some View {
-        HStack(alignment: .top, spacing: .zero) {
+        HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) }, 
                 image: uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll
@@ -125,7 +130,11 @@ struct MessageDetailsView: View {
                 .resizable()
                 .square(size: 20)
         }
-        .square(size: 40)
+        .square(size: 36)
+        .overlay(
+            RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
+                .stroke(DS.Color.Border.norm, lineWidth: 1)
+        )
     }
 
     private var extendedDetailsView: some View {
@@ -367,7 +376,7 @@ extension Array where Element == MessageDetail.Recipient {
 
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
-        return "\(L10n.MessageDetails.to.string.lowercased()) \(recipients)"
+        return "\(L10n.MessageDetails.to.string): \(recipients)"
     }
 }
 
