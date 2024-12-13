@@ -20,6 +20,7 @@ import InboxComposer
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct MailboxScreen: View {
@@ -73,8 +74,8 @@ struct MailboxScreen: View {
                 .navigationDestination(for: MailboxMessageSeed.self) { seed in
                     messageSeedDestination(seed: seed)
                 }
-                .sheet(isPresented: $isComposerPresented) {
-                    ComposerScreen(contactProvider: .productionInstance(mailUserSession: mailboxModel.userSession))
+                .sheet(item: $mailboxModel.presentedDraft) { draft in
+                    ComposerScreen(draft: draft, contactProvider: .productionInstance(session: mailboxModel.userSession))
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -125,7 +126,7 @@ extension MailboxScreen {
 
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
-            isComposerPresented.toggle()
+            mailboxModel.createDraft()
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)

@@ -25,6 +25,7 @@ import proton_app_uniffi
  */
 
 extension ConversationPaginator: @unchecked Sendable {}
+extension Draft: @unchecked Sendable {}
 extension DecryptedMessage: @unchecked Sendable {}
 extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}

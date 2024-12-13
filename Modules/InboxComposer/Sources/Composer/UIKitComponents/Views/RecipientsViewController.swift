@@ -90,13 +90,13 @@ final class RecipientsViewController: UIViewController {
         let areCcAndBccHidden: Bool
         switch visibilityState {
         case .ccAndBccCollapsed:
-            chevronImage = UIImage(resource: DS.Icon.icChevronDown)
+            chevronImage = UIImage(resource: DS.Icon.icChevronTinyDown)
             areCcAndBccHidden = true
         case .allExpandedByUser:
-            chevronImage = UIImage(resource: DS.Icon.icChevronUp)
+            chevronImage = UIImage(resource: DS.Icon.icChevronTinyUp)
             areCcAndBccHidden = false
         case .allExpandedByContent:
-            chevronImage = UIImage(resource: DS.Icon.icChevronUp)
+            chevronImage = UIImage(resource: DS.Icon.icChevronTinyUp)
             areCcAndBccHidden = false
         }
         chevronButton.isHidden = visibilityState == .allExpandedByContent
@@ -148,11 +148,7 @@ extension RecipientsViewController {
         }
 
         static var chevronButton: UIButton {
-            let view = UIButton()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.tintColor = UIColor(DS.Color.Icon.hint)
-            view.imageView?.contentMode = .scaleAspectFit
-            return view
+            ComposerSubviewFactory.chevronButton
         }
     }
 }

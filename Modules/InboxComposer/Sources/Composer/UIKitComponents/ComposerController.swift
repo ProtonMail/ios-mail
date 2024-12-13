@@ -21,6 +21,8 @@ import UIKit
 enum ComposerControllerEvent {
     case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
     case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
+    case fromFieldEvent(FromFieldViewEvent)
+    case subjectFieldEvent(SubjectFieldViewEvent)
     case onNonRecipientFieldStartEditing
 }
 
@@ -28,18 +30,14 @@ final class ComposerController: UIViewController {
     private let composerStack = SubviewFactory.composerStack
     private let contactPicker = ContactPickerController()
     private let recipientsController = RecipientsViewController()
-    private let subject = SubjectFieldView()
+    private let fromField = FromFieldView()
+    private let subjectField = SubjectFieldView()
     private let fakeBodyView = SubviewFactory.textView
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
         didSet {
-            recipientsController.updateRecipientFieldStates(
-                to: state.toRecipients,
-                cc: state.ccRecipients,
-                bcc: state.bccRecipients
-            )
-            contactPicker.recipientsFieldState = state.editingRecipientFieldState
+            updateStatesOfSubviews(with: state)
         }
     }
 
@@ -59,16 +57,17 @@ final class ComposerController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        subject.delegate = self
         fakeBodyView.delegate = self
     }
 
-    func setUpUI() {
+    private func setUpUI() {
         view.backgroundColor = UIColor(DS.Color.Background.norm)
 
         addViewController(recipientsController, using: composerStack.addArrangedSubview)
         composerStack.addArrangedSubview(ComposerSeparator())
-        composerStack.addArrangedSubview(subject)
+        composerStack.addArrangedSubview(fromField)
+        composerStack.addArrangedSubview(ComposerSeparator())
+        composerStack.addArrangedSubview(subjectField)
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(fakeBodyView)
         view.addSubview(composerStack)
@@ -81,9 +80,11 @@ final class ComposerController: UIViewController {
             guard let group = self?.state.editingRecipientsGroup else { return }
             self?.onEvent(.contactPickerEvent(event, group))
         }
+        fromField.onEvent = { [weak self] in self?.onEvent(.fromFieldEvent($0)) }
+        subjectField.onEvent = { [weak self] in self?.onEvent(.subjectFieldEvent($0)) }
     }
 
-    func setupConstraints() {
+    private func setupConstraints() {
 
         [contactPicker.view, composerStack].forEach {
             NSLayoutConstraint.activate([
@@ -94,13 +95,16 @@ final class ComposerController: UIViewController {
             ])
         }
     }
-}
 
-extension ComposerController: UITextFieldDelegate {
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        onEvent(.onNonRecipientFieldStartEditing)
-        return true
+    private func updateStatesOfSubviews(with state: ComposerState) {
+        recipientsController.updateRecipientFieldStates(
+            to: state.toRecipients,
+            cc: state.ccRecipients,
+            bcc: state.bccRecipients
+        )
+        contactPicker.recipientsFieldState = state.editingRecipientFieldState
+        fromField.text = state.senderEmail
+        subjectField.text = state.subject
     }
 }
 

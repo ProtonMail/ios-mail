@@ -23,6 +23,10 @@ struct ComposerState: Equatable, Copying {
     var ccRecipients: RecipientFieldState
     var bccRecipients: RecipientFieldState
 
+    var senderEmail: String
+    var subject: String
+    var body: String
+
     var editingRecipientsGroup: RecipientGroupType?
     var editingRecipientFieldState: RecipientFieldState? {
         guard let group = editingRecipientsGroup else { return nil }
@@ -46,6 +50,9 @@ extension ComposerState {
             toRecipients: .initialState(group: .to),
             ccRecipients: .initialState(group: .cc),
             bccRecipients: .initialState(group: .bcc),
+            senderEmail: .empty,
+            subject: .empty,
+            body: .empty,
             editingRecipientsGroup: nil
         )
     }

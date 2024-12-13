@@ -18,35 +18,39 @@
 import InboxDesignSystem
 import UIKit
 
-enum SubjectFieldViewEvent {
-    case onStartEditing
-    case onSubjectChange(String)
+enum FromFieldViewEvent {
+    case onFieldTap
 }
 
-final class SubjectFieldView: UIView {
+final class FromFieldView: UIView {
     private let stack = SubviewFactory.stack
     private let title = SubviewFactory.title
-    private let textField = SubviewFactory.textField
-    var onEvent: ((SubjectFieldViewEvent) -> Void)?
+    private let label = SubviewFactory.label
+    private let chevronButton = SubviewFactory.chevronButton
+    var onEvent: ((FromFieldViewEvent) -> Void)?
 
     var text: String {
-        get { textField.text ?? .empty }
-        set { textField.text = newValue }
-    }
-
-    var delegate: UITextFieldDelegate? {
-        didSet {
-            textField.delegate = delegate
-        }
+        get { label.text ?? .empty }
+        set { label.text = newValue }
     }
 
     init() {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+        setUpUI()
+        setUpConstraints()
+    }
+    required init?(coder: NSCoder) { nil }
 
-        stack.addArrangedSubview(title)
-        stack.addArrangedSubview(textField)
+    private func setUpUI() {
+        [title, label, chevronButton].forEach(stack.addArrangedSubview)
         addSubview(stack)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        label.addGestureRecognizer(tapGesture)
+        chevronButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+    }
+
+    private func setUpConstraints() {
+        translatesAutoresizingMaskIntoConstraints = false
 
         title.setContentHuggingPriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
@@ -54,46 +58,46 @@ final class SubjectFieldView: UIView {
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
             stack.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            textField.topAnchor.constraint(equalTo: stack.topAnchor, constant: DS.Spacing.moderatelyLarge),
-            textField.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: -DS.Spacing.moderatelyLarge)
-        ])
+            label.topAnchor.constraint(equalTo: stack.topAnchor, constant: DS.Spacing.moderatelyLarge),
+            label.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: -DS.Spacing.moderatelyLarge),
 
-        textField.addTarget(self, action: #selector(onStartEditing), for: .editingDidBegin)
-        textField.addTarget(self, action: #selector(onTextChange), for: .editingChanged)
+            chevronButton.widthAnchor.constraint(equalToConstant: 40),
+            chevronButton.heightAnchor.constraint(equalTo: chevronButton.widthAnchor),
+        ])
     }
-    required init?(coder: NSCoder) { nil }
 
     override var intrinsicContentSize: CGSize {
         stack.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
     @objc
-    private func onStartEditing() {
-        onEvent?(.onStartEditing)
-    }
-
-    @objc
-    private func onTextChange(textField: UITextField) {
-        onEvent?(.onSubjectChange(textField.text ?? .empty))
+    private func onTap() {
+        onEvent?(.onFieldTap)
     }
 }
 
-extension SubjectFieldView {
+extension FromFieldView {
 
     private enum SubviewFactory {
-        
+
         static var stack: UIStackView {
             ComposerSubviewFactory.regularFieldStack
         }
-
+        
         static var title: UILabel {
             let view = ComposerSubviewFactory.fieldTitle
-            view.text = L10n.Composer.subject.string
+            view.text = L10n.Composer.from.string
             return view
         }
 
-        static var textField: UITextField {
-            ComposerSubviewFactory.regularTextField
+        static var label: UILabel {
+            let view = ComposerSubviewFactory.regularLabel
+            view.isUserInteractionEnabled = true
+            return view
+        }
+
+        static var chevronButton: UIButton {
+            ComposerSubviewFactory.chevronButton
         }
     }
 }

@@ -22,10 +22,24 @@ import SwiftUI
 final class ComposerModel: ObservableObject {
     @Published var state: ComposerState
     private var contactProvider: ComposerContactProvider
+    private let draft: DraftProtocol
 
-    init(state: ComposerState = .initial, contactProvider: ComposerContactProvider) {
+    init(state: ComposerState = .initial, draft: DraftProtocol, contactProvider: ComposerContactProvider) { // FIXME: Remove state and inject directly a Draft object for tests when we have the final SDK
         self.state = state
         self.contactProvider = contactProvider
+        self.draft = draft
+        self.state = makeState(from: draft)
+    }
+
+    private func makeState(from draft: DraftProtocol) -> ComposerState {
+        .init(
+            toRecipients: .initialState(group: .to), // FIXME: when the SDK provides the ComposerRecipientList object
+            ccRecipients: .initialState(group: .cc),
+            bccRecipients: .initialState(group: .bcc),
+            senderEmail: draft.sender(),
+            subject: draft.subject(),
+            body: draft.body()
+        )
     }
 
     @MainActor
@@ -116,6 +130,13 @@ final class ComposerModel: ObservableObject {
                 .copy(\.input, to: .empty)
                 .copy(\.controllerState, to: .editing)
         }
+    }
+
+    // FIXME: when the SDK provides the ComposerRecipientList object and we can parse the whole draft
+    @MainActor
+    func changeSubject(value: String) {
+        draft.setSubject(subject: value)
+        state = state.copy(\.subject, to: draft.subject())
     }
 
     private func endEditing(group: RecipientFieldState) -> RecipientFieldState {

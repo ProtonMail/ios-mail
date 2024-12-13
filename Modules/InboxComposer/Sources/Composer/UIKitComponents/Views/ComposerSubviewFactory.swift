@@ -20,11 +20,53 @@ import UIKit
 
 enum ComposerSubviewFactory {
 
+    static var regularFieldStack: UIStackView {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alignment = .center
+        view.spacing = DS.Spacing.standard
+        view.directionalLayoutMargins = .init(top: 0, leading: DS.Spacing.large, bottom: 0, trailing: DS.Spacing.standard)
+        view.isLayoutMarginsRelativeArrangement = true
+        return view
+    }
+
     static var fieldTitle: UILabel {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.preferredFont(forTextStyle: .subheadline)
         view.textColor = UIColor(DS.Color.Text.hint)
         return view
+    }
+
+    static var regularLabel: UILabel {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        view.textColor = regularComponentColor
+        return view
+    }
+
+    static var regularTextField: UITextField {
+        let view = UITextField()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        view.textColor = regularComponentColor
+        view.autocorrectionType = .no
+        view.spellCheckingType = .no
+        view.tintColor = UIColor(DS.Color.Icon.accent)
+        return view
+    }
+
+    static var chevronButton: UIButton {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = UIColor(DS.Color.Icon.hint)
+        view.contentMode = .scaleAspectFit
+        view.setImage(UIImage(resource: DS.Icon.icChevronTinyDown), for: .normal)
+        return view
+    }
+
+    private static var regularComponentColor: UIColor {
+        UIColor(DS.Color.Text.norm)
     }
 }

@@ -7,6 +7,9 @@
     "Composer" : {
       "comment" : "This is a testing string."
     },
+    "From:" : {
+      "comment" : "Composer from field."
+    },
     "Send" : {
       "comment" : "Message send button."
     },

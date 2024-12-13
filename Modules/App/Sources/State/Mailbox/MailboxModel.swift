@@ -35,6 +35,7 @@ final class MailboxModel: ObservableObject {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
+    @Published var presentedDraft: Draft?
     private var messagePaginator: MessagePaginator?
     private var conversationPaginator: ConversationPaginator?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
@@ -340,6 +341,17 @@ extension MailboxModel {
     }
 }
 
+// MARK: Compose
+
+extension MailboxModel {
+
+    func createDraft() {
+        Task {
+            presentedDraft = try await Draft(session: userSession, createMode: .empty)
+        }
+    }
+}
+
 // MARK: View actions
 
 extension MailboxModel {
@@ -451,3 +463,5 @@ extension MailboxItemCellUIModel {
         .init(id: id, isRead: isRead, isStarred: isStarred)
     }
 }
+
+extension Draft: Identifiable {}

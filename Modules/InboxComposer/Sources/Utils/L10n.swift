@@ -34,6 +34,12 @@ enum L10n {
             comment: "Composer to recipients."
         )
 
+        static let from =  LocalizedStringResource(
+            "From:",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer from field."
+        )
+
         static let subject =  LocalizedStringResource(
             "Subject:",
             bundle: .atURL(Bundle.module.bundleURL),

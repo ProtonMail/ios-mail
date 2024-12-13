@@ -16,16 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
+    @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
 
-    public init(contactProvider: ComposerContactProvider) {
-        self._model = StateObject(wrappedValue: ComposerModel(contactProvider: contactProvider))
+    public init(draft: DraftProtocol, contactProvider: ComposerContactProvider) {
+        self._model = StateObject(wrappedValue: ComposerModel(draft: draft, contactProvider: contactProvider))
     }
 
     public var body: some View {
@@ -57,6 +59,20 @@ public struct ComposerScreen: View {
                         model.matchContact(group: group, text: text)
                     case .onContactSelected(let contact):
                         model.addContact(group: group, contact: contact)
+                    }
+
+                case .fromFieldEvent(let event):
+                    switch event {
+                    case .onFieldTap:
+                        toastStateStore.present(toast: .comingSoon)
+                    }
+
+                case .subjectFieldEvent(let event):
+                    switch event {
+                    case .onStartEditing:
+                        model.endEditingRecipients()
+                    case .onSubjectChange(let subject):
+                        model.changeSubject(value: subject)
                     }
 
                 case .onNonRecipientFieldStartEditing:
@@ -111,5 +127,5 @@ extension ComposerScreen {
 }
 
 #Preview {
-    ComposerScreen(contactProvider: .mockInstance)
+    ComposerScreen(draft: .emptyMock, contactProvider: .mockInstance)
 }
