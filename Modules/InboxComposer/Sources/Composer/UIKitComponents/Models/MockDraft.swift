@@ -28,16 +28,32 @@ final class MockDraft: DraftProtocol {
         []
     }
 
+    func bccRecipients() -> ComposerRecipientList {
+        .init(noPointer: .init())
+    }
+
+    func ccRecipients() -> ComposerRecipientList {
+        .init(noPointer: .init())
+    }
+
+    func toRecipients() -> ComposerRecipientList {
+        .init(noPointer: .init())
+    }
+
+    func toRecipients() -> [String] {
+        mockToRecipients
+    }
+
+    func ccRecipients() -> [String] {
+        mockCcRecipients
+    }
+
     func bccRecipients() -> [String] {
         mockBccRecipients
     }
 
     func body() -> String {
         .empty
-    }
-
-    func ccRecipients() -> [String] {
-        mockCcRecipients
     }
 
     func mimeType() -> MimeType {
@@ -54,20 +70,16 @@ final class MockDraft: DraftProtocol {
 
     func setBccRecipients(recipients: [String]) {}
 
-    func setBody(body: String) {}
+    func setBody(body: String) -> VoidDraftResult { .ok }
 
     func setCcRecipients(recipients: [String]) {}
 
-    func setSubject(subject: String) {}
+    func setSubject(subject: String) -> VoidDraftResult { .ok }
 
     func setToRecipients(recipients: [String]) {}
 
     func subject() -> String {
         mockSubject
-    }
-
-    func toRecipients() -> [String] {
-        mockToRecipients
     }
 }
 

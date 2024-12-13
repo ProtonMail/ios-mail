@@ -80,63 +80,64 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
 }
 
 private extension GroupedContactsProvider {
-
     static func mockInstance() -> Self {
-        .init(allContacts: { session in
-            [
-                .init(
-                    groupedBy: "B",
-                    item: [
-                        .contact(
-                            .init(
-                                id: .init(value: 1),
-                                name: "Bob Ainsworth",
-                                avatarInformation: .init(text: "BA", color: "#FF33A1"),
-                                emails: []
-                            )
-                        ),
-                        .contact(
-                            .init(
-                                id: .init(value: 2),
-                                name: "Betty Brown",
-                                avatarInformation: .init(text: "BB", color: "#FF5733"),
-                                emails: [
-                                    .init(id: .init(value: 3), email: "betty.brown.consulting.department.group@example.com"),
-                                    .init(id: .init(value: 4), email: "betty.brown@protonmail.com")
-                                ]
-                            )
-                        ),
-                    ]
-                ),
-                .init(
-                    groupedBy: "C",
-                    item: [
-                        .group(
-                            .init(
-                                id: .init(value: 11),
-                                name: "Corporate Team",
-                                avatarColor: "#3357FF",
-                                emails: [
-                                    .init(id: .init(value: 12), email: "corp.team@example.com"),
-                                    .init(id: .init(value: 13), email: "corp.team@protonmail.com"),
-                                    .init(id: .init(value: 14), email: "corporate@proton.me")
-                                ]
-                            )
-                        ),
-                        .contact(
-                            .init(
-                                id: .init(value: 15),
-                                name: "Carl Cooper",
-                                avatarInformation: .init(text: "CC", color: "#FF33A1"),
-                                emails: [
-                                    .init(id: .init(value: 17), email: "carl.cooper@protonmail.com")
-                                ]
-                            )
-                        ),
-                    ]
-                )
-            ]
-        })
+        .init(allContacts: { _ in .ok(stubbedContacts) })
+    }
+
+    private static var stubbedContacts: [GroupedContacts] {
+        [
+            .init(
+                groupedBy: "B",
+                item: [
+                    .contact(
+                        .init(
+                            id: .init(value: 1),
+                            name: "Bob Ainsworth",
+                            avatarInformation: .init(text: "BA", color: "#FF33A1"),
+                            emails: []
+                        )
+                    ),
+                    .contact(
+                        .init(
+                            id: .init(value: 2),
+                            name: "Betty Brown",
+                            avatarInformation: .init(text: "BB", color: "#FF5733"),
+                            emails: [
+                                .init(id: .init(value: 3), email: "betty.brown.consulting.department.group@example.com"),
+                                .init(id: .init(value: 4), email: "betty.brown@protonmail.com")
+                            ]
+                        )
+                    ),
+                ]
+            ),
+            .init(
+                groupedBy: "C",
+                item: [
+                    .group(
+                        .init(
+                            id: .init(value: 11),
+                            name: "Corporate Team",
+                            avatarColor: "#3357FF",
+                            emails: [
+                                .init(id: .init(value: 12), email: "corp.team@example.com"),
+                                .init(id: .init(value: 13), email: "corp.team@protonmail.com"),
+                                .init(id: .init(value: 14), email: "corporate@proton.me")
+                            ]
+                        )
+                    ),
+                    .contact(
+                        .init(
+                            id: .init(value: 15),
+                            name: "Carl Cooper",
+                            avatarInformation: .init(text: "CC", color: "#FF33A1"),
+                            emails: [
+                                .init(id: .init(value: 17), email: "carl.cooper@protonmail.com")
+                            ]
+                        )
+                    ),
+                ]
+            )
+        ]
     }
 }
 
