@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
@@ -76,7 +77,7 @@ struct AttachmentsView: View {
                 }
             }
             let extraAttachments = min(99, uiModel.count - limit)
-            Text("+\(extraAttachments)".notLocalized) // FIXME: - Reuse
+            Text(Strings.plus(count: extraAttachments))
                 .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()
                 .font(.caption)

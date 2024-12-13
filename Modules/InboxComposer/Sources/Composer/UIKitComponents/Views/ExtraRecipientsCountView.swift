@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import UIKit
 
@@ -56,7 +57,7 @@ final class ExtraRecipientsCountView: UIView {
     }
 
     func configure(extraNumber: Int) {
-        label.text = extraNumber > 0 ? "+\(extraNumber)".notLocalized : ""
+        label.text = extraNumber > 0 ? Strings.plus(count: extraNumber) : ""
         isHidden = extraNumber < 1
         applyCGColors()
     }

@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import SwiftUI
+import InboxCore
 import InboxDesignSystem
+import SwiftUI
 
 struct OneLineLabelsListView: View {
     let labels: [LabelUIModel]
@@ -43,7 +43,7 @@ struct OneLineLabelsListView: View {
                             .background(viewModel.color)
                             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
                     case .count(let count):
-                        Text("+\(count)".notLocalized) // FIXME: - Reuse
+                        Text(Strings.plus(count: count))
                             .foregroundStyle(DS.Color.Text.weak)
                             .fontWeight(.semibold)
                             .font(.caption)

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonMail
 import Foundation
 import XCTest
 
@@ -152,7 +153,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
         }
         
         if let extraItemsCount = entry.extraItemsCount {
-            XCTAssertEqual("+\(extraItemsCount)", extraAttachmentsIndicator.label)
+            XCTAssertEqual(.plus(count: extraItemsCount), extraAttachmentsIndicator.label)
         } else {
             XCTAssertFalse(extraAttachmentsIndicator.exists)
         }
