@@ -503,6 +503,16 @@ public extension MessagesForLabelResult {
         }
     }
 }
+public extension NewDraftResult {
+    func get() throws -> Draft {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension NewMailboxResult {
     func get() throws -> Mailbox {
         switch self {
@@ -614,6 +624,16 @@ public extension SidebarWatchLabelsResult {
     }
 }
 public extension VoidActionResult {
+    func get() throws {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension VoidDraftResult {
     func get() throws {
         switch self {
         case .ok:

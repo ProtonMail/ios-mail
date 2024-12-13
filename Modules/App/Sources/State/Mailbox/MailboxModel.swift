@@ -351,7 +351,7 @@ extension MailboxModel {
 
     func createDraft() {
         Task {
-            presentedDraft = try await Draft(session: userSession, createMode: .empty)
+            presentedDraft = try await newDraft(session: userSession, createMode: .empty).get()
         }
     }
 }

@@ -44,9 +44,9 @@ final class MockDraft: DraftProtocol {
         .textHtml
     }
 
-    func save() async throws {}
+    func save() async -> VoidDraftResult { .ok }
 
-    func send() async throws {}
+    func send() async -> VoidDraftResult { .ok }
 
     func sender() -> String {
         mockSender
