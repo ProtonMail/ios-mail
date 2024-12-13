@@ -429,6 +429,9 @@
     "Unread" : {
       "comment" : "Badge title indicating how many emails are unread in given system folder."
     },
+    "Unrecognized MIME type" : {
+      "comment" : "Error message."
+    },
     "Unstar" : {
       "comment" : "Action title for removing message/conversation from starred items in the action sheet."
     },

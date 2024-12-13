@@ -23,7 +23,7 @@ extension ActionError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let actionErrorReason):
-            actionErrorReason.errorMessage
+            actionErrorReason.errorMessage.string
         case .other(let protonError):
             protonError.localizedDescription
         }
@@ -31,15 +31,14 @@ extension ActionError: LocalizedError {
 }
 
 private extension ActionErrorReason {
-    var errorMessage: String {
-        // TODO: provide proper localized strings https://protonag.atlassian.net/browse/ET-1726
+    var errorMessage: LocalizedStringResource {
         switch self {
         case .unknownLabel:
-            "Unknown label"
+            L10n.Contacts.Error.unknownLabel
         case .unknownMessage:
-            "Unknown message"
+            L10n.Contacts.Error.unknownMessage
         case .unknownContentId:
-            "Unknown content ID"
+            L10n.Contacts.Error.unknownContentId
         }
     }
 }

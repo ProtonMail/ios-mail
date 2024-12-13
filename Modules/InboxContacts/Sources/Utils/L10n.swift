@@ -81,5 +81,14 @@ enum L10n {
                 )
             }
         }
+
+        enum Error {
+            static let unknownContentId = LocalizedStringResource(
+                "No attachment with this content ID",
+                comment: "Error message."
+            )
+            static let unknownLabel = LocalizedStringResource("This label does not exist", comment: "Error message.")
+            static let unknownMessage = LocalizedStringResource("This message does not exist", comment: "Error message.")
+        }
     }
 }

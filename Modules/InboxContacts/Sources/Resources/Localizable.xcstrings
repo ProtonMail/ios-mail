@@ -36,6 +36,9 @@
     "Delete %@" : {
       "comment" : "Title for the alert shown when deleting a contact or contact group."
     },
+    "No attachment with this content ID" : {
+      "comment" : "Error message."
+    },
     "No contacts yet" : {
       "comment" : "Contacts screen's empty state title."
     },
@@ -47,6 +50,12 @@
     },
     "This contact will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact."
+    },
+    "This label does not exist" : {
+      "comment" : "Error message."
+    },
+    "This message does not exist" : {
+      "comment" : "Error message."
     }
   },
   "version" : "1.0"

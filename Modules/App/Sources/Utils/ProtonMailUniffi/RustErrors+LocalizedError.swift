@@ -22,7 +22,7 @@ extension DraftError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let draftErrorReason):
-            draftErrorReason.errorMessage
+            draftErrorReason.errorMessage.string
         case .other(let protonError):
             protonError.localizedDescription
         }
@@ -30,11 +30,10 @@ extension DraftError: LocalizedError {
 }
 
 private extension DraftErrorReason {
-    var errorMessage: String {
+    var errorMessage: LocalizedStringResource {
         switch self {
         case .unknownMimeType:
-            // TODO: provide proper localized strings https://protonag.atlassian.net/browse/ET-1726
-            return "Unknown MIME type"
+            L10n.Error.unknownMimeType
         }
     }
 }
@@ -54,7 +53,6 @@ private extension EventErrorReason {
     var errorMessage: String {
         switch self {
         case .placeholder:
-            // TODO: provide proper localized strings https://protonag.atlassian.net/browse/ET-1726
             "Unknown error"
         }
     }
