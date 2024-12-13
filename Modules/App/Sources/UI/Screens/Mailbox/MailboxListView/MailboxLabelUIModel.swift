@@ -33,7 +33,7 @@ struct MailboxLabelUIModel: Identifiable {
     }
 
     var numExtraLabels: Int {
-        labelModels.count - 1
+        max(labelModels.count - 1, 0)
     }
 
     var isEmpty: Bool {

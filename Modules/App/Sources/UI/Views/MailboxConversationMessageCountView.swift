@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxConversationMessageCountView: View {
-    let isRead: Bool // FIXME: - Rename it
+    let isRead: Bool
     let messagesCount: UInt64
 
     var body: some View {

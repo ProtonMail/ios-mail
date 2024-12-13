@@ -185,24 +185,22 @@ extension MailboxItemCell {
 
     @ViewBuilder
     private var attachmentRowView: some View {
-        if !uiModel.attachmentsUIModel.isEmpty {
-            AttachmentsView(
-                uiModel: uiModel.attachmentsUIModel,
-                isAttachmentHighlightEnabled: isParentListSelectionEmpty,
-                onTapEvent: {
-                    onEvent(.onAttachmentTap(attachmentID: $0))
-                }
-            )
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
-        }
+        AttachmentsView(
+            uiModel: uiModel.attachmentsUIModel,
+            isAttachmentHighlightEnabled: isParentListSelectionEmpty,
+            onTapEvent: {
+                onEvent(.onAttachmentTap(attachmentID: $0))
+            }
+        )
+        .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
     }
 
     @ViewBuilder
     private var labelsRowView: some View {
-        if !uiModel.labelUIModel.labelModels.isEmpty {
-            OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
-        }
+        OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
+            .removeViewIf(uiModel.labelUIModel.labelModels.isEmpty)
     }
 }
 
