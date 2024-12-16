@@ -41,6 +41,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
+    & HasPushNotificationService
     & HasUserManager
     & HasUserDefaults
     & HasAddressBookService
@@ -710,6 +711,27 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         self.updateUnreadButton(count: viewModel.unreadCount)
     }
 
+    func requestNotificationAuthorizationIfApplicable() {
+        Task {
+            guard await viewModel.shouldRequestNotificationAuthorization() else { return }
+
+            await MainActor.run {
+                let prompt = NotificationAuthorizationPrompt {
+                    self.dependencies.pushService.authorizeIfNeededAndRegister()
+                }
+
+                let hosting = SheetLikeSpotlightViewController(rootView: prompt)
+                prompt.config.hostingController = hosting
+
+                hosting.onDismiss = { [weak self] in
+                    self?.viewModel.didRequestNotificationAuthorization()
+                }
+
+                self.present(hosting, animated: false)
+            }
+        }
+    }
+
     // MARK: - Private methods
 
     private func handleViewModeIsChanged() {
@@ -1308,6 +1330,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             showAutoImportContactsSpotlight()
         } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
+        } else {
+            requestNotificationAuthorizationIfApplicable()
         }
     }
 

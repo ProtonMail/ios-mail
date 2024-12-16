@@ -67,7 +67,7 @@ final class OnboardingUpsellCoordinatorTests: XCTestCase {
 
     @MainActor
     func testGivenPlansAreNotFetched_whenStarting_thenWillNotPresentUpsellPage() {
-        sut.start()
+        sut.start {}
 
         XCTAssertNil(rootViewController.presentedViewController)
     }
@@ -76,7 +76,7 @@ final class OnboardingUpsellCoordinatorTests: XCTestCase {
     func testGivenPlansAreFetched_whenStarting_thenWillPresentUpsellPage() async throws {
         try await user.container.upsellOfferProvider.update()
 
-        sut.start()
+        sut.start {}
 
         try await Task.sleep(for: .milliseconds(100))
 

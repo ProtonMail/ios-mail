@@ -41,6 +41,7 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
     typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    & HasPushNotificationService
     & SearchViewController.Dependencies
     & SearchViewModel.Dependencies
     & SingleMessageCoordinator.Dependencies
@@ -244,19 +245,26 @@ extension MailboxCoordinator {
         let viewController = OnboardViewController(isPaidUser: viewModel.user.hasPaidMailPlan)
         viewController.modalPresentationStyle = .fullScreen
         viewController.onViewDidDisappear = { [weak self] in
-            self?.presentUpsellIfApplicable()
+            guard let self else { return }
+
+            if shouldPresentOnboardingUpsell() {
+                presentOnboardingUpsell()
+            } else {
+                requestNotificationAuthorizationIfApplicable()
+            }
         }
         navigation?.present(viewController, animated: true, completion: nil)
     }
 
+    private func shouldPresentOnboardingUpsell() -> Bool {
+        dependencies.featureFlagProvider.isEnabled(.postOnboardingUpsellPage) &&
+        !viewModel.user.hasPaidMailPlan &&
+        dependencies.userDefaults[.didSignUpOnThisDevice] != true
+    }
+
     @MainActor
-    private func presentUpsellIfApplicable() {
-        guard
-            dependencies.featureFlagProvider.isEnabled(.postOnboardingUpsellPage),
-            !viewModel.user.hasPaidMailPlan,
-            dependencies.userDefaults[.didSignUpOnThisDevice] != true,
-            let navigation
-        else {
+    private func presentOnboardingUpsell() {
+        guard let navigation else {
             return
         }
 
@@ -264,7 +272,13 @@ extension MailboxCoordinator {
             rootViewController: navigation
         )
 
-        onboardingUpsellCoordinator?.start()
+        onboardingUpsellCoordinator?.start { [weak self] in
+            self?.requestNotificationAuthorizationIfApplicable()
+        }
+    }
+
+    private func requestNotificationAuthorizationIfApplicable() {
+        viewController?.requestNotificationAuthorizationIfApplicable()
     }
 
     private func presentNewBrandingView() {

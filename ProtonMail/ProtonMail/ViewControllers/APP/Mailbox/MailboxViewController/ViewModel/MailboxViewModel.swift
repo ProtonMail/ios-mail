@@ -68,6 +68,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasUpsellButtonStateProvider
     & HasUserDefaults
     & HasUserIntroductionProgressProvider
+    & HasUserNotificationCenterProtocol
     & HasUsersManager
     & HasQueueManager
     & HasAutoImportContactsFeature
@@ -764,6 +765,19 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         } else {
             return .onboardingForUpdate
         }
+    }
+
+    func shouldRequestNotificationAuthorization() async -> Bool {
+        if dependencies.userDefaults[.lastNotificationAuthorizationRequestDate] != nil {
+            return false
+        } else {
+            let authorizationStatus = await dependencies.userNotificationCenter.authorizationStatus()
+            return authorizationStatus == .notDetermined
+        }
+    }
+
+    func didRequestNotificationAuthorization() {
+        dependencies.userDefaults[.lastNotificationAuthorizationRequestDate] = .init()
     }
 
     private func handleMoveToArchiveAction(on items: [MailboxItem]) {

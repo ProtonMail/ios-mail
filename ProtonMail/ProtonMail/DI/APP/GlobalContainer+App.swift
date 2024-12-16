@@ -143,6 +143,12 @@ extension GlobalContainer {
             UIApplication.shared
         }
     }
+
+    var userNotificationCenterFactory: Factory<UserNotificationCenterProtocol> {
+        self {
+            UNUserNotificationCenter.current()
+        }
+    }
 }
 
 extension GlobalContainer: LifetimeTrackable {
