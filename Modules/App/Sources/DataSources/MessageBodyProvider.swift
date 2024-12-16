@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 protocol MessageBodyProviding {
     @MainActor
-    func messageBody(for messageId: ID) async -> String?
+    func messageBody(for messageId: ID) async -> MessageBody?
 }
 
 final class MessageBodyProvider: Sendable, MessageBodyProviding {
@@ -29,16 +29,27 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
         self.mailbox = mailbox
     }
 
-    func messageBody(for messageId: ID) async -> String? {
+    func messageBody(for messageId: ID) async -> MessageBody? {
         do {
             let decryptedMessage = try await getMessageBody(mbox: mailbox, id: messageId).get()
             let tranformOptions = TransformOpts(blockQuote: .untouched, remoteContent: .default)
             let decryptedBody = try await decryptedMessage.body(opts: tranformOptions).get()
 
-            return decryptedBody.body
+            return .init(body: decryptedBody.body, embeddedImageProvider: decryptedMessage)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
             return nil
         }
+    }
+}
+
+struct MessageBody {
+    let body: String
+    let embeddedImageProvider: EmbeddedImageProvider
+}
+
+extension DecryptedMessage: EmbeddedImageProvider {
+    func embeddedImage(cid: String) async -> GetEmbeddedAttachmentResult {
+        fatalError()
     }
 }

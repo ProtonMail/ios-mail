@@ -30,9 +30,7 @@ class MessageBodyReaderViewTests: XCTestCase {
         urlOpenerSpy = .init()
         sut = MessageBodyReaderView(
             bodyContentHeight: .constant(.zero),
-            mailbox: .dummy,
-            messageID: .init(value: 7),
-            html: .notUsed,
+            messageBody: .init(body: .notUsed, embeddedImageProvider: EmbeddedImageProviderSpy()),
             urlOpener: urlOpenerSpy
         ) {}
     }

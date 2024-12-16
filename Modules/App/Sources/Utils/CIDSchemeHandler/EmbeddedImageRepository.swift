@@ -17,19 +17,19 @@
 
 import proton_app_uniffi
 
-typealias EmbeddedImageClosure = (_ mailbox: Mailbox, _ id: ID, _ cid: String) async -> GetEmbeddedAttachmentResult
+protocol EmbeddedImageProvider: AnyObject {
+    func embeddedImage(cid: String) async -> GetEmbeddedAttachmentResult
+}
 
 struct EmbeddedImageRepository {
-    private let mailbox: Mailbox
-    private let embeddedImageProvider: EmbeddedImageClosure
+    private let embeddedImageProvider: EmbeddedImageProvider
 
-    init(mailbox: Mailbox, embeddedImageProvider: @escaping EmbeddedImageClosure) {
-        self.mailbox = mailbox
+    init(embeddedImageProvider: EmbeddedImageProvider) {
         self.embeddedImageProvider = embeddedImageProvider
     }
 
-    func embeddedImage(messageID: ID, cid: String) async throws -> EmbeddedImage {
-        switch await embeddedImageProvider(mailbox, messageID, cid) {
+    func embeddedImage(cid: String) async throws -> EmbeddedImage {
+        switch await embeddedImageProvider.embeddedImage(cid: cid) {
         case .ok(let imageMetadata):
             imageMetadata.embeddedImage
         case .error(let error):

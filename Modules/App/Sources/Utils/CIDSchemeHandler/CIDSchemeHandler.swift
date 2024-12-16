@@ -20,20 +20,13 @@ import WebKit
 
 class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
     private let embeddedImageRepository: EmbeddedImageRepository
-    private let messageID: ID
 
-    init(
-        mailbox: Mailbox,
-        messageID: ID,
-        embeddedImageProvider: @escaping EmbeddedImageClosure = getEmbeddedAttachment
-    ) {
-        self.embeddedImageRepository = .init(mailbox: mailbox, embeddedImageProvider: embeddedImageProvider)
-        self.messageID = messageID
+    init(embeddedImageProvider: EmbeddedImageProvider) {
+        self.embeddedImageRepository = .init(embeddedImageProvider: embeddedImageProvider)
     }
 
     enum HandlerError: Error, Equatable {
         case missingCID
-        case imageNotAvailable
     }
 
     static let handlerScheme = "cid"
@@ -74,7 +67,8 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 
     private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
         Task {
-            if let image = try? await embeddedImageRepository.embeddedImage(messageID: messageID, cid: cid) {
+            do {
+                let image = try await embeddedImageRepository.embeddedImage(cid: cid)
                 let response = URLResponse(
                     url: url,
                     mimeType: image.mimeType,
@@ -84,8 +78,8 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(image.data)
                 urlSchemeTask.didFinish()
-            } else {
-                urlSchemeTask.didFailWithError(HandlerError.imageNotAvailable)
+            } catch {
+                urlSchemeTask.didFailWithError(error)
             }
         }
     }

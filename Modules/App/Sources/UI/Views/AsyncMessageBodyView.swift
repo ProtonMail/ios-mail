@@ -20,14 +20,14 @@ import SwiftUI
 
 struct AsyncMessageBodyView<Content>: View where Content: View {
     @StateObject private var bodyLoader: MessageBodyLoader
-    @ViewBuilder private var content: (MessageBodyLoader.MessageBody) -> Content
+    @ViewBuilder private var content: (MessageBodyLoader.MessageBodyState) -> Content
 
     private let messageId: ID
 
     init(
         messageId: ID,
         mailbox: Mailbox,
-        @ViewBuilder content: @escaping (MessageBodyLoader.MessageBody) -> Content
+        @ViewBuilder content: @escaping (MessageBodyLoader.MessageBodyState) -> Content
     ) {
         self.messageId = messageId
         _bodyLoader = .init(wrappedValue: .init(mailbox: mailbox))
@@ -45,13 +45,13 @@ struct AsyncMessageBodyView<Content>: View where Content: View {
 }
 
 final class MessageBodyLoader: ObservableObject {
-    enum MessageBody {
+    enum MessageBodyState {
         case fetching
-        case value(_ body: String)
+        case value(_ value: MessageBody)
         case error(Error)
     }
 
-    @Published var body: MessageBody = .fetching
+    @Published var body: MessageBodyState = .fetching
     private let provider: MessageBodyProviding
 
     init(mailbox: Mailbox) {

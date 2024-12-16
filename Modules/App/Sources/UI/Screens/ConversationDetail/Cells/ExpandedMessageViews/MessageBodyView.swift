@@ -24,7 +24,6 @@ struct MessageBodyView: View {
     @Environment(\.openURL) var urlOpener
     @State var bodyContentHeight: CGFloat = 0.0
 
-    let messageBody: String?
     let messageId: ID
     let uiModel: ExpandedMessageCellUIModel
     let mailbox: Mailbox
@@ -39,7 +38,7 @@ struct MessageBodyView: View {
 
     var body: some View {
         if let messageBody = uiModel.message {
-            messageBodyView(body: messageBody)
+            messageBodyView(messageBody: messageBody)
         } else {
             AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
                 switch messageBody {
@@ -50,7 +49,7 @@ struct MessageBodyView: View {
                     .padding(.vertical, DS.Spacing.jumbo)
 
                 case .value(let body):
-                    messageBodyView(body: body)
+                    messageBodyView(messageBody: body)
 
                 case .error(let error):
                     Text(String(describing: error))
@@ -59,7 +58,7 @@ struct MessageBodyView: View {
         }
     }
 
-    private func messageBodyView(body: String) -> some View {
+    private func messageBodyView(messageBody: MessageBody) -> some View {
         ZStack {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
@@ -67,9 +66,7 @@ struct MessageBodyView: View {
 
             MessageBodyReaderView(
                 bodyContentHeight: $bodyContentHeight,
-                mailbox: mailbox,
-                messageID: uiModel.id,
-                html: body,
+                messageBody: messageBody,
                 urlOpener: urlOpener,
                 htmlLoaded: htmlLoaded
             )

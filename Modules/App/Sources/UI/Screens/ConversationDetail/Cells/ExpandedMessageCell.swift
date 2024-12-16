@@ -81,7 +81,6 @@ struct ExpandedMessageCell: View {
                     .padding(.horizontal, DS.Spacing.large)
                     .padding(.bottom, DS.Spacing.large)
                 MessageBodyView(
-                    messageBody: uiModel.message,
                     messageId: uiModel.id,
                     uiModel: uiModel,
                     mailbox: mailbox, 
@@ -110,7 +109,7 @@ struct ExpandedMessageCell: View {
 
 struct ExpandedMessageCellUIModel: Identifiable {
     let id: ID
-    let message: String?
+    let message: MessageBody?
     let unread: Bool
     let messageDetails: MessageDetailsUIModel
 }
@@ -138,6 +137,14 @@ extension MessageBodyAttachmentsState {
 
 }
 
+private extension MessageBody {
+
+    static func testInstance(body: String) -> Self {
+        .init(body: body, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
+    }
+
+}
+
 #Preview {
     let messageDetails = MessageDetailsPreviewProvider.testData(
         location: .system(name: .inbox, id: .random()),
@@ -151,7 +158,9 @@ extension MessageBodyAttachmentsState {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 0),
-                message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it", 
+                message: .testInstance(
+                    body: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                ),
                 unread: false,
                 messageDetails: messageDetails
             ),
@@ -165,7 +174,9 @@ extension MessageBodyAttachmentsState {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 1),
-                message: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it",
+                message: .testInstance(
+                    body: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                ),
                 unread: false,
                 messageDetails: messageDetails
             ),

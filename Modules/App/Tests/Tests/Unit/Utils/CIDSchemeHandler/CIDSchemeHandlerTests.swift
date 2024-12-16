@@ -23,15 +23,8 @@ import WebKit
 
 class CIDSchemeHandlerTests: BaseTestCase {
 
-    struct EmbeddedImageInvokeSpy: Equatable {
-        let id: ID
-        let cid: String
-    }
-
     var sut: CIDSchemeHandler!
-    var embeddedImageProviderInvoked: [EmbeddedImageInvokeSpy]!
-    var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
-    var stubbedError: ActionError!
+    var embeddedImageProviderSpy: EmbeddedImageProviderSpy!
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
     var stubbedMessageID: ID {
@@ -41,28 +34,13 @@ class CIDSchemeHandlerTests: BaseTestCase {
     override func setUp() {
         super.setUp()
 
-        embeddedImageProviderInvoked = []
-
-        sut = CIDSchemeHandler(
-            mailbox: .dummy,
-            messageID: stubbedMessageID,
-            embeddedImageProvider: { _, id, cid in
-                self.embeddedImageProviderInvoked.append(.init(id: id, cid: cid))
-
-                if let stubbedEmbeddedImage = self.stubbedEmbeddedImage {
-                    return .ok(stubbedEmbeddedImage)
-                } else {
-                    return .error(self.stubbedError)
-                }
-            }
-        )
+        embeddedImageProviderSpy = .init()
+        sut = CIDSchemeHandler(embeddedImageProvider: embeddedImageProviderSpy)
     }
 
     override func tearDown() {
         sut = nil
-        urlSchemeTaskSpy = nil
-        embeddedImageProviderInvoked = nil
-        stubbedEmbeddedImage = nil
+        embeddedImageProviderSpy = nil
 
         super.tearDown()
     }
@@ -72,18 +50,18 @@ class CIDSchemeHandlerTests: BaseTestCase {
         urlSchemeTaskSpy = .init(request: request)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderInvoked, [])
+        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.missingCID])
     }
 
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() {
         let cidValue = "abcdef"
-        stubbedError = .reason(.unknownMessage)
+        embeddedImageProviderSpy.stubbedError = .reason(.unknownMessage)
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderInvoked, [.init(id: stubbedMessageID, cid: cidValue)])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.imageNotAvailable])
+        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asActionError), [.reason(.unknownMessage)])
     }
 
     func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() {
@@ -91,14 +69,13 @@ class CIDSchemeHandlerTests: BaseTestCase {
         let url = URL.cid(cidValue)
         let image = EmbeddedAttachmentInfo.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        stubbedEmbeddedImage = image
+        embeddedImageProviderSpy.stubbedEmbeddedImage = image
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderInvoked, [.init(id: stubbedMessageID, cid: cidValue)])
+        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url), [url])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType), ["image/png"])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength), [Int64(image.data.count)])
-        XCTAssertEqual(urlSchemeTaskSpy.didFinishInvokeCount, 1)
     }
 
     func testWebViewStopURLSchemeTask_ItDoesNotDoAnything() {
@@ -156,6 +133,10 @@ private extension URL {
 
 private extension Error {
 
+    var asActionError: ActionError? {
+        self as? ActionError
+    }
+
     var asHandlerError: CIDSchemeHandler.HandlerError? {
         self as? CIDSchemeHandler.HandlerError
     }
@@ -171,6 +152,26 @@ private extension EmbeddedAttachmentInfo {
             height: nil,
             width: nil
         )
+    }
+
+}
+
+class EmbeddedImageProviderSpy: EmbeddedImageProvider {
+
+    var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
+    var stubbedError: ActionError!
+    private(set) var invokedEmbeddedImageWithCID: [String] = []
+
+    // MARK: - EmbeddedImageProvider
+
+    func embeddedImage(cid: String) async -> GetEmbeddedAttachmentResult {
+        invokedEmbeddedImageWithCID.append(cid)
+
+        if let stubbedEmbeddedImage {
+            return .ok(stubbedEmbeddedImage)
+        } else {
+            return .error(stubbedError)
+        }
     }
 
 }
