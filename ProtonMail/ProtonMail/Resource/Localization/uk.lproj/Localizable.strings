@@ -1421,16 +1421,16 @@
 "Inherited from parent folder" = "Успадковано від теки вищого рівня";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "Створення теки не дозволено";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Створення мітки не дозволено";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Передплатіть тарифний план, щоб використовувати понад 3 теки";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "Передплатіть тарифний план, щоб використовувати понад 3 мітки";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Під'єднайтесь і повторіть спробу";
@@ -1615,7 +1615,7 @@
 "Cannot empty folder right now." = "Зараз неможливо спорожнити теку.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Are you sure you want to permanently delete all messages within '%@'?";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Ви дійсно хочете остаточно видалити всі повідомлення в теці \"%@\"?";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Показати повідомлення цілком]";
@@ -1828,31 +1828,31 @@
 "Get more storage" = "Збільшити сховище";
 
 /* Spotlight title */
-"Sized for reading" = "Sized for reading";
+"Sized for reading" = "Масштабовано для читання";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Відтепер текст ваших листів також показуватиметься у бажаному розмірі для читання.";
 
 /* Title of the banner alert */
 "Your storage is full" = "Ваше сховище заповнене";
 
 /* Title of the banner alert */
-"Your subscription has ended" = "Your subscription has ended";
+"Your subscription has ended" = "Ваша передплата завершилась";
 
 /* Title of the banner alert */
-"Your account is at risk of deletion" = "Your account is at risk of deletion";
+"Your account is at risk of deletion" = "Ваш обліковий запис під ризиком видалення";
 
 /* Description of the banner alert */
 "To send or receive emails, free up space or upgrade for more storage." = "Щоб надсилати й отримувати листи, звільніть місце або передплатіть тарифний план, щоб збільшити сховище.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "To upload files, free up space or upgrade for more storage.";
+"To upload files, free up space or upgrade for more storage." = "Щоб вивантажити файли, звільніть місце або передплатіть тарифний план для збільшення сховища.";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Upgrade to restore full access and to avoid data loss.";
+"Upgrade to restore full access and to avoid data loss." = "Перейдіть на тарифний план вищого рівня, щоб відновити повний доступ і уникнути втрати даних.";
 
 /* Description of the banner alert */
-"To avoid data loss, ask your admin to upgrade." = "To avoid data loss, ask your admin to upgrade.";
+"To avoid data loss, ask your admin to upgrade." = "Щоб уникнути втрати даних, попросіть адміністратора підвищити рівень тарифного плану.";
 
 /* Upgrade button action */
 "Upgrade" = "Покращити";
@@ -2121,31 +2121,31 @@
 "As scheduled" = "Як заплановано";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Налаштувати власний розклад";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Користуйтеся власним розкладом листування та іншими перевагами після оновлення тарифного плану.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Покращити зараз";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Заплануйте надсилання повідомлень в будь-який час";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
+"Unlimited folders and labels" = "Необмежена кількість тек і міток";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "До 500 ГБ сховища";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "До 15 адрес електронної пошти";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "До 3 власних доменів";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email aliases";
+"Hide My Email aliases" = "Псевдоніми Hide-my-email";
 
 /* One of schedule time options */
 "In the morning" = "Зранку";
@@ -2274,13 +2274,13 @@
 "Clear out the junk" = "Приберіть усе зайве";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматично очищуйте повідомлення зі спаму та смітника через 30 днів. Скористайтеся цими та іншими перевагами після передплати.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "До 3 ТБ сховища";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Власні домени електронної пошти";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "Змінився відправник";
@@ -2292,7 +2292,7 @@
 "Please retry after all attachments are uploaded." = "Повторіть спробу після вивантаження всіх вкладень.";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "Надсилання за допомогою розширення Share без доступу до інтернету не підтримується";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Ім'я";
@@ -2403,13 +2403,13 @@
 "Please select a time in the future" = "Будь ласка, виберіть час у майбутньому";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "Хочете відкладати на будь-який час?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
+"Unlock custom snooze times when you upgrade" = "Розблокуйте користувацький час відкладення, перейшовши на тарифний план вищого рівня";
 
 /* The benefit item for snooze promotion view */
-"Up to 15 email addresses/aliases" = "Up to 15 email addresses/aliases";
+"Up to 15 email addresses/aliases" = "До 15 адрес електронної пошти або псевдонімів";
 
 /* The benefit item for snooze promotion view */
 "Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
@@ -2478,52 +2478,52 @@
 "%u email addresses" = "%u адрес електронної пошти";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "Власний домен електронної пошти";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "Підтримка власних доменів електронної пошти";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u personal calendars";
+"%u personal calendars" = "%u особистих календарів";
 
 /* Description of a feature of a paid subscription */
-"1 GB Storage and 1 email" = "1 GB Storage and 1 email";
+"1 GB Storage and 1 email" = "1 ГБ сховища й 1 електронна пошта";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Наскрізне шифрування";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Програма для комп'ютера";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Пріоритетна підтримка клієнтів";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "+%u premium features";
+"+%u premium features" = "+%u преміальних функцій";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "У %u разів більше сховище";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Отримайте %u GB – достатньо, щоб безпечно зберігати ваші повідомлення, файли та фотографії";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "У %u разів більше адрес електронної пошти";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Створіть до %u адрес електронної пошти, зокрема @pm.me, щоб задовольнити свої потреби.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Під'єднайте власний домен і надійно надсилайте професійні чи брендовані листи.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Миттєво відкривайте поштову скриньку й календар, не відволікаючись на роботу в браузері.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Організуйте свою поштову скриньку з використанням бажаної системи тек і міток.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Оцініть швидший час відповіді від персоналу підтримки в разі виникнення проблем.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Анонімна телеметрія";
@@ -2547,7 +2547,7 @@
 "Free" = "Безплатно";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Автоматичне поновлення за тією ж ціною та умовами доки не скасувати.";
 
 /* Displayed next to the monthly price */
 "/month" = "/місяць";
@@ -2565,55 +2565,55 @@
 "Purchase already in progress" = "Процес покупки вже виконується";
 
 /* Title of the upsell page */
-"Clear out old trash and spam" = "Clear out old trash and spam";
+"Clear out old trash and spam" = "Очистьте смітник і спам";
 
 /* Subtitle of the upsell page */
-"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Enjoy a tidier mailbox and benefit from other premium features with %@.";
+"Enjoy a tidier mailbox and benefit from other premium features with %@." = "Оцініть чистішу поштову скриньку й переваги інших преміальних функцій %@.";
 
 /* Title of the upsell page */
-"Group your contacts" = "Group your contacts";
+"Group your contacts" = "Групуйте свої контакти";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Легко надсилайте листи групі, а також користуйтеся іншими преміальними функціями %@.";
 
 /* Title of the upsell page */
-"Need more labels or folders?" = "Need more labels or folders?";
+"Need more labels or folders?" = "Потрібно більше міток або тек?";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Get them and other premium features when you upgrade to %@.";
+"Get them and other premium features when you upgrade to %@." = "Отримайте їх, а також інші преміальні функції, передплативши %@.";
 
 /* Title of the upsell page */
-"Customize your signature" = "Customize your signature";
+"Customize your signature" = "Налаштуйте свій підпис";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Використовуйте власний мобільний підпис, а також інші преміальні функції %@.";
 
 /* Title of the upsell page */
-"Schedule now, send later" = "Schedule now, send later";
+"Schedule now, send later" = "Заплануйте зараз, надсилайте пізніше";
 
 /* Subtitle of the upsell page */
-"Enjoy custom schedule send and other premium features with %@." = "Enjoy custom schedule send and other premium features with %@.";
+"Enjoy custom schedule send and other premium features with %@." = "Користуйтеся власним запланованим надсиланням, а також іншими преміальними функціями %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Bad time for this email?";
+"Bad time for this email?" = "Невдалий час для цього листа?";
 
 /* Subtitle of the upsell page */
-"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
+"Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Відкладіть його на будь-який бажаний час, а також користуйтеся іншими можливостями %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Вибрати план";
 
 /* Refers to an annual billing cycle */
-"Annual" = "Annual";
+"Annual" = "Річний";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Найвигідніший";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u додаткових функцій";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
-"Billed at %1$@ every %2$@" = "Billed at %1$@ every %2$@";
+"Billed at %1$@ every %2$@" = "Сплачується %1$@ кожні %2$@";
 
 /* In the list of premium plan features */
-"Premium value included" = "Premium value included";
+"Premium value included" = "Усі переваги преміум";

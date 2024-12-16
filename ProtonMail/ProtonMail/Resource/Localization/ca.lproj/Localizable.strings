@@ -1846,10 +1846,10 @@
 "To send or receive emails, free up space or upgrade for more storage." = "Per a enviar o rebre correus electrònics, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "Per carregar fitxers, allibereu espai o milloreu el pla per obtenir més emmagatzematge.";
+"To upload files, free up space or upgrade for more storage." = "Per carregar fitxers, allibereu espai o milloreu el pla per a obtenir més emmagatzematge.";
 
 /* Description of the banner alert */
-"Upgrade to restore full access and to avoid data loss." = "Milloreu el pla per restaurar l'accés complet i per evitar la pèrdua de dades.";
+"Upgrade to restore full access and to avoid data loss." = "Milloreu el pla per restaurar l'accés complet i evitar la pèrdua de dades.";
 
 /* Description of the banner alert */
 "To avoid data loss, ask your admin to upgrade." = "Per evitar la pèrdua de dades, demaneu a l'administrador que millori el pla.";
@@ -2406,7 +2406,7 @@
 "Want to snooze any time?" = "Voleu posar en pausa en algun moment?";
 
 /* The content description of snooze promotion view */
-"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de pausa personalitzats quan milloreu el vostre pla.";
+"Unlock custom snooze times when you upgrade" = "Desbloquegeu els temps de pausa personalitzats quan milloreu el pla.";
 
 /* The benefit item for snooze promotion view */
 "Up to 15 email addresses/aliases" = "Fins a 15 adreces de correu electrònic/àlies";
@@ -2595,7 +2595,7 @@
 "Enjoy custom schedule send and other premium features with %@." = "Gaudiu de la personalització de l'hora d'enviament i altres funcions prèmium amb %@.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "Mal moment per a aquest correu?";
+"Bad time for this email?" = "És un mal moment per aquest correu electrònic?";
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Personalitzeu les pauses com desitgeu i molt més amb %@.";

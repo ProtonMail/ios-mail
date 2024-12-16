@@ -2130,7 +2130,7 @@
 "Upgrade now" = "立即升级账户";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "随时安排消息";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "文件夹和标签不限量";
@@ -2274,7 +2274,7 @@
 "Clear out the junk" = "邮件也需辞旧迎新";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "自动清除垃圾邮件中超过 30 天的邮件。升级时享受此优惠和其他优惠。";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "最高 3 TB 存储空间";
@@ -2292,7 +2292,7 @@
 "Please retry after all attachments are uploaded." = "请在所有附件上传完成后重试";
 
 /* Alert title */
-"Sending with the Share extension while offline is not supported" = "Sending with the Share extension while offline is not supported";
+"Sending with the Share extension while offline is not supported" = "不支持在离线状态下使用共享扩展发送";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "称呼";
