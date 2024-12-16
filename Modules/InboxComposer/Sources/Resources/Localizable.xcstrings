@@ -18,6 +18,9 @@
     },
     "To:" : {
       "comment" : "Composer to recipients."
+    },
+    "Unrecognized MIME type" : {
+      "comment" : "Error message."
     }
   },
   "version" : "1.0"

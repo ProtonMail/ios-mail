@@ -179,10 +179,6 @@ enum L10n {
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
     }
 
-    enum Error {
-        static let unknownMimeType = LocalizedStringResource("Unrecognized MIME type", comment: "Error message.")
-    }
-
     enum Labels {
         static let alsoArchive = LocalizedStringResource(
             "Also archive?",

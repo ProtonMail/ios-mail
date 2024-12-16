@@ -18,22 +18,22 @@
 import Foundation
 import proton_app_uniffi
 
-extension EventError: LocalizedError {
+extension DraftError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .reason(let eventErrorReason):
-            eventErrorReason.errorMessage
+        case .reason(let draftErrorReason):
+            draftErrorReason.errorMessage.string
         case .other(let protonError):
             protonError.localizedDescription
         }
     }
 }
 
-private extension EventErrorReason {
-    var errorMessage: String {
+private extension DraftErrorReason {
+    var errorMessage: LocalizedStringResource {
         switch self {
-        case .placeholder:
-            "Unknown error"
+        case .unknownMimeType:
+            L10n.Error.unknownMimeType
         }
     }
 }

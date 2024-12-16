@@ -62,4 +62,8 @@ enum L10n {
             )
         }
     }
+
+    enum Error {
+        static let unknownMimeType = LocalizedStringResource("Unrecognized MIME type", comment: "Error message.")
+    }
 }
