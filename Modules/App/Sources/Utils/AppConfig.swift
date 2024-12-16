@@ -36,12 +36,17 @@ extension AppConfig {
     var apiEnvConfig: ApiConfig {
         let environment = self.environment
 
-        return ApiConfig(
-            allowHttp: environment.isHttpAllowed, 
+        return .init(
             appVersion: appVersion,
-            baseUrl: environment.apiBaseUrl,
-            skipSrpProofValidation: environment.isSrpProofSkipped, 
             userAgent: environment.userAgent
         )
+
+//        return ApiConfig(
+//            allowHttp: environment.isHttpAllowed, 
+//            appVersion: appVersion,
+//            baseUrl: environment.apiBaseUrl,
+//            skipSrpProofValidation: environment.isSrpProofSkipped, 
+//            userAgent: environment.userAgent
+//        )
     }
 }
