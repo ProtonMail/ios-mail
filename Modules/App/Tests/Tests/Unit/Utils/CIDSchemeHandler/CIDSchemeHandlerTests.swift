@@ -155,23 +155,3 @@ private extension EmbeddedAttachmentInfo {
     }
 
 }
-
-private class EmbeddedImageProviderSpy: EmbeddedImageProvider {
-
-    var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
-    var stubbedError: UnexpectedError!
-    private(set) var invokedEmbeddedImageWithCID: [String] = []
-
-    // MARK: - EmbeddedImageProvider
-
-    func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult {
-        invokedEmbeddedImageWithCID.append(cid)
-
-        if let stubbedEmbeddedImage {
-            return .ok(stubbedEmbeddedImage)
-        } else {
-            return .error(.unexpected(.unknown))
-        }
-    }
-
-}
