@@ -153,7 +153,7 @@ public extension DecryptedMessageBodyResult {
         }
     }
 }
-public extension GetEmbeddedAttachmentResult {
+public extension DecryptedMessageGetEmbeddedAttachmentResult {
     func get() throws -> EmbeddedAttachmentInfo {
         switch self {
         case .ok(let value):
@@ -385,6 +385,16 @@ public extension MailUserSessionApplicableLabelsResult {
 }
 public extension MailUserSessionForkResult {
     func get() throws -> String {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionGetAttachmentResult {
+    func get() throws -> DecryptedAttachment {
         switch self {
         case .ok(let value):
             value

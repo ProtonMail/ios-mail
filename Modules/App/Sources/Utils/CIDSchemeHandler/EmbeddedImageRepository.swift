@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 protocol EmbeddedImageProvider: AnyObject {
-    func embeddedImage(cid: String) async -> GetEmbeddedAttachmentResult
+    func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult
 }
 
 struct EmbeddedImageRepository {
@@ -29,9 +29,9 @@ struct EmbeddedImageRepository {
     }
 
     func embeddedImage(cid: String) async throws -> EmbeddedImage {
-        switch await embeddedImageProvider.embeddedImage(cid: cid) {
+        switch await embeddedImageProvider.getEmbeddedAttachment(cid: cid) {
         case .ok(let imageMetadata):
-            imageMetadata.embeddedImage
+            return imageMetadata.embeddedImage
         case .error(let error):
             throw error
         }
@@ -45,3 +45,5 @@ private extension EmbeddedAttachmentInfo {
     }
 
 }
+
+extension DecryptedMessage: EmbeddedImageProvider {}

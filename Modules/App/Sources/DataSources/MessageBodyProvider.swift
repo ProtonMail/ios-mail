@@ -22,6 +22,11 @@ protocol MessageBodyProviding {
     func messageBody(for messageId: ID) async -> MessageBody?
 }
 
+struct MessageBody {
+    let body: String
+    let embeddedImageProvider: EmbeddedImageProvider
+}
+
 final class MessageBodyProvider: Sendable, MessageBodyProviding {
     private let mailbox: Mailbox
 
@@ -40,16 +45,5 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
             AppLogger.log(error: error, category: .conversationDetail)
             return nil
         }
-    }
-}
-
-struct MessageBody {
-    let body: String
-    let embeddedImageProvider: EmbeddedImageProvider
-}
-
-extension DecryptedMessage: EmbeddedImageProvider {
-    func embeddedImage(cid: String) async -> GetEmbeddedAttachmentResult {
-        fatalError()
     }
 }

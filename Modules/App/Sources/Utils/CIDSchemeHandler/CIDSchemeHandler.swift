@@ -18,7 +18,7 @@
 import proton_app_uniffi
 import WebKit
 
-class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
+class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
     private let embeddedImageRepository: EmbeddedImageRepository
 
     init(embeddedImageProvider: EmbeddedImageProvider) {
