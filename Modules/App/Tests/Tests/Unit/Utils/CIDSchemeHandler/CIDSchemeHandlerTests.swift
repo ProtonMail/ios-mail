@@ -156,7 +156,7 @@ private extension EmbeddedAttachmentInfo {
 
 }
 
-class EmbeddedImageProviderSpy: EmbeddedImageProvider {
+private class EmbeddedImageProviderSpy: EmbeddedImageProvider {
 
     var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
     var stubbedError: UnexpectedError!
