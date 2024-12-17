@@ -21,10 +21,9 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
+struct MailboxItemsListView<EmptyView: View>: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @State var config: MailboxItemsListViewConfiguration
-    @ViewBuilder let headerView: HeaderView
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
 
@@ -36,11 +35,9 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
 
     init(
         config: MailboxItemsListViewConfiguration,
-        @ViewBuilder headerView: () -> HeaderView,
         @ViewBuilder emptyView: () -> EmptyView
     ) {
         self._config = State(initialValue: config)
-        self.headerView = headerView()
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
     }
@@ -57,7 +54,6 @@ struct MailboxItemsListView<HeaderView: View, EmptyView: View>: View {
     private var listView: some View {
         PaginatedListView(
             dataSource: config.dataSource,
-            headerView: { headerView },
             emptyListView: { emptyView },
             cellView: { index, item in
                 cellView(index: index, item: item)
@@ -185,7 +181,6 @@ private extension SelectionModeState {
         var body: some View {
             MailboxItemsListView(
                 config: makeConfiguration(),
-                headerView: { EmptyView() },
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) }
             )
             .task {

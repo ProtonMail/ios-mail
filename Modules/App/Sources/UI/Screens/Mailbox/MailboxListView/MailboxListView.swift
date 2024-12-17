@@ -99,8 +99,9 @@ extension MailboxListView {
     private func mailboxListView() -> some View {
         MailboxItemsListView(
             config: mailboxItemListViewConfiguration(),
-            headerView:  { EmptyView() },
-            emptyView: { MailboxEmptyView(isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected) }
+            emptyView: {
+                NoResultsView(variant: .mailbox(isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected))
+            }
         )
         .injectIfNotNil(model.mailbox)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

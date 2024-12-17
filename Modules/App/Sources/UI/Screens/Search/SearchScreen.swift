@@ -105,11 +105,8 @@ struct SearchScreen: View {
     private var resultsList: some View {
         MailboxItemsListView(
             config: listConfiguration,
-            headerView: {
-                EmptyView()
-            }, 
             emptyView: {
-                SearchNoResults()
+                NoResultsView(variant: .search)
             }
         )
         .injectIfNotNil(model.mailbox)
