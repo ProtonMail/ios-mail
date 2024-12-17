@@ -27,22 +27,28 @@ enum ComposerScreenPreviewProvider {
     }
 
     static func makeRandomSingleRecipient(suffix: String) -> RecipientUIModel {
-        .init(
-            type: .single,
-            address: ["john.doe_\(suffix)@apple.com", "laura.stern_\(suffix)@gmail.com", "mike2318.smith12398\(suffix)@protonmail.com", "anna\(suffix)@pm.me", "Hillary Scott <hey_hs_\(suffix)@gmail.com>", "Brandon <brandon_234\(suffix)@proton.me>", "andy_\(suffix)@proton.ch"].randomElement()!,
-            isSelected: false,
-            isValid: (Array(repeating: true, count: 8) + [false]).randomElement()!,
-            isEncrypted: [true, true, false].randomElement()!
+        let address = ["john.doe_\(suffix)@apple.com", "laura.stern_\(suffix)@gmail.com", "mike2318.smith12398\(suffix)@protonmail.com", "anna\(suffix)@pm.me", "Hillary Scott <hey_hs_\(suffix)@gmail.com>", "Brandon <brandon_234\(suffix)@proton.me>", "andy_\(suffix)@proton.ch"].randomElement()!
+
+        return RecipientUIModel(
+            composerRecipient: .single(
+                .init(
+                    displayName: "",
+                    address: address,
+                    validState: .valid
+                )
+            )
         )
     }
 
     static func makeRandomGroup(suffix: String) -> RecipientUIModel {
-        .init(
-            type: .group,
-            address: ["Family_\(suffix)", "Gym_\(suffix) 🏋️‍♂️", "Football team with work colleagues \(suffix)", "🏖️ college trip \(suffix)"].randomElement()!,
-            isSelected: false,
-            isValid: true,
-            isEncrypted: false
+        return RecipientUIModel(
+            composerRecipient: .group(
+                .init(
+                    displayName: ["Family_\(suffix)", "Gym_\(suffix) 🏋️‍♂️", "Football team with work colleagues \(suffix)", "🏖️ college trip \(suffix)"].randomElement()!,
+                    recipients: [],
+                    totalContactsInGroup: 0
+                )
+            )
         )
     }
 }

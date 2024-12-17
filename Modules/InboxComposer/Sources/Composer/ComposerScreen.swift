@@ -26,7 +26,7 @@ public struct ComposerScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
 
-    public init(draft: DraftProtocol, contactProvider: ComposerContactProvider) {
+    public init(draft: AppDraftProtocol, contactProvider: ComposerContactProvider) {
         self._model = StateObject(wrappedValue: ComposerModel(draft: draft, contactProvider: contactProvider))
     }
 
@@ -50,7 +50,7 @@ public struct ComposerScreen: View {
                     case .onDeleteKeyPressedInsideEmptyInputField:
                         model.selectLastRecipient(group: group)
                     case .onDeleteKeyPressedOutsideInputField:
-                        model.removeSelectedRecipients(group: group)
+                        model.removeRecipientsThatAreSelected(group: group)
                     }
 
                 case let .contactPickerEvent(event, group):
@@ -72,12 +72,17 @@ public struct ComposerScreen: View {
                     case .onStartEditing:
                         model.endEditingRecipients()
                     case .onSubjectChange(let subject):
-                        model.changeSubject(value: subject)
+                        model.updateSubject(value: subject)
                     }
 
                 case .onNonRecipientFieldStartEditing:
                     model.endEditingRecipients()
                 }
+            }
+            .onChange(of: model.toast) { _, newValue in
+                guard let newValue else { return }
+                toastStateStore.present(toast: newValue)
+                model.toast = nil
             }
             .onLoad {
                 Task {

@@ -4,11 +4,11 @@
     "%lld members" : {
       "comment" : "Contact group row subtitle in contact picker."
     },
-    "Composer" : {
-      "comment" : "This is a testing string."
-    },
     "From:" : {
       "comment" : "Composer from field."
+    },
+    "Removed duplicate recipient: %@" : {
+      "comment" : "Error shown when a duplicated recipient is added to the draft."
     },
     "Send" : {
       "comment" : "Message send button."
@@ -16,11 +16,14 @@
     "Subject:" : {
       "comment" : "Composer subject."
     },
+    "There was a problem saving the draft" : {
+      "comment" : "Error shown when the draft fails to save."
+    },
     "To:" : {
       "comment" : "Composer to recipients."
     },
     "Unrecognized MIME type" : {
-      "comment" : "Error message."
+      "comment" : "Error when saving a draft"
     }
   },
   "version" : "1.0"

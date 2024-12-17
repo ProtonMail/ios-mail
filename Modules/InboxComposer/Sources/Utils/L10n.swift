@@ -48,11 +48,6 @@ enum L10n {
     }
 
     enum Contacts {
-        static let title = LocalizedStringResource(
-            "Composer",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "This is a testing string."
-        )
 
         static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -63,7 +58,25 @@ enum L10n {
         }
     }
 
-    enum Error {
-        static let unknownMimeType = LocalizedStringResource("Unrecognized MIME type", comment: "Error message.")
+    enum ComposerError {
+        static let unknownMimeType = LocalizedStringResource(
+            "Unrecognized MIME type",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error when saving a draft"
+        )
+
+        static func duplicateRecipient(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Removed duplicate recipient: \(address)",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Error shown when a duplicated recipient is added to the draft."
+            )
+        }
+
+        static let draftSaveFailed =  LocalizedStringResource(
+            "There was a problem saving the draft",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error shown when the draft fails to save."
+        )
     }
 }

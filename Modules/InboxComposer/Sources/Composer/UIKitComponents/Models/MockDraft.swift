@@ -17,39 +17,44 @@
 
 import proton_app_uniffi
 
-final class MockDraft: DraftProtocol {
+extension SingleRecipientEntry {
+
+    func toComposerRecipientSingle() -> ComposerRecipientSingle {
+        .init(displayName: name, address: email, validState: .valid)
+    }
+}
+
+final class MockDraft: AppDraftProtocol {
     var mockSender: String = .empty
     var mockSubject: String = .empty
-    var mockToRecipients: [String] = []
-    var mockCcRecipients: [String] = []
-    var mockBccRecipients: [String] = []
+    var mockToRecipientList = MockComposerRecipientList()
+    var mockCcRecipientList = MockComposerRecipientList()
+    var mockBccRecipientList = MockComposerRecipientList()
+
+    static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
+        let draft = MockDraft()
+        switch group {
+        case .to: draft.mockToRecipientList = .init(addedRecipients: recipients)
+        case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
+        case .bcc: draft.mockBccRecipientList = .init(addedRecipients: recipients)
+        }
+        return draft
+    }
+
+    func toRecipients() -> ComposerRecipientListProtocol {
+        mockToRecipientList
+    }
+
+    func ccRecipients() -> ComposerRecipientListProtocol {
+        mockCcRecipientList
+    }
+
+    func bccRecipients() -> ComposerRecipientListProtocol {
+        mockBccRecipientList
+    }
 
     func attachments() -> [AttachmentMetadata] {
         []
-    }
-
-    func bccRecipients() -> ComposerRecipientList {
-        .init(noPointer: .init())
-    }
-
-    func ccRecipients() -> ComposerRecipientList {
-        .init(noPointer: .init())
-    }
-
-    func toRecipients() -> ComposerRecipientList {
-        .init(noPointer: .init())
-    }
-
-    func toRecipients() -> [String] {
-        mockToRecipients
-    }
-
-    func ccRecipients() -> [String] {
-        mockCcRecipients
-    }
-
-    func bccRecipients() -> [String] {
-        mockBccRecipients
     }
 
     func body() -> String {
@@ -74,7 +79,10 @@ final class MockDraft: DraftProtocol {
 
     func setCcRecipients(recipients: [String]) {}
 
-    func setSubject(subject: String) -> VoidDraftResult { .ok }
+    func setSubject(subject: String) -> VoidDraftResult {
+        mockSubject = subject
+        return .ok
+    }
 
     func setToRecipients(recipients: [String]) {}
 
@@ -83,6 +91,56 @@ final class MockDraft: DraftProtocol {
     }
 }
 
-extension DraftProtocol where Self == MockDraft {
+extension AppDraftProtocol where Self == MockDraft {
     static var emptyMock: MockDraft { .init() }
+}
+
+/**
+ `MockComposerRecipientList` implments the logic it is expected from the SDK's `ComposerRecipientList` object. The
+ UI state of the recpient lists is partially hold in the SDK. This is because recipients do not have an identifier and some operations
+ need to happen based on the index of the elements.
+
+ The reason have some logic in this mock object are:
+ 1. Avoid executing any HTTP request involved
+ 2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
+ to update the ComposerState
+ */
+final class MockComposerRecipientList: ComposerRecipientListProtocol {
+    var addedRecipients: [ComposerRecipient] = []
+    private(set) var callback: ComposerRecipientValidationCallback?
+
+    init(addedRecipients: [ComposerRecipient] = []) {
+        self.addedRecipients = addedRecipients
+    }
+
+    func addGroupRecipient(groupName: String, recipients: [SingleRecipientEntry], totalContactsInGroup: UInt64) -> AddGroupRecipientError {
+        let group = ComposerRecipientGroup(
+            displayName: groupName,
+            recipients: recipients.map { $0.toComposerRecipientSingle() },
+            totalContactsInGroup: totalContactsInGroup
+        )
+        addedRecipients.append(.group(group))
+        return .ok
+    }
+
+    func addSingleRecipient(recipient: SingleRecipientEntry) -> AddSingleRecipientError {
+        addedRecipients.append(.single(recipient.toComposerRecipientSingle()))
+        return .ok
+    }
+
+    func recipients() -> [ComposerRecipient] {
+        addedRecipients
+    }
+
+    func removeGroup(groupName: String) {}
+
+    func removeRecipientFromGroup(groupName: String, email: String) {}
+
+    func removeSingleRecipient(email: String) {
+        addedRecipients.removeAll(where: { !$0.isGroup && $0.singleRecipient?.address == email })
+    }
+
+    func setCallback(cb: ComposerRecipientValidationCallback) {
+        callback = cb
+    }
 }

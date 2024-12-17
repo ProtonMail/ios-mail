@@ -15,25 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import proton_app_uniffi
+import Foundation
 
-extension DraftError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .reason(let draftErrorReason):
-            draftErrorReason.errorMessage.string
-        case .other(let protonError):
-            protonError.localizedDescription
-        }
-    }
-}
+extension AddSingleRecipientError {
 
-private extension DraftErrorReason {
-    var errorMessage: LocalizedStringResource {
+    func localizedErrorMessage(entry: SingleRecipientEntry) -> LocalizedStringResource {
         switch self {
-        case .unknownMimeType:
-            L10n.Error.unknownMimeType
+        case .ok: return LocalizedStringResource(stringLiteral: .empty)
+        case .duplicate:
+            return L10n.ComposerError.duplicateRecipient(address: entry.email)
+        case .saveFailed:
+            return L10n.ComposerError.draftSaveFailed
         }
     }
 }

@@ -15,26 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import Foundation
+import proton_app_uniffi
 
-enum RecipientControllerStateType {
-    case idle
-    case editing
-    case contactPicker
+extension DraftError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let draftErrorReason):
+            draftErrorReason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
 }
 
-struct RecipientFieldState: Equatable, Copying {
-    let group: RecipientGroupType
-    var recipients: [RecipientUIModel]
-
-    var input: String
-    var matchingContacts: [ComposerContact]
-    var controllerState: RecipientControllerStateType
-}
-
-extension RecipientFieldState {
-    static func initialState(group: RecipientGroupType, recipients: [RecipientUIModel] = []) -> RecipientFieldState {
-        .init(group: group, recipients: recipients, input: .empty, matchingContacts: [], controllerState: .idle)
+private extension DraftErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .unknownMimeType:
+            L10n.ComposerError.unknownMimeType
+        }
     }
 }

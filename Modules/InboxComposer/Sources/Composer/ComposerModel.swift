@@ -16,30 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
 final class ComposerModel: ObservableObject {
     @Published var state: ComposerState
-    private var contactProvider: ComposerContactProvider
-    private let draft: DraftProtocol
+    @Published var toast: Toast?
 
-    init(state: ComposerState = .initial, draft: DraftProtocol, contactProvider: ComposerContactProvider) { // FIXME: Remove state and inject directly a Draft object for tests when we have the final SDK
-        self.state = state
-        self.contactProvider = contactProvider
+    private let draft: AppDraftProtocol
+    private let contactProvider: ComposerContactProvider
+
+    private let toCallback = ComposerRecipientCallbackWrapper()
+    private let ccCallback = ComposerRecipientCallbackWrapper()
+    private let bccCallback = ComposerRecipientCallbackWrapper()
+
+    init(draft: AppDraftProtocol, contactProvider: ComposerContactProvider) {
         self.draft = draft
+        self.contactProvider = contactProvider
+        self.state = .initial
         self.state = makeState(from: draft)
-    }
-
-    private func makeState(from draft: DraftProtocol) -> ComposerState {
-        .init(
-            toRecipients: .initialState(group: .to), // FIXME: when the SDK provides the ComposerRecipientList object
-            ccRecipients: .initialState(group: .cc),
-            bccRecipients: .initialState(group: .bcc),
-            senderEmail: draft.sender(),
-            subject: draft.subject(),
-            body: draft.body()
-        )
+        setUpComposerRecipientListCallbacks()
     }
 
     @MainActor
@@ -92,8 +89,16 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
-    func removeSelectedRecipients(group: RecipientGroupType) {
-        state.updateRecipientState(for: group) { $0.recipients = $0.recipients.filter { $0.isSelected == false } }
+    func removeRecipientsThatAreSelected(group: RecipientGroupType) {
+        let recipients: [RecipientUIModel] = {
+            switch group {
+            case .to: state.toRecipients.recipients
+            case .cc: state.ccRecipients.recipients
+            case .bcc: state.bccRecipients.recipients
+            }
+        }()
+        let selected = recipients.filter(\.isSelected)
+        removeRecipients(for: draft, group: group, recipients: selected)
     }
 
     @MainActor
@@ -106,37 +111,121 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func addRecipient(group: RecipientGroupType, address: String) {
-        // FIXME: call the SDK
-        let newRecipient = RecipientUIModel(type: .single, address: address, isSelected: false, isValid: false, isEncrypted: false)
-        state.overrideRecipientState(for: group) {
-            $0.copy(\.recipients, to: $0.recipients + [newRecipient])
-                .copy(\.input, to: .empty)
-        }
+        let entry = SingleRecipientEntry(name: nil, email: address)
+        addEntryInRecipients(for: draft, entry: entry, group: group)
     }
 
     @MainActor
     func addContact(group: RecipientGroupType, contact: ComposerContact) {
-        // FIXME: create the correct recipient model, call the SDK
-        let newRecipient = RecipientUIModel(
-            type: contact.type.isGroup ? .group : .single,
-            address: contact.type.isGroup ? contact.toUIModel().title : contact.toUIModel().subtitle,
-            isSelected: false,
-            isValid: true,
-            isEncrypted: false
-        )
-
-        state.overrideRecipientState(for: group) {
-            $0.copy(\.recipients, to: $0.recipients + [newRecipient])
-                .copy(\.input, to: .empty)
-                .copy(\.controllerState, to: .editing)
+        switch contact.type {
+        case .single(let single):
+            let entry = SingleRecipientEntry(name: single.name, email: single.email)
+            addEntryInRecipients(for: draft, entry: entry, group: group)
+        case .group:
+            // FIXME: We are not ready to add groups because the SDK does not return them yet
+            break
         }
     }
 
-    // FIXME: when the SDK provides the ComposerRecipientList object and we can parse the whole draft
     @MainActor
-    func changeSubject(value: String) {
-        draft.setSubject(subject: value)
-        state = state.copy(\.subject, to: draft.subject())
+    func updateSubject(value: String) {
+        switch draft.setSubject(subject: value) {
+        case .ok:
+            state = state.copy(\.subject, to: draft.subject())
+        case .error:
+            // FIXME: handle error
+            break
+        }
+    }
+}
+
+// MARK: Private
+
+extension ComposerModel {
+
+    private func makeState(from draft: AppDraftProtocol) -> ComposerState {
+        .init(
+            toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
+            ccRecipients: .initialState(group: .cc, recipients: recipientUIModels(from: draft, for: .cc)),
+            bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
+            senderEmail: draft.sender(),
+            subject: draft.subject(),
+            body: draft.body()
+        )
+    }
+
+    private func recipientUIModels(
+        from draft: AppDraftProtocol,
+        for group: RecipientGroupType,
+        selecting selectedIndexes: Set<Int> = []
+    ) -> [RecipientUIModel] {
+        let recipientList = recipientList(from: draft, group: group)
+        return recipientList.recipients().enumerated().map { index, recipient in
+            RecipientUIModel(composerRecipient: recipient, isSelected: selectedIndexes.contains(index))
+        }
+    }
+
+    private func setUpComposerRecipientListCallbacks() {
+        toCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .to) }
+        ccCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .cc) }
+        bccCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .bcc) }
+        draft.toRecipients().setCallback(cb: toCallback)
+        draft.ccRecipients().setCallback(cb: ccCallback)
+        draft.bccRecipients().setCallback(cb: bccCallback)
+    }
+
+    private func updateStateRecipientUIModels(for group: RecipientGroupType) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            state.overrideRecipientState(for: group) { [weak self] in
+                guard let self else { return $0 }
+                let selectedIndexes = stateRecipientUIModels(for: group).selectedIndexes
+                let newRecipients = recipientUIModels(from: draft, for: group, selecting: selectedIndexes)
+                return $0.copy(\.recipients, to: newRecipients)
+            }
+        }
+    }
+
+    private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {
+        switch group {
+        case .to: state.toRecipients.recipients
+        case .cc: state.ccRecipients.recipients
+        case .bcc: state.bccRecipients.recipients
+        }
+    }
+
+    private func addEntryInRecipients(for draft: AppDraftProtocol, entry: SingleRecipientEntry, group: RecipientGroupType) {
+        let recipientList = recipientList(from: draft, group: group)
+        let result = recipientList.addSingleRecipient(recipient: entry)
+        switch result {
+        case .ok:
+            let lastRecipient = recipientList.recipients().last!
+            state.overrideRecipientState(for: group) {
+                $0.copy(\.recipients, to: $0.recipients + [RecipientUIModel(composerRecipient: lastRecipient)])
+                    .copy(\.input, to: .empty)
+                    .copy(\.controllerState, to: .editing)
+            }
+        case .duplicate, .saveFailed: // FIXME: handle errors
+            state.overrideRecipientState(for: group) {
+                $0.copy(\.input, to: .empty)
+                    .copy(\.controllerState, to: .editing)
+            }
+            toast = .error(message: result.localizedErrorMessage(entry: entry).string)
+        }
+    }
+
+    private func removeRecipients(for draft: AppDraftProtocol, group: RecipientGroupType, recipients uiModels: [RecipientUIModel]) {
+        let recipientList = recipientList(from: draft, group: group)
+        for uiModel in uiModels {
+            switch uiModel.composerRecipient {
+            case .single(let single):
+                recipientList.removeSingleRecipient(email: single.address)
+            case .group(let group):
+                recipientList.removeGroup(groupName: group.displayName)
+            }
+        }
+        let uiModelsAfterRemove = recipientUIModels(from: draft, for: group)
+        state.updateRecipientState(for: group) { $0.recipients = uiModelsAfterRemove }
     }
 
     private func endEditing(group: RecipientFieldState) -> RecipientFieldState {
@@ -146,5 +235,16 @@ final class ComposerModel: ObservableObject {
             .copy(\.recipients, to: newRecipients)
             .copy(\.input, to: .empty)
             .copy(\.controllerState, to: .idle)
+    }
+
+    private func recipientList(from draft: AppDraftProtocol, group: RecipientGroupType) -> ComposerRecipientListProtocol {
+        switch group {
+        case .to:
+            draft.toRecipients()
+        case .cc:
+            draft.ccRecipients()
+        case .bcc:
+            draft.bccRecipients()
+        }
     }
 }

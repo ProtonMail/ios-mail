@@ -105,6 +105,22 @@ final class ContactPickerController: UIViewController {
             }
         }
     }
+
+    private func isContactAlreadyInTheRecipientList(contact: ComposerContact) -> Bool {
+        guard let composerRecipients = recipientsFieldState?.recipients.map(\.composerRecipient) else { return false }
+        switch contact.type {
+        case .single:
+            return !composerRecipients
+                .allSingleRecipients()
+                .filter { $0.address == contact.singleContact?.email }
+                .isEmpty
+        case .group:
+            return !composerRecipients
+                .allGroupRecipients()
+                .filter { $0.displayName == contact.groupContact?.name }
+                .isEmpty
+        }
+    }
 }
 
 extension ContactPickerController: UITableViewDataSource {
@@ -116,7 +132,7 @@ extension ContactPickerController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(ContactPickerCell.self)
         let contact = contacts[indexPath.row]
-        let isContactAlreadySelected = false // FIXME: when RecipientFieldState reads recipients from the SDK data structure
+        let isContactAlreadySelected = isContactAlreadyInTheRecipientList(contact: contact)
         cell.configure(uiModel: contact.toUIModel(alreadySelected: isContactAlreadySelected))
         cell.selectedBackgroundView = cellBackgroundView
         return cell

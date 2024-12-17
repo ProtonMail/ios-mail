@@ -65,7 +65,7 @@ final class RecipientChipView: UIView {
         icon.image = recipient.icon
         icon.isHidden = recipient.icon == nil
         icon.tintColor = recipient.iconTintColor
-        label.text = recipient.address
+        label.text = recipient.displayName
         label.textColor = recipient.textColor
         applyCGColors()
     }

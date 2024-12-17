@@ -29,7 +29,13 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
         for (index, _) in (1...120_000).enumerated() {
             let email = "\(Self.emailPrefix.randomElement()!)_\(index)\(Self.emailDomain.randomElement()!)"
             let name = Bool.random() ? "\(Self.names.randomElement()!)" : email
-            let contactType = ComposerContactType.single(ComposerContactSingle(name: name, email: email))
+            let contactType = ComposerContactType.single(
+                ComposerContactSingle(
+                    initials: email.first!.description.uppercased(),
+                    name: name,
+                    email: email
+                )
+            )
             contacts.append(ComposerContact(type: contactType, avatarColor: randomColor))
         }
         let groups = [

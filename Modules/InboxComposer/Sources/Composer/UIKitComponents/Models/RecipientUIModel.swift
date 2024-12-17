@@ -16,15 +16,31 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import UIKit
+import enum proton_app_uniffi.ComposerRecipient
 import struct SwiftUI.Color
+import UIKit
 
 struct RecipientUIModel: Equatable {
-    let type: RecipientType
-    let address: String
-    var isSelected: Bool
-    let isValid: Bool
-    let isEncrypted: Bool
+    let composerRecipient: ComposerRecipient
+    var isSelected: Bool = false
+
+    var type: RecipientType {
+        composerRecipient.isGroup ? .group : .single
+    }
+    var displayName: String {
+        switch composerRecipient {
+        case .single(let single):
+            single.displayName ?? single.address
+        case .group(let group):
+            group.displayName
+        }
+    }
+    var isValid: Bool {
+        composerRecipient.isValid
+    }
+    var isEncrypted: Bool {
+        .productStillToComeWithFinalDecision
+    }
 
     var backgroundColor: UIColor {
         UIColor(isSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
@@ -70,4 +86,12 @@ extension Array where Element == RecipientUIModel {
     var noneIsSelected: Bool {
         filter(\.isSelected).isEmpty
     }
+
+    var selectedIndexes: Set<Int> {
+        Set(enumerated().filter(\.element.isSelected).map(\.offset))
+    }
+}
+
+private extension Bool {
+    static var productStillToComeWithFinalDecision: Bool { false }
 }

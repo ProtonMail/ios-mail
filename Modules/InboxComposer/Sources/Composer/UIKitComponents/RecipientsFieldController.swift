@@ -56,6 +56,11 @@ final class RecipientsFieldController: UIViewController {
         setUpConstraints()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+
     private func setUpUI() {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)

@@ -61,6 +61,23 @@ struct ComposerContact: Identifiable, Equatable, Filterable {
     }
 }
 
+extension ComposerContact {
+
+    var singleContact: ComposerContactSingle? {
+        switch type {
+        case .single(let single): single
+        case .group: nil
+        }
+    }
+
+    var groupContact: ComposerContactGroup? {
+        switch type {
+        case .single: nil
+        case .group(let group): group
+        }
+    }
+}
+
 enum ComposerContactType: Equatable, Filterable {
     case single(ComposerContactSingle)
     case group(ComposerContactGroup)
@@ -94,10 +111,10 @@ struct ComposerContactSingle: Equatable, Filterable {
     let email: String
     let emailToMatch: String
 
-    init(initials: String? = nil, name: String? = nil, email: String) {
+    init(initials: String, name: String? = nil, email: String) {
         self.email = email
         self.emailToMatch = self.email.toContactMatchFormat()
-        self.initials = initials ?? email.first?.description.uppercased() ?? "" // FIXME:
+        self.initials = initials
         self.name = name ?? email
         self.nameToMatch = self.name.toContactMatchFormat()
     }

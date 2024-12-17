@@ -25,17 +25,17 @@ final class ComposerModelTests: XCTestCase {
     private var testContactProvider: ComposerContactProvider!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
-    let selectedRecipient = RecipientUIModel(type: .single, address: "inbox1@pm.me", isSelected: true, isValid: true, isEncrypted: false)
-    let unselectedRecipient = RecipientUIModel(type: .single, address: "inbox2@pm.me", isSelected: false, isValid: true, isEncrypted: false)
+    let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
+    let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
     var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         self.testContactProvider = ComposerContactProvider(
             protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: [
-                .init(type: .single(.init(email: "a@example.com"))),
-                .init(type: .single(.init(email: "b@protonmail.com"))),
-                .init(type: .single(.init(email: "c@pm.me"))),
+                .makeComposerContactSingle(name: "", email: "a@example.com"),
+                .makeComposerContactSingle(name: "", email: "b@example.com"),
+                .makeComposerContactSingle(name: "", email: "c@example.com"),
             ])
         )
         self.cancellables = []
@@ -54,55 +54,52 @@ final class ComposerModelTests: XCTestCase {
         XCTAssertEqual(sut.state.bccRecipients, RecipientFieldState.initialState(group: .bcc))
     }
 
-    //FIXME: when the SDK provides the ComposerRecipientList object
-//    // MARK: recipientToggleSelection
-//
-//    @MainActor
-//    func testRecipientToggleSelection_itShouldUpdateSelectedStatus() {
-//        var state = ComposerState.initial
-//        state.toRecipients.recipients = [unselectedRecipient]
-//        let sut = ComposerModel(state: state, draft: .emptyMock, contactProvider: testContactProvider)
-//
-//        sut.recipientToggleSelection(group: .to, index: 0)
-//        XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
-//
-//        sut.recipientToggleSelection(group: .to, index: 0)
-//        XCTAssertFalse(sut.state.toRecipients.recipients[0].isSelected)
-//    }
-//
-//    // MARK: removeSelectedRecipients
-//
-//    @MainActor
-//    func testRemoveSelectedRecipients_itShouldRemoveSelectedItems() {
-//        var state = ComposerState.initial
-//        state.toRecipients.recipients = [selectedRecipient, unselectedRecipient]
-//        let sut = ComposerModel(state: state, draft: .emptyMock, contactProvider: testContactProvider)
-//
-//        sut.removeSelectedRecipients(group: .to)
-//        XCTAssertEqual(sut.state.toRecipients.recipients, [unselectedRecipient])
-//    }
+    // MARK: recipientToggleSelection
+
+    @MainActor
+    func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+
+        sut.recipientToggleSelection(group: .to, index: 0)
+        XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
+
+        sut.recipientToggleSelection(group: .to, index: 0)
+        XCTAssertFalse(sut.state.toRecipients.recipients[0].isSelected)
+    }
+
+    // MARK: removeRecipientsThatAreSelected
+
+    @MainActor
+    func testRemoveRecipientsThatAreSelectedRecipients_itShouldRemoveSelectedItems() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+        sut.recipientToggleSelection(group: .to, index: 0)
+        XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
+
+        sut.removeRecipientsThatAreSelected(group: .to)
+        XCTAssertEqual(sut.state.toRecipients.recipients, [RecipientUIModel(composerRecipient: singleRecipient2, isSelected: false)])
+    }
 
     // MARK: selectLastRecipient
 
-//    @MainActor
-//    func testSelectLastRecipient_whenLastRecipientIsNotSelected_itSholdUpdateItsSelectedStatus() {
-//        var state = ComposerState.initial
-//        state.toRecipients.recipients = [selectedRecipient, unselectedRecipient]
-//        let sut = ComposerModel(state: state, draft: .emptyMock, contactProvider: testContactProvider)
-//
-//        sut.selectLastRecipient(group: .to)
-//        XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
-//    }
-//
-//    @MainActor
-//    func testSelectLastRecipient_whenLastRecipientIsSelected_itSholdNotUpdateItsSelectedStatus() {
-//        var state = ComposerState.initial
-//        state.toRecipients.recipients = [unselectedRecipient, selectedRecipient]
-//        let sut = ComposerModel(state: state, draft: .emptyMock, contactProvider: testContactProvider)
-//
-//        sut.selectLastRecipient(group: .to)
-//        XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
-//    }
+    @MainActor
+    func testSelectLastRecipient_whenLastRecipientIsNotSelected_itSholdUpdateItsSelectedStatus() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+
+        sut.selectLastRecipient(group: .to)
+        XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
+    }
+
+    @MainActor
+    func testSelectLastRecipient_whenLastRecipientIsSelected_itSholdNotUpdateItsSelectedStatus() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+
+        sut.selectLastRecipient(group: .to)
+        XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
+    }
 
     // MARK: addRecipient
 
@@ -111,7 +108,7 @@ final class ComposerModelTests: XCTestCase {
         let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
         sut.addRecipient(group: .to, address: dummyAddress1)
 
-        XCTAssertEqual(sut.state.toRecipients.recipients.first?.address, dummyAddress1)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyAddress1)
         XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }
@@ -119,38 +116,39 @@ final class ComposerModelTests: XCTestCase {
     // MARK: addContact
 
     @MainActor
-    func testAddContact_whenIsSingleContact_itShouldUpdateTheRecipients() {
+    func testAddContact_whenIsSingleContact_andHasNameAndEmail_itShouldUpdateTheRecipients() {
         let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
-        let contact = ComposerContact(type: .single(.init(name: dummyName1, email: dummyAddress1)))
+        let contact: ComposerContact = .makeComposerContactSingle(name: dummyName1, email: dummyAddress1)
         sut.addContact(group: .to, contact: contact)
 
-        XCTAssertEqual(sut.state.toRecipients.recipients.first?.address, dummyAddress1)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
         XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }
 
-    @MainActor
-    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
-        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
-        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
-        sut.addContact(group: .to, contact: contact)
-
-        XCTAssertEqual(sut.state.toRecipients.recipients.first?.address, dummyName1)
-        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
-        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
-    }
+    // FIXME: When the SDK returns contact groups
+//    @MainActor
+//    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
+//        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
+//        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
+//        sut.addContact(group: .to, contact: contact)
+//
+//        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
+//        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+//        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+//    }
 
     // MARK: matchContacts
 
     @MainActor
     func testMatchContacts_whenThereIsMatch_itShouldUpdateStateWithMatchingContacts() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
-            .init(type: .single(.init(name: "Adrian", email: "adrian@example.com"))),
-            .init(type: .single(.init(name: "Su", email: "susan.cohen@example.com"))),
+            .makeComposerContactSingle(name: "Adrian", email: "a@example.com"),
+            .makeComposerContactSingle(name: "Su", email: "susan.cohen@example.com"),
             .init(type: .group(.init(name: "Team", totalMembers: 4))),
         ])
 
-        let tests: [MatchContactTestCase] = [("A", 3), ("susan", 1), ("team", 1)]
+        let tests: [MatchContactCountTestCase] = [("A", 3), ("susan", 1), ("team", 1)]
         for test in tests {
             let sut = ComposerModel(draft: .emptyMock, contactProvider: mockProvider)
             await sut.onLoad()
@@ -161,10 +159,11 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testMatchContacts_whenThereIsMatch_itShouldUpdateControllerStateWithContactPicker() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
-            .init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))
+            .makeComposerContactSingle(name: "Adrian", email: "a@example.com")
         ])
         let sut = ComposerModel(draft: .emptyMock, contactProvider: mockProvider)
         await sut.onLoad()
+        XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
 
         let expectation = expectation(description: "\(#function)")
         fulfill(expectation, in: sut, when: { composerState in
@@ -174,82 +173,146 @@ final class ComposerModelTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 1.0)
     }
 
-    //FIXME: when the SDK provides the ComposerRecipientList object
+    @MainActor
+    func testMatchContacts_whenThereIsNoMatch_itShouldUpdateStateWithoutMatchingContacts() async {
+        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
+            .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
+        ])
+        let sut = ComposerModel(draft: .emptyMock, contactProvider: mockProvider)
+        await sut.onLoad()
 
-//    @MainActor
-//    func testMatchContacts_whenThereIsNoMatch_itShouldUpdateStateWithoutMatchingContacts() async {
-//        let initialState = ComposerState.mockState(
-//            matchingContacts: [.init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))],
-//            controllerState: .editing
-//        )
-//        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
-//            .init(type: .single(.init(name: "Adrian", email: "adrian@example.com"))),
-//            .init(type: .single(.init(name: "Bea", email: "bea@example.com"))),
-//        ])
-//
-//        let sut = ComposerModel(state: initialState, draft: .emptyMock, contactProvider: mockProvider)
-//        await sut.onLoad()
-//        XCTAssertEqual(sut.state.toRecipients.matchingContacts.count, 1)
-//
-//        await testMatchContact(in: sut, test: MatchContactTestCase(input: "Mark", expectedMatchCount: 0))
-//    }
-//
-//    @MainActor
-//    func testMatchContacts_whenThereIsNoMatch_itShouldUpdateControllerStateWithContactEditing() async {
-//        let initialState = ComposerState.mockState(
-//            matchingContacts: [.init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))],
-//            controllerState: .contactPicker
-//        )
-//        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
-//            .init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))
-//        ])
-//
-//        let sut = ComposerModel(state: initialState, draft: .emptyMock, contactProvider: mockProvider)
-//        XCTAssertEqual(sut.state.toRecipients.matchingContacts.count, 1)
-//        XCTAssertEqual(sut.state.toRecipients.controllerState, .contactPicker)
-//        await sut.onLoad()
-//
-//        let expectation = expectation(description: "\(#function)")
-//        expectation.assertForOverFulfill = false
-//        fulfill(expectation, in: sut, when: { composerState in
-//            composerState.toRecipients.input == "Mark" && composerState.toRecipients.controllerState == .editing
-//        })
-//        sut.matchContact(group: .to, text: "Mark")
-//        await fulfillment(of: [expectation], timeout: 1.0)
-//    }
-//
-//    // MARK: endEditingRecipients
-//
-//    @MainActor
-//    func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToIdle() async {
-//        let initialState = ComposerState.mockState(
-//            matchingContacts: [.init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))],
-//            controllerState: .contactPicker
-//        )
-//        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
-//            .init(type: .single(.init(name: "Adrian", email: "adrian@example.com")))
-//        ])
-//
-//        let sut = ComposerModel(state: initialState, draft: .emptyMock, contactProvider: mockProvider)
-//        XCTAssertEqual(sut.state.toRecipients.matchingContacts.count, 1)
-//        XCTAssertEqual(sut.state.toRecipients.controllerState, .contactPicker)
-//
-//        let expectation = expectation(description: "\(#function)")
-//        fulfill(expectation, in: sut, when: { composerState in
-//            composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .idle
-//        })
-//        sut.endEditingRecipients()
-//        await fulfillment(of: [expectation], timeout: 1.0)
-//    }
+        // Preparing test with a contact match
+        let expectation1 = expectation(description: "\(#function)")
+        expectation1.assertForOverFulfill = false
+        fulfill(expectation1, in: sut, when: { composerState in
+            composerState.toRecipients.input == "Adrian" 
+            && composerState.toRecipients.matchingContacts.count == 1
+        })
+        sut.matchContact(group: .to, text: "Adrian")
+        await fulfillment(of: [expectation1], timeout: 1.0)
+
+        // Testing match count will change to 0
+        await testMatchContact(in: sut, test: MatchContactCountTestCase(input: "Mark", expectedMatchCount: 0))
+    }
+
+    @MainActor
+    func testMatchContacts_whenThereIsNoMatch_itShouldUpdateControllerStateWithContactEditing() async {
+        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
+            .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
+        ])
+        let sut = ComposerModel(draft: .emptyMock, contactProvider: mockProvider)
+        await sut.onLoad()
+
+        // Preparing test with a contact match
+        let expectation1 = expectation(description: "\(#function)")
+        expectation1.assertForOverFulfill = false
+        fulfill(expectation1, in: sut, when: { composerState in
+            composerState.toRecipients.input == "Adrian" 
+            && composerState.toRecipients.controllerState == .contactPicker
+        })
+        sut.matchContact(group: .to, text: "Adrian")
+        await fulfillment(of: [expectation1], timeout: 1.0)
+
+        // Testing `controllerState` will change to `editing`
+        let expectation2 = expectation(description: "\(#function)")
+        fulfill(expectation2, in: sut, when: { composerState in
+            composerState.toRecipients.input == "Mark" && composerState.toRecipients.controllerState == .editing
+        })
+        sut.matchContact(group: .to, text: "Mark")
+        await fulfillment(of: [expectation2], timeout: 1.0)
+    }
+
+    // MARK: endEditingRecipients
+
+    @MainActor
+    func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToIdle() async {
+        let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
+            .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
+        ])
+        let sut = ComposerModel(draft: .emptyMock, contactProvider: mockProvider)
+        await sut.onLoad()
+
+        // Preparing test with a contact match
+        let expectation1 = expectation(description: "\(#function)")
+        expectation1.assertForOverFulfill = false
+        fulfill(expectation1, in: sut, when: { composerState in
+            composerState.toRecipients.input == "Adrian" && composerState.toRecipients.controllerState == .contactPicker
+        })
+        sut.matchContact(group: .to, text: "Adrian")
+        await fulfillment(of: [expectation1], timeout: 1.0)
+
+        // Testing the `input` and `controllerState` values
+        let expectation2 = expectation(description: "\(#function)")
+        fulfill(expectation2, in: sut, when: { composerState in
+            composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .idle
+        })
+        sut.endEditingRecipients()
+        await fulfillment(of: [expectation2], timeout: 1.0)
+    }
+
+    // MARK: updateSubject
+
+    @MainActor
+    func testUpdateSubject_itShouldChangeTheSubjectState() async {
+        let sut = ComposerModel(draft: .emptyMock, contactProvider: .mockInstance)
+        let newSubject = "new subject"
+        sut.updateSubject(value: newSubject)
+        XCTAssertEqual(sut.state.subject, newSubject)
+    }
+
+    // MARK: callback
+
+    @MainActor
+    func testComponerRecpientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {
+        let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
+            ComposerRecipientSingle(displayName: "a", address: "a@example.com", validState: validState)
+        }
+        let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
+        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
+
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipientValid], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, true)
+
+        // We simulate a `validState` update
+        mockDraft.mockToRecipientList.addedRecipients = [singleRecipientInvalid]
+        mockDraft.mockToRecipientList.callback?.onUpdate()
+
+        // Testing the valid state is updated
+        let expectation = expectation(description: "callback update updates recipient")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
+            expectation.fulfill()
+        }
+        await fulfillment(of: [expectation], timeout: 1.0)
+    }
+
+    @MainActor
+    func testComponerRecpientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
+        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
+        sut.recipientToggleSelection(group: .to, index: 0)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
+
+        mockDraft.mockToRecipientList.callback?.onUpdate()
+
+        // Testing the valid state is updated
+        let expectation = expectation(description: "callback update keeps selection state")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
+            expectation.fulfill()
+        }
+        await fulfillment(of: [expectation], timeout: 1.0)
+    }
 }
 
 // MARK: Helpers
 
 private extension ComposerModelTests {
-    typealias MatchContactTestCase=(input: String, expectedMatchCount: Int)
+    typealias MatchContactCountTestCase=(input: String, expectedMatchCount: Int)
 
     @MainActor
-    func testMatchContact(in sut: ComposerModel, test: MatchContactTestCase) async {
+    func testMatchContact(in sut: ComposerModel, test: MatchContactCountTestCase) async {
         let expectation = expectation(description: "\(#function): input '\(test.input)' matches \(test.expectedMatchCount)")
         fulfill(expectation, in: sut, when: { composerState in
             composerState.toRecipients.input == test.input && composerState.toRecipients.matchingContacts.count == test.expectedMatchCount
@@ -298,7 +361,12 @@ extension ComposerState {
     }
 }
 
-extension ComposerContact {
+private extension ComposerContact {
+
+    static func makeComposerContactSingle(name: String, email: String) -> ComposerContact {
+        let type = ComposerContactType.single(.init(initials: "", name: name, email: email))
+        return ComposerContact(type: type, avatarColor: .green)
+    }
 
     init(type: ComposerContactType) {
         self.init(type: type, avatarColor: .blue)
