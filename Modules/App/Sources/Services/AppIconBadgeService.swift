@@ -19,22 +19,48 @@ import Foundation
 import proton_app_uniffi
 import UserNotifications
 
+protocol UserNotificationCenter {
+    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+    func setBadgeCount(_ newBadgeCount: Int) async throws
+}
+
 struct AppIconBadgeService {
-    private let notificationCenter: UNUserNotificationCenter = .current()
+    private let userNotificationCenter: UserNotificationCenter
     private let inboxUnreadCount: () async throws -> UInt64
 
-    init(inboxUnreadCount: @escaping () async throws -> UInt64) {
+    init(
+        userNotificationCenter: UserNotificationCenter,
+        inboxUnreadCount: @escaping () async throws -> UInt64
+    ) {
+        self.userNotificationCenter = userNotificationCenter
         self.inboxUnreadCount = inboxUnreadCount
     }
 
     init(appContext: AppContext) {
-        self.init {
+        self.init(userNotificationCenter: UNUserNotificationCenter.current()) {
             guard let userSession = appContext.sessionState.userSession else {
                 return 0
             }
 
             let inbox = try await newInboxMailbox(ctx: userSession).get()
             return try await inbox.unreadCount().get()
+        }
+    }
+
+    func setUpServiceAsync() async {
+        do {
+            _ = try await userNotificationCenter.requestAuthorization(options: [.badge])
+        } catch {
+            AppLogger.log(error: error)
+        }
+    }
+
+    func enterBackgroundServiceAsync() async {
+        do {
+            let unreadCount = Int(try await inboxUnreadCount())
+            try await userNotificationCenter.setBadgeCount(unreadCount)
+        } catch {
+            AppLogger.log(error: error)
         }
     }
 }
@@ -45,10 +71,8 @@ struct AppIconBadgeService {
 // https://protonag.atlassian.net/wiki/spaces/INBOX/pages/199098370/Improved+notification+permission
 extension AppIconBadgeService: ApplicationServiceSetUp {
     func setUpService() {
-        notificationCenter.requestAuthorization(options: [.badge]) { _, error in
-            if let error {
-                AppLogger.log(error: error)
-            }
+        Task {
+            await setUpServiceAsync()
         }
     }
 }
@@ -59,13 +83,6 @@ extension AppIconBadgeService: ApplicationServiceDidEnterBackground {
             await enterBackgroundServiceAsync()
         }
     }
-
-    func enterBackgroundServiceAsync() async {
-        do {
-            let unreadCount = Int(try await inboxUnreadCount())
-            try await notificationCenter.setBadgeCount(unreadCount)
-        } catch {
-            AppLogger.log(error: error)
-        }
-    }
 }
+
+extension UNUserNotificationCenter: UserNotificationCenter {}

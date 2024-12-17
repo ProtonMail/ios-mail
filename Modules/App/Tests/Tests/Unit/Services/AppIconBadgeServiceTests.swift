@@ -20,28 +20,52 @@ import XCTest
 
 final class AppIconBadgeServiceTests: XCTestCase {
     private var sut: AppIconBadgeService!
+    private var userNotificationCenter: UserNotificationCenterSpy!
     private var stubbedUnreadCount: UInt64!
 
     override func setUp() {
         super.setUp()
 
-        sut = .init { [unowned self] in
+        userNotificationCenter = .init()
+
+        sut = .init(userNotificationCenter: userNotificationCenter) { [unowned self] in
             self.stubbedUnreadCount
         }
     }
 
     override func tearDown() {
         sut = nil
+        userNotificationCenter = nil
 
         super.tearDown()
     }
 
-    func testWhenTheAppEntersBackground_setsAppIconBadgeToTheUnreadCount() async throws {
+    func testOnAppLaunch_requestsNotificationAuthorizationForBadgeOnly() async {
+        await sut.setUpServiceAsync()
+        XCTAssertEqual(userNotificationCenter.requestAuthorizationInvocations, [.badge])
+    }
+
+    func testWhenTheAppEntersBackground_setsAppIconBadgeToTheUnreadCount() async {
         stubbedUnreadCount = 5
 
         await sut.enterBackgroundServiceAsync()
 
         let appIconBadge = await UIApplication.shared.applicationIconBadgeNumber
         XCTAssertEqual(appIconBadge, 5)
+    }
+}
+
+private class UserNotificationCenterSpy: UserNotificationCenter {
+    private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
+
+    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
+        requestAuthorizationInvocations.append(options)
+
+        return true
+    }
+
+    func setBadgeCount(_ newBadgeCount: Int) async throws {
+        // we don't actually need to mock this, we can use the real mechanism
+        try await UNUserNotificationCenter.current().setBadgeCount(newBadgeCount)
     }
 }
