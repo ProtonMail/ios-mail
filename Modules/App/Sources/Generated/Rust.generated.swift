@@ -533,6 +533,16 @@ public extension NewMailboxResult {
         }
     }
 }
+public extension OptIdDraftResult {
+    func get() throws -> Id? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension PaginateConversationsForLabelResult {
     func get() throws -> ConversationPaginator {
         switch self {
