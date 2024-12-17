@@ -51,17 +51,19 @@ class CIDSchemeHandlerTests: BaseTestCase {
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
         XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [])
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.count, 1)
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.missingCID])
     }
 
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() {
         let cidValue = "abcdef"
-        embeddedImageProviderSpy.stubbedError = .unknown
+        embeddedImageProviderSpy.stubbedResult = .error(.unexpected(.unknown))
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
         XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asUnexpectedError), [])
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.count, 1)
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError), [.unexpected(.unknown)])
     }
 
     func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() {
@@ -69,7 +71,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         let url = URL.cid(cidValue)
         let image = EmbeddedAttachmentInfo.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        embeddedImageProviderSpy.stubbedEmbeddedImage = image
+        embeddedImageProviderSpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
         XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
@@ -133,8 +135,8 @@ private extension URL {
 
 private extension Error {
 
-    var asUnexpectedError: UnexpectedError? {
-        self as? UnexpectedError
+    var asProtonError: ProtonError? {
+        self as? ProtonError
     }
 
     var asHandlerError: CIDSchemeHandler.HandlerError? {

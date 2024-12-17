@@ -37,8 +37,8 @@ struct MessageBodyView: View {
     }
 
     var body: some View {
-        if let messageBody = uiModel.message {
-            messageBodyView(messageBody: messageBody)
+        if let body = uiModel.messageBody {
+            messageBodyView(body: body)
         } else {
             AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
                 switch messageBody {
@@ -49,7 +49,7 @@ struct MessageBodyView: View {
                     .padding(.vertical, DS.Spacing.jumbo)
 
                 case .value(let body):
-                    messageBodyView(messageBody: body)
+                    messageBodyView(body: body)
 
                 case .error(let error):
                     Text(String(describing: error))
@@ -58,7 +58,7 @@ struct MessageBodyView: View {
         }
     }
 
-    private func messageBodyView(messageBody: MessageBody) -> some View {
+    private func messageBodyView(body: MessageBody) -> some View {
         ZStack {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
@@ -66,7 +66,7 @@ struct MessageBodyView: View {
 
             MessageBodyReaderView(
                 bodyContentHeight: $bodyContentHeight,
-                messageBody: messageBody,
+                body: body,
                 urlOpener: urlOpener,
                 htmlLoaded: htmlLoaded
             )

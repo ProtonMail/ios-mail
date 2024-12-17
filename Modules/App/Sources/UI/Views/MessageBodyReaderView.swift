@@ -22,7 +22,7 @@ import WebKit
 
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
-    let messageBody: MessageBody
+    let body: MessageBody
     let urlOpener: URLOpenerProtocol
     let htmlLoaded: () -> Void
 
@@ -31,7 +31,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
         config.setURLSchemeHandler(
-            CIDSchemeHandler(embeddedImageProvider: messageBody.embeddedImageProvider),
+            CIDSchemeHandler(embeddedImageProvider: body.embeddedImageProvider),
             forURLScheme: CIDSchemeHandler.handlerScheme
         )
 
@@ -40,7 +40,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
-        webView.loadHTMLString(messageBody.body, baseURL: nil)
+        webView.loadHTMLString(body.rawBody, baseURL: nil)
 
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor

@@ -20,8 +20,7 @@ import proton_app_uniffi
 
 class EmbeddedImageProviderSpy: EmbeddedImageProvider {
 
-    var stubbedEmbeddedImage: EmbeddedAttachmentInfo?
-    var stubbedError: UnexpectedError!
+    var stubbedResult: DecryptedMessageGetEmbeddedAttachmentResult!
     private(set) var invokedEmbeddedImageWithCID: [String] = []
 
     // MARK: - EmbeddedImageProvider
@@ -29,11 +28,7 @@ class EmbeddedImageProviderSpy: EmbeddedImageProvider {
     func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult {
         invokedEmbeddedImageWithCID.append(cid)
 
-        if let stubbedEmbeddedImage {
-            return .ok(stubbedEmbeddedImage)
-        } else {
-            return .error(.unexpected(.unknown))
-        }
+        return stubbedResult
     }
 
 }

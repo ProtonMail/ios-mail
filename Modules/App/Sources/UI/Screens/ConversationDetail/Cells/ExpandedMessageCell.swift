@@ -109,7 +109,7 @@ struct ExpandedMessageCell: View {
 
 struct ExpandedMessageCellUIModel: Identifiable {
     let id: ID
-    let message: MessageBody?
+    let messageBody: MessageBody?
     let unread: Bool
     let messageDetails: MessageDetailsUIModel
 }
@@ -139,8 +139,8 @@ extension MessageBodyAttachmentsState {
 
 private extension MessageBody {
 
-    static func testInstance(body: String) -> Self {
-        .init(body: body, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
+    static func testInstance(rawBody: String) -> Self {
+        .init(rawBody: rawBody, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
     }
 
 }
@@ -158,8 +158,8 @@ private extension MessageBody {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 0),
-                message: .testInstance(
-                    body: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                messageBody: .testInstance(
+                    rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
                 ),
                 unread: false,
                 messageDetails: messageDetails
@@ -174,8 +174,8 @@ private extension MessageBody {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 1),
-                message: .testInstance(
-                    body: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                messageBody: .testInstance(
+                    rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
                 ),
                 unread: false,
                 messageDetails: messageDetails

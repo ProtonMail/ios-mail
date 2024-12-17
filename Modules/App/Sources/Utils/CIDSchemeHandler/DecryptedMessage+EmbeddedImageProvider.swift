@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-struct EmbeddedImage {
-    let data: Data
-    let mimeType: String
+protocol EmbeddedImageProvider: AnyObject {
+    func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult
 }
+
+extension DecryptedMessage: EmbeddedImageProvider {}

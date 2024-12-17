@@ -19,10 +19,10 @@ import proton_app_uniffi
 import WebKit
 
 class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
-    private let embeddedImageRepository: EmbeddedImageRepository
+    private let embeddedImageProvider: EmbeddedImageProvider
 
     init(embeddedImageProvider: EmbeddedImageProvider) {
-        self.embeddedImageRepository = .init(embeddedImageProvider: embeddedImageProvider)
+        self.embeddedImageProvider = embeddedImageProvider
     }
 
     enum HandlerError: Error, Equatable {
@@ -67,18 +67,18 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
 
     private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
         Task {
-            do {
-                let image = try await embeddedImageRepository.embeddedImage(cid: cid)
+            switch await embeddedImageProvider.getEmbeddedAttachment(cid: cid) {
+            case .ok(let image):
                 let response = URLResponse(
                     url: url,
-                    mimeType: image.mimeType,
+                    mimeType: image.mime,
                     expectedContentLength: image.data.count,
                     textEncodingName: nil
                 )
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(image.data)
                 urlSchemeTask.didFinish()
-            } catch {
+            case .error(let error):
                 urlSchemeTask.didFailWithError(error)
             }
         }

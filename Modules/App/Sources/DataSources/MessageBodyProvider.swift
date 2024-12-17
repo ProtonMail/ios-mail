@@ -23,7 +23,7 @@ protocol MessageBodyProviding {
 }
 
 struct MessageBody {
-    let body: String
+    let rawBody: String
     let embeddedImageProvider: EmbeddedImageProvider
 }
 
@@ -40,7 +40,7 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
             let tranformOptions = TransformOpts(blockQuote: .untouched, remoteContent: .default)
             let decryptedBody = try await decryptedMessage.body(opts: tranformOptions).get()
 
-            return .init(body: decryptedBody.body, embeddedImageProvider: decryptedMessage)
+            return .init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
             return nil

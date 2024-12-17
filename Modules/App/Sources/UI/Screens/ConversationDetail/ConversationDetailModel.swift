@@ -359,7 +359,7 @@ extension ConversationDetailModel {
     ) async throws -> ExpandedMessageCellUIModel {
         let provider = MessageBodyProvider(mailbox: mailbox)
         let messageBody = wait ? await provider.messageBody(for: message.id) : nil
-        return message.toExpandedMessageCellUIModel(message: messageBody)
+        return message.toExpandedMessageCellUIModel(messageBody: messageBody)
     }
 
     @MainActor
