@@ -234,9 +234,9 @@ extension AppContext: EventLoopProvider {
     }
 }
 
-private extension UInt32 {
+private extension UInt64 {
     static var oneGigabyteInBytes: Self {
         let oneGigabyte = Measurement<UnitInformationStorage>(value: 1, unit: .gigabytes)
-        return UInt32(oneGigabyte.converted(to: .bytes).value)
+        return UInt64(oneGigabyte.converted(to: .bytes).value)
     }
 }
