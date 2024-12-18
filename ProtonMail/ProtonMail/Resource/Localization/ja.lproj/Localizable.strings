@@ -811,7 +811,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "すべてのストレージ容量を使用しました (%@)。このままメールを送受信するにはプランをアップグレードしてください。";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "%1$d%% のストレージ容量を使用しています %2$@。このままメールを送受信するにはプランをアップグレードしてください。";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "%1$d%% のストレージ容量を使用しています (%2$@)。このままメールを送受信するにはプランをアップグレードしてください。";
 
 /* Alert title */
 "Storage full" = "ストレージがいっぱいです";
@@ -947,7 +947,7 @@
 "Retry" = "再試行";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 (E) %@";
+"'On' E, MMM d, yyyy 'at' %@" = "yyyy年M月d日 E %@";
 
 /* No comment provided by engineer. */
 "Message expired" = "メッセージは期限切れです";

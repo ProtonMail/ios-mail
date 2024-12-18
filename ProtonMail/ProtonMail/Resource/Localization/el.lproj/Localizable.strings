@@ -32,7 +32,7 @@
 "Input Notification Email…" = "Εισαγωγή E-mail ειδοποίησης…";
 
 /* Settings row */
-"Remove image metadata" = "Αφαίρεση μετα-δεδομένων εικόνας";
+"Remove image metadata" = "Αφαίρεση μεταδεδομένων εικόνας";
 
 /* Settings row */
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
@@ -1615,7 +1615,7 @@
 "Cannot empty folder right now." = "Αδυναμία αδειάσματος φακέλου επί του παρόντος.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα '%@';";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Θέλετε σίγουρα να διαγράψετε οριστικά όλα τα μηνύματα στα '%@';";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Εμφάνιση πλήρους μηνύματος]";
