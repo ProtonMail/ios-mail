@@ -86,7 +86,7 @@ final class AppContext: Sendable, ObservableObject {
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             mailCacheDir: cachePath, 
-            mailCacheSize: .oneGigabyte,
+            mailCacheSize: .oneGigabyteInBytes,
             logDir: cachePath,
             logDebug: false,
             apiEnvConfig: appConfig.apiEnvConfig
@@ -235,5 +235,8 @@ extension AppContext: EventLoopProvider {
 }
 
 private extension UInt32 {
-    static let oneGigabyte: Self = 1_024 * 1_024 * 1_024
+    static var oneGigabyteInBytes: Self {
+        let oneGigabyte = Measurement<UnitInformationStorage>(value: 1, unit: .gigabytes)
+        return UInt32(oneGigabyte.converted(to: .bytes).value)
+    }
 }
