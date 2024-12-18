@@ -4,8 +4,17 @@
     "%lld members" : {
       "comment" : "Contact group row subtitle in contact picker."
     },
+    "Draft saved" : {
+      "comment" : "Composer toast message when dismissing the screen."
+    },
     "From:" : {
       "comment" : "Composer from field."
+    },
+    "Message sent" : {
+      "comment" : "Composer toast message after sent."
+    },
+    "Message will be sent shortly" : {
+      "comment" : "Composer toast message when sent is tapped."
     },
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft."

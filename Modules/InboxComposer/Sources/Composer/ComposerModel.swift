@@ -30,6 +30,11 @@ final class ComposerModel: ObservableObject {
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
+    
+    private let updateBodyDebounceDuration = Duration.milliseconds(2000)
+    private var updateBodyDebounceTask: Task<(), Never>?
+
+    private var messageHasBeenSent: Bool = false
 
     init(draft: AppDraftProtocol, contactProvider: ComposerContactProvider) {
         self.draft = draft
@@ -43,6 +48,16 @@ final class ComposerModel: ObservableObject {
     func onLoad() async {
         startEditingRecipients(for: .to)
         await contactProvider.loadContacts()
+    }
+
+    @MainActor
+    func viewWillDisappear() {
+//        AppLogger.log(message: "composer will disappear", category: .composer)
+        if messageHasBeenSent {
+            handleViewDisappearAfterSend()
+        } else {
+            handleViewWillDisappear()
+        }
     }
 
     @MainActor
@@ -132,9 +147,42 @@ final class ComposerModel: ObservableObject {
         switch draft.setSubject(subject: value) {
         case .ok:
             state = state.copy(\.subject, to: draft.subject())
-        case .error:
-            // FIXME: handle error
-            break
+        case .error(let draftError):
+//            AppLogger.log(error: draftError, category: .composer)
+            toast = .error(message: draftError.localizedDescription)
+        }
+    }
+
+    @MainActor
+    func updateBody(value: String) {
+        debounce(duration: updateBodyDebounceDuration) { [weak self] in  // FIXME: Move debounce to SDK
+            guard !Task.isCancelled else { return }
+            guard let self else { return }
+            switch draft.setBody(body: value) {
+            case .ok:
+                break
+            case .error(let draftError):
+//                AppLogger.log(error: draftError, category: .composer)
+                toast = .error(message: draftError.localizedDescription)
+            }
+        }
+    }
+
+    func sendMessage(dismissAction: Dismissable) {
+        Task {
+            await waitForDebounceToFinish()
+//            AppLogger.log(message: "sending message", category: .composer)
+            switch await draft.send() {
+            case .ok:
+                messageHasBeenSent = true
+                toast = .information(message: L10n.Composer.messageSending.string)
+                DispatchQueue.main.async {
+                    dismissAction()
+                }
+            case .error(let draftError):
+//                AppLogger.log(error: draftError, category: .composer)
+                toast = .error(message: draftError.localizedDescription)
+            }
         }
     }
 }
@@ -150,7 +198,7 @@ extension ComposerModel {
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
             senderEmail: draft.sender(),
             subject: draft.subject(),
-            body: draft.body()
+            initialBody: draft.body()
         )
     }
 
@@ -245,6 +293,38 @@ extension ComposerModel {
             draft.ccRecipients()
         case .bcc:
             draft.bccRecipients()
+        }
+    }
+
+    private func handleViewWillDisappear() {
+        Task {
+            if case .ok(let id) = await draft.messageId() {
+                if id != nil {
+                    toast = .information(message: L10n.Composer.draftSaved.string)
+                }
+            }
+        }
+    }
+
+    private func handleViewDisappearAfterSend() {
+        Task {
+            let retainingSelfToAllowDebounceToFinish: ComposerModel = self
+            await waitForDebounceToFinish()
+        }
+    }
+
+    private func debounce(duration: Duration, block: @escaping () -> Void) {
+        updateBodyDebounceTask?.cancel()
+        updateBodyDebounceTask = Task {
+            defer { updateBodyDebounceTask = nil }
+            try? await Task.sleep(for: duration)
+            block()
+        }
+    }
+
+    private func waitForDebounceToFinish() async {
+        if updateBodyDebounceTask != nil {
+            try! await Task.sleep(for: updateBodyDebounceDuration + .milliseconds(100))
         }
     }
 }

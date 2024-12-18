@@ -158,6 +158,7 @@ extension AppLogger {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
         case conversationDetail = "ConversationDetail"
+        case composer = "Composer"
         case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
         case rustLibrary = "RustLibrary"

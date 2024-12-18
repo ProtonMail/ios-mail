@@ -34,6 +34,7 @@ public protocol AppDraftProtocol {
 
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
+    func messageId() async -> OptIdDraftResult
     func attachments()  -> [AttachmentMetadata]
     func body()  -> String
     func mimeType()  -> MimeType

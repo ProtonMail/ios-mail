@@ -25,12 +25,16 @@ struct ComposerState: Equatable, Copying {
 
     var senderEmail: String
     var subject: String
-    var body: String
+    var initialBody: String
 
     var editingRecipientsGroup: RecipientGroupType?
     var editingRecipientFieldState: RecipientFieldState? {
         guard let group = editingRecipientsGroup else { return nil }
         return self[keyPath: group.keyPath]
+    }
+
+    var isSendAvailable: Bool {
+        !toRecipients.recipients.isEmpty // FIXME: Implement final logic
     }
 
     mutating func overrideRecipientState(for group: RecipientGroupType, perform: (RecipientFieldState) -> RecipientFieldState) {
@@ -52,7 +56,7 @@ extension ComposerState {
             bccRecipients: .initialState(group: .bcc),
             senderEmail: .empty,
             subject: .empty,
-            body: .empty,
+            initialBody: .empty,
             editingRecipientsGroup: nil
         )
     }

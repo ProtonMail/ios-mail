@@ -36,6 +36,8 @@ public struct ComposerScreen: View {
 
             ComposerControllerRepresentable(state: model.state) { event in
                 switch event {
+                case .viewWillDisappear:
+                    model.viewWillDisappear()
 
                 case let .recipientFieldEvent(recipientFieldEvent, group):
                     switch recipientFieldEvent {
@@ -75,8 +77,13 @@ public struct ComposerScreen: View {
                         model.updateSubject(value: subject)
                     }
 
-                case .onNonRecipientFieldStartEditing:
-                    model.endEditingRecipients()
+                case .bodyEvent(let event):
+                    switch event {
+                    case .onStartEditing:
+                        model.endEditingRecipients()
+                    case .onBodyChange(let body):
+                        model.updateBody(value: body)
+                    }
                 }
             }
             .onChange(of: model.toast) { _, newValue in
@@ -112,9 +119,8 @@ public struct ComposerScreen: View {
             }
             .square(size: Layout.buttonSize)
 
-            SendButton {
-
-            }.disabled(true) // FIXME: attach to state
+            SendButton { model.sendMessage(dismissAction: dismiss) }
+                .disabled(!model.state.isSendAvailable)
         }
         .padding(.leading, DS.Spacing.standard)
         .padding(.top, DS.Spacing.mediumLight)

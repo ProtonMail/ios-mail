@@ -19,20 +19,22 @@ import InboxDesignSystem
 import UIKit
 
 enum ComposerControllerEvent {
+    case viewWillDisappear
     case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
     case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
     case fromFieldEvent(FromFieldViewEvent)
     case subjectFieldEvent(SubjectFieldViewEvent)
-    case onNonRecipientFieldStartEditing
+    case bodyEvent(BodyEditorEvent)
 }
 
 final class ComposerController: UIViewController {
+    private let scrollView = SubviewFactory.scrollView
     private let composerStack = SubviewFactory.composerStack
     private let contactPicker = ContactPickerController()
     private let recipientsController = RecipientsViewController()
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
-    private let fakeBodyView = SubviewFactory.textView
+    private let bodyEditor = BodyEditorController()
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
@@ -53,11 +55,12 @@ final class ComposerController: UIViewController {
         super.viewDidLoad()
         setUpUI()
         setupConstraints()
+        setInitialStates(with: state)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        fakeBodyView.delegate = self
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        onEvent(.viewWillDisappear)
     }
 
     private func setUpUI() {
@@ -69,8 +72,10 @@ final class ComposerController: UIViewController {
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(subjectField)
         composerStack.addArrangedSubview(ComposerSeparator())
-        composerStack.addArrangedSubview(fakeBodyView)
-        view.addSubview(composerStack)
+        addViewController(bodyEditor, using: composerStack.addArrangedSubview)
+
+        scrollView.addSubview(composerStack)
+        view.addSubview(scrollView)
 
         contactPicker.view.isHidden = true
         view.addSubview(contactPicker.view)
@@ -82,17 +87,33 @@ final class ComposerController: UIViewController {
         }
         fromField.onEvent = { [weak self] in self?.onEvent(.fromFieldEvent($0)) }
         subjectField.onEvent = { [weak self] in self?.onEvent(.subjectFieldEvent($0)) }
+        bodyEditor.onEvent = { [weak self] in self?.onEvent(.bodyEvent($0)) }
     }
 
     private func setupConstraints() {
 
-        [contactPicker.view, composerStack].forEach {
+        [contactPicker.view, scrollView].forEach {
             NSLayoutConstraint.activate([
                 $0.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 $0.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 $0.topAnchor.constraint(equalTo: view.topAnchor),
                 $0.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
+        }
+
+        NSLayoutConstraint.activate([
+            composerStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            composerStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            composerStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            composerStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            composerStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+    
+    private func setInitialStates(with state: ComposerState) {
+        // FIXME: have a precached webview strategy
+        DispatchQueue.main.async { [weak self] in
+            self?.bodyEditor.updateBody(html: state.initialBody)
         }
     }
 
@@ -108,18 +129,15 @@ final class ComposerController: UIViewController {
     }
 }
 
-extension ComposerController: UITextViewDelegate {
-
-    // FIXME: This is a momentary hack to manage focus for those views that are not just one single textfield component
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        onEvent(.onNonRecipientFieldStartEditing)
-        return true
-    }
-}
-
 extension ComposerController {
 
     private enum SubviewFactory {
+
+        static var scrollView: UIScrollView {
+            let view = UIScrollView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }
 
         static var composerStack: UIStackView {
             let view = UIStackView()
@@ -128,13 +146,6 @@ extension ComposerController {
             view.alignment = .fill
             view.distribution = .fill
             view.spacing = 0
-            return view
-        }
-
-        static var textView: UITextView {
-            let view = UITextView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .clear
             return view
         }
     }

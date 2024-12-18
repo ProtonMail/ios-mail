@@ -45,6 +45,24 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer subject."
         )
+
+        static let draftSaved =  LocalizedStringResource(
+            "Draft saved",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message when dismissing the screen."
+        )
+
+        static let messageSending =  LocalizedStringResource(
+            "Message will be sent shortly", // FIXME: Using this for v2
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message when sent is tapped."
+        )
+
+        static let messageSent =  LocalizedStringResource(
+            "Message sent",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message after sent."
+        )
     }
 
     enum Contacts {

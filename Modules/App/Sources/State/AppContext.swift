@@ -88,7 +88,7 @@ final class AppContext: Sendable, ObservableObject {
             mailCacheDir: cachePath, 
             mailCacheSize: .oneHundredMBInBytes,
             logDir: cachePath,
-            logDebug: Application.isDebug,
+            logDebug: false,
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
