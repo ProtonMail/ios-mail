@@ -17,11 +17,12 @@
 
 import Combine
 @testable import InboxComposer
+@testable import InboxTesting
 import proton_app_uniffi
 import struct SwiftUI.Color
 import XCTest
 
-final class ComposerModelTests: XCTestCase {
+final class ComposerModelTests: BaseTestCase {
     private var testContactProvider: ComposerContactProvider!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
@@ -278,13 +279,7 @@ final class ComposerModelTests: XCTestCase {
         mockDraft.mockToRecipientList.addedRecipients = [singleRecipientInvalid]
         mockDraft.mockToRecipientList.callback?.onUpdate()
 
-        // Testing the valid state is updated
-        let expectation = expectation(description: "callback update updates recipient")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
-            expectation.fulfill()
-        }
-        await fulfillment(of: [expectation], timeout: 1.0)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
     }
 
     @MainActor
@@ -296,13 +291,7 @@ final class ComposerModelTests: XCTestCase {
 
         mockDraft.mockToRecipientList.callback?.onUpdate()
 
-        // Testing the valid state is updated
-        let expectation = expectation(description: "callback update keeps selection state")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
-            expectation.fulfill()
-        }
-        await fulfillment(of: [expectation], timeout: 1.0)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
     }
 }
 

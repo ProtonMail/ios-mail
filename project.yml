@@ -160,6 +160,7 @@ targets:
       - package: InboxTesting
       - package: Nimble
       - package: ViewInspector
+      - package: proton_app_uniffi
     scheme:
       gatherCoverageData: true
       language: en

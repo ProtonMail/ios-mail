@@ -17,6 +17,7 @@
 
 import AccountManager
 import Combine
+import InboxCore
 import InboxCoreUI
 import Foundation
 import SwiftUI

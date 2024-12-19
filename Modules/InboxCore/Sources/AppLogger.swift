@@ -18,7 +18,7 @@
 import OSLog
 import proton_app_uniffi
 
-final class AppLogger: @unchecked Sendable {
+public final class AppLogger: @unchecked Sendable {
     private static let shared = AppLogger()
     private let serialQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AppLogger")
 
@@ -101,7 +101,7 @@ final class AppLogger: @unchecked Sendable {
     ///   - message: log message in plain text.
     ///   - category: describes the scope for this message and helps filtering the system logs.
     ///   - isError: error logs show a visible indicator in the Console app.
-    static func log(
+    static public func log(
         message: String,
         category: Category? = nil,
         isError: Bool = false,
@@ -119,7 +119,7 @@ final class AppLogger: @unchecked Sendable {
     /// - Parameters:
     ///   - error: the error to log.
     ///   - category: describes the scope for this message and helps filtering the system logs.
-    static func log(
+    static public func log(
         error: Error,
         category: Category? = nil,
         file: StaticString = #file,
@@ -138,7 +138,7 @@ final class AppLogger: @unchecked Sendable {
     /// **If you are reading this documentation because you found a call to this function that is unnecessary, delete it :)**
     ///
     /// See `log(message:,category:,isError:)` for more details on the parameters.
-    static func logTemporarily(
+    static public func logTemporarily(
         message: String,
         category: Category? = nil,
         isError: Bool = false,
@@ -154,7 +154,7 @@ final class AppLogger: @unchecked Sendable {
 
 extension AppLogger {
 
-    enum Category: String {
+    public enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
         case conversationDetail = "ConversationDetail"

@@ -15,18 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import Foundation
 
-@discardableResult
-func forceCast<Value, ExpectedType>(_ value: Value, _ type: ExpectedType.Type) -> ExpectedType {
-    guard let castedValue = value as? ExpectedType else {
-        let message = """
-        Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
-        """
-        AppLogger.log(message: message)
-        fatalError(message)
-    }
-
-    return castedValue
+extension Bundle {
+    /// the default identifier is the one used for Mail 4.x.x in production
+    static public let defaultIdentifier = "ch.protonmail.protonmail"
 }
