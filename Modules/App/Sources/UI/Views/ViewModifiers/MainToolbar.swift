@@ -38,31 +38,32 @@ struct MainToolbar: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    SelectionTitleView(title: title)
-                        .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
-                }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        switch state {
-                        case .noSelection:
-                            onEvent(.onOpenMenu)
-                        case .selection:
-                            onEvent(.onExitSelectionMode)
-                        }
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Image(state.icon)
-                                .resizable()
-                                .square(size: 24)
-                                .id(state.rawValue)
-                                .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
-                        }
-                        .padding(10)
-                    })
-                    .square(size: 40)
-                    .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
+                    HStack(spacing: .zero) {
+                        Button(action: {
+                            switch state {
+                            case .noSelection:
+                                onEvent(.onOpenMenu)
+                            case .selection:
+                                onEvent(.onExitSelectionMode)
+                            }
+                        }, label: {
+                            HStack {
+                                Spacer()
+                                Image(state.icon)
+                                    .resizable()
+                                    .square(size: 24)
+                                    .id(state.rawValue)
+                                    .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
+                            }
+                            .padding(10)
+                        })
+                        .square(size: 40)
+                        .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
+
+                        SelectionTitleView(title: title)
+                            .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
+                    }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
