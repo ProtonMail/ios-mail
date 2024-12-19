@@ -53,9 +53,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         messageListCallback.delegate = { [weak self] in
             guard let self else { return }
             Task {
-                self.updateStarState()
-                let messages = await self.readLiveQueryValues()
-                await self.updateStateToMessagesReady(with: messages)
+                let liveQueryValues = await self.readLiveQueryValues()
+                self.isStarred = liveQueryValues.isStarred
+                await self.updateStateToMessagesReady(with: liveQueryValues.messages)
             }
         }
     }
@@ -66,14 +66,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let mailbox = try await initialiseMailbox()
             let conversationID = try await conversationID()
             self.conversationID = conversationID
-            let messages = try await createLiveQueryAndPrepareMessages(
+            let liveQueryValues = try await createLiveQueryAndPrepareMessages(
                 forConversationID: conversationID,
                 mailbox: mailbox
             )
 
-            await updateStateToMessagesReady(with: messages)
-            try await scrollToRelevantMessage(messages: messages)
-
+            isStarred = liveQueryValues.isStarred
+            await updateStateToMessagesReady(with: liveQueryValues.messages)
+            try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
@@ -87,8 +87,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             } else {
                 expandedMessages.insert(messageId)
             }
-            let messages = await readLiveQueryValues()
-            await updateStateToMessagesReady(with: messages)
+            let liveQueryValues = await readLiveQueryValues()
+            await updateStateToMessagesReady(with: liveQueryValues.messages)
         }
     }
 
@@ -149,13 +149,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
-
-    private func updateStarState() {
-        let isStarred = messagesLiveQuery?.conversation.isStarred ?? false
-        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-            self?.isStarred = isStarred
-        }))
-    }
 
     private func starConversation() {
         starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
@@ -243,7 +236,7 @@ extension ConversationDetailModel {
     private func createLiveQueryAndPrepareMessages(
         forConversationID conversationID: ID,
         mailbox: Mailbox
-    ) async throws -> [MessageCellUIModel] {
+    ) async throws -> LiveQueryValues {
         let watchConversationResult = await watchConversation(
             mailbox: mailbox,
             id: conversationID,
@@ -314,17 +307,24 @@ extension ConversationDetailModel {
         AppLogger.logTemporarily(message: "messageIdToOpen = \(value)", category: .conversationDetail)
     }
 
-    private func readLiveQueryValues() async -> [MessageCellUIModel] {
+    private struct LiveQueryValues {
+        let messages: [MessageCellUIModel]
+        let isStarred: Bool
+    }
+
+    private func readLiveQueryValues() async -> LiveQueryValues {
         do {
             guard let mailbox, let messagesLiveQuery else {
                 let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or message live query"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
-                return []
+                return .init(messages: [], isStarred: false)
             }
             let conversationID = try await conversationID()
-            let messages = try await conversation(mailbox: mailbox, id: conversationID).get()?.messages ?? []
-            guard let lastMessage = messages.last else { return [] }
-            
+            let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
+            let isStarred = conversationAndMessages?.conversation.isStarred ?? false
+            let messages = conversationAndMessages?.messages ?? []
+            guard let lastMessage = messages.last else { return .init(messages: [], isStarred: isStarred) }
+
             // list of messages except the last one
             var result = [MessageCellUIModel]()
             for i in messages.indices.dropLast() {
@@ -346,10 +346,10 @@ extension ConversationDetailModel {
             let expandedMessage = try await expandedMessageCellUIModel(for: lastMessage, wait: true, mailbox: mailbox)
             result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
-            return result
+            return .init(messages: result, isStarred: isStarred)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
-            return []
+            return .init(messages: [], isStarred: false)
         }
     }
 
