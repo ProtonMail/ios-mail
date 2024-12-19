@@ -35,41 +35,43 @@ struct SearchScreen: View {
 
     var body: some View {
         NavigationStack(path: $model.state.navigationPath) {
-            ZStack {
-                DS.Color.Background.norm
-                    .ignoresSafeArea()
+            GeometryReader { geometry in
+                ZStack {
+                    DS.Color.Background.norm
+                        .ignoresSafeArea()
 
-                switch resultsState {
-                case .initial:
-                    EmptyView()
-                case .search:
-                    resultsList
-                        .fullScreenCover(item: $model.state.attachmentPresented) { config in
-                            AttachmentView(config: config)
-                                .edgesIgnoringSafeArea([.top, .bottom])
-                        }
-                        .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
-                            mailboxItemDestination(uiModel: uiModel)
-                        }
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $isTextFieldFocused) { event in
-                        switch event {
-                        case .onSubmitSearch(let query):
-                            resultsState = .search
-                            model.searchText(query)
-                        case .onCancel:
-                            dismiss.callAsFunction()
-                        case .onExitSelection:
-                            model.selectionMode.selectionModifier.exitSelectionMode()
-                        }
+                    switch resultsState {
+                    case .initial:
+                        EmptyView()
+                    case .search:
+                        resultsList
+                            .fullScreenCover(item: $model.state.attachmentPresented) { config in
+                                AttachmentView(config: config)
+                                    .edgesIgnoringSafeArea([.top, .bottom])
+                            }
+                            .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
+                                mailboxItemDestination(uiModel: uiModel)
+                            }
                     }
                 }
-            }
-            .onLoad {
-                isTextFieldFocused = true
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $isTextFieldFocused) { event in
+                            switch event {
+                            case .onSubmitSearch(let query):
+                                resultsState = .search
+                                model.searchText(query)
+                            case .onCancel:
+                                dismiss.callAsFunction()
+                            case .onExitSelection:
+                                model.selectionMode.selectionModifier.exitSelectionMode()
+                            }
+                        }.frame(width: 0.95 * geometry.size.width, height: 46)
+                    }
+                }
+                .onLoad {
+                    isTextFieldFocused = true
+                }
             }
         }
     }
