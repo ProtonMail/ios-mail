@@ -36,12 +36,14 @@ extension AppConfig {
     var apiEnvConfig: ApiConfig {
         let environment = self.environment
 
-        return ApiConfig(
-            allowHttp: environment.isHttpAllowed, 
-            appVersion: appVersion,
-            baseUrl: environment.apiBaseUrl,
-            skipSrpProofValidation: environment.isSrpProofSkipped, 
-            userAgent: environment.userAgent
-        )
+        // FIXME: muon removed arguments to config for UI tests!
+//        return ApiConfig(
+//            allowHttp: environment.isHttpAllowed, 
+//            appVersion: appVersion,
+//            baseUrl: environment.apiBaseUrl,
+//            skipSrpProofValidation: environment.isSrpProofSkipped, 
+//            userAgent: environment.userAgent
+//        )
+        return ApiConfig(appVersion: appVersion, userAgent: environment.userAgent)
     }
 }
