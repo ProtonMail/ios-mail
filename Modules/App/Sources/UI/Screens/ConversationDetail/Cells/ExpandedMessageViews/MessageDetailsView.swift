@@ -49,8 +49,7 @@ struct MessageDetailsView: View {
                         senderAddressView
                         recipientsView
                     }
-                    Spacer()
-                        .frame(width: DS.Spacing.moderatelyLarge)
+                    Spacer(minLength: DS.Spacing.moderatelyLarge)
                     headerActionsView
                 }
             }
