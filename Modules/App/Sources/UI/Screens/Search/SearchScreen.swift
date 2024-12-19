@@ -66,7 +66,10 @@ struct SearchScreen: View {
                             case .onExitSelection:
                                 model.selectionMode.selectionModifier.exitSelectionMode()
                             }
-                        }.frame(width: 0.95 * geometry.size.width, height: 46)
+                        }
+                        // The fix for the issue with shrinking search bar in toolbar
+                        // https://protonag.atlassian.net/browse/ET-1646
+                        .frame(width: 0.95 * geometry.size.width, height: 46)
                     }
                 }
                 .onLoad {
