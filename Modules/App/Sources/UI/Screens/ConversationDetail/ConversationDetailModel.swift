@@ -53,8 +53,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         messageListCallback.delegate = { [weak self] in
             guard let self else { return }
             Task {
-                await self.readLiveQueryValues()
                 self.updateStarState()
+                let messages = await self.readLiveQueryValues()
+                await self.updateStateToMessagesReady(with: messages)
             }
         }
     }
