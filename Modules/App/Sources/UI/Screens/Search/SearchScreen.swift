@@ -25,6 +25,7 @@ enum SearchScreenState {
 
 struct SearchScreen: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.mainWindowSize) var mainWindowSize
     @State private(set) var resultsState: SearchScreenState = .initial
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
@@ -35,46 +36,44 @@ struct SearchScreen: View {
 
     var body: some View {
         NavigationStack(path: $model.state.navigationPath) {
-            GeometryReader { geometry in
-                ZStack {
-                    DS.Color.Background.norm
-                        .ignoresSafeArea()
+            ZStack {
+                DS.Color.Background.norm
+                    .ignoresSafeArea()
 
-                    switch resultsState {
-                    case .initial:
-                        EmptyView()
-                    case .search:
-                        resultsList
-                            .fullScreenCover(item: $model.state.attachmentPresented) { config in
-                                AttachmentView(config: config)
-                                    .edgesIgnoringSafeArea([.top, .bottom])
-                            }
-                            .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
-                                mailboxItemDestination(uiModel: uiModel)
-                            }
-                    }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $isTextFieldFocused) { event in
-                            switch event {
-                            case .onSubmitSearch(let query):
-                                resultsState = .search
-                                model.searchText(query)
-                            case .onCancel:
-                                dismiss.callAsFunction()
-                            case .onExitSelection:
-                                model.selectionMode.selectionModifier.exitSelectionMode()
-                            }
+                switch resultsState {
+                case .initial:
+                    EmptyView()
+                case .search:
+                    resultsList
+                        .fullScreenCover(item: $model.state.attachmentPresented) { config in
+                            AttachmentView(config: config)
+                                .edgesIgnoringSafeArea([.top, .bottom])
                         }
-                        // The fix for the issue with shrinking search bar in toolbar
-                        // https://protonag.atlassian.net/browse/ET-1646
-                        .frame(width: 0.95 * geometry.size.width, height: 46)
+                        .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
+                            mailboxItemDestination(uiModel: uiModel)
+                        }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $isTextFieldFocused) { event in
+                        switch event {
+                        case .onSubmitSearch(let query):
+                            resultsState = .search
+                            model.searchText(query)
+                        case .onCancel:
+                            dismiss.callAsFunction()
+                        case .onExitSelection:
+                            model.selectionMode.selectionModifier.exitSelectionMode()
+                        }
                     }
+                    // The fix for the issue with shrinking search bar in toolbar
+                    // https://protonag.atlassian.net/browse/ET-1646
+                    .frame(width: 0.95 * mainWindowSize.width, height: 46)
                 }
-                .onLoad {
-                    isTextFieldFocused = true
-                }
+            }
+            .onLoad {
+                isTextFieldFocused = true
             }
         }
     }
