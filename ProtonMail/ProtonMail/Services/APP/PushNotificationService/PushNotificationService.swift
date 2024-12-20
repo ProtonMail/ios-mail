@@ -57,7 +57,7 @@ final class PushNotificationService: NSObject {
     }
 
     // MARK: - register for notifications
-    func registerForRemoteNotifications(caller: StaticString = #function) {
+    func authorizeIfNeededAndRegister() {
         guard !ProcessInfo.isRunningUITests else {
             SystemLogger.log(message: "push registration disabled for UI tests ", category: .pushNotification)
             return
@@ -77,7 +77,7 @@ final class PushNotificationService: NSObject {
         UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
             switch settings.authorizationStatus {
             case .authorized:
-                self?.registerForRemoteNotifications()
+                self?.authorizeIfNeededAndRegister()
             default:
                 break
             }
