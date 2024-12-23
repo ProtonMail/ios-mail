@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "push_notification_permission_prompt.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
