@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import enum SwiftUI.ColorScheme
 import class SwiftUI.UIImage
 import func proton_app_uniffi.mailSettings

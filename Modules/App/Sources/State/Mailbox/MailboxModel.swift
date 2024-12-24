@@ -17,6 +17,7 @@
 
 import AccountManager
 import Combine
+import InboxCore
 import InboxCoreUI
 import Foundation
 import SwiftUI
@@ -175,6 +176,12 @@ extension MailboxModel {
                 state.filterBar.unreadCount = .unknown
                 unreadCountLiveQuery = nil
             }
+
+            // These disconnects will prevent unrequested paginator callbacks
+            // for the previous state. Call them before the Mailbox constructor.
+            messagePaginator?.handle().disconnect()
+            conversationPaginator?.handle().disconnect()
+
             await paginatedDataSource.resetToInitialState()
 
             let mailbox = selectedMailbox.isInbox

@@ -9,7 +9,13 @@ let package = Package(
     products: [
         .library(name: "InboxCore", targets: ["InboxCore"])
     ],
+    dependencies: [
+        .package(path: "../../ProtonPackages/proton_app_uniffi")
+    ],
     targets: [
-        .target(name: "InboxCore")
+        .target(
+            name: "InboxCore",
+            dependencies: ["proton_app_uniffi"]
+        )
     ]
 )

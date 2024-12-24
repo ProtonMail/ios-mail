@@ -26,7 +26,7 @@ enum SidebarAction {
 }
 
 final class SidebarModel: Sendable, ObservableObject {
-    private(set) var state: SidebarState
+    @Published var state: SidebarState
 
     private var foldersChangesObservation: SidebarModelsObservation<PMCustomFolder>?
     private var labelsChangesObservation: SidebarModelsObservation<PMCustomLabel>?

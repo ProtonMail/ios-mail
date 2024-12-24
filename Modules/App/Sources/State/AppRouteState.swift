@@ -17,6 +17,7 @@
 
 import Combine
 import Foundation
+import InboxCore
 
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {

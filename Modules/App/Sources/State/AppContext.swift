@@ -18,6 +18,7 @@
 import AccountLogin
 import Combine
 import Foundation
+import InboxCore
 import proton_app_uniffi
 
 final class AppContext: Sendable, ObservableObject {

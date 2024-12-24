@@ -19,9 +19,6 @@ import Foundation
 
 extension Bundle {
 
-    /// the default identifier is the one used for Mail 4.x.x in production
-    static let defaultIdentifier = "ch.protonmail.protonmail"
-
     /// Returns the app version in a nice to read format
     var appVersion: String {
         "\(bundleShortVersion) (\(buildVersion))"

@@ -52,7 +52,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func viewWillDisappear() {
-//        AppLogger.log(message: "composer will disappear", category: .composer)
+        AppLogger.log(message: "composer will disappear", category: .composer)
         if messageHasBeenSent {
             handleViewDisappearAfterSend()
         } else {
@@ -148,7 +148,7 @@ final class ComposerModel: ObservableObject {
         case .ok:
             state = state.copy(\.subject, to: draft.subject())
         case .error(let draftError):
-//            AppLogger.log(error: draftError, category: .composer)
+            AppLogger.log(error: draftError, category: .composer)
             toast = .error(message: draftError.localizedDescription)
         }
     }
@@ -162,16 +162,17 @@ final class ComposerModel: ObservableObject {
             case .ok:
                 break
             case .error(let draftError):
-//                AppLogger.log(error: draftError, category: .composer)
+                AppLogger.log(error: draftError, category: .composer)
                 toast = .error(message: draftError.localizedDescription)
             }
         }
     }
 
     func sendMessage(dismissAction: Dismissable) {
+        guard !messageHasBeenSent else { return }
         Task {
             await waitForDebounceToFinish()
-//            AppLogger.log(message: "sending message", category: .composer)
+            AppLogger.log(message: "sending message", category: .composer)
             switch await draft.send() {
             case .ok:
                 messageHasBeenSent = true
@@ -180,7 +181,7 @@ final class ComposerModel: ObservableObject {
                     dismissAction()
                 }
             case .error(let draftError):
-//                AppLogger.log(error: draftError, category: .composer)
+                AppLogger.log(error: draftError, category: .composer)
                 toast = .error(message: draftError.localizedDescription)
             }
         }
@@ -223,15 +224,17 @@ extension ComposerModel {
     }
 
     private func updateStateRecipientUIModels(for group: RecipientGroupType) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            state.overrideRecipientState(for: group) { [weak self] in
-                guard let self else { return $0 }
-                let selectedIndexes = stateRecipientUIModels(for: group).selectedIndexes
-                let newRecipients = recipientUIModels(from: draft, for: group, selecting: selectedIndexes)
-                return $0.copy(\.recipients, to: newRecipients)
-            }
-        }
+        Dispatcher.dispatchOnMain(.init(
+            block: { [weak self] in
+                guard let self else { return }
+                state.overrideRecipientState(for: group) { [weak self] in
+                    guard let self else { return $0 }
+                    let selectedIndexes = stateRecipientUIModels(for: group).selectedIndexes
+                    let newRecipients = recipientUIModels(from: draft, for: group, selecting: selectedIndexes)
+                    return $0.copy(\.recipients, to: newRecipients)
+                }
+            })
+        )
     }
 
     private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {
