@@ -1,0 +1,48 @@
+{
+  "configurations" : [
+    {
+      "id" : "42017DFF-7B85-4E0B-A70F-580D1101AA81",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "language" : "en",
+    "region" : "US",
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxComposer",
+        "identifier" : "InboxComposerTests",
+        "name" : "InboxComposerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxContacts",
+        "identifier" : "InboxContactsTests",
+        "name" : "InboxContactsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxKeychain",
+        "identifier" : "InboxKeychainTests",
+        "name" : "InboxKeychainTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "32A3C5CC30BF3A6DEA4DD3E5",
+        "name" : "ProtonMailTest"
+      }
+    }
+  ],
+  "version" : 1
+}
