@@ -307,7 +307,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         deleterSpy.stubbedDeleteContactsErrors = [
-            ContactItem.vip.id: NSError(domain: "Network error", code: 1_911)
+            ContactItem.vip.id: .other(.network)
         ]
 
         sut.handle(action: .onLoad)
@@ -343,7 +343,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         stubbedContacts = groupedItems
 
         deleterSpy.stubbedDeleteContactGroupErrors = [
-            ContactGroupItem.advisorsGroup.id: NSError(domain: "Network error", code: 1_911)
+            ContactGroupItem.advisorsGroup.id: .other(.network)
         ]
 
         sut.handle(action: .onLoad)
@@ -471,24 +471,28 @@ final class ContactsStateStoreTests: BaseTestCase {
             state: .init(search: search, allItems: []),
             mailUserSession: .testInstance(),
             contactsWrappers: .init(
-                contactsProvider: StaticGroupedContactsProvider { self.stubbedContacts },
-                contactDeleter: { id in
+                contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) }),
+                contactDeleter: { id, _ in
                     self.deleterSpy.deleteContactCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactsErrors[id] {
-                        throw error
+                        return .error(error)
+                    } else {
+                        return .ok
                     }
                 },
-                contactGroupDeleter: { id in
+                contactGroupDeleter: { id, _ in
                     self.deleterSpy.deleteContactGroupCalls.append(id)
 
                     if let error = self.deleterSpy.stubbedDeleteContactGroupErrors[id] {
-                        throw error
+                        return .error(error)
+                    } else {
+                        return .ok
                     }
                 },
-                contactsWatcher: ContactsWatcherSpy(watchStub: { callback in
+                contactsWatcher: .init(watch: { _, callback in
                     self.watchContactsCallback = callback
-                    return WatchedContactList(contactList: [], handle: .init(noPointer: .init()))
+                    return WatchContactListResult.ok(.init(contactList: [], handle: .init(noPointer: .init())))
                 })
             ),
             makeContactsLiveQuery: {
@@ -520,8 +524,8 @@ final class ContactsStateStoreTests: BaseTestCase {
 }
 
 private class DeleterSpy {
-    var stubbedDeleteContactsErrors: [Id: Error] = [:]
-    var stubbedDeleteContactGroupErrors: [Id: Error] = [:]
+    var stubbedDeleteContactsErrors: [Id: ActionError] = [:]
+    var stubbedDeleteContactGroupErrors: [Id: ActionError] = [:]
 
     var deleteContactCalls: [Id] = []
     var deleteContactGroupCalls: [Id] = []

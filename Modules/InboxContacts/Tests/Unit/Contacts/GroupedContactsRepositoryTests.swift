@@ -32,7 +32,7 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
 
         sut = .init(
             mailUserSession: MailUserSession(noPointer: .init()),
-            contactsProvider: .init(allContacts: { _ in self.stubbedContacts })
+            contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) })
         )
     }
 

@@ -61,8 +61,19 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     }
 
     private func allContacts() async -> [GroupedContacts] {
-        let provider = StaticGroupedContactsProvider.previewInstance()
-        return await provider.allContacts()
+        let provider = GroupedContactsProvider.previewInstance()
+        return try! await provider.allContacts(.testInstance()).get()
     }
 
+}
+
+private extension ContactListResult {
+    func get() throws -> [GroupedContacts] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
 }
