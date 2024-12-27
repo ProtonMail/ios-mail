@@ -216,7 +216,7 @@ schemes:
   AllUnitAndSnapshotTests:
     build:
       targets:
-        ProtonMail: test
+        ProtonMail: [test, run]
     test:
       testPlans:
         - path: TestPlans/AllUnitAndSnapshotTests.xctestplan
