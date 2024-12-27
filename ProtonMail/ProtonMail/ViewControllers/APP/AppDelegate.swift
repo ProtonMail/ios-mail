@@ -411,7 +411,7 @@ extension AppDelegate {
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         let pushService = dependencies.pushService
         UNUserNotificationCenter.current().delegate = pushService
-        pushService.registerForRemoteNotifications()
+        pushService.registerIfAuthorized()
         pushService.setNotificationFrom(launchOptions: launchOptions)
     }
 
