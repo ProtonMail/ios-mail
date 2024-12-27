@@ -143,7 +143,6 @@ platform :ios do
       prelaunch_simulator: true,
       reset_simulator: true,
       result_bundle: true,
-      parallel_testing: false,
       xcargs: "-skipPackagePluginValidation"
     )
   end
