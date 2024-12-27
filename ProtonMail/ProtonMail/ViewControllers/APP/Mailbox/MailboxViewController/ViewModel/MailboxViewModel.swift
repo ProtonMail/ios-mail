@@ -767,17 +767,51 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         }
     }
 
-    func shouldRequestNotificationAuthorization() async -> Bool {
-        if dependencies.userDefaults[.lastNotificationAuthorizationRequestDate] != nil {
+    func shouldRequestNotificationAuthorization(trigger: NotificationAuthorizationRequestTrigger) async -> Bool {
+        let authorizationStatus = await dependencies.userNotificationCenter.authorizationStatus()
+
+        guard authorizationStatus == .notDetermined else {
+            // if status is determined, the system prompt cannot be shown anymore, so we shouldn't show the custom prompt either
             return false
-        } else {
-            let authorizationStatus = await dependencies.userNotificationCenter.authorizationStatus()
-            return authorizationStatus == .notDetermined
+        }
+
+        let notificationAuthorizationRequestDates = dependencies.userDefaults[.notificationAuthorizationRequestDates]
+
+        guard let mostRecentRequestDate = notificationAuthorizationRequestDates.last else {
+            // if the user has never been prompted, prompt them now
+            return true
+        }
+
+        switch trigger {
+        case .onboardingFinished:
+            // the onboarding prompt is never to be shown again
+            return false
+        case .messageSent:
+            let hasAlreadyRetriedBefore = notificationAuthorizationRequestDates.count > 1
+
+            if hasAlreadyRetriedBefore {
+                return false
+            } else {
+                let nextRequestDate = nextNotificationAuthorizationRequestDate(since: mostRecentRequestDate)
+                return nextRequestDate < .now
+            }
         }
     }
 
+    private func nextNotificationAuthorizationRequestDate(since mostRecentRequestDate: Date) -> Date {
+        var retryInterval = DateComponents()
+
+        if Application.isTestflightBeta {
+            retryInterval.minute = 5
+        } else {
+            retryInterval.day = 20
+        }
+
+        return Calendar.autoupdatingCurrent.date(byAdding: retryInterval, to: mostRecentRequestDate)!
+    }
+
     func didRequestNotificationAuthorization() {
-        dependencies.userDefaults[.lastNotificationAuthorizationRequestDate] = .init()
+        dependencies.userDefaults[.notificationAuthorizationRequestDates].append(.now)
     }
 
     private func handleMoveToArchiveAction(on items: [MailboxItem]) {
@@ -1581,6 +1615,20 @@ extension MailboxViewModel {
         ) { _, response in
             DispatchQueue.main.async {
                 completion(response.error)
+            }
+        }
+    }
+}
+
+extension MailboxViewModel {
+    enum NotificationAuthorizationRequestTrigger {
+        case onboardingFinished
+        case messageSent
+
+        var promptVariant: NotificationAuthorizationPrompt.Variant {
+            switch self {
+            case .onboardingFinished: .onboardingFinished
+            case .messageSent: .messageSent
             }
         }
     }

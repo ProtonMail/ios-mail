@@ -278,7 +278,7 @@ extension MailboxCoordinator {
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
-        viewController?.requestNotificationAuthorizationIfApplicable()
+        viewController?.requestNotificationAuthorizationIfApplicable(trigger: .onboardingFinished)
     }
 
     private func presentNewBrandingView() {

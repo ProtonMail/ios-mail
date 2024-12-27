@@ -711,12 +711,14 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         self.updateUnreadButton(count: viewModel.unreadCount)
     }
 
-    func requestNotificationAuthorizationIfApplicable() {
+    func requestNotificationAuthorizationIfApplicable(
+        trigger: MailboxViewModel.NotificationAuthorizationRequestTrigger
+    ) {
         Task {
-            guard await viewModel.shouldRequestNotificationAuthorization() else { return }
+            guard await viewModel.shouldRequestNotificationAuthorization(trigger: trigger) else { return }
 
             await MainActor.run {
-                let prompt = NotificationAuthorizationPrompt {
+                let prompt = NotificationAuthorizationPrompt(variant: trigger.promptVariant) {
                     self.dependencies.pushService.authorizeIfNeededAndRegister()
                 }
 
@@ -1331,7 +1333,7 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
         } else {
-            requestNotificationAuthorizationIfApplicable()
+            requestNotificationAuthorizationIfApplicable(trigger: .onboardingFinished)
         }
     }
 

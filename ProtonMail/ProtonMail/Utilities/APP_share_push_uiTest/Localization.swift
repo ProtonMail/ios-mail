@@ -1738,8 +1738,10 @@ enum L10n {
 
     struct Authorization {
         struct Notifications {
-            static let title = NSLocalizedString("Don’t miss an email", comment: "Title of the authorization prompt")
-            static let body = NSLocalizedString("Notifications help you keep on top of your inbox without checking the app.", comment: "Body of the authorization prompt")
+            static let title1 = NSLocalizedString("Don’t miss an email", comment: "Title of the authorization prompt")
+            static let title2 = NSLocalizedString("Want to stay updated?", comment: "Title of the authorization prompt")
+            static let body1 = NSLocalizedString("Notifications help you keep on top of your inbox without checking the app.", comment: "Body of the authorization prompt")
+            static let body2 = NSLocalizedString("Turn on notifications to know when you get a response to your email.", comment: "Body of the authorization prompt")
             static let cta = NSLocalizedString("Enable push notifications", comment: "Button to authorizate notifications")
         }
     }
