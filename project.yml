@@ -212,11 +212,11 @@ schemes:
       gatherCoverageData: true
       parallelizable: true
       randomExecutionOrder: true
+
   AllUnitAndSnapshotTests:
     build:
       targets:
-        ProtonMail: run
+        ProtonMail: test
     test:
       testPlans:
         - path: TestPlans/AllUnitAndSnapshotTests.xctestplan
-    
