@@ -21,6 +21,11 @@ import ProtonCorePayments
 extension UserDefaultsKeys {
     static let firstRunDate = plainKey(named: "firstRunDate", ofType: Date.self)
 
+    static let lastNotificationAuthorizationRequestDate = plainKey(
+        named: "lastNotificationAuthorizationRequestDate",
+        ofType: Date.self
+    )
+
     static let lastBugReport = plainKey(named: "BugReportCache_LastBugReport", defaultValue: "")
 
     /// Keys need to take both UserID and LabelID into account; use `UserSpecificLabelKey.userDefaultsKey`.

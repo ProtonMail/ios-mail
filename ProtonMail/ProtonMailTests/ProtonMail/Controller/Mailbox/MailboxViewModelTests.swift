@@ -28,7 +28,6 @@ final class MailboxViewModelTests: XCTestCase {
 
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
-    var coreDataService: CoreDataService!
     var featureFlagCache: MockFeatureFlagCache!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
@@ -48,7 +47,12 @@ final class MailboxViewModelTests: XCTestCase {
     var delegateMock: MockCoreDataDelegateObject!
     private let selectionLimitation = 5
 
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+    private var userNotificationCenter: MockUserNotificationCenterProtocol!
+
+    var coreDataService: CoreDataContextProviderProtocol {
+        globalContainer.contextProvider
+    }
 
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -57,10 +61,10 @@ final class MailboxViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
+        userNotificationCenter = .init()
 
         globalContainer = .init()
-        globalContainer.contextProviderFactory.register { self.coreDataService }
+        globalContainer.userNotificationCenterFactory.register { self.userNotificationCenter }
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
@@ -164,7 +168,6 @@ final class MailboxViewModelTests: XCTestCase {
         sut = nil
         contactGroupProviderMock = nil
         contactProviderMock = nil
-        coreDataService = nil
         eventsServiceMock = nil
         featureFlagCache = nil
         userManagerMock = nil
@@ -175,6 +178,7 @@ final class MailboxViewModelTests: XCTestCase {
         globalContainer = nil
         fakeTableView = nil
         fetchMessageWithReset = nil
+        userNotificationCenter = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
     }
@@ -1454,6 +1458,50 @@ extension MailboxViewModelTests {
             SupportedFeatureFlags(rawValues: [FeatureFlagKey.autoDowngradeReminder.rawValue: ["day-45": 0, "day-30": 1]])
         }
         XCTAssertTrue(sut.shouldShowReminderModal())
+    }
+}
+
+// MARK: notification authorization
+
+extension MailboxViewModelTests {
+    func testWhenNotificationAuthorizationStatusIsNotDeterminedAndHasntBeenRequestedBefore_thenShouldRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
+            UNAuthorizationStatus.notDetermined
+        }
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        XCTAssert(shouldRequestNotificationAuthorization)
+    }
+
+    func testWhenNotificationAuthorizationStatusIsNotDeterminedButHasBeenRequestedBefore_thenShouldNotRequestAuthorization() async {
+        sut.didRequestNotificationAuthorization()
+
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
+            UNAuthorizationStatus.notDetermined
+        }
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
+    }
+
+    func testWhenNotificationAuthorizationStatusIsDeterminedAndTheRequestIsRecorded_thenShouldNotRequestAuthorization() async {
+        sut.didRequestNotificationAuthorization()
+
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
+            UNAuthorizationStatus.denied
+        }
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
+    }
+
+    func testWhenNotificationAuthorizationStatusIsDeterminedButTheRequestIsNotRecorded_thenShouldNotRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
+            UNAuthorizationStatus.denied
+        }
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
     }
 }
 

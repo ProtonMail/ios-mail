@@ -261,6 +261,22 @@ extension UserContainer: HasURLOpener {
     }
 }
 
+protocol HasUserNotificationCenterProtocol {
+    var userNotificationCenter: UserNotificationCenterProtocol { get }
+}
+
+extension GlobalContainer: HasUserNotificationCenterProtocol {
+    var userNotificationCenter: UserNotificationCenterProtocol {
+        userNotificationCenterFactory()
+    }
+}
+
+extension UserContainer: HasUserNotificationCenterProtocol {
+    var userNotificationCenter: UserNotificationCenterProtocol {
+        globalContainer.userNotificationCenter
+    }
+}
+
 protocol HasAnswerInvitation {
     var answerInvitation: AnswerInvitation { get }
 }
