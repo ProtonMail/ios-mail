@@ -41,7 +41,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
     typealias Dependencies = HasPaymentsUIFactory
     & ReferralProgramPromptPresenter.Dependencies
     & HasMailboxMessageCellHelper
-    & HasPushNotificationService
     & HasUserManager
     & HasUserDefaults
     & HasAddressBookService
@@ -718,17 +717,12 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             guard await viewModel.shouldRequestNotificationAuthorization(trigger: trigger) else { return }
 
             await MainActor.run {
-                let prompt = NotificationAuthorizationPrompt(variant: trigger.promptVariant) {
-                    self.dependencies.pushService.authorizeIfNeededAndRegister()
+                let prompt = NotificationAuthorizationPrompt(variant: trigger.promptVariant) { [weak self] accepted in
+                    self?.viewModel.userDidRespondToNotificationAuthorizationRequest(accepted: accepted)
                 }
 
                 let hosting = SheetLikeSpotlightViewController(rootView: prompt)
                 prompt.config.hostingController = hosting
-
-                hosting.onDismiss = { [weak self] in
-                    self?.viewModel.didRequestNotificationAuthorization()
-                }
-
                 self.present(hosting, animated: false)
             }
         }
