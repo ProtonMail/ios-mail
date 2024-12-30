@@ -394,7 +394,7 @@
 "Label Name" = "Etikettnavn";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Tilgang til denne konten er deaktivert grunnet manglende betaling. Vennligst logg på via proton.me for å betale den utestående fakturaen.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Tilgang til denne konten er deaktivert grunnet manglende betaling. Logg på via proton.me for å betale den utestående fakturaen.";
 
 /* Title */
 "Alert" = "Varsel";
@@ -410,6 +410,9 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Avbryt";
+
+/* Dismiss popup action */
+"Dismiss" = "Avvis";
 
 /* Open action */
 "Open" = "Åpne";
@@ -458,7 +461,7 @@
 "Close" = "Lukk";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Økten din er utløpt fordi du har vært inaktiv en stund eller fordi den har blitt opphevet. Vennligst logg på igjen.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Økten din er utløpt fordi du har vært inaktiv en stund eller fordi den har blitt opphevet. Logg på igjen.";
 
 /*
  Springboard (3D Touch) shortcuts action
@@ -563,7 +566,7 @@
 "Offline, message queued for sending" = "Frakoblet modus, melding satt i sendekø";
 
 /* Description */
-"Message sending failed. Please try again." = "Sending av melding mislyktes. Vennligst forsøk igjen.";
+"Message sending failed. Please try again." = "Sending av melding mislyktes. Forsøk igjen.";
 
 /* import contact title */
 "Importing Contacts" = "Importerer kontakter";
@@ -658,7 +661,7 @@
 "Continue" = "Fortsett";
 
 /* error message */
-"Please input a valid email address." = "Vennligst angi en gyldig e-postadresse.";
+"Please input a valid email address." = "Angi en gyldig e-postadresse.";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Angi PIN-koden for å låse opp innboksen.";
@@ -808,10 +811,10 @@
 "Storage Warning" = "Advarsel om lagringsplass";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt opp all lagringsplassen din (%@). Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt opp all lagringsplassen (%@). Oppgrader planen din for å fortsette å sende og motta e-post.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt %1$d%% av lagringsplassen din (%2$@). Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brukt %1$d%% av lagringsplassen din (%2$@). Oppgrader planen for å fortsette å sende og motta e-post.";
 
 /* Alert title */
 "Storage full" = "Lagringsplassen er full";
@@ -820,10 +823,10 @@
 "Storage quota exceeded" = "Overskredet lagringskvote";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Vennligst oppgrader planen din";
+"Please upgrade your plan" = "Oppgrader planen din";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Vennligst oppgrader planen din for å fortsette å sende og motta e-post.";
+"Please upgrade your plan to continue to send and receive emails." = "Oppgrader planen din for å fortsette å sende og motta e-post.";
 
 /* Title */
 "Warning" = "Advarsel";
@@ -965,7 +968,7 @@
 "Closing" = "Lukker";
 
 /* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Vennligst hold Proton Mail åpen til operasjonen er fullført.";
+"Please keep Proton Mail open until the operation is done." = "Hold Proton Mail åpen til operasjonen er fullført.";
 
 /* Title */
 "Bug Report Received" = "Feilrapport er mottatt";
@@ -995,7 +998,7 @@
 "Move to spam" = "Flytt til søppelpost";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Innlasting av innhold mislyktes!\nVennligst forsøk igjen.";
+"Failed to load content!\nPlease try again." = "Innlasting av innhold mislyktes!\nForsøk igjen.";
 
 /* Error message */
 "Failed to determine type of file" = "Kunne ikke fastslå filtype";
@@ -1082,10 +1085,10 @@
 "Delete contact group" = "Slett kontaktgruppe";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Vennligst velg minst én e-postadresse for kontaktgruppen";
+"Please select at least one email for the contact group" = "Velg minst én e-postadresse for kontaktgruppen";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Vennligst angi et gruppenavn";
+"Please provide a group name" = "Angi et gruppenavn";
 
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Kan ikke oppdatere kontaktgruppen via API-en";
@@ -1136,7 +1139,7 @@
 "There are unsent messages that will be lost if you sign out" = "Det er usendte meldinger som vil gå tapt hvis du logger av";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Vennligst velg minst en e-post";
+"Please select at least one email" = "Velg minst en e-post";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Logget av fra %1$@ og logget på med %2$@";
@@ -1235,7 +1238,7 @@
 "Invalid email address" = "Ugyldig e-postadresse";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Minst én mottakers e-postadresse er feil formatert, vennligst dobbeltsjekk dem.";
+"At least one recipient email address is improperly formatted, please double check them." = "Minst én mottakers e-postadresse er feil formatert, dobbeltsjekk dem.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Feil ved sending";
@@ -1247,13 +1250,13 @@
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Minst én mottakers e-postadresse/domene finnes ikke eller er dårlig formatert. Meldingen er flyttet til utkast.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Du har skrevet inn minst én ugyldig e-postadresse. Vennligst bekreft mottakerne.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Du har skrevet inn minst én ugyldig e-postadresse. Bekreft mottakerne.";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Minst én av e-postadressene i gruppen kunne ikke bli funnet.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Du har skrevet inn minst én ugyldig mottaker. Vennligst bekreft mottakerne.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Du har skrevet inn minst én ugyldig mottaker. Bekreft mottakerne.";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Sending mislyktes";
@@ -1346,7 +1349,7 @@
 "Receipt sent" = "Kvittering sendt";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Vi har problemer med å koble til tjenerne. Vennligst koble til igjen.";
+"We have trouble connecting to the servers. Please reconnect." = "Vi har problemer med å koble til tjenerne. Koble til igjen.";
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Slett melding";
@@ -1361,7 +1364,7 @@
 "Recovery enabled" = "Gjenoppretting aktivert";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Vennligst angi en gjenopprettings-/varslings-e-post";
+"Please set a recovery / notification email" = "Angi en gjenopprettings-/varslings-e-post";
 
 /* No comment provided by engineer. */
 "Unread" = "Ulest";
@@ -1427,13 +1430,13 @@
 "Creating label not allowed" = "Oppretting av etikett ikke tillatt";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "For å bruke mer enn 3 mapper vennligst oppgrader til en betalt plan";
+"Please upgrade to a paid plan to use more than 3 folders" = "For å bruke mer enn 3 mapper oppgrader til en betalt plan";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "For å bruke mer enn 3 etiketter vennligst oppgrader til en betalt plan";
+"Please upgrade to a paid plan to use more than 3 labels" = "For å bruke mer enn 3 etiketter oppgrader til en betalt plan";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Vennligst koble til og prøv på nytt";
+"Please connect and retry" = "Koble til og prøv på nytt";
 
 /* Option title */
 "Use folder colors" = "Bruk mappefarger";
@@ -1507,7 +1510,7 @@
 "Undisclosed Recipients" = "Ikke avslørte mottakere";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Systemet vårt flagget denne meldingen som et forsøk på nettfisking. Vennligst kontroller at den er legitim.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Systemet vårt flagget denne meldingen som et forsøk på nettfisking. Kontroller at den er legitim.";
 
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Marker som legitim";
@@ -2133,9 +2136,6 @@
 "Schedule messages at any time" = "Planlegg meldinger når som helst";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Ubegrenset antall mapper og etiketter";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Opptil 500 GB med lagringsplass";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2181,19 +2181,19 @@
 "Read emails faster" = "Les e-poster raskere";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "Det oppstod en uventet feil, vennligst kontakt brukerstøtte.\nFeil: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Det oppstod en uventet feil, kontakt brukerstøtte.\nFeil: %@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Utilstrekkelig diskplass";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Programmet kan ikke åpnes på grunn av utilstrekkelig diskplass. Vennligst slett noen data, og prøv på nytt.";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Programmet kan ikke åpnes på grunn av utilstrekkelig diskplass. Slett noe data og prøv på nytt.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Klarte ikke å åpne meldingen, prøv igjen.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Vennligst logg på Proton Mail-appen.";
+"Please sign in to the Proton Mail app." = "Logg på Proton Mail-appen.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Svar (til siste melding)";
@@ -2211,7 +2211,7 @@
 "Customize (verb)" = "Tilpass";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "---For å hjelpe oss med å hjelpe deg, vennligst oppgi så mange detaljer som mulig---\n\nSammendrag:\n\nHar problemet skjedd mer enn en gang: ja/nei\nTrinn for å gjenskape problemet:\nForventet resultat:\nFaktisk resultat:\nKommentarer:";
+"Bug Report Place Holder" = "---For å hjelpe oss med å hjelpe deg, oppgi så mange detaljer som mulig---\n\nSammendrag:\n\nHar problemet skjedd mer enn en gang: ja/nei\nTrinn for å gjenskape problemet:\nForventet resultat:\nFaktisk resultat:\nKommentarer:";
 
 /* Checkbox to attach local application logs to the bug report. */
 "Include logs" = "Inkluder logger";
@@ -2289,7 +2289,7 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den opprinnelige avsenderen av denne meldingen er ikke lenger gyldig. Meldingen sendes fra standardadressen %@.";
 
 /* The alert message that will be shown when user tries to change the sender if there is any attachment being uploaded. */
-"Please retry after all attachments are uploaded." = "Vennligst prøv på nytt etter at alle vedlegg er lastet opp.";
+"Please retry after all attachments are uploaded." = "Prøv på nytt etter at alle vedlegg er lastet opp.";
 
 /* Alert title */
 "Sending with the Share extension while offline is not supported" = "Sending med Del-utvidelsen mens du er frakoblet støttes ikke";
@@ -2355,7 +2355,7 @@
 "The PIN codes must match!" = "PIN-kodene samsvarer ikke!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Vennligst skriv inn gammel PIN-kode ";
+"Please enter old pin code " = "Skriv inn gammel PIN-kode ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Endre PIN-koden";
@@ -2400,7 +2400,7 @@
 "Next week" = "Neste uke";
 
 /* An error message will be shown to user when user select past snooze time */
-"Please select a time in the future" = "Vennligst velg et tidspunkt i fremtiden";
+"Please select a time in the future" = "Velg et tidspunkt i fremtiden";
 
 /* The title of snooze promotion view */
 "Want to snooze any time?" = "Vil du slumre når som helst?";
@@ -2500,6 +2500,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premiumfunksjoner";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB total storage";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB total storage";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Yearly free storage bonuses";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Your own custom email domain";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Calendar sharing";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel program";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive including version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all email address";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "See your colleagues’ availability";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Early access to new apps and features";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB storage per user";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u email addresses per user";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Ubegrenset antall mapper og etiketter";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u custom email domains";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux mer lagringsplass";
@@ -2617,3 +2695,27 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Premiumverdi inkludert";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Your subscription is ending soon";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivate subscription";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Subscription reactivated";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Subscription reactivation failed";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Don’t miss an email";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Enable push notifications";

@@ -79,7 +79,7 @@
  mail location desc
  menu title
 */
-"Trash" = "Lixeira";
+"Trash" = "Lixo";
 
 /* menu title */
 "Spam" = "Spam";
@@ -410,6 +410,9 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Cancelar";
+
+/* Dismiss popup action */
+"Dismiss" = "Descartar";
 
 /* Open action */
 "Open" = "Abrir";
@@ -1307,7 +1310,7 @@
  Push notification action move to trash
  The title of the remove action in action sheet
 */
-"Move to trash" = "Mover para a lixeira";
+"Move to trash" = "Mover para o lixo";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Mover para a caixa de entrada";
@@ -1454,10 +1457,10 @@
 "Load embedded images" = "Carregar as imagens incorporadas";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Esta conversação contém mensagens da lixeira.";
+"This conversation contains trashed messages" = "Esta conversa contém mensagens do lixo";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Esta conversa contém mensagens que não estão na lixeira.";
+"This conversation contains non-trashed messages." = "Esta conversa contém mensagens que não estão no lixo.";
 
 /* No comment provided by engineer. */
 "Message actions" = "Ações das mensagens";
@@ -1585,7 +1588,7 @@
 "Always off" = "Sempre desligado";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Mensagem movida para a lixeira";
+"Message moved to trash" = "Mensagem movida para o lixo";
 
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 mensagem movida para Arquivo";
@@ -1600,10 +1603,10 @@
 "Compose message" = "Compor uma mensagem";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Esvaziar a lixeira";
+"Empty Trash" = "Esvaziar Lixo";
 
 /* Alert title */
-"Empty trash folder" = "Esvaziar a lixeira";
+"Empty trash folder" = "Esvaziar pasta de lixo";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Esvaziar spam";
@@ -2133,9 +2136,6 @@
 "Schedule messages at any time" = "Schedule messages at any time";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Unlimited folders and labels";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Up to 500 GB of storage";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2229,13 +2229,13 @@
 "Auto-delete unwanted messages" = "Eliminar as mensagens indesejadas automaticamente";
 
 /* The footer title of the setting row of the auto delete option */
-"Messages in trash or spam longer than 30 days will be automatically deleted." = "As mensagens na lixeira ou no spam com mais de 30 dias serão automaticamente eliminadas.";
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "As mensagens no lixo ou no spam com mais de 30 dias serão automaticamente eliminadas.";
 
 /* Title of the alert to confirm enabling of the auto delete option */
 "Delete messages?" = "Eliminar as mensagens?";
 
 /* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Isto eliminará todas as mensagens que estão na lixeira ou no spam há mais de 30 dias, incluindo mensagens actualmente nestas pastas.";
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Isto eliminará todas as mensagens que estão no lixo ou no spam há mais de 30 dias, incluindo mensagens atualmente nestas pastas.";
 
 /*
  Button to enable encrypted search
@@ -2244,22 +2244,22 @@
 "Enable" = "Ativar";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Melhore para eliminar automaticamente as mensagens que estão na lixeira ou no spam há mais de 30 dias.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Melhore para eliminar automaticamente as mensagens que estão no lixo ou no spam há mais de 30 dias.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimine automaticamente as mensagens que se encontram na lixeira e no spam há mais de 30 dias.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Elimine automaticamente as mensagens que se encontram no lixo e no spam há mais de 30 dias.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Não, obrigado";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "As mensagens que estiverem na lixeira e no spam há mais de 30 dias serão automaticamente eliminadas.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "As mensagens que estiverem no lixo e no spam há mais de 30 dias serão automaticamente eliminadas.";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "Esvaziar spam";
 
 /* Title of button to empty trash folder */
-"Empty trash" = "Esvaziar a lixeira";
+"Empty trash" = "Esvaziar lixo";
 
 /* Alert prompting to update Calendar */
 "Download the latest version of the Proton Calendar to open this event" = "Download the latest version of the Proton Calendar to open this event";
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+%u premium features";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB total storage";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB total storage";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Yearly free storage bonuses";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Your own custom email domain";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Calendar sharing";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel program";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive including version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all email address";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "See your colleagues’ availability";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Early access to new apps and features";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB storage per user";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u email addresses per user";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u custom email domains";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux more storage";
 
 /* Description of a feature of a paid subscription */
@@ -2617,3 +2695,27 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Premium value included";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Your subscription is ending soon";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivate subscription";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Subscription reactivated";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Subscription reactivation failed";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Don’t miss an email";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Enable push notifications";
