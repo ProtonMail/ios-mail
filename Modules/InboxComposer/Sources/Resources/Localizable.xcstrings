@@ -2,13 +2,65 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%lld members" : {
-      "comment" : "Contact group row subtitle in contact picker."
+      "comment" : "Contact group row subtitle in contact picker.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Mitglieder"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld members"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membres"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld leden"
+          }
+        }
+      }
     },
     "Draft saved" : {
       "comment" : "Composer toast message when dismissing the screen."
     },
     "From:" : {
-      "comment" : "Composer from field."
+      "comment" : "Composer from field.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De :"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Van:"
+          }
+        }
+      }
     },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
@@ -17,22 +69,142 @@
       "comment" : "Composer toast message when sent is tapped."
     },
     "Removed duplicate recipient: %@" : {
-      "comment" : "Error shown when a duplicated recipient is added to the draft."
+      "comment" : "Error shown when a duplicated recipient is added to the draft.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removed duplicate recipient: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le destinataire dupliqué a été retiré : %@"
+          }
+        }
+      }
     },
     "Send" : {
-      "comment" : "Message send button."
+      "comment" : "Message send button.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verstuur"
+          }
+        }
+      }
     },
     "Subject:" : {
-      "comment" : "Composer subject."
+      "comment" : "Composer subject.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betreff:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subject:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objet :"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onderwerp:"
+          }
+        }
+      }
     },
     "There was a problem saving the draft" : {
-      "comment" : "Error shown when the draft fails to save."
+      "comment" : "Error shown when the draft fails to save.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was a problem saving the draft"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème est survenu lors de l'enregistrement du brouillon."
+          }
+        }
+      }
     },
     "To:" : {
-      "comment" : "Composer to recipients."
+      "comment" : "Composer to recipients.",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À :"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aan:"
+          }
+        }
+      }
     },
     "Unrecognized MIME type" : {
-      "comment" : "Error when saving a draft"
+      "comment" : "Error when saving a draft",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unrecognized MIME type"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type MIME non reconnu"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
