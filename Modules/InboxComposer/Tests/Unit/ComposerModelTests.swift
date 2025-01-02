@@ -263,7 +263,7 @@ final class ComposerModelTests: XCTestCase {
 
     // MARK: callback
 
-    // FIXME: - It's failing
+    // FIXME: - Test is failing failing
 //    @MainActor
 //    func testComponerRecpientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {
 //        let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
