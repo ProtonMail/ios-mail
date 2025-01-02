@@ -19,7 +19,8 @@ import SwiftUI
 
 public struct NotificationAuthorizationPrompt: View {
     public let config = HostingProvider()
-    public var enableAction: () -> Void
+    private let variant: Variant
+    private let enableAction: () -> Void
 
     public var body: some View {
         SheetLikeSpotlightView(
@@ -32,9 +33,9 @@ public struct NotificationAuthorizationPrompt: View {
                     enableAction()
                 }
             },
-            message: L10n.Authorization.Notifications.body,
+            message: variant.message,
             spotlightImage: .pushNotificationPermissionPrompt,
-            title: L10n.Authorization.Notifications.title,
+            title: variant.title,
             imageAlignBottom: false,
             maxHeightOfTheImage: 125,
             showNewBadge: false,
@@ -42,11 +43,41 @@ public struct NotificationAuthorizationPrompt: View {
         )
     }
 
-    public init(enableAction: @escaping () -> Void) {
+    public init(variant: Variant, enableAction: @escaping () -> Void) {
+        self.variant = variant
         self.enableAction = enableAction
     }
 }
 
-#Preview {
-    NotificationAuthorizationPrompt {}
+public extension NotificationAuthorizationPrompt {
+    enum Variant {
+        case onboardingFinished
+        case messageSent
+
+        var title: String {
+            switch self {
+            case .onboardingFinished:
+                L10n.Authorization.Notifications.title1
+            case .messageSent:
+                L10n.Authorization.Notifications.title2
+            }
+        }
+
+        var message: String {
+            switch self {
+            case .onboardingFinished:
+                L10n.Authorization.Notifications.body1
+            case .messageSent:
+                L10n.Authorization.Notifications.body2
+            }
+        }
+    }
+}
+
+#Preview("onboarding finished") {
+    NotificationAuthorizationPrompt(variant: .onboardingFinished) {}
+}
+
+#Preview("message sent") {
+    NotificationAuthorizationPrompt(variant: .messageSent) {}
 }

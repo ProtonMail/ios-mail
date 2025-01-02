@@ -1465,42 +1465,103 @@ extension MailboxViewModelTests {
 
 extension MailboxViewModelTests {
     func testWhenNotificationAuthorizationStatusIsNotDeterminedAndHasntBeenRequestedBefore_thenShouldRequestAuthorization() async {
-        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
-            UNAuthorizationStatus.notDetermined
-        }
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
 
-        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .onboardingFinished
+        )
+
         XCTAssert(shouldRequestNotificationAuthorization)
     }
 
     func testWhenNotificationAuthorizationStatusIsNotDeterminedButHasBeenRequestedBefore_thenShouldNotRequestAuthorization() async {
         sut.didRequestNotificationAuthorization()
 
-        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
-            UNAuthorizationStatus.notDetermined
-        }
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
 
-        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .onboardingFinished
+        )
+
         XCTAssertFalse(shouldRequestNotificationAuthorization)
     }
 
     func testWhenNotificationAuthorizationStatusIsDeterminedAndTheRequestIsRecorded_thenShouldNotRequestAuthorization() async {
         sut.didRequestNotificationAuthorization()
 
-        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
-            UNAuthorizationStatus.denied
-        }
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .denied }
 
-        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .onboardingFinished
+        )
+
         XCTAssertFalse(shouldRequestNotificationAuthorization)
     }
 
     func testWhenNotificationAuthorizationStatusIsDeterminedButTheRequestIsNotRecorded_thenShouldNotRequestAuthorization() async {
-        userNotificationCenter.authorizationStatusStub.bodyIs { _ in
-            UNAuthorizationStatus.denied
-        }
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .denied }
 
-        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization()
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .onboardingFinished
+        )
+
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
+    }
+
+    func testGivenAuthorizationHasBeenRequestedOnce_whenMessageIsSentAfter10Days_thenShouldNotRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
+
+        globalContainer.userDefaults[.notificationAuthorizationRequestDates] = [
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -10, to: .now)!
+        ]
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .messageSent
+        )
+
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
+    }
+
+    func testGivenAuthorizationHasBeenRequestedOnce_whenMessageIsSentAfter20Days_thenShouldRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
+
+        globalContainer.userDefaults[.notificationAuthorizationRequestDates] = [
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -20, to: .now)!
+        ]
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .messageSent
+        )
+
+        XCTAssert(shouldRequestNotificationAuthorization)
+    }
+
+    func testGivenAuthorizationHasBeenRequestedTwice_whenMessageIsSentAfter20Days_thenShouldNotRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
+
+        globalContainer.userDefaults[.notificationAuthorizationRequestDates] = [
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -20, to: .now)!,
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -10, to: .now)!
+        ]
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .messageSent
+        )
+
+        XCTAssertFalse(shouldRequestNotificationAuthorization)
+    }
+
+    func testGivenAuthorizationHasBeenGrantedBefore_whenMessageIsSentAfter20Days_thenShouldNotRequestAuthorization() async {
+        userNotificationCenter.authorizationStatusStub.bodyIs { _ in .authorized }
+
+        globalContainer.userDefaults[.notificationAuthorizationRequestDates] = [
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -20, to: .now)!
+        ]
+
+        let shouldRequestNotificationAuthorization = await sut.shouldRequestNotificationAuthorization(
+            trigger: .messageSent
+        )
+
         XCTAssertFalse(shouldRequestNotificationAuthorization)
     }
 }
