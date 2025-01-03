@@ -63,6 +63,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasFetchMessages
     & HasFetchSenderImage
     & HasMailEventsPeriodicScheduler
+    & HasPushNotificationService
     & HasUpsellOfferProvider
     & HasUpdateMailbox
     & HasUpsellButtonStateProvider
@@ -810,8 +811,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         return Calendar.autoupdatingCurrent.date(byAdding: retryInterval, to: mostRecentRequestDate)!
     }
 
-    func didRequestNotificationAuthorization() {
+    func userDidRespondToNotificationAuthorizationRequest(accepted: Bool) {
         dependencies.userDefaults[.notificationAuthorizationRequestDates].append(.now)
+
+        if accepted {
+            dependencies.pushService.authorizeIfNeededAndRegister()
+        }
     }
 
     private func handleMoveToArchiveAction(on items: [MailboxItem]) {

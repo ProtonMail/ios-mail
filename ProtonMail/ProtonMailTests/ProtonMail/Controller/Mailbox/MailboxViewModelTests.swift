@@ -1475,7 +1475,7 @@ extension MailboxViewModelTests {
     }
 
     func testWhenNotificationAuthorizationStatusIsNotDeterminedButHasBeenRequestedBefore_thenShouldNotRequestAuthorization() async {
-        sut.didRequestNotificationAuthorization()
+        sut.userDidRespondToNotificationAuthorizationRequest(accepted: false)
 
         userNotificationCenter.authorizationStatusStub.bodyIs { _ in .notDetermined }
 
@@ -1487,7 +1487,7 @@ extension MailboxViewModelTests {
     }
 
     func testWhenNotificationAuthorizationStatusIsDeterminedAndTheRequestIsRecorded_thenShouldNotRequestAuthorization() async {
-        sut.didRequestNotificationAuthorization()
+        sut.userDidRespondToNotificationAuthorizationRequest(accepted: false)
 
         userNotificationCenter.authorizationStatusStub.bodyIs { _ in .denied }
 

@@ -20,7 +20,7 @@ import SwiftUI
 public struct NotificationAuthorizationPrompt: View {
     public let config = HostingProvider()
     private let variant: Variant
-    private let enableAction: () -> Void
+    private let userAction: (Bool) -> Void
 
     public var body: some View {
         SheetLikeSpotlightView(
@@ -29,9 +29,7 @@ public struct NotificationAuthorizationPrompt: View {
             closeAction: { hostingVC, didTapActionButton in
                 hostingVC?.dismiss(animated: false)
 
-                if didTapActionButton {
-                    enableAction()
-                }
+                userAction(didTapActionButton)
             },
             message: variant.message,
             spotlightImage: .pushNotificationPermissionPrompt,
@@ -43,9 +41,9 @@ public struct NotificationAuthorizationPrompt: View {
         )
     }
 
-    public init(variant: Variant, enableAction: @escaping () -> Void) {
+    public init(variant: Variant, userAction: @escaping (Bool) -> Void) {
         self.variant = variant
-        self.enableAction = enableAction
+        self.userAction = userAction
     }
 }
 
@@ -75,9 +73,9 @@ public extension NotificationAuthorizationPrompt {
 }
 
 #Preview("onboarding finished") {
-    NotificationAuthorizationPrompt(variant: .onboardingFinished) {}
+    NotificationAuthorizationPrompt(variant: .onboardingFinished) { _ in }
 }
 
 #Preview("message sent") {
-    NotificationAuthorizationPrompt(variant: .messageSent) {}
+    NotificationAuthorizationPrompt(variant: .messageSent) { _ in }
 }
