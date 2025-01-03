@@ -132,11 +132,11 @@ final class MailboxActionBarStateStore: StateStore {
                 )
 
                 Dispatcher.dispatchOnMain(.init { [weak self] in
-                    self?.itemMoved(result: .success(destination))
+                    self?.handleMoveAction(result: .success(destination))
                 })
             } catch {
                 Dispatcher.dispatchOnMain(.init { [weak self] in
-                    self?.itemMoved(result: .failure(error))
+                    self?.handleMoveAction(result: .failure(error))
                 })
             }
         }
@@ -184,7 +184,7 @@ final class MailboxActionBarStateStore: StateStore {
         dismissMoreActionSheet()
     }
 
-    private func itemMoved(result: Result<MoveToSystemFolderLocation, Error>) {
+    private func handleMoveAction(result: Result<MoveToSystemFolderLocation, Error>) {
         switch result {
         case .success(let destination):
             toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
