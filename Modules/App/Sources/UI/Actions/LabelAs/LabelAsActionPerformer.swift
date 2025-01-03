@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
 struct LabelAsActionPerformer {
@@ -34,15 +35,19 @@ struct LabelAsActionPerformer {
         self.labelAsActions = labelAsActions
     }
 
-    func labelAs(input: Input) async {
+    func labelAs(input: Input) async throws {
         let labelAsAction = labelAsAction(itemType: input.itemType)
-        _ = try! await labelAsAction(
+        let isTotalSuccess = try await labelAsAction(
             mailbox,
             input.itemsIDs,
             input.selectedLabelsIDs,
             input.partiallySelectedLabelsIDs,
             input.archive
         ).get()
+
+        if !isTotalSuccess {
+            throw LocalError.couldNotProcessSomeLabels
+        }
     }
 
     // MARK: - Private
@@ -63,3 +68,16 @@ private protocol LabelAsResult {
 
 extension LabelMessagesAsResult: LabelAsResult {}
 extension LabelConversationsAsResult: LabelAsResult {}
+
+extension LabelAsActionPerformer {
+    enum LocalError: LocalizedError {
+        case couldNotProcessSomeLabels
+
+        var errorDescription: String? {
+            switch self {
+            case .couldNotProcessSomeLabels:
+                L10n.Labels.couldNotProcessSomeLabels.string
+            }
+        }
+    }
+}

@@ -189,6 +189,10 @@ enum L10n {
             comment: "Action title for creating new label."
         )
         static let title = LocalizedStringResource("Labels", comment: "Labels screen title.")
+        static let couldNotProcessSomeLabels = LocalizedStringResource(
+            "Could not process some labels",
+            comment: "Adding or removing labels from messages has failed at least partially"
+        )
     }
 
     enum Mailbox {

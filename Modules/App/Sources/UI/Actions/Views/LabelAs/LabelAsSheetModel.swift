@@ -17,6 +17,7 @@
 
 import Combine
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -25,6 +26,7 @@ class LabelAsSheetModel: ObservableObject {
     private let input: ActionSheetInput
     private let actionsProvider: LabelAsActionsProvider
     private let labelAsActionPerformer: LabelAsActionPerformer
+    private let toastStateStore: ToastStateStore
     private let dismiss: () -> Void
 
     init(
@@ -32,11 +34,13 @@ class LabelAsSheetModel: ObservableObject {
         mailbox: Mailbox, 
         availableLabelAsActions: AvailableLabelAsActions,
         labelAsActions: LabelAsActions,
+        toastStateStore: ToastStateStore,
         dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.actionsProvider = .init(mailbox: mailbox, availableLabelAsActions: availableLabelAsActions)
         self.labelAsActionPerformer = .init(mailbox: mailbox, labelAsActions: labelAsActions)
+        self.toastStateStore = toastStateStore
         self.dismiss = dismiss
     }
 
@@ -68,13 +72,20 @@ class LabelAsSheetModel: ObservableObject {
 
     private func executeLabelAsAction() {
         Task {
-            await labelAsActionPerformer.labelAs(input: .init(
-                itemType: input.type,
-                itemsIDs: input.ids,
-                selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
-                partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
-                archive: state.shouldArchive
-            ))
+            do {
+                try await labelAsActionPerformer.labelAs(input: .init(
+                    itemType: input.type,
+                    itemsIDs: input.ids,
+                    selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
+                    partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
+                    archive: state.shouldArchive
+                ))
+            } catch {
+                Dispatcher.dispatchOnMain(.init { [weak self] in
+                    self?.toastStateStore.present(toast: .error(message: error.localizedDescription))
+                })
+            }
+
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.dismiss()
             }))

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
 import XCTest
@@ -27,12 +28,14 @@ class LabelAsSheetModelTests: BaseTestCase {
     var invokedDismissCount: Int!
     var stubbedLabelAsActions: [LabelAsAction]!
 
+    private var toastStateStore: ToastStateStore!
     private var invokedLabelMessage: [LabelAsExecutedWithData]!
     private var invokedLabelConversation: [LabelAsExecutedWithData]!
 
     override func setUp() {
         super.setUp()
 
+        toastStateStore = .init(initialState: .initial)
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
         invokedLabelMessage = []
@@ -41,6 +44,7 @@ class LabelAsSheetModelTests: BaseTestCase {
     }
 
     override func tearDown() {
+        toastStateStore = nil
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
         invokedLabelMessage = nil
@@ -149,6 +153,14 @@ class LabelAsSheetModelTests: BaseTestCase {
         testLabelAs(itemType: .conversation) { invokedLabelConversation }
     }
 
+    func testToast_WhenLabellingFails_ItPresentsErrorToast() {
+        let sut = sut(ids: [], type: .conversation)
+
+        sut.handle(action: .doneButtonTapped)
+
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not process some labels")])
+    }
+
     // MARK: - Private
 
     private func sut(ids: [ID], type: MailboxItemType) -> LabelAsSheetModel {
@@ -186,7 +198,8 @@ class LabelAsSheetModelTests: BaseTestCase {
 
                     return .ok(false)
                 }
-            ),
+            ), 
+            toastStateStore: toastStateStore,
             dismiss: { self.invokedDismissCount += 1 }
         )
     }

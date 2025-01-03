@@ -113,7 +113,8 @@ struct MailboxActionBarView: View {
             input: input,
             mailbox: mailbox,
             availableLabelAsActions: .productionInstance, 
-            labelAsActions: .productionInstance
+            labelAsActions: .productionInstance,
+            toastStateStore: toastStateStore
         ) {
             actionHandler(.dismissLabelAsSheet)
         }

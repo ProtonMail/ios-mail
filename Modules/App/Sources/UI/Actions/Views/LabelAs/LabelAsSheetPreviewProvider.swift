@@ -27,6 +27,7 @@ enum LabelAsSheetPreviewProvider {
                 conversation: { _, _ in .ok([]) }
             ),
             labelAsActions: .dummy,
+            toastStateStore: .init(initialState: .initial),
             dismiss: { }
         )
     }

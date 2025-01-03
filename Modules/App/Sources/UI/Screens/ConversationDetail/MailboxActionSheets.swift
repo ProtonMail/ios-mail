@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -26,6 +27,7 @@ struct MailboxActionSheetsState: Copying {
 }
 
 extension View {
+    @MainActor 
     func actionSheetsFlow(
         mailbox: @escaping () -> Mailbox,
         state: Binding<MailboxActionSheetsState>,
@@ -37,6 +39,7 @@ extension View {
 
 private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
+    @EnvironmentObject var toastStateStore: ToastStateStore
     private let mailbox: () -> Mailbox
     private let goBackNavigation: (() -> Void)?
 
@@ -95,7 +98,8 @@ private struct MailboxActionSheets: ViewModifier {
             input: input,
             mailbox: mailbox(),
             availableLabelAsActions: .productionInstance, 
-            labelAsActions: .productionInstance
+            labelAsActions: .productionInstance, 
+            toastStateStore: toastStateStore
         ) {
             state = state.dismissed()
         }
