@@ -52,7 +52,7 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func clickSnoozeActionButton()
 }
 
-class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
+class MailboxViewModel: NSObject, StorageLimit, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
     & HasFeatureFlagProvider
@@ -218,7 +218,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         trackLifetime()
         self.setupAlertBox()
         self.conversationStateProvider.add(delegate: self)
-        dependencies.updateMailbox.setup(source: self)
     }
 
     func viewDidLoad() {
@@ -975,6 +974,7 @@ extension MailboxViewModel {
         dependencies.updateMailbox.execute(
             params: .init(
                 labelID: queryLabel,
+                locationViewMode: locationViewMode,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
