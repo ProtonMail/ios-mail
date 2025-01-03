@@ -230,6 +230,9 @@
     "Expires in less than 1 minute" : {
       "comment" : "Message indicating the item will expire shortly"
     },
+    "Folder does not exist" : {
+      "comment" : "Error when trying to move a message to a folder that no longer exists."
+    },
     "Folders and labels" : {
       "comment" : "Title of the Folders and labels settings item."
     },

@@ -342,6 +342,10 @@ enum L10n {
             comment: "Action title for creating new folder."
         )
         static let title = LocalizedStringResource("Move to..", comment: "Folders title screen.")
+        static let doesNotExist = LocalizedStringResource(
+            "Folder does not exist",
+            comment: "Error when trying to move a message to a folder that no longer exists."
+        )
     }
 
     enum Search {

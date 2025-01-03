@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
 struct MoveToActionPerformer {
@@ -32,6 +33,9 @@ struct MoveToActionPerformer {
         switch await moveToAction(mailbox, destinationID, itemsIDs) {
         case .ok:
             break
+        case .error(.other(.serverError(let userApiServiceError)))
+            where userApiServiceError.errorCode == ProtonErrorCode.doesNotExist:
+            throw LocalError.folderDoesNotExist
         case .error(let error):
             throw error
         }
@@ -45,6 +49,19 @@ struct MoveToActionPerformer {
             moveToActions.moveMessagesTo
         case .conversation:
             moveToActions.moveConversationsTo
+        }
+    }
+}
+
+extension MoveToActionPerformer {
+    enum LocalError: LocalizedError {
+        case folderDoesNotExist
+
+        var errorDescription: String? {
+            switch self {
+            case .folderDoesNotExist:
+                L10n.Folders.doesNotExist.string
+            }
         }
     }
 }
