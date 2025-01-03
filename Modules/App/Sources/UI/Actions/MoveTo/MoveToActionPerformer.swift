@@ -26,14 +26,14 @@ struct MoveToActionPerformer {
         self.moveToActions = moveToActions
     }
 
-    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async {
+    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async throws {
         let moveToAction = moveToAction(itemType: itemType)
 
         switch await moveToAction(mailbox, destinationID, itemsIDs) {
         case .ok:
             break
         case .error(let error):
-            fatalError("\(error)")
+            throw error
         }
     }
 

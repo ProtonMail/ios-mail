@@ -123,13 +123,18 @@ class MailboxItemActionSheetStateStore: StateStore {
         itemType: MailboxItemType
     ) {
         Task {
-            await moveToActionPerformer.moveTo(
-                destinationID: destination.localId,
-                itemsIDs: ids,
-                itemType: itemType
-            )
+            do {
+                try await moveToActionPerformer.moveTo(
+                    destinationID: destination.localId,
+                    itemsIDs: ids,
+                    itemType: itemType
+                )
+                presentMoveToToast(destination: destination)
+            } catch {
+                presentToast(toast: .error(message: error.localizedDescription))
+            }
+
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.presentMoveToToast(destination: destination)
                 self?.navigation(itemType.dismissNavigation)
             }))
         }

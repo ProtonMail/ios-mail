@@ -124,14 +124,21 @@ final class MailboxActionBarStateStore: StateStore {
 
     private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID]) {
         Task {
-            await moveToActionPerformer.moveTo(
-                destinationID: destination.localId,
-                itemsIDs: ids,
-                itemType: itemTypeForActionBar
-            )
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.itemMoved(destination: destination)
-            }))
+            do {
+                try await moveToActionPerformer.moveTo(
+                    destinationID: destination.localId,
+                    itemsIDs: ids,
+                    itemType: itemTypeForActionBar
+                )
+
+                Dispatcher.dispatchOnMain(.init { [weak self] in
+                    self?.itemMoved(result: .success(destination))
+                })
+            } catch {
+                Dispatcher.dispatchOnMain(.init { [weak self] in
+                    self?.itemMoved(result: .failure(error))
+                })
+            }
         }
     }
 
@@ -177,8 +184,14 @@ final class MailboxActionBarStateStore: StateStore {
         dismissMoreActionSheet()
     }
 
-    private func itemMoved(destination: MoveToSystemFolderLocation) {
-        toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+    private func itemMoved(result: Result<MoveToSystemFolderLocation, Error>) {
+        switch result {
+        case .success(let destination):
+            toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+        case .failure(let error):
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
+
         dismissMoreActionSheet()
     }
 }

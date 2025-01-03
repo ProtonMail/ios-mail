@@ -63,16 +63,25 @@ class MoveToSheetStateStore: StateStore {
 
     private func moveTo(destinationID: ID, destinationName: String) {
         Task {
-            await moveToActionPerformer.moveTo(
-                destinationID: destinationID,
-                itemsIDs: input.ids,
-                itemType: input.type
-            )
-            Dispatcher.dispatchOnMain(.init(block: { [weak self, input] in
-                self?.toastStateStore.present(toast: .moveTo(destinationName: destinationName))
-                self?.navigation(input.type.navigation)
-            }))
+            do {
+                try await moveToActionPerformer.moveTo(
+                    destinationID: destinationID,
+                    itemsIDs: input.ids,
+                    itemType: input.type
+                )
+
+                dismissSheet(presentingToast: .moveTo(destinationName: destinationName))
+            } catch {
+                dismissSheet(presentingToast: .error(message: error.localizedDescription))
+            }
         }
+    }
+
+    private func dismissSheet(presentingToast toast: Toast) {
+        Dispatcher.dispatchOnMain(.init { [weak self, input] in
+            self?.toastStateStore.present(toast: toast)
+            self?.navigation(input.type.navigation)
+        })
     }
 
     private func loadMoveToActions() {

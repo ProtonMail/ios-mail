@@ -166,13 +166,22 @@ extension ConversationDetailModel {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
         Task {
-            await moveToActionPerformer.moveTo(
-                destinationID: destination.localId,
-                itemsIDs: [conversationID.unsafelyUnwrapped],
-                itemType: .conversation
-            )
+            let toast: Toast
+
+            do {
+                try await moveToActionPerformer.moveTo(
+                    destinationID: destination.localId,
+                    itemsIDs: [conversationID.unsafelyUnwrapped],
+                    itemType: .conversation
+                )
+
+                toast = .moveTo(destinationName: destination.systemLabel.humanReadable.string)
+            } catch {
+                toast = .error(message: error.localizedDescription)
+            }
+
             Dispatcher.dispatchOnMain(.init(block: {
-                toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+                toastStateStore.present(toast: toast)
                 goBack()
             }))
         }
