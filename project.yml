@@ -161,14 +161,6 @@ targets:
       - package: Nimble
       - package: ViewInspector
       - package: proton_app_uniffi
-    scheme:
-      gatherCoverageData: true
-      language: en
-      region: US
-      testTargets:
-        - name: ProtonMailTest
-          parallelizable: true
-          randomExecutionOrder: true
     settings:
        SWIFT_OBJC_BRIDGING_HEADER: Modules/App/Tests/Utils/ProtonMailTest-Bridging-Header.h
 
