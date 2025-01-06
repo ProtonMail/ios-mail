@@ -1977,7 +1977,7 @@
 "%1@ at %2@ %3@" = "%1@ pada %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "Diterima";
+"accepted" = "diterima";
 
 /* Status in an email body sent with an invitation answer */
 "declined" = "ditolak";
@@ -2714,8 +2714,14 @@
 /* Title of the authorization prompt */
 "Don’t miss an email" = "Don’t miss an email";
 
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
 /* Body of the authorization prompt */
 "Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Enable push notifications";

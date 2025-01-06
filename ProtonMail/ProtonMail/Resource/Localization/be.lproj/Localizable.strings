@@ -2475,7 +2475,7 @@
 "15 GB storage" = "15 ГБ сховішча";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses" = "%u адрасоў электроннай пошты";
+"%u email addresses" = "%u адрасы(оў) электроннай пошты";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain" = "Карыстальніцкі дамен электроннай пошты";
@@ -2499,7 +2499,7 @@
 "Priority customer support" = "Прыярытэтная падтрымка кліентаў";
 
 /* Description of a feature of a paid subscription */
-"+%u premium features" = "І яшчэ %u прэміяльныя функцыі";
+"+%u premium features" = "+ %u прэміяльных функцый";
 
 /* Description of a feature of a paid subscription */
 "%u GB total storage" = "%u GB total storage";
@@ -2714,8 +2714,14 @@
 /* Title of the authorization prompt */
 "Don’t miss an email" = "Don’t miss an email";
 
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
 /* Body of the authorization prompt */
 "Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Enable push notifications";
