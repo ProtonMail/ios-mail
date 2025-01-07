@@ -2502,10 +2502,10 @@
 "+%u premium features" = "+%u преміальних функцій";
 
 /* Description of a feature of a paid subscription */
-"%u GB total storage" = "%u GB total storage";
+"%u GB total storage" = "Усього %u ГБ сховища";
 
 /* Description of a feature of a paid subscription */
-"%u TB total storage" = "%u TB total storage";
+"%u TB total storage" = "Усього %u ТБ сховища";
 
 /* Description of a feature of a paid subscription */
 "Yearly free storage bonuses" = "Щорічні бонуси на безплатне сховище";
@@ -2714,8 +2714,14 @@
 /* Title of the authorization prompt */
 "Don’t miss an email" = "Don’t miss an email";
 
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
 /* Body of the authorization prompt */
 "Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Enable push notifications";

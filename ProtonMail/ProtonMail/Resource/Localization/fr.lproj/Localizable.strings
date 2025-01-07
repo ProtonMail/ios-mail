@@ -2714,8 +2714,14 @@
 /* Title of the authorization prompt */
 "Don’t miss an email" = "Ne manquez aucun e-mail";
 
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Vous voulez rester informé ?";
+
 /* Body of the authorization prompt */
 "Notifications help you keep on top of your inbox without checking the app." = "Les notifications vous aident à garder le contrôle de votre boîte de réception sans consulter l'application.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Activez les notifications pour savoir quand vous recevez une réponse à votre e-mail.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Autoriser les notifications";

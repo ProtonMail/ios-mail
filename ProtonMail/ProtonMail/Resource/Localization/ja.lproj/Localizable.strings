@@ -1412,10 +1412,10 @@
 "Parent folder" = "親フォルダー";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は元に戻せません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメール フォルダーから確認することができます。";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は取り消しできません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメール フォルダーから確認することができます。";
 
 /* Alert message when user tries to delete label */
-"This action cannot be undone." = "この操作は元に戻せません。";
+"This action cannot be undone." = "この操作は取り消しできません。";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "未保存の変更内容はすべて失われます。";
@@ -2714,8 +2714,14 @@
 /* Title of the authorization prompt */
 "Don’t miss an email" = "Don’t miss an email";
 
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
 /* Body of the authorization prompt */
 "Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Enable push notifications";
