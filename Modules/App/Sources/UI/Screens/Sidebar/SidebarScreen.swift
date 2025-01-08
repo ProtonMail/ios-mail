@@ -26,7 +26,8 @@ struct SidebarScreen: View {
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     private let sidebarWidth: CGFloat = 320
-    private let widthOfDragableSpaceOnTheMailbox: CGFloat = 35
+    private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
+    private let openCloseSidebarMinimumDistance: CGFloat = 100
     private let animationDuration = 0.2
     private let selectedItem: (SidebarItem) -> Void
 
@@ -97,9 +98,13 @@ struct SidebarScreen: View {
     }
 
     private var sidebarDragGesture: some Gesture {
-        DragGesture()
+        DragGesture(minimumDistance: openCloseSidebarMinimumDistance)
             .onEnded { value in
-                appUIStateStore.sidebarState.isOpen = value.velocity.width > 100
+                let isScrollingVertically = abs(value.translation.height) > openCloseSidebarMinimumDistance
+                if !isScrollingVertically {
+                    let isSwipingLeftToRight = value.translation.width > -openCloseSidebarMinimumDistance
+                    appUIStateStore.sidebarState.isOpen = isSwipingLeftToRight
+                }
             }
     }
 
