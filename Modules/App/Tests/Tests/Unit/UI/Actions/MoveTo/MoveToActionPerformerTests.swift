@@ -48,10 +48,7 @@ final class MoveToActionPerformerTests: BaseTestCase {
             .other(.serverError(.unprocessableEntity(#"{"Code": 2501, "Error": "Label does not exist"}"#)))
         )
 
-        do {
-            try await sut.moveTo(destinationID: .init(value: 0), itemsIDs: [], itemType: .message)
-            XCTFail("Expected failure")
-        } catch {
+        await XCTAssertAsyncThrowsError(try await moveToAction()) { error in
             XCTAssertEqual(error.localizedDescription, "Folder does not exist")
         }
     }
@@ -61,11 +58,12 @@ final class MoveToActionPerformerTests: BaseTestCase {
             .other(.serverError(.unprocessableEntity(#"{"Code": 2503, "Error": "Operation timed out"}"#)))
         )
 
-        do {
-            try await sut.moveTo(destinationID: .init(value: 0), itemsIDs: [], itemType: .message)
-            XCTFail("Expected failure")
-        } catch {
+        await XCTAssertAsyncThrowsError(try await moveToAction()) { error in
             XCTAssertEqual(error.localizedDescription, "Operation timed out")
         }
+    }
+
+    private func moveToAction() async throws {
+        try await sut.moveTo(destinationID: .init(value: 0), itemsIDs: [], itemType: .message)
     }
 }
