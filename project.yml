@@ -95,6 +95,7 @@ targets:
         SWIFT_EMIT_LOC_STRINGS: YES
         SWIFT_STRICT_CONCURRENCY: "complete"
         CODE_SIGN_ENTITLEMENTS: "ProtonMail.entitlements"
+        SWIFT_ENABLE_OPAQUE_TYPE_ERASURE: NO
       configs:
         UITests:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
