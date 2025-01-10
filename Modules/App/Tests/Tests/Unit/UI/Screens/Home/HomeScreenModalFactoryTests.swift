@@ -21,28 +21,28 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
+@MainActor
 final class HomeScreenModalFactoryTests: XCTestCase {
-    func testMakeModal_ForContactsState_ItReturnsContactsScreen() async throws {
-        let inspect = try await modal(for: .contacts)
+    func testMakeModal_ForContactsState_ItReturnsContactsScreen() throws {
+        let inspect = try modal(for: .contacts)
 
         XCTAssertNoThrow(try inspect.find(ContactsScreen.self))
     }
 
-    func testMakeModal_ForLabelOrFolderCreationState_ItReturnsLabelOrFolderCreationScreenScreen() async throws {
-        let inspect = try await modal(for: .labelOrFolderCreation)
+    func testMakeModal_ForLabelOrFolderCreationState_ItReturnsLabelOrFolderCreationScreenScreen() throws {
+        let inspect = try modal(for: .labelOrFolderCreation)
 
         XCTAssertNoThrow(try inspect.find(CreateFolderOrLabelScreen.self))
     }
 
-    func testMakeModal_ForSettingsState_ItReturnsSettingsScreen() async throws {
-        let inspect = try await modal(for: .settings)
+    func testMakeModal_ForSettingsState_ItReturnsSettingsScreen() throws {
+        let inspect = try modal(for: .settings)
 
         XCTAssertNoThrow(try inspect.find(SettingsScreen.self))
     }
 
     // MARK: - Private
 
-    @MainActor
     private func modal(for state: HomeScreen.ModalState) throws -> InspectableView<ViewType.ClassifiedView> {
         let factory = HomeScreenModalFactory(mailUserSession: .dummy)
         return try factory.makeModal(for: state).inspect()

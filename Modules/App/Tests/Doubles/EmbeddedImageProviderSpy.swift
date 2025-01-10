@@ -25,7 +25,7 @@ class EmbeddedImageProviderSpy: EmbeddedImageProvider {
 
     // MARK: - EmbeddedImageProvider
 
-    func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult {
+    func getEmbeddedAttachment(cid: String) -> DecryptedMessageGetEmbeddedAttachmentResult {
         invokedEmbeddedImageWithCID.append(cid)
 
         return stubbedResult

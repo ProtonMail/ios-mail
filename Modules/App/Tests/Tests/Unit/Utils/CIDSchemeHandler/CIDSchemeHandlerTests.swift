@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import InboxTesting
+import Nimble
 import proton_app_uniffi
 import XCTest
 import WebKit
@@ -61,7 +62,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
+        expect(self.embeddedImageProviderSpy.invokedEmbeddedImageWithCID).toEventually(equal([cidValue]))
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.count, 1)
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError), [.unexpected(.unknown)])
     }
@@ -74,7 +75,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         embeddedImageProviderSpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [cidValue])
+        expect(self.embeddedImageProviderSpy.invokedEmbeddedImageWithCID).toEventually(equal([cidValue]))
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url), [url])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType), ["image/png"])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength), [Int64(image.data.count)])

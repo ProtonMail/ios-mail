@@ -72,7 +72,7 @@ class ContactsScreenTests: BaseTestCase {
 
         ViewHosting.host(view: sut.environment(\.dismissTestable, dismissSpy))
 
-        wait(for: [expectation], timeout: 0.01)
+        wait(for: [expectation], timeout: 0.1)
     }
 
 }

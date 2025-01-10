@@ -61,7 +61,7 @@ packages:
     minorVersion: "1.3.0"
   ViewInspector:
     url: https://github.com/nalexn/ViewInspector.git
-    minorVersion: "0.9.11"
+    minorVersion: "0.10.1"
 
 configs:
   Debug: debug

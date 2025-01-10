@@ -21,10 +21,11 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
+@MainActor
 final class RouteTests: XCTestCase {
-    func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() async throws {
+    func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id = Id(value: 1)
-        let view = try await makeView(for: .contactDetails(id: id))
+        let view = try makeView(for: .contactDetails(id: id))
 
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
@@ -32,9 +33,9 @@ final class RouteTests: XCTestCase {
         XCTAssertEqual(screen.id, id)
     }
 
-    func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() async throws {
+    func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id = Id(value: 2)
-        let view = try await makeView(for: .contactGroupDetails(id: id))
+        let view = try makeView(for: .contactGroupDetails(id: id))
 
         let inspectableScreen = try view.find(ContactGroupDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
@@ -44,7 +45,6 @@ final class RouteTests: XCTestCase {
 
     // MARK: - Private
 
-    @MainActor
     private func makeView(for route: Route) throws -> InspectableView<ViewType.ClassifiedView> {
         try route.view().inspect()
     }
