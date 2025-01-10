@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/Linquas/slather.git
-  revision: f5ac241c355c168579f2ab549ba8dec63f0a5ed3
-  ref: f5ac241
-  specs:
-    slather (2.7.5)
-      CFPropertyList (>= 2.2, < 4)
-      activesupport
-      clamp (~> 1.3)
-      nokogiri (>= 1.13.9)
-      xcodeproj (~> 1.21)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -38,7 +26,7 @@ GEM
     artifactory (3.0.17)
     atomos (0.1.3)
     aws-eventstream (1.3.2)
-    aws-partitions (1.1080.0)
+    aws-partitions (1.1082.0)
     aws-sdk-core (3.222.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -300,6 +288,12 @@ GEM
     simctl (1.6.10)
       CFPropertyList
       naturally
+    slather (2.8.5)
+      CFPropertyList (>= 2.2, < 4)
+      activesupport
+      clamp (~> 1.3)
+      nokogiri (>= 1.14.3)
+      xcodeproj (~> 1.27)
     sysrandom (1.0.5)
     terminal-notifier (2.0.0)
     terminal-table (3.0.2)
@@ -343,7 +337,7 @@ DEPENDENCIES
   fastlane-plugin-sentry
   mutex_m
   ostruct
-  slather!
+  slather
 
 BUNDLED WITH
    2.4.10
