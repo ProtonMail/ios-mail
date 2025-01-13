@@ -24,22 +24,6 @@ struct MailboxLabelUIModel: Identifiable {
         labelModels.first?.labelId ?? .random()
     }
 
-    var color: Color {
-        labelModels.first?.color ?? .clear
-    }
-
-    var text: String {
-        labelModels.first?.text ?? ""
-    }
-
-    var numExtraLabels: Int {
-        max(labelModels.count - 1, 0)
-    }
-
-    var isEmpty: Bool {
-        labelModels.isEmpty
-    }
-
     init(labelModels: [LabelUIModel] = []) {
         self.labelModels = labelModels
     }

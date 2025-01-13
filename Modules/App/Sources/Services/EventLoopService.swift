@@ -18,12 +18,6 @@
 import Combine
 import Foundation
 
-protocol Service {
-    func onAppLaunch()
-    func onMoveToForeground()
-    func onMovetoBackground()
-}
-
 final class EventLoopService: @unchecked Sendable {
     private var timer: Timer = .init()
     private var appInForeground: Bool = true

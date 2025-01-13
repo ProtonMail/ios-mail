@@ -30,10 +30,6 @@ struct MailboxItemCell: View {
         uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm
     }
 
-    private var labelLeadingPadding: CGFloat {
-        uiModel.labelUIModel.isEmpty ? 0 : DS.Spacing.small
-    }
-
     var body: some View {
         HStack(spacing: DS.Spacing.large) {
             avatarView

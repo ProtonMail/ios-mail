@@ -20,11 +20,3 @@ import SwiftUI
 enum UserDefaultsKey: String, CaseIterable {
     case showAlphaV1Onboarding
 }
-
-extension AppStorage {
-
-    init(wrappedValue: Value, _ typedKey: UserDefaultsKey) where Value == Bool {
-        self.init(wrappedValue: wrappedValue, typedKey.rawValue)
-    }
-
-}

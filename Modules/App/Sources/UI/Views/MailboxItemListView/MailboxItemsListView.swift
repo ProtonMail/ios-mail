@@ -17,12 +17,9 @@
 
 import Combine
 import InboxDesignSystem
-import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
 
 struct MailboxItemsListView<EmptyView: View>: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @State var config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState

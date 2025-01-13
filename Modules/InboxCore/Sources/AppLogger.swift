@@ -29,9 +29,9 @@ public final class AppLogger: @unchecked Sendable {
 
     // MARK: Private methods
 
-    static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool, caller: Caller) {
-        logToUnifiedLoggingSystem(message: message, category: category, isError: isError, isDebug: isDebug, caller: caller)
-        logToMailSDK(message: message, category: category, isError: isError, isDebug: isDebug, caller: caller)
+    static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool) {
+        logToUnifiedLoggingSystem(message: message, category: category, isError: isError)
+        logToMailSDK(message: message, category: category, isError: isError, isDebug: isDebug)
     }
 
     /**
@@ -41,9 +41,7 @@ public final class AppLogger: @unchecked Sendable {
     static private func logToUnifiedLoggingSystem(
         message: String,
         category: Category?,
-        isError: Bool,
-        isDebug: Bool,
-        caller: Caller
+        isError: Bool
     ) {
         let osLog = shared.osLog(for: category)
         if isError {
@@ -60,8 +58,7 @@ public final class AppLogger: @unchecked Sendable {
         message: String,
         category: Category?,
         isError: Bool,
-        isDebug: Bool,
-        caller: Caller
+        isDebug: Bool
     ) {
         var categorySection = "[App]"
         if let category {
@@ -110,8 +107,7 @@ public final class AppLogger: @unchecked Sendable {
         line: Int = #line,
         column: Int = #column
     ) {
-        let caller = Caller(file: file, function: function, line: line, column: column)
-        log(message: message, category: category, isError: isError, isDebug: false, caller: caller)
+        log(message: message, category: category, isError: isError, isDebug: false)
     }
 
     /// Logs an error into the unified logging system
@@ -127,8 +123,7 @@ public final class AppLogger: @unchecked Sendable {
         line: Int = #line,
         column: Int = #column
     ) {
-        let caller = Caller(file: file, function: function, line: line, column: column)
-        log(message: "\(error)", category: category, isError: true, isDebug: false, caller: caller)
+        log(message: "\(error)", category: category, isError: true, isDebug: false)
     }
 
     /// Use this function instead of `log` to indicate that calls to this method can be removed from the codebase
@@ -147,8 +142,7 @@ public final class AppLogger: @unchecked Sendable {
         line: Int = #line,
         column: Int = #column
     ) {
-        let caller = Caller(file: file, function: function, line: line, column: column)
-        log(message: message, category: category, isError: isError, isDebug: true, caller: caller)
+        log(message: message, category: category, isError: isError, isDebug: true)
     }
 }
 

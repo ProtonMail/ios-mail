@@ -180,15 +180,6 @@ enum L10n {
     }
 
     enum Labels {
-        static let alsoArchive = LocalizedStringResource(
-            "Also archive?",
-            comment: "Switch title for moving message to `Archive` folder."
-        )
-        static let newLabel = LocalizedStringResource(
-            "Create new label",
-            comment: "Action title for creating new label."
-        )
-        static let title = LocalizedStringResource("Labels", comment: "Labels screen title.")
         static let couldNotProcessSomeLabels = LocalizedStringResource(
             "Could not process some labels",
             comment: "Adding or removing labels from messages has failed at least partially"
@@ -337,11 +328,6 @@ enum L10n {
     }
 
     enum Folders {
-        static let newFolder = LocalizedStringResource(
-            "Create new folder",
-            comment: "Action title for creating new folder."
-        )
-        static let title = LocalizedStringResource("Move to..", comment: "Folders title screen.")
         static let doesNotExist = LocalizedStringResource(
             "Folder does not exist",
             comment: "Error when trying to move a message to a folder that no longer exists."
@@ -454,9 +440,6 @@ enum L10n {
         )
     }
 
-    static func files(attachmentsCount: Int) -> LocalizedStringResource {
-        .init("\(attachmentsCount) files", comment: "The number of attachments on conversation details screen.")
-    }
     static func messages(count: Int) -> LocalizedStringResource {
         .init("\(count) messages", comment: "Number of messages in a conversation.")
     }

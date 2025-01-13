@@ -20,7 +20,6 @@ import InboxComposer
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
 
 struct MailboxScreen: View {
@@ -29,7 +28,6 @@ struct MailboxScreen: View {
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isSearchPresented = false
-    @State private var isComposerPresented = false
     @State private var isOnboardingPresented = false
     private let onboardingStore: OnboardingStore
 
@@ -174,15 +172,10 @@ private struct MailboxScreenIdentifiers {
 }
 
 import Combine
-import proton_app_uniffi
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
 
     // MARK: - MailSettingLiveQuerying
-
-    var settingsPublisher: AnyPublisher<MailSettings, Never> {
-        Just(.defaults()).eraseToAnyPublisher()
-    }
 
     var viewModeHasChanged: AnyPublisher<Void, Never> {
         Just(Void()).eraseToAnyPublisher()

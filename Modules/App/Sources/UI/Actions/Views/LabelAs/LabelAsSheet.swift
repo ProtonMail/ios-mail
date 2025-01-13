@@ -17,7 +17,6 @@
 
 import InboxDesignSystem
 import SwiftUI
-import proton_app_uniffi
 
 struct LabelAsSheet: View {
     @StateObject var model: LabelAsSheetModel

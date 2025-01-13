@@ -17,7 +17,6 @@
 
 import InboxCore
 import SwiftUI
-import proton_app_uniffi
 
 final class AppLifeCycle: NSObject, @unchecked Sendable {
     static let shared = AppLifeCycle()

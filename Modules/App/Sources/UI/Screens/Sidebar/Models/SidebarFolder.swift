@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
 
 struct SidebarFolder: Equatable, Identifiable, SelectableItem {

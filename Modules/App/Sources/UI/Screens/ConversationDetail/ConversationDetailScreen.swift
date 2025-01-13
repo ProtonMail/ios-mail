@@ -134,29 +134,6 @@ struct ConversationDetailScreen: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
-
-    private var attachmentsAndLabelsView: some View {
-        HStack(alignment: .center) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(alignment: .center, spacing: DS.Spacing.small) {
-                    CapsuleView(
-                        text: L10n.files(attachmentsCount: model.seed.numAttachments),
-                        color: DS.Color.Background.secondary,
-                        icon: Image(DS.Icon.icPaperClip),
-                        style: .attachment
-                    )
-                    .removeViewIf(model.seed.hasNoAttachments)
-
-                    ForEach(model.seed.labels, id: \.labelId) { element in
-                        CapsuleView(text: element.text.stringResource, color: element.color, style: .label)
-                    }
-                    .removeViewIf(model.seed.labels.isEmpty)
-
-                }
-            }
-            .contentMargins(.horizontal, DS.Spacing.large)
-        }
-    }
 }
 
 private struct ModifiersForSmoothScreenTransition: ViewModifier {

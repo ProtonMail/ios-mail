@@ -19,8 +19,6 @@ import Combine
 import proton_app_uniffi
 
 protocol MailSettingLiveQuerying {
-    var settingsPublisher: AnyPublisher<MailSettings, Never> { get }
-
     /// Emits an event only when the user's view mode setting changes
     var viewModeHasChanged: AnyPublisher<Void, Never> { get }
 }

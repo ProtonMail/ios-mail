@@ -17,13 +17,11 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
-    @State private var showMessageActionPicker: Bool = false
 
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
@@ -135,7 +133,6 @@ struct ConversationDetailListView: View {
 }
 
 private struct ConversationDetailListViewIdentifiers {
-    static let loader = "detail.loader"
     static let messageList = "detail.messageList"
 
     static func collapsedCell(_ index: Int) -> String {

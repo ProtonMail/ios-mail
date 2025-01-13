@@ -47,26 +47,4 @@ enum ConversationDetailSeed {
             return false
         }
     }
-
-    var numAttachments: Int {
-        switch self {
-        case .mailboxItem(let model, _):
-            return model.attachmentsUIModel.count
-        case .message:
-            return 0
-        }
-    }
-
-    var hasNoAttachments: Bool {
-        numAttachments == 0
-    }
-
-    var labels: [LabelUIModel] {
-        switch self {
-        case .mailboxItem(let model, _):
-            model.labelUIModel.labelModels
-        case .message:
-            []
-        }
-    }
 }

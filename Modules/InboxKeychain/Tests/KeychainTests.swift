@@ -32,14 +32,14 @@ final class KeychainTests: XCTestCase {
     // MARK: - Read
 
     func testKeychainPassesDataIfFound() throws {
-        let data: NSData = Data(repeating: 1, count: 100) as NSData
+        let data: NSData = Data("foo".utf8) as NSData
         setUpSUT(dataToReturn: data, resultCopyMatching: noErr)
 
         // when
-        let result = try XCTUnwrap(try out.dataOrError(forKey: "any.key"))
+        let result = try XCTUnwrap(try out.stringOrError(forKey: "any.key"))
 
         // then
-        XCTAssertEqual(result, data as Data)
+        XCTAssertEqual(result, "foo")
     }
 
     func testKeychainPassesNilIfNotFound() throws {
@@ -47,7 +47,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT(resultCopyMatching: errSecItemNotFound)
 
         // when
-        let result = try out.dataOrError(forKey: "any.key")
+        let result = try out.stringOrError(forKey: "any.key")
 
         // then
         XCTAssertNil(result)
@@ -58,7 +58,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT(resultCopyMatching: errSecInteractionNotAllowed)
 
         // when
-        XCTAssertThrowsError(try out.dataOrError(forKey: "any.key")) { error in
+        XCTAssertThrowsError(try out.stringOrError(forKey: "any.key")) { error in
 
             // then
             guard case let Keychain.AccessError.readFailed(key, errorCode) = error else { XCTFail(); return }
@@ -88,7 +88,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT(resultCopyMatching: errSecItemNotFound)
 
         // when
-        try out.setOrError(Data(), forKey: "any.key")
+        try out.setOrError("", forKey: "any.key")
     }
 
     func testKeychainPassesDataWriteErrorWhenAddingFails() {
@@ -96,7 +96,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT(resultCopyMatching: errSecItemNotFound, resultAdd: errSecInteractionNotAllowed)
 
         // when
-        XCTAssertThrowsError(try out.setOrError(Data(), forKey: "any.key")) { error in
+        XCTAssertThrowsError(try out.setOrError("", forKey: "any.key")) { error in
 
             // then
             guard case let Keychain.AccessError.writeFailed(key, errorCode) = error else { XCTFail(); return }
@@ -126,7 +126,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT()
 
         // when
-        try out.setOrError(Data(), forKey: "any.key")
+        try out.setOrError("", forKey: "any.key")
     }
 
     func testKeychainPassesDataWriteErrorWhenUpdatingFails() {
@@ -134,7 +134,7 @@ final class KeychainTests: XCTestCase {
         setUpSUT(resultUpdate: errSecInteractionNotAllowed)
 
         // when
-        XCTAssertThrowsError(try out.setOrError(Data(), forKey: "any.key")) { error in
+        XCTAssertThrowsError(try out.setOrError("", forKey: "any.key")) { error in
 
             // then
             guard case let Keychain.AccessError.updateFailed(key, errorCode) = error else { XCTFail(); return }

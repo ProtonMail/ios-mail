@@ -49,15 +49,3 @@ struct CustomFolderNode: Sendable {
         return [self] + children.flatMap { $0.preorderTreeTraversal() }
     }
 }
-
-extension Array where Element == CustomFolderNode {
-
-    /// Sorts every folder, and child folder, using the comparison logic
-    func recursivelySorted(by comparison: (Self.Element, Self.Element) -> Bool) -> [Element] {
-        var sorted = sorted(by: comparison)
-        for (index, _) in sorted.enumerated() {
-            sorted[index].children = sorted[index].children.recursivelySorted(by: comparison)
-        }
-        return sorted
-    }
-}

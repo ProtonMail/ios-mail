@@ -108,7 +108,6 @@ struct SingleFolderNodeView<UnreadText: View>: View {
 
 private struct SidebarFolderNodeViewIdentifiers {
     static let icon = "sidebar.button.icon"
-    static let badgeItem = "sidebar.button.badgeIcon"
     static let textItem = "sidebar.button.text"
     static let chevronItem = "sidebar.button.chevron"
 }

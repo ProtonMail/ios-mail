@@ -17,23 +17,7 @@
 
 import Foundation
 
-/**
- Bolean representation for Sendable objects that need mutation.
-
- A common example would be a UI cell model that needs to be selected.
-
- Notice that @unchecked Sendable is ensured by the @MainActor annotation in the setter function
- */
-@Observable
-final class SendableBool: @unchecked Sendable {
-    private(set) var value: Bool
-
-    init(_ value: Bool) {
-        self.value = value
-    }
-
-    @MainActor
-    func set(_ value: Bool) {
-        self.value = value
-    }
+enum MailboxItemType {
+    case conversation
+    case message
 }
