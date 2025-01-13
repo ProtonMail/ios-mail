@@ -20,7 +20,6 @@ import SwiftUI
 
 struct MailboxItemCell: View {
     @Environment(\.sizeCategory) var sizeCategory
-    @State private(set) var isPressed: Bool = false
 
     let uiModel: MailboxItemCellUIModel
     let isParentListSelectionEmpty: Bool
@@ -37,7 +36,7 @@ struct MailboxItemCell: View {
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.medium)
-        .background(uiModel.isSelected || isPressed ? DS.Color.Brand.minus30 : DS.Color.Background.norm)
+        .background(uiModel.isSelected ? DS.Color.Brand.minus30 : DS.Color.Background.norm)
     }
 }
 
@@ -67,12 +66,10 @@ extension MailboxItemCell {
         .onTapGesture {
             onEvent(.onTap)
         }
-        .onLongPressGesture(perform: {
-            onEvent(.onLongPress)
-        }, onPressingChanged: {
-            guard isParentListSelectionEmpty else { return }
-            isPressed = $0
-        })
+        .onLongPressGesture(
+            perform: { onEvent(.onLongPress) },
+            onPressingChanged: { _ in }
+        )
     }
 
     private var senderRowView: some View {
