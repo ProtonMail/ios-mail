@@ -38,8 +38,7 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
     func messageBody(for messageId: ID) async -> MessageBody? {
         do {
             let decryptedMessage = try await getMessageBody(mbox: mailbox, id: messageId).get()
-            let tranformOptions = TransformOpts(blockQuote: .untouched, remoteContent: .default)
-            let decryptedBody = try await decryptedMessage.body(opts: tranformOptions).get()
+            let decryptedBody = await decryptedMessage.bodyWithDefaults()
 
             return .init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage)
         } catch {

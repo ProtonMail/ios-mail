@@ -143,16 +143,6 @@ public extension CreateMailSessionResult {
         }
     }
 }
-public extension DecryptedMessageBodyResult {
-    func get() throws -> BodyOutput {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension DecryptedMessageGetEmbeddedAttachmentResult {
     func get() throws -> EmbeddedAttachmentInfo {
         switch self {
