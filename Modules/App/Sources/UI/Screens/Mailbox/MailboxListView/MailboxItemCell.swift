@@ -66,10 +66,9 @@ extension MailboxItemCell {
         .onTapGesture {
             onEvent(.onTap)
         }
-        .onLongPressGesture(
-            perform: { onEvent(.onLongPress) },
-            onPressingChanged: { _ in }
-        )
+        .onLongPressGesture {
+            onEvent(.onLongPress)
+        }
     }
 
     private var senderRowView: some View {
