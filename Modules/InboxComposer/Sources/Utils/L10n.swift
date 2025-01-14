@@ -22,6 +22,13 @@ import Foundation
 /// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
     enum Composer {
+
+        static let draftLoadedOffline =  LocalizedStringResource(
+            "You're currently offline. This draft may not be up-to-date.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Draft might not be up-to-date when loaded"
+        )
+
         static let send =  LocalizedStringResource(
             "Send",
             bundle: .atURL(Bundle.module.bundleURL),

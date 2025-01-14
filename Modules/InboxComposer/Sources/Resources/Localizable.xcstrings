@@ -205,6 +205,9 @@
           }
         }
       }
+    },
+    "You're currently offline. This draft may not be up-to-date." : {
+      "comment" : "Draft might not be up-to-date when loaded"
     }
   },
   "version" : "1.0"

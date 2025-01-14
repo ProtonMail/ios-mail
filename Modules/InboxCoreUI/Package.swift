@@ -15,6 +15,7 @@ let package = Package(
         .package(path: "../InboxTesting"),
         .package(path: "../InboxSnapshotTesting"),
         .package(url: "https://github.com/apple/swift-collections.git", exact: "1.1.2"),
+        .package(url: "https://github.com/airbnb/lottie-ios.git", from: "4.5.0")
     ],
     targets: [
         .target(
@@ -23,6 +24,10 @@ let package = Package(
                 "InboxCore",
                 "InboxDesignSystem",
                 .product(name: "Collections", package: "swift-collections"),
+                .product(name: "Lottie", package: "lottie-ios")
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .testTarget(

@@ -15,30 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
+import Foundation
 import Lottie
-import SwiftUI
 
-struct MailboxSkeletonRowView: View {
-    let colorScheme: ColorScheme
+extension LottieAnimationView {
 
-    // MARK: - View
-
-    var body: some View {
-        LottieView(animation: animation(for: colorScheme))
-            .playbackInLoopMode()
-            .frame(maxWidth: .infinity)
-            .frame(height: 40, alignment: .leading)
-            .padding(.trailing, 60)
-            .styledSkeletonRow()
-    }
-
-    // MARK: - Private
-
-    private func animation(for colorScheme: ColorScheme) -> LottieAnimation {
-        let darkItem = LottieAnimations.SkeletonListItem.dark
-        let lightItem = LottieAnimations.SkeletonListItem.light
-
-        return colorScheme == .dark ? darkItem : lightItem
+    public static var protonSpinner: LottieAnimationView {
+        LottieAnimationView(name: LottieAnimationName.spinner, bundle: Bundle.module)
     }
 }

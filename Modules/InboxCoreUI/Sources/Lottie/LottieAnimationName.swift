@@ -15,15 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
-import Lottie
-import SwiftUI
+import Foundation
 
-struct ProtonSpinner: View {
-
-    var body: some View {
-        LottieView(animation: .named("protonspinner"))
-            .playbackInLoopMode()
-            .square(size: 28)
-    }
+enum LottieAnimationName {
+    static let spinner = "protonspinner"
 }

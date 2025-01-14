@@ -72,8 +72,8 @@ struct MailboxScreen: View {
                 .navigationDestination(for: MailboxMessageSeed.self) { seed in
                     messageSeedDestination(seed: seed)
                 }
-                .sheet(item: $mailboxModel.presentedDraft) { draft in
-                    ComposerScreen(draft: draft, contactProvider: .productionInstance(session: mailboxModel.userSession))
+                .sheet(item: $mailboxModel.presentedDraft) { presentedDraft in
+                    composerView(presentedDraft: presentedDraft)
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -147,6 +147,21 @@ extension MailboxScreen {
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(seed: .message(seed), navigationPath: $mailboxModel.state.navigationPath)
+        }
+    }
+
+    @ViewBuilder
+    private func composerView(presentedDraft: PresentedDraft) -> some View {
+        let contactProvider = ComposerContactProvider.productionInstance(session: mailboxModel.userSession)
+        switch presentedDraft {
+        case .new(let draft):
+            ComposerScreen(draft: draft, draftOrigin: .new, contactProvider: contactProvider)
+        case .openDraftId(let messageId):
+            ComposerScreen(
+                messageId: messageId,
+                contactProvider: contactProvider,
+                userSession: mailboxModel.userSession
+            )
         }
     }
 }

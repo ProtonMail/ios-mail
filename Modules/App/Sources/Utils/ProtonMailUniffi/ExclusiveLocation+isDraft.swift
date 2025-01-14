@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import proton_app_uniffi
 
 extension ExclusiveLocation {
 
-    static func system(_ systemLabel: SystemFolderLabel) -> Self {
-        .system(name: systemLabel, id: .random())
+    var isDraft: Bool {
+        switch self {
+        case .system(let name, _):
+            return name == .allDrafts || name == .drafts
+        case .custom:
+            return false
+        }
+    }
+}
+
+extension ExclusiveLocation? {
+
+    var isDraft: Bool {
+        self?.isDraft ?? false
     }
 }

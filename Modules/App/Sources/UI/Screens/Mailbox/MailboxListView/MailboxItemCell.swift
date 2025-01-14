@@ -220,6 +220,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let replyIcons: ReplyIconsUIModel
     let expirationDate: Date?
     let snoozeDate: String?
+    let isDraftMessage: Bool
 
     init(
         id: ID,
@@ -239,7 +240,8 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
         replyIcons: ReplyIconsUIModel = .init(),
         expirationDate: Date?,
-        snoozeDate: Date?
+        snoozeDate: Date?,
+        isDraftMessage: Bool
     ) {
         self.id = id
         self.conversationID = conversationID
@@ -264,6 +266,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
             snoozeTime = L10n.Mailbox.Item.snoozedTill(value: snoozeDate.mailboxSnoozeFormat()).string
         }
         self.snoozeDate = snoozeTime
+        self.isDraftMessage = isDraftMessage
     }
 }
 
@@ -334,7 +337,8 @@ enum MailboxItemCellEvent {
                 ],
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
-                snoozeDate: .now + 500
+                snoozeDate: .now + 500,
+                isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
             onEvent: { _ in }
@@ -364,7 +368,8 @@ enum MailboxItemCellEvent {
                 ],
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,
-                snoozeDate: .now + 55000
+                snoozeDate: .now + 55000,
+                isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
             onEvent: { _ in }

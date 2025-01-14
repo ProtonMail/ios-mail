@@ -55,7 +55,8 @@ extension Message {
                 shouldShowForwardedIcon: isForwarded
             ),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
-            snoozeDate: nil
+            snoozeDate: nil,
+            isDraftMessage: exclusiveLocation.isDraft
         )
     }
 

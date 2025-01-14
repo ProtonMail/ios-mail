@@ -15,13 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Lottie
-import SwiftUI
+import Foundation
 
-extension LottieView where Placeholder == EmptyView {
-
-    func playbackInLoopMode() -> Self {
-        playbackMode(.playing(.fromProgress(0, toProgress: 1, loopMode: .loop)))
-    }
-
+public enum DraftOrigin {
+    case new
+    case cache
+    case server
 }

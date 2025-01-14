@@ -42,7 +42,8 @@ extension Conversation {
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
-            snoozeDate: nil
+            snoozeDate: nil,
+            isDraftMessage: false
         )
     }
 

@@ -179,7 +179,8 @@ extension SelectionModeTests {
             labelUIModel: .init(labelModels: []),
             attachmentsUIModel: .init(),
             expirationDate: nil,
-            snoozeDate: nil
+            snoozeDate: nil,
+            isDraftMessage: false
         )
     }
 }

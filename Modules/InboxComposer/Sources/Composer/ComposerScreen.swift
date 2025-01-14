@@ -18,124 +18,63 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
-    @StateObject private var model: ComposerModel
+    @StateObject private var model: ComposerScreenModel
+    private let contactProvider: ComposerContactProvider
 
-    public init(draft: AppDraftProtocol, contactProvider: ComposerContactProvider) {
-        self._model = StateObject(wrappedValue: ComposerModel(draft: draft, contactProvider: contactProvider))
+    public init(messageId: Id, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
+        self.contactProvider = contactProvider
+        self._model = StateObject(
+            wrappedValue:
+                ComposerScreenModel(
+                    messageId: messageId,
+                    contactProvider: contactProvider,
+                    userSession: userSession
+                )
+        )
+    }
+
+    public init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
+        self.contactProvider = contactProvider
+        self._model = StateObject(wrappedValue: ComposerScreenModel(draft: draft, draftOrigin: draftOrigin, contactProvider: contactProvider))
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
-            topBarView()
-
-            ComposerControllerRepresentable(state: model.state) { event in
-                switch event {
-                case .viewWillDisappear:
-                    model.viewWillDisappear()
-
-                case let .recipientFieldEvent(recipientFieldEvent, group):
-                    switch recipientFieldEvent {
-                    case .onFieldTap:
-                        model.startEditingRecipients(for: group)
-                    case .onInputChange(let text):
-                        model.matchContact(group: group, text: text)
-                    case .onRecipientSelected(let index):
-                        model.recipientToggleSelection(group: group, index: index)
-                    case .onReturnKeyPressed(let text):
-                        model.addRecipient(group: group, address: text)
-                    case .onDeleteKeyPressedInsideEmptyInputField:
-                        model.selectLastRecipient(group: group)
-                    case .onDeleteKeyPressedOutsideInputField:
-                        model.removeRecipientsThatAreSelected(group: group)
-                    }
-
-                case let .contactPickerEvent(event, group):
-                    switch event {
-                    case .onInputChange(let text):
-                        model.matchContact(group: group, text: text)
-                    case .onContactSelected(let contact):
-                        model.addContact(group: group, contact: contact)
-                    }
-
-                case .fromFieldEvent(let event):
-                    switch event {
-                    case .onFieldTap:
-                        toastStateStore.present(toast: .comingSoon)
-                    }
-
-                case .subjectFieldEvent(let event):
-                    switch event {
-                    case .onStartEditing:
-                        model.endEditingRecipients()
-                    case .onSubjectChange(let subject):
-                        model.updateSubject(value: subject)
-                    }
-
-                case .bodyEvent(let event):
-                    switch event {
-                    case .onStartEditing:
-                        model.endEditingRecipients()
-                    case .onBodyChange(let body):
-                        model.updateBody(value: body)
-                    }
-                }
-            }
-            .onChange(of: model.toast) { _, newValue in
+        switch model.state {
+        case .loadingDraft:
+            ComposerLoadingView(dismissAction: {
+                model.cancel()
+                dismiss()
+            })
+            .onChange(of: model.draftError) { _, newValue in
                 guard let newValue else { return }
-                toastStateStore.present(toast: newValue)
-                model.toast = nil
+                toastStateStore.present(toast: .error(message: newValue.localizedDescription))
+                dismiss()
             }
-            .onLoad {
-                Task {
-                    await model.onLoad()
-                }
-            }
-
-            Spacer()
+        case .draftLoaded(let draft, let draftOrigin):
+            ComposerView(draft: draft, draftOrigin: draftOrigin, contactProvider: contactProvider)
         }
-        .background(DS.Color.Background.norm)
-    }
-
-    func topBarView() -> some View {
-        HStack(spacing: DS.Spacing.standard) {
-            Button(action:{ dismiss() }) {
-                Image(DS.Icon.icCross)
-                    .square(size: Layout.iconSize)
-                    .foregroundStyle(DS.Color.Icon.weak)
-            }
-            .square(size: Layout.buttonSize)
-
-            Spacer()
-            Button(action:{ }) {
-                Image(DS.Icon.icClockPaperPlane)
-                    .square(size: Layout.iconSize)
-                    .foregroundStyle(DS.Color.InteractionBrandWeak.disabled)
-            }
-            .square(size: Layout.buttonSize)
-
-            SendButton { model.sendMessage(dismissAction: dismiss) }
-                .disabled(!model.state.isSendAvailable)
-        }
-        .padding(.leading, DS.Spacing.standard)
-        .padding(.top, DS.Spacing.mediumLight)
-        .padding(.trailing, DS.Spacing.medium)
-        .padding(.bottom, DS.Spacing.small)
     }
 }
 
-extension ComposerScreen {
+struct ComposerLoadingView: View {
+    var dismissAction: (() -> Void)?
 
-    private enum Layout {
-        static let iconSize: CGFloat = 24
-        static let buttonSize: CGFloat = 40
+    var body: some View {
+        VStack(spacing: 0) {
+            ComposerTopBar(isSendEnabled: false, dismissAction: dismissAction)
+            Spacer()
+            ProtonSpinner()
+            Spacer()
+        }
     }
 }
 
 #Preview {
-    ComposerScreen(draft: .emptyMock, contactProvider: .mockInstance)
+    ComposerScreen(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
 }

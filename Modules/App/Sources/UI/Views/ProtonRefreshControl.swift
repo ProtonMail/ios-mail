@@ -17,12 +17,13 @@
 
 import Combine
 import Foundation
+import InboxCoreUI
 import Lottie
 import UIKit
 
 /// This class is assigned to the underlying UICollectionView of the SwiftUI List.
 final class ProtonRefreshControl: UIRefreshControl, ObservableObject {
-    private let spinnerAnimation = LottieAnimationView(name: "protonspinner")
+    private let spinnerAnimation = LottieAnimationView.protonSpinner
     private let spinnerSize: CGFloat = 28
     private var isAnimating = false
     private let onRefresh: () async -> Void

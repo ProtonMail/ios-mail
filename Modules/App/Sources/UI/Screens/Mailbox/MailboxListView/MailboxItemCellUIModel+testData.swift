@@ -96,7 +96,8 @@ private extension MailboxItemCellUIModel {
             labelUIModel: .init(labelModels: Label.randomLabels()),
             attachmentsUIModel: Attachment.randomAttachment(),
             expirationDate: nil,
-            snoozeDate: nil
+            snoozeDate: nil,
+            isDraftMessage: false
         )
     }
 

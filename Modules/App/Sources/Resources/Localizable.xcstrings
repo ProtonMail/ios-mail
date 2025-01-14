@@ -109,6 +109,7 @@
     },
     "%lld files" : {
       "comment" : "The number of attachments on conversation details screen.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "variations" : {
@@ -998,6 +999,7 @@
     },
     "Create new folder" : {
       "comment" : "Action title for creating new folder.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1027,6 +1029,7 @@
     },
     "Create new label" : {
       "comment" : "Action title for creating new label.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1623,6 +1626,7 @@
     },
     "Labels" : {
       "comment" : "Labels screen title.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2008,6 +2012,7 @@
     },
     "Move to.." : {
       "comment" : "Folders title screen.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

@@ -21,23 +21,25 @@ import proton_app_uniffi
 import SwiftUI
 
 final class ComposerModel: ObservableObject {
-    @Published var state: ComposerState
+    @Published private(set) var state: ComposerState
     @Published var toast: Toast?
 
     private let draft: AppDraftProtocol
+    private let draftOrigin: DraftOrigin
     private let contactProvider: ComposerContactProvider
 
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
-    
+
     private let updateBodyDebounceDuration = Duration.milliseconds(2000)
     private var updateBodyDebounceTask: Task<(), Never>?
 
     private var messageHasBeenSent: Bool = false
 
-    init(draft: AppDraftProtocol, contactProvider: ComposerContactProvider) {
+    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
         self.draft = draft
+        self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.state = .initial
         self.state = makeState(from: draft)
@@ -46,6 +48,9 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func onLoad() async {
+        if draftOrigin == .cache {
+            showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
+        }
         startEditingRecipients(for: .to)
         await contactProvider.loadContacts()
     }
@@ -149,7 +154,7 @@ final class ComposerModel: ObservableObject {
             state = state.copy(\.subject, to: draft.subject())
         case .error(let draftError):
             AppLogger.log(error: draftError, category: .composer)
-            toast = .error(message: draftError.localizedDescription)
+            showToast(.error(message: draftError.localizedDescription))
         }
     }
 
@@ -163,7 +168,7 @@ final class ComposerModel: ObservableObject {
                 break
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
-                toast = .error(message: draftError.localizedDescription)
+                showToast(.error(message: draftError.localizedDescription))
             }
         }
     }
@@ -176,13 +181,13 @@ final class ComposerModel: ObservableObject {
             switch await draft.send() {
             case .ok:
                 messageHasBeenSent = true
-                toast = .information(message: L10n.Composer.messageSending.string)
+                showToast(.information(message: L10n.Composer.messageSending.string))
                 DispatchQueue.main.async {
                     dismissAction()
                 }
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
-                toast = .error(message: draftError.localizedDescription)
+                showToast(.error(message: draftError.localizedDescription))
             }
         }
     }
@@ -261,7 +266,7 @@ extension ComposerModel {
                 $0.copy(\.input, to: .empty)
                     .copy(\.controllerState, to: .editing)
             }
-            toast = .error(message: result.localizedErrorMessage(entry: entry).string)
+            showToast(.error(message: result.localizedErrorMessage(entry: entry).string))
         }
     }
 
@@ -303,7 +308,7 @@ extension ComposerModel {
         Task {
             if case .ok(let id) = await draft.messageId() {
                 if id != nil {
-                    toast = .information(message: L10n.Composer.draftSaved.string)
+                    showToast(.information(message: L10n.Composer.draftSaved.string))
                 }
             }
         }
@@ -328,6 +333,12 @@ extension ComposerModel {
     private func waitForDebounceToFinish() async {
         if updateBodyDebounceTask != nil {
             try! await Task.sleep(for: updateBodyDebounceDuration + .milliseconds(100))
+        }
+    }
+
+    func showToast(_ toastToShow: Toast) {
+        DispatchQueue.main.async { [weak self] in
+            self?.toast = toastToShow
         }
     }
 }

@@ -196,7 +196,8 @@ private extension ConversationDetailModel.State {
                             .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
                         ],
                         expirationDate: nil,
-                        snoozeDate: nil
+                        snoozeDate: nil,
+                        isDraftMessage: false
                     ),
                     selectedMailbox: .inbox
                 ), navigationPath: .constant(.init())

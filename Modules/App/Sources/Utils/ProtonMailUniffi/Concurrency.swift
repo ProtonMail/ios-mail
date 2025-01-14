@@ -30,6 +30,10 @@ extension DecryptedMessage: @unchecked Sendable {}
 extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}
 extension MessagePaginator: @unchecked Sendable {}
+extension NewDraftResult: @unchecked Sendable {}
+extension NewMailboxResult: @unchecked Sendable {}
+extension PaginateConversationsForLabelResult: @unchecked Sendable {}
+extension PaginateMessagesForLabelResult: @unchecked Sendable {}
 extension StoredSession: @unchecked Sendable {}
 extension UserSettings: @unchecked Sendable {}
 extension WatchHandle: @unchecked Sendable {}

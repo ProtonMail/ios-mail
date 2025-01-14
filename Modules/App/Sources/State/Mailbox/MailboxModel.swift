@@ -36,7 +36,8 @@ final class MailboxModel: ObservableObject {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
-    @Published var presentedDraft: Draft?
+    @MainActor @Published var presentedDraft: PresentedDraft?
+    
     private var messagePaginator: MessagePaginator?
     private var conversationPaginator: ConversationPaginator?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
@@ -358,8 +359,12 @@ extension MailboxModel {
 
     func createDraft() {
         Task {
-            presentedDraft = try await newDraft(session: userSession, createMode: .empty).get()
+            presentedDraft = .new(draft: try await newDraft(session: userSession, createMode: .empty).get())
         }
+    }
+
+    private func openDraftMessage(messageId: ID) {
+        presentedDraft = .openDraftId(messageId: messageId)
     }
 }
 
@@ -372,10 +377,13 @@ extension MailboxModel {
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
     }
 
-    @MainActor
     func onMailboxItemTap(item: MailboxItemCellUIModel) {
         guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
+            return
+        }
+        guard !item.isDraftMessage else {
+            openDraftMessage(messageId: item.id)
             return
         }
         state.navigationPath.append(item)
@@ -475,4 +483,10 @@ extension MailboxItemCellUIModel {
     }
 }
 
-extension Draft: Identifiable {}
+enum PresentedDraft: Identifiable {
+    static let viewId = UUID()
+    var id: UUID { Self.viewId }
+
+    case new(draft: Draft)
+    case openDraftId(messageId: ID)
+}
