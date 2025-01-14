@@ -15,6 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import proton_app_uniffi
 
-typealias ID = InboxCore.ID
+public typealias ID = proton_app_uniffi.Id
+
+public extension ID {
+
+    static func random() -> ID {
+        .init(value: UInt64.random(in: (0..<UInt64.max)))
+    }
+
+}

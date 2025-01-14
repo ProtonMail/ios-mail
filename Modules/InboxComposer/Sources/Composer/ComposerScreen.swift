@@ -27,7 +27,7 @@ public struct ComposerScreen: View {
     @StateObject private var model: ComposerScreenModel
     private let contactProvider: ComposerContactProvider
 
-    public init(messageId: Id, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
+    public init(messageId: ID, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
         self.contactProvider = contactProvider
         self._model = StateObject(
             wrappedValue:

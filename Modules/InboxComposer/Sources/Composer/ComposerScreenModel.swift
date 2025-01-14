@@ -20,8 +20,6 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-typealias ID = proton_app_uniffi.Id
-
 final class ComposerScreenModel: ObservableObject {
     @Published private(set) var state: State
     @Published private(set) var draftError: DraftError?
