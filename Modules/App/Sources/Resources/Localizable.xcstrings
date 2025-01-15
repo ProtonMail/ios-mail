@@ -603,6 +603,12 @@
     "Automatic actions and sorting" : {
       "comment" : "Subtitle of the Filters settings item.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Aktionen und Sortierung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -977,6 +983,12 @@
     "Create folder or label" : {
       "comment" : "Title of the web view presenting custom folders and labels",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner oder Kategorie erstellen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2101,6 +2113,12 @@
     "No matches" : {
       "comment" : "Search result is empty title",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Treffer"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2849,6 +2867,12 @@
     "Spam and custom filters" : {
       "comment" : "Title of the Filters settings item.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spam- und benutzerdefinierte Filter"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

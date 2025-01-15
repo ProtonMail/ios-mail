@@ -208,6 +208,12 @@
             "state" : "translated",
             "value" : "Aucune pièce jointe avec cet ID de contenu"
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen bijlage met deze inhoud-ID"
+          }
         }
       }
     },
@@ -243,6 +249,12 @@
     "Tap + to add your first contact." : {
       "comment" : "Contacts screen's empty state subtitle.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drücke +, um deinen ersten Kontakt hinzuzufügen."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -266,6 +278,12 @@
     "This contact group will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact group.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Kontaktgruppe wird von deiner Kontaktliste entfernt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -289,6 +307,12 @@
     "This contact will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Kontakt wird von deiner Kontaktliste entfernt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -329,6 +353,12 @@
             "state" : "translated",
             "value" : "Ce label n’existe pas."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit label bestaat niet."
+          }
         }
       }
     },
@@ -351,6 +381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce message n'existe pas."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht bestaat niet."
           }
         }
       }
