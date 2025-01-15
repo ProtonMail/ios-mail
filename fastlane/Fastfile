@@ -11,8 +11,8 @@ XCODEPROJ = "ProtonMail.xcodeproj"
 APP_TARGET = "ProtonMail"
 UNIT_TESTS_SCHEME = "AllUnitAndSnapshotTests"
 UI_TESTS_SCHEME = "ProtonMailUITest"
-UI_TESTS_DEVICE = "iPhone 15 Pro"
-UNIT_TESTS_DEVICE = "iPhone 15 Pro"
+UI_TESTS_DEVICE = "iPhone 16 Pro"
+UNIT_TESTS_DEVICE = "iPhone 16 Pro"
 XCODEGEN_CONFIGURATION_FILE_PATH = "../project.yml"
 
 CONCURRENT_WORKERS=2

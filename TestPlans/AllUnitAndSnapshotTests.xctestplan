@@ -16,6 +16,20 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:Modules\/InboxKeychain",
+        "identifier" : "InboxKeychainTests",
+        "name" : "InboxKeychainTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "32A3C5CC30BF3A6DEA4DD3E5",
+        "name" : "ProtonMailTest"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:Modules\/InboxComposer",
         "identifier" : "InboxComposerTests",
         "name" : "InboxComposerTests"
@@ -30,16 +44,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxKeychain",
-        "identifier" : "InboxKeychainTests",
-        "name" : "InboxKeychainTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:ProtonMail.xcodeproj",
-        "identifier" : "32A3C5CC30BF3A6DEA4DD3E5",
-        "name" : "ProtonMailTest"
+        "containerPath" : "container:Modules\/InboxCoreUI",
+        "identifier" : "InboxCoreUITests",
+        "name" : "InboxCoreUITests"
       }
     }
   ],
