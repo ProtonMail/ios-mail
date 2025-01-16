@@ -211,32 +211,28 @@ class ComposeViewModel: NSObject {
     }
 
     // check if has external emails and if need attach key
-    private func uploadPublicKeyIfNeeded(completion: @escaping () -> Void) {
+    private func uploadPublicKeyIfNeeded() throws {
         let userinfo = self.user.userInfo
         
         guard userinfo.attachPublicKey == 1 ||
                 (composerMessageHelper.getMessageEntity()?.flag.contains(.publicKey) ?? false ) else {
-            completion()
             return
         }
 
         guard let draft = self.composerMessageHelper.draft,
               let addr = self.messageService.defaultUserAddress(of: draft.sendAddressID),
               let key = addr.keys.first else {
-            completion()
             return
         }
 
         let data = Data(key.publicKey.utf8)
 
-        self.composerMessageHelper.addPublicKeyIfNeeded(
+        _ = try composerMessageHelper.addPublicKeyIfNeeded(
             email: addr.email,
             fingerprint: key.shortFingerprint,
             data: data,
             shouldStripMetaDate: shouldStripMetaData
-        ) { _ in
-            completion()
-        }
+        )
     }
 
     func loadingPolicy() -> (WebContents.LoadingType, WebContents.RemoteContentPolicy) {
@@ -464,16 +460,21 @@ extension ComposeViewModel {
                                                      completion: completion)
     }
 
-    func sendMessage(deliveryTime: Date?) {
-        uploadPublicKeyIfNeeded { [weak self] in
-            guard let self = self else { return }
+    func sendMessage(deliveryTime: Date?) throws {
+        SystemLogger.log(message: "Preparing to send", category: .sendMessage)
 
-            self.updateDraft()
-            guard let msg = self.composerMessageHelper.getMessageEntity() else {
-                return
-            }
-            self.messageService.send(inQueue: msg, deliveryTime: deliveryTime)
+        try uploadPublicKeyIfNeeded()
+
+        SystemLogger.log(message: "Public key prepared", category: .sendMessage)
+
+        updateDraft()
+        guard let msg = composerMessageHelper.getMessageEntity() else {
+            return
         }
+
+        SystemLogger.log(message: "Message prepared", category: .sendMessage)
+
+        try messageService.send(inQueue: msg, deliveryTime: deliveryTime)
     }
 
     // Exact base64 image from body and upload it, if has any
@@ -493,14 +494,18 @@ extension ComposeViewModel {
                 let data = Data(base64Encoded: base64.encoded)
             else { continue }
 
-            composerMessageHelper.addAttachment(
-                data: data,
-                fileName: cid,
-                shouldStripMetaData: true,
-                type: type,
-                isInline: true,
-                cid: cid
-            ) { _ in }
+            do {
+                _ = try composerMessageHelper.addAttachment(
+                    data: data,
+                    fileName: cid,
+                    shouldStripMetaData: true,
+                    type: type,
+                    isInline: true,
+                    cid: cid
+                )
+            } catch {
+                SystemLogger.log(error: error, category: .draft)
+            }
         }
         document.outputSettings().prettyPrint(pretty: false)
         guard let cleanBody = try? document.html() else { return body }
@@ -714,14 +719,18 @@ extension ComposeViewModel {
                 return
             }
 
-            self.composerMessageHelper.addAttachment(
-                data: data,
-                fileName: inlineAttachment.name,
-                shouldStripMetaData: self.shouldStripMetaData,
-                type: inlineAttachment.rawMimeType,
-                isInline: false
-            ) { newAttachment in
-                completion?(newAttachment != nil)
+            do {
+                _ = try self.composerMessageHelper.addAttachment(
+                    data: data,
+                    fileName: inlineAttachment.name,
+                    shouldStripMetaData: self.shouldStripMetaData,
+                    type: inlineAttachment.rawMimeType,
+                    isInline: false
+                )
+                completion?(true)
+            } catch {
+                SystemLogger.log(error: error, category: .draft)
+                completion?(false)
             }
         }
     }

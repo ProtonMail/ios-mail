@@ -54,9 +54,7 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
     }
 
     func registerDeviceForNotifications(deviceToken: String) {
-        SystemLogger.log(message: "register device token: \(deviceToken.redacted)", category: .pushNotification)
         guard shouldRegisterDevice(token: deviceToken) else {
-            SystemLogger.log(message: "no need to register device token", category: .pushNotification)
             return
         }
         Task {

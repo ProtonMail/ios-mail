@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "Ende-zu-Ende-Verschlüsselung";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Zugang zur Desktop-App";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Vorrangiger Kunden-Support";
@@ -2502,28 +2502,28 @@
 "+%u premium features" = "+%u Premium-Funktionen";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%ux mehr Speicherplatz";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Hole dir %u GB - viel Platz zum sicheren Speichern deiner Nachrichten, Dateien und Fotos";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%ux mehr E-Mail-Adressen";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Erstelle bis zu %u E-Mail-Adressen, einschließlich @pm.me-Adressen, um deinen Anforderungen gerecht zu werden.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Verbinde deine eigene Domain und versende deine beruflichen oder markenbezogenen E-Mails sicher.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Öffne deine E-Mails und Kalender mit einem Klick und vermeide Ablenkungen durch den Browser.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Organisiere deine E-Mails mit dem von dir bevorzugten Ablage- und Beschriftungssystem.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Genieße eine schnellere Reaktionszeit durch engagierte Support-Mitarbeiter, falls ein Problem auftritt.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonyme Telemetrie";
@@ -2547,7 +2547,7 @@
 "Free" = "Kostenlos";
 
 /* Auto-renewal notice */
-"Auto-renews at the same price and terms unless canceled." = "Auto-renews at the same price and terms unless canceled.";
+"Auto-renews at the same price and terms unless canceled." = "Verlängert sich automatisch zum gleichen Preis und zu den gleichen Bedingungen, wenn es nicht gekündigt wird.";
 
 /* Displayed next to the monthly price */
 "/month" = "/Monat";

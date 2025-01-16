@@ -23,9 +23,6 @@
 import UIKit
 
 protocol ComposeViewDelegate: AnyObject {
-    func composeViewWillPresentSubview()
-    func composeViewWillDismissSubview()
-
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))

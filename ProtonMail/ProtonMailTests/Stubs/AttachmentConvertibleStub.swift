@@ -34,7 +34,7 @@ final class AttachmentConvertibleStub: AttachmentConvertible {
         stripMetadata: Bool,
         cid: String?,
         isInline: Bool
-    ) -> AttachmentEntity? {
+    ) -> AttachmentEntity {
         fatalError()
     }
 }

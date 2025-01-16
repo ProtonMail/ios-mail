@@ -2121,10 +2121,10 @@
 "As scheduled" = "예정됨";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "나만의 스케쥴 설정";
+"Set your own schedule" = "나만의 일정 설정";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "플랜을 업그레이드 하여 사용자 지정 메시지 스케줄과 다른 혜택을 잠금 해제하세요.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "플랜을 업그레이드 하여 사용자 지정 메시지 예약과 다른 혜택들을 잠금 해제하세요.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "지금 업그레이드";
@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "종단간 암호화";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "데스크톱 앱으로 접근";
+"Access to desktop app" = "데스크톱 앱으로의 접근 가능";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "고객 지원 우선 순위 제공";
@@ -2583,7 +2583,7 @@
 "Get them and other premium features when you upgrade to %@." = "%@로 업그레이드하면 이 기능 및 기타 프리미엄 기능을 사용할 수 있습니다.";
 
 /* Title of the upsell page */
-"Customize your signature" = "내 서명 사용자화";
+"Customize your signature" = "내 서명 커스터마이징";
 
 /* Subtitle of the upsell page */
 "Use your own mobile signature and enjoy other premium features with %@." = "%@(으)로 나만의 모바일 서명을 사용하고 다른 프리미엄 기능도 즐길 수 있어요.";
@@ -2595,7 +2595,7 @@
 "Enjoy custom schedule send and other premium features with %@." = "%@(으)로 커스텀 스케쥴 전송과 더불어 다른 프리미엄 기능을 즐길 수 있어요.";
 
 /* Title of the upsell page */
-"Bad time for this email?" = "이 이메일에 대한 불편함을 느낀적 있나요?";
+"Bad time for this email?" = "이 이메일에 불편함을 느꼈나요?";
 
 /* Subtitle of the upsell page */
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "선택한 시간 동안 이메일을 방해 금지 상태로 변경하세요. 커스텀 방해금지와 더 많은 것들을 %@(으)로 즐겨보세요.";

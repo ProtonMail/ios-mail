@@ -20,28 +20,16 @@ import ProtonCoreServices
 
 typealias UpdateMailboxUseCase = UseCase<Void, UpdateMailbox.Parameters>
 
-// sourcery: mock
-protocol UpdateMailboxSourceProtocol: AnyObject {
-    var locationViewMode: ViewMode { get }
-    var isConversationModeEnabled: Bool { get }
-    var messageLocation: Message.Location? { get }
-}
-
 final class UpdateMailbox: UpdateMailboxUseCase {
     typealias ErrorHandler = (Error) -> Void
 
     private(set) var isFetching = false
     private let dependencies: Dependencies
     private let serverNotice: ServerNotice
-    private weak var sourceDelegate: UpdateMailboxSourceProtocol?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         serverNotice = .init(userDefaults: dependencies.userDefaults)
-    }
-
-    func setup(source: UpdateMailboxSourceProtocol) {
-        self.sourceDelegate = source
     }
 
     /// Set up parameters for test
@@ -52,7 +40,13 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     }
 
     override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
+        SystemLogger.log(
+            message: "Requested update, labelID: \(params.labelID), unreadOnly: \(params.showUnreadOnly), cleanFetch: \(params.isCleanFetch), fetchMessagesAtTheEnd: \(params.fetchMessagesAtTheEnd)",
+            category: .mailboxRefresh
+        )
+
         if self.isFetching {
+            SystemLogger.log(message: "Already fetching", category: .mailboxRefresh)
             callback(.success)
             return
         }
@@ -68,8 +62,8 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     /// Scheduled task to update inbox / event data
     private func scheduledFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         guard self.isEventIDValid else {
-            self.fetchDataWithReset(time: params.time,
-                                    labelID: params.labelID,
+            self.fetchDataWithReset(labelID: params.labelID,
+                                    locationViewMode: params.locationViewMode,
                                     cleanContact: false,
                                     unreadOnly: false) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -79,13 +73,13 @@ final class UpdateMailbox: UpdateMailboxUseCase {
             return
         }
 
-        fetchEvents(notificationMessageID: self.notificationMessageID, params: params, callback: callback)
+        fetchEvents(params: params, callback: callback)
     }
 
     /// Fetch data with cache cleaning
     private func cleanFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
-        self.fetchDataWithReset(time: params.time,
-                                labelID: params.labelID,
+        self.fetchDataWithReset(labelID: params.labelID,
+                                locationViewMode: params.locationViewMode,
                                 cleanContact: true,
                                 unreadOnly: params.showUnreadOnly) { [weak self] error in
             self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -115,21 +109,11 @@ extension UpdateMailbox {
         return nil
     }
 
-    private var locationViewMode: ViewMode {
-        guard let source = self.sourceDelegate else {
-            assert(false, "Needs to set up source")
-            return .conversation
-        }
-        return source.locationViewMode
-    }
-
     private func resetNotificationMessage() {
         self.dependencies.messageDataService.pushNotificationMessageID = nil
     }
 
-    private func fetchEvents(notificationMessageID: MessageID?,
-                             params: Parameters,
-                             callback: @escaping UseCase<Void, Parameters>.Callback) {
+    private func fetchEvents(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         self.dependencies.eventService
             .fetchEvents(
                 byLabel: params.labelID,
@@ -140,19 +124,19 @@ extension UpdateMailbox {
             }
     }
 
-    private func fetchMessages(time: Int,
-                               labelID: LabelID,
+    private func fetchMessages(labelID: LabelID,
+                               locationViewMode: ViewMode,
                                forceClean: Bool,
                                isUnread: Bool,
                                completion: @escaping (Error?) -> Void) {
-        switch self.locationViewMode {
+        switch locationViewMode {
         case .singleMessage:
             self.dependencies
                 .fetchMessage
                 .execute(
                     params: .init(
                         labelID: labelID,
-                        endTime: time,
+                        endTime: 0,
                         isUnread: isUnread,
                         onMessagesRequestSuccess: nil
                     ),
@@ -164,7 +148,7 @@ extension UpdateMailbox {
             self.dependencies
                 .conversationProvider
                 .fetchConversations(for: labelID,
-                                    before: time,
+                                    before: 0,
                                     unreadOnly: isUnread,
                                     shouldReset: forceClean) { result in
                     switch result {
@@ -180,28 +164,15 @@ extension UpdateMailbox {
         }
     }
 
-    private func fetchDataWithReset(time: Int,
-                                    labelID: LabelID,
+    private func fetchDataWithReset(labelID: LabelID,
+                                    locationViewMode: ViewMode,
                                     cleanContact: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
-        let shouldFetchConversations: Bool
-
-        switch self.locationViewMode {
+        switch locationViewMode {
         case .singleMessage:
-            if let sourceDelegate, sourceDelegate.messageLocation == .sent && sourceDelegate.isConversationModeEnabled {
-                shouldFetchConversations = true
-            } else {
-                shouldFetchConversations = false
-            }
-        case .conversation:
-            shouldFetchConversations = true
-        }
-
-        if !shouldFetchConversations {
             let params = FetchMessagesWithReset.Params(
                 labelID: labelID,
-                endTime: time,
                 fetchOnlyUnreadMessages: unreadOnly,
                 refetchContacts: cleanContact
             )
@@ -211,13 +182,17 @@ extension UpdateMailbox {
                 .execute(params: params) { result in
                     completion(result.error)
                 }
-        } else {
+        case .conversation:
             self.dependencies.fetchLatestEventID.execute(params: ()) { [weak self] fetchLatestEventIDResult in
-                if let error = fetchLatestEventIDResult.error {
-                    assertionFailure("\(error)")
+                switch fetchLatestEventIDResult {
+                case .success(let response):
+                    SystemLogger.log(message: "Latest eventID: \(response.eventID)", category: .mailboxRefresh)
+                case .failure(let error):
+                    SystemLogger.log(error: error, category: .mailboxRefresh)
                 }
 
                 guard let localSelf = self else {
+                    SystemLogger.log(message: "Mailbox update taking longer than usual", category: .mailboxRefresh)
                     completion(fetchLatestEventIDResult.error)
                     return
                 }
@@ -225,10 +200,15 @@ extension UpdateMailbox {
                 localSelf.dependencies
                     .conversationProvider
                     .fetchConversations(for: labelID,
-                                        before: time,
+                                        before: 0,
                                         unreadOnly: unreadOnly,
                                         shouldReset: true) { [weak localSelf] result in
+                        if let error = result.error {
+                            SystemLogger.log(error: error, category: .mailboxRefresh)
+                        }
+
                         guard let localSelf = localSelf else {
+                            SystemLogger.log(message: "Mailbox update taking longer than expected", category: .mailboxRefresh)
                             completion(result.error)
                             return
                         }
@@ -268,23 +248,23 @@ extension UpdateMailbox {
 
             if let refresh = res["Refresh"] as? Int, refresh > 0 {
                 // the client has to re-fetch all models/collection and get the last EventID
+                SystemLogger.log(message: "Refreshing events", category: .mailboxRefresh)
                 cleanFetch(params: params, callback: callback)
                 return
             }
 
             if let more = res["More"] as? Int, more > 0 {
                 // it means the client need to call the events route again to receive more updates.
-                self.fetchEvents(notificationMessageID: self.notificationMessageID,
-                                 params: params,
-                                 callback: callback)
+                SystemLogger.log(message: "Need to fetch more events", category: .mailboxRefresh)
+                fetchEvents(params: params, callback: callback)
                 return
             }
         }
 
         if params.fetchMessagesAtTheEnd {
             self.fetchMessages(
-                time: 0,
                 labelID: params.labelID,
+                locationViewMode: params.locationViewMode,
                 forceClean: false,
                 isUnread: params.showUnreadOnly
             ) { [weak self] error in
@@ -304,9 +284,9 @@ extension UpdateMailbox {
 extension UpdateMailbox {
     struct Parameters {
         let labelID: LabelID
+        let locationViewMode: ViewMode
         let showUnreadOnly: Bool
         let isCleanFetch: Bool
-        let time: Int
         let fetchMessagesAtTheEnd: Bool
         let errorHandler: ErrorHandler
         let userID: UserID

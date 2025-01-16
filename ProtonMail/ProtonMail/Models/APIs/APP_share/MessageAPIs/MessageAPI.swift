@@ -61,18 +61,13 @@ final class FetchMessagesByIDResponse: Response {
 
 /// Response
 struct FetchMessagesByLabelRequest: Request {
+    private let pageSize = 50
+
     let labelID: String!
     /// UNIX timestamp to filter messages at or earlier than timestamp
     let endTime: Int?
-    /// UNIX timestamp to filter messages at or later than timestamp
-    let beginTime: Int?
-    let isUnread: Bool?
-    let pageSize: Int?
-    /// return only messages older, in creation time (NOT timestamp), than EndID
-    let endID: String?
-    let page: Int?
-    let priority: APIPriority?
     let sort: Sort
+    let isUnread: Bool
     let descending: Bool
 
     enum Sort: String {
@@ -86,23 +81,13 @@ struct FetchMessagesByLabelRequest: Request {
     init(
         labelID: String,
         endTime: Int?,
-        sort: Sort = .time,
-        beginTime: Int? = nil,
-        isUnread: Bool? = nil,
-        pageSize: Int? = 50,
-        endID: String? = nil,
-        page: Int? = nil,
-        priority: APIPriority? = nil,
-        descending: Bool = true
+        sort: Sort,
+        isUnread: Bool,
+        descending: Bool
     ) {
         self.labelID = labelID
         self.endTime = endTime
-        self.beginTime = beginTime
         self.isUnread = isUnread
-        self.pageSize = pageSize
-        self.endID = endID
-        self.page = page
-        self.priority = priority
         self.sort = sort
         self.descending = descending
     }
@@ -110,37 +95,22 @@ struct FetchMessagesByLabelRequest: Request {
     var parameters: [String: Any]? {
         var out: [String: Any] = [
             "Sort": sort.rawValue,
-            "Desc": descending ? 1 : 0
+            "Desc": descending ? 1 : 0,
+            "PageSize": pageSize
         ]
         out["LabelID"] = self.labelID
         if let endTime, endTime > 0 {
             let newTime = endTime - 1
             out["End"] = newTime
         }
-        if let beginTime {
-            out["Begin"] = beginTime
-        }
-        if let unread = self.isUnread, unread {
+        if isUnread {
             out["Unread"] = 1
-        }
-        if let pagesize = self.pageSize {
-            out["PageSize"] = pagesize
-        }
-        if let endId = self.endID {
-            out["EndID"] = endId
-        }
-        if let page = self.page {
-            out["Page"] = page
         }
         return out
     }
 
     var header: [String : Any] {
-        var header: [String: Any] = [:]
-        if let priority = priority {
-            header["priority"] = priority.rawValue
-        }
-        return header
+        [:]
     }
 
     var path: String {

@@ -26,6 +26,8 @@ import LifetimeTracker
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCorePayments
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonCoreUtilities
@@ -50,10 +52,11 @@ protocol MailboxViewModelUIProtocol: AnyObject {
     func clickSnoozeActionButton()
 }
 
-class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, AttachmentPreviewViewModelProtocol {
+class MailboxViewModel: NSObject, StorageLimit, AttachmentPreviewViewModelProtocol {
     typealias Dependencies = HasCheckProtonServerStatus
     & HasFeatureFlagCache
     & HasFeatureFlagProvider
+    & HasFeatureFlagsDownloadService
     & HasFetchAttachmentUseCase
     & HasFetchAttachmentMetadataUseCase
     & HasFetchMessageDetailUseCase
@@ -70,6 +73,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     & HasAutoImportContactsFeature
     & HasImportDeviceContacts
     & HasUserCachedStatus
+    & HasPlanService
 
     let labelID: LabelID
     var storageAlertVisibility: StorageAlertVisibility = .hidden
@@ -168,6 +172,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
     private var storageExceedObservation: Cancellable?
     private var lockedStateObservation: Cancellable?
 
+    private var plansDataSource: PlansDataSourceProtocol? {
+        switch dependencies.planService {
+        case .left:
+            return nil
+        case .right(let pdsp):
+            return pdsp
+        }
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          userManager: UserManager,
@@ -205,7 +218,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol, Att
         trackLifetime()
         self.setupAlertBox()
         self.conversationStateProvider.add(delegate: self)
-        dependencies.updateMailbox.setup(source: self)
     }
 
     func viewDidLoad() {
@@ -933,7 +945,6 @@ extension MailboxViewModel {
     func updateMailbox(
         showUnreadOnly: Bool,
         isCleanFetch: Bool,
-        time: Int = 0,
         errorHandler: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) {
@@ -963,9 +974,9 @@ extension MailboxViewModel {
         dependencies.updateMailbox.execute(
             params: .init(
                 labelID: queryLabel,
+                locationViewMode: locationViewMode,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
-                time: time,
                 fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
                 errorHandler: errorHandler,
                 userID: user.userID
@@ -1510,6 +1521,54 @@ extension MailboxViewModel {
 extension MailboxViewModel: LifetimeTrackable {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
+    }
+}
+
+extension MailboxViewModel {
+    @MainActor
+    func fetchUserPlan(completion: @MainActor @escaping (_ subscription: CurrentPlan.Subscription) -> Void) {
+        Task { [weak self] in
+            guard let self = self, let plansDataSource = self.plansDataSource else { return }
+            try await plansDataSource.fetchCurrentPlan()
+            if let subscription = plansDataSource.currentPlan?.subscriptions.first {
+                completion(subscription)
+            }
+        }
+    }
+}
+
+// MARK: Cancellation Reminder Modal Related
+
+extension MailboxViewModel {
+    func shouldShowReminderModal() -> Bool {
+        guard let autoDowngradeReminderFF = dependencies.featureFlagCache.featureFlags(for: user.userID)[.autoDowngradeReminder] as? [String: Int] else { return false }
+        return autoDowngradeReminderFF.values.contains(1)
+    }
+    
+    func markRemindersAsSeen() {
+        guard var autoDowngradeReminderFF = dependencies.featureFlagCache.featureFlags(for: user.userID)[.autoDowngradeReminder] as? [String: Int] else { return }
+        autoDowngradeReminderFF.forEach { (key, val) in
+            autoDowngradeReminderFF[key] = val == 1 ? 2 : val
+        }
+        dependencies.featureFlagsDownloadService.updateFeatureFlag(.autoDowngradeReminder, value: autoDowngradeReminderFF) { error in
+            if let error {
+                let message = "Failed to update AutoDowngradeReminder feature flag: \(error)"
+                SystemLogger.log(message: message, isError: true)
+            } else {
+                self.user.refreshFeatureFlags()
+            }
+        }
+    }
+    
+    func reactivateSubscription(completion: @escaping ((Error?) -> Void)) {
+        user.apiService.perform(
+            request: RenewSubscriptionRequest(api: user.apiService),
+            response: VoidResponse()
+        ) { _, response in
+            DispatchQueue.main.async {
+                completion(response.error)
+            }
+        }
     }
 }
 

@@ -117,7 +117,11 @@ final class ComposerMessageHelper {
             return
         }
 
-        dependencies.messageDataService.saveDraft(message)
+        do {
+            try dependencies.messageDataService.saveDraft(message)
+        } catch {
+            SystemLogger.log(error: error, category: .draft)
+        }
     }
 
     func markAsRead() {
@@ -240,15 +244,19 @@ final class ComposerMessageHelper {
     }
 
     func getMessageEntity() -> MessageEntity? {
-        guard let rawMessage, let context = rawMessage.managedObjectContext else {
+        guard let rawMessage else {
+            SystemLogger.log(message: "Raw message not yet loaded", category: .draft)
             return nil
         }
 
-        var message: MessageEntity?
-        context.performAndWait {
-            message = MessageEntity(rawMessage)
+        guard let context = rawMessage.managedObjectContext else {
+            SystemLogger.log(message: "Database context not yet loaded", category: .draft)
+            return nil
         }
-        return message
+
+        return context.performAndWait {
+            MessageEntity(rawMessage)
+        }
     }
 
     func originalTo() -> String? {
@@ -298,8 +306,7 @@ extension ComposerMessageHelper {
     func addPublicKeyIfNeeded(email: String,
                               fingerprint: String,
                               data: Data,
-                              shouldStripMetaDate: Bool,
-                              completion: @escaping (AttachmentEntity?) -> Void) {
+                              shouldStripMetaDate: Bool) throws -> AttachmentEntity? {
         let fileName = "publicKey - \(email) - \(fingerprint).asc"
         var attached = false
         // check if key already attached
@@ -312,15 +319,13 @@ extension ComposerMessageHelper {
         }
 
         if !attached {
-            self.addAttachment(data: data,
+            return try addAttachment(data: data,
                                fileName: fileName,
                                shouldStripMetaData: shouldStripMetaDate,
                                type: "application/pgp-keys",
-                               isInline: false) { attachmentToAdd in
-                completion(attachmentToAdd)
-            }
+                               isInline: false)
         } else {
-            completion(nil)
+            return nil
         }
     }
 
@@ -329,9 +334,9 @@ extension ComposerMessageHelper {
                        shouldStripMetaData: Bool,
                        type: String,
                        isInline: Bool,
-                       cid: String? = nil,
-                       completion: @escaping (AttachmentEntity?) -> Void) {
-        let attachment: AttachmentEntity? = try? dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+                       cid: String? = nil
+    ) throws -> AttachmentEntity {
+        let attachment: AttachmentEntity = try dependencies.contextProvider.write { context in
             return data.toAttachment(
                 context,
                 fileName: fileName,
@@ -341,11 +346,11 @@ extension ComposerMessageHelper {
                 isInline: isInline
             )
         }
-        if let attachment = attachment {
-            addAttachment(attachment.objectID)
-            updateDraft()
-        }
-        completion(attachment)
+
+        addAttachment(attachment.objectID)
+        updateDraft()
+
+        return attachment
     }
 
     func addAttachment(_ attachmentObjectID: ObjectID) {

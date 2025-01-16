@@ -307,7 +307,7 @@
 "Phone" = "Telepon";
 
 /* default vcard types */
-"Mobile" = "Mobile";
+"Mobile" = "Seluler";
 
 /* default vcard types */
 "Fax" = "Faks";
@@ -1289,7 +1289,7 @@
  The title of the star action in action sheet
  VoiceOver title of star button in the message view
 */
-"Star" = "Bintang";
+"Star" = "Bintangi";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Hapus bintang";
@@ -1654,7 +1654,7 @@
 "Warning: suspected fake website" = "Peringatan: situs web ini terindikasi palsu";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.\n%@\n\nDemi keamanan Anda, jangan lanjutkan ke situs web ini.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju pada situs web yang dapat berupaya untuk mencuri informasi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.\n%@\n\nDemi keamanan Anda, jangan lanjutkan ke situs web ini.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Abaikan peringatan dan lanjut";
@@ -2220,7 +2220,7 @@
 "Try a different search term." = "Coba kata kunci pencarian yang berbeda.";
 
 /* zero messages matching search query */
-"No results found" = "Tidak ada hasil";
+"No results found" = "Tidak ada hasil yang ditemukan";
 
 /* The title of the setting of the auto-delete option */
 "Auto-delete" = "Hapus otomatis";
@@ -2586,7 +2586,7 @@
 "Customize your signature" = "Atur tanda tangan Anda";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda sendiri dan nikmati fitur premium lainnya dengan %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Gunakan tanda tangan seluler Anda dan nikmati berbagai fitur premium lainnya dengan %@.";
 
 /* Title of the upsell page */
 "Schedule now, send later" = "Jadwalkan sekarang, kirim nanti";

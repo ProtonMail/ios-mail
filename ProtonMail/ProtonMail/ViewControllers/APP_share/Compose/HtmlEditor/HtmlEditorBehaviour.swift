@@ -33,8 +33,8 @@ private final class InputAccessoryHackHelper: NSObject {
 protocol HtmlEditorBehaviourDelegate: AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
-    func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?)
-    func removeInlineAttachment(_ cid: String, completion: (() -> Void)?)
+    func addInlineAttachment(cid: String, name: String, data: Data)
+    func removeInlineAttachment(_ cid: String)
     func selectedInlineAttachment(_ cid: String)
 }
 
@@ -354,7 +354,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.delegate?.addInlineAttachment(cid: cid, name: cid, data: base64Data, completion: nil)
+            self.delegate?.addInlineAttachment(cid: cid, name: cid, data: base64Data)
 
         case .heightUpdated:
             guard let newHeight = userInfo["height"] as? Double else {
@@ -376,7 +376,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.delegate?.removeInlineAttachment(path, completion: nil)
+            self.delegate?.removeInlineAttachment(path)
         case .selectInlineImage:
             guard let cid = userInfo["cid"] as? String else {
                 assert(false, "Broken message: lack important data")

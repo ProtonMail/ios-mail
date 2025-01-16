@@ -74,7 +74,7 @@ protocol MessageDataServiceProtocol: AnyObject {
                              mailbox_pwd: Passphrase,
                              sendAddress: Address,
                              inManagedObjectContext context: NSManagedObjectContext) -> Message
-    func saveDraft(_ message: MessageEntity)
+    func saveDraft(_ message: MessageEntity) throws
     func updateMessage(_ message: Message,
                        expirationTimeInterval: TimeInterval,
                        body: String,
@@ -234,7 +234,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func isEventIDValid() -> Bool {
         let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
-        return eventID != "" && eventID != "0"
+        let isValid = eventID != "" && eventID != "0"
+        if !isValid {
+            SystemLogger.log(message: "Unexpected eventID: \(eventID)")
+        }
+        return isValid
     }
 
     /// Sync mail setting when user in composer
@@ -292,15 +296,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     // MARK : Send message
 
-    func send(inQueue message: MessageEntity, deliveryTime: Date?) {
+    func send(inQueue message: MessageEntity, deliveryTime: Date?) throws {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
                 .init(messageID: message.messageID, subtitle: message.title)
             )
 
-            self.queueMessage(
-                with: message.objectID,
-                action: .send(messageObjectID: message.objectID.rawValue.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
-            )
+        try queueMessage(
+            with: message.objectID,
+            action: .send(messageObjectID: message.objectID.rawValue.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
+        )
     }
 
     // TODO: fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
@@ -792,18 +796,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func saveDraft(_ message: MessageEntity) {
+    func saveDraft(_ message: MessageEntity) throws {
         if message.title.isEmpty {
-            contextProvider.performAndWaitOnRootSavingContext { context in
-                guard let msg = try? context.existingObject(with: message.objectID.rawValue) as? Message else { return }
+            try contextProvider.write { context in
+                guard let msg = try context.existingObject(with: message.objectID.rawValue) as? Message else { return }
                 
                 msg.title = "(No Subject)"
-                _ = context.saveUpstreamIfNeeded()
                 
             }
         }
 
-        queueMessage(
+        try queueMessage(
             with: message.objectID,
             action: .saveDraft(messageObjectID: message.objectID.rawValue.uriRepresentation().absoluteString)
         )
@@ -1047,12 +1050,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         cleanUp()
     }
 
-    private func queueMessage(with messageObjectID: ObjectID, action: MessageAction) {
-        var messageID = ""
-        
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            guard let message = try? context.existingObject(with: messageObjectID.rawValue) as? Message else {
-                return
+    private func queueMessage(with messageObjectID: ObjectID, action: MessageAction) throws {
+        let messageID: String = try contextProvider.write { context in
+            guard let message = try context.existingObject(with: messageObjectID.rawValue) as? Message else {
+                SystemLogger.log(message: "No Message with ID \(messageObjectID.rawValue)", category: .queue)
+                return ""
             }
             
             if message.objectID.isTemporaryID {
@@ -1063,11 +1065,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
             }
             self.cachePropertiesForBackground(in: message)
-            messageID = message.messageID
+            return message.messageID
         }
         
         let task = QueueManager.Task(messageID: messageID, action: action, userID: userID, dependencyIDs: [], isConversation: false)
-        queueManager?.addTask(task)
+
+        queueManager!.addTask(task)
     }
 
     func queue(_ action: MessageAction) {
