@@ -20,26 +20,16 @@ import ProtonCoreServices
 
 typealias UpdateMailboxUseCase = UseCase<Void, UpdateMailbox.Parameters>
 
-// sourcery: mock
-protocol UpdateMailboxSourceProtocol: AnyObject {
-    var locationViewMode: ViewMode { get }
-}
-
 final class UpdateMailbox: UpdateMailboxUseCase {
     typealias ErrorHandler = (Error) -> Void
 
     private(set) var isFetching = false
     private let dependencies: Dependencies
     private let serverNotice: ServerNotice
-    private weak var sourceDelegate: UpdateMailboxSourceProtocol!
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         serverNotice = .init(userDefaults: dependencies.userDefaults)
-    }
-
-    func setup(source: UpdateMailboxSourceProtocol) {
-        self.sourceDelegate = source
     }
 
     /// Set up parameters for test
@@ -73,6 +63,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     private func scheduledFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         guard self.isEventIDValid else {
             self.fetchDataWithReset(labelID: params.labelID,
+                                    locationViewMode: params.locationViewMode,
                                     cleanContact: false,
                                     unreadOnly: false) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -88,6 +79,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     /// Fetch data with cache cleaning
     private func cleanFetch(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         self.fetchDataWithReset(labelID: params.labelID,
+                                locationViewMode: params.locationViewMode,
                                 cleanContact: true,
                                 unreadOnly: params.showUnreadOnly) { [weak self] error in
             self?.handleFetchMessageResponse(error: error, errorHandler: params.errorHandler)
@@ -117,10 +109,6 @@ extension UpdateMailbox {
         return nil
     }
 
-    private var locationViewMode: ViewMode {
-        sourceDelegate.locationViewMode
-    }
-
     private func resetNotificationMessage() {
         self.dependencies.messageDataService.pushNotificationMessageID = nil
     }
@@ -137,10 +125,11 @@ extension UpdateMailbox {
     }
 
     private func fetchMessages(labelID: LabelID,
+                               locationViewMode: ViewMode,
                                forceClean: Bool,
                                isUnread: Bool,
                                completion: @escaping (Error?) -> Void) {
-        switch self.locationViewMode {
+        switch locationViewMode {
         case .singleMessage:
             self.dependencies
                 .fetchMessage
@@ -176,10 +165,11 @@ extension UpdateMailbox {
     }
 
     private func fetchDataWithReset(labelID: LabelID,
+                                    locationViewMode: ViewMode,
                                     cleanContact: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
-        switch self.locationViewMode {
+        switch locationViewMode {
         case .singleMessage:
             let params = FetchMessagesWithReset.Params(
                 labelID: labelID,
@@ -274,6 +264,7 @@ extension UpdateMailbox {
         if params.fetchMessagesAtTheEnd {
             self.fetchMessages(
                 labelID: params.labelID,
+                locationViewMode: params.locationViewMode,
                 forceClean: false,
                 isUnread: params.showUnreadOnly
             ) { [weak self] error in
@@ -293,6 +284,7 @@ extension UpdateMailbox {
 extension UpdateMailbox {
     struct Parameters {
         let labelID: LabelID
+        let locationViewMode: ViewMode
         let showUnreadOnly: Bool
         let isCleanFetch: Bool
         let fetchMessagesAtTheEnd: Bool

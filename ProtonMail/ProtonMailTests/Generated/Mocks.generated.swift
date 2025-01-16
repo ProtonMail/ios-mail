@@ -1370,14 +1370,6 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
-class MockUpdateMailboxSourceProtocol: UpdateMailboxSourceProtocol {
-    @PropertyStub(\MockUpdateMailboxSourceProtocol.locationViewMode, initialGet: .conversation) var locationViewModeStub
-    var locationViewMode: ViewMode {
-        locationViewModeStub()
-    }
-
-}
-
 class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
     @FuncStub(MockUserIntroductionProgressProvider.shouldShowSpotlight, initialReturn: Bool()) var shouldShowSpotlightStub
     func shouldShowSpotlight(for feature: SpotlightableFeatureKey, toUserWith userID: UserID) -> Bool {
