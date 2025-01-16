@@ -106,6 +106,7 @@ final class SettingsDeviceViewModel {
     & HasBiometricStatusProvider
     & HasKeychain
     & HasLockCacheStatus
+    & HasPushNotificationService
     & HasUserDefaults
     & HasAutoImportContactsFeature
 
@@ -231,5 +232,9 @@ final class SettingsDeviceViewModel {
                 await MBProgressHUD.alert(errorString: error.localizedDescription)
             }
         }
+    }
+
+    func requestNotificationAuthorizationPermission(completion: @escaping () -> Void) {
+        dependencies.pushService.authorizeIfNeededAndRegister(completion: completion)
     }
 }

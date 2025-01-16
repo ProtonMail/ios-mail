@@ -227,15 +227,8 @@ extension SettingsDeviceViewController {
                     let current = UNUserNotificationCenter.current()
                     current.getNotificationSettings(completionHandler: { settings in
                         switch settings.authorizationStatus {
-                        case .notDetermined: // Notification permission has not been asked yet, go for it!
+                        case .notDetermined:
                             { cellToConfig.configure(right: LocalString._settings_Off_title) } ~> .main
-                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
-                                guard granted else { return }
-                                DispatchQueue.main.async {
-                                    UIApplication.shared.registerForRemoteNotifications()
-                                    self?.tableView.reloadRows(at: [indexPath], with: .none)
-                                }
-                            }
                         case .denied: // Notification permission was previously denied, go to settings & privacy to re-enable
                             { cellToConfig.configure(right: LocalString._settings_Off_title, imageType: .system) } ~> .main
                         case .authorized: { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
@@ -354,12 +347,18 @@ extension SettingsDeviceViewController {
             let item = viewModel.generalSettings[row]
             switch item {
             case .notification:
-                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                    return
-                }
-
-                if UIApplication.shared.canOpenURL(settingsUrl) {
-                    UIApplication.shared.open(settingsUrl, completionHandler: nil)
+                let current = UNUserNotificationCenter.current()
+                current.getNotificationSettings { settings in
+                    switch settings.authorizationStatus {
+                    case .notDetermined:
+                        self.viewModel.requestNotificationAuthorizationPermission {
+                            self.tableView.reloadRows(at: [indexPath], with: .none)
+                        }
+                    default:
+                        DispatchQueue.main.async {
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        }
+                    }
                 }
             case .language:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
