@@ -800,13 +800,7 @@ class MailboxViewModel: NSObject, StorageLimit, AttachmentPreviewViewModelProtoc
 
     private func nextNotificationAuthorizationRequestDate(since mostRecentRequestDate: Date) -> Date {
         var retryInterval = DateComponents()
-
-        if Application.isTestflightBeta {
-            retryInterval.minute = 5
-        } else {
-            retryInterval.day = 20
-        }
-
+        retryInterval.day = 20
         return Calendar.autoupdatingCurrent.date(byAdding: retryInterval, to: mostRecentRequestDate)!
     }
 
