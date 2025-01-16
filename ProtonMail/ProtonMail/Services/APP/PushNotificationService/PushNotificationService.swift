@@ -57,18 +57,21 @@ final class PushNotificationService: NSObject {
     }
 
     // MARK: - register for notifications
-    func authorizeIfNeededAndRegister() {
+    func authorizeIfNeededAndRegister(completion: (() -> Void)? = nil) {
         guard !ProcessInfo.isRunningUITests else {
             SystemLogger.log(message: "push registration disabled for UI tests ", category: .pushNotification)
             return
         }
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
-            guard granted else {
-                SystemLogger.log(message: "push notification authorization is not granted", category: .pushNotification)
-                return
-            }
             DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
+
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                } else {
+                    SystemLogger.log(message: "user has disabled push notifications", category: .pushNotification)
+                }
+
+                completion?()
             }
         }
     }
