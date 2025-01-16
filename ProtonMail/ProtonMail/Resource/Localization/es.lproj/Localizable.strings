@@ -411,6 +411,9 @@
 */
 "Cancel" = "Cancelar";
 
+/* Dismiss popup action */
+"Dismiss" = "Descartar";
+
 /* Open action */
 "Open" = "Abrir";
 
@@ -2133,9 +2136,6 @@
 "Schedule messages at any time" = "Programa mensajes en cualquier momento";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Número ilimitado de carpetas y etiquetas";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Hasta 500 GB de almacenamiento";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+%u funciones prémium";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB de almacenamiento total";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB de almacenamiento total";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Bono de almacenamiento gratuito al año";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Tu propio dominio de correo electrónico personalizado";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Uso compartido de calendarios";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Tu alias de correo electrónico @pm.me";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Programación de envío y tiempos de pausa personalizados";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Aplicación de escritorio de Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Historial de versiones";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Programa Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail y todas las funciones premium de productividad";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive con historial de versiones";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail con reenvío de correo automático";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass con monitoreo de la Dark Web";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN con bloqueo de malware y de publicidad";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Dirección de correo electrónico «catch-all»";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Consulta la disponibilidad de tus colegas";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Reenvío de correo automático";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Acceso anticipado a funciones y aplicaciones nuevas";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB de almacenamiento por usuario";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u direcciones de correo electrónico por usuario";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Número ilimitado de carpetas y etiquetas";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u dominios de correo electrónico personalizados";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Soporte para aplicación de escritorio y cliente de correo (vía IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u veces más almacenamiento";
 
 /* Description of a feature of a paid subscription */
@@ -2617,3 +2695,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Funciones prémium incluidas";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "La suscripción finalizará pronto.";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactívala antes de %@ para mantener estas funciones:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivar la suscripción";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Se ha reactivado la suscripción.";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "No se ha reactivado la suscripción.";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "No te pierdas ningún correo electrónico";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "¿Quieres mantenerte actualizado?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Las notificaciones te ayudan a estar al tanto de tu bandeja de entrada sin tener que consultar la aplicación.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Activa las notificaciones para saber cuándo recibes una respuesta a tu correo electrónico.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Activar las notificaciones";

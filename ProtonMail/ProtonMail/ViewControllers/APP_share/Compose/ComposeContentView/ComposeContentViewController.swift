@@ -209,6 +209,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         if self.dismissBySending {
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
+                listVC.requestNotificationAuthorizationIfApplicable(trigger: .messageSent)
             }
             let messageID = viewModel.composerMessageHelper.draft?.messageID ?? MessageID(.empty)
             if viewModel.deliveryTime != nil {

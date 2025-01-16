@@ -1383,6 +1383,19 @@ class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
 
 }
 
+class MockUserNotificationCenterProtocol: UserNotificationCenterProtocol {
+    @FuncStub(MockUserNotificationCenterProtocol.authorizationStatus, initialReturn: .crash) var authorizationStatusStub
+    func authorizationStatus() -> UNAuthorizationStatus {
+        authorizationStatusStub()
+    }
+
+    @FuncStub(MockUserNotificationCenterProtocol.removeDeliveredNotifications) var removeDeliveredNotificationsStub
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {
+        removeDeliveredNotificationsStub(identifiers)
+    }
+
+}
+
 class MockUsersManagerProtocol: UsersManagerProtocol {
     @PropertyStub(\MockUsersManagerProtocol.users, initialGet: [UserManager]()) var usersStub
     var users: [UserManager] {

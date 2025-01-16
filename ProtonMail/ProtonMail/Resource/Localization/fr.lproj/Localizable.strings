@@ -411,6 +411,9 @@
 */
 "Cancel" = "Annuler";
 
+/* Dismiss popup action */
+"Dismiss" = "Ignorer";
+
 /* Open action */
 "Open" = "Ouvrir";
 
@@ -1819,7 +1822,7 @@
 "Your Drive storage is full" = "Votre espace de stockage Drive est plein.";
 
 /* Description of the banner alert */
-"Upgrade to get more storage." = "Changer d'abonnement pour augmenter votre espace de stockage.";
+"Upgrade to get more storage." = "Changez d'abonnement pour augmenter votre espace de stockage";
 
 /* Get more storage button action */
 "Not now" = "Plus tard";
@@ -2131,9 +2134,6 @@
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Schedule messages at any time" = "Planifiez l'envoi de messages quand vous le voulez.";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Nombre illimité de dossiers et de labels";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Jusqu'à 500 Go d'espace de stockage";
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+ %u fonctionnalités premium";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u Go d'espace de stockage total";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u To d'espace de stockage total";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Bonus annuels gratuits pour votre espace de stockage";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Votre domaine de messagerie personnalisé";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Partage de calendriers";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Votre propre alias d'adresse e-mail court @pm.me";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Personnalisation de l'heure d'envoi et de la période de mise en attente";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Application de bureau Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Historique des versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Programme Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail et toutes les fonctionnalités de productivité premium";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive avec version historique des versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail avec transfert automatique des messages";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass avec surveillance du dark web";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN avec blocage des logiciels malveillants et des publicités";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Adresse e-mail catch-all";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Affichage des disponibilités de vos collègues";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Transfert automatique des messages";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Accès en avant-première aux nouvelles fonctionnalités et applications";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u Go d'espace de stockage par utilisateur";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u adresses e-mail par utilisateur";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Nombre illimité de dossiers et de labels";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u domaines de messagerie personnalisés";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Prise en charge de clients de messagerie et applications de bureau (par IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u fois plus d'espace de stockage";
 
 /* Description of a feature of a paid subscription */
@@ -2617,3 +2695,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Fonctionnalités premium incluses";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Votre abonnement se termine bientôt.";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Réactivez votre abonnement avant le %@ pour conserver ces fonctionnalités :";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Réactiver l'abonnement";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "L'abonnement a été réactivé.";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "L'abonnement n'a pas été réactivé.";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Ne manquez aucun e-mail";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Vous voulez rester informé ?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Les notifications vous aident à garder le contrôle de votre boîte de réception sans consulter l'application.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Activez les notifications pour savoir quand vous recevez une réponse à votre e-mail.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Autoriser les notifications";

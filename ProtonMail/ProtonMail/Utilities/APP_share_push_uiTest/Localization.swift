@@ -289,6 +289,8 @@ class LocalizedString {
     lazy var _general_done_button     = NSLocalizedString("Done", comment: "Done action")
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
+    /// "Dismiss
+    lazy var _general_dismiss_button   = NSLocalizedString("Dismiss", comment: "Dismiss popup action")
 
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
@@ -1732,5 +1734,15 @@ enum L10n {
         static let reactivateSubscriptionButtonTitle = NSLocalizedString("Reactivate subscription", comment: "Title of the modal button")
         static let successMessage = NSLocalizedString("Subscription reactivated", comment: "Confirmation message after reactivation subscription")
         static let errorMessage = NSLocalizedString("Subscription reactivation failed", comment: "Error message while reactivation subscription")
+    }
+
+    struct Authorization {
+        struct Notifications {
+            static let title1 = NSLocalizedString("Don’t miss an email", comment: "Title of the authorization prompt")
+            static let title2 = NSLocalizedString("Want to stay updated?", comment: "Title of the authorization prompt")
+            static let body1 = NSLocalizedString("Notifications help you keep on top of your inbox without checking the app.", comment: "Body of the authorization prompt")
+            static let body2 = NSLocalizedString("Turn on notifications to know when you get a response to your email.", comment: "Body of the authorization prompt")
+            static let cta = NSLocalizedString("Enable push notifications", comment: "Button to authorizate notifications")
+        }
     }
 }

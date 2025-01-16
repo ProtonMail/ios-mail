@@ -30,6 +30,8 @@ final class OnboardingUpsellCoordinator {
     & HasUpsellTelemetryReporter
     & HasUserManager
 
+    typealias OnDismissCallback = @MainActor () -> Void
+
     private let dependencies: Dependencies
     private weak var rootViewController: UIViewController?
     private var cancellables: Set<AnyCancellable> = []
@@ -55,18 +57,18 @@ final class OnboardingUpsellCoordinator {
         self.rootViewController = rootViewController
     }
 
-    func start() {
+    func start(onDismiss: @escaping OnDismissCallback) {
         availablePlansHaveBeenFetched
             .compactMap { [unowned self] in plansDataSource?.availablePlans }
             .sink { [weak self] availablePlans in
                 Task { [weak self] in
-                    await self?.presentUpsellPage(availablePlans: availablePlans)
+                    await self?.presentUpsellPage(availablePlans: availablePlans, onDismiss: onDismiss)
                 }
             }
             .store(in: &cancellables)
     }
 
-    private func presentUpsellPage(availablePlans: AvailablePlans) async {
+    private func presentUpsellPage(availablePlans: AvailablePlans, onDismiss: @escaping OnDismissCallback) async {
         dependencies.upsellTelemetryReporter.prepare(entryPoint: .postOnboarding, upsellPageVariant: .plain)
 
         let model = dependencies.onboardingUpsellPageFactory.makeOnboardingUpsellPageModel(for: availablePlans.plans)
@@ -77,6 +79,7 @@ final class OnboardingUpsellCoordinator {
 
         let hosting = SheetLikeSpotlightViewController(rootView: onboardingUpsellPage)
         hosting.overrideUserInterfaceStyle = .light
+        hosting.onDismiss = onDismiss
         rootViewController?.present(hosting, animated: true)
 
         await dependencies.upsellTelemetryReporter.upsellPageDisplayed()

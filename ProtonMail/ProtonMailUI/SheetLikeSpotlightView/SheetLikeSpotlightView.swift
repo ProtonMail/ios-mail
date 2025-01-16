@@ -33,6 +33,7 @@ public struct SheetLikeSpotlightView: View {
     private let imageAlignBottom: Bool
     private let maxHeightOfTheImage: CGFloat?
     private let showNewBadge: Bool
+    private let closingMethods: Set<ClosingMethod>
 
     init(
         config: HostingProvider,
@@ -44,7 +45,8 @@ public struct SheetLikeSpotlightView: View {
         isVisible: Bool = false,
         imageAlignBottom: Bool = false,
         maxHeightOfTheImage: CGFloat? = nil,
-        showNewBadge: Bool = false
+        showNewBadge: Bool = false,
+        closingMethods: Set<ClosingMethod> = [.xInCorner]
     ) {
         self.config = config
         self.buttonTitle = buttonTitle
@@ -56,6 +58,7 @@ public struct SheetLikeSpotlightView: View {
         self.imageAlignBottom = imageAlignBottom
         self.maxHeightOfTheImage = maxHeightOfTheImage
         self.showNewBadge = showNewBadge
+        self.closingMethods = closingMethods
     }
 
     public var body: some View {
@@ -117,15 +120,17 @@ public struct SheetLikeSpotlightView: View {
                 }
 
                 HStack(alignment: .top) {
-                    Button(action: {
-                        dismissView()
-                    }, label: {
-                        Image(uiImage: IconProvider.cross)
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(ColorProvider.IconNorm)
-                            .position(CGPoint(x: 12, y: 4))
-                    })
+                    if closingMethods.contains(.xInCorner) {
+                        Button(action: {
+                            dismissView()
+                        }, label: {
+                            Image(uiImage: IconProvider.cross)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(ColorProvider.IconNorm)
+                                .position(CGPoint(x: 12, y: 4))
+                        })
+                    }
 
                     if showNewBadge {
                         Spacer()
@@ -144,18 +149,21 @@ public struct SheetLikeSpotlightView: View {
             }
             .frame(maxHeight: 169)
             .padding(.bottom, 24)
+
             Text(title)
                 .padding(.bottom, 8)
                 .padding(.horizontal, 8)
                 .foregroundColor(ColorProvider.TextNorm)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)))
                 .multilineTextAlignment(.center)
+
             Text(message)
                 .padding([.horizontal, .bottom], 16)
                 .foregroundColor(ColorProvider.TextWeak)
                 .font(Font(UIFont.adjustedFont(forTextStyle: .subheadline)))
                 .minimumScaleFactor(0.8)
                 .multilineTextAlignment(.center)
+
             Button(action: {
                 dismissView(didTapActionButton: true)
             }, label: {
@@ -166,7 +174,20 @@ public struct SheetLikeSpotlightView: View {
                     .foregroundColor(Color.white)
             })
             .clipShape(RoundedRectangle(cornerRadius: 8))
-            .padding(.bottom, 32)
+
+            if closingMethods.contains(.dismissButton) {
+                Button(action: {
+                    dismissView()
+                }, label: {
+                    Text(LocalString._general_dismiss_button)
+                })
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(ColorProvider.BrandNorm)
+                .padding(.top, 16)
+            }
+
+            Spacer()
+                .frame(height: 32)
         }
     }
 
@@ -180,6 +201,13 @@ public struct SheetLikeSpotlightView: View {
     }
 }
 
+extension SheetLikeSpotlightView {
+    enum ClosingMethod {
+        case xInCorner
+        case dismissButton
+    }
+}
+
 #Preview {
     SheetLikeSpotlightView(
         config: HostingProvider(),
@@ -187,6 +215,7 @@ public struct SheetLikeSpotlightView: View {
         message: "Set when an email should reappear in your inbox with the snooze feature, now available in the toolbar.",
         spotlightImage: .jumpToNextSpotlight,
         title: "Snooze it for later",
-        imageAlignBottom: true
+        imageAlignBottom: true,
+        closingMethods: [.xInCorner, .dismissButton]
     )
 }

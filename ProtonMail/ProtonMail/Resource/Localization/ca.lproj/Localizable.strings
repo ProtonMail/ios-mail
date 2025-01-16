@@ -411,6 +411,9 @@
 */
 "Cancel" = "Cancel·la";
 
+/* Dismiss popup action */
+"Dismiss" = "Descarta";
+
 /* Open action */
 "Open" = "Obrir";
 
@@ -2133,9 +2136,6 @@
 "Schedule messages at any time" = "Programeu missatges en qualsevol moment.";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Nombre il·limitat de carpetes i etiquetes";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+%u característiques prèmium";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB d'emmagatzematge total";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB d'emmagatzematge total";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Bonificacions anuals d'emmagatzematge gratuïtes";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "El vostre propi domini de correu electrònic personalitzat";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Compartició de calendaris";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "El vostre propi àlies de correu electrònic curt @pm.me";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Personalització de l'hora d'enviament i del temps de posposició";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Aplicació d'escriptori Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Historial de versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Programa Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail i totes les funcions de productivitat prèmium";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive amb historial de versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail amb reenviament automàtic de correu";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass amb monitoratge del web fosc";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN amb bloqueig de programaris maliciosos i d'anuncis";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Adreça de correu electrònic «capturar-ho tot»";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Consulteu la disponibilitat dels vostres companys";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Reenviament automàtic de correu electrònic";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Accés anticipat a noves aplicacions i característiques";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB d'emmagatzematge per usuari";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u adreces de correu electrònic per usuari";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Nombre il·limitat de carpetes i etiquetes";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u dominis de correu electrònic personalitzats";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Aplicació d'escriptori i compatibilitat amb clients de correu electrònic (a través d'IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u vegades més emmagatzematge";
 
 /* Description of a feature of a paid subscription */
@@ -2514,7 +2592,7 @@
 "Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Creeu fins a %u adreces de correu electrònic, incloses les @pm.me, per satisfer les vostres necessitats.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connecteu el vostre propi domini i envieu els vostres correus electrònics professionals o de marca de manera segura.";
+"Connect your own domain and send your professional or branded emails securely." = "Connecteu el vostre propi domini i envieu els correus electrònics professionals o de marca de manera segura.";
 
 /* Description of a feature of a paid subscription */
 "Open your email and calendar with one click and avoid browser distractions." = "Obriu el vostre correu electrònic i calendari amb un sol clic i eviteu les distraccions del navegador.";
@@ -2617,3 +2695,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Característiques prèmium incloses";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "La subscripció finalitzarà aviat.";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactiveu abans de %@ per a mantenir aquestes característiques:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactiva la subscripció";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "S'ha reactivat la subscripció.";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "No s'ha reactivat la subscripció.";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "No us perdeu un correu electrònic";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Voleu mantenir-vos actualitzats?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Les notificacions us ajuden a mantenir-vos al capdavant de la vostra safata d'entrada sense comprovar l'aplicació.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Activeu les notificacions per saber quan rebeu una resposta al vostre correu electrònic.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Activa les notificacions";

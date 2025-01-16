@@ -411,6 +411,9 @@
 */
 "Cancel" = "취소";
 
+/* Dismiss popup action */
+"Dismiss" = "무시";
+
 /* Open action */
 "Open" = "열기";
 
@@ -1052,7 +1055,7 @@
 "Is this bug report about an in-app purchase?" = "인앱 구매에 대한 버그 보고서입니까?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store 구매 시 앱에 제공한 기술 정보를 첨부하는 데 동의하실 경우 당사 고객 지원팀이 수동으로 서비스 계획을 활성화합니다. 여기에는 귀하의 iTunes 계정, Apple ID, 연결된 신용 카드 정보 및 기타 사용자 정보는 포함되지 않습니다. App Store 서버에서 결제 검증 및 확인에 대한 데이터만 포함됩니다.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store 구매 시 앱에 제공한 기술 정보를 첨부하는 데 동의하실 경우 당사 고객 지원팀이 수동으로 서비스 플랜을 활성화합니다. 여기에는 사용자의 iTunes 계정, Apple ID, 연결된 신용 카드 정보 및 기타 사용자 정보는 포함되지 않습니다. App Store 서버에서 결제 검증 및 확인에 대한 데이터만 포함됩니다.";
 
 /* Error message */
 "Yes, attach details of payment" = "예, 지불 내역을 첨부합니다";
@@ -2070,7 +2073,7 @@
 "Terms & conditions" = "이용 약관";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "저는 Proton Mail을 사용해왔고 귀하가 좋아할 거라고 생각합니다. Proton Mail은 당신의 사생활을 보호하는 안전한 이메일 서비스입니다. 1개월의 프리미엄 기능을 무료로 사용하려면 이 링크에 접속하세요:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "저는 Proton Mail을 사용해왔고 당신이 좋아할 거라고 생각합니다. Proton Mail은 당신의 사생활을 보호하는 안전한 이메일 서비스입니다. 1개월의 프리미엄 기능을 무료로 사용하려면 이 링크에 접속하세요:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "연락처도 Proton Mail을 사용하면 더 나은 프라이버시를 경험하실 수 있어요. 친구들을 Proton에 초대한다면, 나와 상대방 모두 무료로 프리미엄 혜택을 누릴 수 있습니다.";
@@ -2131,9 +2134,6 @@
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Schedule messages at any time" = "언제든지 메시지를 예약하세요";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "무제한 폴더 및 라벨";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "최대 500 GB 저장공간";
@@ -2211,7 +2211,7 @@
 "Customize (verb)" = "사용자 지정";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "--저희가 귀하를 도와드리기 위해, 최대한 많은 상세 사항을 제공해 주십시오--\n\n요약:\n\n한 번 이상 문제가 발생했다: 예/아니오\n문제를 재현하는 방법:\n예상 결과:\n도출된 실제 결과:\n코멘트:";
+"Bug Report Place Holder" = "--저희가 회원님을 도와드리기 위해, 최대한 많은 상세 사항을 제공해 주세요--\n\n요약:\n\n한 번 이상 문제가 발생했다: 예/아니오\n문제를 재현하는 방법:\n예상 결과:\n도출된 실제 결과:\n코멘트:";
 
 /* Checkbox to attach local application logs to the bug report. */
 "Include logs" = "로그 포함";
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+ %u개 프리미엄 기능";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB total storage";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB total storage";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Yearly free storage bonuses";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Your own custom email domain";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Calendar sharing";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel program";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive including version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all email address";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "See your colleagues’ availability";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Early access to new apps and features";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB storage per user";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u email addresses per user";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "무제한 폴더 및 라벨";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u custom email domains";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u배 더 많은 스토리지";
 
 /* Description of a feature of a paid subscription */
@@ -2617,3 +2695,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "프리미엄 가치 포함됨";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Your subscription is ending soon";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivate subscription";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Subscription reactivated";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Subscription reactivation failed";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Don’t miss an email";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Enable push notifications";

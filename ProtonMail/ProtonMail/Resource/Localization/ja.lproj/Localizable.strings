@@ -54,7 +54,7 @@
  Springboard (3D Touch) shortcuts action
  VoiceOver: email is starred
 */
-"Starred" = "星印付き";
+"Starred" = "スター付き";
 
 /*
  menu title
@@ -241,7 +241,7 @@
 "From" = "差出人";
 
 /* Title */
-"Bcc" = "BCC";
+"Bcc" = "Bcc";
 
 /* Placeholder */
 "Subject" = "件名";
@@ -262,7 +262,7 @@
 "Add nickname" = "ニックネームを追加";
 
 /* new contacts add Title */
-"Add title" = "タイトルを入力";
+"Add title" = "タイトルを追加";
 
 /* new contacts add Birthday */
 "Add birthday" = "誕生日を追加";
@@ -277,10 +277,10 @@
 "New contact" = "新しい連絡先";
 
 /* add new address action */
-"Add new address" = "新しい住所を追加";
+"Add new address" = "新しいアドレスを追加";
 
 /* new custom field action */
-"Add new custom field" = "新しい独自項目を追加";
+"Add new custom field" = "新しいカスタムフィールドを追加";
 
 /* new email action */
 "Add new email" = "新しいメールアドレスを追加";
@@ -410,6 +410,9 @@
  Title for the alert button to cancel disable content search.
 */
 "Cancel" = "キャンセル";
+
+/* Dismiss popup action */
+"Dismiss" = "却下";
 
 /* Open action */
 "Open" = "開く";
@@ -931,7 +934,7 @@
 "The size limit for attachments is 25 MB." = "添付ファイルの容量制限は 25 MB です。";
 
 /* Error */
-"Can't load the file" = "ファイルをロードできません";
+"Can't load the file" = "ファイルを読み込めません";
 
 /* Error */
 "Can't open the file" = "ファイルを開くことができません";
@@ -1409,10 +1412,10 @@
 "Parent folder" = "親フォルダー";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は元に戻せません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメール フォルダーから確認することができます。";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "この操作は取り消しできません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメール フォルダーから確認することができます。";
 
 /* Alert message when user tries to delete label */
-"This action cannot be undone." = "この操作は元に戻せません。";
+"This action cannot be undone." = "この操作は取り消しできません。";
 
 /* Alert message when user tries to discard unsaved changes */
 "Any unsaved changes will be lost." = "未保存の変更内容はすべて失われます。";
@@ -1705,7 +1708,7 @@
 "Sent by Proton Mail with zero-access encryption" = "Proton Mail のゼロアクセス暗号化による送信";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "暗号化されずに送受信されたメッセージ";
+"Stored with zero-access encryption" = "ゼロアクセス暗号化で保存されています";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "検証済みの送信者からの、エンドツーエンド暗号化済みメッセージ";
@@ -2133,9 +2136,6 @@
 "Schedule messages at any time" = "メッセージをいつでも予約できます";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "無制限のフォルダとラベル";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "500 GBまでのストレージ容量";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2283,7 +2283,7 @@
 "Custom email domains" = "カスタムメールドメイン";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "送信者変更";
+"Sender changed" = "送信者が変更されました";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "このメッセージの元の送信者はもう無効です。メッセージは既定のアドレス %@ から送信されます。";
@@ -2502,6 +2502,84 @@
 "+%u premium features" = "+ %u 個のプレミアム機能";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB total storage";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB total storage";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Yearly free storage bonuses";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Your own custom email domain";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Calendar sharing";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel program";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive including version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all email address";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "See your colleagues’ availability";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Early access to new apps and features";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB storage per user";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u email addresses per user";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "無制限のフォルダとラベル";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u custom email domains";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u倍のストレージ容量";
 
 /* Description of a feature of a paid subscription */
@@ -2617,3 +2695,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "プレミアム機能をを含む";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Your subscription is ending soon";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivate subscription";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Subscription reactivated";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Subscription reactivation failed";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Don’t miss an email";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Enable push notifications";
