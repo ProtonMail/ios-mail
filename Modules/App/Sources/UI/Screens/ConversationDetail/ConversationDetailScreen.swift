@@ -221,3 +221,16 @@ private struct ConversationDetailScreenIdentifiers {
     static let rootItem = "detail.rootItem"
     static let subjectText = "detail.subjectText"
 }
+
+extension ConversationDetailSeed {
+
+    var isOutbox: Bool {
+        switch self {
+        case .mailboxItem(let item, let selectedMailbox):
+            selectedMailbox.systemFolder == .outbox
+        case .message:
+            false
+        }
+    }
+
+}
