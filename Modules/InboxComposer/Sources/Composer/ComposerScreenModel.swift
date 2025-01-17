@@ -45,8 +45,8 @@ final class ComposerScreenModel: ObservableObject {
                 let result = await openDraft(session: session, messageId: messageId)
                 guard !isCancelled else { return }
                 switch result {
-                case .ok(let draft): // TODO: draft origin will come in the openDraft result
-                    state = .draftLoaded(draft: draft, draftOrigin: .server)
+                case .ok(let openDraft):
+                    state = .draftLoaded(draft: openDraft.draft, draftOrigin: openDraft.syncStatus.toDraftOrigin())
                 case .error(let draftError):
                     self.draftError = draftError
                 }
@@ -62,5 +62,17 @@ final class ComposerScreenModel: ObservableObject {
     enum State {
         case loadingDraft
         case draftLoaded(draft: AppDraftProtocol, draftOrigin: DraftOrigin)
+    }
+}
+
+private extension DraftSyncStatus {
+
+    func toDraftOrigin() -> DraftOrigin {
+        switch self {
+        case .cached:
+            .cache
+        case .synced:
+            .server
+        }
     }
 }
