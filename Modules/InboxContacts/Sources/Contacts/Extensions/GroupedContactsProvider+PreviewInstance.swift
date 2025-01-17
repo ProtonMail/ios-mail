@@ -27,7 +27,7 @@ extension GroupedContactsProvider {
         [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 1_000,
@@ -42,7 +42,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 0,
@@ -59,7 +59,7 @@ extension GroupedContactsProvider {
                             id: 3,
                             name: "Advisors Group: Comprehensive Wealth Management and Strategic Financial Solutions",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 4, email: "group.advisor@pm.me"),
                                 .init(id: 5, email: "group.advisor@protonmail.com"),
                                 .init(id: 6, email: "advisor.group@yahoo.com")
@@ -92,7 +92,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "B",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 13,
@@ -117,7 +117,7 @@ extension GroupedContactsProvider {
                             id: 19,
                             name: "Business Group",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 20, email: "business.group@proton.me")
                             ]
                         )
@@ -126,13 +126,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "C",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 23,
                             name: "Consultants",
                             avatarColor: "#33FF57",
-                            emails: [
+                            contacts: [
                                 .init(id: 24, email: "consultant@proton.me"),
                                 .init(id: 25, email: "consult.group@yahoo.com"),
                                 .init(id: 26, email: "group.consultants@pm.me")
@@ -144,7 +144,7 @@ extension GroupedContactsProvider {
                             id: 27,
                             name: "Corporate Team",
                             avatarColor: "#3357FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 28, email: "corp.team@gmail.com"),
                                 .init(id: 29, email: "corp.team@protonmail.com"),
                                 .init(id: 30, email: "corporate@proton.me")
@@ -177,7 +177,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "D",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 37,
@@ -205,7 +205,7 @@ extension GroupedContactsProvider {
                             id: 43,
                             name: "Development Team",
                             avatarColor: "#FF33A1",
-                            emails: [
+                            contacts: [
                                 .init(id: 44, email: "dev.team@proton.me"),
                                 .init(id: 45, email: "development@protonmail.com"),
                                 .init(id: 46, email: "dev.group@pm.me")
@@ -216,13 +216,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 47,
                             name: "Engineering Team",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 48, email: "engineering@proton.me"),
                                 .init(id: 49, email: "eng.team@protonmail.com"),
                                 .init(id: 50, email: "team.engineering@yahoo.com")
@@ -255,7 +255,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "F",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 57,
@@ -283,7 +283,7 @@ extension GroupedContactsProvider {
                             id: 63,
                             name: "Finance Group",
                             avatarColor: "#33FF57",
-                            emails: [
+                            contacts: [
                                 .init(id: 64, email: "finance.group@proton.me"),
                                 .init(id: 65, email: "group.finance@pm.me"),
                                 .init(id: 66, email: "finance@protonmail.com")
@@ -294,13 +294,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "G",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 67,
                             name: "Global Partners",
                             avatarColor: "#3357FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 68, email: "global.partners@pm.me"),
                                 .init(id: 69, email: "global@protonmail.com"),
                                 .init(id: 70, email: "partners.global@yahoo.com")
@@ -333,7 +333,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "H",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 77,
@@ -350,7 +350,7 @@ extension GroupedContactsProvider {
                             id: 80,
                             name: "Healthcare Team",
                             avatarColor: "#33FF57",
-                            emails: [
+                            contacts: [
                                 .init(id: 81, email: "health.team@proton.me"),
                                 .init(id: 82, email: "team.healthcare@protonmail.com"),
                                 .init(id: 83, email: "healthcare@pm.me")
@@ -361,13 +361,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "I",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 84,
                             name: "IT Group",
                             avatarColor: "#3357FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 85, email: "it.group@yahoo.com"),
                                 .init(id: 86, email: "group.it@protonmail.com"),
                                 .init(id: 87, email: "it.group@pm.me")
@@ -389,7 +389,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "J",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 91,
@@ -406,7 +406,7 @@ extension GroupedContactsProvider {
                             id: 94,
                             name: "Journalists Team",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 95, email: "journalist.team@pm.me"),
                                 .init(id: 96, email: "team.journalists@proton.me"),
                                 .init(id: 97, email: "journalist@protonmail.com")
@@ -417,7 +417,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "K",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 98,
@@ -444,7 +444,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "L",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 104,
@@ -461,7 +461,7 @@ extension GroupedContactsProvider {
                             id: 107,
                             name: "Legal Team",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 108, email: "legal.team@pm.me"),
                                 .init(id: 109, email: "team.legal@proton.me"),
                                 .init(id: 110, email: "legal@protonmail.com")
@@ -472,13 +472,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "M",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 111,
                             name: "Marketing Team",
                             avatarColor: "#33FF57",
-                            emails: [
+                            contacts: [
                                 .init(id: 112, email: "marketing@pm.me"),
                                 .init(id: 113, email: "team.marketing@protonmail.com"),
                                 .init(id: 114, email: "marketing@proton.me")
@@ -511,7 +511,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "N",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 121,
@@ -527,13 +527,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "O",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 124,
                             name: "Operations Group",
                             avatarColor: "#3357FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 125, email: "operations.group@proton.me"),
                                 .init(id: 126, email: "group.ops@yahoo.com"),
                                 .init(id: 127, email: "ops.group@pm.me")
@@ -544,7 +544,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "P",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 128,
@@ -571,7 +571,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "Q",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 134,
@@ -587,13 +587,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "R",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 137,
                             name: "Research Group",
                             avatarColor: "#33A1FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 138, email: "research.group@pm.me"),
                                 .init(id: 139, email: "group.research@proton.me"),
                                 .init(id: 140, email: "research@protonmail.com")
@@ -615,7 +615,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "S",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 144,
@@ -642,13 +642,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "T",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 150,
                             name: "Tech Group",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 151, email: "tech.group@proton.me"),
                                 .init(id: 152, email: "group.tech@pm.me"),
                                 .init(id: 153, email: "tech@protonmail.com")
@@ -681,7 +681,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "U",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 160,
@@ -697,13 +697,13 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "V",
-                item: [
+                items: [
                     .group(
                         .init(
                             id: 163,
                             name: "Visionaries Group",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 164, email: "visionaries@protonmail.com"),
                                 .init(id: 165, email: "vision@proton.me"),
                                 .init(id: 166, email: "group.visionaries@pm.me")
@@ -725,7 +725,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "W",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 170,
@@ -742,7 +742,7 @@ extension GroupedContactsProvider {
                             id: 173,
                             name: "Writers Team",
                             avatarColor: "#A1FF33",
-                            emails: [
+                            contacts: [
                                 .init(id: 174, email: "writers.team@pm.me"),
                                 .init(id: 175, email: "team.writers@protonmail.com"),
                                 .init(id: 176, email: "writers@proton.me")
@@ -753,7 +753,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "X",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 177,
@@ -766,7 +766,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "Y",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 180,
@@ -782,7 +782,7 @@ extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "Z",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: 183,
@@ -799,7 +799,7 @@ extension GroupedContactsProvider {
                             id: 186,
                             name: "Zebra Group",
                             avatarColor: "#3357FF",
-                            emails: [
+                            contacts: [
                                 .init(id: 187, email: "zebra.group@protonmail.com"),
                                 .init(id: 188, email: "group.zebra@pm.me"),
                                 .init(id: 189, email: "zebra@proton.me")
@@ -828,8 +828,20 @@ extension ContactItem {
 
 extension ContactGroupItem {
 
-    init(id: UInt64, name: String, avatarColor: String, emails: [ContactEmailItem]) {
-        self.init(id: Id(value: id), name: name, avatarColor: avatarColor, emails: emails)
+    init(id: UInt64, name: String, avatarColor: String, contacts: [ContactEmailItem]) {
+        self.init(
+            id: Id(value: id),
+            name: name,
+            avatarColor: avatarColor,
+            contacts: [
+                .init(
+                    id: id,
+                    name: name,
+                    avatarInformation: .init(text: "__NOT_USED__", color: avatarColor),
+                    emails: contacts
+                )
+            ]
+        )
     }
 
 }
@@ -837,7 +849,7 @@ extension ContactGroupItem {
 extension ContactEmailItem {
 
     init(id: UInt64, email: String) {
-        self.init(id: Id(value: id), email: email)
+        self.init(id: Id(value: id), email: email, isProton: false, lastUsedTime: 0)
     }
 
 }

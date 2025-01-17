@@ -75,13 +75,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -105,13 +105,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -120,7 +120,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                     .contact(.elenaErickson)
                 ]
@@ -133,7 +133,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         let expectedDisplayItems: [GroupedContacts] = [
             .init(
                 groupedBy: "",
-                item: [
+                items: [
                     .contact(.andrewAllen),
                     .contact(.evanAndrage)
                 ]
@@ -152,13 +152,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -167,7 +167,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                     .contact(.elenaErickson)
                 ]
@@ -178,7 +178,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
 
         XCTAssertEqual(sut.state, .init(search: .init(query: "", isActive: true), allItems: groupedItems))
-        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: sut.state.allItems.flatMap(\.item))])
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: sut.state.allItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
@@ -190,13 +190,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -217,13 +217,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let expectedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -244,13 +244,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     itemToDelete,
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -263,7 +263,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onDeleteItem(.contact(.vip)))
 
         XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: groupedItems, itemToDelete: itemToDelete))
-        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: groupedItems.flatMap(\.item))])
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: groupedItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
 
@@ -272,7 +272,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         let expectedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -281,7 +281,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         ]
 
         XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems, itemToDelete: nil))
-        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", item: expectedItems.flatMap(\.item))])
+        XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: expectedItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
     }
@@ -291,13 +291,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     itemToDelete,
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -327,13 +327,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     itemToDelete,
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -363,13 +363,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     itemToDelete,
                     .contact(.andrewAllen),
                     .contact(.amandaArcher)
@@ -396,13 +396,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -422,13 +422,13 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -450,7 +450,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             )
@@ -516,7 +516,7 @@ final class ContactsStateStoreTests: BaseTestCase {
 
     private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {
         items.compactMap { groupedContacts in
-            let filteredItems = groupedContacts.item.filter { item in item != itemToDelete }
+            let filteredItems = groupedContacts.items.filter { item in item != itemToDelete }
             return filteredItems.isEmpty ? nil : groupedContacts.copy(items: filteredItems)
         }
     }

@@ -28,7 +28,7 @@ enum ContactsFilterStrategy {
         }
 
         return items.compactMap { groupedContacts in
-            let filteredItems = groupedContacts.item.filter { item in
+            let filteredItems = groupedContacts.items.filter { item in
                 switch item {
                 case .contact(let contact):
                     let isMatchingOneOfEmails: ([ContactEmailItem]) -> Bool = { contactEmails in

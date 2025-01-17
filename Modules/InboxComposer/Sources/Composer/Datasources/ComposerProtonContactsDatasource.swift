@@ -29,7 +29,7 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
         switch await contactsProvider.allContacts(mailUserSession) {
         case .ok(let groupedContacts):
             let composerContacts = groupedContacts.flatMap { group in
-                group.item.flatMap { item in
+                group.items.flatMap { item in
                     switch item {
                     case .contact(let single):
                         return single.toComposerContacts()
@@ -68,7 +68,7 @@ private extension ContactGroupItem {
 
     func toComposerContact() -> ComposerContact {
         return ComposerContact(
-            type: .group(.init(name: name, totalMembers: emails.count)),
+            type: .group(.init(name: name, totalMembers: contacts.count)),
             avatarColor: Color(UIColor(hex: avatarColor))
         )
     }

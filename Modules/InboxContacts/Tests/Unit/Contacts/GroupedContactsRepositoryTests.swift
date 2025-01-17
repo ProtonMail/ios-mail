@@ -51,13 +51,13 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
         let items: [GroupedContacts] = [
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams)
                 ]
             ),
             .init(
                 groupedBy: "B",
-                item: [
+                items: [
                     .contact(.bobAinsworth),
                     .group(.businessGroup)
                 ]
