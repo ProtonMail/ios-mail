@@ -62,8 +62,10 @@ extension SystemFolderLabel {
         switch self {
         case .inbox:
             DS.Icon.icInbox
-        case .allDrafts, .drafts, .outbox:
+        case .allDrafts, .drafts:
             DS.Icon.icFile
+        case .outbox:
+            DS.Icon.icOutbox
         case .allSent, .sent:
             DS.Icon.icPaperPlane
         case .trash:

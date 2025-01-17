@@ -49,7 +49,7 @@ class SidebarScreenSnapshotTests: BaseTestCase {
 
     func testSidebarWithDataLayoutsCorrectOnIphoneX() {
         sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
-        sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
+        sidebarSpy.stubbedSystemLabels = [.inbox, .sent, .outbox]
         sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
 
         let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }

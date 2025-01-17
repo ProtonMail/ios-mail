@@ -20,17 +20,9 @@ import proton_app_uniffi
 
 extension PMSystemLabel {
 
-    static let inbox: Self = .testData(
-        id: 1,
-        systemLabel: .inbox,
-        name: "Inbox"
-    )
-
-    static let sent: Self = .testData(
-        id: 2,
-        systemLabel: .sent,
-        name: "Sent"
-    )
+    static let inbox: Self = .testData(id: 1, systemLabel: .inbox, name: "Inbox")
+    static let sent: Self = .testData(id: 2, systemLabel: .sent, name: "Sent")
+    static let outbox: Self = .testData(id: 3, systemLabel: .outbox, name: "Outbox")
 
     static func testData(
         id: UInt64 = UInt64.random(in: 1...UInt64.max),
