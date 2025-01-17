@@ -118,8 +118,12 @@ struct ConversationDetailListView: View {
         switch event {
         case .onTap:
             model.onMessageTap(messageId: uiModel.id)
-        case .onReply, .onReplyAll, .onForward:
-            toastStateStore.present(toast: .comingSoon)
+        case .onReply:
+            model.onReplyMessage(withId: uiModel.id, toastStateStore: toastStateStore)
+        case .onReplyAll:
+            model.onReplyAllMessage(withId: uiModel.id, toastStateStore: toastStateStore)
+        case .onForward:
+            model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
             model.actionSheets = model.actionSheets.copy(
                 \.mailbox, to: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)

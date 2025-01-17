@@ -36,14 +36,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
+    private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
     private let messageListCallback: LiveQueryCallbackWrapper = .init()
     private let starActionPerformer: StarActionPerformer
 
-    init(seed: ConversationDetailSeed, dependencies: Dependencies = .init()) {
+    init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, dependencies: Dependencies = .init()) {
         self.seed = seed
         self.isStarred = seed.isStarred
         self.expandedMessages = .init()
+        self.draftPresenter = draftPresenter
         self.dependencies = dependencies
         self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
         setUpCallback()
@@ -90,6 +92,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let liveQueryValues = await readLiveQueryValues()
             await updateStateToMessagesReady(with: liveQueryValues.messages)
         }
+    }
+
+    func onReplyMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
+        onReplyAction(messageId: messageId, action: .reply, toastStateStore: toastStateStore)
+    }
+
+    func onReplyAllMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
+        onReplyAction(messageId: messageId, action: .replyAll, toastStateStore: toastStateStore)
+    }
+
+    func onForwardMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
+        onReplyAction(messageId: messageId, action: .forward, toastStateStore: toastStateStore)
     }
 
     func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
@@ -376,6 +390,14 @@ extension ConversationDetailModel {
     private func updateState(_ newState: State) async {
         AppLogger.log(message: "conversation detail state \(newState.debugDescription)", category: .conversationDetail)
         state = newState
+    }
+
+    private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
+        Task {
+            await draftPresenter.handleReplyAction(for: messageId, action: action, onError: { error in
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            })
+        }
     }
 }
 

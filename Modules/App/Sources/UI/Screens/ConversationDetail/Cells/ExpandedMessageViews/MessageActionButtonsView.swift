@@ -18,16 +18,18 @@
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
+import enum proton_app_uniffi.ReplyAction
 
 struct MessageActionButtonsView: View {
     let isSingleRecipient: Bool
+    var onEvent: (ReplyAction) -> Void
 
     var body: some View {
         HStack() {
-            MessageActionButtonView(image: DS.Icon.icReply, text: L10n.Action.Send.reply)
-            MessageActionButtonView(image: DS.Icon.icReplyAll, text: L10n.Action.Send.replyAll)
+            MessageActionButtonView(image: DS.Icon.icReply, text: L10n.Action.Send.reply) { onEvent(.reply) }
+            MessageActionButtonView(image: DS.Icon.icReplyAll, text: L10n.Action.Send.replyAll) { onEvent(.replyAll) }
                 .removeViewIf(isSingleRecipient)
-            MessageActionButtonView(image: DS.Icon.icForward, text: L10n.Action.Send.forward)
+            MessageActionButtonView(image: DS.Icon.icForward, text: L10n.Action.Send.forward) { onEvent(.forward) }
         }
         .padding(.horizontal, DS.Spacing.large)
     }
@@ -37,11 +39,10 @@ private struct MessageActionButtonView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     let image: ImageResource
     let text: LocalizedStringResource
+    var onButtonTap: () -> Void
 
     var body: some View {
-        Button(action: {
-            toastStateStore.present(toast: .comingSoon)
-        }) {
+        Button(action: onButtonTap) {
             HStack(spacing: DS.Spacing.medium) {
                 Image(image)
                     .resizable()
@@ -69,5 +70,5 @@ private struct MessageActionButtonView: View {
 }
 
 #Preview {
-    MessageActionButtonsView(isSingleRecipient: false)
+    MessageActionButtonsView(isSingleRecipient: false, onEvent: { _ in })
 }

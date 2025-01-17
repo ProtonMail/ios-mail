@@ -21,30 +21,36 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
-    @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isSearchPresented = false
     @State private var isOnboardingPresented = false
+    private let userSession: MailUserSession
     private let onboardingStore: OnboardingStore
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
+        userSession: MailUserSession,
         userDefaults: UserDefaults,
+        draftPresenter: DraftPresenter,
         openedItem: MailboxMessageSeed? = nil
     ) {
         self._mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
+                draftPresenter: draftPresenter,
                 openedItem: openedItem
             )
         )
         self.onboardingStore = .init(userDefaults: userDefaults)
+        self.userSession = userSession
     }
 
     var didAppear: ((Self) -> Void)?
@@ -60,7 +66,7 @@ struct MailboxScreen: View {
                     content: { OnboardingScreen() }
                 )
                 .fullScreenCover(isPresented: $isSearchPresented) {
-                    SearchScreen()
+                    SearchScreen(userSession: userSession)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -71,9 +77,6 @@ struct MailboxScreen: View {
                 }
                 .navigationDestination(for: MailboxMessageSeed.self) { seed in
                     messageSeedDestination(seed: seed)
-                }
-                .sheet(item: $mailboxModel.presentedDraft) { presentedDraft in
-                    composerView(presentedDraft: presentedDraft)
                 }
         }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
@@ -124,7 +127,7 @@ extension MailboxScreen {
 
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
-            mailboxModel.createDraft()
+            mailboxModel.createDraft(toastStateStore: toastStateStore)
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)
@@ -138,6 +141,7 @@ extension MailboxScreen {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
                 seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox),
+                draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath
             )
         }
@@ -146,14 +150,18 @@ extension MailboxScreen {
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(seed: .message(seed), navigationPath: $mailboxModel.state.navigationPath)
+            ConversationDetailScreen(
+                seed: .message(seed),
+                draftPresenter: mailboxModel.draftPresenter,
+                navigationPath: $mailboxModel.state.navigationPath
+            )
         }
     }
 
     @ViewBuilder
-    private func composerView(presentedDraft: PresentedDraft) -> some View {
+    private func composerView(draftToPresent: DraftToPresent) -> some View {
         let contactProvider = ComposerContactProvider.productionInstance(session: mailboxModel.userSession)
-        switch presentedDraft {
+        switch draftToPresent {
         case .new(let draft):
             ComposerScreen(draft: draft, draftOrigin: .new, contactProvider: contactProvider)
         case .openDraftId(let messageId):
@@ -175,7 +183,9 @@ extension MailboxScreen {
     return MailboxScreen(
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
-        userDefaults: userDefaults
+        userSession: .init(noPointer: .init()),
+        userDefaults: userDefaults,
+        draftPresenter: .dummy
     )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)

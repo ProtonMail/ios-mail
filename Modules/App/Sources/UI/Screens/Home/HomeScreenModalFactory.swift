@@ -16,12 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxContacts
+import InboxComposer
 import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 struct HomeScreenModalFactory {
     private let makeContactsScreen: () -> ContactsScreen
+    private let makeComposerScreen: (DraftToPresent) -> ComposerScreen
 
     init(mailUserSession: MailUserSession) {
         self.makeContactsScreen = {
@@ -30,6 +32,9 @@ struct HomeScreenModalFactory {
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance()
             )
+        }
+        self.makeComposerScreen = { draftToPresent in
+            ComposerScreenFactory.makeComposer(draftToPresent: draftToPresent, mailUserSession: mailUserSession)
         }
     }
 
@@ -42,6 +47,8 @@ struct HomeScreenModalFactory {
             CreateFolderOrLabelScreen()
         case .settings:
             SettingsScreen()
+        case .draft(let draftToPresent):
+            makeComposerScreen(draftToPresent)
         }
     }
 }

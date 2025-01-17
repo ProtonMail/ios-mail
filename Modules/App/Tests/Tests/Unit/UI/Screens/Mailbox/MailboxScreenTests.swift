@@ -33,7 +33,9 @@ class MailboxScreenTests: BaseTestCase {
         sut = MailboxScreen(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox)),
-            userDefaults: userDefaults
+            userSession: .dummy,
+            userDefaults: userDefaults,
+            draftPresenter: .dummy
         )
     }
 

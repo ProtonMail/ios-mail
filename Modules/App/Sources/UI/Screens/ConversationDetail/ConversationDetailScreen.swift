@@ -26,10 +26,12 @@ struct ConversationDetailScreen: View {
     @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Binding private var navigationPath: NavigationPath
+    private let draftPresenter: DraftPresenter
 
-    init(seed: ConversationDetailSeed, navigationPath: Binding<NavigationPath>) {
-        self._model = StateObject(wrappedValue: .init(seed: seed))
+    init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
+        self._model = StateObject(wrappedValue: .init(seed: seed, draftPresenter: draftPresenter))
         self._navigationPath = .init(projectedValue: navigationPath)
+        self.draftPresenter = draftPresenter
     }
 
     var body: some View {
@@ -52,6 +54,7 @@ struct ConversationDetailScreen: View {
         }.actionSheetsFlow(
             mailbox: { model.mailbox.unsafelyUnwrapped },
             state: $model.actionSheets,
+            replyActions: handleReplyAction,
             goBackNavigation: { navigationPath.removeLast() }
         )
         .alert(
@@ -134,6 +137,14 @@ struct ConversationDetailScreen: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
+
+    private func handleReplyAction(messageId: ID, action: ReplyAction) {
+        Task {
+            await draftPresenter.handleReplyAction(for: messageId, action: action) { error in
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        }
+    }
 }
 
 private struct ModifiersForSmoothScreenTransition: ViewModifier {
@@ -173,34 +184,36 @@ private extension ConversationDetailModel.State {
 
 #Preview("From Mailbox") {
     NavigationView {
-        ConversationDetailScreen(seed:
-                .mailboxItem(
-                    item: .init(
-                        id: .random(),
-                        conversationID: .random(),
-                        type: .conversation,
-                        avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
-                        emails: "",
-                        subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
-                        date: .now,
-                        locationIcon: nil,
-                        isRead: true,
-                        isStarred: true,
-                        isSelected: false,
-                        isSenderProtonOfficial: true,
-                        messagesCount: 3,
-                        labelUIModel: MailboxLabelUIModel(
-                            labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
-                        ),
-                        attachmentsUIModel: [
-                            .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
-                        ],
-                        expirationDate: nil,
-                        snoozeDate: nil,
-                        isDraftMessage: false
+        ConversationDetailScreen(
+            seed: .mailboxItem(
+                item: .init(
+                    id: .random(),
+                    conversationID: .random(),
+                    type: .conversation,
+                    avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
+                    emails: "",
+                    subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
+                    date: .now,
+                    locationIcon: nil,
+                    isRead: true,
+                    isStarred: true,
+                    isSelected: false,
+                    isSenderProtonOfficial: true,
+                    messagesCount: 3,
+                    labelUIModel: MailboxLabelUIModel(
+                        labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                     ),
-                    selectedMailbox: .inbox
-                ), navigationPath: .constant(.init())
+                    attachmentsUIModel: [
+                        .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+                    ],
+                    expirationDate: nil,
+                    snoozeDate: nil,
+                    isDraftMessage: false
+                ),
+                selectedMailbox: .inbox
+            ),
+            draftPresenter: .dummy,
+            navigationPath: .constant(.init())
         )
     }
 }
@@ -212,7 +225,9 @@ private extension ConversationDetailModel.State {
                 remoteID: .init(value: 0),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                 sender: "him"
-            )), navigationPath: .constant(.init())
+            )),
+            draftPresenter: .dummy,
+            navigationPath: .constant(.init())
         )
     }
 }
