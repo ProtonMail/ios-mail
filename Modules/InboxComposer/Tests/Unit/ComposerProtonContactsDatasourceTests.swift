@@ -88,7 +88,7 @@ private extension GroupedContactsProvider {
         [
             .init(
                 groupedBy: "B",
-                item: [
+                items: [
                     .contact(
                         .init(
                             id: .init(value: 1),
@@ -103,8 +103,8 @@ private extension GroupedContactsProvider {
                             name: "Betty Brown",
                             avatarInformation: .init(text: "BB", color: "#FF5733"),
                             emails: [
-                                .init(id: .init(value: 3), email: "betty.brown.consulting.department.group@example.com"),
-                                .init(id: .init(value: 4), email: "betty.brown@protonmail.com")
+                                .init(id: 3, email: "betty.brown.consulting.department.group@example.com"),
+                                .init(id: 4, email: "betty.brown@protonmail.com")
                             ]
                         )
                     ),
@@ -112,16 +112,16 @@ private extension GroupedContactsProvider {
             ),
             .init(
                 groupedBy: "C",
-                item: [
+                items: [
                     .group(
                         .init(
-                            id: .init(value: 11),
+                            id: 11, 
                             name: "Corporate Team",
                             avatarColor: "#3357FF",
-                            emails: [
-                                .init(id: .init(value: 12), email: "corp.team@example.com"),
-                                .init(id: .init(value: 13), email: "corp.team@protonmail.com"),
-                                .init(id: .init(value: 14), email: "corporate@proton.me")
+                            contacts: [
+                                .init(id: 12, email: "corp.team@example.com"),
+                                .init(id: 13, email: "corp.team@protonmail.com"),
+                                .init(id: 14, email: "corporate@proton.me"),
                             ]
                         )
                     ),
@@ -131,7 +131,7 @@ private extension GroupedContactsProvider {
                             name: "Carl Cooper",
                             avatarInformation: .init(text: "CC", color: "#FF33A1"),
                             emails: [
-                                .init(id: .init(value: 17), email: "carl.cooper@protonmail.com")
+                                .init(id: 17, email: "carl.cooper@protonmail.com")
                             ]
                         )
                     ),
@@ -146,4 +146,33 @@ private extension MailUserSession {
     static func empty() -> MailUserSession {
         MailUserSession(noPointer: .init())
     }
+}
+
+private extension ContactGroupItem {
+
+    init(id: UInt64, name: String, avatarColor: String, contacts: [ContactEmailItem]) {
+        self.init(
+            id: Id(value: id),
+            name: name,
+            avatarColor: avatarColor,
+            contacts: [
+                .init(
+                    id: .init(value: id),
+                    name: name,
+                    avatarInformation: .init(text: "__NOT_USED__", color: avatarColor),
+                    emails: contacts
+                )
+            ]
+        )
+    }
+
+}
+
+
+private extension ContactEmailItem {
+
+    init(id: UInt64, email: String) {
+        self.init(id: Id(value: id), email: email, isProton: false, lastUsedTime: 0)
+    }
+
 }

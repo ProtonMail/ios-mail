@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxContacts
+import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 import UIKit
@@ -41,7 +42,7 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
             }
             return composerContacts
         case .error(let error):
-            // AppLogger. // FIXME: move logger to InboxCore
+            AppLogger.log(error: error, category: .composer)
             return []
         }
     }
@@ -68,7 +69,7 @@ private extension ContactGroupItem {
 
     func toComposerContact() -> ComposerContact {
         return ComposerContact(
-            type: .group(.init(name: name, totalMembers: contacts.count)),
+            type: .group(.init(name: name, totalMembers: contacts.flatMap(\.emails).count)),
             avatarColor: Color(UIColor(hex: avatarColor))
         )
     }
