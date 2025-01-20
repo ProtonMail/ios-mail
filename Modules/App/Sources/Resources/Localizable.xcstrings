@@ -495,7 +495,7 @@
       }
     },
     "Archive" : {
-      "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.\nMenu title of all archived emails in the sidebar.",
+      "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2180,7 +2180,7 @@
       }
     },
     "Not spam" : {
-      "comment" : "Action title for moving a message out of `Spam` to `Inbox`\nAction title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
+      "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
       "localizations" : {
         "de" : {
           "stringUnit" : {
