@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Aqli-k ad tsekreḍ iminig web akken ad tinigeḍ ɣer";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Tanaka n urmas";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "S yitran";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Tarcivt";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Irewwayen";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Akk iznan";
 
@@ -76,8 +77,8 @@
 "Sent" = "Yettwazen";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Taqecwalt";
 
@@ -85,8 +86,8 @@
 "Spam" = "Aspam";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Inermisen";
 
@@ -97,8 +98,8 @@
 "Settings" = "Iɣewwaren";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Ffeɣ";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Sekkeṛ asnas";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Ajerred";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Sefrek imiḍanen";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Rnu afaylu yeddan";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Awal uffir n usnas";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Aru";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Afati n yizen";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Udmawan";
 
@@ -403,11 +404,11 @@
 "Done" = "Immed";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Sefsex";
 
@@ -436,14 +437,14 @@
 "From:" = "Sɣur:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "I";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Anɣ. I";
 
@@ -451,9 +452,9 @@
 "Bcc:" = "Anɣ. Uff. I:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Kkes";
 
@@ -464,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tiɣimit-inek tfuk acku ulac-ik.kem taswiɛt aya neɣ ahat tettwafsex. Ttxil-k.m qqen tikelt-nniḍen.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Anadi";
 
@@ -482,8 +483,8 @@
 "Send" = "Azen";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Sɣiwes tuzna";
 
@@ -521,8 +522,8 @@
 "Save" = "Sekles";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Ẓreg";
 
@@ -587,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Anermis yettwakkes, ad yemtawi ticki tella tuqqna";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Sentem";
 
@@ -608,8 +609,8 @@
 "Later" = "Ticki";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Yensa";
 
@@ -620,10 +621,10 @@
 "Back" = "Ɣer deffir";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Ulac";
 
@@ -655,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "Ur tezmireḍ ara ad tesbaduḍ tansa %@ am tansa tamezwert acku d tawuri n lexlaṣ.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Kemmel";
 
@@ -682,8 +683,8 @@
 "Unknown Error" = "Tuccḍa tarussint";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Sali-d agbur anmeggag";
 
@@ -940,9 +941,9 @@
 "Can't open the file" = "Ur izmir ara ad d-yeldi afaylu";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Issin ugar";
 
@@ -992,8 +993,8 @@
 "Move to archive" = "Awi ar uɣbaṛ";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Awi ɣer yispamen";
 
@@ -1040,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Ad nsemter aseɣwer n wawal uffir, neɣ asexsi n PGP i yiuɣerwaḍen-agi:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Ilɣa";
 
@@ -1127,8 +1128,8 @@
 "You will be switched to %@" = "Ad tɛeddiḍ ɣer %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Titedt tebɣiḍ ad teffɣeḍ?";
 
@@ -1193,8 +1194,8 @@
 "Language" = "Tutlayt";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Inermisen uddisen";
 
@@ -1289,8 +1290,8 @@
 "Signed in as %@" = "Teqqneḍ amzun d %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Itri";
 
@@ -1301,14 +1302,14 @@
 "Mark as unread" = "Creḍ ur yettwaγra ara";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Creḍ-it yettwaɣra";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Awi ar iḍumman";
 
@@ -1322,8 +1323,8 @@
 "View message in Dark mode" = "Wali izen deg uskar ubrik";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
 
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Rmed";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Sbadu tangalt PIN";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Ales tangalt PIN";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Snifel awal uffir n tnaka n yimayl";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Snifel awal uffir";
 

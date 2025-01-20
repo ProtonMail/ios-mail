@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Stai per avviare il browser web e navigare in";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Posta in arrivo";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "Importante";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Archivio";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Bozze";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Tutta la posta";
 
@@ -76,8 +77,8 @@
 "Sent" = "Inviata";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Cestino";
 
@@ -85,8 +86,8 @@
 "Spam" = "Spam";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Contatti";
 
@@ -97,8 +98,8 @@
 "Settings" = "Impostazioni";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Esci dall'account";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Blocca l'app";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Abbonamento";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Gestisci account";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Aggiungi allegato";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Applica Password";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Componi";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Scadenza del messaggio";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Personalizzato";
 
@@ -403,11 +404,11 @@
 "Done" = "Fatto";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Annulla";
 
@@ -436,14 +437,14 @@
 "From:" = "Da:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "A";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Cc";
 
@@ -451,9 +452,9 @@
 "Bcc:" = "Ccn:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Elimina";
 
@@ -464,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La tua sessione è scaduta perché sei stato inattivo per un po' di tempo o perché è stata revocata. Effettua di nuovo il login.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Cerca";
 
@@ -482,8 +483,8 @@
 "Send" = "Invia";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Programma l'invio";
 
@@ -521,8 +522,8 @@
 "Save" = "Salva";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Modifica";
 
@@ -587,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Contatto eliminato, verrà sincronizzato quando la connessione sarà disponibile";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Conferma";
 
@@ -608,8 +609,8 @@
 "Later" = "Dopo";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Disabilitato";
 
@@ -620,10 +621,10 @@
 "Back" = "Indietro";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Nessuno";
 
@@ -655,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "Non puoi impostare l'indirizzo %@ come predefinito perché è una funzionalità a pagamento.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Continua";
 
@@ -682,8 +683,8 @@
 "Unknown Error" = "Errore sconosciuto";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Carica i contenuti remoti";
 
@@ -940,9 +941,9 @@
 "Can't open the file" = "Impossibile aprire il file";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Per saperne di più";
 
@@ -992,8 +993,8 @@
 "Move to archive" = "Sposta in archivio";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Sposta in spam";
 
@@ -1040,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Consigliamo invece di configurare una password o disabilitare PGP per i seguenti destinatari:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Notifiche";
 
@@ -1127,8 +1128,8 @@
 "You will be switched to %@" = "Passerai a %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Sei sicuro di voler uscire dall'account?";
 
@@ -1193,8 +1194,8 @@
 "Language" = "Lingua";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Contatti combinati";
 
@@ -1289,8 +1290,8 @@
 "Signed in as %@" = "Accesso effettuato come %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Segna come importante";
 
@@ -1301,14 +1302,14 @@
 "Mark as unread" = "Segna come non letta";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Segna come letta";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Sposta nel cestino";
 
@@ -1322,8 +1323,8 @@
 "View message in Dark mode" = "Visualizza il messaggio in modalità Scura";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all'app di provare l'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità. %1$@";
 
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Questa operazione eliminerà tutti i messaggi presenti nel cestino o nei spam da più di 30 giorni, incluso quelli attualmente presenti in queste cartelle.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Abilita";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Imposta codice PIN";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Conferma il codice PIN";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Cambia la password della casella di posta";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Cambia la password";
 
@@ -2502,40 +2503,40 @@
 "+%u premium features" = "+%u funzionalità premium";
 
 /* Description of a feature of a paid subscription */
-"%u GB total storage" = "%u GB total storage";
+"%u GB total storage" = "%u GB di spazio di archiviazione totale";
 
 /* Description of a feature of a paid subscription */
-"%u TB total storage" = "%u TB total storage";
+"%u TB total storage" = "%u TB di spazio di archiviazione totale";
 
 /* Description of a feature of a paid subscription */
-"Yearly free storage bonuses" = "Yearly free storage bonuses";
+"Yearly free storage bonuses" = "Bonus annuali gratuiti per lo spazio di archiviazione";
 
 /* Description of a feature of a paid subscription */
-"Your own custom email domain" = "Your own custom email domain";
+"Your own custom email domain" = "Il tuo dominio email personalizzato";
 
 /* Description of a feature of a paid subscription */
-"Calendar sharing" = "Calendar sharing";
+"Calendar sharing" = "Condivisione dei calendari";
 
 /* Description of a feature of a paid subscription */
-"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+"Your own short @pm.me email alias" = "Il tuo alias email breve @pm.me";
 
 /* Description of a feature of a paid subscription */
-"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+"Custom schedule send and snooze times" = "Pianificazione personalizzata degli orari di invio e posticipazione";
 
 /* Description of a feature of a paid subscription */
-"Proton Mail desktop app" = "Proton Mail desktop app";
+"Proton Mail desktop app" = "App desktop di Proton Mail";
 
 /* Description of a feature of a paid subscription */
-"Version history" = "Version history";
+"Version history" = "Cronologia delle versioni";
 
 /* Description of a feature of a paid subscription */
-"Proton Sentinel program" = "Proton Sentinel program";
+"Proton Sentinel program" = "Programma Proton Sentinel";
 
 /* Description of a feature of a paid subscription */
-"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+"Proton Mail and all premium productivity features" = "Proton Mail e tutte le funzionalità di produttività premium";
 
 /* Description of a feature of a paid subscription */
-"Proton Drive including version history" = "Proton Drive including version history";
+"Proton Drive including version history" = "Proton Drive inclusa la cronologia delle versioni";
 
 /* Description of a feature of a paid subscription */
 "Proton Pass" = "Proton Pass";
@@ -2544,40 +2545,40 @@
 "Proton VPN" = "Proton VPN";
 
 /* Description of a feature of a paid subscription */
-"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+"Proton Mail with automatic email forwarding" = "Proton Mail con inoltro automatico delle email";
 
 /* Description of a feature of a paid subscription */
-"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+"Proton Pass with Dark Web Monitoring" = "Proton Pass con monitoraggio del Dark Web";
 
 /* Description of a feature of a paid subscription */
-"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+"Proton VPN with malware and ad-blocking" = "Proton VPN con blocco di malware e annunci";
 
 /* Description of a feature of a paid subscription */
-"Catch-all email address" = "Catch-all email address";
+"Catch-all email address" = "Indirizzi email catch-all";
 
 /* Description of a feature of a paid subscription */
-"See your colleagues’ availability" = "See your colleagues’ availability";
+"See your colleagues’ availability" = "Visualizza la disponibilità dei colleghi";
 
 /* Description of a feature of a paid subscription */
-"Automatic email forwarding" = "Automatic email forwarding";
+"Automatic email forwarding" = "Inoltro automatico delle email";
 
 /* Description of a feature of a paid subscription */
-"Early access to new apps and features" = "Early access to new apps and features";
+"Early access to new apps and features" = "Accesso anticipato a nuove app e funzionalità";
 
 /* Description of a feature of a paid subscription */
-"%u GB storage per user" = "%u GB storage per user";
+"%u GB storage per user" = "%u GB di spazio di archiviazione per utente";
 
 /* Description of a feature of a paid subscription */
-"%u email addresses per user" = "%u email addresses per user";
+"%u email addresses per user" = "%u indirizzi email per utente";
 
 /* Description of a feature of a paid subscription */
 "Unlimited folders and labels" = "Cartelle ed etichette illimitate";
 
 /* Description of a feature of a paid subscription */
-"%u custom email domains" = "%u custom email domains";
+"%u custom email domains" = "%u domini email personalizzati";
 
 /* Description of a feature of a paid subscription */
-"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
+"Desktop app and email client support (via IMAP)" = "App desktop e supporto per client email (tramite IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux spazio di archiviazione in più";
@@ -2697,31 +2698,31 @@
 "Premium value included" = "Prodotti premium inclusi";
 
 /* The title of the modal */
-"Your subscription is ending soon" = "Your subscription is ending soon";
+"Your subscription is ending soon" = "Il tuo abbonamento sta per scadere";
 
 /* The subtitle of the modal */
-"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+"Reactivate by %@ to keep these features:" = "Riattiva entro il %@ per mantenere queste funzionalità:";
 
 /* Title of the modal button */
-"Reactivate subscription" = "Reactivate subscription";
+"Reactivate subscription" = "Riattiva l'abbonamento";
 
 /* Confirmation message after reactivation subscription */
-"Subscription reactivated" = "Subscription reactivated";
+"Subscription reactivated" = "Abbonamento riattivato";
 
 /* Error message while reactivation subscription */
-"Subscription reactivation failed" = "Subscription reactivation failed";
+"Subscription reactivation failed" = "Riattivazione dell'abbonamento non riuscita";
 
 /* Title of the authorization prompt */
-"Don’t miss an email" = "Don’t miss an email";
+"Don’t miss an email" = "Non perdere un'email";
 
 /* Title of the authorization prompt */
-"Want to stay updated?" = "Want to stay updated?";
+"Want to stay updated?" = "Vuoi rimanere aggiornato?";
 
 /* Body of the authorization prompt */
-"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+"Notifications help you keep on top of your inbox without checking the app." = "Le notifiche ti aiutano a tenere sotto controllo la tua casella di posta senza controllare l'app.";
 
 /* Body of the authorization prompt */
-"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
+"Turn on notifications to know when you get a response to your email." = "Attiva le notifiche per sapere quando ricevi una risposta alla tua email.";
 
 /* Button to authorizate notifications */
-"Enable push notifications" = "Enable push notifications";
+"Enable push notifications" = "Attiva le notifiche push";
