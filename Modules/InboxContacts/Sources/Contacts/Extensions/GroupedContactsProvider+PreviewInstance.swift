@@ -816,31 +816,28 @@ extension GroupedContactsProvider {
 extension ContactItem {
 
     init(id: UInt64, name: String, avatarInformation: AvatarInformation, emails: [ContactEmailItem]) {
-        self.init(
-            id: Id(value: id),
-            name: name,
-            avatarInformation: avatarInformation,
-            emails: emails
-        )
+        self.init(id: Id(value: id), name: name, avatarInformation: avatarInformation, emails: emails)
     }
 
 }
 
 extension ContactGroupItem {
 
-    init(id: UInt64, name: String, avatarColor: String, contacts: [ContactEmailItem]) {
+    init(id: UInt64, name: String, avatarColor: String, contacts emailItems: [ContactEmailItem]) {
+        let contactItems: [ContactItem] = emailItems.map { contactEmail in
+            ContactItem(
+                id: contactEmail.id,
+                name: contactEmail.email,
+                avatarInformation: .init(text: "__NOT_USED__", color: avatarColor),
+                emails: [contactEmail]
+            )
+        }
+        
         self.init(
             id: Id(value: id),
             name: name,
             avatarColor: avatarColor,
-            contacts: [
-                .init(
-                    id: id,
-                    name: name,
-                    avatarInformation: .init(text: "__NOT_USED__", color: avatarColor),
-                    emails: contacts
-                )
-            ]
+            contacts: contactItems
         )
     }
 
