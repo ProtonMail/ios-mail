@@ -33,15 +33,8 @@ struct MailboxListView: View {
 
     var body: some View {
         VStack(spacing: .zero) {
-            unreadFilterView()
-                .background(
-                    DS.Color.Background.norm
-                        .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
-                )
-                .zIndex(1)
-
+            unreadFilter()
             mailboxListView()
-
         }
         .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
     }
@@ -115,8 +108,16 @@ extension MailboxListView {
         }
     }
 
-    private func unreadFilterView() -> some View {
-        UnreadFilterBarView(state: $model.state.filterBar)
+    @ViewBuilder
+    private func unreadFilter() -> some View {
+        if model.shouldDisplayUnreadFilter {
+            UnreadFilterBarView(state: $model.state.filterBar)
+                .background(
+                    DS.Color.Background.norm
+                        .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
+                )
+                .zIndex(1)
+        }
     }
 }
 
@@ -130,4 +131,12 @@ extension MailboxListView {
             appRoute: route
         )
     )
+}
+
+extension MailboxModel {
+
+    var shouldDisplayUnreadFilter: Bool {
+        !isDraft && !isOutbox
+    }
+
 }

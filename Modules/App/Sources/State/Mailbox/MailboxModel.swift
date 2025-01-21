@@ -62,6 +62,14 @@ final class MailboxModel: ObservableObject {
         mailbox?.viewMode() ?? .conversations
     }
 
+    var isOutbox: Bool {
+        selectedMailbox.systemFolder == .outbox
+    }
+
+    var isDraft: Bool {
+        [SystemFolderLabel.drafts, .allDrafts].contains(selectedMailbox.systemFolder)
+    }
+
     private var messagesShouldDisplaySenderEmail: Bool {
         let systemFolder = selectedMailbox.systemFolder
         return ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
