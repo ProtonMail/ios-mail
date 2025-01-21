@@ -405,6 +405,7 @@ extension MailboxModel {
 
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
+        guard !readOnlyLocation else { return }
         isSelected
         ? selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
         : selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
