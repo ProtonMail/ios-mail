@@ -66,10 +66,6 @@ final class MailboxModel: ObservableObject {
         selectedMailbox.systemFolder == .outbox
     }
 
-    var isDraft: Bool {
-        [SystemFolderLabel.drafts, .allDrafts].contains(selectedMailbox.systemFolder)
-    }
-
     private var messagesShouldDisplaySenderEmail: Bool {
         let systemFolder = selectedMailbox.systemFolder
         return ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
@@ -405,7 +401,7 @@ extension MailboxModel {
 
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
-        guard !readOnlyLocation else { return }
+        guard !isOutbox else { return }
         isSelected
         ? selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
         : selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())

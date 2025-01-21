@@ -43,7 +43,7 @@ struct MailboxListView: View {
 extension MailboxListView {
 
     private func disableSwipeActionIfNeeded(_ swipeAction: SwipeAction) -> SwipeAction {
-        if swipeAction.isActionAssigned(systemFolder: model.selectedMailbox.systemFolder) && !model.readOnlyLocation {
+        if swipeAction.isActionAssigned(systemFolder: model.selectedMailbox.systemFolder) && !model.isOutbox {
             swipeAction
         } else {
             .none
@@ -112,7 +112,7 @@ extension MailboxListView {
 
     @ViewBuilder
     private func unreadFilter() -> some View {
-        if !model.readOnlyLocation {
+        if !model.isOutbox {
             UnreadFilterBarView(state: $model.state.filterBar)
                 .background(
                     DS.Color.Background.norm
@@ -133,12 +133,4 @@ extension MailboxListView {
             appRoute: route
         )
     )
-}
-
-extension MailboxModel {
-
-    var readOnlyLocation: Bool {
-        isDraft || isOutbox
-    }
-
 }
