@@ -34,6 +34,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
     @Published var attachmentIDToOpen: ID?
 
+    var isOutbox: Bool {
+        seed.isOutbox
+    }
+
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
     private let dependencies: Dependencies

@@ -35,7 +35,7 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if let mailbox = model.mailbox, let conversationID = model.conversationID {
+            if let mailbox = model.mailbox, let conversationID = model.conversationID, !model.isOutbox {
                 ConversationActionBarView(
                     conversationID: conversationID,
                     bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
@@ -82,7 +82,6 @@ struct ConversationDetailScreen: View {
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
-            .padding(.bottom, proxy.safeAreaInsets.bottom + 45)
             .navigationBarTitleDisplayMode(.inline)
             .conversationTopToolbar(
                 title: topToolbarTitle,
@@ -97,6 +96,8 @@ struct ConversationDetailScreen: View {
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
+            .ignoresSafeArea(.all, edges: .bottom)
+            .padding(.bottom, model.isOutbox ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
