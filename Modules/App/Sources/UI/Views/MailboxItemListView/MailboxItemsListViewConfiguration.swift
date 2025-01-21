@@ -24,6 +24,8 @@ struct MailboxItemsListViewConfiguration {
     let selectionState: SelectionModeState
     /// Determines whether the actions are for messages or conversations
     let itemTypeForActionBar: MailboxItemType
+    /// Determines whether to display star button or not
+    let starActionAvailable: Bool
     /// Swipe actions to be applied to the cells. If  `nil` no actions are configured.
     var swipeActions: MailboxItemsListSwipeActions?
     /// Listener for events related to the list.

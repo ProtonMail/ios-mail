@@ -23,6 +23,7 @@ struct MailboxItemCell: View {
 
     let uiModel: MailboxItemCellUIModel
     let isParentListSelectionEmpty: Bool
+    let starActionAvailable: Bool
     let onEvent: (MailboxItemCellEvent) -> Void
 
     private var textColor: Color {
@@ -105,6 +106,14 @@ extension MailboxItemCell {
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.subjectText)
 
             Spacer()
+            starView
+        }
+        .frame(height: 21.0)
+    }
+
+    @ViewBuilder
+    private var starView: some View {
+        if starActionAvailable {
             Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
                 .resizable()
                 .square(size: 16)
@@ -114,7 +123,6 @@ extension MailboxItemCell {
                 }
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.starIcon)
         }
-        .frame(height: 21.0)
     }
 
     @ViewBuilder
@@ -308,7 +316,12 @@ enum MailboxItemCellEvent {
 
 #Preview {
     VStack {
-        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton1, isParentListSelectionEmpty: true, onEvent: { _ in })
+        MailboxItemCell(
+            uiModel: MailboxItemCellUIModel.proton1,
+            isParentListSelectionEmpty: true,
+            starActionAvailable: true, 
+            onEvent: { _ in }
+        )
 
         MailboxItemCell(
             uiModel: .init(
@@ -337,6 +350,7 @@ enum MailboxItemCellEvent {
                 isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
+            starActionAvailable: true, 
             onEvent: { _ in }
         )
 
@@ -368,10 +382,16 @@ enum MailboxItemCellEvent {
                 isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
+            starActionAvailable: true,
             onEvent: { _ in }
         )
 
-        MailboxItemCell(uiModel: MailboxItemCellUIModel.proton2, isParentListSelectionEmpty: true, onEvent: { _ in })
+        MailboxItemCell(
+            uiModel: MailboxItemCellUIModel.proton2,
+            isParentListSelectionEmpty: true,
+            starActionAvailable: true,
+            onEvent: { _ in }
+        )
     }
 }
 

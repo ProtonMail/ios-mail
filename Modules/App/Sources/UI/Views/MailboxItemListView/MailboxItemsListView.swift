@@ -20,7 +20,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MailboxItemsListView<EmptyView: View>: View {
-    @State var config: MailboxItemsListViewConfiguration
+    let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
 
@@ -34,7 +34,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
         config: MailboxItemsListViewConfiguration,
         @ViewBuilder emptyView: () -> EmptyView
     ) {
-        self._config = State(initialValue: config)
+        self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
     }
@@ -87,6 +87,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
             MailboxItemCell(
                 uiModel: item,
                 isParentListSelectionEmpty: !selectionState.hasItems,
+                starActionAvailable: config.starActionAvailable,
                 onEvent: { config.cellEventHandler?.onCellEvent($0, item) }
             )
             .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
@@ -192,7 +193,8 @@ private extension SelectionModeState {
             return .init(
                 dataSource: dataSource,
                 selectionState: selectionState,
-                itemTypeForActionBar: .conversation,
+                itemTypeForActionBar: .conversation, 
+                starActionAvailable: true,
                 swipeActions: .init(leadingSwipe: { .toggleReadStatus }, trailingSwipe: { .moveToTrash })
             )
         }

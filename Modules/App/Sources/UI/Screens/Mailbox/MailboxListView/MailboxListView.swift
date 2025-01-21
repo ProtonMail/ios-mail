@@ -54,7 +54,8 @@ extension MailboxListView {
         var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
             selectionState: model.selectionMode.selectionState,
-            itemTypeForActionBar: model.viewMode.itemType
+            itemTypeForActionBar: model.viewMode.itemType,
+            starActionAvailable: !model.isOutbox
         )
 
         config.swipeActions = .init(
