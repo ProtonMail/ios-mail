@@ -57,6 +57,12 @@ private extension DraftErrorReason {
             "message update is not a draft"
         case .messageDoesNotExist:
             "message does not exist"
+        case .alreadySent:
+            "message has already been sent"
+        case .messageCanNotBeUndoSent:
+            "message can't undo send"
+        case .sendCanNoLongerBeUndone:
+            "send cannot longer be undone"
         }
     }
 }
