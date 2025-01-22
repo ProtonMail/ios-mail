@@ -23,6 +23,7 @@ import SwiftUI
 struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
+    let isOutbox: Bool
     let onEvent: (MessageDetailsEvent) -> Void
 
     private let messageDetailsLeftColumnWidth: CGFloat = 80
@@ -50,7 +51,9 @@ struct MessageDetailsView: View {
                         recipientsView
                     }
                     Spacer(minLength: DS.Spacing.moderatelyLarge)
-                    headerActionsView
+                    if !isOutbox {
+                        headerActionsView
+                    }
                 }
             }
             .padding(.leading, DS.Spacing.large)
@@ -389,7 +392,7 @@ extension Array where Element == MessageDetail.Recipient {
             .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ])
 
-    return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, onEvent: { _ in })
+    return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, isOutbox: false, onEvent: { _ in })
 }
 
 enum MessageDetailsPreviewProvider {

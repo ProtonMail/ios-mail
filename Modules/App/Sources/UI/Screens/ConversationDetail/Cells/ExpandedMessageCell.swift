@@ -60,7 +60,7 @@ struct ExpandedMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
 
             VStack(spacing: .zero) {
-                MessageDetailsView(uiModel: uiModel.messageDetails, onEvent: { event in
+                MessageDetailsView(uiModel: uiModel.messageDetails, isOutbox: isOutbox, onEvent: { event in
                     switch event {
                     case .onTap:
                         onEvent(.onTap)
