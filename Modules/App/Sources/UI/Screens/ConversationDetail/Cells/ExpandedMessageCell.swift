@@ -27,6 +27,7 @@ struct ExpandedMessageCell: View {
     @Binding var attachmentIDToOpen: ID?
 
     private let hasShadow: Bool
+    private let isOutbox: Bool
 
     // Determines how the horizontal edges of the card are rendered to give visual
     // continuation to the list (only visible in landscape mode).
@@ -39,6 +40,7 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
+        isOutbox: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
         htmlLoaded: @escaping () -> Void
@@ -47,6 +49,7 @@ struct ExpandedMessageCell: View {
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
+        self.isOutbox = isOutbox
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
         self.htmlLoaded = htmlLoaded
@@ -87,9 +90,11 @@ struct ExpandedMessageCell: View {
                     htmlLoaded: htmlLoaded
                 )
 
-                MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
-                    .padding(.top, DS.Spacing.moderatelyLarge)
-                    .padding(.bottom, DS.Spacing.large)
+                if !isOutbox {
+                    MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
+                        .padding(.top, DS.Spacing.moderatelyLarge)
+                        .padding(.bottom, DS.Spacing.large)
+                }
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
             .padding(.top, cardCornerRadius)
@@ -166,6 +171,7 @@ private extension MessageBody {
             ),
             hasShadow: false,
             isFirstCell: true, 
+            isOutbox: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
@@ -182,6 +188,7 @@ private extension MessageBody {
             ),
             hasShadow: true,
             isFirstCell: false, 
+            isOutbox: false, 
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
