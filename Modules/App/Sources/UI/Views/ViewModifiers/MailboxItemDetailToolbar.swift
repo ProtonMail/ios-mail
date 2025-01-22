@@ -22,9 +22,9 @@ import SwiftUI
 struct ConversationToolbar<TrailingButton: View>: ViewModifier {
     @Environment(\.presentationMode) var presentationMode
     private let title: AttributedString
-    private let trailingButton: () -> TrailingButton
+    private let trailingButton: () -> TrailingButton?
 
-    init(title: AttributedString, trailingButton: @escaping () -> TrailingButton) {
+    init(title: AttributedString, trailingButton: @escaping () -> TrailingButton?) {
         self.title = title
         self.trailingButton = trailingButton
     }

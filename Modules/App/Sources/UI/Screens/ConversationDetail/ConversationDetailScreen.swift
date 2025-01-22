@@ -49,7 +49,8 @@ struct ConversationDetailScreen: View {
                     }
                 )
             }
-        }.actionSheetsFlow(
+        }
+        .actionSheetsFlow(
             mailbox: { model.mailbox.unsafelyUnwrapped },
             state: $model.actionSheets,
             goBackNavigation: { navigationPath.removeLast() }
@@ -83,17 +84,7 @@ struct ConversationDetailScreen: View {
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .conversationTopToolbar(
-                title: topToolbarTitle,
-                trailingButton: {
-                    Button(action: {
-                        model.toggleStarState()
-                    }, label: {
-                        Image(model.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                            .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                    })
-                }
-            )
+            .conversationTopToolbar(title: topToolbarTitle, trailingButton: { navigationTrailingButton })
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .ignoresSafeArea(.all, edges: .bottom)
@@ -134,6 +125,18 @@ struct ConversationDetailScreen: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
+    }
+
+    @ViewBuilder
+    private var navigationTrailingButton: some View {
+        if !model.isOutbox {
+            Button(action: {
+                model.toggleStarState()
+            }, label: {
+                Image(model.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
+                    .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+            })
+        }
     }
 }
 
