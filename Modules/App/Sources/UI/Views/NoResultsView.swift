@@ -70,7 +70,7 @@ extension NoResultsView {
             case .mailbox(isUnreadFilterOn: true): L10n.Mailbox.EmptyState.titleForUnread
             case .mailbox(isUnreadFilterOn: false): L10n.Mailbox.EmptyState.title
             case .search: L10n.Search.noResultsTitle
-            case .outbox: LocalizedStringResource(stringLiteral: "Nothing in Outbox") // FIXME: - To localize
+            case .outbox: L10n.Mailbox.EmptyOutbox.title
             }
         }
 
@@ -78,7 +78,7 @@ extension NoResultsView {
             switch self {
             case .mailbox: L10n.Mailbox.EmptyState.message
             case .search: L10n.Search.noResultsSubtitle
-            case .outbox: LocalizedStringResource(stringLiteral: "All messages have been sent") // FIXME: - To localize
+            case .outbox: L10n.Mailbox.EmptyOutbox.message
             }
         }
     }

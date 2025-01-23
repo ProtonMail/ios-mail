@@ -26,7 +26,7 @@ struct SendingTag: View {
                 .resizable()
                 .square(size: 14)
                 .foregroundStyle(DS.Color.Notification.success)
-            Text("Sending..".notLocalized) // FIXME: - Localize
+            Text(L10n.Mailbox.Item.sending)
                 .foregroundStyle(DS.Color.Notification.success)
                 .font(.caption)
         }

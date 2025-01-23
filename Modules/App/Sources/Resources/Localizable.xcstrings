@@ -407,6 +407,9 @@
         }
       }
     },
+    "All messages have been sent" : {
+      "comment" : "Outbox empty state message."
+    },
     "All Sent" : {
       "comment" : "Menu title of all sent emails in the sidebar.",
       "localizations" : {
@@ -2226,6 +2229,9 @@
         }
       }
     },
+    "Nothing in Outbox" : {
+      "comment" : "Outbox empty state title."
+    },
     "Official" : {
       "comment" : "Proton official badge title.",
       "localizations" : {
@@ -2689,6 +2695,9 @@
           }
         }
       }
+    },
+    "Sending.." : {
+      "comment" : "Title of a tag displayed for each message that is in the outbox with sending status"
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar.",

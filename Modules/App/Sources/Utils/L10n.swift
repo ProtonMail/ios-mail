@@ -199,6 +199,17 @@ enum L10n {
             )
         }
 
+        enum EmptyOutbox {
+            static let title = LocalizedStringResource(
+                "Nothing in Outbox",
+                comment: "Outbox empty state title."
+            )
+            static let message = LocalizedStringResource(
+                "All messages have been sent",
+                comment: "Outbox empty state message."
+            )
+        }
+
         enum Item {
             static func expiresIn(value: String) -> LocalizedStringResource {
                 .init(
@@ -217,6 +228,10 @@ enum L10n {
                 )
             }
             static let noRecipient = LocalizedStringResource("(No Recipient)", comment: "No recipent placeholder.")
+            static let sending = LocalizedStringResource(
+                "Sending..",
+                comment: "Title of a tag displayed for each message that is in the outbox with sending status"
+            )
         }
 
         enum SystemFolder {
