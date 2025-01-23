@@ -20,7 +20,6 @@ import SwiftUI
 
 struct NoResultsView: View {
     @Environment(\.mainWindowSize) private var mainWindowSize: CGSize
-
     let variant: Variant
 
     var body: some View {
@@ -56,11 +55,13 @@ extension NoResultsView {
     enum Variant {
         case mailbox(isUnreadFilterOn: Bool)
         case search
+        case outbox
 
         var image: ImageResource {
             switch self {
             case .mailbox: DS.Images.emptyMailbox
             case .search: DS.Images.searchNoResults
+            case .outbox: DS.Images.emptyOutbox
             }
         }
 
@@ -69,6 +70,7 @@ extension NoResultsView {
             case .mailbox(isUnreadFilterOn: true): L10n.Mailbox.EmptyState.titleForUnread
             case .mailbox(isUnreadFilterOn: false): L10n.Mailbox.EmptyState.title
             case .search: L10n.Search.noResultsTitle
+            case .outbox: LocalizedStringResource(stringLiteral: "Nothing in Outbox") // FIXME: - To localize
             }
         }
 
@@ -76,6 +78,7 @@ extension NoResultsView {
             switch self {
             case .mailbox: L10n.Mailbox.EmptyState.message
             case .search: L10n.Search.noResultsSubtitle
+            case .outbox: LocalizedStringResource(stringLiteral: "All messages have been sent") // FIXME: - To localize
             }
         }
     }
@@ -93,5 +96,10 @@ extension NoResultsView {
 
 #Preview("Empty search") {
     NoResultsView(variant: .search)
+        .environment(\.mainWindowSize, .init(width: 0, height: 750))
+}
+
+#Preview("Empty outbox") {
+    NoResultsView(variant: .outbox)
         .environment(\.mainWindowSize, .init(width: 0, height: 750))
 }
