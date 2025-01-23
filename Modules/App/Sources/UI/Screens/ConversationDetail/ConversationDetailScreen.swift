@@ -136,6 +136,9 @@ struct ConversationDetailScreen: View {
                 Image(model.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
                     .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
             })
+        } else {
+            Color.clear
+                .square(size: 40)
         }
     }
 }
