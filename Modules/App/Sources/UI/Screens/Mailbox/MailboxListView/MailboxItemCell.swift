@@ -63,7 +63,7 @@ extension MailboxItemCell {
             attachmentRowView
             labelsRowView
             if isSending {
-                SendingTag()
+                SendingTag(variant: .sending)
             }
         }
         .contentShape(Rectangle())

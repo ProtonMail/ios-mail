@@ -230,7 +230,11 @@ enum L10n {
             static let noRecipient = LocalizedStringResource("(No Recipient)", comment: "No recipent placeholder.")
             static let sending = LocalizedStringResource(
                 "Sending..",
-                comment: "Title of a tag displayed for each message that is in the outbox with sending status"
+                comment: "Title of a tag displayed for each message that is in the outbox with sending status."
+            )
+            static let sendingFailure = LocalizedStringResource(
+                "Failed to Send",
+                comment: "Title of a tag displayed for each message that failed to send."
             )
         }
 

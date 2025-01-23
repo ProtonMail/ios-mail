@@ -19,22 +19,28 @@ import SwiftUI
 import InboxDesignSystem
 
 struct SendingTag: View {
+    let variant: Variant
+
+    enum Variant: CaseIterable {
+        case sending
+        case failure
+    }
 
     var body: some View {
         HStack(alignment: .center, spacing: DS.Spacing.compact) {
-            Image(DS.Icon.icPaperPlane)
+            Image(variant.icon)
                 .resizable()
                 .square(size: 14)
-                .foregroundStyle(DS.Color.Notification.success)
-            Text(L10n.Mailbox.Item.sending)
-                .foregroundStyle(DS.Color.Notification.success)
+                .foregroundStyle(variant.color)
+            Text(variant.title)
+                .foregroundStyle(variant.color)
                 .font(.caption)
         }
         .padding(.horizontal, DS.Spacing.standard)
         .padding(.vertical, DS.Spacing.compact)
         .overlay {
             Capsule()
-                .stroke(DS.Color.Notification.success, lineWidth: 1)
+                .stroke(variant.color, lineWidth: 1)
         }
     }
 
@@ -42,6 +48,38 @@ struct SendingTag: View {
 
 #Preview {
     ZStack(alignment: .center, content: {
-        SendingTag()
+        VStack {
+            SendingTag(variant: .sending)
+            SendingTag(variant: .failure)
+        }
     })
+}
+
+private extension SendingTag.Variant {
+    var title: LocalizedStringResource {
+        switch self {
+        case .sending:
+            L10n.Mailbox.Item.sending
+        case .failure:
+            L10n.Mailbox.Item.sendingFailure
+        }
+    }
+
+    var icon: ImageResource {
+        switch self {
+        case .sending:
+            DS.Icon.icPaperPlane
+        case .failure:
+            DS.Icon.icExclamationCircle
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .sending:
+            DS.Color.Notification.success
+        case .failure:
+            DS.Color.Notification.error
+        }
+    }
 }

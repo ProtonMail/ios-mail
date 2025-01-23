@@ -24,6 +24,7 @@ extension XCTestCase {
     public func assertSelfSizingSnapshot(
         of view: some View,
         styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+        drawHierarchyInKeyWindow: Bool = false,
         preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
         named name: String? = nil,
         record recording: Bool = false,
@@ -37,6 +38,7 @@ extension XCTestCase {
         assertCustomHeightSnapshot(
             matching: view,
             styles: styles,
+            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
             preferredHeight: view.calculatePreferredHeight(preferredWidth: preferredWidth),
             preferredWidth: preferredWidth,
             named: name,
@@ -83,6 +85,7 @@ extension XCTestCase {
     public func assertCustomHeightSnapshot(
         matching view: UIView,
         styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+        drawHierarchyInKeyWindow: Bool = false,
         preferredHeight: CGFloat,
         preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
         named name: String? = nil,
@@ -97,7 +100,10 @@ extension XCTestCase {
 
             assertSnapshot(
                 of: view,
-                as: .image(size: .init(width: preferredWidth, height: preferredHeight)),
+                as: .image(
+                    drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+                    size: .init(width: preferredWidth, height: preferredHeight)
+                ),
                 named: suffixedName(name: name, withStyle: style),
                 record: recording,
                 timeout: timeout,
