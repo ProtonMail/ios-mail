@@ -31,9 +31,10 @@ extension View {
     func actionSheetsFlow(
         mailbox: @escaping () -> Mailbox,
         state: Binding<MailboxActionSheetsState>,
+        replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)? = nil
     ) -> some View {
-        modifier(MailboxActionSheets(mailbox: mailbox, state: state, goBackNavigation: goBackNavigation))
+        modifier(MailboxActionSheets(mailbox: mailbox, state: state, replyActions: replyActions, goBackNavigation: goBackNavigation))
     }
 }
 
@@ -41,15 +42,18 @@ private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let mailbox: () -> Mailbox
+    private let replyActions: ReplyActionsHandler
     private let goBackNavigation: (() -> Void)?
 
     init(
         mailbox: @escaping () -> Mailbox, 
         state: Binding<MailboxActionSheetsState>,
+        replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)?
     ) {
         self.mailbox = mailbox
         self._state = state
+        self.replyActions = replyActions
         self.goBackNavigation = goBackNavigation
     }
 
@@ -87,6 +91,7 @@ private struct MailboxActionSheets: ViewModifier {
             readActionPerformerActions: .productionInstance,
             deleteActions: .productionInstance,
             moveToActions: .productionInstance,
+            replyActions: replyActions,
             mailUserSession: AppContext.shared.userSession,
             navigation: navigation
         ).pickerViewStyle([.large])

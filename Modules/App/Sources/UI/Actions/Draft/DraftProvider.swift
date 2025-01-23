@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
-extension GroupedContacts {
+struct DraftProvider {
+    let makeDraft: (_ session: MailUserSession, _ createMode: DraftCreateMode) async -> NewDraftResult
+}
 
-    func copy(items: [ContactItemType]) -> Self {
-        .init(groupedBy: groupedBy, items: items)
+extension DraftProvider {
+
+    static var productionInstance: Self {
+        .init(makeDraft: newDraft)
     }
 
+    static var dummy: Self {
+        .init(makeDraft: { _, _  in  return NewDraftResult.ok(.init(noPointer: .init())) })
+    }
 }

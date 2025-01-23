@@ -57,12 +57,12 @@ final class ContactsController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        groupedContacts[section].item.count
+        groupedContacts[section].items.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = groupedContacts[indexPath.section]
-        let contactType = section.item[indexPath.row]
+        let contactType = section.items[indexPath.row]
 
         switch contactType {
         case .contact(let contactItem):
@@ -84,7 +84,7 @@ final class ContactsController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = groupedContacts[indexPath.section]
-        let contactItem = section.item[indexPath.row]
+        let contactItem = section.items[indexPath.row]
 
         onTapItem(contactItem)
     }
@@ -94,7 +94,7 @@ final class ContactsController: UITableViewController {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let section = groupedContacts[indexPath.section]
-        let item = section.item[indexPath.row]
+        let item = section.items[indexPath.row]
 
         let deleteAction = UIContextualAction(
             style: .destructive,

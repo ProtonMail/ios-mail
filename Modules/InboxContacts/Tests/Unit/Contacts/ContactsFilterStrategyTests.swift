@@ -25,13 +25,13 @@ final class ContactsFilterStrategyTests: XCTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -40,7 +40,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                 ]
             )
@@ -53,13 +53,13 @@ final class ContactsFilterStrategyTests: XCTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.alexAbrams),
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
@@ -69,7 +69,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                     .contact(.elenaErickson)
                 ]
@@ -79,7 +79,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
         let expectedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.alexAbrams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
@@ -88,7 +88,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                 ]
             )
@@ -101,13 +101,13 @@ final class ContactsFilterStrategyTests: XCTestCase {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
-                item: [
+                items: [
                     .contact(.vip),
                 ]
             ),
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.alexAbrams),
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
@@ -117,7 +117,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                     .contact(.elenaErickson)
                 ]
@@ -127,14 +127,14 @@ final class ContactsFilterStrategyTests: XCTestCase {
         let expectedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "A",
-                item: [
+                items: [
                     .contact(.alexAbrams),
                     .contact(.andrewAllen)
                 ]
             ),
             .init(
                 groupedBy: "E",
-                item: [
+                items: [
                     .contact(.evanAndrage),
                 ]
             )

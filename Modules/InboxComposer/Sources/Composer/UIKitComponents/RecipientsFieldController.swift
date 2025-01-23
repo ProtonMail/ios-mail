@@ -114,20 +114,23 @@ final class RecipientsFieldController: UIViewController {
     }
 
     private func updateView(for state: RecipientFieldState, noCellSelected: Bool) {
-        idleController.view.isHidden = state.controllerState == .editing
-        editingController.view.isHidden = state.controllerState == .idle
-        switch state.controllerState {
-        case .idle:
-            editingController.scrollToLast()
-            editingController.clearCursor()
-            idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
-        case .editing:
-            editingController.state = state
-            if state.recipients.filter(\.isSelected).isEmpty {
-                editingController.setFocus()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            idleController.view.isHidden = state.controllerState == .editing
+            editingController.view.isHidden = state.controllerState == .idle
+            switch state.controllerState {
+            case .idle:
+                editingController.scrollToLast()
+                editingController.clearCursor()
+                idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
+            case .editing:
+                editingController.state = state
+                if state.recipients.filter(\.isSelected).isEmpty {
+                    editingController.setFocus()
+                }
+            case .contactPicker:
+                editingController.state = state
             }
-        case .contactPicker:
-            editingController.state = state
         }
     }
 }

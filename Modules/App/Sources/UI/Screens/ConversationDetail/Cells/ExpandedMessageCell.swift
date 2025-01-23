@@ -76,24 +76,34 @@ struct ExpandedMessageCell: View {
                         onEvent(.onRecipientTap(recipient))
                     }
                 })
+
                 MessageBodyAttachmentsView(
                     state: .state(attachments: uiModel.messageDetails.attachments),
                     attachmentIDToOpen: $attachmentIDToOpen
                 )
-                    .padding(.top, DS.Spacing.extraLarge)
-                    .padding(.horizontal, DS.Spacing.large)
-                    .padding(.bottom, DS.Spacing.large)
+                .padding(.top, DS.Spacing.extraLarge)
+                .padding(.horizontal, DS.Spacing.large)
+                .padding(.bottom, DS.Spacing.large)
+                
                 MessageBodyView(
                     messageId: uiModel.id,
                     uiModel: uiModel,
                     mailbox: mailbox, 
                     htmlLoaded: htmlLoaded
                 )
-
                 if !isOutbox {
-                    MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient)
-                        .padding(.top, DS.Spacing.moderatelyLarge)
-                        .padding(.bottom, DS.Spacing.large)
+                    MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient, onEvent: { event in
+                        switch event {
+                        case .reply:
+                            onEvent(.onReply)
+                        case .replyAll:
+                            onEvent(.onReplyAll)
+                        case .forward:
+                            onEvent(.onForward)
+                        }
+                    })
+                    .padding(.top, DS.Spacing.moderatelyLarge)
+                    .padding(.bottom, DS.Spacing.large)
                 }
             }
             .overlay { borderOnTheSides(show: isFirstCell) }

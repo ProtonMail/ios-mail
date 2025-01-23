@@ -123,6 +123,26 @@ public extension ConversationResult {
         }
     }
 }
+public extension ConversationScrollerAllItemsResult {
+    func get() throws -> [Conversation] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerFetchMoreResult {
+    func get() throws -> [Conversation] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ConversationsForLabelResult {
     func get() throws -> [Conversation] {
         switch self {
@@ -145,6 +165,16 @@ public extension CreateMailSessionResult {
 }
 public extension DecryptedMessageGetEmbeddedAttachmentResult {
     func get() throws -> EmbeddedAttachmentInfo {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension DraftSendResultUnseenResult {
+    func get() throws -> [DraftSendResult] {
         switch self {
         case .ok(let value):
             value
@@ -483,6 +513,26 @@ public extension MessageResult {
         }
     }
 }
+public extension MessageScrollerAllItemsResult {
+    func get() throws -> [Message] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerFetchMoreResult {
+    func get() throws -> [Message] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MessagesForConversationResult {
     func get() throws -> [Message] {
         switch self {
@@ -513,8 +563,28 @@ public extension NewDraftResult {
         }
     }
 }
+public extension NewDraftSendResultWatcherResult {
+    func get() throws -> DraftSendResultWatcher {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension NewMailboxResult {
     func get() throws -> Mailbox {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension OpenDraftResult {
+    func get() throws -> OpenDraft {
         switch self {
         case .ok(let value):
             value
@@ -555,6 +625,26 @@ public extension PaginateMessagesForLabelResult {
 }
 public extension PaginateSearchResult {
     func get() throws -> MessagePaginator {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ScrollConversationsForLabelResult {
+    func get() throws -> ConversationScroller {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ScrollMessagesForLabelResult {
+    func get() throws -> MessageScroller {
         switch self {
         case .ok(let value):
             value

@@ -16,20 +16,28 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountLogin
+import Combine
+import InboxComposer
 import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
 struct HomeScreen: View {
-    enum ModalState: String, Identifiable {
+    enum ModalState: Identifiable {
         case contacts
         case labelOrFolderCreation
         case settings
+        case draft(DraftToPresent)
 
         // MARK: - Identifiable
 
         var id: String {
-            rawValue
+            switch self {
+            case .contacts: "contacts"
+            case .labelOrFolderCreation: "labelOrFolderCreation"
+            case .settings: "settings"
+            case .draft: "draft"
+            }
         }
     }
 
@@ -37,8 +45,10 @@ struct HomeScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
     @State private var modalState: ModalState?
+    @State private var draftPresenter: DraftPresenter
     @ObservedObject private var appContext: AppContext
 
+    private let userSession: MailUserSession
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaults: UserDefaults
@@ -49,6 +59,7 @@ struct HomeScreen: View {
     init(appContext: AppContext, userSession: MailUserSession) {
         _appRoute = .init(wrappedValue: .initialState)
         self.appContext = appContext
+        self.userSession = userSession
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
         self.makeSidebarScreen = { selectedItem in
             SidebarScreen(
@@ -57,6 +68,9 @@ struct HomeScreen: View {
                 selectedItem: selectedItem
             )
         }
+        self._draftPresenter = .init(
+            initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+        )
         self.userDefaults = appContext.userDefaults
         self.modalFactory = .init(mailUserSession: userSession)
     }
@@ -72,13 +86,17 @@ struct HomeScreen: View {
                 MailboxScreen(
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
-                    userDefaults: userDefaults
+                    userSession: userSession,
+                    userDefaults: userDefaults,
+                    draftPresenter: draftPresenter
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
                     mailSettingsLiveQuery: mailSettingsLiveQuery,
                     appRoute: appRoute,
+                    userSession: userSession,
                     userDefaults: userDefaults,
+                    draftPresenter: draftPresenter,
                     openedItem: item
                 )
             }
@@ -120,6 +138,7 @@ struct HomeScreen: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
+        .onReceive(draftPresenter.draftToPresent) { modalState = .draft($0) }
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }

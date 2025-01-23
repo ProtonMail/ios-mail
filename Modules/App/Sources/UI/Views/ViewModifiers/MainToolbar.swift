@@ -131,7 +131,9 @@ enum MainToolbarEvent {
     return MailboxScreen(
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
-        userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped
+        userSession: .init(noPointer: .init()),
+        userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped,
+        draftPresenter: .dummy
     )
         .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
         .environmentObject(appUIStateStore)

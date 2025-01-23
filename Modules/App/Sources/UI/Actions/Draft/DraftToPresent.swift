@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,10 +17,7 @@
 
 import proton_app_uniffi
 
-extension GroupedContacts {
-
-    func copy(items: [ContactItemType]) -> Self {
-        .init(groupedBy: groupedBy, items: items)
-    }
-
+enum DraftToPresent {
+    case new(draft: Draft)
+    case openDraftId(messageId: ID)
 }

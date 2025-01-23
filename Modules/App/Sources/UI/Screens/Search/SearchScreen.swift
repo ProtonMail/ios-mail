@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxComposer
 import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 enum SearchScreenState {
     case initial
@@ -24,14 +26,26 @@ enum SearchScreenState {
 }
 
 struct SearchScreen: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.mainWindowSize) var mainWindowSize
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.mainWindowSize) private var mainWindowSize
     @State private(set) var resultsState: SearchScreenState = .initial
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
+    @State private var modalState: ModalState?
+    @State private var searchDraftPresenter: DraftPresenter
+    private let makeModalScreen: (ModalState) -> ComposerScreen
 
-    init() {
+    init(userSession: MailUserSession) {
         self._model = StateObject(wrappedValue: .init())
+        self._searchDraftPresenter = State(
+            initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+        )
+        self.makeModalScreen = { state in
+            switch state {
+            case .draft(let draft):
+                ComposerScreenFactory.makeComposer(draftToPresent: draft, mailUserSession: userSession)
+            }
+        }
     }
 
     var body: some View {
@@ -76,6 +90,8 @@ struct SearchScreen: View {
                 isTextFieldFocused = true
             }
         }
+        .onReceive(searchDraftPresenter.draftToPresent) { modalState = .draft($0) }
+        .sheet(item: $modalState, content: makeModalScreen)
     }
 
     private var listConfiguration: MailboxItemsListViewConfiguration {
@@ -118,7 +134,21 @@ struct SearchScreen: View {
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
         ConversationDetailScreen(
             seed: .mailboxItem(item: uiModel, selectedMailbox: model.selectedMailbox),
+            draftPresenter: searchDraftPresenter,
             navigationPath: $model.state.navigationPath
         )
+    }
+}
+
+private extension SearchScreen {
+
+    enum ModalState: Identifiable {
+        case draft(DraftToPresent)
+
+        var id: String {
+            switch self {
+            case .draft: "draft"
+            }
+        }
     }
 }

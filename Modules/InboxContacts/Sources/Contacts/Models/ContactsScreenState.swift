@@ -34,9 +34,9 @@ public struct ContactsScreenState: Copying, Equatable {
 
         let filteredItems = ContactsFilterStrategy
             .filter(searchPhrase: search.query, items: allItems)
-            .flatMap(\.item)
+            .flatMap(\.items)
 
-        return [.init(groupedBy: "", item: filteredItems)]
+        return [.init(groupedBy: "", items: filteredItems)]
     }
 }
 

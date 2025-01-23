@@ -36,8 +36,8 @@ final class MailboxModel: ObservableObject {
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
-    @MainActor @Published var presentedDraft: PresentedDraft?
-    
+    let draftPresenter: DraftPresenter
+
     private var messagePaginator: MessagePaginator?
     private var conversationPaginator: ConversationPaginator?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
@@ -81,12 +81,14 @@ final class MailboxModel: ObservableObject {
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
+        draftPresenter: DraftPresenter,
         openedItem: MailboxMessageSeed? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
+        self.draftPresenter = draftPresenter
         self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(
@@ -361,14 +363,16 @@ extension MailboxModel {
 
 extension MailboxModel {
 
-    func createDraft() {
+    func createDraft(toastStateStore: ToastStateStore) {
         Task {
-            presentedDraft = .new(draft: try await newDraft(session: userSession, createMode: .empty).get())
+            await draftPresenter.openNewDraft(onError: {
+                toastStateStore.present(toast: .error(message: $0.localizedDescription))
+            })
         }
     }
 
     private func openDraftMessage(messageId: ID) {
-        presentedDraft = .openDraftId(messageId: messageId)
+        draftPresenter.openDraft(withId: messageId)
     }
 }
 
@@ -486,12 +490,4 @@ extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
     }
-}
-
-enum PresentedDraft: Identifiable {
-    static let viewId = UUID()
-    var id: UUID { Self.viewId }
-
-    case new(draft: Draft)
-    case openDraftId(messageId: ID)
 }

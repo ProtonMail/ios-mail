@@ -15,10 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+
+typealias ReplyActionsHandler = (_ messageId: ID, _ action: ReplyAction) -> Void
 
 struct MailboxItemActionSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -29,6 +32,7 @@ struct MailboxItemActionSheet: View {
     private let readActionPerformerActions: ReadActionPerformerActions
     private let deleteActions: DeleteActions
     private let moveToActions: MoveToActions
+    private let replyActions: ReplyActionsHandler
     private let mailUserSession: MailUserSession
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
@@ -40,6 +44,7 @@ struct MailboxItemActionSheet: View {
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
+        replyActions: @escaping ReplyActionsHandler,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -50,6 +55,7 @@ struct MailboxItemActionSheet: View {
         self.readActionPerformerActions = readActionPerformerActions
         self.deleteActions = deleteActions
         self.moveToActions = moveToActions
+        self.replyActions = replyActions
         self.mailUserSession = mailUserSession
         self.navigation = navigation
     }
@@ -142,7 +148,12 @@ struct MailboxItemActionSheet: View {
     }
 
     private func replyButton(action: ReplyAction) -> some View {
-        Button(action: { toastStateStore.present(toast: .comingSoon) }) {
+        guard let messageId = input.ids.first else {
+            let message = "messageId not found for reply action"
+            AppLogger.log(message: message, category: .composer)
+            fatalError(message)
+        }
+        return Button(action: { replyActions(messageId, action) }) {
             VStack(spacing: DS.Spacing.standard) {
                 Image(action.displayData.image)
                     .resizable()
@@ -170,6 +181,7 @@ struct MailboxItemActionSheet: View {
         readActionPerformerActions: .dummy,
         deleteActions: .dummy,
         moveToActions: .dummy,
+        replyActions: { _, _ in },
         mailUserSession: .dummy,
         navigation: { _ in }
     )

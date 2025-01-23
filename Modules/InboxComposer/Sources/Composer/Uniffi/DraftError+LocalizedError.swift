@@ -31,9 +31,38 @@ extension DraftError: LocalizedError {
 
 private extension DraftErrorReason {
     var errorMessage: LocalizedStringResource {
+        temporaryDescription.stringResource
+    }
+
+    // TODO: Pending adding more granularity to DraftError to have more context and decide the copy to show the user
+    var temporaryDescription: String {
         switch self {
-        case .unknownMimeType:
-            L10n.ComposerError.unknownMimeType
+        case .noRecipients:
+            "no recipients"
+        case .addressDoesNotHavePrimaryKey(let string):
+            "primary key for address missing: \(string)"
+        case .recipientEmailInvalid(let string):
+            "recipient email invalid: \(string)"
+        case .protonRecipientDoesNotExist(let string):
+            "proton recipient does not exist: \(string)"
+        case .unknownRecipientValidationError(let string):
+            "unknown recipient: \(string)"
+        case .addressDisabled(let string):
+            "address disabled: \(string)"
+        case .messageAlreadySent:
+            "message already exists"
+        case .packageError(let string):
+            "package error: \(string)"
+        case .messageUpdateIsNotDraft:
+            "message update is not a draft"
+        case .messageDoesNotExist:
+            "message does not exist"
+        case .alreadySent:
+            "message has already been sent"
+        case .messageCanNotBeUndoSent:
+            "message can't undo send"
+        case .sendCanNoLongerBeUndone:
+            "send cannot longer be undone"
         }
     }
 }

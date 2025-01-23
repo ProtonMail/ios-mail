@@ -109,9 +109,7 @@ final class RecipientsFieldEditingController: UIViewController {
     }
 
     func scrollToLast() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            self.scrollToLast(animated: false)
-        }
+        scrollToLast(animated: false)
     }
 
     func clearCursor() {
