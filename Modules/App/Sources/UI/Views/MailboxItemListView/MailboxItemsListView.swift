@@ -87,7 +87,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
             MailboxItemCell(
                 uiModel: item,
                 isParentListSelectionEmpty: !selectionState.hasItems,
-                starActionAvailable: config.starActionAvailable,
+                isSending: config.isOutboxLocation,
                 onEvent: { config.cellEventHandler?.onCellEvent($0, item) }
             )
             .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
@@ -194,7 +194,7 @@ private extension SelectionModeState {
                 dataSource: dataSource,
                 selectionState: selectionState,
                 itemTypeForActionBar: .conversation, 
-                starActionAvailable: true,
+                isOutboxLocation: false,
                 swipeActions: .init(leadingSwipe: { .toggleReadStatus }, trailingSwipe: { .moveToTrash })
             )
         }

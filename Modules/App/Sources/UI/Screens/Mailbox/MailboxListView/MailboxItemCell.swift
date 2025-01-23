@@ -23,7 +23,7 @@ struct MailboxItemCell: View {
 
     let uiModel: MailboxItemCellUIModel
     let isParentListSelectionEmpty: Bool
-    let starActionAvailable: Bool
+    let isSending: Bool
     let onEvent: (MailboxItemCellEvent) -> Void
 
     private var textColor: Color {
@@ -53,7 +53,7 @@ extension MailboxItemCell {
     }
 
     private var mailboxItemContentView: some View {
-        VStack(spacing: DS.Spacing.compact) {
+        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             senderRowView
             VStack(spacing: DS.Spacing.small) {
                 subjectRowView
@@ -62,6 +62,9 @@ extension MailboxItemCell {
             }
             attachmentRowView
             labelsRowView
+            if isSending {
+                SendingTag()
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -113,7 +116,7 @@ extension MailboxItemCell {
 
     @ViewBuilder
     private var starView: some View {
-        if starActionAvailable {
+        if isSending {
             Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
                 .resizable()
                 .square(size: 16)
@@ -319,7 +322,7 @@ enum MailboxItemCellEvent {
         MailboxItemCell(
             uiModel: MailboxItemCellUIModel.proton1,
             isParentListSelectionEmpty: true,
-            starActionAvailable: true, 
+            isSending: false,
             onEvent: { _ in }
         )
 
@@ -350,7 +353,7 @@ enum MailboxItemCellEvent {
                 isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
-            starActionAvailable: true, 
+            isSending: false,
             onEvent: { _ in }
         )
 
@@ -382,14 +385,14 @@ enum MailboxItemCellEvent {
                 isDraftMessage: false
             ),
             isParentListSelectionEmpty: true,
-            starActionAvailable: true,
+            isSending: false,
             onEvent: { _ in }
         )
 
         MailboxItemCell(
             uiModel: MailboxItemCellUIModel.proton2,
             isParentListSelectionEmpty: true,
-            starActionAvailable: true,
+            isSending: false,
             onEvent: { _ in }
         )
     }

@@ -99,7 +99,7 @@ struct SearchScreen: View {
             dataSource: model.paginatedDataSource,
             selectionState: model.selectionMode.selectionState,
             itemTypeForActionBar: .message, 
-            starActionAvailable: true,
+            isOutboxLocation: false,
             cellEventHandler: .init(onCellEvent: handleResultCellEvent)
         )
     }
