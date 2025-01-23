@@ -95,7 +95,9 @@ extension MailboxListView {
         MailboxItemsListView(
             config: mailboxItemListViewConfiguration(),
             emptyView: {
-                NoResultsView(variant: .mailbox(isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected))
+                NoResultsView(variant: model.selectedMailbox.emptyScreenVariant(
+                    isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected
+                ))
             }
         )
         .injectIfNotNil(model.mailbox)
@@ -134,3 +136,32 @@ extension MailboxListView {
         )
     )
 }
+
+private extension SelectedMailbox {
+
+    func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
+        switch self {
+        case .inbox, .customLabel, .customFolder:
+            .mailbox(isUnreadFilterOn: isUnreadFilterOn)
+        case .systemFolder(_, let systemFolder):
+            systemFolder.emptyScreenVariant(isUnreadFilterOn: isUnreadFilterOn)
+        }
+    }
+
+}
+
+private extension SystemFolderLabel {
+
+    func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
+        switch self {
+        case .inbox, .allDrafts, .allSent, .sent, .trash, .spam, .allMail, .archive, .drafts, .starred, .scheduled,
+                .almostAllMail, .snoozed, .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums,
+                .categoryDefault:
+            .mailbox(isUnreadFilterOn: isUnreadFilterOn)
+        case .outbox:
+            .outbox
+        }
+    }
+
+}
+
