@@ -22,7 +22,7 @@ import SwiftUI
 
 final class ComposerScreenModel: ObservableObject {
     @Published private(set) var state: State
-    @Published private(set) var draftError: DraftError?
+    @Published private(set) var draftError: DraftOpenError?
     private var isCancelled: Bool = false
 
     init(

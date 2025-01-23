@@ -34,7 +34,7 @@ struct DraftPresenter {
     }
 
     @MainActor
-    func openNewDraft(onError: (DraftError) -> Void) async {
+    func openNewDraft(onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open new draft", category: .composer)
         await publishDraftToPresent(createMode: .empty, onError: onError)
     }
@@ -46,7 +46,7 @@ struct DraftPresenter {
     }
 
     @MainActor
-    func handleReplyAction(for messageId: ID, action: ReplyAction , onError: (DraftError) -> Void) async {
+    func handleReplyAction(for messageId: ID, action: ReplyAction , onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:
             await openReplyDraft(for: messageId, onError: onError)
@@ -61,25 +61,25 @@ struct DraftPresenter {
 extension DraftPresenter {
 
     @MainActor
-    private func openReplyDraft(for messageId: ID, onError: (DraftError) -> Void) async {
+    private func openReplyDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply draft", category: .composer)
         await publishDraftToPresent(createMode: .reply(messageId), onError: onError)
     }
 
     @MainActor
-    private func openReplyAllDraft(for messageId: ID, onError: (DraftError) -> Void) async {
+    private func openReplyAllDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply all draft", category: .composer)
         await publishDraftToPresent(createMode: .replyAll(messageId), onError: onError)
     }
 
     @MainActor
-    private func openForwardDraft(for messageId: ID, onError: (DraftError) -> Void) async {
+    private func openForwardDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open forward draft", category: .composer)
         await publishDraftToPresent(createMode: .forward(messageId), onError: onError)
     }
 
     @MainActor
-    private func publishDraftToPresent(createMode: DraftCreateMode, onError: (DraftError) -> Void) async {
+    private func publishDraftToPresent(createMode: DraftCreateMode, onError: (DraftOpenError) -> Void) async {
         switch await draftProvider.makeDraft(userSession, createMode) {
         case .ok(let draft):
             draftToPresentSubject.send(.new(draft: draft))

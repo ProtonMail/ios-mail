@@ -393,6 +393,16 @@ public extension MailSessionWatchSessionsResult {
         }
     }
 }
+public extension MailUserSessionAccountDetailsResult {
+    func get() throws -> AccountDetails {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionApplicableLabelsResult {
     func get() throws -> [SidebarCustomLabel] {
         switch self {
@@ -593,7 +603,7 @@ public extension OpenDraftResult {
         }
     }
 }
-public extension OptIdDraftResult {
+public extension OptIdProtonResult {
     func get() throws -> Id? {
         switch self {
         case .ok(let value):
@@ -653,6 +663,16 @@ public extension ScrollMessagesForLabelResult {
         }
     }
 }
+public extension ScrollSearchResult {
+    func get() throws -> SearchScroller {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension SearchForConversationsResult {
     func get() throws -> [Conversation] {
         switch self {
@@ -664,6 +684,26 @@ public extension SearchForConversationsResult {
     }
 }
 public extension SearchForMessagesResult {
+    func get() throws -> [Message] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerAllItemsResult {
+    func get() throws -> [Message] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerFetchMoreResult {
     func get() throws -> [Message] {
         switch self {
         case .ok(let value):
@@ -733,7 +773,7 @@ public extension VoidActionResult {
         }
     }
 }
-public extension VoidDraftResult {
+public extension VoidDraftSaveSendResult {
     func get() throws {
         switch self {
         case .ok:
@@ -754,6 +794,16 @@ public extension VoidEventResult {
     }
 }
 public extension VoidLoginResult {
+    func get() throws {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension VoidProtonResult {
     func get() throws {
         switch self {
         case .ok:

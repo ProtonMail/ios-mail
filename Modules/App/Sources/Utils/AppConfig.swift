@@ -44,6 +44,6 @@ extension AppConfig {
 //            skipSrpProofValidation: environment.isSrpProofSkipped, 
 //            userAgent: environment.userAgent
 //        )
-        return ApiConfig(appVersion: appVersion, userAgent: environment.userAgent)
+        return ApiConfig(appVersion: appVersion, userAgent: environment.userAgent, envId: .prod)
     }
 }
