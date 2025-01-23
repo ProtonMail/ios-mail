@@ -41,7 +41,7 @@ final class MockDraft: AppDraftProtocol {
         return draft
     }
 
-    func messageId() async -> OptIdDraftResult { .ok(nil) }
+    func messageId() async -> OptIdProtonResult { .ok(nil) }
 
     func toRecipients() -> ComposerRecipientListProtocol {
         mockToRecipientList
@@ -67,9 +67,9 @@ final class MockDraft: AppDraftProtocol {
         .textHtml
     }
 
-    func save() async -> VoidDraftResult { .ok }
+    func save() async -> VoidDraftSaveSendResult { .ok }
 
-    func send() async -> VoidDraftResult { .ok }
+    func send() async -> VoidDraftSaveSendResult { .ok }
 
     func sender() -> String {
         mockSender
@@ -77,11 +77,11 @@ final class MockDraft: AppDraftProtocol {
 
     func setBccRecipients(recipients: [String]) {}
 
-    func setBody(body: String) -> VoidDraftResult { .ok }
+    func setBody(body: String) -> VoidDraftSaveSendResult { .ok }
 
     func setCcRecipients(recipients: [String]) {}
 
-    func setSubject(subject: String) -> VoidDraftResult {
+    func setSubject(subject: String) -> VoidDraftSaveSendResult {
         mockSubject = subject
         return .ok
     }

@@ -34,15 +34,15 @@ public protocol AppDraftProtocol {
 
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
-    func messageId() async -> OptIdDraftResult
+    func messageId() async -> OptIdProtonResult
     func attachments()  -> [AttachmentMetadata]
     func body()  -> String
     func mimeType()  -> MimeType
-    func save() async  -> VoidDraftResult
-    func send() async  -> VoidDraftResult
+    func save() async  -> VoidDraftSaveSendResult
+    func send() async  -> VoidDraftSaveSendResult
     func sender()  -> String
-    func setBody(body: String)  -> VoidDraftResult
-    func setSubject(subject: String)  -> VoidDraftResult
+    func setBody(body: String)  -> VoidDraftSaveSendResult
+    func setSubject(subject: String)  -> VoidDraftSaveSendResult
     func subject()  -> String
 }
 

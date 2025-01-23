@@ -71,6 +71,12 @@
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doppelten Empfänger entfernt: %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +87,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le destinataire dupliqué a été retiré : %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dubbele ontvanger verwijderd: %@"
           }
         }
       }
@@ -157,6 +169,12 @@
             "state" : "translated",
             "value" : "Un problème est survenu lors de l'enregistrement du brouillon."
           }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een probleem opgetreden bij het verwijderen van het concept"
+          }
         }
       }
     },
@@ -202,6 +220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Type MIME non reconnu"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet-herkend MIME-type"
           }
         }
       }

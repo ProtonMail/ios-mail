@@ -24,7 +24,7 @@ import XCTest
 final class DraftPresenterTests: BaseTestCase {
     private var sut: DraftPresenter!
     private var stubbedResult: NewDraftResult!
-    private let emptyErrorCallback: (DraftError) -> Void = { _ in }
+    private let emptyErrorCallback: (DraftOpenError) -> Void = { _ in }
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {

@@ -18,24 +18,56 @@
 import Foundation
 import proton_app_uniffi
 
-extension DraftError: LocalizedError {
+extension DraftOpenError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .reason(let draftErrorReason):
-            draftErrorReason.errorMessage.string
+        case .reason(let reason):
+            reason.errorMessage.string
         case .other(let protonError):
             protonError.localizedDescription
         }
     }
 }
 
-private extension DraftErrorReason {
+extension DraftSaveSendError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+private extension DraftOpenErrorReason {
     var errorMessage: LocalizedStringResource {
         temporaryDescription.stringResource
     }
 
     // TODO: Pending adding more granularity to DraftError to have more context and decide the copy to show the user
     var temporaryDescription: String {
+        switch self {
+        case .messageDoesNotExist:
+            "message does not exist"
+        case .messageIsNotADraft:
+            "message is not a draft"
+        case .replyOrForwardDraft:
+            "can not reply or forward to a draft"
+        case .addressNotFound:
+            "could not find user's address"
+        case .messageBodyMissing:
+            "message body is missing"
+        }
+    }
+}
+
+private extension DraftSaveSendErrorReason {
+    var errorMessage: LocalizedStringResource {
+        temporaryDescription.stringResource
+    }
+    
+    private var temporaryDescription: String {
         switch self {
         case .noRecipients:
             "no recipients"
@@ -53,16 +85,12 @@ private extension DraftErrorReason {
             "message already exists"
         case .packageError(let string):
             "package error: \(string)"
-        case .messageUpdateIsNotDraft:
-            "message update is not a draft"
-        case .messageDoesNotExist:
-            "message does not exist"
         case .alreadySent:
             "message has already been sent"
-        case .messageCanNotBeUndoSent:
-            "message can't undo send"
-        case .sendCanNoLongerBeUndone:
-            "send cannot longer be undone"
+        case .messageDoesNotExist:
+            "message does not exist"
+        case .messageIsNotADraft:
+            "message is not a draft"
         }
     }
 }
