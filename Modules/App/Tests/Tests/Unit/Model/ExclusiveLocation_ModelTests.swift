@@ -57,7 +57,7 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
             ),
             .init(
                 given: .system(.outbox),
-                expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icFile, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox, iconColor: nil)
             ),
             .init(
                 given: .custom(name: "Online shopping", id: .random(), color: .init(value: "FFA500")),
