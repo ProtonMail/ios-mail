@@ -498,7 +498,7 @@
       }
     },
     "Archive" : {
-      "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.",
+      "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.\nMenu title of all archived emails in the sidebar.",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1462,6 +1462,9 @@
         }
       }
     },
+    "Failed to Send" : {
+      "comment" : "Title of a tag displayed for each message that failed to send."
+    },
     "Folder does not exist" : {
       "comment" : "Error when trying to move a message to a folder that no longer exists."
     },
@@ -2201,7 +2204,7 @@
       }
     },
     "Not spam" : {
-      "comment" : "Action title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
+      "comment" : "Action title for moving a message out of `Spam` to `Inbox`\nAction title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2697,7 +2700,7 @@
       }
     },
     "Sending.." : {
-      "comment" : "Title of a tag displayed for each message that is in the outbox with sending status"
+      "comment" : "Title of a tag displayed for each message that is in the outbox with sending status."
     },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar.",
