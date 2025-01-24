@@ -82,6 +82,7 @@ private struct RootView: View {
                 appContext: appContext,
                 userSession: activeUserSession
             )
+            .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
 
         case .activeSessionTransition:
             EmptyView()
