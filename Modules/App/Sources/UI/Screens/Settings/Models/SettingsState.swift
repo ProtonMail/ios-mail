@@ -16,9 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import proton_app_uniffi
+import SwiftUI
 
 struct SettingsState {
-    let accountSettings: AccountSettings
+    let accountSettings: AccountSettings?
     let preferences: [SettingsPreference]
     let presentedWebPage: ProtonAuthenticatedWebPage?
 }
@@ -27,13 +29,24 @@ extension SettingsState {
 
     static var initial: Self {
         .init(
-            accountSettings: .init(
-                name: "Mocked name".notLocalized,
-                email: "mocked.email@pm.me".notLocalized,
-                avatarInfo: .init(initials: "T".notLocalized, color: DS.Color.Brand.norm)
-            ),
+            accountSettings: nil,
             preferences: .stale, 
             presentedWebPage: nil
+        )
+    }
+    
+    func copy(with accountDetails: AccountDetails) -> Self {
+        .init(
+            accountSettings: .init(
+                name: accountDetails.name,
+                email: accountDetails.email,
+                avatarInfo: .init(
+                    initials: accountDetails.avatarInformation.text,
+                    color: Color(hex: accountDetails.avatarInformation.color)
+                )
+            ),
+            preferences: preferences,
+            presentedWebPage: presentedWebPage
         )
     }
 

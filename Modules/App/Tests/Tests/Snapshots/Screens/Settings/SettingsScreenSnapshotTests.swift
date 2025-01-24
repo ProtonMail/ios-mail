@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+@testable import proton_app_uniffi
+import InboxDesignSystem
 import InboxTesting
 import SwiftUI
 import XCTest
@@ -24,10 +26,33 @@ class SettingsScreenSnapshotTests: BaseTestCase {
 
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let sut = NavigationStack {
-            SettingsScreen()
+            SettingsScreen(
+                state: .initial.copy(with: .testData),
+                mailUserSession: MailUserSessionStub(noPointer: .init())
+            )
         }
 
         assertSnapshotsOnIPhoneX(of: sut)
+    }
+
+}
+
+private class MailUserSessionStub: MailUserSession {
+
+    override func accountDetails() async -> MailUserSessionAccountDetailsResult {
+        .ok(.testData)
+    }
+
+}
+
+private extension AccountDetails {
+
+    static var testData: Self {
+        AccountDetails(
+            name: "Mocked name",
+            email: "mocked.email@pm.me",
+            avatarInformation: .init(text: "T", color: DS.Color.Brand.norm.toHex()!)
+        )
     }
 
 }

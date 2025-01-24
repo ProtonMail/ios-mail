@@ -17,15 +17,18 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private var state: SettingsState
+    private let provider: AccountDetailsProvider
 
-    init() {
-        _state = .init(initialValue: .initial)
+    init(state: SettingsState = .initial, mailUserSession: MailUserSession) {
+        _state = .init(initialValue: state)
+        self.provider = .init(mailUserSession: mailUserSession)
     }
 
     var body: some View {
@@ -34,7 +37,9 @@ struct SettingsScreen: View {
                 DS.Color.BackgroundInverted.norm
                     .ignoresSafeArea()
                 ScrollView {
-                    section(items: [.account(state.accountSettings)], header: L10n.Settings.account)
+                    if let accountSettings = state.accountSettings {
+                        section(items: [.account(accountSettings)], header: L10n.Settings.account)
+                    }
                     section(
                         items: state.preferences.map(SettingsItemType.preference),
                         header: L10n.Settings.preferences
@@ -60,6 +65,11 @@ struct SettingsScreen: View {
                     }
                     .navigationTitle(webPage.title.string)
                     .navigationBarBackButtonHidden(true)
+            }
+        }
+        .task {
+            if let details = await provider.accountDetails() {
+                state = state.copy(with: details)
             }
         }
     }
@@ -167,7 +177,7 @@ struct SettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        SettingsScreen()
+        SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
     }
 }
 
