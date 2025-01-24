@@ -373,8 +373,28 @@ public extension MailSessionWatchAccountSessionsResult {
         }
     }
 }
+public extension MailSessionWatchAccountsAsyncResult {
+    func get() throws -> WatchedAccounts {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionWatchAccountsResult {
     func get() throws -> WatchedAccounts {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionWatchSessionsAsyncResult {
+    func get() throws -> WatchedSessions {
         switch self {
         case .ok(let value):
             value
@@ -663,7 +683,7 @@ public extension ScrollMessagesForLabelResult {
         }
     }
 }
-public extension ScrollSearchResult {
+public extension ScrollerSearchResult {
     func get() throws -> SearchScroller {
         switch self {
         case .ok(let value):
