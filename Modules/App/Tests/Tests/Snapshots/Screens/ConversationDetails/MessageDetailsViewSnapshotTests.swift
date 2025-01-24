@@ -62,11 +62,15 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithOutboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(location: .system(.outbox), labels: [])
-        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, isOutbox: true))
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, areActionsDisabled: true))
     }
 
-    private func sut(collapsed: Bool, model: MessageDetailsUIModel, isOutbox: Bool = false) -> MessageDetailsView {
-        .init(isHeaderCollapsed: collapsed, uiModel: model, isOutbox: isOutbox, onEvent: { _ in })
+    private func sut(
+        collapsed: Bool,
+        model: MessageDetailsUIModel,
+        areActionsDisabled: Bool = false
+    ) -> MessageDetailsView {
+        .init(isHeaderCollapsed: collapsed, uiModel: model, areActionsDisabled: areActionsDisabled, onEvent: { _ in })
     }
 
 }
