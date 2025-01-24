@@ -27,7 +27,7 @@ struct ExpandedMessageCell: View {
     @Binding var attachmentIDToOpen: ID?
 
     private let hasShadow: Bool
-    private let isOutbox: Bool
+    private let areActionsDisabled: Bool
 
     // Determines how the horizontal edges of the card are rendered to give visual
     // continuation to the list (only visible in landscape mode).
@@ -40,7 +40,7 @@ struct ExpandedMessageCell: View {
         uiModel: ExpandedMessageCellUIModel,
         hasShadow: Bool = true,
         isFirstCell: Bool = false,
-        isOutbox: Bool,
+        areActionsDisabled: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
         htmlLoaded: @escaping () -> Void
@@ -49,7 +49,7 @@ struct ExpandedMessageCell: View {
         self.uiModel = uiModel
         self.hasShadow = hasShadow
         self.isFirstCell = isFirstCell
-        self.isOutbox = isOutbox
+        self.areActionsDisabled = areActionsDisabled
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
         self.htmlLoaded = htmlLoaded
@@ -60,22 +60,26 @@ struct ExpandedMessageCell: View {
             MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
 
             VStack(spacing: .zero) {
-                MessageDetailsView(uiModel: uiModel.messageDetails, isOutbox: isOutbox, onEvent: { event in
-                    switch event {
-                    case .onTap:
-                        onEvent(.onTap)
-                    case .onReply:
-                        onEvent(.onReply)
-                    case .onReplyAll:
-                        onEvent(.onReplyAll)
-                    case .onMoreActions:
-                        onEvent(.onMoreActions)
-                    case .onSenderTap:
-                        onEvent(.onSenderTap)
-                    case .onRecipientTap(let recipient):
-                        onEvent(.onRecipientTap(recipient))
+                MessageDetailsView(
+                    uiModel: uiModel.messageDetails,
+                    areActionsDisabled: areActionsDisabled,
+                    onEvent: { event in
+                        switch event {
+                        case .onTap:
+                            onEvent(.onTap)
+                        case .onReply:
+                            onEvent(.onReply)
+                        case .onReplyAll:
+                            onEvent(.onReplyAll)
+                        case .onMoreActions:
+                            onEvent(.onMoreActions)
+                        case .onSenderTap:
+                            onEvent(.onSenderTap)
+                        case .onRecipientTap(let recipient):
+                            onEvent(.onRecipientTap(recipient))
+                        }
                     }
-                })
+                )
 
                 MessageBodyAttachmentsView(
                     state: .state(attachments: uiModel.messageDetails.attachments),
@@ -91,7 +95,7 @@ struct ExpandedMessageCell: View {
                     mailbox: mailbox, 
                     htmlLoaded: htmlLoaded
                 )
-                if !isOutbox {
+                if !areActionsDisabled {
                     MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient, onEvent: { event in
                         switch event {
                         case .reply:
@@ -181,7 +185,7 @@ private extension MessageBody {
             ),
             hasShadow: false,
             isFirstCell: true, 
-            isOutbox: false,
+            areActionsDisabled: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
@@ -198,7 +202,7 @@ private extension MessageBody {
             ),
             hasShadow: true,
             isFirstCell: false, 
-            isOutbox: false, 
+            areActionsDisabled: false, 
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}

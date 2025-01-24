@@ -34,7 +34,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
     @Published var attachmentIDToOpen: ID?
 
-    var isOutbox: Bool {
+    var areActionsDisabled: Bool {
         seed.isOutbox
     }
 

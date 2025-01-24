@@ -116,7 +116,7 @@ extension MailboxItemCell {
 
     @ViewBuilder
     private var starView: some View {
-        if isSending {
+        if !isSending {
             Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
                 .resizable()
                 .square(size: 16)

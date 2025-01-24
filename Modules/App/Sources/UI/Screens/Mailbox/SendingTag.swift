@@ -26,21 +26,27 @@ struct SendingTag: View {
         case failure
     }
 
+    struct Configuration {
+        let title: LocalizedStringResource
+        let icon: ImageResource
+        let color: Color
+    }
+
     var body: some View {
         HStack(alignment: .center, spacing: DS.Spacing.compact) {
-            Image(variant.icon)
+            Image(variant.configuration.icon)
                 .resizable()
                 .square(size: 14)
-                .foregroundStyle(variant.color)
-            Text(variant.title)
-                .foregroundStyle(variant.color)
+                .foregroundStyle(variant.configuration.color)
+            Text(variant.configuration.title)
+                .foregroundStyle(variant.configuration.color)
                 .font(.caption)
         }
         .padding(.horizontal, DS.Spacing.standard)
         .padding(.vertical, DS.Spacing.compact)
         .overlay {
             Capsule()
-                .stroke(variant.color, lineWidth: 1)
+                .stroke(variant.configuration.color, lineWidth: 1)
         }
     }
 
@@ -56,30 +62,16 @@ struct SendingTag: View {
 }
 
 private extension SendingTag.Variant {
-    var title: LocalizedStringResource {
+    var configuration: SendingTag.Configuration {
         switch self {
         case .sending:
-            L10n.Mailbox.Item.sending
+            .init(title: L10n.Mailbox.Item.sending, icon: DS.Icon.icPaperPlane, color: DS.Color.Notification.success)
         case .failure:
-            L10n.Mailbox.Item.sendingFailure
-        }
-    }
-
-    var icon: ImageResource {
-        switch self {
-        case .sending:
-            DS.Icon.icPaperPlane
-        case .failure:
-            DS.Icon.icExclamationCircle
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .sending:
-            DS.Color.Notification.success
-        case .failure:
-            DS.Color.Notification.error
+            .init(
+                title: L10n.Mailbox.Item.sendingFailure,
+                icon: DS.Icon.icExclamationCircle,
+                color: DS.Color.Notification.error
+            )
         }
     }
 }

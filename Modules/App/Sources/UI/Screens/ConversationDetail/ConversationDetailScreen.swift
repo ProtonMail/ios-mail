@@ -37,7 +37,7 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if let mailbox = model.mailbox, let conversationID = model.conversationID, !model.isOutbox {
+            if let mailbox = model.mailbox, let conversationID = model.conversationID, !model.areActionsDisabled {
                 ConversationActionBarView(
                     conversationID: conversationID,
                     bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
@@ -87,11 +87,14 @@ struct ConversationDetailScreen: View {
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .conversationTopToolbar(title: topToolbarTitle, trailingButton: { navigationTrailingButton })
+            .conversationTopToolbar(title: topToolbarTitle, trailingButton: {
+                navigationTrailingButton
+                    .square(size: 40)
+            })
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .ignoresSafeArea(.all, edges: .bottom)
-            .padding(.bottom, model.isOutbox ? 0 : proxy.safeAreaInsets.bottom + 45)
+            .padding(.bottom, model.areActionsDisabled ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
@@ -132,7 +135,7 @@ struct ConversationDetailScreen: View {
 
     @ViewBuilder
     private var navigationTrailingButton: some View {
-        if !model.isOutbox {
+        if !model.areActionsDisabled {
             Button(action: {
                 model.toggleStarState()
             }, label: {
@@ -141,7 +144,6 @@ struct ConversationDetailScreen: View {
             })
         } else {
             Color.clear
-                .square(size: 40)
         }
     }
 
@@ -248,7 +250,7 @@ extension ConversationDetailSeed {
 
     var isOutbox: Bool {
         switch self {
-        case .mailboxItem(let item, let selectedMailbox):
+        case .mailboxItem(_, let selectedMailbox):
             selectedMailbox.systemFolder == .outbox
         case .message:
             false
