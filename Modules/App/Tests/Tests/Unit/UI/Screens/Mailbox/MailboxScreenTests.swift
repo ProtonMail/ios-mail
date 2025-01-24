@@ -35,7 +35,8 @@ class MailboxScreenTests: BaseTestCase {
             appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox)),
             userSession: .dummy,
             userDefaults: userDefaults,
-            draftPresenter: .dummy
+            draftPresenter: .dummy,
+            sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
         )
     }
 

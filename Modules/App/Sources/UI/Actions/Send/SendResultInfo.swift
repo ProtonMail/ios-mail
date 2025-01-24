@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,17 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-protocol SearchProtocol: Sendable {
+struct SendResultInfo {
+    enum ToastType {
+        case sending
+        case sent
+        case error(String)
+    }
 
-    func scrollerSearch(
-      session: MailUserSession,
-      options: SearchOptions,
-      callback: LiveQueryCallback
-    ) async -> ScrollerSearchResult
-}
-
-struct SearchOptions {
-    let query: String
+    let messageId: ID
+    let type: ToastType
 }

@@ -30,8 +30,20 @@
         }
       }
     },
+    "Address not found" : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Draft body is missing" : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Draft not found" : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
     "Draft saved" : {
       "comment" : "Composer toast message when dismissing the screen."
+    },
+    "Error trying to reply or forward this message" : {
+      "comment" : "Error in the context of opening a draft in the composer"
     },
     "From:" : {
       "comment" : "Composer from field.",
@@ -65,8 +77,14 @@
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
-    "Message will be sent shortly" : {
-      "comment" : "Composer toast message when sent is tapped."
+    "Message to be sent has no recipients" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Recipient address is invalid: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Recipient primary key is missing: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft.",
@@ -126,6 +144,9 @@
         }
       }
     },
+    "Sending message..." : {
+      "comment" : "Composer toast message when send is tapped."
+    },
     "Subject:" : {
       "comment" : "Composer subject.",
       "localizations" : {
@@ -155,6 +176,24 @@
         }
       }
     },
+    "The address is disabled: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The draft to be sent was not found" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The message to be sent is not a draft" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The message was already sent" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The Proton address in the recipient does not exist: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The recipient is unknown: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",
       "localizations" : {
@@ -177,6 +216,9 @@
           }
         }
       }
+    },
+    "There was a problem sending the message: %@" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "To:" : {
       "comment" : "Composer to recipients.",
@@ -206,6 +248,9 @@
           }
         }
       }
+    },
+    "UNDO" : {
+      "comment" : "Undo action after message has been sent."
     },
     "Unrecognized MIME type" : {
       "comment" : "Error when saving a draft",

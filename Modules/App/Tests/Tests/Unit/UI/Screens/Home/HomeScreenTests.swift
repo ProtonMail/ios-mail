@@ -38,7 +38,8 @@ class HomeScreenTests: BaseTestCase {
         userDefaults = .clearedTestInstance()
         sut = HomeScreen(
             appContext: .shared,
-            userSession: try .testInstance()
+            userSession: try .testInstance(),
+            toastStateStore: toastStateStore
         )
     }
 

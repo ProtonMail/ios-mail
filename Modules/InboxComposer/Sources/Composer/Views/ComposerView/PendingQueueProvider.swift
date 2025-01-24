@@ -15,17 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import proton_app_uniffi
 
-protocol SearchProtocol: Sendable {
+struct PendingQueueProvider {
+    private let executePendingActions: () async -> VoidSessionResult
 
-    func scrollerSearch(
-      session: MailUserSession,
-      options: SearchOptions,
-      callback: LiveQueryCallback
-    ) async -> ScrollerSearchResult
-}
+    init(userSession: MailUserSession) {
+        self.executePendingActions = userSession.executePendingActions
+    }
 
-struct SearchOptions {
-    let query: String
+    func executeActionsInBackgroundTask() {
+        Task {
+            /// Currently `executePendingActions` in the SDK executes all pending actions sequentially. To have valuable
+            /// information of what the user experience is, we log the start and end of this task.
+            AppLogger.log(message: "execute pending actions start", category: .send)
+            try! await self.executePendingActions().get()
+            AppLogger.log(message: "execute pending actions end", category: .send)
+        }
+    }
 }

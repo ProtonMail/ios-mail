@@ -133,7 +133,8 @@ enum MainToolbarEvent {
         appRoute: .initialState,
         userSession: .init(noPointer: .init()),
         userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped,
-        draftPresenter: .dummy
+        draftPresenter: .dummy,
+        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
     )
         .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
         .environmentObject(appUIStateStore)

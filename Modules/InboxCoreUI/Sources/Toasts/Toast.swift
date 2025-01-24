@@ -25,31 +25,44 @@ public struct Toast: Hashable {
     let style: Style
     let duration: TimeInterval
 
-    struct Button: Hashable {
+    public init(title: String?, message: String, button: Button?, style: Style, duration: TimeInterval) {
+        self.title = title
+        self.message = message
+        self.button = button
+        self.style = style
+        self.duration = duration
+    }
+
+    public struct Button: Hashable {
         let type: ButtonType
         let action: () -> Void
 
-        static func == (lhs: Toast.Button, rhs: Toast.Button) -> Bool {
+        public init(type: ButtonType, action: @escaping () -> Void) {
+            self.type = type
+            self.action = action
+        }
+
+        public static func == (lhs: Toast.Button, rhs: Toast.Button) -> Bool {
             lhs.type == rhs.type
         }
 
-        func hash(into hasher: inout Hasher) {
+        public func hash(into hasher: inout Hasher) {
             hasher.combine(type)
         }
     }
 
-    enum Style {
+    public enum Style {
         case error
         case information
         case success
         case warning
     }
 
-    enum ButtonType: Hashable {
+    public enum ButtonType: Hashable {
         case largeBottom(buttonTitle: String)
         case smallTrailing(content: ContentType)
 
-        enum ContentType: Hashable {
+        public enum ContentType: Hashable {
             case image(ImageResource)
             case title(String)
         }

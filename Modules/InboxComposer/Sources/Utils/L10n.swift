@@ -23,52 +23,58 @@ import Foundation
 enum L10n {
     enum Composer {
 
-        static let draftLoadedOffline =  LocalizedStringResource(
+        static let draftLoadedOffline = LocalizedStringResource(
             "You're currently offline. This draft may not be up-to-date.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Draft might not be up-to-date when loaded"
         )
 
-        static let send =  LocalizedStringResource(
+        static let send = LocalizedStringResource(
             "Send",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Message send button."
         )
 
-        static let to =  LocalizedStringResource(
+        static let to = LocalizedStringResource(
             "To:",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer to recipients."
         )
 
-        static let from =  LocalizedStringResource(
+        static let from = LocalizedStringResource(
             "From:",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer from field."
         )
 
-        static let subject =  LocalizedStringResource(
+        static let subject = LocalizedStringResource(
             "Subject:",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer subject."
         )
 
-        static let draftSaved =  LocalizedStringResource(
+        static let draftSaved = LocalizedStringResource(
             "Draft saved",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer toast message when dismissing the screen."
         )
 
-        static let messageSending =  LocalizedStringResource(
-            "Message will be sent shortly", // FIXME: Using this for v2
+        static let sendingMessage = LocalizedStringResource(
+            "Sending message...",
             bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Composer toast message when sent is tapped."
+            comment: "Composer toast message when send is tapped."
         )
 
-        static let messageSent =  LocalizedStringResource(
+        static let messageSent = LocalizedStringResource(
             "Message sent",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer toast message after sent."
+        )
+
+        static let undoSend = LocalizedStringResource(
+            "UNDO",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Undo action after message has been sent."
         )
     }
 
@@ -102,6 +108,97 @@ enum L10n {
             "There was a problem saving the draft",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to save."
+        )
+    }
+
+    enum DraftSaveSendError {
+
+        static func addressDisabled(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The address is disabled: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static func addressDoesNotHavePrimaryKey(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Recipient primary key is missing: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static let messageAlreadySent = LocalizedStringResource(
+            "The message was already sent",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let messageDoesNotExist = LocalizedStringResource(
+            "The draft to be sent was not found",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let messageIsNotADraft = LocalizedStringResource(
+            "The message to be sent is not a draft",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let noRecipients = LocalizedStringResource(
+            "Message to be sent has no recipients",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static func packageError(error: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "There was a problem sending the message: \(error)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static func protonRecipientNotFound(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The Proton address in the recipient does not exist: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static func recipientInvalidAddress(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Recipient address is invalid: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The recipient is unknown: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+    }
+
+    enum OpenDraftError {
+        static let addressNotFound = LocalizedStringResource(
+            "Address not found",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error in the context of opening a draft in the composer"
+        )
+
+        static let draftDoesNotExist = LocalizedStringResource(
+            "Draft not found",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error in the context of opening a draft in the composer"
+        )
+
+        static let missingMessageBody = LocalizedStringResource(
+            "Draft body is missing",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error in the context of opening a draft in the composer"
+        )
+
+        static let cantReplyOrForward = LocalizedStringResource(
+            "Error trying to reply or forward this message",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error in the context of opening a draft in the composer"
         )
     }
 }

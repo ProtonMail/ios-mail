@@ -2699,6 +2699,9 @@
         }
       }
     },
+    "Send operation can't be undone" : {
+      "comment" : "Error in the context of undoing a sent message"
+    },
     "Sending.." : {
       "comment" : "Title of a tag displayed for each message that is in the outbox with sending status."
     },
@@ -3049,6 +3052,9 @@
           }
         }
       }
+    },
+    "Undo operation failed because draft was not found" : {
+      "comment" : "Error in the context of undoing a sent message"
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",

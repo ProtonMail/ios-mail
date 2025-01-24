@@ -63,6 +63,18 @@ enum L10n {
             )
         }
 
+        enum UndoSendError {
+            static let sendCannotBeUndone = LocalizedStringResource(
+                "Send operation can't be undone",
+                comment: "Error in the context of undoing a sent message"
+            )
+
+            static let draftNotFound = LocalizedStringResource(
+                "Undo operation failed because draft was not found",
+                comment: "Error in the context of undoing a sent message"
+            )
+        }
+
         static let deletePermanently = LocalizedStringResource(
             "Delete permanently",
             comment: "Action title for permanent deletion of message/conversation in the action sheet."

@@ -33,19 +33,21 @@ struct SearchScreen: View {
     @FocusState var isTextFieldFocused: Bool
     @State private var modalState: ModalState?
     @State private var searchDraftPresenter: DraftPresenter
-    private let makeModalScreen: (ModalState) -> ComposerScreen
+    @State private var sendResultPresenter: SendResultPresenter
+    @State private var makeModalScreen: (ModalState) -> ComposerScreen
 
-    init(userSession: MailUserSession) {
+    init(userSession: MailUserSession, sendResultPresenter: SendResultPresenter) {
         self._model = StateObject(wrappedValue: .init())
         self._searchDraftPresenter = State(
             initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
         )
-        self.makeModalScreen = { state in
+        self._makeModalScreen = .init(initialValue: { state in
             switch state {
-            case .draft(let draft):
-                ComposerScreenFactory.makeComposer(draftToPresent: draft, mailUserSession: userSession)
+            case .draft(let composerParams):
+                ComposerScreenFactory.makeComposer(userSession: userSession, composerParams: composerParams)
             }
-        }
+        })
+        self._sendResultPresenter = .init(initialValue: sendResultPresenter)
     }
 
     var body: some View {
@@ -90,8 +92,16 @@ struct SearchScreen: View {
                 isTextFieldFocused = true
             }
         }
-        .onReceive(searchDraftPresenter.draftToPresent) { modalState = .draft($0) }
+        .onReceive(searchDraftPresenter.draftToPresent) { modalState = modalStateFor(draftToPresent: $0) }
         .sheet(item: $modalState, content: makeModalScreen)
+    }
+
+    private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
+        .draft(
+            ComposerModalParams(draftToPresent: draftToPresent, onSendingEvent: { draftId in
+                sendResultPresenter.presentResultInfo(.init(messageId: draftId, type: .sending))
+            })
+        )
     }
 
     private var listConfiguration: MailboxItemsListViewConfiguration {
@@ -143,7 +153,7 @@ struct SearchScreen: View {
 private extension SearchScreen {
 
     enum ModalState: Identifiable {
-        case draft(DraftToPresent)
+        case draft(ComposerModalParams)
 
         var id: String {
             switch self {

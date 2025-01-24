@@ -38,15 +38,15 @@ final class MailboxModel: ObservableObject {
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
 
-    private var messagePaginator: MessagePaginator?
-    private var conversationPaginator: ConversationPaginator?
+    private var messageScroller: MessageScroller?
+    private var conversationScroller: ConversationScroller?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchPage: { [unowned self] currentPage, pageSize in
             let result = await fetchNextPageItems(currentPage: currentPage)
             return result
         })
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-    private var paginatorCallback: LiveQueryCallbackWrapper = .init()
+    private var scrollerCallback: LiveQueryCallbackWrapper = .init()
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var readActionPerformer: ReadActionPerformer?
@@ -60,6 +60,10 @@ final class MailboxModel: ObservableObject {
 
     var viewMode: ViewMode {
         mailbox?.viewMode() ?? .conversations
+    }
+
+    var unreadFilter: ReadFilter {
+        state.filterBar.isUnreadButtonSelected ? .unread : .all
     }
 
     var isOutbox: Bool {
@@ -97,7 +101,7 @@ final class MailboxModel: ObservableObject {
         )
 
         setUpBindings()
-        setUpPaginatorCallback()
+        setUpScrollerCallback()
 
         if let openedItem = openedItem {
             state.navigationPath.append(openedItem)
@@ -110,7 +114,7 @@ final class MailboxModel: ObservableObject {
 
     func onLoad() {
         Task {
-            await updateMailboxAndPaginator()
+            await updateMailboxAndScroller()
         }
     }
 }
@@ -126,7 +130,7 @@ extension MailboxModel {
                 Task {
                     guard let self else { return }
                     self.selectedMailbox = newSelectedMailbox
-                    await self.updateMailboxAndPaginator()
+                    await self.updateMailboxAndScroller()
                 }
             }
             .store(in: &cancellables)
@@ -137,7 +141,7 @@ extension MailboxModel {
                 Task {
                     guard let self else { return }
                     AppLogger.log(message: "viewMode has changed", category: .mailbox)
-                    await self.updateMailboxAndPaginator()
+                    await self.updateMailboxAndScroller()
                 }
             }
             .store(in: &cancellables)
@@ -154,10 +158,10 @@ extension MailboxModel {
             .store(in: &cancellables)
     }
 
-    private func setUpPaginatorCallback() {
-        paginatorCallback.delegate = { [weak self] in
+    private func setUpScrollerCallback() {
+        scrollerCallback.delegate = { [weak self] in
             Task {
-                AppLogger.log(message: "items paginator callback", category: .mailbox)
+                AppLogger.log(message: "items scroller callback", category: .mailbox)
                 await self?.refreshMailboxItems()
             }
         }
@@ -175,7 +179,7 @@ extension MailboxModel {
         : selectedMailbox.name
     }
 
-    private func updateMailboxAndPaginator(resetUnreadCount: Bool = true) async {
+    private func updateMailboxAndScroller(resetUnreadCount: Bool = true) async {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
@@ -184,10 +188,10 @@ extension MailboxModel {
                 unreadCountLiveQuery = nil
             }
 
-            // These disconnects will prevent unrequested paginator callbacks
+            // These disconnects will prevent unrequested scroller callbacks
             // for the previous state. Call them before the Mailbox constructor.
-            messagePaginator?.handle().disconnect()
-            conversationPaginator?.handle().disconnect()
+            messageScroller?.handle().disconnect()
+            conversationScroller?.handle().disconnect()
 
             await paginatedDataSource.resetToInitialState()
 
@@ -199,18 +203,18 @@ extension MailboxModel {
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
 
             if mailbox.viewMode() == .messages {
-                messagePaginator = try await paginateMessagesForLabel(
+                messageScroller = try await scrollMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
-                    callback: paginatorCallback
+                    filter: unreadFilter,
+                    callback: scrollerCallback
                 ).get()
             } else {
-                conversationPaginator = try await paginateConversationsForLabel(
+                conversationScroller = try await scrollConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(), 
-                    filter: .init(unread: state.filterBar.isUnreadButtonSelected ? true : nil),
-                    callback: paginatorCallback
+                    filter: unreadFilter,
+                    callback: scrollerCallback
                 ).get()
             }
             await paginatedDataSource.fetchInitialPage()
@@ -226,7 +230,7 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            fatalError("failed to instantiate the Mailbox or Paginator object")
+            fatalError("failed to instantiate the Mailbox or Scroller object")
         }
     }
 
@@ -249,32 +253,32 @@ extension MailboxModel {
     }
 
     private func fetchNextPageMessages(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let messagePaginator else {
-            AppLogger.log(message: "no paginator found when fetching messages", category: .mailbox, isError: true)
+        guard let messageScroller else {
+            AppLogger.log(message: "no scroller found when fetching messages", category: .mailbox, isError: true)
             return .init(newItems: [], isLastPage: true)
         }
         AppLogger.logTemporarily(message: "fetching messages page \(currentPage)", category: .mailbox)
 
-        switch await messagePaginator.nextPage() {
+        switch await messageScroller.fetchMore() {
         case .ok(let messages):
             let items = mailboxItems(messages: messages)
-            return .init(newItems: items, isLastPage: !messagePaginator.hasNextPage())
+            return .init(newItems: items, isLastPage: !messageScroller.hasMore())
         case .error(let error):
             throw error
         }
     }
 
     private func fetchNextPageConversations(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let conversationPaginator else {
-            AppLogger.log(message: "no paginator found when fetching conversations", category: .mailbox, isError: true)
+        guard let conversationScroller else {
+            AppLogger.log(message: "no scroller found when fetching conversations", category: .mailbox, isError: true)
             return .init(newItems: [], isLastPage: true)
         }
         AppLogger.logTemporarily(message: "fetching conversations page \(currentPage)", category: .mailbox)
 
-        switch await conversationPaginator.nextPage() {
+        switch await conversationScroller.fetchMore() {
         case .ok(let conversations):
             let items = mailboxItems(conversations: conversations)
-            return .init(newItems: items, isLastPage: !conversationPaginator.hasNextPage())
+            return .init(newItems: items, isLastPage: !conversationScroller.hasMore())
         case .error(let error):
             throw error
         }
@@ -291,8 +295,8 @@ extension MailboxModel {
     }
 
     private func refreshMessage() async {
-        guard let messagePaginator else { return }
-        switch await messagePaginator.reload() {
+        guard let messageScroller else { return }
+        switch await messageScroller.allItems() {
         case .ok(let messages):
             let items = mailboxItems(messages: messages)
             AppLogger.logTemporarily(message: "refreshed messages before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
@@ -303,8 +307,8 @@ extension MailboxModel {
     }
 
     private func refreshConversations() async {
-        guard let conversationPaginator else { return }
-        switch await conversationPaginator.reload() {
+        guard let conversationScroller else { return }
+        switch await conversationScroller.allItems() {
         case .ok(let conversations):
             let items = mailboxItems(conversations: conversations)
             AppLogger.logTemporarily(message: "refreshed conversations before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
@@ -354,7 +358,7 @@ extension MailboxModel {
     func onUnreadFilterChange() {
         Task {
             AppLogger.log(message: "unread filter has changed to \(state.filterBar.isUnreadButtonSelected)", category: .mailbox)
-            await self.updateMailboxAndPaginator(resetUnreadCount: false)
+            await self.updateMailboxAndScroller(resetUnreadCount: false)
         }
     }
 }
@@ -372,7 +376,9 @@ extension MailboxModel {
     }
 
     private func openDraftMessage(messageId: ID) {
-        draftPresenter.openDraft(withId: messageId)
+        Task {
+            await draftPresenter.openDraft(withId: messageId)
+        }
     }
 }
 
