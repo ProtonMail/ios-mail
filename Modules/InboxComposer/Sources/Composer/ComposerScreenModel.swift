@@ -24,6 +24,7 @@ final class ComposerScreenModel: ObservableObject {
     @Published private(set) var state: State
     @Published private(set) var draftError: DraftOpenError?
     private var isCancelled: Bool = false
+    let pendingQueueProvider: PendingQueueProvider
 
     init(
         messageId: ID,
@@ -31,10 +32,12 @@ final class ComposerScreenModel: ObservableObject {
         userSession: MailUserSession
     ) {
         self.state = .loadingDraft
+        self.pendingQueueProvider = .init(userSession: userSession)
         openDraftMessage(session: userSession, messageId: messageId)
     }
 
-    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
+    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
+        self.pendingQueueProvider = .init(userSession: userSession)
         self.state = .draftLoaded(draft: draft, draftOrigin: draftOrigin)
     }
 

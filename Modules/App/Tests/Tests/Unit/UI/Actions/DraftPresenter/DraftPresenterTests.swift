@@ -48,12 +48,12 @@ final class DraftPresenterTests: BaseTestCase {
     // MARK: openDraft
 
     @MainActor
-    func testOpenDraft_itShouldPublishADraftToPresent() {
+    func testOpenDraft_itShouldPublishADraftToPresent() async {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         let dummyMessageId: ID = .random()
-        sut.openDraft(withId: dummyMessageId)
+        await sut.openDraft(withId: dummyMessageId)
         XCTAssertEqual(capturedDraftToPresent.count, 1)
 
         switch capturedDraftToPresent.first! {

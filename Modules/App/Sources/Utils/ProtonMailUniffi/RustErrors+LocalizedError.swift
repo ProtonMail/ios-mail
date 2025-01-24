@@ -37,3 +37,27 @@ private extension EventErrorReason {
         }
     }
 }
+
+extension DraftUndoSendError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            return reason.errorMessage?.string
+        case .other(let protonError):
+            return protonError.errorDescription
+        }
+    }
+}
+
+private extension DraftUndoSendErrorReason {
+
+    var errorMessage: LocalizedStringResource? {
+        switch self {
+        case .messageCanNotBeUndoSent, .sendCanNoLongerBeUndone:
+            L10n.Action.UndoSendError.sendCannotBeUndone
+        case .messageIsNotADraft, .messageDoesNotExist:
+            L10n.Action.UndoSendError.draftNotFound
+        }
+    }
+}

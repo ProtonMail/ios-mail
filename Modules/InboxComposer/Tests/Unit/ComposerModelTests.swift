@@ -24,6 +24,7 @@ import XCTest
 
 final class ComposerModelTests: XCTestCase {
     private var testContactProvider: ComposerContactProvider!
+    private var testPendingQueueProvider: PendingQueueProvider!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
@@ -39,6 +40,7 @@ final class ComposerModelTests: XCTestCase {
                 .makeComposerContactSingle(name: "", email: "c@example.com"),
             ])
         )
+        self.testPendingQueueProvider = .init(userSession: .init(noPointer: .init()))
         self.cancellables = []
     }
 
@@ -49,7 +51,7 @@ final class ComposerModelTests: XCTestCase {
     }
 
     func testInit_whenNoStateIsPassed_itShouldReturnAnEmptyState() {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider, pendingQueueProvider: testPendingQueueProvider, onSendingEvent: {})
         XCTAssertEqual(sut.state.toRecipients, RecipientFieldState.initialState(group: .to))
         XCTAssertEqual(sut.state.ccRecipients, RecipientFieldState.initialState(group: .cc))
         XCTAssertEqual(sut.state.bccRecipients, RecipientFieldState.initialState(group: .bcc))
@@ -58,13 +60,13 @@ final class ComposerModelTests: XCTestCase {
     // MARK: onLoad
 
     func testInit_whenOriginIsRemote_itShouldNotNotifyTheUser() async {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .server, contactProvider: testContactProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .server, contactProvider: testContactProvider)
         await sut.onLoad()
         XCTAssertNil(sut.toast)
     }
 
     func testInit_whenOriginIsCached_itShouldNotifyTheUser() async {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
         await sut.onLoad()
         XCTAssertEqual(sut.toast, .information(message: L10n.Composer.draftLoadedOffline.string))
     }
@@ -74,7 +76,7 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = ComposerModel(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         sut.recipientToggleSelection(group: .to, index: 0)
         XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
@@ -88,7 +90,7 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testRemoveRecipientsThatAreSelectedRecipients_itShouldRemoveSelectedItems() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = ComposerModel(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
         sut.recipientToggleSelection(group: .to, index: 0)
         XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
 
@@ -101,7 +103,7 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testSelectLastRecipient_whenLastRecipientIsNotSelected_itSholdUpdateItsSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = ComposerModel(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         sut.selectLastRecipient(group: .to)
         XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
@@ -110,7 +112,7 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testSelectLastRecipient_whenLastRecipientIsSelected_itSholdNotUpdateItsSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = ComposerModel(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         sut.selectLastRecipient(group: .to)
         XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
@@ -120,7 +122,7 @@ final class ComposerModelTests: XCTestCase {
 
     @MainActor
     func testAddRecipient_itShouldAddTheRecipient() {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         sut.addRecipient(group: .to, address: dummyAddress1)
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyAddress1)
@@ -132,7 +134,7 @@ final class ComposerModelTests: XCTestCase {
 
     @MainActor
     func testAddContact_whenIsSingleContact_andHasNameAndEmail_itShouldUpdateTheRecipients() {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         let contact: ComposerContact = .makeComposerContactSingle(name: dummyName1, email: dummyAddress1)
         sut.addContact(group: .to, contact: contact)
 
@@ -165,7 +167,7 @@ final class ComposerModelTests: XCTestCase {
 
         let tests: [MatchContactCountTestCase] = [("A", 3), ("susan", 1), ("team", 1)]
         for test in tests {
-            let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
+            let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
             await sut.onLoad()
             await testMatchContact(in: sut, test: test)
         }
@@ -176,7 +178,7 @@ final class ComposerModelTests: XCTestCase {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "a@example.com")
         ])
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
         await sut.onLoad()
         XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
 
@@ -193,7 +195,7 @@ final class ComposerModelTests: XCTestCase {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
         ])
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
         await sut.onLoad()
 
         // Preparing test with a contact match
@@ -215,7 +217,7 @@ final class ComposerModelTests: XCTestCase {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
         ])
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
         await sut.onLoad()
 
         // Preparing test with a contact match
@@ -244,7 +246,7 @@ final class ComposerModelTests: XCTestCase {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
         ])
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: mockProvider)
         await sut.onLoad()
 
         // Preparing test with a contact match
@@ -269,7 +271,7 @@ final class ComposerModelTests: XCTestCase {
 
     @MainActor
     func testUpdateSubject_itShouldChangeTheSubjectState() async {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
         let newSubject = "new subject"
         sut.updateSubject(value: newSubject)
         XCTAssertEqual(sut.state.subject, newSubject)
@@ -300,7 +302,7 @@ final class ComposerModelTests: XCTestCase {
     @MainActor
     func testComponerRecpientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
-        let sut = ComposerModel(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
         sut.recipientToggleSelection(group: .to, index: 0)
         XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
 
@@ -314,6 +316,16 @@ final class ComposerModelTests: XCTestCase {
 
 private extension ComposerModelTests {
     typealias MatchContactCountTestCase=(input: String, expectedMatchCount: Int)
+
+    private func makeSut(draft: any AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) -> ComposerModel {
+        ComposerModel(
+            draft: draft,
+            draftOrigin: draftOrigin,
+            contactProvider: contactProvider,
+            pendingQueueProvider: testPendingQueueProvider,
+            onSendingEvent: {}
+        )
+    }
 
     @MainActor
     func testMatchContact(in sut: ComposerModel, test: MatchContactCountTestCase) async {

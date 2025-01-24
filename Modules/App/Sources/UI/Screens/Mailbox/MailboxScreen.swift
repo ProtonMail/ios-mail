@@ -30,6 +30,7 @@ struct MailboxScreen: View {
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isSearchPresented = false
     @State private var isOnboardingPresented = false
+    private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
     private let onboardingStore: OnboardingStore
 
@@ -39,6 +40,7 @@ struct MailboxScreen: View {
         userSession: MailUserSession,
         userDefaults: UserDefaults,
         draftPresenter: DraftPresenter,
+        sendResultPresenter: SendResultPresenter,
         openedItem: MailboxMessageSeed? = nil
     ) {
         self._mailboxModel = StateObject(
@@ -51,6 +53,7 @@ struct MailboxScreen: View {
         )
         self.onboardingStore = .init(userDefaults: userDefaults)
         self.userSession = userSession
+        self.sendResultPresenter = sendResultPresenter
     }
 
     var didAppear: ((Self) -> Void)?
@@ -66,7 +69,7 @@ struct MailboxScreen: View {
                     content: { OnboardingScreen() }
                 )
                 .fullScreenCover(isPresented: $isSearchPresented) {
-                    SearchScreen(userSession: userSession)
+                    SearchScreen(userSession: userSession, sendResultPresenter: sendResultPresenter)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -157,21 +160,6 @@ extension MailboxScreen {
             )
         }
     }
-
-    @ViewBuilder
-    private func composerView(draftToPresent: DraftToPresent) -> some View {
-        let contactProvider = ComposerContactProvider.productionInstance(session: mailboxModel.userSession)
-        switch draftToPresent {
-        case .new(let draft):
-            ComposerScreen(draft: draft, draftOrigin: .new, contactProvider: contactProvider)
-        case .openDraftId(let messageId):
-            ComposerScreen(
-                messageId: messageId,
-                contactProvider: contactProvider,
-                userSession: mailboxModel.userSession
-            )
-        }
-    }
 }
 
 #Preview {
@@ -185,7 +173,8 @@ extension MailboxScreen {
         appRoute: .initialState,
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy
+        draftPresenter: .dummy,
+        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
     )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)

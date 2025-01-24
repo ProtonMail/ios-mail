@@ -27,6 +27,8 @@ final class ComposerModel: ObservableObject {
     private let draft: AppDraftProtocol
     private let draftOrigin: DraftOrigin
     private let contactProvider: ComposerContactProvider
+    private let pendingQueueProvider: PendingQueueProvider
+    private let onSendingEvent: () -> Void
 
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
@@ -37,10 +39,18 @@ final class ComposerModel: ObservableObject {
 
     private var messageHasBeenSent: Bool = false
 
-    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
+    init(
+        draft: AppDraftProtocol,
+        draftOrigin: DraftOrigin,
+        contactProvider: ComposerContactProvider,
+        pendingQueueProvider: PendingQueueProvider,
+        onSendingEvent: @escaping () -> Void
+    ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
+        self.pendingQueueProvider = pendingQueueProvider
+        self.onSendingEvent = onSendingEvent
         self.state = .initial
         self.state = makeState(from: draft)
         setUpComposerRecipientListCallbacks()
@@ -173,6 +183,7 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
     func sendMessage(dismissAction: Dismissable) {
         guard !messageHasBeenSent else { return }
         Task {
@@ -181,7 +192,8 @@ final class ComposerModel: ObservableObject {
             switch await draft.send() {
             case .ok:
                 messageHasBeenSent = true
-                showToast(.information(message: L10n.Composer.messageSending.string))
+                onSendingEvent()
+                pendingQueueProvider.executeActionsInBackgroundTask()
                 DispatchQueue.main.async {
                     dismissAction()
                 }

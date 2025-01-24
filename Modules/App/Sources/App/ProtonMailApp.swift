@@ -80,7 +80,8 @@ private struct RootView: View {
         case .activeSession(let activeUserSession):
             HomeScreen(
                 appContext: appContext,
-                userSession: activeUserSession
+                userSession: activeUserSession,
+                toastStateStore: toastStateStore
             )
             .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
 

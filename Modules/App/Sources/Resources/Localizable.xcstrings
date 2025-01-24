@@ -2690,6 +2690,9 @@
         }
       }
     },
+    "Send operation can't be undone" : {
+      "comment" : "Error in the context of undoing a sent message"
+    },
     "Sent" : {
       "comment" : "Menu title of sent emails in the sidebar.",
       "localizations" : {
@@ -3037,6 +3040,9 @@
           }
         }
       }
+    },
+    "Undo operation failed because draft was not found" : {
+      "comment" : "Error in the context of undoing a sent message"
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",

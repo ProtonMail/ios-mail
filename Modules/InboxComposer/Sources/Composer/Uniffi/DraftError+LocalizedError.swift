@@ -29,6 +29,21 @@ extension DraftOpenError: LocalizedError {
     }
 }
 
+private extension DraftOpenErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .addressNotFound:
+            L10n.OpenDraftError.addressNotFound
+        case .messageBodyMissing:
+            L10n.OpenDraftError.missingMessageBody
+        case .messageDoesNotExist, .messageIsNotADraft:
+            L10n.OpenDraftError.draftDoesNotExist
+        case .replyOrForwardDraft:
+            L10n.OpenDraftError.cantReplyOrForward
+        }
+    }
+}
+
 extension DraftSaveSendError: LocalizedError {
     public var errorDescription: String? {
         switch self {
@@ -40,57 +55,29 @@ extension DraftSaveSendError: LocalizedError {
     }
 }
 
-private extension DraftOpenErrorReason {
-    var errorMessage: LocalizedStringResource {
-        temporaryDescription.stringResource
-    }
-
-    // TODO: Pending adding more granularity to DraftError to have more context and decide the copy to show the user
-    var temporaryDescription: String {
-        switch self {
-        case .messageDoesNotExist:
-            "message does not exist"
-        case .messageIsNotADraft:
-            "message is not a draft"
-        case .replyOrForwardDraft:
-            "can not reply or forward to a draft"
-        case .addressNotFound:
-            "could not find user's address"
-        case .messageBodyMissing:
-            "message body is missing"
-        }
-    }
-}
-
 private extension DraftSaveSendErrorReason {
     var errorMessage: LocalizedStringResource {
-        temporaryDescription.stringResource
-    }
-    
-    private var temporaryDescription: String {
         switch self {
-        case .noRecipients:
-            "no recipients"
-        case .addressDoesNotHavePrimaryKey(let string):
-            "primary key for address missing: \(string)"
-        case .recipientEmailInvalid(let string):
-            "recipient email invalid: \(string)"
-        case .protonRecipientDoesNotExist(let string):
-            "proton recipient does not exist: \(string)"
-        case .unknownRecipientValidationError(let string):
-            "unknown recipient: \(string)"
-        case .addressDisabled(let string):
-            "address disabled: \(string)"
-        case .messageAlreadySent:
-            "message already exists"
-        case .packageError(let string):
-            "package error: \(string)"
-        case .alreadySent:
-            "message has already been sent"
+        case .addressDoesNotHavePrimaryKey(let value):
+            L10n.DraftSaveSendError.addressDoesNotHavePrimaryKey(address: value)
+        case .addressDisabled(let value):
+            L10n.DraftSaveSendError.addressDisabled(address: value)
+        case .alreadySent, .messageAlreadySent:
+            L10n.DraftSaveSendError.messageAlreadySent
         case .messageDoesNotExist:
-            "message does not exist"
+            L10n.DraftSaveSendError.messageDoesNotExist
         case .messageIsNotADraft:
-            "message is not a draft"
+            L10n.DraftSaveSendError.messageIsNotADraft
+        case .noRecipients:
+            L10n.DraftSaveSendError.noRecipients
+        case .packageError(let value):
+            L10n.DraftSaveSendError.packageError(error: value)
+        case .recipientEmailInvalid(let value):
+            L10n.DraftSaveSendError.recipientInvalidAddress(address: value)
+        case .protonRecipientDoesNotExist(let value):
+            L10n.DraftSaveSendError.protonRecipientNotFound(address: value)
+        case .unknownRecipientValidationError(let value):
+            L10n.DraftSaveSendError.unknownRecipientValidation(address: value)
         }
     }
 }

@@ -26,22 +26,37 @@ public struct ComposerScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
     private let contactProvider: ComposerContactProvider
+    private let onSendingEvent: () -> Void
 
-    public init(messageId: ID, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
-        self.contactProvider = contactProvider
+    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping () -> Void) {
+        self.contactProvider = dependencies.contactProvider
+        self.onSendingEvent = onSendingEvent
         self._model = StateObject(
             wrappedValue:
                 ComposerScreenModel(
                     messageId: messageId,
-                    contactProvider: contactProvider,
-                    userSession: userSession
+                    contactProvider: dependencies.contactProvider,
+                    userSession: dependencies.userSession
                 )
         )
     }
 
-    public init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
-        self.contactProvider = contactProvider
-        self._model = StateObject(wrappedValue: ComposerScreenModel(draft: draft, draftOrigin: draftOrigin, contactProvider: contactProvider))
+    public init(
+        draft: AppDraftProtocol,
+        draftOrigin: DraftOrigin,
+        dependencies: Dependencies,
+        onSendingEvent: @escaping () -> Void
+    ) {
+        self.contactProvider = dependencies.contactProvider
+        self.onSendingEvent = onSendingEvent
+        self._model = StateObject(
+            wrappedValue: ComposerScreenModel(
+                draft: draft,
+                draftOrigin: draftOrigin,
+                contactProvider: dependencies.contactProvider,
+                userSession: dependencies.userSession
+            )
+        )
     }
 
     public var body: some View {
@@ -57,7 +72,26 @@ public struct ComposerScreen: View {
                 dismiss()
             }
         case .draftLoaded(let draft, let draftOrigin):
-            ComposerView(draft: draft, draftOrigin: draftOrigin, contactProvider: contactProvider)
+            ComposerView(
+                draft: draft,
+                draftOrigin: draftOrigin,
+                contactProvider: contactProvider,
+                pendingQueueProvider: model.pendingQueueProvider,
+                onSendingEvent: onSendingEvent
+            )
+        }
+    }
+}
+
+extension ComposerScreen {
+
+    public struct Dependencies {
+        let contactProvider: ComposerContactProvider
+        let userSession: MailUserSession
+
+        public init(contactProvider: ComposerContactProvider, userSession: MailUserSession) {
+            self.contactProvider = contactProvider
+            self.userSession = userSession
         }
     }
 }
@@ -76,5 +110,10 @@ struct ComposerLoadingView: View {
 }
 
 #Preview {
-    ComposerScreen(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
+    ComposerScreen(
+        draft: .emptyMock,
+        draftOrigin: .new,
+        dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
+        onSendingEvent: {}
+    )
 }

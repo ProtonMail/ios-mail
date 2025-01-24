@@ -368,7 +368,9 @@ extension MailboxModel {
     }
 
     private func openDraftMessage(messageId: ID) {
-        draftPresenter.openDraft(withId: messageId)
+        Task {
+            await draftPresenter.openDraft(withId: messageId)
+        }
     }
 }
 

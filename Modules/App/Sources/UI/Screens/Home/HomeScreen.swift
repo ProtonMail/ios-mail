@@ -23,11 +23,12 @@ import proton_app_uniffi
 import SwiftUI
 
 struct HomeScreen: View {
+
     enum ModalState: Identifiable {
         case contacts
         case labelOrFolderCreation
         case settings
-        case draft(DraftToPresent)
+        case draft(ComposerModalParams)
 
         // MARK: - Identifiable
 
@@ -46,6 +47,7 @@ struct HomeScreen: View {
     @StateObject private var appRoute: AppRouteState
     @State private var modalState: ModalState?
     @State private var draftPresenter: DraftPresenter
+    @StateObject private var sendResultCoordinator: SendResultCoordinator
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -56,7 +58,7 @@ struct HomeScreen: View {
 
     @State var presentSignOutDialog = false
 
-    init(appContext: AppContext, userSession: MailUserSession) {
+    init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
         _appRoute = .init(wrappedValue: .initialState)
         self.appContext = appContext
         self.userSession = userSession
@@ -68,11 +70,13 @@ struct HomeScreen: View {
                 selectedItem: selectedItem
             )
         }
-        self._draftPresenter = .init(
-            initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+        let draftPresenter = DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+        self._draftPresenter = .init(initialValue: draftPresenter)
+        self._sendResultCoordinator = .init(
+            wrappedValue: SendResultCoordinator(userSession: userSession, draftPresenter: draftPresenter)
         )
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = .init(mailUserSession: userSession)
+        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -88,7 +92,8 @@ struct HomeScreen: View {
                     appRoute: appRoute,
                     userSession: userSession,
                     userDefaults: userDefaults,
-                    draftPresenter: draftPresenter
+                    draftPresenter: draftPresenter,
+                    sendResultPresenter: sendResultCoordinator.presenter
                 )
             case .mailboxOpenMessage(let item):
                 MailboxScreen(
@@ -97,6 +102,7 @@ struct HomeScreen: View {
                     userSession: userSession,
                     userDefaults: userDefaults,
                     draftPresenter: draftPresenter,
+                    sendResultPresenter: sendResultCoordinator.presenter,
                     openedItem: item
                 )
             }
@@ -138,10 +144,29 @@ struct HomeScreen: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .onReceive(draftPresenter.draftToPresent) { modalState = .draft($0) }
+        .onReceive(draftPresenter.draftToPresent) { modalState = modalStateFor(draftToPresent: $0) }
+        .onReceive(sendResultCoordinator.presenter.toastAction, perform: handleSendResultToastAction)
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
+    }
+
+    private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
+        .draft(
+            ComposerModalParams(
+                draftToPresent: draftToPresent,
+                onSendingEvent: { draftId in
+                    sendResultCoordinator.presenter.presentResultInfo(.init(messageId: draftId, type: .sending))
+                }
+            )
+        )
+    }
+
+    private func handleSendResultToastAction(_ action: SendResultToastAction) {
+        switch action {
+        case .present(let toast): toastStateStore.present(toast: toast)
+        case .dismiss(let toast): toastStateStore.dismiss(toast: toast)
+        }
     }
 
     private func presentShareFileController() {

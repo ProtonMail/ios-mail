@@ -803,6 +803,16 @@ public extension VoidDraftSaveSendResult {
         }
     }
 }
+public extension VoidDraftUndoSendResult {
+    func get() throws {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension VoidEventResult {
     func get() throws {
         switch self {

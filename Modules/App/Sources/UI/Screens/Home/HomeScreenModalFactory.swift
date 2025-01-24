@@ -23,7 +23,7 @@ import SwiftUI
 @MainActor
 struct HomeScreenModalFactory {
     private let makeContactsScreen: () -> ContactsScreen
-    private let makeComposerScreen: (DraftToPresent) -> ComposerScreen
+    private let makeComposerScreen: (ComposerModalParams) -> ComposerScreen
 
     init(mailUserSession: MailUserSession) {
         self.makeContactsScreen = {
@@ -33,8 +33,8 @@ struct HomeScreenModalFactory {
                 contactsWatcher: .productionInstance()
             )
         }
-        self.makeComposerScreen = { draftToPresent in
-            ComposerScreenFactory.makeComposer(draftToPresent: draftToPresent, mailUserSession: mailUserSession)
+        self.makeComposerScreen = { composerParams in
+            ComposerScreenFactory.makeComposer(userSession: mailUserSession, composerParams: composerParams)
         }
     }
 
@@ -47,8 +47,8 @@ struct HomeScreenModalFactory {
             CreateFolderOrLabelScreen()
         case .settings:
             SettingsScreen()
-        case .draft(let draftToPresent):
-            makeComposerScreen(draftToPresent)
+        case .draft(let composerParams):
+            makeComposerScreen(composerParams)
         }
     }
 }

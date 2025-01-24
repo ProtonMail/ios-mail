@@ -24,9 +24,21 @@ struct ComposerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
 
-    public init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) {
+    public init(
+        draft: AppDraftProtocol,
+        draftOrigin: DraftOrigin,
+        contactProvider: ComposerContactProvider,
+        pendingQueueProvider: PendingQueueProvider,
+        onSendingEvent: @escaping () -> Void
+    ) {
         self._model = StateObject(
-            wrappedValue: ComposerModel(draft: draft, draftOrigin: draftOrigin, contactProvider: contactProvider)
+            wrappedValue: ComposerModel(
+                draft: draft,
+                draftOrigin: draftOrigin,
+                contactProvider: contactProvider,
+                pendingQueueProvider: pendingQueueProvider,
+                onSendingEvent: onSendingEvent
+            )
         )
     }
 

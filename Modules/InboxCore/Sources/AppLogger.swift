@@ -157,6 +157,7 @@ extension AppLogger {
         case mailboxActions = "MailboxActions"
         case rustLibrary = "RustLibrary"
         case search = "Search"
+        case send = "Send"
         case userSessions = "UserSessions"
     }
 
