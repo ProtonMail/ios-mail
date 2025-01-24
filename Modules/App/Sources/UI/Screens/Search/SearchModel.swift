@@ -29,8 +29,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private(set) var mailbox: Mailbox!
-    private var searchPaginator: MessagePaginator?
-    private var paginatorCallback: LiveQueryCallbackWrapper = .init()
+    private var searchScroller: SearchScroller?
+    private var scrollerCallback: LiveQueryCallbackWrapper = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchPage: { [unowned self] currentPage, _ in
             let result = await fetchNextPage(currentPage: currentPage)
@@ -40,11 +40,11 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private let dependencies: Dependencies
     private var cancellables: Set<AnyCancellable> = .init()
 
-    init(searchPaginator: MessagePaginator? = nil, dependencies: Dependencies = .init()) {
+    init(searchScroller: SearchScroller? = nil, dependencies: Dependencies = .init()) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
-        self.searchPaginator = searchPaginator
+        self.searchScroller = searchScroller
         self.dependencies = dependencies
-        setUpPaginatorCallback()
+        setUpScrollerCallback()
         setUpBindings()
         initialiseMailbox()
     }
@@ -53,11 +53,11 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         AppLogger.logTemporarily(message: "SearchModel deinit", category: .search)
     }
 
-    private func setUpPaginatorCallback() {
-        paginatorCallback.delegate = { [weak self] in
+    private func setUpScrollerCallback() {
+        scrollerCallback.delegate = { [weak self] in
             guard let self else { return }
             Task {
-                AppLogger.log(message: "search paginator callback", category: .search)
+                AppLogger.log(message: "search scroller callback", category: .search)
                 await self.refreshMailboxItems()
             }
         }
@@ -91,18 +91,18 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     func searchText(_ text: String) {
         Task {
             let query = text.withoutWhitespace
-            searchPaginator?.handle().disconnect()
+            searchScroller?.handle().disconnect()
             await paginatedDataSource.resetToInitialState()
 
-            let result = await dependencies.searchProtocol.paginateSearch(
+            let result = await dependencies.searchProtocol.scrollerSearch(
                 session: dependencies.appContext.userSession,
                 options: .init(query: query),
-                callback: paginatorCallback
+                callback: scrollerCallback
             )
 
             switch result {
-            case .ok(let searchPaginator):
-                self.searchPaginator = searchPaginator
+            case .ok(let searchScroller):
+                self.searchScroller = searchScroller
                 await paginatedDataSource.fetchInitialPage()
             case .error(let error):
                 AppLogger.log(error: error, category: .search)
@@ -111,13 +111,13 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private func fetchNextPage(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        let searchPaginator = searchPaginator.unsafelyUnwrapped
-        switch await searchPaginator.reload() {
+        let searchScroller = searchScroller.unsafelyUnwrapped
+        switch await searchScroller.fetchMore() {
         case .ok(let messages):
             let items = mailboxItems(messages: messages)
             let result = PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult(
                 newItems: items,
-                isLastPage: !searchPaginator.hasNextPage()
+                isLastPage: !searchScroller.hasMore()
             )
             AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .search)
             return result
@@ -139,8 +139,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private func refreshMailboxItems() async {
-        guard let searchPaginator else { return }
-        switch await searchPaginator.reload() {
+        guard let searchScroller else { return }
+        switch await searchScroller.allItems() {
         case .ok(let messages):
             let items = mailboxItems(messages: messages)
             AppLogger.log(message: "refreshed results before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .search)
@@ -196,6 +196,7 @@ extension SearchModel {
             return
         }
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
+
     }
 
     func onMailboxItemAction(_ action: Action, itemIds: [ID]) {
@@ -221,7 +222,7 @@ extension SearchModel {
 
 struct SearchWrapper: SearchProtocol {
 
-    func paginateSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async -> PaginateSearchResult {
-        await proton_app_uniffi.paginateSearch(session: session, options: .init(keywords: options.query), callback: callback)
+    func scrollerSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async -> ScrollerSearchResult {
+        await proton_app_uniffi.scrollerSearch(session: session, options: .init(keywords: options.query), callback: callback)
     }
 }

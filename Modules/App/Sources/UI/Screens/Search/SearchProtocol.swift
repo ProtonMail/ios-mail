@@ -19,11 +19,11 @@ import proton_app_uniffi
 
 protocol SearchProtocol: Sendable {
 
-    func paginateSearch(
+    func scrollerSearch(
       session: MailUserSession,
       options: SearchOptions,
       callback: LiveQueryCallback
-    ) async -> PaginateSearchResult
+    ) async -> ScrollerSearchResult
 }
 
 struct SearchOptions {
