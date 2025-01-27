@@ -1421,16 +1421,16 @@
 "Inherited from parent folder" = "繼承自上層資料夾";
 
 /* Alert title */
-"Creating folder not allowed" = "Creating folder not allowed";
+"Creating folder not allowed" = "不允許創建資料夾";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "不允許創建標籤";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "請升級至付費方案以使用超過 3 個標籤";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "請連線後再試一次";
@@ -2121,10 +2121,10 @@
 "As scheduled" = "按排程";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "設定您自己的排程";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "升級方案以解鎖自訂訊息排程與其他好處。";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "立即升級";
@@ -2136,13 +2136,13 @@
 "Unlimited folders and labels" = "Unlimited folders and labels";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "Up to 500 GB of storage";
+"Up to 500 GB of storage" = "多達 500 GB的儲存空間";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "Up to 15 email addresses";
+"Up to 15 email addresses" = "多達 15 組電子郵件位址";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "支援 3 個自訂電郵網域";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Hide My Email aliases";
@@ -2277,10 +2277,10 @@
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "多達 3 TB的儲存空間";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "自訂電子郵件網域";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
 "Sender changed" = "寄件者已變更";
@@ -2403,7 +2403,7 @@
 "Please select a time in the future" = "請選取未來的某個時間";
 
 /* The title of snooze promotion view */
-"Want to snooze any time?" = "Want to snooze any time?";
+"Want to snooze any time?" = "想隨時延後?";
 
 /* The content description of snooze promotion view */
 "Unlock custom snooze times when you upgrade" = "Unlock custom snooze times when you upgrade";
@@ -2478,7 +2478,7 @@
 "%u email addresses" = "%u電子郵件位址";
 
 /* Description of a feature of a paid subscription */
-"Custom email domain" = "Custom email domain";
+"Custom email domain" = "自訂電郵網域名稱電郵網域名稱";
 
 /* Description of a feature of a paid subscription */
 "Custom email domain support" = "支援自訂電子郵件網域";
@@ -2490,7 +2490,7 @@
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "端對端加密";
 
 /* Description of a feature of a paid subscription */
 "Access to desktop app" = "Access to desktop app";

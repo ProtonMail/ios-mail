@@ -210,7 +210,6 @@ extension FetchMessagesWithResetTests {
     private func makeParams(refetchContacts: Bool) -> FetchMessagesWithReset.Params {
         FetchMessagesWithReset.Params(
             labelID: "dummy_label_id",
-            endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
             refetchContacts: refetchContacts
         )

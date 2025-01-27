@@ -54,7 +54,7 @@ extension MailboxViewModelTests {
         }
 
         let expectation1 = expectation(description: "Closure is called")
-        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true) { error in
             XCTFail("Shouldn't have error")
         } completion: {
             XCTAssertTrue(self.conversationProviderMock.fetchConversationsStub.wasCalledExactlyOnce)
@@ -62,7 +62,7 @@ extension MailboxViewModelTests {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.fetchConversationsStub.lastArguments)
                 XCTAssertEqual(argument.first, self.sut.labelID)
-                XCTAssertEqual(argument.a2, 999)
+                XCTAssertEqual(argument.a2, 0)
                 XCTAssertFalse(argument.a3)
                 XCTAssertTrue(argument.a4)
 
@@ -93,7 +93,7 @@ extension MailboxViewModelTests {
             XCTAssertEqual(params.labelID.rawValue, Message.HiddenLocation.draft.rawValue)
         }
         let expectation1 = expectation(description: "Closure is called")
-        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true) { error in
             XCTFail("Shouldn't have error")
         } completion: {
             expectation1.fulfill()
@@ -110,7 +110,7 @@ extension MailboxViewModelTests {
             XCTAssertEqual(params.labelID.rawValue, Message.HiddenLocation.sent.rawValue)
         }
         let expectation1 = expectation(description: "Closure is called")
-        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true) { error in
             XCTFail("Shouldn't have error")
         } completion: {
             expectation1.fulfill()
@@ -127,7 +127,7 @@ extension MailboxViewModelTests {
             XCTAssertEqual(params.labelID.rawValue, Message.Location.sent.rawValue)
         }
         let expectation1 = expectation(description: "Closure is called")
-        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true, time: 999) { error in
+        sut.updateMailbox(showUnreadOnly: false, isCleanFetch: true) { error in
             XCTFail("Shouldn't have error")
         } completion: {
             expectation1.fulfill()

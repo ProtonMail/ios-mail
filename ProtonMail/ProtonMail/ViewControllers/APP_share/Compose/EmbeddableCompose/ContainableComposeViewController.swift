@@ -124,7 +124,7 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
         super.webView(webView, didFinish: navigation)
     }
 
-    override func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?) {
+    override func addInlineAttachment(cid: String, name: String, data: Data) {
         guard viewModel.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
                 self.latestErrorBanner?.remove(animated: true)
@@ -138,10 +138,9 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
             }
 
             self.htmlEditor.remove(embedImage: "cid:\(cid)")
-            completion?()
             return
         }
-        return super.addInlineAttachment(cid: cid, name: name, data: data, completion: completion)
+        return super.addInlineAttachment(cid: cid, name: name, data: data)
     }
 
     func errorBannerToPresent() -> BannerView? {
@@ -272,6 +271,8 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
 
     override func startSendingMessage() {
         guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            SystemLogger.log(message: "Not connected", category: .sendMessage)
+
             let alert = UIAlertController(
                 title: L10n.Compose.sendingWithShareExtensionWhileOfflineIsNotSupported,
                 message: nil,

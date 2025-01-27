@@ -282,12 +282,20 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     func sendAction(deliveryTime: Date?) {
         viewModel.deliveryTime = deliveryTime
-        sendAction(self)
+        sendAction()
     }
 
-    @IBAction func sendAction(_ sender: AnyObject) {
+   func sendAction() {
         self.dismissKeyboard()
-        self.sendMessage()
+
+        delay(0.3) {
+            self.stopAutoSave()
+            if self.viewModel.deliveryTime == nil {
+                self.validateDraftBeforeSending()
+            } else {
+                self.startSendingMessage()
+            }
+        }
     }
 
     private func composerRecipientsValidation() -> Bool {
@@ -331,22 +339,14 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         return true
     }
 
-    private func sendMessage() {
-        delay(0.3) { [weak self] in
-            self?.stopAutoSave()
-            if self?.viewModel.deliveryTime == nil {
-                self?.validateDraftBeforeSending()
-            } else {
-                self?.startSendingMessage()
-            }
-        }
-    }
-
     func validateDraftBeforeSending() {
+        SystemLogger.log(message: "Validating draft before sending", category: .sendMessage)
+
         if self.headerView.expirationTimeInterval > 0 {
             if viewModel.shouldShowExpirationWarning(havingPGPPinned: headerView.hasPGPPinned,
                                                      isPasswordSet: !encryptionPassword.isEmpty,
                                                      havingNonPMEmail: headerView.hasNonePMEmails) {
+                SystemLogger.log(message: "Expiration alert will \(delegate == nil ? "not " : "")be shown", category: .sendMessage)
                 delegate?.displayExpirationWarning()
                 return
             }
@@ -357,7 +357,12 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     }
 
     func startSendingMessage() {
-        self.viewModel.sendMessage(deliveryTime: viewModel.deliveryTime)
+        do {
+            try viewModel.sendMessage(deliveryTime: viewModel.deliveryTime)
+        } catch {
+            SystemLogger.log(error: error, category: .sendMessage)
+            show(error: "\(error)")
+        }
 
         self.dismissBySending = true
         self.dismiss()
@@ -477,28 +482,30 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     // MARK: - HtmlEditorBehaviourDelegate
 
-    func addInlineAttachment(cid: String, name: String, data: Data, completion: (() -> Void)?) {
-        // Data.toAttachment will automatically increment number of attachments in the message
-        viewModel.composerMessageHelper.addAttachment(
-            data: data,
-            fileName: name,
-            shouldStripMetaData: viewModel.shouldStripMetaData,
-            type: "image/png",
-            isInline: true,
-            cid: cid
-        ) { _ in
-            self.viewModel.updateDraft()
-            completion?()
+    func addInlineAttachment(cid: String, name: String, data: Data) {
+        do {
+            // Data.toAttachment will automatically increment number of attachments in the message
+            _ = try viewModel.composerMessageHelper.addAttachment(
+                data: data,
+                fileName: name,
+                shouldStripMetaData: viewModel.shouldStripMetaData,
+                type: "image/png",
+                isInline: true,
+                cid: cid
+            )
+        } catch {
+            SystemLogger.log(error: error, category: .draft)
         }
+
+        viewModel.updateDraft()
     }
 
-    func removeInlineAttachment(_ cid: String, completion: (() -> Void)?) {
+    func removeInlineAttachment(_ cid: String) {
         viewModel.composerMessageHelper.removeAttachment(
             cid: cid,
             isRealAttachment: true
         ) { [weak self] in
             self?.viewModel.updateDraft()
-            completion?()
         }
     }
 
@@ -568,7 +575,11 @@ extension ComposeContentViewController {
     ) {
         isUserInputValidInTheHeaderViewOfComposer { [weak self] in
             _ = self?.collectDraftBody().done { body in
-                guard let self = self, let body = body else { return }
+                guard let self, let body else {
+                    SystemLogger.log(message: "Draft validation taking longer than usual", category: .draft)
+                    return
+                }
+
                 let bodyWithoutBase64 = self.viewModel.extractAndUploadBase64ImagesFromSendingBody(body: body)
 
                 let subject = self.headerView.subject.text ?? "(No Subject)"
@@ -579,8 +590,8 @@ extension ComposeContentViewController {
                         self.showAttachmentRemindAlertIfNeeded(
                             subject: subject,
                             body: bodyWithoutBase64
-                        ) { [weak self] in
-                            self?.showScheduleSendConfirmationAlertIfNeeded(
+                        ) {
+                            self.showScheduleSendConfirmationAlertIfNeeded(
                                 isTriggeredFromScheduleButton: isTriggeredFromScheduleButton
                             ) {
                                 continueAction()
@@ -593,7 +604,11 @@ extension ComposeContentViewController {
     }
 
     private func isUserInputValidInTheHeaderViewOfComposer(continueAction: @escaping () -> Void) {
-        guard composerRecipientsValidation() else { return }
+        guard composerRecipientsValidation() else {
+            SystemLogger.log(message: "Validating recipients", category: .sendMessage)
+            return
+        }
+
         showSubjectAlertIfNeeded(continueAction: continueAction)
     }
 
@@ -813,8 +828,6 @@ extension ComposeContentViewController {
 // MARK: - view extensions
 
 extension ComposeContentViewController: ComposeViewDelegate {
-    func composeViewWillPresentSubview() {}
-    func composeViewWillDismissSubview() {}
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)

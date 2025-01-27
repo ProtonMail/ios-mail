@@ -181,23 +181,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel>: UIViewCo
         return true
     }
 
-// iPads think tableView is resized when app is backgrounded and reloads it's data
-// by some mysterious reason if MessageBodyViewController cell occupies whole screen at that moment, tableView will scroll to bottom. So we perserve contentOffset with help of these methods
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        self.saveOffset()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // scrolling happens after traits collection change, so we have to run restore async
-        DispatchQueue.main.async {
-            self.restoreOffset()
-        }
-    }
-
     @objc internal func saveOffset() {
         self.contentOffsetToPerserve = self.tableView.contentOffset
     }

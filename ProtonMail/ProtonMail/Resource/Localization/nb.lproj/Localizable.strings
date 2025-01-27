@@ -1825,7 +1825,7 @@
 "Not now" = "Ikke nå";
 
 /* Get more storage button action */
-"Get more storage" = "Få mer lagringskapasitet";
+"Get more storage" = "Skaff deg mer lagringskapasitet";
 
 /* Spotlight title */
 "Sized for reading" = "Dimensjonert for lesing";
@@ -1899,7 +1899,7 @@
 "Your calendar is a record of your life, Proton Calendar helps keep it private." = "Kalenderen din er en oversikt over livet ditt, Proton Calendar hjelper deg med å holde den privat.";
 
 /* Button to open the App Store page for Proton Calendar */
-"Get Proton Calendar app" = "Få Proton Calendar-appen";
+"Get Proton Calendar app" = "Skaff deg Proton Calendar-appen";
 
 /* Name of the feature */
 "Email tracking protection" = "Sporingsbeskyttelse for e-post";
@@ -2163,7 +2163,7 @@
 "New!" = "Ny!";
 
 /* Got it action */
-"Got it" = "Forstått";
+"Got it" = "Skjønner";
 
 /* The title of the setting of the next msg after move */
 "Jump to next email" = "Gå til neste e-post";
@@ -2223,10 +2223,10 @@
 "No results found" = "Ingen resultater funnet";
 
 /* The title of the setting of the auto-delete option */
-"Auto-delete" = "Autoslett";
+"Auto-delete" = "Automatisk sletting";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Autoslett uønskede meldinger";
+"Auto-delete unwanted messages" = "Automatisk sletting av uønskede meldinger";
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.";
@@ -2553,7 +2553,7 @@
 "/month" = "/måned";
 
 /* CTA button to purchase a plan (e.g. Get Mail Plus) */
-"Get %@" = "Få %@";
+"Get %@" = "Skaff deg %@";
 
 /* In the context of a discount */
 "Save %u%%" = "Spar %u%%";

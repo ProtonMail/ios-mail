@@ -32,7 +32,6 @@ protocol ContactPickerDataSource: NSObjectProtocol {
 
 protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat)
-    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker)
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker)
     func contactPicker(contactPicker: ContactPicker, didEnterCustomText text: String, needFocus focus: Bool)
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool)
@@ -390,7 +389,6 @@ class ContactPicker: UIView, AccessibleView {
         self.searchTableViewController?.preferredContentSize = CGSize(width: Double.infinity, height: Double.infinity)
 
         self.delegate?.present(self.searchTableViewController!, animated: true, completion: nil)
-        self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
     internal func hideSearchTableView() {

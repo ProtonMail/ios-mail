@@ -195,6 +195,8 @@ final class MainQueueHandler: QueueHandler {
                         userID: UserID(rawValue: UID)
                     )
                     sendMessageTask.run(params: params, completion: completeHandler)
+                } else {
+                    SystemLogger.log(message: "Sending could not proceed", category: .sendMessage)
                 }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)

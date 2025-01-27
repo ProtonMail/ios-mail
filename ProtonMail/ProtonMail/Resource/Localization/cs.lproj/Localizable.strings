@@ -2484,7 +2484,7 @@
 "Custom email domain support" = "Podpora vlastní e-mailové domény";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u osobní kalendáře";
+"%u personal calendars" = "%u osobních kalendářů";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB úložiště a 1 e-mail";
@@ -2610,7 +2610,7 @@
 "Best value" = "Nejvýhodnější";
 
 /* Button to expand the feature list */
-"%u more features" = "%u další funkce";
+"%u more features" = "%u dalších funkcí";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Účtováno %1$@ každý(ch) %2$@";

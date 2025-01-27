@@ -1498,7 +1498,7 @@
 "Label as" = "Označiť ako";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Taktiež archivovať?";
+"Also archive?" = "Aj archivované?";
 
 /* No comment provided by engineer. */
 "New Label" = "Nový štítok";
@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "End-to-end šifrovanie";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Prístup k desktopovej aplikácii";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Prioritná zákaznícka podpora";
@@ -2502,28 +2502,28 @@
 "+%u premium features" = "+%u prémiových funkcií";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%ux viac úložného priestoru";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Získajte %u GB – dostatok priestoru pre bezpečné ukladanie správ, súborov a fotografií";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%ux viac emailových adries";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Vytvorte si podľa svojich potrieb až %u emailových adries vrátane adries @pm.me.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Pripojte vlastnú doménu a bezpečne odosielajte profesionálne alebo firemné emaily.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Otvorte email a kalendár jedným kliknutím a vyhnite sa rozptyľovaniu v prehliadači.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Usporiadajte svoje emaily pomocou preferovaného systému archivácie a označovania.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "V prípade problému môžete využiť rýchlejšiu odozvu špecializovaného personálu podpory.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Anonymná telemetria";

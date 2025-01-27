@@ -286,10 +286,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     @objc
     func sendAction(_ sender: UIBarButtonItem) {
+        SystemLogger.log(message: "Send button tapped", category: .sendMessage)
+
         viewModel.isSendButtonTapped = true
 
         // TODO: move send action in editor into viewModel
-        editor.sendAction(sender)
+        editor.sendAction()
     }
 
     #if APP_EXTENSION

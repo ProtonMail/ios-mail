@@ -1424,10 +1424,10 @@
 "Creating folder not allowed" = "Ustvarjanje mape ni dovoljeno.";
 
 /* Alert title */
-"Creating label not allowed" = "Creating label not allowed";
+"Creating label not allowed" = "Ustvarjanje oznake ni dovoljeno";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "Za uporabo več kot treh map nadgradite na plačljiv paket";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Za uporabo več kot treh oznak nadgradite na plačljiv paket.";
@@ -1732,10 +1732,10 @@
 "PGP-signed message. Sender verification failed" = "Sporočilo, podpisano s PGP. Preverjanje pošiljatelja neuspešno";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "End-to-end šifiranje za preverjenega prejemnika";
+"End-to-end encrypted to verified recipient" = "Od konca do konca šifrirano za preverjenega prejemnika";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "End-to-End šifrirano";
+"End-to-end encrypted" = "Šifrirano od konca do konca";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "Šifrirano s PGP za preverjenega prejemnika";
@@ -1870,7 +1870,7 @@
 "Blocked Senders" = "Blokirani pošiljatelji";
 
 /* Shown when the user attempts to manually refresh the list of blocked senders while offline */
-"Update queued, awaiting connectivity..." = "Posodobitev v čakalni vrsti, čakanje na povezavo...";
+"Update queued, awaiting connectivity..." = "Posodobitev v čakalni vrsti, čakanje na povezavo ...";
 
 /* Placeholder for empty sender list */
 "No blocked senders" = "Ni blokiranih pošiljateljev";
@@ -2055,7 +2055,7 @@
 "Invite friends to Proton,\n get up to $90 in credits!" = "Povabite prijatelje v Proton\n in pridobite do 90 $ dobroimetja!";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Povabite svoje prijatelje v Proton: brezplačno preizkusijo Mail Plus, vi pa zaslužite kredite, ko se naročijo na plačljivi paket.";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Povabite svoje prijatelje v Proton: brezplačno preizkusijo Mail Plus, vi pa zaslužite dobroimetje, ko se naročijo na plačljivi paket.";
 
 /* The title link of the textfield of the referral link in referral share view. */
 "Your invite link" = "Vaša povezava s povabilom";
@@ -2106,7 +2106,7 @@
 "AppKey protection" = "Zaščita AppKey";
 
 /* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey dodatno ščiti vaše podatke Proton v primeru zapletenih napadov, kot je napadalec, ki klonira vsebino vaše naprave. %1$@";
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey dodatno ščiti vaše podatke Proton v primeru kompleksnih napadov, npr. ko napadalec klonira vsebino vaše naprave. %1$@";
 
 /* AppKey disclaimer title when turning on */
 "Disclaimer" = "Izjava o omejitvi odgovornosti";
@@ -2304,7 +2304,7 @@
 "Last name" = "Priimek";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Polje z imenom profila ne sme biti prazno";
+"Display name field cannot be empty" = "Polje s prikaznim imenom ne sme biti prazno";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
 "Contact name is too long" = "Ime stika je predolgo";
@@ -2484,7 +2484,7 @@
 "Custom email domain support" = "Podpora za e-poštno domeno po meri";
 
 /* Description of a feature of a paid subscription */
-"%u personal calendars" = "%u osebni koledarji";
+"%u personal calendars" = "%u osebnih koledarjev";
 
 /* Description of a feature of a paid subscription */
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
@@ -2601,7 +2601,7 @@
 "Snooze it for a time of your choosing. Get custom snooze and more with %@." = "Snooze it for a time of your choosing. Get custom snooze and more with %@.";
 
 /* Title of the upsell page */
-"Choose a plan" = "Choose a plan";
+"Choose a plan" = "Izberite si paket";
 
 /* Refers to an annual billing cycle */
 "Annual" = "Letno";

@@ -322,7 +322,7 @@ private enum SubviewFactory {
         case .two:
             label.text = L10n.AutoDeleteUpsellSheet.upsellLineTwo
         case .three:
-            label.text = L10n.AutoDeleteUpsellSheet.upsellLineThree
+            label.text = L10n.PremiumPerks.unlimitedFoldersAndLabels
         case .four:
             label.text = L10n.AutoDeleteUpsellSheet.upsellLineFour
         }

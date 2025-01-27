@@ -32,7 +32,7 @@
 "Input Notification Email…" = "Εισαγωγή E-mail ειδοποίησης…";
 
 /* Settings row */
-"Remove image metadata" = "Αφαίρεση μετα-δεδομένων εικόνας";
+"Remove image metadata" = "Αφαίρεση μεταδεδομένων εικόνας";
 
 /* Settings row */
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
@@ -1615,7 +1615,7 @@
 "Cannot empty folder right now." = "Αδυναμία αδειάσματος φακέλου επί του παρόντος.";
 
 /* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete all messages within '%@'?" = "Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα '%@';";
+"Are you sure you want to permanently delete all messages within '%@'?" = "Θέλετε σίγουρα να διαγράψετε οριστικά όλα τα μηνύματα στα '%@';";
 
 /* Button title to show full encrypted message body when decryption failed */
 "…[Show full message]" = "…[Εμφάνιση πλήρους μηνύματος]";
@@ -2187,7 +2187,7 @@
 "Insufficient disk space" = "Ανεπαρκής χώρος στον δίσκο";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Δεν είναι δυνατό το άνοιγμα της εφαρμογής λόγω ανεπαρκούς χώρου στο δίσκο. Διαγράψτε ορισμένα δεδομένα και προσπαθήστε ξανά";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Δεν είναι δυνατό το άνοιγμα της εφαρμογής λόγω ανεπαρκούς χώρου στο δίσκο. Διαγράψτε μερικά δεδομένα και προσπαθήστε ξανά";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Αδυναμία ανοίγματος μηνύματος, δοκιμάστε ξανά.";
@@ -2247,7 +2247,7 @@
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash and spam for more than 30 days." = "Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.";
+"Automatically delete messages that have been in trash and spam for more than 30 days." = "Αυτόματη οριστική διαγραφή μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Όχι, ευχαριστώ";
@@ -2427,7 +2427,7 @@
 "Your contacts at your fingertips" = "Οι επαφές σας στα χέρια σας";
 
 /* The message of the spotlight of the auto import contacts. */
-"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δε χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
+"No need to leave the app to find an email address. Sync contacts from your device to Proton Mail." = "Δεν χρειάζεται να αποχωρήσετε από την εφαρμογή για να βρείτε μια διεύθυνση email. Συγχρονίστε επαφές από τη συσκευή σας στο Proton Mail.";
 
 /* The title of the button of the spotlight of the auto import contacts. */
 "Enable auto-import" = "Ενεργοποίηση Αυτόματης Εισαγωγής";
@@ -2472,7 +2472,7 @@
 "Security keys" = "Κλειδιά ασφαλείας";
 
 /* Description of a feature of a paid subscription */
-"15 GB storage" = "15 GB αποθηκευτικός χώρος";
+"15 GB storage" = "15 GB αποθηκευτικού χώρου";
 
 /* Description of a feature of a paid subscription */
 "%u email addresses" = "%u διευθύνσεις ηλεκτρονικού ταχυδρομείου";
@@ -2493,7 +2493,7 @@
 "End-to-end encryption" = "Διατερματική κρυπτογράφηση";
 
 /* Description of a feature of a paid subscription */
-"Access to desktop app" = "Access to desktop app";
+"Access to desktop app" = "Πρόσβαση στην εφαρμογή επιφάνειας εργασίας";
 
 /* Description of a feature of a paid subscription */
 "Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
@@ -2502,28 +2502,28 @@
 "+%u premium features" = "+%u premium χαρακτηριστικά";
 
 /* Description of a feature of a paid subscription */
-"%ux more storage" = "%ux more storage";
+"%ux more storage" = "%ux περισσότερο χώρο αποθήκευσης";
 
 /* Description of a feature of a paid subscription */
-"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Get %u GB—plenty of space to securely store your messages, files, and photos";
+"Get %u GB—plenty of space to securely store your messages, files, and photos" = "Αποκτήστε %u GB—άφθονο χώρο για την ασφαλή αποθήκευση των μηνυμάτων, των αρχείων και των φωτογραφιών σας";
 
 /* Description of a feature of a paid subscription */
-"%ux more email addresses" = "%ux more email addresses";
+"%ux more email addresses" = "%ux περισσότερες διευθύνσεις ηλεκτρονικού ταχυδρομείου";
 
 /* Description of a feature of a paid subscription */
-"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Create up to %u email addresses, including @pm.me ones, to meet your needs.";
+"Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Δημιουργήστε έως και %u διευθύνσεις ηλεκτρονικού ταχυδρομείου, συμπεριλαμβανομένων @pm.me, για να καλύψετε τις ανάγκες σας.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connect your own domain and send your professional or branded emails securely.";
+"Connect your own domain and send your professional or branded emails securely." = "Συνδέστε το δικό σας τομέα και στείλτε τα επαγγελματικά ή επώνυμα email σας με ασφάλεια.";
 
 /* Description of a feature of a paid subscription */
-"Open your email and calendar with one click and avoid browser distractions." = "Open your email and calendar with one click and avoid browser distractions.";
+"Open your email and calendar with one click and avoid browser distractions." = "Ανοίξτε το email και το ημερολόγιό σας με ένα κλικ και αποφύγετε τους περισπασμούς του προγράμματος περιήγησης.";
 
 /* Description of a feature of a paid subscription */
-"Organize your emails using your preferred filing and labeling system." = "Organize your emails using your preferred filing and labeling system.";
+"Organize your emails using your preferred filing and labeling system." = "Οργανώστε τα email σας χρησιμοποιώντας το προτιμώμενο σύστημα αρχειοθέτησης και επισήμανσης.";
 
 /* Description of a feature of a paid subscription */
-"Enjoy faster response time from dedicated support staff should an issue arise." = "Enjoy faster response time from dedicated support staff should an issue arise.";
+"Enjoy faster response time from dedicated support staff should an issue arise." = "Απολαύστε ταχύτερο χρόνο απόκρισης από εξειδικευμένο προσωπικό υποστήριξης σε περίπτωση που προκύψει κάποιο πρόβλημα.";
 
 /* The title of the telemetry setting. */
 "Anonymous telemetry" = "Ανώνυμη τηλεμετρία";
@@ -2580,7 +2580,7 @@
 "Need more labels or folders?" = "Χρειάζεστε περισσότερες ετικέτες ή φακέλους;";
 
 /* Subtitle of the upsell page */
-"Get them and other premium features when you upgrade to %@." = "Αποκτήστε τα και άλλες premium δυνατότητες κατά την αναβάθμιση στο %@.";
+"Get them and other premium features when you upgrade to %@." = "Αποκτήστε αυτά και άλλες premium δυνατότητες με αναβάθμιση σε %@.";
 
 /* Title of the upsell page */
 "Customize your signature" = "Προσαρμόστε την υπογραφή σας";

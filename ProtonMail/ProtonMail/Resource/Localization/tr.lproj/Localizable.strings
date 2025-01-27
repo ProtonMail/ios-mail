@@ -35,7 +35,7 @@
 "Remove image metadata" = "Görsel üst verilerini kaldır";
 
 /* Settings row */
-"Block email tracking" = "E-postanın izlenmesi engellensin";
+"Block email tracking" = "E-postaların izlenmesi engellensin";
 
 /* Settings row */
 "Default browser" = "Varsayılan tarayıcı";
@@ -1846,7 +1846,7 @@
 "To send or receive emails, free up space or upgrade for more storage." = "E-postaları alabilmek ya da gönderebilmek için boş yer açın ya da daha fazla depolama alanı edinmek için tarifenizi yükseltin.";
 
 /* Description of the banner alert */
-"To upload files, free up space or upgrade for more storage." = "Dosya yüklemek, depolama alanı boşaltın ya da daha fazla depolama alanı almak için tarifenizi yükseltin.";
+"To upload files, free up space or upgrade for more storage." = "Dosya yüklemek için depolama alanı boşaltın ya da daha fazla depolama alanı almak için tarifenizi yükseltin.";
 
 /* Description of the banner alert */
 "Upgrade to restore full access and to avoid data loss." = "Tam erişim kazanmak ve veri kaybını önlemek için tarifenizi yükseltin.";

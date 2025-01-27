@@ -423,12 +423,7 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
 
-    func didShowFilteredContactsForContactPicker(contactPicker: ContactPicker) {
-        self.delegate?.composeViewWillPresentSubview()
-    }
-
     func didHideFilteredContactsForContactPicker(contactPicker: ContactPicker) {
-        self.delegate?.composeViewWillDismissSubview()
         self.view.sendSubviewToBack(contactPicker)
         if contactPicker.frame.size.height > contactPicker.currentContentHeight {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
