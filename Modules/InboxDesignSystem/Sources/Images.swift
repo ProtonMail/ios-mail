@@ -15,4 +15,5 @@ public extension DS.Images {
     static let onboardingSecondPage = ImageResource.onboardingAlphaV12
     static let onboardingThirdPage = ImageResource.onboardingAlphaV13
     static let searchNoResults = ImageResource.searchNoResults
+    static let noConnection = ImageResource.noConnection
 }
