@@ -2689,7 +2689,7 @@ title
 "Best value" = "Najlepsza oferta";
 
 /* Button to expand the feature list */
-"%u more features" = "%u more features";
+"%u more features" = "%u więcej funkcji";
 
 /* 1st parameter is the full price, 2nd is the cycle: '1 month', '12 months' etc */
 "Billed at %1$@ every %2$@" = "Płatne %1$@ co %2$@";

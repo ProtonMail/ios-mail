@@ -27,7 +27,7 @@
 "Recovery email" = "E-post för återställning";
 
 /* Title */
-"Enable email notices" = "Aktivera e-postnotiser";
+"Enable email notices" = "Aktivera e-postaviseringar";
 
 /* place holder */
 "Input Notification Email…" = "Mata in e-postnotis…";
@@ -122,7 +122,7 @@ The voiceiver title of the add attachment button in the tool bar of composer
 "Add attachment" = "Lägg till bilaga";
 
 /* menu title */
-"Refer a friend" = "Bjud in en vän";
+"Refer a friend" = "Hänvisa en vän";
 
 /* mail location title */
 "Scheduled" = "Schemalagd";
@@ -875,7 +875,7 @@ The title of loading remote content banner.
 "Password update failed" = "Lösenordsuppdatering misslyckades";
 
 /* update notification email error title */
-"Update Notification Email" = "Uppdatera e-postnotis";
+"Update Notification Email" = "Uppdatera e-postavisering";
 
 /* Title */
 "Apply Labels" = "Tillämpa etiketter";
@@ -1044,7 +1044,7 @@ The title of the spam action in action sheet
 A option title that enable/disable notification feature
 cell title in device settings
 */
-"Notifications" = "Notiser";
+"Notifications" = "Aviseringar";
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Mappar";
@@ -2116,7 +2116,7 @@ The footer of alternative routing setting
 "Disclaimer" = "Ansvarsfriskrivning";
 
 /* AppKey disclaimer when turning on */
-"Notification actions and other background processes will become unavailable" = "Notisåtgärder och andra bakgrundsprocesser kommer att bli otillgängliga";
+"Notification actions and other background processes will become unavailable" = "Aviseringsåtgärder och andra bakgrundsprocesser kommer att bli otillgängliga";
 
 /* One of schedule time options */
 "Tomorrow" = "Imorgon";
@@ -2548,7 +2548,7 @@ title
 "Proton Mail with automatic email forwarding" = "Proton Mail med automatisk vidarebefordran av e-post";
 
 /* Description of a feature of a paid subscription */
-"Proton Pass with Dark Web Monitoring" = "Proton VPN med övervakning av mörka webben";
+"Proton Pass with Dark Web Monitoring" = "Proton Pass med övervakning av mörka webben";
 
 /* Description of a feature of a paid subscription */
 "Proton VPN with malware and ad-blocking" = "Proton VPN med blockering av skadlig kod och annonser";
@@ -2719,10 +2719,10 @@ title
 "Want to stay updated?" = "Vill du hålla dig uppdaterad?";
 
 /* Body of the authorization prompt */
-"Notifications help you keep on top of your inbox without checking the app." = "Notiser sätter dig i kontroll av din inkorg utan att du behöver kolla appen.";
+"Notifications help you keep on top of your inbox without checking the app." = "Aviseringar hjälper dig att hålla koll på din inkorg utan att behöva kolla appen.";
 
 /* Body of the authorization prompt */
-"Turn on notifications to know when you get a response to your email." = "Aktivera notiser för att veta när du får svar på ditt e-postmeddelande.";
+"Turn on notifications to know when you get a response to your email." = "Slå på aviseringar för att veta när du får svar på ditt e-postmeddelande.";
 
 /* Button to authorizate notifications */
 "Enable push notifications" = "Aktivera pushnotiser";

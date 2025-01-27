@@ -1835,7 +1835,7 @@ The footer of alternative routing setting
 "Sized for reading" = "Olvasásra méretezve";
 
 /* Spotlight body */
-"Now the body text of your emails will also be shown in your preferred reading size." = "Now the body text of your emails will also be shown in your preferred reading size.";
+"Now the body text of your emails will also be shown in your preferred reading size." = "Mostantól az e-mailek törzsszövege is az Ön által preferált olvasási méretben jelenik meg.";
 
 /* Title of the banner alert */
 "Your storage is full" = "A tárhelye megtelt";

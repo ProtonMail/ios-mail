@@ -215,7 +215,7 @@ The voiceiver title of the add attachment button in the tool bar of composer
 Action
 Springboard (3D Touch) shortcuts action
 */
-"Compose" = "Objet du message";
+"Compose" = "Rédiger";
 
 /* Composer expiration page title */
 "Message expiration" = "Délai d'expiration du message";
