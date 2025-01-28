@@ -93,6 +93,16 @@ public extension ContactListResult {
         }
     }
 }
+public extension ContactSuggestionsResult {
+    func get() throws -> [ContactSuggestion] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ConversationPaginatorNextPageResult {
     func get() throws -> [Conversation] {
         switch self {
@@ -425,6 +435,16 @@ public extension MailUserSessionAccountDetailsResult {
 }
 public extension MailUserSessionApplicableLabelsResult {
     func get() throws -> [SidebarCustomLabel] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionConnectionStatusResult {
+    func get() throws -> ConnectionStatus {
         switch self {
         case .ok(let value):
             value
