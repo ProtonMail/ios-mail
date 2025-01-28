@@ -80,6 +80,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             isStarred = liveQueryValues.isStarred
             await updateStateToMessagesReady(with: liveQueryValues.messages)
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
+        } catch ActionError.other(.network) {
+            await updateState(.noConnection)
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
@@ -409,6 +411,7 @@ extension ConversationDetailModel {
     enum State {
         case initial
         case fetchingMessages
+        case noConnection
         case messagesReady(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel)
 
         var debugDescription: String {

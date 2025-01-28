@@ -81,7 +81,7 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model)
+                    ConversationDetailListView(model: model) // Pass available size here
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
@@ -182,7 +182,7 @@ private extension ConversationDetailModel.State {
 
     var messagesCount: Int {
         switch self {
-        case .initial, .fetchingMessages:
+        case .initial, .fetchingMessages, .noConnection:
             0
         case .messagesReady(let previous, let last):
             (previous + [last]).count

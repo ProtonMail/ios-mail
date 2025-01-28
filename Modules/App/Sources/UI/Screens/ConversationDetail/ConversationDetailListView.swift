@@ -32,7 +32,7 @@ struct ConversationDetailListView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: .zero) {
             switch model.state {
             case .initial:
                 EmptyView()
@@ -41,6 +41,8 @@ struct ConversationDetailListView: View {
             case .messagesReady(let previous, let last):
                 messageList(previous: previous, last: last)
                     .padding(.top, DS.Spacing.compact)
+            case .noConnection:
+                NoConnectionView()
             }
         }
         .sheet(item: $senderActionTarget, content: senderActionPicker)
