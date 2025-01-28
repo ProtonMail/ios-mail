@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 struct SuggestionContactsRepository {
     private let contactStore: CNContactStoring
-    private let allContacts: ([PlatformDeviceContact]) async -> [ContactType]
+    private let allContacts: (String, [DeviceContact]) async -> [ContactSuggestion]
     
     init(
         contactStore: CNContactStoring,
@@ -28,8 +28,8 @@ struct SuggestionContactsRepository {
         mailUserSession: MailUserSession
     ) {
         self.contactStore = contactStore
-        self.allContacts = { deviceContacts in
-            let result = await allContactsProvider.allContacts(mailUserSession, deviceContacts)
+        self.allContacts = { query, deviceContacts in
+            let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
             
             switch result {
             case .ok(let contacts):
@@ -40,12 +40,12 @@ struct SuggestionContactsRepository {
         }
     }
     
-    func allContacts(completion: @escaping ([ContactType]) -> Void) {
+    func allContacts(query: String, completion: @escaping ([ContactSuggestion]) -> Void) {
         contactStore.requestAccess(for: .contacts) { granted, _ in
-            let deviceContacts: [PlatformDeviceContact] = granted ? deviceContacts() : []
+            let deviceContacts: [DeviceContact] = granted ? deviceContacts() : []
             
             Task {
-                let contacts = await allContacts(deviceContacts)
+                let contacts = await allContacts(query, deviceContacts)
                 completion(contacts)
             }
         }
@@ -53,14 +53,14 @@ struct SuggestionContactsRepository {
     
     // MARK: - Private
     
-    private func deviceContacts() -> [PlatformDeviceContact] {
+    private func deviceContacts() -> [DeviceContact] {
         let keys: [CNKeyDescriptor] = [CNContactGivenNameKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
-        var contacts: [PlatformDeviceContact] = []
+        var contacts: [DeviceContact] = []
         
         try? contactStore.enumerateContacts(with: request) { contact, _ in
-            let contact = PlatformDeviceContact(
-                id: contact.id.uuidString,
+            let contact = DeviceContact(
+                key: contact.id.uuidString,
                 name: contact.givenName,
                 emails: contact.emailAddresses.compactMap(\.label)
             )
@@ -72,38 +72,16 @@ struct SuggestionContactsRepository {
     }
 }
 
-public enum ContactType: Equatable {
-    case group(ContactGroupItem)
-    case proton(ContactEmailItem)
-    case device(DeviceContact)
-}
-
 public struct AllContactsProvider {
-    // FIXME: To remove after Rust SDK bump
-    public enum AllContactResult {
-        case ok([ContactType])
-        case error(Error)
+    public let contactSuggestions: (
+        _ query: String,
+        _ deviceContacts: [DeviceContact],
+        _ userSession: MailUserSession
+    ) async -> ContactSuggestionsResult
+
+    public init(
+        contactSuggestions: @escaping (String, [DeviceContact], MailUserSession) async -> ContactSuggestionsResult
+    ) {
+        self.contactSuggestions = contactSuggestions
     }
-    
-    public let allContacts: (
-        _ userSession: MailUserSession,
-        _ deviceContacts: [PlatformDeviceContact]
-    ) async -> AllContactResult
-
-    public init(allContacts: @escaping (MailUserSession, [PlatformDeviceContact]) async -> AllContactResult) {
-        self.allContacts = allContacts
-    }
-}
-
-public struct PlatformDeviceContact: Equatable {
-    public let id: String
-    public let name: String
-    public let emails: [String]
-}
-
-public struct DeviceContact: Equatable {
-    public let id: String
-    public let name: String
-    public let emails: [String]
-    public let avatarInformation: AvatarInformation
 }

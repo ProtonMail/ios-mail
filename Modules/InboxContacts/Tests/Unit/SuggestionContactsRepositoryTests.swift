@@ -24,10 +24,10 @@ import XCTest
 final class SuggestionContactsRepositoryTests: BaseTestCase {
     
     var sut: SuggestionContactsRepository!
-    var stubbedAllContacts: [ContactType]!
+    var stubbedAllContacts: [ContactSuggestion]!
     
     private var contactStoreSpy: CNContactStoreSpy!
-    private(set) var allContactsCallsWithDeviceContacts: [[PlatformDeviceContact]] = []
+    private(set) var allContactsCallsWithDeviceContacts: [[DeviceContact]] = []
     
     override func setUp() {
         super.setUp()
@@ -35,7 +35,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         contactStoreSpy = .init()
         sut = .init(
             contactStore: contactStoreSpy,
-            allContactsProvider: .init(allContacts: { _, contacts in
+            allContactsProvider: .init(contactSuggestions: { query, contacts, _ in
                 self.allContactsCallsWithDeviceContacts.append(contacts)
                 return .ok(self.stubbedAllContacts)
             }),
@@ -52,7 +52,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
     }
     
     func testAllContacts_ItRequestForPermissions() {
-        sut.allContacts(completion: { _ in })
+        sut.allContacts(query: "", completion: { _ in })
         
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 1)
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.last?.entityType, .contacts)
@@ -61,7 +61,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
     // MARK: - Permissions granted
     
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() throws {
-        sut.allContacts(completion: { _ in })
+        sut.allContacts(query: "", completion: { _ in })
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
         parameters.completionHandler(true, nil)
@@ -80,7 +80,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             .travisHulkenberg
         ]
         
-        sut.allContacts(completion: { _ in })
+        sut.allContacts(query: "", completion: { _ in })
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
         parameters.completionHandler(true, nil)
@@ -88,12 +88,12 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         XCTAssertEqual(allContactsCallsWithDeviceContacts.count, 1)
         XCTAssertEqual(allContactsCallsWithDeviceContacts.last, [
             .init(
-                id: "E121E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                key: "E121E1F8-C36C-495A-93FC-0C247A3E6E5F",
                 name: "Jonathan Horovitz",
                 emails: ["jonathan@pm.me", "jonathan@gmail.com"]
             ),
             .init(
-                id: "E221E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                key: "E221E1F8-C36C-495A-93FC-0C247A3E6E5F",
                 name: "Travis Hulkenberg",
                 emails: ["travis@pm.me", "travis@gmail.com"]
             )
@@ -106,18 +106,18 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             .travisHulkenberg
         ]
         
-        var receivedContacts: [ContactType] = []
+        var receivedContacts: [ContactSuggestion] = []
         
-        sut.allContacts(completion: { contacts in
+        sut.allContacts(query: "", completion: { contacts in
             receivedContacts = contacts
         })
         
         stubbedAllContacts = [
             .group(.businessGroup),
-            .proton(.init(id: 1, email: "john@pm.me")),
-            .proton(.init(id: 2, email: "mark@pm.me")),
-            .device(.jonathanHorotvitz),
-            .device(.travisHulkenberg)
+            .protonJohn,
+            .protonMark,
+            .deviceJonathanHorotvitz,
+            .deviceTravisHulkenberg
         ]
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
@@ -126,17 +126,17 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         XCTAssertEqual(receivedContacts.count, 5)
         XCTAssertEqual(receivedContacts, [
             .group(.businessGroup),
-            .proton(.init(id: 1, email: "john@pm.me")),
-            .proton(.init(id: 2, email: "mark@pm.me")),
-            .device(.jonathanHorotvitz),
-            .device(.travisHulkenberg)
+            .protonJohn,
+            .protonMark,
+            .deviceJonathanHorotvitz,
+            .deviceTravisHulkenberg
         ])
     }
     
     // MARK: - Permissions not granted
     
     func testAllContacts_WhenPermissionsNotGranted_ItDoesNotRequestForDeviceContacts() throws {
-        sut.allContacts(completion: { _ in })
+        sut.allContacts(query: "", completion: { _ in })
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
         parameters.completionHandler(false, nil)
@@ -150,14 +150,14 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             .travisHulkenberg
         ]
         
-        sut.allContacts(completion: { _ in })
+        sut.allContacts(query: "", completion: { _ in })
         
         stubbedAllContacts = [
             .group(.businessGroup),
-            .proton(.init(id: 1, email: "john@pm.me")),
-            .proton(.init(id: 2, email: "mark@pm.me")),
-            .device(.jonathanHorotvitz),
-            .device(.travisHulkenberg)
+            .protonJohn,
+            .protonMark,
+            .deviceJonathanHorotvitz,
+            .deviceTravisHulkenberg
         ]
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
@@ -173,15 +173,15 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             .travisHulkenberg
         ]
         
-        var receivedContacts: [ContactType] = []
+        var receivedContacts: [ContactSuggestion] = []
         
-        sut.allContacts(completion: { contacts in
+        sut.allContacts(query: "", completion: { contacts in
             receivedContacts = contacts
         })
         
         stubbedAllContacts = [
-            .proton(.init(id: 1, email: "john@pm.me")),
-            .proton(.init(id: 2, email: "mark@pm.me"))
+            .protonJohn,
+            .protonMark
         ]
         
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
@@ -189,8 +189,8 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         
         XCTAssertEqual(receivedContacts.count, 2)
         XCTAssertEqual(receivedContacts, [
-            .proton(.init(id: 1, email: "john@pm.me")),
-            .proton(.init(id: 2, email: "mark@pm.me"))
+            .protonJohn,
+            .protonMark
         ])
     }
     
@@ -255,23 +255,56 @@ private extension CNContact {
     
 }
 
-private extension DeviceContact {
-    
-    static var jonathanHorotvitz: Self {
-        testData(from: .jonathanHorotvitz, with: .init(text: "JH", color: "#FF5733"))
-    }
-    
-    static var travisHulkenberg: Self {
-        testData(from: .travisHulkenberg, with: .init(text: "TH", color: "#A1FF33"))
-    }
-    
-    private static func testData(from contact: CNContact, with avatarInformation: AvatarInformation) -> Self {
+private extension ContactSuggestion {
+
+    static func group(_ groupItem: ContactGroupItem) -> Self {
         .init(
-            id: contact.id.uuidString,
-            name: contact.givenName,
-            emails: contact.emailAddresses.compactMap(\.label),
-            avatarInformation: avatarInformation
+            key: "\(groupItem.id.value)",
+            name: groupItem.name,
+            avatarInformation: .init(text: "", color: groupItem.avatarColor),
+            kind: .contactGroup(groupItem.contacts.flatMap(\.emails))
         )
     }
-
+    
+    static var protonJohn: Self {
+        .proton(.init(id: 1, email: "john@pm.me"), "JD")
+    }
+    
+    static var protonMark: Self {
+        .proton(.init(id: 2, email: "mark@pm.me"), "MW")
+    }
+    
+    static var deviceJonathanHorotvitz: Self {
+        device(from: .jonathanHorotvitz, with: .init(text: "JH", color: "#FF5733"))
+    }
+    
+    static var deviceTravisHulkenberg: Self {
+        device(from: .travisHulkenberg, with: .init(text: "TH", color: "#A1FF33"))
+    }
+    
+    // MARK: - Private
+    
+    private static func proton(_ emailItem: ContactEmailItem, _ initials: String) -> Self {
+        .init(
+            key: "\(emailItem.id.value)",
+            name: "name_\(emailItem.email)",
+            avatarInformation: .init(text: initials, color: "#A1FF33"),
+            kind: .contactItem(emailItem)
+        )
+    }
+    
+    private static func device(
+        from contact: CNContact,
+        with avatarInformation: AvatarInformation
+    ) -> Self {
+        let email: String = contact.emailAddresses.first!.label!
+        
+        return .init(
+            key: contact.id.uuidString,
+            name: contact.givenName,
+            avatarInformation: avatarInformation,
+            kind: .deviceContact(.init(email: email))
+        )
+    }
+    
 }
