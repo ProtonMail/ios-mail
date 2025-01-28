@@ -128,7 +128,7 @@ struct ExpandedMessageCell: View {
 
 struct ExpandedMessageCellUIModel: Identifiable {
     let id: ID
-    let messageBody: MessageBody?
+    let messageBody: MessageBodyState
     let unread: Bool
     let messageDetails: MessageDetailsUIModel
 }
@@ -177,8 +177,10 @@ private extension MessageBody {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 0),
-                messageBody: .testInstance(
-                    rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                messageBody: .loaded(
+                    .testInstance(
+                        rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                    )
                 ),
                 unread: false,
                 messageDetails: messageDetails
@@ -194,8 +196,10 @@ private extension MessageBody {
             mailbox: Mailbox(noPointer: .init()),
             uiModel: .init(
                 id: .init(value: 1),
-                messageBody: .testInstance(
-                    rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                messageBody: .loaded(
+                    .testInstance(
+                        rawBody: "Hey!!\n\nToday, I bought my plane tickets! 🛫 \nReady for a diet plenty of milanesas, parrilladas and alfajores!!\n\nLooking forward to it"
+                    )
                 ),
                 unread: false,
                 messageDetails: messageDetails

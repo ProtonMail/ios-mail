@@ -49,6 +49,7 @@ final class MessageBodyLoader: ObservableObject {
         case fetching
         case value(_ value: MessageBody)
         case error(Error)
+        case noConnection
     }
 
     @Published var body: MessageBodyState = .fetching
@@ -60,10 +61,15 @@ final class MessageBodyLoader: ObservableObject {
 
     @MainActor
     func loadBody(for messageId: ID) async {
-        guard let bodyValue = await provider.messageBody(for: messageId) else {
-            body = .fetching // TODO: error
-            return
+        switch await provider.messageBody(for: messageId) {
+        case .loaded(let body):
+            self.body = .value(body)
+        case .noConnection:
+            self.body = .noConnection
+        case .error(let error):
+            self.body = .error(error)
+        case .notLoaded:
+            self.body = .fetching
         }
-        body = .value(bodyValue)
     }
 }

@@ -38,23 +38,21 @@ struct MessageBodyView: View {
     }
 
     var body: some View {
-        if let body = uiModel.messageBody {
-            messageBodyView(body: body)
-        } else {
-            AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
-                switch messageBody {
-                case .fetching:
-                    ZStack {
-                        ProgressView()
-                    }
-                    .padding(.vertical, DS.Spacing.jumbo)
-
-                case .value(let body):
-                    messageBodyView(body: body)
-
-                case .error(let error):
-                    Text(String(describing: error))
+        AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
+            switch messageBody {
+            case .fetching:
+                ZStack {
+                    ProgressView()
                 }
+                .padding(.vertical, DS.Spacing.jumbo)
+
+            case .value(let body):
+                messageBodyView(body: body)
+
+            case .error(let error):
+                Text(String(describing: error))
+            case .noConnection:
+                NoConnectionView()
             }
         }
     }

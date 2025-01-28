@@ -18,9 +18,16 @@
 import InboxCore
 import proton_app_uniffi
 
+enum MessageBodyState {
+    case notLoaded
+    case loaded(MessageBody)
+    case noConnection
+    case error(Error)
+}
+
 protocol MessageBodyProviding {
     @MainActor
-    func messageBody(for messageId: ID) async -> MessageBody?
+    func messageBody(for messageId: ID) async -> MessageBodyState
 }
 
 struct MessageBody {
@@ -35,15 +42,17 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
         self.mailbox = mailbox
     }
 
-    func messageBody(for messageId: ID) async -> MessageBody? {
-        do {
-            let decryptedMessage = try await getMessageBody(mbox: mailbox, id: messageId).get()
+    func messageBody(for messageId: ID) async -> MessageBodyState {
+        switch await getMessageBody(mbox: mailbox, id: messageId) {
+        case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
-
-            return .init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage)
-        } catch {
-            AppLogger.log(error: error, category: .conversationDetail)
-            return nil
+            return .loaded(.init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage))
+        case .error(let error):
+            if error == .other(.network) {
+                return .noConnection
+            } else {
+                return .error(error)
+            }
         }
     }
 }
