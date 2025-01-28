@@ -62,7 +62,7 @@ struct SuggestionContactsRepository {
             let contact = DeviceContact(
                 key: contact.id.uuidString,
                 name: contact.givenName,
-                emails: contact.emailAddresses.compactMap(\.label)
+                emails: contact.emailAddresses.compactMap { address in address.value as String }
             )
             
             contacts.append(contact)
