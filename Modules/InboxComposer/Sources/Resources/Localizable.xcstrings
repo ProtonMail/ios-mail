@@ -80,6 +80,9 @@
     "Message to be sent has no recipients" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
+    "Please verify your last recipient" : {
+      "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"
+    },
     "Recipient address is invalid: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },

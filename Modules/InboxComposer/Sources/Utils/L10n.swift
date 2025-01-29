@@ -109,6 +109,12 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to save."
         )
+
+        static let invalidLastRecipient = LocalizedStringResource(
+            "Please verify your last recipient",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message when an invalid recipient is added by prematurely finishing text input"
+        )
     }
 
     enum DraftSaveSendError {

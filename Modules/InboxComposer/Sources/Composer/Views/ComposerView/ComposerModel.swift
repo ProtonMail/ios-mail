@@ -184,7 +184,9 @@ final class ComposerModel: ObservableObject {
     func sendMessage(dismissAction: Dismissable) {
         guard !messageHasBeenSent else { return }
         Task {
+            guard await addHangingInputAsRecipientIfNeededAndContinueIfValid() else { return }
             await updateBodyDebounceTask?.executeImmediately()
+
             AppLogger.log(message: "sending message", category: .composer)
             switch await draft.send() {
             case .ok:
@@ -259,7 +261,12 @@ extension ComposerModel {
         }
     }
 
-    private func addEntryInRecipients(for draft: AppDraftProtocol, entry: SingleRecipientEntry, group: RecipientGroupType) {
+    @discardableResult
+    private func addEntryInRecipients(
+        for draft: AppDraftProtocol,
+        entry: SingleRecipientEntry,
+        group: RecipientGroupType
+    ) -> ComposerRecipient? {
         let recipientList = recipientList(from: draft, group: group)
         let result = recipientList.addSingleRecipient(recipient: entry)
         switch result {
@@ -270,12 +277,14 @@ extension ComposerModel {
                     .copy(\.input, to: .empty)
                     .copy(\.controllerState, to: .editing)
             }
+            return lastRecipient
         case .duplicate, .saveFailed: // FIXME: handle errors
             state.overrideRecipientState(for: group) {
                 $0.copy(\.input, to: .empty)
                     .copy(\.controllerState, to: .editing)
             }
             showToast(.error(message: result.localizedErrorMessage(entry: entry).string))
+            return nil
         }
     }
 
@@ -311,6 +320,25 @@ extension ComposerModel {
         case .bcc:
             draft.bccRecipients()
         }
+    }
+
+    private func addHangingInputAsRecipientIfNeededAndContinueIfValid() async -> Bool {
+        guard let addedOneMoreRecipient = await addRecipientFromHangingInputIfNeeded() else { return true }
+        if !addedOneMoreRecipient.isValid {
+            showToast(.error(message: L10n.ComposerError.invalidLastRecipient.string))
+        }
+        return addedOneMoreRecipient.isValid
+    }
+
+    private func addRecipientFromHangingInputIfNeeded() async -> ComposerRecipient? {
+        let recipientFields: [(state: RecipientFieldState, group: RecipientGroupType)] = [
+            (state.toRecipients, .to),
+            (state.ccRecipients, .cc),
+            (state.bccRecipients, .bcc)
+        ]
+        guard let firstNonEmptyInput = recipientFields.first(where: { !$0.state.input.isEmpty }) else { return nil }
+        let entry = SingleRecipientEntry(name: nil, email: firstNonEmptyInput.state.input)
+        return addEntryInRecipients(for: draft, entry: entry, group: firstNonEmptyInput.group)
     }
 
     private func showDraftSavedToastIfNeeded() {
