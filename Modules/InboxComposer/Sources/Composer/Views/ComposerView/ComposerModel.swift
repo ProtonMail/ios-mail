@@ -34,9 +34,8 @@ final class ComposerModel: ObservableObject {
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
 
-    private let updateBodyDebounceDuration = Duration.milliseconds(2000)
-    private var updateBodyDebounceTask: Task<(), Never>?
-
+    private var updateBodyDebounceTask: DebouncedTask?
+    
     private var messageHasBeenSent: Bool = false
 
     init(
@@ -68,10 +67,8 @@ final class ComposerModel: ObservableObject {
     @MainActor
     func viewWillDisappear() {
         AppLogger.log(message: "composer will disappear", category: .composer)
-        if messageHasBeenSent {
-            handleViewDisappearAfterSend()
-        } else {
-            handleViewWillDisappear()
+        if !messageHasBeenSent {
+            showDraftSavedToastIfNeeded()
         }
     }
 
@@ -170,8 +167,8 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func updateBody(value: String) {
-        debounce(duration: updateBodyDebounceDuration) { [weak self] in  // FIXME: Move debounce to SDK
-            guard !Task.isCancelled else { return }
+        guard !messageHasBeenSent else { return }
+        debounce { [weak self] in  // FIXME: Move debounce to SDK
             guard let self else { return }
             switch draft.setBody(body: value) {
             case .ok:
@@ -187,7 +184,7 @@ final class ComposerModel: ObservableObject {
     func sendMessage(dismissAction: Dismissable) {
         guard !messageHasBeenSent else { return }
         Task {
-            await waitForDebounceToFinish()
+            await updateBodyDebounceTask?.executeImmediately()
             AppLogger.log(message: "sending message", category: .composer)
             switch await draft.send() {
             case .ok:
@@ -316,7 +313,7 @@ extension ComposerModel {
         }
     }
 
-    private func handleViewWillDisappear() {
+    private func showDraftSavedToastIfNeeded() {
         Task {
             if case .ok(let id) = await draft.messageId() {
                 if id != nil {
@@ -326,26 +323,12 @@ extension ComposerModel {
         }
     }
 
-    private func handleViewDisappearAfterSend() {
-        Task {
-            let retainingSelfToAllowDebounceToFinish: ComposerModel = self
-            await waitForDebounceToFinish()
-        }
-    }
-
-    private func debounce(duration: Duration, block: @escaping () -> Void) {
+    private func debounce(_ block: @escaping () -> Void) {
         updateBodyDebounceTask?.cancel()
-        updateBodyDebounceTask = Task {
-            defer { updateBodyDebounceTask = nil }
-            try? await Task.sleep(for: duration)
-            block()
+        updateBodyDebounceTask = DebouncedTask(duration: .seconds(2), block: block) { [weak self] in
+            self?.updateBodyDebounceTask = nil
         }
-    }
-
-    private func waitForDebounceToFinish() async {
-        if updateBodyDebounceTask != nil {
-            try! await Task.sleep(for: updateBodyDebounceDuration + .milliseconds(100))
-        }
+        updateBodyDebounceTask?.debounce()
     }
 
     func showToast(_ toastToShow: Toast) {
