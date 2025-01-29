@@ -369,3 +369,5 @@ extension ComposerModel {
         }
     }
 }
+
+extension Draft: EmbeddedImageProvider {}

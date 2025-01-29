@@ -54,3 +54,5 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
         }
     }
 }
+
+extension DecryptedMessage: EmbeddedImageProvider {}

@@ -18,18 +18,18 @@
 import proton_app_uniffi
 import WebKit
 
-class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
+public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
     private let embeddedImageProvider: EmbeddedImageProvider
 
-    init(embeddedImageProvider: EmbeddedImageProvider) {
+    public init(embeddedImageProvider: EmbeddedImageProvider) {
         self.embeddedImageProvider = embeddedImageProvider
     }
 
-    enum HandlerError: Error, Equatable {
+    public enum HandlerError: Error, Equatable {
         case missingCID
     }
 
-    static let handlerScheme = "cid"
+    public static let handlerScheme = "cid"
 
     // MARK: - WKURLSchemeHandler
 
@@ -48,7 +48,7 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
     ///
     /// In above's case when html is loaded to the web view and this handler is registered as cid scheme handler for web view,
     /// it will call this function where the `urlSchemeTask` requested URL will be `cid:43affe26@protonmail.com`
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+    public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         let url = urlSchemeTask.request.url
         guard let url, url.scheme == Self.handlerScheme else {
             urlSchemeTask.didFailWithError(HandlerError.missingCID)
@@ -61,7 +61,7 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
         finishTaskWithImage(url: url, cid: cid, urlSchemeTask: urlSchemeTask)
     }
 
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+    public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 
     // MARK: - Private
 
@@ -84,3 +84,5 @@ class CIDSchemeHandler: NSObject, WKURLSchemeHandler, @unchecked Sendable {
         }
     }
 }
+
+extension ProtonError: Error {}
