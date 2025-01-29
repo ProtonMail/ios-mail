@@ -341,6 +341,17 @@ enum L10n {
         )
     }
 
+    enum NoConnection {
+        static let title = LocalizedStringResource(
+            "Your Devise is Offline",
+            comment: "Title of the offline mode placeholder."
+        )
+        static let subtitle = LocalizedStringResource(
+            "The message will download when device is back online",
+            comment: "Subtitle of the offline mode placeholder."
+        )
+    }
+
     enum MessageDetails {
         static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")
         static let cc = LocalizedStringResource("Cc", comment: "`CC` in the messsage details.")

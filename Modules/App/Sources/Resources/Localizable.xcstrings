@@ -2995,6 +2995,9 @@
         }
       }
     },
+    "The message will download when device is back online" : {
+      "comment" : "Subtitle of the offline mode placeholder."
+    },
     "To" : {
       "comment" : "`To` in the message details.",
       "localizations" : {
@@ -3287,6 +3290,9 @@
           }
         }
       }
+    },
+    "Your Devise is Offline" : {
+      "comment" : "Title of the offline mode placeholder."
     }
   },
   "version" : "1.0"
