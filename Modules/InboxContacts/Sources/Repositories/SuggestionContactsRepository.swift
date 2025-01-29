@@ -43,13 +43,6 @@ struct SuggestionContactsRepository {
         }
     }
     
-    func allContacts(query: String, completion: @escaping ([ContactSuggestion]) -> Void) {
-        Task {
-            let suggestions = await allContacts(query: query)
-            completion(suggestions)
-        }
-    }
-    
     func allContacts(query: String) async -> [ContactSuggestion] {
         let permissionsGranted = await requestAccessIfNeeded()
         let deviceContacts: [DeviceContact] = permissionsGranted ? deviceContacts() : []
@@ -57,6 +50,13 @@ struct SuggestionContactsRepository {
         return await allContacts(query, deviceContacts)
     }
     
+    func allContacts(query: String, completion: @escaping ([ContactSuggestion]) -> Void) {
+        Task {
+            let suggestions = await allContacts(query: query)
+            completion(suggestions)
+        }
+    }
+
     // MARK: - Private
     
     private func requestAccessIfNeeded() async -> Bool {
