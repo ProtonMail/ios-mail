@@ -97,16 +97,4 @@ struct ContactsSuggestionRepository {
     }
 }
 
-public struct AllContactsProvider {
-    public let contactSuggestions: (
-        _ query: String,
-        _ deviceContacts: [DeviceContact],
-        _ userSession: MailUserSession
-    ) async -> ContactSuggestionsResult
 
-    public init(
-        contactSuggestions: @escaping (String, [DeviceContact], MailUserSession) async -> ContactSuggestionsResult
-    ) {
-        self.contactSuggestions = contactSuggestions
-    }
-}
