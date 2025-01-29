@@ -81,31 +81,3 @@ struct MessageBodyView: View {
 private struct MessageBodyViewIdentifiers {
     static let messageBody = "detail.messageBody"
 }
-
-struct NoConnectionView: View {
-
-    var body: some View {
-        VStack(spacing: .zero) {
-            Image(DS.Images.noConnection)
-                .padding(.bottom, DS.Spacing.extraLarge)
-            Text("Your Devise is Offline")
-                .font(.callout)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(DS.Color.Text.norm)
-                .padding(.bottom, DS.Spacing.mediumLight)
-            Text("The message will download when device is back online")
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(DS.Color.Text.weak)
-        }
-        .frame(width: 295, height: 375, alignment: .center)
-        .frame(maxWidth: .infinity)
-    }
-}
-
-#Preview {
-    VStack {
-        NoConnectionView()
-    }
-}

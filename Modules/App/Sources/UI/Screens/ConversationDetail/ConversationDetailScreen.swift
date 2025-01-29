@@ -81,7 +81,7 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model) // Pass available size here
+                    ConversationDetailListView(model: model)
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
