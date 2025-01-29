@@ -30,7 +30,7 @@ struct PendingQueueProvider {
             /// Currently `executePendingActions` in the SDK executes all pending actions sequentially. To have valuable
             /// information of what the user experience is, we log the start and end of this task.
             AppLogger.log(message: "execute pending actions start", category: .send)
-            try! await self.executePendingActions().get()
+            try? await self.executePendingActions().get()
             AppLogger.log(message: "execute pending actions end", category: .send)
         }
     }
