@@ -3291,7 +3291,7 @@
         }
       }
     },
-    "Your Devise is Offline" : {
+    "Your Device is Offline" : {
       "comment" : "Title of the offline mode placeholder."
     }
   },
