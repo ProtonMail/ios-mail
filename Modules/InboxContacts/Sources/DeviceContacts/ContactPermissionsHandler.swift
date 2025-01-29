@@ -17,7 +17,7 @@
 
 import Contacts
 
-struct DeviceContactsPermissionHandler {
+struct ContactPermissionsHandler {
     private let permissionsHandler: CNContactStoring.Type
     private let contactStore: CNContactStoring
     
