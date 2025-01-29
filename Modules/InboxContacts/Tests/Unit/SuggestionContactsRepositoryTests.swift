@@ -27,7 +27,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
     var stubbedAllContacts: [ContactSuggestion]!
     
     private var contactStoreSpy: CNContactStoreSpy!
-    private(set) var allContactsCallsWithDeviceContacts: [[DeviceContact]] = []
+    private var allContactsCalls: [AllContactsParameters] = []
     
     override func setUp() {
         super.setUp()
@@ -37,7 +37,8 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             permissionsHandler: CNContactStoreSpy.self,
             contactStore: contactStoreSpy,
             allContactsProvider: .init(contactSuggestions: { query, contacts, _ in
-                self.allContactsCallsWithDeviceContacts.append(contacts)
+                let parameters = AllContactsParameters(query: query, deviceContacts: contacts)
+                self.allContactsCalls.append(parameters)
                 return .ok(self.stubbedAllContacts)
             }),
             mailUserSession: MailUserSession(noPointer: .init())
@@ -45,7 +46,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
     }
     
     override func tearDown() {
-        allContactsCallsWithDeviceContacts = []
+        allContactsCalls = []
         contactStoreSpy = nil
         stubbedAllContacts = nil
         sut = nil
@@ -142,19 +143,22 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
         parameters.completionHandler(true, nil)
         
-        XCTAssertEqual(allContactsCallsWithDeviceContacts.count, 1)
-        XCTAssertEqual(allContactsCallsWithDeviceContacts.last, [
-            .init(
-                key: "E121E1F8-C36C-495A-93FC-0C247A3E6E5F",
-                name: "Jonathan Horovitz",
-                emails: ["jonathan@pm.me", "jonathan@gmail.com"]
-            ),
-            .init(
-                key: "E221E1F8-C36C-495A-93FC-0C247A3E6E5F",
-                name: "Travis Hulkenberg",
-                emails: ["travis@pm.me", "travis@gmail.com"]
-            )
-        ])
+        XCTAssertEqual(allContactsCalls.count, 1)
+        XCTAssertEqual(allContactsCalls.last, .init(
+            query: "",
+            deviceContacts: [
+                .init(
+                    key: "E121E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                    name: "Jonathan Horovitz",
+                    emails: ["jonathan@pm.me", "jonathan@gmail.com"]
+                ),
+                .init(
+                    key: "E221E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                    name: "Travis Hulkenberg",
+                    emails: ["travis@pm.me", "travis@gmail.com"]
+                )
+            ]
+        ))
     }
     
     func testAllContacts_WhenPermissionsAreGranted_ItReturnsDeviceAndProtonContacts() throws {
@@ -207,7 +211,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
             .travisHulkenberg
         ]
         
-        sut.allContacts(query: "", completion: { _ in })
+        sut.allContacts(query: "Ab", completion: { _ in })
         
         stubbedAllContacts = [
             .group(.businessGroup),
@@ -220,8 +224,8 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         let parameters = try XCTUnwrap(contactStoreSpy.requestAccessCalls.last)
         parameters.completionHandler(false, nil)
         
-        XCTAssertEqual(allContactsCallsWithDeviceContacts.count, 1)
-        XCTAssertEqual(allContactsCallsWithDeviceContacts.last, [])
+        XCTAssertEqual(allContactsCalls.count, 1)
+        XCTAssertEqual(allContactsCalls.last, AllContactsParameters(query: "Ab", deviceContacts: []))
     }
     
     func testAllContacts_WhenPermissionsNotGranted_ItReturnsProtonContactsOnly() throws {
@@ -251,6 +255,11 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         ])
     }
     
+}
+
+private struct AllContactsParameters: Equatable {
+    let query: String
+    let deviceContacts: [DeviceContact]
 }
 
 private class CNContactSpy: CNContact {
