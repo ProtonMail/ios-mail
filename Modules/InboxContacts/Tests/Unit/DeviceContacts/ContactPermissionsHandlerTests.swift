@@ -43,8 +43,9 @@ final class ContactPermissionsHandlerTests: BaseTestCase {
     }
     
     func testRequestAccessIfNeeded_WhenPermissionsNotDetermined_ItRequestForPermissions() async {
-        contactStoreSpy.requestAccessCompletionBlockCalledImmediately = true
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .notDetermined]
+        
+        contactStoreSpy.requestAccessCompletionBlockCalledImmediately = true
         
         let granted = await sut.requestAccessIfNeeded()
         

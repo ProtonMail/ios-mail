@@ -72,19 +72,6 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
     
     // MARK: - Permissions granted
     
-    func testAllContacts_WhenPermissionsGrantedBefore_ItRequestForDeviceContacts() throws {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
-        
-        sut.allContacts(query: "", completion: { _ in })
-        
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 1)
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 2)
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description), [
-            CNContactGivenNameKey.description,
-            CNContactEmailAddressesKey.description
-        ])
-    }
-    
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() throws {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
         

@@ -20,7 +20,7 @@ import Contacts
 
 class CNContactStoreSpy: CNContactStoring {
     
-    static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = [.contacts: .notDetermined]
+    static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
     private(set) var requestAccessCalls: [
         (entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)
@@ -30,7 +30,7 @@ class CNContactStoreSpy: CNContactStoring {
     var requestAccessCompletionBlockCalledImmediately: Bool = false
     
     static func cleanUp() {
-        stubbedAuthorizationStatus = [.contacts: .notDetermined]
+        stubbedAuthorizationStatus = .default
     }
     
     // MARK: - CNContactStoring
@@ -57,6 +57,14 @@ class CNContactStoreSpy: CNContactStoring {
         stubbedEnumerateContacts.forEach { contact in
             block(contact, ok)
         }
+    }
+
+}
+
+extension Dictionary where Key == CNEntityType, Value == CNAuthorizationStatus {
+
+    static var `default`: Self {
+        [.contacts: .notDetermined]
     }
 
 }
