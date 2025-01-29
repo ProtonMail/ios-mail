@@ -27,6 +27,7 @@ class CNContactStoreSpy: CNContactStoring {
     ] = []
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
+    var requestAccessCompletionBlockCalledImmediately: Bool = false
     
     static func cleanUp() {
         stubbedAuthorizationStatus = [.contacts: .notDetermined]
@@ -40,6 +41,10 @@ class CNContactStoreSpy: CNContactStoring {
     
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void) {
         requestAccessCalls.append((entityType, completionHandler))
+        
+        if requestAccessCompletionBlockCalledImmediately {
+            completionHandler(true, nil)
+        }
     }
     
     func enumerateContacts(

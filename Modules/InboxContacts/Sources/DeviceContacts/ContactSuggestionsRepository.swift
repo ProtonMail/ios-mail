@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 struct ContactSuggestionsRepository {
     private let contactStore: CNContactStoring
-    private let permissionsHandler: ContactPermissionsHandler
+    private let permissionsHandler: CNContactStoring.Type
     private let allContacts: (String, [DeviceContact]) async -> [ContactSuggestion]
     
     init(
@@ -30,7 +30,7 @@ struct ContactSuggestionsRepository {
         mailUserSession: MailUserSession
     ) {
         self.contactStore = contactStore
-        self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
+        self.permissionsHandler = permissionsHandler
         self.allContacts = { query, deviceContacts in
             let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
             
@@ -44,9 +44,9 @@ struct ContactSuggestionsRepository {
     }
     
     func allContacts(query: String) async -> [ContactSuggestion] {
-        let permissionsGranted = await permissionsHandler.requestAccessIfNeeded()
+        let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
         let deviceContacts: [DeviceContact] = permissionsGranted ? deviceContacts() : []
-
+        
         return await allContacts(query, deviceContacts)
     }
     
@@ -56,7 +56,7 @@ struct ContactSuggestionsRepository {
             completion(suggestions)
         }
     }
-
+    
     // MARK: - Private
     
     private func deviceContacts() -> [DeviceContact] {
@@ -76,4 +76,19 @@ struct ContactSuggestionsRepository {
         
         return contacts
     }
+}
+
+private extension CNAuthorizationStatus {
+
+    var granted: Bool {
+        switch self {
+        case .notDetermined, .restricted, .denied:
+            false
+        case .authorized:
+            true
+        @unknown default:
+            false
+        }
+    }
+
 }
