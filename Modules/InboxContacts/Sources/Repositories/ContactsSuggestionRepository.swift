@@ -18,7 +18,7 @@
 import Contacts
 import proton_app_uniffi
 
-struct SuggestionContactsRepository {
+struct ContactsSuggestionRepository {
     private let permissionsHandler: CNContactStoring.Type
     private let contactStore: CNContactStoring
     private let allContacts: (String, [DeviceContact]) async -> [ContactSuggestion]

@@ -21,9 +21,9 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-final class SuggestionContactsRepositoryTests: BaseTestCase {
+final class ContactsSuggestionRepositoryTests: BaseTestCase {
     
-    var sut: SuggestionContactsRepository!
+    var sut: ContactsSuggestionRepository!
     var stubbedAllContacts: [ContactSuggestion]!
     
     private var contactStoreSpy: CNContactStoreSpy!
