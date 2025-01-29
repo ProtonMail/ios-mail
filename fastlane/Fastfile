@@ -108,15 +108,14 @@ platform :ios do
     sh "base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE"
   end
 
-  desc "Build the app"
-  # Skip archiving and codesigning, until provisioning is properly set.
+  desc "Build the app for testing"
   lane :build do
-    build_app(
-      scheme: "ProtonMail",
-      configuration: "Release",
-      skip_codesigning: true,
+    run_tests(
+      build_for_testing: true,
       clean: true,
-      skip_archive: true,
+      skip_detect_devices: true,
+      device: UNIT_TESTS_DEVICE,
+      scheme: UNIT_TESTS_SCHEME,
       xcargs: "-skipPackagePluginValidation"
     )
   end
@@ -142,9 +141,9 @@ platform :ios do
     run_tests(
       scheme: UNIT_TESTS_SCHEME,
       devices: UNIT_TESTS_DEVICE,
-      prelaunch_simulator: true,
-      reset_simulator: true,
       result_bundle: true,
+      skip_package_dependencies_resolution: true,
+      test_without_building: true,
       xcargs: "-skipPackagePluginValidation"
     )
   end
