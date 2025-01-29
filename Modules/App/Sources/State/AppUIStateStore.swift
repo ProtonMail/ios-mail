@@ -22,21 +22,31 @@ import Foundation
  */
 final class AppUIStateStore: ObservableObject {
     struct SidebarState {
-        var isOpen: Bool
         var zIndex: Double
+        var visibleWidth: CGFloat
+
+        var isOpen: Bool {
+            visibleWidth > .zero
+        }
     }
 
     @Published var sidebarState: SidebarState
 
+    let sidebarWidth: CGFloat = 320
+
     init(sidebarState: SidebarState = .initial) {
         self.sidebarState = sidebarState
+    }
+
+    func toggleSidebar(isOpen: Bool) {
+        sidebarState.visibleWidth = isOpen ? sidebarWidth : .zero
     }
 }
 
 extension AppUIStateStore.SidebarState {
 
     static var initial: Self {
-        .init(isOpen: false, zIndex: .zero)
+        .init(zIndex: .zero, visibleWidth: .zero)
     }
 
 }

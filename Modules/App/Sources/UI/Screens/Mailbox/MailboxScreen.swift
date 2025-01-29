@@ -120,7 +120,7 @@ extension MailboxScreen {
     private func handleMainToolbarEvent(_ event: MainToolbarEvent) {
         switch event {
         case .onOpenMenu:
-            appUIStateStore.sidebarState.isOpen = true
+            appUIStateStore.toggleSidebar(isOpen: true)
         case .onExitSelectionMode:
             mailboxModel.selectionMode.selectionModifier.exitSelectionMode()
         case .onSearch:

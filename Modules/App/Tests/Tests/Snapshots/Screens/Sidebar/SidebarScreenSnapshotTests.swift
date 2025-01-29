@@ -53,7 +53,7 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
 
         let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
-            .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
+            .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
@@ -62,7 +62,7 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
 
         let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
-            .environmentObject(AppUIStateStore(sidebarState: .init(isOpen: true, zIndex: .zero)))
+            .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }

@@ -25,15 +25,12 @@ struct SidebarScreen: View {
     @Environment(\.mainBundle) var mainBundle: Bundle
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
-    private let sidebarWidth: CGFloat = 320
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     private let openCloseSidebarMinimumDistance: CGFloat = 100
+    /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
+    private let lastSwipeSignificanceThreshold: CGFloat = 25
     private let animationDuration = 0.2
     private let selectedItem: (SidebarItem) -> Void
-
-    private var dragOffset: CGFloat {
-        appUIStateStore.sidebarState.isOpen ? sidebarWidth : .zero
-    }
 
     init(
         state: SidebarState,
@@ -53,7 +50,7 @@ struct SidebarScreen: View {
 
                 Color.clear
                     .contentShape(Rectangle())
-                    .frame(width: sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
+                    .frame(width: appUIStateStore.sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
                     .gesture(sidebarDragGesture)
                     .gesture(appUIStateStore.sidebarState.isOpen ? closeSidebarTapGesture : nil)
 
@@ -70,11 +67,11 @@ struct SidebarScreen: View {
                     .accessibilityElement(children: .contain)
                     .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
                 }
-                .frame(width: sidebarWidth)
+                .frame(width: appUIStateStore.sidebarWidth)
                 .highPriorityGesture(sidebarDragGesture)
             }
-            .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.isOpen)
-            .offset(x: dragOffset - sidebarWidth - geometry.safeAreaInsets.leading)
+            .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.visibleWidth)
+            .offset(x: appUIStateStore.sidebarState.visibleWidth - appUIStateStore.sidebarWidth - geometry.safeAreaInsets.leading)
         }
         .onAppear { screenModel.handle(action: .viewAppear) }
     }
@@ -98,25 +95,35 @@ struct SidebarScreen: View {
     }
 
     private var sidebarDragGesture: some Gesture {
-        DragGesture(minimumDistance: openCloseSidebarMinimumDistance)
-            .onEnded { value in
+        DragGesture(minimumDistance: openCloseSidebarMinimumDistance, coordinateSpace: .global)
+            .onChanged { value in
                 let isScrollingVertically = abs(value.translation.height) > openCloseSidebarMinimumDistance
                 if !isScrollingVertically {
-                    let isSwipingLeftToRight = value.translation.width > -openCloseSidebarMinimumDistance
-                    appUIStateStore.sidebarState.isOpen = isSwipingLeftToRight
+                    appUIStateStore.sidebarState.visibleWidth = min(appUIStateStore.sidebarWidth, value.location.x)
+                }
+            }
+            .onEnded { value in
+                let predictedSlideDistanceFromLeftToRight = value.predictedEndLocation.x - value.location.x
+                let wasDragEndedWithEnoughVelocity = abs(predictedSlideDistanceFromLeftToRight) < lastSwipeSignificanceThreshold
+
+                if wasDragEndedWithEnoughVelocity {
+                    let isCloserToOpenPositionThanToClosedPosition = appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
+                    appUIStateStore.toggleSidebar(isOpen: isCloserToOpenPositionThanToClosedPosition)
+                } else {
+                    let isLastSwipeLeftToRight = predictedSlideDistanceFromLeftToRight > 0
+                    appUIStateStore.toggleSidebar(isOpen: isLastSwipeLeftToRight)
                 }
             }
     }
 
     private var closeSidebarTapGesture: some Gesture {
         TapGesture()
-            .onEnded { appUIStateStore.sidebarState.isOpen = false }
+            .onEnded { appUIStateStore.toggleSidebar(isOpen: false) }
     }
 
     private var opacityBackground: some View {
         DS.Color.Global.modal
-            .animation(.linear(duration: animationDuration), value: appUIStateStore.sidebarState.isOpen)
-            .opacity(0.5 * (dragOffset / sidebarWidth))
+            .opacity(0.5 * (appUIStateStore.sidebarState.visibleWidth / appUIStateStore.sidebarWidth))
             .ignoresSafeArea(.all)
     }
 
@@ -313,7 +320,7 @@ struct SidebarScreen: View {
     private func select(item: SidebarItem) {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
-        appUIStateStore.sidebarState.isOpen = !item.hideSidebar
+        appUIStateStore.toggleSidebar(isOpen: !item.hideSidebar)
     }
 }
 
