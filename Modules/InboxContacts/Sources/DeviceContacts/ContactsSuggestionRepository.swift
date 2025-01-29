@@ -19,8 +19,8 @@ import Contacts
 import proton_app_uniffi
 
 struct ContactsSuggestionRepository {
-    private let permissionsHandler: CNContactStoring.Type
     private let contactStore: CNContactStoring
+    private let permissionsHandler: DeviceContactsPermissionHandler
     private let allContacts: (String, [DeviceContact]) async -> [ContactSuggestion]
     
     init(
@@ -29,8 +29,8 @@ struct ContactsSuggestionRepository {
         allContactsProvider: AllContactsProvider,
         mailUserSession: MailUserSession
     ) {
-        self.permissionsHandler = permissionsHandler
         self.contactStore = contactStore
+        self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.allContacts = { query, deviceContacts in
             let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
             
@@ -44,7 +44,7 @@ struct ContactsSuggestionRepository {
     }
     
     func allContacts(query: String) async -> [ContactSuggestion] {
-        let permissionsGranted = await requestAccessIfNeeded()
+        let permissionsGranted = await permissionsHandler.requestAccessIfNeeded()
         let deviceContacts: [DeviceContact] = permissionsGranted ? deviceContacts() : []
 
         return await allContacts(query, deviceContacts)
@@ -58,25 +58,6 @@ struct ContactsSuggestionRepository {
     }
 
     // MARK: - Private
-    
-    private func requestAccessIfNeeded() async -> Bool {
-        let status: CNAuthorizationStatus = permissionsHandler.authorizationStatus(for: .contacts)
-        
-        switch status {
-        case .notDetermined:
-            return await withCheckedContinuation { continuation in
-                contactStore.requestAccess(for: .contacts) { granted, _ in
-                    continuation.resume(returning: granted)
-                }
-            }
-        case .authorized:
-            return true
-        case .restricted, .denied:
-            return false
-        @unknown default:
-            return false
-        }
-    }
     
     private func deviceContacts() -> [DeviceContact] {
         let keys: [CNKeyDescriptor] = [CNContactGivenNameKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]
@@ -96,5 +77,3 @@ struct ContactsSuggestionRepository {
         return contacts
     }
 }
-
-
