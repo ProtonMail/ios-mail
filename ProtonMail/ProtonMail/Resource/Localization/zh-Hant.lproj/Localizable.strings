@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "收件匣";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "已加星號";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "封存";
 
@@ -67,8 +68,8 @@
 "Drafts" = "草稿";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "所有郵件";
 
@@ -76,8 +77,8 @@
 "Sent" = "寄件備份";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "垃圾桶";
 
@@ -85,8 +86,8 @@
 "Spam" = "垃圾郵件";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "聯絡人";
 
@@ -97,8 +98,8 @@
 "Settings" = "設定";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "登出";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "鎖定應用程式";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "訂購授權";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "管理帳號";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "加入附件";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "套用密碼";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "撰寫郵件";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "郵件期限";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "自訂";
 
@@ -403,11 +404,11 @@
 "Done" = "完成";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "取消";
 
@@ -436,14 +437,14 @@
 "From:" = "寄件者：";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "收件者";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "副本";
 
@@ -451,9 +452,9 @@
 "Bcc:" = "密件副本:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "刪除";
 
@@ -464,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的往來對話已過期或是被撤銷。請重新登入。";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "搜尋";
 
@@ -482,8 +483,8 @@
 "Send" = "送出";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "排程送出";
 
@@ -521,8 +522,8 @@
 "Save" = "儲存";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "編輯";
 
@@ -587,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "聯絡人已刪除，將在連線到網際網路時同步";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "確認";
 
@@ -608,8 +609,8 @@
 "Later" = "稍後";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "已停用";
 
@@ -620,10 +621,10 @@
 "Back" = "返回";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "無";
 
@@ -655,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "繼續";
 
@@ -682,8 +683,8 @@
 "Unknown Error" = "未知錯誤";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "載入遠端內容";
 
@@ -940,9 +941,9 @@
 "Can't open the file" = "無法打開檔案";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "瞭解詳情";
 
@@ -992,8 +993,8 @@
 "Move to archive" = "移至封存檔";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "移至垃圾郵件";
 
@@ -1040,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "我們建議為以下收件人設定密碼，又或者停用 PGP：";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "通知";
 
@@ -1127,8 +1128,8 @@
 "You will be switched to %@" = "您將切換為 %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "您確定要登出嗎？";
 
@@ -1193,8 +1194,8 @@
 "Language" = "語言";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "合併聯絡人";
 
@@ -1289,8 +1290,8 @@
 "Signed in as %@" = "已使用 %@ 登入";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "星號";
 
@@ -1301,14 +1302,14 @@
 "Mark as unread" = "標記為未讀";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "標示為已讀取";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "移至垃圾桶";
 
@@ -1322,8 +1323,8 @@
 "View message in Dark mode" = "在深色模式下查看郵件";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "此會刪除全部於垃圾桶及垃圾郵件超過30天的訊息，包含所有現在此資料夾的訊息。";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "啟用";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "設定 PIN 碼";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "重複輸入 PIN 碼";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "變更郵箱密碼";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "變更密碼";
 
