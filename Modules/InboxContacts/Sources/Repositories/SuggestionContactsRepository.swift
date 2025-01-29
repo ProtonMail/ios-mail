@@ -44,32 +44,37 @@ struct SuggestionContactsRepository {
     }
     
     func allContacts(query: String, completion: @escaping ([ContactSuggestion]) -> Void) {
-        requestAccessIfNeeded { granted in
-            let deviceContacts: [DeviceContact] = granted ? deviceContacts() : []
-            
-            Task {
-                let contacts = await allContacts(query, deviceContacts)
-                completion(contacts)
-            }
+        Task {
+            let suggestions = await allContacts(query: query)
+            completion(suggestions)
         }
+    }
+    
+    func allContacts(query: String) async -> [ContactSuggestion] {
+        let permissionsGranted = await requestAccessIfNeeded()
+        let deviceContacts: [DeviceContact] = permissionsGranted ? deviceContacts() : []
+
+        return await allContacts(query, deviceContacts)
     }
     
     // MARK: - Private
     
-    private func requestAccessIfNeeded(completion: @escaping (_ granted: Bool) -> Void) {
+    private func requestAccessIfNeeded() async -> Bool {
         let status: CNAuthorizationStatus = permissionsHandler.authorizationStatus(for: .contacts)
         
         switch status {
         case .notDetermined:
-            contactStore.requestAccess(for: .contacts) { granted, _ in
-                completion(granted)
+            return await withCheckedContinuation { continuation in
+                contactStore.requestAccess(for: .contacts) { granted, _ in
+                    continuation.resume(returning: granted)
+                }
             }
         case .authorized:
-            completion(true)
+            return true
         case .restricted, .denied:
-            completion(false)
+            return false
         @unknown default:
-            break
+            return false
         }
     }
     
