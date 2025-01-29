@@ -19,10 +19,11 @@ import SwiftUI
 
 struct ComposerControllerRepresentable: UIViewControllerRepresentable {
     let state: ComposerState
+    let embeddedImageProvider: EmbeddedImageProvider
     let onEvent: (ComposerControllerEvent) -> Void
 
     func makeUIViewController(context: Context) -> ComposerController {
-        ComposerController(state: state, onEvent: onEvent)
+        ComposerController(state: state, embeddedImageProvider: embeddedImageProvider, onEvent: onEvent)
     }
 
     func updateUIViewController(_ controller: ComposerController, context: Context) {

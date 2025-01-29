@@ -50,7 +50,7 @@ struct ComposerView: View {
                 dismissAction: { dismiss() }
             )
 
-            ComposerControllerRepresentable(state: model.state) { event in
+            ComposerControllerRepresentable(state: model.state, embeddedImageProvider: model.embeddedImageProvider) { event in  // XAVI
                 switch event {
                 case .viewWillDisappear:
                     model.viewWillDisappear()

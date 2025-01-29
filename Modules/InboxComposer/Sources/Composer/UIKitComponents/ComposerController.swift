@@ -34,7 +34,7 @@ final class ComposerController: UIViewController {
     private let recipientsController = RecipientsViewController()
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
-    private let bodyEditor = BodyEditorController()
+    private let bodyEditor: BodyEditorController
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
@@ -43,8 +43,10 @@ final class ComposerController: UIViewController {
         }
     }
 
-    init(state: ComposerState, onEvent: @escaping (ComposerControllerEvent) -> Void) {
+    init(state: ComposerState, embeddedImageProvider: EmbeddedImageProvider, onEvent: @escaping (ComposerControllerEvent) -> Void) {
         self.state = state
+        self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
+
         self.onEvent = onEvent
         super.init(nibName: nil, bundle: nil)
     }

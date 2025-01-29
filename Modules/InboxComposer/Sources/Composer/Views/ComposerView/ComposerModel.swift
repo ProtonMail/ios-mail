@@ -38,6 +38,10 @@ final class ComposerModel: ObservableObject {
     
     private var messageHasBeenSent: Bool = false
 
+    var embeddedImageProvider: EmbeddedImageProvider {
+        draft
+    }
+
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,

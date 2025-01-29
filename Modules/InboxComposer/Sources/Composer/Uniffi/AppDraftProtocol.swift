@@ -24,7 +24,7 @@ import proton_app_uniffi
  its function definitions. Given that we can't instantiate `ComponentRecipientList` objects, we are forced
  to work with our own draft protocol
  */
-public protocol AppDraftProtocol {
+public protocol AppDraftProtocol: EmbeddedImageProvider {
 
     /// These are the function we overwrite from the `DraftProtocol`. For every function
     /// returning `ComposerRecipientList`, we return `ComposerRecipientListProtocol`.

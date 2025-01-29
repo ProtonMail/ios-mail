@@ -25,13 +25,14 @@ enum BodyEditorEvent {
 }
 
 final class BodyEditorController: UIViewController {
-    private let htmlInterface = BodyWebViewInterface(webView: SubviewFactory.webView)
+    private let htmlInterface: BodyWebViewInterface // = BodyWebViewInterface(webView: SubviewFactory.webView)
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
 
     var onEvent: ((BodyEditorEvent) -> Void)?
 
-    init() {
+    init(embeddedImageProvider: EmbeddedImageProvider) {
+        self.htmlInterface = BodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -91,9 +92,16 @@ extension BodyEditorController {
 
     enum SubviewFactory {
 
-        static var webView: WKWebView {
+        static func webView(embeddedImageProvider: EmbeddedImageProvider) -> WKWebView {
+            let config = WKWebViewConfiguration()
+            config.dataDetectorTypes = [.link]
+            config.setURLSchemeHandler(
+                CIDSchemeHandler(embeddedImageProvider: embeddedImageProvider),
+                forURLScheme: CIDSchemeHandler.handlerScheme
+            )
+
             let backgroundColor = UIColor(DS.Color.Background.norm)
-            let webView = WKWebView(frame: .zero)
+            let webView = WKWebView(frame: .zero, configuration: config)
             webView.translatesAutoresizingMaskIntoConstraints = false
             webView.scrollView.isScrollEnabled = false
             webView.scrollView.bounces = false
