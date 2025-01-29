@@ -18,6 +18,8 @@
 import Contacts
 
 protocol CNContactStoring {
+    static func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus
+    
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void)
     func enumerateContacts(
         with fetchRequest: CNContactFetchRequest,

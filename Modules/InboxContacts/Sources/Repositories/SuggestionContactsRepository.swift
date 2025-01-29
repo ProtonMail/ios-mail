@@ -19,14 +19,17 @@ import Contacts
 import proton_app_uniffi
 
 struct SuggestionContactsRepository {
+    private let permissionsHandler: CNContactStoring.Type
     private let contactStore: CNContactStoring
     private let allContacts: (String, [DeviceContact]) async -> [ContactSuggestion]
     
     init(
+        permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         allContactsProvider: AllContactsProvider,
         mailUserSession: MailUserSession
     ) {
+        self.permissionsHandler = permissionsHandler
         self.contactStore = contactStore
         self.allContacts = { query, deviceContacts in
             let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
@@ -41,7 +44,7 @@ struct SuggestionContactsRepository {
     }
     
     func allContacts(query: String, completion: @escaping ([ContactSuggestion]) -> Void) {
-        contactStore.requestAccess(for: .contacts) { granted, _ in
+        requestAccessIfNeeded { granted in
             let deviceContacts: [DeviceContact] = granted ? deviceContacts() : []
             
             Task {
@@ -52,6 +55,23 @@ struct SuggestionContactsRepository {
     }
     
     // MARK: - Private
+    
+    private func requestAccessIfNeeded(completion: @escaping (_ granted: Bool) -> Void) {
+        let status: CNAuthorizationStatus = permissionsHandler.authorizationStatus(for: .contacts)
+        
+        switch status {
+        case .notDetermined:
+            contactStore.requestAccess(for: .contacts) { granted, _ in
+                completion(granted)
+            }
+        case .authorized:
+            completion(true)
+        case .restricted, .denied:
+            completion(false)
+        @unknown default:
+            break
+        }
+    }
     
     private func deviceContacts() -> [DeviceContact] {
         let keys: [CNKeyDescriptor] = [CNContactGivenNameKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]

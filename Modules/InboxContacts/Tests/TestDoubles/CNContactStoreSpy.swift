@@ -19,6 +19,8 @@
 import Contacts
 
 class CNContactStoreSpy: CNContactStoring {
+    
+    static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = [.contacts: .notDetermined]
 
     private(set) var requestAccessCalls: [
         (entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)
@@ -26,7 +28,15 @@ class CNContactStoreSpy: CNContactStoring {
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
     
+    static func cleanUp() {
+        stubbedAuthorizationStatus = [.contacts: .notDetermined]
+    }
+    
     // MARK: - CNContactStoring
+    
+    class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+        stubbedAuthorizationStatus[entityType].unsafelyUnwrapped
+    }
     
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void) {
         requestAccessCalls.append((entityType, completionHandler))

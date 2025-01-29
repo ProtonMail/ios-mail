@@ -34,6 +34,7 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         stubbedAllContacts = []
         contactStoreSpy = .init()
         sut = .init(
+            permissionsHandler: CNContactStoreSpy.self,
             contactStore: contactStoreSpy,
             allContactsProvider: .init(contactSuggestions: { query, contacts, _ in
                 self.allContactsCallsWithDeviceContacts.append(contacts)
@@ -48,17 +49,73 @@ final class SuggestionContactsRepositoryTests: BaseTestCase {
         contactStoreSpy = nil
         stubbedAllContacts = nil
         sut = nil
+        CNContactStoreSpy.cleanUp()
         super.tearDown()
     }
     
-    func testAllContacts_ItRequestForPermissions() {
+    func testAllContacts_WhenPermissionsNotDetermined_ItRequestForPermissions() {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .notDetermined]
+        
         sut.allContacts(query: "", completion: { _ in })
         
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 1)
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.last?.entityType, .contacts)
     }
     
+    func testAllContacts_WhenPermissionsRestricted_ItDoesNotRequestForPermissions() {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
+    }
+    
+    func testAllContacts_WhenPermissionsDenied_ItDoesNotRequestForPermissions() {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
+    }
+    
+    func testAllContacts_WhenPermissionsAuthorized_ItDoesNotRequestForPermissions() {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
+    }
+    
+    func testAllContacts_WhenPermissionsDenied_ItDoesNotRequestForDeviceContacts() throws {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
+    }
+    
+    func testAllContacts_WhenPermissionsRestricted_ItDoesNotRequestForDeviceContacts() throws {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
+    }
+    
     // MARK: - Permissions granted
+    
+    func testAllContacts_WhenPermissionsGrantedBefore_ItRequestForDeviceContacts() throws {
+        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        
+        sut.allContacts(query: "", completion: { _ in })
+        
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 1)
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 2)
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description), [
+            CNContactGivenNameKey.description,
+            CNContactEmailAddressesKey.description
+        ])
+    }
     
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() throws {
         sut.allContacts(query: "", completion: { _ in })
