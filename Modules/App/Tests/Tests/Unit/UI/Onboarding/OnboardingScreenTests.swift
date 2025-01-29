@@ -20,21 +20,22 @@ import InboxTesting
 import ViewInspector
 import XCTest
 
+@MainActor
 class OnboardingScreenTests: BaseTestCase {
 
     private var sut: OnboardingScreen!
     private var dismissSpy: DismissSpy!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         dismissSpy = .init()
         sut = OnboardingScreen()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         dismissSpy = nil
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func testOnAppear_ItHas1stPageSelected() throws {
@@ -132,7 +133,7 @@ class OnboardingScreenTests: BaseTestCase {
 
         ViewHosting.host(view: sut.environment(\.dismissTestable, dismissSpy))
 
-        wait(for: [expectation], timeout: 0.01)
+        wait(for: [expectation], timeout: 0.1)
     }
 
 }

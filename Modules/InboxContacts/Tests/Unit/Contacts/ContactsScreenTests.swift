@@ -23,21 +23,22 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
+@MainActor
 class ContactsScreenTests: BaseTestCase {
 
     private var sut: ContactsScreen!
     private var dismissSpy: DismissSpy!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         dismissSpy = .init()
         sut = .testInstance(search: .initial, items: [])
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         dismissSpy = nil
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func testOnAppear_ItDoesNotDismissSelfYet() throws {
