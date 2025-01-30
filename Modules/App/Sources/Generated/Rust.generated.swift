@@ -173,8 +173,8 @@ public extension CreateMailSessionResult {
         }
     }
 }
-public extension DecryptedMessageGetEmbeddedAttachmentResult {
-    func get() throws -> EmbeddedAttachmentInfo {
+public extension DraftSendResultUnseenResult {
+    func get() throws -> [DraftSendResult] {
         switch self {
         case .ok(let value):
             value
@@ -183,8 +183,8 @@ public extension DecryptedMessageGetEmbeddedAttachmentResult {
         }
     }
 }
-public extension DraftSendResultUnseenResult {
-    func get() throws -> [DraftSendResult] {
+public extension EmbeddedAttachmentInfoResult {
+    func get() throws -> EmbeddedAttachmentInfo {
         switch self {
         case .ok(let value):
             value

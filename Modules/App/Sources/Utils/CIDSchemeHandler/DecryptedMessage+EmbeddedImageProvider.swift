@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 protocol EmbeddedImageProvider: AnyObject {
-    func getEmbeddedAttachment(cid: String) async -> DecryptedMessageGetEmbeddedAttachmentResult
+    func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult
 }
 
 extension DecryptedMessage: EmbeddedImageProvider {}
