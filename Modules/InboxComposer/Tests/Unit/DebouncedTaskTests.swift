@@ -66,7 +66,7 @@ final class DebouncedTaskTests: XCTestCase {
     // MARK: Cancel
 
     func testCancel_itShouldCancelTheTaskExecution() {
-        let duration: TimeInterval = 0.1
+        let duration: TimeInterval = 0.15
         let expectation = expectation(description: "task is executed")
         expectation.isInverted = true
         sut = .init(duration: .milliseconds(duration), block: { expectation.fulfill() }, onBlockCompletion: { })
