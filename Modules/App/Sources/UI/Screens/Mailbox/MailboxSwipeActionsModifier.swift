@@ -15,63 +15,59 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 
 struct MailboxSwipeActionsModifier: ViewModifier {
-    typealias OnTapAction = (Action, ID) -> Void
+    typealias OnTapAction = (SwipeActionContext) -> Void
 
     @State private(set) var triggerFeedback = false
     private let mailboxItemId: ID
     private let isItemRead: Bool
+    private let isItemStarred: Bool
     private let onTap: OnTapAction
 
-    private let leadingSwipe: SwipeAction
-    private let trailingSwipe: SwipeAction
+    private let swipeActions: AssignedSwipeActions
 
     init(
-        leadingSwipe: SwipeAction,
-        trailingSwipe: SwipeAction,
+        swipeActions: AssignedSwipeActions,
         mailboxItemId: ID,
         isItemRead: Bool,
+        isItemStarred: Bool,
         onTapAction: @escaping OnTapAction
     ) {
         self.mailboxItemId = mailboxItemId
         self.isItemRead = isItemRead
-        self.leadingSwipe = leadingSwipe
-        self.trailingSwipe = trailingSwipe
+        self.isItemStarred = isItemStarred
+        self.swipeActions = swipeActions
         self.onTap = onTapAction
     }
 
     func body(content: Content) -> some View {
         content
-            .if(leadingSwipe != .none) { view in
+            .if(swipeActions.right != .noAction) { view in
                 view.swipeActions(edge: .leading) {
-                    button(for: leadingSwipe)
+                    button(for: swipeActions.right)
                 }
             }
-            .if(trailingSwipe != .none) { view in
+            .if(swipeActions.left != .noAction) { view in
                 view.swipeActions(edge: .trailing) {
-                    button(for: trailingSwipe)
+                    button(for: swipeActions.left)
                 }
             }
     }
 
     @ViewBuilder
-    private func button(for swipeAction: SwipeAction) -> some View {
+    private func button(for action: AssignedSwipeAction) -> some View {
         VStack {
-            Button(role: swipeAction.isDestructive ? .destructive : .cancel) {
-                var newReadStatus: MailboxReadStatus?
-                if case .toggleReadStatus = swipeAction {
-                    newReadStatus = MailboxReadStatus(rawValue: !isItemRead)
-                }
-                guard let action = swipeAction.toAction(newReadStatus: newReadStatus) else { return }
-                onTap(action, mailboxItemId)
+            Button(role: action.isDestructive ? .destructive : .cancel) {
+                onTap(.init(action: action, itemID: mailboxItemId, isItemRead: isItemRead, isItemStarred: isItemStarred))
                 triggerFeedback.toggle()
             } label: {
-                Image(uiImage: swipeAction.icon(isRead: isItemRead).unsafelyUnwrapped)
+                Image(action.icon(isRead: isItemRead, isStarred: isItemStarred))
             }
         }
-        .tint(swipeAction.color)
+        .tint(action.color)
         .sensoryFeedback(.success, trigger: triggerFeedback)
     }
 }
@@ -80,19 +76,18 @@ extension View {
 
     @ViewBuilder 
     func mailboxSwipeActions(
-        leadingSwipe: SwipeAction,
-        trailingSwipe: SwipeAction,
+        swipeActions: AssignedSwipeActions,
         isSwipeEnabled: Bool,
         mailboxItem: MailboxItemCellUIModel,
         onTapAction: @escaping MailboxSwipeActionsModifier.OnTapAction
     ) -> some View {
-        if isSwipeEnabled, leadingSwipe != .none || trailingSwipe != .none {
+        if isSwipeEnabled, [swipeActions.left, swipeActions.right].contains(where: { $0 != .noAction }) {
             self.modifier(
                 MailboxSwipeActionsModifier(
-                    leadingSwipe: leadingSwipe,
-                    trailingSwipe: trailingSwipe,
+                    swipeActions: swipeActions,
                     mailboxItemId: mailboxItem.id,
                     isItemRead: mailboxItem.isRead,
+                    isItemStarred: mailboxItem.isStarred,
                     onTapAction: onTapAction
                 )
             )

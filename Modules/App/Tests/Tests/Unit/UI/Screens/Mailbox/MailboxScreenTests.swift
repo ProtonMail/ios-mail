@@ -128,13 +128,11 @@ class MailboxScreenTests: BaseTestCase {
 
         let appUIStateStore = AppUIStateStore()
         let toastStateStore = ToastStateStore(initialState: .initial)
-        let userSettings = UserSettings()
 
         ViewHosting.host(
             view: sut
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
-                .environmentObject(userSettings)
         )
 
         wait(for: [expectation], timeout: 0.1)

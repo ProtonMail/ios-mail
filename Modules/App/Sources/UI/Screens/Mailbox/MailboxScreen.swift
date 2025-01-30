@@ -165,7 +165,6 @@ extension MailboxScreen {
 #Preview {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    let userSettings = UserSettings()
     let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 
     return MailboxScreen(
@@ -178,7 +177,6 @@ extension MailboxScreen {
     )
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
-        .environmentObject(userSettings)
 }
 
 private struct MailboxScreenIdentifiers {

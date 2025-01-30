@@ -21,7 +21,6 @@ import SwiftUI
 
 struct MailboxListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
-    @EnvironmentObject private var userSettings: UserSettings
     @ObservedObject private var model: MailboxModel
 
     @Binding private var isListAtTop: Bool
@@ -42,14 +41,6 @@ struct MailboxListView: View {
 
 extension MailboxListView {
 
-    private func disableSwipeActionIfNeeded(_ swipeAction: SwipeAction) -> SwipeAction {
-        if swipeAction.isActionAssigned(systemFolder: model.selectedMailbox.systemFolder) && !model.isOutbox {
-            swipeAction
-        } else {
-            .none
-        }
-    }
-
     private func mailboxItemListViewConfiguration() -> MailboxItemsListViewConfiguration {
         var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
@@ -58,11 +49,8 @@ extension MailboxListView {
             isOutboxLocation: model.isOutbox
         )
 
-        config.swipeActions = .init(
-            leadingSwipe: { disableSwipeActionIfNeeded(userSettings.leadingSwipeAction) },
-            trailingSwipe: { disableSwipeActionIfNeeded(userSettings.trailingSwipeAction) }
-        )
-        
+        config.swipeActions = model.state.swipeActions
+
         config.listEventHandler = .init(
             listAtTop: { isListAtTop = $0 },
             pullToRefresh: { await model.onPullToRefresh() }
@@ -83,8 +71,8 @@ extension MailboxListView {
                     model?.onMailboxItemAttachmentTap(attachmentId: attachmentId, for: item)
                 }
             },
-            onSwipeAction: { [weak model] action, itemId in
-                model?.onMailboxItemAction(action, itemIds: [itemId], toastStateStore: toastStateStore)
+            onSwipeAction: { [weak model] context in
+                model?.onMailboxItemAction(context, toastStateStore: toastStateStore)
             }
         )
         

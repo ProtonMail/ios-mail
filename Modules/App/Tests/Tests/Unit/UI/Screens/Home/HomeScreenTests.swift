@@ -31,7 +31,6 @@ class HomeScreenTests: BaseTestCase {
 
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let userSettings = UserSettings()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -107,7 +106,6 @@ class HomeScreenTests: BaseTestCase {
             view: sut
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
-                .environmentObject(userSettings)
         )
 
         wait(for: [expectation], timeout: 0.01)
@@ -117,7 +115,7 @@ class HomeScreenTests: BaseTestCase {
         inspectSUT: InspectableView<ViewType.View<HomeScreen>>
     ) throws -> InspectableView<ViewType.ClassifiedView> {
         try inspectSUT
-            .mailboxScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore, userSettings)
+            .mailboxScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore)
             .inspect()
     }
 
@@ -125,7 +123,7 @@ class HomeScreenTests: BaseTestCase {
         inspectSUT: InspectableView<ViewType.View<HomeScreen>>
     ) throws -> InspectableView<ViewType.ClassifiedView> {
         try inspectSUT
-            .sidebarScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore, userSettings)
+            .sidebarScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore)
             .inspect()
     }
 
@@ -135,30 +133,26 @@ private extension InspectableView where View == ViewType.View<HomeScreen> {
 
     func mailboxScreenWithInjectedEnvironmentObjects(
         _ appUIStateStore: AppUIStateStore,
-        _ toastStateStore: ToastStateStore,
-        _ userSettings: ProtonMail.UserSettings
+        _ toastStateStore: ToastStateStore
     ) throws -> any SwiftUI.View {
         let mailboxScreen = try find(MailboxScreen.self)
         let mailboxScreenView = try mailboxScreen
             .actualView()
             .environmentObject(appUIStateStore)
             .environmentObject(toastStateStore)
-            .environmentObject(userSettings)
 
         return mailboxScreenView
     }
 
     func sidebarScreenWithInjectedEnvironmentObjects(
         _ appUIStateStore: AppUIStateStore,
-        _ toastStateStore: ToastStateStore,
-        _ userSettings: ProtonMail.UserSettings
+        _ toastStateStore: ToastStateStore
     ) throws -> any SwiftUI.View {
         let sidebarScreen = try find(SidebarScreen.self)
         let sidebarScreenView = try sidebarScreen
             .actualView()
             .environmentObject(appUIStateStore)
             .environmentObject(toastStateStore)
-            .environmentObject(userSettings)
 
         return sidebarScreenView
     }

@@ -126,7 +126,6 @@ enum MainToolbarEvent {
 #Preview {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
-    let userSettings = UserSettings()
 
     return MailboxScreen(
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
@@ -139,7 +138,6 @@ enum MainToolbarEvent {
         .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
         .environmentObject(appUIStateStore)
         .environmentObject(toastStateStore)
-        .environmentObject(userSettings)
 }
 
 private struct MainToolbarIdentifiers {

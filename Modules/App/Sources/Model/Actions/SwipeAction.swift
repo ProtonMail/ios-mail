@@ -16,75 +16,47 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
-enum SwipeAction {
-    case none
-    case delete
-    case moveToTrash
-    case toggleReadStatus
+extension AssignedSwipeAction {
 
-    func isActionAssigned(systemFolder: SystemFolderLabel?) -> Bool {
+    var isDestructive: Bool {
         switch self {
-        case .none:
-            return false
-        case .delete, .toggleReadStatus:
-            return true
-        case .moveToTrash:
-            return systemFolder != .trash
+        case .moveTo:
+            true
+        default:
+            false
         }
     }
 
-    /// if `true` the swipe action will optimistically remove the cell from the list
-    var isDestructive: Bool {
-        return false
-//        switch self {
-//        case .none, .toggleReadStatus:
-//            return false
-//        case .delete, .moveToTrash:
-//            return true
-//        }
-    }
-
-    func icon(isRead: Bool) -> UIImage? {
+    func icon(isRead: Bool, isStarred: Bool) -> ImageResource {
         switch self {
-        case .none:
-            return nil
-        case .delete:
-            return UIImage(resource: Action.deletePermanently.icon)
-        case .moveToTrash:
-            return UIImage(resource: Action.moveToTrash.icon)
-        case .toggleReadStatus:
-            let action = isRead ? Action.markAsUnread : Action.markAsRead
-            return UIImage(resource: action.icon)
+        case .noAction:
+            fatalError("Action is not assigned, no need for icon")
+        case .moveTo(.moveToSystemLabel(let systemLabel, _)):
+            systemLabel.icon
+        case .moveTo:
+            DS.Icon.icFolderArrowIn
+        case .labelAs:
+            DS.Icon.icTag
+        case .toggleStar:
+            isStarred ? DS.Icon.icStar : DS.Icon.icStarSlash
+        case .toggleRead:
+            isRead ? DS.Icon.icEnvelopeOpen : DS.Icon.icEnvelopeDot
         }
     }
 
     var color: Color {
         switch self {
-        case .none:
-            return DS.Color.Global.white
-        case .toggleReadStatus:
-            return DS.Color.Brand.norm
-        case .delete, .moveToTrash:
-            return DS.Color.Notification.error
-        }
-    }
-}
-
-extension SwipeAction {
-
-    func toAction(newReadStatus: MailboxReadStatus?) -> Action? {
-        switch self {
-        case .toggleReadStatus:
-            guard let newReadStatus else { return nil }
-            return newReadStatus == .read ? .markAsRead : .markAsUnread
-        case .delete:
-            return .deletePermanently
-        case .moveToTrash:
-            return .moveToTrash
-        case .none:
-            return nil
+        case .moveTo(.moveToSystemLabel(label: .trash, _)):
+            DS.Color.Notification.error
+        case .labelAs, .noAction, .moveTo:
+            DS.Color.Icon.hint
+        case .toggleStar:
+            DS.Color.Notification.warning
+        case .toggleRead:
+            DS.Color.Brand.norm
         }
     }
 }

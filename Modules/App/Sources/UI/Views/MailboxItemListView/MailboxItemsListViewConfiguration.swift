@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 struct MailboxItemsListViewConfiguration {
     /// State observed by the list to update the data.
@@ -26,17 +27,12 @@ struct MailboxItemsListViewConfiguration {
     let itemTypeForActionBar: MailboxItemType
     /// Determines if it's Outbox location
     let isOutboxLocation: Bool
-    /// Swipe actions to be applied to the cells. If  `nil` no actions are configured.
-    var swipeActions: MailboxItemsListSwipeActions?
+    /// Swipe actions to be applied to the cells.
+    var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
     /// Listener for events related to the list.
     var listEventHandler: MailboxItemsListEventHandler?
     /// Listener for events related to the cells of the list.
     var cellEventHandler: MailboxItemsCellEventHandler?
-}
-
-struct MailboxItemsListSwipeActions {
-    let leadingSwipe: () -> SwipeAction
-    let trailingSwipe: () -> SwipeAction
 }
 
 struct MailboxItemsListEventHandler {
@@ -44,7 +40,14 @@ struct MailboxItemsListEventHandler {
     let pullToRefresh: (() async -> Void)?
 }
 
+struct SwipeActionContext {
+    let action: AssignedSwipeAction
+    let itemID: ID
+    let isItemRead: Bool
+    let isItemStarred: Bool
+}
+
 struct MailboxItemsCellEventHandler {
     var onCellEvent: (MailboxItemCellEvent, MailboxItemCellUIModel) -> Void
-    var onSwipeAction: ((Action, ID) -> Void)?
+    var onSwipeAction: ((SwipeActionContext) -> Void)?
 }

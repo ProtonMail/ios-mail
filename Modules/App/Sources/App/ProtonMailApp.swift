@@ -27,7 +27,6 @@ struct ProtonMailApp: App {
     // declaration of state objects
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let userSettings = UserSettings()
 
     var body: some Scene {
         WindowGroup {
@@ -36,7 +35,6 @@ struct ProtonMailApp: App {
                     .environment(\.mainWindowSize, proxy.size)
                     .environmentObject(appUIStateStore)
                     .environmentObject(toastStateStore)
-                    .environmentObject(userSettings)
             }
         }
         .onChange(of: scenePhase, { oldValue, newValue in

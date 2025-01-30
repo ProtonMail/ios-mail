@@ -49,6 +49,7 @@ final class MailboxModel: ObservableObject {
     private var scrollerCallback: LiveQueryCallbackWrapper = .init()
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
+    private var moveToActionPerformer: MoveToActionPerformer?
     private var readActionPerformer: ReadActionPerformer?
     private var cancellables = Set<AnyCancellable>()
 
@@ -115,6 +116,7 @@ final class MailboxModel: ObservableObject {
     func onLoad() {
         Task {
             await updateMailboxAndScroller()
+            await prepareSwipeActions()
         }
     }
 }
@@ -199,6 +201,7 @@ extension MailboxModel {
             ? try await newInboxMailbox(ctx: userSession).get()
             : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
+            self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
 
@@ -231,6 +234,17 @@ extension MailboxModel {
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             fatalError("failed to instantiate the Mailbox or Scroller object")
+        }
+    }
+
+    private func prepareSwipeActions() async {
+        guard let userSession = dependencies.appContext.sessionState.userSession else { return }
+
+        switch await assignedSwipeActions(session: userSession) {
+        case .ok(let actions):
+            state.swipeActions = actions
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
         }
     }
 
@@ -376,9 +390,7 @@ extension MailboxModel {
     }
 
     private func openDraftMessage(messageId: ID) {
-        Task {
-            await draftPresenter.openDraft(withId: messageId)
-        }
+        draftPresenter.openDraft(withId: messageId)
     }
 }
 
@@ -433,19 +445,25 @@ extension MailboxModel {
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
     }
 
-    func onMailboxItemAction(_ action: Action, itemIds: [ID], toastStateStore: ToastStateStore) {
-        switch action {
-        case .deletePermanently, .moveToArchive, .moveToInbox, .moveToSpam, .moveToTrash:
+    func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
+        switch context.action {
+        case .labelAs, .moveTo(.moveToUnknownLabel):
             toastStateStore.present(toast: .comingSoon)
-        case .markAsRead:
-            markAsRead(ids: itemIds)
-        case .markAsUnread:
-            markAsUnread(ids: itemIds)
-        case .star:
-            actionStar(ids: itemIds)
-        case .unstar:
-            actionUnstar(ids: itemIds)
-        default:
+        case .toggleRead:
+            if context.isItemRead {
+                markAsUnread(ids: [context.itemID])
+            } else {
+                markAsRead(ids: [context.itemID])
+            }
+        case .toggleStar:
+            if context.isItemStarred {
+                actionUnstar(ids: [context.itemID])
+            } else {
+                actionStar(ids: [context.itemID])
+            }
+        case .moveTo(.moveToSystemLabel(_, let systemLabelID)):
+            moveTo(systemLabel: systemLabelID, ids: [context.itemID], toastStateStore: toastStateStore)
+        case .noAction:
             break
         }
     }
@@ -471,6 +489,19 @@ extension MailboxModel {
         starActionPerformer.unstar(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
 
+    private func moveTo(systemLabel: ID, ids: [ID], toastStateStore: ToastStateStore) {
+        Task {
+            do {
+                try await moveToActionPerformer?.moveTo(
+                    destinationID: systemLabel,
+                    itemsIDs: ids,
+                    itemType: viewMode.itemType
+                )
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        }
+    }
 }
 
 extension MailboxModel {
@@ -482,6 +513,8 @@ extension MailboxModel {
         // Navigation properties
         var attachmentPresented: AttachmentViewConfig?
         var navigationPath: NavigationPath = .init()
+
+        var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
     }
 }
 

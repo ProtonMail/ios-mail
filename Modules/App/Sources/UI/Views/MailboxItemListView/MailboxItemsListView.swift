@@ -93,12 +93,11 @@ struct MailboxItemsListView<EmptyView: View>: View {
             .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
             .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
             .mailboxSwipeActions(
-                leadingSwipe: config.swipeActions?.leadingSwipe() ?? .none,
-                trailingSwipe: config.swipeActions?.trailingSwipe() ?? .none,
+                swipeActions: config.swipeActions,
                 isSwipeEnabled: !selectionState.hasItems,
                 mailboxItem: item
-            ) { action, itemId in
-                config.cellEventHandler?.onSwipeAction?(action, itemId)
+            ) { context in
+                config.cellEventHandler?.onSwipeAction?(context)
             }
         }
         .listRowBackground(Color.clear)
@@ -166,8 +165,6 @@ private extension SelectionModeState {
 
 #Preview {
     struct Container: View {
-        let userSettings = UserSettings()
-
         let dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(pageSize: 20) { currentPage, pageSize in
             try? await Task.sleep(nanoseconds: 1_000_000_000)
             let items = MailboxItemCellUIModel.testData()
@@ -184,7 +181,6 @@ private extension SelectionModeState {
             .task {
                 await dataSource.fetchInitialPage()
             }
-            .environmentObject(userSettings)
         }
 
         func makeConfiguration() -> MailboxItemsListViewConfiguration {
@@ -195,7 +191,10 @@ private extension SelectionModeState {
                 selectionState: selectionState,
                 itemTypeForActionBar: .conversation, 
                 isOutboxLocation: false,
-                swipeActions: .init(leadingSwipe: { .toggleReadStatus }, trailingSwipe: { .moveToTrash })
+                swipeActions: .init(
+                    left: .toggleRead,
+                    right: .moveTo(.moveToSystemLabel(label: .trash, id: .init(value: 0)))
+                )
             )
         }
     }
