@@ -26,7 +26,7 @@ enum BodyEditorEvent {
 }
 
 final class BodyEditorController: UIViewController {
-    private let htmlInterface: BodyWebViewInterface // = BodyWebViewInterface(webView: SubviewFactory.webView)
+    private let htmlInterface: BodyWebViewInterface
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
 
