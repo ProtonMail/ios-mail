@@ -45,7 +45,7 @@ struct ContactSuggestionsRepository {
     
     func allContacts(query: String) async -> [ContactSuggestion] {
         let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
-        let deviceContacts: [DeviceContact] = permissionsGranted ? deviceContacts() : []
+        let deviceContacts = permissionsGranted ? deviceContacts() : []
         
         return await allContacts(query, deviceContacts)
     }
