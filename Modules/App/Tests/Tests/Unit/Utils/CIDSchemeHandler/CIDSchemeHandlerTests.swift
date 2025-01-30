@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxCore
 @testable import ProtonMail
 import InboxTesting
 import Nimble
@@ -22,6 +23,13 @@ import proton_app_uniffi
 import XCTest
 import WebKit
 
+/**
+ The `CIDSchemeHandler` is part of `InboxCore`, but its tests (`CIDSchemeHandlerTests`) are located in
+ the App module because moving them to `InboxCore` would create a circular dependency.
+
+ Specifically, `CIDSchemeHandlerTests` depends on `InboxTesting`, and `InboxTesting` itself relies on classes
+ from `InboxCore`. To avoid this circular dependency, the tests remain in the App module.
+ */
 class CIDSchemeHandlerTests: BaseTestCase {
 
     var sut: CIDSchemeHandler!
