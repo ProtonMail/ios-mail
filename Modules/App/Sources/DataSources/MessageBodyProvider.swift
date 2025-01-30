@@ -47,12 +47,10 @@ final class MessageBodyProvider: Sendable, MessageBodyProviding {
         case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
             return .loaded(.init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage))
+        case .error(.other(.network)):
+            return .noConnection
         case .error(let error):
-            if error == .other(.network) {
-                return .noConnection
-            } else {
-                return .error(error)
-            }
+            return .error(error)
         }
     }
 }

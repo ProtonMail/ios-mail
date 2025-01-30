@@ -343,7 +343,7 @@ enum L10n {
 
     enum NoConnection {
         static let title = LocalizedStringResource(
-            "Your Device is Offline",
+            "Your device is offline",
             comment: "Title of the offline mode placeholder."
         )
         static let subtitle = LocalizedStringResource(

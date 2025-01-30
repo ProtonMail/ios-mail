@@ -3291,7 +3291,7 @@
         }
       }
     },
-    "Your Device is Offline" : {
+    "Your device is offline" : {
       "comment" : "Title of the offline mode placeholder."
     }
   },
