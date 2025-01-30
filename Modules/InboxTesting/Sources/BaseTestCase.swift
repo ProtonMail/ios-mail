@@ -22,6 +22,8 @@ open class BaseTestCase: XCTestCase {
 
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
+    private var originalGlobalQueue: ((DispatchQoS.QoSClass) -> DispatchQueueScheduler)!
+    private var originalTimeInSeconds: ((Int) -> DispatchQueueTimeStride)!
     private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
     private var originalCalendar: Calendar!
 
@@ -30,11 +32,15 @@ open class BaseTestCase: XCTestCase {
 
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
+        originalGlobalQueue = Dispatcher.globalQueue
+        originalTimeInSeconds = Dispatcher.timeInSeconds
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
         originalCalendar = DateEnvironment.calendar
 
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
+        Dispatcher.globalQueue = { _ in .init(DispatchQueueImmediateScheduler()) }
+        Dispatcher.timeInSeconds = { _ in .seconds(0) }
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
             TestExecutor.shared.enqueue(job)
         }
@@ -44,11 +50,15 @@ open class BaseTestCase: XCTestCase {
     open override func tearDown() {
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
+        Dispatcher.globalQueue = originalGlobalQueue
+        Dispatcher.timeInSeconds = originalTimeInSeconds
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
         DateEnvironment.calendar = originalCalendar
 
         originalDispatchOnMain = nil
         originalDispatchOnMainAfter = nil
+        originalGlobalQueue = nil
+        originalTimeInSeconds = nil
         original_swift_task_enqueueGlobal_hook = nil
         originalCalendar = nil
 

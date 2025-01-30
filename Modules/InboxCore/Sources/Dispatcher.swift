@@ -25,6 +25,10 @@ public enum Dispatcher {
         .init(DispatchQueue.global(qos: $0))
     }
 
+    public static var timeInSeconds: (Int) -> DispatchQueueTimeStride = DispatchQueueTimeStride.seconds
+
     public static var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
     public static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }
+
+public typealias DispatchQueueTimeStride = DispatchQueue.SchedulerTimeType.Stride

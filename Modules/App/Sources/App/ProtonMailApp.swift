@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import proton_app_uniffi
 import SwiftUI
 
 @main
@@ -55,15 +56,32 @@ private struct RootView: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
+    @StateObject private var emailsPrefetchingTrigger: EmailsPrefetchingTrigger
 
-    init(appContext: AppContext) {
+    init(
+        appContext: AppContext,
+        emailsPrefetchingNotifier: EmailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+    ) {
         self.appContext = appContext
+        self._emailsPrefetchingTrigger = .init(wrappedValue: .init(
+            emailsPrefetchingNotifier: emailsPrefetchingNotifier,
+            sessionProvider: appContext,
+            prefetch: prefetch
+        ))
     }
 
     var body: some View {
         mainView()
             .onAppear {
                 sceneDelegate.toastStateStore = toastStateStore
+            }
+            .onChange(of: appContext.sessionState) { _, new in
+                if new.isAuthorized {
+                    EmailsPrefetchingNotifier.shared.notify()
+                }
+            }
+            .onLoad {
+                emailsPrefetchingTrigger.setUpSubscription()
             }
     }
 
