@@ -39,7 +39,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             allContactsProvider: .init(contactSuggestions: { query, contacts, _ in
                 let parameters = AllContactsParameters(query: query, deviceContacts: contacts)
                 self.allContactsCalls.append(parameters)
-                return .ok(self.stubbedAllContacts)
+                return .ok(ContactSuggestionsStub(all: self.stubbedAllContacts))
             }),
             mailUserSession: MailUserSession(noPointer: .init())
         )
@@ -321,4 +321,23 @@ private extension ContactSuggestion {
         )
     }
     
+}
+
+private class ContactSuggestionsStub: ContactSuggestions {
+
+    private let _all: [ContactSuggestion]
+
+    init(all: [ContactSuggestion]) {
+        _all = all
+        super.init(noPointer: .init())
+    }
+
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
+
+    override func all() -> [ContactSuggestion] {
+        _all
+    }
+
 }
