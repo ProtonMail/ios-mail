@@ -17,6 +17,7 @@
 
 import InboxCore
 import InboxCoreUI
+import InboxDesignSystem
 import SwiftUI
 
 struct ComposerView: View {
@@ -115,5 +116,6 @@ struct ComposerView: View {
 
             Spacer()
         }
+        .background(DS.Color.Background.norm)
     }
 }

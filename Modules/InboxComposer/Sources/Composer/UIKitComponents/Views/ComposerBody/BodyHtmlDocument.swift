@@ -16,11 +16,38 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCoreUI
+import InboxDesignSystem
+import SwiftUICore
 
 struct BodyHtmlDocument {
+    private typealias ColorBundle = (background: String, text: String, brand: String)
+
+    private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
+        var env = EnvironmentValues()
+        env.colorScheme = colorScheme
+        let backgroundColor = DS.Color.Background.norm.hexString(in: env)
+        let textColor = DS.Color.Text.norm.hexString(in: env)
+        let brandColor = DS.Color.Brand.norm.hexString(in: env)
+        return (background: backgroundColor, text: textColor, brand: brandColor)
+    }
+
     private let css: String = {
         let fileURL = Bundle.module.url(forResource: "BodyHtmlStyling", withExtension: "css")!
-        return try! String(contentsOf: fileURL)
+        let content = try! String(contentsOf: fileURL)
+
+        let lightBundle = colorBundle(for: .light)
+        let darkBundle = colorBundle(for: .dark)
+
+        return content
+            .replacingOccurrences(of: "\n", with: "")
+            .replacingOccurrences(of: "{{proton-background-color}}", with: lightBundle.background)
+            .replacingOccurrences(of: "{{proton-text-color}}", with: lightBundle.text)
+            .replacingOccurrences(of: "{{proton-brand-color}}", with: lightBundle.brand)
+            .replacingOccurrences(of: "{{proton-background-color-dark}}", with: darkBundle.background)
+            .replacingOccurrences(of: "{{proton-text-color-dark}}", with: darkBundle.text)
+            .replacingOccurrences(of: "{{proton-brand-color-dark}}", with: darkBundle.brand)
+
     }()
 
     func html(withTextEditorContent content: String) -> String {
@@ -153,5 +180,11 @@ private extension BodyHtmlDocument {
     };
 
     """
+    }
+}
+
+private extension Color {
+    func hexString(in environment: EnvironmentValues) -> String {
+        Color(resolve(in: environment).cgColor).toHex()!
     }
 }

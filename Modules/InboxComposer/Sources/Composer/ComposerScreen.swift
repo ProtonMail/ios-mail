@@ -106,6 +106,7 @@ struct ComposerLoadingView: View {
             ProtonSpinner()
             Spacer()
         }
+        .background(DS.Color.Background.norm)
     }
 }
 
