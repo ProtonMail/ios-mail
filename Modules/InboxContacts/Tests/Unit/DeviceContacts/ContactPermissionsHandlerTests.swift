@@ -29,10 +29,7 @@ final class ContactPermissionsHandlerTests: BaseTestCase {
     override func setUp() {
         super.setUp()
         contactStoreSpy = .init()
-        sut = .init(
-            permissionsHandler: CNContactStoreSpy.self,
-            contactStore: contactStoreSpy
-        )
+        sut = .init(permissionsHandler: CNContactStoreSpy.self, contactStore: contactStoreSpy)
     }
     
     override func tearDown() {
@@ -70,6 +67,17 @@ final class ContactPermissionsHandlerTests: BaseTestCase {
         
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
         XCTAssertEqual(granted, false)
+    }
+
+    func testRequestAccessIfNeeded_WhenPermissionsLimited_ItDoesNotRequestForPermissions() async {
+        if #available(iOS 18.0, *) {
+            CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .limited]
+            
+            let granted = await sut.requestAccessIfNeeded()
+            
+            XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
+            XCTAssertEqual(granted, true)
+        }
     }
     
     func testRequestAccessIfNeeded_WhenPermissionsAuthorized_ItDoesNotRequestForPermissions() async {

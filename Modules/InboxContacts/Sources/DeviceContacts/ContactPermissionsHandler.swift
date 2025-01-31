@@ -36,7 +36,7 @@ struct ContactPermissionsHandler {
                     continuation.resume(returning: granted)
                 }
             }
-        case .authorized:
+        case .authorized, .limited:
             return true
         case .restricted, .denied:
             return false
