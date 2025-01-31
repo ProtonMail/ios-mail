@@ -23,23 +23,20 @@ protocol MailSettingLiveQuerying {
     var viewModeHasChanged: AnyPublisher<Void, Never> { get }
 }
 
-final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailSettingLiveQuerying {
+final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying {
 
     private let userSession: MailUserSession
-    private var settingsWatcher: SettingsWatcher!
+    private var watchHandle: WatchHandle?
     private let settingsSubject: CurrentValueSubject<MailSettings, Never> = .init(.defaults())
+    private let updateCallback = LiveQueryCallbackWrapper()
 
     init(userSession: MailUserSession) {
         self.userSession = userSession
         setUpLiveQuery()
     }
 
-    // MARK: - LiveQueryCallback
-
-    func onUpdate() {
-        Task {
-            settingsSubject.value = await mailSettings(ctx: userSession)
-        }
+    deinit {
+        watchHandle?.disconnect()
     }
 
     // MARK: - MailSettingLiveQuerying
@@ -60,10 +57,14 @@ final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailS
     // MARK: - Private
 
     private func setUpLiveQuery() {
+        updateCallback.delegate = { [weak self] in
+            self?.onSettingsUpdate()
+        }
+
         Task {
-            switch await watchMailSettings(ctx: userSession, callback: self) {
+            switch await watchMailSettings(ctx: userSession, callback: updateCallback) {
             case .ok(let settingsWatcher):
-                self.settingsWatcher = settingsWatcher
+                self.watchHandle = settingsWatcher.watchHandle
                 settingsSubject.value = settingsWatcher.settings
             case .error(let error):
                 fatalError("\(error)")
@@ -71,6 +72,11 @@ final class MailSettingsLiveQuery: @unchecked Sendable, LiveQueryCallback, MailS
         }
     }
 
+    private func onSettingsUpdate() {
+        Task {
+            settingsSubject.value = await mailSettings(ctx: userSession)
+        }
+    }
 }
 
 extension MailSettings {

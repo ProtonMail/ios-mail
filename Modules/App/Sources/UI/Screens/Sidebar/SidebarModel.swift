@@ -81,7 +81,7 @@ final class SidebarModel: Sendable, ObservableObject {
             sidebar: sidebar,
             labelType: .folder,
             updatedData: sidebar.customFolders
-        ) { newFolders in
+        ) { [weak self] newFolders in
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateFolders(with: newFolders)
             }))
@@ -90,7 +90,7 @@ final class SidebarModel: Sendable, ObservableObject {
             sidebar: sidebar,
             labelType: .label,
             updatedData: sidebar.customLabels
-        ) { newLabels in
+        ) { [weak self] newLabels in
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateLabels(with: newLabels)
             }))
@@ -99,7 +99,7 @@ final class SidebarModel: Sendable, ObservableObject {
             sidebar: sidebar,
             labelType: .system, 
             updatedData: sidebar.systemLabels
-        ) { newSystemLabels in
+        ) { [weak self] newSystemLabels in
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.updateSystemFolders(with: newSystemLabels)
             }))
@@ -211,13 +211,14 @@ final class SidebarModel: Sendable, ObservableObject {
 
 }
 
-private class SidebarModelsObservation<Model>: LiveQueryCallback {
+private class SidebarModelsObservation<Model> {
 
     private let sidebar: SidebarProtocol
     private let labelType: LabelType
     private let updatedData: () async -> Result<[Model], ActionError>
     private let dataUpdate: ([Model]) -> Void
 
+    private let updateCallback = LiveQueryCallbackWrapper()
     private var watchHandle: WatchHandle?
 
     init(
@@ -233,25 +234,31 @@ private class SidebarModelsObservation<Model>: LiveQueryCallback {
         initLiveQuery()
     }
 
-    // MARK: - LiveQueryCallback
-
-    func onUpdate() {
-        Task {
-            await emitUpdatedModelsIfAvailable()
-        }
+    deinit {
+        watchHandle?.disconnect()
     }
 
     // MARK: - Private
 
     private func initLiveQuery() {
+        updateCallback.delegate = { [weak self] in
+            self?.onLabelsUpdate()
+        }
+
         Task {
-            switch await sidebar.watchLabels(labelType: labelType, callback: self) {
+            switch await sidebar.watchLabels(labelType: labelType, callback: updateCallback) {
             case .ok(let watchHandle):
                 self.watchHandle = watchHandle
                 await emitUpdatedModelsIfAvailable()
             case .error:
                 break
             }
+        }
+    }
+
+    private func onLabelsUpdate() {
+        Task {
+            await emitUpdatedModelsIfAvailable()
         }
     }
 
