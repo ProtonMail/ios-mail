@@ -21,7 +21,7 @@ import proton_app_uniffi
 struct ContactSuggestionsRepository {
     private let contactStore: CNContactStoring
     private let permissionsHandler: CNContactStoring.Type
-    private let allContacts: (String, [DeviceContact]) async -> ContactSuggestionsProtocol?
+    private let allContacts: ([DeviceContact]) async -> ContactSuggestionsProtocol?
     
     init(
         permissionsHandler: CNContactStoring.Type,
@@ -31,8 +31,8 @@ struct ContactSuggestionsRepository {
     ) {
         self.contactStore = contactStore
         self.permissionsHandler = permissionsHandler
-        self.allContacts = { query, deviceContacts in
-            let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
+        self.allContacts = { deviceContacts in
+            let result = await allContactsProvider.contactSuggestions(deviceContacts, mailUserSession)
             
             switch result {
             case .ok(let contactSuggestions):
@@ -43,16 +43,16 @@ struct ContactSuggestionsRepository {
         }
     }
     
-    func allContacts(query: String) async -> ContactSuggestionsProtocol? {
+    func allContacts() async -> ContactSuggestionsProtocol? {
         let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
         let deviceContacts = permissionsGranted ? deviceContacts() : []
         
-        return await allContacts(query, deviceContacts)
+        return await allContacts(deviceContacts)
     }
     
     func allContacts(query: String, completion: @escaping (ContactSuggestionsProtocol?) -> Void) {
         Task {
-            let suggestions = await allContacts(query: query)
+            let suggestions = await allContacts()
             completion(suggestions)
         }
     }
