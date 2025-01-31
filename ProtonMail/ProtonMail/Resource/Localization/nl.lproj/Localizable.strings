@@ -869,7 +869,7 @@ The title of loading remote content banner.
 "The new password can't be empty." = "Het nieuwe wachtwoord kan niet leeg zijn.";
 
 /* update password error */
-"The private key update failed." = "Updaten van de geheime sleutel is mislukt.";
+"The private key update failed." = "Bijwerken van de geheime sleutel is mislukt.";
 
 /* update password error */
 "Password update failed" = "Wachtwoord wijzigen mislukt";

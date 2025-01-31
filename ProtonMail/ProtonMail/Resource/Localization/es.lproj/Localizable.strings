@@ -510,7 +510,7 @@ The action title of the alert of the user trying to send a message that was sche
 "The request timed out." = "Tiempo de espera agotado.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "No se puede acceder a los servidores de Proton.\nVisita nuestra página de estado para más detalles.";
+"Proton servers are unreachable.\nVisit our status page for details." = "No se puede acceder a los servidores de Proton.\nConsulta nuestra página de estado para más detalles.";
 
 /* Title */
 "No connectivity detected…" = "No se ha detectado ninguna conectividad…";

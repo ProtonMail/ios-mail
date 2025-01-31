@@ -278,19 +278,19 @@ Custom option for time config picker
 "New contact" = "Novo contato";
 
 /* add new address action */
-"Add new address" = "Adicionar novo endereço";
+"Add new address" = "Adicionar um endereço";
 
 /* new custom field action */
-"Add new custom field" = "Adicionar novo campo personalizado";
+"Add new custom field" = "Adicionar um campo personalizado";
 
 /* new email action */
-"Add new email" = "Adicionar novo e-mail";
+"Add new email" = "Adicionar um e-mail";
 
 /* new phone action */
-"Add new phone number" = "Adicionar novo número de telefone";
+"Add new phone number" = "Adicionar um número de telefone";
 
 /* new field action */
-"Add new field" = "Adicionar novo campo";
+"Add new field" = "Adicionar um campo";
 
 /* default vcard types */
 "Personal" = "Pessoal";
@@ -758,7 +758,7 @@ The title of loading remote content banner.
 "Discarded" = "Descartado";
 
 /* action */
-"Add new URL" = "Adicionar nova URL";
+"Add new URL" = "Adicionar um URL";
 
 /* settings general section title */
 "Auto-load remote content" = "Carregar conteúdo remoto automaticamente";
