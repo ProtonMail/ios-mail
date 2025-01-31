@@ -23,7 +23,7 @@ public final class ComposerContactProvider {
     typealias FilterResult = (text: String, matchingContacts: [ComposerContact])
 
     let protonContactsDatasource: ComposerContactsDatasource
-    private(set) var contacts: [ComposerContact] = []
+    private(set) var contactsResult: ComposerContactsResult?
     private var task: Task<Void, Never>?
 
     init(protonContactsDatasource: ComposerContactsDatasource) {
@@ -31,7 +31,7 @@ public final class ComposerContactProvider {
     }
 
     func loadContacts() async {
-        contacts = await protonContactsDatasource.allContacts()
+        contactsResult = await protonContactsDatasource.allContacts()
     }
 
     /**
@@ -45,13 +45,9 @@ public final class ComposerContactProvider {
         task = Task {
             let textForMatching = text.toContactMatchFormat()
             var matchingContacts = [ComposerContact]()
-
-            for contact in contacts {
-                guard !Task.isCancelled else { return }
-                let isMatch = contact.toMatch.contains { elementToMatch in elementToMatch.contains(textForMatching) }
-                if isMatch {
-                    matchingContacts.append(contact)
-                }
+            
+            if let contactsResult {
+                matchingContacts = contactsResult.filter(textForMatching)
             }
             guard !Task.isCancelled else { return }
             completion((text: text, matchingContacts: matchingContacts))
@@ -68,7 +64,7 @@ public extension ComposerContactProvider {
     static func productionInstance(session: MailUserSession) -> ComposerContactProvider {
         let protonContactsProvider = ComposerProtonContactsDatasource(
             mailUserSession: session,
-            contactsProvider: .productionInstance()
+            repository: .productionInstance(mailUserSession: session)
         )
         return .init(protonContactsDatasource: protonContactsProvider)
     }

@@ -16,8 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
+import InboxContacts
 import proton_app_uniffi
 import struct SwiftUI.Color
 import XCTest
@@ -51,7 +53,15 @@ final class ComposerModelTests: XCTestCase {
     }
 
     func testInit_whenNoStateIsPassed_itShouldReturnAnEmptyState() {
-        let sut = ComposerModel(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider, pendingQueueProvider: testPendingQueueProvider, onSendingEvent: {})
+        let sut = ComposerModel(
+            draft: .emptyMock,
+            draftOrigin: .new,
+            contactProvider: testContactProvider,
+            pendingQueueProvider: testPendingQueueProvider,
+            onSendingEvent: {},
+            permissionsHandler: CNContactStorePartialStub.self,
+            contactStore: CNContactStorePartialStub()
+        )
         XCTAssertEqual(sut.state.toRecipients, RecipientFieldState.initialState(group: .to))
         XCTAssertEqual(sut.state.ccRecipients, RecipientFieldState.initialState(group: .cc))
         XCTAssertEqual(sut.state.bccRecipients, RecipientFieldState.initialState(group: .bcc))
@@ -323,7 +333,9 @@ private extension ComposerModelTests {
             draftOrigin: draftOrigin,
             contactProvider: contactProvider,
             pendingQueueProvider: testPendingQueueProvider,
-            onSendingEvent: {}
+            onSendingEvent: {},
+            permissionsHandler: CNContactStorePartialStub.self,
+            contactStore: CNContactStorePartialStub()
         )
     }
 
@@ -357,8 +369,15 @@ extension ComposerContactProvider {
 struct ComposerTestContactsDatasource: ComposerContactsDatasource {
     var dummyContacts: [ComposerContact] = []
 
-    func allContacts() async -> [ComposerContact] {
-        dummyContacts
+    func allContacts() async -> ComposerContactsResult {
+        .init(
+            contacts: dummyContacts,
+            filter: { query in
+                dummyContacts.filter { contact in
+                    contact.toMatch.contains { elementToMatch in elementToMatch.contains(query) }
+                }
+            }
+        )
     }
 }
 

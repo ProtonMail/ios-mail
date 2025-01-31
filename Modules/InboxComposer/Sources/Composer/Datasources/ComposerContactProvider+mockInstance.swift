@@ -23,7 +23,7 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
         [.green, .blue, .purple, .orange, .red].randomElement()!
     }
 
-    func allContacts() async -> [ComposerContact] {
+    func allContacts() async -> ComposerContactsResult {
         var contacts: [ComposerContact] = []
 
         for (index, _) in (1...120_000).enumerated() {
@@ -54,7 +54,7 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
             let second = $1.type.nameOrEmail
             return first.localizedCompare(second) == .orderedAscending
         }
-        return contacts
+        return .init(contacts: contacts, filter: { _ in contacts })
     }
 }
 

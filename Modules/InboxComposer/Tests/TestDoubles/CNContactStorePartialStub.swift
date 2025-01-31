@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,8 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import Contacts
+import InboxContacts
 
-protocol ComposerContactsDatasource {
-    func allContacts() async -> ComposerContactsResult
+class CNContactStorePartialStub: CNContactStoring {
+    
+    // MARK: - CNContactStoring
+    
+    class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+        .denied
+    }
+    
+    func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void) {
+        fatalError("Not implemented")
+    }
+    
+    func enumerateContacts(
+        with fetchRequest: CNContactFetchRequest,
+        usingBlock block: (CNContact, UnsafeMutablePointer<ObjCBool>) -> Void
+    ) throws {
+        fatalError("Not implemented")
+    }
+
 }

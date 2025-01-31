@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Contacts
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
@@ -38,7 +39,9 @@ struct ComposerView: View {
                 draftOrigin: draftOrigin,
                 contactProvider: contactProvider,
                 pendingQueueProvider: pendingQueueProvider,
-                onSendingEvent: onSendingEvent
+                onSendingEvent: onSendingEvent,
+                permissionsHandler: CNContactStore.self,
+                contactStore: CNContactStore()
             )
         )
     }

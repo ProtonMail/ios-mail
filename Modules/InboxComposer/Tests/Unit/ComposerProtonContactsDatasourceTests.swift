@@ -20,6 +20,7 @@ import Combine
 import InboxContacts
 import proton_app_uniffi
 import struct SwiftUI.Color
+import InboxTesting
 import XCTest
 
 final class ComposerProtonContactsDatasourceTests: XCTestCase {
@@ -27,7 +28,17 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = ComposerProtonContactsDatasource(mailUserSession: .empty(), contactsProvider: .mockInstance())
+        sut = ComposerProtonContactsDatasource(
+            mailUserSession: .empty(),
+            repository: .init(
+                permissionsHandler: CNContactStorePartialStub.self,
+                contactStore: CNContactStorePartialStub(),
+                allContactsProvider: .init(contactSuggestions: { deviceContacts, _ in
+                    return .ok(ContactSuggestionsStub(all: .testData))
+                }),
+                mailUserSession: .empty()
+            )
+        )
     }
 
     override func tearDown() {
@@ -36,7 +47,7 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
     }
 
     func testAllContacts_itParsesSingleProtonContactsCorrectly() async {
-        let contacts = await sut.allContacts()
+        let contacts = await sut.allContacts().contacts
         let composerContact = contacts.filter { $0.name == "Carl Cooper" }.first!
 
         XCTAssertEqual(composerContact.avatarColor, Color(UIColor(hex: "#FF33A1")))
@@ -48,9 +59,23 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
             XCTFail("sinle contact expected")
         }
     }
+    
+    func testAllContacts_itParsesSingleDeviceContactsCorrectly() async {
+        let contacts = await sut.allContacts().contacts
+        let composerContact = contacts.filter { $0.name == "Bob Ainsworth" }.first!
+
+        XCTAssertEqual(composerContact.avatarColor, Color(UIColor(hex: "#3357FF")))
+        if case .single(let singleContact) = composerContact.type {
+            XCTAssertEqual(singleContact.name, "Bob Ainsworth")
+            XCTAssertEqual(singleContact.email, "bob.ainsworth@pm.me")
+            XCTAssertEqual(singleContact.initials, "BA")
+        } else {
+            XCTFail("sinle contact expected")
+        }
+    }
 
     func testAllContacts_itParsesProtonContactGroupsCorrectly() async {
-        let contacts = await sut.allContacts()
+        let contacts = await sut.allContacts().contacts
         let composerContact = contacts.filter { $0.name == "Corporate Team" }.first!
 
         XCTAssertEqual(composerContact.avatarColor, Color(UIColor(hex: "#3357FF")))
@@ -62,83 +87,59 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
         }
     }
 
-    func testAllContacts_whenAProtonContactDoesNotHaveEmail_itShouldNotReturnIt() async {
-        let contacts = await sut.allContacts()
-        XCTAssertEqual(contacts.map(\.name).contains("Bob Ainsworth"), false)
-    }
-
     func testAllContacts_whenAProtonContactHasMultipleEmails_itShouldReturnMultipleComposerContacts() async {
-        let contacts = await sut.allContacts()
+        let contacts = await sut.allContacts().contacts
         XCTAssertEqual(contacts.map(\.name).filter { $0.contains("Betty Brown") }.count, 2)
     }
 
     func testAllContacts_whenAProtonContactIsAGroup_itShouldReturnAComposerContactGroup() async {
-        let contacts = await sut.allContacts()
+        let contacts = await sut.allContacts().contacts
         XCTAssertEqual(contacts.map(\.name).filter { $0.contains("Corporate Team") }.count, 1)
         XCTAssertEqual(contacts.map(\.type).filter { $0.isGroup }.count, 1)
     }
 }
 
-private extension GroupedContactsProvider {
-    static func mockInstance() -> Self {
-        .init(allContacts: { _ in .ok(stubbedContacts) })
-    }
-
-    private static var stubbedContacts: [GroupedContacts] {
+private extension Array where Element == ContactSuggestion {
+    
+    static var testData: Self {
         [
             .init(
-                groupedBy: "B",
-                items: [
-                    .contact(
-                        .init(
-                            id: .init(value: 1),
-                            name: "Bob Ainsworth",
-                            avatarInformation: .init(text: "BA", color: "#FF33A1"),
-                            emails: []
-                        )
-                    ),
-                    .contact(
-                        .init(
-                            id: .init(value: 2),
-                            name: "Betty Brown",
-                            avatarInformation: .init(text: "BB", color: "#FF5733"),
-                            emails: [
-                                .init(id: 3, email: "betty.brown.consulting.department.group@example.com"),
-                                .init(id: 4, email: "betty.brown@protonmail.com")
-                            ]
-                        )
-                    ),
-                ]
+                key: "1",
+                name: "Bob Ainsworth",
+                avatarInformation: .init(text: "BA", color: "#3357FF"),
+                kind: .deviceContact(.init(email: "bob.ainsworth@pm.me"))
             ),
             .init(
-                groupedBy: "C",
-                items: [
-                    .group(
-                        .init(
-                            id: 11, 
-                            name: "Corporate Team",
-                            avatarColor: "#3357FF",
-                            contacts: [
-                                .init(id: 12, email: "corp.team@example.com"),
-                                .init(id: 13, email: "corp.team@protonmail.com"),
-                                .init(id: 14, email: "corporate@proton.me"),
-                            ]
-                        )
-                    ),
-                    .contact(
-                        .init(
-                            id: .init(value: 15),
-                            name: "Carl Cooper",
-                            avatarInformation: .init(text: "CC", color: "#FF33A1"),
-                            emails: [
-                                .init(id: 17, email: "carl.cooper@protonmail.com")
-                            ]
-                        )
-                    ),
-                ]
-            )
+                key: "2",
+                name: "Betty Brown",
+                avatarInformation: .init(text: "BB", color: "#FF5733"),
+                kind: .contactItem(.init(id: 3, email: "betty.brown.consulting.department.group@example.com"))
+            ),
+            .init(
+                key: "3",
+                name: "Betty Brown",
+                avatarInformation: .init(text: "BB", color: "#FF5733"),
+                kind: .contactItem(.init(id: 4, email: "betty.brown@protonmail.com"))
+            ),
+            .init(
+                key: "11",
+                name: "Corporate Team",
+                avatarInformation: .init(text: "CT", color: "#3357FF"),
+                kind: .contactGroup([
+                    .init(id: 12, email: "corp.team@example.com"),
+                    .init(id: 13, email: "corp.team@protonmail.com"),
+                    .init(id: 14, email: "corporate@proton.me")
+                ])
+            ),
+            .init(
+                key: "15",
+                name: "Carl Cooper",
+                avatarInformation: .init(text: "CC", color: "#FF33A1"),
+                kind: .contactItem(.init(id: 17, email: "carl.cooper@protonmail.com"))
+            ),
         ]
     }
+    
 }
 
 private extension MailUserSession {
@@ -176,4 +177,23 @@ private extension ContactEmailItem {
         self.init(id: Id(value: id), email: email, isProton: false, lastUsedTime: 0)
     }
 
+}
+
+private class ContactSuggestionsStub: ContactSuggestions {
+    
+    private let _all: [ContactSuggestion]
+    
+    init(all: [ContactSuggestion]) {
+        _all = all
+        super.init(noPointer: .init())
+    }
+    
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
+    
+    override func all() -> [ContactSuggestion] {
+        _all
+    }
+    
 }

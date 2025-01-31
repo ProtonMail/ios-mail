@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Contacts
 import proton_app_uniffi
 
 typealias DeleteContactItem = (_ id: Id, _ session: MailUserSession) async -> VoidActionResult
@@ -81,6 +82,27 @@ extension ContactsWatcher {
 
     public static func productionInstance() -> Self {
         .init(watch: watchContactList(session:callback:))
+    }
+
+}
+
+extension AllContactsProvider {
+    
+    public static func productionInstance() -> Self {
+        .init(contactSuggestions: contactSuggestions(deviceContacts:session:))
+    }
+    
+}
+
+extension ContactSuggestionsRepository {
+
+    public static func productionInstance(mailUserSession: MailUserSession) -> Self {
+        .init(
+            permissionsHandler: CNContactStore.self,
+            contactStore: CNContactStore(),
+            allContactsProvider: .productionInstance(),
+            mailUserSession: mailUserSession
+        )
     }
 
 }

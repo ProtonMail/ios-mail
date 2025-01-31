@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Contacts
 import InboxCore
 import InboxCoreUI
+import InboxContacts
 import proton_app_uniffi
 import SwiftUI
 
@@ -29,6 +31,7 @@ final class ComposerModel: ObservableObject {
     private let contactProvider: ComposerContactProvider
     private let pendingQueueProvider: PendingQueueProvider
     private let onSendingEvent: () -> Void
+    private let permissionsHandler: ContactPermissionsHandler
 
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
@@ -47,13 +50,16 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,
         pendingQueueProvider: PendingQueueProvider,
-        onSendingEvent: @escaping () -> Void
+        onSendingEvent: @escaping () -> Void,
+        permissionsHandler: CNContactStoring.Type,
+        contactStore: CNContactStoring
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.pendingQueueProvider = pendingQueueProvider
         self.onSendingEvent = onSendingEvent
+        self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
         self.state = makeState(from: draft)
         setUpComposerRecipientListCallbacks()
@@ -65,6 +71,7 @@ final class ComposerModel: ObservableObject {
             showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
         }
         startEditingRecipients(for: .to)
+        await permissionsHandler.requestAccessIfNeeded()
         await contactProvider.loadContacts()
     }
 
@@ -99,9 +106,9 @@ final class ComposerModel: ObservableObject {
     @MainActor
     func matchContact(group: RecipientGroupType, text: String) {
         state.overrideRecipientState(for: group) { $0.copy(\.input, to: text) }
-        guard !contactProvider.contacts.isEmpty else { return }
+        guard let result = contactProvider.contactsResult, !result.contacts.isEmpty else { return }
 
-        contactProvider.filter(with: text) {result in
+        contactProvider.filter(with: text) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 let newState: RecipientControllerStateType = result.matchingContacts.isEmpty ? .editing : .contactPicker

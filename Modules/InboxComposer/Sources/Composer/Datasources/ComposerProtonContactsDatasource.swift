@@ -22,55 +22,44 @@ import proton_app_uniffi
 import UIKit
 import SwiftUI
 
+struct ComposerContactsResult {
+    let contacts: [ComposerContact]
+    let filter: (String) -> [ComposerContact]
+}
+
 struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
     let mailUserSession: MailUserSession
-    let contactsProvider: GroupedContactsProvider
+    let repository: ContactSuggestionsRepository
 
-    func allContacts() async -> [ComposerContact] {
-        switch await contactsProvider.allContacts(mailUserSession) {
-        case .ok(let groupedContacts):
-            let composerContacts = groupedContacts.flatMap { group in
-                group.items.flatMap { item in
-                    switch item {
-                    case .contact(let single):
-                        return single.toComposerContacts()
-
-                    case .group(let group):
-                        return [group.toComposerContact()]
-                    }
-                }
-            }
-            return composerContacts
-        case .error(let error):
-            AppLogger.log(error: error, category: .composer)
-            return []
-        }
-    }
-}
-
-private extension ContactItem {
-
-    func toComposerContacts() -> [ComposerContact] {
-        emails.map { emailItem in
-            let contact = ComposerContactSingle(
-                initials: avatarInformation.text,
-                name: name,
-                email: emailItem.email
-            )
-            return ComposerContact(
-                type: .single(contact),
-                avatarColor: Color(UIColor(hex: avatarInformation.color))
-            )
-        }
-    }
-}
-
-private extension ContactGroupItem {
-
-    func toComposerContact() -> ComposerContact {
-        return ComposerContact(
-            type: .group(.init(name: name, totalMembers: contacts.flatMap(\.emails).count)),
-            avatarColor: Color(UIColor(hex: avatarColor))
+    func allContacts() async -> ComposerContactsResult {
+        let suggestions = await repository.allContacts()
+        return ComposerContactsResult(
+            contacts: suggestions.all().compactMap(\.toComposerContact),
+            filter: { query in suggestions.filtered(query: query).compactMap(\.toComposerContact) }
         )
     }
+}
+
+private extension ContactSuggestion {
+    
+    var toComposerContact: ComposerContact? {
+        switch kind {
+        case .contactGroup(let contacts):
+            return ComposerContact(
+                type: .group(.init(name: name, totalMembers: contacts.count)),
+                avatarColor: Color(UIColor(hex: avatarInformation.color))
+            )
+        case .contactItem(let emailItem):
+            return single(email: emailItem.email)
+        case .deviceContact(let deviceItem):
+            return single(email: deviceItem.email)
+        }
+    }
+    
+    private func single(email: String) -> ComposerContact {
+        let type: ComposerContactType = .single(.init(initials: avatarInformation.text, name: name, email: email))
+        
+        return ComposerContact(type: type, avatarColor: Color(UIColor(hex: avatarInformation.color)))
+    }
+    
 }

@@ -17,7 +17,7 @@
 
 import Contacts
 
-protocol CNContactStoring {
+public protocol CNContactStoring {
     static func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus
     
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void)
