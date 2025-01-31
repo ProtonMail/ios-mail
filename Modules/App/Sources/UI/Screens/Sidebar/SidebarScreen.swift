@@ -97,12 +97,17 @@ struct SidebarScreen: View {
     private var sidebarDragGesture: some Gesture {
         DragGesture(minimumDistance: openCloseSidebarMinimumDistance, coordinateSpace: .global)
             .onChanged { value in
-                let isScrollingVertically = abs(value.translation.height) > openCloseSidebarMinimumDistance
-                if !isScrollingVertically {
-                    appUIStateStore.sidebarState.visibleWidth = min(appUIStateStore.sidebarWidth, value.location.x)
+                guard !isScrollingVertically(value) else {
+                    return
                 }
+
+                appUIStateStore.sidebarState.visibleWidth = min(appUIStateStore.sidebarWidth, value.location.x)
             }
             .onEnded { value in
+                guard !isScrollingVertically(value) else {
+                    return
+                }
+
                 let predictedSlideDistanceFromLeftToRight = value.predictedEndLocation.x - value.location.x
                 let wasDragEndedWithEnoughVelocity = abs(predictedSlideDistanceFromLeftToRight) < lastSwipeSignificanceThreshold
 
@@ -114,6 +119,10 @@ struct SidebarScreen: View {
                     appUIStateStore.toggleSidebar(isOpen: isLastSwipeLeftToRight)
                 }
             }
+    }
+
+    private func isScrollingVertically(_ gestureState: DragGesture.Value) -> Bool {
+        abs(gestureState.translation.height) > abs(gestureState.translation.width)
     }
 
     private var closeSidebarTapGesture: some Gesture {
