@@ -16,10 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import InboxTesting
 import XCTest
 
-final class PassThroughWindowTests: BaseTestCase {
+final class PassThroughWindowTests: XCTestCase {
 
     var sut: PassThroughWindow!
 
