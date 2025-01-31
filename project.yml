@@ -128,6 +128,7 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+        NSContactsUsageDescription: "Your contacts will be used to show contacts suggestions whilst composing a message."
     dependencies:
       - package: InboxComposer
       - package: InboxContacts
