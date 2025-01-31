@@ -35,8 +35,8 @@ struct ContactSuggestionsRepository {
             let result = await allContactsProvider.contactSuggestions(query, deviceContacts, mailUserSession)
             
             switch result {
-            case .ok(let contacts):
-                return contacts
+            case .ok(let contactSuggestions):
+                return contactSuggestions.all()
             case .error:
                 return []
             }

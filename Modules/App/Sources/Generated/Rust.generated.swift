@@ -94,7 +94,7 @@ public extension ContactListResult {
     }
 }
 public extension ContactSuggestionsResult {
-    func get() throws -> [ContactSuggestion] {
+    func get() throws -> ContactSuggestions {
         switch self {
         case .ok(let value):
             value
