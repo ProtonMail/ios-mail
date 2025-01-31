@@ -78,9 +78,10 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         sut.allContacts(query: .empty, completion: { _ in })
         
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 1)
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 2)
+        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 3)
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description), [
             CNContactGivenNameKey.description,
+            CNContactFamilyNameKey.description,
             CNContactEmailAddressesKey.description
         ])
     }
@@ -115,7 +116,8 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
-            .travisHulkenberg
+            .travisHulkenberg,
+            .marcus
         ]
         
         stubbedAllContacts = [
@@ -123,7 +125,8 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .protonJohn,
             .protonMark,
             .deviceJonathanHorotvitz,
-            .deviceTravisHulkenberg
+            .deviceTravisHulkenberg,
+            .deviceMarcus
         ]
         
         var receivedContacts: [ContactSuggestion] = []
@@ -134,13 +137,14 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             }
         })
         
-        XCTAssertEqual(receivedContacts.count, 5)
+        XCTAssertEqual(receivedContacts.count, 6)
         XCTAssertEqual(receivedContacts, [
             .group(.businessGroup),
             .protonJohn,
             .protonMark,
             .deviceJonathanHorotvitz,
-            .deviceTravisHulkenberg
+            .deviceTravisHulkenberg,
+            .deviceMarcus
         ])
     }
     
@@ -209,11 +213,13 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 private class CNContactSpy: CNContact {
     let _id: String
     let _givenName: String
+    let _familyName: String
     let _emailAddresses: [String]
     
-    init(id: String, givenName: String, emails: [String]) {
+    init(id: String, givenName: String, familyName: String, emails: [String]) {
         _id = id
         _givenName = givenName
+        _familyName = familyName
         _emailAddresses = emails
         super.init()
     }
@@ -230,6 +236,10 @@ private class CNContactSpy: CNContact {
         _givenName
     }
     
+    override var familyName: String {
+        _familyName
+    }
+    
     override var emailAddresses: [CNLabeledValue<NSString>] {
         _emailAddresses.map { email in
             CNLabeledValue(label: email, value: email as NSString)
@@ -242,7 +252,8 @@ private extension CNContact {
     static var jonathanHorotvitz: CNContact {
         CNContactSpy(
             id: "1",
-            givenName: "Jonathan Horovitz",
+            givenName: "Jonathan",
+            familyName: "Horovitz",
             emails: ["jonathan@pm.me", "jonathan@gmail.com"]
         )
     }
@@ -250,8 +261,18 @@ private extension CNContact {
     static var travisHulkenberg: CNContact {
         CNContactSpy(
             id: "2",
-            givenName: "Travis Hulkenberg",
+            givenName: "Travis",
+            familyName: "Hulkenberg",
             emails: ["travis@pm.me", "travis@gmail.com"]
+        )
+    }
+    
+    static var marcus: CNContact {
+        CNContactSpy(
+            id: "3",
+            givenName: "Marcus",
+            familyName: "",
+            emails: ["marcus@pm.me"]
         )
     }
     
@@ -284,6 +305,10 @@ private extension ContactSuggestion {
         device(from: .travisHulkenberg, with: .init(text: "TH", color: "#A1FF33"))
     }
     
+    static var deviceMarcus: Self {
+        device(from: .marcus, with: .init(text: "M", color: "#FF5755"))
+    }
+    
     // MARK: - Private
     
     private static func proton(_ emailItem: ContactEmailItem, _ initials: String) -> Self {
@@ -303,7 +328,7 @@ private extension ContactSuggestion {
         
         return .init(
             key: contact.identifier,
-            name: contact.givenName,
+            name: [contact.givenName, contact.familyName].joined(separator: " "),
             avatarInformation: avatarInformation,
             kind: .deviceContact(.init(email: email))
         )

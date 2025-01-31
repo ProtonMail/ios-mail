@@ -60,14 +60,18 @@ public struct ContactSuggestionsRepository {
     // MARK: - Private
     
     private func deviceContacts() -> [DeviceContact] {
-        let keys: [CNKeyDescriptor] = [CNContactGivenNameKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]
+        let keys: [CNKeyDescriptor] = [
+            CNContactGivenNameKey,
+            CNContactFamilyNameKey,
+            CNContactEmailAddressesKey
+        ] as [CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         var contacts: [DeviceContact] = []
         
         try? contactStore.enumerateContacts(with: request) { contact, _ in
             let contact = DeviceContact(
                 key: contact.identifier,
-                name: contact.givenName,
+                name: [contact.givenName, contact.familyName].joined(separator: " "),
                 emails: contact.emailAddresses.compactMap { address in address.value as String }
             )
             
