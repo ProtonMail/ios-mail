@@ -23,8 +23,8 @@ class EmailsPrefetchingTrigger: @unchecked Sendable, ObservableObject {
 
     private let emailsPrefetchingNotifier: EmailsPrefetchingNotifier
     private let sessionProvider: SessionProvider
-    private var emailsPrefetchingNotifierCancellable: AnyCancellable?
     private let prefetch: (MailUserSession) async -> PrefetchResult
+    private var emailsPrefetchingNotifierCancellable: AnyCancellable?
 
     init(
         emailsPrefetchingNotifier: EmailsPrefetchingNotifier,
