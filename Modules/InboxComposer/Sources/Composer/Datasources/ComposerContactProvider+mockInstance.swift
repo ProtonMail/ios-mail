@@ -36,7 +36,7 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
                     email: email
                 )
             )
-            contacts.append(ComposerContact(type: contactType, avatarColor: randomColor))
+            contacts.append(ComposerContact(id: "contact_\(index)", type: contactType, avatarColor: randomColor))
         }
         let groups = [
             ComposerContactType.group(ComposerContactGroup(name: "Core Team", totalMembers: 4)),
@@ -45,8 +45,8 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
             ComposerContactType.group(ComposerContactGroup(name: "Family", totalMembers: 8)),
             ComposerContactType.group(ComposerContactGroup(name: "Operations", totalMembers: 10))
         ]
-        for group in groups {
-            contacts.append(ComposerContact(type: group, avatarColor: randomColor))
+        for (groupIndex, group) in groups.enumerated() {
+            contacts.append(ComposerContact(id: "group_\(groupIndex)", type: group, avatarColor: randomColor))
         }
 
         contacts.sort {

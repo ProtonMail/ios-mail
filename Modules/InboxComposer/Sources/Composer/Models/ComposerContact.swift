@@ -18,23 +18,19 @@
 import Foundation
 import struct SwiftUI.Color
 
-struct ComposerContact: Identifiable, Equatable, Filterable {
+struct ComposerContact: Identifiable, Equatable {
     let id: String
     let type: ComposerContactType
     let avatarColor: Color
 
-    init(type: ComposerContactType, avatarColor: Color) {
-        self.id = type.toMatch.joined(separator: ",")
+    init(id: String, type: ComposerContactType, avatarColor: Color) {
+        self.id = id
         self.type = type
         self.avatarColor = avatarColor
     }
 
     var name: String {
         type.name
-    }
-
-    var toMatch: [String] {
-        type.toMatch
     }
 
     func toUIModel(alreadySelected: Bool = false) -> ComposerContactUIModel {
@@ -78,7 +74,7 @@ extension ComposerContact {
     }
 }
 
-enum ComposerContactType: Equatable, Filterable {
+enum ComposerContactType: Equatable {
     case single(ComposerContactSingle)
     case group(ComposerContactGroup)
 
@@ -95,48 +91,27 @@ enum ComposerContactType: Equatable, Filterable {
         case .group(let group): group.name
         }
     }
-
-    var toMatch: [String] {
-        switch self {
-        case .single(let single): single.toMatch
-        case .group(let group): group.toMatch
-        }
-    }
 }
 
-struct ComposerContactSingle: Equatable, Filterable {
+struct ComposerContactSingle: Equatable {
     let initials: String
     let name: String
-    let nameToMatch: String
     let email: String
-    let emailToMatch: String
 
     init(initials: String, name: String? = nil, email: String) {
         self.email = email
-        self.emailToMatch = self.email.toContactMatchFormat()
         self.initials = initials
         self.name = name ?? email
-        self.nameToMatch = self.name.toContactMatchFormat()
-    }
-
-    var toMatch: [String] {
-        [nameToMatch, emailToMatch]
     }
 }
 
-struct ComposerContactGroup: Equatable, Filterable {
+struct ComposerContactGroup: Equatable {
     let name: String
-    let nameToMatch: String
     let totalMembers: Int
 
     init(name: String, totalMembers: Int) {
         self.name = name
-        self.nameToMatch = self.name.toContactMatchFormat()
         self.totalMembers = totalMembers
-    }
-
-    var toMatch: [String] {
-        [nameToMatch]
     }
 }
 

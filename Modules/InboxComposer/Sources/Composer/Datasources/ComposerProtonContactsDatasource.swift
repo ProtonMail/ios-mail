@@ -46,6 +46,7 @@ private extension ContactSuggestion {
         switch kind {
         case .contactGroup(let contacts):
             return ComposerContact(
+                id: key,
                 type: .group(.init(name: name, totalMembers: contacts.count)),
                 avatarColor: Color(UIColor(hex: avatarInformation.color))
             )
@@ -59,7 +60,7 @@ private extension ContactSuggestion {
     private func single(email: String) -> ComposerContact {
         let type: ComposerContactType = .single(.init(initials: avatarInformation.text, name: name, email: email))
         
-        return ComposerContact(type: type, avatarColor: Color(UIColor(hex: avatarInformation.color)))
+        return ComposerContact(id: key, type: type, avatarColor: Color(UIColor(hex: avatarInformation.color)))
     }
     
 }

@@ -381,6 +381,19 @@ struct ComposerTestContactsDatasource: ComposerContactsDatasource {
     }
 }
 
+private extension ComposerContact {
+    
+    var toMatch: [String] {
+        switch self.type {
+        case .group(let group):
+            [group.name.toContactMatchFormat()]
+        case .single(let singleItem):
+            [singleItem.name.toContactMatchFormat(), singleItem.email.toContactMatchFormat()]
+        }
+    }
+    
+}
+
 extension ComposerState {
 
     static func mockState(matchingContacts: [ComposerContact], controllerState: RecipientControllerStateType) -> ComposerState {
@@ -400,10 +413,10 @@ private extension ComposerContact {
 
     static func makeComposerContactSingle(name: String, email: String) -> ComposerContact {
         let type = ComposerContactType.single(.init(initials: "", name: name, email: email))
-        return ComposerContact(type: type, avatarColor: .green)
+        return ComposerContact(id: "__NOT_USED__", type: type, avatarColor: .green)
     }
 
     init(type: ComposerContactType) {
-        self.init(type: type, avatarColor: .blue)
+        self.init(id: "__NOT_USED__", type: type, avatarColor: .blue)
     }
 }
