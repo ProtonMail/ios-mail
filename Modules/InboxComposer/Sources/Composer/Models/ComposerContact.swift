@@ -98,10 +98,10 @@ struct ComposerContactSingle: Equatable {
     let name: String
     let email: String
 
-    init(initials: String, name: String? = nil, email: String) {
-        self.email = email
+    init(initials: String, name: String, email: String) {
         self.initials = initials
-        self.name = name ?? email
+        self.name = name
+        self.email = email
     }
 }
 
