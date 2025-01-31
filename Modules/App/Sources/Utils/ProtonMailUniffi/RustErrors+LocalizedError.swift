@@ -32,8 +32,10 @@ extension EventError: LocalizedError {
 private extension EventErrorReason {
     var errorMessage: String {
         switch self {
-        case .placeholder:
-            "Unknown error"
+        case .refresh:
+            "Refresh error"
+        case .subscriber:
+            "Subscriber error"
         }
     }
 }

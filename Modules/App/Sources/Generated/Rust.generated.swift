@@ -683,6 +683,16 @@ public extension PaginateSearchResult {
         }
     }
 }
+public extension PrefetchResult {
+    func get() throws {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ScrollConversationsForLabelResult {
     func get() throws -> ConversationScroller {
         switch self {
