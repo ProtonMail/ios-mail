@@ -21,7 +21,7 @@ import proton_app_uniffi
 struct ContactSuggestionsRepository {
     private let contactStore: CNContactStoring
     private let permissionsHandler: CNContactStoring.Type
-    private let allContacts: ([DeviceContact]) async -> ContactSuggestionsProtocol?
+    private let allContacts: ([DeviceContact]) async -> ContactSuggestionsProtocol
     
     init(
         permissionsHandler: CNContactStoring.Type,
@@ -37,13 +37,13 @@ struct ContactSuggestionsRepository {
             switch result {
             case .ok(let contactSuggestions):
                 return contactSuggestions
-            case .error:
-                return nil
+            case .error(let error):
+                fatalError("\(error)")
             }
         }
     }
     
-    func allContacts() async -> ContactSuggestionsProtocol? {
+    func allContacts() async -> ContactSuggestionsProtocol {
         let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
         let deviceContacts = permissionsGranted ? deviceContacts() : []
         
