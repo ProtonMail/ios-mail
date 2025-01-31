@@ -101,12 +101,12 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             query: "",
             deviceContacts: [
                 .init(
-                    key: "E121E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                    key: "1",
                     name: "Jonathan Horovitz",
                     emails: ["jonathan@pm.me", "jonathan@gmail.com"]
                 ),
                 .init(
-                    key: "E221E1F8-C36C-495A-93FC-0C247A3E6E5F",
+                    key: "2",
                     name: "Travis Hulkenberg",
                     emails: ["travis@pm.me", "travis@gmail.com"]
                 )
@@ -216,11 +216,11 @@ private struct AllContactsParameters: Equatable {
 }
 
 private class CNContactSpy: CNContact {
-    let _id: UUID
+    let _id: String
     let _givenName: String
     let _emailAddresses: [String]
     
-    init(id: UUID, givenName: String, emails: [String]) {
+    init(id: String, givenName: String, emails: [String]) {
         _id = id
         _givenName = givenName
         _emailAddresses = emails
@@ -231,7 +231,7 @@ private class CNContactSpy: CNContact {
         nil
     }
     
-    override var id: UUID {
+    override var identifier: String {
         _id
     }
     
@@ -246,19 +246,11 @@ private class CNContactSpy: CNContact {
     }
 }
 
-private extension UUID {
-    
-    static func testData(id: Int) -> UUID {
-        .init(uuidString: "E\(id)21E1F8-C36C-495A-93FC-0C247A3E6E5F").unsafelyUnwrapped
-    }
-    
-}
-
 private extension CNContact {
     
     static var jonathanHorotvitz: CNContact {
         CNContactSpy(
-            id: .testData(id: 1),
+            id: "1",
             givenName: "Jonathan Horovitz",
             emails: ["jonathan@pm.me", "jonathan@gmail.com"]
         )
@@ -266,7 +258,7 @@ private extension CNContact {
     
     static var travisHulkenberg: CNContact {
         CNContactSpy(
-            id: .testData(id: 2),
+            id: "2",
             givenName: "Travis Hulkenberg",
             emails: ["travis@pm.me", "travis@gmail.com"]
         )
@@ -319,7 +311,7 @@ private extension ContactSuggestion {
         let email: String = contact.emailAddresses.first!.label!
         
         return .init(
-            key: contact.id.uuidString,
+            key: contact.identifier,
             name: contact.givenName,
             avatarInformation: avatarInformation,
             kind: .deviceContact(.init(email: email))

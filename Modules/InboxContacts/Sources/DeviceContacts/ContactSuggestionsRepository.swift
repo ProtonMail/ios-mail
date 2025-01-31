@@ -66,7 +66,7 @@ struct ContactSuggestionsRepository {
         
         try? contactStore.enumerateContacts(with: request) { contact, _ in
             let contact = DeviceContact(
-                key: contact.id.uuidString,
+                key: contact.identifier,
                 name: contact.givenName,
                 emails: contact.emailAddresses.compactMap { address in address.value as String }
             )
