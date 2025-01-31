@@ -39,7 +39,8 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             allContactsProvider: .init(contactSuggestions: { query, contacts, _ in
                 let parameters = AllContactsParameters(query: query, deviceContacts: contacts)
                 self.allContactsCalls.append(parameters)
-                return .ok(ContactSuggestionsStub(all: self.stubbedAllContacts))
+                let result = ContactSuggestionsStub(all: self.stubbedAllContacts)
+                return .ok(result)
             }),
             mailUserSession: MailUserSession(noPointer: .init())
         )
@@ -131,8 +132,10 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         
         var receivedContacts: [ContactSuggestion] = []
         
-        sut.allContacts(query: .empty, completion: { contacts in
-            receivedContacts = contacts
+        sut.allContacts(query: .empty, completion: { result in
+            if let result {
+                receivedContacts = result.all()
+            }
         })
         
         XCTAssertEqual(receivedContacts.count, 5)
@@ -192,8 +195,10 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         
         var receivedContacts: [ContactSuggestion] = []
         
-        sut.allContacts(query: .empty, completion: { contacts in
-            receivedContacts = contacts
+        sut.allContacts(query: .empty, completion: { result in
+            if let result {
+                receivedContacts = result.all()
+            }
         })
         
         XCTAssertEqual(receivedContacts.count, 2)
@@ -324,20 +329,24 @@ private extension ContactSuggestion {
 }
 
 private class ContactSuggestionsStub: ContactSuggestions {
-
+    
     private let _all: [ContactSuggestion]
-
+    
     init(all: [ContactSuggestion]) {
         _all = all
         super.init(noPointer: .init())
     }
-
+    
     required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
-
+    
     override func all() -> [ContactSuggestion] {
         _all
     }
-
+    
+    override func filtered(query: String) -> [ContactSuggestion] {
+        return []
+    }
+    
 }
