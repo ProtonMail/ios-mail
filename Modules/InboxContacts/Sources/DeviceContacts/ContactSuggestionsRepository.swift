@@ -84,7 +84,7 @@ private extension CNAuthorizationStatus {
         switch self {
         case .notDetermined, .restricted, .denied:
             false
-        case .authorized:
+        case .authorized, .limited:
             true
         @unknown default:
             false
