@@ -161,7 +161,7 @@ final class ComposerModel: ObservableObject {
             addEntryInRecipients(for: draft, entry: entry, group: group)
         case .group:
             // FIXME: We are not ready to add groups because the SDK does not return them yet
-            break
+            showToast(.comingSoon)
         }
     }
 
