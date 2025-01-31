@@ -17,7 +17,7 @@
 
 import Foundation
 
-private extension SessionState {
+extension SessionState {
     var isAuthorized: Bool {
         switch self {
         case .activeSession:

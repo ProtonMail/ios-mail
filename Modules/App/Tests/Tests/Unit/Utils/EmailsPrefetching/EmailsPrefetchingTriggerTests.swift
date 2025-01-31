@@ -25,8 +25,8 @@ class EmailsPrefetchingTriggerTests: BaseTestCase {
 
     var sut: EmailsPrefetchingTrigger!
     var emailsPrefetchingNotifier: EmailsPrefetchingNotifier!
-    var sessionProviderStub: SessionProviderStubb!
     var prefetchCallCount: Int!
+    private var sessionProviderStub: SessionProviderStubb!
 
     override func setUp() {
         super.setUp()
