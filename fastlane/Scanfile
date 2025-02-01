@@ -1,1 +1,3 @@
+deployment_target_version("18.2")
+derived_data_path("fastlane/test_output/DerivedData")
 disable_package_automatic_updates(true)
