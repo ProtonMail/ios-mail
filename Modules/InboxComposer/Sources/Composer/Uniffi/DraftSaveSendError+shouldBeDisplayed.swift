@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 extension DraftSaveSendError {
 
-    var shouldBeDisplayed: Bool {
+    public var shouldBeDisplayed: Bool {
         switch self {
         case .reason(let reason):
             reason.shouldBeDisplayed
@@ -31,7 +31,7 @@ extension DraftSaveSendError {
 
 extension DraftSaveSendErrorReason {
 
-    var shouldBeDisplayed: Bool {
+    public var shouldBeDisplayed: Bool {
         if case .messageAlreadySent = self {
             return false
         }

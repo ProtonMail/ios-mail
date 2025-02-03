@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 struct SendResultInfo {
     enum ToastType {
         case sending
         case sent
-        case error(String)
+        case error(DraftSaveSendError)
     }
 
     let messageId: ID

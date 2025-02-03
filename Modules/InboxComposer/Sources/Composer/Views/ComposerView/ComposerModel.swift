@@ -209,7 +209,9 @@ final class ComposerModel: ObservableObject {
                 }
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
-                showToast(.error(message: draftError.localizedDescription))
+                if draftError.shouldBeDisplayed {
+                    showToast(.error(message: draftError.localizedDescription))
+                }
             }
         }
     }

@@ -65,7 +65,7 @@ final class SendResultPublisher: Sendable, ObservableObject {
                 case .success:
                     subject.send(.init(messageId: messageId, type: .sent))
                 case .failure(let draftError):
-                    subject.send(.init(messageId: messageId, type: .error(draftError.localizedDescription)))
+                    subject.send(.init(messageId: messageId, type: .error(draftError)))
                 }
             }
         }

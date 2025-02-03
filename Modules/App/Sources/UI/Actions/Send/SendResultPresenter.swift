@@ -18,6 +18,7 @@
 import Combine
 import Foundation
 import InboxCoreUI
+import InboxComposer
 
 /**
  This class handles all toast notifications related to sending a message, from the moment
@@ -54,8 +55,10 @@ final class SendResultPresenter {
             }
             handleToast(toast, for: info.messageId)
 
-        case .error(let message):
-            handleToast(.error(message: message), for: info.messageId)
+        case .error(let error):
+            if error.shouldBeDisplayed {
+                handleToast(.error(message: error.localizedDescription), for: info.messageId)
+            }
         }
     }
 

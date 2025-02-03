@@ -79,18 +79,33 @@ final class SendResultPresenterTests: BaseTestCase {
     @MainActor
     func testPresentResultInfo_whenSending_andThenErrorForTheSameMessageId_itShouldDismissToastFirstAndThenPresentAToast() async {
         let messageId: ID = .random()
-        let dummyErrorMessage = "dummy"
+        let dummyError = DraftSaveSendError.reason(.messageDoesNotExist)
         sut.presentResultInfo(.init(messageId: messageId, type: .sending))
 
-        sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyErrorMessage)))
+        sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyError)))
         XCTAssertEqual(capturedToastActions.count, 3)
 
         XCTAssertTrue(capturedToastActions.isSame(as: [
             .present(.sendingMessage(duration: sendingMessageDuration)),
             .dismiss(.sendingMessage(duration: sendingMessageDuration)),
-            .present(.error(message: dummyErrorMessage)),
+            .present(.error(message: dummyError.localizedDescription)),
         ]))
     }
+
+    @MainActor
+    func testPresentResultInfo_whenSending_andThenErrorThatShouldNotBeDisplayed_itShouldNotPresentTheErrorToast() async {
+        let messageId: ID = .random()
+        let dummyError = DraftSaveSendError.reason(.messageAlreadySent)
+        sut.presentResultInfo(.init(messageId: messageId, type: .sending))
+
+        sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyError)))
+        XCTAssertEqual(capturedToastActions.count, 1)
+
+        XCTAssertTrue(capturedToastActions.isSame(as: [
+            .present(.sendingMessage(duration: sendingMessageDuration))
+        ]))
+    }
+
 
     // MARK: undoAction
 
