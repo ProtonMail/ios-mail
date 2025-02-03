@@ -32,9 +32,11 @@ extension DraftSaveSendError {
 extension DraftSaveSendErrorReason {
 
     public var shouldBeDisplayed: Bool {
-        if case .messageAlreadySent = self {
+        switch self {
+        case .messageAlreadySent, .alreadySent:
             return false
+        default:
+            return true
         }
-        return true
     }
 }

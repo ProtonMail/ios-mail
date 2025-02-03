@@ -95,7 +95,7 @@ final class SendResultPresenterTests: BaseTestCase {
     @MainActor
     func testPresentResultInfo_whenSending_andThenErrorThatShouldNotBeDisplayed_itShouldNotPresentTheErrorToast() async {
         let messageId: ID = .random()
-        let dummyError = DraftSaveSendError.reason(.messageAlreadySent)
+        let dummyError = DraftSaveSendError.reason(.alreadySent)
         sut.presentResultInfo(.init(messageId: messageId, type: .sending))
 
         sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyError)))
