@@ -252,7 +252,7 @@
         }
       }
     },
-    "UNDO" : {
+    "Undo" : {
       "comment" : "Undo action after message has been sent."
     },
     "Unrecognized MIME type" : {

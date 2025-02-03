@@ -72,7 +72,7 @@ enum L10n {
         )
 
         static let undoSend = LocalizedStringResource(
-            "UNDO",
+            "Undo",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Undo action after message has been sent."
         )
