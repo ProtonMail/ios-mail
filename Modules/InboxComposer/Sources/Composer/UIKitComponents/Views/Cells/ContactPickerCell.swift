@@ -35,6 +35,7 @@ final class ContactPickerCell: UITableViewCell {
     required init?(coder: NSCoder) { nil }
 
     private func setUpUI() {
+        backgroundColor = UIColor(DS.Color.Background.norm)
         [initials, groupIcon].forEach(avatarView.addSubview)
         [avatarView, labelsView, checked].forEach(contentView.addSubview)
     }
