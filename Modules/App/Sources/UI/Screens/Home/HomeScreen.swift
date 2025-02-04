@@ -48,6 +48,7 @@ struct HomeScreen: View {
     @State private var modalState: ModalState?
     @State private var draftPresenter: DraftPresenter
     @StateObject private var sendResultCoordinator: SendResultCoordinator
+    @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -74,6 +75,9 @@ struct HomeScreen: View {
         self._draftPresenter = .init(initialValue: draftPresenter)
         self._sendResultCoordinator = .init(
             wrappedValue: SendResultCoordinator(userSession: userSession, draftPresenter: draftPresenter)
+        )
+        self._eventLoopErrorCoordinator = .init(
+            wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)

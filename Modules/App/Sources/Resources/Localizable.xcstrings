@@ -3262,6 +3262,9 @@
         }
       }
     },
+    "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue." : {
+      "comment" : "Event loop failed because an unexpected error."
+    },
     "You can either update your search query or clear it." : {
       "comment" : "Search result is empty subtitle",
       "localizations" : {

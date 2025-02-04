@@ -28,6 +28,7 @@ extension ConversationScroller: @unchecked Sendable {}
 extension Draft: @unchecked Sendable {}
 extension DecryptedMessage: @unchecked Sendable {}
 extension DraftSendResultWatcher: @unchecked Sendable {}
+extension EventLoopErrorObserverHandle: @unchecked Sendable {}
 extension LoginFlow: @unchecked Sendable {}
 extension Mailbox: @unchecked Sendable {}
 extension MessageScroller: @unchecked Sendable {}
