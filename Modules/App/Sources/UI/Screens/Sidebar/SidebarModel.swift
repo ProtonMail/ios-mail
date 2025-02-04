@@ -82,7 +82,7 @@ final class SidebarModel: Sendable, ObservableObject {
             labelType: .folder,
             updatedData: sidebar.customFolders
         ) { [weak self] newFolders in
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            Dispatcher.dispatchOnMain(.init(block: {
                 self?.updateFolders(with: newFolders)
             }))
         }
@@ -91,7 +91,7 @@ final class SidebarModel: Sendable, ObservableObject {
             labelType: .label,
             updatedData: sidebar.customLabels
         ) { [weak self] newLabels in
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            Dispatcher.dispatchOnMain(.init(block: {
                 self?.updateLabels(with: newLabels)
             }))
         }
@@ -100,7 +100,7 @@ final class SidebarModel: Sendable, ObservableObject {
             labelType: .system, 
             updatedData: sidebar.systemLabels
         ) { [weak self] newSystemLabels in
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+            Dispatcher.dispatchOnMain(.init(block: {
                 self?.updateSystemFolders(with: newSystemLabels)
             }))
         }
