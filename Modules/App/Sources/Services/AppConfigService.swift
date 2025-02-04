@@ -33,7 +33,7 @@ extension AppConfigService: ApplicationServiceSetUp {
 
     private func setUpForApp() {
         let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
-        let appVersion = "ios-mail@7.0.0" // TODO: Read from config.
+        let appVersion = "Other" // Read from config once "ios-mail@x.y.z" is supported.
         let environment = AppConfig.Environment(
             domain: domain,
             apiBaseUrl: "https://mail-api.\(domain)",
