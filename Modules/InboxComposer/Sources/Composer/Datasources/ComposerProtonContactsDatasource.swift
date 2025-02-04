@@ -32,7 +32,10 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
     let repository: ContactSuggestionsRepository
 
     func allContacts() async -> ComposerContactsResult {
-        let suggestions = await repository.allContacts()
+        guard let suggestions = await repository.allContacts() else {
+            return .init(contacts: [], filter: { _ in [] })
+        }
+
         return ComposerContactsResult(
             contacts: suggestions.all().compactMap(\.toComposerContact),
             filter: { query in suggestions.filtered(query: query).compactMap(\.toComposerContact) }
