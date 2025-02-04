@@ -57,11 +57,17 @@ class SidebarSpy: SidebarProtocol {
 
     func watchLabels(labelType: LabelType, callback: LiveQueryCallback) async -> SidebarWatchLabelsResult {
         spiedWatchers[labelType] = callback
-        return .ok(WatchHandle(noPointer: .init()))
+        return .ok(WatchHandleDummy(noPointer: .init()))
     }
 
 }
 
 private func notImplemented() -> Never {
     fatalError("Not implemented")
+}
+
+private final class WatchHandleDummy: WatchHandle, @unchecked Sendable {
+    override func disconnect() {
+        // do not call super, it will crash because of self.pointer == nil
+    }
 }
