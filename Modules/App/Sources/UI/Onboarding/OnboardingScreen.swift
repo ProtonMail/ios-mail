@@ -31,7 +31,7 @@ struct OnboardingScreen: View {
             .init(
                 image: DS.Images.onboardingSecondPage,
                 title: "New inbox unboxed".notLocalized.stringResource,
-                subtitle: "We’re excited to unveil the vibrant new design and improved user experience. For now, you can preview the new list and message views.".notLocalized.stringResource
+                subtitle: "We’re excited to unveil the vibrant new design and improved user experience.".notLocalized.stringResource
             ),
             .init(
                 image: DS.Images.onboardingThirdPage,
