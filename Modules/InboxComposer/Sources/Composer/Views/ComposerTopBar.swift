@@ -37,7 +37,7 @@ struct ComposerTopBar: View {
             Button(action:{ }) {
                 Image(DS.Icon.icClockPaperPlane)
                     .square(size: Layout.iconSize)
-                    .foregroundStyle(DS.Color.InteractionBrandWeak.disabled)
+                    .foregroundStyle(DS.Color.InteractionBrand.disabled)
             }
             .square(size: Layout.buttonSize)
 

@@ -42,7 +42,7 @@ private struct SendButtonStyle: ButtonStyle {
 
     func backgroundColor(configuration: Self.Configuration) -> Color {
         if isEnabled {
-            configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.InteractionWeak.norm
+            configuration.isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm
         } else {
             DS.Color.InteractionBrandWeak.disabled
         }
