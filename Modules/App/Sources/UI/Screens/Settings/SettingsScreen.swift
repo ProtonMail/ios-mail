@@ -142,7 +142,7 @@ struct SettingsScreen: View {
                     .foregroundStyle(DS.Color.Global.white)
             }
             .square(size: 40)
-            .clipShape(Circle())
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
         case .preference(let settingsPreference):
             Image(settingsPreference.displayData.icon)
                 .resizable()
