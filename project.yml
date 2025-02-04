@@ -116,6 +116,7 @@ targets:
         CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
+        NSContactsUsageDescription: ""
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
