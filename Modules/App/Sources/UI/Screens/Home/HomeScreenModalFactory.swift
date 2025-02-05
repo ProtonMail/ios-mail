@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxContacts
 import InboxComposer
+import InboxContacts
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -26,12 +27,13 @@ struct HomeScreenModalFactory {
     private let makeComposerScreen: (ComposerModalParams) -> ComposerScreen
     private let makeSettingsScreen: () -> SettingsScreen
 
-    init(mailUserSession: MailUserSession) {
+    init(mailUserSession: MailUserSession, toastStateStore: ToastStateStore) {
         self.makeContactsScreen = {
             ContactsScreen(
                 mailUserSession: mailUserSession,
                 contactsProvider: .productionInstance(),
-                contactsWatcher: .productionInstance()
+                contactsWatcher: .productionInstance(),
+                toastStateStore: toastStateStore
             )
         }
         self.makeComposerScreen = { composerParams in

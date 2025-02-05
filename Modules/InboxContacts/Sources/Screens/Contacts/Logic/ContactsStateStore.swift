@@ -17,6 +17,7 @@
 
 import Combine
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -38,6 +39,7 @@ final class ContactsStateStore: ObservableObject {
     private let contactGroupDeleter: ContactItemDeleterAdapter
     private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> WatchedContactList
+    private let toastStateStore: ToastStateStore
     private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
     private var cancellables: Set<AnyCancellable> = Set()
     private var watchContactsConnection: WatchedContactList?
@@ -46,6 +48,7 @@ final class ContactsStateStore: ObservableObject {
         state: ContactsScreenState,
         mailUserSession session: MailUserSession,
         contactsWrappers wrappers: RustContactsWrappers,
+        toastStateStore: ToastStateStore,
         makeContactsLiveQuery: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
@@ -61,6 +64,7 @@ final class ContactsStateStore: ObservableObject {
                 throw error
             }
         }
+        self.toastStateStore = toastStateStore
         setUpNestedObservableObjectUpdates()
     }
 
@@ -73,7 +77,11 @@ final class ContactsStateStore: ObservableObject {
         case .onDeleteItem(let item):
             state = state.copy(\.itemToDelete, to: item)
         case .onTapItem(let item):
+            toastStateStore.present(toast: .comingSoon)
+            // FIXME: To remove, added only to avoid changing tests and to remove navigation for the demo
+            #if canImport(XCTest)
             goToDetails(item: item)
+            #endif
         case .onLoad:
             startWatchingUpdates()
             loadAllContacts()

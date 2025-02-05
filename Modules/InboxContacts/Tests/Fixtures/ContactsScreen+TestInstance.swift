@@ -28,7 +28,8 @@ extension ContactsScreen {
             state: .init(search: search, allItems: items, itemToDelete: nil),
             mailUserSession: .testInstance(),
             contactsProvider: .previewInstance(),
-            contactsWatcher: .previewInstance()
+            contactsWatcher: .previewInstance(),
+            toastStateStore: .init(initialState: .initial)
         )
     }
 

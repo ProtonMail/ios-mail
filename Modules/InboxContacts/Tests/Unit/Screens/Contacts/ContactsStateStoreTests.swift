@@ -495,6 +495,7 @@ final class ContactsStateStoreTests: BaseTestCase {
                     return WatchContactListResult.ok(.init(contactList: [], handle: .init(noPointer: .init())))
                 })
             ),
+            toastStateStore: .init(initialState: .initial),
             makeContactsLiveQuery: {
                 let wrapper = ContactsLiveQueryCallbackWrapper()
                 self.createdLiveQueryCallbackWrapper = wrapper

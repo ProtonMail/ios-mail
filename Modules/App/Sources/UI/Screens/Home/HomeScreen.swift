@@ -80,7 +80,7 @@ struct HomeScreen: View {
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
+        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, toastStateStore: toastStateStore)
     }
 
     var didAppear: ((Self) -> Void)?
