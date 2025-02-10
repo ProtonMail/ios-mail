@@ -128,7 +128,7 @@ extension XCTestCase {
         let styles: [UIUserInterfaceStyle] = [.light, .dark]
         styles.forEach { style in
             assertSnapshotOnIPhoneX(
-                of: view,
+                of: UIHostingController(rootView: view),
                 style: style,
                 drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
                 named: name,
@@ -145,7 +145,7 @@ extension XCTestCase {
     // MARK: - Private
 
     private func assertSnapshotOnIPhoneX(
-        of view: some View,
+        of controller: UIViewController,
         style: UIUserInterfaceStyle = .light,
         drawHierarchyInKeyWindow: Bool = false,
         named name: String? = nil,
@@ -156,18 +156,16 @@ extension XCTestCase {
         testName: String = #function,
         line: UInt = #line
     ) {
-        let traits = UITraitCollection.current.modifyingTraits { mutableTraits in
-            mutableTraits.userInterfaceStyle = style
-        }
+        controller.overrideUserInterfaceStyle = style
+        let strategy: Snapshotting<UIViewController, UIImage> = drawHierarchyInKeyWindow ? .image(
+            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+            precision: precision,
+            size: ViewImageConfig.iPhoneX.size
+        ) : .image(on: .iPhoneX(.portrait), precision: precision)
 
         assertSnapshot(
-            of: view,
-            as: .image(
-                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-                precision: precision,
-                layout: .device(config: .iPhoneX(.portrait)),
-                traits: traits
-            ),
+            of: controller,
+            as: strategy,
             named: suffixedName(name: name, withStyle: style),
             record: recording,
             timeout: timeout,
