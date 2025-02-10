@@ -154,12 +154,6 @@ extension ContactPickerController {
             ComposerSubviewFactory.fieldTitle
         }
 
-        static var textField: CursorTextField {
-            let view = CursorTextField()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }
-
         static var tableView: UITableView {
             let view = UITableView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false

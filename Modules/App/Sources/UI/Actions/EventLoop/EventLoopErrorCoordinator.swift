@@ -21,16 +21,12 @@ import proton_app_uniffi
 import SwiftUI
 
 final class EventLoopErrorCoordinator: Sendable, ObservableObject {
-    private let userSession: MailUserSession
-    private let toastStateStore: ToastStateStore
     private let handle: EventLoopErrorObserverHandle
     private let eventLoopErrorCallback: EventLoopErrorCallbackWrapper = .init()
 
     init(userSession: MailUserSession, toastStateStore: ToastStateStore) {
-        self.userSession = userSession
-        self.toastStateStore = toastStateStore
         self.handle = userSession.observeEventLoopErrors(callback: eventLoopErrorCallback)
-        eventLoopErrorCallback.delegate = { [weak self] error in
+        eventLoopErrorCallback.delegate = { error in
             AppLogger.log(error: error)
             let toast = Toast(
                 title: nil,
@@ -39,7 +35,7 @@ final class EventLoopErrorCoordinator: Sendable, ObservableObject {
                 style: .error,
                 duration: 10
             )
-            self?.toastStateStore.present(toast: toast)
+            toastStateStore.present(toast: toast)
         }
     }
 

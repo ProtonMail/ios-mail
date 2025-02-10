@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxContacts
-import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 import UIKit
@@ -28,7 +27,6 @@ struct ComposerContactsResult {
 }
 
 struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
-    let mailUserSession: MailUserSession
     let repository: ContactSuggestionsRepository
 
     func allContacts() async -> ComposerContactsResult {

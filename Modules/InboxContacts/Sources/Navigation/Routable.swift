@@ -17,10 +17,7 @@
 
 import SwiftUI
 
-public protocol Routable: Hashable, Identifiable {
-    associatedtype ViewType: View
-
-    func view() -> ViewType
+protocol Routable: Hashable, Identifiable {
 }
 
 extension Routable {

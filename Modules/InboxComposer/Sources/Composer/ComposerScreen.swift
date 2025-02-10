@@ -35,7 +35,6 @@ public struct ComposerScreen: View {
             wrappedValue:
                 ComposerScreenModel(
                     messageId: messageId,
-                    contactProvider: dependencies.contactProvider,
                     userSession: dependencies.userSession
                 )
         )
@@ -53,7 +52,6 @@ public struct ComposerScreen: View {
             wrappedValue: ComposerScreenModel(
                 draft: draft,
                 draftOrigin: draftOrigin,
-                contactProvider: dependencies.contactProvider,
                 userSession: dependencies.userSession
             )
         )

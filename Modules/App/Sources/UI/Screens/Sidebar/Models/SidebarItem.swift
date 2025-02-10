@@ -40,7 +40,7 @@ enum SidebarItem: Equatable, Identifiable {
         switch self {
         case .system, .label, .folder:
             true
-        case .other(let item):
+        case .other:
             false
         }
     }

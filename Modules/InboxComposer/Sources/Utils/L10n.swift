@@ -90,12 +90,6 @@ enum L10n {
     }
 
     enum ComposerError {
-        static let unknownMimeType = LocalizedStringResource(
-            "Unrecognized MIME type",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Error when saving a draft"
-        )
-
         static func duplicateRecipient(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "Removed duplicate recipient: \(address)",

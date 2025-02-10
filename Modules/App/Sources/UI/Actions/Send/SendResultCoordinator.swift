@@ -20,13 +20,11 @@ import Foundation
 import proton_app_uniffi
 
 final class SendResultCoordinator: ObservableObject {
-    private let sendResultPublisher: SendResultPublisher
     private var anyCancellables = Set<AnyCancellable>()
     
     let presenter: SendResultPresenter
 
     init(sendResultPublisher: SendResultPublisher, presenter: SendResultPresenter) {
-        self.sendResultPublisher = sendResultPublisher
         self.presenter = presenter
 
         sendResultPublisher

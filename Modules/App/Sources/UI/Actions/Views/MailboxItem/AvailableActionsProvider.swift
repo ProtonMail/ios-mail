@@ -33,11 +33,7 @@ struct AvailableActionsProvider {
     }
 }
 
-protocol AvailableActionsConvertible {
-    var availableActions: AvailableActions { get }
-}
-
-extension MessageAvailableActions: AvailableActionsConvertible {
+extension MessageAvailableActions {
 
     var availableActions: AvailableActions {
         .init(
@@ -50,7 +46,7 @@ extension MessageAvailableActions: AvailableActionsConvertible {
 
 }
 
-extension ConversationAvailableActions: AvailableActionsConvertible {
+extension ConversationAvailableActions {
 
     var availableActions: AvailableActions {
         .init(

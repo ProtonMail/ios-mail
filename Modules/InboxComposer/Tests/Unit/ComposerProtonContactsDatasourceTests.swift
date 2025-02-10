@@ -29,7 +29,6 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         sut = ComposerProtonContactsDatasource(
-            mailUserSession: .empty(),
             repository: .init(
                 permissionsHandler: CNContactStorePartialStub.self,
                 contactStore: CNContactStorePartialStub(),

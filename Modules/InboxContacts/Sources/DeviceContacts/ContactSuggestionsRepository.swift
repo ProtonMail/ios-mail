@@ -50,13 +50,6 @@ public struct ContactSuggestionsRepository {
         return await allContacts(deviceContacts)
     }
     
-    func allContacts(query: String, completion: @escaping (ContactSuggestionsProtocol?) -> Void) {
-        Task {
-            let suggestions = await allContacts()
-            completion(suggestions)
-        }
-    }
-    
     // MARK: - Private
     
     private func deviceContacts() -> [DeviceContact] {

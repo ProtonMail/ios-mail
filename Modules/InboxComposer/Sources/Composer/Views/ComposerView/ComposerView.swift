@@ -26,7 +26,7 @@ struct ComposerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
 
-    public init(
+    init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,

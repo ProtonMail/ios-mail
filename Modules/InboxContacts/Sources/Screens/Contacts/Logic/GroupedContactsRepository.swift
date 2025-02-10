@@ -21,7 +21,7 @@ struct GroupedContactsRepository {
     private let mailUserSession: MailUserSession
     private let contactsProvider: GroupedContactsProvider
 
-    public init(mailUserSession: MailUserSession, contactsProvider: GroupedContactsProvider) {
+    init(mailUserSession: MailUserSession, contactsProvider: GroupedContactsProvider) {
         self.mailUserSession = mailUserSession
         self.contactsProvider = contactsProvider
     }

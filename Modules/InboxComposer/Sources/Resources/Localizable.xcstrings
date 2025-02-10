@@ -255,29 +255,6 @@
     "Undo" : {
       "comment" : "Undo action after message has been sent."
     },
-    "Unrecognized MIME type" : {
-      "comment" : "Error when saving a draft",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unrecognized MIME type"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type MIME non reconnu"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Niet-herkend MIME-type"
-          }
-        }
-      }
-    },
     "You're currently offline. This draft may not be up-to-date." : {
       "comment" : "Draft might not be up-to-date when loaded"
     }

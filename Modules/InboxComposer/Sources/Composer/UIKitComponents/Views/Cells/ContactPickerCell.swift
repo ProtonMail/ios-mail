@@ -122,7 +122,6 @@ extension ContactPickerCell {
 
 private final class LabelsView: UIView {
     private let stack = SubviewFactory.stack
-    private let icon = SubviewFactory.icon
     private let title = SubviewFactory.titleLabel
     private let subtitle = SubviewFactory.subtitleLabel
 
@@ -159,12 +158,6 @@ private final class LabelsView: UIView {
 private extension LabelsView {
 
     private enum SubviewFactory {
-        static var icon: UIImageView {
-            let view = UIImageView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }
-
         static var titleLabel: UILabel {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false

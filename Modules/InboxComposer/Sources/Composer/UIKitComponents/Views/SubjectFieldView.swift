@@ -34,12 +34,6 @@ final class SubjectFieldView: UIView {
         set { textField.text = newValue }
     }
 
-    var delegate: UITextFieldDelegate? {
-        didSet {
-            textField.delegate = delegate
-        }
-    }
-
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false

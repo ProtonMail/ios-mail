@@ -36,7 +36,6 @@ struct MessageActionButtonsView: View {
 }
 
 private struct MessageActionButtonView: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
     let image: ImageResource
     let text: LocalizedStringResource
     var onButtonTap: () -> Void

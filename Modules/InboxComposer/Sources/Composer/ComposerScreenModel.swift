@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -26,17 +25,13 @@ final class ComposerScreenModel: ObservableObject {
     private var isCancelled: Bool = false
     let pendingQueueProvider: PendingQueueProvider
 
-    init(
-        messageId: ID,
-        contactProvider: ComposerContactProvider,
-        userSession: MailUserSession
-    ) {
+    init(messageId: ID, userSession: MailUserSession) {
         self.state = .loadingDraft
         self.pendingQueueProvider = .init(userSession: userSession)
         openDraftMessage(session: userSession, messageId: messageId)
     }
 
-    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider, userSession: MailUserSession) {
+    init(draft: AppDraftProtocol, draftOrigin: DraftOrigin, userSession: MailUserSession) {
         self.pendingQueueProvider = .init(userSession: userSession)
         self.state = .draftLoaded(draft: draft, draftOrigin: draftOrigin)
     }

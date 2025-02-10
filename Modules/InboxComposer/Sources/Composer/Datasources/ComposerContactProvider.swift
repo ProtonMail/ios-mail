@@ -63,7 +63,6 @@ public extension ComposerContactProvider {
 
     static func productionInstance(session: MailUserSession) -> ComposerContactProvider {
         let protonContactsProvider = ComposerProtonContactsDatasource(
-            mailUserSession: session,
             repository: .productionInstance(mailUserSession: session)
         )
         return .init(protonContactsDatasource: protonContactsProvider)

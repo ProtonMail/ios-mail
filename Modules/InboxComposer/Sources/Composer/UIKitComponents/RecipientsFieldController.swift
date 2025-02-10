@@ -108,12 +108,8 @@ final class RecipientsFieldController: UIViewController {
     private func onIdleControllerTap() {
         onEvent?(.onFieldTap)
     }
-    
-    private func updateView(for state: RecipientFieldState) {
-        updateView(for: state, noCellSelected: true)
-    }
 
-    private func updateView(for state: RecipientFieldState, noCellSelected: Bool) {
+    private func updateView(for state: RecipientFieldState) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             idleController.view.isHidden = state.controllerState == .editing
