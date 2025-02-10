@@ -212,5 +212,6 @@ schemes:
       targets:
         ProtonMail: [test, run]
     test:
+      debugEnabled: false
       testPlans:
         - path: TestPlans/AllUnitAndSnapshotTests.xctestplan
