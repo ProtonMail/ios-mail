@@ -56,7 +56,7 @@ extension Message {
             ),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
             snoozeDate: nil,
-            isDraftMessage: exclusiveLocation.isDraft
+            isDraftMessage: isDraft
         )
     }
 
