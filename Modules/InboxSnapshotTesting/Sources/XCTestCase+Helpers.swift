@@ -117,6 +117,7 @@ extension XCTestCase {
     public func assertSnapshotsOnIPhoneX(
         of view: some View,
         named name: String? = nil,
+        drawHierarchyInKeyWindow: Bool = false,
         precision: Float = 1,
         record recording: Bool = false,
         timeout: TimeInterval = 5,
@@ -127,8 +128,9 @@ extension XCTestCase {
         let styles: [UIUserInterfaceStyle] = [.light, .dark]
         styles.forEach { style in
             assertSnapshotOnIPhoneX(
-                of: UIHostingController(rootView: view),
+                of: view,
                 style: style,
+                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
                 named: name,
                 precision: precision,
                 record: recording,
@@ -143,8 +145,9 @@ extension XCTestCase {
     // MARK: - Private
 
     private func assertSnapshotOnIPhoneX(
-        of controller: UIViewController,
+        of view: some View,
         style: UIUserInterfaceStyle = .light,
+        drawHierarchyInKeyWindow: Bool = false,
         named name: String? = nil,
         precision: Float = 1,
         record recording: Bool = false,
@@ -153,10 +156,18 @@ extension XCTestCase {
         testName: String = #function,
         line: UInt = #line
     ) {
-        controller.overrideUserInterfaceStyle = style
+        let traits = UITraitCollection.current.modifyingTraits { mutableTraits in
+            mutableTraits.userInterfaceStyle = style
+        }
+
         assertSnapshot(
-            of: controller,
-            as: .image(on: .iPhoneX(.portrait), precision: precision),
+            of: view,
+            as: .image(
+                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+                precision: precision,
+                layout: .device(config: .iPhoneX(.portrait)),
+                traits: traits
+            ),
             named: suffixedName(name: name, withStyle: style),
             record: recording,
             timeout: timeout,

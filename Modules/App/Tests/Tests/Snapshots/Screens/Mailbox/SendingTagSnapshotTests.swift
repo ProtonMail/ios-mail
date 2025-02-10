@@ -18,18 +18,17 @@
 @testable import ProtonMail
 import InboxTesting
 import SnapshotTesting
+import InboxSnapshotTesting
 import SwiftUI
 
 class SendingTagSnapshotTests: BaseTestCase {
 
     func testSendingTagVariants() {
-        let view = VStack(alignment: .center) {
-            ForEach(SendingTag.Variant.allCases, id: \.self) { variant in
-                SendingTag(variant: variant)
-            }
+        let view = ForEach(SendingTag.Variant.allCases, id: \.self) { variant in
+            SendingTag(variant: variant)
         }
 
-        assertSelfSizingSnapshot(of: view, drawHierarchyInKeyWindow: true)
+        assertSnapshotsOnIPhoneX(of: view, drawHierarchyInKeyWindow: true)
     }
 
 }
