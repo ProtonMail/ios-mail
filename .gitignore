@@ -80,3 +80,13 @@ xcodegen
 
 # Testmo
 testmo-resources.json
+
+# Check in Package.resolved for dependency resolution, despite ignoring .xcodeproj because of Xcodegen
+# https://developer.apple.com/documentation/xcode/building-swift-packages-or-apps-that-use-them-in-continuous-integration-workflows#Use-the-expected-version-of-a-package-dependency
+!ProtonMail.xcodeproj/project.xcworkspace
+ProtonMail.xcodeproj/project.xcworkspace/*
+!ProtonMail.xcodeproj/project.xcworkspace/xcshareddata
+ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/*
+!ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
