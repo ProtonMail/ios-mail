@@ -24,11 +24,9 @@ class SendingTagSnapshotTests: BaseTestCase {
 
     func testSendingTagVariants() {
         let view = VStack(alignment: .center) {
-            Spacer()
             ForEach(SendingTag.Variant.allCases, id: \.self) { variant in
                 SendingTag(variant: variant)
             }
-            Spacer()
         }
 
         assertSelfSizingSnapshot(of: view, drawHierarchyInKeyWindow: true)

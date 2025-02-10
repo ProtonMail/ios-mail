@@ -23,16 +23,6 @@ public extension AllAvailableBottomBarActionsForMessagesResult {
         }
     }
 }
-public extension AssignedSwipeActionsResult {
-    func get() throws -> AssignedSwipeActions {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension AvailableActionsForConversationsResult {
     func get() throws -> ConversationAvailableActions {
         switch self {
