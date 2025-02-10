@@ -36,6 +36,7 @@ ProtonPackages/proton_app_uniffi/
 
 ## Build generated
 build/
+ci-cache/
 DerivedData/
 
 ## Various settings

@@ -1,3 +1,0 @@
-.cache-policy:
-  cache:
-    policy: pull-push
