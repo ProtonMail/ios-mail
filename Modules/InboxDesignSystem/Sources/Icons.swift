@@ -31,6 +31,7 @@ public extension DS.Icon {
     static let icCogWheel = ImageResource.icCogWheel
     static let icCross = ImageResource.icCross
     static let icCrossBig = ImageResource.icCrossBig
+    static let icCrossCircle = ImageResource.icCrossCircle
     static let icCrossCircleFilled = ImageResource.icCrossCircleFilled
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icExclamationCircle = ImageResource.icExclamationCircle

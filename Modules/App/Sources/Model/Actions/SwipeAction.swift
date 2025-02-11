@@ -33,7 +33,7 @@ extension AssignedSwipeAction {
     func icon(isRead: Bool, isStarred: Bool) -> ImageResource {
         switch self {
         case .noAction:
-            fatalError("Action is not assigned, no need for icon")
+            DS.Icon.icCrossCircle
         case .moveTo(.moveToSystemLabel(let systemLabel, _)):
             systemLabel.icon
         case .moveTo:
