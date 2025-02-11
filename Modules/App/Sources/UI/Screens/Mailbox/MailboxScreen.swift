@@ -30,6 +30,7 @@ struct MailboxScreen: View {
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isSearchPresented = false
     @State private var isOnboardingPresented = false
+    @State private var isAccountManagerPresented = false
     private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
     private let onboardingStore: OnboardingStore
@@ -108,7 +109,10 @@ extension MailboxScreen {
         .background(DS.Color.Background.norm) // sets also the color for the navigation bar
         .toolbarBackground(.hidden, for: .navigationBar) // the purpose of this is to hide the toolbar shadow
         .navigationBarTitleDisplayMode(.inline)
-        .withAccountManager(coordinator: $mailboxModel.accountManagerCoordinator)
+        .withAccountManager(
+            isPresented: $isAccountManagerPresented,
+            coordinator: mailboxModel.accountManagerCoordinator
+        )
         .mainToolbar(
             title: mailboxModel.state.mailboxTitle,
             selectionMode: mailboxModel.selectionMode.selectionState,
