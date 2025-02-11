@@ -133,6 +133,7 @@ extension MailboxModel {
                     guard let self else { return }
                     self.selectedMailbox = newSelectedMailbox
                     await self.updateMailboxAndScroller()
+                    await self.prepareSwipeActions()
                 }
             }
             .store(in: &cancellables)
@@ -240,7 +241,7 @@ extension MailboxModel {
     private func prepareSwipeActions() async {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
 
-        switch await assignedSwipeActions(session: userSession) {
+        switch await assignedSwipeActions(currentFolder: selectedMailbox.localId, session: userSession) {
         case .ok(let actions):
             state.swipeActions = actions
         case .error(let error):
