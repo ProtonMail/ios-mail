@@ -67,7 +67,7 @@ struct HomeScreen: View {
         self.makeSidebarScreen = { selectedItem in
             SidebarScreen(
                 state: .initial,
-                sidebar: Sidebar(ctx: userSession),
+                userSession: userSession,
                 selectedItem: selectedItem
             )
         }

@@ -52,7 +52,11 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         sidebarSpy.stubbedSystemLabels = [.inbox, .sent, .outbox]
         sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
 
-        let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
+        let sidebarScreen = SidebarScreen(
+            state: state,
+            userSession: .dummy,
+            sidebarFactory: { _ in self.sidebarSpy! }
+        ) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
@@ -61,7 +65,11 @@ class SidebarScreenSnapshotTests: BaseTestCase {
     func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX() {
         sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
 
-        let sidebarScreen = SidebarScreen(state: state, sidebar: sidebarSpy) { _ in }
+        let sidebarScreen = SidebarScreen(
+            state: state,
+            userSession: .dummy,
+            sidebarFactory: { _ in self.sidebarSpy! }
+        ) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
             .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)

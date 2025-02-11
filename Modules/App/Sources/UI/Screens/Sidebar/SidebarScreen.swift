@@ -34,10 +34,11 @@ struct SidebarScreen: View {
 
     init(
         state: SidebarState,
-        sidebar: SidebarProtocol,
+        userSession: MailUserSession,
+        sidebarFactory: @escaping (MailUserSession) -> SidebarProtocol = Sidebar.init,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
-        _screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebar))
+        _screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebarFactory(userSession)))
         self.selectedItem = selectedItem
     }
 
