@@ -29,6 +29,7 @@ struct ComposerView: View {
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
+        draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         pendingQueueProvider: PendingQueueProvider,
         onSendingEvent: @escaping () -> Void
@@ -37,6 +38,7 @@ struct ComposerView: View {
             wrappedValue: ComposerModel(
                 draft: draft,
                 draftOrigin: draftOrigin,
+                draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
                 pendingQueueProvider: pendingQueueProvider,
                 onSendingEvent: onSendingEvent,

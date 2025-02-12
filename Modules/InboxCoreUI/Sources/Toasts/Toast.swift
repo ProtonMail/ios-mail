@@ -103,7 +103,7 @@ public extension Toast {
     // MARK: - Private
 
     private static func noButtonDefaultDuration(message: String, style: Toast.Style) -> Self {
-        .init(title: nil, message: message, button: nil, style: style, duration: 4.0)
+        .init(title: nil, message: message, button: nil, style: style, duration: .toastDefaultDuration)
     }
 
 }
@@ -123,4 +123,8 @@ extension Toast.Style {
         }
     }
 
+}
+
+public extension TimeInterval {
+    static let toastDefaultDuration: TimeInterval = 4.0
 }

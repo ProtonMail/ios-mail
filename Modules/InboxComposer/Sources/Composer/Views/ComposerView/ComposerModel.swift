@@ -28,6 +28,7 @@ final class ComposerModel: ObservableObject {
 
     private let draft: AppDraftProtocol
     private let draftOrigin: DraftOrigin
+    private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
     private let pendingQueueProvider: PendingQueueProvider
     private let onSendingEvent: () -> Void
@@ -48,6 +49,7 @@ final class ComposerModel: ObservableObject {
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
+        draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         pendingQueueProvider: PendingQueueProvider,
         onSendingEvent: @escaping () -> Void,
@@ -56,6 +58,7 @@ final class ComposerModel: ObservableObject {
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
+        self.draftSavedToastCoordinator = draftSavedToastCoordinator
         self.contactProvider = contactProvider
         self.pendingQueueProvider = pendingQueueProvider
         self.onSendingEvent = onSendingEvent
@@ -358,7 +361,7 @@ extension ComposerModel {
         Task {
             if case .ok(let id) = await draft.messageId() {
                 if id != nil {
-                    showToast(.information(message: L10n.Composer.draftSaved.string))
+                    draftSavedToastCoordinator.showDraftSavedToast(draft: draft)  // FIXME: do not strongly retain self.draft, change the SDK discard function
                 }
             }
         }
@@ -379,4 +382,4 @@ extension ComposerModel {
     }
 }
 
-extension Draft: EmbeddedImageProvider {}
+extension Draft: @retroactive EmbeddedImageProvider {}
