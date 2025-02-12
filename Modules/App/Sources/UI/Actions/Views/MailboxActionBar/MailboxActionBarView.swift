@@ -78,12 +78,8 @@ struct MailboxActionBarView: View {
             .onLoad {
                 store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
             }
-            .sheet(item: store.binding(\.labelAsSheetPresented)) { input in
-                labelAsSheet(input: input, actionHandler: store.handle)
-            }
-            .sheet(item: store.binding(\.moveToSheetPresented)) { input in
-                moveToSheet(input: input, actionHandler: store.handle)
-            }
+            .labelAsSheet(mailbox:  { mailbox }, input: store.binding(\.labelAsSheetPresented))
+            .moveToSheet(mailbox:  { mailbox }, input: store.binding(\.moveToSheetPresented))
             .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                 MailboxActionBarMoreSheet(state: state) { action in
                     store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
@@ -102,36 +98,6 @@ struct MailboxActionBarView: View {
 
     private var selectedItemsIDs: [ID] {
         selectedItems.map(\.id)
-    }
-
-    private func labelAsSheet(
-        input: ActionSheetInput,
-        actionHandler: @escaping (MailboxActionBarAction) -> Void
-    ) -> some View {
-        let model = LabelAsSheetModel(
-            input: input,
-            mailbox: mailbox,
-            availableLabelAsActions: .productionInstance, 
-            labelAsActions: .productionInstance,
-            toastStateStore: toastStateStore
-        ) {
-            actionHandler(.dismissLabelAsSheet)
-        }
-        return LabelAsSheet(model: model)
-    }
-
-    private func moveToSheet(
-        input: ActionSheetInput,
-        actionHandler: @escaping (MailboxActionBarAction) -> Void
-    ) -> some View {
-        MoveToSheet(
-            input: input,
-            mailbox: mailbox,
-            availableMoveToActions: .productionInstance,
-            moveToActions: .productionInstance
-        ) { _ in
-            actionHandler(.dismissMoveToSheet)
-        }
     }
 }
 

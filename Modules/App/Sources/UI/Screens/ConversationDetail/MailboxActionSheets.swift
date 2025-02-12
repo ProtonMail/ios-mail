@@ -38,6 +38,77 @@ extension View {
     }
 }
 
+extension View {
+    func labelAsSheet(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) -> some View {
+        modifier(LabelAsSheetModifier(mailbox: mailbox, input: input))
+    }
+
+    func moveToSheet(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) -> some View {
+        modifier(MoveToSheetModifier(mailbox: mailbox, input: input))
+    }
+}
+
+private struct LabelAsSheetModifier: ViewModifier {
+    private let mailbox: () -> Mailbox
+    @Binding var input: ActionSheetInput?
+    @EnvironmentObject var toastStateStore: ToastStateStore
+
+    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) {
+        self.mailbox = mailbox
+        self._input = .init(projectedValue: input)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .sheet(item: $input, content: actionPicker)
+    }
+
+    // MARK: - Private
+
+    private func actionPicker(item: ActionSheetInput) -> some View {
+        let model = LabelAsSheetModel(
+            input: item,
+            mailbox: mailbox(),
+            availableLabelAsActions: .productionInstance,
+            labelAsActions: .productionInstance,
+            toastStateStore: toastStateStore
+        ) {
+            self.input = nil
+        }
+        return LabelAsSheet(model: model)
+    }
+
+}
+
+private struct MoveToSheetModifier: ViewModifier {
+    private let mailbox: () -> Mailbox
+    @Binding var input: ActionSheetInput?
+
+    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) {
+        self.mailbox = mailbox
+        self._input = .init(projectedValue: input)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .sheet(item: $input, content: actionPicker)
+    }
+
+    // MARK: - Private
+
+    private func actionPicker(input: ActionSheetInput) -> some View {
+        MoveToSheet(
+            input: input,
+            mailbox: mailbox(),
+            availableMoveToActions: .productionInstance,
+            moveToActions: .productionInstance
+        ) { _ in
+            self.input = nil
+        }
+    }
+
+}
+
 private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -60,8 +131,8 @@ private struct MailboxActionSheets: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
-            .sheet(item: labelAsBinding, content: labelAsActionPicker)
-            .sheet(item: moveToBinding, content: moveToActionPicker)
+            .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
+            .moveToSheet(mailbox: mailbox, input: $state.moveTo)
     }
 
     @MainActor
@@ -97,48 +168,8 @@ private struct MailboxActionSheets: ViewModifier {
         ).pickerViewStyle([.large])
     }
 
-    @MainActor
-    private func labelAsActionPicker(input: ActionSheetInput) -> some View {
-        let model = LabelAsSheetModel(
-            input: input,
-            mailbox: mailbox(),
-            availableLabelAsActions: .productionInstance, 
-            labelAsActions: .productionInstance, 
-            toastStateStore: toastStateStore
-        ) {
-            state = state.dismissed()
-        }
-        return LabelAsSheet(model: model)
-    }
-
-    @MainActor
-    private func moveToActionPicker(input: ActionSheetInput) -> some View {
-        MoveToSheet(
-            input: input,
-            mailbox: mailbox(),
-            availableMoveToActions: .productionInstance,
-            moveToActions: .productionInstance
-        ) { navigation in
-            state = state.dismissed()
-            switch navigation {
-            case .dismissAndGoBack:
-                goBackNavigation?()
-            case .dismiss:
-                break
-            }
-        }
-    }
-
     private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
         .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
-    }
-
-    private var labelAsBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.labelAs }, set: { labelAs in state = state.copy(\.labelAs, to: labelAs) })
-    }
-
-    private var moveToBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.moveTo }, set: { moveTo in state = state.copy(\.moveTo, to: moveTo) })
     }
 
 }

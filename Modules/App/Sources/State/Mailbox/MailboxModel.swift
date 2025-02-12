@@ -443,23 +443,27 @@ extension MailboxModel {
     }
 
     func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
+        let ids: [ID] = [context.itemID]
+
         switch context.action {
-        case .labelAs, .moveTo(.moveToUnknownLabel):
-            toastStateStore.present(toast: .comingSoon)
+        case .labelAs:
+            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, type: viewMode.itemType)
+        case .moveTo(.moveToUnknownLabel):
+            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, type: viewMode.itemType)
         case .toggleRead:
             if context.isItemRead {
-                markAsUnread(ids: [context.itemID])
+                markAsUnread(ids: ids)
             } else {
-                markAsRead(ids: [context.itemID])
+                markAsRead(ids: ids)
             }
         case .toggleStar:
             if context.isItemStarred {
-                actionUnstar(ids: [context.itemID])
+                actionUnstar(ids: ids)
             } else {
-                actionStar(ids: [context.itemID])
+                actionStar(ids: ids)
             }
         case .moveTo(.moveToSystemLabel(_, let systemLabelID)):
-            moveTo(systemLabel: systemLabelID, ids: [context.itemID], toastStateStore: toastStateStore)
+            moveTo(systemLabel: systemLabelID, ids: ids, toastStateStore: toastStateStore)
         case .noAction:
             break
         }
@@ -512,6 +516,9 @@ extension MailboxModel {
         var navigationPath: NavigationPath = .init()
 
         var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
+
+        var labelAsSheetPresented: ActionSheetInput?
+        var moveToSheetPresented: ActionSheetInput?
     }
 }
 

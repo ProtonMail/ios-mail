@@ -68,6 +68,14 @@ struct MailboxScreen: View {
                     onDismiss: { onboardingStore.shouldShowOnboarding = false },
                     content: { OnboardingScreen() }
                 )
+                .labelAsSheet(
+                    mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
+                    input: $mailboxModel.state.labelAsSheetPresented
+                )
+                .moveToSheet(
+                    mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
+                    input: $mailboxModel.state.moveToSheetPresented
+                )
                 .fullScreenCover(isPresented: $isSearchPresented) {
                     SearchScreen(userSession: userSession, sendResultPresenter: sendResultPresenter)
                 }
