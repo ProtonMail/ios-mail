@@ -1355,6 +1355,12 @@
     "Email and mailbox preferences" : {
       "comment" : "Subtitle of the Email settings item.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail- und Postfach-Einstellungen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1704,6 +1710,12 @@
     "Mailbox organization" : {
       "comment" : "Subtitle of the Folders and labels settings item.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfachverwaltung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1921,6 +1933,12 @@
     "Mobile app customization" : {
       "comment" : "Subtitle of the App settings item.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobile App Anpassung"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

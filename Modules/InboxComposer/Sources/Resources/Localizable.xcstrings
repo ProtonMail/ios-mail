@@ -200,6 +200,12 @@
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt ein Problem bei der Datenspeicherung."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
