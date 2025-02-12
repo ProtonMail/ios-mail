@@ -35,7 +35,7 @@ final class ContactPickerCell: UITableViewCell {
     required init?(coder: NSCoder) { nil }
 
     private func setUpUI() {
-        backgroundColor = UIColor(DS.Color.Background.norm)
+        backgroundColor = DS.Color.Background.norm.toDynamicUIColor
         [initials, groupIcon].forEach(avatarView.addSubview)
         [avatarView, labelsView, checked].forEach(contentView.addSubview)
     }
@@ -96,7 +96,7 @@ extension ContactPickerCell {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.inverted)
+            view.textColor = DS.Color.Text.inverted.toDynamicUIColor
             view.textAlignment = .center
             return view
         }
@@ -105,7 +105,7 @@ extension ContactPickerCell {
             let view = UIImageView(image: UIImage(resource: DS.Icon.icUsers))
             view.translatesAutoresizingMaskIntoConstraints = false
             view.contentMode = .scaleAspectFit
-            view.tintColor = UIColor(DS.Color.Text.inverted)
+            view.tintColor = DS.Color.Text.inverted.toDynamicUIColor
             return view
         }
 
@@ -113,7 +113,7 @@ extension ContactPickerCell {
             let view = UIImageView(image: UIImage(resource: DS.Icon.icCheckmark))
             view.translatesAutoresizingMaskIntoConstraints = false
             view.contentMode = .scaleAspectFit
-            view.tintColor = UIColor(DS.Color.Icon.accent)
+            view.tintColor = DS.Color.Icon.accent.toDynamicUIColor
             return view
         }
     }
@@ -149,7 +149,7 @@ private final class LabelsView: UIView {
 
     func configure(title: String, subtitle: String, isSelected: Bool) {
         self.title.text = title
-        self.title.textColor = isSelected ? UIColor(DS.Color.Text.hint) : UIColor(DS.Color.Text.weak)
+        self.title.textColor = isSelected ? DS.Color.Text.hint.toDynamicUIColor : DS.Color.Text.weak.toDynamicUIColor
         self.subtitle.text = subtitle
     }
 }
@@ -169,7 +169,7 @@ private extension LabelsView {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.hint)
+            view.textColor = DS.Color.Text.hint.toDynamicUIColor
             return view
         }
 

@@ -43,7 +43,7 @@ struct RecipientUIModel: Equatable {
     }
 
     var backgroundColor: UIColor {
-        UIColor(isSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
+        isSelected ? DS.Color.InteractionWeak.pressed.toDynamicUIColor : DS.Color.Background.norm.toDynamicUIColor
     }
 
     var icon: UIImage? {
@@ -58,21 +58,21 @@ struct RecipientUIModel: Equatable {
 
     // FIXME: WIP - pending lock icon colors states and color definition
     var iconTintColor: UIColor {
-        guard isValid else { return UIColor(DS.Color.Notification.error) }
+        guard isValid else { return DS.Color.Notification.error.toDynamicUIColor }
         if type == .group {
-            return UIColor(DS.Color.Notification.success)
+            return DS.Color.Notification.success.toDynamicUIColor
         }
         return UIColor(Color(hex: "#239ECE"))
     }
 
     var textColor: UIColor {
-        guard isValid else { return UIColor(DS.Color.Notification.error) }
-        return UIColor(DS.Color.Text.norm)
+        guard isValid else { return DS.Color.Notification.error.toDynamicUIColor }
+        return DS.Color.Text.norm.toDynamicUIColor
     }
 
     var borderColor: UIColor {
-        guard isValid else { return UIColor(DS.Color.Notification.error) }
-        return UIColor(DS.Color.Border.norm)
+        guard isValid else { return DS.Color.Notification.error.toDynamicUIColor }
+        return DS.Color.Border.norm.toDynamicUIColor
     }
 }
 

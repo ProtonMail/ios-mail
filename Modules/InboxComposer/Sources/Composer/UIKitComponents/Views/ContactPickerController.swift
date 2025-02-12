@@ -52,7 +52,7 @@ final class ContactPickerController: UIViewController {
     }
 
     private func setUpUI() {
-        view.backgroundColor = UIColor(DS.Color.Background.norm)
+        view.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
 
         [label, textField, tableView, separator].forEach(view.addSubview)
         textField.onTextChanged = { [weak self] text in
@@ -157,13 +157,13 @@ extension ContactPickerController {
         static var tableView: UITableView {
             let view = UITableView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = UIColor(DS.Color.BackgroundInverted.norm)
+            view.backgroundColor = DS.Color.BackgroundInverted.norm.toDynamicUIColor
             view.directionalLayoutMargins = .init(top: 0, leading: DS.Spacing.large, bottom: 0, trailing: DS.Spacing.large)
-            view.separatorColor = UIColor(DS.Color.Border.norm)
+            view.separatorColor = DS.Color.Border.norm.toDynamicUIColor
             view.separatorInset = .zero
 
             let background = UIView()
-            background.backgroundColor = UIColor(DS.Color.Background.norm)
+            background.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
             view.backgroundView = background
 
             view.estimatedRowHeight = 100.0
@@ -173,7 +173,7 @@ extension ContactPickerController {
 
         static var cellBackgroundView: UIView {
             let view = UIView()
-            view.backgroundColor = UIColor(DS.Color.InteractionWeak.pressed)
+            view.backgroundColor = DS.Color.InteractionWeak.pressed.toDynamicUIColor
             return view
         }
     }

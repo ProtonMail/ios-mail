@@ -67,7 +67,7 @@ final class ComposerController: UIViewController {
     }
 
     private func setUpUI() {
-        view.backgroundColor = UIColor(DS.Color.Background.norm)
+        view.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
 
         addViewController(recipientsController, using: composerStack.addArrangedSubview)
         composerStack.addArrangedSubview(ComposerSeparator())

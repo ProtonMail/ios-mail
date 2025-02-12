@@ -101,7 +101,7 @@ extension BodyEditorController {
                 forURLScheme: CIDSchemeHandler.handlerScheme
             )
 
-            let backgroundColor = UIColor(DS.Color.Background.norm)
+            let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
             let webView = WKWebView(frame: .zero, configuration: config)
             webView.translatesAutoresizingMaskIntoConstraints = false
             webView.scrollView.isScrollEnabled = false

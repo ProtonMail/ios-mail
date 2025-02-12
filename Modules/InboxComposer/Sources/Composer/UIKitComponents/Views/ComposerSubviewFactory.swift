@@ -34,7 +34,7 @@ enum ComposerSubviewFactory {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        view.textColor = UIColor(DS.Color.Text.hint)
+        view.textColor = DS.Color.Text.hint.toDynamicUIColor
         return view
     }
 
@@ -53,20 +53,20 @@ enum ComposerSubviewFactory {
         view.textColor = regularComponentColor
         view.autocorrectionType = .no
         view.spellCheckingType = .no
-        view.tintColor = UIColor(DS.Color.Icon.accent)
+        view.tintColor = DS.Color.Icon.accent.toDynamicUIColor
         return view
     }
 
     static var chevronButton: UIButton {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.tintColor = UIColor(DS.Color.Icon.hint)
+        view.tintColor = DS.Color.Icon.hint.toDynamicUIColor
         view.contentMode = .scaleAspectFit
         view.setImage(UIImage(resource: DS.Icon.icChevronTinyDown), for: .normal)
         return view
     }
 
     private static var regularComponentColor: UIColor {
-        UIColor(DS.Color.Text.norm)
+        DS.Color.Text.norm.toDynamicUIColor
     }
 }

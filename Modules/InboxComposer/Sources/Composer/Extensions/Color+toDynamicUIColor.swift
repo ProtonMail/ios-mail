@@ -15,16 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
-import UIKit
+import SwiftUI
 
-final class ComposerSeparator: UIView {
+extension Color {
 
-    init() {
-        super.init(frame: .zero)
-        backgroundColor = DS.Color.Border.norm.toDynamicUIColor
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 1).isActive = true
+    /// Use in UIKit components inside `UIViewControllerRepresentable` to ensure dynamic colours updates
+    var toDynamicUIColor: UIColor {
+        UIColor { traits in
+            /**
+             Referencing `userInterfaceStyle` is the only hack I found to fix all dynamic colours problems in UIKit. Without
+             this some user actions break the dynamic colours, for example, while being at the composer:
+             1. switching to another app and back
+             2. changing the color mode from a shortcut in Control Center
+             */
+            let _ = traits.userInterfaceStyle
+            return UIColor(self)
+        }
     }
-    required init?(coder: NSCoder) { nil }
 }

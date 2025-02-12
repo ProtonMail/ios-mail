@@ -42,7 +42,7 @@ final class RecipientCursorCell: UICollectionViewCell {
     required init?(coder: NSCoder) { nil }
 
     private func setUpView() {
-        contentView.backgroundColor = UIColor(DS.Color.Background.norm)
+        contentView.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
         contentView.addSubview(textField)
 
         textField.delegate = self
@@ -109,12 +109,12 @@ final class CursorTextField: UITextField {
     private func setUpUI() {
         translatesAutoresizingMaskIntoConstraints = false
         font = UIFont.preferredFont(forTextStyle: .subheadline)
-        textColor = UIColor(DS.Color.Text.norm)
+        textColor = DS.Color.Text.norm.toDynamicUIColor
         autocapitalizationType = .none
         autocorrectionType = .no
         spellCheckingType = .no
         keyboardType = .emailAddress
-        tintColor = UIColor(DS.Color.Icon.accent)
+        tintColor = DS.Color.Icon.accent.toDynamicUIColor
         addTarget(self, action: #selector(CursorTextField.textFieldDidChange(_:)), for: .editingChanged)
     }
 

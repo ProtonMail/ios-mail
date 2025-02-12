@@ -53,7 +53,7 @@ final class ExtraRecipientsCountView: UIView {
         layer.borderWidth = 1
         layer.masksToBounds = true
         layer.cornerRadius = frame.height / 2.0
-        layer.borderColor = UIColor(DS.Color.Border.norm).cgColor
+        layer.borderColor = DS.Color.Border.norm.toDynamicUIColor.cgColor
     }
 
     func configure(extraNumber: Int) {
@@ -71,7 +71,7 @@ extension ExtraRecipientsCountView {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = UIColor(DS.Color.Text.norm)
+            view.textColor = DS.Color.Text.norm.toDynamicUIColor
             view.textAlignment = .center
             return view
         }
