@@ -25,6 +25,7 @@ import struct SwiftUI.Color
 import XCTest
 
 final class ComposerModelTests: XCTestCase {
+    private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
     private var testPendingQueueProvider: PendingQueueProvider!
     let dummyName1 = "dummy name"
@@ -35,6 +36,7 @@ final class ComposerModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        self.testDraftSavedToastCoordinator = .init(toastStoreState: .init(initialState: .initial))
         self.testContactProvider = ComposerContactProvider(
             protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: [
                 .makeComposerContactSingle(name: "", email: "a@example.com"),
@@ -56,6 +58,7 @@ final class ComposerModelTests: XCTestCase {
         let sut = ComposerModel(
             draft: .emptyMock,
             draftOrigin: .new,
+            draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: testContactProvider,
             pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},
@@ -331,6 +334,7 @@ private extension ComposerModelTests {
         ComposerModel(
             draft: draft,
             draftOrigin: draftOrigin,
+            draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: contactProvider,
             pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},

@@ -35,10 +35,12 @@ public final class ToastStateStore: ObservableObject {
     }
 
     public func present(toast: Toast) {
+        assert(Thread.isMainThread)
         state.toasts.append(toast)
     }
 
     public func dismiss(toast: Toast) {
+        assert(Thread.isMainThread)
         state.toasts.remove(toast)
     }
 }
