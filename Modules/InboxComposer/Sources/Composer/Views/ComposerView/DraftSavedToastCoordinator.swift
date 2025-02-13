@@ -26,23 +26,29 @@ struct DraftSavedToastCoordinator {
     }
 
     func showDraftSavedToast(draft: AppDraftProtocol) {
+        DispatchQueue.main.async {
+            toastStoreState.present(toast: discardDraftToast(draft: draft))
+        }
+    }
+
+    private func discardDraftToast(draft: AppDraftProtocol) -> Toast {
         let discardButton = Toast.Button(
             type: .smallTrailing(content: .title(L10n.Composer.discard.string)),
             action: { self.discardDraft(draft: draft) }
         )
-        let toast = Toast(
+        return Toast(
             title: nil,
             message: L10n.Composer.draftSaved.string,
             button: discardButton,
             style: .information,
             duration: .toastDefaultDuration
         )
-        DispatchQueue.main.async {
-            toastStoreState.present(toast: toast)
-        }
     }
 
     private func discardDraft(draft: AppDraftProtocol) {
+        DispatchQueue.main.async {
+            toastStoreState.dismiss(toast: discardDraftToast(draft: draft))
+        }
         Task {
             let result = await draft.discard()
             DispatchQueue.main.async {
