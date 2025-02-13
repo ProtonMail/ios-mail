@@ -62,7 +62,7 @@ final class ComposerController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewDidDisappear(animated)
         onEvent(.viewDidDisappear)
     }
 
