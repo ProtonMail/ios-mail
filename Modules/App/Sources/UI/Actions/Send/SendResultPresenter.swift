@@ -28,7 +28,7 @@ import InboxComposer
 final class SendResultPresenter {
     private typealias MessageID = ID
     private let sendingMessageDuration: TimeInterval = 10.0
-    private let regularDuration: TimeInterval = 5.0
+    private let regularDuration: TimeInterval = .toastDefaultDuration
     private var toasts = [MessageID: Toast]()
     private let subject = PassthroughSubject<SendResultToastAction, Never>()
     private let undoSendProvider: UndoSendProvider
