@@ -25,7 +25,7 @@ import XCTest
 
 final class SendResultPresenterTests: BaseTestCase {
     private let sendingMessageDuration: TimeInterval = 10.0
-    private let regularDuration: TimeInterval = 5.0
+    private let regularDuration: TimeInterval = .toastDefaultDuration
 
     private var sut: SendResultPresenter!
     private var cancellables: Set<AnyCancellable>!
