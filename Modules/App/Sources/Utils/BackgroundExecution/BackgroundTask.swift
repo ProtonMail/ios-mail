@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,9 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import BackgroundTasks
 
-public enum DateEnvironment {
-    public static var currentDate: () -> Date = Date.init
-    public static var calendar: Calendar = .current
+protocol BackgroundTask: AnyObject {
+    var expirationHandler: (() -> Void)? { get set }
+
+    func setTaskCompleted(success: Bool)
 }
+
+extension BGTask: BackgroundTask {}
