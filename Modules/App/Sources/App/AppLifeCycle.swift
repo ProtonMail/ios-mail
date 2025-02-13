@@ -72,14 +72,37 @@ extension AppLifeCycle {
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+        let executePendingActionsBackgroundTaskService = ExecutePendingActionsBackgroundTaskService()
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
-            setUpServices: [appConfigService, testService, appContext, appIconBadgeService],
+            setUpServices: [appConfigService, testService, appContext, appIconBadgeService, executePendingActionsBackgroundTaskService],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
-            enterBackgroundServices: [appIconBadgeService, eventLoop],
+            enterBackgroundServices: [appIconBadgeService, eventLoop, executePendingActionsBackgroundTaskService],
             terminateServices: []
         )
     }
+}
+
+import BackgroundTasks
+
+private class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp, ApplicationServiceDidEnterBackground {
+
+    private let executePendingActionsBackgroundTaskScheduler = ExecutePendingActionsBackgroundTaskScheduler(
+        userSession: { AppContext.shared.sessionState.userSession },
+        backgroundTaskRegistration: .init(registerWithIdentifier: BGTaskScheduler.shared.register),
+        backgroundTaskScheduler: BGTaskScheduler.shared
+    )
+
+    func setUpService() {
+        executePendingActionsBackgroundTaskScheduler.register()
+    }
+
+    func enterBackgroundService() {
+        if let session = AppContext.shared.sessionState.userSession {
+            executePendingActionsBackgroundTaskScheduler.submit()
+        }
+    }
+
 }
