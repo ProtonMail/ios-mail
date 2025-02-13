@@ -108,18 +108,6 @@ platform :ios do
     sh "base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE"
   end
 
-  desc "Build the app for testing"
-  lane :build do
-    run_tests(
-      build_for_testing: true,
-      clean: true,
-      skip_detect_devices: true,
-      device: UNIT_TESTS_DEVICE,
-      scheme: UNIT_TESTS_SCHEME,
-      xcargs: "-skipPackagePluginValidation"
-    )
-  end
-
   desc "Build the release app"
   lane :build_release_app do
     build_app(
@@ -138,12 +126,13 @@ platform :ios do
 
   desc "Run unit tests"
   lane :tests do
+    xcodes(version: '16.2', select_for_current_build_only: true)
+
     run_tests(
       scheme: UNIT_TESTS_SCHEME,
       devices: UNIT_TESTS_DEVICE,
+      clean: true,
       result_bundle: true,
-      skip_package_dependencies_resolution: true,
-      test_without_building: true,
       xcargs: "-skipPackagePluginValidation"
     )
   end
