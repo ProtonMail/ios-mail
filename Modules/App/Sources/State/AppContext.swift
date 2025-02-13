@@ -20,9 +20,14 @@ import Combine
 import Foundation
 import InboxCore
 import proton_app_uniffi
+import SwiftUI
 
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
+
+    private enum Constants {
+        static let sessionChangeDelay = 0.1
+    }
 
     var userSession: MailUserSession {
         guard let userSession = sessionState.userSession else {
@@ -106,7 +111,7 @@ final class AppContext: Sendable, ObservableObject {
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
             switch mailSession.userContextFromSession(session: currentSession) {
             case .ok(let newUserSession):
-                sessionState = .activeSession(session: newUserSession)
+                withAnimation { sessionState = .activeSession(session: newUserSession) }
             case .error(let error):
                 throw error
             }
@@ -126,12 +131,16 @@ extension AppContext: AccountAuthDelegate {
                 guard let self else { return }
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
-                    self.sessionState = .noSession
+                    withAnimation { self.sessionState = .noSession }
                     return
                 }
-                self.sessionState = .activeSessionTransition
-                DispatchQueue.main.async {
-                    self.setupActiveUserSession(session: primaryAccountSession)
+                // Needed for a smoother UI transition.
+                // Gives time to the AccountSwitcher for dismissing.
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.sessionChangeDelay) {
+                    withAnimation { self.sessionState = .activeSessionTransition }
+                    DispatchQueue.main.async {
+                        self.setupActiveUserSession(session: primaryAccountSession)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -155,7 +164,7 @@ extension AppContext: AccountAuthDelegate {
     private func setupActiveUserSession(session: StoredSession) {
         switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
-            self.sessionState = .activeSession(session: newUserSession)
+            withAnimation { self.sessionState = .activeSession(session: newUserSession) }
         case .error(let error):
             AppLogger.log(error: error, category: .userSessions)
         }
