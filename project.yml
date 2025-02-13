@@ -137,6 +137,7 @@ targets:
       - package: InboxDesignSystem
       - package: InboxKeychain
       - package: Lottie
+      - target: NotificationService
       - package: proton_app_uniffi
       - package: ProtonCoreET
         products:
@@ -188,6 +189,26 @@ targets:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
     scheme: ProtonMailUITest
 
+  NotificationService:
+    type: app-extension
+    platform: iOS
+    dependencies:
+      - package: InboxCore
+    sources:
+      - path: Modules/NotificationService/Sources
+    settings:
+      CODE_SIGN_ENTITLEMENTS: "NotificationService.entitlements"
+      CODE_SIGN_IDENTITY: "Apple Development"
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: 2SB5Z68H26
+      PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
+    info:
+      path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: 'com.apple.usernotifications.service'
+          NSExtensionPrincipalClass: '$(PRODUCT_MODULE_NAME).NotificationService'
+
 schemes:
   ProtonMailUITest:
     build:
@@ -215,3 +236,20 @@ schemes:
       debugEnabled: false
       testPlans:
         - path: TestPlans/AllUnitAndSnapshotTests.xctestplan
+
+  NotificationService:
+    build:
+      targets:
+        NotificationService: all
+        ProtonMail: all
+      buildImplicitDependencies: true
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

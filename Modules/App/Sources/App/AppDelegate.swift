@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import ProtonCoreUtilities
 import SwiftUI
 
@@ -43,5 +44,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         InterfaceOrientationCoordinator.shared.supportedOrientations
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let stringToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        AppLogger.log(message: "APS token: \(stringToken)", category: .notifications)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        AppLogger.log(error: error, category: .notifications)
     }
 }

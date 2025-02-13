@@ -66,17 +66,21 @@ extension AppLifeCycle {
 
 extension AppLifeCycle {
 
+    @MainActor
     private func applicationServicesInitialisation() {
         let appConfigService = AppConfigService.shared
         let testService = TestService.shared
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+        let notificationAuthorizationService = NotificationAuthorizationService(
+            remoteNotificationRegistrar: UIApplication.shared
+        )
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
-            setUpServices: [appConfigService, testService, appContext, appIconBadgeService],
+            setUpServices: [appConfigService, testService, appContext, notificationAuthorizationService],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
             enterBackgroundServices: [appIconBadgeService, eventLoop],
             terminateServices: []

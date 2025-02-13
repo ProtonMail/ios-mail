@@ -20,25 +20,15 @@ import InboxCore
 import proton_app_uniffi
 import UserNotifications
 
-protocol UserNotificationCenter {
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
-    func setBadgeCount(_ newBadgeCount: Int) async throws
-}
-
 struct AppIconBadgeService {
-    private let userNotificationCenter: UserNotificationCenter
     private let inboxUnreadCount: () async throws -> UInt64
 
-    init(
-        userNotificationCenter: UserNotificationCenter,
-        inboxUnreadCount: @escaping () async throws -> UInt64
-    ) {
-        self.userNotificationCenter = userNotificationCenter
+    init(inboxUnreadCount: @escaping () async throws -> UInt64) {
         self.inboxUnreadCount = inboxUnreadCount
     }
 
     init(appContext: AppContext) {
-        self.init(userNotificationCenter: UNUserNotificationCenter.current()) {
+        self.init {
             guard let userSession = appContext.sessionState.userSession else {
                 return 0
             }
@@ -48,32 +38,12 @@ struct AppIconBadgeService {
         }
     }
 
-    func setUpServiceAsync() async {
-        do {
-            _ = try await userNotificationCenter.requestAuthorization(options: [.badge])
-        } catch {
-            AppLogger.log(error: error)
-        }
-    }
-
     func enterBackgroundServiceAsync() async {
         do {
             let unreadCount = Int(try await inboxUnreadCount())
-            try await userNotificationCenter.setBadgeCount(unreadCount)
+            try await UNUserNotificationCenter.current().setBadgeCount(unreadCount)
         } catch {
             AppLogger.log(error: error)
-        }
-    }
-}
-
-// we're only requesting authorization on app launch because the OS won't display a badge on the icon without it
-// we're doing it like this per Product team instruction, and this must be removed and redone before GA
-// ultimately we'll be going for
-// https://protonag.atlassian.net/wiki/spaces/INBOX/pages/199098370/Improved+notification+permission
-extension AppIconBadgeService: ApplicationServiceSetUp {
-    func setUpService() {
-        Task {
-            await setUpServiceAsync()
         }
     }
 }
@@ -85,5 +55,3 @@ extension AppIconBadgeService: ApplicationServiceDidEnterBackground {
         }
     }
 }
-
-extension UNUserNotificationCenter: UserNotificationCenter {}

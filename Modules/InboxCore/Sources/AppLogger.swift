@@ -155,6 +155,7 @@ extension AppLogger {
         case composer = "Composer"
         case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
+        case notifications = "Notifications"
         case rustLibrary = "RustLibrary"
         case search = "Search"
         case send = "Send"
