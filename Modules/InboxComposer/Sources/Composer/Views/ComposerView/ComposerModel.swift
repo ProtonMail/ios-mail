@@ -79,7 +79,7 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
-    func viewWillDisappear() {
+    func viewDidDisappear() {
         AppLogger.log(message: "composer will disappear", category: .composer)
         if !messageHasBeenSent {
             showDraftSavedToastIfNeeded()

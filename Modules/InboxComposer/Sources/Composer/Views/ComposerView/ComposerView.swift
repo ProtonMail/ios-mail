@@ -58,8 +58,8 @@ struct ComposerView: View {
 
             ComposerControllerRepresentable(state: model.state, embeddedImageProvider: model.embeddedImageProvider) { event in
                 switch event {
-                case .viewWillDisappear:
-                    model.viewWillDisappear()
+                case .viewDidDisappear:
+                    model.viewDidDisappear()
 
                 case let .recipientFieldEvent(recipientFieldEvent, group):
                     switch recipientFieldEvent {
