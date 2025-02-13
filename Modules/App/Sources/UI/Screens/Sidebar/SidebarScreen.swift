@@ -365,7 +365,7 @@ private extension SidebarOtherItem {
         switch type {
         case .createFolder, .createLabel, .settings, .signOut:
             true
-        case .shareLogs, .contacts, .bugReport, .subscriptions:
+        case .shareLogs, .contacts, .bugReport, .subscriptions, .backgroundTasksLogs:
             false
         }
     }

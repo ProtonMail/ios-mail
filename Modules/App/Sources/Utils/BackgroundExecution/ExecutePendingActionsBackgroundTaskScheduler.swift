@@ -40,39 +40,54 @@ class ExecutePendingActionsBackgroundTaskScheduler {
             Self.identifier,
             nil
         ) { [weak self] task in
+            BackgroundEventsLogging.log("🎬 Task execution started")
             self?.execute(task: task)
         }
         if !isTaskDefinedInInfoPlist {
+            BackgroundEventsLogging.log("📓 Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
+        BackgroundEventsLogging.log("📓 Task with identifier: <\(Self.identifier)> registered.")
     }
 
     func submit() {
         let request = BGProcessingTaskRequest(identifier: Self.identifier)
         request.requiresExternalPower = false
         request.requiresNetworkConnectivity = true
-        request.earliestBeginDate = DateEnvironment.currentDate().oneHourAfter
+        request.earliestBeginDate = DateEnvironment.currentDate().fifteenMinutesAfter
         do {
             try backgroundTaskScheduler.submit(request)
+            BackgroundEventsLogging.log("🚀 Task submitted")
         } catch {
-            // FIXME: - Add logging
+            BackgroundEventsLogging.log("👎🏻 Task submission failure: \(error)")
         }
     }
 
     // MARK: - Private
 
     private func execute(task: BackgroundTask) {
+        let startTime = CFAbsoluteTimeGetCurrent()
         submit()
 
         task.expirationHandler = {
+            let endTime = CFAbsoluteTimeGetCurrent()
+            let executionTime = endTime - startTime
+            BackgroundEventsLogging.log("⏰ Expiration handler called, time of execution: \(executionTime) seconds")
             task.setTaskCompleted(success: true)
         }
 
         Task {
+            BackgroundEventsLogging.log("🕺 Execute pending actions called")
             switch await executePendingActions() {
             case .ok:
+                let endTime = CFAbsoluteTimeGetCurrent()
+                let executionTime = endTime - startTime
+                BackgroundEventsLogging.log("✅ Execute pending actions finished with success after: \(executionTime) seconds")
                 task.setTaskCompleted(success: true)
             case .error(let error):
+                let endTime = CFAbsoluteTimeGetCurrent()
+                let executionTime = endTime - startTime
+                BackgroundEventsLogging.log("❌ Execute pending actions finished with failure after: \(executionTime) seconds")
                 task.setTaskCompleted(success: false)
             }
         }
@@ -81,7 +96,7 @@ class ExecutePendingActionsBackgroundTaskScheduler {
 }
 
 extension Date {
-    var oneHourAfter: Self {
-        DateEnvironment.calendar.date(byAdding: .hour, value: 1, to: self).unsafelyUnwrapped
+    var fifteenMinutesAfter: Self {
+        DateEnvironment.calendar.date(byAdding: .minute, value: 15, to: self).unsafelyUnwrapped
     }
 }
