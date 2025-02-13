@@ -19,18 +19,105 @@ import BackgroundTasks
 import InboxCore
 import proton_app_uniffi
 
+class MailUserSessionSpy: MailUserSessionProtocol {
+
+    var pendingActionsExecutionResultStub = VoidSessionResult.ok
+    var pollEventsResultStub = VoidEventResult.ok
+
+    private(set) var pollEventInvokeCount = 0
+    private(set) var executePendingActionsInvokeCount = 0
+
+    // MARK: - MailUserSessionProtocol
+
+    func pollEvents() async -> VoidEventResult {
+        pollEventInvokeCount += 1
+
+        return pollEventsResultStub
+    }
+
+    func executePendingActions() async -> VoidSessionResult {
+        executePendingActionsInvokeCount += 1
+
+        return pendingActionsExecutionResultStub
+    }
+
+    func accountDetails() async -> MailUserSessionAccountDetailsResult {
+        fatalError()
+    }
+    
+    func applicableLabels() async -> MailUserSessionApplicableLabelsResult {
+        fatalError()
+    }
+    
+    func connectionStatus() async -> MailUserSessionConnectionStatusResult {
+        fatalError()
+    }
+    
+    func executePendingAction() async -> VoidSessionResult {
+        fatalError()
+    }
+    
+    func fork() async -> MailUserSessionForkResult {
+        fatalError()
+    }
+    
+    func getAttachment(localAttachmentId: Id) async -> MailUserSessionGetAttachmentResult {
+        fatalError()
+    }
+    
+    func imageForSender(
+        address: String,
+        bimiSelector: String?,
+        displaySenderImage: Bool,
+        size: UInt32?,
+        mode: String?,
+        format: String?
+    ) async -> MailUserSessionImageForSenderResult {
+        fatalError()
+    }
+    
+    func initialize(cb: any MailUserSessionInitializationCallback) async -> VoidSessionResult {
+        fatalError()
+    }
+    
+    func logout() async -> VoidSessionResult {
+        fatalError()
+    }
+    
+    func movableFolders() async -> MailUserSessionMovableFoldersResult {
+        fatalError()
+    }
+    
+    func observeEventLoopErrors(callback: any EventLoopErrorObserver) -> EventLoopErrorObserverHandle {
+        fatalError()
+    }
+
+    func sessionId() -> String {
+        fatalError()
+    }
+    
+    func user() async -> MailUserSessionUserResult {
+        fatalError()
+    }
+    
+    func userId() -> String {
+        fatalError()
+    }
+
+}
+
 class ExecutePendingActionsBackgroundTaskScheduler {
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
-    private let executePendingActions: () async -> VoidSessionResult
+    private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
 
     init(
-        executePendingActions: @escaping () async -> VoidSessionResult,
+        userSession: @escaping () -> MailUserSessionProtocol?,
         backgroundTaskRegistration: BackgroundTaskRegistration,
         backgroundTaskScheduler: BackgroundTaskScheduler
     ) {
-        self.executePendingActions = executePendingActions
+        self.userSession = userSession
         self.backgroundTaskRegistration = backgroundTaskRegistration
         self.backgroundTaskScheduler = backgroundTaskScheduler
     }
@@ -66,28 +153,39 @@ class ExecutePendingActionsBackgroundTaskScheduler {
     // MARK: - Private
 
     private func execute(task: BackgroundTask) {
+        guard let session = userSession() else {
+            BackgroundEventsLogging.log("👋🏻 No session - complete the task")
+            task.setTaskCompleted(success: true)
+            return
+        }
         let startTime = CFAbsoluteTimeGetCurrent()
         submit()
 
-        task.expirationHandler = {
+        func executionTime() {
             let endTime = CFAbsoluteTimeGetCurrent()
             let executionTime = endTime - startTime
-            BackgroundEventsLogging.log("⏰ Expiration handler called, time of execution: \(executionTime) seconds")
+        }
+
+        task.expirationHandler = {
+            BackgroundEventsLogging.log("⏰ Expiration handler called, time of execution: \(executionTime()) seconds")
             task.setTaskCompleted(success: true)
         }
 
         Task {
             BackgroundEventsLogging.log("🕺 Execute pending actions called")
-            switch await executePendingActions() {
+            switch await session.executePendingActions() {
             case .ok:
-                let endTime = CFAbsoluteTimeGetCurrent()
-                let executionTime = endTime - startTime
-                BackgroundEventsLogging.log("✅ Execute pending actions finished with success after: \(executionTime) seconds")
-                task.setTaskCompleted(success: true)
+                BackgroundEventsLogging.log("✅ Execute pending actions finished with success after: \(executionTime()) seconds")
             case .error(let error):
-                let endTime = CFAbsoluteTimeGetCurrent()
-                let executionTime = endTime - startTime
-                BackgroundEventsLogging.log("❌ Execute pending actions finished with failure after: \(executionTime) seconds")
+                BackgroundEventsLogging.log("❌ Execute pending actions finished with failure after: \(executionTime()) seconds")
+            }
+
+            switch await session.pollEvents() {
+            case .ok:
+                BackgroundEventsLogging.log("✅ Poll events finished with success after: \(executionTime()) seconds")
+                task.setTaskCompleted(success: true)
+            case .error(let eventError):
+                BackgroundEventsLogging.log("❌ Poll events finished with failure after: \(executionTime()) seconds")
                 task.setTaskCompleted(success: false)
             }
         }

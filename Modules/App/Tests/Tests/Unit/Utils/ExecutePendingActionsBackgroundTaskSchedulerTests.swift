@@ -26,7 +26,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
 
     var sut: ExecutePendingActionsBackgroundTaskScheduler!
     var invokedRegister: [(identifier: String, handler: (BackgroundTask) -> Void)]!
-    var pendingActionsExecutionResult: VoidSessionResult!
+    var mailUserSessionSpy: MailUserSessionSpy!
     private var backgroundTaskScheduler: BackgroundTaskSchedulerSpy!
 
     override func setUp() {
@@ -34,8 +34,9 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
 
         invokedRegister = []
         backgroundTaskScheduler = .init()
+        mailUserSessionSpy = .init()
         sut = .init(
-            executePendingActions: { self.pendingActionsExecutionResult },
+            userSession: { self.mailUserSessionSpy },
             backgroundTaskRegistration: .init(registerWithIdentifier: { identifier, _, handler in
                 self.invokedRegister.append((identifier, handler))
                 return true
@@ -48,7 +49,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         sut = nil
         backgroundTaskScheduler = nil
         invokedRegister = nil
-        pendingActionsExecutionResult = nil
+        mailUserSessionSpy = nil
 
         super.tearDown()
     }
@@ -69,8 +70,10 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertTrue(submittedProcessingTaskRequest.requiresNetworkConnectivity)
 
         let backgroundTask = BackgroundTaskSpy()
-        pendingActionsExecutionResult = .ok
         taskRegistration.handler(backgroundTask)
+
+        XCTAssertEqual(mailUserSessionSpy.pollEventInvokeCount, 1)
+        XCTAssertEqual(mailUserSessionSpy.executePendingActionsInvokeCount, 1)
 
         XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 2)
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
@@ -82,7 +85,8 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         let backgroundTask = BackgroundTaskSpy()
-        pendingActionsExecutionResult = .error(.other(.network))
+        mailUserSessionSpy.pendingActionsExecutionResultStub = .error(.other(.network))
+        mailUserSessionSpy.pollEventsResultStub = .error(.other(.network))
         taskRegistration.handler(backgroundTask)
 
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
