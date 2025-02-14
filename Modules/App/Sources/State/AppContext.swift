@@ -120,8 +120,8 @@ final class AppContext: Sendable, ObservableObject {
 }
 
 extension AppContext: AccountAuthDelegate {
-    func accountSessionInitialization(storedSession: StoredSession) async {
-        await initializeMailUserSession(session: storedSession)
+    func accountSessionInitialization(storedSession: StoredSession) async throws {
+        try await initializeMailUserSession(session: storedSession)
     }
 
     func setupAccountBindings() {
@@ -147,17 +147,9 @@ extension AppContext: AccountAuthDelegate {
     }
 
     @MainActor
-    private func initializeMailUserSession(session: StoredSession) async {
-        do {
-            switch mailSession.userContextFromSession(session: session) {
-            case .ok(let newUserSession):
-                try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
-            case .error(let error):
-                throw error
-            }
-        } catch {
-            AppLogger.log(error: error, category: .userSessions)
-        }
+    private func initializeMailUserSession(session: StoredSession) async throws {
+        let newUserSession = try mailSession.userContextFromSession(session: session).get()
+        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
     }
 
     @MainActor
