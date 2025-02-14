@@ -56,6 +56,8 @@ private struct RootView: View {
     @ObservedObject private var appContext: AppContext
     @StateObject private var emailsPrefetchingTrigger: EmailsPrefetchingTrigger
 
+    private let executePendingActionsBackgroundTaskScheduler: ExecutePendingActionsBackgroundTaskScheduler
+
     init(
         appContext: AppContext,
         emailsPrefetchingNotifier: EmailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
@@ -66,6 +68,9 @@ private struct RootView: View {
             sessionProvider: appContext,
             prefetch: prefetch
         ))
+        self.executePendingActionsBackgroundTaskScheduler = .init(userSession: {
+            appContext.sessionState.userSession
+        })
     }
 
     var body: some View {
@@ -73,9 +78,13 @@ private struct RootView: View {
             .onAppear {
                 sceneDelegate.toastStateStore = toastStateStore
             }
-            .onChange(of: appContext.sessionState) { _, new in
+            .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {
                     EmailsPrefetchingNotifier.shared.notify()
+                    executePendingActionsBackgroundTaskScheduler.submit()
+                }
+                if new == .noSession {
+                    executePendingActionsBackgroundTaskScheduler.cancel()
                 }
             }
             .onLoad {
