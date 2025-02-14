@@ -48,53 +48,71 @@ class ExecutePendingActionsBackgroundTaskScheduler {
             Self.identifier,
             nil
         ) { [weak self] task in
+            BackgroundEventsLogging.log("🎬 Task execution started")
             self?.execute(task: task)
         }
         if !isTaskDefinedInInfoPlist {
+            BackgroundEventsLogging.log("📓 Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
+        BackgroundEventsLogging.log("📓 Task with identifier: <\(Self.identifier)> registered.")
     }
 
     func submit() {
         Task {
+            BackgroundEventsLogging.log("🚀 Submit.")
             let allTaskRequests = await backgroundTaskScheduler.pendingTaskRequests()
             let isTaskSchedulled = allTaskRequests
                 .contains(where: { request in request.identifier == Self.identifier })
             guard !isTaskSchedulled else {
+                BackgroundEventsLogging.log("⏭️ Task already waiting for execution.")
                 return
             }
 
             do {
                 try backgroundTaskScheduler.submit(taskRequest)
+                BackgroundEventsLogging.log("🚀 Task submitted")
             } catch {
+                BackgroundEventsLogging.log("↘️ Error on submission: \(error)")
                 assertionFailure("Failed to submit background task error: \(error)")
             }
         }
     }
 
     func cancel() {
+        BackgroundEventsLogging.log("❌ Task cancelled")
         backgroundTaskScheduler.cancel(taskRequestWithIdentifier: Self.identifier)
     }
 
     // MARK: - Private
 
     private func execute(task: BackgroundTask) {
+        let startTime = CFAbsoluteTimeGetCurrent()
         guard let userSession = userSession() else {
+            BackgroundEventsLogging.log("🎬 Missing user session.")
             task.setTaskCompleted(success: false)
             return
         }
 
         submit()
 
+        func executionTime() {
+            let endTime = CFAbsoluteTimeGetCurrent()
+            let executionTime = endTime - startTime
+        }
+
         task.expirationHandler = {
+            BackgroundEventsLogging.log("⏰ Expiration handler called, time of execution: \(executionTime()) seconds.")
             task.setTaskCompleted(success: true)
         }
 
         Task {
             switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
             case (.ok, .ok):
+                BackgroundEventsLogging.log("🎬 Task completed successfully after: \(executionTime()) seconds.")
                 task.setTaskCompleted(success: true)
             default:
+                BackgroundEventsLogging.log("🎬 Task failed after: \(executionTime()) seconds.")
                 task.setTaskCompleted(success: false)
             }
         }
