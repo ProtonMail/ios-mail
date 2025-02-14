@@ -23,7 +23,7 @@ extension AssignedSwipeAction {
 
     var isDestructive: Bool {
         switch self {
-        case .moveTo:
+        case .moveTo(.moveToSystemLabel):
             true
         default:
             false

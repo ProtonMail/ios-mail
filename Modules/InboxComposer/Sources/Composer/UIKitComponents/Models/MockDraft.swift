@@ -95,6 +95,10 @@ final class MockDraft: AppDraftProtocol {
     func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult {
         .error(.network)
     }
+
+    func discard() async -> VoidDraftDiscardResult {
+        .ok
+    }
 }
 
 extension AppDraftProtocol where Self == MockDraft {

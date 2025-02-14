@@ -20,7 +20,7 @@ import InboxDesignSystem
 import UIKit
 
 enum ComposerControllerEvent {
-    case viewWillDisappear
+    case viewDidDisappear
     case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
     case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
     case fromFieldEvent(FromFieldViewEvent)
@@ -61,9 +61,9 @@ final class ComposerController: UIViewController {
         setInitialStates(with: state)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        onEvent(.viewWillDisappear)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onEvent(.viewDidDisappear)
     }
 
     private func setUpUI() {

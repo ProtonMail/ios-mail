@@ -29,6 +29,7 @@ struct ComposerView: View {
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
+        draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         pendingQueueProvider: PendingQueueProvider,
         onSendingEvent: @escaping () -> Void
@@ -37,6 +38,7 @@ struct ComposerView: View {
             wrappedValue: ComposerModel(
                 draft: draft,
                 draftOrigin: draftOrigin,
+                draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
                 pendingQueueProvider: pendingQueueProvider,
                 onSendingEvent: onSendingEvent,
@@ -56,8 +58,8 @@ struct ComposerView: View {
 
             ComposerControllerRepresentable(state: model.state, embeddedImageProvider: model.embeddedImageProvider) { event in
                 switch event {
-                case .viewWillDisappear:
-                    model.viewWillDisappear()
+                case .viewDidDisappear:
+                    model.viewDidDisappear()
 
                 case let .recipientFieldEvent(recipientFieldEvent, group):
                     switch recipientFieldEvent {

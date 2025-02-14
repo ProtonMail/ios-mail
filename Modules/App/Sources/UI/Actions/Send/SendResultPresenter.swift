@@ -27,8 +27,8 @@ import InboxComposer
 */
 final class SendResultPresenter {
     private typealias MessageID = ID
-    private let sendingMessageDuration: TimeInterval = 10.0
-    private let regularDuration: TimeInterval = 5.0
+    private let regularDuration: TimeInterval = .toastDefaultDuration
+    private let extendedDuration: TimeInterval = 3.0
     private var toasts = [MessageID: Toast]()
     private let subject = PassthroughSubject<SendResultToastAction, Never>()
     private let undoSendProvider: UndoSendProvider
@@ -47,10 +47,10 @@ final class SendResultPresenter {
     func presentResultInfo(_ info: SendResultInfo) {
         switch info.type {
         case .sending:
-            handleToast(.sendingMessage(duration: sendingMessageDuration), for: info.messageId)
+            handleToast(.sendingMessage(duration: regularDuration), for: info.messageId)
 
         case .sent:
-            let toast: Toast = .messageSent(duration: regularDuration) { [weak self] in
+            let toast: Toast = .messageSent(duration: extendedDuration) { [weak self] in
                 Task { await self?.undoAction(for: info.messageId) }
             }
             handleToast(toast, for: info.messageId)

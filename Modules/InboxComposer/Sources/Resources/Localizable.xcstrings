@@ -33,6 +33,12 @@
     "Address not found" : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
+    "Discard" : {
+      "comment" : "Composer toast action to discard the draft after dismising the screen"
+    },
+    "Discarded" : {
+      "comment" : "Composer toast message confirming draft discarded"
+    },
     "Draft body is missing" : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
@@ -196,6 +202,9 @@
     },
     "The recipient is unknown: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "There was a problem discarding the draft" : {
+      "comment" : "Error shown when the draft fails to delete."
     },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",

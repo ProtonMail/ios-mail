@@ -73,6 +73,7 @@ public struct ComposerScreen: View {
             ComposerView(
                 draft: draft,
                 draftOrigin: draftOrigin,
+                draftSavedToastCoordinator: .init(toastStoreState: toastStateStore),
                 contactProvider: contactProvider,
                 pendingQueueProvider: model.pendingQueueProvider,
                 onSendingEvent: onSendingEvent

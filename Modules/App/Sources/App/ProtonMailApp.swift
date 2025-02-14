@@ -99,22 +99,28 @@ private struct RootView: View {
 
     @ViewBuilder
     private func mainView() -> some View {
-        switch appContext.sessionState {
-        case .noSession:
-            appContext
-                .accountAuthCoordinator
-                .accountView()
+        ZStack {
+            Group {
+                switch appContext.sessionState {
+                case .noSession:
+                    appContext
+                        .accountAuthCoordinator
+                        .accountView()
 
-        case .activeSession(let activeUserSession):
-            HomeScreen(
-                appContext: appContext,
-                userSession: activeUserSession,
-                toastStateStore: toastStateStore
-            )
-            .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
+                case .activeSession(let activeUserSession):
+                    HomeScreen(
+                        appContext: appContext,
+                        userSession: activeUserSession,
+                        toastStateStore: toastStateStore
+                    )
+                    .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
 
-        case .activeSessionTransition:
-            EmptyView()
+                case .activeSessionTransition:
+                    EmptyView()
+                }
+            }
+            .transition(.opacity)
         }
+        .animation(.easeInOut, value: appContext.sessionState)
     }
 }

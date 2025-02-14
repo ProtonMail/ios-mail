@@ -1,0 +1,53 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import proton_app_uniffi
+import SwiftUI
+
+private struct MoveToSheetModifier: ViewModifier {
+    private let mailbox: () -> Mailbox
+    @Binding var input: ActionSheetInput?
+
+    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) {
+        self.mailbox = mailbox
+        self._input = .init(projectedValue: input)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .sheet(item: $input, content: actionPicker)
+    }
+
+    // MARK: - Private
+
+    private func actionPicker(input: ActionSheetInput) -> some View {
+        MoveToSheet(
+            input: input,
+            mailbox: mailbox(),
+            availableMoveToActions: .productionInstance,
+            moveToActions: .productionInstance
+        ) { _ in
+            self.input = nil
+        }
+    }
+}
+
+extension View {
+    func moveToSheet(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) -> some View {
+        modifier(MoveToSheetModifier(mailbox: mailbox, input: input))
+    }
+}

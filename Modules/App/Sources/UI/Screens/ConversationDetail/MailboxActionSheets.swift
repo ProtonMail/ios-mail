@@ -60,8 +60,8 @@ private struct MailboxActionSheets: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
-            .sheet(item: labelAsBinding, content: labelAsActionPicker)
-            .sheet(item: moveToBinding, content: moveToActionPicker)
+            .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
+            .moveToSheet(mailbox: mailbox, input: $state.moveTo)
     }
 
     @MainActor
@@ -97,48 +97,8 @@ private struct MailboxActionSheets: ViewModifier {
         ).pickerViewStyle([.large])
     }
 
-    @MainActor
-    private func labelAsActionPicker(input: ActionSheetInput) -> some View {
-        let model = LabelAsSheetModel(
-            input: input,
-            mailbox: mailbox(),
-            availableLabelAsActions: .productionInstance, 
-            labelAsActions: .productionInstance, 
-            toastStateStore: toastStateStore
-        ) {
-            state = state.dismissed()
-        }
-        return LabelAsSheet(model: model)
-    }
-
-    @MainActor
-    private func moveToActionPicker(input: ActionSheetInput) -> some View {
-        MoveToSheet(
-            input: input,
-            mailbox: mailbox(),
-            availableMoveToActions: .productionInstance,
-            moveToActions: .productionInstance
-        ) { navigation in
-            state = state.dismissed()
-            switch navigation {
-            case .dismissAndGoBack:
-                goBackNavigation?()
-            case .dismiss:
-                break
-            }
-        }
-    }
-
     private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
         .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
-    }
-
-    private var labelAsBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.labelAs }, set: { labelAs in state = state.copy(\.labelAs, to: labelAs) })
-    }
-
-    private var moveToBinding: Binding<ActionSheetInput?> {
-        .init(get: { state.moveTo }, set: { moveTo in state = state.copy(\.moveTo, to: moveTo) })
     }
 
 }

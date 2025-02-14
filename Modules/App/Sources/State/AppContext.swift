@@ -20,9 +20,14 @@ import Combine
 import Foundation
 import InboxCore
 import proton_app_uniffi
+import SwiftUI
 
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
+
+    private enum Constants {
+        static let sessionChangeDelay = 0.1
+    }
 
     var userSession: MailUserSession {
         guard let userSession = sessionState.userSession else {
@@ -106,7 +111,7 @@ final class AppContext: Sendable, ObservableObject {
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
             switch mailSession.userContextFromSession(session: currentSession) {
             case .ok(let newUserSession):
-                sessionState = .activeSession(session: newUserSession)
+                withAnimation { sessionState = .activeSession(session: newUserSession) }
             case .error(let error):
                 throw error
             }
@@ -115,8 +120,8 @@ final class AppContext: Sendable, ObservableObject {
 }
 
 extension AppContext: AccountAuthDelegate {
-    func accountSessionInitialization(storedSession: StoredSession) async {
-        await initializeMailUserSession(session: storedSession)
+    func accountSessionInitialization(storedSession: StoredSession) async throws {
+        try await initializeMailUserSession(session: storedSession)
     }
 
     func setupAccountBindings() {
@@ -126,36 +131,32 @@ extension AppContext: AccountAuthDelegate {
                 guard let self else { return }
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
-                    self.sessionState = .noSession
+                    withAnimation { self.sessionState = .noSession }
                     return
                 }
-                self.sessionState = .activeSessionTransition
-                DispatchQueue.main.async {
-                    self.setupActiveUserSession(session: primaryAccountSession)
+                // Needed for a smoother UI transition.
+                // Gives time to the AccountSwitcher for dismissing.
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.sessionChangeDelay) {
+                    withAnimation { self.sessionState = .activeSessionTransition }
+                    DispatchQueue.main.async {
+                        self.setupActiveUserSession(session: primaryAccountSession)
+                    }
                 }
             }
             .store(in: &cancellables)
     }
 
     @MainActor
-    private func initializeMailUserSession(session: StoredSession) async {
-        do {
-            switch mailSession.userContextFromSession(session: session) {
-            case .ok(let newUserSession):
-                try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
-            case .error(let error):
-                throw error
-            }
-        } catch {
-            AppLogger.log(error: error, category: .userSessions)
-        }
+    private func initializeMailUserSession(session: StoredSession) async throws {
+        let newUserSession = try mailSession.userContextFromSession(session: session).get()
+        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
     }
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
         switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
-            self.sessionState = .activeSession(session: newUserSession)
+            withAnimation { self.sessionState = .activeSession(session: newUserSession) }
         case .error(let error):
             AppLogger.log(error: error, category: .userSessions)
         }

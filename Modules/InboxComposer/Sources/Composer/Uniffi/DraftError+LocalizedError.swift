@@ -18,6 +18,28 @@
 import Foundation
 import proton_app_uniffi
 
+extension DraftDiscardError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage?.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension DraftDiscardErrorReason {
+    var errorMessage: LocalizedStringResource? {
+        switch self {
+        case .messageDoesNotExist:
+            nil
+        case .deleteFailed:
+            L10n.ComposerError.draftDiscardFailed
+        }
+    }
+}
+
 extension DraftOpenError: LocalizedError {
     public var errorDescription: String? {
         switch self {

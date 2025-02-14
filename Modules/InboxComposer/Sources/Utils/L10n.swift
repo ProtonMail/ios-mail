@@ -59,6 +59,18 @@ enum L10n {
             comment: "Composer toast message when dismissing the screen."
         )
 
+        static let discard = LocalizedStringResource(
+            "Discard",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast action to discard the draft after dismising the screen"
+        )
+
+        static let discarded = LocalizedStringResource(
+            "Discarded",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message confirming draft discarded"
+        )
+
         static let sendingMessage = LocalizedStringResource(
             "Sending message...",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -102,6 +114,12 @@ enum L10n {
             "There was a problem saving the draft",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to save."
+        )
+
+        static let draftDiscardFailed =  LocalizedStringResource(
+            "There was a problem discarding the draft",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error shown when the draft fails to delete."
         )
 
         static let invalidLastRecipient = LocalizedStringResource(
