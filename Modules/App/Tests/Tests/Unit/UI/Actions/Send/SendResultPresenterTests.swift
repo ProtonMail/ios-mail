@@ -24,8 +24,8 @@ import proton_app_uniffi
 import XCTest
 
 final class SendResultPresenterTests: BaseTestCase {
-    private let sendingMessageDuration: TimeInterval = 10.0
     private let regularDuration: TimeInterval = .toastDefaultDuration
+    private let extendedDuration: TimeInterval = 3.0
 
     private var sut: SendResultPresenter!
     private var cancellables: Set<AnyCancellable>!
@@ -58,7 +58,7 @@ final class SendResultPresenterTests: BaseTestCase {
         sut.presentResultInfo(.init(messageId: .random(), type: .sending))
         XCTAssertEqual(capturedToastActions.count, 1)
 
-        XCTAssertTrue(capturedToastActions.first!.isSame(as: .present(.sendingMessage(duration: 10.0))))
+        XCTAssertTrue(capturedToastActions.first!.isSame(as: .present(.sendingMessage(duration: regularDuration))))
     }
 
     @MainActor
@@ -70,9 +70,9 @@ final class SendResultPresenterTests: BaseTestCase {
         XCTAssertEqual(capturedToastActions.count, 3)
 
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: sendingMessageDuration)),
-            .dismiss(.sendingMessage(duration: sendingMessageDuration)),
-            .present(.messageSent(duration: regularDuration, undoAction: {})),
+            .present(.sendingMessage(duration: regularDuration)),
+            .dismiss(.sendingMessage(duration: regularDuration)),
+            .present(.messageSent(duration: extendedDuration, undoAction: {})),
         ]))
     }
 
@@ -86,8 +86,8 @@ final class SendResultPresenterTests: BaseTestCase {
         XCTAssertEqual(capturedToastActions.count, 3)
 
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: sendingMessageDuration)),
-            .dismiss(.sendingMessage(duration: sendingMessageDuration)),
+            .present(.sendingMessage(duration: regularDuration)),
+            .dismiss(.sendingMessage(duration: regularDuration)),
             .present(.error(message: dummyError.localizedDescription)),
         ]))
     }
@@ -102,7 +102,7 @@ final class SendResultPresenterTests: BaseTestCase {
         XCTAssertEqual(capturedToastActions.count, 1)
 
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: sendingMessageDuration))
+            .present(.sendingMessage(duration: regularDuration))
         ]))
     }
 
@@ -118,8 +118,8 @@ final class SendResultPresenterTests: BaseTestCase {
 
         XCTAssertEqual(capturedToastActions.count, 2)
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: regularDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: regularDuration, undoAction: {})),
+            .present(.messageSent(duration: extendedDuration, undoAction: {})),
+            .dismiss(.messageSent(duration: extendedDuration, undoAction: {})),
         ]))
     }
 
@@ -146,8 +146,8 @@ final class SendResultPresenterTests: BaseTestCase {
 
         XCTAssertEqual(capturedToastActions.count, 3)
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: regularDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: regularDuration, undoAction: {})),
+            .present(.messageSent(duration: extendedDuration, undoAction: {})),
+            .dismiss(.messageSent(duration: extendedDuration, undoAction: {})),
             .present(.error(message: mockDraftUndoSendError.localizedDescription)),
         ]))
     }
