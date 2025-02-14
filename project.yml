@@ -131,6 +131,7 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         BGTaskSchedulerPermittedIdentifiers:
           - ch.protonmail.protonmail.execute_pending_actions
+        UIBackgroundModes: [processing]
     dependencies:
       - package: InboxComposer
       - package: InboxContacts
