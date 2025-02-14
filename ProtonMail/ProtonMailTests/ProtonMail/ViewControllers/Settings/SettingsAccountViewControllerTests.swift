@@ -68,22 +68,16 @@ class SettingsAccountViewControllerTests: XCTestCase {
 
         // account section
         let accountCells = sut.tableView.allIndexedCells(ofType: SettingsGeneralCell.self, inSection: 0)
-        XCTAssertEqual(accountCells.count, 4)
+
         XCTAssertEqual(
-            accountCells[0].cell.leftTextValue(),
-            SettingsAccountItem.singlePassword.description
-        )
-        XCTAssertEqual(
-            accountCells[1].cell.leftTextValue(),
-            SettingsAccountItem.recovery.description
-        )
-        XCTAssertEqual(
-            accountCells[2].cell.leftTextValue(),
-            SettingsAccountItem.storage.description
-        )
-        XCTAssertEqual(
-            accountCells[3].cell.leftTextValue(),
-            SettingsAccountItem.privacyAndData.description
+            accountCells.map { $0.cell.leftTextValue() },
+            [
+                SettingsAccountItem.singlePassword.description,
+                SettingsAccountItem.securityKeys.description,
+                SettingsAccountItem.recovery.description,
+                SettingsAccountItem.storage.description,
+                SettingsAccountItem.privacyAndData.description
+            ]
         )
 
         // addresses section
@@ -101,26 +95,17 @@ class SettingsAccountViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
 
         let accountCells = sut.tableView.allIndexedCells(ofType: SettingsGeneralCell.self, inSection: 0)
-        XCTAssertEqual(accountCells.count, 5)
+
         XCTAssertEqual(
-            accountCells[0].cell.leftTextValue(),
-            SettingsAccountItem.loginPassword.description
-        )
-        XCTAssertEqual(
-            accountCells[1].cell.leftTextValue(),
-            SettingsAccountItem.mailboxPassword.description
-        )
-        XCTAssertEqual(
-            accountCells[2].cell.leftTextValue(),
-            SettingsAccountItem.recovery.description
-        )
-        XCTAssertEqual(
-            accountCells[3].cell.leftTextValue(),
-            SettingsAccountItem.storage.description
-        )
-        XCTAssertEqual(
-            accountCells[4].cell.leftTextValue(),
-            SettingsAccountItem.privacyAndData.description
+            accountCells.map { $0.cell.leftTextValue() },
+            [
+                SettingsAccountItem.loginPassword.description,
+                SettingsAccountItem.mailboxPassword.description,
+                SettingsAccountItem.securityKeys.description,
+                SettingsAccountItem.recovery.description,
+                SettingsAccountItem.storage.description,
+                SettingsAccountItem.privacyAndData.description
+            ]
         )
     }
 
