@@ -112,6 +112,14 @@ class ExecutePendingActionsBackgroundTaskScheduler {
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
 
+    convenience init(userSession: @escaping () -> MailUserSessionProtocol?) {
+        self.init(
+            userSession: userSession,
+            backgroundTaskRegistration: .init(registerWithIdentifier: BGTaskScheduler.shared.register),
+            backgroundTaskScheduler: BGTaskScheduler.shared
+        )
+    }
+
     init(
         userSession: @escaping () -> MailUserSessionProtocol?,
         backgroundTaskRegistration: BackgroundTaskRegistration,
@@ -135,20 +143,34 @@ class ExecutePendingActionsBackgroundTaskScheduler {
     }
 
     func submit() {
-        let request = BGProcessingTaskRequest(identifier: Self.identifier)
-        request.requiresExternalPower = false
-        request.requiresNetworkConnectivity = true
-        request.earliestBeginDate = DateEnvironment.currentDate().oneHourAfter
-        do {
-            try backgroundTaskScheduler.submit(request)
-        } catch {
-            // FIXME: - Add logging
+        Task {
+            let allTaskRequests = await backgroundTaskScheduler.pendingTaskRequests()
+            let isTaskSchedulled = allTaskRequests
+                .contains(where: { request in request.identifier == Self.identifier })
+            guard !isTaskSchedulled else {
+                return
+            }
+
+            do {
+                try backgroundTaskScheduler.submit(taskRequest)
+            } catch {
+                assertionFailure("Failed to submit background task error: \(error)")
+            }
         }
+    }
+
+    func cancel() {
+        backgroundTaskScheduler.cancel(taskRequestWithIdentifier: Self.identifier)
     }
 
     // MARK: - Private
 
     private func execute(task: BackgroundTask) {
+        guard let userSession = userSession() else {
+            task.setTaskCompleted(success: false)
+            return
+        }
+
         submit()
 
         task.expirationHandler = {
@@ -156,19 +178,27 @@ class ExecutePendingActionsBackgroundTaskScheduler {
         }
 
         Task {
-            switch await executePendingActions() {
-            case .ok:
+            switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
+            case (.ok, .ok):
                 task.setTaskCompleted(success: true)
-            case .error(let error):
+            default:
                 task.setTaskCompleted(success: false)
             }
         }
     }
 
+    private var taskRequest: BGProcessingTaskRequest {
+        let request = BGProcessingTaskRequest(identifier: Self.identifier)
+        request.requiresExternalPower = false
+        request.requiresNetworkConnectivity = true
+        request.earliestBeginDate = DateEnvironment.currentDate().thirthyMinutesAfter
+        return request
+    }
+
 }
 
 extension Date {
-    var oneHourAfter: Self {
-        DateEnvironment.calendar.date(byAdding: .hour, value: 1, to: self).unsafelyUnwrapped
+    var thirthyMinutesAfter: Self {
+        DateEnvironment.calendar.date(byAdding: .minute, value: 30, to: self).unsafelyUnwrapped
     }
 }

@@ -61,7 +61,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertEqual(invokedRegister.count, 1)
         XCTAssertEqual(taskRegistration.identifier, "ch.protonmail.protonmail.execute_pending_actions")
 
-        sut.submit()
+        submitTask()
 
         XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 1)
         let submittedTaskRequest = try XCTUnwrap(backgroundTaskScheduler.invokedSubmit.first)
@@ -70,7 +70,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertTrue(submittedProcessingTaskRequest.requiresNetworkConnectivity)
 
         let backgroundTask = BackgroundTaskSpy()
-        taskRegistration.handler(backgroundTask)
+        try execute(task: backgroundTask)
 
         XCTAssertEqual(mailUserSessionSpy.pollEventInvokeCount, 1)
         XCTAssertEqual(mailUserSessionSpy.executePendingActionsInvokeCount, 1)
@@ -81,24 +81,66 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
 
     func test_taskExecutionFailure() throws {
         sut.register()
-        sut.submit()
+        submitTask()
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         let backgroundTask = BackgroundTaskSpy()
         mailUserSessionSpy.pendingActionsExecutionResultStub = .error(.other(.network))
         mailUserSessionSpy.pollEventsResultStub = .error(.other(.network))
-        taskRegistration.handler(backgroundTask)
+        try execute(task: backgroundTask)
 
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+    }
+
+    func test_taskSubmissionWhenPreviousWasNotExecuted_ItDoesNotScheduleNextOne() {
+        sut.register()
+        submitTask()
+        submitTask()
+
+        XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 1)
+    }
+
+    func test_taskCancellation() {
+        sut.register()
+        submitTask()
+        sut.cancel()
+
+        XCTAssertEqual(backgroundTaskScheduler.invokedCancel, ["ch.protonmail.protonmail.execute_pending_actions"])
+    }
+
+    // MARK: - Private
+
+    private func submitTask() {
+        sut.submit()
+        backgroundTaskScheduler.pendingTaskRequestsStub = [backgroundTaskScheduler.invokedSubmit.last].compactMap { $0 }
+    }
+
+    private func execute(task: BackgroundTask) throws {
+        let taskRegistration = try XCTUnwrap(invokedRegister.first)
+        backgroundTaskScheduler.pendingTaskRequestsStub = []
+        taskRegistration.handler(task)
     }
 
 }
 
 private class BackgroundTaskSchedulerSpy: BackgroundTaskScheduler {
+
+    var pendingTaskRequestsStub: [BGTaskRequest] = []
+    private(set) var invokedCancel: [String] = []
     private(set) var invokedSubmit: [BGTaskRequest] = []
+
+    // MARK: - BackgroundTaskScheduler
 
     func submit(_ taskRequest: BGTaskRequest) throws {
         invokedSubmit.append(taskRequest)
+    }
+
+    func pendingTaskRequests() async -> [BGTaskRequest] {
+        pendingTaskRequestsStub
+    }
+
+    func cancel(taskRequestWithIdentifier identifier: String) {
+        invokedCancel.append(identifier)
     }
 }
 
