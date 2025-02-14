@@ -126,5 +126,5 @@ extension Toast.Style {
 }
 
 public extension TimeInterval {
-    static let toastDefaultDuration: TimeInterval = 4.0
+    static let toastDefaultDuration: TimeInterval = 1.5
 }
