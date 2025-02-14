@@ -19,6 +19,8 @@ import BackgroundTasks
 
 protocol BackgroundTaskScheduler {
     func submit(_ taskRequest: BGTaskRequest) throws
+    func cancel(taskRequestWithIdentifier identifier: String)
+    func pendingTaskRequests() async -> [BGTaskRequest]
 }
 
 extension BGTaskScheduler: BackgroundTaskScheduler {}

@@ -83,7 +83,7 @@ extension AppLifeCycle {
         applicationServices = .init(
             setUpServices: [appConfigService, testService, appContext, notificationAuthorizationService, executePendingActionsBackgroundTaskService],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
-            enterBackgroundServices: [appIconBadgeService, eventLoop, executePendingActionsBackgroundTaskService],
+            enterBackgroundServices: [appIconBadgeService, eventLoop],
             terminateServices: []
         )
     }
@@ -91,22 +91,14 @@ extension AppLifeCycle {
 
 import BackgroundTasks
 
-private class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp, ApplicationServiceDidEnterBackground {
+private class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp {
 
     private let executePendingActionsBackgroundTaskScheduler = ExecutePendingActionsBackgroundTaskScheduler(
-        userSession: { AppContext.shared.sessionState.userSession },
-        backgroundTaskRegistration: .init(registerWithIdentifier: BGTaskScheduler.shared.register),
-        backgroundTaskScheduler: BGTaskScheduler.shared
+        userSession: { AppContext.shared.sessionState.userSession }
     )
 
     func setUpService() {
         executePendingActionsBackgroundTaskScheduler.register()
-    }
-
-    func enterBackgroundService() {
-        if let session = AppContext.shared.sessionState.userSession {
-            executePendingActionsBackgroundTaskScheduler.submit()
-        }
     }
 
 }
