@@ -24,7 +24,6 @@ struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
         case shareLogs
         case contacts
         case bugReport
-        case backgroundTasksLogs
         case signOut
         case createLabel
         case createFolder

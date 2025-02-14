@@ -50,8 +50,6 @@ struct HomeScreen: View {
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @ObservedObject private var appContext: AppContext
 
-    @State var presentLogsViewer = false
-
     private let userSession: MailUserSession
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
@@ -132,8 +130,6 @@ struct HomeScreen: View {
                         presentShareFileController()
                     case .subscriptions:
                         toastStateStore.present(toast: .comingSoon)
-                    case .backgroundTasksLogs:
-                        presentLogsViewer = true
                     case .signOut:
                         presentSignOutDialog = true
                     }
@@ -155,9 +151,6 @@ struct HomeScreen: View {
         .onReceive(sendResultCoordinator.presenter.toastAction, perform: handleSendResultToastAction)
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
-        .sheet(isPresented: $presentLogsViewer) {
-            LogViewerView()
-        }
         .onAppear { didAppear?(self) }
     }
 
