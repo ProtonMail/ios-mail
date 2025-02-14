@@ -21,9 +21,6 @@ import SwiftUI
 
 @main
 struct ProtonMailApp: App {
-    init() {
-        UIDevice.current.isBatteryMonitoringEnabled = true
-    }
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
 
