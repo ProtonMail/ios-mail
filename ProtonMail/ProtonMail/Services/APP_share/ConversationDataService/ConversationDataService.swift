@@ -109,7 +109,8 @@ extension ConversationDataService {
             let labelResult = try? context.fetch(contextLabelFetch)
             labelResult?.forEach(context.delete)
 
-            _ = context.saveUpstreamIfNeeded()
+            _ = LabelUpdate.remove(by: self.userID.rawValue, inManagedObjectContext: context)
+            _ = ConversationCount.remove(by: self.userID.rawValue, inManagedObjectContext: context)
         }
     }
 }
