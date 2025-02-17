@@ -115,11 +115,6 @@ platform :ios do
       clean: true,
       output_directory: "outputs/",
       export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "me.proton.mail.ios" => "Mail - Engineering Transformation Distribution",
-        }
-      },
       xcargs: "-skipPackagePluginValidation"
     )
   end

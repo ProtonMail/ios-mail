@@ -197,11 +197,17 @@ targets:
     sources:
       - path: Modules/NotificationService/Sources
     settings:
-      CODE_SIGN_ENTITLEMENTS: "NotificationService.entitlements"
-      CODE_SIGN_IDENTITY: "Apple Development"
-      CODE_SIGN_STYLE: Automatic
-      DEVELOPMENT_TEAM: 2SB5Z68H26
-      PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
+      base:
+        CODE_SIGN_ENTITLEMENTS: "NotificationService.entitlements"
+        CODE_SIGN_IDENTITY: "Apple Development"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: 2SB5Z68H26
+        PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
+          PROVISIONING_PROFILE_SPECIFIER: "ET Mail - Notification Service Distribution"
     info:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
