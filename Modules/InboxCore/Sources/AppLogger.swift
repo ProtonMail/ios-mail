@@ -151,6 +151,7 @@ extension AppLogger {
     public enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
+        case backgroundTask = "BackgroundTask"
         case conversationDetail = "ConversationDetail"
         case composer = "Composer"
         case mailbox = "Mailbox"

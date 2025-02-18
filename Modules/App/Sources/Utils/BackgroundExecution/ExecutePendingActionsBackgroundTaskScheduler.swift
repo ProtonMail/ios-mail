@@ -53,6 +53,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         if !isTaskDefinedInInfoPlist {
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
+        AppLogger.log(message: "Background task registered", category: .backgroundTask)
     }
 
     func submit() {
@@ -66,8 +67,13 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
             do {
                 try backgroundTaskScheduler.submit(taskRequest)
+                AppLogger.log(message: "Background task submitted", category: .backgroundTask)
             } catch {
-                AppLogger.log(error: error)
+                AppLogger.log(
+                    message: "Background task failed to submit, because of error: \(error.localizedDescription)",
+                    category: .backgroundTask,
+                    isError: true
+                )
             }
         }
     }
@@ -79,6 +85,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     // MARK: - Private
 
     private func execute(task: BackgroundTask) {
+        AppLogger.log(message: "Background task execution started", category: .backgroundTask)
         guard let userSession = userSession() else {
             task.setTaskCompleted(success: false)
             return
@@ -87,15 +94,21 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         submit()
 
         task.expirationHandler = {
+            AppLogger.log(message: "Background task expiration handler called", category: .backgroundTask)
             task.setTaskCompleted(success: true)
         }
 
         Task {
             switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
             case (.ok, .ok):
+                AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
                 task.setTaskCompleted(success: true)
-            default:
+            case (.error(let error), _):
                 task.setTaskCompleted(success: false)
+                AppLogger.log(error: error, category: .backgroundTask)
+            case (_, .error(let error)):
+                task.setTaskCompleted(success: false)
+                AppLogger.log(error: error, category: .backgroundTask)
             }
         }
     }
