@@ -67,7 +67,7 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
                 self.watchHandle = settingsWatcher.watchHandle
                 settingsSubject.value = settingsWatcher.settings
             case .error(let error):
-                fatalError("\(error)")
+                break
             }
         }
     }

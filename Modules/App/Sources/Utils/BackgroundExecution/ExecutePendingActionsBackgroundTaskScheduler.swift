@@ -48,7 +48,7 @@ class ExecutePendingActionsBackgroundTaskScheduler {
             Self.identifier,
             nil
         ) { [weak self] task in
-            BackgroundEventsLogging.log("🎬 Task execution started", taskType: .backgroundProcessing)
+            log("🎬 Task execution started")
             self?.execute(task: task)
         }
         if !isTaskDefinedInInfoPlist {

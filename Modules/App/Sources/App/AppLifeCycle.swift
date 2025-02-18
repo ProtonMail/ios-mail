@@ -77,13 +77,16 @@ extension AppLifeCycle {
         let notificationAuthorizationService = NotificationAuthorizationService(
             remoteNotificationRegistrar: UIApplication.shared
         )
+        let backgroundPendingActionsExecutor = BackgroundPendingActionsExecutor(userSession: {
+            AppContext.shared.sessionState.userSession
+        })
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
         applicationServices = .init(
             setUpServices: [appConfigService, testService, appContext, notificationAuthorizationService, executePendingActionsBackgroundTaskService],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
-            enterBackgroundServices: [appIconBadgeService, eventLoop],
+            enterBackgroundServices: [appIconBadgeService, eventLoop, backgroundPendingActionsExecutor],
             terminateServices: []
         )
     }
