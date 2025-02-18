@@ -229,6 +229,13 @@ enum L10n {
             )
         }
 
+        enum Error {
+            static let mailboxErrorMessage = LocalizedStringResource(
+                "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation.",
+                comment: "Mailbox failed because an unexpected error."
+            )
+        }
+
         enum Item {
             static func expiresIn(value: String) -> LocalizedStringResource {
                 .init(

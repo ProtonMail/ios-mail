@@ -3280,6 +3280,9 @@
         }
       }
     },
+    "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation." : {
+      "comment" : "Mailbox failed because an unexpected error."
+    },
     "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue." : {
       "comment" : "Event loop failed because an unexpected error."
     },

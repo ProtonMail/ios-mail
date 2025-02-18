@@ -90,6 +90,7 @@ struct MailboxScreen: View {
                     messageSeedDestination(seed: seed)
                 }
         }
+        .onChange(of: mailboxModel.toast) { showToast($1) }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
         .onAppear {
@@ -169,6 +170,14 @@ extension MailboxScreen {
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath
             )
+        }
+    }
+
+    private func showToast(_ toast: Toast?) {
+        guard let toast else { return }
+        DispatchQueue.main.async {
+            toastStateStore.present(toast: toast)
+            mailboxModel.toast = nil
         }
     }
 }

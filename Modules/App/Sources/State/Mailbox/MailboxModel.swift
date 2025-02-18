@@ -30,6 +30,7 @@ import class UIKit.UIImage
  */
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
+    @Published var toast: Toast?
     let selectionMode: SelectionMode = .init()
     private(set) var selectedMailbox: SelectedMailbox
 
@@ -230,7 +231,13 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            fatalError("failed to instantiate the Mailbox or Scroller object")
+            toast = Toast(
+                title: nil,
+                message: L10n.Mailbox.Error.mailboxErrorMessage.string,
+                button: nil,
+                style: .error,
+                duration: 8.0
+            )
         }
     }
 
