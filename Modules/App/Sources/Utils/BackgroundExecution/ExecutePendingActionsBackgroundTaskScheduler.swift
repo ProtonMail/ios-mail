@@ -67,7 +67,7 @@ class ExecutePendingActionsBackgroundTaskScheduler {
             do {
                 try backgroundTaskScheduler.submit(taskRequest)
             } catch {
-                assertionFailure("Failed to submit background task error: \(error)")
+                AppLogger.log(error: error)
             }
         }
     }
