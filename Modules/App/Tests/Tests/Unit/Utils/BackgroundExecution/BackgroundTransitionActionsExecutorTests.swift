@@ -27,7 +27,6 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
     var mailUserSessionSpy: MailUserSessionSpy!
     private var backgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskSchedulerSpy!
 
-
     override func setUp() {
         super.setUp()
 
