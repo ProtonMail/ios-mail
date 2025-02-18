@@ -83,7 +83,6 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         sut.register()
         submitTask()
 
-        let taskRegistration = try XCTUnwrap(invokedRegister.first)
         let backgroundTask = BackgroundTaskSpy()
         mailUserSessionSpy.pendingActionsExecutionResultStub = .error(.other(.network))
         mailUserSessionSpy.pollEventsResultStub = .error(.other(.network))
@@ -154,93 +153,6 @@ private class BackgroundTaskSpy: BackgroundTask {
 
     func setTaskCompleted(success: Bool) {
         didCompleteWithSuccess = success
-    }
-
-}
-
-private class MailUserSessionSpy: MailUserSessionProtocol {
-
-    var pendingActionsExecutionResultStub = VoidSessionResult.ok
-    var pollEventsResultStub = VoidEventResult.ok
-
-    private(set) var pollEventInvokeCount = 0
-    private(set) var executePendingActionsInvokeCount = 0
-
-    // MARK: - MailUserSessionProtocol
-
-    func pollEvents() async -> VoidEventResult {
-        pollEventInvokeCount += 1
-
-        return pollEventsResultStub
-    }
-
-    func executePendingActions() async -> VoidSessionResult {
-        executePendingActionsInvokeCount += 1
-
-        return pendingActionsExecutionResultStub
-    }
-
-    func accountDetails() async -> MailUserSessionAccountDetailsResult {
-        fatalError()
-    }
-
-    func applicableLabels() async -> MailUserSessionApplicableLabelsResult {
-        fatalError()
-    }
-
-    func connectionStatus() async -> MailUserSessionConnectionStatusResult {
-        fatalError()
-    }
-
-    func executePendingAction() async -> VoidSessionResult {
-        fatalError()
-    }
-
-    func fork() async -> MailUserSessionForkResult {
-        fatalError()
-    }
-
-    func getAttachment(localAttachmentId: Id) async -> MailUserSessionGetAttachmentResult {
-        fatalError()
-    }
-
-    func imageForSender(
-        address: String,
-        bimiSelector: String?,
-        displaySenderImage: Bool,
-        size: UInt32?,
-        mode: String?,
-        format: String?
-    ) async -> MailUserSessionImageForSenderResult {
-        fatalError()
-    }
-
-    func initialize(cb: any MailUserSessionInitializationCallback) async -> VoidSessionResult {
-        fatalError()
-    }
-
-    func logout() async -> VoidSessionResult {
-        fatalError()
-    }
-
-    func movableFolders() async -> MailUserSessionMovableFoldersResult {
-        fatalError()
-    }
-
-    func observeEventLoopErrors(callback: any EventLoopErrorObserver) -> EventLoopErrorObserverHandle {
-        fatalError()
-    }
-
-    func sessionId() -> String {
-        fatalError()
-    }
-
-    func user() async -> MailUserSessionUserResult {
-        fatalError()
-    }
-
-    func userId() -> String {
-        fatalError()
     }
 
 }
