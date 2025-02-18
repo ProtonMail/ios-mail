@@ -208,6 +208,7 @@ targets:
     info:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
+        CFBundleDisplayName: "$(PRODUCT_MODULE_NAME)"
         NSExtension:
           NSExtensionPointIdentifier: 'com.apple.usernotifications.service'
           NSExtensionPrincipalClass: '$(PRODUCT_MODULE_NAME).NotificationService'
