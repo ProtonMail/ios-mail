@@ -18,7 +18,7 @@
 import proton_app_uniffi
 import UIKit
 
-class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground {
+class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     static let taskName = "finish_pending_actions"
     private let userSession: () -> MailUserSessionProtocol?

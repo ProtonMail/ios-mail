@@ -19,7 +19,7 @@ import BackgroundTasks
 import InboxCore
 import proton_app_uniffi
 
-class ExecutePendingActionsBackgroundTaskScheduler {
+class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
     private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTaskRegistration: BackgroundTaskRegistration
