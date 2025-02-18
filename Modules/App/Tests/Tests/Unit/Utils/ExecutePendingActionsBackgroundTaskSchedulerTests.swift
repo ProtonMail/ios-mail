@@ -26,7 +26,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
 
     var sut: ExecutePendingActionsBackgroundTaskScheduler!
     var invokedRegister: [(identifier: String, handler: (BackgroundTask) -> Void)]!
-    var mailUserSessionSpy: MailUserSessionSpy!
+    private var mailUserSessionSpy: MailUserSessionSpy!
     private var backgroundTaskScheduler: BackgroundTaskSchedulerSpy!
 
     override func setUp() {
@@ -54,7 +54,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         super.tearDown()
     }
 
-    func test_flowOfTaskRegistrationSubmissionAndSuccessExecution() throws {
+    func test_WhenTaskIsRegistered_WhenTaskIsExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() throws {
         sut.register()
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
@@ -79,7 +79,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
 
-    func test_taskExecutionFailure() throws {
+    func test_WhenActionsFinishWithFailure_ItCompletesWithFailure() throws {
         sut.register()
         submitTask()
 
@@ -92,7 +92,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
     }
 
-    func test_taskSubmissionWhenPreviousWasNotExecuted_ItDoesNotScheduleNextOne() {
+    func test_WhenTwoTasksAreSubmitted_ItSchedulesOnlyOne() {
         sut.register()
         submitTask()
         submitTask()
@@ -100,7 +100,7 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 1)
     }
 
-    func test_taskCancellation() {
+    func test_WhenCancelIsCalled_ItCancelsTask() {
         sut.register()
         submitTask()
         sut.cancel()
