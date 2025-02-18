@@ -88,17 +88,3 @@ extension AppLifeCycle {
         )
     }
 }
-
-import BackgroundTasks
-
-private class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp {
-
-    private let executePendingActionsBackgroundTaskScheduler = ExecutePendingActionsBackgroundTaskScheduler(
-        userSession: { AppContext.shared.sessionState.userSession }
-    )
-
-    func setUpService() {
-        executePendingActionsBackgroundTaskScheduler.register()
-    }
-
-}
