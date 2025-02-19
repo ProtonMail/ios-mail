@@ -36,7 +36,7 @@ final class ComposerModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        self.testDraftSavedToastCoordinator = .init(toastStoreState: .init(initialState: .initial))
+        self.testDraftSavedToastCoordinator = .init(mailUSerSession: .init(noPointer: .init()), toastStoreState: .init(initialState: .initial))
         self.testContactProvider = ComposerContactProvider(
             protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: [
                 .makeComposerContactSingle(name: "", email: "a@example.com"),

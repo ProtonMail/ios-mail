@@ -25,11 +25,11 @@ public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
-    private let contactProvider: ComposerContactProvider
     private let onSendingEvent: () -> Void
+    private let dependencies: Dependencies
 
     public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping () -> Void) {
-        self.contactProvider = dependencies.contactProvider
+        self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
         self._model = StateObject(
             wrappedValue:
@@ -46,7 +46,7 @@ public struct ComposerScreen: View {
         dependencies: Dependencies,
         onSendingEvent: @escaping () -> Void
     ) {
-        self.contactProvider = dependencies.contactProvider
+        self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
         self._model = StateObject(
             wrappedValue: ComposerScreenModel(
@@ -73,8 +73,8 @@ public struct ComposerScreen: View {
             ComposerView(
                 draft: draft,
                 draftOrigin: draftOrigin,
-                draftSavedToastCoordinator: .init(toastStoreState: toastStateStore),
-                contactProvider: contactProvider,
+                draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
+                contactProvider: dependencies.contactProvider,
                 pendingQueueProvider: model.pendingQueueProvider,
                 onSendingEvent: onSendingEvent
             )

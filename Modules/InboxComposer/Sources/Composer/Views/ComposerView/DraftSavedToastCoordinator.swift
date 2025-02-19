@@ -16,25 +16,29 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxCoreUI
+import proton_app_uniffi
 
 struct DraftSavedToastCoordinator {
+    private let mailUSerSession: MailUserSession
     private let toastStoreState: ToastStateStore
 
-    init(toastStoreState: ToastStateStore) {
+    init(mailUSerSession: MailUserSession, toastStoreState: ToastStateStore) {
+        self.mailUSerSession = mailUSerSession
         self.toastStoreState = toastStoreState
     }
 
-    func showDraftSavedToast(draft: AppDraftProtocol) {
+    func showDraftSavedToast(draftId: ID) {
         DispatchQueue.main.async {
-            toastStoreState.present(toast: discardDraftToast(draft: draft))
+            toastStoreState.present(toast: discardDraftToast(draftId: draftId))
         }
     }
 
-    private func discardDraftToast(draft: AppDraftProtocol) -> Toast {
+    private func discardDraftToast(draftId: ID) -> Toast {
         let discardButton = Toast.Button(
             type: .smallTrailing(content: .title(L10n.Composer.discard.string)),
-            action: { self.discardDraft(draft: draft) }
+            action: { self.discardDraft(draftId: draftId) }
         )
         return Toast(
             title: nil,
@@ -45,12 +49,12 @@ struct DraftSavedToastCoordinator {
         )
     }
 
-    private func discardDraft(draft: AppDraftProtocol) {
+    private func discardDraft(draftId: ID) {
         DispatchQueue.main.async {
-            toastStoreState.dismiss(toast: discardDraftToast(draft: draft))
+            toastStoreState.dismiss(toast: discardDraftToast(draftId: draftId))
         }
         Task {
-            let result = await draft.discard()
+            let result = await draftDiscard(session: mailUSerSession, messageId: draftId)
             DispatchQueue.main.async {
                 switch result {
                 case .ok:

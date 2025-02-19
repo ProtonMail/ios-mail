@@ -360,8 +360,8 @@ extension ComposerModel {
     private func showDraftSavedToastIfNeeded() {
         Task {
             if case .ok(let id) = await draft.messageId() {
-                if id != nil {
-                    draftSavedToastCoordinator.showDraftSavedToast(draft: draft)  // FIXME: do not strongly retain self.draft, change the SDK discard function
+                if let id {
+                    draftSavedToastCoordinator.showDraftSavedToast(draftId: id)
                 }
             }
         }
