@@ -115,11 +115,6 @@ class CacheService: CacheServiceProtocol {
                 labelObjs.removeAllObjects()
                 msgToUpdate.setValue(labelObjs, forKey: "labels")
                 contextToUse.delete(msgToUpdate)
-
-                let error = contextToUse.saveUpstreamIfNeeded()
-                if error != nil {
-                    hasError = true
-                }
             }
         }
         return hasError ? false : true
