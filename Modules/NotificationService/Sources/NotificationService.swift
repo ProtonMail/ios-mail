@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import TestableNotificationService
 import UserNotifications
 
 class NotificationService: UNNotificationServiceExtension {
@@ -23,15 +24,13 @@ class NotificationService: UNNotificationServiceExtension {
         _ request: UNNotificationRequest,
         withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void
     ) {
-        AppLogger.log(message: "Notification received: \(request.content.title)", category: .notifications)
+        Task {
+            let updatedContent = await TestableNotificationService().transform(originalContent: request.content)
 
-        guard let mutableContent = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
-            contentHandler(request.content)
-            return
+            await MainActor.run {
+                contentHandler(updatedContent)
+            }
         }
-
-        mutableContent.body = "overridden by app extension"
-        contentHandler(mutableContent)
     }
 
     override func serviceExtensionTimeWillExpire() {
