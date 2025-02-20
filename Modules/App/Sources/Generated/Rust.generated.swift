@@ -154,7 +154,7 @@ public extension ConversationScrollerAllItemsResult {
     }
 }
 public extension ConversationScrollerFetchMoreResult {
-    func get() throws -> ConversationScrollerSet {
+    func get() throws -> [Conversation] {
         switch self {
         case .ok(let value):
             value
@@ -183,16 +183,6 @@ public extension CreateMailSessionResult {
         }
     }
 }
-public extension DraftDiscardResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension DraftMessageIdResult {
     func get() throws -> Id? {
         switch self {
@@ -208,26 +198,6 @@ public extension DraftSendResultUnseenResult {
         switch self {
         case .ok(let value):
             value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension DraftSetBodyResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension DraftSetSubjectResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
         case .error(let error):
             throw error
         }
@@ -293,41 +263,11 @@ public extension LoadConversationResult {
         }
     }
 }
-public extension LoginFlowLoginResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension LoginFlowSessionIdResult {
     func get() throws -> String {
         switch self {
         case .ok(let value):
             value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension LoginFlowSubmitMailboxPasswordResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension LoginFlowSubmitTotpResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
         case .error(let error):
             throw error
         }
@@ -714,7 +654,7 @@ public extension MessageScrollerAllItemsResult {
     }
 }
 public extension MessageScrollerFetchMoreResult {
-    func get() throws -> MessageScrollerSet {
+    func get() throws -> [Message] {
         switch self {
         case .ok(let value):
             value

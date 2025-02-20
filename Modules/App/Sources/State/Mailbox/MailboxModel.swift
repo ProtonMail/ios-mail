@@ -278,8 +278,8 @@ extension MailboxModel {
         AppLogger.logTemporarily(message: "fetching messages page \(currentPage)", category: .mailbox)
 
         switch await messageScroller.fetchMore() {
-        case .ok(let result):
-            let items = mailboxItems(messages: result.messages)
+        case .ok(let messages):
+            let items = mailboxItems(messages: messages)
             return .init(newItems: items, isLastPage: !messageScroller.hasMore())
         case .error(let error):
             throw error
@@ -294,8 +294,8 @@ extension MailboxModel {
         AppLogger.logTemporarily(message: "fetching conversations page \(currentPage)", category: .mailbox)
 
         switch await conversationScroller.fetchMore() {
-        case .ok(let result):
-            let items = mailboxItems(conversations: result.conversations)
+        case .ok(let conversations):
+            let items = mailboxItems(conversations: conversations)
             return .init(newItems: items, isLastPage: !conversationScroller.hasMore())
         case .error(let error):
             throw error
@@ -540,30 +540,4 @@ extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
     }
-}
-
-private extension MessageScrollerSet {
-    
-    var messages: [Message] {
-        switch self {
-        case .append(let added):
-            added
-        case .replace(let replaced):
-            replaced
-        }
-    }
-    
-}
-
-private extension ConversationScrollerSet {
-    
-    var conversations: [Conversation] {
-        switch self {
-        case .append(let added):
-            added
-        case .replace(let replaced):
-            replaced
-        }
-    }
-    
 }

@@ -77,11 +77,11 @@ final class MockDraft: AppDraftProtocol {
 
     func setBccRecipients(recipients: [String]) {}
 
-    func setBody(body: String)  -> DraftSetBodyResult { .ok }
+    func setBody(body: String) -> VoidDraftSaveSendResult { .ok }
 
     func setCcRecipients(recipients: [String]) {}
 
-    func setSubject(subject: String)  -> DraftSetSubjectResult {
+    func setSubject(subject: String) -> VoidDraftSaveSendResult {
         mockSubject = subject
         return .ok
     }
