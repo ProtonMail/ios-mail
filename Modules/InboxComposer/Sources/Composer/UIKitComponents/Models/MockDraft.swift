@@ -41,7 +41,7 @@ final class MockDraft: AppDraftProtocol {
         return draft
     }
 
-    func messageId() async  -> DraftMessageIdResult { .ok(nil) }
+    func messageId() async -> DraftMessageIdResult { .ok(nil) }
 
     func toRecipients() -> ComposerRecipientListProtocol {
         mockToRecipientList
