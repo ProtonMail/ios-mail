@@ -21,11 +21,10 @@ import proton_app_uniffi
 import SwiftUI
 
 final class EventLoopErrorCoordinator: Sendable, ObservableObject {
-    private let handle: EventLoopErrorObserverHandle
+    private var handle: EventLoopErrorObserverHandle?
     private let eventLoopErrorCallback: EventLoopErrorCallbackWrapper = .init()
 
     init(userSession: MailUserSession, toastStateStore: ToastStateStore) {
-        self.handle = try! userSession.observeEventLoopErrors(callback: eventLoopErrorCallback).get()
         eventLoopErrorCallback.delegate = { error in
             AppLogger.log(error: error)
             let toast = Toast(
@@ -37,10 +36,17 @@ final class EventLoopErrorCoordinator: Sendable, ObservableObject {
             )
             toastStateStore.present(toast: toast)
         }
+        do {
+            handle = try userSession.observeEventLoopErrors(callback: eventLoopErrorCallback).get()
+        } catch {
+            let errorMessage = "Failed to start observation for event loop due to: \(error.localizedDescription)"
+            let eventError: EventError = .other(.otherReason(.other(errorMessage)))
+            eventLoopErrorCallback.delegate?(eventError)
+        }
     }
 
     deinit {
-        handle.disconnect()
+        handle?.disconnect()
     }
 }
 
