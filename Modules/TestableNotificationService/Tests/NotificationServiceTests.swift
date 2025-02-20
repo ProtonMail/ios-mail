@@ -1,0 +1,102 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import proton_app_uniffi
+import Testing
+import UserNotifications
+
+@testable import TestableNotificationService
+
+final class NotificationServiceTests {
+    private lazy var sut = TestableNotificationService { [unowned self] _ in
+        try self.stubbedDecryptionResult.get()
+    }
+
+    private var stubbedDecryptionResult: Result<DecryptedPushNotification, ActionError>!
+
+    @Test
+    func whenReplacingTitleAndBodyWithDecryptedInfo_prefersSenderName() async {
+        let originalContent = prepareContent()
+
+        stubbedDecryptionResult = .success(
+            .email(
+                .init(
+                    subject: "Decrypted subject",
+                    sender: .init(name: "John Doe", address: "john.doe@example.com", group: ""),
+                    messageId: .random()
+                )
+            )
+        )
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.title == "John Doe")
+        #expect(updatedContent.body == "Decrypted subject")
+    }
+
+    @Test
+    func whenReplacingTitleAndBodyWithDecryptedInfo_ifSenderNameIsEmpty_fallsBackToSenderAddress() async {
+        let originalContent = prepareContent()
+
+        stubbedDecryptionResult = .success(
+            .email(
+                .init(
+                    subject: "Decrypted subject",
+                    sender: .init(name: "", address: "john.doe@example.com", group: ""),
+                    messageId: .random()
+                )
+            )
+        )
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.title == "john.doe@example.com")
+        #expect(updatedContent.body == "Decrypted subject")
+    }
+
+    @Test
+    func whenInitialParsingFails_doesNotModifyTitleOrBody() async {
+        let originalContent = prepareContent(userInfo: [:])
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.title == "original title")
+        #expect(updatedContent.body == "original body")
+    }
+
+    @Test
+    func whenDecryptionFails_replacesTitleAndBodyWithErrorNotice() async {
+        let originalContent = prepareContent()
+        let stubbedError = ActionError.other(.unexpected(.crypto))
+        stubbedDecryptionResult = .failure(stubbedError)
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.title == "Failed to decrypt notification")
+        #expect(updatedContent.body == stubbedError.localizedDescription)
+    }
+
+    private func prepareContent(
+        userInfo: [AnyHashable: Any] = ["encryptedMessage": "foo", "UID": "123"]
+    ) -> UNNotificationContent {
+        let content = UNMutableNotificationContent()
+        content.title = "original title"
+        content.body = "original body"
+        content.userInfo = userInfo
+        return content
+    }
+}

@@ -17,5 +17,4 @@
 
 public enum AppContextError: Error {
     case appGroupDirectoryNotAccessible
-    case appConfigNotDefined
 }
