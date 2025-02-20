@@ -18,6 +18,8 @@
 import proton_app_uniffi
 
 final class MailSessionSpy: MailSessionProtocol {
+    var onPrimaryAccountChanged: ((String) -> Void)?
+
     var storedSessions: [StoredSessionStub] = [] {
         didSet {
             Task {
@@ -25,6 +27,8 @@ final class MailSessionSpy: MailSessionProtocol {
             }
         }
     }
+
+    private(set) var setPrimaryAccountInvocations: [String] = []
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
 
@@ -69,7 +73,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getSession(sessionId: String) async -> MailSessionGetSessionResult {
-        fatalError()
+        .ok(storedSessions.first { $0.sessionId() == sessionId })
     }
 
     func getSessionBlocking(sessionId: String) -> MailSessionGetSessionResult {
@@ -113,7 +117,9 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func setPrimaryAccount(userId: String) async -> VoidSessionResult {
-        fatalError()
+        setPrimaryAccountInvocations.append(userId)
+        onPrimaryAccountChanged?(userId)
+        return .ok
     }
 
     func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {

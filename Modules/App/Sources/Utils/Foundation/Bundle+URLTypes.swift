@@ -15,12 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
+import Foundation
 
-protocol UserNotificationCenter: AnyObject {
-    var delegate: UNUserNotificationCenterDelegate? { get set }
+extension Bundle {
+    enum URLScheme: String {
+        case protonmail = "protonmailET"
+    }
 
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+    struct URLTypes {
+        let urlSchemes: [URLScheme]
+
+        init(dict: [String: Any]) {
+            urlSchemes = forceCast(dict["CFBundleURLSchemes"], [String].self).compactMap(URLScheme.init(rawValue:))
+        }
+    }
+
+    var urlTypes: [URLTypes] {
+        forceCast(infoDictionary?["CFBundleURLTypes"], [[String: Any]].self).map(URLTypes.init)
+    }
 }
-
-extension UNUserNotificationCenter: UserNotificationCenter {}
