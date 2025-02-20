@@ -24,22 +24,23 @@ import proton_app_uniffi
  For this reason we extend the Rust SDK objects and mark them as unchecked Sendable to avoid warnings.
  */
 
-extension ConversationScroller: @unchecked Sendable {}
-extension Draft: @unchecked Sendable {}
-extension DecryptedMessage: @unchecked Sendable {}
-extension DraftSendResultWatcher: @unchecked Sendable {}
-extension EventLoopErrorObserverHandle: @unchecked Sendable {}
-extension LoginFlow: @unchecked Sendable {}
-extension Mailbox: @unchecked Sendable {}
-extension MessageScroller: @unchecked Sendable {}
-extension NewDraftResult: @unchecked Sendable {}
-extension NewMailboxResult: @unchecked Sendable {}
-extension PaginateConversationsForLabelResult: @unchecked Sendable {}
-extension PaginateMessagesForLabelResult: @unchecked Sendable {}
-extension ScrollConversationsForLabelResult: @unchecked Sendable {}
-extension ScrollMessagesForLabelResult: @unchecked Sendable {}
-extension StoredSession: @unchecked Sendable {}
+extension ConversationScroller: @unchecked @retroactive Sendable {}
+extension Draft: @unchecked @retroactive Sendable {}
+extension DecryptedMessage: @unchecked @retroactive Sendable {}
+extension DraftSendResultWatcher: @unchecked @retroactive Sendable {}
+extension EventLoopErrorObserverHandle: @unchecked @retroactive Sendable {}
+extension LoginFlow: @unchecked @retroactive Sendable {}
+extension Mailbox: @unchecked @retroactive Sendable {}
+extension MessageScroller: @unchecked @retroactive Sendable {}
+extension NewDraftResult: @unchecked @retroactive Sendable {}
+extension NewMailboxResult: @unchecked @retroactive Sendable {}
+extension NewInboxMailboxResult: @unchecked @retroactive Sendable {}
+extension PaginateConversationsForLabelResult: @unchecked @retroactive Sendable {}
+extension PaginateMessagesForLabelResult: @unchecked @retroactive Sendable {}
+extension ScrollConversationsForLabelResult: @unchecked @retroactive Sendable {}
+extension ScrollMessagesForLabelResult: @unchecked @retroactive Sendable {}
+extension StoredSession: @unchecked @retroactive Sendable {}
 extension UserSettings: @unchecked Sendable {}
-extension WatchHandle: @unchecked Sendable {}
-extension WatchedMessages: @unchecked Sendable {}
-extension WatchedConversations: @unchecked Sendable {}
+extension WatchHandle: @unchecked @retroactive Sendable {}
+extension WatchedMessages: @unchecked @retroactive Sendable {}
+extension WatchedConversations: @unchecked @retroactive Sendable {}
