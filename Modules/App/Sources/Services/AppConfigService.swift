@@ -50,17 +50,7 @@ final class AppConfigService: Sendable {
 
         return AppConfig(appVersion: appVersion, environment: environment)
 #else
-        let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
-        let appVersion = "ios-mail@7.0.0" // Read from config once "ios-mail@x.y.z" is supported.
-        let environment = AppConfig.Environment(
-            domain: domain,
-            apiBaseUrl: "https://mail-api.\(domain)",
-            userAgent: "Mozilla/5.0",
-            isSrpProofSkipped: false,
-            isHttpAllowed: false
-        )
-
-        return AppConfig(appVersion: appVersion, environment: environment)
+        return .default
 #endif
     }()
 }
