@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 class MailUserSessionSpy: MailUserSessionProtocol {
 
-    var pendingActionsExecutionResultStub = VoidSessionResult.ok
+    var pendingActionsExecutionResultStub = MailUserSessionExecutePendingActionsResult.ok(1)
     var pollEventsResultStub = VoidEventResult.ok
 
     private(set) var pollEventInvokeCount = 0
@@ -34,7 +34,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         return pollEventsResultStub
     }
 
-    func executePendingActions() async -> VoidSessionResult {
+    func executePendingActions() async -> MailUserSessionExecutePendingActionsResult {
         executePendingActionsInvokeCount += 1
 
         return pendingActionsExecutionResultStub
@@ -87,11 +87,11 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         fatalError()
     }
 
-    func observeEventLoopErrors(callback: any EventLoopErrorObserver) -> EventLoopErrorObserverHandle {
+    func observeEventLoopErrors(callback: any EventLoopErrorObserver) -> MailUserSessionObserveEventLoopErrorsResult {
         fatalError()
     }
 
-    func sessionId() -> String {
+    func sessionId() -> MailUserSessionSessionIdResult {
         fatalError()
     }
 
@@ -99,7 +99,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         fatalError()
     }
 
-    func userId() -> String {
+    func userId() -> MailUserSessionUserIdResult {
         fatalError()
     }
 

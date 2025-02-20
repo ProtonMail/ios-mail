@@ -35,15 +35,15 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
 
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
-    func messageId() async -> OptIdProtonResult
+    func messageId() async -> DraftMessageIdResult
     func attachments()  -> [AttachmentMetadata]
     func body()  -> String
     func mimeType()  -> MimeType
     func save() async  -> VoidDraftSaveSendResult
     func send() async  -> VoidDraftSaveSendResult
     func sender()  -> String
-    func setBody(body: String)  -> VoidDraftSaveSendResult
-    func setSubject(subject: String)  -> VoidDraftSaveSendResult
+    func setBody(body: String)  -> DraftSetBodyResult
+    func setSubject(subject: String)  -> DraftSetSubjectResult
     func subject()  -> String
 
     func discard() async  -> VoidDraftDiscardResult

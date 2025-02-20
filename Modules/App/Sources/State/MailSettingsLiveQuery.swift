@@ -74,7 +74,7 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
 
     private func onSettingsUpdate() {
         Task {
-            settingsSubject.value = await mailSettings(ctx: userSession)
+            settingsSubject.value = try await mailSettings(ctx: userSession).get()
         }
     }
 }

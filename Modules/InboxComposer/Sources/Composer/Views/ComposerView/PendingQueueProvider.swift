@@ -19,7 +19,7 @@ import InboxCore
 import proton_app_uniffi
 
 struct PendingQueueProvider {
-    private let executePendingActions: () async -> VoidSessionResult
+    private let executePendingActions: () async -> MailUserSessionExecutePendingActionsResult
 
     init(userSession: MailUserSession) {
         self.executePendingActions = userSession.executePendingActions
@@ -30,7 +30,7 @@ struct PendingQueueProvider {
             /// Currently `executePendingActions` in the SDK executes all pending actions sequentially. To have valuable
             /// information of what the user experience is, we log the start and end of this task.
             AppLogger.log(message: "execute pending actions start", category: .send)
-            try? await self.executePendingActions().get()
+            _ = await self.executePendingActions()
             AppLogger.log(message: "execute pending actions end", category: .send)
         }
     }

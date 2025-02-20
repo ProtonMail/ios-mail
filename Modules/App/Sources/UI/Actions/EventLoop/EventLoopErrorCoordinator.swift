@@ -25,7 +25,7 @@ final class EventLoopErrorCoordinator: Sendable, ObservableObject {
     private let eventLoopErrorCallback: EventLoopErrorCallbackWrapper = .init()
 
     init(userSession: MailUserSession, toastStateStore: ToastStateStore) {
-        self.handle = userSession.observeEventLoopErrors(callback: eventLoopErrorCallback)
+        self.handle = try! userSession.observeEventLoopErrors(callback: eventLoopErrorCallback).get()
         eventLoopErrorCallback.delegate = { error in
             AppLogger.log(error: error)
             let toast = Toast(

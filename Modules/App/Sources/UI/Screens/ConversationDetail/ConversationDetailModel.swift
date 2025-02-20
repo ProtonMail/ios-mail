@@ -224,19 +224,19 @@ extension ConversationDetailModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else {
             throw ConversationModelError.noActiveSessionFound
         }
-        let newMailboxResult: NewMailboxResult
+        let newMailboxResult: Result<Mailbox, UserSessionError>
         switch seed.selectedMailbox {
         case .inbox:
-            newMailboxResult = await newInboxMailbox(ctx: userSession)
+            newMailboxResult = await newInboxMailbox(ctx: userSession).result
         case .systemFolder, .customLabel, .customFolder:
-            newMailboxResult = await newMailbox(ctx: userSession, labelId: seed.selectedMailbox.localId)
+            newMailboxResult = await newMailbox(ctx: userSession, labelId: seed.selectedMailbox.localId).result
         }
 
         switch newMailboxResult {
-        case .ok(let newMailbox):
+        case .success(let newMailbox):
             self.mailbox = newMailbox
             return newMailbox
-        case .error(let userSessionError):
+        case .failure(let userSessionError):
             throw userSessionError
         }
     }
@@ -470,4 +470,30 @@ private extension MailboxActionSheetsState {
     static func initial() -> Self {
         .init(mailbox: nil, labelAs: nil, moveTo: nil)
     }
+}
+
+private extension NewMailboxResult {
+    
+    var result: Result<Mailbox, UserSessionError> {
+        switch self {
+        case .ok(let mailbox):
+            .success(mailbox)
+        case .error(let userSessionError):
+            .failure(userSessionError)
+        }
+    }
+    
+}
+
+private extension NewInboxMailboxResult {
+    
+    var result: Result<Mailbox, UserSessionError> {
+        switch self {
+        case .ok(let mailbox):
+            .success(mailbox)
+        case .error(let userSessionError):
+            .failure(userSessionError)
+        }
+    }
+    
 }
