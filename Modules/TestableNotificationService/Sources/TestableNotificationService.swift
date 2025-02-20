@@ -77,6 +77,13 @@ public struct TestableNotificationService {
             let notificationData = try await decryptRemoteNotification(encryptedPushNotification)
             mutableContent.title = notificationData.sender.displayableName
             mutableContent.body = notificationData.body
+
+            switch notificationData {
+            case .email(let payload):
+                mutableContent.userInfo["messageId"] = payload.messageId.value
+            case .openUrl(let payload):
+                mutableContent.userInfo["url"] = payload.url
+            }
         } catch {
             AppLogger.log(error: error, category: .notifications)
         }

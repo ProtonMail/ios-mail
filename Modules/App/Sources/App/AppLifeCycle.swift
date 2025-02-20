@@ -84,12 +84,18 @@ extension AppLifeCycle {
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
+        let userNotificationCenterDelegate = UserNotificationCenterDelegate(
+            sessionStatePublisher: appContext.$sessionState.eraseToAnyPublisher(),
+            urlOpener: UIApplication.shared
+        )
+
         applicationServices = .init(
             setUpServices: [
                 testService,
                 appContext,
                 notificationAuthorizationService,
-                recurringBackgroundTaskService
+                recurringBackgroundTaskService,
+                userNotificationCenterDelegate
             ],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
             enterBackgroundServices: [appIconBadgeService, eventLoop, backgroundTransitionActionsExecutor],

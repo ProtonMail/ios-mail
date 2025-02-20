@@ -139,6 +139,7 @@ struct HomeScreen: View {
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
+        .onOpenURL(perform: handleDeepLink)
     }
 
     private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
@@ -165,5 +166,11 @@ struct HomeScreen: View {
         let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
         let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
         UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+    }
+
+    private func handleDeepLink(_ deepLink: URL) {
+        if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
+            appRoute.updateRoute(to: route)
+        }
     }
 }

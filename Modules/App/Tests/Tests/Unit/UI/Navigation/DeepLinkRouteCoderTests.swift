@@ -15,19 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
+import Testing
 
 @testable import ProtonMail
 
-final class UserNotificationCenterSpy: UserNotificationCenter {
-    var delegate: UNUserNotificationCenterDelegate?
-    var stubbedAuthorizationResult = true
+struct DeepLinkRouteCoderTests {
+    private let sut = DeepLinkRouteCoder.self
 
-    private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
+    private let testSeed = MailboxMessageSeed(remoteId: .init(value: "foo123=="), subject: "foo bar 😀")
+    private let testURL = URL(string: "protonmailET://messages/foo123==?subject=foo%20bar%20%F0%9F%98%80")!
 
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-        requestAuthorizationInvocations.append(options)
+    @Test
+    func encoding_openMessageRoute() async throws {
+        let deepLink = try #require(sut.encode(route: .mailboxOpenMessage(seed: testSeed)))
+        #expect(deepLink == testURL)
+    }
 
-        return stubbedAuthorizationResult
+    @Test
+    func decoding_openMessageRoute() async throws {
+        let route: Route = try #require(sut.decode(deepLink: testURL))
+        #expect(route == .mailboxOpenMessage(seed: testSeed))
     }
 }

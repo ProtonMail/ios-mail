@@ -19,10 +19,12 @@ import proton_app_uniffi
 
 final class StoredSessionStub: StoredSession, @unchecked Sendable {
     private let id: String
+    private let userIdValue: String
     private let stateValue: StoredSessionState
 
-    init(id: String, state: StoredSessionState) {
+    init(id: String, userId: String = "", state: StoredSessionState) {
         self.id = id
+        userIdValue = userId
         stateValue = state
 
         super.init(noPointer: .init())
@@ -39,5 +41,9 @@ final class StoredSessionStub: StoredSession, @unchecked Sendable {
 
     override func state() -> StoredSessionState {
         stateValue
+    }
+
+    override func userId() -> String {
+        userIdValue
     }
 }
