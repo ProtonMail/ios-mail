@@ -20,6 +20,7 @@ import UserNotifications
 @testable import ProtonMail
 
 final class UserNotificationCenterSpy: UserNotificationCenter {
+    var delegate: UNUserNotificationCenterDelegate?
     var stubbedAuthorizationResult = true
 
     private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []

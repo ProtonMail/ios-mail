@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
+import UIKit
 
-protocol UserNotificationCenter: AnyObject {
-    var delegate: UNUserNotificationCenterDelegate? { get set }
-
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+protocol URLOpener {
+    @discardableResult @MainActor
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool
 }
 
-extension UNUserNotificationCenter: UserNotificationCenter {}
+extension UIApplication: URLOpener {}
