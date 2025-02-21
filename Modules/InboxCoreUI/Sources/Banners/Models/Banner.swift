@@ -18,10 +18,15 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct Banner: Hashable {
-    struct Button: Hashable {
-        let title: String
-        let action: () -> Void
+public struct Banner: Hashable {
+    public struct Button: Hashable {
+        public let title: String
+        public let action: () -> Void
+        
+        public init(title: String, action: @escaping () -> Void) {
+            self.title = title
+            self.action = action
+        }
         
         public static func == (lhs: Button, rhs: Button) -> Bool {
             lhs.title == rhs.title
@@ -32,34 +37,34 @@ struct Banner: Hashable {
         }
     }
 
-    struct ColorStyle: Hashable {
+    public struct ColorStyle: Hashable {
         let background: Color
         let border: Color
         let button: ButtonStyle
         let content: ContentStyle
     }
     
-    struct ContentStyle: Hashable {
+    public struct ContentStyle: Hashable {
         let icon: Color
         let text: Color
     }
     
-    struct ButtonStyle: Hashable {
+    public struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
     }
 
-    enum LargeType: Hashable {
+    public enum LargeType: Hashable {
         case one(Button)
         case two(left: Button, right: Button)
     }
 
-    enum Size: Hashable {
+    public enum Size: Hashable {
         case small(Button?)
         case large(LargeType)
     }
 
-    enum Style: Hashable {
+    public enum Style: Hashable {
         case regular
         case error
         
@@ -84,8 +89,15 @@ struct Banner: Hashable {
     }
 
     let id: UUID = UUID()
-    let icon: ImageResource
-    let message: String
-    let size: Size
-    let style: Style
+    public let icon: ImageResource
+    public let message: String
+    public let size: Size
+    public let style: Style
+    
+    public init(icon: ImageResource, message: String, size: Size, style: Style) {
+        self.icon = icon
+        self.message = message
+        self.size = size
+        self.style = style
+    }
 }

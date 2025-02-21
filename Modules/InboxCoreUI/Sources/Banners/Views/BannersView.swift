@@ -19,14 +19,14 @@ import InboxDesignSystem
 import OrderedCollections
 import SwiftUI
 
-struct BannersView: View {
+public struct BannersView: View {
     let model: OrderedSet<Banner>
     
-    init(model: OrderedSet<Banner>) {
+    public init(model: OrderedSet<Banner>) {
         self.model = model
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             ForEach(model, id: \.id) { banner in
                 BannerView(model: banner)

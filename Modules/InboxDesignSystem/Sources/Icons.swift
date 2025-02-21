@@ -63,6 +63,7 @@ public extension DS.Icon {
     static let icStarFilledStrong = ImageResource.icStarFilledStrong
     static let icStarStrong = ImageResource.icStarStrong
     static let icTrash = ImageResource.icTrash
+    static let icTrashClock = ImageResource.icTrashClock
     static let icTrashCross = ImageResource.icTrashCross
     static let icUsers = ImageResource.icUsers
     static let icUsersFilled = ImageResource.icUsersFilled
