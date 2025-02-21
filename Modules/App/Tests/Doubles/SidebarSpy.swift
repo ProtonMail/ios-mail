@@ -61,13 +61,3 @@ class SidebarSpy: SidebarProtocol {
     }
 
 }
-
-private func notImplemented() -> Never {
-    fatalError("Not implemented")
-}
-
-private final class WatchHandleDummy: WatchHandle, @unchecked Sendable {
-    override func disconnect() {
-        // do not call super, it will crash because of self.pointer == nil
-    }
-}

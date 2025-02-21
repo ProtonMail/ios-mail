@@ -20,6 +20,7 @@ import ProtonCoreUtilities
 import SwiftUI
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+    private let deviceTokenRegistrar = DeviceTokenRegistrar()
 
     func application(
         _ application: UIApplication,
@@ -47,8 +48,15 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let stringToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        AppLogger.log(message: "APS token: \(stringToken)", category: .notifications)
+        deviceTokenRegistrar.onDeviceTokenReceived(deviceToken)
+
+        Task {
+            do {
+                try await deviceTokenRegistrar.startWatchingMailSessionForSessions(AppContext.shared.mailSession)
+            } catch {
+                AppLogger.log(error: error, category: .notifications)
+            }
+        }
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {

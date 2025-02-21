@@ -34,3 +34,15 @@ final class LiveQueryCallbackWrapper: @unchecked Sendable, LiveQueryCallback {
     }
 
 }
+
+final class AsyncLiveQueryCallbackWrapper: @unchecked Sendable, AsyncLiveQueryCallback {
+    var delegate: (() async -> Void)
+
+    init(delegate: @escaping () async -> Void) {
+        self.delegate = delegate
+    }
+
+    func onUpdate() async {
+        await delegate()
+    }
+}
