@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct MessageBanner: Hashable {
+struct Banner: Hashable {
     struct Button: Hashable {
         let title: String
         let action: () -> Void

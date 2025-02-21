@@ -19,24 +19,24 @@ import InboxDesignSystem
 import OrderedCollections
 import SwiftUI
 
-struct MessageBannersView: View {
-    let model: OrderedSet<MessageBanner>
+struct BannersView: View {
+    let model: OrderedSet<Banner>
     
-    init(model: OrderedSet<MessageBanner>) {
+    init(model: OrderedSet<Banner>) {
         self.model = model
     }
     
     var body: some View {
         VStack(spacing: 0) {
             ForEach(model, id: \.id) { banner in
-                MessageBannerView(model: banner)
+                BannerView(model: banner)
             }
         }
     }
 }
 
 #Preview {
-    MessageBannersView(model: [
+    BannersView(model: [
         .init(
             icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

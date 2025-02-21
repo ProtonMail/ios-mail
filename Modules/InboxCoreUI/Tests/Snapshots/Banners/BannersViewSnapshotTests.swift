@@ -21,10 +21,10 @@ import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
-class MessageBannersViewSnapshotTests: BaseTestCase {
+class BannersViewSnapshotTests: BaseTestCase {
     
-    func testMessageBannersLayoutCorrectly() {
-        let banners = MessageBannersView(model: [
+    func testBannersLayoutCorrectly() {
+        let banners = BannersView(model: [
             .init(
                 icon: DS.Icon.icFire,
                 message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

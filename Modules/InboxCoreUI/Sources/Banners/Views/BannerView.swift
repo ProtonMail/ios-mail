@@ -18,10 +18,10 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct MessageBannerView: View {
-    let model: MessageBanner
+struct BannerView: View {
+    let model: Banner
     
-    init(model: MessageBanner) {
+    init(model: Banner) {
         self.model = model
     }
     
@@ -73,7 +73,7 @@ struct MessageBannerView: View {
     private func iconText(
         icon: ImageResource,
         text: String,
-        style: MessageBanner.ContentStyle,
+        style: Banner.ContentStyle,
         lineLimit: Int?
     ) -> some View {
         Group {
@@ -88,17 +88,17 @@ struct MessageBannerView: View {
         }
     }
     
-    private func smallButton(model: MessageBanner.Button, style: MessageBanner.ButtonStyle) -> some View {
+    private func smallButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
         button(model: model, style: style, maxWidth: nil)
     }
     
-    private func largeButton(model: MessageBanner.Button, style: MessageBanner.ButtonStyle) -> some View {
+    private func largeButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
         button(model: model, style: style, maxWidth: .infinity)
     }
     
     private func button(
-        model: MessageBanner.Button,
-        style: MessageBanner.ButtonStyle,
+        model: Banner.Button,
+        style: Banner.ButtonStyle,
         maxWidth: CGFloat?
     ) -> some View {
         Button(
@@ -119,7 +119,7 @@ struct MessageBannerView: View {
 #Preview {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 0) {
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -127,7 +127,7 @@ struct MessageBannerView: View {
                     style: .regular
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -135,7 +135,7 @@ struct MessageBannerView: View {
                     style: .error
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
@@ -143,7 +143,7 @@ struct MessageBannerView: View {
                     style: .regular
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
@@ -151,7 +151,7 @@ struct MessageBannerView: View {
                     style: .error
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
@@ -159,7 +159,7 @@ struct MessageBannerView: View {
                     style: .regular
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
@@ -167,7 +167,7 @@ struct MessageBannerView: View {
                     style: .error
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
@@ -175,7 +175,7 @@ struct MessageBannerView: View {
                     style: .regular
                 )
             )
-            MessageBannerView(
+            BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
