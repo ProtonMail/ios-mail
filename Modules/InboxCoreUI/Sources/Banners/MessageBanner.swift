@@ -18,40 +18,48 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct MessageBanner {
-    struct Button {
+struct MessageBanner: Hashable {
+    struct Button: Hashable {
         let title: String
         let action: () -> Void
+        
+        public static func == (lhs: Button, rhs: Button) -> Bool {
+            lhs.title == rhs.title
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(title)
+        }
     }
 
-    struct ColorStyle {
+    struct ColorStyle: Hashable {
         let background: Color
         let border: Color
         let button: ButtonStyle
         let content: ContentStyle
     }
     
-    struct ContentStyle {
+    struct ContentStyle: Hashable {
         let icon: Color
         let text: Color
     }
     
-    struct ButtonStyle {
+    struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
     }
 
-    enum LargeType {
+    enum LargeType: Hashable {
         case one(Button)
         case two(left: Button, right: Button)
     }
 
-    enum Size {
+    enum Size: Hashable {
         case small(Button?)
         case large(LargeType)
     }
 
-    enum Style {
+    enum Style: Hashable {
         case regular
         case error
         

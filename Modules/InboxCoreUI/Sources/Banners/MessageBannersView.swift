@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import OrderedCollections
 import SwiftUI
 
 struct MessageBannersView: View {
-    let model: [MessageBanner]
+    let model: OrderedSet<MessageBanner>
     
-    init(model: [MessageBanner]) {
+    init(model: OrderedSet<MessageBanner>) {
         self.model = model
     }
     
