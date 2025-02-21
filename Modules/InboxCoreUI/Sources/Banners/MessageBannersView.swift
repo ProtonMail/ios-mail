@@ -37,33 +37,39 @@ struct MessageBannersView: View {
 #Preview {
     MessageBannersView(model: [
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            button: nil,
+            size: .small(nil),
             style: .regular
         ),
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            button: nil,
+            size: .small(nil),
             style: .error
         ),
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet",
-            button: .init(title: "Action", action: {}),
+            size: .small(.init(title: "Action", action: {})),
             style: .regular
         ),
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet",
-            button: .init(title: "Action", action: {}),
+            size: .small(.init(title: "Action", action: {})),
             style: .error
         ),
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet",
-            button: nil,
+            size: .small(nil),
             style: .regular
         ),
         .init(
+            icon: DS.Icon.icFire,
             message: "Lorem ipsum dolor sit amet",
-            button: nil,
+            size: .small(nil),
             style: .error
         )
     ])

@@ -26,39 +26,93 @@ struct MessageBannerView: View {
     }
     
     var body: some View {
-        HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
-            Image(DS.Icon.icFire)
-                .foregroundColor(model.style.color.icon)
-            Text(model.message)
+        container()
+            .background {
+                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                    .fill(model.style.color.background)
+                    .stroke(model.style.color.border, lineWidth: 1)
+            }
+            .safeAreaPadding([.horizontal, .bottom], DS.Spacing.large)
+    }
+    
+    // MARK: - Private
+    
+    @ViewBuilder
+    private func container() -> some View {
+        switch model.size {
+        case .small(let button):
+            HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
+                iconText(icon: model.icon, text: model.message, style: model.style.color.content, lineLimit: 2)
+                if let button = button {
+                    smallButton(model: button, style: model.style.color.button)
+                }
+            }
+            .padding(.init(
+                vertical: button == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
+                horizontal: DS.Spacing.large
+            ))
+        case .large(let type):
+            VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+                HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
+                    iconText(icon: model.icon, text: model.message, style: model.style.color.content, lineLimit: nil)
+                }
+                switch type {
+                case .one(let button):
+                    largeButton(model: button, style: model.style.color.button)
+                case .two(let left, let right):
+                    HStack(alignment: .center, spacing: DS.Spacing.standard) {
+                        largeButton(model: left, style: model.style.color.button)
+                        largeButton(model: right, style: model.style.color.button)
+                    }
+                }
+            }
+            .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
+        }
+    }
+    
+    private func iconText(
+        icon: ImageResource,
+        text: String,
+        style: MessageBanner.ContentStyle,
+        lineLimit: Int?
+    ) -> some View {
+        Group {
+            Image(icon)
+                .foregroundColor(style.icon)
+            Text(text)
                 .font(.footnote)
                 .fontWeight(.regular)
-                .foregroundStyle(model.style.color.text)
-                .lineLimit(2)
+                .foregroundStyle(style.text)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            if let button = model.button {
-                Button(
-                    action: button.action,
-                    label: {
-                        Text(button.title)
-                            .font(.subheadline)
-                            .fontWeight(.regular)
-                            .foregroundStyle(model.style.color.button.text)
-                            .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
-                            .background(model.style.color.button.background, in: Capsule())
-                    }
-                )
+                .lineLimit(lineLimit)
+        }
+    }
+    
+    private func smallButton(model: MessageBanner.Button, style: MessageBanner.ButtonStyle) -> some View {
+        button(model: model, style: style, maxWidth: nil)
+    }
+    
+    private func largeButton(model: MessageBanner.Button, style: MessageBanner.ButtonStyle) -> some View {
+        button(model: model, style: style, maxWidth: .infinity)
+    }
+    
+    private func button(
+        model: MessageBanner.Button,
+        style: MessageBanner.ButtonStyle,
+        maxWidth: CGFloat?
+    ) -> some View {
+        Button(
+            action: model.action,
+            label: {
+                Text(model.title)
+                    .font(.subheadline)
+                    .fontWeight(.regular)
+                    .foregroundStyle(style.text)
+                    .frame(maxWidth: maxWidth)
+                    .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
+                    .background(style.background, in: Capsule())
             }
-        }
-        .padding(.init(
-            vertical: model.button == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
-            horizontal: DS.Spacing.large
-        ))
-        .background {
-            RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                .fill(model.style.color.background)
-                .stroke(model.style.color.border, lineWidth: 1)
-        }
-        .safeAreaPadding([.horizontal, .bottom], DS.Spacing.large)
+        )
     }
 }
 
@@ -67,43 +121,67 @@ struct MessageBannerView: View {
         VStack(spacing: 0) {
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    button: nil,
+                    size: .small(nil),
                     style: .regular
                 )
             )
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    button: nil,
+                    size: .small(nil),
                     style: .error
                 )
             )
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
-                    button: .init(title: "Action", action: {}),
+                    size: .small(.init(title: "Action", action: {})),
                     style: .regular
                 )
             )
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
-                    button: .init(title: "Action", action: {}),
+                    size: .small(.init(title: "Action", action: {})),
                     style: .error
                 )
             )
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
-                    button: .init(title: "Action", action: {}),
+                    size: .small(.init(title: "Action", action: {})),
                     style: .regular
                 )
             )
             MessageBannerView(
                 model: .init(
+                    icon: DS.Icon.icFire,
                     message: "Lorem ipsum dolor sit amet",
-                    button: nil,
+                    size: .small(nil),
+                    style: .error
+                )
+            )
+            MessageBannerView(
+                model: .init(
+                    icon: DS.Icon.icFire,
+                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    size: .large(.one(.init(title: "Action", action: {}))),
+                    style: .regular
+                )
+            )
+            MessageBannerView(
+                model: .init(
+                    icon: DS.Icon.icFire,
+                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    size: .large(
+                        .two(left: .init(title: "Left", action: {}), right: .init(title: "Right", action: {}))
+                    ),
                     style: .error
                 )
             )

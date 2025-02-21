@@ -26,17 +26,31 @@ struct MessageBanner {
 
     struct ColorStyle {
         let background: Color
-        let icon: Color
-        let text: Color
         let border: Color
-        let button: Button
-        
-        struct Button {
-            let background: Color
-            let text: Color
-        }
+        let button: ButtonStyle
+        let content: ContentStyle
     }
     
+    struct ContentStyle {
+        let icon: Color
+        let text: Color
+    }
+    
+    struct ButtonStyle {
+        let background: Color
+        let text: Color
+    }
+
+    enum LargeType {
+        case one(Button)
+        case two(left: Button, right: Button)
+    }
+
+    enum Size {
+        case small(Button?)
+        case large(LargeType)
+    }
+
     enum Style {
         case regular
         case error
@@ -46,25 +60,24 @@ struct MessageBanner {
             case .regular:
                 .init(
                     background: DS.Color.Background.norm,
-                    icon: DS.Color.Icon.weak,
-                    text: DS.Color.Text.weak,
                     border: DS.Color.Border.strong,
-                    button: .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm)
+                    button: .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm),
+                    content: .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
                 )
             case .error:
                 .init(
                     background: DS.Color.Notification.error,
-                    icon: DS.Color.Icon.inverted,
-                    text: DS.Color.Text.inverted,
                     border: .clear,
-                    button: .init(background: DS.Color.Global.white.opacity(0.2), text: DS.Color.Text.inverted)
+                    button: .init(background: DS.Color.Global.white.opacity(0.2), text: DS.Color.Text.inverted),
+                    content: .init(icon: DS.Color.Icon.inverted, text: DS.Color.Text.inverted)
                 )
             }
         }
     }
 
     let id: UUID = UUID()
+    let icon: ImageResource
     let message: String
-    let button: Button?
+    let size: Size
     let style: Style
 }
