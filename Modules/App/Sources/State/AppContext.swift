@@ -140,6 +140,7 @@ extension AppContext: AccountAuthDelegate {
                     withAnimation { self.sessionState = .activeSessionTransition }
                     DispatchQueue.main.async {
                         self.setupActiveUserSession(session: primaryAccountSession)
+                        self.pollEvents()
                     }
                 }
             }
