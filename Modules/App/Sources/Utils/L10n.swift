@@ -400,7 +400,7 @@ enum L10n {
             comment: "Action to override the system's phishing detection and mark the email as safe."
         )
         static let phishingAttemptTitle = LocalizedStringResource(
-            "Our system flagged this as suspicious. If it is not a phishing or scam email, mark as legitimate.",
+            "Our system flagged this message as a phishing attempt. Please check to ensure that it is legitimate.",
             comment: "Banner warning the user that the system detected a possible phishing attempt."
         )
         static let remoteContentAction = LocalizedStringResource(
