@@ -107,11 +107,10 @@ final class DeviceTokenRegistrar {
     private static func prepareDeviceRegistrationRequest(deviceToken: String) -> RegisteredDevice {
         let environment: DeviceEnvironment
 
-        // TODO: replace with proper values once they are exposed by the SDK
 #if DEBUG
-        environment = .appleDev
+        environment = .appleDevEt
 #else
-        environment = .appleDev
+        environment = .appleProdEt
 #endif
 
         return RegisteredDevice(
