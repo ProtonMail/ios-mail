@@ -1265,6 +1265,12 @@
         }
       }
     },
+    "Display" : {
+      "comment" : "Action to display embedded images."
+    },
+    "Display embedded images?" : {
+      "comment" : "Banner asking if the user wants to display images embedded in the email."
+    },
     "Done" : {
       "comment" : "`Done` action title.",
       "localizations" : {
@@ -1294,6 +1300,12 @@
         }
       }
     },
+    "Download" : {
+      "comment" : "Action to download remote content in the email."
+    },
+    "Download images and other remote content?" : {
+      "comment" : "Banner asking if the user wants to download remote content such as images from external sources."
+    },
     "Draft" : {
       "comment" : "Menu title of drafts in the sidebar.",
       "localizations" : {
@@ -1322,6 +1334,9 @@
           }
         }
       }
+    },
+    "Edit" : {
+      "comment" : "Action to modify the scheduled send time."
     },
     "Email" : {
       "comment" : "Title of the Email settings item.",
@@ -1843,6 +1858,9 @@
         }
       }
     },
+    "Mark as legitimate" : {
+      "comment" : "Action to override the system's phishing detection and mark the email as safe.\nAction to override the system's spam detection and mark the email as safe."
+    },
     "Mark as read" : {
       "comment" : "Action title for marking message/conversation as read in the action sheet.",
       "localizations" : {
@@ -2310,6 +2328,9 @@
           }
         }
       }
+    },
+    "Our system flagged this as suspicious. If it is not a phishing or scam email, mark as legitimate." : {
+      "comment" : "Banner warning the user that the system detected a possible phishing attempt."
     },
     "Outbox" : {
       "comment" : "Menu title of all outbox emails in the sidebar.",
@@ -2868,6 +2889,9 @@
         }
       }
     },
+    "Snoozed until %@" : {
+      "comment" : "Banner indicating when a snoozed email will reappear in the inbox."
+    },
     "Spam" : {
       "comment" : "Menu title of all emails marked as spam in the sidebar.",
       "localizations" : {
@@ -3016,6 +3040,21 @@
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."
     },
+    "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." : {
+      "comment" : "Banner warning the user that the email failed authentication checks and may be spoofed."
+    },
+    "This message is from a mailing list." : {
+      "comment" : "Banner indicating that the email is from a mailing list."
+    },
+    "This message will auto-delete in %@" : {
+      "comment" : "Banner indicating when a message will automatically be deleted."
+    },
+    "This message will be sent %@" : {
+      "comment" : "Banner showing the scheduled send time for an email."
+    },
+    "This message will expire in %@" : {
+      "comment" : "Banner indicating when a message will expire and no longer be accessible."
+    },
     "To" : {
       "comment" : "`To` in the message details.",
       "localizations" : {
@@ -3073,6 +3112,9 @@
           }
         }
       }
+    },
+    "Unblock" : {
+      "comment" : "Action to unblock the sender."
     },
     "Undo operation failed because draft was not found" : {
       "comment" : "Error in the context of undoing a sent message"
@@ -3135,6 +3177,9 @@
         }
       }
     },
+    "Unsnooze" : {
+      "comment" : "Action to restore a snoozed email immediately."
+    },
     "Unstar" : {
       "comment" : "Action title for removing message/conversation from starred items in the action sheet.",
       "localizations" : {
@@ -3163,6 +3208,9 @@
           }
         }
       }
+    },
+    "Unsubscribe" : {
+      "comment" : "Action to unsubscribe from the mailing list."
     },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
@@ -3285,6 +3333,9 @@
     },
     "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue." : {
       "comment" : "Event loop failed because an unexpected error."
+    },
+    "You blocked this sender" : {
+      "comment" : "Banner informing the user that they have blocked this sender."
     },
     "You can either update your search query or clear it." : {
       "comment" : "Search result is empty subtitle",

@@ -34,69 +34,69 @@ struct MessageBannersView: View {
         let banners: [Banner] = types.compactMap { type in
             switch type {
             case .blockedSender:
-                return .init(
+                .init(
                     icon: DS.Icon.icCircleSlash,
-                    message: "You blocked this sender",
-                    size: .small(.init(title: "Unblock", action: {})),
+                    message: L10n.MessageBanner.blockedSenderTitle,
+                    size: .small(.init(title: L10n.MessageBanner.blockedSenderAction, action: {})),
                     style: .regular
                 )
             case .phishingAttempt:
-                return .init(
+                .init(
                     icon: DS.Icon.icHook,
-                    message: "Our system flagged this as suspicious. If it is not a phishing or scam email, mark as legitimate.",
-                    size: .large(.one(.init(title: "Mark as legitimate", action: {}))),
+                    message: L10n.MessageBanner.phishingAttemptTitle,
+                    size: .large(.one(.init(title: L10n.MessageBanner.phishingAttemptAction, action: {}))),
                     style: .error
                 )
             case .spam:
-                return .init(
+                .init(
                     icon: DS.Icon.icFire,
-                    message: "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.",
-                    size: .large(.one(.init(title: "Mark as legitimate", action: {}))),
+                    message: L10n.MessageBanner.spamTitle,
+                    size: .large(.one(.init(title: L10n.MessageBanner.spamAction, action: {}))),
                     style: .error
                 )
             case .expiry:
-                return regularSmallNoButton(
+                regularSmallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: "This message will expire in 15 days, 5 hours, and 58 minutes"
+                    message: L10n.MessageBanner.expiryTitle(formattedTime: "15 days, 5 hours, and 58 minutes")
                 )
             case .autoDelete:
-                return regularSmallNoButton(
+                regularSmallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: "This message will auto-delete in 20 days"
+                    message: L10n.MessageBanner.autoDeleteTitle(formattedTime: "20 days")
                 )
             case .unsubscribeNewsletter:
-                return .init(
+                .init(
                     icon: DS.Icon.icEnvelopes,
-                    message: "This message is from a mailing list.",
-                    size: .small(.init(title: "Unsubscribe", action: {})),
+                    message: L10n.MessageBanner.unsubscribeNewsletterTitle,
+                    size: .small(.init(title: L10n.MessageBanner.unsubscribeNewsletterAction, action: {})),
                     style: .regular
                 )
             case .scheduledSend:
-                return .init(
+                .init(
                     icon: DS.Icon.icClockPaperPlane,
-                    message: "This message will be sent tomorrow at 08:00",
-                    size: .small(.init(title: "Edit", action: {})),
+                    message: L10n.MessageBanner.scheduledSendTitle(formattedTime: "tomorrow at 08:00"),
+                    size: .small(.init(title: L10n.MessageBanner.scheduledSendAction, action: {})),
                     style: .regular
                 )
             case .snoozed:
-                return .init(
+                .init(
                     icon: DS.Icon.icClock,
-                    message: "Snoozed until tomorrow at 09:00",
-                    size: .small(.init(title: "Unsnooze", action: {})),
+                    message: L10n.MessageBanner.snoozedTitle(formattedTime: "tomorrow at 09:00"),
+                    size: .small(.init(title: L10n.MessageBanner.snoozedAction, action: {})),
                     style: .regular
                 )
             case .embeddedImages:
-                return .init(
+                .init(
                     icon: DS.Icon.icCogWheel,
-                    message: "Display embedded images?",
-                    size: .small(.init(title: "Display", action: {})),
+                    message: L10n.MessageBanner.embeddedImagesTitle,
+                    size: .small(.init(title: L10n.MessageBanner.embeddedImagesAction, action: {})),
                     style: .regular
                 )
             case .remoteContent:
-                return .init(
+                .init(
                     icon: DS.Icon.icCogWheel,
-                    message: "Download images and other remote content?",
-                    size: .small(.init(title: "Download", action: {})),
+                    message: L10n.MessageBanner.remoteContentTitle,
+                    size: .small(.init(title: L10n.MessageBanner.remoteContentAction, action: {})),
                     style: .regular
                 )
             }
@@ -104,7 +104,7 @@ struct MessageBannersView: View {
         return OrderedSet(banners)
     }
     
-    private func regularSmallNoButton(icon: ImageResource, message: String) -> Banner {
+    private func regularSmallNoButton(icon: ImageResource, message: LocalizedStringResource) -> Banner {
         .init(icon: icon, message: message, size: .small(.none), style: .regular)
     }
 }

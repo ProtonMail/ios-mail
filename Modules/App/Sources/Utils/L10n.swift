@@ -365,6 +365,89 @@ enum L10n {
             comment: "Subtitle of the offline mode placeholder."
         )
     }
+    
+    enum MessageBanner {
+        static func autoDeleteTitle(formattedTime: String) -> LocalizedStringResource {
+            .init(
+                "This message will auto-delete in \(formattedTime)",
+                comment: "Banner indicating when a message will automatically be deleted."
+            )
+        }
+        static let blockedSenderAction = LocalizedStringResource(
+            "Unblock",
+            comment: "Action to unblock the sender."
+        )
+        static let blockedSenderTitle = LocalizedStringResource(
+            "You blocked this sender",
+            comment: "Banner informing the user that they have blocked this sender."
+        )
+        static let embeddedImagesAction = LocalizedStringResource(
+            "Display",
+            comment: "Action to display embedded images."
+        )
+        static let embeddedImagesTitle = LocalizedStringResource(
+            "Display embedded images?",
+            comment: "Banner asking if the user wants to display images embedded in the email."
+        )
+        static func expiryTitle(formattedTime: String) -> LocalizedStringResource {
+            .init(
+                "This message will expire in \(formattedTime)",
+                comment: "Banner indicating when a message will expire and no longer be accessible."
+            )
+        }
+        static let phishingAttemptAction = LocalizedStringResource(
+            "Mark as legitimate",
+            comment: "Action to override the system's phishing detection and mark the email as safe."
+        )
+        static let phishingAttemptTitle = LocalizedStringResource(
+            "Our system flagged this as suspicious. If it is not a phishing or scam email, mark as legitimate.",
+            comment: "Banner warning the user that the system detected a possible phishing attempt."
+        )
+        static let remoteContentAction = LocalizedStringResource(
+            "Download",
+            comment: "Action to download remote content in the email."
+        )
+        static let remoteContentTitle = LocalizedStringResource(
+            "Download images and other remote content?",
+            comment: "Banner asking if the user wants to download remote content such as images from external sources."
+        )
+        static func scheduledSendTitle(formattedTime: String) -> LocalizedStringResource {
+            .init(
+                "This message will be sent \(formattedTime)",
+                comment: "Banner showing the scheduled send time for an email."
+            )
+        }
+        static let scheduledSendAction = LocalizedStringResource(
+            "Edit",
+            comment: "Action to modify the scheduled send time."
+        )
+        static func snoozedTitle(formattedTime: String) -> LocalizedStringResource {
+            .init(
+                "Snoozed until \(formattedTime)",
+                comment: "Banner indicating when a snoozed email will reappear in the inbox."
+            )
+        }
+        static let snoozedAction = LocalizedStringResource(
+            "Unsnooze",
+            comment: "Action to restore a snoozed email immediately."
+        )
+        static let spamAction = LocalizedStringResource(
+            "Mark as legitimate",
+            comment: "Action to override the system's spam detection and mark the email as safe."
+        )
+        static let spamTitle = LocalizedStringResource(
+            "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.",
+            comment: "Banner warning the user that the email failed authentication checks and may be spoofed."
+        )
+        static let unsubscribeNewsletterAction = LocalizedStringResource(
+            "Unsubscribe",
+            comment: "Action to unsubscribe from the mailing list."
+        )
+        static let unsubscribeNewsletterTitle = LocalizedStringResource(
+            "This message is from a mailing list.",
+            comment: "Banner indicating that the email is from a mailing list."
+        )
+    }
 
     enum MessageDetails {
         static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")

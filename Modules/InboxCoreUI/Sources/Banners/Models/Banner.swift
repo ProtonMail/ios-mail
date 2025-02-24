@@ -23,8 +23,8 @@ public struct Banner: Hashable {
         public let title: String
         public let action: () -> Void
         
-        public init(title: String, action: @escaping () -> Void) {
-            self.title = title
+        public init(title: LocalizedStringResource, action: @escaping () -> Void) {
+            self.title = title.string
             self.action = action
         }
         
@@ -94,9 +94,9 @@ public struct Banner: Hashable {
     public let size: Size
     public let style: Style
     
-    public init(icon: ImageResource, message: String, size: Size, style: Style) {
+    public init(icon: ImageResource, message: LocalizedStringResource, size: Size, style: Style) {
         self.icon = icon
-        self.message = message
+        self.message = message.string
         self.size = size
         self.style = style
     }
