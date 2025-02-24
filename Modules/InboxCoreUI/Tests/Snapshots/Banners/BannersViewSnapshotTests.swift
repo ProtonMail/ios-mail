@@ -23,8 +23,8 @@ import XCTest
 
 class BannersViewSnapshotTests: BaseTestCase {
     
-    func testBannersLayoutCorrectly() {
-        let banners = BannersView(model: [
+    func testBannersViewLayoutsCorrectly() {
+        let bannersView = BannersView(model: [
             .init(
                 icon: DS.Icon.icFire,
                 message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -78,7 +78,7 @@ class BannersViewSnapshotTests: BaseTestCase {
             )
         ])
         
-        assertSnapshotsOnIPhoneX(of: banners)
+        assertSnapshotsOnIPhoneX(of: bannersView)
     }
 
 }

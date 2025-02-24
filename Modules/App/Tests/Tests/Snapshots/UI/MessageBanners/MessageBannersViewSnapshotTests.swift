@@ -23,8 +23,8 @@ import XCTest
 
 class MessageBannersViewSnapshotTests: BaseTestCase {
     
-    func testMessageBannersFirstVariantLayoutCorrectly() {
-        let banners = MessageBannersView(types: [
+    func testMessageBannersViewFirstVariantLayoutsCorrectly() {
+        let bannersView = MessageBannersView(types: [
             .blockedSender,
             .phishingAttempt,
             .expiry(timestamp: 1740238200000),
@@ -33,11 +33,11 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
             .embeddedImages
         ])
         
-        assertSnapshotsOnIPhoneX(of: banners)
+        assertSnapshotsOnIPhoneX(of: bannersView)
     }
     
-    func testMessageBannersSecondVariantLayoutCorrectly() {
-        let banners = MessageBannersView(types: [
+    func testMessageBannersViewSecondVariantLayoutsCorrectly() {
+        let bannersView = MessageBannersView(types: [
             .blockedSender,
             .spam,
             .scheduledSend(timestamp: 1740238200000),
@@ -45,7 +45,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
             .remoteContent
         ])
         
-        assertSnapshotsOnIPhoneX(of: banners)
+        assertSnapshotsOnIPhoneX(of: bannersView)
     }
 
 }
