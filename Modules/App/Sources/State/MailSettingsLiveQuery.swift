@@ -21,6 +21,8 @@ import proton_app_uniffi
 protocol MailSettingLiveQuerying {
     /// Emits an event only when the user's view mode setting changes
     var viewModeHasChanged: AnyPublisher<Void, Never> { get }
+
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never>
 }
 
 final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying {
@@ -41,16 +43,17 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
 
     // MARK: - MailSettingLiveQuerying
 
-    var settingsPublisher: AnyPublisher<MailSettings, Never> {
-        settingsSubject.eraseToAnyPublisher()
+    var viewModeHasChanged: AnyPublisher<Void, Never> {
+        settingHasChanged(keyPath: \.viewMode)
+            .map { _ in }
+            .eraseToAnyPublisher()
     }
 
-    var viewModeHasChanged: AnyPublisher<Void, Never> {
-        settingsPublisher
-            .map(\.viewMode)
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never> {
+        settingsSubject
+            .map(keyPath)
             .removeDuplicates()
             .dropFirst()
-            .map { _ in }
             .eraseToAnyPublisher()
     }
 

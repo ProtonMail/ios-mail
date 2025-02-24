@@ -135,6 +135,17 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
+        Publishers.Merge(
+            mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeLeft),
+            mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeRight)
+        )
+        .sink { [weak self] _ in
+            Task {
+                await self?.prepareSwipeActions()
+            }
+        }
+        .store(in: &cancellables)
+
         mailSettingsLiveQuery
             .viewModeHasChanged
             .sink { [weak self] _ in

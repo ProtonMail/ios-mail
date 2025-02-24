@@ -212,4 +212,8 @@ class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
     var viewModeHasChanged: AnyPublisher<Void, Never> {
         Just(Void()).eraseToAnyPublisher()
     }
+
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never> {
+        Empty().eraseToAnyPublisher()
+    }
 }
