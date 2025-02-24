@@ -16,12 +16,26 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
 class MessageBannersViewSnapshotTests: BaseTestCase {
+    
+    var originalCurrentDate: (() -> Date)!
+    
+    override func setUp() {
+        super.setUp()
+        originalCurrentDate = DateEnvironment.currentDate
+        DateEnvironment.currentDate = { .fixture("2025-02-07 09:32:00") }
+    }
+    
+    override func tearDown() {
+        DateEnvironment.currentDate = originalCurrentDate
+        super.tearDown()
+    }
     
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(types: [
