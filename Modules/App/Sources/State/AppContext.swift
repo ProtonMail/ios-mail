@@ -75,9 +75,7 @@ final class AppContext: Sendable, ObservableObject {
             throw AppContextError.cacheDirectoryNotAccessible
         }
 
-        guard let appConfig = dependencies.appConfigService.appConfig else {
-            throw AppContextError.appConfigNotDefined
-        }
+        let appConfig = dependencies.appConfigService.appConfig
 
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
@@ -177,7 +175,6 @@ extension AppContext {
 enum AppContextError: Error {
     case applicationSupportDirectoryNotAccessible
     case cacheDirectoryNotAccessible
-    case appConfigNotDefined
 }
 
 final class NetworkStatusManager: NetworkStatusChanged, Sendable {

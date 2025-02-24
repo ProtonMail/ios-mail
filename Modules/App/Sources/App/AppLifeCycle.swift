@@ -68,7 +68,6 @@ extension AppLifeCycle {
 
     @MainActor
     private func applicationServicesInitialisation() {
-        let appConfigService = AppConfigService.shared
         let testService = TestService.shared
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
@@ -86,7 +85,6 @@ extension AppLifeCycle {
 
         applicationServices = .init(
             setUpServices: [
-                appConfigService,
                 testService,
                 appContext,
                 notificationAuthorizationService,

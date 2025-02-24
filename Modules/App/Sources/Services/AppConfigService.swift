@@ -19,36 +19,12 @@ import Foundation
 
 final class AppConfigService: Sendable {
     static let shared: AppConfigService = .init()
-    private(set) var appConfig: AppConfig!
-}
 
-extension AppConfigService: ApplicationServiceSetUp {
-    func setUpService() {
-        #if UITESTS
-        setUpForUITests()
-        #else
-        setUpForApp()
-        #endif
-    }
-
-    private func setUpForApp() {
-        let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
-        let appVersion = "ios-mail@7.0.0" // Read from config once "ios-mail@x.y.z" is supported.
-        let environment = AppConfig.Environment(
-            domain: domain,
-            apiBaseUrl: "https://mail-api.\(domain)",
-            userAgent: "Mozilla/5.0",
-            isSrpProofSkipped: false, 
-            isHttpAllowed: false
-        )
-        
-        appConfig = AppConfig(appVersion: appVersion, environment: environment)
-    }
-    
-    private func setUpForUITests() {
+    let appConfig: AppConfig = {
+#if UITESTS
         let appVersion = "Other"
         let environment: AppConfig.Environment
-        
+
         // The `mockServerPort` value is computed by the UI Tests runner at runtime,
         // it can't be read from project.yml as a static value as it would prevent concurrent runs.
         if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
@@ -70,7 +46,20 @@ extension AppConfigService: ApplicationServiceSetUp {
                 isHttpAllowed: false
             )
         }
-        
-        appConfig = AppConfig(appVersion: appVersion, environment: environment)
-    }
+
+        return AppConfig(appVersion: appVersion, environment: environment)
+#else
+        let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
+        let appVersion = "ios-mail@7.0.0" // Read from config once "ios-mail@x.y.z" is supported.
+        let environment = AppConfig.Environment(
+            domain: domain,
+            apiBaseUrl: "https://mail-api.\(domain)",
+            userAgent: "Mozilla/5.0",
+            isSrpProofSkipped: false,
+            isHttpAllowed: false
+        )
+
+        return AppConfig(appVersion: appVersion, environment: environment)
+#endif
+    }()
 }
