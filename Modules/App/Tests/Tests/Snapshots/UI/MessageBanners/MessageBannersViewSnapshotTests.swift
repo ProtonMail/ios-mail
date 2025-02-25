@@ -41,8 +41,8 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
         let bannersView = MessageBannersView(types: [
             .blockedSender,
             .phishingAttempt,
-            .expiry(timestamp: 1740238200000),
-            .autoDelete(timestamp: 1740238200000),
+            .expiry(timestamp: 1_740_238_200),
+            .autoDelete(timestamp: 1_740_238_200),
             .unsubscribeNewsletter,
             .embeddedImages
         ])
@@ -54,8 +54,8 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
         let bannersView = MessageBannersView(types: [
             .blockedSender,
             .spam,
-            .scheduledSend(timestamp: 1740238200000),
-            .snoozed(timestamp: 1740238200000),
+            .scheduledSend(timestamp: 1_740_238_200),
+            .snoozed(timestamp: 1_740_238_200),
             .remoteContent
         ])
         

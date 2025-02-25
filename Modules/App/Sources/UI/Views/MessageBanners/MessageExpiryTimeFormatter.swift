@@ -17,10 +17,9 @@
 
 import Foundation
 
-struct MessageExpiryTimeFormatter {
+enum MessageExpiryTimeFormatter {
     static func string(from unixTimestamp: Int, currentDate: Date) -> String {
-        let timestampInSeconds = TimeInterval(unixTimestamp / 1_000)
-        let expiryDate = Date(timeIntervalSince1970: timestampInSeconds)
+        let expiryDate = Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
         let timeInterval = expiryDate.timeIntervalSince(currentDate)
 
         guard timeInterval >= 0 else {
