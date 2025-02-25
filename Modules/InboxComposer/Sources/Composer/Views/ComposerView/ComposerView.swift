@@ -19,12 +19,14 @@ import Contacts
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import PhotosUI
 import SwiftUI
 
 struct ComposerView: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
+    @State var selectedPhotosItems: [PhotosPickerItem] = []
 
     init(
         draft: AppDraftProtocol,
@@ -106,8 +108,21 @@ struct ComposerView: View {
                     case .onBodyChange(let body):
                         model.updateBody(value: body)
                     }
+
+                case .actionBarEvent(let event):
+                    switch event {
+                    case .onPickAttachmentSource:
+                        model.pickAttachmentSource()
+                    case .onDiscardDraft:
+                        toastStateStore.present(toast: .comingSoon)
+                    }
                 }
             }
+            .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
+                model.selectedAttachmentSource(selection)
+            }
+            .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems)
+            .onChange(of: selectedPhotosItems, { model.addAttachments(selectedPhotosItems: $selectedPhotosItems) })
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
                 toastStateStore.present(toast: newValue)

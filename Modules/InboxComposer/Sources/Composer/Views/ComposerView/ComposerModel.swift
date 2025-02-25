@@ -19,11 +19,13 @@ import Contacts
 import InboxCore
 import InboxCoreUI
 import InboxContacts
+import PhotosUI
 import proton_app_uniffi
 import SwiftUI
 
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
+    @Published var pickersState: AttachmentPickersState
     @Published var toast: Toast?
 
     private let draft: AppDraftProtocol
@@ -33,6 +35,7 @@ final class ComposerModel: ObservableObject {
     private let pendingQueueProvider: PendingQueueProvider
     private let onSendingEvent: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
+    private let photosItemsHandler: PhotosPickerItemHandler
 
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
@@ -54,7 +57,8 @@ final class ComposerModel: ObservableObject {
         pendingQueueProvider: PendingQueueProvider,
         onSendingEvent: @escaping () -> Void,
         permissionsHandler: CNContactStoring.Type,
-        contactStore: CNContactStoring
+        contactStore: CNContactStoring,
+        photosItemsHandler: PhotosPickerItemHandler = .init()
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
@@ -64,6 +68,8 @@ final class ComposerModel: ObservableObject {
         self.onSendingEvent = onSendingEvent
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
+        self.pickersState = .init()
+        self.photosItemsHandler = photosItemsHandler
         self.state = makeState(from: draft)
         setUpComposerRecipientListCallbacks()
     }
@@ -216,6 +222,51 @@ final class ComposerModel: ObservableObject {
                     showToast(.error(message: draftError.localizedDescription))
                 }
             }
+        }
+    }
+
+    @MainActor
+    func pickAttachmentSource() {
+        pickersState.isAttachmentSourcePickerPresented = true
+    }
+
+    @MainActor
+    func selectedAttachmentSource(_ source: AttachmentSource) {
+        switch source {
+        case .photoGallery:
+            showToast(.comingSoon)
+            // FIXME: When SDK is ready to get attachments
+//            pickersState.isPhotosPickerPresented = true
+        case .camera:
+            showToast(.comingSoon)
+        case .files:
+            showToast(.comingSoon)
+        }
+    }
+
+    func addAttachments(selectedPhotosItems: Binding<[PhotosPickerItem]>) {
+        Task {
+            let items = selectedPhotosItems.wrappedValue
+            selectedPhotosItems.wrappedValue = []
+            guard !items.isEmpty else { return }
+
+            // FIXME: destinationFolder to be provided by the SDK's draft object
+            let destinationFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+                .appendingPathComponent("draft-attachments", isDirectory: true)
+                .appendingPathComponent("asdfghjk", isDirectory: true)
+
+            let result = await photosItemsHandler.saveToFile(items: items, destinationFolder: destinationFolder)
+            if result.atLeastOneFailed {
+                let message = items.count == 1
+                ? L10n.Attachments.attachmentCouldNotBeAdded.string
+                : L10n.Attachments.someAttachmentCouldNotBeAdded.string
+                showToast(.error(message: message))
+            }
+
+            // FIXME: When SDK is ready
+            // for file in result.files {
+                // draft.addAttachment(filePath: file.url)
+            //}
         }
     }
 }

@@ -13,6 +13,7 @@ public extension DS.Icon {
     static let icArrowRotateRight = ImageResource.icArrowRotateRight
     static let icBookmark = ImageResource.icBookmark
     static let icBug = ImageResource.icBug
+    static let icCamera = ImageResource.icCamera
     static let icCheckmark = ImageResource.icCheckmark
     static let icCheckmarkBig = ImageResource.icCheckmarkBig
     static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
@@ -43,6 +44,7 @@ public extension DS.Icon {
     static let icFolderOpen = ImageResource.icFolderOpen
     static let icFolders = ImageResource.icFolders
     static let icHamburguer = ImageResource.icHamburger
+    static let icImage = ImageResource.ic
     static let icInbox = ImageResource.icInbox
     static let icLockFilled = ImageResource.icLockFilled
     static let icMagnifier = ImageResource.icMagnifier

@@ -90,6 +90,44 @@ enum L10n {
         )
     }
 
+    enum Attachments {
+        static let addAttachments = LocalizedStringResource(
+            "Add attachments",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachments action sheet title."
+        )
+
+        static let attachmentFromPhotoLibrary = LocalizedStringResource(
+            "From your photo library",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachments action sheet photo library option."
+        )
+
+        static let attachmentFromCamera = LocalizedStringResource(
+            "Take new photo",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachments action sheet camera option."
+        )
+
+        static let attachmentImport = LocalizedStringResource(
+            "Import from...",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachments action sheet import option."
+        )
+
+        static let attachmentCouldNotBeAdded = LocalizedStringResource(
+            "Attachment could not be added",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed to be added to a draft message."
+        )
+
+        static let someAttachmentCouldNotBeAdded = LocalizedStringResource(
+            "One or more attachmentments could not be added",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed to be added to a draft message."
+        )
+    }
+
     enum Contacts {
 
         static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {

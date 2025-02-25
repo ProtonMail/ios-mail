@@ -15,15 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct ClosableScreen<ContentView: View>: View {
+public struct ClosableScreen<ContentView: View>: View {
     @Environment(\.dismiss) var dismiss
     let content: () -> ContentView
 
-    var body: some View {
+    public init(content: @escaping () -> ContentView) {
+        self.content = content
+    }
+
+    public var body: some View {
         NavigationStack {
             content()
                 .toolbar {

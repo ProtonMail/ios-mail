@@ -30,8 +30,14 @@
         }
       }
     },
+    "Add attachments" : {
+      "comment" : "Attachments action sheet title."
+    },
     "Address not found" : {
       "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Attachment could not be added" : {
+      "comment" : "Attachment failed to be added to a draft message."
     },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
@@ -50,6 +56,9 @@
     },
     "Error trying to reply or forward this message" : {
       "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "From your photo library" : {
+      "comment" : "Attachments action sheet photo library option."
     },
     "From:" : {
       "comment" : "Composer from field.",
@@ -80,11 +89,17 @@
         }
       }
     },
+    "Import from..." : {
+      "comment" : "Attachments action sheet import option."
+    },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
     "Message to be sent has no recipients" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "One or more attachmentments could not be added" : {
+      "comment" : "Attachment failed to be added to a draft message."
     },
     "Please verify your last recipient" : {
       "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"
@@ -184,6 +199,9 @@
           }
         }
       }
+    },
+    "Take new photo" : {
+      "comment" : "Attachments action sheet camera option."
     },
     "The address is disabled: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."

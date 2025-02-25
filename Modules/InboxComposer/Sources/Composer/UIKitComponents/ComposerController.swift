@@ -26,6 +26,7 @@ enum ComposerControllerEvent {
     case fromFieldEvent(FromFieldViewEvent)
     case subjectFieldEvent(SubjectFieldViewEvent)
     case bodyEvent(BodyEditorEvent)
+    case actionBarEvent(DraftActionBarEvent)
 }
 
 final class ComposerController: UIViewController {
@@ -36,6 +37,7 @@ final class ComposerController: UIViewController {
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
     private let bodyEditor: BodyEditorController
+    private let draftActionBarController = DraftActionBarViewController()
     private let onEvent: (ComposerControllerEvent) -> Void
 
     var state: ComposerState {
@@ -79,6 +81,7 @@ final class ComposerController: UIViewController {
 
         scrollView.addSubview(composerStack)
         view.addSubview(scrollView)
+        addViewController(draftActionBarController, using: view.addSubview(_:))
 
         contactPicker.view.isHidden = true
         view.addSubview(contactPicker.view)
@@ -91,25 +94,28 @@ final class ComposerController: UIViewController {
         fromField.onEvent = { [weak self] in self?.onEvent(.fromFieldEvent($0)) }
         subjectField.onEvent = { [weak self] in self?.onEvent(.subjectFieldEvent($0)) }
         bodyEditor.onEvent = { [weak self] in self?.onEvent(.bodyEvent($0)) }
+        draftActionBarController.onEvent = { [weak self] in self?.onEvent(.actionBarEvent($0)) }
     }
 
     private func setupConstraints() {
-
-        [contactPicker.view, scrollView].forEach {
-            NSLayoutConstraint.activate([
-                $0.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                $0.topAnchor.constraint(equalTo: view.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ])
-        }
+        let closeKeyboardSeparation = 6.0
+        contactPicker.view.anchorTo(view: view)
+        composerStack.anchorTo(view: scrollView)
 
         NSLayoutConstraint.activate([
-            composerStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            composerStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            composerStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            composerStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            composerStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            composerStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: draftActionBarController.view.topAnchor),
+
+            draftActionBarController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            draftActionBarController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            draftActionBarController.view.bottomAnchor.constraint(
+                equalTo: view.keyboardLayoutGuide.topAnchor,
+                constant: closeKeyboardSeparation
+            )
         ])
     }
     
