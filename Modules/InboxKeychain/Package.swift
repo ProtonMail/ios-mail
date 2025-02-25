@@ -9,8 +9,12 @@ let package = Package(
     products: [
         .library(name: "InboxKeychain", targets: ["InboxKeychain"]),
     ],
+    dependencies: [
+        .package(path: "../InboxCore"),
+        .package(path: "../../ProtonPackages/proton_app_uniffi")
+    ],
     targets: [
-        .target(name: "InboxKeychain"),
+        .target(name: "InboxKeychain", dependencies: ["InboxCore", "proton_app_uniffi"]),
         .testTarget(name: "InboxKeychainTests", dependencies: ["InboxKeychain"]),
     ]
 )

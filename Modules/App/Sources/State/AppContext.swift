@@ -19,6 +19,7 @@ import AccountLogin
 import Combine
 import Foundation
 import InboxCore
+import InboxKeychain
 import proton_app_uniffi
 import SwiftUI
 
@@ -68,33 +69,13 @@ final class AppContext: Sendable, ObservableObject {
 
     private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
-        guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-            throw AppContextError.applicationSupportDirectoryNotAccessible
-        }
-        guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            throw AppContextError.cacheDirectoryNotAccessible
-        }
 
         let appConfig = dependencies.appConfigService.appConfig
 
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
-
-        // TODO: exclude application support from iCloud backup
-
-        let applicationSupportPath = applicationSupportFolder.path()
-        let cachePath = cacheFolder.path()
-        AppLogger.logTemporarily(message: "path: \(cacheFolder)")
         
-        let params = MailSessionParams(
-            sessionDir: applicationSupportPath,
-            userDir: applicationSupportPath,
-            mailCacheDir: cachePath, 
-            mailCacheSize: .oneGigabyteInBytes,
-            logDir: cachePath,
-            logDebug: false,
-            apiEnvConfig: appConfig.apiEnvConfig
-        )
+        let params = try MailSessionParamsFactory.make(appConfig: appConfig)
 
         _mailSession = try createMailSession(
             params: params,
@@ -172,11 +153,6 @@ extension AppContext {
     }
 }
 
-enum AppContextError: Error {
-    case applicationSupportDirectoryNotAccessible
-    case cacheDirectoryNotAccessible
-}
-
 final class NetworkStatusManager: NetworkStatusChanged, Sendable {
     static let shared = NetworkStatusManager()
 
@@ -231,12 +207,5 @@ extension AppContext: EventLoopProvider {
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }
-    }
-}
-
-private extension UInt64 {
-    static var oneGigabyteInBytes: Self {
-        let oneGigabyte = Measurement<UnitInformationStorage>(value: 1, unit: .gigabytes)
-        return UInt64(oneGigabyte.converted(to: .bytes).value)
     }
 }

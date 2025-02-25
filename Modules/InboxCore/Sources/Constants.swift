@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,11 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-enum AppConstants {
-
-    /// time interval between event loop poll calls
-    static let eventLoopFrequency: TimeInterval = 30
-
+public enum AppGroup {
+    /// Mail app group identifier to access shared resources
+    public static let mail = "group.ch.protonmail.protonmail"
 }

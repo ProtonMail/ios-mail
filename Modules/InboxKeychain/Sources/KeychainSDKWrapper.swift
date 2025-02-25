@@ -17,7 +17,6 @@
 
 import Foundation
 import InboxCore
-import InboxKeychain
 import proton_app_uniffi
 
 /**
@@ -25,14 +24,14 @@ import proton_app_uniffi
  mention the expected type of error to be thrown due to the Swift language limitations, we should
  use `OsKeyChainError`.
  */
-final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
+public final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
     private let keychain: Keychain
 
-    init() {
+    public init() {
         self.keychain = Keychain(service: Bundle.defaultIdentifier, accessGroup: AppGroup.mail)
     }
 
-    func store(key: String) throws {
+    public func store(key: String) throws {
         AppLogger.logTemporarily(message: "KeychainSDKWrapper.store(key:)", category: .rustLibrary)
         do {
             try keychain.setOrError(key, forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)
@@ -41,7 +40,7 @@ final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
         }
     }
 
-    func delete() throws {
+    public func delete() throws {
         AppLogger.logTemporarily(message: "KeychainSDKWrapper.delete", category: .rustLibrary)
         do {
             try keychain.removeOrError(forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)
@@ -50,7 +49,7 @@ final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
         }
     }
 
-    func get() throws -> String? {
+    public func get() throws -> String? {
         AppLogger.logTemporarily(message: "KeychainSDKWrapper.get", category: .rustLibrary)
         do {
             return try keychain.stringOrError(forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)

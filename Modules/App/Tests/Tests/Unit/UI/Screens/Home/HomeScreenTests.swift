@@ -17,7 +17,9 @@
 
 @testable import ProtonMail
 import AccountLogin
+import InboxCore
 import InboxCoreUI
+import InboxKeychain
 import InboxTesting
 import proton_app_uniffi
 import SwiftUI

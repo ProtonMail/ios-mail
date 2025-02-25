@@ -18,20 +18,33 @@
 import Foundation
 import proton_app_uniffi
 
-struct AppConfig: Sendable {
-    let appVersion: String
-    let environment: Environment
-    
-    struct Environment {
-        let domain: String
-        let apiBaseUrl: String
-        let userAgent: String
-        let isSrpProofSkipped: Bool
-        let isHttpAllowed: Bool
+public struct AppConfig: Sendable {
+    public let appVersion: String
+    public let environment: Environment
+
+    public struct Environment: Sendable {
+        public let domain: String
+        public let apiBaseUrl: String
+        public let userAgent: String
+        public let isSrpProofSkipped: Bool
+        public let isHttpAllowed: Bool
+
+        public init(domain: String, apiBaseUrl: String, userAgent: String, isSrpProofSkipped: Bool, isHttpAllowed: Bool) {
+            self.domain = domain
+            self.apiBaseUrl = apiBaseUrl
+            self.userAgent = userAgent
+            self.isSrpProofSkipped = isSrpProofSkipped
+            self.isHttpAllowed = isHttpAllowed
+        }
+    }
+
+    public init(appVersion: String, environment: Environment) {
+        self.appVersion = appVersion
+        self.environment = environment
     }
 }
 
-extension AppConfig {
+public extension AppConfig {
 
     var apiEnvConfig: ApiConfig {
         let environment = self.environment
