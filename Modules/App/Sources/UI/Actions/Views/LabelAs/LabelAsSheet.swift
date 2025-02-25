@@ -35,7 +35,7 @@ struct LabelAsSheet: View {
                 }
                 .padding(.all, DS.Spacing.large)
             }
-            .background(DS.Color.Background.secondary)
+            .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.Action.labelAs.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
@@ -64,7 +64,7 @@ struct LabelAsSheet: View {
                         .padding(.leading, DS.Spacing.large)
                     Text(L10n.Action.alsoArchive)
                         .font(.body)
-                        .foregroundStyle(DS.Color.Text.weak)
+                        .foregroundStyle(DS.Color.Text.norm)
                     Spacer()
                 }
             }
@@ -95,7 +95,7 @@ struct LabelAsSheet: View {
                             .foregroundStyle(DS.Color.Icon.norm)
                             .padding(.trailing, DS.Spacing.standard)
                         Text(L10n.Sidebar.createLabel)
-                            .foregroundStyle(DS.Color.Text.weak)
+                            .foregroundStyle(DS.Color.Text.norm)
                         Spacer()
                     }
                 }

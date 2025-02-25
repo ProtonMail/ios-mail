@@ -35,6 +35,7 @@ struct ActionSheetButton<Content: View>: View {
             if displayBottomSeparator {
                 Divider()
                     .frame(height: 1)
+                    .background(DS.Color.BackgroundInverted.border)
             }
         }
     }

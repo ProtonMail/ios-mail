@@ -96,12 +96,12 @@ struct SettingsScreen: View {
                         buttonContent(item: item)
                     }
                     if items.last != item {
-                        Divider()
+                        DS.Color.BackgroundInverted.border
                             .frame(height: 1)
-                            .background(DS.Color.Background.norm)
                     }
                 }
             }
+            .listRowSeparator(.hidden)
             .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
         }
@@ -117,7 +117,7 @@ struct SettingsScreen: View {
                     .padding(.trailing, DS.Spacing.large)
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(item.displayData.title)
-                        .foregroundStyle(DS.Color.Text.weak)
+                        .foregroundStyle(DS.Color.Text.norm)
                     Text(item.displayData.subtitle)
                         .foregroundStyle(DS.Color.Text.hint)
                         .font(.subheadline)

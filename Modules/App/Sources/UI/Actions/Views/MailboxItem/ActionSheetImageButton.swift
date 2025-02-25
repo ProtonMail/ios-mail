@@ -31,7 +31,7 @@ struct ActionSheetImageButton: View {
                     .square(size: 20)
                     .foregroundStyle(DS.Color.Icon.norm)
                 Text(displayData.title)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .foregroundStyle(DS.Color.Text.norm)
                 Spacer()
             }
         }

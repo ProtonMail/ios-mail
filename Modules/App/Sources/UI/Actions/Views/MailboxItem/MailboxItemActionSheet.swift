@@ -85,7 +85,7 @@ struct MailboxItemActionSheet: View {
                         section(displayData: state.availableActions.generalActions.map(\.displayData))
                     }.padding(.all, DS.Spacing.large)
                 }
-                .background(DS.Color.Background.secondary)
+                .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(state.title)
                 .navigationBarTitleDisplayMode(.inline)
                 .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
@@ -161,7 +161,7 @@ struct MailboxItemActionSheet: View {
                     .foregroundStyle(DS.Color.Icon.norm)
                 Text(action.displayData.title)
                     .font(.body)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .foregroundStyle(DS.Color.Text.norm)
             }
             .frame(height: 84)
             .frame(maxWidth: .infinity)

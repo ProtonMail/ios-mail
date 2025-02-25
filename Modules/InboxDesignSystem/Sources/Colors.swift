@@ -20,6 +20,7 @@ public extension DS.Color {
         public static let norm = Color(.backgroundInvertedNorm)
         public static let secondary = Color(.backgroundInvertedSecondary)
         public static let deep = Color(.backgroundInvertedSecondary)
+        public static let border = Color(.backgroundInvertedBorder)
     }
 
     enum Border {

@@ -30,7 +30,7 @@ struct ActionSheetSelectableButton: View {
                     .padding(.leading, displayData.leadingSpacing)
                 Text(displayData.title)
                     .lineLimit(1)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .foregroundStyle(DS.Color.Text.norm)
                 Spacer()
 
                 if let image = displayData.isSelected.image {

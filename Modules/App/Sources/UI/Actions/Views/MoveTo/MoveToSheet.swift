@@ -59,7 +59,7 @@ struct MoveToSheet: View {
                     }
                     .padding(.all, DS.Spacing.large)
                 }
-                .background(DS.Color.Background.secondary)
+                .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(L10n.Action.moveTo.string)
                 .navigationBarTitleDisplayMode(.inline)
                 .onAppear { store.handle(action: .viewAppear) }
@@ -109,7 +109,7 @@ struct MoveToSheet: View {
                             .foregroundStyle(DS.Color.Icon.norm)
                             .padding(.trailing, DS.Spacing.standard)
                         Text(L10n.Sidebar.createFolder)
-                            .foregroundStyle(DS.Color.Text.weak)
+                            .foregroundStyle(DS.Color.Text.norm)
                         Spacer()
                     }
                 }
