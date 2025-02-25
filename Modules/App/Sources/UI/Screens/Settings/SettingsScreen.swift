@@ -98,6 +98,7 @@ struct SettingsScreen: View {
                     if items.last != item {
                         DS.Color.BackgroundInverted.border
                             .frame(height: 1)
+                            .frame(maxWidth: .infinity)
                     }
                 }
             }
