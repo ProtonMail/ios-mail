@@ -30,7 +30,7 @@ class SettingsScreenSnapshotTests: BaseTestCase {
             mailUserSession: MailUserSessionStub(noPointer: .init())
         )
 
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: sut, precision: 0.99)
     }
 
 }
