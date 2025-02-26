@@ -27,7 +27,6 @@ import XCTest
 final class ComposerModelTests: XCTestCase {
     private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
-    private var testPendingQueueProvider: PendingQueueProvider!
     private var testPhotosItemsHandler: PhotosPickerItemHandler!
     private var testFilesItemsHandler: FilePickerItemHandler!
     let dummyName1 = "dummy name"
@@ -46,7 +45,6 @@ final class ComposerModelTests: XCTestCase {
                 .makeComposerContactSingle(name: "", email: "c@example.com"),
             ])
         )
-        self.testPendingQueueProvider = .init(userSession: .init(noPointer: .init()))
         self.testPhotosItemsHandler = .init(toastStateStore: .init(initialState: .initial))
         self.testFilesItemsHandler = .init(toastStateStore: .init(initialState: .initial))
         self.cancellables = []
@@ -65,7 +63,6 @@ final class ComposerModelTests: XCTestCase {
             draftOrigin: .new,
             draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: testContactProvider,
-            pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
@@ -343,7 +340,6 @@ private extension ComposerModelTests {
             draftOrigin: draftOrigin,
             draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: contactProvider,
-            pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),

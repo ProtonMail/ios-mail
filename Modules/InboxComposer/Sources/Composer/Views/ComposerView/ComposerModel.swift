@@ -32,7 +32,6 @@ final class ComposerModel: ObservableObject {
     private let draftOrigin: DraftOrigin
     private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
-    private let pendingQueueProvider: PendingQueueProvider
     private let onSendingEvent: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
@@ -55,7 +54,6 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        pendingQueueProvider: PendingQueueProvider,
         onSendingEvent: @escaping () -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
@@ -66,7 +64,6 @@ final class ComposerModel: ObservableObject {
         self.draftOrigin = draftOrigin
         self.draftSavedToastCoordinator = draftSavedToastCoordinator
         self.contactProvider = contactProvider
-        self.pendingQueueProvider = pendingQueueProvider
         self.onSendingEvent = onSendingEvent
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
@@ -215,7 +212,6 @@ final class ComposerModel: ObservableObject {
             case .ok:
                 messageHasBeenSent = true
                 onSendingEvent()
-                pendingQueueProvider.executeActionsInBackgroundTask()
                 DispatchQueue.main.async {
                     dismissAction()
                 }

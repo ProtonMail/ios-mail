@@ -28,6 +28,10 @@ final class MailSessionSpy: MailSessionProtocol {
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
 
+    func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
+        fatalError()
+    }
+
     func deleteAccount(userId: String) async -> VoidSessionResult {
         fatalError()
     }
@@ -113,6 +117,10 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func setPrimaryAccount(userId: String) async -> VoidSessionResult {
+        fatalError()
+    }
+
+    func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
         fatalError()
     }
 

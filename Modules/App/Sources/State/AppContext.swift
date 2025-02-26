@@ -182,15 +182,6 @@ extension AppContext: EventLoopProvider {
                 AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
                 return
             }
-
-            /**
-             For now, event loop calls can't be run in parallel so we flush any action from the queue first.
-             Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
-             */
-            AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
-//            try await userSession.executePendingActions().get()
-
             AppLogger.log(message: "poll events", category: .rustLibrary)
             try await userSession.pollEvents().get()
         } catch {

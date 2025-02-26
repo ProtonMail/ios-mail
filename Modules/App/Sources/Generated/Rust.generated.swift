@@ -303,6 +303,16 @@ public extension LoginFlowUserIdResult {
         }
     }
 }
+public extension MailSessionAllMessagesWereSentResult {
+    func get() throws -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionGetAccountResult {
     func get() throws -> StoredAccount? {
         switch self {
@@ -395,6 +405,16 @@ public extension MailSessionNewLoginFlowResult {
 }
 public extension MailSessionResumeLoginFlowResult {
     func get() throws -> LoginFlow {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionStartBackgroundExecutionResult {
+    func get() throws -> BackgroundExecutionHandle {
         switch self {
         case .ok(let value):
             value
