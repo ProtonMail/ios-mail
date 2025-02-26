@@ -175,7 +175,7 @@ targets:
       - package: SwiftUIIntrospect
     preBuildScripts:
       - name: Sourcery
-        script: /opt/homebrew/bin/mint run sourcery --config sourcery/sourcery.yaml
+        script: find sourcery/configs -name "*.yaml" -exec /opt/homebrew/bin/mint run sourcery --config {} \;
 
   ProtonMailTest:
     type: bundle.unit-test

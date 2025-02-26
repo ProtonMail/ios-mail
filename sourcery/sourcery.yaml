@@ -1,9 +1,0 @@
-sources:
-    - ../Modules/App/Sources
-    - ../Modules/InboxComposer
-    - ../Modules/InboxContacts
-    - ../ProtonPackages/et-protoncore
-    - ../ProtonPackages/proton_app_uniffi
-templates:
-    - .
-output: ../Modules/App/Sources/Generated

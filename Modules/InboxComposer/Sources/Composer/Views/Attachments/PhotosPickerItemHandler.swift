@@ -57,19 +57,11 @@ struct PhotosPickerItemHandler {
         draft: AppDraftProtocol,
         file: URL
     ) async throws(DraftAttachmentError) -> String {
-        switch await draft.attachmentList().addInline(path: file.path, filenameOverride: nil) {
-        case .ok(let cid):
-            return cid
-        case .error(let error):
-            throw error
-        }
+        try await draft.attachmentList().addInline(path: file.path, filenameOverride: nil).get()
     }
 
     private func addFileToDraftAsAttachment(draft: AppDraftProtocol, file: URL) async throws(DraftAttachmentError) {
-        let result = await draft.attachmentList().add(path: file.path)
-        if case .error(let error) = result {
-            throw error
-        }
+        try await draft.attachmentList().add(path: file.path).get()
     }
 
     /**

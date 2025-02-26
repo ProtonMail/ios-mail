@@ -32,14 +32,7 @@ public struct ContactSuggestionsRepository {
         self.contactStore = contactStore
         self.permissionsHandler = permissionsHandler
         self.allContacts = { deviceContacts in
-            let result = await allContactsProvider.contactSuggestions(deviceContacts, mailUserSession)
-
-            switch result {
-            case .ok(let contactSuggestions):
-                return contactSuggestions
-            case .error:
-                return nil
-            }
+            try? await allContactsProvider.contactSuggestions(deviceContacts, mailUserSession).get()
         }
     }
 

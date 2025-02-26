@@ -27,11 +27,6 @@ struct ContactItemDeleterAdapter {
     }
 
     func delete(itemID: Id) async throws {
-        switch await deleteItem(itemID, mailUserSession) {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
+        try await deleteItem(itemID, mailUserSession).get()
     }
 }

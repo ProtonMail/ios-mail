@@ -1,0 +1,6 @@
+sources:
+    - ../../Modules/App/Sources
+    - ../../ProtonPackages/proton_app_uniffi
+templates:
+    - ../
+output: ../../Modules/App/Sources/Generated

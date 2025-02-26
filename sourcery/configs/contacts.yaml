@@ -1,0 +1,6 @@
+sources:
+    - ../../Modules/InboxContacts/Sources
+    - ../../ProtonPackages/proton_app_uniffi
+templates:
+    - ../
+output: ../../Modules/InboxContacts/Sources/Generated
