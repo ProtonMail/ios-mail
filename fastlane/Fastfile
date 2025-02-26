@@ -87,7 +87,7 @@ platform :ios do
   end
 
   def bump_build_number_in_xcodegen_configuration(new_build_number)
-    sh("sed -i '' -e 's/^\\( *CURRENT_PROJECT_VERSION: \\).*/\\1#{new_build_number}/' #{XCODEGEN_CONFIGURATION_FILE_PATH}").strip
+    sh("sed -i '' -e 's/^\\( *CURRENT_PROJECT_VERSION: \\).*/\\1#{new_build_number}/g' #{XCODEGEN_CONFIGURATION_FILE_PATH}").strip
   end
 
   def commit_add_tag_and_push(build_number)

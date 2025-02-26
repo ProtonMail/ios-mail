@@ -206,6 +206,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
+        CURRENT_PROJECT_VERSION: 46
       configs:
         Release:
           CODE_SIGN_STYLE: Manual
@@ -215,6 +216,7 @@ targets:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
         CFBundleDisplayName: "Proton Mail"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         NSExtension:
           NSExtensionPointIdentifier: 'com.apple.usernotifications.service'
           NSExtensionPrincipalClass: '$(PRODUCT_MODULE_NAME).NotificationService'
