@@ -19,16 +19,10 @@ import Foundation
 
 enum MessageExpiryTimeFormatter {
     static func string(from unixTimestamp: Int, currentDate: Date) -> String {
-        let expiryDate = Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
-        let timeInterval = expiryDate.timeIntervalSince(currentDate)
+        let duration = MessageExpiryDurationCalculator.duration(from: unixTimestamp, currentDate: currentDate)
+        let formatter = duration.isOneMinuteOrMore ? mainFormatter : lastMinuteFormatter
 
-        guard timeInterval >= 0 else {
-            return "Expired"
-        }
-        
-        let formatter = timeInterval >= 60 ? mainFormatter : lastMinuteFormatter
-
-        return formatter.string(from: timeInterval).unsafelyUnwrapped
+        return formatter.string(from: duration.interval).unsafelyUnwrapped
     }
     
     // MARK: - Private

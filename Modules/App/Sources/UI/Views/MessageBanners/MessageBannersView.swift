@@ -68,18 +68,20 @@ struct MessageBannersView: View {
                     style: .error
                 )
             case .expiry(let timestamp):
-                let formattedTime = MessageExpiryTimeFormatter.string(
-                    from: Int(timestamp),
-                    currentDate: currentDate
-                )
-                return regularSmallNoButton(
+                let timestamp = Int(timestamp)
+                let duration = MessageExpiryDurationCalculator.duration(from: timestamp, currentDate: currentDate)
+                let formattedTime = MessageExpiryTimeFormatter.string(from: timestamp, currentDate: currentDate)
+
+                return smallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime)
+                    message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
+                    style: duration.isOneMinuteOrMore ? .regular : .error
                 )
             case .autoDelete:
-                return regularSmallNoButton(
+                return smallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.autoDeleteTitle(formattedTime: "20 days")
+                    message: L10n.MessageBanner.autoDeleteTitle(formattedTime: "20 days"),
+                    style: .regular
                 )
             case .unsubscribeNewsletter:
                 return .init(
@@ -121,7 +123,11 @@ struct MessageBannersView: View {
         return OrderedSet(banners)
     }
     
-    private func regularSmallNoButton(icon: ImageResource, message: LocalizedStringResource) -> Banner {
-        .init(icon: icon, message: message, size: .small(.none), style: .regular)
+    private func smallNoButton(
+        icon: ImageResource,
+        message: LocalizedStringResource,
+        style: Banner.Style
+    ) -> Banner {
+        .init(icon: icon, message: message, size: .small(.none), style: style)
     }
 }

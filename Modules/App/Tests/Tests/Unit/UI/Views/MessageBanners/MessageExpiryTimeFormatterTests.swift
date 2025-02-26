@@ -24,7 +24,7 @@ struct MessageExpiryTimeFormatterTests {
     }
     
     @Test("Formats expiration time correctly", arguments: [
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:01"), "Expired"),
+        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:01"), "0 seconds"),
         (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:00"), "0 seconds"),
         (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:51"), "9 seconds"),
         (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:45"), "15 seconds"),

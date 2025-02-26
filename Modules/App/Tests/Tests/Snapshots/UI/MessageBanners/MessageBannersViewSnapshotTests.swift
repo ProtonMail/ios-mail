@@ -58,6 +58,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
             types: [
                 .blockedSender,
                 .spam,
+                .expiry(timestamp: 1_738_920_762),
                 .scheduledSend(timestamp: 1_740_238_200),
                 .snoozed(timestamp: 1_740_238_200),
                 .remoteContent
