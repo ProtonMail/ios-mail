@@ -219,14 +219,8 @@ private extension MailUserSession {
             apiEnvConfig: appConfig.apiEnvConfig
         )
 
-        let mailSession = try createMailSession(
-            params: params,
-            keyChain: KeychainSDKWrapper(),
-            networkCallback: nil
-        ).get()
-
+        let mailSession = try createMailSession(params: params, keyChain: KeychainSDKWrapper()).get()
         let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
-
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 
         switch mailSession.userContextFromSession(session: storedSession) {

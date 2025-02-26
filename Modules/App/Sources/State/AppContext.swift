@@ -77,11 +77,7 @@ final class AppContext: Sendable, ObservableObject {
         
         let params = MailSessionParamsFactory.make(appConfig: appConfig)
 
-        _mailSession = try createMailSession(
-            params: params,
-            keyChain: dependencies.keychain,
-            networkCallback: dependencies.networkStatus
-        ).get()
+        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain).get()
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
@@ -148,17 +144,8 @@ extension AppContext {
 
     struct Dependencies {
         let keychain: OsKeyChain = KeychainSDKWrapper()
-        let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
         let appConfigService: AppConfigService = AppConfigService.shared
         let userDefaults: UserDefaults = .standard
-    }
-}
-
-final class NetworkStatusManager: NetworkStatusChanged, Sendable {
-    static let shared = NetworkStatusManager()
-
-    func onNetworkStatusChanged(online: Bool) {
-        AppLogger.logTemporarily(message: "onNetworkStatusChanged online: \(online)")
     }
 }
 
@@ -201,7 +188,8 @@ extension AppContext: EventLoopProvider {
              Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
              */
             AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            try await userSession.executePendingActions().get()
+            // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
+//            try await userSession.executePendingActions().get()
 
             AppLogger.log(message: "poll events", category: .rustLibrary)
             try await userSession.pollEvents().get()
