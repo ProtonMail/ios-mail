@@ -17,5 +17,5 @@
 
 public enum AppGroup {
     /// Mail app group identifier to access shared resources
-    public static let mail = "group.ch.protonmail.protonmail"
+    public static let mail = "group.me.proton.mail"
 }
