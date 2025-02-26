@@ -98,19 +98,20 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
             task.setTaskCompleted(success: true)
         }
 
-        Task {
-            switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
-            case (.ok, .ok):
-                AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
-                task.setTaskCompleted(success: true)
-            case (.error(let error), _):
-                task.setTaskCompleted(success: false)
-                AppLogger.log(error: error, category: .backgroundTask)
-            case (_, .error(let error)):
-                task.setTaskCompleted(success: false)
-                AppLogger.log(error: error, category: .backgroundTask)
-            }
-        }
+        // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
+//        Task {
+//            switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
+//            case (.ok, .ok):
+//                AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
+//                task.setTaskCompleted(success: true)
+//            case (.error(let error), _):
+//                task.setTaskCompleted(success: false)
+//                AppLogger.log(error: error, category: .backgroundTask)
+//            case (_, .error(let error)):
+//                task.setTaskCompleted(success: false)
+//                AppLogger.log(error: error, category: .backgroundTask)
+//            }
+//        }
     }
 
     private var taskRequest: BGProcessingTaskRequest {

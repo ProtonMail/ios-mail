@@ -201,7 +201,8 @@ extension AppContext: EventLoopProvider {
              Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
              */
             AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            try await userSession.executePendingActions().get()
+            // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
+//            try await userSession.executePendingActions().get()
 
             AppLogger.log(message: "poll events", category: .rustLibrary)
             try await userSession.pollEvents().get()

@@ -493,16 +493,6 @@ public extension MailUserSessionConnectionStatusResult {
         }
     }
 }
-public extension MailUserSessionExecutePendingActionsResult {
-    func get() throws -> UInt64 {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MailUserSessionForkResult {
     func get() throws -> String {
         switch self {

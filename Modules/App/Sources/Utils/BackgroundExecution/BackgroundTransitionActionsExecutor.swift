@@ -42,7 +42,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             expirationHandler: nil
         )
         Task {
-            _ = await session.executePendingActions()
+            // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
+//            _ = await session.executePendingActions()
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTask)
         }
     }

@@ -19,8 +19,8 @@
 import proton_app_uniffi
 
 class MailUserSessionSpy: MailUserSessionProtocol {
-
-    var pendingActionsExecutionResultStub = MailUserSessionExecutePendingActionsResult.ok(1)
+    // this will be reworked in https://protonag.atlassian.net/browse/ET-2226
+//    var pendingActionsExecutionResultStub = MailUserSessionExecutePendingActionsResult.ok(1)
     var pollEventsResultStub = VoidEventResult.ok
 
     private(set) var pollEventInvokeCount = 0
@@ -32,12 +32,6 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         pollEventInvokeCount += 1
 
         return pollEventsResultStub
-    }
-
-    func executePendingActions() async -> MailUserSessionExecutePendingActionsResult {
-        executePendingActionsInvokeCount += 1
-
-        return pendingActionsExecutionResultStub
     }
 
     func accountDetails() async -> MailUserSessionAccountDetailsResult {
@@ -52,7 +46,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         fatalError()
     }
 
-    func executePendingAction() async -> VoidSessionResult {
+    func executeWhenOnline(callback: any proton_app_uniffi.LiveQueryCallback) {
         fatalError()
     }
 
