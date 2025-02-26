@@ -28,6 +28,12 @@ extension MailSession: BackgroundTaskExecutor {
     func endExecuteInBackground() async {}
 }
 
+protocol ConnectionStatusProvider {
+    func isNetworkConnected() -> Bool
+}
+
+extension MailSession: ConnectionStatusProvider {}
+
 class BackgroundTransitionActionsExecutor_v2: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     static let taskName = "finish_pending_actions"
