@@ -33,7 +33,6 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        pendingQueueProvider: PendingQueueProvider,
         photosItemsHandler: PhotosPickerItemHandler,
         fileItemsHandler: FilePickerItemHandler,
         onSendingEvent: @escaping () -> Void
@@ -44,7 +43,6 @@ struct ComposerView: View {
                 draftOrigin: draftOrigin,
                 draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
-                pendingQueueProvider: pendingQueueProvider,
                 onSendingEvent: onSendingEvent,
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),

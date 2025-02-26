@@ -48,13 +48,7 @@ public struct ComposerScreen: View {
     ) {
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
-        self._model = StateObject(
-            wrappedValue: ComposerScreenModel(
-                draft: draft,
-                draftOrigin: draftOrigin,
-                userSession: dependencies.userSession
-            )
-        )
+        self._model = StateObject(wrappedValue: ComposerScreenModel(draft: draft, draftOrigin: draftOrigin))
     }
 
     public var body: some View {
@@ -75,7 +69,6 @@ public struct ComposerScreen: View {
                 draftOrigin: draftOrigin,
                 draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
                 contactProvider: dependencies.contactProvider,
-                pendingQueueProvider: model.pendingQueueProvider,
                 photosItemsHandler: .init(toastStateStore: toastStateStore),
                 fileItemsHandler: .init(toastStateStore: toastStateStore),
                 onSendingEvent: onSendingEvent
