@@ -32,7 +32,8 @@ struct BannerView: View {
                     .fill(model.style.color.background)
                     .stroke(model.style.color.border, lineWidth: 1)
             }
-            .safeAreaPadding([.horizontal, .bottom], DS.Spacing.large)
+            .frame(maxWidth: .infinity)
+            .padding([.horizontal, .bottom], DS.Spacing.large)
     }
     
     // MARK: - Private
@@ -83,8 +84,8 @@ struct BannerView: View {
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(style.text)
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(lineLimit)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
     
