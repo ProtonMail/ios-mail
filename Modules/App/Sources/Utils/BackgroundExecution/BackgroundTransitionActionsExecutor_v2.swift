@@ -18,6 +18,16 @@
 import proton_app_uniffi
 import UIKit
 
+protocol BackgroundTaskExecutor {
+    func startExecuteInBackground() async
+    func endExecuteInBackground() async
+}
+
+extension MailSession: BackgroundTaskExecutor {
+    func startExecuteInBackground() async {}
+    func endExecuteInBackground() async {}
+}
+
 class BackgroundTransitionActionsExecutor_v2: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     static let taskName = "finish_pending_actions"
