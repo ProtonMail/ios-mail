@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Collections
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -80,7 +81,9 @@ struct ExpandedMessageCell: View {
                         }
                     }
                 )
-
+                if !uiModel.messageDetails.banners.isEmpty {
+                    MessageBannersView(types: OrderedSet(uiModel.messageDetails.banners), timer: Timer.self)
+                }
                 MessageBodyAttachmentsView(
                     state: .state(attachments: uiModel.messageDetails.attachments),
                     attachmentIDToOpen: $attachmentIDToOpen

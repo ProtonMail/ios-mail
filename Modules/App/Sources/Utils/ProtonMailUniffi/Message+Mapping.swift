@@ -80,7 +80,16 @@ extension Message {
                 location: exclusiveLocation?.model,
                 labels: labels,
                 other: other, 
-                attachments: attachmentsMetadata.map(\.displayModel)
+                attachments: attachmentsMetadata.map(\.displayModel),
+                banners: [
+                    // FIXME: [ET-2233] Integrate data source from Rust SDK
+                    /*
+                     .blockedSender,
+                     .phishingAttempt,
+                     .expiry(timestamp: 1744371901),
+                     .unsubscribeNewsletter
+                     */
+                ]
             )
         )
     }

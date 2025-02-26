@@ -18,6 +18,7 @@
 import InboxCoreUI
 import InboxDesignSystem
 import enum proton_app_uniffi.ExclusiveLocation
+import enum proton_app_uniffi.MessageBanner
 import SwiftUI
 
 struct MessageDetailsView: View {
@@ -337,6 +338,7 @@ struct MessageDetailsUIModel {
     let labels: [LabelUIModel]
     let other: [MessageDetail.Other]
     let attachments: [AttachmentDisplayModel]
+    let banners: [MessageBanner]
 }
 
 enum MessageDetail {
@@ -427,7 +429,8 @@ enum MessageDetailsPreviewProvider {
             location: location?.model,
             labels: labels,
             other: [.starred, .pinned], 
-            attachments: .previewData
+            attachments: .previewData,
+            banners: []
         )
     }
 
