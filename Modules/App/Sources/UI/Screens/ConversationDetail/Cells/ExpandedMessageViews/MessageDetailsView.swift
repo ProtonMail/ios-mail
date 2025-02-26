@@ -34,8 +34,7 @@ struct MessageDetailsView: View {
             extendedDetailsView
                 .removeViewIf(isHeaderCollapsed)
         }
-        .padding(.horizontal, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.large)
+        .padding([.horizontal, .bottom], DS.Spacing.large)
     }
 
     // MARK: - Private
