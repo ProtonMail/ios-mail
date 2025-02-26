@@ -18,7 +18,7 @@
 import Foundation
 
 enum MessageExpiryDurationCalculator {
-    struct ExpiryDuration {
+    struct Duration {
         let interval: TimeInterval
        
         var isOneMinuteOrMore: Bool {
@@ -26,7 +26,7 @@ enum MessageExpiryDurationCalculator {
         }
     }
 
-    static func duration(from unixTimestamp: Int, currentDate: Date) -> ExpiryDuration {
+    static func duration(from unixTimestamp: Int, currentDate: Date) -> Duration {
         let expiryDate = Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
         let timeInterval = expiryDate.timeIntervalSince(currentDate)
 

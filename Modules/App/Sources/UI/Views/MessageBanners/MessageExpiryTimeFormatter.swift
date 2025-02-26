@@ -29,7 +29,7 @@ enum MessageExpiryTimeFormatter {
 
     private static let mainFormatter = makeFormatter(units: [.day, .hour, .minute])
     private static let lastMinuteFormatter = makeFormatter(units: [.second])
-    
+
     private static func makeFormatter(units: NSCalendar.Unit) -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = units
