@@ -42,14 +42,17 @@ public struct TestableNotificationService {
     }
 
     public func transform(originalContent: UNNotificationContent) async -> UNNotificationContent {
-        guard
-            let mutableContent = (originalContent.mutableCopy() as? UNMutableNotificationContent),
-            let encryptedPushNotification = parseDecryptablePayload(from: originalContent.userInfo)
-        else {
+        guard let mutableContent = (originalContent.mutableCopy() as? UNMutableNotificationContent) else {
+            AppLogger.log(message: "Notification content cannot be mutated", category: .notifications, isError: true)
             return originalContent
         }
 
-        await replaceTitleAndBody(of: mutableContent, byDecrypting: encryptedPushNotification)
+        // this is a temporary "marker" body to see if the extension has been launched by the OS, which is known to not be the case sometimes
+        mutableContent.body = "You received a new message!"
+
+        if let encryptedPushNotification = parseDecryptablePayload(from: originalContent.userInfo) {
+            await replaceTitleAndBody(of: mutableContent, byDecrypting: encryptedPushNotification)
+        }
 
         return mutableContent
     }
@@ -59,6 +62,7 @@ public struct TestableNotificationService {
             let encryptedMessage = userInfo["encryptedMessage"] as? String,
             let sessionId = userInfo["UID"] as? String
         else {
+            AppLogger.log(message: "Missing required fields in the payload", category: .notifications, isError: true)
             return nil
         }
 
@@ -74,8 +78,6 @@ public struct TestableNotificationService {
             mutableContent.title = notificationData.sender.displayableName
             mutableContent.body = notificationData.body
         } catch {
-            mutableContent.title = "Failed to decrypt notification"
-            mutableContent.body = error.localizedDescription
             AppLogger.log(error: error, category: .notifications)
         }
     }

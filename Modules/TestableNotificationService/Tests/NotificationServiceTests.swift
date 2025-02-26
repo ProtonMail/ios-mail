@@ -69,25 +69,25 @@ final class NotificationServiceTests {
     }
 
     @Test
-    func whenInitialParsingFails_doesNotModifyTitleOrBody() async {
+    func whenInitialParsingFails_onlyModifiesTheBody() async {
         let originalContent = prepareContent(userInfo: [:])
 
         let updatedContent = await sut.transform(originalContent: originalContent)
 
         #expect(updatedContent.title == "original title")
-        #expect(updatedContent.body == "original body")
+        #expect(updatedContent.body == "You received a new message!")
     }
 
     @Test
-    func whenDecryptionFails_replacesTitleAndBodyWithErrorNotice() async {
+    func whenDecryptionFails_onlyModifiesTheBody() async {
         let originalContent = prepareContent()
         let stubbedError = ActionError.other(.unexpected(.crypto))
         stubbedDecryptionResult = .failure(stubbedError)
 
         let updatedContent = await sut.transform(originalContent: originalContent)
 
-        #expect(updatedContent.title == "Failed to decrypt notification")
-        #expect(updatedContent.body == stubbedError.localizedDescription)
+        #expect(updatedContent.title == "original title")
+        #expect(updatedContent.body == "You received a new message!")
     }
 
     private func prepareContent(
