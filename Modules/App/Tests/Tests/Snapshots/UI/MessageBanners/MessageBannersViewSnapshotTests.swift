@@ -38,26 +38,32 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
     }
     
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
-        let bannersView = MessageBannersView(types: [
-            .blockedSender,
-            .phishingAttempt,
-            .expiry(timestamp: 1_740_238_200),
-            .autoDelete(timestamp: 1_740_238_200),
-            .unsubscribeNewsletter,
-            .embeddedImages
-        ])
+        let bannersView = MessageBannersView(
+            types: [
+                .blockedSender,
+                .phishingAttempt,
+                .expiry(timestamp: 1_740_238_200),
+                .autoDelete(timestamp: 1_740_238_200),
+                .unsubscribeNewsletter,
+                .embeddedImages
+            ],
+            timer: Timer.self
+        )
         
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
     
     func testMessageBannersViewSecondVariantLayoutsCorrectly() {
-        let bannersView = MessageBannersView(types: [
-            .blockedSender,
-            .spam,
-            .scheduledSend(timestamp: 1_740_238_200),
-            .snoozed(timestamp: 1_740_238_200),
-            .remoteContent
-        ])
+        let bannersView = MessageBannersView(
+            types: [
+                .blockedSender,
+                .spam,
+                .scheduledSend(timestamp: 1_740_238_200),
+                .snoozed(timestamp: 1_740_238_200),
+                .remoteContent
+            ],
+            timer: Timer.self
+        )
         
         assertSnapshotsOnIPhoneX(of: bannersView)
     }

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
@@ -24,14 +25,25 @@ import SwiftUI
 
 struct MessageBannersView: View {
     let types: OrderedSet<MessageBanner>
+    let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
+    
+    @State private var currentDate: Date = DateEnvironment.currentDate()
+
+    init(types: OrderedSet<MessageBanner>, timer: Timer.Type) {
+        self.types = types
+        self.timerPublisher = timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    }
     
     var body: some View {
-        BannersView(model: model(from: types))
+        BannersView(model: model(from: types, currentDate: currentDate))
+            .onReceive(timerPublisher) { _ in
+                currentDate = DateEnvironment.currentDate()
+            }
     }
     
     // MARK: - Private
     
-    private func model(from types: OrderedSet<MessageBanner>) -> OrderedSet<Banner> {
+    private func model(from types: OrderedSet<MessageBanner>, currentDate: Date) -> OrderedSet<Banner> {
         let banners: [Banner] = types.compactMap { type in
             switch type {
             case .blockedSender:
@@ -58,7 +70,7 @@ struct MessageBannersView: View {
             case .expiry(let timestamp):
                 let formattedTime = MessageExpiryTimeFormatter.string(
                     from: Int(timestamp),
-                    currentDate: DateEnvironment.currentDate()
+                    currentDate: currentDate
                 )
                 return regularSmallNoButton(
                     icon: DS.Icon.icTrashClock,
