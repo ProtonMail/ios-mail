@@ -105,6 +105,7 @@ extension AppContext: AccountAuthDelegate {
 
     func setupAccountBindings() {
         accountAuthCoordinator.$primaryAccountSession
+            .dropFirst()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newSession in
                 guard let self else { return }
