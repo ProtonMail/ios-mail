@@ -122,7 +122,7 @@ enum L10n {
         )
 
         static let someAttachmentCouldNotBeAdded = LocalizedStringResource(
-            "One or more attachmentments could not be added",
+            "Some attachmentments could not be added",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Attachment failed to be added to a draft message."
         )

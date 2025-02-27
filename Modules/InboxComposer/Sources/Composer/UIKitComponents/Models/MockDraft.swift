@@ -30,6 +30,7 @@ final class MockDraft: AppDraftProtocol {
     var mockToRecipientList = MockComposerRecipientList()
     var mockCcRecipientList = MockComposerRecipientList()
     var mockBccRecipientList = MockComposerRecipientList()
+    var mockAttachments = [String]()
 
     static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
         let draft = MockDraft()
@@ -98,6 +99,11 @@ final class MockDraft: AppDraftProtocol {
 
     func discard() async -> VoidDraftDiscardResult {
         .ok
+    }
+
+    func add(attachmentFilePath: String) -> VoidDraftAttachmentResult {
+        mockAttachments.append(attachmentFilePath)
+        return .ok
     }
 }
 

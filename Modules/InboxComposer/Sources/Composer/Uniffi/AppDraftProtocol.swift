@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 import proton_app_uniffi
 
@@ -46,6 +47,8 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setSubject(subject: String) -> VoidDraftSaveSendResult
     func subject() -> String
 
+    func add(attachmentFilePath: String) -> VoidDraftAttachmentResult
+
     func discard() async -> VoidDraftDiscardResult
 }
 
@@ -67,4 +70,15 @@ extension Draft: AppDraftProtocol {
         let list: ComposerRecipientList = self.bccRecipients()
         return list
     }
+
+    // FIXME: Delete when SDK provides it
+    public func add(attachmentFilePath: String) -> VoidDraftAttachmentResult {
+        return .ok
+    }
+}
+
+// FIXME: Delete when SDK provides it
+public enum VoidDraftAttachmentResult {
+    case ok
+    case error(LocalizedError)
 }

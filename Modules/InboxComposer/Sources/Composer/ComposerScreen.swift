@@ -76,6 +76,8 @@ public struct ComposerScreen: View {
                 draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
                 contactProvider: dependencies.contactProvider,
                 pendingQueueProvider: model.pendingQueueProvider,
+                photosItemsHandler: .init(toastStateStore: toastStateStore),
+                fileItemsHandler: .init(toastStateStore: toastStateStore),
                 onSendingEvent: onSendingEvent
             )
         }

@@ -31,6 +31,26 @@ final class FileManagerAttachmentHelpersTests: XCTestCase {
         try sut.removeItem(at: tempDirectory)
     }
 
+    // MARK: copyToUniqueURL
+
+    func testCopyToUniqueURL_whenFileExists_itShouldCopyTheFile() throws {
+        let sourceFile = tempDirectory.appendingPathComponent("testFile.txt")
+        let destinationFolder = tempDirectory.appendingPathComponent("destination")
+        try "Test content".write(to: sourceFile, atomically: true, encoding: .utf8)
+
+        let copiedFile = try sut.copyToUniqueURL(file: sourceFile, to: destinationFolder)
+
+        XCTAssertTrue(sut.fileExists(atPath: copiedFile.path))
+        XCTAssertTrue(sut.fileExists(atPath: sourceFile.path))
+    }
+
+    func testCopyToUniqueURL_whenFileDoesNotExist_itShouldThrowError() {
+        let nonExistentFile = tempDirectory.appendingPathComponent("nonExistent.txt")
+        let destinationFolder = tempDirectory.appendingPathComponent("destination")
+
+        XCTAssertThrowsError(try sut.copyToUniqueURL(file: nonExistentFile, to: destinationFolder))
+    }
+
     // MARK: deleteContainingFolder
 
     func testDeleteContainingFolder_whenFolderExists_itShouldDeleteTheFolder() throws {

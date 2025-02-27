@@ -36,6 +36,7 @@ final class ComposerModel: ObservableObject {
     private let onSendingEvent: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
+    private let fileItemsHandler: FilePickerItemHandler
 
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
@@ -58,7 +59,8 @@ final class ComposerModel: ObservableObject {
         onSendingEvent: @escaping () -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
-        photosItemsHandler: PhotosPickerItemHandler = .init()
+        photosItemsHandler: PhotosPickerItemHandler,
+        fileItemsHandler: FilePickerItemHandler
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
@@ -70,6 +72,7 @@ final class ComposerModel: ObservableObject {
         self.state = .initial
         self.pickersState = .init()
         self.photosItemsHandler = photosItemsHandler
+        self.fileItemsHandler = fileItemsHandler
         self.state = makeState(from: draft)
         setUpComposerRecipientListCallbacks()
     }
@@ -234,39 +237,34 @@ final class ComposerModel: ObservableObject {
     func selectedAttachmentSource(_ source: AttachmentSource) {
         switch source {
         case .photoGallery:
-            showToast(.comingSoon)
-            // FIXME: When SDK is ready to get attachments
-//            pickersState.isPhotosPickerPresented = true
+            pickersState.isPhotosPickerPresented = true
         case .camera:
             showToast(.comingSoon)
         case .files:
-            showToast(.comingSoon)
+            pickersState.isFileImporterPresented = true
         }
     }
 
-    func addAttachments(selectedPhotosItems: Binding<[PhotosPickerItem]>) {
+    // FIXME: attachmentUploadDirectory to be provided by the SDK's draft object
+    private func attachmentUploadDirectory() -> URL {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+            .appendingPathComponent("draft-attachments", isDirectory: true)
+            .appendingPathComponent("asdfghjk", isDirectory: true)
+    }
+
+    func addAttachments(selectedPhotosItems items: Binding<[PhotosPickerItem]>) {
         Task {
-            let items = selectedPhotosItems.wrappedValue
-            selectedPhotosItems.wrappedValue = []
-            guard !items.isEmpty else { return }
+            let photos = items.wrappedValue
+            items.wrappedValue = []
+            guard !photos.isEmpty else { return }
 
-            // FIXME: destinationFolder to be provided by the SDK's draft object
-            let destinationFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-                .appendingPathComponent("draft-attachments", isDirectory: true)
-                .appendingPathComponent("asdfghjk", isDirectory: true)
+            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos, uploadFolder: attachmentUploadDirectory())
+        }
+    }
 
-            let result = await photosItemsHandler.saveToFile(items: items, destinationFolder: destinationFolder)
-            if result.atLeastOneFailed {
-                let message = items.count == 1
-                ? L10n.Attachments.attachmentCouldNotBeAdded.string
-                : L10n.Attachments.someAttachmentCouldNotBeAdded.string
-                showToast(.error(message: message))
-            }
-
-            // FIXME: When SDK is ready
-            // for file in result.files {
-                // draft.addAttachment(filePath: file.url)
-            //}
+    func addAttachments(filePickerResult: Result<[URL], any Error>) {
+        Task {
+            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, uploadFolder: attachmentUploadDirectory())
         }
     }
 }

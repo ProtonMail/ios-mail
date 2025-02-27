@@ -34,6 +34,8 @@ struct ComposerView: View {
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         pendingQueueProvider: PendingQueueProvider,
+        photosItemsHandler: PhotosPickerItemHandler,
+        fileItemsHandler: FilePickerItemHandler,
         onSendingEvent: @escaping () -> Void
     ) {
         self._model = StateObject(
@@ -45,7 +47,9 @@ struct ComposerView: View {
                 pendingQueueProvider: pendingQueueProvider,
                 onSendingEvent: onSendingEvent,
                 permissionsHandler: CNContactStore.self,
-                contactStore: CNContactStore()
+                contactStore: CNContactStore(),
+                photosItemsHandler: photosItemsHandler,
+                fileItemsHandler: fileItemsHandler
             )
         )
     }
@@ -119,9 +123,11 @@ struct ComposerView: View {
                 }
             }
             .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
-                model.selectedAttachmentSource(selection)
+//                model.selectedAttachmentSource(selection)
+                toastStateStore.present(toast: .comingSoon)
             }
             .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems)
+            .fileImporter(isPresented: $model.pickersState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
             .onChange(of: selectedPhotosItems, { model.addAttachments(selectedPhotosItems: $selectedPhotosItems) })
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }

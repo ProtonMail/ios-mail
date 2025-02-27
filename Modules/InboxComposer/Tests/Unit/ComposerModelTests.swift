@@ -28,6 +28,8 @@ final class ComposerModelTests: XCTestCase {
     private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
     private var testPendingQueueProvider: PendingQueueProvider!
+    private var testPhotosItemsHandler: PhotosPickerItemHandler!
+    private var testFilesItemsHandler: FilePickerItemHandler!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
@@ -45,12 +47,15 @@ final class ComposerModelTests: XCTestCase {
             ])
         )
         self.testPendingQueueProvider = .init(userSession: .init(noPointer: .init()))
+        self.testPhotosItemsHandler = .init(toastStateStore: .init(initialState: .initial))
+        self.testFilesItemsHandler = .init(toastStateStore: .init(initialState: .initial))
         self.cancellables = []
     }
 
     override func tearDown() {
         super.tearDown()
         self.testContactProvider = nil
+        self.testPhotosItemsHandler = nil
         self.cancellables = nil
     }
 
@@ -63,7 +68,9 @@ final class ComposerModelTests: XCTestCase {
             pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},
             permissionsHandler: CNContactStorePartialStub.self,
-            contactStore: CNContactStorePartialStub()
+            contactStore: CNContactStorePartialStub(),
+            photosItemsHandler: testPhotosItemsHandler,
+            fileItemsHandler: testFilesItemsHandler
         )
         XCTAssertEqual(sut.state.toRecipients, RecipientFieldState.initialState(group: .to))
         XCTAssertEqual(sut.state.ccRecipients, RecipientFieldState.initialState(group: .cc))
@@ -339,7 +346,9 @@ private extension ComposerModelTests {
             pendingQueueProvider: testPendingQueueProvider,
             onSendingEvent: {},
             permissionsHandler: CNContactStorePartialStub.self,
-            contactStore: CNContactStorePartialStub()
+            contactStore: CNContactStorePartialStub(),
+            photosItemsHandler: testPhotosItemsHandler,
+            fileItemsHandler: testFilesItemsHandler
         )
     }
 

@@ -17,25 +17,57 @@
 
 import Foundation
 import InboxCore
+import InboxCoreUI
 import PhotosUI
 import SwiftUI
 
-struct PhotosPickerItemHandler  {
+struct PhotosPickerItemHandler {
     let fileManager = FileManager.default
+    let toastStateStore: ToastStateStore
 
-    func saveToFile(items: [PhotosPickerItemTransferable], destinationFolder: URL) async -> (files: [URL], atLeastOneFailed: Bool) {
-        var result = [URL]()
-        var atLeastOneFailed: Bool = false
-        for item in items {
-            do {
-                let itemFile = try await saveToFile(item: item, destinationFolder: destinationFolder)
-                result.append(itemFile)
-            } catch {
-                AppLogger.log(error: error, category: .composer)
-                atLeastOneFailed = true
+    func addPickerPhotos(to draft: AppDraftProtocol, photos: [PhotosPickerItemTransferable], uploadFolder: URL) async {
+        var errorCount = 0
+        for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
+            switch result {
+            case .success(let file):
+                let result = draft.add(attachmentFilePath: file.path)
+                if case .error(let error) = result {
+                    presentToast(toast: .error(message: error.localizedDescription))
+                }
+            case .failure:
+                errorCount += 1
             }
         }
-        return (result, atLeastOneFailed)
+        notifyAttachmentPreparationErrorsIfNeeded(numErrors: errorCount)
+    }
+
+    /**
+     Generates a new file for each item passed. It does the operation in parallel to optimise performance.
+     Returns an asynchronous sequence that publishes a result for each item without waiting for the rest to complete.
+     */
+    private func saveToFile(items: [PhotosPickerItemTransferable], destinationFolder: URL) -> AsyncStream<Result<URL, Error>> {
+        return AsyncStream { continuation in
+            Task {
+                await withTaskGroup(of: Result<URL, Error>.self) { group in
+                    for item in items {
+                        group.addTask {
+                            do {
+                                let itemFile = try await saveToFile(item: item, destinationFolder: destinationFolder)
+                                return .success(itemFile)
+                            } catch {
+                                AppLogger.log(error: error, category: .composer)
+                                return .failure(error)
+                            }
+                        }
+                    }
+
+                    for await result in group {
+                        continuation.yield(result)
+                    }
+                    continuation.finish()
+                }
+            }
+        }
     }
 
     private func saveToFile(item: PhotosPickerItemTransferable, destinationFolder: URL) async throws -> URL {
@@ -47,10 +79,24 @@ struct PhotosPickerItemHandler  {
             try? fileManager.deleteContainingFolder(for: tempFile.url)
             return newUrl
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .composer)
             try? fileManager.deleteContainingFolder(for: tempFile.url)
             throw error
         }
+    }
+
+    private func notifyAttachmentPreparationErrorsIfNeeded(numErrors: Int) {
+        guard numErrors > 0 else { return }
+        let message = numErrors == 1
+        ? L10n.Attachments.attachmentCouldNotBeAdded.string
+        : L10n.Attachments.someAttachmentCouldNotBeAdded.string
+        presentToast(toast: .error(message: message))
+    }
+
+    private func presentToast(toast: Toast) {
+        Dispatcher.dispatchOnMain(.init(block: {
+            toastStateStore.present(toast: toast)
+        }))
     }
 }
 

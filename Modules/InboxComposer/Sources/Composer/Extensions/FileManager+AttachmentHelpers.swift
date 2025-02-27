@@ -20,16 +20,24 @@ import Foundation
 extension FileManager {
 
     /**
+     Copies the given `file` to `destinationFolder`. If a file with the same name exists, it creates a unique file name using `uniqueFileNameURL(in folder:,baseName:,fileExtension:)`
+     */
+    func copyToUniqueURL(file: URL, to destinationFolder: URL) throws -> URL {
+        let uniqueURL = uniqueFileNameURL(
+            in: destinationFolder,
+            baseName: file.deletingPathExtension().lastPathComponent,
+            fileExtension: file.pathExtension
+        )
+
+        try createDirectory(at: destinationFolder, withIntermediateDirectories: true)
+        try copyItem(at: file, to: uniqueURL)
+        return uniqueURL
+    }
+
+    /**
      Moves the given `file` to `destinationFolder`. If a file with the same name exists, it creates a unique file name using `uniqueFileNameURL(in folder:,baseName:,fileExtension:)`
      */
     func moveToUniqueURL(file: URL, to destinationFolder: URL) throws -> URL {
-        guard fileExists(atPath: file.path) else {
-            throw NSError(
-                domain: "moveToUniqueURL".notLocalized,
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "file can't be moved because it does not exist".notLocalized]
-            )
-        }
         let uniqueURL = uniqueFileNameURL(
             in: destinationFolder,
             baseName: file.deletingPathExtension().lastPathComponent,
