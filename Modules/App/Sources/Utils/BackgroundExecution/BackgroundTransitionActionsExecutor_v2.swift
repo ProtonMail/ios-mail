@@ -32,34 +32,64 @@ protocol ConnectionStatusProvider {
     func isNetworkConnected() -> Bool
 }
 
+protocol ActionQueueManager {
+    func areSendingActionsInActionQueue() async -> Bool
+}
+
 extension MailSession: ConnectionStatusProvider {}
 
 class BackgroundTransitionActionsExecutor_v2: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     static let taskName = "finish_pending_actions"
-    private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
+    private let backgroundTaskExecutor: BackgroundTaskExecutor
+    private let connectionStatusProvider: ConnectionStatusProvider
+    private let actionQueueManager: ActionQueueManager
+
+    // Store the task identifier as an instance property.
+    private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
 
     init(
-        userSession: @escaping () -> MailUserSessionProtocol?,
-        backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
+        backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler,
+        backgroundTaskExecutor: BackgroundTaskExecutor,
+        connectionStatusProvider: ConnectionStatusProvider,
+        actionQueueManager: ActionQueueManager
     ) {
-        self.userSession = userSession
         self.backgroundTransitionTaskScheduler = backgroundTransitionTaskScheduler
+        self.backgroundTaskExecutor = backgroundTaskExecutor
+        self.connectionStatusProvider = connectionStatusProvider
+        self.actionQueueManager = actionQueueManager
     }
 
     func enterBackgroundService() {
-        guard let session = userSession() else {
-            return
-        }
-
-        let backgroundTask = backgroundTransitionTaskScheduler.beginBackgroundTask(
-            withName: Self.taskName,
-            expirationHandler: nil
-        )
         Task {
-            _ = await session.executePendingActions()
-            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTask)
+            let accessToInternetOnStart = connectionStatusProvider.isNetworkConnected()
+            backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
+                withName: Self.taskName,
+                expirationHandler: { [weak self] in
+                    self?.endBackgroundTask(accessToInternetOnStart: accessToInternetOnStart)
+                }
+            )
+
+            await backgroundTaskExecutor.startExecuteInBackground()
+
+            endBackgroundTask(accessToInternetOnStart: accessToInternetOnStart)
+        }
+    }
+
+    private func endBackgroundTask(accessToInternetOnStart: Bool) {
+        guard let backgroundTaskIdentifier else { return }
+        Task {
+            let accessToInternetOnEnd = connectionStatusProvider.isNetworkConnected()
+            let offline = !accessToInternetOnEnd && !accessToInternetOnStart
+            await backgroundTaskExecutor.endExecuteInBackground()
+            let areSendingActionsInActionQueue = await actionQueueManager.areSendingActionsInActionQueue()
+
+            if areSendingActionsInActionQueue && !offline {
+                // FIXME: - Display a local notification here
+            }
+
+            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
         }
     }
 
