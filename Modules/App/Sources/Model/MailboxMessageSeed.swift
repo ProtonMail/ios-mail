@@ -19,9 +19,6 @@ import Foundation
 
 /// Describes the available information when opening the conversation details screen from a push notification
 struct MailboxMessageSeed: Hashable {
-    /// The type is temporarily set to ID due to the lack of a Rust API for fetching the local message ID for a given remote ID.
-    /// It should be reverted back to String when implementing push notifications.
-    let remoteID: ID
+    let localId: ID
     let subject: String
-    let sender: String
 }

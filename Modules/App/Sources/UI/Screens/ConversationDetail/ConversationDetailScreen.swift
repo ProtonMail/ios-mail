@@ -231,9 +231,8 @@ private extension ConversationDetailModel.State {
     NavigationView {
         ConversationDetailScreen(
             seed: .message(.init(
-                remoteID: .init(value: 0),
-                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
-                sender: "him"
+                localId: .init(value: 0),
+                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
             )),
             draftPresenter: .dummy,
             navigationPath: .constant(.init())
