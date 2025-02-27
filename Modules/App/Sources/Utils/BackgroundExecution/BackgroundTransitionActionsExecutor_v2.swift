@@ -36,6 +36,12 @@ protocol ActionQueueManager {
     func areSendingActionsInActionQueue() async -> Bool
 }
 
+protocol NotificationScheduller {
+    func add(_ request: UNNotificationRequest) async throws
+}
+
+extension UNUserNotificationCenter: NotificationScheduller {}
+
 extension MailSession: ConnectionStatusProvider {}
 
 class BackgroundTransitionActionsExecutor_v2: ApplicationServiceDidEnterBackground, @unchecked Sendable {
@@ -85,12 +91,24 @@ class BackgroundTransitionActionsExecutor_v2: ApplicationServiceDidEnterBackgrou
             await backgroundTaskExecutor.endExecuteInBackground()
             let areSendingActionsInActionQueue = await actionQueueManager.areSendingActionsInActionQueue()
 
+//            let checkIfEmailFailedToSend
+
             if areSendingActionsInActionQueue && !offline {
-                // FIXME: - Display a local notification here
+                scheduleLocalNotification()
             }
 
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
         }
+    }
+
+    private func scheduleLocalNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Email sending error".notLocalized
+        content.body = "We were not able to send your message, enter foreground to continue".notLocalized
+        content.sound = UNNotificationSound.default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "sending_failure", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
 
 }
