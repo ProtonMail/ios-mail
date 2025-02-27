@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Testing
-import UserNotifications
 
 @testable import ProtonMail
 
@@ -59,17 +58,5 @@ private class RemoteNotificationRegistrarSpy: RemoteNotificationRegistrar {
 
     func registerForRemoteNotifications() {
         isRegisteredForRemoteNotifications = true
-    }
-}
-
-private class UserNotificationCenterSpy: UserNotificationCenter {
-    var stubbedAuthorizationResult = true
-
-    private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
-
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-        requestAuthorizationInvocations.append(options)
-
-        return stubbedAuthorizationResult
     }
 }

@@ -26,10 +26,6 @@ protocol RemoteNotificationRegistrar {
     func registerForRemoteNotifications()
 }
 
-protocol UserNotificationCenter {
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
-}
-
 struct NotificationAuthorizationService: ApplicationServiceSetUp {
     private let remoteNotificationRegistrar: RemoteNotificationRegistrar
     private let userNotificationCenter: UserNotificationCenter
@@ -59,5 +55,4 @@ struct NotificationAuthorizationService: ApplicationServiceSetUp {
     }
 }
 
-extension UNUserNotificationCenter: UserNotificationCenter {}
 extension UIApplication: RemoteNotificationRegistrar {}
