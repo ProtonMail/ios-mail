@@ -91,7 +91,7 @@ final class MailboxModel: ObservableObject {
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.draftPresenter = draftPresenter
-        self.selectedMailbox = appRoute.route.selectedMailbox ?? .inbox
+        self.selectedMailbox = appRoute.route.selectedMailbox
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(
             appContext: dependencies.appContext.mailSession,

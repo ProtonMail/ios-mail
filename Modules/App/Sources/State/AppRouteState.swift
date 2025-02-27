@@ -23,7 +23,7 @@ import InboxCore
 final class AppRouteState: ObservableObject, Sendable {
     @Published private(set) var route: Route
     var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
-        _route.projectedValue.compactMap(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
+        _route.projectedValue.map(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
     }
 
     init(route: Route) {
@@ -48,11 +48,13 @@ enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
 
-    var selectedMailbox: SelectedMailbox? {
-        if case .mailbox(let selectedMailbox) = self {
-            return selectedMailbox
+    var selectedMailbox: SelectedMailbox {
+        switch self {
+        case .mailbox(let selectedMailbox):
+            selectedMailbox
+        case .mailboxOpenMessage:
+            SelectedMailbox.inbox
         }
-        return nil
     }
 
     var description: String {
