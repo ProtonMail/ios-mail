@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,7 +16,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public enum AppContextError: Error {
-    case appGroupDirectoryNotAccessible
-    case appConfigNotDefined
+import Foundation
+
+public extension FileManager {
+    var appGroupDirectory: URL {
+        containerURL(forSecurityApplicationGroupIdentifier: AppGroup.mail).unsafelyUnwrapped
+    }
+
+    var sharedCacheDirectory: URL {
+        appGroupDirectory.appending(path: "cache", directoryHint: .isDirectory)
+    }
+
+    var sharedSupportDirectory: URL {
+        appGroupDirectory.appending(path: "support", directoryHint: .isDirectory)
+    }
 }

@@ -19,21 +19,14 @@ import Foundation
 import proton_app_uniffi
 
 public enum MailSessionParamsFactory {
-    public static func make(appConfig: AppConfig) throws -> MailSessionParams {
-        guard let applicationGroupFolder = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: AppGroup.mail
-        ) else {
-            throw AppContextError.appGroupDirectoryNotAccessible
-        }
-
-        let applicationSupportFolder = applicationGroupFolder.appending(path: "support")
-        let cacheFolder = applicationGroupFolder.appending(path: "cache")
+    public static func make(appConfig: AppConfig) -> MailSessionParams {
+        let fileManager = FileManager.default
 
         // TODO: exclude application support from iCloud backup
 
-        let applicationSupportPath = applicationSupportFolder.path()
-        let cachePath = cacheFolder.path()
-        AppLogger.logTemporarily(message: "path: \(cacheFolder)")
+        let applicationSupportPath = fileManager.sharedSupportDirectory.path()
+        let cachePath = fileManager.sharedCacheDirectory.path()
+        AppLogger.logTemporarily(message: "path: \(cachePath)")
 
         let mailCacheSize = Measurement<UnitInformationStorage>(value: 1, unit: .gigabytes)
 

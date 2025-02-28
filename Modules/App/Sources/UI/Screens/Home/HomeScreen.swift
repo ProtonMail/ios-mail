@@ -161,7 +161,7 @@ struct HomeScreen: View {
 
     private func presentShareFileController() {
         let fileManager = FileManager.default
-        guard let logFolder = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
+        let logFolder = fileManager.sharedCacheDirectory
         let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
         let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
         UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)

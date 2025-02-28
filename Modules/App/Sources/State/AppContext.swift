@@ -75,7 +75,7 @@ final class AppContext: Sendable, ObservableObject {
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
         
-        let params = try MailSessionParamsFactory.make(appConfig: appConfig)
+        let params = MailSessionParamsFactory.make(appConfig: appConfig)
 
         _mailSession = try createMailSession(
             params: params,
