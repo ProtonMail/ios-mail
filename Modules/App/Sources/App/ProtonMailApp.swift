@@ -69,8 +69,7 @@ private struct RootView: View {
             prefetch: prefetch
         ))
         self.executePendingActionsBackgroundTaskScheduler = .init(
-            backgroundTaskExecutorProvider: { appContext.mailSession },
-            userSession: { appContext.sessionState.userSession }
+            backgroundTaskExecutorProvider: { appContext.mailSession }
         )
     }
 

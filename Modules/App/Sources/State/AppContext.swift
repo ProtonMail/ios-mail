@@ -79,8 +79,7 @@ final class AppContext: Sendable, ObservableObject {
 
         _mailSession = try createMailSession(
             params: params,
-            keyChain: dependencies.keychain,
-            networkCallback: dependencies.networkStatus
+            keyChain: dependencies.keychain
         ).get()
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
@@ -148,17 +147,8 @@ extension AppContext {
 
     struct Dependencies {
         let keychain: OsKeyChain = KeychainSDKWrapper()
-        let networkStatus: NetworkStatusChanged = NetworkStatusManager.shared
         let appConfigService: AppConfigService = AppConfigService.shared
         let userDefaults: UserDefaults = .standard
-    }
-}
-
-final class NetworkStatusManager: NetworkStatusChanged, Sendable {
-    static let shared = NetworkStatusManager()
-
-    func onNetworkStatusChanged(online: Bool) {
-        AppLogger.logTemporarily(message: "onNetworkStatusChanged online: \(online)")
     }
 }
 
@@ -195,13 +185,6 @@ extension AppContext: EventLoopProvider {
                 AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
                 return
             }
-
-            /**
-             For now, event loop calls can't be run in parallel so we flush any action from the queue first.
-             Once this is not a limitation, we should run actions right after the actionis triggered by calling `executePendingAction()`
-             */
-            AppLogger.log(message: "execute pending actions", category: .rustLibrary)
-            try await userSession.executePendingActions().get()
 
             AppLogger.log(message: "poll events", category: .rustLibrary)
             try await userSession.pollEvents().get()

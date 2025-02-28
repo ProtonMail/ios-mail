@@ -52,14 +52,14 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
             nil
         ) { task in
             Task { [weak self] in
-                AppLogger.log(message: "Background task execution started", category: .recurringBackgroundTask)
+                Self.log("Background task execution started")
                 await self?.execute(task: task)
             }
         }
         if !isTaskDefinedInInfoPlist {
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
-        AppLogger.log(message: "Background task registered", category: .recurringBackgroundTask)
+        Self.log("Background task registered")
     }
 
     func submit() async {
@@ -72,13 +72,9 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
         do {
             try backgroundTaskScheduler.submit(taskRequest)
-            AppLogger.log(message: "Background task submitted", category: .recurringBackgroundTask)
+            Self.log("Background task submitted")
         } catch {
-            AppLogger.log(
-                message: "Background task failed to submit, because of error: \(error.localizedDescription)",
-                category: .recurringBackgroundTask,
-                isError: true
-            )
+            Self.log("Background task failed to submit, because of error: \(error.localizedDescription)")
         }
     }
 
@@ -92,7 +88,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         await submit()
 
         callback.delegate = {
-            AppLogger.log(message: "Background task finished with success", category: .recurringBackgroundTask)
+            Self.log("Background task finished with success")
             task.setTaskCompleted(success: true)
         }
 
@@ -100,7 +96,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
         task.expirationHandler = { [handler] in
             Task {
-                AppLogger.log(message: "Background task expiration handler called", category: .recurringBackgroundTask)
+                Self.log("Background task expiration handler called")
                 await handler.abort()
                 task.setTaskCompleted(success: true)
             }
@@ -113,6 +109,10 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         request.requiresNetworkConnectivity = true
         request.earliestBeginDate = DateEnvironment.currentDate().thirthyMinutesAfter
         return request
+    }
+
+    private static func log(_ message: String) {
+        AppLogger.log(message: message, category: .recurringBackgroundTask)
     }
 
 }

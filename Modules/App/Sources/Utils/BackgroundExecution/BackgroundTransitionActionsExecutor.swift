@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import InboxCore
 import UIKit
 
 protocol NotificationScheduller {
@@ -93,27 +94,42 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
             withName: Self.taskName,
             expirationHandler: { [weak self] in
+                Self.log("Time is up, ending task")
                 self?.endBackgroundTask()
             }
         )
 
+        Self.log("Background task started")
+
         Task {
             let actionQueueStatusProvider = actionQueueStatusProvider()
             accessToInternetOnStart = await actionQueueStatusProvider.connectionStatus().isConnected
-            callback.delegate = { [weak self] in self?.endBackgroundTask() }
+            Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
+            callback.delegate = { [weak self] in
+                Self.log("All actions executed, ending task")
+                self?.endBackgroundTask()
+            }
             backgroundExecutionHandler = await backgroundTaskExecutor.startExecuteInBackground(callback: callback)
+            Self.log("Handler is returned, background actions in progress")
         }
     }
 
     private func endBackgroundTask() {
-        guard let backgroundTaskIdentifier, let backgroundExecutionHandler else { return }
+        guard let backgroundTaskIdentifier, let backgroundExecutionHandler else {
+            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil), backgroundExecutionHandler? - \(backgroundExecutionHandler == nil)")
+            return
+        }
         Task {
             let accessToInternetOnEnd = await actionQueueStatusProvider().connectionStatus().isConnected
             await backgroundExecutionHandler.abort()
+            Self.log("Abort called")
             let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
+            Self.log("Any sending actions left? - \(areSendingActionsInActionQueue)")
             let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
+            Self.log("Any message of primary account failed to send? - \(anyActiveAccountMessageFailedToSend)")
 
             let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
+            Self.log("Background task executed in offline mode? - \(offline)")
 
             if anyActiveAccountMessageFailedToSend && !offline {
                 await scheduleLocalNotification()
@@ -121,18 +137,24 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
                 await scheduleLocalNotification()
             }
 
+            Self.log("Ending background task")
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
         }
     }
 
     private func scheduleLocalNotification() async {
+        Self.log("Schedulling local notification")
         let content = UNMutableNotificationContent()
         content.title = "Email sending error".notLocalized
         content.body = "We were not able to send your message, enter foreground to continue".notLocalized
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "sending_failure", content: content, trigger: trigger)
-        try? await notificationScheduller.add(request)
+        do {
+            try await notificationScheduller.add(request)
+        } catch {
+            Self.log("Local notification schedulling failed")
+        }
     }
 
     private func hasAnyMessageFailedToSend() async -> Bool {
@@ -142,6 +164,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         case .error:
             false
         }
+    }
+
+    private static func log(_ message: String) {
+        AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
     }
 
 }

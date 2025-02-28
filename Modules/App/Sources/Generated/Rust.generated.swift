@@ -183,6 +183,16 @@ public extension CreateMailSessionResult {
         }
     }
 }
+public extension DecryptPushNotificationResult {
+    func get() throws -> DecryptedPushNotification {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftMessageIdResult {
     func get() throws -> Id? {
         switch self {
@@ -393,6 +403,16 @@ public extension MailSessionResumeLoginFlowResult {
         }
     }
 }
+public extension MailSessionStartBackgroundExecutionResult {
+    func get() throws -> BackgroundExecutionHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionUserContextFromSessionResult {
     func get() throws -> MailUserSession {
         switch self {
@@ -485,16 +505,6 @@ public extension MailUserSessionApplicableLabelsResult {
 }
 public extension MailUserSessionConnectionStatusResult {
     func get() throws -> ConnectionStatus {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailUserSessionExecutePendingActionsResult {
-    func get() throws -> UInt64 {
         switch self {
         case .ok(let value):
             value
