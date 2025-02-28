@@ -43,9 +43,15 @@ public enum MailSessionParamsFactory {
             mailCacheDir: cachePath,
             mailCacheSize: mailCacheSize.bytes,
             logDir: cachePath,
-            logDebug: false,
+            logDebug: true,
             apiEnvConfig: appConfig.apiEnvConfig
         )
+    }
+}
+
+public extension FileManager {
+    var appGroupDirectory: URL {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.mail)!
     }
 }
 
