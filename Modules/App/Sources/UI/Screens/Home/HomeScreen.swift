@@ -88,27 +88,14 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-            switch appRoute.route {
-            case .mailbox:
-                MailboxScreen(
-                    mailSettingsLiveQuery: mailSettingsLiveQuery,
-                    appRoute: appRoute,
-                    userSession: userSession,
-                    userDefaults: userDefaults,
-                    draftPresenter: draftPresenter,
-                    sendResultPresenter: sendResultCoordinator.presenter
-                )
-            case .mailboxOpenMessage(let item):
-                MailboxScreen(
-                    mailSettingsLiveQuery: mailSettingsLiveQuery,
-                    appRoute: appRoute,
-                    userSession: userSession,
-                    userDefaults: userDefaults,
-                    draftPresenter: draftPresenter,
-                    sendResultPresenter: sendResultCoordinator.presenter,
-                    openedItem: item
-                )
-            }
+            MailboxScreen(
+                mailSettingsLiveQuery: mailSettingsLiveQuery,
+                appRoute: appRoute,
+                userSession: userSession,
+                userDefaults: userDefaults,
+                draftPresenter: draftPresenter,
+                sendResultPresenter: sendResultCoordinator.presenter
+            )
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
                 case .system(let systemFolder):

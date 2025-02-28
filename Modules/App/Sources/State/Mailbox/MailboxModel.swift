@@ -84,7 +84,6 @@ final class MailboxModel: ObservableObject {
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
-        openedItem: MailboxMessageSeed? = nil,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
@@ -100,10 +99,6 @@ final class MailboxModel: ObservableObject {
 
         setUpBindings()
         setUpScrollerCallback()
-
-        if let openedItem = openedItem {
-            state.navigationPath.append(openedItem)
-        }
     }
 
     deinit {
@@ -131,6 +126,26 @@ extension MailboxModel {
                     self.selectedMailbox = newSelectedMailbox
                     await self.updateMailboxAndScroller()
                     await self.prepareSwipeActions()
+                }
+            }
+            .store(in: &cancellables)
+
+        appRoute
+            .openedMailboxItem
+            .sink { [weak self] openedItem in
+                guard let self else { return }
+
+                let openMessageAction = DispatchWorkItem {
+                    self.state.navigationPath.append(openedItem)
+                }
+
+                if state.navigationPath.count > 0 {
+                    state.navigationPath.removeLast()
+
+                    let estimatedPopBackAnimationDuration = DispatchTimeInterval.milliseconds(250)
+                    Dispatcher.dispatchOnMainAfter(.now() + estimatedPopBackAnimationDuration, openMessageAction)
+                } else {
+                    openMessageAction.perform()
                 }
             }
             .store(in: &cancellables)

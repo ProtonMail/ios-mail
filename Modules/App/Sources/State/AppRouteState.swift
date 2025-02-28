@@ -26,6 +26,17 @@ final class AppRouteState: ObservableObject, Sendable {
         _route.projectedValue.map(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
     }
 
+    var openedMailboxItem: AnyPublisher<MailboxMessageSeed, Never> {
+        _route.projectedValue
+            .compactMap {
+                switch $0 {
+                case .mailbox: nil
+                case .mailboxOpenMessage(let seed): seed
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
     init(route: Route) {
         self.route = route
     }

@@ -40,15 +40,13 @@ struct MailboxScreen: View {
         userSession: MailUserSession,
         userDefaults: UserDefaults,
         draftPresenter: DraftPresenter,
-        sendResultPresenter: SendResultPresenter,
-        openedItem: MailboxMessageSeed? = nil
+        sendResultPresenter: SendResultPresenter
     ) {
         self._mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
-                draftPresenter: draftPresenter,
-                openedItem: openedItem
+                draftPresenter: draftPresenter
             )
         )
         self.onboardingStore = .init(userDefaults: userDefaults)
