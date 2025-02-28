@@ -23,18 +23,13 @@ import proton_app_uniffi
 class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
-    private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
     private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
     private let callback = LiveQueryCallbackWrapper()
 
-    convenience init(
-        backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider,
-        userSession: @escaping () -> MailUserSessionProtocol?
-    ) {
+    convenience init(backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider) {
         self.init(
-            userSession: userSession,
             backgroundTaskRegistration: .init(registerWithIdentifier: BGTaskScheduler.shared.register),
             backgroundTaskScheduler: BGTaskScheduler.shared,
             backgroundTaskExecutorProvider: backgroundTaskExecutorProvider
@@ -42,12 +37,10 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     }
 
     init(
-        userSession: @escaping () -> MailUserSessionProtocol?,
         backgroundTaskRegistration: BackgroundTaskRegistration,
         backgroundTaskScheduler: BackgroundTaskScheduler,
         backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider
     ) {
-        self.userSession = userSession
         self.backgroundTaskRegistration = backgroundTaskRegistration
         self.backgroundTaskScheduler = backgroundTaskScheduler
         self.backgroundTaskExecutorProvider = backgroundTaskExecutorProvider
@@ -57,8 +50,9 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         let isTaskDefinedInInfoPlist = backgroundTaskRegistration.registerWithIdentifier(
             Self.identifier,
             nil
-        ) { [weak self] task in
+        ) { task in
             Task { [weak self] in
+                AppLogger.log(message: "Background task execution started", category: .recurringBackgroundTask)
                 await self?.execute(task: task)
             }
         }
@@ -95,12 +89,6 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     // MARK: - Private
 
     private func execute(task: BackgroundTask) async {
-        AppLogger.log(message: "Background task execution started", category: .recurringBackgroundTask)
-        guard let userSession = userSession() else {
-            task.setTaskCompleted(success: false)
-            return
-        }
-
         await submit()
 
         callback.delegate = {
