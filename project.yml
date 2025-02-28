@@ -211,7 +211,7 @@ targets:
         Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
-          PROVISIONING_PROFILE_SPECIFIER: "ET Mail - Notification Service Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "ET Mail - Notification Service Distribution 2"
     info:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
