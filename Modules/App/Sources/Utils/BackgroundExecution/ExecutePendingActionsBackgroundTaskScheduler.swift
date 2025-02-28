@@ -19,6 +19,7 @@ import BackgroundTasks
 import InboxCore
 import proton_app_uniffi
 
+// FIXME: - Rename
 class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
@@ -64,7 +65,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         if !isTaskDefinedInInfoPlist {
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
-        AppLogger.log(message: "Background task registered", category: .backgroundTask)
+        AppLogger.log(message: "Background task registered", category: .recurringBackgroundTask)
     }
 
     func submit() async {
@@ -77,11 +78,11 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
         do {
             try backgroundTaskScheduler.submit(taskRequest)
-            AppLogger.log(message: "Background task submitted", category: .backgroundTask)
+            AppLogger.log(message: "Background task submitted", category: .recurringBackgroundTask)
         } catch {
             AppLogger.log(
                 message: "Background task failed to submit, because of error: \(error.localizedDescription)",
-                category: .backgroundTask,
+                category: .recurringBackgroundTask,
                 isError: true
             )
         }
@@ -94,7 +95,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
     // MARK: - Private
 
     private func execute(task: BackgroundTask) async {
-        AppLogger.log(message: "Background task execution started", category: .backgroundTask)
+        AppLogger.log(message: "Background task execution started", category: .recurringBackgroundTask)
         guard let userSession = userSession() else {
             task.setTaskCompleted(success: false)
             return
@@ -103,7 +104,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         await submit()
 
         callback.delegate = {
-            AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
+            AppLogger.log(message: "Background task finished with success", category: .recurringBackgroundTask)
             task.setTaskCompleted(success: true)
         }
 
@@ -111,7 +112,7 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
         task.expirationHandler = { [handler] in
             Task {
-                AppLogger.log(message: "Background task expiration handler called", category: .backgroundTask)
+                AppLogger.log(message: "Background task expiration handler called", category: .recurringBackgroundTask)
                 await handler.abort()
                 task.setTaskCompleted(success: true)
             }
