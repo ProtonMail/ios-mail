@@ -18,32 +18,145 @@
 import proton_app_uniffi
 import UIKit
 
+protocol NotificationScheduller {
+    func add(_ request: UNNotificationRequest) async throws
+}
+
+// Mail Session
+
+class StartBackgroundExecutionHandler {
+    func abort() {}
+}
+
+protocol BackgroundTaskExecutor {
+    func startExecuteInBackground(callback: LiveQueryCallback) async -> StartBackgroundExecutionHandler
+    func areSendingActionsInActionQueue() async -> [ID]
+}
+
+// Mail User Session
+
+protocol ActiveAccountSendingStatusChecker {
+    func draftSendResultUnseen() async -> DraftSendResultUnseenResult
+}
+
+protocol ConnectionStatusProvider {
+    func connectionStatus() async -> MailUserSessionConnectionStatusResult
+}
+
+extension MailUserSession: ActiveAccountSendingStatusChecker {
+    func draftSendResultUnseen() async -> DraftSendResultUnseenResult {
+        await proton_app_uniffi.draftSendResultUnseen(session: self)
+    }
+}
+
+extension UNUserNotificationCenter: NotificationScheduller {}
+extension MailUserSession: ConnectionStatusProvider {}
+
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
+    typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider & ActiveAccountSendingStatusChecker
+
     static let taskName = "finish_pending_actions"
-    private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
+    private let backgroundTaskExecutor: BackgroundTaskExecutor
+    private let notificationScheduller: NotificationScheduller
+    private let actionQueueStatusProvider: ActionQueueStatusProvider
+    private let callback: LiveQueryCallbackWrapper = .init()
+
+    private var backgroundExecutionHandler: StartBackgroundExecutionHandler?
+    private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+    private var accessToInternetOnStart: Bool?
 
     init(
-        userSession: @escaping () -> MailUserSessionProtocol?,
-        backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
+        backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler,
+        backgroundTaskExecutor: BackgroundTaskExecutor,
+        notificationScheduller: NotificationScheduller,
+        actionQueueStatusProvider: @escaping ActionQueueStatusProvider
     ) {
-        self.userSession = userSession
         self.backgroundTransitionTaskScheduler = backgroundTransitionTaskScheduler
+        self.backgroundTaskExecutor = backgroundTaskExecutor
+        self.notificationScheduller = notificationScheduller
+        self.actionQueueStatusProvider = actionQueueStatusProvider
     }
 
     func enterBackgroundService() {
-        guard let session = userSession() else {
-            return
-        }
-
-        let backgroundTask = backgroundTransitionTaskScheduler.beginBackgroundTask(
+        backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
             withName: Self.taskName,
-            expirationHandler: nil
+            expirationHandler: { [weak self] in
+                self?.endBackgroundTask()
+            }
         )
+
         Task {
-            _ = await session.executePendingActions()
-            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTask)
+            let actionQueueStatusProvider = actionQueueStatusProvider()
+            accessToInternetOnStart = await actionQueueStatusProvider.connectionStatus().isConnected
+            callback.delegate = { [weak self] in self?.endBackgroundTask() }
+            backgroundExecutionHandler = await backgroundTaskExecutor.startExecuteInBackground(callback: callback)
+        }
+    }
+
+    private func endBackgroundTask() {
+        guard let backgroundTaskIdentifier, let backgroundExecutionHandler else { return }
+        Task {
+            let accessToInternetOnEnd = await actionQueueStatusProvider().connectionStatus().isConnected
+            backgroundExecutionHandler.abort()
+            let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
+            let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
+
+            let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
+
+            if anyActiveAccountMessageFailedToSend && !offline {
+                await scheduleLocalNotification()
+            } else if areSendingActionsInActionQueue && !offline {
+                await scheduleLocalNotification()
+            }
+
+            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
+        }
+    }
+
+    private func scheduleLocalNotification() async {
+        let content = UNMutableNotificationContent()
+        content.title = "Email sending error".notLocalized
+        content.body = "We were not able to send your message, enter foreground to continue".notLocalized
+        content.sound = UNNotificationSound.default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "sending_failure", content: content, trigger: trigger)
+        try? await notificationScheduller.add(request)
+    }
+
+    private func hasAnyMessageFailedToSend() async -> Bool {
+        switch await actionQueueStatusProvider().draftSendResultUnseen() {
+        case .ok(let results):
+            results.first(where: { $0.failedToSend }) != nil
+        case .error:
+            false
+        }
+    }
+
+}
+
+private extension MailUserSessionConnectionStatusResult {
+
+    var isConnected: Bool {
+        switch self {
+        case .ok(let connectionStatus):
+            connectionStatus == .online
+        case .error:
+            false
+        }
+    }
+
+}
+
+private extension DraftSendResult {
+
+    var failedToSend: Bool {
+        switch error {
+        case .success:
+            false
+        case .failure:
+            true
         }
     }
 

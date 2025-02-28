@@ -48,8 +48,10 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         fatalError()
     }
 
+    var connectionStatusStub: MailUserSessionConnectionStatusResult = .ok(.online)
+
     func connectionStatus() async -> MailUserSessionConnectionStatusResult {
-        fatalError()
+        connectionStatusStub
     }
 
     func executePendingAction() async -> VoidSessionResult {
@@ -101,6 +103,12 @@ class MailUserSessionSpy: MailUserSessionProtocol {
 
     func userId() -> MailUserSessionUserIdResult {
         fatalError()
+    }
+
+    var draftSendResultUnseenResultStub = DraftSendResultUnseenResult.ok([])
+
+    func draftSendResultUnseen() async -> DraftSendResultUnseenResult {
+        draftSendResultUnseenResultStub
     }
 
 }

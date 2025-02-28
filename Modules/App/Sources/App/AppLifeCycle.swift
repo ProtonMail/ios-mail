@@ -76,10 +76,11 @@ extension AppLifeCycle {
         let notificationAuthorizationService = NotificationAuthorizationService(
             remoteNotificationRegistrar: UIApplication.shared
         )
-        let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor(
-            userSession: { appContext.sessionState.userSession },
-            backgroundTransitionTaskScheduler: UIApplication.shared
-        )
+        // FIXME: - Create `BackgroundTransitionActionsExecutor` here
+//        let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor_v1(
+//            userSession: { appContext.sessionState.userSession },
+//            backgroundTransitionTaskScheduler: UIApplication.shared
+//        )
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
 
@@ -91,7 +92,7 @@ extension AppLifeCycle {
                 executePendingActionsBackgroundTaskService
             ],
             becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
-            enterBackgroundServices: [appIconBadgeService, eventLoop, backgroundTransitionActionsExecutor],
+            enterBackgroundServices: [appIconBadgeService, eventLoop], // FIXME: - Add `BackgroundTransitionActionsExecutor` here
             terminateServices: []
         )
     }
