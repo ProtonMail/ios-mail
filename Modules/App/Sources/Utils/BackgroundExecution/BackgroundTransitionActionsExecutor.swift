@@ -25,12 +25,22 @@ protocol NotificationScheduller {
 // Mail Session
 
 class StartBackgroundExecutionHandler {
-    func abort() {}
+    func abort() async {}
 }
 
 protocol BackgroundTaskExecutor {
     func startExecuteInBackground(callback: LiveQueryCallback) async -> StartBackgroundExecutionHandler
     func areSendingActionsInActionQueue() async -> [ID]
+}
+
+extension MailSession: BackgroundTaskExecutor {
+    func startExecuteInBackground(callback: LiveQueryCallback) async -> StartBackgroundExecutionHandler {
+        .init()
+    }
+    
+    func areSendingActionsInActionQueue() async -> [ID] {
+        []
+    }
 }
 
 // Mail User Session
@@ -99,7 +109,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         guard let backgroundTaskIdentifier, let backgroundExecutionHandler else { return }
         Task {
             let accessToInternetOnEnd = await actionQueueStatusProvider().connectionStatus().isConnected
-            backgroundExecutionHandler.abort()
+            await backgroundExecutionHandler.abort()
             let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
             let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
 

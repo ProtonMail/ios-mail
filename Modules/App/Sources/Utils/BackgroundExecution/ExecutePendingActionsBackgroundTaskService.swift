@@ -18,6 +18,7 @@
 class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp {
 
     private let executePendingActionsBackgroundTaskScheduler = ExecutePendingActionsBackgroundTaskScheduler(
+        backgroundTaskExecutorProvider: { AppContext.shared.mailSession },
         userSession: { AppContext.shared.sessionState.userSession }
     )
 

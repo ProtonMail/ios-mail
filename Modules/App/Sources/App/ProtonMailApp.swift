@@ -68,9 +68,10 @@ private struct RootView: View {
             sessionProvider: appContext,
             prefetch: prefetch
         ))
-        self.executePendingActionsBackgroundTaskScheduler = .init(userSession: {
-            appContext.sessionState.userSession
-        })
+        self.executePendingActionsBackgroundTaskScheduler = .init(
+            backgroundTaskExecutorProvider: { appContext.mailSession },
+            userSession: { appContext.sessionState.userSession }
+        )
     }
 
     var body: some View {
@@ -81,7 +82,7 @@ private struct RootView: View {
             .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {
                     EmailsPrefetchingNotifier.shared.notify()
-                    executePendingActionsBackgroundTaskScheduler.submit()
+                    submitBackgroundTask()
                 }
                 if new == .noSession {
                     executePendingActionsBackgroundTaskScheduler.cancel()
@@ -119,5 +120,11 @@ private struct RootView: View {
             .transition(.opacity)
         }
         .animation(.easeInOut, value: appContext.sessionState)
+    }
+
+    private func submitBackgroundTask() {
+        Task {
+            await executePendingActionsBackgroundTaskScheduler.submit()
+        }
     }
 }

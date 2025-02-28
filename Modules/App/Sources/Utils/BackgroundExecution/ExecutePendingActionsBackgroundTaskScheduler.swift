@@ -20,27 +20,36 @@ import InboxCore
 import proton_app_uniffi
 
 class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
+    typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
     private let userSession: () -> MailUserSessionProtocol?
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
+    private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
+    private let callback = LiveQueryCallbackWrapper()
 
-    convenience init(userSession: @escaping () -> MailUserSessionProtocol?) {
+    convenience init(
+        backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider,
+        userSession: @escaping () -> MailUserSessionProtocol?
+    ) {
         self.init(
             userSession: userSession,
             backgroundTaskRegistration: .init(registerWithIdentifier: BGTaskScheduler.shared.register),
-            backgroundTaskScheduler: BGTaskScheduler.shared
+            backgroundTaskScheduler: BGTaskScheduler.shared,
+            backgroundTaskExecutorProvider: backgroundTaskExecutorProvider
         )
     }
 
     init(
         userSession: @escaping () -> MailUserSessionProtocol?,
         backgroundTaskRegistration: BackgroundTaskRegistration,
-        backgroundTaskScheduler: BackgroundTaskScheduler
+        backgroundTaskScheduler: BackgroundTaskScheduler,
+        backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider
     ) {
         self.userSession = userSession
         self.backgroundTaskRegistration = backgroundTaskRegistration
         self.backgroundTaskScheduler = backgroundTaskScheduler
+        self.backgroundTaskExecutorProvider = backgroundTaskExecutorProvider
     }
 
     func register() {
@@ -48,7 +57,9 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
             Self.identifier,
             nil
         ) { [weak self] task in
-            self?.execute(task: task)
+            Task { [weak self] in
+                await self?.execute(task: task)
+            }
         }
         if !isTaskDefinedInInfoPlist {
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
@@ -56,25 +67,23 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
         AppLogger.log(message: "Background task registered", category: .backgroundTask)
     }
 
-    func submit() {
-        Task {
-            let allTaskRequests = await backgroundTaskScheduler.pendingTaskRequests()
-            let isTaskSchedulled = allTaskRequests
-                .contains(where: { request in request.identifier == Self.identifier })
-            guard !isTaskSchedulled else {
-                return
-            }
+    func submit() async {
+        let allTaskRequests = await backgroundTaskScheduler.pendingTaskRequests()
+        let isTaskSchedulled = allTaskRequests
+            .contains(where: { request in request.identifier == Self.identifier })
+        guard !isTaskSchedulled else {
+            return
+        }
 
-            do {
-                try backgroundTaskScheduler.submit(taskRequest)
-                AppLogger.log(message: "Background task submitted", category: .backgroundTask)
-            } catch {
-                AppLogger.log(
-                    message: "Background task failed to submit, because of error: \(error.localizedDescription)",
-                    category: .backgroundTask,
-                    isError: true
-                )
-            }
+        do {
+            try backgroundTaskScheduler.submit(taskRequest)
+            AppLogger.log(message: "Background task submitted", category: .backgroundTask)
+        } catch {
+            AppLogger.log(
+                message: "Background task failed to submit, because of error: \(error.localizedDescription)",
+                category: .backgroundTask,
+                isError: true
+            )
         }
     }
 
@@ -84,31 +93,27 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
 
     // MARK: - Private
 
-    private func execute(task: BackgroundTask) {
+    private func execute(task: BackgroundTask) async {
         AppLogger.log(message: "Background task execution started", category: .backgroundTask)
         guard let userSession = userSession() else {
             task.setTaskCompleted(success: false)
             return
         }
 
-        submit()
+        await submit()
 
-        task.expirationHandler = {
-            AppLogger.log(message: "Background task expiration handler called", category: .backgroundTask)
+        callback.delegate = {
+            AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
             task.setTaskCompleted(success: true)
         }
 
-        Task {
-            switch (await userSession.executePendingActions(), await userSession.pollEvents()) {
-            case (.ok, .ok):
-                AppLogger.log(message: "Background task finished with success", category: .backgroundTask)
+        let handler = await backgroundTaskExecutorProvider().startExecuteInBackground(callback: callback)
+
+        task.expirationHandler = { [handler] in
+            Task {
+                AppLogger.log(message: "Background task expiration handler called", category: .backgroundTask)
+                await handler.abort()
                 task.setTaskCompleted(success: true)
-            case (.error(let error), _):
-                task.setTaskCompleted(success: false)
-                AppLogger.log(error: error, category: .backgroundTask)
-            case (_, .error(let error)):
-                task.setTaskCompleted(success: false)
-                AppLogger.log(error: error, category: .backgroundTask)
             }
         }
     }
