@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-class ExecutePendingActionsBackgroundTaskService: ApplicationServiceSetUp {
+class RecurringBackgroundTaskService: ApplicationServiceSetUp {
 
-    private let executePendingActionsBackgroundTaskScheduler = ExecutePendingActionsBackgroundTaskScheduler(
+    private let recurringBackgroundTaskScheduler = RecurringBackgroundTaskScheduler(
         backgroundTaskExecutorProvider: { AppContext.shared.mailSession }
     )
 
     func setUpService() {
-        executePendingActionsBackgroundTaskScheduler.register()
+        recurringBackgroundTaskScheduler.register()
     }
 
 }

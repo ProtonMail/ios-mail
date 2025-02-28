@@ -56,7 +56,7 @@ private struct RootView: View {
     @ObservedObject private var appContext: AppContext
     @StateObject private var emailsPrefetchingTrigger: EmailsPrefetchingTrigger
 
-    private let executePendingActionsBackgroundTaskScheduler: ExecutePendingActionsBackgroundTaskScheduler
+    private let recurringBackgroundTaskScheduler: RecurringBackgroundTaskScheduler
 
     init(
         appContext: AppContext,
@@ -68,7 +68,7 @@ private struct RootView: View {
             sessionProvider: appContext,
             prefetch: prefetch
         ))
-        self.executePendingActionsBackgroundTaskScheduler = .init(
+        self.recurringBackgroundTaskScheduler = .init(
             backgroundTaskExecutorProvider: { appContext.mailSession }
         )
     }
@@ -84,7 +84,7 @@ private struct RootView: View {
                     submitBackgroundTask()
                 }
                 if new == .noSession {
-                    executePendingActionsBackgroundTaskScheduler.cancel()
+                    recurringBackgroundTaskScheduler.cancel()
                 }
             }
             .onLoad {
@@ -123,7 +123,7 @@ private struct RootView: View {
 
     private func submitBackgroundTask() {
         Task {
-            await executePendingActionsBackgroundTaskScheduler.submit()
+            await recurringBackgroundTaskScheduler.submit()
         }
     }
 }

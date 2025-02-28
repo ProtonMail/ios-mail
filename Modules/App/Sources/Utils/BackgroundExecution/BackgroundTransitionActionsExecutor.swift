@@ -30,18 +30,16 @@ class StartBackgroundExecutionHandler {
 }
 
 protocol BackgroundTaskExecutor {
-    func startExecuteInBackground(callback: LiveQueryCallback) async -> StartBackgroundExecutionHandler
+    func startBackgroundExecution(callback: LiveQueryCallback)  -> MailSessionStartBackgroundExecutionResult
     func areSendingActionsInActionQueue() async -> [ID]
 }
 
 extension MailSession: BackgroundTaskExecutor {
-    func startExecuteInBackground(callback: LiveQueryCallback) async -> StartBackgroundExecutionHandler {
-        .init()
-    }
     
     func areSendingActionsInActionQueue() async -> [ID] {
         []
     }
+
 }
 
 // Mail User Session
@@ -66,26 +64,27 @@ extension MailUserSession: ConnectionStatusProvider {}
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider & ActiveAccountSendingStatusChecker
+    typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
 
     static let taskName = "finish_pending_actions"
     private let backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
-    private let backgroundTaskExecutor: BackgroundTaskExecutor
+    private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
     private let notificationScheduller: NotificationScheduller
     private let actionQueueStatusProvider: ActionQueueStatusProvider
     private let callback: LiveQueryCallbackWrapper = .init()
 
-    private var backgroundExecutionHandler: StartBackgroundExecutionHandler?
+    private var backgroundExecutionHandle: BackgroundExecutionHandle?
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     private var accessToInternetOnStart: Bool?
 
     init(
         backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler,
-        backgroundTaskExecutor: BackgroundTaskExecutor,
-        notificationScheduller: NotificationScheduller,
+        backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider,
+        notificationScheduller: NotificationScheduller = UNUserNotificationCenter.current(),
         actionQueueStatusProvider: @escaping ActionQueueStatusProvider
     ) {
         self.backgroundTransitionTaskScheduler = backgroundTransitionTaskScheduler
-        self.backgroundTaskExecutor = backgroundTaskExecutor
+        self.backgroundTaskExecutorProvider = backgroundTaskExecutorProvider
         self.notificationScheduller = notificationScheduller
         self.actionQueueStatusProvider = actionQueueStatusProvider
     }
@@ -109,22 +108,28 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
                 Self.log("All actions executed, ending task")
                 self?.endBackgroundTask()
             }
-            backgroundExecutionHandler = await backgroundTaskExecutor.startExecuteInBackground(callback: callback)
-            Self.log("Handler is returned, background actions in progress")
+            do {
+                backgroundExecutionHandle = try backgroundTaskExecutorProvider().startBackgroundExecution(
+                    callback: callback
+                ).get()
+                Self.log("Handle is returned, background actions in progress")
+            } catch {
+                Self.log("Background execution failed to start: \(error.localizedDescription)")
+            }
         }
     }
 
     private func endBackgroundTask() {
-        guard let backgroundTaskIdentifier, let backgroundExecutionHandler else {
-            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil), backgroundExecutionHandler? - \(backgroundExecutionHandler == nil)")
+        guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
+            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil), backgroundExecutionHandler? - \(backgroundExecutionHandle == nil)")
             return
         }
         Task {
             let accessToInternetOnEnd = await actionQueueStatusProvider().connectionStatus().isConnected
-            await backgroundExecutionHandler.abort()
+            await backgroundExecutionHandle.abort()
             Self.log("Abort called")
-            let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
-            Self.log("Any sending actions left? - \(areSendingActionsInActionQueue)")
+//            let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
+//            Self.log("Any sending actions left? - \(areSendingActionsInActionQueue)")
             let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
             Self.log("Any message of primary account failed to send? - \(anyActiveAccountMessageFailedToSend)")
 
@@ -133,9 +138,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
             if anyActiveAccountMessageFailedToSend && !offline {
                 await scheduleLocalNotification()
-            } else if areSendingActionsInActionQueue && !offline {
-                await scheduleLocalNotification()
             }
+//            else if areSendingActionsInActionQueue && !offline {
+//                await scheduleLocalNotification()
+//            }
 
             Self.log("Ending background task")
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)

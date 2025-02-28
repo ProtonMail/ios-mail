@@ -19,8 +19,7 @@ import BackgroundTasks
 import InboxCore
 import proton_app_uniffi
 
-// FIXME: - Rename
-class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
+class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
     private let backgroundTaskRegistration: BackgroundTaskRegistration
@@ -92,14 +91,19 @@ class ExecutePendingActionsBackgroundTaskScheduler: @unchecked Sendable {
             task.setTaskCompleted(success: true)
         }
 
-        let handler = await backgroundTaskExecutorProvider().startExecuteInBackground(callback: callback)
+        do {
+            let handle = try backgroundTaskExecutorProvider().startBackgroundExecution(callback: callback).get()
+            Self.log("Handle is returned, background actions in progress")
 
-        task.expirationHandler = { [handler] in
-            Task {
-                Self.log("Background task expiration handler called")
-                await handler.abort()
-                task.setTaskCompleted(success: true)
+            task.expirationHandler = { [handle] in
+                Task {
+                    Self.log("Background task expiration handler called")
+                    await handle.abort()
+                    task.setTaskCompleted(success: true)
+                }
             }
+        } catch {
+            Self.log("Background execution failed to start: \(error.localizedDescription)")
         }
     }
 
