@@ -73,7 +73,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
                 await urlOpener.open(url, options: [:])
             }
         case .none:
-            break
+            AppLogger.log(message: "Unrecognized notification type", category: .notifications, isError: true)
         }
     }
 
