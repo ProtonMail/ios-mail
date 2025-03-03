@@ -79,7 +79,7 @@ extension AppLifeCycle {
         let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor(
             backgroundTransitionTaskScheduler: UIApplication.shared,
             backgroundTaskExecutorProvider: { appContext.mailSession },
-            actionQueueStatusProvider: { appContext.userSession }
+            actionQueueStatusProvider: { appContext.sessionState.userSession }
         )
 
         let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
