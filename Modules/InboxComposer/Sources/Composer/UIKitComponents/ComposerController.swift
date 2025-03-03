@@ -36,6 +36,7 @@ final class ComposerController: UIViewController {
     private let recipientsController = RecipientsViewController()
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
+    private let attachmentsController = DraftAttachmentsSectionViewController()
     private let bodyEditor: BodyEditorController
     private let draftActionBarController = DraftActionBarViewController()
     private let onEvent: (ComposerControllerEvent) -> Void
@@ -77,6 +78,8 @@ final class ComposerController: UIViewController {
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(subjectField)
         composerStack.addArrangedSubview(ComposerSeparator())
+        composerStack.addArrangedSubview(EmptyView(height: DS.Spacing.large))
+        addViewController(attachmentsController, using: composerStack.addArrangedSubview)
         addViewController(bodyEditor, using: composerStack.addArrangedSubview)
 
         scrollView.addSubview(composerStack)
@@ -135,6 +138,7 @@ final class ComposerController: UIViewController {
         contactPicker.recipientsFieldState = state.editingRecipientFieldState
         fromField.text = state.senderEmail
         subjectField.text = state.subject
+        attachmentsController.uiModels = state.attachments
     }
 }
 

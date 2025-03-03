@@ -25,6 +25,7 @@ struct ComposerState: Equatable, Copying {
 
     var senderEmail: String
     var subject: String
+    var attachments: [DraftAttachmentUIModel]
     var initialBody: String
 
     var editingRecipientsGroup: RecipientGroupType?
@@ -56,6 +57,7 @@ extension ComposerState {
             bccRecipients: .initialState(group: .bcc),
             senderEmail: .empty,
             subject: .empty,
+            attachments: [],
             initialBody: .empty,
             editingRecipientsGroup: nil
         )

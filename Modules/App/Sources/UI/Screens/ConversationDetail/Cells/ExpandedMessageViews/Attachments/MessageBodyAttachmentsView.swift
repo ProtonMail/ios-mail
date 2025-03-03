@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
@@ -129,16 +130,6 @@ struct MessageBodyAttachmentsView: View {
         attributedString[numberRange].foregroundColor = DS.Color.Shade.shade100
         return attributedString
     }
-}
-
-private enum Formatter {
-    static let bytesFormatter: ByteCountFormatter = {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useBytes, .useKB, .useMB, .useGB]
-        formatter.countStyle = .file
-        formatter.includesUnit = true
-        return formatter
-    }()
 }
 
 private extension Array where Element == AttachmentDisplayModel {

@@ -39,6 +39,9 @@
     "Attachment could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
     },
+    "Cancel" : {
+      "comment" : "Cancellation for the remove attachment action in a Draft."
+    },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
     },
@@ -106,6 +109,9 @@
     },
     "Recipient primary key is missing: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Remove" : {
+      "comment" : "Confirmation for the remove attachment action in a Draft."
     },
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft.",

@@ -15,22 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DeveloperToolsSupport
-import InboxCoreUI
-import proton_app_uniffi
+import Foundation
 
-extension AttachmentMetadata {
-
-    func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
-        .init(id: id, icon: mimeType.category.icon, name: name)
-    }
-
-}
-
-extension Array where Element == AttachmentMetadata {
-
-    func toAttachmentCapsuleUIModels() -> [AttachmentCapsuleUIModel] {
-        map { $0.toAttachmentCapsuleUIModel() }
-    }
-
+public enum Formatter {
+    public static let bytesFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useBytes, .useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        formatter.includesUnit = true
+        return formatter
+    }()
 }

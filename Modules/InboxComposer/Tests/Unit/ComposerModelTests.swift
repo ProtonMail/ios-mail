@@ -412,6 +412,7 @@ extension ComposerState {
             bccRecipients: .initialState(group: .bcc),
             senderEmail: .empty,
             subject: .empty,
+            attachments: [],
             initialBody: .empty,
             editingRecipientsGroup: nil
         )

@@ -15,22 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DeveloperToolsSupport
-import InboxCoreUI
-import proton_app_uniffi
+import UIKit
 
-extension AttachmentMetadata {
+final class EmptyView: UIView {
 
-    func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
-        .init(id: id, icon: mimeType.category.icon, name: name)
+    init(height: CGFloat) {
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: height).isActive = true
     }
-
-}
-
-extension Array where Element == AttachmentMetadata {
-
-    func toAttachmentCapsuleUIModels() -> [AttachmentCapsuleUIModel] {
-        map { $0.toAttachmentCapsuleUIModel() }
-    }
-
+    required init?(coder: NSCoder) { nil }
 }
