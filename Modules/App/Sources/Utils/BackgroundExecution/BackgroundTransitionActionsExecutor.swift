@@ -21,7 +21,7 @@ import UIKit
 
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
-    typealias ActionQueueStatusProvider = (() -> (ConnectionStatusProvider & ActiveAccountSendingStatusChecker)?)
+    typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
 
     static let taskName = "finish_pending_actions"
@@ -95,13 +95,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             let areAnyMessagesUnsent = await areAnyMessagesUnsent()
             Self.log("Are any messages unsent - \(areAnyMessagesUnsent)")
 
-            let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
-            Self.log("Any message of primary account failed to send? - \(anyActiveAccountMessageFailedToSend)")
-
             let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
             Self.log("Background task executed in offline mode? - \(offline)")
 
-            if (anyActiveAccountMessageFailedToSend || areAnyMessagesUnsent) && !offline {
+            if areAnyMessagesUnsent && !offline {
                 await scheduleLocalNotification()
             }
 
@@ -132,18 +129,6 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         return await actionQueueStatusProvider.connectionStatus().isConnected
     }
 
-    private func hasAnyMessageFailedToSend() async -> Bool {
-        guard let actionQueueStatusProvider = actionQueueStatusProvider() else {
-            return false
-        }
-        switch await actionQueueStatusProvider.draftSendResultUnseen() {
-        case .ok(let results):
-            return results.first(where: { $0.failedToSend }) != nil
-        case .error:
-            return false
-        }
-    }
-
     private static func log(_ message: String) {
         AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
     }
@@ -163,19 +148,6 @@ private extension MailUserSessionConnectionStatusResult {
             connectionStatus == .online
         case .error:
             false
-        }
-    }
-
-}
-
-private extension DraftSendResult {
-
-    var failedToSend: Bool {
-        switch error {
-        case .success:
-            false
-        case .failure:
-            true
         }
     }
 

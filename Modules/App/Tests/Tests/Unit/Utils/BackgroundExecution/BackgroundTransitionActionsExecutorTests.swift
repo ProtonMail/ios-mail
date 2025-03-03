@@ -66,22 +66,6 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         )
     }
 
-    func test_WhenUserEntersBackgroundAndMessageFailsToSend_ItDisplaysNotification() throws {
-        actionQueueStatusProviderSpy.draftSendResultUnseenResultStub = .ok([.failure])
-        sut.enterBackgroundService()
-
-        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
-        XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
-        XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 1)
-
-        let notification = try XCTUnwrap(notificationSchedulerSpy.invokedAdd.first)
-
-        XCTAssertEqual(notification.content.title, "Email not sent")
-        XCTAssertEqual(notification.content.body, "Some emails couldn't be sent. Open the app to finish sending.")
-
-        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
-    }
-
     func test_WhenUserEntersBackgroundAndTimeIsUpAndMessagesAreUnsent_ItDisplaysNotification() {
         backgroundTaskExecutorSpy.allMessagesWereSent = false
         sut.enterBackgroundService()

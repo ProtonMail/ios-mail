@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import proton_app_uniffi
 
-class ActionQueueStatusProviderSpy: ConnectionStatusProvider, ActiveAccountSendingStatusChecker {
+class ActionQueueStatusProviderSpy: ConnectionStatusProvider {
 
     var connectionStatusStub: ConnectionStatus = .online
     var draftSendResultUnseenResultStub: DraftSendResultUnseenResult = .ok([])
@@ -27,12 +27,6 @@ class ActionQueueStatusProviderSpy: ConnectionStatusProvider, ActiveAccountSendi
 
     func connectionStatus() async -> MailUserSessionConnectionStatusResult {
         .ok(connectionStatusStub)
-    }
-
-    // MARK: - ActiveAccountSendingStatusChecker
-
-    func draftSendResultUnseen() async -> DraftSendResultUnseenResult {
-        draftSendResultUnseenResultStub
     }
 
 }
