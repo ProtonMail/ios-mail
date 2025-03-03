@@ -21,7 +21,7 @@ import UIKit
 
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
-    typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider & ActiveAccountSendingStatusChecker
+    typealias ActionQueueStatusProvider = (() -> (ConnectionStatusProvider & ActiveAccountSendingStatusChecker)?)
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
 
     static let taskName = "finish_pending_actions"
@@ -48,6 +48,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     }
 
     func enterBackgroundService() {
+        guard actionQueueStatusProvider() != nil else {
+            Self.log("No active session")
+            return
+        }
         backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
             withName: Self.taskName,
             expirationHandler: { [weak self] in
@@ -59,8 +63,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Self.log("Background task started")
 
         Task {
-            let actionQueueStatusProvider = actionQueueStatusProvider()
-            accessToInternetOnStart = await actionQueueStatusProvider.connectionStatus().isConnected
+            accessToInternetOnStart = await isConnected()
 
             Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
 
@@ -85,8 +88,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             return
         }
         Task {
-            let actionQueueStatusProvider = actionQueueStatusProvider()
-            let accessToInternetOnEnd = await actionQueueStatusProvider.connectionStatus().isConnected
+            let accessToInternetOnEnd = await isConnected()
             await backgroundExecutionHandle?.abort()
             Self.log("Abort called")
 
@@ -123,12 +125,22 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         }
     }
 
+    private func isConnected() async -> Bool {
+        guard let actionQueueStatusProvider = actionQueueStatusProvider() else {
+            return true
+        }
+        return await actionQueueStatusProvider.connectionStatus().isConnected
+    }
+
     private func hasAnyMessageFailedToSend() async -> Bool {
-        switch await actionQueueStatusProvider().draftSendResultUnseen() {
+        guard let actionQueueStatusProvider = actionQueueStatusProvider() else {
+            return false
+        }
+        switch await actionQueueStatusProvider.draftSendResultUnseen() {
         case .ok(let results):
-            results.first(where: { $0.failedToSend }) != nil
+            return results.first(where: { $0.failedToSend }) != nil
         case .error:
-            false
+            return false
         }
     }
 
