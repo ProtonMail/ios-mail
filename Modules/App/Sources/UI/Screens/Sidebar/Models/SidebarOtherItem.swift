@@ -22,7 +22,6 @@ struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
         case settings
         case subscriptions
         case shareLogs
-        case checkLogs
         case contacts
         case bugReport
         case signOut

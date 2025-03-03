@@ -52,12 +52,6 @@ extension Array where Element == SidebarOtherItem {
                 isSelected: false
             ),
             .init(
-                type: .checkLogs,
-                icon: DS.Icon.icBug,
-                name: "Check logs".notLocalized,
-                isSelected: false
-            ),
-            .init(
                 type: .signOut,
                 icon: DS.Icon.icSignOut,
                 name: "Sign Out".notLocalized,

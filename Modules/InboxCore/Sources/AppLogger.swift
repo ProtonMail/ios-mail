@@ -148,7 +148,7 @@ public final class AppLogger: @unchecked Sendable {
 
 extension AppLogger {
 
-    public enum Category: String, CaseIterable {
+    public enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
         case thritySecondsBackgroundTask = "ThritySecondsBackgroundTask"

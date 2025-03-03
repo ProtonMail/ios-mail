@@ -27,7 +27,6 @@ struct HomeScreen: View {
         case contacts
         case labelOrFolderCreation
         case settings
-        case checkLogs
         case draft(ComposerModalParams)
 
         // MARK: - Identifiable
@@ -38,7 +37,6 @@ struct HomeScreen: View {
             case .labelOrFolderCreation: "labelOrFolderCreation"
             case .settings: "settings"
             case .draft: "draft"
-            case .checkLogs: "checkLogs"
             }
         }
     }
@@ -121,8 +119,6 @@ struct HomeScreen: View {
                         toastStateStore.present(toast: .comingSoon)
                     case .signOut:
                         presentSignOutDialog = true
-                    case .checkLogs:
-                        modalState = .checkLogs
                     }
                 case .label(let label):
                     appRoute.updateRoute(to: .mailbox(selectedMailbox: .customLabel(
