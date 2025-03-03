@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 /// Describes the available information when opening the conversation details screen from a push notification
 struct MailboxMessageSeed: Hashable {
-    let localId: ID
+    let remoteId: RemoteId
     let subject: String
 }

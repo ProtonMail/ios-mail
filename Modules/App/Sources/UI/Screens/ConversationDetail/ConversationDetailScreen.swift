@@ -230,8 +230,8 @@ private extension ConversationDetailModel.State {
 #Preview("From Notification") {
     NavigationView {
         ConversationDetailScreen(
-            seed: .message(.init(
-                localId: .init(value: 0),
+            seed: .pushNotification(.init(
+                remoteId: .init(value: ""),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
             )),
             draftPresenter: .dummy,
@@ -251,7 +251,7 @@ extension ConversationDetailSeed {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
             selectedMailbox.systemFolder == .outbox
-        case .message:
+        case .pushNotification:
             false
         }
     }

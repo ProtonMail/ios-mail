@@ -164,7 +164,7 @@ extension MailboxScreen {
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
-                seed: .message(seed),
+                seed: .pushNotification(seed),
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath
             )
