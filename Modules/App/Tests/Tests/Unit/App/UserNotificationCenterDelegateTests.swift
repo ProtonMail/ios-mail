@@ -79,7 +79,7 @@ final class UserNotificationCenterDelegateTests {
 
     @Test
     func givenMessageTypeNotification_whenUserOpensIt_switchesThePrimaryAccount() async throws {
-        let response = makeNotificationResponse(type: .newMessage(sessionId: "session-2", messageId: 0))
+        let response = makeNotificationResponse(type: .newMessage(sessionId: "session-2", remoteId: ""))
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
@@ -89,13 +89,13 @@ final class UserNotificationCenterDelegateTests {
     @Test
     func givenMessageTypeNotification_whenUserOpensIt_navigatesToMessageThroughDeepLink() async {
         let response = makeNotificationResponse(
-            type: .newMessage(sessionId: "session-1", messageId: 123),
+            type: .newMessage(sessionId: "session-1", remoteId: "foo"),
             body: "Message subject"
         )
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
-        #expect(urlOpener.openURLInvocations == [URL(string: "protonmailET://messages/123?subject=Message%20subject")!])
+        #expect(urlOpener.openURLInvocations == [URL(string: "protonmailET://messages/foo?subject=Message%20subject")!])
     }
 
     @Test
@@ -121,9 +121,9 @@ final class UserNotificationCenterDelegateTests {
         content.body = body
 
         switch type {
-        case .newMessage(let sessionId, let messageId):
+        case .newMessage(let sessionId, let remoteId):
             content.userInfo["UID"] = sessionId
-            content.userInfo["messageId"] = messageId
+            content.userInfo["messageId"] = remoteId
         case .urlToOpen(let url):
             content.userInfo["url"] = url
             content.userInfo["UID"] = "foo"

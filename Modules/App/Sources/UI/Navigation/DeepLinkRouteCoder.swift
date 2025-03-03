@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 enum DeepLinkRouteCoder {
     private static let deepLinkScheme = Bundle.URLScheme.protonmail
@@ -30,7 +31,7 @@ enum DeepLinkRouteCoder {
         case .mailboxOpenMessage(let seed):
             components.host = "messages"
 
-            components.path = "/\(seed.localId.value)"
+            components.path = "/\(seed.remoteId.value)"
 
             components.queryItems = [
                 .init(name: "subject", value: seed.subject)
@@ -53,13 +54,13 @@ enum DeepLinkRouteCoder {
 
             guard
                 let match = try? pathRegex.wholeMatch(in: components.path),
-                let messageId = UInt64(match.output.1),
                 let subject = components.queryItems?.first(where: { $0.name == "subject" })?.value
             else {
                 return nil
             }
 
-            return .mailboxOpenMessage(seed: .init(localId: .init(value: messageId), subject: subject))
+            let remoteId = RemoteId(value: .init(match.output.1))
+            return .mailboxOpenMessage(seed: .init(remoteId: remoteId, subject: subject))
         default:
             return nil
         }

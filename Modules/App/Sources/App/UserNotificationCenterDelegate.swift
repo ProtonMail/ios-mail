@@ -22,7 +22,7 @@ import UIKit
 import UserNotifications
 
 enum RemoteNotificationType {
-    case newMessage(sessionId: String, messageId: UInt64)
+    case newMessage(sessionId: String, remoteId: String)
     case urlToOpen(String)
 }
 
@@ -61,10 +61,10 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         let notificationType = detectNotificationType(userInfo: notificationContent.userInfo)
 
         switch notificationType {
-        case .newMessage(let sessionId, let messageId):
+        case .newMessage(let sessionId, let remoteId):
             if
                 await switchPrimaryAccount(sessionId: sessionId),
-                let deepLink = makeDeepLink(basedOn: messageId, subject: notificationContent.body)
+                let deepLink = makeDeepLink(basedOn: remoteId, subject: notificationContent.body)
             {
                 await urlOpener.open(deepLink, options: [:])
             }
@@ -78,8 +78,8 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     }
 
     private func detectNotificationType(userInfo: [AnyHashable: Any]) -> RemoteNotificationType? {
-        if let sessionId = userInfo["UID"] as? String, let messageId = userInfo["messageId"] as? UInt64 {
-            return .newMessage(sessionId: sessionId, messageId: messageId)
+        if let sessionId = userInfo["UID"] as? String, let messageId = userInfo["messageId"] as? String {
+            return .newMessage(sessionId: sessionId, remoteId: messageId)
         } else if let url = userInfo["url"] as? String {
             return .urlToOpen(url)
         } else {
@@ -115,9 +115,9 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         _ = await activeSessionPublisher.next()
     }
 
-    private func makeDeepLink(basedOn rawMessageId: UInt64, subject: String) -> URL? {
-        let messageId = Id(value: rawMessageId)
-        let route = Route.mailboxOpenMessage(seed: .init(localId: messageId, subject: subject))
+    private func makeDeepLink(basedOn rawRemoteMessageId: String, subject: String) -> URL? {
+        let remoteId = RemoteId(value: rawRemoteMessageId)
+        let route = Route.mailboxOpenMessage(seed: .init(remoteId: remoteId, subject: subject))
         return DeepLinkRouteCoder.encode(route: route)
     }
 }

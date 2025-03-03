@@ -45,6 +45,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let messageListCallback: LiveQueryCallbackWrapper = .init()
     private let starActionPerformer: StarActionPerformer
 
+    private var userSession: MailUserSession {
+        dependencies.appContext.userSession
+    }
+
     init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, dependencies: Dependencies = .init()) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -246,19 +250,18 @@ extension ConversationDetailModel {
         case .mailboxItem(let item, _):
             return item.conversationID
         case .message(let message):
-            let message = try await fetchMessage(with: message.localId)
+            let message = try await fetchMessage(with: message.remoteId)
             return message.conversationId
         }
     }
 
-    private func fetchMessage(with messageID: ID) async throws -> Message {
-        switch await message(session: dependencies.appContext.userSession, id: messageID) {
-        case .error(let error):
-            throw error
-        case .ok(.none):
-            throw ConversationModelError.noMessageFound(messageID: messageID)
-        case .ok(.some(let message)):
+    private func fetchMessage(with remoteId: RemoteId) async throws -> Message {
+        let localId = try await resolveMessageId(session: userSession, remoteId: remoteId).get()
+
+        if let message = try await message(session: userSession, id: localId).get() {
             return message
+        } else {
+            throw ConversationModelError.noMessageFound(messageID: localId)
         }
     }
 
@@ -280,12 +283,12 @@ extension ConversationDetailModel {
         }
 
         /// We want to set the state to expanded before rendering the list to scroll to the correct position
-        setRelevantMessageStateAsExpanded()
+        await setRelevantMessageStateAsExpanded()
         return await readLiveQueryValues()
     }
 
-    private func setRelevantMessageStateAsExpanded() {
-        if let messageID = messageIDToScrollTo() {
+    private func setRelevantMessageStateAsExpanded() async {
+        if let messageID = await messageIDToScrollTo() {
             expandedMessages.insert(messageID)
         } else {
             let msg = "Failed to expand relevant message. Error: missing messageID."
@@ -300,7 +303,7 @@ extension ConversationDetailModel {
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
-        let messageIDToScrollTo = messageIDToScrollTo()
+        let messageIDToScrollTo = await messageIDToScrollTo()
         if messages.last?.id == messageIDToScrollTo {
             scrollToMessage = Self.lastCellId
         } else {
@@ -309,7 +312,7 @@ extension ConversationDetailModel {
         }
     }
 
-    private func messageIDToScrollTo() -> ID? {
+    private func messageIDToScrollTo() async -> ID? {
         let messageID: ID?
         switch seed {
         case .mailboxItem(let item, _):
@@ -321,7 +324,13 @@ extension ConversationDetailModel {
                 messageID = item.id
             }
         case .message(let message):
-            messageID = message.localId
+            switch await resolveMessageId(session: userSession, remoteId: message.remoteId) {
+            case .ok(let localId):
+                messageID = localId
+            case .error(let error):
+                AppLogger.log(error: error, category: .conversationDetail)
+                messageID = nil
+            }
         }
         return messageID
     }
