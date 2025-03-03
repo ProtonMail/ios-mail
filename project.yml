@@ -59,6 +59,9 @@ packages:
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
     from: "1.3.0"
+  TestableNotificationService:
+    path: Modules/TestableNotificationService
+    group: Modules
   ViewInspector:
     url: https://github.com/nalexn/ViewInspector.git
     from: "0.10.1"
@@ -196,7 +199,7 @@ targets:
     type: app-extension
     platform: iOS
     dependencies:
-      - package: InboxCore
+      - package: TestableNotificationService
     sources:
       - path: Modules/NotificationService/Sources
     settings:
@@ -254,7 +257,6 @@ schemes:
       targets:
         NotificationService: all
         ProtonMail: all
-      buildImplicitDependencies: true
     run:
       config: Debug
     test:
