@@ -572,6 +572,19 @@ enum L10n {
         }
     }
 
+    enum Notification {
+        enum EmailNotSent {
+            static let title = LocalizedStringResource(
+                "Email not sent",
+                comment: "Notification that is displayed when background time is up and at least one message is unsent."
+            )
+            static let body = LocalizedStringResource(
+                "Some emails couldn't be sent. Open the app to finish sending.",
+                comment: "Notification that is displayed when background time is up and at least one message is unsent."
+            )
+        }
+    }
+
     enum CreateFolderOrLabel {
         static let title = LocalizedStringResource(
             "Create folder or label",

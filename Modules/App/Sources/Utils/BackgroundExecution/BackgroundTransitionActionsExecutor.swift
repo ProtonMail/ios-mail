@@ -110,8 +110,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private func scheduleLocalNotification() async {
         Self.log("Schedulling local notification")
         let content = UNMutableNotificationContent()
-        content.title = "Email not sent".notLocalized
-        content.body = "Some emails couldn't be sent. Open the app to finish sending.".notLocalized
+        content.title = L10n.Notification.EmailNotSent.title.string
+        content.body = L10n.Notification.EmailNotSent.body.string
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: Self.taskName, content: content, trigger: trigger)
