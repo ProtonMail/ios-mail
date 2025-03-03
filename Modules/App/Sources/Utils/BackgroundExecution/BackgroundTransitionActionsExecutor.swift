@@ -19,27 +19,15 @@ import proton_app_uniffi
 import InboxCore
 import UIKit
 
-protocol NotificationScheduller {
+protocol NotificationScheduler {
     func add(_ request: UNNotificationRequest) async throws
 }
 
 // Mail Session
 
-class StartBackgroundExecutionHandler {
-    func abort() async {}
-}
-
 protocol BackgroundTaskExecutor {
     func startBackgroundExecution(callback: LiveQueryCallback)  -> MailSessionStartBackgroundExecutionResult
-    func areSendingActionsInActionQueue() async -> [ID]
-}
-
-extension MailSession: BackgroundTaskExecutor {
-    
-    func areSendingActionsInActionQueue() async -> [ID] {
-        []
-    }
-
+    func allMessagesWereSent() async -> Bool
 }
 
 // Mail User Session
@@ -58,7 +46,7 @@ extension MailUserSession: ActiveAccountSendingStatusChecker {
     }
 }
 
-extension UNUserNotificationCenter: NotificationScheduller {}
+extension UNUserNotificationCenter: NotificationScheduler {}
 extension MailUserSession: ConnectionStatusProvider {}
 
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
@@ -69,7 +57,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     static let taskName = "finish_pending_actions"
     private let backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
     private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
-    private let notificationScheduller: NotificationScheduller
+    private let notificationScheduller: NotificationScheduler
     private let actionQueueStatusProvider: ActionQueueStatusProvider
     private let callback: LiveQueryCallbackWrapper = .init()
 
@@ -80,7 +68,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     init(
         backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler,
         backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider,
-        notificationScheduller: NotificationScheduller = UNUserNotificationCenter.current(),
+        notificationScheduller: NotificationScheduler = UNUserNotificationCenter.current(),
         actionQueueStatusProvider: @escaping ActionQueueStatusProvider
     ) {
         self.backgroundTransitionTaskScheduler = backgroundTransitionTaskScheduler
@@ -120,28 +108,29 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     }
 
     private func endBackgroundTask() {
-        guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
-            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil), backgroundExecutionHandler? - \(backgroundExecutionHandle == nil)")
+        guard let backgroundTaskIdentifier else {
+            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             return
         }
         Task {
-            let accessToInternetOnEnd = await actionQueueStatusProvider().connectionStatus().isConnected
-            await backgroundExecutionHandle.abort()
+            let actionQueueStatusProvider = self.actionQueueStatusProvider()
+            let backgroundTaskExecutor = backgroundTaskExecutorProvider()
+            let accessToInternetOnEnd = await actionQueueStatusProvider.connectionStatus().isConnected
+            await backgroundExecutionHandle?.abort()
             Self.log("Abort called")
-//            let areSendingActionsInActionQueue = await !backgroundTaskExecutor.areSendingActionsInActionQueue().isEmpty
-//            Self.log("Any sending actions left? - \(areSendingActionsInActionQueue)")
+
+            let areAnyMessagesUnsent = await !backgroundTaskExecutor.allMessagesWereSent()
+            Self.log("Are any messages unsent - \(areAnyMessagesUnsent)")
+
             let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
             Self.log("Any message of primary account failed to send? - \(anyActiveAccountMessageFailedToSend)")
 
             let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
             Self.log("Background task executed in offline mode? - \(offline)")
 
-            if anyActiveAccountMessageFailedToSend && !offline {
+            if (anyActiveAccountMessageFailedToSend || areAnyMessagesUnsent) && !offline {
                 await scheduleLocalNotification()
             }
-//            else if areSendingActionsInActionQueue && !offline {
-//                await scheduleLocalNotification()
-//            }
 
             Self.log("Ending background task")
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
@@ -151,11 +140,11 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private func scheduleLocalNotification() async {
         Self.log("Schedulling local notification")
         let content = UNMutableNotificationContent()
-        content.title = "Email sending error".notLocalized
-        content.body = "We were not able to send your message, enter foreground to continue".notLocalized
+        content.title = "Email not sent".notLocalized
+        content.body = "Some emails couldn't be sent. Open the app to finish sending.".notLocalized
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: "sending_failure", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: Self.taskName, content: content, trigger: trigger)
         do {
             try await notificationScheduller.add(request)
         } catch {

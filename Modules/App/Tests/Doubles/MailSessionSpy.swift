@@ -18,6 +18,7 @@
 import proton_app_uniffi
 
 final class MailSessionSpy: MailSessionProtocol {
+
     var storedSessions: [StoredSessionStub] = [] {
         didSet {
             Task {
@@ -27,6 +28,12 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
+
+    var backgroundExecutionFinishedWithSuccess = true
+    var backgroundExecutionHandleStub = BackgroundExecutionHandleStub()
+    private(set) var startBackgroundExecutionInvokeCount = 0
+
+    // MARK: - MailSessionProtocol
 
     func deleteAccount(userId: String) async -> VoidSessionResult {
         fatalError()
@@ -134,6 +141,16 @@ final class MailSessionSpy: MailSessionProtocol {
 
     func watchSessions(callback: any LiveQueryCallback) async -> MailSessionWatchSessionsResult {
         fatalError()
+    }
+
+    func startBackgroundExecution(callback: LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
+        startBackgroundExecutionInvokeCount += 1
+
+        if backgroundExecutionFinishedWithSuccess {
+            callback.onUpdate()
+        }
+
+        return .ok(backgroundExecutionHandleStub)
     }
 
     func watchSessionsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchSessionsAsyncResult {

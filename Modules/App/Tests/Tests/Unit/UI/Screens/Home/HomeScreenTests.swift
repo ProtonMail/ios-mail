@@ -221,8 +221,7 @@ private extension MailUserSession {
 
         let mailSession = try createMailSession(
             params: params,
-            keyChain: KeychainSDKWrapper(),
-            networkCallback: nil
+            keyChain: KeychainSDKWrapper()
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(appContext: mailSession)

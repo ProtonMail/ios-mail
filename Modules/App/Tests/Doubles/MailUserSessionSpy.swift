@@ -20,7 +20,6 @@ import proton_app_uniffi
 
 class MailUserSessionSpy: MailUserSessionProtocol {
 
-    var pendingActionsExecutionResultStub = MailUserSessionExecutePendingActionsResult.ok(1)
     var pollEventsResultStub = VoidEventResult.ok
 
     private(set) var pollEventInvokeCount = 0
@@ -34,10 +33,8 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         return pollEventsResultStub
     }
 
-    func executePendingActions() async -> MailUserSessionExecutePendingActionsResult {
-        executePendingActionsInvokeCount += 1
+    func executeWhenOnline(callback: LiveQueryCallback) {
 
-        return pendingActionsExecutionResultStub
     }
 
     func accountDetails() async -> MailUserSessionAccountDetailsResult {

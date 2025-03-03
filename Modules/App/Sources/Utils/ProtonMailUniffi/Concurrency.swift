@@ -24,6 +24,7 @@ import proton_app_uniffi
  For this reason we extend the Rust SDK objects and mark them as unchecked Sendable to avoid warnings.
  */
 
+extension BackgroundExecutionHandle: @unchecked @retroactive Sendable {}
 extension ConversationScroller: @unchecked @retroactive Sendable {}
 extension Draft: @unchecked @retroactive Sendable {}
 extension DecryptedMessage: @unchecked @retroactive Sendable {}

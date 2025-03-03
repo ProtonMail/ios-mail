@@ -22,49 +22,50 @@ import InboxTesting
 import XCTest
 import proton_app_uniffi
 
-class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
+class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 
-    var sut: ExecutePendingActionsBackgroundTaskScheduler!
+    var sut: RecurringBackgroundTaskScheduler!
     var invokedRegister: [(identifier: String, handler: (BackgroundTask) -> Void)]!
-    private var mailUserSessionSpy: MailUserSessionSpy!
-    private var backgroundTaskScheduler: BackgroundTaskSchedulerSpy!
+    private var backgroundTaskExecutorSpy: BackgroundTaskExecutorSpy!
+    private var backgroundTaskSchedulerSpy: BackgroundTaskSchedulerSpy!
 
     override func setUp() {
         super.setUp()
 
         invokedRegister = []
-        backgroundTaskScheduler = .init()
-        mailUserSessionSpy = .init()
+        backgroundTaskSchedulerSpy = .init()
+        backgroundTaskExecutorSpy = .init()
         sut = .init(
-            userSession: { self.mailUserSessionSpy },
             backgroundTaskRegistration: .init(registerWithIdentifier: { identifier, _, handler in
                 self.invokedRegister.append((identifier, handler))
                 return true
             }),
-            backgroundTaskScheduler: backgroundTaskScheduler
+            backgroundTaskScheduler: backgroundTaskSchedulerSpy,
+            backgroundTaskExecutorProvider: { self.backgroundTaskExecutorSpy }
         )
     }
 
     override func tearDown() {
         sut = nil
-        backgroundTaskScheduler = nil
+        backgroundTaskSchedulerSpy = nil
         invokedRegister = nil
-        mailUserSessionSpy = nil
+        backgroundTaskExecutorSpy = nil
 
         super.tearDown()
     }
 
-    func test_WhenTaskIsRegistered_WhenTaskIsExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() throws {
+    func test_WhenTaskIsRegisteredAndExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() async throws {
         sut.register()
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         XCTAssertEqual(invokedRegister.count, 1)
         XCTAssertEqual(taskRegistration.identifier, "ch.protonmail.protonmail.execute_pending_actions")
 
-        submitTask()
+        await submitTask()
 
-        XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 1)
-        let submittedTaskRequest = try XCTUnwrap(backgroundTaskScheduler.invokedSubmit.first)
+        XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 1)
+        let submittedTaskRequest = try XCTUnwrap(backgroundTaskSchedulerSpy.invokedSubmit.first)
         let submittedProcessingTaskRequest = try XCTUnwrap(submittedTaskRequest as? BGProcessingTaskRequest)
         XCTAssertFalse(submittedProcessingTaskRequest.requiresExternalPower)
         XCTAssertTrue(submittedProcessingTaskRequest.requiresNetworkConnectivity)
@@ -72,51 +73,53 @@ class ExecutePendingActionsBackgroundTaskSchedulerTests: BaseTestCase {
         let backgroundTask = BackgroundTaskSpy()
         try execute(task: backgroundTask)
 
-        XCTAssertEqual(mailUserSessionSpy.pollEventInvokeCount, 1)
-        XCTAssertEqual(mailUserSessionSpy.executePendingActionsInvokeCount, 1)
+        XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
 
-        XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 2)
+        XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 2)
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
 
-    func test_WhenActionsFinishWithFailure_ItCompletesWithFailure() throws {
+    func test_WhenTaskIsRegisteredAndExecuted_WhenAbortIsCalled_ItCompletesWithSuccess() async throws {
         sut.register()
-        submitTask()
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+
+        await submitTask()
 
         let backgroundTask = BackgroundTaskSpy()
-        mailUserSessionSpy.pendingActionsExecutionResultStub = .error(.other(.network))
-        mailUserSessionSpy.pollEventsResultStub = .error(.other(.network))
         try execute(task: backgroundTask)
+        backgroundTask.expirationHandler?()
 
-        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortInvokedCount, 1)
+        XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
+        XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
 
-    func test_WhenTwoTasksAreSubmitted_ItSchedulesOnlyOne() {
+    func test_WhenTwoTasksAreSubmitted_ItSchedulesOnlyOne() async {
         sut.register()
-        submitTask()
-        submitTask()
+        await submitTask()
+        await submitTask()
 
-        XCTAssertEqual(backgroundTaskScheduler.invokedSubmit.count, 1)
+        XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 1)
     }
 
-    func test_WhenCancelIsCalled_ItCancelsTask() {
+    func test_WhenCancelIsCalled_ItCancelsTask() async {
         sut.register()
-        submitTask()
+        await submitTask()
         sut.cancel()
 
-        XCTAssertEqual(backgroundTaskScheduler.invokedCancel, ["ch.protonmail.protonmail.execute_pending_actions"])
+        XCTAssertEqual(backgroundTaskSchedulerSpy.invokedCancel, ["ch.protonmail.protonmail.execute_pending_actions"])
     }
 
     // MARK: - Private
 
-    private func submitTask() {
-        sut.submit()
-        backgroundTaskScheduler.pendingTaskRequestsStub = [backgroundTaskScheduler.invokedSubmit.last].compactMap { $0 }
+    private func submitTask() async {
+        await sut.submit()
+        backgroundTaskSchedulerSpy.pendingTaskRequestsStub = [backgroundTaskSchedulerSpy.invokedSubmit.last].compactMap { $0 }
     }
 
     private func execute(task: BackgroundTask) throws {
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
-        backgroundTaskScheduler.pendingTaskRequestsStub = []
+        backgroundTaskSchedulerSpy.pendingTaskRequestsStub = []
         taskRegistration.handler(task)
     }
 
@@ -153,6 +156,26 @@ private class BackgroundTaskSpy: BackgroundTask {
 
     func setTaskCompleted(success: Bool) {
         didCompleteWithSuccess = success
+    }
+
+}
+
+class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Sendable {
+
+    private(set) var abortInvokedCount = 0
+
+    init() {
+        super.init(noPointer: .init())
+    }
+    
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
+
+    // MARK: - BackgroundExecutionHandle
+
+    override func abort() async {
+        abortInvokedCount += 1
     }
 
 }
