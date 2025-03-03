@@ -713,16 +713,6 @@ public extension NewAllMailMailboxResult {
         }
     }
 }
-public extension NewDraftResult {
-    func get() throws -> Draft {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension NewDraftSendWatcherResult {
     func get() throws -> DraftSendResultWatcher {
         switch self {
@@ -745,16 +735,6 @@ public extension NewInboxMailboxResult {
 }
 public extension NewMailboxResult {
     func get() throws -> Mailbox {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension OpenDraftResult {
-    func get() throws -> OpenDraft {
         switch self {
         case .ok(let value):
             value
@@ -924,26 +904,6 @@ public extension SidebarWatchLabelsResult {
     }
 }
 public extension VoidActionResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension VoidDraftDiscardResult {
-    func get() throws {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension VoidDraftSaveSendResult {
     func get() throws {
         switch self {
         case .ok:

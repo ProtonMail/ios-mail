@@ -37,7 +37,7 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
     func messageId() async -> DraftMessageIdResult
-    func attachments() -> [AttachmentMetadata]
+    func attachmentList() -> AttachmentListProtocol
     func body() -> String
     func mimeType() -> MimeType
     func save() async -> VoidDraftSaveSendResult
@@ -47,8 +47,6 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setSubject(subject: String) -> VoidDraftSaveSendResult
     func subject() -> String
 
-    func add(attachmentFilePath: String) -> VoidDraftAttachmentResult
-
     func discard() async -> VoidDraftDiscardResult
 }
 
@@ -56,6 +54,11 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
  This conformance allows us to use `Draft` as an `AppDraftProtocol`
  */
 extension Draft: AppDraftProtocol {
+    public func attachmentList() -> AttachmentListProtocol {
+        let list: AttachmentList = self.attachmentList()
+        return list
+    }
+    
     public func toRecipients() -> ComposerRecipientListProtocol {
         let list: ComposerRecipientList = self.toRecipients()
         return list
@@ -69,11 +72,6 @@ extension Draft: AppDraftProtocol {
     public func bccRecipients() -> ComposerRecipientListProtocol {
         let list: ComposerRecipientList = self.bccRecipients()
         return list
-    }
-
-    // FIXME: Delete when SDK provides it
-    public func add(attachmentFilePath: String) -> VoidDraftAttachmentResult {
-        return .ok
     }
 }
 

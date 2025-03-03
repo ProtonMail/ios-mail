@@ -18,7 +18,38 @@
 import Foundation
 import proton_app_uniffi
 
-extension DraftDiscardError: LocalizedError {
+extension DraftAttachmentError: @retroactive LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+private extension DraftAttachmentErrorReason {
+
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .attachmentTooLarge:
+            L10n.DraftAttachmentError.attachmentTooLarge
+        case .crypto:
+            L10n.DraftAttachmentError.crypto
+        case .messageAlreadySent:
+            L10n.DraftAttachmentError.messageAlreadySent
+        case .messageDoesNotExist:
+            L10n.DraftAttachmentError.messageDoesNotExist
+        case .messageDoesNotExistOnServer:
+            L10n.DraftAttachmentError.messageDoesNotExistOnServer
+        case .tooManyAttachments:
+            L10n.DraftAttachmentError.tooManyAttachments
+        }
+    }
+}
+
+extension DraftDiscardError: @retroactive LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -40,7 +71,7 @@ extension DraftDiscardErrorReason {
     }
 }
 
-extension DraftOpenError: LocalizedError {
+extension DraftOpenError: @retroactive LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -66,7 +97,7 @@ private extension DraftOpenErrorReason {
     }
 }
 
-extension DraftSaveSendError: LocalizedError {
+extension DraftSaveSendError: @retroactive LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -90,6 +121,8 @@ private extension DraftSaveSendErrorReason {
             L10n.DraftSaveSendError.messageDoesNotExist
         case .messageIsNotADraft:
             L10n.DraftSaveSendError.messageIsNotADraft
+        case .missingAttachmentUploads:
+            L10n.DraftSaveSendError.missingAttachmentUploads
         case .noRecipients:
             L10n.DraftSaveSendError.noRecipients
         case .packageError(let value):

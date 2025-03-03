@@ -28,7 +28,7 @@ final class DeviceTokenRegistrar {
             Task {
                 do {
                     let mailUserSession = try AppContext.shared.mailSession.userContextFromSession(
-                        session: storedSession
+                        session: storedSession, challenge: nil
                     ).get()
 
                     try await registerAndSaveDevice(session: mailUserSession, device: device).get()

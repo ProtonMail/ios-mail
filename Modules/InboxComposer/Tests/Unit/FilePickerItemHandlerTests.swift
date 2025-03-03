@@ -63,7 +63,7 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertEqual(Set(mockDraft.mockAttachments), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
     }
@@ -78,7 +78,7 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file1-1.txt")
 
-        XCTAssertEqual(Set(mockDraft.mockAttachments), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
     }
@@ -92,7 +92,7 @@ final class FilePickerItemHandlerTests: BaseTestCase {
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
-        XCTAssertEqual(mockDraft.mockAttachments, [destFile2.path])
+        XCTAssertEqual(mockDraft.mockAttachments(), [destFile2.path])
         XCTAssertFalse(fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
     }

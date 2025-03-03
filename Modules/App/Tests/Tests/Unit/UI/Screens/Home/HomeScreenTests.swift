@@ -228,7 +228,7 @@ private extension MailUserSession {
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 
-        switch mailSession.userContextFromSession(session: storedSession) {
+        switch mailSession.userContextFromSession(session: storedSession, challenge: nil) {
         case .ok(let mailUserSession):
             return mailUserSession
         case .error(let error):

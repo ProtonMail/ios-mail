@@ -30,9 +30,10 @@ struct FilePickerItemHandler {
             for await result in copyFilePickerItems(files: urls, destinationFolder: uploadFolder) {
                 switch result {
                 case .success(let file):
-                    let result = draft.add(attachmentFilePath: file.path)
+                    let result = await draft.attachmentList().add(path: file.path)
                     if case .error(let error) = result {
                         presentToast(toast: .error(message: error.localizedDescription))
+                        return
                     }
                 case .failure:
                     errorCount += 1

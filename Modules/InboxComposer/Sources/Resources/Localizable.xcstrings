@@ -95,6 +95,12 @@
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
     },
+    "Message does not exist" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Message does not exist on the server" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
@@ -212,7 +218,19 @@
     "The address is disabled: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
+    "The attachment is missing" : {
+      "comment" : "Error in the context of managing attachments in a draft."
+    },
+    "The attachments is too large" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "The draft to be sent was not found" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The limit of attachments has been reached" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The message has been already sent" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "The message to be sent is not a draft" : {
@@ -229,6 +247,9 @@
     },
     "There was a problem discarding the draft" : {
       "comment" : "Error shown when the draft fails to delete."
+    },
+    "There was a problem encrypting attachment" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",

@@ -84,7 +84,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            switch mailSession.userContextFromSession(session: currentSession) {
+            switch mailSession.userContextFromSession(session: currentSession, challenge: nil) {
             case .ok(let newUserSession):
                 withAnimation { sessionState = .activeSession(session: newUserSession) }
             case .error(let error):
@@ -125,13 +125,13 @@ extension AppContext: AccountAuthDelegate {
 
     @MainActor
     private func initializeMailUserSession(session: StoredSession) async throws {
-        let newUserSession = try mailSession.userContextFromSession(session: session).get()
+        let newUserSession = try mailSession.userContextFromSession(session: session, challenge: nil).get()
         try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
     }
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
-        switch mailSession.userContextFromSession(session: session) {
+        switch mailSession.userContextFromSession(session: session, challenge: nil) {
         case .ok(let newUserSession):
             withAnimation { self.sessionState = .activeSession(session: newUserSession) }
         case .error(let error):

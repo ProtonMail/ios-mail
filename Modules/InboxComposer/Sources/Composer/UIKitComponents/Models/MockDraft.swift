@@ -30,7 +30,7 @@ final class MockDraft: AppDraftProtocol {
     var mockToRecipientList = MockComposerRecipientList()
     var mockCcRecipientList = MockComposerRecipientList()
     var mockBccRecipientList = MockComposerRecipientList()
-    var mockAttachments = [String]()
+    var mockAttachmentList = MockAttachmentList()
 
     static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
         let draft = MockDraft()
@@ -43,6 +43,10 @@ final class MockDraft: AppDraftProtocol {
     }
 
     func messageId() async -> DraftMessageIdResult { .ok(nil) }
+
+    func attachmentList() -> AttachmentListProtocol {
+        mockAttachmentList
+    }
 
     func toRecipients() -> ComposerRecipientListProtocol {
         mockToRecipientList
@@ -100,10 +104,12 @@ final class MockDraft: AppDraftProtocol {
     func discard() async -> VoidDraftDiscardResult {
         .ok
     }
+}
 
-    func add(attachmentFilePath: String) -> VoidDraftAttachmentResult {
-        mockAttachments.append(attachmentFilePath)
-        return .ok
+extension MockDraft {
+
+    func mockAttachments() -> [String] {
+        (attachmentList() as! MockAttachmentList).mockAttachments
     }
 }
 
@@ -158,5 +164,26 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol {
 
     func setCallback(cb: ComposerRecipientValidationCallback) {
         callback = cb
+    }
+}
+
+final class MockAttachmentList: AttachmentListProtocol {
+    var mockAttachments = [String]()
+
+    func add(path: String) async -> AttachmentListAddResult {
+        mockAttachments.append(path)
+        return .ok
+    }
+    
+    func attachmentUploadDirectory() -> String {
+        .empty
+    }
+    
+    func attachments() async -> AttachmentListAttachmentsResult {
+        .ok([])
+    }
+    
+    func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {
+        .error(.reason(.crypto))
     }
 }

@@ -210,6 +210,11 @@ enum L10n {
             comment: "Error in the context of saving a draft before being sent."
         )
 
+        static let missingAttachmentUploads = LocalizedStringResource(
+            "The attachment is missing",
+            comment: "Error in the context of managing attachments in a draft."
+        )
+
         static let noRecipients = LocalizedStringResource(
             "Message to be sent has no recipients",
             comment: "Error in the context of saving a draft before being sent."
@@ -242,6 +247,38 @@ enum L10n {
                 comment: "Error in the context of saving a draft before being sent."
             )
         }
+    }
+
+    enum DraftAttachmentError {
+        static let attachmentTooLarge = LocalizedStringResource(
+            "The attachments is too large",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let crypto = LocalizedStringResource(
+            "There was a problem encrypting attachment",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let messageAlreadySent = LocalizedStringResource(
+            "The message has been already sent",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let messageDoesNotExist = LocalizedStringResource(
+            "Message does not exist",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let messageDoesNotExistOnServer = LocalizedStringResource(
+            "Message does not exist on the server",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let tooManyAttachments = LocalizedStringResource(
+            "The limit of attachments has been reached",
+            comment: "Error in the context of saving a draft before being sent."
+        )
     }
 
     enum OpenDraftError {

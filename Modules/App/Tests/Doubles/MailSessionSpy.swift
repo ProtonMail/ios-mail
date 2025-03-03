@@ -110,11 +110,15 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError()
     }
 
-    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
+    func newLoginFlow(challenge: (any ChallengeNotifier)?) async -> MailSessionNewLoginFlowResult {
         fatalError()
     }
 
-    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
+    func resumeLoginFlow(userId: String, sessionId: String, challenge: (any ChallengeNotifier)?) async -> MailSessionResumeLoginFlowResult {
+        fatalError()
+    }
+
+    func userContextFromSession(session: StoredSession, challenge: (any ChallengeNotifier)?) -> MailSessionUserContextFromSessionResult {
         fatalError()
     }
 
@@ -129,10 +133,6 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
-        fatalError()
-    }
-
-    func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
         fatalError()
     }
 
