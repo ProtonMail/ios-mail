@@ -1396,6 +1396,9 @@
         }
       }
     },
+    "Email not sent" : {
+      "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
+    },
     "Email tracking protection" : {
       "comment" : "Subtitle of the Privacy and security settings item.",
       "localizations" : {
@@ -2891,6 +2894,9 @@
     },
     "Snoozed until %@" : {
       "comment" : "Banner indicating when a snoozed email will reappear in the inbox."
+    },
+    "Some emails couldn't be sent. Open the app to finish sending." : {
+      "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
     },
     "Spam" : {
       "comment" : "Menu title of all emails marked as spam in the sidebar.",

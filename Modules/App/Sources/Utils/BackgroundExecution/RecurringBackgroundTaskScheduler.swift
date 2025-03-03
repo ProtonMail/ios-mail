@@ -51,14 +51,14 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
             nil
         ) { task in
             Task { [weak self] in
-                Self.log("Background task execution started")
+                log("Background task execution started")
                 await self?.execute(task: task)
             }
         }
         if !isTaskDefinedInInfoPlist {
             fatalError("Missing background task identifier: <\(Self.identifier)> in the Info.plist file.")
         }
-        Self.log("Background task registered")
+        log("Background task registered")
     }
 
     func submit() async {
@@ -71,9 +71,9 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
 
         do {
             try backgroundTaskScheduler.submit(taskRequest)
-            Self.log("Background task submitted")
+            log("Background task submitted")
         } catch {
-            Self.log("Background task failed to submit, because of error: \(error.localizedDescription)")
+            log("Background task failed to submit, because of error: \(error.localizedDescription)")
         }
     }
 
@@ -87,23 +87,23 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
         await submit()
 
         callback.delegate = {
-            Self.log("Background task finished with success")
+            log("Background task finished with success")
             task.setTaskCompleted(success: true)
         }
 
         do {
             let handle = try backgroundTaskExecutorProvider().startBackgroundExecution(callback: callback).get()
-            Self.log("Handle is returned, background actions in progress")
+            log("Handle is returned, background actions in progress")
 
             task.expirationHandler = { [handle, task] in
                 Task {
-                    Self.log("Background task expiration handler called")
+                    log("Background task expiration handler called")
                     await handle.abort()
                     task.setTaskCompleted(success: true)
                 }
             }
         } catch {
-            Self.log("Background execution failed to start: \(error.localizedDescription)")
+            log("Background execution failed to start: \(error.localizedDescription)")
         }
     }
 
@@ -115,10 +115,10 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
         return request
     }
 
-    private static func log(_ message: String) {
-        AppLogger.log(message: message, category: .recurringBackgroundTask)
-    }
+}
 
+private func log(_ message: String) {
+    AppLogger.log(message: message, category: .recurringBackgroundTask)
 }
 
 extension Date {
