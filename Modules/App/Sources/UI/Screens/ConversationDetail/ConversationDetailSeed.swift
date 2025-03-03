@@ -19,13 +19,13 @@ import Foundation
 
 enum ConversationDetailSeed {
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
-    case message(MailboxMessageSeed)
+    case pushNotification(MailboxMessageSeed)
 
     var selectedMailbox: SelectedMailbox {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
             return selectedMailbox
-        case .message:
+        case .pushNotification:
             return .inbox
         }
     }
@@ -34,7 +34,7 @@ enum ConversationDetailSeed {
         switch self {
         case .mailboxItem(let model, _):
             return model.subject
-        case .message(let message):
+        case .pushNotification(let message):
             return message.subject
         }
     }
@@ -43,7 +43,7 @@ enum ConversationDetailSeed {
         switch self {
         case .mailboxItem(let model, _):
             return model.isStarred
-        case .message:
+        case .pushNotification:
             return false
         }
     }
