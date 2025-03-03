@@ -33,10 +33,6 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         return pollEventsResultStub
     }
 
-    func executeWhenOnline(callback: LiveQueryCallback) {
-
-    }
-
     func accountDetails() async -> MailUserSessionAccountDetailsResult {
         fatalError()
     }
@@ -51,7 +47,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         connectionStatusStub
     }
 
-    func executeWhenOnline(callback: any proton_app_uniffi.LiveQueryCallback) {
+    func executeWhenOnline(callback: LiveQueryCallback) {
         fatalError()
     }
 

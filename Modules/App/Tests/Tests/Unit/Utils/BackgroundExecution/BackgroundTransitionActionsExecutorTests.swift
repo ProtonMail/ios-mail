@@ -16,97 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import proton_app_uniffi
 import InboxTesting
 import XCTest
-
-class NotificationSchedulerSpy: NotificationScheduler {
-
-    private(set) var invokedAdd: [UNNotificationRequest] = []
-
-    // MARK: - NotificationScheduler
-
-    func add(_ request: UNNotificationRequest) async throws {
-        invokedAdd.append(request)
-    }
-
-}
-
-class BackgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskScheduler {
-
-    var stubbedBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 10)
-    private(set) var invokedBeginBackgroundTask: [(taskName: String?, handler: (@MainActor @Sendable () -> Void)?)] = []
-    private(set) var invokedEndBackgroundTask: [UIBackgroundTaskIdentifier] = []
-
-    // MARK: - BackgroundTransitionTaskScheduler
-
-    func beginBackgroundTask(
-        withName taskName: String?,
-        expirationHandler handler: (@MainActor @Sendable () -> Void)?
-    ) -> UIBackgroundTaskIdentifier {
-        invokedBeginBackgroundTask.append((taskName, handler))
-
-        return stubbedBackgroundTaskIdentifier
-    }
-    
-    func endBackgroundTask(_ identifier: UIBackgroundTaskIdentifier) {
-        invokedEndBackgroundTask.append(identifier)
-    }
-
-}
-
-import proton_app_uniffi
-
-class ActionQueueStatusProviderSpy: ConnectionStatusProvider, ActiveAccountSendingStatusChecker {
-
-    var connectionStatusStub: ConnectionStatus = .online
-    var draftSendResultUnseenResultStub: DraftSendResultUnseenResult = .ok([])
-
-    // MARK: - ConnectionStatusProvider
-
-    func connectionStatus() async -> MailUserSessionConnectionStatusResult {
-        .ok(connectionStatusStub)
-    }
-
-    // MARK: - ActiveAccountSendingStatusChecker
-
-    func draftSendResultUnseen() async -> DraftSendResultUnseenResult {
-        draftSendResultUnseenResultStub
-    }
-
-}
-
-class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
-
-    var backgroundExecutionFinishedWithSuccess = true
-    var backgroundExecutionHandleStub = BackgroundExecutionHandleStub()
-    var allMessagesWereSent = true
-    private(set) var startBackgroundExecutionInvokeCount = 0
-
-    // MARK: - BackgroundTaskExecutor
-
-    func startBackgroundExecution(callback: LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
-        startBackgroundExecutionInvokeCount += 1
-
-        if backgroundExecutionFinishedWithSuccess {
-            callback.onUpdate()
-        }
-
-        return .ok(backgroundExecutionHandleStub)
-    }
-    
-    func allMessagesWereSent() async -> Bool {
-        allMessagesWereSent
-    }
-
-}
 
 class BackgroundTransitionActionsExecutorTests: BaseTestCase {
 
     var sut: BackgroundTransitionActionsExecutor!
-    var notificationSchedulerSpy: NotificationSchedulerSpy!
     var backgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskSchedulerSpy!
     var backgroundTaskExecutorSpy: BackgroundTaskExecutorSpy!
     var actionQueueStatusProviderSpy: ActionQueueStatusProviderSpy!
+    private var notificationSchedulerSpy: NotificationSchedulerSpy!
 
     override func setUp() {
         super.setUp()
@@ -186,7 +106,7 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
 
 }
 
-extension DraftSendResult {
+private extension DraftSendResult {
 
     static var failure: Self {
         .init(messageId: .random(), timestamp: 0, error: .failure(.other(.network)), origin: .save)
@@ -194,6 +114,18 @@ extension DraftSendResult {
 
     static var success: Self {
         .init(messageId: .random(), timestamp: 0, error: .success(1), origin: .save)
+    }
+
+}
+
+private class NotificationSchedulerSpy: NotificationScheduler {
+
+    private(set) var invokedAdd: [UNNotificationRequest] = []
+
+    // MARK: - NotificationScheduler
+
+    func add(_ request: UNNotificationRequest) async throws {
+        invokedAdd.append(request)
     }
 
 }

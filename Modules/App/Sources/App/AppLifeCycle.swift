@@ -97,11 +97,3 @@ extension AppLifeCycle {
         )
     }
 }
-
-import proton_app_uniffi
-
-extension MailSession: BackgroundTaskExecutor {
-    func allMessagesWereSent() async -> Bool {
-        true
-    }
-}

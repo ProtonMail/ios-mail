@@ -19,36 +19,6 @@ import proton_app_uniffi
 import InboxCore
 import UIKit
 
-protocol NotificationScheduler {
-    func add(_ request: UNNotificationRequest) async throws
-}
-
-// Mail Session
-
-protocol BackgroundTaskExecutor {
-    func startBackgroundExecution(callback: LiveQueryCallback)  -> MailSessionStartBackgroundExecutionResult
-    func allMessagesWereSent() async -> Bool
-}
-
-// Mail User Session
-
-protocol ActiveAccountSendingStatusChecker {
-    func draftSendResultUnseen() async -> DraftSendResultUnseenResult
-}
-
-protocol ConnectionStatusProvider {
-    func connectionStatus() async -> MailUserSessionConnectionStatusResult
-}
-
-extension MailUserSession: ActiveAccountSendingStatusChecker {
-    func draftSendResultUnseen() async -> DraftSendResultUnseenResult {
-        await proton_app_uniffi.draftSendResultUnseen(session: self)
-    }
-}
-
-extension UNUserNotificationCenter: NotificationScheduler {}
-extension MailUserSession: ConnectionStatusProvider {}
-
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
 
     typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider & ActiveAccountSendingStatusChecker
@@ -91,7 +61,9 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Task {
             let actionQueueStatusProvider = actionQueueStatusProvider()
             accessToInternetOnStart = await actionQueueStatusProvider.connectionStatus().isConnected
+
             Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
+
             callback.delegate = { [weak self] in
                 Self.log("All actions executed, ending task")
                 self?.endBackgroundTask()
@@ -113,13 +85,12 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             return
         }
         Task {
-            let actionQueueStatusProvider = self.actionQueueStatusProvider()
-            let backgroundTaskExecutor = backgroundTaskExecutorProvider()
+            let actionQueueStatusProvider = actionQueueStatusProvider()
             let accessToInternetOnEnd = await actionQueueStatusProvider.connectionStatus().isConnected
             await backgroundExecutionHandle?.abort()
             Self.log("Abort called")
 
-            let areAnyMessagesUnsent = await !backgroundTaskExecutor.allMessagesWereSent()
+            let areAnyMessagesUnsent = await areAnyMessagesUnsent()
             Self.log("Are any messages unsent - \(areAnyMessagesUnsent)")
 
             let anyActiveAccountMessageFailedToSend = await hasAnyMessageFailedToSend()
@@ -163,6 +134,11 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     private static func log(_ message: String) {
         AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
+    }
+
+    private func areAnyMessagesUnsent() async -> Bool {
+        let allMessagesWereSent = (try? await backgroundTaskExecutorProvider().allMessagesWereSent().get()) ?? true
+        return !allMessagesWereSent
     }
 
 }

@@ -77,10 +77,7 @@ final class AppContext: Sendable, ObservableObject {
         
         let params = MailSessionParamsFactory.make(appConfig: appConfig)
 
-        _mailSession = try createMailSession(
-            params: params,
-            keyChain: dependencies.keychain
-        ).get()
+        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain).get()
         AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
@@ -185,7 +182,6 @@ extension AppContext: EventLoopProvider {
                 AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
                 return
             }
-
             AppLogger.log(message: "poll events", category: .rustLibrary)
             try await userSession.pollEvents().get()
         } catch {
