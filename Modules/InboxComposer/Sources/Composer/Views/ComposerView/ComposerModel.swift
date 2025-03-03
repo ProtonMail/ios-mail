@@ -276,6 +276,7 @@ extension ComposerModel {
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
             senderEmail: draft.sender(),
             subject: draft.subject(),
+            attachments: [], // FIXME: read from `draft.attachments()` when available
             initialBody: draft.body()
         )
     }

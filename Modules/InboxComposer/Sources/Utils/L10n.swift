@@ -126,6 +126,18 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Attachment failed to be added to a draft message."
         )
+
+        static let removeAttachmentConfirmation = LocalizedStringResource(
+            "Remove",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Confirmation for the remove attachment action in a Draft."
+        )
+
+        static let cancelAttachmentConfirmation = LocalizedStringResource(
+            "Cancel",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Cancellation for the remove attachment action in a Draft."
+        )
     }
 
     enum Contacts {
