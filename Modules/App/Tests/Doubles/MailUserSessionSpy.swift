@@ -51,7 +51,7 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         connectionStatusStub
     }
 
-    func executePendingAction() async -> VoidSessionResult {
+    func executeWhenOnline(callback: any proton_app_uniffi.LiveQueryCallback) {
         fatalError()
     }
 

@@ -123,6 +123,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError()
     }
 
+    func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
+        fatalError()
+    }
+
     func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
         fatalError()
     }
