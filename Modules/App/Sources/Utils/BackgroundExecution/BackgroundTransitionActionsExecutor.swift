@@ -49,66 +49,72 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     func enterBackgroundService() {
         guard actionQueueStatusProvider() != nil else {
-            log("No active session")
+            Self.log("No active session")
             return
         }
         backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
             withName: Self.taskName,
             expirationHandler: { [weak self] in
-                log("Time is up, ending task")
+                Self.log("Time is up, ending task")
                 self?.endBackgroundTask()
             }
         )
 
-        log("Background task started")
+        Self.log("Background task started")
 
         Task {
             accessToInternetOnStart = await isConnected()
 
-            log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
+            Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
 
             callback.delegate = { [weak self] in
-                log("All actions executed, ending task")
+                Self.log("All actions executed, ending task")
+                Self.log("Handle present: \(self?.backgroundExecutionHandle != nil)?")
                 self?.endBackgroundTask()
             }
             do {
                 backgroundExecutionHandle = try backgroundTaskExecutorProvider().startBackgroundExecution(
                     callback: callback
                 ).get()
-                log("Handle is returned, background actions in progress")
+                Self.log("Handle is returned, background actions in progress")
+                Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             } catch {
-                log("Background execution failed to start: \(error.localizedDescription)")
+                Self.log("[Broken] Background execution failed to start: \(error.localizedDescription)")
             }
         }
     }
 
     private func endBackgroundTask() {
         guard let backgroundTaskIdentifier else {
-            log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+            Self.log("[Broken] Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+            Self.log("[Broken] Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
         }
         Task {
+            Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
             let accessToInternetOnEnd = await isConnected()
-            await backgroundExecutionHandle?.abort()
-            log("Abort called")
 
-            let areAnyMessagesUnsent = await areAnyMessagesUnsent()
-            log("Are any messages unsent - \(areAnyMessagesUnsent)")
+            Self.log("[Broken] Handle present: \(backgroundExecutionHandle != nil)?")
+            await backgroundExecutionHandle?.abort()
+            Self.log("Abort called")
+
+            let allMessagesWereSent = await allMessagesWereSent()
+            Self.log("All messages were sent - \(allMessagesWereSent)")
 
             let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
-            log("Background task executed in offline mode? - \(offline)")
+            Self.log("Background task executed in offline mode? - \(offline)")
 
-            if areAnyMessagesUnsent && !offline {
+            if !allMessagesWereSent && !offline {
                 await scheduleLocalNotification()
             }
 
-            log("Ending background task")
+            Self.log("Ending background task")
             backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
         }
     }
 
     private func scheduleLocalNotification() async {
-        log("Schedulling local notification")
+        Self.log("Schedulling local notification")
         let content = UNMutableNotificationContent()
         content.title = L10n.Notification.EmailNotSent.title.string
         content.body = L10n.Notification.EmailNotSent.body.string
@@ -118,7 +124,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         do {
             try await notificationScheduller.add(request)
         } catch {
-            log("Local notification schedulling failed")
+            Self.log("[Broken] Local notification schedulling failed error: \(error)")
         }
     }
 
@@ -126,28 +132,30 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         guard let actionQueueStatusProvider = actionQueueStatusProvider() else {
             return true
         }
-        return await actionQueueStatusProvider.connectionStatus().isConnected
+        switch await actionQueueStatusProvider.connectionStatus() {
+        case .ok(let status):
+            return status == .online
+        case .error(let error):
+            Self.log("[Broken] func isConnected error: \(error)")
+            return false
+        }
     }
 
-    private func areAnyMessagesUnsent() async -> Bool {
-        let allMessagesWereSent = (try? await backgroundTaskExecutorProvider().allMessagesWereSent().get()) ?? true
-        return !allMessagesWereSent
+    private func allMessagesWereSent() async -> Bool {
+        switch await backgroundTaskExecutorProvider().allMessagesWereSent() {
+        case .ok(let result):
+            Self.log("func allMessagesWereSent result: \(result)")
+            return result
+        case .error(let error):
+            Self.log("[Broken] func areAnyMessagesUnsent error result: \(error)")
+            return false
+        }
     }
 
-}
-
-private func log(_ message: String) {
-    AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
-}
-
-private extension MailUserSessionConnectionStatusResult {
-
-    var isConnected: Bool {
-        switch self {
-        case .ok(let connectionStatus):
-            connectionStatus == .online
-        case .error:
-            false
+    private static func log(_ message: String) {
+        Task {
+            let message = "\(message), time left: \(await UIApplication.shared.backgroundTimeRemaining)"
+            AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
         }
     }
 
