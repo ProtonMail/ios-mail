@@ -60,10 +60,11 @@ struct MainToolbar: ViewModifier {
                         })
                         .square(size: 40)
                         .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
-
-                        SelectionTitleView(title: title)
-                            .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                     }
+                }
+                ToolbarItem(placement: .principal) {
+                    SelectionTitleView(title: title)
+                        .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
