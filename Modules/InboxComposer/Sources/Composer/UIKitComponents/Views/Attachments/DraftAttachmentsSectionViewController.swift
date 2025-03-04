@@ -23,23 +23,18 @@ import SwiftUI
 
 struct DraftAttachmentUIModel: Hashable {
     let attachment: AttachmentMetadata
-    let status: DraftAttachmentStatus
-}
-
-enum DraftAttachmentStatus {
-    case offline
-    case uploading
-    case uploaded
-    case error
+    let status: DraftAttachmentState
 }
 
 enum DraftAttachmentsSectionEvent {
     case onTap(uiModel: DraftAttachmentUIModel)
     case onRemove(uiModel: DraftAttachmentUIModel)
+    case onRetryAttachmentUpload(uiModel: DraftAttachmentUIModel)
 }
 
 final class DraftAttachmentsSectionViewController: UIViewController {
     private let stack = SubviewFactory.stack
+    private var topConstraint: NSLayoutConstraint?
     var uiModels: [DraftAttachmentUIModel] = [] {
         didSet { updateUI() }
     }
@@ -55,28 +50,41 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stack)
 
+        let constraint = stack.topAnchor.constraint(equalTo: view.topAnchor)
+        topConstraint = constraint
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DS.Spacing.large),
-            stack.topAnchor.constraint(equalTo: view.topAnchor),
+            constraint,
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.large),
             view.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
         ])
     }
 
     private func updateUI() {
+        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.large
         stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for uiModel in uiModels {
             let view = DraftAttachmentView(onEvent: { [weak self] event, uiModel in
                 switch event {
                 case .onViewTap:
-                    self?.onEvent?(.onTap(uiModel: uiModel))
+                    // FIXME: when we work on inline attachments
+//                    self?.onEvent?(.onTap(uiModel: uiModel))
+                    break
                 case .onButtonTap:
                     self?.showRemoveConfirmation(uiModel: uiModel)
                 }
             })
             stack.addArrangedSubview(view)
             view.configure(uiModel: uiModel)
+        }
+        // avoid undesired animations caused by re-adding subviews with `addArrangedSubview`
+        stack.layoutIfNeeded()
+
+        for uiModel in uiModels {
+            if uiModel.status == .error {
+                showAttachmentError(uiModel: uiModel)
+            }
         }
     }
 
@@ -87,12 +95,28 @@ final class DraftAttachmentsSectionViewController: UIViewController {
             preferredStyle: .actionSheet
         )
 
-        let remove = UIAlertAction(title: L10n.Attachments.removeAttachmentConfirmation.string, style: .default) { [weak self] _ in
+        let remove = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
             self?.onEvent?(.onRemove(uiModel: uiModel))
         }
-        let cancel = UIAlertAction(title: L10n.Attachments.cancelAttachmentConfirmation.string, style: .cancel)
+        let cancel = UIAlertAction(title: L10n.Attachments.cancelAttachment.string, style: .cancel)
         alertController.addAction(remove)
         alertController.addAction(cancel)
+        present(alertController, animated: true)
+    }
+
+    private func showAttachmentError(uiModel: DraftAttachmentUIModel) {
+        AppLogger.log(message: "Attachment failed alert, id = \(uiModel.attachment.id)", category: .composer, isError: true)
+        let message = L10n.Attachments.attachmentFailAlertTitle(name: uiModel.attachment.name).string
+        let alertController = UIAlertController(title: String.empty, message: message, preferredStyle: .alert)
+
+        let retry = UIAlertAction(title: L10n.Attachments.retryAttachmentUpload.string, style: .default) { [weak self] _ in
+            self?.onEvent?(.onRetryAttachmentUpload(uiModel: uiModel))
+        }
+        let remove = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
+            self?.onEvent?(.onRemove(uiModel: uiModel))
+        }
+        alertController.addAction(retry)
+        alertController.addAction(remove)
         present(alertController, animated: true)
     }
 }
@@ -115,7 +139,7 @@ extension DraftAttachmentsSectionViewController {
 
 #Preview {
     enum Model {
-        static func makeUIModel(name: String, cat: MimeTypeCategory, size: UInt64, status: DraftAttachmentStatus)
+        static func makeUIModel(name: String, cat: MimeTypeCategory, size: UInt64, status: DraftAttachmentState)
         -> DraftAttachmentUIModel {
             let mimeType = AttachmentMimeType(mime: "", category: cat)
             let attachment = AttachmentMetadata(id: .random(), disposition: .attachment, mimeType: mimeType, name: name, size: size)
@@ -126,7 +150,7 @@ extension DraftAttachmentsSectionViewController {
             Model.makeUIModel(name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, status: .uploading),
             Model.makeUIModel(name: "budget.xls", cat: .excel, size: 263478, status: .uploaded),
             Model.makeUIModel(name: "photo_1.jpg", cat: .image, size: 7824333, status: .offline),
-            Model.makeUIModel(name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, status: .error),
+            Model.makeUIModel(name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, status: .uploaded),
         ]
     }
 
@@ -140,6 +164,8 @@ extension DraftAttachmentsSectionViewController {
             section.uiModels = Model.uiModels
             section.onEvent = { event in
                 switch event {
+                case .onRetryAttachmentUpload(let uiModel):
+                    print("retry \(uiModel.attachment.name)?")
                 case .onTap(let uiModel):
                     print("tap \(uiModel.attachment.name)")
                 case .onRemove(let uiModel):

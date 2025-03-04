@@ -40,6 +40,7 @@ final class ComposerModel: ObservableObject {
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
+    private let attachmentsCallback = DraftAttachmentsCallbackWrapper()
 
     private var updateBodyDebounceTask: DebouncedTask?
     
@@ -71,7 +72,10 @@ final class ComposerModel: ObservableObject {
         self.photosItemsHandler = photosItemsHandler
         self.fileItemsHandler = fileItemsHandler
         self.state = makeState(from: draft)
-        setUpComposerRecipientListCallbacks()
+        setUpCallbacks()
+        Task {
+            await updateStateAttachmentUIModels()
+        }
     }
 
     @MainActor
@@ -241,26 +245,19 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    // FIXME: attachmentUploadDirectory to be provided by the SDK's draft object
-    private func attachmentUploadDirectory() -> URL {
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("draft-attachments", isDirectory: true)
-            .appendingPathComponent("asdfghjk", isDirectory: true)
-    }
-
     func addAttachments(selectedPhotosItems items: Binding<[PhotosPickerItem]>) {
         Task {
             let photos = items.wrappedValue
             items.wrappedValue = []
             guard !photos.isEmpty else { return }
 
-            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos, uploadFolder: attachmentUploadDirectory())
+            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos)
         }
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) {
         Task {
-            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, uploadFolder: attachmentUploadDirectory())
+            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult)
         }
     }
 }
@@ -276,7 +273,7 @@ extension ComposerModel {
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
             senderEmail: draft.sender(),
             subject: draft.subject(),
-            attachments: [], // FIXME: read from `draft.attachments()` when available
+            attachments: [], // FIXME: Because the async nature of the SDK to read attachments, we read them separetely
             initialBody: draft.body()
         )
     }
@@ -292,13 +289,19 @@ extension ComposerModel {
         }
     }
 
-    private func setUpComposerRecipientListCallbacks() {
+    private func setUpCallbacks() {
         toCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .to) }
         ccCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .cc) }
         bccCallback.delegate = { [weak self] in self?.updateStateRecipientUIModels(for: .bcc) }
         draft.toRecipients().setCallback(cb: toCallback)
         draft.ccRecipients().setCallback(cb: ccCallback)
         draft.bccRecipients().setCallback(cb: bccCallback)
+
+        attachmentsCallback.delegate = { [weak self] in await self?.updateStateAttachmentUIModels() }
+        Task {
+            // FIXME: The SDK should provide a sync function to set the callback
+            await draft.attachmentList().watcher(callback: attachmentsCallback)
+        }
     }
 
     private func updateStateRecipientUIModels(for group: RecipientGroupType) {
@@ -313,6 +316,16 @@ extension ComposerModel {
                 }
             })
         )
+    }
+
+    @MainActor
+    private func updateStateAttachmentUIModels() async {
+        do {
+            state.attachments = try await draft.attachmentList().attachments().toDraftAttachmentUIModels()
+        } catch {
+            AppLogger.log(error: error, category: .composer)
+            showToast(.error(message: error.localizedDescription))
+        }
     }
 
     private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {

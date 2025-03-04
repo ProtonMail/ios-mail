@@ -36,6 +36,9 @@
     "Address not found" : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
+    "Attachment %@ could not be added." : {
+      "comment" : "Alert shown when an attachment fails to be uploaded."
+    },
     "Attachment could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
     },
@@ -147,6 +150,9 @@
           }
         }
       }
+    },
+    "Retry" : {
+      "comment" : "Option when the attachment failed to upload."
     },
     "Send" : {
       "comment" : "Message send button.",

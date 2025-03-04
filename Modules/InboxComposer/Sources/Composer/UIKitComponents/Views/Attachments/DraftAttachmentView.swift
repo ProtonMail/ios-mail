@@ -85,6 +85,12 @@ final class DraftAttachmentView: TapHighlightView {
         layer.cornerRadius = frame.height / 2.0
     }
 
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let buttonFrameInParent = removeButton.convert(removeButton.bounds, to: self)
+        let expandedTouchArea = buttonFrameInParent.insetBy(dx: -10, dy: -10)
+        return expandedTouchArea.contains(point) ? removeButton : super.hitTest(point, with: event)
+    }
+
     @objc private func removeButtonTapped(_ sender: SpinnerButton) {
         guard let uiModel else { return }
         onEvent(.onButtonTap, uiModel)

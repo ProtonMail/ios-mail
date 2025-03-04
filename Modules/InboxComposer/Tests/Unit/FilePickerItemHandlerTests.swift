@@ -24,6 +24,7 @@ final class FilePickerItemHandlerTests: BaseTestCase {
     var sut: FilePickerItemHandler!
     private var fileManager: FileManager!
     private var tempDirectory: URL!
+    private var destinationFolder: URL!
     private var toastStateStore: ToastStateStore!
     private var mockDraft: MockDraft!
 
@@ -31,8 +32,11 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         fileManager = .default
         tempDirectory = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try fileManager.createDirectory(at: tempDirectory, withIntermediateDirectories: true)
+        destinationFolder = tempDirectory.appendingPathComponent("destination/")
+
         toastStateStore = .init(initialState: .initial)
         mockDraft = .emptyMock
+        mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = destinationFolder
         sut = .init(toastStateStore: toastStateStore)
     }
 
@@ -49,16 +53,15 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         let error = NSError(domain: "".notLocalized, code: -1,
             userInfo: [NSLocalizedDescriptionKey: "the localised error".notLocalized]
         )
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .failure(error), uploadFolder: tempDirectory)
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .failure(error))
         XCTAssertEqual(toastStateStore.state.toasts, [.error(message: error.localizedDescription)])
     }
 
     func testAddSelectedFiles_whenThereIsNoErrorCopyingFiles_itShouldCopyFilesToDestinationFolder() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
-        let destinationFolder = tempDirectory.appendingPathComponent("destination/")
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), uploadFolder: destinationFolder)
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
@@ -71,9 +74,8 @@ final class FilePickerItemHandlerTests: BaseTestCase {
     func testAddSelectedFiles_whenSameFileNameAddedTwice_itShouldCopyItTwice() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file1.txt", createFile: true)
-        let destinationFolder = tempDirectory.appendingPathComponent("destination/")
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), uploadFolder: destinationFolder)
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file1-1.txt")
@@ -86,9 +88,8 @@ final class FilePickerItemHandlerTests: BaseTestCase {
     func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldCopyCorrectFilesAndSignalTheErrorInTheResult() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: false)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
-        let destinationFolder = tempDirectory.appendingPathComponent("destination/")
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), uploadFolder: destinationFolder)
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
@@ -99,9 +100,8 @@ final class FilePickerItemHandlerTests: BaseTestCase {
 
     func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldShowErrorToast() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: false)
-        let destinationFolder = tempDirectory.appendingPathComponent("destination/")
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1]), uploadFolder: destinationFolder)
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1]))
 
         XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.Attachments.attachmentCouldNotBeAdded.string)])
     }

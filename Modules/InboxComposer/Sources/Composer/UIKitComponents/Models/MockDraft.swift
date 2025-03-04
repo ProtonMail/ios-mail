@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
 extension SingleRecipientEntry {
@@ -169,6 +170,7 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol {
 
 final class MockAttachmentList: AttachmentListProtocol {
     var mockAttachments = [String]()
+    var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
 
     func add(path: String) async -> AttachmentListAddResult {
         mockAttachments.append(path)
@@ -176,13 +178,13 @@ final class MockAttachmentList: AttachmentListProtocol {
     }
     
     func attachmentUploadDirectory() -> String {
-        .empty
+        attachmentUploadDirectoryURL.path()
     }
     
     func attachments() async -> AttachmentListAttachmentsResult {
         .ok([])
     }
-    
+
     func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {
         .error(.reason(.crypto))
     }

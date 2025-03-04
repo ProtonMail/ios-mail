@@ -25,6 +25,7 @@ enum ComposerControllerEvent {
     case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
     case fromFieldEvent(FromFieldViewEvent)
     case subjectFieldEvent(SubjectFieldViewEvent)
+    case attachmentEvent(DraftAttachmentsSectionEvent)
     case bodyEvent(BodyEditorEvent)
     case actionBarEvent(DraftActionBarEvent)
 }
@@ -78,7 +79,6 @@ final class ComposerController: UIViewController {
         composerStack.addArrangedSubview(ComposerSeparator())
         composerStack.addArrangedSubview(subjectField)
         composerStack.addArrangedSubview(ComposerSeparator())
-        composerStack.addArrangedSubview(EmptyView(height: DS.Spacing.large))
         addViewController(attachmentsController, using: composerStack.addArrangedSubview)
         addViewController(bodyEditor, using: composerStack.addArrangedSubview)
 
@@ -96,6 +96,7 @@ final class ComposerController: UIViewController {
         }
         fromField.onEvent = { [weak self] in self?.onEvent(.fromFieldEvent($0)) }
         subjectField.onEvent = { [weak self] in self?.onEvent(.subjectFieldEvent($0)) }
+        attachmentsController.onEvent = { [weak self] in self?.onEvent(.attachmentEvent($0)) }
         bodyEditor.onEvent = { [weak self] in self?.onEvent(.bodyEvent($0)) }
         draftActionBarController.onEvent = { [weak self] in self?.onEvent(.actionBarEvent($0)) }
     }

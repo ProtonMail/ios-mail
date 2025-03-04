@@ -22,7 +22,10 @@ final class SpinnerButton: UIButton {
     private struct Appearance {
         static let lineWidth: CGFloat = 3.0
         static let outlinePadding: CGFloat = 3.0
+        static let tintColor = DS.Color.Icon.weak.toDynamicUIColor
+        static let tintColorPressed = DS.Color.Icon.inverted.toDynamicUIColor
         static let spinnerColor = DS.Color.Brand.minus10.toDynamicUIColor
+        static let spinnerColorPressed = DS.Color.Brand.minus20.toDynamicUIColor
     }
 
     private lazy var progressLayer: CAShapeLayer = {
@@ -70,10 +73,12 @@ final class SpinnerButton: UIButton {
     override var isHighlighted: Bool {
         didSet {
             if isHighlighted {
-                backgroundColor = DS.Color.InteractionWeak.pressed.toDynamicUIColor
+                tintColor = Appearance.tintColorPressed
+                progressLayer.strokeColor = Appearance.spinnerColorPressed.cgColor
             } else {
-                UIView.animate(withDuration: 0.2) {
-                    self.backgroundColor = .clear
+                UIView.animate(withDuration: 0.2) { [weak self] in
+                    self?.tintColor = Appearance.tintColor
+                    self?.progressLayer.strokeColor = Appearance.spinnerColor.cgColor
                 }
             }
         }

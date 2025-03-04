@@ -74,9 +74,3 @@ extension Draft: AppDraftProtocol {
         return list
     }
 }
-
-// FIXME: Delete when SDK provides it
-public enum VoidDraftAttachmentResult {
-    case ok
-    case error(LocalizedError)
-}

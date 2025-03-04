@@ -25,8 +25,9 @@ struct PhotosPickerItemHandler {
     let fileManager = FileManager.default
     let toastStateStore: ToastStateStore
 
-    func addPickerPhotos(to draft: AppDraftProtocol, photos: [PhotosPickerItemTransferable], uploadFolder: URL) async {
+    func addPickerPhotos(to draft: AppDraftProtocol, photos: [PhotosPickerItemTransferable]) async {
         var errorCount = 0
+        let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {
             case .success(let file):

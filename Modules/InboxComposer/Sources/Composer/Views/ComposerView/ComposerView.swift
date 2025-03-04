@@ -103,6 +103,16 @@ struct ComposerView: View {
                         model.updateSubject(value: subject)
                     }
 
+                case .attachmentEvent(let event):
+                    switch event {
+                    case .onRetryAttachmentUpload:
+                        toastStateStore.present(toast: .comingSoon)
+                    case .onTap:
+                        toastStateStore.present(toast: .comingSoon)
+                    case .onRemove:
+                        toastStateStore.present(toast: .comingSoon)
+                    }
+
                 case .bodyEvent(let event):
                     switch event {
                     case .onStartEditing:
@@ -121,8 +131,7 @@ struct ComposerView: View {
                 }
             }
             .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
-//                model.selectedAttachmentSource(selection)
-                toastStateStore.present(toast: .comingSoon)
+                model.selectedAttachmentSource(selection)
             }
             .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems)
             .fileImporter(isPresented: $model.pickersState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))

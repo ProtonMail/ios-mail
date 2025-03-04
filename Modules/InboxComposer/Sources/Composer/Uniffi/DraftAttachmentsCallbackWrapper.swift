@@ -15,15 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UIKit
+import proton_app_uniffi
 
-final class EmptyView: UIView {
+// FIXME: Resue `AsyncLiveQueryCallbackWrapper`
+final class DraftAttachmentsCallbackWrapper: @unchecked Sendable, AsyncLiveQueryCallback {
+    var delegate: (() async -> Void)?
 
-    init(height: CGFloat) {
-        super.init(frame: .zero)
-        backgroundColor = .clear
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: height).isActive = true
+    func onUpdate() async{
+        await delegate?()
     }
-    required init?(coder: NSCoder) { nil }
 }

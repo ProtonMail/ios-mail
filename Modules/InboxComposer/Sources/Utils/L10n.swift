@@ -127,17 +127,32 @@ enum L10n {
             comment: "Attachment failed to be added to a draft message."
         )
 
-        static let removeAttachmentConfirmation = LocalizedStringResource(
+        static let removeAttachment = LocalizedStringResource(
             "Remove",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Confirmation for the remove attachment action in a Draft."
         )
 
-        static let cancelAttachmentConfirmation = LocalizedStringResource(
+        static let cancelAttachment = LocalizedStringResource(
             "Cancel",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Cancellation for the remove attachment action in a Draft."
         )
+
+        static func attachmentFailAlertTitle(name: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Attachment \(name) could not be added.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Alert shown when an attachment fails to be uploaded."
+            )
+        }
+
+        static let retryAttachmentUpload = LocalizedStringResource(
+            "Retry",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Option when the attachment failed to upload."
+        )
+
     }
 
     enum Contacts {

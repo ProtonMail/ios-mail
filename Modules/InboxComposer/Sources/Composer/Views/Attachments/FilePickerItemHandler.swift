@@ -23,7 +23,8 @@ struct FilePickerItemHandler {
     let fileManager = FileManager.default
     let toastStateStore: ToastStateStore
 
-    func addSelectedFiles(to draft: AppDraftProtocol, selectionResult: Result<[URL], any Error>, uploadFolder: URL) async {
+    func addSelectedFiles(to draft: AppDraftProtocol, selectionResult: Result<[URL], any Error>) async {
+        let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         switch selectionResult {
         case .success(let urls):
             var errorCount = 0
