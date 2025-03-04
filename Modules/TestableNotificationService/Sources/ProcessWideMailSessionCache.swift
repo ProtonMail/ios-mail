@@ -33,7 +33,7 @@ enum ProcessWideMailSessionCache {
             return cachedMailSession
         } else {
             let params = MailSessionParamsFactory.make(appConfig: .default)
-            let mailSessionResult = createMailSession(params: params, keyChain: KeychainSDKWrapper())
+            let mailSessionResult = createMailIosExtensionSession(params: params, keyChain: KeychainSDKWrapper())
 
             switch mailSessionResult {
             case .ok(let mailSession):

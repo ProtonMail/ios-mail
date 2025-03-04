@@ -173,6 +173,16 @@ public extension ConversationsForLabelResult {
         }
     }
 }
+public extension CreateMailIosExtensionSessionResult {
+    func get() throws -> MailSession {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension CreateMailSessionResult {
     func get() throws -> MailSession {
         switch self {
