@@ -135,20 +135,15 @@ extension MailboxModel {
             .sink { [weak self] openedItem in
                 guard let self else { return }
 
-                let openMessageAction = DispatchWorkItem {
-                    self.state.navigationPath.append(openedItem)
-                }
-
                 state.isSearchPresented = false
 
-                if state.navigationPath.count > 0 {
-                    state.navigationPath.removeLast()
-
-                    let estimatedPopBackAnimationDuration = DispatchTimeInterval.milliseconds(250)
-                    Dispatcher.dispatchOnMainAfter(.now() + estimatedPopBackAnimationDuration, openMessageAction)
-                } else {
-                    openMessageAction.perform()
+                if !state.navigationPath.isEmpty {
+                    UIView.performWithoutAnimation {
+                        self.state.navigationPath.removeLast(self.state.navigationPath.count)
+                    }
                 }
+
+                state.navigationPath.append(openedItem)
             }
             .store(in: &cancellables)
 
