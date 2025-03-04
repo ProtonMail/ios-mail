@@ -170,6 +170,7 @@ struct HomeScreen: View {
 
     private func handleDeepLink(_ deepLink: URL) {
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
+            modalState = nil
             appRoute.updateRoute(to: route)
         }
     }
