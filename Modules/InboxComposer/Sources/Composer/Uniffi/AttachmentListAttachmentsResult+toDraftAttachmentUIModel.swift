@@ -31,6 +31,6 @@ extension AttachmentListAttachmentsResult {
 extension DraftAttachment {
 
     func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, status: state)
+        .init(attachment: attachment, status: .init(modifiedAt: stateModifiedTimestamp, state: state))
     }
 }

@@ -210,6 +210,11 @@ enum L10n {
             )
         }
 
+        static let attachmentUpload = LocalizedStringResource(
+            "An attachmemt failed to upload",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
         static let messageAlreadySent = LocalizedStringResource(
             "The message was already sent",
             comment: "Error in the context of saving a draft before being sent."
@@ -288,6 +293,11 @@ enum L10n {
         static let messageDoesNotExistOnServer = LocalizedStringResource(
             "Message does not exist on the server",
             comment: "Error in the context of saving a draft before being sent."
+        )
+
+        static let retryInvalidState = LocalizedStringResource(
+            "Retry failed, please remove the attachment",
+            comment: "Error in the context of retrying to upload a draft."
         )
 
         static let tooManyAttachments = LocalizedStringResource(

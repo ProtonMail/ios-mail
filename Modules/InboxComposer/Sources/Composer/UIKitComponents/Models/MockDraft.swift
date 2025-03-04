@@ -185,6 +185,10 @@ final class MockAttachmentList: AttachmentListProtocol {
         .ok([])
     }
 
+    func retry(attachmentId: Id) async -> AttachmentListRetryResult {
+        .ok
+    }
+
     func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {
         .error(.reason(.crypto))
     }

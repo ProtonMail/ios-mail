@@ -43,6 +43,8 @@ private extension DraftAttachmentErrorReason {
             L10n.DraftAttachmentError.messageDoesNotExist
         case .messageDoesNotExistOnServer:
             L10n.DraftAttachmentError.messageDoesNotExistOnServer
+        case .retryInvalidState:
+            L10n.DraftAttachmentError.retryInvalidState
         case .tooManyAttachments:
             L10n.DraftAttachmentError.tooManyAttachments
         }
@@ -117,6 +119,8 @@ private extension DraftSaveSendErrorReason {
             L10n.DraftSaveSendError.addressDisabled(address: value)
         case .alreadySent, .messageAlreadySent:
             L10n.DraftSaveSendError.messageAlreadySent
+        case .attachmentUpload:
+            L10n.DraftSaveSendError.attachmentUpload
         case .messageDoesNotExist:
             L10n.DraftSaveSendError.messageDoesNotExist
         case .messageIsNotADraft:

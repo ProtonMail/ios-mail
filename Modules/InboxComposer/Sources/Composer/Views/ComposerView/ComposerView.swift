@@ -105,8 +105,8 @@ struct ComposerView: View {
 
                 case .attachmentEvent(let event):
                     switch event {
-                    case .onRetryAttachmentUpload:
-                        toastStateStore.present(toast: .comingSoon)
+                    case .onRetryAttachmentUpload(let uiModel):
+                        model.retryUploadingAttachment(uiModel: uiModel)
                     case .onTap:
                         toastStateStore.present(toast: .comingSoon)
                     case .onRemove:

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Collections
 import InboxDesignSystem
 import InboxCore
 import InboxCoreUI
@@ -23,7 +24,12 @@ import SwiftUI
 
 struct DraftAttachmentUIModel: Hashable {
     let attachment: AttachmentMetadata
-    let status: DraftAttachmentState
+    let status: DraftAttachmentStatus
+}
+
+struct DraftAttachmentStatus: Hashable {
+    let modifiedAt: Int64
+    let state: DraftAttachmentState
 }
 
 enum DraftAttachmentsSectionEvent {
@@ -38,6 +44,7 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     var uiModels: [DraftAttachmentUIModel] = [] {
         didSet { updateUI() }
     }
+    private var attachmentErrorAlerts = AttachmentErrorAlertState()
     var onEvent: ((DraftAttachmentsSectionEvent) -> Void)?
 
     override func viewDidLoad() {
@@ -81,9 +88,9 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         // avoid undesired animations caused by re-adding subviews with `addArrangedSubview`
         stack.layoutIfNeeded()
 
-        for uiModel in uiModels {
-            if uiModel.status == .error {
-                showAttachmentError(uiModel: uiModel)
+        Task {
+            for uiModel in uiModels where uiModel.status.state == .error {
+                await enqueueAttachmentErrorAlert(uiModel: uiModel)
             }
         }
     }
@@ -104,20 +111,53 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    private func showAttachmentError(uiModel: DraftAttachmentUIModel) {
-        AppLogger.log(message: "Attachment failed alert, id = \(uiModel.attachment.id)", category: .composer, isError: true)
-        let message = L10n.Attachments.attachmentFailAlertTitle(name: uiModel.attachment.name).string
-        let alertController = UIAlertController(title: String.empty, message: message, preferredStyle: .alert)
+    private func enqueueAttachmentErrorAlert(uiModel: DraftAttachmentUIModel) async {
+        await attachmentErrorAlerts.enqueue(uiModel: uiModel)
+        await showNextAttachmentErrorAlertIfNeeded()
+    }
 
-        let retry = UIAlertAction(title: L10n.Attachments.retryAttachmentUpload.string, style: .default) { [weak self] _ in
+    private func makeAttachmentErrorAlert(uiModel: DraftAttachmentUIModel) -> UIAlertController {
+        let message = L10n.Attachments.attachmentFailAlertTitle(name: uiModel.attachment.name).string
+        let retryTitle = L10n.Attachments.retryAttachmentUpload.string
+        let removeTitle = L10n.Attachments.removeAttachment.string
+
+        let alertController = UIAlertController(title: String.empty, message: message, preferredStyle: .alert)
+        alertController.addAction(makeAttachmentErrorAlertAction(title: retryTitle, uiModel: uiModel) { [weak self] in
             self?.onEvent?(.onRetryAttachmentUpload(uiModel: uiModel))
-        }
-        let remove = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
+        })
+        alertController.addAction(makeAttachmentErrorAlertAction(title: removeTitle, uiModel: uiModel) { [weak self] in
             self?.onEvent?(.onRemove(uiModel: uiModel))
+        })
+        return alertController
+    }
+
+    private func makeAttachmentErrorAlertAction(
+        title: String,
+        uiModel: DraftAttachmentUIModel,
+        completion: @escaping () -> Void
+    ) -> UIAlertAction {
+        UIAlertAction(title: title, style: .default) { [weak self] _ in
+            Task {
+                completion()
+                await self?.attachmentErrorAlerts.setIsAlertPresented(value: false)
+                await self?.showNextAttachmentErrorAlertIfNeeded()
+            }
         }
-        alertController.addAction(retry)
-        alertController.addAction(remove)
-        present(alertController, animated: true)
+    }
+
+    private func showNextAttachmentErrorAlertIfNeeded() async {
+        let isAlertPresented = await attachmentErrorAlerts.isAlertPresented
+        let isQueueEmpty = await attachmentErrorAlerts.isQueueEmpty()
+        guard
+            !isAlertPresented && !isQueueEmpty,
+            let uiModel = await attachmentErrorAlerts.dequeue()
+        else { return }
+
+        await attachmentErrorAlerts.setIsAlertPresented(value: true)
+        present(makeAttachmentErrorAlert(uiModel: uiModel), animated: true) {
+            let message = "Attachment failed alert: id = \(uiModel.attachment.id), status timestamp = \(uiModel.status.modifiedAt)"
+            AppLogger.log(message: message, category: .composer, isError: true)
+        }
     }
 }
 
@@ -137,20 +177,51 @@ extension DraftAttachmentsSectionViewController {
     }
 }
 
+private actor AttachmentErrorAlertState {
+    private var queue: OrderedSet<DraftAttachmentUIModel> = []
+    private var alreadySeen: OrderedSet<DraftAttachmentUIModel> = []
+    private(set) var isAlertPresented = false
+
+    func setIsAlertPresented(value: Bool) {
+        isAlertPresented = value
+    }
+
+    func isQueueEmpty() async -> Bool {
+        queue.isEmpty
+    }
+
+    func enqueue(uiModel: DraftAttachmentUIModel) async {
+        guard uiModel.status.state == .error, !alreadySeen.contains(uiModel) else { return }
+        queue.append(uiModel)
+    }
+
+    func dequeue() async -> DraftAttachmentUIModel? {
+        guard !queue.isEmpty else { return nil }
+        let uiModel = queue.removeFirst()
+        alreadySeen.append(uiModel)
+        return uiModel
+    }
+}
+
 #Preview {
     enum Model {
-        static func makeUIModel(name: String, cat: MimeTypeCategory, size: UInt64, status: DraftAttachmentState)
-        -> DraftAttachmentUIModel {
+        static func makeUIModel(
+            id: UInt64,
+            name: String,
+            cat: MimeTypeCategory,
+            size: UInt64,
+            status: DraftAttachmentState, timestamp: Int64 = 1740954885
+        ) -> DraftAttachmentUIModel {
             let mimeType = AttachmentMimeType(mime: "", category: cat)
-            let attachment = AttachmentMetadata(id: .random(), disposition: .attachment, mimeType: mimeType, name: name, size: size)
-            return DraftAttachmentUIModel(attachment: attachment, status: status)
+            let attachment = AttachmentMetadata(id: .init(value: id), disposition: .attachment, mimeType: mimeType, name: name, size: size)
+            return DraftAttachmentUIModel(attachment: attachment, status: .init(modifiedAt: timestamp, state: status))
         }
 
         static let uiModels: [DraftAttachmentUIModel] = [
-            Model.makeUIModel(name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, status: .uploading),
-            Model.makeUIModel(name: "budget.xls", cat: .excel, size: 263478, status: .uploaded),
-            Model.makeUIModel(name: "photo_1.jpg", cat: .image, size: 7824333, status: .offline),
-            Model.makeUIModel(name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, status: .uploaded),
+            Model.makeUIModel(id: 1, name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, status: .uploading),
+            Model.makeUIModel(id: 2, name: "budget.xls", cat: .excel, size: 263478, status: .uploaded),
+            Model.makeUIModel(id: 3, name: "photo_1.jpg", cat: .image, size: 7824333, status: .offline),
+            Model.makeUIModel(id: 4, name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, status: .uploaded),
         ]
     }
 

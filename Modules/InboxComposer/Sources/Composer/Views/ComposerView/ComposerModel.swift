@@ -260,6 +260,12 @@ final class ComposerModel: ObservableObject {
             await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult)
         }
     }
+
+    func retryUploadingAttachment(uiModel: DraftAttachmentUIModel) {
+        Task {
+            await draft.attachmentList().retry(attachmentId: uiModel.attachment.id)
+        }
+    }
 }
 
 // MARK: Private

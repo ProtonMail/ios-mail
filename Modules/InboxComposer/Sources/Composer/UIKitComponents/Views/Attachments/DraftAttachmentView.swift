@@ -101,8 +101,13 @@ final class DraftAttachmentView: TapHighlightView {
         icon.image = UIImage(resource: uiModel.attachment.mimeType.category.bigIcon)
         name.text = uiModel.attachment.name
         size.text = Formatter.bytesFormatter.string(fromByteCount: Int64(uiModel.attachment.size))
-        let isUploaded = uiModel.status == .uploaded
-        removeButton.configure(isSpinning: !isUploaded)
+
+        let isError = uiModel.status.state == .error
+        layer.borderColor = isError ? DS.Color.Notification.error.toDynamicUIColor.cgColor : UIColor.clear.cgColor
+        layer.borderWidth = isError ? 1.0 : 0.0
+
+        let isUploaded = uiModel.status.state == .uploaded
+        removeButton.configure(isSpinning: !isUploaded && !isError)
         isTappable = isUploaded
     }
 }
