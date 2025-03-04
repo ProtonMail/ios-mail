@@ -139,6 +139,8 @@ extension MailboxModel {
                     self.state.navigationPath.append(openedItem)
                 }
 
+                state.isSearchPresented = false
+
                 if state.navigationPath.count > 0 {
                     state.navigationPath.removeLast()
 
@@ -546,6 +548,7 @@ extension MailboxModel {
 
         // Navigation properties
         var attachmentPresented: AttachmentViewConfig?
+        var isSearchPresented = false
         var navigationPath: NavigationPath = .init()
 
         var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)

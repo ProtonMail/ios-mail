@@ -27,7 +27,6 @@ struct MailboxScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
-    @State private var isSearchPresented = false
     @State private var isOnboardingPresented = false
     @State private var isAccountManagerPresented = false
     private let sendResultPresenter: SendResultPresenter
@@ -74,7 +73,7 @@ struct MailboxScreen: View {
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
                     input: $mailboxModel.state.moveToSheetPresented
                 )
-                .fullScreenCover(isPresented: $isSearchPresented) {
+                .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
                     SearchScreen(userSession: userSession, sendResultPresenter: sendResultPresenter)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
@@ -134,7 +133,7 @@ extension MailboxScreen {
         case .onExitSelectionMode:
             mailboxModel.selectionMode.selectionModifier.exitSelectionMode()
         case .onSearch:
-            isSearchPresented = true
+            mailboxModel.state.isSearchPresented = true
         }
     }
 
