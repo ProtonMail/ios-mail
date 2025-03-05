@@ -53,6 +53,17 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         super.tearDown()
     }
 
+    func test_WhenUserEntersBackgroundAndEntersForeground_ItEndsBackgroundTask() {
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        sut.enterBackgroundService()
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
+
+        sut.becomeActiveService()
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortInvokedCount, 1)
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
+        XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
+    }
+
     func test_WhenUserEntersBackground_ItExecutesBackgroundActionsWithSuccess() throws {
         actionQueueStatusProviderSpy.draftSendResultUnseenResultStub = .ok([.success])
         sut.enterBackgroundService()

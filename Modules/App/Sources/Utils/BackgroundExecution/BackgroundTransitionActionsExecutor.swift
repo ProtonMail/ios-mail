@@ -19,7 +19,7 @@ import proton_app_uniffi
 import InboxCore
 import UIKit
 
-class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, @unchecked Sendable {
+class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceDidBecomeActive, @unchecked Sendable {
 
     typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
@@ -46,6 +46,25 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         self.notificationScheduller = notificationScheduller
         self.actionQueueStatusProvider = actionQueueStatusProvider
     }
+
+    // MARK: - ApplicationServiceDidBecomeActive
+
+    func becomeActiveService() {
+        guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
+            Self.log("[Broken] Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+            Self.log("[Broken] Handle present: \(self.backgroundExecutionHandle != nil)?")
+            return
+        }
+        Task {
+            Self.log("Abort called")
+            await backgroundExecutionHandle.abort()
+
+            Self.log("Ending background task")
+            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
+        }
+    }
+
+    // MARK: - ApplicationServiceDidEnterBackground
 
     func enterBackgroundService() {
         guard actionQueueStatusProvider() != nil else {
@@ -84,6 +103,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         }
     }
 
+    // MARK: - Private
+
     private func endBackgroundTask() {
         guard let backgroundTaskIdentifier else {
             Self.log("[Broken] Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
@@ -94,7 +115,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
             let accessToInternetOnEnd = await isConnected()
 
-            Self.log("[Broken] Handle present: \(backgroundExecutionHandle != nil)?")
+            Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
             await backgroundExecutionHandle?.abort()
             Self.log("Abort called")
 

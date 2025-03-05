@@ -97,7 +97,7 @@ extension AppLifeCycle {
                 recurringBackgroundTaskService,
                 userNotificationCenterDelegate
             ],
-            becomeActiveServices: [eventLoop, emailsPrefetchingNotifier],
+            becomeActiveServices: [backgroundTransitionActionsExecutor, eventLoop, emailsPrefetchingNotifier],
             enterBackgroundServices: [appIconBadgeService, eventLoop, backgroundTransitionActionsExecutor],
             terminateServices: []
         )
