@@ -53,10 +53,12 @@ struct PaginatedListView<
         switch viewState {
         case .fetchingInitialPage:
             MailboxSkeletonView()
-        case .empty:
-            emptyListView()
-        case .data:
-            dataStateView
+        case .data(let type):
+            dataStateView.overlay {
+                if type == .placeholder {
+                    emptyListView()
+                }
+            }
         }
     }
 
@@ -72,7 +74,7 @@ struct PaginatedListView<
                 cellView(index, item)
             }
 
-            if !viewState.isLastPage {
+            if viewState.showBottomSpinner {
                 HStack {
                     ProtonSpinner()
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -94,14 +96,29 @@ struct PaginatedListView<
 
 enum PaginatedListViewState: Equatable {
     case fetchingInitialPage
-    case empty
-    case data(isLastPage: Bool)
-
-    var isLastPage: Bool {
-        guard case .data(let isLastPage) = self else {
+    case data(Data)
+    
+    enum Data: Equatable {
+        case items(isLastPage: Bool)
+        case placeholder
+    }
+    
+    var showBottomSpinner: Bool {
+        switch self {
+        case .fetchingInitialPage:
+            return true
+        case .data(let data):
+            return showSpinner(for: data)
+        }
+    }
+    
+    private func showSpinner(for data: Data) -> Bool {
+        switch data {
+        case .items(let isLastPage):
+            return !isLastPage
+        case .placeholder:
             return false
         }
-        return isLastPage
     }
 }
 
