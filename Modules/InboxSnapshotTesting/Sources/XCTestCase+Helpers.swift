@@ -19,89 +19,56 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-    public func assertSelfSizingSnapshot(
-        of view: some View,
-        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
-        drawHierarchyInKeyWindow: Bool = false,
-        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
-        named name: String? = nil,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        let view = UIHostingController(rootView: view).view.unsafelyUnwrapped
+public func assertSelfSizingSnapshot(
+    of view: some View,
+    styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+    drawHierarchyInKeyWindow: Bool = false,
+    preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
+    named name: String? = nil,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    let view = UIHostingController(rootView: view).view.unsafelyUnwrapped
 
-        assertCustomHeightSnapshot(
-            matching: view,
-            styles: styles,
-            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-            preferredHeight: view.calculatePreferredHeight(preferredWidth: preferredWidth),
-            preferredWidth: preferredWidth,
-            named: name,
-            record: recording,
-            timeout: timeout,
-            file: file,
-            testName: testName,
-            line: line
-        )
-    }
+    assertCustomHeightSnapshot(
+        matching: view,
+        styles: styles,
+        drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+        preferredHeight: view.calculatePreferredHeight(preferredWidth: preferredWidth),
+        preferredWidth: preferredWidth,
+        named: name,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        testName: testName,
+        line: line
+    )
+}
 
-    public func assertSnapshots(
-        matching controller: @autoclosure () throws -> UIViewController,
-        on configurations: [(String, ViewImageConfig)],
-        named name: String? = nil,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        configurations.forEach { (configurationName, configuration) in
-            let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
-            let styles: [UIUserInterfaceStyle] = [.light, .dark]
+public func assertSnapshots(
+    matching controller: @autoclosure () throws -> UIViewController,
+    on configurations: [(String, ViewImageConfig)],
+    named name: String? = nil,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    configurations.forEach { (configurationName, configuration) in
+        let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
+        let styles: [UIUserInterfaceStyle] = [.light, .dark]
 
-            try? styles.forEach { style in
-                let controller = try controller()
-                controller.overrideUserInterfaceStyle = style
-
-                assertSnapshot(
-                    of: controller,
-                    as: .image(on: configuration),
-                    named: suffixedName(name: name, withStyle: style),
-                    record: recording,
-                    timeout: timeout,
-                    file: file,
-                    testName: testName,
-                    line: line
-                )
-            }
-        }
-    }
-
-    public func assertCustomHeightSnapshot(
-        matching view: UIView,
-        styles: Set<UIUserInterfaceStyle> = [.light, .dark],
-        drawHierarchyInKeyWindow: Bool = false,
-        preferredHeight: CGFloat,
-        preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
-        named name: String? = nil,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        styles.forEach { style in
-            view.overrideUserInterfaceStyle = style
+        try? styles.forEach { style in
+            let controller = try controller()
+            controller.overrideUserInterfaceStyle = style
 
             assertSnapshot(
-                of: view,
-                as: .image(
-                    drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-                    size: .init(width: preferredWidth, height: preferredHeight)
-                ),
+                of: controller,
+                as: .image(on: configuration),
                 named: suffixedName(name: name, withStyle: style),
                 record: recording,
                 timeout: timeout,
@@ -111,59 +78,30 @@ import XCTest
             )
         }
     }
+}
 
-    public func assertSnapshotsOnIPhoneX(
-        of view: some View,
-        named name: String? = nil,
-        drawHierarchyInKeyWindow: Bool = false,
-        precision: Float = 1,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        let styles: [UIUserInterfaceStyle] = [.light, .dark]
-        styles.forEach { style in
-            assertSnapshotOnIPhoneX(
-                of: UIHostingController(rootView: view),
-                style: style,
-                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-                named: name,
-                precision: precision,
-                record: recording,
-                timeout: timeout,
-                file: file,
-                testName: testName,
-                line: line
-            )
-        }
-    }
-
-    // MARK: - Private
-
-    private func assertSnapshotOnIPhoneX(
-        of controller: UIViewController,
-        style: UIUserInterfaceStyle = .light,
-        drawHierarchyInKeyWindow: Bool = false,
-        named name: String? = nil,
-        precision: Float = 1,
-        record recording: Bool = false,
-        timeout: TimeInterval = 5,
-        file: StaticString = #file,
-        testName: String = #function,
-        line: UInt = #line
-    ) {
-        controller.overrideUserInterfaceStyle = style
-        let strategy: Snapshotting<UIViewController, UIImage> = drawHierarchyInKeyWindow ? .image(
-            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-            precision: precision,
-            size: ViewImageConfig.iPhoneX.size
-        ) : .image(on: .iPhoneX(.portrait), precision: precision)
+public func assertCustomHeightSnapshot(
+    matching view: UIView,
+    styles: Set<UIUserInterfaceStyle> = [.light, .dark],
+    drawHierarchyInKeyWindow: Bool = false,
+    preferredHeight: CGFloat,
+    preferredWidth: CGFloat = ViewImageConfig.iPhoneX.size!.width,
+    named name: String? = nil,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    styles.forEach { style in
+        view.overrideUserInterfaceStyle = style
 
         assertSnapshot(
-            of: controller,
-            as: strategy,
+            of: view,
+            as: .image(
+                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+                size: .init(width: preferredWidth, height: preferredHeight)
+            ),
             named: suffixedName(name: name, withStyle: style),
             record: recording,
             timeout: timeout,
@@ -172,12 +110,74 @@ import XCTest
             line: line
         )
     }
+}
 
-    private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
-        [name, style.humanReadable]
-            .compactMap { $0 }
-            .joined(separator: "_")
+public func assertSnapshotsOnIPhoneX(
+    of view: some View,
+    named name: String? = nil,
+    drawHierarchyInKeyWindow: Bool = false,
+    precision: Float = 1,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    let styles: [UIUserInterfaceStyle] = [.light, .dark]
+    styles.forEach { style in
+        assertSnapshotOnIPhoneX(
+            of: UIHostingController(rootView: view),
+            style: style,
+            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+            named: name,
+            precision: precision,
+            record: recording,
+            timeout: timeout,
+            file: file,
+            testName: testName,
+            line: line
+        )
     }
+}
+
+// MARK: - Private
+
+private func assertSnapshotOnIPhoneX(
+    of controller: UIViewController,
+    style: UIUserInterfaceStyle = .light,
+    drawHierarchyInKeyWindow: Bool = false,
+    named name: String? = nil,
+    precision: Float = 1,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    controller.overrideUserInterfaceStyle = style
+    let strategy: Snapshotting<UIViewController, UIImage> = drawHierarchyInKeyWindow ? .image(
+        drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+        precision: precision,
+        size: ViewImageConfig.iPhoneX.size
+    ) : .image(on: .iPhoneX(.portrait), precision: precision)
+
+    assertSnapshot(
+        of: controller,
+        as: strategy,
+        named: suffixedName(name: name, withStyle: style),
+        record: recording,
+        timeout: timeout,
+        file: file,
+        testName: testName,
+        line: line
+    )
+}
+
+private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
+    [name, style.humanReadable]
+        .compactMap { $0 }
+        .joined(separator: "_")
+}
 
 private extension UIUserInterfaceStyle {
 
