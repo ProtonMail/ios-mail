@@ -109,7 +109,7 @@ struct LabelAsSheet: View {
             action: { model.handle(action: .doneButtonTapped) },
             label: { Text(L10n.Common.done) }
         )
-        .buttonStyle(PurpleButtonStyle())
+        .buttonStyle(BigButtonStyle())
     }
 }
 
@@ -123,20 +123,4 @@ private extension LabelDisplayModel {
         .init(id: id, visualAsset: .color(color), title: title, isSelected: isSelected, leadingSpacing: .zero)
     }
 
-}
-
-private struct PurpleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        return configuration
-            .label
-            .font(.subheadline)
-            .fontWeight(.semibold)
-            .foregroundColor(DS.Color.Text.inverted)
-            .frame(height: 44)
-            .frame(maxWidth: .infinity)
-            .background(
-                configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm,
-                in: RoundedRectangle(cornerRadius: DS.Radius.huge)
-            )
-    }
 }
