@@ -19,8 +19,6 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-extension XCTestCase {
-
     public func assertSelfSizingSnapshot(
         of view: some View,
         styles: Set<UIUserInterfaceStyle> = [.light, .dark],
@@ -180,8 +178,6 @@ extension XCTestCase {
             .compactMap { $0 }
             .joined(separator: "_")
     }
-
-}
 
 private extension UIUserInterfaceStyle {
 
