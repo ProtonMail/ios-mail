@@ -106,18 +106,11 @@ enum PaginatedListViewState: Equatable {
     var showBottomSpinner: Bool {
         switch self {
         case .fetchingInitialPage:
-            return true
-        case .data(let data):
-            return showSpinner(for: data)
-        }
-    }
-    
-    private func showSpinner(for data: Data) -> Bool {
-        switch data {
-        case .items(let isLastPage):
-            return !isLastPage
-        case .placeholder:
-            return false
+            true
+        case .data(.items(let isLastPage)):
+            !isLastPage
+        case .data(.placeholder):
+            false
         }
     }
 }
