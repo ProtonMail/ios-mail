@@ -34,6 +34,7 @@ struct ComposerView: View {
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         photosItemsHandler: PhotosPickerItemHandler,
+        cameraImageHandler: CameraImageHandler,
         fileItemsHandler: FilePickerItemHandler,
         onSendingEvent: @escaping () -> Void
     ) {
@@ -47,6 +48,7 @@ struct ComposerView: View {
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
                 photosItemsHandler: photosItemsHandler,
+                cameraImageHandler: cameraImageHandler,
                 fileItemsHandler: fileItemsHandler
             )
         )
@@ -134,6 +136,7 @@ struct ComposerView: View {
                 model.selectedAttachmentSource(selection)
             }
             .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems)
+            .camera(isPresented: $model.pickersState.isCameraPresented, onPhotoTaken: model.addAttachments(image:))
             .fileImporter(isPresented: $model.pickersState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
             .onChange(of: selectedPhotosItems, { model.addAttachments(selectedPhotosItems: $selectedPhotosItems) })
             .onChange(of: model.toast) { _, newValue in

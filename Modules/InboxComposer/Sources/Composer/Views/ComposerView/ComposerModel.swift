@@ -35,6 +35,7 @@ final class ComposerModel: ObservableObject {
     private let onSendingEvent: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
+    private let cameraImageHandler: CameraImageHandler
     private let fileItemsHandler: FilePickerItemHandler
 
     private let toCallback = ComposerRecipientCallbackWrapper()
@@ -59,6 +60,7 @@ final class ComposerModel: ObservableObject {
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
+        cameraImageHandler: CameraImageHandler,
         fileItemsHandler: FilePickerItemHandler
     ) {
         self.draft = draft
@@ -70,6 +72,7 @@ final class ComposerModel: ObservableObject {
         self.state = .initial
         self.pickersState = .init()
         self.photosItemsHandler = photosItemsHandler
+        self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
         self.state = makeState(from: draft)
         setUpCallbacks()
@@ -239,7 +242,7 @@ final class ComposerModel: ObservableObject {
         case .photoGallery:
             pickersState.isPhotosPickerPresented = true
         case .camera:
-            showToast(.comingSoon)
+            pickersState.isCameraPresented = true
         case .files:
             pickersState.isFileImporterPresented = true
         }
@@ -258,6 +261,12 @@ final class ComposerModel: ObservableObject {
     func addAttachments(filePickerResult: Result<[URL], any Error>) {
         Task {
             await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult)
+        }
+    }
+
+    func addAttachments(image: UIImage) {
+        Task {
+            await cameraImageHandler.addImage(to: draft, image: image)
         }
     }
 

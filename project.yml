@@ -124,6 +124,7 @@ targets:
               - protonmailET
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
+        NSCameraUsageDescription: "{{Placeholder}}"
         NSContactsUsageDescription: "{{Placeholder}}"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
