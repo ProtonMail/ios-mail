@@ -38,6 +38,7 @@ struct MailboxScreen: View {
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
+        notificationAuthorizationStore: NotificationAuthorizationStore,
         userSession: MailUserSession,
         userDefaults: UserDefaults,
         draftPresenter: DraftPresenter,
@@ -50,7 +51,7 @@ struct MailboxScreen: View {
                 draftPresenter: draftPresenter
             )
         )
-        notificationAuthorizationStore = .init(userDefaults: userDefaults)
+        self.notificationAuthorizationStore = notificationAuthorizationStore
         self.onboardingStore = .init(userDefaults: userDefaults)
         self.userSession = userSession
         self.sendResultPresenter = sendResultPresenter
@@ -237,9 +238,10 @@ extension MailboxScreen {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
 
-    return MailboxScreen(
+    MailboxScreen(
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
+        notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
         draftPresenter: .dummy,

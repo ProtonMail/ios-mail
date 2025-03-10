@@ -27,7 +27,7 @@ public struct BigButtonStyle: ButtonStyle {
             .label
             .font(.subheadline)
             .fontWeight(.semibold)
-            .foregroundColor(DS.Color.Text.inverted)
+            .foregroundStyle(DS.Color.Text.inverted)
             .frame(height: 44)
             .frame(maxWidth: .infinity)
             .background(

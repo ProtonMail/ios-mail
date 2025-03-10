@@ -50,6 +50,7 @@ struct NotificationAuthorizationPrompt: View {
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
                 .frame(height: DS.Spacing.jumbo)

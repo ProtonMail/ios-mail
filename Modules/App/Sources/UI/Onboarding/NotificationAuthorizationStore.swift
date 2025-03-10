@@ -50,7 +50,6 @@ final class NotificationAuthorizationStore {
 
         let requestedAtMostOnce = pastRequestDates.count < 2
         return trigger == .messageSent && requestedAtMostOnce && mostRecentRequestDate.isMoreThan(daysAgo: 20)
-
     }
 
     func userDidRespondToAuthorizationRequest(accepted: Bool) async {
