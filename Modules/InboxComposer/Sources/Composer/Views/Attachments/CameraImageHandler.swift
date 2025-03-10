@@ -31,7 +31,7 @@ struct CameraImageHandler {
             let destinationFile = uploadFolder
                 .appendingPathComponent(UUID().uuidString)
                 .appendingPathExtension(UTType.jpeg.preferredFilenameExtension ?? "jpg")
-            let imageData = image.jpegData(compressionQuality: 0.8)
+            let imageData = image.jpegData(compressionQuality: JPEG.compressionQuality)
             try imageData?.write(to: destinationFile)
             // FIXME: Add as inline image when supported by SDK
             let result = await draft.attachmentList().add(path: destinationFile.path)

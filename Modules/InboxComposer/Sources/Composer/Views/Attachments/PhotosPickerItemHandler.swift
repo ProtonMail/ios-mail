@@ -77,14 +77,40 @@ struct PhotosPickerItemHandler {
             throw PhotosPickerItemHandlerError.loadTransferableFailed
         }
         do {
-            let newUrl = try fileManager.moveToUniqueURL(file: tempFile.url, to: destinationFolder)
-            try? fileManager.deleteContainingFolder(for: tempFile.url)
-            return newUrl
+            if UTType(filenameExtension: tempFile.url.pathExtension) == .heic {
+                return try saveHeicImage(image: tempFile.url, destinationFolder: destinationFolder)
+            } else {
+                let newUrl = try fileManager.moveToUniqueURL(file: tempFile.url, to: destinationFolder)
+                try? fileManager.deleteContainingFolder(for: tempFile.url)
+                return newUrl
+            }
         } catch {
             AppLogger.log(error: error, category: .composer)
             try? fileManager.deleteContainingFolder(for: tempFile.url)
             throw error
         }
+    }
+
+    private func saveHeicImage(image: URL, destinationFolder: URL) throws -> URL {
+        let jpeg = try convertHeictoJpeg(data: try Data(contentsOf: image))
+        let finalUrl = fileManager.uniqueFileNameURL(
+            in: destinationFolder,
+            baseName: image.deletingPathExtension().lastPathComponent,
+            fileExtension: "jpg"
+        )
+        try fileManager.createDirectory(at: finalUrl.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try jpeg.write(to: finalUrl)
+        return finalUrl
+    }
+
+    private func convertHeictoJpeg(data: Data) throws -> Data {
+        guard
+            let image = UIImage(data: data),
+            let data = image.jpegData(compressionQuality: JPEG.compressionQuality)
+        else {
+            throw PhotosPickerItemHandlerError.failConvertingHeicToJpeg
+        }
+        return data
     }
 
     private func notifyAttachmentPreparationErrorsIfNeeded(numErrors: Int) {
@@ -104,6 +130,7 @@ struct PhotosPickerItemHandler {
 
 enum PhotosPickerItemHandlerError: Error {
     case loadTransferableFailed
+    case failConvertingHeicToJpeg
 }
 
 protocol PhotosPickerItemTransferable {
