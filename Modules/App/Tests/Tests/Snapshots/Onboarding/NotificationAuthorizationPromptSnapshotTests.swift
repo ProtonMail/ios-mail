@@ -15,24 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
-
 @testable import ProtonMail
 
-final class UserNotificationCenterSpy: UserNotificationCenter {
-    var delegate: UNUserNotificationCenterDelegate?
-    var stubbedAuthorizationResult = true
-    var stubbedAuthorizationStatus: UNAuthorizationStatus = .notDetermined
+import InboxSnapshotTesting
+import SwiftUI
+import Testing
 
-    private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
-
-    func authorizationStatus() async -> UNAuthorizationStatus {
-        stubbedAuthorizationStatus
+@MainActor
+struct NotificationAuthorizationPromptSnapshotTests {
+    @Test("all variants", arguments: NotificationAuthorizationRequestTrigger.allCases)
+    func snapshotsOfAllVariants(trigger: NotificationAuthorizationRequestTrigger) {
+        let sut = makeSUT(trigger: trigger)
+        assertSnapshotsOnIPhoneX(of: sut, named: "\(trigger)")
     }
 
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-        requestAuthorizationInvocations.append(options)
-
-        return stubbedAuthorizationResult
+    private func makeSUT(trigger: NotificationAuthorizationRequestTrigger) -> some View {
+        NotificationAuthorizationPrompt(trigger: trigger) { _ in }
     }
 }

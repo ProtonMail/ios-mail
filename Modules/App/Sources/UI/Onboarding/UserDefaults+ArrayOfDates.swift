@@ -15,24 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
+import Foundation
 
-@testable import ProtonMail
-
-final class UserNotificationCenterSpy: UserNotificationCenter {
-    var delegate: UNUserNotificationCenterDelegate?
-    var stubbedAuthorizationResult = true
-    var stubbedAuthorizationStatus: UNAuthorizationStatus = .notDetermined
-
-    private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
-
-    func authorizationStatus() async -> UNAuthorizationStatus {
-        stubbedAuthorizationStatus
-    }
-
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
-        requestAuthorizationInvocations.append(options)
-
-        return stubbedAuthorizationResult
+extension UserDefaults {
+    subscript(key: UserDefaultsKey) -> [Date] {
+        get {
+            array(forKey: key.rawValue) as? [Date] ?? []
+        }
+        set {
+            set(newValue, forKey: key.rawValue)
+        }
     }
 }

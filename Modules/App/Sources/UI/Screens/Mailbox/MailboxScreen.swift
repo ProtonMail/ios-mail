@@ -28,9 +28,11 @@ struct MailboxScreen: View {
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
+    @State private var isNotificationPromptPresented = false
     @State private var isAccountManagerPresented = false
     private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
+    private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let onboardingStore: OnboardingStore
 
     init(
@@ -48,6 +50,7 @@ struct MailboxScreen: View {
                 draftPresenter: draftPresenter
             )
         )
+        notificationAuthorizationStore = .init(userDefaults: userDefaults)
         self.onboardingStore = .init(userDefaults: userDefaults)
         self.userSession = userSession
         self.sendResultPresenter = sendResultPresenter
@@ -62,8 +65,17 @@ struct MailboxScreen: View {
             mailboxScreen
                 .sheetTestable(
                     isPresented: $isOnboardingPresented,
-                    onDismiss: { onboardingStore.shouldShowOnboarding = false },
+                    onDismiss: { onboardingScreenDismissed() },
                     content: { OnboardingScreen() }
+                )
+                .sheetTestable(
+                    isPresented: $isNotificationPromptPresented,
+                    content: {
+                        NotificationAuthorizationPrompt(
+                            trigger: .onboardingFinished,
+                            userDidRespond: userDidRespondToAuthorizationRequest
+                        )
+                    }
                 )
                 .labelAsSheet(
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
@@ -92,10 +104,43 @@ struct MailboxScreen: View {
         .accessibilityElement(children: .contain)
         .onAppear {
             let workItem = DispatchWorkItem {
-                isOnboardingPresented = onboardingStore.shouldShowOnboarding
+                Task {
+                    await presentAppropriateIntroductoryView()
+                }
             }
             Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
             didAppear?(self)
+        }
+    }
+
+    private func onboardingScreenDismissed() {
+         onboardingStore.shouldShowOnboarding = false
+
+        Task {
+            await presentAppropriateIntroductoryView()
+        }
+    }
+
+    private func userDidRespondToAuthorizationRequest(accepted: Bool) {
+        Task {
+            await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
+            await presentAppropriateIntroductoryView()
+        }
+    }
+
+    private func presentAppropriateIntroductoryView() async {
+        let introductionProgress = await calculateIntroductionProgress()
+        isOnboardingPresented = introductionProgress == .onboarding
+        isNotificationPromptPresented = introductionProgress == .notifications
+    }
+
+    private func calculateIntroductionProgress() async -> IntroductionProgress {
+        if onboardingStore.shouldShowOnboarding {
+            return .onboarding
+        } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
+            return .notifications
+        } else {
+            return .finished
         }
     }
 }
@@ -176,6 +221,14 @@ extension MailboxScreen {
             toastStateStore.present(toast: toast)
             mailboxModel.toast = nil
         }
+    }
+}
+
+extension MailboxScreen {
+    enum IntroductionProgress {
+        case onboarding
+        case notifications
+        case finished
     }
 }
 

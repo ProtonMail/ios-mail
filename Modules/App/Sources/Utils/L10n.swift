@@ -473,6 +473,35 @@ enum L10n {
         )
     }
 
+    enum Notifications {
+        static let title1 = LocalizedStringResource(
+            "Don’t miss an email",
+            comment: "Title of the authorization prompt"
+        )
+
+        static let title2 = LocalizedStringResource(
+            "Want to stay updated?",
+            comment: "Title of the authorization prompt"
+        )
+
+        static let body1 = LocalizedStringResource(
+            "Notifications help you keep on top of your inbox without checking the app.",
+            comment: "Body of the authorization prompt"
+        )
+
+        static let body2 = LocalizedStringResource(
+            "Turn on notifications to know when you get a response to your email.", 
+            comment: "Body of the authorization prompt"
+        )
+
+        static let cta = LocalizedStringResource(
+            "Enable push notifications",
+            comment: "Button to authorizate notifications"
+        )
+
+        static let dismiss = LocalizedStringResource("Dismiss", comment: "Alert dismiss button")
+    }
+
     enum Search {
         static let searchPlaceholder = LocalizedStringResource(
             "Search",
