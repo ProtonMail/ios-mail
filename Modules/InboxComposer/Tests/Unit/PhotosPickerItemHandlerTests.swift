@@ -18,8 +18,9 @@
 import CoreTransferable
 @testable import InboxComposer
 import InboxCoreUI
-import SwiftUI
 import InboxTesting
+import proton_app_uniffi
+import SwiftUI
 import XCTest
 
 final class PhotosPickerItemHandlerTests: BaseTestCase {
@@ -47,6 +48,32 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
         toastStateStore = nil
         mockDraft = nil
         sut = nil
+    }
+
+    func testAddPickerPhotos_whenNoError_itShouldAddFilesToDraft() async throws {
+        let mockItem1 = try makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
+        let mockItem2 = try makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)
+
+        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
+
+        let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
+        let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
+    }
+
+    func testAddPickerPhotos_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems() async throws {
+        let error = DraftAttachmentError.reason(DraftAttachmentErrorReason.attachmentTooLarge)
+        mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(error)), ("file2.txt", .ok)]
+        let mockItem1 = try makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
+        let mockItem2 = try makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)
+
+        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
+
+        let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
+        let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
     }
 
     func testAddPickerPhotos_whenLoadTransferableDoesNotReturnError_itShouldMoveFilesToDestinationFolder() async throws {

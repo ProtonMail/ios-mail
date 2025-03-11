@@ -34,7 +34,6 @@ struct PhotosPickerItemHandler {
                 let result = await draft.attachmentList().add(path: file.path)
                 if case .error(let error) = result {
                     presentToast(toast: .error(message: error.localizedDescription))
-                    return
                 }
             case .failure:
                 errorCount += 1

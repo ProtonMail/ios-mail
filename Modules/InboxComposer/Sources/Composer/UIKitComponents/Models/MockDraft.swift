@@ -110,7 +110,7 @@ final class MockDraft: AppDraftProtocol {
 extension MockDraft {
 
     func mockAttachments() -> [String] {
-        (attachmentList() as! MockAttachmentList).mockAttachments
+        (attachmentList() as! MockAttachmentList).capturedAttachments
     }
 }
 
@@ -169,12 +169,15 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol {
 }
 
 final class MockAttachmentList: AttachmentListProtocol {
-    var mockAttachments = [String]()
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
+    var capturedAttachments = [String]()
+    var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
 
     func add(path: String) async -> AttachmentListAddResult {
-        mockAttachments.append(path)
-        return .ok
+        capturedAttachments.append(path)
+        return mockAttachmentListAddResult.first(where: {
+            $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
+        })?.result ?? AttachmentListAddResult.ok
     }
     
     func attachmentUploadDirectory() -> String {
