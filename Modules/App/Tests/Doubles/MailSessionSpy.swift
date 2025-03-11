@@ -105,6 +105,10 @@ final class MailSessionSpy: MailSessionProtocol {
     func isNetworkConnected() -> Bool {
         fatalError()
     }
+    
+    func getUnsentMessagesIdsInQueue(userId: String) async  -> MailSessionGetUnsentMessagesIdsInQueueResult {
+        fatalError()
+    }
 
     func logoutAccount(userId: String) async -> VoidSessionResult {
         fatalError()

@@ -403,6 +403,16 @@ public extension MailSessionGetSessionsResult {
         }
     }
 }
+public extension MailSessionGetUnsentMessagesIdsInQueueResult {
+    func get() throws -> [Id] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewLoginFlowResult {
     func get() throws -> LoginFlow {
         switch self {
