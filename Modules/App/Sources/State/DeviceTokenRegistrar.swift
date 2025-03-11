@@ -116,7 +116,6 @@ final class DeviceTokenRegistrar {
         return RegisteredDevice(
             deviceToken: deviceToken,
             environment: environment,
-            publicKey: nil,
             pingNotificationStatus: nil,
             pushNotificationStatus: nil
         )

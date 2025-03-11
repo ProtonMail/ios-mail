@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxKeychain
 import proton_app_uniffi
 import UserNotifications
 
@@ -26,9 +27,7 @@ public struct TestableNotificationService {
 
     public init() {
         self.init {
-            let mailSession = try ProcessWideMailSessionCache.prepareMailSession()
-
-            switch await decryptPushNotification(session: mailSession, encrypted: $0) {
+            switch await decryptPushNotification(keyChain: KeychainSDKWrapper(), encrypted: $0) {
             case .ok(let value):
                 return value
             case .error(let error):

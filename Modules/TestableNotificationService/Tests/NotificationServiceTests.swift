@@ -37,7 +37,8 @@ final class NotificationServiceTests {
                 .init(
                     subject: "Decrypted subject",
                     sender: .init(name: "John Doe", address: "john.doe@example.com", group: ""),
-                    messageId: .init(value: "")
+                    messageId: .init(value: ""),
+                    action: nil
                 )
             )
         )
@@ -57,7 +58,8 @@ final class NotificationServiceTests {
                 .init(
                     subject: "Decrypted subject",
                     sender: .init(name: "", address: "john.doe@example.com", group: ""),
-                    messageId: .init(value: "")
+                    messageId: .init(value: ""),
+                    action: nil
                 )
             )
         )

@@ -113,26 +113,6 @@ public extension ContactSuggestionsResult {
         }
     }
 }
-public extension ConversationPaginatorNextPageResult {
-    func get() throws -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension ConversationPaginatorReloadResult {
-    func get() throws -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension ConversationResult {
     func get() throws -> ConversationAndMessages? {
         switch self {
@@ -403,6 +383,16 @@ public extension MailSessionGetSessionsResult {
         }
     }
 }
+public extension MailSessionGetUnsentMessagesIdsInQueueResult {
+    func get() throws -> [Id] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewLoginFlowResult {
     func get() throws -> LoginFlow {
         switch self {
@@ -643,26 +633,6 @@ public extension MailboxWatchUnreadCountResult {
         }
     }
 }
-public extension MessagePaginatorNextPageResult {
-    func get() throws -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MessagePaginatorReloadResult {
-    func get() throws -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MessageResult {
     func get() throws -> Message? {
         switch self {
@@ -745,36 +715,6 @@ public extension NewInboxMailboxResult {
 }
 public extension NewMailboxResult {
     func get() throws -> Mailbox {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PaginateConversationsForLabelResult {
-    func get() throws -> ConversationPaginator {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PaginateMessagesForLabelResult {
-    func get() throws -> MessagePaginator {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PaginateSearchResult {
-    func get() throws -> MessagePaginator {
         switch self {
         case .ok(let value):
             value
