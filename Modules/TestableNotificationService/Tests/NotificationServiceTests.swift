@@ -22,17 +22,17 @@ import UserNotifications
 @testable import TestableNotificationService
 
 final class NotificationServiceTests {
-    private lazy var sut = TestableNotificationService { [unowned self] _ in
-        try self.stubbedDecryptionResult.get()
+    private lazy var sut = TestableNotificationService { [unowned self] _, _ in
+        self.stubbedDecryptionResult
     }
 
-    private var stubbedDecryptionResult: Result<DecryptedPushNotification, ActionError>!
+    private var stubbedDecryptionResult: DecryptPushNotificationResult!
 
     @Test
     func whenReplacingTitleAndBodyWithDecryptedInfo_prefersSenderName() async {
         let originalContent = prepareContent()
 
-        stubbedDecryptionResult = .success(
+        stubbedDecryptionResult = .ok(
             .email(
                 .init(
                     subject: "Decrypted subject",
@@ -53,7 +53,7 @@ final class NotificationServiceTests {
     func whenReplacingTitleAndBodyWithDecryptedInfo_ifSenderNameIsEmpty_fallsBackToSenderAddress() async {
         let originalContent = prepareContent()
 
-        stubbedDecryptionResult = .success(
+        stubbedDecryptionResult = .ok(
             .email(
                 .init(
                     subject: "Decrypted subject",
@@ -84,7 +84,7 @@ final class NotificationServiceTests {
     func whenDecryptionFails_onlyModifiesTheBody() async {
         let originalContent = prepareContent()
         let stubbedError = ActionError.other(.unexpected(.crypto))
-        stubbedDecryptionResult = .failure(stubbedError)
+        stubbedDecryptionResult = .error(stubbedError)
 
         let updatedContent = await sut.transform(originalContent: originalContent)
 

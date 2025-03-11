@@ -60,6 +60,10 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         let notificationContent = response.notification.request.content
         let notificationType = detectNotificationType(userInfo: notificationContent.userInfo)
 
+        if let notificationType {
+            AppLogger.log(message: "Did receive notification: \(notificationType)", category: .notifications)
+        }
+
         switch notificationType {
         case .newMessage(let sessionId, let remoteId):
             if

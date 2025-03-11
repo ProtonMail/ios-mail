@@ -33,7 +33,7 @@ final class DeviceTokenRegistrar {
 
                     try await registerAndSaveDevice(session: mailUserSession, device: device).get()
 
-                    AppLogger.log(message: "Subscribed \(storedSession.userId()) to APNS", category: .notifications)
+                    AppLogger.log(message: "Subscribed \(storedSession.sessionId()) to APNS", category: .notifications)
                 } catch {
                     AppLogger.log(error: error, category: .notifications)
                 }

@@ -21,19 +21,13 @@ import proton_app_uniffi
 import UserNotifications
 
 public struct TestableNotificationService {
-    typealias DecryptRemoteNotification = (EncryptedPushNotification) async throws -> DecryptedPushNotification
+    typealias DecryptRemoteNotification = (OsKeyChain, EncryptedPushNotification) async -> DecryptPushNotificationResult
 
     private let decryptRemoteNotification: DecryptRemoteNotification
+    private let keychain = KeychainSDKWrapper()
 
     public init() {
-        self.init {
-            switch await decryptPushNotification(keyChain: KeychainSDKWrapper(), encrypted: $0) {
-            case .ok(let value):
-                return value
-            case .error(let error):
-                throw error
-            }
-        }
+        self.init(decryptRemoteNotification: decryptPushNotification)
     }
 
     init(decryptRemoteNotification: @escaping DecryptRemoteNotification) {
@@ -72,8 +66,8 @@ public struct TestableNotificationService {
         of mutableContent: UNMutableNotificationContent,
         byDecrypting encryptedPushNotification: EncryptedPushNotification
     ) async {
-        do {
-            let notificationData = try await decryptRemoteNotification(encryptedPushNotification)
+        switch await decryptRemoteNotification(keychain, encryptedPushNotification) {
+        case .ok(let notificationData):
             mutableContent.title = notificationData.sender.displayableName
             mutableContent.body = notificationData.body
 
@@ -83,7 +77,7 @@ public struct TestableNotificationService {
             case .openUrl(let payload):
                 mutableContent.userInfo["url"] = payload.url
             }
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .notifications)
         }
     }
