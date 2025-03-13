@@ -30,7 +30,7 @@ class ReportBugScreenSnapshotTests: BaseTestCase {
     }
 
     func testFormValidationStyle() {
-        var state = ReportBugViewState.initial
+        var state = ReportBugState.initial
         state.summaryValidation = .failure("This field must be more than 10 characters.")
         let sut = ReportBugScreen(state: state)
 

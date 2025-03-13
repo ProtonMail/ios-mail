@@ -19,13 +19,13 @@ import Foundation
 import Combine
 
 class ReportBugStateStore: ObservableObject, StateStore {
-    @Published var state: ReportBugViewState
+    @Published var state: ReportBugState
 
-    init(state: ReportBugViewState) {
+    init(state: ReportBugState) {
         self.state = state
     }
 
-    func handle(action: ReportBugViewAction) {
+    func handle(action: ReportBugAction) {
         switch action {
         case .textEntered(let keyPath, let text):
             state.summaryValidation = .ok
@@ -43,7 +43,7 @@ class ReportBugStateStore: ObservableObject, StateStore {
                 state.isLoading = true
 
                 // FIXME: - To remove
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
                     self?.state.isLoading = false
                 }
             }

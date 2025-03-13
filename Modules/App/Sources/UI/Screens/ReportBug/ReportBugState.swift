@@ -15,9 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ReportBugViewAction {
-    case textEntered(WritableKeyPath<ReportBugViewState, String>, text: String)
-    case sendLogsToggleSwitched(isEnabled: Bool)
-    case cleanUpScrollingState
-    case submit
+struct ReportBugState {
+    var summary: String
+    var expectedResults: String
+    var stepsToReproduce: String
+    var actualResults: String
+    var sendLogsEnabled: Bool
+    var scrollTo: ReportBugScrollToElements?
+    var summaryValidation: FormMultilineTextInput.ValidationStatus
+    var isLoading: Bool
+}
+
+extension ReportBugState {
+
+    static var initial: Self {
+        .init(
+            summary: .empty,
+            expectedResults: .empty,
+            stepsToReproduce: .empty,
+            actualResults: .empty,
+            sendLogsEnabled: true,
+            scrollTo: nil,
+            summaryValidation: .ok,
+            isLoading: false
+        )
+    }
+
 }

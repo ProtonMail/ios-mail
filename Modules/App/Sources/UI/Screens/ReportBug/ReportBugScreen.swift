@@ -22,7 +22,7 @@ import SwiftUI
 struct ReportBugScreen: View {
     @StateObject private var store: ReportBugStateStore
 
-    init(state: ReportBugViewState = .initial) {
+    init(state: ReportBugState = .initial) {
         self._store = .init(wrappedValue: .init(state: state))
     }
 
@@ -116,9 +116,10 @@ struct ReportBugScreen: View {
             .frame(maxWidth: .infinity)
             .background(DS.Color.Background.secondary)
         }
+        .interactiveDismissDisabled(store.state.isLoading)
     }
 
-    private func text(keyPath: WritableKeyPath<ReportBugViewState, String>) -> Binding<String> {
+    private func text(keyPath: WritableKeyPath<ReportBugState, String>) -> Binding<String> {
         .init(
             get: { store.state[keyPath: keyPath] },
             set: { newValue in store.handle(action: .textEntered(keyPath, text: newValue)) }

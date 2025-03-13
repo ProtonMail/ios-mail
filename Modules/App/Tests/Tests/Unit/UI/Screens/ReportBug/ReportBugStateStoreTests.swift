@@ -49,7 +49,7 @@ class ReportBugStateStoreTests: BaseTestCase {
     }
 
     func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItStartsLoading() {
-        let fields: [WritableKeyPath<ReportBugViewState, String>] = [
+        let fields: [WritableKeyPath<ReportBugState, String>] = [
             \.summary,
             \.expectedResults,
             \.actualResults,
