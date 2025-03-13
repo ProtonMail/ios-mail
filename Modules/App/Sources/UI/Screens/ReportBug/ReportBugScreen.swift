@@ -21,6 +21,7 @@ import SwiftUI
 
 struct ReportBugScreen: View {
     @Environment(\.dismiss) var dismiss
+    @FocusState private var isSummaryFocused: Bool
     @StateObject private var store: ReportBugStateStore
 
     init(state: ReportBugState = .initial) {
@@ -44,6 +45,7 @@ struct ReportBugScreen: View {
                             text: text(keyPath: \.summary),
                             validation: $store.state.summaryValidation
                         )
+                        .focused($isSummaryFocused)
                         FormMultilineTextInput(
                             title: "Expected results",
                             placeholder: "Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -124,6 +126,14 @@ struct ReportBugScreen: View {
             }
             .frame(maxWidth: .infinity)
             .background(DS.Color.Background.secondary)
+        }
+        .onChange(of: store.state.summaryValidation) { _, newValue in
+            if case .failure = newValue {
+                isSummaryFocused = true
+            }
+        }
+        .onAppear {
+            isSummaryFocused = true
         }
         .interactiveDismissDisabled(store.state.isLoading)
     }
