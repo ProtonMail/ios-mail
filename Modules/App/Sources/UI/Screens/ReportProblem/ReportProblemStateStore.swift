@@ -18,14 +18,14 @@
 import Foundation
 import Combine
 
-class ReportBugStateStore: ObservableObject, StateStore {
-    @Published var state: ReportBugState
+class ReportProblemStateStore: ObservableObject, StateStore {
+    @Published var state: ReportProblemState
 
-    init(state: ReportBugState) {
+    init(state: ReportProblemState) {
         self.state = state
     }
 
-    func handle(action: ReportBugAction) {
+    func handle(action: ReportProblemAction) {
         switch action {
         case .textEntered(let keyPath, let text):
             state.summaryValidation = .ok

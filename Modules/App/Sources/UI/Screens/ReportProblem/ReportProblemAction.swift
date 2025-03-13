@@ -15,26 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
-import InboxTesting
-import XCTest
-
-import SnapshotTesting
-
-class ReportBugScreenSnapshotTests: BaseTestCase {
-
-    func testReportBugScreenLayoutsCorrectly() {
-        let sut = ReportBugScreen()
-        assertSnapshotsOnIPhoneX(of: sut)
-    }
-
-    func testFormValidationStyle() {
-        var state = ReportBugState.initial
-        state.summaryValidation = .failure("This field must be more than 10 characters.")
-        let sut = ReportBugScreen(state: state)
-
-        assertSnapshotsOnIPhoneX(of: sut)
-    }
-
+enum ReportProblemAction {
+    case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
+    case sendLogsToggleSwitched(isEnabled: Bool)
+    case cleanUpScrollingState
+    case submit
 }

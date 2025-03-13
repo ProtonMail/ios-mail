@@ -19,12 +19,12 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct ReportBugScreen: View {
+struct ReportProblemScreen: View {
     @Environment(\.dismiss) var dismiss
     @FocusState private var isSummaryFocused: Bool
-    @StateObject private var store: ReportBugStateStore
+    @StateObject private var store: ReportProblemStateStore
 
-    init(state: ReportBugState = .initial) {
+    init(state: ReportProblemState = .initial) {
         self._store = .init(wrappedValue: .init(state: state))
     }
 
@@ -38,7 +38,7 @@ struct ReportBugScreen: View {
                             .multilineTextAlignment(.leading)
                             .padding(.top, DS.Spacing.standard)
                             .foregroundStyle(DS.Color.Text.weak)
-                            .id(ReportBugScrollToElements.topInfoText)
+                            .id(ReportProblemScrollToElements.topInfoText)
                         FormMultilineTextInput(
                             title: L10n.ReportProblem.summary,
                             placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
@@ -82,7 +82,7 @@ struct ReportBugScreen: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.footnote)
                                 .foregroundStyle(DS.Color.Text.norm)
-                                .id(ReportBugScrollToElements.bottomInfoText)
+                                .id(ReportProblemScrollToElements.bottomInfoText)
                         }
                     }
                     .animation(.easeOut(duration: 0.2), value: store.state.sendLogsEnabled)
@@ -138,7 +138,7 @@ struct ReportBugScreen: View {
         .interactiveDismissDisabled(store.state.isLoading)
     }
 
-    private func text(keyPath: WritableKeyPath<ReportBugState, String>) -> Binding<String> {
+    private func text(keyPath: WritableKeyPath<ReportProblemState, String>) -> Binding<String> {
         .init(
             get: { store.state[keyPath: keyPath] },
             set: { newValue in store.handle(action: .textEntered(keyPath, text: newValue)) }
@@ -154,5 +154,5 @@ struct ReportBugScreen: View {
 }
 
 #Preview {
-    ReportBugScreen()
+    ReportProblemScreen()
 }

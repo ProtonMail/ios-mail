@@ -19,14 +19,14 @@
 import XCTest
 import InboxTesting
 
-class ReportBugStateStoreTests: BaseTestCase {
+class ReportProblemStateStoreTests: BaseTestCase {
 
-    var sut: ReportBugStateStore!
+    var sut: ReportProblemStateStore!
 
     override func setUp() {
         super.setUp()
 
-        sut = ReportBugStateStore(state: .initial)
+        sut = ReportProblemStateStore(state: .initial)
     }
 
     override func tearDown() {
@@ -49,7 +49,7 @@ class ReportBugStateStoreTests: BaseTestCase {
     }
 
     func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItStartsLoading() {
-        let fields: [WritableKeyPath<ReportBugState, String>] = [
+        let fields: [WritableKeyPath<ReportProblemState, String>] = [
             \.summary,
             \.expectedResults,
             \.actualResults,

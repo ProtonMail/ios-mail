@@ -15,18 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct ReportBugState {
+struct ReportProblemState {
     var summary: String
     var expectedResults: String
     var stepsToReproduce: String
     var actualResults: String
     var sendLogsEnabled: Bool
-    var scrollTo: ReportBugScrollToElements?
+    var scrollTo: ReportProblemScrollToElements?
     var summaryValidation: FormMultilineTextInput.ValidationStatus
     var isLoading: Bool
 }
 
-extension ReportBugState {
+extension ReportProblemState {
 
     static var initial: Self {
         .init(

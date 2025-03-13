@@ -54,7 +54,7 @@ struct HomeScreenModalFactory {
         case .settings:
             makeSettingsScreen()
         case .reportBug:
-            ReportBugScreen()
+            ReportProblemScreen()
         }
     }
 }
