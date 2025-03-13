@@ -583,7 +583,7 @@ enum L10n {
             comment: "Button in the sidebar menu that redirects a user to the contacts screen."
         )
         static let bugReport = LocalizedStringResource(
-            "Bug report",
+            "Report a problem",
             comment: "Button in the sidebar menu that redirects a user to the bug report screen."
         )
     }

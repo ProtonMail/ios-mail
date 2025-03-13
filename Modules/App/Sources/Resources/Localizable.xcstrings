@@ -692,6 +692,7 @@
     },
     "Bug report" : {
       "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2549,6 +2550,9 @@
           }
         }
       }
+    },
+    "Report a problem" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen."
     },
     "Report phishing" : {
       "comment" : "Action title for reporting phishing message in the action sheet.",

@@ -41,7 +41,7 @@ extension Array where Element == SidebarOtherItem {
             ),
             .init(
                 type: .bugReport,
-                icon: DS.Icon.icBug,
+                icon: DS.Icon.icExclamationCircle,
                 name: L10n.Sidebar.bugReport.string,
                 isSelected: false
             ),
