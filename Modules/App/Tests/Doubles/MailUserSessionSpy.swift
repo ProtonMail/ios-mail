@@ -34,11 +34,11 @@ class MailUserSessionSpy: MailUserSessionProtocol {
     }
 
     func accountDetails() async -> MailUserSessionAccountDetailsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func applicableLabels() async -> MailUserSessionApplicableLabelsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     var connectionStatusStub: MailUserSessionConnectionStatusResult = .ok(.online)
@@ -48,15 +48,15 @@ class MailUserSessionSpy: MailUserSessionProtocol {
     }
 
     func executeWhenOnline(callback: LiveQueryCallback) {
-        fatalError()
+        fatalError(#function)
     }
 
     func fork() async -> MailUserSessionForkResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAttachment(localAttachmentId: Id) async -> MailUserSessionGetAttachmentResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func imageForSender(
@@ -67,35 +67,39 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         mode: String?,
         format: String?
     ) async -> MailUserSessionImageForSenderResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func initialize(cb: any MailUserSessionInitializationCallback) async -> VoidSessionResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func logout() async -> VoidSessionResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func movableFolders() async -> MailUserSessionMovableFoldersResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func observeEventLoopErrors(callback: any EventLoopErrorObserver) -> MailUserSessionObserveEventLoopErrorsResult {
-        fatalError()
+        fatalError(#function)
+    }
+    
+    func sessionId() -> proton_app_uniffi.MailUserSessionSessionIdResult {
+        fatalError(#function)
     }
 
-    func sessionId() -> MailUserSessionSessionIdResult {
-        fatalError()
+    func sessionUuid() async -> MailUserSessionSessionUuidResult {
+        fatalError(#function)
     }
 
     func user() async -> MailUserSessionUserResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func userId() -> MailUserSessionUserIdResult {
-        fatalError()
+        fatalError(#function)
     }
 
     var draftSendResultUnseenResultStub = DraftSendResultUnseenResult.ok([])
@@ -104,4 +108,29 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         draftSendResultUnseenResultStub
     }
 
+    // MARK: - Payments
+
+    func getPaymentsPlans(options: GetPaymentsPlansOptions) async -> MailUserSessionGetPaymentsPlansResult {
+        fatalError(#function)
+    }
+    
+    func getPaymentsSubscription() async -> MailUserSessionGetPaymentsSubscriptionResult {
+        fatalError(#function)
+    }
+    
+    func postPaymentsSubscription(
+        subscription: NewSubscription,
+        newValues: NewSubscriptionValues
+    ) async -> MailUserSessionPostPaymentsSubscriptionResult {
+        fatalError(#function)
+    }
+    
+    func postPaymentsTokens(
+        amount: UInt64,
+        currency: String,
+        payment: PaymentReceipt
+    ) async -> MailUserSessionPostPaymentsTokensResult {
+        fatalError(#function)
+    }
+    
 }

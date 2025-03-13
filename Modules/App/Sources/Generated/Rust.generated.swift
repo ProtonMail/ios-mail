@@ -543,6 +543,26 @@ public extension MailUserSessionGetAttachmentResult {
         }
     }
 }
+public extension MailUserSessionGetPaymentsPlansResult {
+    func get() throws -> PaymentsPlans {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionGetPaymentsSubscriptionResult {
+    func get() throws -> Subscriptions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionImageForSenderResult {
     func get() throws -> String? {
         switch self {
@@ -573,7 +593,37 @@ public extension MailUserSessionObserveEventLoopErrorsResult {
         }
     }
 }
+public extension MailUserSessionPostPaymentsSubscriptionResult {
+    func get() throws {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionPostPaymentsTokensResult {
+    func get() throws -> PaymentToken {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionSessionIdResult {
+    func get() throws -> String {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionSessionUuidResult {
     func get() throws -> String {
         switch self {
         case .ok(let value):

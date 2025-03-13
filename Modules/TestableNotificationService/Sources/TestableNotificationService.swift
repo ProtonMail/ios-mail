@@ -59,7 +59,7 @@ public struct TestableNotificationService {
             return nil
         }
 
-        return .init(authId: sessionId, encryptedMessage: encryptedMessage)
+        return .init(sessionId: sessionId, encryptedMessage: encryptedMessage)
     }
 
     private func replaceTitleAndBody(
