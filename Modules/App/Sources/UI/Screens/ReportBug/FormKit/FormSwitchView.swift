@@ -19,10 +19,10 @@ import SwiftUI
 import InboxDesignSystem
 
 struct FormSwitchView: View {
-    private let title: String
+    private let title: LocalizedStringResource
     @Binding private var isOn: Bool
 
-    init(title: String, isOn: Binding<Bool>) {
+    init(title: LocalizedStringResource, isOn: Binding<Bool>) {
         self.title = title
         self._isOn = .init(projectedValue: isOn)
     }

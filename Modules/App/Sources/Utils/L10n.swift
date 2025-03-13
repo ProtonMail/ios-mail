@@ -502,6 +502,49 @@ enum L10n {
         static let dismiss = LocalizedStringResource("Dismiss", comment: "Alert dismiss button")
     }
 
+    enum ReportProblem {
+        static let mainTitle = LocalizedStringResource(
+            "Report a problem",
+            comment: "Report a problem screen main title."
+        )
+        static let generalInfo = LocalizedStringResource(
+            "Reports are not end-to-end encrypted, please do not send any sensitive information.",
+            comment: "Report a problem screen, top information."
+        )
+        static let summary = LocalizedStringResource(
+            "Summary (required)",
+            comment: "Title of summary text field."
+        )
+        static let expectedResults = LocalizedStringResource(
+            "Expected results",
+            comment: "Title of expected results text field."
+        )
+        static let stepsToReproduce = LocalizedStringResource(
+            "Steps to reproduce",
+            comment: "Title of steps to reproduce text field."
+        )
+        static let actualResults = LocalizedStringResource(
+            "Actual results",
+            comment: "Title of actual results text field."
+        )
+        static let sendErrorLogs = LocalizedStringResource(
+            "Send error logs",
+            comment: "Title of row with toggle where a user can decide whether to send logs."
+        )
+        static let submit = LocalizedStringResource(
+            "Submit",
+            comment: "Title of the button used to submit the form."
+        )
+        static let logsInfo = LocalizedStringResource(
+            "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs.",
+            comment: "Information displayed under send error logs switch."
+        )
+        static let logsAdditionalInfo = LocalizedStringResource(
+            "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully.",
+            comment: "Information displayed in the bottom of the screen when send error logs switch is dislabed."
+        )
+    }
+
     enum Search {
         static let searchPlaceholder = LocalizedStringResource(
             "Search",

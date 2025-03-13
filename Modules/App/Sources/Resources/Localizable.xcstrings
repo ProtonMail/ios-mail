@@ -291,6 +291,9 @@
         }
       }
     },
+    "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs." : {
+      "comment" : "Information displayed under send error logs switch."
+    },
     "Account" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -319,6 +322,9 @@
           }
         }
       }
+    },
+    "Actual results" : {
+      "comment" : "Title of actual results text field."
     },
     "Add to contacts" : {
       "comment" : "Action title for adding email address to contacts in the address action sheet.",
@@ -1438,6 +1444,12 @@
     "Enable push notifications" : {
       "comment" : "Button to authorizate notifications"
     },
+    "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
+      "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."
+    },
+    "Expected results" : {
+      "comment" : "Title of expected results text field."
+    },
     "Expires in %@" : {
       "comment" : "Message indicating when email is gonna be expired.",
       "localizations" : {
@@ -2552,7 +2564,7 @@
       }
     },
     "Report a problem" : {
-      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen."
+      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.\nReport a problem screen main title."
     },
     "Report phishing" : {
       "comment" : "Action title for reporting phishing message in the action sheet.",
@@ -2582,6 +2594,9 @@
           }
         }
       }
+    },
+    "Reports are not end-to-end encrypted, please do not send any sensitive information." : {
+      "comment" : "Report a problem screen, top information."
     },
     "Save as PDF" : {
       "comment" : "Action title for saving message as PDF file in the action sheet.",
@@ -2756,6 +2771,9 @@
           }
         }
       }
+    },
+    "Send error logs" : {
+      "comment" : "Title of row with toggle where a user can decide whether to send logs."
     },
     "Send operation can't be undone" : {
       "comment" : "Error in the context of undoing a sent message"
@@ -3030,6 +3048,12 @@
         }
       }
     },
+    "Steps to reproduce" : {
+      "comment" : "Title of steps to reproduce text field."
+    },
+    "Submit" : {
+      "comment" : "Title of the button used to submit the form."
+    },
     "Subscription" : {
       "comment" : "Subscription menu title in the settings.",
       "localizations" : {
@@ -3058,6 +3082,9 @@
           }
         }
       }
+    },
+    "Summary (required)" : {
+      "comment" : "Title of summary text field."
     },
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."

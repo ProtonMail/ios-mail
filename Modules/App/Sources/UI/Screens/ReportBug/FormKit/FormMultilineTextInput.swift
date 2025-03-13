@@ -33,13 +33,13 @@ struct FormMultilineTextInput: View {
         }
     }
 
-    private let title: String
+    private let title: LocalizedStringResource
     private let placeholder: String
     @Binding private var text: String
     @Binding private var validation: ValidationStatus
     @FocusState private var isFocused: Bool
 
-    init(title: String, placeholder: String, text: Binding<String>, validation: Binding<ValidationStatus>) {
+    init(title: LocalizedStringResource, placeholder: String, text: Binding<String>, validation: Binding<ValidationStatus>) {
         self.title = title
         self.placeholder = placeholder
         self._text = text

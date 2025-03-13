@@ -33,39 +33,39 @@ struct ReportBugScreen: View {
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
                     VStack(spacing: DS.Spacing.extraLarge) {
-                        Text("Reports are not end-to-end encrypted, please do not send any sensitive information.")
+                        Text(L10n.ReportProblem.generalInfo)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .multilineTextAlignment(.leading)
                             .padding(.top, DS.Spacing.standard)
                             .foregroundStyle(DS.Color.Text.weak)
                             .id(ReportBugScrollToElements.topInfoText)
                         FormMultilineTextInput(
-                            title: "Summary (required)",
-                            placeholder: "Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            title: L10n.ReportProblem.summary,
+                            placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
                             text: text(keyPath: \.summary),
                             validation: $store.state.summaryValidation
                         )
                         .focused($isSummaryFocused)
                         FormMultilineTextInput(
-                            title: "Expected results",
-                            placeholder: "Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            title: L10n.ReportProblem.expectedResults,
+                            placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
                             text: text(keyPath: \.expectedResults),
                             validation: .noValidation
                         )
                         FormMultilineTextInput(
-                            title: "Steps to reproduce",
-                            placeholder: "Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            title: L10n.ReportProblem.stepsToReproduce,
+                            placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
                             text: text(keyPath: \.stepsToReproduce),
                             validation: .noValidation
                         )
                         FormMultilineTextInput(
-                            title: "Actual result",
-                            placeholder: "Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                            title: L10n.ReportProblem.actualResults,
+                            placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
                             text: text(keyPath: \.actualResults),
                             validation: .noValidation
                         )
                         FormSwitchView(
-                            title: "Send error logs",
+                            title: L10n.ReportProblem.sendErrorLogs,
                             isOn: sendErrorLogsToggle
                         )
                     }
@@ -73,12 +73,12 @@ struct ReportBugScreen: View {
                     .animation(.easeInOut(duration: 0.2), value: store.state.summaryValidation)
                     .padding(.horizontal, DS.Spacing.large)
                     VStack(spacing: DS.Spacing.large) {
-                        Text("A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs.")
+                        Text(L10n.ReportProblem.logsInfo)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.footnote)
                             .foregroundStyle(DS.Color.Text.weak)
                         if !store.state.sendLogsEnabled {
-                            Text("Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully.")
+                            Text(L10n.ReportProblem.logsAdditionalInfo)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.footnote)
                                 .foregroundStyle(DS.Color.Text.norm)
@@ -89,7 +89,7 @@ struct ReportBugScreen: View {
                     .padding(.vertical, DS.Spacing.standard)
                     .padding(.horizontal, DS.Spacing.huge)
                 }
-                .navigationTitle("Report a problem")
+                .navigationTitle(L10n.ReportProblem.mainTitle.string)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         if store.state.isLoading {
@@ -99,7 +99,7 @@ struct ReportBugScreen: View {
                             Button(action: {
                                 store.handle(action: .submit)
                             }) {
-                                Text("Submit")
+                                Text(L10n.ReportProblem.submit)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(DS.Color.Text.accent)
                             }
