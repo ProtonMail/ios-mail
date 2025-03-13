@@ -20,6 +20,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct ReportBugScreen: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var store: ReportBugStateStore
 
     init(state: ReportBugState = .initial) {
@@ -101,6 +102,14 @@ struct ReportBugScreen: View {
                                     .foregroundStyle(DS.Color.Text.accent)
                             }
                         }
+                    }
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: { dismiss.callAsFunction() }) {
+                            Image(DS.Icon.icCross)
+                                .square(size: 20)
+                                .tint(DS.Color.Text.weak)
+                        }
+                        .disabled(store.state.isLoading)
                     }
                 }
                 .onChange(of: store.state.scrollTo) { _, newValue in
