@@ -19,7 +19,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct ReportBugView: View {
+struct ReportBugScreen: View {
     @StateObject private var store: ReportBugStateStore
 
     init(state: ReportBugViewState = .initial) {
@@ -134,5 +134,5 @@ struct ReportBugView: View {
 }
 
 #Preview {
-    ReportBugView()
+    ReportBugScreen()
 }
