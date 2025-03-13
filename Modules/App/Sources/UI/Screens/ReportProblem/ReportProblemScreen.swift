@@ -32,46 +32,11 @@ struct ReportProblemScreen: View {
         NavigationStack {
             ScrollViewReader { proxy in
                 ScrollView(.vertical) {
-                    VStack(spacing: DS.Spacing.extraLarge) {
-                        Text(L10n.ReportProblem.generalInfo)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .multilineTextAlignment(.leading)
-                            .padding(.top, DS.Spacing.standard)
-                            .foregroundStyle(DS.Color.Text.weak)
-                            .id(ReportProblemScrollToElements.topInfoText)
-                        FormMultilineTextInput(
-                            title: L10n.ReportProblem.summary,
-                            placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
-                            text: text(keyPath: \.summary),
-                            validation: $store.state.summaryValidation
-                        )
-                        .focused($isSummaryFocused)
-                        FormMultilineTextInput(
-                            title: L10n.ReportProblem.expectedResults,
-                            placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
-                            text: text(keyPath: \.expectedResults),
-                            validation: .noValidation
-                        )
-                        FormMultilineTextInput(
-                            title: L10n.ReportProblem.stepsToReproduce,
-                            placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
-                            text: text(keyPath: \.stepsToReproduce),
-                            validation: .noValidation
-                        )
-                        FormMultilineTextInput(
-                            title: L10n.ReportProblem.actualResults,
-                            placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
-                            text: text(keyPath: \.actualResults),
-                            validation: .noValidation
-                        )
-                        FormSwitchView(
-                            title: L10n.ReportProblem.sendErrorLogs,
-                            isOn: sendErrorLogsToggle
-                        )
-                    }
-                    .disabled(store.state.isLoading)
-                    .animation(.easeInOut(duration: 0.2), value: store.state.summaryValidation)
-                    .padding(.horizontal, DS.Spacing.large)
+                    reportProblemForm()
+                        .disabled(store.state.isLoading)
+                        .animation(.easeInOut(duration: 0.2), value: store.state.summaryValidation)
+                        .padding(.horizontal, DS.Spacing.large)
+
                     VStack(spacing: DS.Spacing.large) {
                         Text(L10n.ReportProblem.logsInfo)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,28 +56,8 @@ struct ReportProblemScreen: View {
                 }
                 .navigationTitle(L10n.ReportProblem.mainTitle.string)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if store.state.isLoading {
-                            ProgressView()
-                                .tint(DS.Color.Text.accent)
-                        } else {
-                            Button(action: {
-                                store.handle(action: .submit)
-                            }) {
-                                Text(L10n.ReportProblem.submit)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(DS.Color.Text.accent)
-                            }
-                        }
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { dismiss.callAsFunction() }) {
-                            Image(DS.Icon.icCross)
-                                .square(size: 20)
-                                .tint(DS.Color.Text.weak)
-                        }
-                        .disabled(store.state.isLoading)
-                    }
+                    toolbarLeadingItem()
+                    toolbarTrailingItem()
                 }
                 .onChange(of: store.state.scrollTo) { _, newValue in
                     if let newValue {
@@ -136,6 +81,74 @@ struct ReportProblemScreen: View {
             isSummaryFocused = true
         }
         .interactiveDismissDisabled(store.state.isLoading)
+    }
+
+    private func reportProblemForm() -> some View {
+        VStack(spacing: DS.Spacing.extraLarge) {
+            Text(L10n.ReportProblem.generalInfo)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .multilineTextAlignment(.leading)
+                .padding(.top, DS.Spacing.standard)
+                .foregroundStyle(DS.Color.Text.weak)
+                .id(ReportProblemScrollToElements.topInfoText)
+            FormMultilineTextInput(
+                title: L10n.ReportProblem.summary,
+                placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
+                text: text(keyPath: \.summary),
+                validation: $store.state.summaryValidation
+            )
+            .focused($isSummaryFocused)
+            FormMultilineTextInput(
+                title: L10n.ReportProblem.expectedResults,
+                placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
+                text: text(keyPath: \.expectedResults),
+                validation: .noValidation
+            )
+            FormMultilineTextInput(
+                title: L10n.ReportProblem.stepsToReproduce,
+                placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
+                text: text(keyPath: \.stepsToReproduce),
+                validation: .noValidation
+            )
+            FormMultilineTextInput(
+                title: L10n.ReportProblem.actualResults,
+                placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
+                text: text(keyPath: \.actualResults),
+                validation: .noValidation
+            )
+            FormSwitchView(
+                title: L10n.ReportProblem.sendErrorLogs,
+                isOn: sendErrorLogsToggle
+            )
+        }
+    }
+
+    private func toolbarLeadingItem() -> some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if store.state.isLoading {
+                ProgressView()
+                    .tint(DS.Color.Text.accent)
+            } else {
+                Button(action: {
+                    store.handle(action: .submit)
+                }) {
+                    Text(L10n.ReportProblem.submit)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+        }
+    }
+
+    private func toolbarTrailingItem() -> some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button(action: { dismiss.callAsFunction() }) {
+                Image(DS.Icon.icCross)
+                    .square(size: 20)
+                    .tint(DS.Color.Text.weak)
+            }
+            .disabled(store.state.isLoading)
+        }
     }
 
     private func text(keyPath: WritableKeyPath<ReportProblemState, String>) -> Binding<String> {
