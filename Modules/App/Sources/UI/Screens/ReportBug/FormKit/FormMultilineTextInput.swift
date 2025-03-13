@@ -57,6 +57,7 @@ struct FormMultilineTextInput: View {
                     .foregroundStyle(validation.isFailure ? DS.Color.Notification.error : (isFocused ? DS.Color.Text.accent : DS.Color.Text.weak))
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $text)
+                        .scrollContentBackground(.hidden)
                         .focused($isFocused)
                         .padding(.top, -DS.Spacing.standard)
                         .padding(.leading, -DS.Spacing.small)
