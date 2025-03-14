@@ -372,8 +372,7 @@ extension ConversationDetailModel {
 
                 let messageCellUIModel: MessageCellUIModelType
                 if expandedMessages.contains(message.id) {
-                    let wait = message.id == messagesLiveQuery.messageIdToOpen
-                    let uiModel = try await expandedMessageCellUIModel(for: message, wait: wait, mailbox: mailbox)
+                    let uiModel = expandedMessageCellUIModel(for: message)
                     messageCellUIModel = .expanded(uiModel)
                 } else {
                     messageCellUIModel = .collapsed(message.toCollapsedMessageCellUIModel())
@@ -383,7 +382,7 @@ extension ConversationDetailModel {
             }
             
             // last message
-            let expandedMessage = try await expandedMessageCellUIModel(for: lastMessage, wait: true, mailbox: mailbox)
+            let expandedMessage = expandedMessageCellUIModel(for: lastMessage)
             result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
             return .init(messages: result, isStarred: isStarred)
@@ -393,14 +392,8 @@ extension ConversationDetailModel {
         }
     }
 
-    private func expandedMessageCellUIModel(
-        for message: Message,
-        wait: Bool,
-        mailbox: Mailbox
-    ) async throws -> ExpandedMessageCellUIModel {
-        let provider = MessageBodyProvider(mailbox: mailbox)
-        let messageBody = wait ? await provider.messageBody(for: message.id) : .notLoaded
-        return message.toExpandedMessageCellUIModel(messageBody: messageBody)
+    private func expandedMessageCellUIModel(for message: Message) -> ExpandedMessageCellUIModel {
+        message.toExpandedMessageCellUIModel(messageBody: .notLoaded)
     }
 
     @MainActor
