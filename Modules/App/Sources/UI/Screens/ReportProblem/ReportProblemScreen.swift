@@ -22,68 +22,72 @@ import SwiftUI
 struct ReportProblemScreen: View {
     @Environment(\.dismiss) var dismiss
     @FocusState private var isSummaryFocused: Bool
-    @StateObject private var store: ReportProblemStateStore
+    private let state: ReportProblemState
 
     init(state: ReportProblemState = .initial) {
-        self._store = .init(wrappedValue: .init(state: state))
+        self.state = state
     }
 
     var body: some View {
-        NavigationStack {
-            ScrollViewReader { proxy in
-                ScrollView(.vertical) {
-                    reportProblemForm()
-                        .disabled(store.state.isLoading)
-                        .animation(.easeInOut(duration: 0.2), value: store.state.summaryValidation)
-                        .padding(.horizontal, DS.Spacing.large)
+        StoreView(
+            store: ReportProblemStateStore(state: state)
+        ) { state, store in
+            NavigationStack {
+                ScrollViewReader { proxy in
+                    ScrollView(.vertical) {
+                        reportProblemForm(state: state, store: store)
+                            .disabled(store.state.isLoading)
+                            .animation(.easeInOut(duration: 0.2), value: state.summaryValidation)
+                            .padding(.horizontal, DS.Spacing.large)
 
-                    VStack(spacing: DS.Spacing.large) {
-                        Text(L10n.ReportProblem.logsInfo)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.footnote)
-                            .foregroundStyle(DS.Color.Text.weak)
-                        if !store.state.sendLogsEnabled {
-                            Text(L10n.ReportProblem.logsAdditionalInfo)
+                        VStack(spacing: DS.Spacing.large) {
+                            Text(L10n.ReportProblem.logsInfo)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.footnote)
-                                .foregroundStyle(DS.Color.Text.norm)
-                                .id(ReportProblemScrollToElements.bottomInfoText)
+                                .foregroundStyle(DS.Color.Text.weak)
+                            if !state.sendLogsEnabled {
+                                Text(L10n.ReportProblem.logsAdditionalInfo)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .font(.footnote)
+                                    .foregroundStyle(DS.Color.Text.norm)
+                                    .id(ReportProblemScrollToElements.bottomInfoText)
+                            }
+                        }
+                        .animation(.easeOut(duration: 0.2), value: state.sendLogsEnabled)
+                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.horizontal, DS.Spacing.huge)
+                    }
+                    .navigationTitle(L10n.ReportProblem.mainTitle.string)
+                    .toolbar {
+                        toolbarLeadingItem(state: state, store: store)
+                        toolbarTrailingItem(state: state)
+                    }
+                    .onChange(of: store.state.scrollTo) { _, newValue in
+                        if let newValue {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                proxy.scrollTo(newValue, anchor: .bottom)
+                            } completion: {
+                                store.handle(action: .cleanUpScrollingState)
+                            }
                         }
                     }
-                    .animation(.easeOut(duration: 0.2), value: store.state.sendLogsEnabled)
-                    .padding(.vertical, DS.Spacing.standard)
-                    .padding(.horizontal, DS.Spacing.huge)
                 }
-                .navigationTitle(L10n.ReportProblem.mainTitle.string)
-                .toolbar {
-                    toolbarLeadingItem()
-                    toolbarTrailingItem()
-                }
-                .onChange(of: store.state.scrollTo) { _, newValue in
-                    if let newValue {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            proxy.scrollTo(newValue, anchor: .bottom)
-                        } completion: {
-                            store.handle(action: .cleanUpScrollingState)
-                        }
-                    }
+                .frame(maxWidth: .infinity)
+                .background(DS.Color.Background.secondary)
+            }
+            .onChange(of: store.state.summaryValidation) { _, newValue in
+                if case .failure = newValue {
+                    isSummaryFocused = true
                 }
             }
-            .frame(maxWidth: .infinity)
-            .background(DS.Color.Background.secondary)
-        }
-        .onChange(of: store.state.summaryValidation) { _, newValue in
-            if case .failure = newValue {
+            .onAppear {
                 isSummaryFocused = true
             }
+            .interactiveDismissDisabled(store.state.isLoading)
         }
-        .onLoad {
-            isSummaryFocused = true
-        }
-        .interactiveDismissDisabled(store.state.isLoading)
     }
 
-    private func reportProblemForm() -> some View {
+    private func reportProblemForm(state: ReportProblemState, store: ReportProblemStateStore) -> some View {
         VStack(spacing: DS.Spacing.extraLarge) {
             Text(L10n.ReportProblem.generalInfo)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,41 +99,41 @@ struct ReportProblemScreen: View {
                 title: L10n.ReportProblem.summary,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
-                text: text(keyPath: \.summary),
-                validation: $store.state.summaryValidation
+                text: text(keyPath: \.summary, state: state, store: store),
+                validation: store.binding(\.summaryValidation)
             )
             .focused($isSummaryFocused)
             FormMultilineTextInput(
                 title: L10n.ReportProblem.expectedResults,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
-                text: text(keyPath: \.expectedResults),
+                text: text(keyPath: \.expectedResults, state: state, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
-                text: text(keyPath: \.stepsToReproduce),
+                text: text(keyPath: \.stepsToReproduce, state: state, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.actualResults,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
-                text: text(keyPath: \.actualResults),
+                text: text(keyPath: \.actualResults, state: state, store: store),
                 validation: .noValidation
             )
             FormSwitchView(
                 title: L10n.ReportProblem.sendErrorLogs,
-                isOn: sendErrorLogsToggle
+                isOn: sendErrorLogsToggle(state: state, store: store)
             )
         }
     }
 
-    private func toolbarLeadingItem() -> some ToolbarContent {
+    private func toolbarLeadingItem(state: ReportProblemState, store: ReportProblemStateStore) -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            if store.state.isLoading {
+            if state.isLoading {
                 ProgressView()
                     .tint(DS.Color.Text.accent)
             } else {
@@ -144,27 +148,34 @@ struct ReportProblemScreen: View {
         }
     }
 
-    private func toolbarTrailingItem() -> some ToolbarContent {
+    private func toolbarTrailingItem(state: ReportProblemState) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button(action: { dismiss.callAsFunction() }) {
                 Image(DS.Icon.icCross)
                     .square(size: 20)
                     .tint(DS.Color.Text.weak)
             }
-            .disabled(store.state.isLoading)
+            .disabled(state.isLoading)
         }
     }
 
-    private func text(keyPath: WritableKeyPath<ReportProblemState, String>) -> Binding<String> {
+    private func text(
+        keyPath: WritableKeyPath<ReportProblemState, String>,
+        state: ReportProblemState,
+        store: ReportProblemStateStore
+    ) -> Binding<String> {
         .init(
-            get: { store.state[keyPath: keyPath] },
+            get: { state[keyPath: keyPath] },
             set: { newValue in store.handle(action: .textEntered(keyPath, text: newValue)) }
         )
     }
 
-    private var sendErrorLogsToggle: Binding<Bool> {
+    private func sendErrorLogsToggle(
+        state: ReportProblemState,
+        store: ReportProblemStateStore
+    ) -> Binding<Bool> {
         .init(
-            get: { store.state.sendLogsEnabled },
+            get: { state.sendLogsEnabled },
             set: { newValue in store.handle(action: .sendLogsToggleSwitched(isEnabled: newValue)) }
         )
     }
