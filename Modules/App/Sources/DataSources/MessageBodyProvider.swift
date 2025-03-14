@@ -19,7 +19,6 @@ import InboxCore
 import proton_app_uniffi
 
 enum MessageBodyState {
-    case notLoaded
     case loaded(MessageBody)
     case noConnection
     case error(Error)

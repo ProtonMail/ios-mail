@@ -87,7 +87,7 @@ private extension MessageBodyState {
         switch self {
         case .loaded(let messageBody):
             messageBody
-        case .noConnection, .notLoaded, .error:
+        case .noConnection, .error:
             nil
         }
     }

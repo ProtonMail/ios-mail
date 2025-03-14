@@ -68,8 +68,6 @@ final class MessageBodyLoader: ObservableObject {
             self.body = .noConnection
         case .error(let error):
             self.body = .error(error)
-        case .notLoaded:
-            self.body = .fetching
         }
     }
 }
