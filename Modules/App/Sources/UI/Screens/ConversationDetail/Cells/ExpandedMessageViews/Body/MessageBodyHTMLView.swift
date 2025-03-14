@@ -42,7 +42,7 @@ struct MessageBodyHTMLView: View {
             ProgressView()
                 .padding(.vertical, DS.Spacing.jumbo)
         case .loaded(let body):
-            bodyReaderView(with: body)
+            bodyReaderView(with: body.html)
         case .error(let error):
             Text(String(describing: error))
         case .noConnection:
@@ -50,7 +50,7 @@ struct MessageBodyHTMLView: View {
         }
     }
 
-    private func bodyReaderView(with body: MessageBody) -> some View {
+    private func bodyReaderView(with body: MessageBody.HTML) -> some View {
         ZStack {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)

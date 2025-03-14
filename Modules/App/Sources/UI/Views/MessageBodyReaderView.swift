@@ -22,7 +22,7 @@ import WebKit
 
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
-    let body: MessageBody
+    let body: MessageBody.HTML
     let urlOpener: URLOpenerProtocol
     let htmlLoaded: () -> Void
 

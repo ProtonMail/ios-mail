@@ -140,7 +140,10 @@ enum ExpandedMessageCellEvent {
 private extension MessageBody {
 
     static func testInstance(rawBody: String) -> Self {
-        .init(rawBody: rawBody, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
+        .init(
+            banners: [],
+            html: .init(rawBody: rawBody, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
+        )
     }
 
 }

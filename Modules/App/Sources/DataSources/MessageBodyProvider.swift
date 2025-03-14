@@ -19,8 +19,13 @@ import InboxCore
 import proton_app_uniffi
 
 struct MessageBody: Sendable {
-    let rawBody: String
-    let embeddedImageProvider: EmbeddedImageProvider
+    struct HTML {
+        let rawBody: String
+        let embeddedImageProvider: EmbeddedImageProvider
+    }
+    
+    let banners: [MessageBanner]
+    let html: HTML
 }
 
 struct MessageBodyProvider {
@@ -40,7 +45,11 @@ struct MessageBodyProvider {
         switch await messageBody(messageID) {
         case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
-            return .success(.init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage))
+            let body = MessageBody(
+                banners: decryptedBody.bodyBanners,
+                html: .init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage)
+            )
+            return .success(body)
         case .error(.other(.network)):
             return .noConnectionError
         case .error(let error):
