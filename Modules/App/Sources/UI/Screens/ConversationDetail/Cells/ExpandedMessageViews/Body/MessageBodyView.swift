@@ -26,7 +26,7 @@ struct MessageBodyView: View {
     @State var bodyContentHeight: CGFloat = 0.0
 
     let messageId: ID
-    let messageBody: MessageBodyLoader.MessageBodyState
+    let messageBody: MessageBodyState
     let htmlLoaded: () -> Void
     
     /// This value is key to the conversation scrolling to the opened message. We don't

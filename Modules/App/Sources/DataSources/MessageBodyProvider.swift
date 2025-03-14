@@ -18,38 +18,49 @@
 import InboxCore
 import proton_app_uniffi
 
-enum MessageBodyState {
-    case loaded(MessageBody)
-    case noConnection
-    case error(Error)
-}
-
-protocol MessageBodyProviding {
-    @MainActor
-    func messageBody(for messageId: ID) async -> MessageBodyState
-}
-
-struct MessageBody {
+struct MessageBody: Sendable {
     let rawBody: String
     let embeddedImageProvider: EmbeddedImageProvider
 }
 
-final class MessageBodyProvider: Sendable, MessageBodyProviding {
-    private let mailbox: Mailbox
-
-    init(mailbox: Mailbox) {
-        self.mailbox = mailbox
+struct MessageBodyProvider {
+    enum Result: Sendable {
+        case success(MessageBody)
+        case error(Error)
+        case noConnectionError
     }
 
-    func messageBody(for messageId: ID) async -> MessageBodyState {
-        switch await getMessageBody(mbox: mailbox, id: messageId) {
+    private let messageBody: (_ messageID: ID) async -> GetMessageBodyResult
+
+    init(mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
+        self.messageBody = { messageID in await bodyWrapper.messageBody(mailbox, messageID) }
+    }
+
+    func messageBody(forMessageID messageID: ID) async -> Result {
+        switch await messageBody(messageID) {
         case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
-            return .loaded(.init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage))
+            return .success(.init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage))
         case .error(.other(.network)):
-            return .noConnection
+            return .noConnectionError
         case .error(let error):
             return .error(error)
         }
     }
+}
+
+struct RustMessageBodyWrapper {
+    let messageBody: (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
+    
+    init(messageBody: @escaping (Mailbox, Id) async -> GetMessageBodyResult) {
+        self.messageBody = messageBody
+    }
+}
+
+extension RustMessageBodyWrapper {
+
+    static func productionInstance() -> Self {
+        .init(messageBody: getMessageBody(mbox:id:))
+    }
+
 }
