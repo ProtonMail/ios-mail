@@ -26,7 +26,7 @@ struct MessageBodyView: View {
     @State var bodyContentHeight: CGFloat = 0.0
 
     let messageId: ID
-    let mailbox: Mailbox
+    let messageBody: MessageBodyLoader.MessageBodyState
     let htmlLoaded: () -> Void
     
     /// This value is key to the conversation scrolling to the opened message. We don't
@@ -37,22 +37,16 @@ struct MessageBodyView: View {
     }
 
     var body: some View {
-        AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
-            switch messageBody {
-            case .fetching:
-                ZStack {
-                    ProgressView()
-                }
+        switch messageBody {
+        case .fetching:
+            ProgressView()
                 .padding(.vertical, DS.Spacing.jumbo)
-
-            case .value(let body):
-                messageBodyView(body: body)
-
-            case .error(let error):
-                Text(String(describing: error))
-            case .noConnection:
-                NoConnectionView()
-            }
+        case .loaded(let body):
+            messageBodyView(body: body)
+        case .error(let error):
+            Text(String(describing: error))
+        case .noConnection:
+            NoConnectionView()
         }
     }
 
@@ -61,7 +55,6 @@ struct MessageBodyView: View {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
                 .removeViewIf(bodyContentHeight > 0)
-
             MessageBodyReaderView(
                 bodyContentHeight: $bodyContentHeight,
                 body: body,
@@ -79,17 +72,4 @@ struct MessageBodyView: View {
 
 private struct MessageBodyViewIdentifiers {
     static let messageBody = "detail.messageBody"
-}
-
-private extension MessageBodyState {
-
-    var messageBody: MessageBody? {
-        switch self {
-        case .loaded(let messageBody):
-            messageBody
-        case .noConnection, .error:
-            nil
-        }
-    }
-
 }

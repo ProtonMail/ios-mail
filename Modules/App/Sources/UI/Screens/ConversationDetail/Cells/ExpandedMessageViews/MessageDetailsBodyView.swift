@@ -26,11 +26,59 @@ struct MessageDetailsBodyView: View {
     let htmlLoaded: () -> Void
     @Binding var attachmentIDToOpen: ID?
     
+    @StateObject var store: MessageBodyLoader
+    
+    init(
+        messageID: ID,
+        attachments: [AttachmentDisplayModel],
+        mailbox: Mailbox,
+        attachmentIDToOpen: Binding<ID?>,
+        htmlLoaded: @escaping () -> Void
+    ) {
+        self.messageID = messageID
+        self.attachments = attachments
+        self.mailbox = mailbox
+        self._attachmentIDToOpen = attachmentIDToOpen
+        self.htmlLoaded = htmlLoaded
+        _store = .init(wrappedValue: .init(mailbox: mailbox))
+    }
+    
     var body: some View {
         VStack(spacing: .zero) {
             MessageBannersView(types: OrderedSet([]), timer: Timer.self)
             MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
-            MessageBodyView(messageId: messageID, mailbox: mailbox, htmlLoaded: htmlLoaded)
+            MessageBodyView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
+        }
+        .task {
+            await store.loadBody(for: messageID)
+        }
+    }
+}
+
+final class MessageBodyLoader: ObservableObject {
+    enum MessageBodyState {
+        case fetching
+        case loaded(MessageBody)
+        case error(Error)
+        case noConnection
+    }
+
+    @Published var state: MessageBodyState = .fetching
+    private let provider: MessageBodyProviding
+
+    init(mailbox: Mailbox) {
+        self.provider = MessageBodyProvider(mailbox: mailbox)
+    }
+
+    @MainActor
+    func loadBody(for messageId: ID) async {
+        switch await provider.messageBody(for: messageId) {
+        case .loaded(let body):
+            self.state = .loaded(body)
+        case .noConnection:
+            self.state = .noConnection
+        case .error(let error):
+            self.state = .error(error)
         }
     }
 }

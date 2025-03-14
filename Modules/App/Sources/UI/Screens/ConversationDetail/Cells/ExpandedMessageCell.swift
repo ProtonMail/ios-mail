@@ -85,8 +85,8 @@ struct ExpandedMessageCell: View {
                     messageID: uiModel.id,
                     attachments: uiModel.messageDetails.attachments,
                     mailbox: mailbox,
-                    htmlLoaded: htmlLoaded,
-                    attachmentIDToOpen: $attachmentIDToOpen
+                    attachmentIDToOpen: $attachmentIDToOpen,
+                    htmlLoaded: htmlLoaded
                 )
                 if !areActionsDisabled {
                     MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient, onEvent: { event in
