@@ -49,20 +49,21 @@ class ReportProblemStateStoreTests: BaseTestCase {
     }
 
     func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItStartsLoading() {
-        let fields: [WritableKeyPath<ReportProblemState, String>] = [
-            \.summary,
-            \.expectedResults,
-            \.actualResults,
-            \.stepsToReproduce
+        let fields: [(WritableKeyPath<ReportProblemState, String>, String)] = [
+            (\.summary, "summary"),
+            (\.expectedResults, "expected results"),
+            (\.actualResults, "actual results"),
+            (\.stepsToReproduce, "steps to reproduce")
         ]
 
-        fields.forEach { field in
-            sut.handle(action: .textEntered(field, text: "Hello world!"))
+        fields.forEach { field, text in
+            sut.handle(action: .textEntered(field, text: "Hello \(text)!"))
         }
 
-        fields.forEach { field in
-            XCTAssertEqual(sut.state[keyPath: field], "Hello world!")
-        }
+        XCTAssertEqual(sut.state.summary, "Hello summary!")
+        XCTAssertEqual(sut.state.expectedResults, "Hello expected results!")
+        XCTAssertEqual(sut.state.actualResults, "Hello actual results!")
+        XCTAssertEqual(sut.state.stepsToReproduce, "Hello steps to reproduce!")
 
         sut.handle(action: .sendLogsToggleSwitched(isEnabled: false))
         XCTAssertEqual(sut.state.scrollTo, .bottomInfoText)

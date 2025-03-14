@@ -70,8 +70,7 @@ struct FormMultilineTextInput: View {
                 }
             }
             .padding(.all, DS.Spacing.large)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: minimalContainerHight, alignment: .topLeading)
+            .frame(maxWidth: .infinity, minHeight: minimalContainerHight, alignment: .topLeading)
             .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
             .overlay(

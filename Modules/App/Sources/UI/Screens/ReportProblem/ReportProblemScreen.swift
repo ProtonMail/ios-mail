@@ -77,7 +77,7 @@ struct ReportProblemScreen: View {
                 isSummaryFocused = true
             }
         }
-        .onAppear {
+        .onLoad {
             isSummaryFocused = true
         }
         .interactiveDismissDisabled(store.state.isLoading)

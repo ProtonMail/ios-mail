@@ -24,7 +24,7 @@ struct FormSwitchView: View {
 
     init(title: LocalizedStringResource, isOn: Binding<Bool>) {
         self.title = title
-        self._isOn = .init(projectedValue: isOn)
+        self._isOn = isOn
     }
 
     var body: some View {
