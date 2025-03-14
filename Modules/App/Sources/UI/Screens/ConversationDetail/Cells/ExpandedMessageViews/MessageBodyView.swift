@@ -26,7 +26,6 @@ struct MessageBodyView: View {
     @State var bodyContentHeight: CGFloat = 0.0
 
     let messageId: ID
-    let uiModel: ExpandedMessageCellUIModel
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
     
@@ -38,25 +37,21 @@ struct MessageBodyView: View {
     }
 
     var body: some View {
-        if let body = uiModel.messageBodyState.messageBody {
-            messageBodyView(body: body)
-        } else {
-            AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
-                switch messageBody {
-                case .fetching:
-                    ZStack {
-                        ProgressView()
-                    }
-                    .padding(.vertical, DS.Spacing.jumbo)
-
-                case .value(let body):
-                    messageBodyView(body: body)
-
-                case .error(let error):
-                    Text(String(describing: error))
-                case .noConnection:
-                    NoConnectionView()
+        AsyncMessageBodyView(messageId: messageId, mailbox: mailbox) { messageBody in
+            switch messageBody {
+            case .fetching:
+                ZStack {
+                    ProgressView()
                 }
+                .padding(.vertical, DS.Spacing.jumbo)
+
+            case .value(let body):
+                messageBodyView(body: body)
+
+            case .error(let error):
+                Text(String(describing: error))
+            case .noConnection:
+                NoConnectionView()
             }
         }
     }

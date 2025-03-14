@@ -60,10 +60,9 @@ extension Message {
         )
     }
 
-    func toExpandedMessageCellUIModel(messageBody: MessageBodyState) -> ExpandedMessageCellUIModel {
+    func toExpandedMessageCellUIModel() -> ExpandedMessageCellUIModel {
         .init(
             id: id,
-            messageBodyState: messageBody, 
             unread: unread,
             messageDetails: MessageDetailsUIModel(
                 avatar: sender.senderAvatar,

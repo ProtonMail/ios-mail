@@ -372,8 +372,7 @@ extension ConversationDetailModel {
 
                 let messageCellUIModel: MessageCellUIModelType
                 if expandedMessages.contains(message.id) {
-                    let uiModel = expandedMessageCellUIModel(for: message)
-                    messageCellUIModel = .expanded(uiModel)
+                    messageCellUIModel = .expanded(message.toExpandedMessageCellUIModel())
                 } else {
                     messageCellUIModel = .collapsed(message.toCollapsedMessageCellUIModel())
                 }
@@ -382,7 +381,7 @@ extension ConversationDetailModel {
             }
             
             // last message
-            let expandedMessage = expandedMessageCellUIModel(for: lastMessage)
+            let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
             result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
             return .init(messages: result, isStarred: isStarred)
@@ -390,10 +389,6 @@ extension ConversationDetailModel {
             AppLogger.log(error: error, category: .conversationDetail)
             return .init(messages: [], isStarred: false)
         }
-    }
-
-    private func expandedMessageCellUIModel(for message: Message) -> ExpandedMessageCellUIModel {
-        message.toExpandedMessageCellUIModel(messageBody: .notLoaded)
     }
 
     @MainActor
