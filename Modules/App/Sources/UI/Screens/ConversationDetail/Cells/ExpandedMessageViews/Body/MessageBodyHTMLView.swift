@@ -42,7 +42,7 @@ struct MessageBodyHTMLView: View {
             ProgressView()
                 .padding(.vertical, DS.Spacing.jumbo)
         case .loaded(let body):
-            messageBodyView(body: body)
+            bodyReaderView(with: body)
         case .error(let error):
             Text(String(describing: error))
         case .noConnection:
@@ -50,7 +50,7 @@ struct MessageBodyHTMLView: View {
         }
     }
 
-    private func messageBodyView(body: MessageBody) -> some View {
+    private func bodyReaderView(with body: MessageBody) -> some View {
         ZStack {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
@@ -62,8 +62,7 @@ struct MessageBodyHTMLView: View {
                 htmlLoaded: htmlLoaded
             )
             .frame(height: bodyContentHeight)
-            .padding(.vertical, DS.Spacing.large)
-            .padding(.horizontal, DS.Spacing.large)
+            .padding([.vertical, .horizontal], DS.Spacing.large)
             .opacity(bodyContentHeight > 0 ? 1 : 0)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
         }

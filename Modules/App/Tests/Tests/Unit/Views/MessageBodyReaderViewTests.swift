@@ -20,7 +20,6 @@ import XCTest
 import WebKit
 
 class MessageBodyReaderViewTests: XCTestCase {
-
     var sut: MessageBodyReaderView!
     private var urlOpenerSpy: URLOpenerSpy!
 
@@ -31,8 +30,9 @@ class MessageBodyReaderViewTests: XCTestCase {
         sut = MessageBodyReaderView(
             bodyContentHeight: .constant(.zero),
             body: .init(rawBody: .notUsed, embeddedImageProvider: EmbeddedImageProviderSpy()),
-            urlOpener: urlOpenerSpy
-        ) {}
+            urlOpener: urlOpenerSpy,
+            htmlLoaded: {}
+        )
     }
 
     override func tearDown() {
@@ -63,7 +63,7 @@ class MessageBodyReaderViewTests: XCTestCase {
 
 private extension MessageBodyReaderView {
     func webView(navigation: NavigationActionStub) async -> WKNavigationActionPolicy {
-        let coordinator = await makeCoordinator()
+        let coordinator = makeCoordinator()
         let result = await coordinator.webView(WKWebView(), decidePolicyFor: navigation)
 
         return result
