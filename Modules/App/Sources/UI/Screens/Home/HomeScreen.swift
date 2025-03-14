@@ -28,7 +28,7 @@ struct HomeScreen: View {
         case labelOrFolderCreation
         case settings
         case draft(ComposerModalParams)
-        case reportBug
+        case reportProblem
 
         // MARK: - Identifiable
 
@@ -38,7 +38,7 @@ struct HomeScreen: View {
             case .labelOrFolderCreation: "labelOrFolderCreation"
             case .settings: "settings"
             case .draft: "draft"
-            case .reportBug: "reportBug"
+            case .reportProblem: "reportProblem"
             }
         }
     }
@@ -112,7 +112,7 @@ struct HomeScreen: View {
                 case .other(let otherItem):
                     switch otherItem.type {
                     case .bugReport:
-                        modalState = .reportBug
+                        modalState = .reportProblem
                     case .contacts:
                         modalState = .contacts
                     case .createFolder, .createLabel:

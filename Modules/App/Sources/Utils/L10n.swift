@@ -515,6 +515,10 @@ enum L10n {
             "Summary (required)",
             comment: "Title of summary text field."
         )
+        static let summaryValidationError = LocalizedStringResource(
+            "This field must be more than 10 characters",
+            comment: "Summary field validation error"
+        )
         static let expectedResults = LocalizedStringResource(
             "Expected results",
             comment: "Title of expected results text field."

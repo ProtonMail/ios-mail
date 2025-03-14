@@ -3092,6 +3092,9 @@
     "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." : {
       "comment" : "Banner warning the user that the email failed authentication checks and may be spoofed."
     },
+    "This field must be more than 10 characters" : {
+      "comment" : "Summary field validation error"
+    },
     "This message is from a mailing list." : {
       "comment" : "Banner indicating that the email is from a mailing list."
     },

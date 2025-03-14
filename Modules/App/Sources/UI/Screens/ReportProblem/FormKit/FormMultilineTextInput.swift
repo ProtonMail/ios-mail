@@ -21,7 +21,7 @@ import SwiftUI
 struct FormMultilineTextInput: View {
     enum ValidationStatus: Equatable {
         case ok
-        case failure(String)
+        case failure(LocalizedStringResource)
 
         var isFailure: Bool {
             switch self {

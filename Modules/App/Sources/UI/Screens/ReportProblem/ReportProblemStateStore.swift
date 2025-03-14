@@ -37,7 +37,7 @@ class ReportProblemStateStore: ObservableObject, StateStore {
             state.scrollTo = nil
         case .submit:
             if state.summary.count <= 10 {
-                state.summaryValidation = .failure("This field must be more than 10 characters")
+                state.summaryValidation = .summaryLessThen10Characters
                 state.scrollTo = .topInfoText
             } else {
                 state.isLoading = true
@@ -49,4 +49,12 @@ class ReportProblemStateStore: ObservableObject, StateStore {
             }
         }
     }
+}
+
+private extension FormMultilineTextInput.ValidationStatus {
+
+    static var summaryLessThen10Characters: Self {
+        .failure(L10n.ReportProblem.summaryValidationError)
+    }
+
 }

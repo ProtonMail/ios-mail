@@ -93,6 +93,7 @@ struct ReportProblemScreen: View {
                 .id(ReportProblemScrollToElements.topInfoText)
             FormMultilineTextInput(
                 title: L10n.ReportProblem.summary,
+                // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
                 text: text(keyPath: \.summary),
                 validation: $store.state.summaryValidation
@@ -100,18 +101,21 @@ struct ReportProblemScreen: View {
             .focused($isSummaryFocused)
             FormMultilineTextInput(
                 title: L10n.ReportProblem.expectedResults,
+                // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
                 text: text(keyPath: \.expectedResults),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
+                // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
                 text: text(keyPath: \.stepsToReproduce),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.actualResults,
+                // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
                 text: text(keyPath: \.actualResults),
                 validation: .noValidation
