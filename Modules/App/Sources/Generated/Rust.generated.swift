@@ -263,6 +263,16 @@ public extension LoadConversationResult {
         }
     }
 }
+public extension LoginFlowMigrateResult {
+    func get() throws(LoginError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowSessionIdResult {
     func get() throws(LoginError) -> String {
         switch self {
