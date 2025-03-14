@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,61 +15,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
-import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 struct MessageBodyView: View {
-    @Environment(\.mainWindowSize) var mainWindowSize
-    @Environment(\.openURL) var urlOpener
-    @State var bodyContentHeight: CGFloat = 0.0
-
-    let messageId: ID
-    let messageBody: MessageBodyState
+    let messageID: ID
+    let attachments: [AttachmentDisplayModel]
+    let mailbox: Mailbox
     let htmlLoaded: () -> Void
+    @Binding var attachmentIDToOpen: ID?
     
-    /// This value is key to the conversation scrolling to the opened message. We don't
-    /// know the height of the body before it has finished rendering in the webview, having a
-    /// meaningful default size avoids more than one scroll movement (before and after the html rendering).
-    private var loadingHtmlInitialHeight: CGFloat {
-        mainWindowSize.height * 0.5
+    @StateObject var store: MessageBodyStateStore
+    
+    init(
+        messageID: ID,
+        attachments: [AttachmentDisplayModel],
+        mailbox: Mailbox,
+        attachmentIDToOpen: Binding<ID?>,
+        htmlLoaded: @escaping () -> Void
+    ) {
+        self.messageID = messageID
+        self.attachments = attachments
+        self.mailbox = mailbox
+        self._attachmentIDToOpen = attachmentIDToOpen
+        self.htmlLoaded = htmlLoaded
+        _store = .init(wrappedValue: .init(mailbox: mailbox, bodyWrapper: .productionInstance()))
     }
-
+    
     var body: some View {
-        switch messageBody {
-        case .fetching:
-            ProgressView()
-                .padding(.vertical, DS.Spacing.jumbo)
-        case .loaded(let body):
-            messageBodyView(body: body)
-        case .error(let error):
-            Text(String(describing: error))
-        case .noConnection:
-            NoConnectionView()
+        VStack(spacing: .zero) {
+            MessageBannersView(types: [], timer: Timer.self)
+            MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+            MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
+        .onLoad { store.handle(action: .onLoad(messageID: messageID)) }
     }
-
-    private func messageBodyView(body: MessageBody) -> some View {
-        ZStack {
-            ProtonSpinner()
-                .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
-                .removeViewIf(bodyContentHeight > 0)
-            MessageBodyReaderView(
-                bodyContentHeight: $bodyContentHeight,
-                body: body,
-                urlOpener: urlOpener,
-                htmlLoaded: htmlLoaded
-            )
-            .frame(height: bodyContentHeight)
-            .padding(.vertical, DS.Spacing.large)
-            .padding(.horizontal, DS.Spacing.large)
-            .opacity(bodyContentHeight > 0 ? 1 : 0)
-            .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
-        }
-    }
-}
-
-private struct MessageBodyViewIdentifiers {
-    static let messageBody = "detail.messageBody"
 }

@@ -81,7 +81,7 @@ struct ExpandedMessageCell: View {
                         }
                     }
                 )
-                MessageDetailsBodyView(
+                MessageBodyView(
                     messageID: uiModel.id,
                     attachments: uiModel.messageDetails.attachments,
                     mailbox: mailbox,
