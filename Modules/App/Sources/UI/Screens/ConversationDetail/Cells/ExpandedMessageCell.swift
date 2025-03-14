@@ -81,15 +81,12 @@ struct ExpandedMessageCell: View {
                         }
                     }
                 )
-                MessageBannersView(types: OrderedSet([]), timer: Timer.self)
-                MessageBodyAttachmentsView(
-                    state: .state(attachments: uiModel.messageDetails.attachments),
+                MessageDetailsBodyView(
+                    messageID: uiModel.id,
+                    attachments: uiModel.messageDetails.attachments,
+                    mailbox: mailbox,
+                    htmlLoaded: htmlLoaded,
                     attachmentIDToOpen: $attachmentIDToOpen
-                )
-                MessageBodyView(
-                    messageId: uiModel.id,
-                    mailbox: mailbox, 
-                    htmlLoaded: htmlLoaded
                 )
                 if !areActionsDisabled {
                     MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient, onEvent: { event in
@@ -138,17 +135,6 @@ enum ExpandedMessageCellEvent {
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
-}
-
-extension MessageBodyAttachmentsState {
-
-    static func state(attachments: [AttachmentDisplayModel]) -> Self {
-        .init(
-            attachments: attachments,
-            listState: attachments.count > 3 ? .long(isAttachmentsListOpen: false) : .short
-        )
-    }
-
 }
 
 private extension MessageBody {

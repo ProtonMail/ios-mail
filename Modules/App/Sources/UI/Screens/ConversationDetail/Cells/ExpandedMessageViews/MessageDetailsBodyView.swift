@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,25 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import OrderedCollections
+import proton_app_uniffi
+import SwiftUI
 
-struct MessageBodyAttachmentsState: Copying {
-    enum ListState {
-        case short
-        case long(isAttachmentsListOpen: Bool)
-    }
-    
+struct MessageDetailsBodyView: View {
+    let messageID: ID
     let attachments: [AttachmentDisplayModel]
-    var listState: ListState
-}
-
-extension MessageBodyAttachmentsState {
-
-    static func state(attachments: [AttachmentDisplayModel]) -> Self {
-        .init(
-            attachments: attachments,
-            listState: attachments.count > 3 ? .long(isAttachmentsListOpen: false) : .short
-        )
+    let mailbox: Mailbox
+    let htmlLoaded: () -> Void
+    @Binding var attachmentIDToOpen: ID?
+    
+    var body: some View {
+        VStack(spacing: .zero) {
+            MessageBannersView(types: OrderedSet([]), timer: Timer.self)
+            MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+            MessageBodyView(messageId: messageID, mailbox: mailbox, htmlLoaded: htmlLoaded)
+        }
     }
-
 }

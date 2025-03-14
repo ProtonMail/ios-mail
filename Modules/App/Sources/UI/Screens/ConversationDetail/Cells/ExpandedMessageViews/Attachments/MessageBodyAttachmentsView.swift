@@ -24,9 +24,14 @@ struct MessageBodyAttachmentsView: View {
     @State private var state: MessageBodyAttachmentsState
     @Binding var attachmentIDToOpen: ID?
 
+    /// Convenience initializer that exposes `state` for testing purposes, allowing simulation of different states (e.g., an expanded attachments list).
     init(state: MessageBodyAttachmentsState, attachmentIDToOpen: Binding<ID?>) {
         self.state = state
         self._attachmentIDToOpen = attachmentIDToOpen
+    }
+
+    init(attachments: [AttachmentDisplayModel], attachmentIDToOpen: Binding<ID?>) {
+        self.init(state: .state(attachments: attachments), attachmentIDToOpen: attachmentIDToOpen)
     }
 
     var body: some View {
@@ -168,7 +173,7 @@ private extension AttachmentDisplayModel {
 #Preview {
     VStack {
         MessageBodyAttachmentsView(
-            state: .init(attachments: .previewData, listState: .long(isAttachmentsListOpen: true)),
+            attachments: .previewData,
             attachmentIDToOpen: .constant(nil)
         )
         Spacer()

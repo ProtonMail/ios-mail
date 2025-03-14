@@ -23,7 +23,7 @@ import XCTest
 class MessageBodyAttachmentsViewSnapshotTests: BaseTestCase {
 
     func testShortAttachmentsList() {
-        let sut = makeSut(state: .state(attachments: Array([AttachmentDisplayModel].previewData.prefix(3))))
+        let sut = makeSUT(state: .state(attachments: Array([AttachmentDisplayModel].previewData.prefix(3))))
         assertSnapshotsOnIPhoneX(of: sut, named: "short_attachments_list")
     }
 
@@ -31,7 +31,7 @@ class MessageBodyAttachmentsViewSnapshotTests: BaseTestCase {
         let state = MessageBodyAttachmentsState
             .state(attachments: .previewData)
 
-        let sut = makeSut(state: state)
+        let sut = makeSUT(state: state)
         assertSnapshotsOnIPhoneX(of: sut, named: "long_attachments_list_collapsed")
     }
 
@@ -40,13 +40,13 @@ class MessageBodyAttachmentsViewSnapshotTests: BaseTestCase {
             .state(attachments: .previewData)
             .copy(\.listState, to: .long(isAttachmentsListOpen: true))
 
-        let sut = makeSut(state: state)
+        let sut = makeSUT(state: state)
         assertSnapshotsOnIPhoneX(of: sut, named: "long_attachments_list_expanded")
     }
 
     // MARK: - Private
 
-    private func makeSut(state: MessageBodyAttachmentsState) -> MessageBodyAttachmentsView {
+    private func makeSUT(state: MessageBodyAttachmentsState) -> MessageBodyAttachmentsView {
         .init(state: state, attachmentIDToOpen: .constant(nil))
     }
 
