@@ -338,7 +338,6 @@ struct MessageDetailsUIModel {
     let labels: [LabelUIModel]
     let other: [MessageDetail.Other]
     let attachments: [AttachmentDisplayModel]
-    let banners: [MessageBanner]
 }
 
 enum MessageDetail {
@@ -429,8 +428,7 @@ enum MessageDetailsPreviewProvider {
             location: location?.model,
             labels: labels,
             other: [.starred, .pinned], 
-            attachments: .previewData,
-            banners: []
+            attachments: .previewData
         )
     }
 

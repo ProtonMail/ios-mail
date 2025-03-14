@@ -81,9 +81,7 @@ struct ExpandedMessageCell: View {
                         }
                     }
                 )
-                if !uiModel.messageDetails.banners.isEmpty {
-                    MessageBannersView(types: OrderedSet(uiModel.messageDetails.banners), timer: Timer.self)
-                }
+                MessageBannersView(types: OrderedSet([]), timer: Timer.self)
                 MessageBodyAttachmentsView(
                     state: .state(attachments: uiModel.messageDetails.attachments),
                     attachmentIDToOpen: $attachmentIDToOpen
