@@ -3,6 +3,7 @@ opt_out_usage
 default_platform(:ios)
 
 APP_IDENTIFIER = "me.proton.mail.ios"
+NOTIFICATION_EXTENSION_IDENTIFIER = "me.proton.mail.ios.notification-service"
 DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
 DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
 API_KEY_DURATION = 20 * 60 # 20 mins
@@ -59,6 +60,7 @@ platform :ios do
   def get_xcode_profile(api_key)
     ids = [
       APP_IDENTIFIER,
+      NOTIFICATION_EXTENSION_IDENTIFIER
     ]
 
     ids.each do |id|
