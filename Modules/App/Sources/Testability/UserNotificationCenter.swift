@@ -20,7 +20,12 @@ import UserNotifications
 protocol UserNotificationCenter: AnyObject {
     var delegate: UNUserNotificationCenterDelegate? { get set }
 
+    func authorizationStatus() async -> UNAuthorizationStatus
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
 }
 
-extension UNUserNotificationCenter: UserNotificationCenter {}
+extension UNUserNotificationCenter: UserNotificationCenter {
+    func authorizationStatus() async -> UNAuthorizationStatus {
+        await notificationSettings().authorizationStatus
+    }
+}

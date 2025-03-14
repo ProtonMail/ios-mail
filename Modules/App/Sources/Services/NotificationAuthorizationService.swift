@@ -28,24 +28,13 @@ protocol RemoteNotificationRegistrar {
 
 struct NotificationAuthorizationService: ApplicationServiceSetUp {
     private let remoteNotificationRegistrar: RemoteNotificationRegistrar
-    private let userNotificationCenter: UserNotificationCenter
 
-    init(
-        remoteNotificationRegistrar: RemoteNotificationRegistrar,
-        userNotificationCenter: UserNotificationCenter = UNUserNotificationCenter.current()
-    ) {
+    init(remoteNotificationRegistrar: RemoteNotificationRegistrar) {
         self.remoteNotificationRegistrar = remoteNotificationRegistrar
-        self.userNotificationCenter = userNotificationCenter
     }
 
     func setUpServiceAsync() async {
-        do {
-            if try await userNotificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) {
-                await remoteNotificationRegistrar.registerForRemoteNotifications()
-            }
-        } catch {
-            AppLogger.log(error: error, category: .notifications)
-        }
+        await remoteNotificationRegistrar.registerForRemoteNotifications()
     }
 
     func setUpService() {

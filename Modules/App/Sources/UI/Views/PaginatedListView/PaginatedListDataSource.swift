@@ -92,11 +92,13 @@ extension PaginatedListDataSource {
         var isLastPage: Bool = false
 
         var viewState: PaginatedListViewState {
-            guard !isFetchingNextPage else {
-                return currentPage == 0 ? .fetchingInitialPage : .data(isLastPage: isLastPage)
+            let isFetchingFirstPage = isFetchingNextPage && currentPage == 0            
+            
+            guard !isFetchingFirstPage else {
+                return .fetchingInitialPage
             }
 
-            return items.isEmpty ? .empty : .data(isLastPage: isLastPage)
+            return .data(items.isEmpty ? .placeholder : .items(isLastPage: isLastPage))
         }
     }
 }

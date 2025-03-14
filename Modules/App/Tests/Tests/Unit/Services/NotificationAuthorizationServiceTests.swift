@@ -22,34 +22,17 @@ import Testing
 struct NotificationAuthorizationServiceTests {
     private var sut: NotificationAuthorizationService!
     private var remoteNotificationRegistrar: RemoteNotificationRegistrarSpy!
-    private var userNotificationCenter: UserNotificationCenterSpy!
 
     init() {
         remoteNotificationRegistrar = .init()
-        userNotificationCenter = .init()
-        sut = .init(remoteNotificationRegistrar: remoteNotificationRegistrar, userNotificationCenter: userNotificationCenter)
+        sut = .init(remoteNotificationRegistrar: remoteNotificationRegistrar)
     }
 
-    @Test func onAppLaunch_requestsNotificationAuthorization() async throws {
-        await sut.setUpServiceAsync()
-
-        #expect(userNotificationCenter.requestAuthorizationInvocations == [[.alert, .badge, .sound]])
-    }
-
-    @Test func onAppLaunch_ifNotificationsAuthorized_registersForRemoteNotifications() async throws {
-        userNotificationCenter.stubbedAuthorizationResult = true
-
+    @Test
+    func onAppLaunch_registersForRemoteNotifications() async {
         await sut.setUpServiceAsync()
 
         #expect(await remoteNotificationRegistrar.isRegisteredForRemoteNotifications)
-    }
-
-    @Test func onAppLaunch_ifNotificationsNotAuthorized_doesNotRegisterForRemoteNotifications() async throws {
-        userNotificationCenter.stubbedAuthorizationResult = false
-
-        await sut.setUpServiceAsync()
-
-        #expect(await !remoteNotificationRegistrar.isRegisteredForRemoteNotifications)
     }
 }
 

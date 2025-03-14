@@ -18,6 +18,7 @@
 @testable import InboxComposer
 import InboxCoreUI
 import InboxTesting
+import proton_app_uniffi
 import XCTest
 
 final class FilePickerItemHandlerTests: BaseTestCase {
@@ -47,6 +48,32 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         fileManager = nil
         tempDirectory = nil
         sut = nil
+    }
+
+    func testAddSelectedFiles_whenNoError_itShouldAddFilesToDraft() async throws {
+        let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
+        let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
+
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+
+        let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
+        let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
+    }
+
+    func testAddSelectedFiles_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems() async throws {
+        let error = DraftAttachmentError.reason(DraftAttachmentErrorReason.attachmentTooLarge)
+        mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(error)), ("file2.txt", .ok)]
+        let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
+        let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
+
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+
+        let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
+        let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
     }
 
     func testAddSelectedFiles_whenThereIsAnErrorInTheResults_itShouldShowErrorToast() async throws {

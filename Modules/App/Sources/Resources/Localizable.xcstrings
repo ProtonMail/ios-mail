@@ -1265,11 +1265,17 @@
         }
       }
     },
+    "Dismiss" : {
+      "comment" : "Alert dismiss button"
+    },
     "Display" : {
       "comment" : "Action to display embedded images."
     },
     "Display embedded images?" : {
       "comment" : "Banner asking if the user wants to display images embedded in the email."
+    },
+    "Don’t miss an email" : {
+      "comment" : "Title of the authorization prompt"
     },
     "Done" : {
       "comment" : "`Done` action title.",
@@ -1427,6 +1433,9 @@
           }
         }
       }
+    },
+    "Enable push notifications" : {
+      "comment" : "Button to authorizate notifications"
     },
     "Expires in %@" : {
       "comment" : "Message indicating when email is gonna be expired.",
@@ -2274,6 +2283,9 @@
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title."
     },
+    "Notifications help you keep on top of your inbox without checking the app." : {
+      "comment" : "Body of the authorization prompt"
+    },
     "Official" : {
       "comment" : "Proton official badge title.",
       "localizations" : {
@@ -3119,6 +3131,9 @@
         }
       }
     },
+    "Turn on notifications to know when you get a response to your email." : {
+      "comment" : "Body of the authorization prompt"
+    },
     "Unblock" : {
       "comment" : "Action to unblock the sender."
     },
@@ -3333,6 +3348,9 @@
           }
         }
       }
+    },
+    "Want to stay updated?" : {
+      "comment" : "Title of the authorization prompt"
     },
     "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation." : {
       "comment" : "Mailbox failed because an unexpected error."

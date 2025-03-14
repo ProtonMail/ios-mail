@@ -18,5 +18,6 @@
 struct AttachmentPickersState: Equatable {
     var isAttachmentSourcePickerPresented: Bool = false
     var isPhotosPickerPresented: Bool = false
+    var isCameraPresented: Bool = false
     var isFileImporterPresented: Bool = false
 }

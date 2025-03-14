@@ -16,25 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxKeychain
 import proton_app_uniffi
 import UserNotifications
 
 public struct TestableNotificationService {
-    typealias DecryptRemoteNotification = (EncryptedPushNotification) async throws -> DecryptedPushNotification
+    typealias DecryptRemoteNotification = (OsKeyChain, EncryptedPushNotification) async -> DecryptPushNotificationResult
 
     private let decryptRemoteNotification: DecryptRemoteNotification
+    private let keychain = KeychainSDKWrapper()
 
     public init() {
-        self.init {
-            let mailSession = try ProcessWideMailSessionCache.prepareMailSession()
-
-            switch await decryptPushNotification(session: mailSession, encrypted: $0) {
-            case .ok(let value):
-                return value
-            case .error(let error):
-                throw error
-            }
-        }
+        self.init(decryptRemoteNotification: decryptPushNotification)
     }
 
     init(decryptRemoteNotification: @escaping DecryptRemoteNotification) {
@@ -66,15 +59,15 @@ public struct TestableNotificationService {
             return nil
         }
 
-        return .init(authId: sessionId, encryptedMessage: encryptedMessage)
+        return .init(sessionId: sessionId, encryptedMessage: encryptedMessage)
     }
 
     private func replaceTitleAndBody(
         of mutableContent: UNMutableNotificationContent,
         byDecrypting encryptedPushNotification: EncryptedPushNotification
     ) async {
-        do {
-            let notificationData = try await decryptRemoteNotification(encryptedPushNotification)
+        switch await decryptRemoteNotification(keychain, encryptedPushNotification) {
+        case .ok(let notificationData):
             mutableContent.title = notificationData.sender.displayableName
             mutableContent.body = notificationData.body
 
@@ -84,7 +77,7 @@ public struct TestableNotificationService {
             case .openUrl(let payload):
                 mutableContent.userInfo["url"] = payload.url
             }
-        } catch {
+        case .error(let error):
             AppLogger.log(error: error, category: .notifications)
         }
     }
