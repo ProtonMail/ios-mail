@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "InboxSnapshotTesting", targets: ["InboxSnapshotTesting"])
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.0")
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.0")
     ],
     targets: [
         .target(

@@ -36,12 +36,9 @@ extension MessageScroller: @unchecked @retroactive Sendable {}
 extension NewDraftResult: @unchecked @retroactive Sendable {}
 extension NewMailboxResult: @unchecked @retroactive Sendable {}
 extension NewInboxMailboxResult: @unchecked @retroactive Sendable {}
-extension PaginateConversationsForLabelResult: @unchecked @retroactive Sendable {}
-extension PaginateMessagesForLabelResult: @unchecked @retroactive Sendable {}
 extension ScrollConversationsForLabelResult: @unchecked @retroactive Sendable {}
 extension ScrollMessagesForLabelResult: @unchecked @retroactive Sendable {}
 extension StoredSession: @unchecked @retroactive Sendable {}
-extension UserSettings: @unchecked Sendable {}
 extension WatchHandle: @unchecked @retroactive Sendable {}
 extension WatchedMessages: @unchecked @retroactive Sendable {}
 extension WatchedConversations: @unchecked @retroactive Sendable {}

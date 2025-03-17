@@ -291,6 +291,9 @@
         }
       }
     },
+    "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs." : {
+      "comment" : "Information displayed under send error logs switch."
+    },
     "Account" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -319,6 +322,9 @@
           }
         }
       }
+    },
+    "Actual results" : {
+      "comment" : "Title of actual results text field."
     },
     "Add to contacts" : {
       "comment" : "Action title for adding email address to contacts in the address action sheet.",
@@ -692,6 +698,7 @@
     },
     "Bug report" : {
       "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1265,11 +1272,17 @@
         }
       }
     },
+    "Dismiss" : {
+      "comment" : "Alert dismiss button"
+    },
     "Display" : {
       "comment" : "Action to display embedded images."
     },
     "Display embedded images?" : {
       "comment" : "Banner asking if the user wants to display images embedded in the email."
+    },
+    "Don’t miss an email" : {
+      "comment" : "Title of the authorization prompt"
     },
     "Done" : {
       "comment" : "`Done` action title.",
@@ -1427,6 +1440,15 @@
           }
         }
       }
+    },
+    "Enable push notifications" : {
+      "comment" : "Button to authorizate notifications"
+    },
+    "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
+      "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."
+    },
+    "Expected results" : {
+      "comment" : "Title of expected results text field."
     },
     "Expires in %@" : {
       "comment" : "Message indicating when email is gonna be expired.",
@@ -2274,6 +2296,9 @@
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title."
     },
+    "Notifications help you keep on top of your inbox without checking the app." : {
+      "comment" : "Body of the authorization prompt"
+    },
     "Official" : {
       "comment" : "Proton official badge title.",
       "localizations" : {
@@ -2538,6 +2563,9 @@
         }
       }
     },
+    "Report a problem" : {
+      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.\nReport a problem screen main title."
+    },
     "Report phishing" : {
       "comment" : "Action title for reporting phishing message in the action sheet.",
       "localizations" : {
@@ -2566,6 +2594,9 @@
           }
         }
       }
+    },
+    "Reports are not end-to-end encrypted, please do not send any sensitive information." : {
+      "comment" : "Report a problem screen, top information."
     },
     "Save as PDF" : {
       "comment" : "Action title for saving message as PDF file in the action sheet.",
@@ -2740,6 +2771,9 @@
           }
         }
       }
+    },
+    "Send error logs" : {
+      "comment" : "Title of row with toggle where a user can decide whether to send logs."
     },
     "Send operation can't be undone" : {
       "comment" : "Error in the context of undoing a sent message"
@@ -3014,6 +3048,12 @@
         }
       }
     },
+    "Steps to reproduce" : {
+      "comment" : "Title of steps to reproduce text field."
+    },
+    "Submit" : {
+      "comment" : "Title of the button used to submit the form."
+    },
     "Subscription" : {
       "comment" : "Subscription menu title in the settings.",
       "localizations" : {
@@ -3043,11 +3083,17 @@
         }
       }
     },
+    "Summary (required)" : {
+      "comment" : "Title of summary text field."
+    },
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."
     },
     "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." : {
       "comment" : "Banner warning the user that the email failed authentication checks and may be spoofed."
+    },
+    "This field must be more than 10 characters" : {
+      "comment" : "Summary field validation error"
     },
     "This message is from a mailing list." : {
       "comment" : "Banner indicating that the email is from a mailing list."
@@ -3118,6 +3164,9 @@
           }
         }
       }
+    },
+    "Turn on notifications to know when you get a response to your email." : {
+      "comment" : "Body of the authorization prompt"
     },
     "Unblock" : {
       "comment" : "Action to unblock the sender."
@@ -3333,6 +3382,9 @@
           }
         }
       }
+    },
+    "Want to stay updated?" : {
+      "comment" : "Title of the authorization prompt"
     },
     "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation." : {
       "comment" : "Mailbox failed because an unexpected error."

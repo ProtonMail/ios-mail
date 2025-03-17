@@ -92,7 +92,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
         MARKETING_VERSION: 0.2.0
-        CURRENT_PROJECT_VERSION: 65
+        CURRENT_PROJECT_VERSION: 1
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_EMIT_LOC_STRINGS: YES
@@ -124,6 +124,7 @@ targets:
               - protonmailET
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
+        NSCameraUsageDescription: "{{Placeholder}}"
         NSContactsUsageDescription: "{{Placeholder}}"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
@@ -214,7 +215,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
         PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
-        CURRENT_PROJECT_VERSION: 65
+        CURRENT_PROJECT_VERSION: 1
       configs:
         Release:
           CODE_SIGN_STYLE: Manual

@@ -102,11 +102,11 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError()
     }
 
-    func isNetworkConnected() -> Bool {
+    func getUnsentMessagesIdsInQueue(userId: String) async -> MailSessionGetUnsentMessagesIdsInQueueResult {
         fatalError()
     }
-    
-    func getUnsentMessagesIdsInQueue(userId: String) async  -> MailSessionGetUnsentMessagesIdsInQueueResult {
+
+    func isNetworkConnected() -> Bool {
         fatalError()
     }
 

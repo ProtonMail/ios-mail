@@ -31,28 +31,28 @@ public final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
         self.keychain = Keychain(service: Bundle.defaultIdentifier, accessGroup: AppGroup.mail)
     }
 
-    public func store(key: String) throws {
-        AppLogger.logTemporarily(message: "KeychainSDKWrapper.store(key:)", category: .rustLibrary)
+    public func store(kind: OsKeyChainEntryKind, key: String) throws {
+        AppLogger.logTemporarily(message: "Storing \(kind) in Keychain", category: .rustLibrary)
         do {
-            try keychain.setOrError(key, forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)
+            try keychain.setOrError(key, forKey: kind.key)
         } catch let error {
             throw osKeyChainError(error: error)
         }
     }
 
-    public func delete() throws {
-        AppLogger.logTemporarily(message: "KeychainSDKWrapper.delete", category: .rustLibrary)
+    public func delete(kind: OsKeyChainEntryKind) throws {
+        AppLogger.logTemporarily(message: "Deleting \(kind) from Keychain", category: .rustLibrary)
         do {
-            try keychain.removeOrError(forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)
+            try keychain.removeOrError(forKey: kind.key)
         } catch let error {
             throw osKeyChainError(error: error)
         }
     }
 
-    public func get() throws -> String? {
-        AppLogger.logTemporarily(message: "KeychainSDKWrapper.get", category: .rustLibrary)
+    public func load(kind: OsKeyChainEntryKind) throws -> String? {
+        AppLogger.logTemporarily(message: "Loading \(kind) from Keychain", category: .rustLibrary)
         do {
-            return try keychain.stringOrError(forKey: KeychainSDKWrapper.Keys.mailApplicationKey.rawValue)
+            return try keychain.stringOrError(forKey: kind.key)
         } catch let error {
             throw osKeyChainError(error: error)
         }
@@ -69,9 +69,11 @@ extension KeychainSDKWrapper {
     }
 }
 
-extension KeychainSDKWrapper {
-
-    private enum Keys: String {
-        case mailApplicationKey
+private extension OsKeyChainEntryKind {
+    var key: String {
+        switch self {
+        case .encryptionKey: "mailApplicationKey"
+        case .deviceKey: "deviceKey"
+        }
     }
 }

@@ -28,6 +28,7 @@ struct HomeScreen: View {
         case labelOrFolderCreation
         case settings
         case draft(ComposerModalParams)
+        case reportProblem
 
         // MARK: - Identifiable
 
@@ -37,6 +38,7 @@ struct HomeScreen: View {
             case .labelOrFolderCreation: "labelOrFolderCreation"
             case .settings: "settings"
             case .draft: "draft"
+            case .reportProblem: "reportProblem"
             }
         }
     }
@@ -46,6 +48,7 @@ struct HomeScreen: View {
     @StateObject private var appRoute: AppRouteState
     @State private var modalState: ModalState?
     @State private var draftPresenter: DraftPresenter
+    @State private var isNotificationPromptPresented = false
     @StateObject private var sendResultCoordinator: SendResultCoordinator
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @ObservedObject private var appContext: AppContext
@@ -55,6 +58,7 @@ struct HomeScreen: View {
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let userDefaults: UserDefaults
     private let modalFactory: HomeScreenModalFactory
+    private let notificationAuthorizationStore: NotificationAuthorizationStore
 
     @State var presentSignOutDialog = false
 
@@ -80,6 +84,7 @@ struct HomeScreen: View {
         )
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, toastStateStore: toastStateStore)
+        notificationAuthorizationStore = .init(userDefaults: userDefaults)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -91,6 +96,7 @@ struct HomeScreen: View {
             MailboxScreen(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
+                notificationAuthorizationStore: notificationAuthorizationStore,
                 userSession: userSession,
                 userDefaults: userDefaults,
                 draftPresenter: draftPresenter,
@@ -106,7 +112,7 @@ struct HomeScreen: View {
                 case .other(let otherItem):
                     switch otherItem.type {
                     case .bugReport:
-                        toastStateStore.present(toast: .comingSoon)
+                        modalState = .reportProblem
                     case .contacts:
                         modalState = .contacts
                     case .createFolder, .createLabel:
@@ -137,6 +143,12 @@ struct HomeScreen: View {
         .onReceive(draftPresenter.draftToPresent) { modalState = modalStateFor(draftToPresent: $0) }
         .onReceive(sendResultCoordinator.presenter.toastAction, perform: handleSendResultToastAction)
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
+        .sheet(isPresented: $isNotificationPromptPresented) {
+            NotificationAuthorizationPrompt(
+                trigger: .messageSent,
+                userDidRespond: userDidRespondToAuthorizationRequest
+            )
+        }
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
@@ -148,6 +160,7 @@ struct HomeScreen: View {
                 draftToPresent: draftToPresent,
                 onSendingEvent: { draftId in
                     sendResultCoordinator.presenter.presentResultInfo(.init(messageId: draftId, type: .sending))
+                    requestNotificationAuthorizationIfApplicable()
                 }
             )
         )
@@ -157,6 +170,21 @@ struct HomeScreen: View {
         switch action {
         case .present(let toast): toastStateStore.present(toast: toast)
         case .dismiss(let toast): toastStateStore.dismiss(toast: toast)
+        }
+    }
+
+    private func requestNotificationAuthorizationIfApplicable() {
+        Task {
+            isNotificationPromptPresented = await notificationAuthorizationStore.shouldRequestAuthorization(
+                trigger: .messageSent
+            )
+        }
+    }
+
+    private func userDidRespondToAuthorizationRequest(accepted: Bool) {
+        Task {
+            await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
+            isNotificationPromptPresented = false
         }
     }
 
@@ -171,6 +199,7 @@ struct HomeScreen: View {
     private func handleDeepLink(_ deepLink: URL) {
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
             modalState = nil
+            appUIStateStore.toggleSidebar(isOpen: false)
             appRoute.updateRoute(to: route)
         }
     }

@@ -120,26 +120,16 @@ struct OnboardingScreen: View {
     }
 
     private var actionButton: some View {
-        Button(
-            action: {
-                if !state.hasNextPage {
-                    dismiss()
-                }
-
-                state = state
-                    .copy(\.selectedPageIndex, to: min(state.selectedPageIndex + 1, state.maxPageIndex))
-            },
-            label: {
-                Text(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(DS.Color.Text.inverted)
-                    .frame(height: 44)
-                    .frame(maxWidth: .infinity)
-                    .background(DS.Color.InteractionBrand.norm, in: RoundedRectangle(cornerRadius: DS.Radius.huge))
-                    .padding(.horizontal, DS.Spacing.large)
+        Button(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized) {
+            if !state.hasNextPage {
+                dismiss()
             }
-        )
+            
+            state = state
+                .copy(\.selectedPageIndex, to: min(state.selectedPageIndex + 1, state.maxPageIndex))
+        }
+        .buttonStyle(BigButtonStyle())
+        .padding(.horizontal, DS.Spacing.large)
         .accessibilityIdentifier(OnboardingScreenIdentifiers.actionButton)
     }
 

@@ -53,6 +53,8 @@ struct HomeScreenModalFactory {
             makeComposerScreen(draftToPresent)
         case .settings:
             makeSettingsScreen()
+        case .reportProblem:
+            ReportProblemScreen()
         }
     }
 }

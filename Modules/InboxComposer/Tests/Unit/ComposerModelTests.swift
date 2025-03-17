@@ -28,6 +28,7 @@ final class ComposerModelTests: XCTestCase {
     private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
     private var testPhotosItemsHandler: PhotosPickerItemHandler!
+    private var testCameraImageHandler: CameraImageHandler!
     private var testFilesItemsHandler: FilePickerItemHandler!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
@@ -46,6 +47,7 @@ final class ComposerModelTests: XCTestCase {
             ])
         )
         self.testPhotosItemsHandler = .init(toastStateStore: .init(initialState: .initial))
+        self.testCameraImageHandler = .init(toastStateStore: .init(initialState: .initial))
         self.testFilesItemsHandler = .init(toastStateStore: .init(initialState: .initial))
         self.cancellables = []
     }
@@ -54,6 +56,8 @@ final class ComposerModelTests: XCTestCase {
         super.tearDown()
         self.testContactProvider = nil
         self.testPhotosItemsHandler = nil
+        self.testCameraImageHandler = nil
+        self.testFilesItemsHandler = nil
         self.cancellables = nil
     }
 
@@ -67,6 +71,7 @@ final class ComposerModelTests: XCTestCase {
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
+            cameraImageHandler: testCameraImageHandler,
             fileItemsHandler: testFilesItemsHandler
         )
         XCTAssertEqual(sut.state.toRecipients, RecipientFieldState.initialState(group: .to))
@@ -344,6 +349,7 @@ private extension ComposerModelTests {
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
+            cameraImageHandler: testCameraImageHandler,
             fileItemsHandler: testFilesItemsHandler
         )
     }

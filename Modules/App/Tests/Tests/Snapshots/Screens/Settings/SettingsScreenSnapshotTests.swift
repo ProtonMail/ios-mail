@@ -18,6 +18,7 @@
 @testable import ProtonMail
 @testable import proton_app_uniffi
 import InboxDesignSystem
+import InboxSnapshotTesting
 import InboxTesting
 import SwiftUI
 import XCTest

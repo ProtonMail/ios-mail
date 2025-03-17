@@ -473,6 +473,82 @@ enum L10n {
         )
     }
 
+    enum Notifications {
+        static let title1 = LocalizedStringResource(
+            "Don’t miss an email",
+            comment: "Title of the authorization prompt"
+        )
+
+        static let title2 = LocalizedStringResource(
+            "Want to stay updated?",
+            comment: "Title of the authorization prompt"
+        )
+
+        static let body1 = LocalizedStringResource(
+            "Notifications help you keep on top of your inbox without checking the app.",
+            comment: "Body of the authorization prompt"
+        )
+
+        static let body2 = LocalizedStringResource(
+            "Turn on notifications to know when you get a response to your email.", 
+            comment: "Body of the authorization prompt"
+        )
+
+        static let cta = LocalizedStringResource(
+            "Enable push notifications",
+            comment: "Button to authorizate notifications"
+        )
+
+        static let dismiss = LocalizedStringResource("Dismiss", comment: "Alert dismiss button")
+    }
+
+    enum ReportProblem {
+        static let mainTitle = LocalizedStringResource(
+            "Report a problem",
+            comment: "Report a problem screen main title."
+        )
+        static let generalInfo = LocalizedStringResource(
+            "Reports are not end-to-end encrypted, please do not send any sensitive information.",
+            comment: "Report a problem screen, top information."
+        )
+        static let summary = LocalizedStringResource(
+            "Summary (required)",
+            comment: "Title of summary text field."
+        )
+        static let summaryValidationError = LocalizedStringResource(
+            "This field must be more than 10 characters",
+            comment: "Summary field validation error"
+        )
+        static let expectedResults = LocalizedStringResource(
+            "Expected results",
+            comment: "Title of expected results text field."
+        )
+        static let stepsToReproduce = LocalizedStringResource(
+            "Steps to reproduce",
+            comment: "Title of steps to reproduce text field."
+        )
+        static let actualResults = LocalizedStringResource(
+            "Actual results",
+            comment: "Title of actual results text field."
+        )
+        static let sendErrorLogs = LocalizedStringResource(
+            "Send error logs",
+            comment: "Title of row with toggle where a user can decide whether to send logs."
+        )
+        static let submit = LocalizedStringResource(
+            "Submit",
+            comment: "Title of the button used to submit the form."
+        )
+        static let logsInfo = LocalizedStringResource(
+            "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs.",
+            comment: "Information displayed under send error logs switch."
+        )
+        static let logsAdditionalInfo = LocalizedStringResource(
+            "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully.",
+            comment: "Information displayed in the bottom of the screen when send error logs switch is dislabed."
+        )
+    }
+
     enum Search {
         static let searchPlaceholder = LocalizedStringResource(
             "Search",
@@ -554,7 +630,7 @@ enum L10n {
             comment: "Button in the sidebar menu that redirects a user to the contacts screen."
         )
         static let bugReport = LocalizedStringResource(
-            "Bug report",
+            "Report a problem",
             comment: "Button in the sidebar menu that redirects a user to the bug report screen."
         )
     }

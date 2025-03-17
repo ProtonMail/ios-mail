@@ -74,7 +74,7 @@ final class UserNotificationCenterDelegateTests {
 
         let options = await sut.userNotificationCenter(.current(), willPresent: notification)
 
-        #expect(options == [.banner, .sound])
+        #expect(options == [.banner, .list, .sound])
     }
 
     @Test

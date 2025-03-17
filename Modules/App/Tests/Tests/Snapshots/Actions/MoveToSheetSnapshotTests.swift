@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import InboxCoreUI
+import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 

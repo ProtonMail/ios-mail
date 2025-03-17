@@ -33,6 +33,7 @@ class MailboxScreenTests: BaseTestCase {
         sut = MailboxScreen(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: AppRouteState(route: .mailbox(selectedMailbox: .inbox)),
+            notificationAuthorizationStore: .init(userDefaults: userDefaults),
             userSession: .dummy,
             userDefaults: userDefaults,
             draftPresenter: .dummy,

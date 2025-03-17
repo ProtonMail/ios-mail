@@ -127,12 +127,14 @@ enum MainToolbarEvent {
 #Preview {
     let appUIStateStore = AppUIStateStore()
     let toastStateStore = ToastStateStore(initialState: .initial)
+    let userDefaults = UserDefaults(suiteName: "preview").unsafelyUnwrapped
 
-    return MailboxScreen(
+    MailboxScreen(
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
+        notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
-        userDefaults: UserDefaults(suiteName: "preview").unsafelyUnwrapped,
+        userDefaults: userDefaults,
         draftPresenter: .dummy,
         sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
     )

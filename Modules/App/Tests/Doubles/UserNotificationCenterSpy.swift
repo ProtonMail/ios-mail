@@ -22,8 +22,13 @@ import UserNotifications
 final class UserNotificationCenterSpy: UserNotificationCenter {
     var delegate: UNUserNotificationCenterDelegate?
     var stubbedAuthorizationResult = true
+    var stubbedAuthorizationStatus: UNAuthorizationStatus = .notDetermined
 
     private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
+
+    func authorizationStatus() async -> UNAuthorizationStatus {
+        stubbedAuthorizationStatus
+    }
 
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {
         requestAuthorizationInvocations.append(options)

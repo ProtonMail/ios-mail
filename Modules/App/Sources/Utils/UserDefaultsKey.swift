@@ -19,4 +19,5 @@ import SwiftUI
 
 enum UserDefaultsKey: String, CaseIterable {
     case showAlphaV1Onboarding
+    case notificationAuthorizationRequestDates
 }
