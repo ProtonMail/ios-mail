@@ -42,7 +42,7 @@ final class MessageBodyStateStoreTests: XCTestCase {
 
     @MainActor
     func testState_WhenOnLoadAndSucceeds_ItReturnsLoaded() async {
-        stubbedResult = .ok(DummyDecryptedMessage(noPointer: .init()))
+        stubbedResult = .ok(DecryptedMessageStub(noPointer: .init()))
         
         XCTAssertEqual(sut.state.expectationState, .fetching)
 
@@ -106,7 +106,7 @@ private enum ExpectationMessageBodyState: Equatable {
     case noConnection
 }
 
-final class DummyDecryptedMessage: DecryptedMessage, @unchecked Sendable {
+private final class DecryptedMessageStub: DecryptedMessage, @unchecked Sendable {
 
     override func bodyWithDefaults() async -> BodyOutput {
         .init(
