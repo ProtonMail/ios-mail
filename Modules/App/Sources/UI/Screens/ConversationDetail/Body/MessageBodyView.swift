@@ -50,7 +50,9 @@ struct MessageBodyView: View {
             if case .loaded(let body) = store.state, !body.banners.isEmpty {
                 MessageBannersView(types: OrderedSet(body.banners), timer: Timer.self)
             }
-            MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+            if !attachments.isEmpty {
+                MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+            }
             MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
         .onLoad {
