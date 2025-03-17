@@ -50,6 +50,10 @@ struct MessageBodyView: View {
             MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
             MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
-        .onLoad { store.handle(action: .onLoad) }
+        .onLoad {
+            Task {
+                await store.handle(action: .onLoad)
+            }
+        }
     }
 }

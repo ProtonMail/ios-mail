@@ -25,7 +25,7 @@ enum MessageBodyState {
     case noConnection
 }
 
-final class MessageBodyStateStore: ObservableObject {
+final class MessageBodyStateStore: ObservableObject, @unchecked Sendable {
     enum Action {
         case onLoad
     }
@@ -40,24 +40,22 @@ final class MessageBodyStateStore: ObservableObject {
     }
 
     @MainActor
-    func handle(action: Action) {
+    func handle(action: Action) async {
         switch action {
         case .onLoad:
-            loadMessageBody(forMessageID: messageID)
+            await loadMessageBody(forMessageID: messageID)
         }
     }
 
     @MainActor
-    private func loadMessageBody(forMessageID messageID: ID) {
-        Task {
-            switch await provider.messageBody(forMessageID: messageID) {
-            case .success(let body):
-                state = .loaded(body)
-            case .noConnectionError:
-                state = .noConnection
-            case .error(let error):
-                state = .error(error)
-            }
+    private func loadMessageBody(forMessageID messageID: ID) async {
+        switch await provider.messageBody(forMessageID: messageID) {
+        case .success(let body):
+            state = .loaded(body)
+        case .noConnectionError:
+            state = .noConnection
+        case .error(let error):
+            state = .error(error)
         }
     }
 }

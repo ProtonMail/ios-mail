@@ -46,12 +46,7 @@ final class MessageBodyStateStoreTests: XCTestCase {
         
         XCTAssertEqual(sut.state.expectationState, .fetching)
 
-        sut.handle(action: .onLoad)
-        
-        _ = await sut.$state.values.first(where: { state in
-            guard case .loaded = state else { return false }
-            return true
-        })
+        await sut.handle(action: .onLoad)
 
         XCTAssertEqual(sut.state.expectationState, .loaded(.init(
             banners: [],
@@ -63,12 +58,7 @@ final class MessageBodyStateStoreTests: XCTestCase {
     func testState_WhenOnLoadAndFailedDueToNetworkError_ItReturnsNoConnectionError() async {
         stubbedResult = .error(.other(.network))
         
-        sut.handle(action: .onLoad)
-        
-        _ = await sut.$state.values.first(where: { state in
-            guard case .noConnection = state else { return false }
-            return true
-        })
+        await sut.handle(action: .onLoad)
         
         XCTAssertEqual(sut.state.expectationState, .noConnection)
     }
@@ -77,12 +67,7 @@ final class MessageBodyStateStoreTests: XCTestCase {
     func testState_WhenOnLoadAndFailedDueToOtherReasonError_ItReturnsError() async {
         stubbedResult = .error(.other(.otherReason(.other("An error occurred"))))
         
-        sut.handle(action: .onLoad)
-        
-        _ = await sut.$state.values.first(where: { state in
-            guard case .error = state else { return false }
-            return true
-        })
+        await sut.handle(action: .onLoad)
         
         XCTAssertEqual(sut.state.expectationState, .error)
     }
