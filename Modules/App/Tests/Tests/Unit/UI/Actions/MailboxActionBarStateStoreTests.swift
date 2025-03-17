@@ -60,6 +60,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
+    @MainActor
     func testState_WhenMailboxItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
         stubbedAvailableMessageActions = .init(
@@ -80,6 +81,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         ))
     }
 
+    @MainActor
     func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .conversations)
         stubbedAvailableConversationActions = .init(
@@ -99,6 +101,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         ))
     }
 
+    @MainActor
     func testState_WhenMailboxItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
 
@@ -107,6 +110,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
     }
 
+    @MainActor
     func testState_WhenMoveToActionIsSelectedAndThenMoveToSheetIsDismissed_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
 
@@ -124,6 +128,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertNil(sut.state.moveToSheetPresented)
     }
 
+    @MainActor
     func testState_WhenLabelAsActionIsSelectedAndThenLabelAsSheetIsDismissed_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .conversations)
         let ids: [ID] = [.init(value: 8)]
@@ -139,6 +144,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertNil(sut.state.labelAsSheetPresented)
     }
 
+    @MainActor
     func testState_WhenMoreActionIsSelected_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 9)]
@@ -159,6 +165,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         ))
     }
 
+    @MainActor
     func testState_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7)]
@@ -168,6 +175,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, type: .message))
     }
 
+    @MainActor
     func testState_WhenStarActionIsApplied_ItStarsCorrectMessages() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
@@ -177,6 +185,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
     }
 
+    @MainActor
     func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarsCorrectMessage() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
@@ -188,6 +197,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
     }
 
+    @MainActor
     func testState_WhenReadActionIsApplied_ItMarksMessageAsRead() {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
@@ -197,6 +207,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(readActionPerformerActionsSpy.markMessageAsReadInvoked, ids)
     }
 
+    @MainActor
     func testState_WhenUnreadActionIsApplied_ItMarksConversationAsUnread() {
         sut = makeSUT(viewMode: .conversations)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
@@ -206,6 +217,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(readActionPerformerActionsSpy.markConversationAsUnreadInvoked, ids)
     }
 
+    @MainActor
     func testAction_WhenDeleteActionIsApplied_ItDeletesMessage() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         sut = makeSUT(viewMode: .messages)
@@ -221,6 +233,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
     }
 
+    @MainActor
     func testAction_WhenMoveToInboxIsTapped_ItMovesMessage() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MoveToSystemFolderLocation.testInbox

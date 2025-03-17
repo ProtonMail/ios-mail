@@ -35,6 +35,7 @@ class ReportProblemStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
+    @MainActor
     func testFormSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() {
         sut.handle(action: .textEntered(\.summary, text: "Hello"))
         sut.handle(action: .submit)
@@ -48,6 +49,7 @@ class ReportProblemStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.scrollTo, nil)
     }
 
+    @MainActor
     func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItStartsLoading() {
         let fields: [(WritableKeyPath<ReportProblemState, String>, String)] = [
             (\.summary, "summary"),

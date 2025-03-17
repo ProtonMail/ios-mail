@@ -59,6 +59,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
+    @MainActor
     func testState_WhenMailboxTypeIsMessageAndViewAppear_ItReturnsMoveToActions() {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
         let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .message))
@@ -69,6 +70,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, [])
     }
 
+    @MainActor
     func testState_WhenMailboxTypeIsConversationAndViewAppear_ItReturnsMoveToActions() {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
         let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .conversation))
@@ -79,6 +81,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, ids)
     }
 
+    @MainActor
     func testState_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [], type: .message))
 
@@ -87,6 +90,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         XCTAssertTrue(sut.state.createFolderLabelPresented)
     }
 
+    @MainActor
     func testAction_WhenCustomFolderIsTapped_ItMovesConversationToCustomFolder() {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 2)], type: .conversation))
 
@@ -99,6 +103,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
     }
 
+    @MainActor
     func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message))
 
