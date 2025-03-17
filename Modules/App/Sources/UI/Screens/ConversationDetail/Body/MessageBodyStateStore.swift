@@ -27,20 +27,22 @@ enum MessageBodyState {
 
 final class MessageBodyStateStore: ObservableObject {
     enum Action {
-        case onLoad(messageID: ID)
+        case onLoad
     }
 
     @Published var state: MessageBodyState = .fetching
+    private let messageID: ID
     private let provider: MessageBodyProvider
 
-    init(mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
+    init(messageID: ID, mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
+        self.messageID = messageID
         self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
     }
 
     @MainActor
     func handle(action: Action) {
         switch action {
-        case .onLoad(let messageID):
+        case .onLoad:
             loadMessageBody(forMessageID: messageID)
         }
     }

@@ -39,7 +39,9 @@ struct MessageBodyView: View {
         self.mailbox = mailbox
         self._attachmentIDToOpen = attachmentIDToOpen
         self.htmlLoaded = htmlLoaded
-        _store = .init(wrappedValue: .init(mailbox: mailbox, bodyWrapper: .productionInstance()))
+        _store = .init(
+            wrappedValue: .init(messageID: messageID, mailbox: mailbox, bodyWrapper: .productionInstance())
+        )
     }
     
     var body: some View {
@@ -48,6 +50,6 @@ struct MessageBodyView: View {
             MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
             MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
-        .onLoad { store.handle(action: .onLoad(messageID: messageID)) }
+        .onLoad { store.handle(action: .onLoad) }
     }
 }
