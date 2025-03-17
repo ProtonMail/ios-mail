@@ -63,12 +63,8 @@ struct ReportProblemScreen: View {
                         toolbarTrailingItem(state: state)
                     }
                     .onChange(of: store.state.scrollTo) { _, newValue in
-                        if let newValue {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                proxy.scrollTo(newValue, anchor: .bottom)
-                            } completion: {
-                                store.handle(action: .cleanUpScrollingState)
-                            }
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            proxy.scrollTo(newValue, anchor: .bottom)
                         }
                     }
                 }

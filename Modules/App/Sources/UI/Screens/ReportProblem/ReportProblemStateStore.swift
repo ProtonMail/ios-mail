@@ -25,16 +25,20 @@ class ReportProblemStateStore: ObservableObject, StateStore {
         self.state = state
     }
 
+    @MainActor
     func handle(action: ReportProblemAction) {
         switch action {
         case .textEntered(let keyPath, let text):
             state.summaryValidation = .ok
             state[keyPath: keyPath] = text
         case .sendLogsToggleSwitched(let isEnabled):
-            state.sendLogsEnabled = isEnabled
-            state.scrollTo = isEnabled ? nil : .bottomInfoText
-        case .cleanUpScrollingState:
-            state.scrollTo = nil
+            withAnimation(.easeInOut(duration: 0.2)) {
+                state.sendLogsEnabled = isEnabled
+            } completion: { [weak self] in
+                self?.handle(action: .scrollTo(element: isEnabled ? nil : .bottomInfoText))
+            }
+        case .scrollTo(let element):
+            state.scrollTo = element
         case .submit:
             if state.summary.count <= 10 {
                 state.summaryValidation = .summaryLessThen10Characters

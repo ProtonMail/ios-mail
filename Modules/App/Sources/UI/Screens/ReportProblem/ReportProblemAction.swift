@@ -18,6 +18,6 @@
 enum ReportProblemAction {
     case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
     case sendLogsToggleSwitched(isEnabled: Bool)
-    case cleanUpScrollingState
+    case scrollTo(element: ReportProblemScrollToElements?)
     case submit
 }
