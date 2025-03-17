@@ -30,7 +30,7 @@ final class MessageBodyStateStore: ObservableObject {
         case onLoad(messageID: ID)
     }
 
-    @MainActor @Published var state: MessageBodyState = .fetching
+    @Published var state: MessageBodyState = .fetching
     private let provider: MessageBodyProvider
 
     init(mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
