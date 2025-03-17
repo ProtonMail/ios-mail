@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import OrderedCollections
 import proton_app_uniffi
 import SwiftUI
 
@@ -46,7 +47,9 @@ struct MessageBodyView: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            MessageBannersView(types: [], timer: Timer.self)
+            if case .loaded(let body) = store.state, !body.banners.isEmpty {
+                MessageBannersView(types: OrderedSet(body.banners), timer: Timer.self)
+            }
             MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
             MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
