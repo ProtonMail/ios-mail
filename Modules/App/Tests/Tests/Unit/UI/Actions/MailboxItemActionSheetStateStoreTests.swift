@@ -65,7 +65,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         toastStateStore = nil
     }
 
-    @MainActor
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
         stubbedMessageActions = .init(
             replyActions: [.reply],
@@ -96,7 +95,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         ))
     }
 
-    @MainActor
     func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
         stubbedConversationActions = .init(
             conversationActions: [.labelAs],
@@ -126,7 +124,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         ))
     }
 
-    @MainActor
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
         let sut = sut(ids: [], type: .message, title: .notUsed)
 
@@ -135,7 +132,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(spiedNavigation, [.labelAs])
     }
 
-    @MainActor
     func testStarAction_WhenMessageIsStarred_ItStarsMessage() {
         test(
             action: .star,
@@ -145,7 +141,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testUnstarAction_WhenMessageIsUnstarred_ItUnstarsMessage() {
         test(
             action: .unstar,
@@ -155,7 +150,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testStarAction_WhenConversationIsStarred_ItStarsConversation() {
         test(
             action: .star,
@@ -165,7 +159,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testUnstarAction_WhenConversationIsUnstarred_ItUnstarsConversation() {
         test(
             action: .unstar,
@@ -175,7 +168,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testMarkAsReadAction_WhenMessageIsMarkedAsRead_ItMarksMessageAsRead() {
         test(
             action: .markRead,
@@ -185,7 +177,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testMarkAsReadAction_WhenConversationIsMarkedAsRead_ItMarksConversationAsRead() {
         test(
             action: .markRead,
@@ -195,7 +186,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testMarkAsUnreadAction_WhenMessageIsMarkedAsUnread_ItMarksMessageAsUnread() {
         test(
             action: .markUnread,
@@ -205,7 +195,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testMarkAsUnreadAction_WhenConversationIsMarkedAsUnread_ItMarksConversationAsUnread() {
         test(
             action: .markUnread,
@@ -215,7 +204,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
         testDeletionFlow(
             itemType: .conversation,
@@ -225,7 +213,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
@@ -235,7 +222,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testMoveToDeleteAction_WhenMeesageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
@@ -245,7 +231,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testAction_WhenMessageIsMovedOutOfSpam_ItMovesMessageOutOfSpam() throws {
         try testMoveToAction(
             itemType: .message,
@@ -254,7 +239,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         )
     }
 
-    @MainActor
     func testAction_WhenConversationIsMovedToInbox_ItMovesConversationToInbox() throws {
         try testMoveToAction(
             itemType: .conversation,
@@ -265,7 +249,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
     // MARK: - Private
 
-    @MainActor
     private func test(
         action: MailboxItemAction,
         itemType: MailboxItemType,
@@ -281,7 +264,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(spiedNavigation, [expectedNavigation])
     }
 
-    @MainActor
     private func testDeletionFlow(
         itemType: MailboxItemType,
         action: MailboxItemActionSheetAction,
@@ -303,7 +285,6 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
     }
 
-    @MainActor
     private func testMoveToAction(
         itemType: MailboxItemType,
         action: MoveToAction,

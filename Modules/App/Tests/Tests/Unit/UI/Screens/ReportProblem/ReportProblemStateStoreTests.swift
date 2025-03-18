@@ -108,7 +108,7 @@ class ReportProblemStateStoreTests: BaseTestCase {
                 includeLogs: false
             )
         ])
-        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Success")])
+        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Problem report sent")])
         XCTAssertEqual(dismissInvokeCount, 1)
     }
 
