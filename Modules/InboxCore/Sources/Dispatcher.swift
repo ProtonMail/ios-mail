@@ -27,7 +27,7 @@ public enum Dispatcher {
 
     public static var timeInSeconds: (Int) -> DispatchQueueTimeStride = DispatchQueueTimeStride.seconds
 
-    public static var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
+    public static nonisolated(unsafe) var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
     public static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }
 
