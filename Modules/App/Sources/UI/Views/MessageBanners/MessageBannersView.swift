@@ -24,6 +24,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MessageBannersView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     let types: OrderedSet<MessageBanner>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
     
@@ -47,24 +48,36 @@ struct MessageBannersView: View {
         let banners: [Banner] = types.compactMap { type in
             switch type {
             case .blockedSender:
+                let button = Banner.Button(title: L10n.MessageBanner.blockedSenderAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icCircleSlash,
                     message: L10n.MessageBanner.blockedSenderTitle,
-                    size: .small(.init(title: L10n.MessageBanner.blockedSenderAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             case .phishingAttempt:
+                let button = Banner.Button(title: L10n.MessageBanner.phishingAttemptAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icHook,
                     message: L10n.MessageBanner.phishingAttemptTitle,
-                    size: .large(.one(.init(title: L10n.MessageBanner.phishingAttemptAction, action: {}))),
+                    size: .large(.one(button)),
                     style: .error
                 )
             case .spam:
+                let button = Banner.Button(title: L10n.MessageBanner.spamAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icFire,
                     message: L10n.MessageBanner.spamTitle,
-                    size: .large(.one(.init(title: L10n.MessageBanner.spamAction, action: {}))),
+                    size: .large(.one(button)),
                     style: .error
                 )
             case .expiry(let timestamp):
@@ -84,38 +97,58 @@ struct MessageBannersView: View {
                     style: .regular
                 )
             case .unsubscribeNewsletter:
+                let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icEnvelopes,
                     message: L10n.MessageBanner.unsubscribeNewsletterTitle,
-                    size: .small(.init(title: L10n.MessageBanner.unsubscribeNewsletterAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             case .scheduledSend:
+                let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icClockPaperPlane,
                     message: L10n.MessageBanner.scheduledSendTitle(formattedTime: "tomorrow at 08:00"),
-                    size: .small(.init(title: L10n.MessageBanner.scheduledSendAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             case .snoozed:
+                let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icClock,
                     message: L10n.MessageBanner.snoozedTitle(formattedTime: "tomorrow at 09:00"),
-                    size: .small(.init(title: L10n.MessageBanner.snoozedAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             case .embeddedImages:
+                let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.embeddedImagesTitle,
-                    size: .small(.init(title: L10n.MessageBanner.embeddedImagesAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             case .remoteContent:
+                let button = Banner.Button(title: L10n.MessageBanner.remoteContentAction) {
+                    toastStateStore.present(toast: .comingSoon)
+                }
+                
                 return .init(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.remoteContentTitle,
-                    size: .small(.init(title: L10n.MessageBanner.remoteContentAction, action: {})),
+                    size: .small(button),
                     style: .regular
                 )
             }
