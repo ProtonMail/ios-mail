@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import proton_app_uniffi
 
 enum MessageBodyState {
@@ -29,6 +30,7 @@ enum MessageBodyState {
 final class MessageBodyStateStore: ObservableObject {
     enum Action {
         case onLoad
+        case displayEmbeddedImages
     }
 
     @Published var state: MessageBodyState = .fetching
@@ -44,6 +46,8 @@ final class MessageBodyStateStore: ObservableObject {
         switch action {
         case .onLoad:
             await loadMessageBody(forMessageID: messageID)
+        case .displayEmbeddedImages:
+            break
         }
     }
 
@@ -58,3 +62,5 @@ final class MessageBodyStateStore: ObservableObject {
         }
     }
 }
+
+extension TransformOpts: @retroactive Copying {}

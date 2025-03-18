@@ -81,6 +81,47 @@ final class MessageBodyStateStoreTests {
         
         #expect(sut.state == .error(expectedError))
     }
+    
+    // MARK: - `displayEmbeddedImages` action
+    
+    @Test
+    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+        let initialOptions = TransformOpts.init(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        stubbedResult = .ok(decryptedMessageSpy)
+
+        await sut.handle(action: .onLoad)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy</html>",
+                options: initialOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .displayEmbeddedImages)
+        
+        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+    }
 }
 
 extension MessageBodyState: @retroactive Equatable {
@@ -109,7 +150,6 @@ extension MessageBody: @retroactive Equatable {
             lhs.html.rawBody == rhs.html.rawBody &&
             lhs.html.options == rhs.html.options &&
             lhs.html.embeddedImageProvider === rhs.html.embeddedImageProvider
-        
         let areBannersEqual = lhs.banners == rhs.banners
         
         return areHTMLEqual && areBannersEqual
@@ -131,6 +171,9 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     }
     
     private(set) var bodyWithDefaultsCalls: Int = 0
+    private(set) var bodyWithOptionsCalls: [TransformOpts] = []
+    
+    // MARK: - DecryptedMessage
 
     override func bodyWithDefaults() async -> BodyOutput {
         bodyWithDefaultsCalls += 1
@@ -143,6 +186,21 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             remoteImagesDisabled: 0,
             embeddedImagesDisabled: 0,
             transformOpts: stubbedOptions,
+            bodyBanners: []
+        )
+    }
+    
+    override func body(opts: TransformOpts) async -> BodyOutput {
+        bodyWithOptionsCalls.append(opts)
+        
+        return .init(
+            body: "<html>dummy</html>",
+            hadBlockquote: true,
+            tagsStripped: 0,
+            utmStripped: 0,
+            remoteImagesDisabled: 0,
+            embeddedImagesDisabled: 0,
+            transformOpts: opts,
             bodyBanners: []
         )
     }
