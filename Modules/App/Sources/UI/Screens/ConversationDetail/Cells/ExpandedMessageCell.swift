@@ -142,7 +142,11 @@ private extension MessageBody {
     static func testInstance(rawBody: String) -> Self {
         .init(
             banners: [],
-            html: .init(rawBody: rawBody, embeddedImageProvider: DecryptedMessage(noPointer: .init()))
+            html: .init(
+                rawBody: rawBody,
+                options: .init(showBlockQuote: true, hideRemoteImages: .none, hideEmbeddedImages: .none),
+                embeddedImageProvider: DecryptedMessage(noPointer: .init())
+            )
         )
     }
 

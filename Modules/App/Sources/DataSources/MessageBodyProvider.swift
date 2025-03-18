@@ -21,6 +21,7 @@ import proton_app_uniffi
 struct MessageBody: Sendable {
     struct HTML: Sendable {
         let rawBody: String
+        let options: TransformOpts
         let embeddedImageProvider: EmbeddedImageProvider
     }
     
@@ -45,10 +46,12 @@ struct MessageBodyProvider {
         switch await _messageBody(messageID) {
         case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
-            let body = MessageBody(
-                banners: decryptedBody.bodyBanners,
-                html: .init(rawBody: decryptedBody.body, embeddedImageProvider: decryptedMessage)
+            let html = MessageBody.HTML(
+                rawBody: decryptedBody.body,
+                options: decryptedBody.transformOpts,
+                embeddedImageProvider: decryptedMessage
             )
+            let body = MessageBody(banners: decryptedBody.bodyBanners, html: html)
             return .success(body)
         case .error(.other(.network)):
             return .noConnectionError

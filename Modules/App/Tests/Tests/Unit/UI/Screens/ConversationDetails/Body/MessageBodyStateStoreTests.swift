@@ -32,22 +32,33 @@ final class MessageBodyStateStoreTests {
             bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedResult })
         )
     }
+    
+    // MARK: - `onLoad` action
 
     @Test
     func testState_WhenOnLoadAndSucceedsFetchingBodyWithDefaultOptions_ItReturnsLoadedWithCorrectMessageBody() async {
-        let decryptedMessageSpy = DecryptedMessageSpy(noPointer: .init())
+        let initialOptions = TransformOpts.init(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
         stubbedResult = .ok(decryptedMessageSpy)
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 0)
-        #expect(sut.state.expectationState == .fetching)
+        #expect(sut.state == .fetching)
 
         await sut.handle(action: .onLoad)
 
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state.expectationState == .loaded(.init(
+        #expect(sut.state == .loaded(.init(
             banners: [],
-            html: .init(rawBody: "<html>dummy</html>")
+            html: .init(
+                rawBody: "<html>dummy</html>",
+                options: initialOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
         )))
     }
     
@@ -57,63 +68,67 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .onLoad)
         
-        #expect(sut.state.expectationState == .noConnection)
+        #expect(sut.state == .noConnection)
     }
     
     @Test
     func testState_WhenOnLoadAndFailedDueToOtherReasonError_ItReturnsError() async {
-        stubbedResult = .error(.other(.otherReason(.other("An error occurred"))))
+        let expectedError: ActionError = .other(.otherReason(.other("An error occurred")))
+        
+        stubbedResult = .error(expectedError)
         
         await sut.handle(action: .onLoad)
         
-        #expect(sut.state.expectationState == .error)
+        #expect(sut.state == .error(expectedError))
     }
 }
 
-private extension MessageBodyState {
-    
-    var expectationState: ExpectationMessageBodyState {
-        switch self {
-        case .fetching:
-            return .fetching
-        case .loaded(let body):
-            let messageBody = ExpectationMessageBodyState.MessageBody(
-                banners: body.banners,
-                html: .init(rawBody: body.html.rawBody)
-            )
-            return .loaded(messageBody)
-        case .error:
-            return .error
-        case .noConnection:
-            return .noConnection
+extension MessageBodyState: @retroactive Equatable {
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.fetching, .fetching):
+            return true
+        case (.loaded(let lhsBody), .loaded(let rhsBody)):
+            return lhsBody == rhsBody
+        case (.error(let lhsError), .error(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+        case (.noConnection, .noConnection):
+            return true
+        default:
+            return false
         }
     }
-    
+
 }
 
-private enum ExpectationMessageBodyState: Equatable {
-    struct MessageBody: Equatable {
-        struct HTML: Equatable {
-            let rawBody: String
-        }
+extension MessageBody: @retroactive Equatable {
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        let areHTMLEqual =
+            lhs.html.rawBody == rhs.html.rawBody &&
+            lhs.html.options == rhs.html.options &&
+            lhs.html.embeddedImageProvider === rhs.html.embeddedImageProvider
         
-        let banners: [MessageBanner]
-        let html: HTML
+        let areBannersEqual = lhs.banners == rhs.banners
+        
+        return areHTMLEqual && areBannersEqual
     }
     
-    case fetching
-    case loaded(MessageBody)
-    case error
-    case noConnection
 }
 
 private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     
-    let defaultOptions: TransformOpts = .init(
-        showBlockQuote: true,
-        hideRemoteImages: .none,
-        hideEmbeddedImages: .none
-    )
+    private let stubbedOptions: TransformOpts
+    
+    init(stubbedOptions: TransformOpts) {
+        self.stubbedOptions = stubbedOptions
+        super.init(noPointer: .init())
+    }
+    
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    }
     
     private(set) var bodyWithDefaultsCalls: Int = 0
 
@@ -127,7 +142,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             utmStripped: 0,
             remoteImagesDisabled: 0,
             embeddedImagesDisabled: 0,
-            transformOpts: defaultOptions,
+            transformOpts: stubbedOptions,
             bodyBanners: []
         )
     }
