@@ -41,13 +41,17 @@ final class MessageBodyStateStoreTests: XCTestCase {
     }
 
     @MainActor
-    func testState_WhenOnLoadAndSucceeds_ItReturnsLoaded() async {
-        stubbedResult = .ok(DecryptedMessageStub(noPointer: .init()))
+    func testState_WhenOnLoadAndSucceedsFetchingBodyWithDefaultOptions_ItReturnsLoadedWithCorrectMessageBody() async {
+        let decryptedMessageSpy = DecryptedMessageSpy(noPointer: .init())
         
+        stubbedResult = .ok(decryptedMessageSpy)
+        
+        XCTAssertEqual(decryptedMessageSpy.bodyWithDefaultsCalls, 0)
         XCTAssertEqual(sut.state.expectationState, .fetching)
 
         await sut.handle(action: .onLoad)
 
+        XCTAssertEqual(decryptedMessageSpy.bodyWithDefaultsCalls, 1)
         XCTAssertEqual(sut.state.expectationState, .loaded(.init(
             banners: [],
             html: .init(rawBody: "<html>dummy</html>")
@@ -80,7 +84,11 @@ private extension MessageBodyState {
         case .fetching:
             return .fetching
         case .loaded(let body):
-            return .loaded(.init(banners: body.banners, html: .init(rawBody: body.html.rawBody)))
+            let messageBody = ExpectationMessageBodyState.MessageBody(
+                banners: body.banners,
+                html: .init(rawBody: body.html.rawBody)
+            )
+            return .loaded(messageBody)
         case .error:
             return .error
         case .noConnection:
@@ -106,21 +114,27 @@ private enum ExpectationMessageBodyState: Equatable {
     case noConnection
 }
 
-private final class DecryptedMessageStub: DecryptedMessage, @unchecked Sendable {
+private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
+    
+    let defaultOptions: TransformOpts = .init(
+        showBlockQuote: true,
+        hideRemoteImages: .none,
+        hideEmbeddedImages: .none
+    )
+    
+    private(set) var bodyWithDefaultsCalls: Int = 0
 
     override func bodyWithDefaults() async -> BodyOutput {
-        .init(
+        bodyWithDefaultsCalls += 1
+        
+        return .init(
             body: "<html>dummy</html>",
             hadBlockquote: true,
             tagsStripped: 0,
             utmStripped: 0,
             remoteImagesDisabled: 0,
             embeddedImagesDisabled: 0,
-            transformOpts: .init(
-                showBlockQuote: false,
-                hideRemoteImages: .none,
-                hideEmbeddedImages: .none
-            ),
+            transformOpts: defaultOptions,
             bodyBanners: []
         )
     }
