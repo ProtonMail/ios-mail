@@ -67,6 +67,16 @@ public struct Toast: Hashable {
             case title(String)
         }
     }
+
+    public func duration(_ newDuration: TimeInterval) -> Self {
+        .init(
+            title: title,
+            message: message,
+            button: button,
+            style: style,
+            duration: newDuration
+        )
+    }
 }
 
 public extension Toast {
@@ -127,4 +137,5 @@ extension Toast.Style {
 
 public extension TimeInterval {
     static let toastDefaultDuration: TimeInterval = 1.5
+    static let toastMediumDuration: TimeInterval = 3.0
 }

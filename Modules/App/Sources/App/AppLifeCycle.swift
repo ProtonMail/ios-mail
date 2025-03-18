@@ -72,6 +72,7 @@ extension AppLifeCycle {
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+        let legacyMigrationService = LegacyMigrationService.shared
         let recurringBackgroundTaskService = RecurringBackgroundTaskService()
         let notificationAuthorizationService = NotificationAuthorizationService(
             remoteNotificationRegistrar: UIApplication.shared
@@ -93,6 +94,7 @@ extension AppLifeCycle {
             setUpServices: [
                 testService,
                 appContext,
+                legacyMigrationService,
                 notificationAuthorizationService,
                 recurringBackgroundTaskService,
                 userNotificationCenterDelegate

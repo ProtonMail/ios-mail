@@ -205,6 +205,18 @@ enum L10n {
         )
     }
 
+    enum LegacyMigration {
+        static let migrationInProgress = LocalizedStringResource(
+            "Migration in progress",
+            comment: "Shown under activity progress indicator"
+        )
+
+        static let migrationFailed = LocalizedStringResource(
+            "Migration failed. Please sign in again and submit a bug report.",
+            comment: "Error toast of the welcome screen."
+        )
+    }
+
     enum Mailbox {
         enum EmptyState {
             static let message = LocalizedStringResource(

@@ -151,9 +151,9 @@ extension AppLogger {
     public enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appRoute = "AppRoute"
-        case thritySecondsBackgroundTask = "ThritySecondsBackgroundTask"
         case conversationDetail = "ConversationDetail"
         case composer = "Composer"
+        case legacyMigration = "LegacyMigration"
         case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
         case notifications = "Notifications"
@@ -161,6 +161,7 @@ extension AppLogger {
         case rustLibrary = "RustLibrary"
         case search = "Search"
         case send = "Send"
+        case thritySecondsBackgroundTask = "ThritySecondsBackgroundTask"
         case userSessions = "UserSessions"
     }
 

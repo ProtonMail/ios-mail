@@ -26,6 +26,7 @@ struct ProtonMailApp: App {
 
     // declaration of state objects
     private let appUIStateStore = AppUIStateStore()
+    private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
 
     var body: some Scene {
@@ -34,6 +35,7 @@ struct ProtonMailApp: App {
                 RootView(appContext: .shared)
                     .environment(\.mainWindowSize, proxy.size)
                     .environmentObject(appUIStateStore)
+                    .environmentObject(legacyMigrationStateStore)
                     .environmentObject(toastStateStore)
             }
         }
@@ -46,10 +48,15 @@ struct ProtonMailApp: App {
             }
         })
     }
+
+    init() {
+        legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
+    }
 }
 
 private struct RootView: View {
     @EnvironmentObject private var sceneDelegate: SceneDelegate
+    @EnvironmentObject private var legacyMigrationStateStore: LegacyMigrationStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
     // The route determines the screen that will be rendered
@@ -100,9 +107,7 @@ private struct RootView: View {
             Group {
                 switch appContext.sessionState {
                 case .noSession:
-                    appContext
-                        .accountAuthCoordinator
-                        .accountView()
+                    noSessionView(migrationState: legacyMigrationStateStore.state)
 
                 case .activeSession(let activeUserSession):
                     HomeScreen(
@@ -121,9 +126,33 @@ private struct RootView: View {
         .animation(.easeInOut, value: appContext.sessionState)
     }
 
+    @ViewBuilder
+    private func noSessionView(migrationState: LegacyMigrationStateStore.State) -> some View {
+        switch migrationState {
+        case .checkingIfMigrationIsNeeded:
+            EmptyView()
+        case .inProgress:
+            MigrationInProgressView()
+        case .willNotMigrate:
+            appContext.accountAuthCoordinator.accountView()
+        }
+    }
+
     private func submitBackgroundTask() {
         Task {
             await recurringBackgroundTaskScheduler.submit()
+        }
+    }
+}
+
+private struct MigrationInProgressView: View {
+    var body: some View {
+        ZStack(alignment: .center) {
+            Color.clear
+
+            ProgressView() {
+                Text(L10n.LegacyMigration.migrationInProgress)
+            }
         }
     }
 }

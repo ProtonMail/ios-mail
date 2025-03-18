@@ -1973,6 +1973,12 @@
         }
       }
     },
+    "Migration failed. Please sign in again and submit a bug report." : {
+      "comment" : "Error toast of the welcome screen."
+    },
+    "Migration in progress" : {
+      "comment" : "Shown under activity progress indicator"
+    },
     "Mobile app customization" : {
       "comment" : "Subtitle of the App settings item.",
       "localizations" : {
