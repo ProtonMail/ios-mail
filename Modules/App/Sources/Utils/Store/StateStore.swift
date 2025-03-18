@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-protocol StateStore: ObservableObject, Sendable {
+protocol StateStore: ObservableObject, Sendable where Action: Sendable {
     associatedtype State
     associatedtype Action
 
