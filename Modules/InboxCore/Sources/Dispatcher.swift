@@ -21,14 +21,14 @@ public enum Dispatcher {
     public typealias DispatchAfterType = (DispatchTime, DispatchWorkItem) -> Void
     public typealias Queue = DispatchQueue
 
-    public static var globalQueue: (DispatchQoS.QoSClass) -> DispatchQueueScheduler = {
+    public static nonisolated(unsafe) var globalQueue: (DispatchQoS.QoSClass) -> DispatchQueueScheduler = {
         .init(DispatchQueue.global(qos: $0))
     }
 
-    public static var timeInSeconds: (Int) -> DispatchQueueTimeStride = DispatchQueueTimeStride.seconds
+    public static nonisolated(unsafe) var timeInSeconds: (Int) -> DispatchQueueTimeStride = DispatchQueueTimeStride.seconds
 
     public static nonisolated(unsafe) var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
-    public static var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
+    public static nonisolated(unsafe) var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }
 
 public typealias DispatchQueueTimeStride = DispatchQueue.SchedulerTimeType.Stride
