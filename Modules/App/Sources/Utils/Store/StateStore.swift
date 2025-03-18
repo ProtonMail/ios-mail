@@ -17,18 +17,18 @@
 
 import SwiftUI
 
-protocol StateStore: ObservableObject {
+protocol StateStore: ObservableObject, Sendable {
     associatedtype State
     associatedtype Action
 
     var state: State { get set }
 
-    func handle(action: Action)
-    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value>
+    func handle(action: Action) async
+    func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value>
 }
 
 extension StateStore {
-    func binding<Value>(_ keyPath: WritableKeyPath<State, Value>) -> Binding<Value> {
+    func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value> {
         Binding(
             get: { self.state[keyPath: keyPath] },
             set: { self.state[keyPath: keyPath] = $0 }
