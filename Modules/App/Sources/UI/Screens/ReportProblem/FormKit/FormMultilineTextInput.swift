@@ -53,7 +53,6 @@ struct FormMultilineTextInput: View {
             VStack(alignment: .leading) {
                 Text(title)
                     .animation(.easeOut(duration: 0.2), value: isFocused)
-                    .fontWeight((isFocused || validation.isFailure) ? .semibold : .regular)
                     .foregroundStyle(validation.isFailure ? DS.Color.Notification.error : (isFocused ? DS.Color.Text.accent : DS.Color.Text.weak))
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $text)

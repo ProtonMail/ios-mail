@@ -16,16 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
 import XCTest
-
-import SnapshotTesting
 
 class ReportProblemScreenSnapshotTests: BaseTestCase {
 
     func testReportProblemScreenLayoutsCorrectly() {
         let sut = ReportProblemScreen()
+            .environmentObject(ToastStateStore(initialState: .initial))
         assertSnapshotsOnIPhoneX(of: sut)
     }
 
@@ -33,6 +33,7 @@ class ReportProblemScreenSnapshotTests: BaseTestCase {
         var state = ReportProblemState.initial
         state.summaryValidation = .failure("This field must be more than 10 characters.")
         let sut = ReportProblemScreen(state: state)
+            .environmentObject(ToastStateStore(initialState: .initial))
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
