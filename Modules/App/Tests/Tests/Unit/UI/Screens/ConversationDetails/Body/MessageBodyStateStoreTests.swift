@@ -16,64 +16,56 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import Combine
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-final class MessageBodyStateStoreTests: XCTestCase {
+final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedResult: GetMessageBodyResult!
     
-    override func setUp() {
-        super.setUp()
+    init() {
         sut = .init(
             messageID: .init(value: 1),
             mailbox: .dummy,
             bodyWrapper: .init(messageBody: { _, _ in self.stubbedResult })
         )
     }
-    
-    override func tearDown() {
-        super.tearDown()
-        sut = nil
-        stubbedResult = nil
-    }
 
-    @MainActor
+    @Test
     func testState_WhenOnLoadAndSucceedsFetchingBodyWithDefaultOptions_ItReturnsLoadedWithCorrectMessageBody() async {
         let decryptedMessageSpy = DecryptedMessageSpy(noPointer: .init())
         
         stubbedResult = .ok(decryptedMessageSpy)
         
-        XCTAssertEqual(decryptedMessageSpy.bodyWithDefaultsCalls, 0)
-        XCTAssertEqual(sut.state.expectationState, .fetching)
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 0)
+        #expect(sut.state.expectationState == .fetching)
 
         await sut.handle(action: .onLoad)
 
-        XCTAssertEqual(decryptedMessageSpy.bodyWithDefaultsCalls, 1)
-        XCTAssertEqual(sut.state.expectationState, .loaded(.init(
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(sut.state.expectationState == .loaded(.init(
             banners: [],
             html: .init(rawBody: "<html>dummy</html>")
         )))
     }
     
-    @MainActor
+    @Test
     func testState_WhenOnLoadAndFailedDueToNetworkError_ItReturnsNoConnectionError() async {
         stubbedResult = .error(.other(.network))
         
         await sut.handle(action: .onLoad)
         
-        XCTAssertEqual(sut.state.expectationState, .noConnection)
+        #expect(sut.state.expectationState == .noConnection)
     }
     
-    @MainActor
+    @Test
     func testState_WhenOnLoadAndFailedDueToOtherReasonError_ItReturnsError() async {
         stubbedResult = .error(.other(.otherReason(.other("An error occurred"))))
         
         await sut.handle(action: .onLoad)
         
-        XCTAssertEqual(sut.state.expectationState, .error)
+        #expect(sut.state.expectationState == .error)
     }
 }
 
