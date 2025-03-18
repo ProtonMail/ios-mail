@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ReportProblemAction {
-    case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
-    case sendLogsToggleSwitched(isEnabled: Bool)
-    case scrollTo(element: ReportProblemScrollToElements?)
-    case submit
+import UIKit
 
-    case reportSend
-    case reportFailedToSend
+protocol DeviceInfo {
+    var model: String { get }
+    var systemName: String { get }
+    var systemVersion: String { get }
 }
+
+extension UIDevice: DeviceInfo {}

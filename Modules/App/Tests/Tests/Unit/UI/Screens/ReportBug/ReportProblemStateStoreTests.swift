@@ -18,39 +18,59 @@
 @testable import ProtonMail
 import XCTest
 import InboxTesting
+import proton_app_uniffi
+import InboxCoreUI
 
 class ReportProblemStateStoreTests: BaseTestCase {
-
     var sut: ReportProblemStateStore!
+    var toastStateStore: ToastStateStore!
+    var dismissInvokeCount: Int!
+    private var reportProblemServiceSpy: ReportProblemServiceSpy!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
 
-        sut = ReportProblemStateStore(state: .initial)
+        reportProblemServiceSpy = .init()
+        toastStateStore = .init(initialState: .initial)
+        dismissInvokeCount = 0
+        sut = await ReportProblemStateStore(
+            state: .initial,
+            reportProblemService: reportProblemServiceSpy,
+            toastStateStore: toastStateStore,
+            infoDictionary: [
+                "CFBundleVersion": "127",
+                "CFBundleShortVersionString": "0.2.0",
+            ],
+            deviceInfo: DeviceInfoStub(),
+            dismiss: { self.dismissInvokeCount += 1 }
+        )
     }
 
     override func tearDown() {
+        reportProblemServiceSpy = nil
+        toastStateStore = nil
+        dismissInvokeCount = nil
         sut = nil
 
         super.tearDown()
     }
 
     @MainActor
-    func testFormSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() {
-        sut.handle(action: .textEntered(\.summary, text: "Hello"))
-        sut.handle(action: .submit)
+    func testFormSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() async {
+        await sut.handle(action: .textEntered(\.summary, text: "Hello"))
+        await sut.handle(action: .submit)
 
         XCTAssertEqual(sut.state.scrollTo, .topInfoText)
         XCTAssertEqual(sut.state.isLoading, false)
         XCTAssertEqual(sut.state.summaryValidation, .failure("This field must be more than 10 characters"))
 
-        sut.handle(action: .cleanUpScrollingState)
+        await sut.handle(action: .scrollTo(element: nil))
 
         XCTAssertEqual(sut.state.scrollTo, nil)
     }
 
     @MainActor
-    func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItStartsLoading() {
+    func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItSendsRequestWithSuccess() async {
         let fields: [(WritableKeyPath<ReportProblemState, String>, String)] = [
             (\.summary, "summary"),
             (\.expectedResults, "expected results"),
@@ -58,8 +78,8 @@ class ReportProblemStateStoreTests: BaseTestCase {
             (\.stepsToReproduce, "steps to reproduce")
         ]
 
-        fields.forEach { field, text in
-            sut.handle(action: .textEntered(field, text: "Hello \(text)!"))
+        await fields.asyncForEach { field, text in
+            await sut.handle(action: .textEntered(field, text: "Hello \(text)!"))
         }
 
         XCTAssertEqual(sut.state.summary, "Hello summary!")
@@ -67,13 +87,75 @@ class ReportProblemStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.actualResults, "Hello actual results!")
         XCTAssertEqual(sut.state.stepsToReproduce, "Hello steps to reproduce!")
 
-        sut.handle(action: .sendLogsToggleSwitched(isEnabled: false))
-        XCTAssertEqual(sut.state.scrollTo, .bottomInfoText)
-        sut.handle(action: .cleanUpScrollingState)
+        await sut.handle(action: .sendLogsToggleSwitched(isEnabled: false))
 
-        sut.handle(action: .submit)
+        XCTAssertEqual(sut.state.sendLogsEnabled, false)
 
-        XCTAssertEqual(sut.state.isLoading, true)
+        await sut.handle(action: .submit)
+        XCTAssertEqual(sut.state.isLoading, false)
+        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport, [
+            .init(
+                operatingSystem: "iOS - iPhone",
+                operatingSystemVersion: "18.4",
+                client: "iOS_Native",
+                clientVersion: "7.0.0 (127)",
+                clientType: .email,
+                title: "Proton Mail App bug report",
+                summary: "Hello summary!",
+                stepsToReproduce: "Hello steps to reproduce!",
+                expectedResult: "Hello expected results!",
+                actualResult: "Hello actual results!",
+                includeLogs: false
+            )
+        ])
+        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Success")])
+        XCTAssertEqual(dismissInvokeCount, 1)
     }
 
+    @MainActor
+    func testFormSubmission_WhenValidationSuccess_ItSendsRequestWithFailure() async {
+        reportProblemServiceSpy.failedToSend = true
+
+        await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
+        await sut.handle(action: .submit)
+        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
+        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Failure")])
+        XCTAssertEqual(dismissInvokeCount, 0)
+    }
+
+}
+
+private extension Sequence {
+    func asyncForEach(_ body: (Element) async -> Void) async {
+        for element in self {
+            await body(element)
+        }
+    }
+}
+
+private class ReportProblemServiceSpy: ReportProblemService {
+    var failedToSend = false
+    private(set) var invokedSendWithReport: [IssueReport] = []
+
+    func send(report: IssueReport) async throws {
+        invokedSendWithReport.append(report)
+
+        if failedToSend {
+            throw ProtonError.network
+        }
+    }
+}
+
+private class DeviceInfoStub: DeviceInfo {
+    var model: String {
+        "iPhone"
+    }
+
+    var systemName: String {
+        "iOS"
+    }
+
+    var systemVersion: String {
+        "18.4"
+    }
 }

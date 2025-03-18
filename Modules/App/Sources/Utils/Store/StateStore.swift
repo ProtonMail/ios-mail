@@ -34,4 +34,10 @@ extension StateStore {
             set: { self.state[keyPath: keyPath] = $0 }
         )
     }
+
+    func handle(action: Action) {
+        Task {
+            await handle(action: action)
+        }
+    }
 }

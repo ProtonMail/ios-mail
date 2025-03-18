@@ -15,18 +15,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import Combine
+import InboxCoreUI
+import InboxCore
+import SwiftUI
 
-class ReportProblemStateStore: ObservableObject, StateStore {
+final class ReportProblemStateStore: ObservableObject, StateStore, @unchecked Sendable {
     @Published var state: ReportProblemState
+    private let reportProblemService: ReportProblemService
+    private let toastStateStore: ToastStateStore
+    private let issueReportBuilder: IssueReportBuilder
+    private let infoDictionary: [String: Any]?
+    private let dismiss: () -> Void
 
-    init(state: ReportProblemState) {
+    @MainActor
+    init(
+        state: ReportProblemState,
+        reportProblemService: ReportProblemService,
+        toastStateStore: ToastStateStore,
+        infoDictionary: [String: Any]? = Bundle.main.infoDictionary,
+        deviceInfo: DeviceInfo = UIDevice.current,
+        dismiss: @escaping () -> Void
+    ) {
+
         self.state = state
+        self.reportProblemService = reportProblemService
+        self.toastStateStore = toastStateStore
+        self.issueReportBuilder = .init(infoDictionary: infoDictionary, deviceInfo: deviceInfo)
+        self.infoDictionary = infoDictionary
+        self.dismiss = dismiss
     }
 
     @MainActor
-    func handle(action: ReportProblemAction) {
+    func handle(action: ReportProblemAction) async {
         switch action {
         case .textEntered(let keyPath, let text):
             state.summaryValidation = .ok
@@ -35,7 +56,9 @@ class ReportProblemStateStore: ObservableObject, StateStore {
             withAnimation(.easeInOut(duration: 0.2)) {
                 state.sendLogsEnabled = isEnabled
             } completion: { [weak self] in
-                self?.handle(action: .scrollTo(element: isEnabled ? nil : .bottomInfoText))
+                Task {
+                    await self?.handle(action: .scrollTo(element: isEnabled ? nil : .bottomInfoText))
+                }
             }
         case .scrollTo(let element):
             state.scrollTo = element
@@ -45,13 +68,32 @@ class ReportProblemStateStore: ObservableObject, StateStore {
                 state.scrollTo = .topInfoText
             } else {
                 state.isLoading = true
-
-                // FIXME: - To remove
-                DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-                    self?.state.isLoading = false
+                do {
+                    try await reportProblemService.send(report: issueReport)
+                    await handle(action: .reportSend)
+                } catch {
+                    await handle(action: .reportFailedToSend)
                 }
+                state.isLoading = false
             }
+        case .reportSend:
+            toastStateStore.present(toast: .information(message: "Problem report sent"))
+            dismiss()
+        case .reportFailedToSend:
+            toastStateStore.present(toast: .information(message: "Failure"))
         }
+    }
+
+    private var issueReport: IssueReport {
+        issueReportBuilder.build(
+            with: .init(
+                summary: state.summary,
+                stepsToReproduce: state.stepsToReproduce,
+                expectedResults: state.expectedResults,
+                actualResults: state.actualResults,
+                includeLogs: state.sendLogsEnabled
+            )
+        )
     }
 }
 
@@ -62,3 +104,4 @@ private extension FormMultilineTextInput.ValidationStatus {
     }
 
 }
+

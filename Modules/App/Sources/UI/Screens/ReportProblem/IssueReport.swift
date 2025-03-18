@@ -15,12 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ReportProblemAction {
-    case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
-    case sendLogsToggleSwitched(isEnabled: Bool)
-    case scrollTo(element: ReportProblemScrollToElements?)
-    case submit
+// FIXME: - To remove when Rust SDK API is available
 
-    case reportSend
-    case reportFailedToSend
+import Foundation
+
+struct IssueReport: Equatable {
+    let operatingSystem: String
+    let operatingSystemVersion: String
+    let client: String
+    let clientVersion: String
+    let clientType: ClientType
+    let title: String
+    let summary: String
+    let stepsToReproduce: String
+    let expectedResult: String
+    let actualResult: String
+    let includeLogs: Bool
+}
+
+enum ClientType: Int {
+    case email = 1;
+}
+
+protocol ReportProblemService {
+    func send(report: IssueReport) async throws
+}
+
+class ReportProblemServiceImplementation: ReportProblemService {
+
+    func send(report: IssueReport) async throws {
+        try await Task.sleep(for: .seconds(5))
+    }
+
 }

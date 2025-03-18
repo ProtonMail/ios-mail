@@ -22,15 +22,27 @@ import SwiftUI
 struct ReportProblemScreen: View {
     @Environment(\.dismiss) var dismiss
     @FocusState private var isSummaryFocused: Bool
-    private let state: ReportProblemState
+    @EnvironmentObject private var toastStateStore: ToastStateStore
 
-    init(state: ReportProblemState = .initial) {
+    private let state: ReportProblemState
+    private let reportProblemService: ReportProblemService
+
+    init(
+        state: ReportProblemState = .initial,
+        reportProblemService: ReportProblemService = ReportProblemServiceImplementation()
+    ) {
         self.state = state
+        self.reportProblemService = reportProblemService
     }
 
     var body: some View {
         StoreView(
-            store: ReportProblemStateStore(state: state)
+            store: ReportProblemStateStore(
+                state: state,
+                reportProblemService: reportProblemService,
+                toastStateStore: toastStateStore,
+                dismiss: { dismiss.callAsFunction() }
+            )
         ) { state, store in
             NavigationStack {
                 ScrollViewReader { proxy in
