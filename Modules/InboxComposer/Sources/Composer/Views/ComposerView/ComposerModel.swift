@@ -253,24 +253,17 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func addAttachments(selectedPhotosItems items: Binding<[PhotosPickerItem]>) {
-        Task {
-            let photos = items.wrappedValue
-            items.wrappedValue = []
-            guard !photos.isEmpty else { return }
-
-            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos, onErrors: { errors in
-                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
-            })
-        }
+    func addAttachments(selectedPhotosItems items: [PhotosPickerItemTransferable]) async {
+        guard !items.isEmpty else { return }
+        await photosItemsHandler.addPickerPhotos(to: draft, photos: items, onErrors: { errors in
+            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+        })
     }
 
-    func addAttachments(filePickerResult: Result<[URL], any Error>) {
-        Task {
-            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, onErrors: { errors in
-                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
-            })
-        }
+    func addAttachments(filePickerResult: Result<[URL], any Error>) async {
+        await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, onErrors: { errors in
+            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+        })
     }
 
     func addAttachments(image: UIImage) {

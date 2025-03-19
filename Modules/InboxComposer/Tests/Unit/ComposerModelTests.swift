@@ -20,24 +20,27 @@ import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
 import InboxContacts
+import PhotosUI
 import proton_app_uniffi
-import struct SwiftUI.Color
+import SwiftUI
 import XCTest
 
-final class ComposerModelTests: XCTestCase {
+final class ComposerModelTests: BaseTestCase {
+    private var mockDraft: MockDraft!
     private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
     private var testPhotosItemsHandler: PhotosPickerItemHandler!
+    private var photosPickerTestsHelper: PhotosPickerItemHandlerTestsHelper!
     private var testCameraImageHandler: CameraImageHandler!
     private var testFilesItemsHandler: FilePickerItemHandler!
+    private var filePickerTestsHelper: FilePickerItemHandlerTestsHelper!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
     let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
     var cancellables: Set<AnyCancellable>!
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
         self.testDraftSavedToastCoordinator = .init(mailUSerSession: .init(noPointer: .init()), toastStoreState: .init(initialState: .initial))
         self.testContactProvider = ComposerContactProvider(
             protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: [
@@ -47,18 +50,25 @@ final class ComposerModelTests: XCTestCase {
             ])
         )
         self.testPhotosItemsHandler = .init()
+        self.photosPickerTestsHelper = try .init()
         self.testCameraImageHandler = .init()
         self.testFilesItemsHandler = .init()
+        self.filePickerTestsHelper = try .init()
+        self.mockDraft = .init()
+        self.mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = photosPickerTestsHelper.destinationFolder
         self.cancellables = []
+        try super.setUpWithError()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        self.testContactProvider = nil
-        self.testPhotosItemsHandler = nil
-        self.testCameraImageHandler = nil
-        self.testFilesItemsHandler = nil
-        self.cancellables = nil
+    override func tearDownWithError() throws {
+        try photosPickerTestsHelper.tearDown()
+        try filePickerTestsHelper.tearDown()
+        testContactProvider = nil
+        testPhotosItemsHandler = nil
+        testCameraImageHandler = nil
+        testFilesItemsHandler = nil
+        cancellables = nil
+        try super.tearDownWithError()
     }
 
     func testInit_whenNoStateIsPassed_itShouldReturnAnEmptyState() {
@@ -331,6 +341,56 @@ final class ComposerModelTests: XCTestCase {
         mockDraft.mockToRecipientList.callback?.onUpdate()
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
+    }
+
+    // MARK: addAttachments
+
+    @MainActor
+    func testAddAttachments_whenSelectingFromPhotos_itShouldAddAttachmentToDraft() async throws {
+        let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(selectedPhotosItems: [photo1])
+
+        let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("photo1.jpg")
+        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
+    }
+
+    @MainActor
+    func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
+        let draftAddResultError = DraftAttachmentError.reason(.attachmentTooLarge)
+        mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("photo1.jpg", .error(draftAddResultError))]
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
+        await sut.addAttachments(selectedPhotosItems: [photo1])
+
+        XCTAssertTrue(sut.alertState.isAlertPresented)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentError().title)
+    }
+
+    @MainActor
+    func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let file1 = try filePickerTestsHelper.prepareItem(fileName: "file1.txt", createFile: true)
+
+        await sut.addAttachments(filePickerResult: .success([file1]))
+
+        let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("file1.txt")
+        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
+    }
+
+    @MainActor
+    func testAddAttachments_whenSelectingFromFilesReturnedError_itShouldShowAlertError() async throws {
+        let draftAddResultError = DraftAttachmentError.reason(.tooManyAttachments)
+        mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(draftAddResultError))]
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        let file1 = try filePickerTestsHelper.prepareItem(fileName: "file1.txt", createFile: true)
+        await sut.addAttachments(filePickerResult: .success([file1]))
+
+        XCTAssertTrue(sut.alertState.isAlertPresented)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentError().title)
     }
 }
 

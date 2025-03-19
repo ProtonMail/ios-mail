@@ -33,7 +33,9 @@ private struct FileImporterModifier: ViewModifier {
 }
 
 extension View {
-    func fileImporter(isPresented: Binding<Bool>, onCompletion: @escaping (Result<[URL], any Error>) -> Void) -> some View {
-        modifier(FileImporterModifier(isPresented: isPresented, onCompletion: onCompletion))
+    func fileImporter(isPresented: Binding<Bool>, onCompletion: @escaping (Result<[URL], any Error>) async -> Void) -> some View {
+        modifier(FileImporterModifier(isPresented: isPresented, onCompletion: { result in
+            Task { await onCompletion(result) }
+        }))
     }
 }

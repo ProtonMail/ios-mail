@@ -142,7 +142,13 @@ struct ComposerView: View {
             .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
             .camera(isPresented: $model.pickersState.isCameraPresented, onPhotoTaken: model.addAttachments(image:))
             .fileImporter(isPresented: $model.pickersState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
-            .onChange(of: selectedPhotosItems, { model.addAttachments(selectedPhotosItems: $selectedPhotosItems) })
+            .onChange(of: selectedPhotosItems, {
+                Task {
+                    let photos = $selectedPhotosItems.wrappedValue
+                    $selectedPhotosItems.wrappedValue = []
+                    await model.addAttachments(selectedPhotosItems: photos)
+                }
+            })
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
                 toastStateStore.present(toast: newValue)
