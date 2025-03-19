@@ -48,17 +48,28 @@ struct MessageBodyView: View {
     var body: some View {
         VStack(spacing: .zero) {
             if case .loaded(let body) = store.state, !body.banners.isEmpty {
-                MessageBannersView(types: OrderedSet(body.banners), timer: Timer.self)
+                MessageBannersView(
+                    types: OrderedSet(body.banners),
+                    timer: Timer.self,
+                    action: { action in
+                        switch action {
+                        case .displayEmbeddedImages:
+                            handle(action: .displayEmbeddedImages)
+                        }
+                    }
+                )
             }
             if !attachments.isEmpty {
                 MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
             }
             MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
         }
-        .onLoad {
-            Task {
-                await store.handle(action: .onLoad)
-            }
+        .onLoad { handle(action: .onLoad) }
+    }
+    
+    private func handle(action: MessageBodyStateStore.Action) {
+        Task {
+            await store.handle(action: action)
         }
     }
 }

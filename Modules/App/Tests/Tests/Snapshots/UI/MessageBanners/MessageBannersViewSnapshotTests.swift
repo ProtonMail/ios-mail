@@ -47,7 +47,8 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
                 .unsubscribeNewsletter,
                 .embeddedImages
             ],
-            timer: Timer.self
+            timer: Timer.self,
+            action: { _ in }
         )
         
         assertSnapshotsOnIPhoneX(of: bannersView)
@@ -63,7 +64,8 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
                 .snoozed(timestamp: 1_740_238_200),
                 .remoteContent
             ],
-            timer: Timer.self
+            timer: Timer.self,
+            action: { _ in }
         )
         
         assertSnapshotsOnIPhoneX(of: bannersView)

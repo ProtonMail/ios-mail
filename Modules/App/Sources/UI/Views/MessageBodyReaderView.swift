@@ -26,7 +26,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
     let urlOpener: URLOpenerProtocol
     let htmlLoaded: () -> Void
 
-    func makeUIView(context: Context) -> WKWebView  {
+    func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
@@ -40,7 +40,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
-        webView.loadHTMLString(body.rawBody, baseURL: nil)
+        webView.loadHTMLString(body.rawBody)
 
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor
@@ -50,7 +50,13 @@ struct MessageBodyReaderView: UIViewRepresentable {
         return webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {}
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        updateUIView(uiView)
+    }
+    
+    func updateUIView(_ view: WKWebView) {
+        view.loadHTMLString(body.rawBody)
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -86,4 +92,12 @@ extension MessageBodyReaderView {
             return .cancel
         }
     }
+}
+
+private extension WKWebView {
+    
+    func loadHTMLString(_ string: String) {
+        loadHTMLString(string, baseURL: nil)
+    }
+    
 }

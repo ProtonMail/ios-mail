@@ -24,15 +24,21 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MessageBannersView: View {
+    enum Action {
+        case displayEmbeddedImages
+    }
+    
     @EnvironmentObject var toastStateStore: ToastStateStore
     let types: OrderedSet<MessageBanner>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
+    let action: (Action) -> Void
     
     @State private var currentDate: Date = DateEnvironment.currentDate()
 
-    init(types: OrderedSet<MessageBanner>, timer: Timer.Type) {
+    init(types: OrderedSet<MessageBanner>, timer: Timer.Type, action: @escaping (Action) -> Void) {
         self.types = types
         self.timerPublisher = timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        self.action = action
     }
     
     var body: some View {
@@ -131,7 +137,7 @@ struct MessageBannersView: View {
                 )
             case .embeddedImages:
                 let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.displayEmbeddedImages)
                 }
                 
                 return .init(

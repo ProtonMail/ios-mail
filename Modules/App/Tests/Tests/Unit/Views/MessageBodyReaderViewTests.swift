@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
+import SwiftUI
 import WebKit
+import XCTest
 
 class MessageBodyReaderViewTests: XCTestCase {
     var sut: MessageBodyReaderView!
@@ -30,7 +31,7 @@ class MessageBodyReaderViewTests: XCTestCase {
         sut = MessageBodyReaderView(
             bodyContentHeight: .constant(.zero),
             body: .init(
-                rawBody: .notUsed,
+                rawBody: "<html>dummy</html>",
                 options: .init(
                     showBlockQuote: true,
                     hideRemoteImages: .none,
@@ -62,6 +63,19 @@ class MessageBodyReaderViewTests: XCTestCase {
 
         XCTAssertEqual(result, .allow)
         XCTAssertTrue(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty)
+    }
+    
+    func test_WhenUpdateUIViewIsCalledByTheSystem_ItReloadsWebView() throws {
+        let webViewSpy = WKWebViewSpy()
+        
+        sut.updateUIView(webViewSpy)
+        
+        XCTAssertEqual(webViewSpy.loadHTMLStringCalls.count, 1)
+        
+        let arguments = try XCTUnwrap(webViewSpy.loadHTMLStringCalls.last)
+        
+        XCTAssertEqual(arguments.html, "<html>dummy</html>")
+        XCTAssertEqual(arguments.baseURL, nil)
     }
 
     private var protonURL: URL {
@@ -102,4 +116,16 @@ private class NavigationActionStub: WKNavigationAction {
     override var request: URLRequest {
         URLRequest(url: url)
     }
+}
+
+private class WKWebViewSpy: WKWebView {
+    
+    private(set) var loadHTMLStringCalls: [(html: String, baseURL: URL?)] = []
+    
+    override func loadHTMLString(_ string: String, baseURL: URL?) -> WKNavigation? {
+        loadHTMLStringCalls.append((string, baseURL))
+        
+        return nil
+    }
+    
 }
