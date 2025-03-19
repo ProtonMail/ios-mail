@@ -70,8 +70,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func fetchInitialData() async {
         await updateState(.fetchingMessages)
         do {
-            let mailbox = try await initialiseMailbox()
-            let conversationID = try await conversationID()
+            let (selectedMailbox, conversationID) = try await establishSelectedMailboxAndConversationID()
+            let mailbox = try await initialiseMailbox(basedOn: selectedMailbox)
+            self.mailbox = mailbox
             self.conversationID = conversationID
             let liveQueryValues = try await createLiveQueryAndPrepareMessages(
                 forConversationID: conversationID,
@@ -221,38 +222,43 @@ extension ConversationDetailModel {
         goBack()
     }
 
-    private func initialiseMailbox() async throws -> Mailbox {
-        guard let userSession = dependencies.appContext.sessionState.userSession else {
-            throw ConversationModelError.noActiveSessionFound
-        }
-        let newMailboxResult: Result<Mailbox, UserSessionError>
-        switch seed.selectedMailbox {
+    private func initialiseMailbox(basedOn selectedMailbox: SelectedMailbox) async throws -> Mailbox {
+        switch selectedMailbox {
         case .inbox:
-            newMailboxResult = await newInboxMailbox(ctx: userSession).result
-        case .systemFolder, .customLabel, .customFolder:
-            newMailboxResult = await newMailbox(ctx: userSession, labelId: seed.selectedMailbox.localId).result
-        }
-
-        switch newMailboxResult {
-        case .success(let newMailbox):
-            self.mailbox = newMailbox
-            return newMailbox
-        case .failure(let userSessionError):
-            throw userSessionError
+            try await newInboxMailbox(ctx: userSession).get()
+        case .systemFolder(let labelId, _), .customLabel(let labelId, _), .customFolder(let labelId, _):
+            try await newMailbox(ctx: userSession, labelId: labelId).get()
         }
     }
 
-    private func conversationID() async throws -> ID {
+    private func establishSelectedMailboxAndConversationID() async throws -> (SelectedMailbox, ID) {
+        let selectedMailbox: SelectedMailbox
+        let conversationId: ID
+
         switch seed {
-        case .mailboxItem(let item, _):
-            return item.conversationID
+        case .mailboxItem(let item, let mailbox):
+            selectedMailbox = mailbox
+            conversationId = item.conversationID
         case .pushNotification(let message):
             let message = try await fetchMessage(with: message.remoteId)
-            return message.conversationId
+
+            if let exclusiveLocation = message.exclusiveLocation {
+                selectedMailbox = exclusiveLocation.selectedMailbox
+            } else {
+                selectedMailbox = .inbox
+            }
+
+            conversationId = message.conversationId
         }
+
+        return (selectedMailbox, conversationId)
     }
 
     private func fetchMessage(with remoteId: RemoteId) async throws -> Message {
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
+            throw ConversationModelError.noActiveSessionFound
+        }
+
         let localId = try await resolveMessageId(session: userSession, remoteId: remoteId).get()
 
         if let message = try await message(session: userSession, id: localId).get() {
@@ -349,12 +355,11 @@ extension ConversationDetailModel {
 
     private func readLiveQueryValues() async -> LiveQueryValues {
         do {
-            guard let mailbox, let messagesLiveQuery else {
-                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or message live query"
+            guard let conversationID, let mailbox, let messagesLiveQuery else {
+                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))), conversationID (\(String(describing: conversationID)) or message live query"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return .init(messages: [], isStarred: false)
             }
-            let conversationID = try await conversationID()
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
@@ -476,30 +481,4 @@ private extension MailboxActionSheetsState {
     static func initial() -> Self {
         .init(mailbox: nil, labelAs: nil, moveTo: nil)
     }
-}
-
-private extension NewMailboxResult {
-    
-    var result: Result<Mailbox, UserSessionError> {
-        switch self {
-        case .ok(let mailbox):
-            .success(mailbox)
-        case .error(let userSessionError):
-            .failure(userSessionError)
-        }
-    }
-    
-}
-
-private extension NewInboxMailboxResult {
-    
-    var result: Result<Mailbox, UserSessionError> {
-        switch self {
-        case .ok(let mailbox):
-            .success(mailbox)
-        case .error(let userSessionError):
-            .failure(userSessionError)
-        }
-    }
-    
 }

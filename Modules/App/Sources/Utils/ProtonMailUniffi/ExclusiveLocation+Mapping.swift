@@ -21,6 +21,15 @@ import SwiftUI
 
 extension ExclusiveLocation {
 
+    var selectedMailbox: SelectedMailbox {
+        switch self {
+        case .system(let name, let id):
+            return .systemFolder(labelId: id, systemFolder: name)
+        case .custom(let name, let id, _):
+            return .customFolder(labelId: id, name: name.stringResource)
+        }
+    }
+
     var mailboxLocationIcon: ImageResource {
         switch self {
         case .system(let systemLabel, _):

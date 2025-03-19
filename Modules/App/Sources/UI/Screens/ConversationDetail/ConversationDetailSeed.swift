@@ -21,15 +21,6 @@ enum ConversationDetailSeed {
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
     case pushNotification(MailboxMessageSeed)
 
-    var selectedMailbox: SelectedMailbox {
-        switch self {
-        case .mailboxItem(_, let selectedMailbox):
-            return selectedMailbox
-        case .pushNotification:
-            return .inbox
-        }
-    }
-
     var subject: String {
         switch self {
         case .mailboxItem(let model, _):
