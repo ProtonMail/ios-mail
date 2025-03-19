@@ -42,10 +42,10 @@ struct MessageBodyProvider {
         _messageBody = { messageID in await bodyWrapper.messageBody(mailbox, messageID) }
     }
 
-    func messageBody(forMessageID messageID: ID) async -> Result {
+    func messageBody(forMessageID messageID: ID, with options: TransformOpts?) async -> Result {
         switch await _messageBody(messageID) {
         case .ok(let decryptedMessage):
-            let decryptedBody = await decryptedMessage.bodyWithDefaults()
+            let decryptedBody = await decryptedMessage.body(with: options)
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
@@ -75,4 +75,16 @@ extension RustMessageBodyWrapper {
         .init(messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) })
     }
 
+}
+
+private extension DecryptedMessage {
+    
+    func body(with options: TransformOpts?) async -> BodyOutput {
+        guard let options else {
+            return await bodyWithDefaults()
+        }
+        
+        return await body(opts: options)
+    }
+    
 }

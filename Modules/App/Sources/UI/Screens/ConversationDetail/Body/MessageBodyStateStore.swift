@@ -45,14 +45,19 @@ final class MessageBodyStateStore: ObservableObject {
     func handle(action: Action) async {
         switch action {
         case .onLoad:
-            await loadMessageBody(forMessageID: messageID)
+            await loadMessageBody(forMessageID: messageID, with: .none)
         case .displayEmbeddedImages:
-            break
+            if case let .loaded(body) = state {
+                let updatedOptions = body.html.options
+                    .copy(\.hideEmbeddedImages, to: false)
+
+                await loadMessageBody(forMessageID: messageID, with: updatedOptions)
+            }
         }
     }
 
-    private func loadMessageBody(forMessageID messageID: ID) async {
-        switch await provider.messageBody(forMessageID: messageID) {
+    private func loadMessageBody(forMessageID messageID: ID, with options: TransformOpts?) async {
+        switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
             state = .loaded(body)
         case .noConnectionError:
