@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ReportProblemAction {
+import proton_app_uniffi
+
+enum ReportProblemAction: Sendable {
     case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
     case sendLogsToggleSwitched(isEnabled: Bool)
     case scrollTo(element: ReportProblemScrollToElements?)
     case submit
 
-    case reportSend
-    case reportFailedToSend
+    case reportResponse(Result<Void, ActionError>)
 }

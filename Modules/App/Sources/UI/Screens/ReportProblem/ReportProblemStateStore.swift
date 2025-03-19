@@ -19,8 +19,9 @@ import Combine
 import InboxCoreUI
 import InboxCore
 import SwiftUI
+import proton_app_uniffi
 
-final class ReportProblemStateStore: ObservableObject, StateStore, @unchecked Sendable {
+final class ReportProblemStateStore: StateStore {
     @Published var state: ReportProblemState
     private let reportProblemService: ReportProblemService
     private let toastStateStore: ToastStateStore
@@ -50,40 +51,50 @@ final class ReportProblemStateStore: ObservableObject, StateStore, @unchecked Se
     func handle(action: ReportProblemAction) async {
         switch action {
         case .textEntered(let keyPath, let text):
-            state.summaryValidation = .ok
-            state[keyPath: keyPath] = text
+            state = state
+                .copy(\.summaryValidation, to: .ok)
+                .copy(keyPath, to: text)
         case .sendLogsToggleSwitched(let isEnabled):
             withAnimation(.easeInOut(duration: 0.2)) {
-                state.sendLogsEnabled = isEnabled
+                state = state.copy(\.sendLogsEnabled, to: isEnabled)
             } completion: { [weak self] in
                 Task {
                     await self?.handle(action: .scrollTo(element: isEnabled ? nil : .bottomInfoText))
                 }
             }
         case .scrollTo(let element):
-            state.scrollTo = element
+            state = state.copy(\.scrollTo, to: element)
         case .submit:
             if state.summary.count <= 10 {
-                state.summaryValidation = .summaryLessThen10Characters
-                state.scrollTo = .topInfoText
+                state = state
+                    .copy(\.summaryValidation, to: .summaryLessThen10Characters)
+                    .copy(\.scrollTo, to: .topInfoText)
             } else {
-                state.isLoading = true
+                state = state.copy(\.isLoading, to: true)
                 do {
                     try await reportProblemService.send(report: issueReport)
-                    await handle(action: .reportSend)
+                    await handle(action: .reportResponse(.success(())))
                 } catch {
-                    await handle(action: .reportFailedToSend)
+                    await handle(action: .reportResponse(.failure(error)))
                 }
-                state.isLoading = false
             }
-        case .reportSend:
-            toastStateStore.present(toast: .information(message: "Problem report sent"))
-            dismiss()
-        case .reportFailedToSend:
-            toastStateStore.present(toast: .information(message: "Failure"))
+        case .reportResponse(let result):
+            switch result {
+            case .success:
+                toastStateStore.present(toast: .information(message: L10n.ReportProblem.successToast.string))
+                dismiss()
+            case .failure(let failure):
+                switch failure {
+                case .other(.network):
+                    toastStateStore.present(toast: .error(message: L10n.ReportProblem.failureToast.string)) // OFFLINE TOAST
+                default:
+                    toastStateStore.present(toast: .error(message: L10n.ReportProblem.failureToast.string))
+                }
+            }
         }
     }
 
+    @MainActor
     private var issueReport: IssueReport {
         issueReportBuilder.build(
             with: .init(

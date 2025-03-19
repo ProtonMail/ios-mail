@@ -17,6 +17,7 @@
 
 // FIXME: - To remove when Rust SDK API is available
 
+import proton_app_uniffi
 import Foundation
 
 struct IssueReport: Equatable {
@@ -37,14 +38,14 @@ enum ClientType: Int {
     case email = 1;
 }
 
-protocol ReportProblemService {
-    func send(report: IssueReport) async throws
+protocol ReportProblemService: Sendable {
+    func send(report: IssueReport) async throws (ActionError)
 }
 
-class ReportProblemServiceImplementation: ReportProblemService {
+final class ReportProblemServiceImplementation: ReportProblemService {
 
-    func send(report: IssueReport) async throws {
-        try await Task.sleep(for: .seconds(5))
+    func send(report: IssueReport) async throws (ActionError) {
+        try! await Task.sleep(for: .seconds(5))
     }
 
 }

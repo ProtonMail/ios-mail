@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct ReportProblemState {
+import InboxCore
+
+struct ReportProblemState: Copying {
     var summary: String
     var expectedResults: String
     var stepsToReproduce: String
