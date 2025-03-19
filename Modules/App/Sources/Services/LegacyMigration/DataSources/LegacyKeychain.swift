@@ -32,9 +32,7 @@ final class LegacyKeychain: Keychain {
 
     static nonisolated(unsafe) var legacyService = "ch.protonmail"
 
-    // TODO: use the intended legacy accessGroup once we change the bundle identifier
-    // private let legacyAccessGroup = "2SB5Z68H26.ch.protonmail.protonmail"
-    private let legacyAccessGroup = "group.me.proton.mail"
+    private let legacyAccessGroup = "2SB5Z68H26.ch.protonmail.protonmail"
 
     init() {
         super.init(service: Self.legacyService, accessGroup: legacyAccessGroup)
