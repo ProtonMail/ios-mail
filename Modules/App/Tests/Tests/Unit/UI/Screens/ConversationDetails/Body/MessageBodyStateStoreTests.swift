@@ -122,6 +122,47 @@ final class MessageBodyStateStoreTests {
             )
         )))
     }
+    
+    // MARK: - `downloadRemoteContent` action
+    
+    @Test
+    func testState_WhenDownlaodRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+        let initialOptions = TransformOpts.init(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        stubbedResult = .ok(decryptedMessageSpy)
+
+        await sut.handle(action: .onLoad)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy</html>",
+                options: initialOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .downloadRemoteContent)
+        
+        let updatedOptions = initialOptions.copy(\.hideRemoteImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+    }
 }
 
 extension MessageBodyState: @retroactive Equatable {

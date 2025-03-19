@@ -31,6 +31,7 @@ final class MessageBodyStateStore: ObservableObject {
     enum Action {
         case onLoad
         case displayEmbeddedImages
+        case downloadRemoteContent
     }
 
     @Published var state: MessageBodyState = .fetching
@@ -53,6 +54,8 @@ final class MessageBodyStateStore: ObservableObject {
 
                 await loadMessageBody(forMessageID: messageID, with: updatedOptions)
             }
+        case .downloadRemoteContent:
+            break
         }
     }
 
