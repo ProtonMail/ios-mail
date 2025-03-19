@@ -25,7 +25,8 @@ enum MessageBodyState {
     case noConnection
 }
 
-final class MessageBodyStateStore: ObservableObject, @unchecked Sendable {
+@MainActor
+final class MessageBodyStateStore: ObservableObject {
     enum Action {
         case onLoad
     }
@@ -39,7 +40,6 @@ final class MessageBodyStateStore: ObservableObject, @unchecked Sendable {
         self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
     }
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onLoad:
@@ -47,7 +47,6 @@ final class MessageBodyStateStore: ObservableObject, @unchecked Sendable {
         }
     }
 
-    @MainActor
     private func loadMessageBody(forMessageID messageID: ID) async {
         switch await provider.messageBody(forMessageID: messageID) {
         case .success(let body):

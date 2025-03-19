@@ -19,7 +19,7 @@ import InboxCore
 import proton_app_uniffi
 
 struct MessageBody: Sendable {
-    struct HTML {
+    struct HTML: Sendable {
         let rawBody: String
         let embeddedImageProvider: EmbeddedImageProvider
     }
@@ -35,14 +35,14 @@ struct MessageBodyProvider {
         case noConnectionError
     }
 
-    private let messageBody: (_ messageID: ID) async -> GetMessageBodyResult
+    private let _messageBody: @Sendable (_ messageID: ID) async -> GetMessageBodyResult
 
     init(mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
-        self.messageBody = { messageID in await bodyWrapper.messageBody(mailbox, messageID) }
+        _messageBody = { messageID in await bodyWrapper.messageBody(mailbox, messageID) }
     }
 
     func messageBody(forMessageID messageID: ID) async -> Result {
-        switch await messageBody(messageID) {
+        switch await _messageBody(messageID) {
         case .ok(let decryptedMessage):
             let decryptedBody = await decryptedMessage.bodyWithDefaults()
             let body = MessageBody(
@@ -59,9 +59,9 @@ struct MessageBodyProvider {
 }
 
 struct RustMessageBodyWrapper {
-    let messageBody: (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
+    let messageBody: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
     
-    init(messageBody: @escaping (Mailbox, Id) async -> GetMessageBodyResult) {
+    init(messageBody: @escaping @Sendable (Mailbox, Id) async -> GetMessageBodyResult) {
         self.messageBody = messageBody
     }
 }
@@ -69,7 +69,7 @@ struct RustMessageBodyWrapper {
 extension RustMessageBodyWrapper {
 
     static func productionInstance() -> Self {
-        .init(messageBody: getMessageBody(mbox:id:))
+        .init(messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) })
     }
 
 }

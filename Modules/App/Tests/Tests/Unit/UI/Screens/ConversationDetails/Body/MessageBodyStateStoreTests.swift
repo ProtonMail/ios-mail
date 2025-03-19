@@ -20,6 +20,7 @@ import InboxTesting
 import proton_app_uniffi
 import Testing
 
+@MainActor
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedResult: GetMessageBodyResult!
@@ -28,7 +29,7 @@ final class MessageBodyStateStoreTests {
         sut = .init(
             messageID: .init(value: 1),
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { _, _ in self.stubbedResult })
+            bodyWrapper: .init(messageBody: { _, _ in await self.stubbedResult })
         )
     }
 
