@@ -2530,6 +2530,9 @@
         }
       }
     },
+    "Problem report sent" : {
+      "comment" : "Toast displayed after the report was successfully sent"
+    },
     "Reply" : {
       "comment" : "Action title for replying to a sender of given message in the action sheet.",
       "localizations" : {
@@ -2590,6 +2593,9 @@
     },
     "Report a problem" : {
       "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.\nReport a problem screen main title."
+    },
+    "Report failed to send, please retry" : {
+      "comment" : "Toast displayed after the report failed to send"
     },
     "Report phishing" : {
       "comment" : "Action title for reporting phishing message in the action sheet.",

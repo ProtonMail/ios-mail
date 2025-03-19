@@ -559,6 +559,14 @@ enum L10n {
             "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully.",
             comment: "Information displayed in the bottom of the screen when send error logs switch is dislabed."
         )
+        static let successToast = LocalizedStringResource(
+            "Problem report sent",
+            comment: "Toast displayed after the report was successfully sent"
+        )
+        static let failureToast = LocalizedStringResource(
+            "Report failed to send, please retry",
+            comment: "Toast displayed after the report failed to send"
+        )
     }
 
     enum Search {

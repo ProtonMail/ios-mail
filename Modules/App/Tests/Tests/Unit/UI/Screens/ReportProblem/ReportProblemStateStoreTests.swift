@@ -108,7 +108,7 @@ class ReportProblemStateStoreTests: BaseTestCase {
                 includeLogs: false
             )
         ])
-        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Problem report sent")])
+        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: L10n.ReportProblem.successToast.string)])
         XCTAssertEqual(dismissInvokeCount, 1)
     }
 
@@ -119,7 +119,7 @@ class ReportProblemStateStoreTests: BaseTestCase {
         await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
         await sut.handle(action: .submit)
         XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
-        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Failure")])
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.ReportProblem.failureToast.string)])
         XCTAssertEqual(dismissInvokeCount, 0)
     }
 
