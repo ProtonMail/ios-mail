@@ -24,6 +24,6 @@ protocol ApplicationHolder {
 
 extension ApplicationHolder {
     var application: XCUIApplication {
-        XCUIApplication(bundleIdentifier: "me.proton.mail.ios")
+        XCUIApplication(bundleIdentifier: "ch.protonmail.protonmail")
     }
 }

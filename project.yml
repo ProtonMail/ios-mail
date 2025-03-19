@@ -95,15 +95,15 @@ targets:
       - path: Modules/App/Sources
     settings:
       base:
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         BUNDLE_DISPLAY_NAME: "Proton Mail (ET)"
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
-        MARKETING_VERSION: 0.2.0
+        MARKETING_VERSION: 5.0.0
         CURRENT_PROJECT_VERSION: 1
-        PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios"
+        PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail"
         PROVISIONING_PROFILE_SPECIFIER: ""
         SWIFT_EMIT_LOC_STRINGS: YES
         SWIFT_STRICT_CONCURRENCY: "complete"
@@ -118,7 +118,7 @@ targets:
         Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
-          PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Release"
           PM_API_HOST: "proton.me"
     info:
       path: Modules/App/Sources/SupportingFiles/Info.plist
@@ -129,9 +129,9 @@ targets:
         CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
-            CFBundleURLName: me.proton.mail.ios
+            CFBundleURLName: ch.protonmail.protonmail
             CFBundleURLSchemes:
-              - protonmailET
+              - protonmail
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
         NSCameraUsageDescription: "{{Placeholder}}"
@@ -226,13 +226,13 @@ targets:
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 2SB5Z68H26
-        PRODUCT_BUNDLE_IDENTIFIER: "me.proton.mail.ios.notification-service"
+        PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail.notifications"
         CURRENT_PROJECT_VERSION: 1
       configs:
         Release:
           CODE_SIGN_STYLE: Manual
           CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
-          PROVISIONING_PROFILE_SPECIFIER: "ET Mail - Notification Service Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "Mail - Notification Service Distribution"
     info:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
