@@ -33,6 +33,11 @@ final class MessageBodyStateStoreTests {
         )
     }
     
+    deinit {
+        stubbedResult = nil
+        sut = nil
+    }
+    
     // MARK: - `onLoad` action
 
     @Test
@@ -116,7 +121,7 @@ final class MessageBodyStateStoreTests {
         #expect(sut.state == .loaded(.init(
             banners: [],
             html: .init(
-                rawBody: "<html>dummy</html>",
+                rawBody: "<html>dummy_with_custom_options</html>",
                 options: updatedOptions,
                 embeddedImageProvider: decryptedMessageSpy
             )
@@ -157,7 +162,7 @@ final class MessageBodyStateStoreTests {
         #expect(sut.state == .loaded(.init(
             banners: [],
             html: .init(
-                rawBody: "<html>dummy</html>",
+                rawBody: "<html>dummy_with_custom_options</html>",
                 options: updatedOptions,
                 embeddedImageProvider: decryptedMessageSpy
             )
@@ -187,13 +192,13 @@ extension MessageBodyState: @retroactive Equatable {
 extension MessageBody: @retroactive Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        let areHTMLEqual =
+        let areHTMLsEqual =
             lhs.html.rawBody == rhs.html.rawBody &&
             lhs.html.options == rhs.html.options &&
             lhs.html.embeddedImageProvider === rhs.html.embeddedImageProvider
         let areBannersEqual = lhs.banners == rhs.banners
         
-        return areHTMLEqual && areBannersEqual
+        return areHTMLsEqual && areBannersEqual
     }
     
 }
@@ -235,7 +240,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
         bodyWithOptionsCalls.append(opts)
         
         return .init(
-            body: "<html>dummy</html>",
+            body: "<html>dummy_with_custom_options</html>",
             hadBlockquote: true,
             tagsStripped: 0,
             utmStripped: 0,
