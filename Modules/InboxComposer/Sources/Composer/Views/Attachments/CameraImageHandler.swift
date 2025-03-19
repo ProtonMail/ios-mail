@@ -18,13 +18,14 @@
 import InboxCore
 import InboxCoreUI
 import Photos
+import proton_app_uniffi
 import UIKit
 
 struct CameraImageHandler {
     let fileManager = FileManager.default
-    let toastStateStore: ToastStateStore
+    let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
 
-    func addImage(to draft: AppDraftProtocol, image: UIImage) async {
+    func addImage(to draft: AppDraftProtocol, image: UIImage, onError: (DraftAttachmentError) -> Void) async {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         do {
             try fileManager.createDirectory(at: uploadFolder, withIntermediateDirectories: true)
@@ -36,17 +37,11 @@ struct CameraImageHandler {
             // FIXME: Add as inline image when supported by SDK
             let result = await draft.attachmentList().add(path: destinationFile.path)
             if case .error(let error) = result {
-                presentToast(toast: .error(message: error.localizedDescription))
+                onError(error)
             }
         } catch {
             AppLogger.log(error: error, category: .composer)
-            toastStateStore.present(toast: .error(message: L10n.Attachments.attachmentCouldNotBeAdded.string))
+            onError(unexpectedError)
         }
-    }
-
-    private func presentToast(toast: Toast) {
-        Dispatcher.dispatchOnMain(.init(block: {
-            toastStateStore.present(toast: toast)
-        }))
     }
 }

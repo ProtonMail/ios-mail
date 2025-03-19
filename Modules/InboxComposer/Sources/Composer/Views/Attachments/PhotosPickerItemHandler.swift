@@ -19,27 +19,32 @@ import Foundation
 import InboxCore
 import InboxCoreUI
 import PhotosUI
+import enum proton_app_uniffi.DraftAttachmentError
 import SwiftUI
 
 struct PhotosPickerItemHandler {
+    static let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
     let fileManager = FileManager.default
-    let toastStateStore: ToastStateStore
 
-    func addPickerPhotos(to draft: AppDraftProtocol, photos: [PhotosPickerItemTransferable]) async {
-        var errorCount = 0
+    func addPickerPhotos(
+        to draft: AppDraftProtocol,
+        photos: [PhotosPickerItemTransferable],
+        onErrors: ([DraftAttachmentError]) -> Void
+    ) async {
+        var allErrors = [DraftAttachmentError]()
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {
             case .success(let file):
                 let result = await draft.attachmentList().add(path: file.path)
                 if case .error(let error) = result {
-                    presentToast(toast: .error(message: error.localizedDescription))
+                    allErrors.append(error)
                 }
             case .failure:
-                errorCount += 1
+                allErrors.append(Self.unexpectedError)
             }
         }
-        notifyAttachmentPreparationErrorsIfNeeded(numErrors: errorCount)
+        onErrors(allErrors)
     }
 
     /**
@@ -110,20 +115,6 @@ struct PhotosPickerItemHandler {
             throw PhotosPickerItemHandlerError.failConvertingHeicToJpeg
         }
         return data
-    }
-
-    private func notifyAttachmentPreparationErrorsIfNeeded(numErrors: Int) {
-        guard numErrors > 0 else { return }
-        let message = numErrors == 1
-        ? L10n.Attachments.attachmentCouldNotBeAdded.string
-        : L10n.Attachments.someAttachmentCouldNotBeAdded.string
-        presentToast(toast: .error(message: message))
-    }
-
-    private func presentToast(toast: Toast) {
-        Dispatcher.dispatchOnMain(.init(block: {
-            toastStateStore.present(toast: toast)
-        }))
     }
 }
 

@@ -33,9 +33,6 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        photosItemsHandler: PhotosPickerItemHandler,
-        cameraImageHandler: CameraImageHandler,
-        fileItemsHandler: FilePickerItemHandler,
         onSendingEvent: @escaping () -> Void
     ) {
         self._model = StateObject(
@@ -47,9 +44,9 @@ struct ComposerView: View {
                 onSendingEvent: onSendingEvent,
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
-                photosItemsHandler: photosItemsHandler,
-                cameraImageHandler: cameraImageHandler,
-                fileItemsHandler: fileItemsHandler
+                photosItemsHandler: .init(),
+                cameraImageHandler: .init(),
+                fileItemsHandler: .init()
             )
         )
     }
@@ -132,6 +129,13 @@ struct ComposerView: View {
                     }
                 }
             }
+            .alert(
+                Text(model.alertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
+                isPresented: $model.alertState.isAlertPresented,
+                presenting: model.alertState.presentedError,
+                actions: { actionsForAttachmentAlert(error: $0) },
+                message: { Text($0.message) }
+            )
             .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
                 model.selectedAttachmentSource(selection)
             }
@@ -153,5 +157,19 @@ struct ComposerView: View {
             Spacer()
         }
         .background(DS.Color.Background.norm)
+    }
+
+    @ViewBuilder
+    private func actionsForAttachmentAlert(error: AttachmentError) -> some View {
+        ForEach(error.actions) { action in
+            Button(role: .cancel) {
+                if action.removeAttachment {
+                    model.removeDraftAttachments(origin: error.origin)
+                }
+                model.alertState.errorDismissedShowNextError()
+            } label: {
+                Text(action.title)
+            }
+        }
     }
 }

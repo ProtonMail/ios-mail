@@ -44,7 +44,6 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     var uiModels: [DraftAttachmentUIModel] = [] {
         didSet { updateUI() }
     }
-    private var attachmentErrorAlerts = AttachmentErrorAlertState()
     var onEvent: ((DraftAttachmentsSectionEvent) -> Void)?
 
     override func viewDidLoad() {
@@ -87,12 +86,6 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         }
         // avoid undesired animations caused by re-adding subviews with `addArrangedSubview`
         stack.layoutIfNeeded()
-
-        Task {
-            for uiModel in uiModels where uiModel.status.state == .error {
-                await enqueueAttachmentErrorAlert(uiModel: uiModel)
-            }
-        }
     }
 
     private func showRemoveConfirmation(uiModel: DraftAttachmentUIModel) {
@@ -110,55 +103,6 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         alertController.addAction(cancel)
         present(alertController, animated: true)
     }
-
-    private func enqueueAttachmentErrorAlert(uiModel: DraftAttachmentUIModel) async {
-        await attachmentErrorAlerts.enqueue(uiModel: uiModel)
-        await showNextAttachmentErrorAlertIfNeeded()
-    }
-
-    private func makeAttachmentErrorAlert(uiModel: DraftAttachmentUIModel) -> UIAlertController {
-        let message = L10n.Attachments.attachmentFailAlertTitle(name: uiModel.attachment.name).string
-        let retryTitle = L10n.Attachments.retryAttachmentUpload.string
-        let removeTitle = L10n.Attachments.removeAttachment.string
-
-        let alertController = UIAlertController(title: String.empty, message: message, preferredStyle: .alert)
-        alertController.addAction(makeAttachmentErrorAlertAction(title: retryTitle, uiModel: uiModel) { [weak self] in
-            self?.onEvent?(.onRetryAttachmentUpload(uiModel: uiModel))
-        })
-        alertController.addAction(makeAttachmentErrorAlertAction(title: removeTitle, uiModel: uiModel) { [weak self] in
-            self?.onEvent?(.onRemove(uiModel: uiModel))
-        })
-        return alertController
-    }
-
-    private func makeAttachmentErrorAlertAction(
-        title: String,
-        uiModel: DraftAttachmentUIModel,
-        completion: @escaping () -> Void
-    ) -> UIAlertAction {
-        UIAlertAction(title: title, style: .default) { [weak self] _ in
-            Task {
-                completion()
-                await self?.attachmentErrorAlerts.setIsAlertPresented(value: false)
-                await self?.showNextAttachmentErrorAlertIfNeeded()
-            }
-        }
-    }
-
-    private func showNextAttachmentErrorAlertIfNeeded() async {
-        let isAlertPresented = await attachmentErrorAlerts.isAlertPresented
-        let isQueueEmpty = await attachmentErrorAlerts.isQueueEmpty()
-        guard
-            !isAlertPresented && !isQueueEmpty,
-            let uiModel = await attachmentErrorAlerts.dequeue()
-        else { return }
-
-        await attachmentErrorAlerts.setIsAlertPresented(value: true)
-        present(makeAttachmentErrorAlert(uiModel: uiModel), animated: true) {
-            let message = "Attachment failed alert: id = \(uiModel.attachment.id), status timestamp = \(uiModel.status.modifiedAt)"
-            AppLogger.log(message: message, category: .composer, isError: true)
-        }
-    }
 }
 
 extension DraftAttachmentsSectionViewController {
@@ -174,32 +118,6 @@ extension DraftAttachmentsSectionViewController {
             view.spacing = DS.Spacing.standard
             return view
         }
-    }
-}
-
-private actor AttachmentErrorAlertState {
-    private var queue: OrderedSet<DraftAttachmentUIModel> = []
-    private var alreadySeen: OrderedSet<DraftAttachmentUIModel> = []
-    private(set) var isAlertPresented = false
-
-    func setIsAlertPresented(value: Bool) {
-        isAlertPresented = value
-    }
-
-    func isQueueEmpty() async -> Bool {
-        queue.isEmpty
-    }
-
-    func enqueue(uiModel: DraftAttachmentUIModel) async {
-        guard uiModel.status.state == .error, !alreadySeen.contains(uiModel) else { return }
-        queue.append(uiModel)
-    }
-
-    func dequeue() async -> DraftAttachmentUIModel? {
-        guard !queue.isEmpty else { return nil }
-        let uiModel = queue.removeFirst()
-        alreadySeen.append(uiModel)
-        return uiModel
     }
 }
 

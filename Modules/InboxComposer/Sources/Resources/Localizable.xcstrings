@@ -39,11 +39,11 @@
     "An attachmemt failed to upload" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Attachment %@ could not be added." : {
-      "comment" : "Alert shown when an attachment fails to be uploaded."
-    },
     "Attachment could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
+    },
+    "Attachments too big" : {
+      "comment" : "Attachment failed because the total attachment size is over the limit"
     },
     "Cancel" : {
       "comment" : "Cancellation for the remove attachment action in a Draft."
@@ -97,6 +97,9 @@
           }
         }
       }
+    },
+    "Got it" : {
+      "comment" : "Attachment error ok button"
     },
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
@@ -154,9 +157,6 @@
         }
       }
     },
-    "Retry" : {
-      "comment" : "Option when the attachment failed to upload."
-    },
     "Retry failed, please remove the attachment" : {
       "comment" : "Error in the context of retrying to upload a draft."
     },
@@ -195,6 +195,9 @@
     "Some attachmentments could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
     },
+    "Something went wrong" : {
+      "comment" : "Attachment failed because an unexpected error"
+    },
     "Subject:" : {
       "comment" : "Composer subject.",
       "localizations" : {
@@ -230,6 +233,9 @@
     "The address is disabled: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
+    "The attachment could not be added, please try again" : {
+      "comment" : "Attachment failed because an unexpected error"
+    },
     "The attachment is missing" : {
       "comment" : "Error in the context of managing attachments in a draft."
     },
@@ -256,6 +262,12 @@
     },
     "The recipient is unknown: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "There is a 25 MB limit on attachments per email and %lld attachments couldn't be added. Send them in separate emails or share them via Proton Drive." : {
+      "comment" : "Attachment failed because the total attachment size is over the limit"
+    },
+    "There is a 25 MB limit on attachments per email. Send them in separate emails or share them via Proton Drive." : {
+      "comment" : "Attachment failed because the total attachment size is over the limit"
     },
     "There was a problem discarding the draft" : {
       "comment" : "Error shown when the draft fails to delete."
@@ -324,8 +336,14 @@
         }
       }
     },
+    "Too many attachments" : {
+      "comment" : "Attachment failed because the total of number of attachments is over the limit"
+    },
     "Undo" : {
       "comment" : "Undo action after message has been sent."
+    },
+    "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
+      "comment" : "Attachment failed because the total of number of attachments is over the limit"
     },
     "You're currently offline. This draft may not be up-to-date." : {
       "comment" : "Draft might not be up-to-date when loaded"

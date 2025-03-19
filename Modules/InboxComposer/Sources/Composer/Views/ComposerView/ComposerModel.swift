@@ -21,11 +21,15 @@ import InboxCoreUI
 import InboxContacts
 import PhotosUI
 import proton_app_uniffi
+import struct ProtonCoreUtilities.NestedObservableObject
 import SwiftUI
+
+typealias Nested = NestedObservableObject
 
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
     @Published var pickersState: AttachmentPickersState
+    @Nested var alertState: AttachmentAlertState
     @Published var toast: Toast?
 
     private let draft: AppDraftProtocol
@@ -74,6 +78,7 @@ final class ComposerModel: ObservableObject {
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
+        self.alertState = .init()
         self.state = makeState(from: draft)
         setUpCallbacks()
         Task {
@@ -254,19 +259,38 @@ final class ComposerModel: ObservableObject {
             items.wrappedValue = []
             guard !photos.isEmpty else { return }
 
-            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos)
+            await photosItemsHandler.addPickerPhotos(to: draft, photos: photos, onErrors: { errors in
+                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+            })
         }
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) {
         Task {
-            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult)
+            await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, onErrors: { errors in
+                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+            })
         }
     }
 
     func addAttachments(image: UIImage) {
         Task {
-            await cameraImageHandler.addImage(to: draft, image: image)
+            await cameraImageHandler.addImage(to: draft, image: image, onError: { error in
+                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
+            })
+        }
+    }
+
+    func removeDraftAttachments(origin: AttachmentErrorOrigin) {
+        switch origin {
+        case .adding:
+            break
+        case .uploading(let uploadAttachmentErrors):
+            for attachment in uploadAttachmentErrors {
+                // FIXME: When the SDK allow to remove attachment
+                // draft.attachmentList().remove(attachmentId: attachment.attachmentId)
+                AppLogger.logTemporarily(message: "\(attachment.name) would be removed", category: .composer)
+            }
         }
     }
 
@@ -336,7 +360,9 @@ extension ComposerModel {
     @MainActor
     private func updateStateAttachmentUIModels() async {
         do {
-            state.attachments = try await draft.attachmentList().attachments().toDraftAttachmentUIModels()
+            let draftAttachments = try await draft.attachmentList().attachments().toDraftAttachments()
+            state.attachments = draftAttachments.map { $0.toDraftAttachmentUIModel() }
+            alertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {
             AppLogger.log(error: error, category: .composer)
             showToast(.error(message: error.localizedDescription))

@@ -26,8 +26,9 @@ final class FilePickerItemHandlerTests: BaseTestCase {
     private var fileManager: FileManager!
     private var tempDirectory: URL!
     private var destinationFolder: URL!
-    private var toastStateStore: ToastStateStore!
     private var mockDraft: MockDraft!
+    private var capturedErrors: [DraftAttachmentError]!
+    private var mockOnErrors: (([DraftAttachmentError]) -> Void)!
 
     override func setUpWithError() throws {
         fileManager = .default
@@ -35,15 +36,16 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         try fileManager.createDirectory(at: tempDirectory, withIntermediateDirectories: true)
         destinationFolder = tempDirectory.appendingPathComponent("destination/")
 
-        toastStateStore = .init(initialState: .initial)
+        capturedErrors = []
+        mockOnErrors = { self.capturedErrors.append(contentsOf: $0) }
         mockDraft = .emptyMock
         mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = destinationFolder
-        sut = .init(toastStateStore: toastStateStore)
+        sut = .init()
     }
 
     override func tearDownWithError() throws {
         try fileManager.removeItem(at: tempDirectory)
-        toastStateStore = nil
+        capturedErrors = nil
         mockDraft = nil
         fileManager = nil
         tempDirectory = nil
@@ -54,45 +56,48 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
+        XCTAssertTrue(capturedErrors.isEmpty)
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddPathCalls, [destFile1.path, destFile2.path])
     }
 
-    func testAddSelectedFiles_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems() async throws {
+    func testAddSelectedFiles_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems_andReturnError() async throws {
         let error = DraftAttachmentError.reason(DraftAttachmentErrorReason.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(error)), ("file2.txt", .ok)]
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAttachments, [destFile1.path, destFile2.path])
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddPathCalls, [destFile1.path, destFile2.path])
+        XCTAssertEqual(capturedErrors, [error])
     }
 
-    func testAddSelectedFiles_whenThereIsAnErrorInTheResults_itShouldShowErrorToast() async throws {
+    func testAddSelectedFiles_whenThereIsAnErrorInTheResults_itShouldReturnError() async throws {
         let error = NSError(domain: "".notLocalized, code: -1,
             userInfo: [NSLocalizedDescriptionKey: "the localised error".notLocalized]
         )
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .failure(error))
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: error.localizedDescription)])
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .failure(error), onErrors: mockOnErrors)
+        XCTAssertEqual(capturedErrors, [FilePickerItemHandler.unexpectedError])
     }
 
     func testAddSelectedFiles_whenThereIsNoErrorCopyingFiles_itShouldCopyFilesToDestinationFolder() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
 
+        XCTAssertTrue(capturedErrors.isEmpty)
         XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
@@ -102,7 +107,7 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try prepareItem(fileName: "file1.txt", createFile: true)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file1-1.txt")
@@ -110,13 +115,14 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
+        XCTAssertTrue(capturedErrors.isEmpty)
     }
 
-    func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldCopyCorrectFilesAndSignalTheErrorInTheResult() async throws {
+    func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldCopyCorrectFiles() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: false)
         let file2 = try prepareItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]))
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
 
         let destFile1 = destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = destinationFolder.appendingPathComponent("file2.txt")
@@ -125,12 +131,12 @@ final class FilePickerItemHandlerTests: BaseTestCase {
         XCTAssertTrue(fileManager.fileExists(atPath: destFile2.path))
     }
 
-    func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldShowErrorToast() async throws {
+    func testAddSelectedFiles_whenThereIsAnErrorCopyingFiles_itShouldReturnTheErrors() async throws {
         let file1 = try prepareItem(fileName: "file1.txt", createFile: false)
+        let file2 = try prepareItem(fileName: "file2.txt", createFile: false)
 
-        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1]))
-
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.Attachments.attachmentCouldNotBeAdded.string)])
+        await sut.addSelectedFiles(to: mockDraft, selectionResult: .success([file1, file2]), onErrors: mockOnErrors)
+        XCTAssertEqual(capturedErrors, [FilePickerItemHandler.unexpectedError, FilePickerItemHandler.unexpectedError])
     }
 
     private func prepareItem(fileName: String, createFile: Bool) throws -> URL {

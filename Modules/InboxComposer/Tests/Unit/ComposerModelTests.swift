@@ -46,9 +46,9 @@ final class ComposerModelTests: XCTestCase {
                 .makeComposerContactSingle(name: "", email: "c@example.com"),
             ])
         )
-        self.testPhotosItemsHandler = .init(toastStateStore: .init(initialState: .initial))
-        self.testCameraImageHandler = .init(toastStateStore: .init(initialState: .initial))
-        self.testFilesItemsHandler = .init(toastStateStore: .init(initialState: .initial))
+        self.testPhotosItemsHandler = .init()
+        self.testCameraImageHandler = .init()
+        self.testFilesItemsHandler = .init()
         self.cancellables = []
     }
 

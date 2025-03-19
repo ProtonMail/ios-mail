@@ -139,20 +139,62 @@ enum L10n {
             comment: "Cancellation for the remove attachment action in a Draft."
         )
 
-        static func attachmentFailAlertTitle(name: String) -> LocalizedStringResource {
+    }
+
+    enum AttachmentError {
+
+        static let attachmentsOverSizeLimitTitle = LocalizedStringResource(
+            "Attachments too big",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because the total attachment size is over the limit"
+        )
+
+        static let singleAttachmentOverSizeLimitMessage = LocalizedStringResource(
+            "There is a 25 MB limit on attachments per email. Send them in separate emails or share them via Proton Drive.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because the total attachment size is over the limit"
+        )
+
+        static func multipleAttachmentOverSizeLimitMessage(count: Int) -> LocalizedStringResource {
             LocalizedStringResource(
-                "Attachment \(name) could not be added.",
+                "There is a 25 MB limit on attachments per email and \(count) attachments couldn't be added. Send them in separate emails or share them via Proton Drive.",
                 bundle: .atURL(Bundle.module.bundleURL),
-                comment: "Alert shown when an attachment fails to be uploaded."
+                comment: "Attachment failed because the total attachment size is over the limit"
             )
         }
 
-        static let retryAttachmentUpload = LocalizedStringResource(
-            "Retry",
+        static let tooManyAttachmentsTitle = LocalizedStringResource(
+            "Too many attachments",
             bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Option when the attachment failed to upload."
+            comment: "Attachment failed because the total of number of attachments is over the limit"
         )
 
+        static let tooManyAttachmentsMessage = LocalizedStringResource(
+            "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because the total of number of attachments is over the limit"
+        )
+
+        static let somethingWentWrongTitle = LocalizedStringResource(
+            "Something went wrong",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because an unexpected error"
+        )
+
+        static let somethingWentWrongMessage = LocalizedStringResource(
+            "The attachment could not be added, please try again",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because an unexpected error"
+        )
+    }
+
+    enum Common {
+
+        static let gotIt = LocalizedStringResource(
+            "Got it",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment error ok button"
+        )
     }
 
     enum Contacts {

@@ -17,18 +17,24 @@
 
 import proton_app_uniffi
 
-extension AttachmentListAttachmentsResult {
-    func toDraftAttachments() throws -> [DraftAttachment] {
+extension DraftAttachmentError {
+
+    func toAttachmentError() -> AttachmentError {
         switch self {
-        case .ok(let items): items
-        case .error(let error): throw error
+        case .reason(let reason):
+            switch reason {
+            case .messageDoesNotExist, .retryInvalidState, .messageDoesNotExistOnServer, .crypto, .messageAlreadySent:
+                return .somethingWentWrong(origin: .adding([.makeUnique]))
+
+            case .tooManyAttachments:
+                return .tooMany(origin: .adding([.makeUnique]))
+
+            case .attachmentTooLarge:
+                return .overSizeLimit(origin: .adding([.makeUnique]))
+
+            }
+        case .other:
+            return .somethingWentWrong(origin: .adding([.makeUnique]))
         }
-    }
-}
-
-extension DraftAttachment {
-
-    func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, status: .init(modifiedAt: stateModifiedTimestamp, state: state))
     }
 }

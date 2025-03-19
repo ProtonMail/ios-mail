@@ -18,31 +18,36 @@
 import Foundation
 import InboxCore
 import InboxCoreUI
+import proton_app_uniffi
 
 struct FilePickerItemHandler {
+    static let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
     let fileManager = FileManager.default
-    let toastStateStore: ToastStateStore
 
-    func addSelectedFiles(to draft: AppDraftProtocol, selectionResult: Result<[URL], any Error>) async {
+    func addSelectedFiles(
+        to draft: AppDraftProtocol,
+        selectionResult: Result<[URL], any Error>,
+        onErrors: ([DraftAttachmentError]) -> Void
+    ) async {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         switch selectionResult {
         case .success(let urls):
-            var errorCount = 0
+            var allErrors = [DraftAttachmentError]()
             for await result in copyFilePickerItems(files: urls, destinationFolder: uploadFolder) {
                 switch result {
                 case .success(let file):
                     let result = await draft.attachmentList().add(path: file.path)
                     if case .error(let error) = result {
-                        presentToast(toast: .error(message: error.localizedDescription))
+                        allErrors.append(error)
                     }
                 case .failure:
-                    errorCount += 1
+                    allErrors.append(Self.unexpectedError)
                 }
             }
-            notifyAttachmentPreparationErrorsIfNeeded(numErrors: errorCount)
+            onErrors(allErrors)
 
-        case .failure(let failure):
-            presentToast(toast: .error(message: failure.localizedDescription))
+        case .failure:
+            onErrors([Self.unexpectedError])
         }
     }
 
@@ -79,19 +84,5 @@ struct FilePickerItemHandler {
             }
         }
         return try fileManager.copyToUniqueURL(file: file, to: folder)
-    }
-
-    private func notifyAttachmentPreparationErrorsIfNeeded(numErrors: Int) {
-        guard numErrors > 0 else { return }
-        let message = numErrors == 1
-        ? L10n.Attachments.attachmentCouldNotBeAdded.string
-        : L10n.Attachments.someAttachmentCouldNotBeAdded.string
-        presentToast(toast: .error(message: message))
-    }
-
-    private func presentToast(toast: Toast) {
-        Dispatcher.dispatchOnMain(.init(block: {
-            toastStateStore.present(toast: toast)
-        }))
     }
 }
