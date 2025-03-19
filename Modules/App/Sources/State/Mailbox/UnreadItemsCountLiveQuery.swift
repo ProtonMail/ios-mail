@@ -29,8 +29,7 @@ final class UnreadItemsCountLiveQuery: @unchecked Sendable {
     }
 
     func setUpLiveQuery() async {
-        let liveQueryCallback = LiveQueryCallbackWrapper()
-        liveQueryCallback.delegate = { [weak self] in
+        let liveQueryCallback = LiveQueryCallbackWrapper { [weak self] in
             guard let self else { return }
 
             Task {

@@ -25,7 +25,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
     private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
-    private let callback = LiveQueryCallbackWrapper()
+    private var callback: LiveQueryCallbackWrapper!
 
     convenience init(backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider) {
         self.init(
@@ -86,7 +86,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     private func execute(task: BackgroundTask) async {
         await submit()
 
-        callback.delegate = {
+        callback = .init {
             log("Background task finished with success")
             task.setTaskCompleted(success: true)
         }

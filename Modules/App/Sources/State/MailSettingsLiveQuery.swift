@@ -30,7 +30,10 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
     private let userSession: MailUserSession
     private var watchHandle: WatchHandle?
     private let settingsSubject: CurrentValueSubject<MailSettings, Never> = .init(.defaults())
-    private let updateCallback = LiveQueryCallbackWrapper()
+
+    private lazy var updateCallback = LiveQueryCallbackWrapper { [weak self] in
+        self?.onSettingsUpdate()
+    }
 
     init(userSession: MailUserSession) {
         self.userSession = userSession
@@ -60,10 +63,6 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
     // MARK: - Private
 
     private func setUpLiveQuery() {
-        updateCallback.delegate = { [weak self] in
-            self?.onSettingsUpdate()
-        }
-
         Task {
             switch await watchMailSettings(ctx: userSession, callback: updateCallback) {
             case .ok(let settingsWatcher):

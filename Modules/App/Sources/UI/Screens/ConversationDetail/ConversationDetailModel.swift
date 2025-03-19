@@ -42,7 +42,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var expandedMessages: Set<ID>
     private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
-    private let messageListCallback: LiveQueryCallbackWrapper = .init()
+
+    private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
+        guard let self else { return }
+        Task { @MainActor in
+            let liveQueryValues = await self.readLiveQueryValues()
+            self.isStarred = liveQueryValues.isStarred
+            await self.updateStateToMessagesReady(with: liveQueryValues.messages)
+        }
+    }
+
     private let starActionPerformer: StarActionPerformer
 
     private var userSession: MailUserSession {
@@ -56,18 +65,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
         self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
-        setUpCallback()
-    }
-
-    private func setUpCallback() {
-        messageListCallback.delegate = { [weak self] in
-            guard let self else { return }
-            Task {
-                let liveQueryValues = await self.readLiveQueryValues()
-                self.isStarred = liveQueryValues.isStarred
-                await self.updateStateToMessagesReady(with: liveQueryValues.messages)
-            }
-        }
     }
 
     func fetchInitialData() async {

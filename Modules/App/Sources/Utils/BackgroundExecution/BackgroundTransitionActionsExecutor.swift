@@ -21,15 +21,20 @@ import UIKit
 
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceDidBecomeActive, @unchecked Sendable {
 
-    typealias ActionQueueStatusProvider = () -> ConnectionStatusProvider?
-    typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
+    typealias ActionQueueStatusProvider = @Sendable () -> ConnectionStatusProvider?
+    typealias BackgroundTaskExecutorProvider = @Sendable () -> BackgroundTaskExecutor
 
     static let taskName = "finish_pending_actions"
     private let backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler
     private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
     private let notificationScheduller: NotificationScheduler
     private let actionQueueStatusProvider: ActionQueueStatusProvider
-    private let callback: LiveQueryCallbackWrapper = .init()
+
+    private lazy var callback = LiveQueryCallbackWrapper { [weak self] in
+        Self.log("All actions executed, ending task")
+        Self.log("Handle present: \(self?.backgroundExecutionHandle != nil)?")
+        self?.endBackgroundTask()
+    }
 
     private var backgroundExecutionHandle: BackgroundExecutionHandle?
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
@@ -86,11 +91,6 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
             Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
 
-            callback.delegate = { [weak self] in
-                Self.log("All actions executed, ending task")
-                Self.log("Handle present: \(self?.backgroundExecutionHandle != nil)?")
-                self?.endBackgroundTask()
-            }
             do {
                 backgroundExecutionHandle = try backgroundTaskExecutorProvider().startBackgroundExecution(
                     callback: callback

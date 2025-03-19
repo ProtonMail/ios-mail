@@ -47,7 +47,14 @@ final class MailboxModel: ObservableObject {
             return result
         })
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-    private var scrollerCallback: LiveQueryCallbackWrapper = .init()
+
+    private lazy var scrollerCallback = LiveQueryCallbackWrapper { [weak self] in
+        Task {
+            AppLogger.log(message: "items scroller callback", category: .mailbox)
+            await self?.refreshMailboxItems()
+        }
+    }
+
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var moveToActionPerformer: MoveToActionPerformer?
@@ -98,7 +105,6 @@ final class MailboxModel: ObservableObject {
         )
 
         setUpBindings()
-        setUpScrollerCallback()
     }
 
     deinit {
@@ -179,15 +185,6 @@ extension MailboxModel {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    private func setUpScrollerCallback() {
-        scrollerCallback.delegate = { [weak self] in
-            Task {
-                AppLogger.log(message: "items scroller callback", category: .mailbox)
-                await self?.refreshMailboxItems()
-            }
-        }
     }
 
     private func onSelectedItemsChange() async {

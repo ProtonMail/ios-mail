@@ -218,7 +218,10 @@ private class SidebarModelsObservation<Model> {
     private let updatedData: () async -> Result<[Model], ActionError>
     private let dataUpdate: ([Model]) -> Void
 
-    private let updateCallback = LiveQueryCallbackWrapper()
+    private lazy var updateCallback = LiveQueryCallbackWrapper { [weak self] in
+        self?.onLabelsUpdate()
+    }
+
     private var watchHandle: WatchHandle?
 
     init(
@@ -241,10 +244,6 @@ private class SidebarModelsObservation<Model> {
     // MARK: - Private
 
     private func initLiveQuery() {
-        updateCallback.delegate = { [weak self] in
-            self?.onLabelsUpdate()
-        }
-
         Task {
             switch await sidebar.watchLabels(labelType: labelType, callback: updateCallback) {
             case .ok(let watchHandle):

@@ -30,7 +30,15 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
-    private var scrollerCallback: LiveQueryCallbackWrapper = .init()
+
+    private lazy var scrollerCallback = LiveQueryCallbackWrapper { [weak self] in
+        guard let self else { return }
+        Task {
+            AppLogger.log(message: "search scroller callback", category: .search)
+            await self.refreshMailboxItems()
+        }
+    }
+
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchPage: { [unowned self] currentPage, _ in
             let result = await fetchNextPage(currentPage: currentPage)
@@ -44,23 +52,12 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchScroller = searchScroller
         self.dependencies = dependencies
-        setUpScrollerCallback()
         setUpBindings()
         initialiseMailbox()
     }
 
     deinit {
         AppLogger.logTemporarily(message: "SearchModel deinit", category: .search)
-    }
-
-    private func setUpScrollerCallback() {
-        scrollerCallback.delegate = { [weak self] in
-            guard let self else { return }
-            Task {
-                AppLogger.log(message: "search scroller callback", category: .search)
-                await self.refreshMailboxItems()
-            }
-        }
     }
 
     private func setUpBindings() {
