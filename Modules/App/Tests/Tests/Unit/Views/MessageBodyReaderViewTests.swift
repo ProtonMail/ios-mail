@@ -17,16 +17,15 @@
 
 @testable import ProtonMail
 import SwiftUI
+import Testing
 import WebKit
-import XCTest
 
-class MessageBodyReaderViewTests: XCTestCase {
+@MainActor
+class MessageBodyReaderViewTests {
     var sut: MessageBodyReaderView!
     private var urlOpenerSpy: URLOpenerSpy!
-
-    override func setUp() {
-        super.setUp()
-
+    
+    init() {
         urlOpenerSpy = .init()
         sut = MessageBodyReaderView(
             bodyContentHeight: .constant(.zero),
@@ -43,39 +42,42 @@ class MessageBodyReaderViewTests: XCTestCase {
             htmlLoaded: {}
         )
     }
-
-    override func tearDown() {
+    
+    deinit {
         urlOpenerSpy = nil
         sut = nil
-
-        super.tearDown()
     }
 
+    @Test
     func test_WhenLinkInsideWebViewIsTapped_ItOpensURL() async {
         let result = await sut.webView(navigation: .init(navigationType: .linkActivated, url: protonURL))
 
-        XCTAssertEqual(result, .cancel)
-        XCTAssertEqual(urlOpenerSpy.callAsFunctionInvokedWithURL, [protonURL])
+        #expect(result == .cancel)
+        #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [protonURL])
     }
 
+    @Test
     func test_WhenReloadNavigationIsTriggered_ItDoesNotOpenURL() async {
         let result = await sut.webView(navigation: .init(navigationType: .reload, url: protonURL))
 
-        XCTAssertEqual(result, .allow)
-        XCTAssertTrue(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty)
+        #expect(result == .allow)
+        #expect(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty == true)
     }
     
+    @Test
     func test_WhenUpdateUIViewIsCalledByTheSystem_ItReloadsWebView() throws {
         let webViewSpy = WKWebViewSpy()
         
+        #expect(webViewSpy.loadHTMLStringCalls.count == 0)
+        
         sut.updateUIView(webViewSpy)
         
-        XCTAssertEqual(webViewSpy.loadHTMLStringCalls.count, 1)
+        #expect(webViewSpy.loadHTMLStringCalls.count == 1)
         
-        let arguments = try XCTUnwrap(webViewSpy.loadHTMLStringCalls.last)
+        let arguments = try #require(webViewSpy.loadHTMLStringCalls.last)
         
-        XCTAssertEqual(arguments.html, "<html>dummy</html>")
-        XCTAssertEqual(arguments.baseURL, nil)
+        #expect(arguments.html == "<html>dummy</html>")
+        #expect(arguments.baseURL == nil)
     }
 
     private var protonURL: URL {
