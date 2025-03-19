@@ -46,25 +46,27 @@ final class MessageBodyStateStore: ObservableObject {
     func handle(action: Action) async {
         switch action {
         case .onLoad:
-            await loadMessageBody(forMessageID: messageID, with: .none)
+            await loadMessageBody(with: .none)
         case .displayEmbeddedImages:
             if case let .loaded(body) = state {
                 let updatedOptions = body.html.options
                     .copy(\.hideEmbeddedImages, to: false)
 
-                await loadMessageBody(forMessageID: messageID, with: updatedOptions)
+                await loadMessageBody(with: updatedOptions)
             }
         case .downloadRemoteContent:
             if case let .loaded(body) = state {
                 let updatedOptions = body.html.options
                     .copy(\.hideRemoteImages, to: false)
                 
-                await loadMessageBody(forMessageID: messageID, with: updatedOptions)
+                await loadMessageBody(with: updatedOptions)
             }
         }
     }
 
-    private func loadMessageBody(forMessageID messageID: ID, with options: TransformOpts?) async {
+    // MARK: - Private
+
+    private func loadMessageBody(with options: TransformOpts?) async {
         switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
             state = .loaded(body)
