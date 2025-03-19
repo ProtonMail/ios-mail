@@ -55,7 +55,12 @@ final class MessageBodyStateStore: ObservableObject {
                 await loadMessageBody(forMessageID: messageID, with: updatedOptions)
             }
         case .downloadRemoteContent:
-            break
+            if case let .loaded(body) = state {
+                let updatedOptions = body.html.options
+                    .copy(\.hideRemoteImages, to: false)
+                
+                await loadMessageBody(forMessageID: messageID, with: updatedOptions)
+            }
         }
     }
 

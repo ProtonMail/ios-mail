@@ -26,6 +26,7 @@ import SwiftUI
 struct MessageBannersView: View {
     enum Action {
         case displayEmbeddedImages
+        case downloadRemoteContent
     }
     
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -148,7 +149,7 @@ struct MessageBannersView: View {
                 )
             case .remoteContent:
                 let button = Banner.Button(title: L10n.MessageBanner.remoteContentAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.downloadRemoteContent)
                 }
                 
                 return .init(

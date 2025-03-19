@@ -55,6 +55,8 @@ struct MessageBodyView: View {
                         switch action {
                         case .displayEmbeddedImages:
                             handle(action: .displayEmbeddedImages)
+                        case .downloadRemoteContent:
+                            handle(action: .downloadRemoteContent)
                         }
                     }
                 )
