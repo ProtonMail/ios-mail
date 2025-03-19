@@ -24,9 +24,7 @@ final class LegacyKeychain: Keychain {
     }
 
     init() {
-        // TODO: use the intended legacy accessGroup once we change the bundle identifier
-//        super.init(service: "ch.protonmail", accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
-        super.init(service: "ch.protonmail", accessGroup: "group.me.proton.mail")
+        super.init(service: "ch.protonmail", accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
     }
 
     func data(forKey key: Key) throws -> Data? {
