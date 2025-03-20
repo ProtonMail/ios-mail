@@ -47,7 +47,7 @@ struct SettingsScreen: View {
                                         Color(details.avatarInfo.color)
                                         Text(details.avatarInfo.initials)
                                             .opacity(0.8)
-                                            .font(.subheadline)
+                                            .font(.body)
                                             .fontWeight(.semibold)
                                             .foregroundStyle(DS.Color.Global.white)
                                     }
