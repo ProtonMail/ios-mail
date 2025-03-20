@@ -53,9 +53,9 @@ struct MessageBodyView: View {
                     timer: Timer.self,
                     action: { action in
                         switch action {
-                        case .displayEmbeddedImages:
+                        case .displayEmbeddedImagesTapped:
                             handle(action: .displayEmbeddedImages)
-                        case .downloadRemoteContent:
+                        case .downloadRemoteContentTapped:
                             handle(action: .downloadRemoteContent)
                         }
                     }

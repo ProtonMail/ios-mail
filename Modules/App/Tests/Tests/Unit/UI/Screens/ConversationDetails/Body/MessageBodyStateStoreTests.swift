@@ -87,10 +87,10 @@ final class MessageBodyStateStoreTests {
         #expect(sut.state == .error(expectedError))
     }
     
-    // MARK: - `displayEmbeddedImages` action
+    // MARK: - `displayEmbeddedImagesTapped` action
     
     @Test
-    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+    func testState_WhenDisplayEmbeddedImagesTappedActionTriggered_ItFetchesBodyWithModifiedOptions() async {
         let initialOptions = TransformOpts.init(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -128,10 +128,10 @@ final class MessageBodyStateStoreTests {
         )))
     }
     
-    // MARK: - `downloadRemoteContent` action
+    // MARK: - `downloadRemoteContentTapped` action
     
     @Test
-    func testState_WhenDownlaodRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+    func testState_WhenDownloadRemoteContentTappedActionTriggered_ItFetchesBodyWithModifiedOptions() async {
         let initialOptions = TransformOpts.init(
             showBlockQuote: true,
             hideRemoteImages: .none,
