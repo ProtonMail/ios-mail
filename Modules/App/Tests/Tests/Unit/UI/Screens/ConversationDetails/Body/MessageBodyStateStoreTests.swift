@@ -24,7 +24,7 @@ import Testing
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedMessageID: ID!
-    var stubbedResult: GetMessageBodyResult!
+    var stubbedMessageBodyResult: GetMessageBodyResult!
     var markAsNotSpamMessageIDs: [ID]!
     var stubbedMarkAsNotSpamResult: VoidActionResult!
     
@@ -34,7 +34,7 @@ final class MessageBodyStateStoreTests {
         sut = .init(
             messageID: stubbedMessageID,
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedResult }),
+            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedMessageBodyResult }),
             actionsWrapper: .init(
                 markMessageHam: { @MainActor [unowned self] _, messageID in
                     self.markAsNotSpamMessageIDs.append(messageID)
@@ -48,7 +48,7 @@ final class MessageBodyStateStoreTests {
         stubbedMarkAsNotSpamResult = nil
         markAsNotSpamMessageIDs = nil
         stubbedMessageID = nil
-        stubbedResult = nil
+        stubbedMessageBodyResult = nil
         sut = nil
     }
     
@@ -63,7 +63,7 @@ final class MessageBodyStateStoreTests {
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
-        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 0)
         #expect(sut.state == .fetching)
@@ -83,7 +83,7 @@ final class MessageBodyStateStoreTests {
     
     @Test
     func testState_WhenOnLoadAndFailedDueToNetworkError_ItReturnsNoConnectionError() async {
-        stubbedResult = .error(.other(.network))
+        stubbedMessageBodyResult = .error(.other(.network))
         
         await sut.handle(action: .onLoad)
         
@@ -94,7 +94,7 @@ final class MessageBodyStateStoreTests {
     func testState_WhenOnLoadAndFailedDueToOtherReasonError_ItReturnsError() async {
         let expectedError: ActionError = .other(.otherReason(.other("An error occurred")))
         
-        stubbedResult = .error(expectedError)
+        stubbedMessageBodyResult = .error(expectedError)
         
         await sut.handle(action: .onLoad)
         
@@ -112,7 +112,7 @@ final class MessageBodyStateStoreTests {
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
-        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
         
@@ -153,7 +153,7 @@ final class MessageBodyStateStoreTests {
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
-        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
         
@@ -194,7 +194,7 @@ final class MessageBodyStateStoreTests {
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
-        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         stubbedMarkAsNotSpamResult = .ok
 
         await sut.handle(action: .onLoad)
@@ -237,7 +237,7 @@ final class MessageBodyStateStoreTests {
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
-        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         stubbedMarkAsNotSpamResult = .error(.other(.network))
 
         await sut.handle(action: .onLoad)
