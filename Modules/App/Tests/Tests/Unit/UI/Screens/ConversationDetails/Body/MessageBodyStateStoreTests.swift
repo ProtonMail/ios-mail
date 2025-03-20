@@ -186,7 +186,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `markAsLegitimateSpam` action
     
     @Test
-    func testState_WhenSpamMarkAsLegitimateActionSucceeds_ItFetchesBodyWithLastOptionsAndMarkMessageAsNotSpam() async {
+    func testState_WhenSpamMarkAsLegitimateActionSucceeds_ItMarksMessageAsNotSpamAndFetchesBodyWithLastOptions() async {
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -226,6 +226,41 @@ final class MessageBodyStateStoreTests {
                 embeddedImageProvider: decryptedMessageSpy
             )
         )))
+    }
+    
+    @Test
+    func testState_WhenSpamMarkAsLegitimateActionFails_ItMarksMessageAsNotSpamAndDoNotFetchBody() async {
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMarkAsNotSpamResult = .error(.other(.network))
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .displayEmbeddedImages)
+        
+        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .spamMarkAsLegitimate)
+        
+        #expect(markAsNotSpamMessageIDs == [stubbedMessageID!])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
     }
 }
 

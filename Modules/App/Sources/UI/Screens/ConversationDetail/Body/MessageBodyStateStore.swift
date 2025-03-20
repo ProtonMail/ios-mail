@@ -90,7 +90,12 @@ final class MessageBodyStateStore: ObservableObject {
     }
     
     private func markAsNotSpam(with options: TransformOpts) async {
-        _ = await legitMessageMarker.markAsNotSpam(forMessageID: messageID)
-        await loadMessageBody(with: options)
+        switch await legitMessageMarker.markAsNotSpam(forMessageID: messageID) {
+        case .ok:
+            await loadMessageBody(with: options)
+        case .error(let error):
+            // FIXME: Add presenting toast
+            break
+        }
     }
 }
