@@ -77,5 +77,3 @@ final class MessageBodyStateStore: ObservableObject {
         }
     }
 }
-
-extension TransformOpts: @retroactive Copying {}
