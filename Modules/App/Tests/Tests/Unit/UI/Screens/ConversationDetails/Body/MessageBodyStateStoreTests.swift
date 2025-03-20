@@ -29,7 +29,7 @@ final class MessageBodyStateStoreTests {
         sut = .init(
             messageID: .init(value: 1),
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { _, _ in await self.stubbedResult })
+            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedResult })
         )
     }
 
