@@ -31,12 +31,12 @@ class SettingsScreenSnapshotTests: BaseTestCase {
             mailUserSession: MailUserSessionStub(noPointer: .init())
         )
 
-        assertSnapshotsOnIPhoneX(of: sut, precision: 0.99)
+        assertSnapshotsOnIPhoneX(of: sut)
     }
 
 }
 
-private class MailUserSessionStub: MailUserSession {
+private final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
 
     override func accountDetails() async -> MailUserSessionAccountDetailsResult {
         .ok(.testData)

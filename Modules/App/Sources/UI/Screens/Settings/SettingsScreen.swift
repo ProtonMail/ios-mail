@@ -34,23 +34,77 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                DS.Color.BackgroundInverted.norm
+                DS.Color.Background.secondary
                     .ignoresSafeArea()
                 ScrollView {
-                    if let accountSettings = state.accountSettings {
-                        section(items: [.account(accountSettings)], header: L10n.Settings.account)
+                    VStack(alignment: .leading, spacing: .zero) {
+                        if let details = state.accountSettings {
+                            Button(action: {
+                                present(page: .accountSettings)
+                            }) {
+                                HStack(spacing: DS.Spacing.large) {
+                                    ZStack {
+                                        Color(details.avatarInfo.color)
+                                        Text(details.avatarInfo.initials)
+                                            .opacity(0.8)
+                                            .font(.subheadline)
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(DS.Color.Global.white)
+                                    }
+                                    .square(size: 48)
+                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+
+                                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                                        Text(details.name)
+                                            .lineLimit(1)
+                                            .foregroundStyle(DS.Color.Text.norm)
+                                            .fontWeight(.semibold)
+                                        Text(verbatim: details.email)
+                                            .foregroundStyle(DS.Color.Text.weak)
+                                            .font(.subheadline)
+                                    }
+
+                                    Spacer()
+
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 17))
+                                        .foregroundStyle(DS.Color.Text.hint)
+                                }
+                                .padding(.all, DS.Spacing.large)
+                                .contentShape(Rectangle())
+                            }
+                            .buttonStyle(SettingsButtonStyle())
+                            .background(DS.Color.BackgroundInverted.secondary) // This can be reused
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge)) // This can be reused
+                            .padding(.bottom, DS.Spacing.huge)
+                            .padding(.top, DS.Spacing.large)
+                        }
+
+                        Text(L10n.Settings.preferences)
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                            .padding(.bottom, DS.Spacing.mediumLight)
+                            .padding(.leading, DS.Spacing.large)
+                        LazyVStack(spacing: .zero) {
+                            ForEachLast(collection: state.preferences) { preference, isLast in
+                                settingsRow(
+                                    icon: preference.displayData.icon,
+                                    title: preference.displayData.title,
+                                    isLast: isLast
+                                ) {
+                                    present(page: preference.webPage)
+                                }
+                            }
+                        }
+                        .background(DS.Color.BackgroundInverted.secondary)
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
                     }
-                    section(
-                        items: state.preferences.map(SettingsItemType.preference),
-                        header: L10n.Settings.preferences
-                    )
                 }
+                .padding(.horizontal, DS.Spacing.large)
                 .navigationTitle(L10n.Settings.title.string)
                 .toolbarTitleDisplayMode(.large)
                 .toolbarBackground(DS.Color.BackgroundInverted.norm, for: .navigationBar)
-                .toolbar {
-                    doneToolbarItem()
-                }
+                .toolbar { doneToolbarItem() }
             }
             .navigationDestination(item: presentedWebPage) { webPage in
                 ProtonAuthenticatedWebView(webViewPage: webPage)
@@ -83,76 +137,6 @@ struct SettingsScreen: View {
         )
     }
 
-    private func section(items: [SettingsItemType], header: LocalizedStringResource) -> some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
-            Text(header)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(DS.Color.Text.hint)
-
-            VStack(spacing: .zero) {
-                ForEach(items, id: \.self) { item in
-                    Button(action: { selected(item: item) }) {
-                        buttonContent(item: item)
-                    }
-                    if items.last != item {
-                        DS.Color.BackgroundInverted.border
-                            .frame(height: 1)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-            }
-            .listRowSeparator(.hidden)
-            .background(DS.Color.BackgroundInverted.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, DS.Spacing.large)
-        .padding(.top, DS.Spacing.medium)
-    }
-
-    private func buttonContent(item: SettingsItemType) -> some View {
-        VStack(spacing: .zero) {
-            HStack(spacing: .zero) {
-                image(for: item)
-                    .padding(.trailing, DS.Spacing.large)
-                VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                    Text(item.displayData.title)
-                        .foregroundStyle(DS.Color.Text.norm)
-                    Text(item.displayData.subtitle)
-                        .foregroundStyle(DS.Color.Text.hint)
-                        .font(.subheadline)
-                }
-                Spacer()
-                Image(DS.Icon.icChevronTinyRight)
-                    .foregroundStyle(DS.Color.Icon.hint)
-
-            }.padding(DS.Spacing.large)
-        }
-    }
-
-    @ViewBuilder
-    private func image(for item: SettingsItemType) -> some View {
-        switch item {
-        case .account(let accountSettings):
-            ZStack {
-                Color(accountSettings.avatarInfo.color)
-                Text(accountSettings.avatarInfo.initials)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(DS.Color.Global.white)
-            }
-            .square(size: 40)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
-        case .preference(let settingsPreference):
-            Image(settingsPreference.displayData.icon)
-                .resizable()
-                .square(size: 24)
-                .foregroundStyle(DS.Color.Icon.norm)
-                .padding(DS.Spacing.standard)
-        }
-    }
-
     private func doneToolbarItem() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
@@ -162,9 +146,42 @@ struct SettingsScreen: View {
         }
     }
 
-    private func selected(item: SettingsItemType) {
-        if let webPage = item.displayData.webPage {
-            state = state.copy(presentedWebPage: webPage)
+    private func settingsRow(
+        icon: ImageResource,
+        title: LocalizedStringResource,
+        isLast: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: { action() }) {
+            VStack(spacing: .zero) {
+                HStack(spacing: DS.Spacing.large) {
+                    Image(icon)
+                        .resizable()
+                        .square(size: 24)
+                        .foregroundStyle(DS.Color.Icon.norm)
+                    Text(title)
+                        .foregroundStyle(DS.Color.Text.norm)
+                    Spacer(minLength: DS.Spacing.medium)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 17))
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
+                .padding(DS.Spacing.large)
+
+                if !isLast {
+                    DS.Color.Border.norm
+                        .frame(height: 1)
+                        .padding(.leading, 56)
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(SettingsButtonStyle())
+    }
+
+    private func present(page: ProtonAuthenticatedWebPage?) {
+        if let page {
+            state = state.copy(presentedWebPage: page)
         } else {
             toastStateStore.present(toast: .comingSoon)
         }
@@ -174,12 +191,6 @@ struct SettingsScreen: View {
         state = state.copy(presentedWebPage: nil)
     }
 
-}
-
-#Preview {
-    NavigationStack {
-        SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
-    }
 }
 
 private extension ProtonAuthenticatedWebPage {
@@ -199,4 +210,39 @@ private extension ProtonAuthenticatedWebPage {
         }
     }
 
+}
+
+private extension SettingsPreference {
+
+    var webPage: ProtonAuthenticatedWebPage? {
+        switch self {
+        case .email:
+            return .emailSettings
+        case .foldersAndLabels:
+            return .createFolderOrLabel
+        case .filters:
+            return .spamFiltersSettings
+        case .privacyAndSecurity:
+            return .privacySecuritySettings
+        case .app:
+            return nil
+        }
+    }
+
+}
+
+private struct SettingsButtonStyle: ButtonStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration
+            .label
+            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
+    }
+
+}
+
+#Preview {
+    NavigationStack {
+        SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
+    }
 }
