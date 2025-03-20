@@ -41,7 +41,12 @@ struct MessageBodyView: View {
         self._attachmentIDToOpen = attachmentIDToOpen
         self.htmlLoaded = htmlLoaded
         _store = .init(
-            wrappedValue: .init(messageID: messageID, mailbox: mailbox, bodyWrapper: .productionInstance())
+            wrappedValue: .init(
+                messageID: messageID,
+                mailbox: mailbox,
+                bodyWrapper: .productionInstance(),
+                actionsWrapper: .productionInstance()
+            )
         )
     }
     

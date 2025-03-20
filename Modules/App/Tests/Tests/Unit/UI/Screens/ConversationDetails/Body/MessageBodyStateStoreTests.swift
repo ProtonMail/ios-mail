@@ -23,17 +23,31 @@ import Testing
 @MainActor
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
+    var stubbedMessageID: ID!
     var stubbedResult: GetMessageBodyResult!
+    var markAsNotSpamMessageIDs: [ID]!
+    var stubbedMarkAsNotSpamResult: VoidActionResult!
     
     init() {
+        stubbedMessageID = .init(value: 42)
+        markAsNotSpamMessageIDs = []
         sut = .init(
-            messageID: .init(value: 1),
+            messageID: stubbedMessageID,
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedResult })
+            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedResult }),
+            actionsWrapper: .init(
+                markMessageHam: { @MainActor [unowned self] _, messageID in
+                    self.markAsNotSpamMessageIDs.append(messageID)
+                    return stubbedMarkAsNotSpamResult
+                }
+            )
         )
     }
     
     deinit {
+        stubbedMarkAsNotSpamResult = nil
+        markAsNotSpamMessageIDs = nil
+        stubbedMessageID = nil
         stubbedResult = nil
         sut = nil
     }
@@ -42,7 +56,7 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenOnLoadAndSucceedsFetchingBodyWithDefaultOptions_ItReturnsLoadedWithCorrectMessageBody() async {
-        let initialOptions = TransformOpts.init(
+        let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
             hideEmbeddedImages: .none
@@ -90,8 +104,8 @@ final class MessageBodyStateStoreTests {
     // MARK: - `displayEmbeddedImagesTapped` action
     
     @Test
-    func testState_WhenDisplayEmbeddedImagesTappedActionTriggered_ItFetchesBodyWithModifiedOptions() async {
-        let initialOptions = TransformOpts.init(
+    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+        let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
             hideEmbeddedImages: .none
@@ -131,8 +145,8 @@ final class MessageBodyStateStoreTests {
     // MARK: - `downloadRemoteContentTapped` action
     
     @Test
-    func testState_WhenDownloadRemoteContentTappedActionTriggered_ItFetchesBodyWithModifiedOptions() async {
-        let initialOptions = TransformOpts.init(
+    func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+        let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
             hideEmbeddedImages: .none
@@ -159,6 +173,51 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+    }
+    
+    // MARK: - `markAsLegitimateSpam` action
+    
+    @Test
+    func testState_WhenSpamMarkAsLegitimateActionSucceeds_ItFetchesBodyWithLastOptionsAndMarkMessageAsNotSpam() async {
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        stubbedResult = .ok(decryptedMessageSpy)
+        stubbedMarkAsNotSpamResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .displayEmbeddedImages)
+        
+        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .spamMarkAsLegitimate)
+        
+        #expect(markAsNotSpamMessageIDs == [stubbedMessageID!])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
             banners: [],
             html: .init(

@@ -32,15 +32,23 @@ final class MessageBodyStateStore: ObservableObject {
         case onLoad
         case displayEmbeddedImages
         case downloadRemoteContent
+        case spamMarkAsLegitimate
     }
 
     @Published var state: MessageBodyState = .fetching
     private let messageID: ID
     private let provider: MessageBodyProvider
+    private let legitMessageMarker: LegitMessageMarker
 
-    init(messageID: ID, mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
+    init(
+        messageID: ID,
+        mailbox: Mailbox,
+        bodyWrapper: RustMessageBodyWrapper,
+        actionsWrapper: RustMessageActionsWrapper
+    ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
+        self.legitMessageMarker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
     }
 
     func handle(action: Action) async {
@@ -61,6 +69,10 @@ final class MessageBodyStateStore: ObservableObject {
                 
                 await loadMessageBody(with: updatedOptions)
             }
+        case .spamMarkAsLegitimate:
+            if case let .loaded(body) = state {
+                await markAsNotSpam(with: body.html.options)
+            }
         }
     }
 
@@ -75,5 +87,10 @@ final class MessageBodyStateStore: ObservableObject {
         case .error(let error):
             state = .error(error)
         }
+    }
+    
+    private func markAsNotSpam(with options: TransformOpts) async {
+        _ = await legitMessageMarker.markAsNotSpam(forMessageID: messageID)
+        await loadMessageBody(with: options)
     }
 }

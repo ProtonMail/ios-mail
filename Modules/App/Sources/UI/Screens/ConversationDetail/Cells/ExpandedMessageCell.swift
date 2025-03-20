@@ -162,7 +162,7 @@ private extension MessageBody {
 
     return VStack(spacing: 0) {
         ExpandedMessageCell(
-            mailbox: Mailbox(noPointer: .init()),
+            mailbox: .dummy,
             uiModel: .init(
                 id: .init(value: 0),
                 unread: false,
@@ -176,7 +176,7 @@ private extension MessageBody {
             htmlLoaded: {}
         )
         ExpandedMessageCell(
-            mailbox: Mailbox(noPointer: .init()),
+            mailbox: .dummy,
             uiModel: .init(
                 id: .init(value: 1),
                 unread: false,
