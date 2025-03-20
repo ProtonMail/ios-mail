@@ -24,13 +24,8 @@ struct LegitMessageMarker {
         self.markMessageHam = { messageID in await actionsWrapper.markMessageHam(mailbox, messageID) }
     }
 
-    func markAsNotSpam(forMessageID messageID: ID) async -> Result<Void, ActionError> {
-        switch await markMessageHam(messageID) {
-        case .ok:
-            return .success(())
-        case .error(let actionError):
-            return .failure(actionError)
-        }
+    func markAsNotSpam(forMessageID messageID: ID) async -> VoidActionResult {
+        await markMessageHam(messageID)
     }
 }
 
