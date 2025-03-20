@@ -766,6 +766,9 @@
         }
       }
     },
+    "Can't send while offline. Reconnect and retry." : {
+      "comment" : "Toast displayed after the report failed to send in offline."
+    },
     "Cancel" : {
       "comment" : "`Cancel` action title.",
       "localizations" : {

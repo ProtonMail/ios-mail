@@ -113,13 +113,24 @@ class ReportProblemStateStoreTests: BaseTestCase {
     }
 
     @MainActor
-    func testFormSubmission_WhenValidationSuccess_ItSendsRequestWithFailure() async {
-        reportProblemServiceSpy.failedToSend = true
+    func testFormSubmission_WhenValidationSuccess_ItSendsRequestWithFailureAndPresentsToast() async {
+        reportProblemServiceSpy.error = .other(.sessionExpired)
 
         await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
         await sut.handle(action: .submit)
         XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
         XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.ReportProblem.failureToast.string)])
+        XCTAssertEqual(dismissInvokeCount, 0)
+    }
+
+    @MainActor
+    func testFormSubmission_WhenDeviceIsOffline_ItPresentsToast() async {
+        reportProblemServiceSpy.error = .other(.network)
+
+        await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
+        await sut.handle(action: .submit)
+        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.ReportProblem.offlineFailureToast.string)])
         XCTAssertEqual(dismissInvokeCount, 0)
     }
 
@@ -133,15 +144,15 @@ private extension Sequence {
     }
 }
 
-private class ReportProblemServiceSpy: ReportProblemService {
-    var failedToSend = false
+private final class ReportProblemServiceSpy: ReportProblemService, @unchecked Sendable {
+    var error: ActionError?
     private(set) var invokedSendWithReport: [IssueReport] = []
 
-    func send(report: IssueReport) async throws {
+    func send(report: IssueReport) async throws(ActionError) {
         invokedSendWithReport.append(report)
 
-        if failedToSend {
-            throw ProtonError.network
+        if let error {
+            throw error
         }
     }
 }

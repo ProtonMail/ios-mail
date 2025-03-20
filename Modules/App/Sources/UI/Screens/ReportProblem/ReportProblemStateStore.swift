@@ -79,6 +79,7 @@ final class ReportProblemStateStore: StateStore {
                 }
             }
         case .reportResponse(let result):
+            state = state.copy(\.isLoading, to: false)
             switch result {
             case .success:
                 toastStateStore.present(toast: .information(message: L10n.ReportProblem.successToast.string))
@@ -86,7 +87,7 @@ final class ReportProblemStateStore: StateStore {
             case .failure(let failure):
                 switch failure {
                 case .other(.network):
-                    toastStateStore.present(toast: .error(message: L10n.ReportProblem.failureToast.string)) // OFFLINE TOAST
+                    toastStateStore.present(toast: .error(message: L10n.ReportProblem.offlineFailureToast.string))
                 default:
                     toastStateStore.present(toast: .error(message: L10n.ReportProblem.failureToast.string))
                 }
