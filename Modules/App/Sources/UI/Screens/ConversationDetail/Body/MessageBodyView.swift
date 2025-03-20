@@ -62,6 +62,8 @@ struct MessageBodyView: View {
                             handle(action: .displayEmbeddedImages)
                         case .downloadRemoteContentTapped:
                             handle(action: .downloadRemoteContent)
+                        case .spamMarkAsLegitimateTapped:
+                            handle(action: .spamMarkAsLegitimate)
                         }
                     }
                 )

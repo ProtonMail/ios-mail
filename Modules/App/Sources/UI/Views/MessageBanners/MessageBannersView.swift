@@ -27,6 +27,7 @@ struct MessageBannersView: View {
     enum Action {
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
+        case spamMarkAsLegitimateTapped
     }
     
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -78,7 +79,7 @@ struct MessageBannersView: View {
                 )
             case .spam:
                 let button = Banner.Button(title: L10n.MessageBanner.spamAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.spamMarkAsLegitimateTapped)
                 }
                 
                 return .init(
