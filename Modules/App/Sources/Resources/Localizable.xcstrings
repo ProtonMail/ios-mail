@@ -445,6 +445,9 @@
         }
       }
     },
+    "Allow notifications" : {
+      "comment" : "Button to authorizate notifications"
+    },
     "Also archive?" : {
       "comment" : "Title of switcher in the label as action sheet.",
       "localizations" : {
@@ -1440,9 +1443,6 @@
           }
         }
       }
-    },
-    "Enable push notifications" : {
-      "comment" : "Button to authorizate notifications"
     },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."

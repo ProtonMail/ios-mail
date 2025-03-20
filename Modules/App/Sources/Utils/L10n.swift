@@ -507,7 +507,7 @@ enum L10n {
         )
 
         static let cta = LocalizedStringResource(
-            "Enable push notifications",
+            "Allow notifications",
             comment: "Button to authorizate notifications"
         )
 

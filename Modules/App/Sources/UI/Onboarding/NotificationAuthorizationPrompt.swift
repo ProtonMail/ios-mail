@@ -39,7 +39,7 @@ struct NotificationAuthorizationPrompt: View {
 
             Text(trigger.title)
                 .font(.body)
-                .fontWeight(.semibold)
+                .fontWeight(.bold)
                 .foregroundStyle(DS.Color.Text.norm)
 
             Spacer()
