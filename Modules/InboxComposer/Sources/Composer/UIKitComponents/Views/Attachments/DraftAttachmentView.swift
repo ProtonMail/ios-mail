@@ -102,7 +102,7 @@ final class DraftAttachmentView: TapHighlightView {
         name.text = uiModel.attachment.name
         size.text = Formatter.bytesFormatter.string(fromByteCount: Int64(uiModel.attachment.size))
 
-        let isError = uiModel.status.state == .error
+        let isError = uiModel.status.state.isError
         layer.borderColor = isError ? DS.Color.Notification.error.toDynamicUIColor.cgColor : UIColor.clear.cgColor
         layer.borderWidth = isError ? 1.0 : 0.0
 

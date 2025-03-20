@@ -188,6 +188,10 @@ final class MockAttachmentList: AttachmentListProtocol {
         .ok([])
     }
 
+    func remove(id: Id) async -> AttachmentListRemoveResult {
+        .ok
+    }
+
     func retry(attachmentId: Id) async -> AttachmentListRetryResult {
         .ok
     }

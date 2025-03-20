@@ -41,7 +41,7 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
 
     func enqueueAlertsForFailedAttachmentUploads(attachments: [DraftAttachment]) {
         Task {
-            let failedAttachments = attachments.filter { $0.state == .error }
+            let failedAttachments = attachments.filter { $0.state.isError }
             let uploadFailures = failedAttachments.map { attachment in
                 UploadAttachmentError(
                     name: attachment.attachment.name,
@@ -98,4 +98,3 @@ extension AttachmentAlertState {
         return result
     }
 }
-

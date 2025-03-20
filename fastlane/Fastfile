@@ -119,9 +119,11 @@ platform :ios do
     xcodes(version: '16.2', select_for_current_build_only: true)
 
     run_tests(
+      app_identifier: APP_IDENTIFIER,
       scheme: UNIT_TESTS_SCHEME,
       devices: UNIT_TESTS_DEVICE,
       clean: true,
+      reinstall_app: true,
       result_bundle: true,
       xcargs: "-skipPackagePluginValidation"
     )
