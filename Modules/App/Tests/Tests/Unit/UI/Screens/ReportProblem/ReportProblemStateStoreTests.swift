@@ -16,20 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
 import InboxTesting
-import proton_app_uniffi
 import InboxCoreUI
+import proton_app_uniffi
+import Testing
 
-class ReportProblemStateStoreTests: BaseTestCase {
+final class ReportProblemStateStoreTests {
     var sut: ReportProblemStateStore!
     var toastStateStore: ToastStateStore!
     var dismissInvokeCount: Int!
     private var reportProblemServiceSpy: ReportProblemServiceSpy!
 
-    override func setUp() async throws {
-        try await super.setUp()
-
+    init() async {
         reportProblemServiceSpy = .init()
         toastStateStore = .init(initialState: .initial)
         dismissInvokeCount = 0
@@ -46,31 +44,29 @@ class ReportProblemStateStoreTests: BaseTestCase {
         )
     }
 
-    override func tearDown() {
+    deinit {
         reportProblemServiceSpy = nil
         toastStateStore = nil
         dismissInvokeCount = nil
         sut = nil
-
-        super.tearDown()
     }
 
-    @MainActor
-    func testFormSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() async {
+    @Test
+    func formSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() async {
         await sut.handle(action: .textEntered(\.summary, text: "Hello"))
         await sut.handle(action: .submit)
 
-        XCTAssertEqual(sut.state.scrollTo, .topInfoText)
-        XCTAssertEqual(sut.state.isLoading, false)
-        XCTAssertEqual(sut.state.summaryValidation, .failure("This field must be more than 10 characters"))
+        #expect(sut.state.scrollTo == .topInfoText)
+        #expect(sut.state.isLoading == false)
+        #expect(sut.state.summaryValidation == .failure("This field must be more than 10 characters"))
 
         await sut.handle(action: .scrollTo(element: nil))
 
-        XCTAssertEqual(sut.state.scrollTo, nil)
+        #expect(sut.state.scrollTo == nil)
     }
 
-    @MainActor
-    func testFormSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItSendsRequestWithSuccess() async {
+    @Test
+    func formSubmission_WhenLogsToggleIsDisabled_WhenValidationSuccess_ItSendsRequestWithSuccess() async {
         let fields: [(WritableKeyPath<ReportProblemState, String>, String)] = [
             (\.summary, "summary"),
             (\.expectedResults, "expected results"),
@@ -82,18 +78,18 @@ class ReportProblemStateStoreTests: BaseTestCase {
             await sut.handle(action: .textEntered(field, text: "Hello \(text)!"))
         }
 
-        XCTAssertEqual(sut.state.summary, "Hello summary!")
-        XCTAssertEqual(sut.state.expectedResults, "Hello expected results!")
-        XCTAssertEqual(sut.state.actualResults, "Hello actual results!")
-        XCTAssertEqual(sut.state.stepsToReproduce, "Hello steps to reproduce!")
+        #expect(sut.state.summary == "Hello summary!")
+        #expect(sut.state.expectedResults == "Hello expected results!")
+        #expect(sut.state.actualResults == "Hello actual results!")
+        #expect(sut.state.stepsToReproduce == "Hello steps to reproduce!")
 
         await sut.handle(action: .sendLogsToggleSwitched(isEnabled: false))
 
-        XCTAssertEqual(sut.state.sendLogsEnabled, false)
+        #expect(sut.state.sendLogsEnabled == false)
 
         await sut.handle(action: .submit)
-        XCTAssertEqual(sut.state.isLoading, false)
-        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport, [
+        #expect(sut.state.isLoading == false)
+        #expect(reportProblemServiceSpy.invokedSendWithReport == [
             .init(
                 operatingSystem: "iOS - iPhone",
                 operatingSystemVersion: "18.4",
@@ -108,32 +104,31 @@ class ReportProblemStateStoreTests: BaseTestCase {
                 includeLogs: false
             )
         ])
-        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: L10n.ReportProblem.successToast.string)])
-        XCTAssertEqual(dismissInvokeCount, 1)
+        #expect(toastStateStore.state.toasts == [.information(message: L10n.ReportProblem.successToast.string)])
+        #expect(dismissInvokeCount == 1)
     }
 
-    @MainActor
-    func testFormSubmission_WhenValidationSuccess_ItSendsRequestWithFailureAndPresentsToast() async {
+    @Test
+    func formSubmission_WhenValidationSuccess_ItSendsRequestWithFailureAndPresentsToast() async {
         reportProblemServiceSpy.error = .other(.sessionExpired)
 
         await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
         await sut.handle(action: .submit)
-        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.ReportProblem.failureToast.string)])
-        XCTAssertEqual(dismissInvokeCount, 0)
+        #expect(reportProblemServiceSpy.invokedSendWithReport.count == 1)
+        #expect(toastStateStore.state.toasts == [.error(message: L10n.ReportProblem.failureToast.string)])
+        #expect(dismissInvokeCount == 0)
     }
 
-    @MainActor
-    func testFormSubmission_WhenDeviceIsOffline_ItPresentsToast() async {
+    @Test
+    func formSubmission_WhenDeviceIsOffline_ItPresentsToast() async {
         reportProblemServiceSpy.error = .other(.network)
 
         await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
         await sut.handle(action: .submit)
-        XCTAssertEqual(reportProblemServiceSpy.invokedSendWithReport.count, 1)
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: L10n.ReportProblem.offlineFailureToast.string)])
-        XCTAssertEqual(dismissInvokeCount, 0)
+        #expect(reportProblemServiceSpy.invokedSendWithReport.count == 1)
+        #expect(toastStateStore.state.toasts == [.error(message: L10n.ReportProblem.offlineFailureToast.string)])
+        #expect(dismissInvokeCount == 0)
     }
-
 }
 
 private extension Sequence {
