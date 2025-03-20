@@ -38,66 +38,8 @@ struct SettingsScreen: View {
                     .ignoresSafeArea()
                 ScrollView {
                     VStack(alignment: .leading, spacing: .zero) {
-                        if let details = state.accountSettings {
-                            Button(action: {
-                                present(page: .accountSettings)
-                            }) {
-                                HStack(spacing: DS.Spacing.large) {
-                                    ZStack {
-                                        Color(details.avatarInfo.color)
-                                        Text(details.avatarInfo.initials)
-                                            .opacity(0.8)
-                                            .font(.body)
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(DS.Color.Global.white)
-                                    }
-                                    .square(size: 48)
-                                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
-
-                                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                                        Text(details.name)
-                                            .lineLimit(1)
-                                            .foregroundStyle(DS.Color.Text.norm)
-                                            .fontWeight(.semibold)
-                                        Text(verbatim: details.email)
-                                            .foregroundStyle(DS.Color.Text.weak)
-                                            .font(.subheadline)
-                                    }
-
-                                    Spacer()
-
-                                    Image(systemName: "chevron.right")
-                                        .font(.system(size: 17))
-                                        .foregroundStyle(DS.Color.Text.hint)
-                                }
-                                .padding(.all, DS.Spacing.large)
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(SettingsButtonStyle())
-                            .background(DS.Color.BackgroundInverted.secondary) // This can be reused
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge)) // This can be reused
-                            .padding(.bottom, DS.Spacing.huge)
-                            .padding(.top, DS.Spacing.large)
-                        }
-
-                        Text(L10n.Settings.preferences)
-                            .font(.callout)
-                            .fontWeight(.semibold)
-                            .padding(.bottom, DS.Spacing.mediumLight)
-                            .padding(.leading, DS.Spacing.large)
-                        LazyVStack(spacing: .zero) {
-                            ForEachLast(collection: state.preferences) { preference, isLast in
-                                settingsRow(
-                                    icon: preference.displayData.icon,
-                                    title: preference.displayData.title,
-                                    isLast: isLast
-                                ) {
-                                    present(page: preference.webPage)
-                                }
-                            }
-                        }
-                        .background(DS.Color.BackgroundInverted.secondary)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+                        accountDetails()
+                        preferencesSection()
                     }
                 }
                 .padding(.horizontal, DS.Spacing.large)
@@ -143,6 +85,75 @@ struct SettingsScreen: View {
                 Text(L10n.Common.done)
                     .foregroundStyle(DS.Color.InteractionBrand.norm)
             }
+        }
+    }
+
+    private func preferencesSection() -> some View {
+        VStack(spacing: .zero) {
+            Text(L10n.Settings.preferences)
+                .font(.callout)
+                .fontWeight(.semibold)
+                .padding(.bottom, DS.Spacing.mediumLight)
+                .padding(.leading, DS.Spacing.large)
+
+            LazyVStack(spacing: .zero) {
+                ForEachLast(collection: state.preferences) { preference, isLast in
+                    settingsRow(
+                        icon: preference.displayData.icon,
+                        title: preference.displayData.title,
+                        isLast: isLast
+                    ) {
+                        present(page: preference.webPage)
+                    }
+                }
+            }
+            .background(DS.Color.BackgroundInverted.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+        }
+    }
+
+    @ViewBuilder
+    private func accountDetails() -> some View {
+        if let details = state.accountSettings {
+            Button(action: {
+                present(page: .accountSettings)
+            }) {
+                HStack(spacing: DS.Spacing.large) {
+                    ZStack {
+                        Color(details.avatarInfo.color)
+                        Text(details.avatarInfo.initials)
+                            .opacity(0.8)
+                            .font(.body)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DS.Color.Global.white)
+                    }
+                    .square(size: 48)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+
+                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                        Text(details.name)
+                            .lineLimit(1)
+                            .foregroundStyle(DS.Color.Text.norm)
+                            .fontWeight(.semibold)
+                        Text(verbatim: details.email)
+                            .foregroundStyle(DS.Color.Text.weak)
+                            .font(.subheadline)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 17))
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
+                .padding(.all, DS.Spacing.large)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(SettingsButtonStyle())
+            .background(DS.Color.BackgroundInverted.secondary) // This can be reused
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge)) // This can be reused
+            .padding(.bottom, DS.Spacing.huge)
+            .padding(.top, DS.Spacing.large)
         }
     }
 
