@@ -69,6 +69,7 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
+            appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0") ),
             sidebarFactory: { _ in self.sidebarSpy! }
         ) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
@@ -89,7 +90,7 @@ private extension Dictionary where Key == String, Value == Any {
 
 }
 
-private class BundleStub: Bundle {
+private class BundleStub: Bundle, @unchecked Sendable {
 
     private let _infoDictionary: [String : Any]?
 

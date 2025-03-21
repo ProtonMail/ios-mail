@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,9 +18,23 @@
 import Foundation
 import proton_app_uniffi
 
-enum AppConstants {
+struct AppVersionProvider {
+    let bundle: Bundle
+    let sdkVersionProvider: SDKVersionProvider
 
-    /// time interval between event loop poll calls
-    static let eventLoopFrequency: TimeInterval = 30
+    /// Application and SDK version e.g. 1.18.0 (142) - 1.31.0
+    var fullVersion: String { "\(Bundle.main.appVersion) - \(rustSdkVersion())" }
 
+    init(bundle: Bundle = .main, sdkVersionProvider: SDKVersionProvider = .production) {
+        self.bundle = bundle
+        self.sdkVersionProvider = sdkVersionProvider
+    }
+}
+
+struct SDKVersionProvider {
+    let sdkVersion: String
+}
+
+extension SDKVersionProvider {
+    static let production: SDKVersionProvider = .init(sdkVersion: rustSdkVersion())
 }

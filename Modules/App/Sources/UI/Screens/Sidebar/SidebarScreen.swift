@@ -22,7 +22,6 @@ import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
-    @Environment(\.mainBundle) var mainBundle: Bundle
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
@@ -31,15 +30,18 @@ struct SidebarScreen: View {
     private let lastSwipeSignificanceThreshold: CGFloat = 25
     private let animationDuration = 0.2
     private let selectedItem: (SidebarItem) -> Void
+    private let appVersionProvider: AppVersionProvider
 
     init(
         state: SidebarState,
         userSession: MailUserSession,
+        appVersionProvider: AppVersionProvider = .init(),
         sidebarFactory: @escaping (MailUserSession) -> SidebarProtocol = Sidebar.init,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
         _screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebarFactory(userSession)))
         self.selectedItem = selectedItem
+        self.appVersionProvider = appVersionProvider
     }
 
     var body: some View {
@@ -320,7 +322,7 @@ struct SidebarScreen: View {
     }
 
     private var appVersionNote: some View {
-        Text("Version number \(mainBundle.appVersion)".notLocalized)
+        Text("Proton Mail \(appVersionProvider.fullVersion)".notLocalized)
             .font(.footnote)
             .foregroundStyle(DS.Color.Sidebar.textWeak)
             .frame(maxWidth: .infinity)

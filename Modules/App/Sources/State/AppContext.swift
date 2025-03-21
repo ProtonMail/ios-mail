@@ -78,7 +78,7 @@ final class AppContext: Sendable, ObservableObject {
         let params = MailSessionParamsFactory.make(appConfig: appConfig)
 
         _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain).get()
-        AppLogger.log(message: "MailSession init | \(Bundle.main.appVersion)", category: .rustLibrary)
+        AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
         setupAccountBindings()

@@ -32,7 +32,7 @@ extension AppLifeCycle: UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?
     ) -> Bool {
-        AppLogger.log(message: "\(#function) | \(Bundle.main.appVersion)", category: .appLifeCycle)
+        AppLogger.log(message: "\(#function) | \(AppVersionProvider().fullVersion)", category: .appLifeCycle)
 
         applicationServicesInitialisation()
         applicationServices.setUp()
