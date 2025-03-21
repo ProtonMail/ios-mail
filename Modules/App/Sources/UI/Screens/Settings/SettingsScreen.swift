@@ -142,7 +142,7 @@ struct SettingsScreen: View {
 
                     Spacer()
 
-                    Image(systemName: "chevron.right")
+                    Image(systemName: DS.SFSymbols.chevronRight)
                         .font(.system(size: 17))
                         .foregroundStyle(DS.Color.Text.hint)
                 }
@@ -173,7 +173,7 @@ struct SettingsScreen: View {
                     Text(title)
                         .foregroundStyle(DS.Color.Text.norm)
                     Spacer(minLength: DS.Spacing.medium)
-                    Image(systemName: "chevron.right")
+                    Image(systemName: DS.SFSymbols.chevronRight)
                         .font(.system(size: 17))
                         .foregroundStyle(DS.Color.Text.hint)
                 }
