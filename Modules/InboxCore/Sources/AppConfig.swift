@@ -48,7 +48,7 @@ public extension AppConfig {
 
     static let `default`: Self = {
         let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
-        let appVersion = "ios-mail@7.0.0" // Read from config once "ios-mail@x.y.z" is supported.
+        let appVersion = "ios-mail@\(Bundle.main.effectiveAppVersion)"
         let environment = AppConfig.Environment(
             domain: domain,
             apiBaseUrl: "https://mail-api.\(domain)",
