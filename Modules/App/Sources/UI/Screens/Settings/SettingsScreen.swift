@@ -89,13 +89,7 @@ struct SettingsScreen: View {
     }
 
     private func preferencesSection() -> some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            Text(L10n.Settings.preferences)
-                .font(.callout)
-                .fontWeight(.semibold)
-                .padding(.bottom, DS.Spacing.mediumLight)
-                .padding(.leading, DS.Spacing.large)
-
+        FormSection(header: L10n.Settings.preferences) {
             LazyVStack(spacing: .zero) {
                 ForEachLast(collection: state.preferences) { preference, isLast in
                     VStack(spacing: .zero) {
