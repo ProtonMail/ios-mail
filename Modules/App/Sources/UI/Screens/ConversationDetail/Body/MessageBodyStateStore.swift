@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 
 enum MessageBodyState {
@@ -26,8 +27,7 @@ enum MessageBodyState {
     case noConnection
 }
 
-@MainActor
-final class MessageBodyStateStore: ObservableObject {
+final class MessageBodyStateStore: StateStore {
     enum Action {
         case onLoad
         case displayEmbeddedImages
@@ -39,18 +39,22 @@ final class MessageBodyStateStore: ObservableObject {
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
+    private let toastStateStore: ToastStateStore
 
     init(
         messageID: ID,
         mailbox: Mailbox,
         bodyWrapper: RustMessageBodyWrapper,
-        actionsWrapper: RustMessageActionsWrapper
+        actionsWrapper: RustMessageActionsWrapper,
+        toastStateStore: ToastStateStore
     ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
         self.legitMessageMarker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
+        self.toastStateStore = toastStateStore
     }
 
+    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onLoad:
@@ -78,6 +82,7 @@ final class MessageBodyStateStore: ObservableObject {
 
     // MARK: - Private
 
+    @MainActor
     private func loadMessageBody(with options: TransformOpts?) async {
         switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
@@ -89,13 +94,13 @@ final class MessageBodyStateStore: ObservableObject {
         }
     }
     
+    @MainActor
     private func markAsNotSpam(with options: TransformOpts) async {
         switch await legitMessageMarker.markAsNotSpam(forMessageID: messageID) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):
-            // FIXME: Add presenting toast
-            break
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 }

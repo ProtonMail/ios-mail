@@ -16,35 +16,39 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+@testable import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
 import Testing
 
-@MainActor
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedMessageID: ID!
     var stubbedMessageBodyResult: GetMessageBodyResult!
     var markAsNotSpamMessageIDs: [ID]!
     var stubbedMarkAsNotSpamResult: VoidActionResult!
+    var toastStateStore: ToastStateStore!
     
     init() {
         stubbedMessageID = .init(value: 42)
         markAsNotSpamMessageIDs = []
+        toastStateStore = .init(initialState: .initial)
         sut = .init(
             messageID: stubbedMessageID,
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { [unowned self] _, _ in await self.stubbedMessageBodyResult }),
+            bodyWrapper: .init(messageBody: { [unowned self] _, _ in self.stubbedMessageBodyResult }),
             actionsWrapper: .init(
                 markMessageHam: { @MainActor [unowned self] _, messageID in
                     self.markAsNotSpamMessageIDs.append(messageID)
                     return stubbedMarkAsNotSpamResult
                 }
-            )
+            ),
+            toastStateStore: toastStateStore
         )
     }
     
     deinit {
+        toastStateStore = nil
         stubbedMarkAsNotSpamResult = nil
         markAsNotSpamMessageIDs = nil
         stubbedMessageID = nil
@@ -229,16 +233,17 @@ final class MessageBodyStateStoreTests {
     }
     
     @Test
-    func testState_WhenSpamMarkAsLegitimateActionFails_ItMarksMessageAsNotSpamAndDoNotFetchBody() async {
+    func testState_WhenSpamMarkAsLegitimateActionFails_ItDoesNotFetchBodyAndPresentsErrorToast() async {
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
             hideEmbeddedImages: .none
         )
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        let expectedActionError: ActionError = .other(.network)
         
         stubbedMessageBodyResult = .ok(decryptedMessageSpy)
-        stubbedMarkAsNotSpamResult = .error(.other(.network))
+        stubbedMarkAsNotSpamResult = .error(expectedActionError)
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .displayEmbeddedImages)
@@ -261,6 +266,8 @@ final class MessageBodyStateStoreTests {
         #expect(markAsNotSpamMessageIDs == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
+        #expect(toastStateStore.state.toastHeights == [:])
     }
 }
 

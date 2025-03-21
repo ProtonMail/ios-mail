@@ -16,17 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OrderedCollections
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
 struct MessageBodyView: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     let messageID: ID
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
     @Binding var attachmentIDToOpen: ID?
-    
-    @StateObject var store: MessageBodyStateStore
     
     init(
         messageID: ID,
@@ -40,45 +40,39 @@ struct MessageBodyView: View {
         self.mailbox = mailbox
         self._attachmentIDToOpen = attachmentIDToOpen
         self.htmlLoaded = htmlLoaded
-        _store = .init(
-            wrappedValue: .init(
-                messageID: messageID,
-                mailbox: mailbox,
-                bodyWrapper: .productionInstance(),
-                actionsWrapper: .productionInstance()
-            )
-        )
     }
     
     var body: some View {
-        VStack(spacing: .zero) {
-            if case .loaded(let body) = store.state, !body.banners.isEmpty {
-                MessageBannersView(
-                    types: OrderedSet(body.banners),
-                    timer: Timer.self,
-                    action: { action in
-                        switch action {
-                        case .displayEmbeddedImagesTapped:
-                            handle(action: .displayEmbeddedImages)
-                        case .downloadRemoteContentTapped:
-                            handle(action: .downloadRemoteContent)
-                        case .spamMarkAsLegitimateTapped:
-                            handle(action: .spamMarkAsLegitimate)
+        StoreView(store: MessageBodyStateStore(
+            messageID: messageID,
+            mailbox: mailbox,
+            bodyWrapper: .productionInstance(),
+            actionsWrapper: .productionInstance(),
+            toastStateStore: toastStateStore
+        )) { state, store in
+            VStack(spacing: .zero) {
+                if case .loaded(let body) = state, !body.banners.isEmpty {
+                    MessageBannersView(
+                        types: OrderedSet(body.banners),
+                        timer: Timer.self,
+                        action: { action in
+                            switch action {
+                            case .displayEmbeddedImagesTapped:
+                                store.handle(action: .displayEmbeddedImages)
+                            case .downloadRemoteContentTapped:
+                                store.handle(action: .downloadRemoteContent)
+                            case .spamMarkAsLegitimateTapped:
+                                store.handle(action: .spamMarkAsLegitimate)
+                            }
                         }
-                    }
-                )
+                    )
+                }
+                if !attachments.isEmpty {
+                    MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+                }
+                MessageBodyHTMLView(messageId: messageID, messageBody: state, htmlLoaded: htmlLoaded)
             }
-            if !attachments.isEmpty {
-                MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
-            }
-            MessageBodyHTMLView(messageId: messageID, messageBody: store.state, htmlLoaded: htmlLoaded)
-        }
-        .onLoad { handle(action: .onLoad) }
-    }
-    
-    private func handle(action: MessageBodyStateStore.Action) {
-        Task {
-            await store.handle(action: action)
+            .onLoad { store.handle(action: .onLoad) }
         }
     }
 }
