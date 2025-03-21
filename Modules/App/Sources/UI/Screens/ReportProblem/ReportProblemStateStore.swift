@@ -26,7 +26,6 @@ final class ReportProblemStateStore: StateStore {
     private let reportProblemService: ReportProblemService
     private let toastStateStore: ToastStateStore
     private let issueReportBuilder: IssueReportBuilder
-    private let infoDictionary: [String: Any]?
     private let dismiss: () -> Void
 
     @MainActor
@@ -34,7 +33,7 @@ final class ReportProblemStateStore: StateStore {
         state: ReportProblemState,
         reportProblemService: ReportProblemService,
         toastStateStore: ToastStateStore,
-        infoDictionary: [String: Any]? = Bundle.main.infoDictionary,
+        mainBundle: Bundle = Bundle.main,
         deviceInfo: DeviceInfo = UIDevice.current,
         dismiss: @escaping () -> Void
     ) {
@@ -42,8 +41,7 @@ final class ReportProblemStateStore: StateStore {
         self.state = state
         self.reportProblemService = reportProblemService
         self.toastStateStore = toastStateStore
-        self.issueReportBuilder = .init(infoDictionary: infoDictionary, deviceInfo: deviceInfo)
-        self.infoDictionary = infoDictionary
+        self.issueReportBuilder = .init(mainBundle: mainBundle, deviceInfo: deviceInfo)
         self.dismiss = dismiss
     }
 
@@ -116,4 +114,3 @@ private extension FormMultilineTextInput.ValidationStatus {
     }
 
 }
-

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
 struct IssueReportBuilder {
@@ -26,11 +27,11 @@ struct IssueReportBuilder {
         let includeLogs: Bool
     }
 
-    private let infoDictionary: [String: Any]?
+    private let mainBundle: Bundle
     private let deviceInfo: DeviceInfo
 
-    init(infoDictionary: [String: Any]?, deviceInfo: DeviceInfo) {
-        self.infoDictionary = infoDictionary
+    init(mainBundle: Bundle, deviceInfo: DeviceInfo) {
+        self.mainBundle = mainBundle
         self.deviceInfo = deviceInfo
     }
 
@@ -52,23 +53,8 @@ struct IssueReportBuilder {
 
     // MARK: - Private
 
-    private var targetReleaseVersion = "7.0.0"
-
     private var clientVersion: String {
-        "\(appVersion) (\(buildNumber))"
+        "\(mainBundle.effectiveAppVersion) (\(mainBundle.buildVersion))"
     }
 
-    private var appVersion: String {
-        [infoPlistAppVersion, targetReleaseVersion].max { infoPlistAppVersion, targetReleaseVersion in
-            infoPlistAppVersion.compare(targetReleaseVersion, options: .numeric) == .orderedAscending
-        } ?? "Unknown"
-    }
-
-    private var infoPlistAppVersion: String {
-        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
-    }
-
-    private var buildNumber: String {
-        return infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
-    }
 }

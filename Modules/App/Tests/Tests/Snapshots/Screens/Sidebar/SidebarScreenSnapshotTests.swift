@@ -89,18 +89,3 @@ private extension Dictionary where Key == String, Value == Any {
     }
 
 }
-
-private class BundleStub: Bundle, @unchecked Sendable {
-
-    private let _infoDictionary: [String : Any]?
-
-    init(infoDictionary: [String : Any]?) {
-        self._infoDictionary = infoDictionary
-        super.init()
-    }
-
-    override var infoDictionary: [String : Any]? {
-        _infoDictionary
-    }
-
-}

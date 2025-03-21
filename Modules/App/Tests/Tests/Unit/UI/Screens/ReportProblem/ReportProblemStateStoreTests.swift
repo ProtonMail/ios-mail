@@ -35,10 +35,10 @@ final class ReportProblemStateStoreTests {
             state: .initial,
             reportProblemService: reportProblemServiceSpy,
             toastStateStore: toastStateStore,
-            infoDictionary: [
+            mainBundle: BundleStub(infoDictionary: [
                 "CFBundleVersion": "127",
                 "CFBundleShortVersionString": "0.2.0",
-            ],
+            ]),
             deviceInfo: DeviceInfoStub(),
             dismiss: { self.dismissInvokeCount += 1 }
         )
@@ -98,10 +98,10 @@ final class ReportProblemStateStoreTests {
                 clientType: .email,
                 title: "Proton Mail App bug report",
                 summary: "Hello summary!",
-                stepsToReproduce: "Hello steps to reproduce!",
+                stepstToReproduce: "Hello steps to reproduce!",
                 expectedResult: "Hello expected results!",
                 actualResult: "Hello actual results!",
-                includeLogs: false
+                logs: false
             )
         ])
         #expect(toastStateStore.state.toasts == [.information(message: L10n.ReportProblem.successToast.string)])
