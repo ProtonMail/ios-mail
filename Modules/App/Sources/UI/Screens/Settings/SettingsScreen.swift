@@ -107,8 +107,7 @@ struct SettingsScreen: View {
                     }
                 }
             }
-            .background(DS.Color.BackgroundInverted.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+            .applyRoundedRectangleStyle()
         }
     }
 
@@ -150,8 +149,7 @@ struct SettingsScreen: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(SettingsButtonStyle())
-            .background(DS.Color.BackgroundInverted.secondary) // This can be reused
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge)) // This can be reused
+            .applyRoundedRectangleStyle()
             .padding(.bottom, DS.Spacing.huge)
             .padding(.top, DS.Spacing.large)
         }
@@ -248,6 +246,22 @@ private struct SettingsButtonStyle: ButtonStyle {
         configuration
             .label
             .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
+    }
+
+}
+
+private extension View {
+    func applyRoundedRectangleStyle() -> some View {
+        modifier(RoundedRectangleStyleStyle())
+    }
+}
+
+private struct RoundedRectangleStyleStyle: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .background(DS.Color.BackgroundInverted.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
     }
 
 }
