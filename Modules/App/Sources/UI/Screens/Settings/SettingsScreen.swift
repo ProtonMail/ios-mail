@@ -89,7 +89,7 @@ struct SettingsScreen: View {
     }
 
     private func preferencesSection() -> some View {
-        VStack(spacing: .zero) {
+        VStack(alignment: .leading, spacing: .zero) {
             Text(L10n.Settings.preferences)
                 .font(.callout)
                 .fontWeight(.semibold)
@@ -98,12 +98,19 @@ struct SettingsScreen: View {
 
             LazyVStack(spacing: .zero) {
                 ForEachLast(collection: state.preferences) { preference, isLast in
-                    settingsRow(
-                        icon: preference.displayData.icon,
-                        title: preference.displayData.title,
-                        isLast: isLast
-                    ) {
-                        present(page: preference.webPage)
+                    VStack(spacing: .zero) {
+                        settingsRow(
+                            icon: preference.displayData.icon,
+                            title: preference.displayData.title,
+                            isLast: isLast
+                        ) {
+                            present(page: preference.webPage)
+                        }
+                        if !isLast {
+                            DS.Color.Border.norm
+                                .frame(height: 1)
+                                .padding(.leading, 56)
+                        }
                     }
                 }
             }
@@ -166,7 +173,7 @@ struct SettingsScreen: View {
                 HStack(spacing: DS.Spacing.large) {
                     Image(icon)
                         .resizable()
-                        .square(size: 24)
+                        .square(size: 20)
                         .foregroundStyle(DS.Color.Icon.norm)
                     Text(title)
                         .foregroundStyle(DS.Color.Text.norm)
@@ -176,12 +183,6 @@ struct SettingsScreen: View {
                         .foregroundStyle(DS.Color.Text.hint)
                 }
                 .padding(DS.Spacing.large)
-
-                if !isLast {
-                    DS.Color.Border.norm
-                        .frame(height: 1)
-                        .padding(.leading, 56)
-                }
             }
             .contentShape(Rectangle())
         }
