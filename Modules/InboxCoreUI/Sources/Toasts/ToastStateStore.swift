@@ -18,6 +18,7 @@
 import Foundation
 import OrderedCollections
 
+// FIXME: `ToastStateStore` should be on @MainActor
 public final class ToastStateStore: ObservableObject {
     public struct State {
         public var toasts: OrderedSet<Toast>

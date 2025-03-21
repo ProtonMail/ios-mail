@@ -20,29 +20,39 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class EventLoopErrorCoordinator: Sendable, ObservableObject {
+@MainActor
+final class EventLoopErrorCoordinator: ObservableObject {
+    private let toastStateStore: ToastStateStore
     private var handle: EventLoopErrorObserverHandle?
-    private let eventLoopErrorCallback: EventLoopErrorCallbackWrapper = .init()
+
+    private lazy var eventLoopErrorCallback = EventLoopErrorCallbackWrapper { [weak self] error in
+        guard let self else { return }
+        await MainActor.run {
+            self.onEventLoopError(error: error)
+        }
+    }
 
     init(userSession: MailUserSession, toastStateStore: ToastStateStore) {
-        eventLoopErrorCallback.delegate = { error in
-            AppLogger.log(error: error)
-            let toast = Toast(
-                title: nil,
-                message: L10n.EventLoopError.eventLoopErrorMessage.string,
-                button: nil,
-                style: .error,
-                duration: 10
-            )
-            toastStateStore.present(toast: toast)
-        }
+        self.toastStateStore = toastStateStore
         do {
             handle = try userSession.observeEventLoopErrors(callback: eventLoopErrorCallback).get()
         } catch {
             let errorMessage = "Failed to start observation for event loop due to: \(error.localizedDescription)"
             let eventError: EventError = .other(.otherReason(.other(errorMessage)))
-            eventLoopErrorCallback.delegate?(eventError)
+            onEventLoopError(error: eventError)
         }
+    }
+
+    private func onEventLoopError(error: EventError) {
+        AppLogger.log(error: error)
+        let toast = Toast(
+            title: nil,
+            message: L10n.EventLoopError.eventLoopErrorMessage.string,
+            button: nil,
+            style: .error,
+            duration: 10
+        )
+        toastStateStore.present(toast: toast)
     }
 
     deinit {
@@ -50,10 +60,14 @@ final class EventLoopErrorCoordinator: Sendable, ObservableObject {
     }
 }
 
-final class EventLoopErrorCallbackWrapper: @unchecked Sendable, EventLoopErrorObserver {
-    var delegate: ((EventError) -> Void)?
+private final class EventLoopErrorCallbackWrapper: Sendable, EventLoopErrorObserver {
+    private let callback: @Sendable (EventError) async -> Void
+
+    init(callback: @escaping @Sendable (EventError) async -> Void) {
+        self.callback = callback
+    }
 
     func onEventLoopError(error: EventError) async {
-        delegate?(error)
+        await callback(error)
     }
 }
