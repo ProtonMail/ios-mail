@@ -49,7 +49,7 @@ struct ReportProblemScreen: View {
                 ScrollViewReader { proxy in
                     ScrollView(.vertical) {
                         reportProblemForm(state: state, store: store)
-                            .disabled(store.state.isLoading)
+                            .disabled(state.isLoading)
                             .animation(.easeInOut(duration: 0.2), value: state.summaryValidation)
                             .padding(.horizontal, DS.Spacing.large)
 
@@ -75,7 +75,7 @@ struct ReportProblemScreen: View {
                         toolbarLeadingItem(state: state, store: store)
                         toolbarTrailingItem(state: state)
                     }
-                    .onChange(of: store.state.scrollTo) { _, newValue in
+                    .onChange(of: state.scrollTo) { _, newValue in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             proxy.scrollTo(newValue, anchor: .bottom)
                         }
@@ -84,7 +84,7 @@ struct ReportProblemScreen: View {
                 .frame(maxWidth: .infinity)
                 .background(DS.Color.Background.secondary)
             }
-            .onChange(of: store.state.summaryValidation) { _, newValue in
+            .onChange(of: state.summaryValidation) { _, newValue in
                 if case .failure = newValue {
                     isSummaryFocused = true
                 }
@@ -92,7 +92,7 @@ struct ReportProblemScreen: View {
             .onAppear {
                 isSummaryFocused = true
             }
-            .interactiveDismissDisabled(store.state.isLoading)
+            .interactiveDismissDisabled(state.isLoading)
         }
     }
 
