@@ -26,6 +26,7 @@ struct HomeScreenModalFactory {
     private let makeContactsScreen: () -> ContactsScreen
     private let makeComposerScreen: (ComposerModalParams) -> ComposerScreen
     private let makeSettingsScreen: () -> SettingsScreen
+    private let makeReportProblemScreen: () -> ReportProblemScreen
 
     init(mailUserSession: MailUserSession, toastStateStore: ToastStateStore) {
         self.makeContactsScreen = {
@@ -40,6 +41,7 @@ struct HomeScreenModalFactory {
             ComposerScreenFactory.makeComposer(userSession: mailUserSession, composerParams: composerParams)
         }
         self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
+        self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
     }
 
     @MainActor @ViewBuilder
@@ -54,7 +56,7 @@ struct HomeScreenModalFactory {
         case .settings:
             makeSettingsScreen()
         case .reportProblem:
-            ReportProblemScreen()
+            makeReportProblemScreen()
         }
     }
 }

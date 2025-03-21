@@ -15,13 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonMail
 import proton_app_uniffi
 
-enum ReportProblemAction: Sendable {
-    case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
-    case sendLogsToggleSwitched(isEnabled: Bool)
-    case scrollTo(element: ReportProblemScrollToElements?)
-    case submit
+class ReportProblemServiceSpy: ReportProblemService, @unchecked Sendable {
+    var error: UserSessionError?
+    private(set) var invokedSendWithReport: [IssueReport] = []
 
-    case reportResponse(Result<Void, UserSessionError>)
+    func send(report: IssueReport) async throws(UserSessionError) {
+        invokedSendWithReport.append(report)
+
+        if let error {
+            throw error
+        }
+    }
 }

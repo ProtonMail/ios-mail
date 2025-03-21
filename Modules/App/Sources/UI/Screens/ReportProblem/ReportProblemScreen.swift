@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct ReportProblemScreen: View {
@@ -29,7 +30,7 @@ struct ReportProblemScreen: View {
 
     init(
         state: ReportProblemState = .initial,
-        reportProblemService: ReportProblemService = ReportProblemServiceImplementation()
+        reportProblemService: ReportProblemService
     ) {
         self.state = state
         self.reportProblemService = reportProblemService
@@ -190,5 +191,5 @@ struct ReportProblemScreen: View {
 }
 
 #Preview {
-    ReportProblemScreen()
+    ReportProblemScreen(reportProblemService: MailUserSession(noPointer: .init()))
 }

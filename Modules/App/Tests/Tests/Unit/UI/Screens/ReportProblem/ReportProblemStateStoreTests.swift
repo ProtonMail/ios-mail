@@ -139,19 +139,6 @@ private extension Sequence {
     }
 }
 
-private final class ReportProblemServiceSpy: ReportProblemService, @unchecked Sendable {
-    var error: ActionError?
-    private(set) var invokedSendWithReport: [IssueReport] = []
-
-    func send(report: IssueReport) async throws(ActionError) {
-        invokedSendWithReport.append(report)
-
-        if let error {
-            throw error
-        }
-    }
-}
-
 private class DeviceInfoStub: DeviceInfo {
     var model: String {
         "iPhone"

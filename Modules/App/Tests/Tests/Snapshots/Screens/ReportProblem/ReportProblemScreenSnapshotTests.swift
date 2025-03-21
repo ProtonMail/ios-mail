@@ -24,7 +24,7 @@ import XCTest
 class ReportProblemScreenSnapshotTests: BaseTestCase {
 
     func testReportProblemScreenLayoutsCorrectly() {
-        let sut = ReportProblemScreen()
+        let sut = ReportProblemScreen(reportProblemService: ReportProblemServiceSpy())
             .environmentObject(ToastStateStore(initialState: .initial))
         assertSnapshotsOnIPhoneX(of: sut)
     }
@@ -32,7 +32,7 @@ class ReportProblemScreenSnapshotTests: BaseTestCase {
     func testFormValidationStyle() {
         var state = ReportProblemState.initial
         state.summaryValidation = .failure("This field must be more than 10 characters.")
-        let sut = ReportProblemScreen(state: state)
+        let sut = ReportProblemScreen(state: state, reportProblemService: ReportProblemServiceSpy())
             .environmentObject(ToastStateStore(initialState: .initial))
 
         assertSnapshotsOnIPhoneX(of: sut)

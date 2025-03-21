@@ -15,37 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-// FIXME: - To remove when Rust SDK API is available
-
 import proton_app_uniffi
-import Foundation
-
-struct IssueReport: Equatable {
-    let operatingSystem: String
-    let operatingSystemVersion: String
-    let client: String
-    let clientVersion: String
-    let clientType: ClientType
-    let title: String
-    let summary: String
-    let stepsToReproduce: String
-    let expectedResult: String
-    let actualResult: String
-    let includeLogs: Bool
-}
-
-enum ClientType: Int {
-    case email = 1;
-}
 
 protocol ReportProblemService: Sendable {
-    func send(report: IssueReport) async throws (ActionError)
+    func send(report: IssueReport) async throws (UserSessionError)
 }
 
-final class ReportProblemServiceImplementation: ReportProblemService {
-
-    func send(report: IssueReport) async throws (ActionError) {
-        try! await Task.sleep(for: .seconds(5))
+extension MailUserSession: ReportProblemService {
+    func send(report: IssueReport) async throws(UserSessionError) {
+        try await reportAnIssue(session: self, issueReport: report).get()
     }
-
 }

@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
+
 struct IssueReportBuilder {
     struct FormInfo {
         let summary: String
@@ -41,10 +43,10 @@ struct IssueReportBuilder {
             clientType: .email,
             title: "Proton Mail App bug report".notLocalized,
             summary: formInfo.summary,
-            stepsToReproduce: formInfo.stepsToReproduce,
+            stepstToReproduce: formInfo.stepsToReproduce,
             expectedResult: formInfo.expectedResults,
             actualResult: formInfo.actualResults,
-            includeLogs: formInfo.includeLogs
+            logs: formInfo.includeLogs
         )
     }
 
