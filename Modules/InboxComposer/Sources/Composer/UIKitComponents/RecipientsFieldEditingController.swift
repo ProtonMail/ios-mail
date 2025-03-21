@@ -27,11 +27,6 @@ enum RecipientsFieldEditingEvent {
 }
 
 final class RecipientsFieldEditingController: UIViewController {
-    enum Layout {
-        static let minCellHeight: CGFloat = 32.0
-        static let maxCollectionHeight: CGFloat = 200.0
-    }
-
     private let collectionView = SubviewFactory.collectionView
 
     private var contentSizeObservation: NSKeyValueObservation?
@@ -70,8 +65,9 @@ final class RecipientsFieldEditingController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        heightConstraint.constant = Layout.minCellHeight
+        heightConstraint.constant = RecipientsFieldExpandedLayout.minCellHeight
         self.becomeFirstResponder()
+        view.layoutIfNeeded()
     }
 
     private func setUpUI() {
@@ -102,7 +98,7 @@ final class RecipientsFieldEditingController: UIViewController {
     }
 
     func setFocus() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.scrollToLast(animated: false)
             self.setFocusOnCursor()
         }
@@ -123,9 +119,7 @@ extension RecipientsFieldEditingController {
 
     private func onContentSizeChage(collectionView: UICollectionView) {
         let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
-        let newHeight = max(min(contentHeight, Layout.maxCollectionHeight), Layout.minCellHeight)
-        heightConstraint.constant = newHeight
-        collectionView.isScrollEnabled = contentHeight > Layout.maxCollectionHeight
+        heightConstraint.constant = max(contentHeight, RecipientsFieldExpandedLayout.minCellHeight)
     }
 
     private func reloadCollectionItems() {
@@ -139,6 +133,8 @@ extension RecipientsFieldEditingController {
                     }
                 if cellUIModels.count > 1 { scrollToLast(animated: false) }
             }
+
+            view.layoutIfNeeded()
         }
     }
 
@@ -263,9 +259,10 @@ extension RecipientsFieldEditingController {
     private enum SubviewFactory {
 
         static var collectionView: UICollectionView {
-            let view = UICollectionView(frame: .zero, collectionViewLayout: .recipientEditingLayout)
+            let view = UICollectionView(frame: .zero, collectionViewLayout: .allRecipientsLayout)
             view.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = .clear
+            view.isScrollEnabled = false
             return view
         }
     }

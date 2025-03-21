@@ -30,8 +30,9 @@ enum RecipientsFieldEvent {
 final class RecipientsFieldController: UIViewController {
     private let label = SubviewFactory.title
     private let stack = SubviewFactory.stack
-    private let editingController: RecipientsFieldEditingController
     private let idleController = RecipientsFieldIdleController()
+    private let expandedController: RecipientsFieldExpandedController
+    private let editingController: RecipientsFieldEditingController
 
     var state: RecipientFieldState {
         didSet {
@@ -43,6 +44,7 @@ final class RecipientsFieldController: UIViewController {
 
     init(group: RecipientGroupType) {
         self.state = .initialState(group: group)
+        self.expandedController = .init(state: self.state)
         self.editingController = .init(state: self.state)
         label.text = group.string
         super.init(nibName: nil, bundle: nil)
@@ -67,7 +69,9 @@ final class RecipientsFieldController: UIViewController {
         
         stack.addArrangedSubview(idleController.view)
         stack.addArrangedSubview(editingController.view)
-        editingController.view.isHidden = true
+        stack.addArrangedSubview(expandedController.view)
+        expandedController.view.isHidden = state.controllerState != .expanded
+        editingController.view.isHidden = state.controllerState != .editing && state.controllerState != .contactPicker
         view.addSubview(stack)
 
         editingController.onEvent = {[weak self] event in
@@ -85,9 +89,13 @@ final class RecipientsFieldController: UIViewController {
             }
         }
 
-        let tapGesture = UITapGestureRecognizer()
-        tapGesture.addTarget(self, action: #selector(onIdleControllerTap))
-        idleController.view.addGestureRecognizer(tapGesture)
+        let idleViewTapGesture = UITapGestureRecognizer()
+        idleViewTapGesture.addTarget(self, action: #selector(onIdleControllerTap))
+        idleController.view.addGestureRecognizer(idleViewTapGesture)
+
+        let expandedViewTapGesture = UITapGestureRecognizer()
+        expandedViewTapGesture.addTarget(self, action: #selector(onIdleControllerTap))
+        expandedController.view.addGestureRecognizer(expandedViewTapGesture)
     }
 
     private func setUpConstraints() {
@@ -110,24 +118,34 @@ final class RecipientsFieldController: UIViewController {
     }
 
     private func updateView(for state: RecipientFieldState) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            idleController.view.isHidden = state.controllerState == .editing
-            editingController.view.isHidden = state.controllerState == .idle
-            switch state.controllerState {
-            case .idle:
-                editingController.scrollToLast()
-                editingController.clearCursor()
-                idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
-            case .editing:
-                editingController.state = state
-                if state.recipients.filter(\.isSelected).isEmpty {
-                    editingController.setFocus()
-                }
-            case .contactPicker:
-                editingController.state = state
+        idleController.view.isHidden = state.controllerState != .collapsed
+        expandedController.view.isHidden = state.controllerState != .expanded
+        editingController.view.isHidden = state.controllerState == .collapsed || state.controllerState == .expanded
+        switch state.controllerState {
+        case .collapsed:
+            editingController.scrollToLast()
+            editingController.clearCursor()
+            idleController.configure(recipient: state.recipients.first, numExtra: state.recipients.count - 1)
+            updateStateInExpandedAndEditingViews(state)
+        case .expanded:
+            editingController.scrollToLast()
+            editingController.clearCursor()
+            updateStateInExpandedAndEditingViews(state)
+        case .editing:
+            updateStateInExpandedAndEditingViews(state)
+            if state.recipients.filter(\.isSelected).isEmpty {
+                editingController.setFocus()
             }
+        case .contactPicker:
+            editingController.state = state
         }
+
+        view.layoutIfNeeded()
+    }
+
+    private func updateStateInExpandedAndEditingViews(_ state: RecipientFieldState) {
+        expandedController.state = state
+        editingController.state = state
     }
 }
 

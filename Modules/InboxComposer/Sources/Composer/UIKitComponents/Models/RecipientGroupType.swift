@@ -32,4 +32,8 @@ enum RecipientGroupType: CaseIterable {
             "Bcc:"
         }
     }
+
+    static func allCases(excluding group: RecipientGroupType) -> [RecipientGroupType] {
+        Array(Set(allCases).subtracting([group]))
+    }
 }

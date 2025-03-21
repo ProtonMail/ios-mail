@@ -20,19 +20,19 @@ import UIKit
 
 extension UICollectionViewLayout {
 
-    static var recipientEditingLayoutItemInset: NSDirectionalEdgeInsets {
+    static var allRecipientsLayoutItemInset: NSDirectionalEdgeInsets {
         .init(top: DS.Spacing.small, leading: 0, bottom: DS.Spacing.small, trailing: 0)
     }
 
-    static var recipientEditingLayoutItem: NSCollectionLayoutItem {
+    static var allRecipientsLayoutItem: NSCollectionLayoutItem {
         let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(40))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = UICollectionViewLayout.recipientEditingLayoutItemInset
+        item.contentInsets = UICollectionViewLayout.allRecipientsLayoutItemInset
         return item
     }
 
-    static var recipientEditingLayout: UICollectionViewLayout {
-        let item = UICollectionViewLayout.recipientEditingLayoutItem
+    static var allRecipientsLayout: UICollectionViewLayout {
+        let item = UICollectionViewLayout.allRecipientsLayoutItem
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(40)

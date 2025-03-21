@@ -91,9 +91,18 @@ final class ComposerModel: ObservableObject {
         if draftOrigin == .cache {
             showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
         }
-        startEditingRecipients(for: .to)
+        setInitialFocus()
         await permissionsHandler.requestAccessIfNeeded()
         await contactProvider.loadContacts()
+    }
+
+    @MainActor
+    private func setInitialFocus() {
+        if state.toRecipients.recipients.isEmpty {
+            startEditingRecipients(for: .to)
+            return
+        }
+        state.isInitialFocusInBody = true
     }
 
     @MainActor
@@ -109,10 +118,16 @@ final class ComposerModel: ObservableObject {
         endEditingRecipients()
 
         var newState = state
-        newState.overrideRecipientState(for: group) {
-            $0.copy(\.controllerState, to: .editing)
+        newState.overrideRecipientState(for: group) { recipientFieldState in
+            recipientFieldState.copy(\.controllerState, to: .editing)
         }
         newState = newState.copy(\.editingRecipientsGroup, to: group)
+        RecipientGroupType.allCases(excluding: group).forEach { group in
+            newState.overrideRecipientState(for: group) { recipientFieldState in
+                recipientFieldState.copy(\.controllerState, to: .expanded)
+            }
+        }
+
         state = newState
     }
 
@@ -126,15 +141,15 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func matchContact(group: RecipientGroupType, text: String) {
-        state.overrideRecipientState(for: group) { $0.copy(\.input, to: text) }
+        state.overrideRecipientState(for: group) { recipientFieldState in recipientFieldState.copy(\.input, to: text) }
         guard let result = contactProvider.contactsResult, !result.contacts.isEmpty else { return }
 
         contactProvider.filter(with: text) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 let newState: RecipientControllerStateType = result.matchingContacts.isEmpty ? .editing : .contactPicker
-                state.overrideRecipientState(for: group) {
-                    $0.copy(\.controllerState, to: newState)
+                state.overrideRecipientState(for: group) { recipientFieldState in
+                    recipientFieldState.copy(\.controllerState, to: newState)
                         .copy(\.input, to: result.text)
                         .copy(\.matchingContacts, to: result.matchingContacts)
                 }
@@ -144,7 +159,9 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func recipientToggleSelection(group: RecipientGroupType, index: Int) {
-        state.updateRecipientState(for: group) { $0.recipients[index].isSelected.toggle() }
+        state.updateRecipientState(for: group) { recipientFieldState in
+            recipientFieldState.recipients[index].isSelected.toggle()
+        }
     }
 
     @MainActor
@@ -162,9 +179,9 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func selectLastRecipient(group: RecipientGroupType) {
-        state.updateRecipientState(for: group) {
-            guard !$0.recipients.isEmpty else { return }
-            $0.recipients[$0.recipients.count - 1].isSelected = true
+        state.updateRecipientState(for: group) { recipientFieldState in
+            guard !recipientFieldState.recipients.isEmpty else { return }
+            recipientFieldState.recipients[recipientFieldState.recipients.count - 1].isSelected = true
         }
     }
 
@@ -306,7 +323,8 @@ extension ComposerModel {
             senderEmail: draft.sender(),
             subject: draft.subject(),
             attachments: [], // FIXME: Because the async nature of the SDK to read attachments, we read them separetely
-            initialBody: draft.body()
+            initialBody: draft.body(),
+            isInitialFocusInBody: false
         )
     }
 
@@ -340,11 +358,11 @@ extension ComposerModel {
         Dispatcher.dispatchOnMain(.init(
             block: { [weak self] in
                 guard let self else { return }
-                state.overrideRecipientState(for: group) { [weak self] in
-                    guard let self else { return $0 }
+                state.overrideRecipientState(for: group) { [weak self] recipientFieldState in
+                    guard let self else { return recipientFieldState }
                     let selectedIndexes = stateRecipientUIModels(for: group).selectedIndexes
                     let newRecipients = recipientUIModels(from: draft, for: group, selecting: selectedIndexes)
-                    return $0.copy(\.recipients, to: newRecipients)
+                    return recipientFieldState.copy(\.recipients, to: newRecipients)
                 }
             })
         )
@@ -381,15 +399,18 @@ extension ComposerModel {
         switch result {
         case .ok:
             let lastRecipient = recipientList.recipients().last!
-            state.overrideRecipientState(for: group) {
-                $0.copy(\.recipients, to: $0.recipients + [RecipientUIModel(composerRecipient: lastRecipient)])
-                    .copy(\.input, to: .empty)
-                    .copy(\.controllerState, to: .editing)
+            state.overrideRecipientState(for: group) { recipientFieldState in
+                recipientFieldState.copy(
+                    \.recipients,
+                     to: recipientFieldState.recipients + [RecipientUIModel(composerRecipient: lastRecipient)]
+                )
+                .copy(\.input, to: .empty)
+                .copy(\.controllerState, to: .editing)
             }
             return lastRecipient
         case .duplicate, .saveFailed: // FIXME: handle errors
-            state.overrideRecipientState(for: group) {
-                $0.copy(\.input, to: .empty)
+            state.overrideRecipientState(for: group) { recipientFieldState in
+                recipientFieldState.copy(\.input, to: .empty)
                     .copy(\.controllerState, to: .editing)
             }
             showToast(.error(message: result.localizedErrorMessage(entry: entry).string))
@@ -417,7 +438,7 @@ extension ComposerModel {
         return group
             .copy(\.recipients, to: newRecipients)
             .copy(\.input, to: .empty)
-            .copy(\.controllerState, to: .idle)
+            .copy(\.controllerState, to: .collapsed)
     }
 
     private func recipientList(from draft: AppDraftProtocol, group: RecipientGroupType) -> ComposerRecipientListProtocol {

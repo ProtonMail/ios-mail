@@ -27,6 +27,7 @@ struct ComposerState: Equatable, Copying {
     var subject: String
     var attachments: [DraftAttachmentUIModel]
     var initialBody: String
+    var isInitialFocusInBody: Bool
 
     var editingRecipientsGroup: RecipientGroupType?
     var editingRecipientFieldState: RecipientFieldState? {
@@ -59,6 +60,7 @@ extension ComposerState {
             subject: .empty,
             attachments: [],
             initialBody: .empty,
+            isInitialFocusInBody: false,
             editingRecipientsGroup: nil
         )
     }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import WebKit
 
 enum BodyEvent {
@@ -49,9 +50,20 @@ final class BodyWebViewInterface: NSObject {
     }
 
     @MainActor
+    func setFocus() async {
+        await withCheckedContinuation { continuation in
+            webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.setFocus.callFunction) { _, error in
+                if let error { AppLogger.log(error: error, category: .composer) }
+                continuation.resume()
+            }
+        }
+    }
+
+    @MainActor
     func readMesasgeBody() async -> String? {
         await withCheckedContinuation { continuation in
-            webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.getHtmlContent.callFunction) { result, _ in
+            webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.getHtmlContent.callFunction) { result, error in
+                if let error { AppLogger.log(error: error, category: .composer) }
                 guard let html = result as? String else {
                     return continuation.resume(returning: nil)
                 }

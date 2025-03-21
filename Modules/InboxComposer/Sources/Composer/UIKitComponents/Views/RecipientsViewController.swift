@@ -117,7 +117,7 @@ final class RecipientsViewController: UIViewController {
         bccField.state = bcc
 
         let areThereRecipientsInCcOrBcc = !ccField.state.recipients.isEmpty || !bccField.state.recipients.isEmpty
-        let isCcOrBccFocused = ccField.state.controllerState != .idle || bccField.state.controllerState != .idle
+        let isCcOrBccFocused = ccField.state.controllerState.isFocusedState || bccField.state.controllerState.isFocusedState
 
         visibilityState = areThereRecipientsInCcOrBcc || isCcOrBccFocused
         ? .allExpandedByContent
@@ -149,6 +149,18 @@ extension RecipientsViewController {
 
         static var chevronButton: UIButton {
             ComposerSubviewFactory.chevronButton
+        }
+    }
+}
+
+private extension RecipientControllerStateType {
+
+    var isFocusedState: Bool {
+        switch self {
+        case .collapsed, .expanded:
+            false
+        case .editing, .contactPicker:
+            true
         }
     }
 }

@@ -140,6 +140,9 @@ final class ComposerController: UIViewController {
         fromField.text = state.senderEmail
         subjectField.text = state.subject
         attachmentsController.uiModels = state.attachments
+        if state.isInitialFocusInBody {
+            bodyEditor.setBodyInitialFocus()
+        }
     }
 }
 

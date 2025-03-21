@@ -71,6 +71,7 @@ extension BodyHtmlDocument {
     }
 
     enum JSFunction: String {
+        case setFocus = "html_editor.setFocus"
         case getHtmlContent = "html_editor.getHtmlContent"
 
         var callFunction: String {
@@ -174,6 +175,10 @@ private extension BodyHtmlDocument {
     // --------------------
     // Functions
     // --------------------
+
+    \(JSFunction.setFocus.rawValue) = function () {
+        document.getElementById('\(ID.editor)').focus();
+    };
 
     \(JSFunction.getHtmlContent.rawValue) = function () {
         return document.getElementById('\(ID.editor)').innerHTML;

@@ -19,9 +19,10 @@ import InboxCore
 import Foundation
 
 enum RecipientControllerStateType {
-    case idle
-    case editing
-    case contactPicker
+    case collapsed      /* only first recipient and remaining recipient count are visible */
+    case expanded       /* all recipients are visible */
+    case editing        /* all recipients are visible and also the cursor to add more recipients */
+    case contactPicker  /* only the content of the cursor cell is visible */
 }
 
 struct RecipientFieldState: Equatable, Copying {
@@ -35,6 +36,6 @@ struct RecipientFieldState: Equatable, Copying {
 
 extension RecipientFieldState {
     static func initialState(group: RecipientGroupType, recipients: [RecipientUIModel] = []) -> RecipientFieldState {
-        .init(group: group, recipients: recipients, input: .empty, matchingContacts: [], controllerState: .idle)
+        .init(group: group, recipients: recipients, input: .empty, matchingContacts: [], controllerState: .collapsed)
     }
 }

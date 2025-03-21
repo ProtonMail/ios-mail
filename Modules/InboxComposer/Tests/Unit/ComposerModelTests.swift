@@ -103,6 +103,41 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.toast, .information(message: L10n.Composer.draftLoadedOffline.string))
     }
 
+    func testInit_whenNoToRecipient_itShouldFocusOnToField() async {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .cc)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
+        await sut.onLoad()
+        XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
+        XCTAssertFalse(sut.state.isInitialFocusInBody)
+    }
+
+    func testInit_whenAtLeastOneToRecipient_itShouldFocusOnTheBody() async {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
+        await sut.onLoad()
+        XCTAssertTrue(sut.state.isInitialFocusInBody)
+        XCTAssertEqual(sut.state.toRecipients.controllerState, .collapsed)
+    }
+
+    // MARK: startEditingRecipients
+
+    func testStartEditingRecipients_itShouldSetEditingForTargetGroupAndExpandedForOthers() async {
+        let mockDraft = MockDraft()
+        mockDraft.mockToRecipientList = .init(addedRecipients: [singleRecipient1])
+        mockDraft.mockCcRecipientList = .init(addedRecipients: [singleRecipient2])
+        let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
+
+        await sut.startEditingRecipients(for: .to)
+        XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
+        XCTAssertEqual(sut.state.ccRecipients.controllerState, .expanded)
+        XCTAssertEqual(sut.state.bccRecipients.controllerState, .expanded)
+
+        await sut.startEditingRecipients(for: .bcc)
+        XCTAssertEqual(sut.state.toRecipients.controllerState, .expanded)
+        XCTAssertEqual(sut.state.ccRecipients.controllerState, .expanded)
+        XCTAssertEqual(sut.state.bccRecipients.controllerState, .editing)
+    }
+
     // MARK: recipientToggleSelection
 
     @MainActor
@@ -274,7 +309,7 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: endEditingRecipients
 
     @MainActor
-    func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToIdle() async {
+    func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToCollapsed() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
         ])
@@ -293,7 +328,7 @@ final class ComposerModelTests: BaseTestCase {
         // Testing the `input` and `controllerState` values
         let expectation2 = expectation(description: "\(#function)")
         fulfill(expectation2, in: sut, when: { composerState in
-            composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .idle
+            composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .collapsed
         })
         sut.endEditingRecipients()
         await fulfillment(of: [expectation2], timeout: 1.0)
@@ -480,6 +515,7 @@ extension ComposerState {
             subject: .empty,
             attachments: [],
             initialBody: .empty,
+            isInitialFocusInBody: false,
             editingRecipientsGroup: nil
         )
     }

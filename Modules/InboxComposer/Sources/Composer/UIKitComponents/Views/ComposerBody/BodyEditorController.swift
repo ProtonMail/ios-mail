@@ -29,7 +29,9 @@ final class BodyEditorController: UIViewController {
     private let htmlInterface: BodyWebViewInterface
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
-
+    private lazy var initialFocusState = BodyInitialFocusState { [weak self] in
+        await self?.htmlInterface.setFocus()
+    }
     var onEvent: ((BodyEditorEvent) -> Void)?
 
     init(embeddedImageProvider: EmbeddedImageProvider) {
@@ -43,7 +45,7 @@ final class BodyEditorController: UIViewController {
         super.viewDidLoad()
         setUpUI()
         setUpConstraints()
-        setUpCallback()
+        setUpCallbacks()
     }
 
     private func setUpUI() {
@@ -64,7 +66,9 @@ final class BodyEditorController: UIViewController {
         ])
     }
 
-    private func setUpCallback() {
+    private func setUpCallbacks() {
+        webView.navigationDelegate = self
+
         htmlInterface.onEvent = { [weak self] htmlEvent in
             guard let self else { return }
             switch htmlEvent {
@@ -84,8 +88,19 @@ final class BodyEditorController: UIViewController {
         }
     }
 
+    func setBodyInitialFocus() {
+        Task { await initialFocusState.setFocusWhenLoaded() }
+    }
+
     func updateBody(html body: String) {
         htmlInterface.loadMessageBody(body)
+    }
+}
+
+extension BodyEditorController: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        Task { await initialFocusState.bodyWasLoaded() }
     }
 }
 
@@ -102,7 +117,7 @@ extension BodyEditorController {
             )
 
             let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
-            let webView = WKWebView(frame: .zero, configuration: config)
+            let webView = WKWebViewWithNoAccessoryView(frame: .zero, configuration: config)
             webView.translatesAutoresizingMaskIntoConstraints = false
             webView.scrollView.isScrollEnabled = false
             webView.scrollView.bounces = false
@@ -113,5 +128,52 @@ extension BodyEditorController {
             webView.scrollView.contentInsetAdjustmentBehavior = .never
             return webView
         }
+    }
+}
+
+private class WKWebViewWithNoAccessoryView: WKWebView {
+
+    override var inputAccessoryView: UIView? {
+        return nil
+    }
+}
+
+private final actor BodyInitialFocusState {
+    enum State {
+        case bodyNotLoaded
+        case bodyLoaded
+        case done
+    }
+
+    private var state: State = .bodyNotLoaded
+    private var shouldSetFocusWhenLoaded: Bool = false
+    private let setFocusAction: (() async -> Void)
+
+    init(setFocusAction: @escaping (() async -> Void)) {
+        self.setFocusAction = setFocusAction
+    }
+
+    private func moveToNextState() async {
+        guard state != .done else { return }
+        switch state {
+        case .bodyNotLoaded:
+            state = .bodyLoaded
+        case .bodyLoaded:
+            if shouldSetFocusWhenLoaded {
+                await setFocusAction()
+            }
+            state = .done
+        case .done:
+            break
+        }
+        await moveToNextState()
+    }
+
+    func setFocusWhenLoaded() {
+        shouldSetFocusWhenLoaded = true
+    }
+
+    func bodyWasLoaded() async {
+        await moveToNextState()
     }
 }

@@ -19,6 +19,9 @@ import InboxDesignSystem
 import UIKit
 
 final class RecipientsFieldIdleController: UIViewController {
+    enum Layout {
+        static let minCellHeight: CGFloat = 32.0
+    }
     private let recipientView = RecipientChipView()
     private let extraRecipientsCount = ExtraRecipientsCountView()
     private var recipient: RecipientUIModel?
@@ -41,7 +44,7 @@ final class RecipientsFieldIdleController: UIViewController {
         extraRecipientsCount.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: RecipientsFieldEditingController.Layout.minCellHeight + 2*verticalSpacing),
+            view.heightAnchor.constraint(equalToConstant: Layout.minCellHeight + 2*verticalSpacing),
             recipientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             recipientView.topAnchor.constraint(equalTo: view.topAnchor, constant: verticalSpacing),
             recipientView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalSpacing),
