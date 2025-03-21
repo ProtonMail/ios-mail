@@ -27,34 +27,21 @@ enum SettingsPreference: CaseIterable, Hashable {
 
     struct DisplayData {
         let title: LocalizedStringResource
-        let subtitle: LocalizedStringResource
         let icon: ImageResource
     }
 
     var displayData: DisplayData {
         switch self {
         case .email:
-            .init(title: L10n.Settings.email, subtitle: L10n.Settings.emailSubtitle, icon: DS.Icon.icEnvelopes)
+            .init(title: L10n.Settings.email, icon: DS.Icon.icEnvelopes)
         case .foldersAndLabels:
-            .init(
-                title: L10n.Settings.foldersAndLabels,
-                subtitle: L10n.Settings.foldersAndLabelsSubtitle,
-                icon: DS.Icon.icFolderOpen
-            )
+            .init(title: L10n.Settings.foldersAndLabels, icon: DS.Icon.icFolderOpen)
         case .filters:
-            .init(title: L10n.Settings.filters, subtitle: L10n.Settings.filtersSubtitle, icon: DS.Icon.icSliders)
+            .init(title: L10n.Settings.filters, icon: DS.Icon.icSliders)
         case .privacyAndSecurity:
-            .init(
-                title: L10n.Settings.privacyAndSecurity,
-                subtitle: L10n.Settings.privacyAndSecuritySubtitle,
-                icon: DS.Icon.icShield2Bolt
-            )
+            .init(title: L10n.Settings.privacyAndSecurity, icon: DS.Icon.icShield2Bolt)
         case .app:
-            .init(
-                title: L10n.Settings.appSettingsTitle, 
-                subtitle: L10n.Settings.appSettingsSubtitle,
-                icon: DS.Icon.icMobile
-            )
+            .init(title: L10n.Settings.appSettingsTitle, icon: DS.Icon.icMobile)
         }
     }
 

@@ -479,6 +479,7 @@
     },
     "App" : {
       "comment" : "Title of the App settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -505,6 +506,9 @@
           }
         }
       }
+    },
+    "App customisations" : {
+      "comment" : "Title of the App settings item."
     },
     "Archive" : {
       "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.\nMenu title of all archived emails in the sidebar.",
@@ -614,6 +618,7 @@
     },
     "Automatic actions and sorting" : {
       "comment" : "Subtitle of the Filters settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1356,6 +1361,7 @@
     },
     "Email" : {
       "comment" : "Title of the Email settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1385,6 +1391,7 @@
     },
     "Email and mailbox preferences" : {
       "comment" : "Subtitle of the Email settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1417,6 +1424,7 @@
     },
     "Email tracking protection" : {
       "comment" : "Subtitle of the Privacy and security settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1749,6 +1757,7 @@
     },
     "Mailbox organization" : {
       "comment" : "Subtitle of the Folders and labels settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1775,6 +1784,9 @@
           }
         }
       }
+    },
+    "Mailbox preferences" : {
+      "comment" : "Title of the Email settings item."
     },
     "mailbox.systemFolder.voiceOver.attachments" : {
       "comment" : "Voice over reads the number of attachments on an item.",
@@ -1981,6 +1993,7 @@
     },
     "Mobile app customization" : {
       "comment" : "Subtitle of the App settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2969,6 +2982,7 @@
     },
     "Spam and custom filters" : {
       "comment" : "Title of the Filters settings item.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2995,6 +3009,9 @@
           }
         }
       }
+    },
+    "Spam and filters" : {
+      "comment" : "Title of the Filters settings item."
     },
     "Star" : {
       "comment" : "Action title for marking message/conversation as starred in the action sheet.",
