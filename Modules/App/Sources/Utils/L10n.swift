@@ -564,11 +564,11 @@ enum L10n {
             comment: "Toast displayed after the report was successfully sent"
         )
         static let failureToast = LocalizedStringResource(
-            "Report failed to send, please retry",
+            "There was an error sending the report, please try again.",
             comment: "Toast displayed after the report failed to send"
         )
         static let offlineFailureToast = LocalizedStringResource(
-            "Can't send while offline. Reconnect and retry.",
+            "You are currently offline, please try again with internet connection.",
             comment: "Toast displayed after the report failed to send in offline."
         )
     }

@@ -766,9 +766,6 @@
         }
       }
     },
-    "Can't send while offline. Reconnect and retry." : {
-      "comment" : "Toast displayed after the report failed to send in offline."
-    },
     "Cancel" : {
       "comment" : "`Cancel` action title.",
       "localizations" : {
@@ -2597,9 +2594,6 @@
     "Report a problem" : {
       "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.\nReport a problem screen main title."
     },
-    "Report failed to send, please retry" : {
-      "comment" : "Toast displayed after the report failed to send"
-    },
     "Report phishing" : {
       "comment" : "Action title for reporting phishing message in the action sheet.",
       "localizations" : {
@@ -3127,6 +3121,9 @@
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."
     },
+    "There was an error sending the report, please try again." : {
+      "comment" : "Toast displayed after the report failed to send"
+    },
     "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." : {
       "comment" : "Banner warning the user that the email failed authentication checks and may be spoofed."
     },
@@ -3423,6 +3420,9 @@
     },
     "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue." : {
       "comment" : "Event loop failed because an unexpected error."
+    },
+    "You are currently offline, please try again with internet connection." : {
+      "comment" : "Toast displayed after the report failed to send in offline."
     },
     "You blocked this sender" : {
       "comment" : "Banner informing the user that they have blocked this sender."
