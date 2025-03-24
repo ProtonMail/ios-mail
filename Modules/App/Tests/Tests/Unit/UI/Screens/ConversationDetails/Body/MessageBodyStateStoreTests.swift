@@ -322,6 +322,43 @@ final class MessageBodyStateStoreTests {
             )
         )))
     }
+    
+    @Test
+    func testState_WhenUnblockSenderActionFails_ItDoesNotFetchBodyAndPresentsErrorToast() async {
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        let expectedActionError: ActionError = .other(.network)
+        
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        stubbedUnblockSenderResult = .error(expectedActionError)
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .displayEmbeddedImages)
+        
+        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .unblockSender)
+        
+        #expect(unblockSenderMessageIDs == [stubbedMessageID!])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
+    }
 }
 
 extension MessageBodyState: @retroactive Equatable {
