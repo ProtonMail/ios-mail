@@ -40,6 +40,7 @@ final class MessageBodyStateStore: StateStore {
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
+    private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
 
     init(
@@ -52,6 +53,7 @@ final class MessageBodyStateStore: StateStore {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
         self.legitMessageMarker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
+        self.senderUnblocker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
         self.toastStateStore = toastStateStore
     }
 
@@ -79,7 +81,9 @@ final class MessageBodyStateStore: StateStore {
                 await markAsNotSpam(with: body.html.options)
             }
         case .unblockSender:
-            break
+            if case let .loaded(body) = state {
+                await unblockSender(with: body.html.options)
+            }
         }
     }
 
@@ -104,6 +108,16 @@ final class MessageBodyStateStore: StateStore {
             await loadMessageBody(with: options)
         case .error(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
+    }
+    
+    @MainActor
+    private func unblockSender(with options: TransformOpts) async {
+        switch await senderUnblocker.unblockSender(forMessageID: messageID) {
+        case .ok:
+            await loadMessageBody(with: options)
+        case .error(let error):
+            fatalError("Not implemented: \(error)")
         }
     }
 }
