@@ -39,14 +39,16 @@ final class MessageBodyStateStoreTests {
         sut = .init(
             messageID: stubbedMessageID,
             mailbox: .dummy,
-            bodyWrapper: .init(messageBody: { [unowned self] _, _ in self.stubbedMessageBodyResult }),
-            actionsWrapper: .init(
-                markMessageHam: { @MainActor [unowned self] _, messageID in
-                    self.markAsNotSpamMessageIDs.append(messageID)
+            wrapper: .init(
+                messageBody: { [unowned self] _, _ in
+                    stubbedMessageBodyResult
+                },
+                markMessageHam: { [unowned self] _, messageID in
+                    markAsNotSpamMessageIDs.append(messageID)
                     return stubbedMarkAsNotSpamResult
                 },
-                unblockSender: { [self] _, messageID in
-                    self.unblockSenderMessageIDs.append(messageID)
+                unblockSender: { [unowned self] _, messageID in
+                    unblockSenderMessageIDs.append(messageID)
                     return stubbedUnblockSenderResult
                 }
             ),

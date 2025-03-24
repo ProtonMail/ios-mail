@@ -20,8 +20,8 @@ import proton_app_uniffi
 struct LegitMessageMarker {
     private let markMessageHam: @Sendable (_ messageID: ID) async -> VoidActionResult
     
-    init(mailbox: Mailbox, actionsWrapper: RustMessageActionsWrapper) {
-        self.markMessageHam = { messageID in await actionsWrapper.markMessageHam(mailbox, messageID) }
+    init(mailbox: Mailbox, wrapper: RustMessageBodyWrapper) {
+        self.markMessageHam = { messageID in await wrapper.markMessageHam(mailbox, messageID) }
     }
 
     func markAsNotSpam(forMessageID messageID: ID) async -> VoidActionResult {

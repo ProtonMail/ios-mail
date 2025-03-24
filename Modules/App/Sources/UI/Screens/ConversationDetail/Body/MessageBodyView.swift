@@ -46,8 +46,7 @@ struct MessageBodyView: View {
         StoreView(store: MessageBodyStateStore(
             messageID: messageID,
             mailbox: mailbox,
-            bodyWrapper: .productionInstance(),
-            actionsWrapper: .productionInstance(),
+            wrapper: .productionInstance(),
             toastStateStore: toastStateStore
         )) { state, store in
             VStack(spacing: .zero) {

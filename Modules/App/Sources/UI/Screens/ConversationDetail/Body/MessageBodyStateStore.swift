@@ -46,14 +46,13 @@ final class MessageBodyStateStore: StateStore {
     init(
         messageID: ID,
         mailbox: Mailbox,
-        bodyWrapper: RustMessageBodyWrapper,
-        actionsWrapper: RustMessageActionsWrapper,
+        wrapper: RustMessageBodyWrapper,
         toastStateStore: ToastStateStore
     ) {
         self.messageID = messageID
-        self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
-        self.legitMessageMarker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
-        self.senderUnblocker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
+        self.provider = .init(mailbox: mailbox, wrapper: wrapper)
+        self.legitMessageMarker = .init(mailbox: mailbox, wrapper: wrapper)
+        self.senderUnblocker = .init(mailbox: mailbox, wrapper: wrapper)
         self.toastStateStore = toastStateStore
     }
 

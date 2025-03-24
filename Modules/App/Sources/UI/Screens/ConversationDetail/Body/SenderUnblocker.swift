@@ -20,8 +20,8 @@ import proton_app_uniffi
 struct SenderUnblocker {
     private let _unblockSender: @Sendable (_ messageID: ID) async -> VoidActionResult
     
-    init(mailbox: Mailbox, actionsWrapper: RustMessageActionsWrapper) {
-        _unblockSender = { messageID in await actionsWrapper.unblockSender(mailbox, messageID) }
+    init(mailbox: Mailbox, wrapper: RustMessageBodyWrapper) {
+        _unblockSender = { messageID in await wrapper.unblockSender(mailbox, messageID) }
     }
     
     func unblockSender(forMessageID messageID: ID) async -> VoidActionResult {

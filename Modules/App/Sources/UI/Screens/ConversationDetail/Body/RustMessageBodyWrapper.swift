@@ -17,23 +17,27 @@
 
 import proton_app_uniffi
 
-struct RustMessageActionsWrapper {
+struct RustMessageBodyWrapper {
+    let messageBody: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
     let markMessageHam: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> VoidActionResult
     let unblockSender: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> VoidActionResult
     
     init(
+        messageBody: @escaping @Sendable (Mailbox, Id) async -> GetMessageBodyResult,
         markMessageHam: @escaping @Sendable (Mailbox, Id) async -> VoidActionResult,
         unblockSender: @escaping @Sendable (Mailbox, Id) async -> VoidActionResult
     ) {
+        self.messageBody = messageBody
         self.markMessageHam = markMessageHam
         self.unblockSender = unblockSender
     }
 }
 
-extension RustMessageActionsWrapper {
+extension RustMessageBodyWrapper {
 
     static func productionInstance() -> Self {
         .init(
+            messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) },
             markMessageHam: { mailbox, id in await markMessagesHam(mailbox: mailbox, messageId: id) },
             unblockSender: { mailbox, id in .ok }
         )
