@@ -117,7 +117,7 @@ final class MessageBodyStateStore: StateStore {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):
-            fatalError("Not implemented: \(error)")
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 }
