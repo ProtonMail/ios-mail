@@ -98,7 +98,7 @@ final class ReportProblemStateStoreTests {
                 clientType: .email,
                 title: "Proton Mail App bug report",
                 summary: "Hello summary!",
-                stepstToReproduce: "Hello steps to reproduce!",
+                stepsToReproduce: "Hello steps to reproduce!",
                 expectedResult: "Hello expected results!",
                 actualResult: "Hello actual results!",
                 logs: false

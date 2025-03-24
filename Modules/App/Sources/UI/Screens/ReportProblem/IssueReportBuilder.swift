@@ -44,7 +44,7 @@ struct IssueReportBuilder {
             clientType: .email,
             title: "Proton Mail App bug report".notLocalized,
             summary: formInfo.summary,
-            stepstToReproduce: formInfo.stepsToReproduce,
+            stepsToReproduce: formInfo.stepsToReproduce,
             expectedResult: formInfo.expectedResults,
             actualResult: formInfo.actualResults,
             logs: formInfo.includeLogs
