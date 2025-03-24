@@ -20,13 +20,13 @@ import Testing
 
 @testable import ProtonMail
 
-@Suite(.serialized) // we need serial execution, because we're accessing a real Keychain and UserDefaults
+@Suite(.serialized) // we need serial execution, because we're accessing real UserDefaults
 final class LegacyMigrationServiceTests {
-    private let legacyKeychain = LegacyKeychain()
+    private let legacyKeychain = LegacyKeychain.randomInstance()
     private let legacyUserDefaults = UserDefaults.legacy
     private var recordedCallsToMigrate: [MigrationData] = []
 
-    private lazy var sut = LegacyMigrationService { [unowned self] in
+    private lazy var sut = LegacyMigrationService(legacyKeychain: legacyKeychain) { [unowned self] in
         recordedCallsToMigrate.append($0)
     }
 

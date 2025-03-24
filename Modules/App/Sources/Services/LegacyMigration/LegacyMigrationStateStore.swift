@@ -17,6 +17,7 @@
 
 @preconcurrency import Combine
 import Foundation
+import InboxCore
 import InboxCoreUI
 
 @MainActor
@@ -30,39 +31,60 @@ final class LegacyMigrationStateStore: ObservableObject, Sendable {
     @Published private(set) var state: State = .checkingIfMigrationIsNeeded
 
     private let legacyMigrationService = LegacyMigrationService.shared
+    private let mainKeyUnlocker = MainKeyUnlocker()
+    private let toastStateStore: ToastStateStore
 
     init(toastStateStore: ToastStateStore) {
+        self.toastStateStore = toastStateStore
+
         Task { [weak self] in
             guard let self else { return }
 
             for await nextServiceState in await legacyMigrationService.statePublisher.values {
-                let (nextState, toast) = mapped(serviceState: nextServiceState)
-
-                state = nextState
-
-                if let toast {
-                    toastStateStore.present(toast: toast)
+                switch nextServiceState {
+                case .notChecked:
+                    break
+                case .notNeeded:
+                    state = .willNotMigrate
+                case .inProgress:
+                    state = .inProgress
+                case .awaitingProtectedMainKey:
+                    state = .inProgress
+                    unlockMainKeyAndResumeMigration()
+                case .failed:
+                    finishMigrationWithGenericError()
                 }
             }
         }
     }
 
-    private func mapped(serviceState: LegacyMigrationService.MigrationState) -> (State, Toast?) {
-        switch serviceState {
-        case .notChecked:
-            (.checkingIfMigrationIsNeeded, nil)
-        case .notNeeded:
-            (.willNotMigrate, nil)
-        case .inProgress:
-            (.inProgress, nil)
-        case .awaitingProtectedMainKey:
-            (
-                .willNotMigrate,
-                .migrationError(message: "Migrating a PIN- or Face ID-protected account is not supported yet.")
-            )
-        case .failed:
-            (.willNotMigrate, .migrationError(message: L10n.LegacyMigration.migrationFailed.string))
+    private func unlockMainKeyAndResumeMigration() {
+        Task {
+            do {
+                switch try mainKeyUnlocker.legacyAppProtectionMethod() {
+                case .biometrics:
+                    let mainKey = try mainKeyUnlocker.biometricsProtectedMainKey()
+                    await legacyMigrationService.resume(protectedMainKey: mainKey)
+                case .pin:
+                    state = .willNotMigrate
+                    toastStateStore.present(
+                        toast: .migrationError(
+                            message: "Migrating a PIN-protected account is not supported yet."
+                        )
+                    )
+                case .none:
+                    break
+                }
+            } catch {
+                AppLogger.log(error: error, category: .legacyMigration)
+                finishMigrationWithGenericError()
+            }
         }
+    }
+
+    private func finishMigrationWithGenericError() {
+        state = .willNotMigrate
+        toastStateStore.present(toast: .migrationError(message: L10n.LegacyMigration.migrationFailed.string))
     }
 }
 

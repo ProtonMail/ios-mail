@@ -44,7 +44,7 @@ actor LegacyMigrationService {
         stateSubject.eraseToAnyPublisher()
     }
 
-    private let legacyKeychain = LegacyKeychain()
+    private let legacyKeychain: LegacyKeychain
     private let legacyUserDefaults = UserDefaults.legacy
     private let passMigrationPayloadToRustSDK: PassMigrationPayloadToRustSDK
     private let stateSubject = CurrentValueSubject<MigrationState, Never>(.notChecked)
@@ -63,12 +63,13 @@ actor LegacyMigrationService {
         }
     }
 
-    init(passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK) {
+    init(legacyKeychain: LegacyKeychain, passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK) {
+        self.legacyKeychain = legacyKeychain
         self.passMigrationPayloadToRustSDK = passMigrationPayloadToRustSDK
     }
 
     private init() {
-        self.init {
+        self.init(legacyKeychain: .init()) {
             try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
         }
     }

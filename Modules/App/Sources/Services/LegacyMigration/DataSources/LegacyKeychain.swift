@@ -20,16 +20,47 @@ import InboxKeychain
 
 final class LegacyKeychain: Keychain {
     enum Key: String {
+        case biometricsProtectedMainKey = "BioProtection"
+        case pinProtectedMainKey = "PinProtection"
         case unprotectedMainKey = "NoneProtection"
     }
 
+    enum PrivateKeyLabel: String {
+        case biometricProtection = "BioProtection.private"
+    }
+
+    static nonisolated(unsafe) var legacyService = "ch.protonmail"
+
+    // TODO: use the intended legacy accessGroup once we change the bundle identifier
+    // private let legacyAccessGroup = "2SB5Z68H26.ch.protonmail.protonmail"
+    private let legacyAccessGroup = "group.me.proton.mail"
+
     init() {
-        // TODO: use the intended legacy accessGroup once we change the bundle identifier
-//        super.init(service: "ch.protonmail", accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
-        super.init(service: "ch.protonmail", accessGroup: "group.me.proton.mail")
+        super.init(service: Self.legacyService, accessGroup: legacyAccessGroup)
     }
 
     func data(forKey key: Key) throws -> Data? {
         try dataOrError(forKey: key.rawValue)
+    }
+
+    func privateKey(labeled label: PrivateKeyLabel) throws -> SecKey? {
+        let query: [CFString: Any] = [
+            kSecClass: kSecClassKey,
+            kSecAttrLabel: label.rawValue,
+            kSecAttrAccessGroup: legacyAccessGroup,
+            kSecReturnRef: true,
+        ]
+
+        var raw: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &raw)
+
+        switch status {
+        case errSecSuccess:
+            return raw as! SecKey?
+        case errSecItemNotFound:
+            return nil
+        default:
+            throw Keychain.AccessError.readFailed(key: label.rawValue, error: status)
+        }
     }
 }
