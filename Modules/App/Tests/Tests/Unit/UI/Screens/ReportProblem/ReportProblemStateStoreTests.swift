@@ -139,16 +139,8 @@ private extension Sequence {
     }
 }
 
-private class DeviceInfoStub: DeviceInfo {
-    var model: String {
-        "iPhone"
-    }
-
-    var systemName: String {
-        "iOS"
-    }
-
-    var systemVersion: String {
-        "18.4"
-    }
+private struct DeviceInfoStub: DeviceInfo {
+    let model = "iPhone"
+    let systemName = "iOS"
+    let systemVersion = "18.4"
 }
