@@ -40,10 +40,7 @@ struct RustMessageActionsWrapper {
 extension RustMessageActionsWrapper {
 
     static func productionInstance() -> Self {
-        .init(markMessageHam: { mailbox, id in
-            // FIXME: markMessagesHam takes session as first argument instead of mailbox
-            .ok
-        })
+        .init(markMessageHam: { mailbox, id in await markMessagesHam(mailbox: mailbox, messageId: id) })
     }
 
 }
