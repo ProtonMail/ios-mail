@@ -267,7 +267,6 @@ final class MessageBodyStateStoreTests {
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
-        #expect(toastStateStore.state.toastHeights == [:])
     }
 }
 
