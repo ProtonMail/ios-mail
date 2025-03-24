@@ -23,7 +23,7 @@ struct AppVersionProvider {
     let sdkVersionProvider: SDKVersionProvider
 
     /// Application and SDK version e.g. 1.18.0 (142) - 1.31.0
-    var fullVersion: String { "\(Bundle.main.appVersion) - \(rustSdkVersion())" }
+    var fullVersion: String { "\(Bundle.main.appVersion) - \(sdkVersionProvider.sdkVersion)" }
 
     init(bundle: Bundle = .main, sdkVersionProvider: SDKVersionProvider = .production) {
         self.bundle = bundle
