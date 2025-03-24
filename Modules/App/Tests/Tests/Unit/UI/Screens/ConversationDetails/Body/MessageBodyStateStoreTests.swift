@@ -26,12 +26,15 @@ final class MessageBodyStateStoreTests {
     var stubbedMessageID: ID!
     var stubbedMessageBodyResult: GetMessageBodyResult!
     var markAsNotSpamMessageIDs: [ID]!
+    var unblockSenderMessageIDs: [ID]!
     var stubbedMarkAsNotSpamResult: VoidActionResult!
+    var stubbedUnblockSenderResult: VoidActionResult!
     var toastStateStore: ToastStateStore!
     
     init() {
         stubbedMessageID = .init(value: 42)
         markAsNotSpamMessageIDs = []
+        unblockSenderMessageIDs = []
         toastStateStore = .init(initialState: .initial)
         sut = .init(
             messageID: stubbedMessageID,
@@ -41,6 +44,10 @@ final class MessageBodyStateStoreTests {
                 markMessageHam: { @MainActor [unowned self] _, messageID in
                     self.markAsNotSpamMessageIDs.append(messageID)
                     return stubbedMarkAsNotSpamResult
+                },
+                unblockSender: { [self] _, messageID in
+                    self.unblockSenderMessageIDs.append(messageID)
+                    return stubbedUnblockSenderResult
                 }
             ),
             toastStateStore: toastStateStore
@@ -50,7 +57,9 @@ final class MessageBodyStateStoreTests {
     deinit {
         toastStateStore = nil
         stubbedMarkAsNotSpamResult = nil
+        stubbedUnblockSenderResult = nil
         markAsNotSpamMessageIDs = nil
+        unblockSenderMessageIDs = nil
         stubbedMessageID = nil
         stubbedMessageBodyResult = nil
         sut = nil
@@ -267,6 +276,51 @@ final class MessageBodyStateStoreTests {
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
+    }
+    
+    // MARK: - `unblockSender` action
+    
+    @Test
+    func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyWithLastOptions() async {
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        stubbedUnblockSenderResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .displayEmbeddedImages)
+        
+        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
+        
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
+        
+        await sut.handle(action: .unblockSender)
+        
+        #expect(unblockSenderMessageIDs == [stubbedMessageID!])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
+        #expect(sut.state == .loaded(.init(
+            banners: [],
+            html: .init(
+                rawBody: "<html>dummy_with_custom_options</html>",
+                options: updatedOptions,
+                embeddedImageProvider: decryptedMessageSpy
+            )
+        )))
     }
 }
 

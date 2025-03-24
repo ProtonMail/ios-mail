@@ -33,6 +33,7 @@ final class MessageBodyStateStore: StateStore {
         case displayEmbeddedImages
         case downloadRemoteContent
         case spamMarkAsLegitimate
+        case unblockSender
     }
 
     @Published var state: MessageBodyState = .fetching
@@ -77,6 +78,8 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state {
                 await markAsNotSpam(with: body.html.options)
             }
+        case .unblockSender:
+            break
         }
     }
 

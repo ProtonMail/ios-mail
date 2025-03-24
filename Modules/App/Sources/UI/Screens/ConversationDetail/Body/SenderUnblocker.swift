@@ -17,14 +17,14 @@
 
 import proton_app_uniffi
 
-struct LegitMessageMarker {
-    private let markMessageHam: @Sendable (_ messageID: ID) async -> VoidActionResult
+struct SenderUnblocker {
+    private let _unblockSender: @Sendable (_ messageID: ID) async -> VoidActionResult
     
     init(mailbox: Mailbox, actionsWrapper: RustMessageActionsWrapper) {
-        self.markMessageHam = { messageID in await actionsWrapper.markMessageHam(mailbox, messageID) }
+        _unblockSender = { messageID in await actionsWrapper.unblockSender(mailbox, messageID) }
     }
-
-    func markAsNotSpam(forMessageID messageID: ID) async -> VoidActionResult {
-        await markMessageHam(messageID)
+    
+    func unblockSender(forMessageID messageID: ID) async -> VoidActionResult {
+        await _unblockSender(messageID)
     }
 }
