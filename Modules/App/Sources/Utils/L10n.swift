@@ -492,17 +492,17 @@ enum L10n {
         )
 
         static let title2 = LocalizedStringResource(
-            "Want to stay updated?",
+            "Don’t miss the reply",
             comment: "Title of the authorization prompt"
         )
 
         static let body1 = LocalizedStringResource(
-            "Notifications help you keep on top of your inbox without checking the app.",
+            "Notifications help you keep on top of your inbox even when you’re in another app.",
             comment: "Body of the authorization prompt"
         )
 
         static let body2 = LocalizedStringResource(
-            "Turn on notifications to know when you get a response to your email.", 
+            "A reply to your email? An important message? Get notified the moment they arrive.", 
             comment: "Body of the authorization prompt"
         )
 

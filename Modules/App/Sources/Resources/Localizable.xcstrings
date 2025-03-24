@@ -294,6 +294,9 @@
     "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs." : {
       "comment" : "Information displayed under send error logs switch."
     },
+    "A reply to your email? An important message? Get notified the moment they arrive." : {
+      "comment" : "Body of the authorization prompt"
+    },
     "Account" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -1290,6 +1293,9 @@
       "comment" : "Banner asking if the user wants to display images embedded in the email."
     },
     "Don’t miss an email" : {
+      "comment" : "Title of the authorization prompt"
+    },
+    "Don’t miss the reply" : {
       "comment" : "Title of the authorization prompt"
     },
     "Done" : {
@@ -2315,7 +2321,7 @@
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title."
     },
-    "Notifications help you keep on top of your inbox without checking the app." : {
+    "Notifications help you keep on top of your inbox even when you’re in another app." : {
       "comment" : "Body of the authorization prompt"
     },
     "Official" : {
@@ -3188,9 +3194,6 @@
         }
       }
     },
-    "Turn on notifications to know when you get a response to your email." : {
-      "comment" : "Body of the authorization prompt"
-    },
     "Unblock" : {
       "comment" : "Action to unblock the sender."
     },
@@ -3405,9 +3408,6 @@
           }
         }
       }
-    },
-    "Want to stay updated?" : {
-      "comment" : "Title of the authorization prompt"
     },
     "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation." : {
       "comment" : "Mailbox failed because an unexpected error."
