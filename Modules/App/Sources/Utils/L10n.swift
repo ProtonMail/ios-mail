@@ -195,6 +195,7 @@ enum L10n {
     enum Common {
         static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
         static let cancel = LocalizedStringResource("Cancel", comment: "`Cancel` action title.")
+        static let confirm = LocalizedStringResource("Confirm", comment: "`Confirm` action title.")
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
         static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
         static let off = LocalizedStringResource("Off", comment: "Indicates that a feature is disabled and not functioning.")
@@ -541,10 +542,6 @@ enum L10n {
         static let screenTopTitle = LocalizedStringResource(
             "Enter PIN",
             comment: "Top title of the pin lock screen."
-        )
-        static let confirmButtonTitle = LocalizedStringResource(
-            "Confirm",
-            comment: "Title of the button to confirm the pin code."
         )
         static let signOutConfirmationButton = LocalizedStringResource(
             "Sign Out",
