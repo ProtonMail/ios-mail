@@ -45,7 +45,7 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
             let uploadFailures = failedAttachments.map { attachment in
                 UploadAttachmentError(
                     name: attachment.attachment.name,
-                    attachmentId: attachment.attachment.id.value.description,
+                    attachmentId: attachment.attachment.id,
                     errorTimeStamp: attachment.stateModifiedTimestamp
                 )
             }

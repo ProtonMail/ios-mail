@@ -108,8 +108,8 @@ struct ComposerView: View {
                         model.retryUploadingAttachment(uiModel: uiModel)
                     case .onTap:
                         toastStateStore.present(toast: .comingSoon)
-                    case .onRemove:
-                        toastStateStore.present(toast: .comingSoon)
+                    case .onRemove(let uiModel):
+                        model.removeAttachment(id: uiModel.attachment.id)
                     }
 
                 case .bodyEvent(let event):
@@ -170,7 +170,7 @@ struct ComposerView: View {
         ForEach(error.actions) { action in
             Button(role: .cancel) {
                 if action.removeAttachment {
-                    model.removeDraftAttachments(origin: error.origin)
+                    model.removeAttachments(for: error)
                 }
                 model.alertState.errorDismissedShowNextError()
             } label: {

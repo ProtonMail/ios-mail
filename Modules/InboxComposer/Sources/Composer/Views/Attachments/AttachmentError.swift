@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 enum AttachmentError: Hashable {
     case overSizeLimit(origin: AttachmentErrorOrigin)
@@ -83,7 +84,7 @@ enum AttachmentErrorOrigin: Hashable {
 struct UploadAttachmentError: Identifiable, Hashable {
     var id: String { "\(attachmentId)-\(errorTimeStamp)" }
     let name: String
-    let attachmentId: ID
+    let attachmentId: Id
     let errorTimeStamp: Int64
 }
 

@@ -45,7 +45,7 @@ final class ComposerModel: ObservableObject {
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
-    private let attachmentsCallback = DraftAttachmentsCallbackWrapper()
+    private var attachmentWatcher: DraftAttachmentWatcher?
 
     private var updateBodyDebounceTask: DebouncedTask?
     
@@ -84,6 +84,10 @@ final class ComposerModel: ObservableObject {
         Task {
             await updateStateAttachmentUIModels()
         }
+    }
+
+    deinit {
+        attachmentWatcher?.disconnect()
     }
 
     @MainActor
@@ -291,15 +295,14 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func removeDraftAttachments(origin: AttachmentErrorOrigin) {
-        switch origin {
-        case .adding:
-            break
-        case .uploading(let uploadAttachmentErrors):
+    func removeAttachment(id attachmendId: ID) {
+        Task { await draft.attachmentList().remove(id: attachmendId) }
+    }
+
+    func removeAttachments(for error: AttachmentError) {
+        if case .uploading(let uploadAttachmentErrors) = error.origin {
             for attachment in uploadAttachmentErrors {
-                // FIXME: When the SDK allow to remove attachment
-                // draft.attachmentList().remove(attachmentId: attachment.attachmentId)
-                AppLogger.logTemporarily(message: "\(attachment.name) would be removed", category: .composer)
+                removeAttachment(id: attachment.attachmentId)
             }
         }
     }
@@ -347,10 +350,17 @@ extension ComposerModel {
         draft.ccRecipients().setCallback(cb: ccCallback)
         draft.bccRecipients().setCallback(cb: bccCallback)
 
-        attachmentsCallback.delegate = { [weak self] in await self?.updateStateAttachmentUIModels() }
         Task {
+            let attachmentsCallback = AsyncLiveQueryCallbackWrapper {
+                [weak self] in await self?.updateStateAttachmentUIModels()
+            }
             // FIXME: The SDK should provide a sync function to set the callback
-            await draft.attachmentList().watcher(callback: attachmentsCallback)
+            switch await draft.attachmentList().watcher(callback: attachmentsCallback) {
+            case .ok(let watcher):
+                attachmentWatcher = watcher
+            case .error(let error):
+                AppLogger.log(error: error, category: .composer)
+            }
         }
     }
 
