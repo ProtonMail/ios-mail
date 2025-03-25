@@ -113,17 +113,17 @@ struct ReportProblemScreen: View {
             )
             .focused($isSummaryFocused)
             FormMultilineTextInput(
-                title: L10n.ReportProblem.expectedResults,
-                // FIXME: - Temporary. Waiting for final version
-                placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
-                text: text(keyPath: \.expectedResults, store: store),
-                validation: .noValidation
-            )
-            FormMultilineTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
                 text: text(keyPath: \.stepsToReproduce, store: store),
+                validation: .noValidation
+            )
+            FormMultilineTextInput(
+                title: L10n.ReportProblem.expectedResults,
+                // FIXME: - Temporary. Waiting for final version
+                placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
+                text: text(keyPath: \.expectedResults, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
