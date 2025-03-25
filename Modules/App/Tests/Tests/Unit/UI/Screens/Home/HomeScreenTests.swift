@@ -221,14 +221,15 @@ private extension MailUserSession {
 
         let mailSession = try createMailSession(
             params: params,
-            keyChain: KeychainSDKWrapper()
+            keyChain: KeychainSDKWrapper(),
+            hvNotifier: nil
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 
-        switch mailSession.userContextFromSession(session: storedSession, challenge: nil) {
+        switch mailSession.userContextFromSession(session: storedSession) {
         case .ok(let mailUserSession):
             return mailUserSession
         case .error(let error):

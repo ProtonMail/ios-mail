@@ -160,6 +160,7 @@ targets:
       - package: proton_app_uniffi
       - package: ProtonCoreET
         products:
+          - AccountChallenge
           - AccountLogin
           - AccountManager
       - package: SwiftUIIntrospect

@@ -93,6 +93,16 @@ public extension AvailableMoveToActionsForMessagesResult {
         }
     }
 }
+public extension ChallengeLoaderGetResult {
+    func get() throws(ProtonError) -> ChallengeLoaderResponse {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactListResult {
     func get() throws(ActionError) -> [GroupedContacts] {
         switch self {
@@ -663,6 +673,16 @@ public extension MailUserSessionUserResult {
         }
     }
 }
+public extension MailUserSessionUserSettingsResult {
+    func get() throws(UserSessionError) -> UserSettings {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailboxGetAttachmentResult {
     func get() throws(ActionError) -> DecryptedAttachment {
         switch self {
@@ -745,6 +765,16 @@ public extension MessagesForLabelResult {
 }
 public extension NewAllMailMailboxResult {
     func get() throws(UserSessionError) -> Mailbox {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension NewChallengeLoaderResult {
+    func get() throws(ProtonError) -> ChallengeLoader {
         switch self {
         case .ok(let value):
             value

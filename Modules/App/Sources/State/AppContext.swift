@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountChallenge
 import AccountLogin
 import Combine
 import Foundation
@@ -55,6 +56,7 @@ final class AppContext: Sendable, ObservableObject {
     @Published private(set) var sessionState = SessionState.noSession
 
     private(set) var accountAuthCoordinator: AccountAuthCoordinator!
+    private(set) var accountChallengeCoordinator: AccountChallengeCoordinator!
 
     var hasActiveUser: Bool {
         if case .activeSession = sessionState {
@@ -76,15 +78,16 @@ final class AppContext: Sendable, ObservableObject {
         userDefaultsCleaner = .init(userDefaults: userDefaults)
         
         let params = MailSessionParamsFactory.make(appConfig: appConfig)
+        accountChallengeCoordinator = .init(apiConfigProvider: { appConfig.apiEnvConfig })
 
-        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain).get()
+        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            switch mailSession.userContextFromSession(session: currentSession, challenge: nil) {
+            switch mailSession.userContextFromSession(session: currentSession) {
             case .ok(let newUserSession):
                 withAnimation { sessionState = .activeSession(session: newUserSession) }
             case .error(let error):
@@ -125,13 +128,13 @@ extension AppContext: AccountAuthDelegate {
 
     @MainActor
     private func initializeMailUserSession(session: StoredSession) async throws {
-        let newUserSession = try mailSession.userContextFromSession(session: session, challenge: nil).get()
+        let newUserSession = try mailSession.userContextFromSession(session: session).get()
         try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
     }
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
-        switch mailSession.userContextFromSession(session: session, challenge: nil) {
+        switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
             withAnimation { self.sessionState = .activeSession(session: newUserSession) }
         case .error(let error):

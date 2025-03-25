@@ -144,7 +144,7 @@ private extension SystemFolderLabel {
         switch self {
         case .inbox, .allDrafts, .allSent, .sent, .trash, .spam, .allMail, .archive, .drafts, .starred, .scheduled,
                 .almostAllMail, .snoozed, .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums,
-                .categoryDefault:
+                .categoryDefault, .blocked, .pinned:
             .mailbox(isUnreadFilterOn: isUnreadFilterOn)
         case .outbox:
             .outbox

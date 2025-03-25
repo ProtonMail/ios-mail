@@ -108,6 +108,10 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         draftSendResultUnseenResultStub
     }
 
+    func userSettings() async -> MailUserSessionUserSettingsResult {
+        fatalError(#function)
+    }
+
     // MARK: - Payments
 
     func getPaymentsPlans(options: GetPaymentsPlansOptions) async -> MailUserSessionGetPaymentsPlansResult {

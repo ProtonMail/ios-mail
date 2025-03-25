@@ -53,7 +53,7 @@ extension SystemFolderLabel {
             L10n.Mailbox.SystemFolder.allMail
         case .snoozed:
             L10n.Mailbox.SystemFolder.snoozed
-        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
+        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
             fatalError("Not implemented")
         }
     }
@@ -80,7 +80,7 @@ extension SystemFolderLabel {
             DS.Icon.icStar
         case .scheduled, .snoozed:
             DS.Icon.icClock
-        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault:
+        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
             fatalError("Not implemented")
         }
     }

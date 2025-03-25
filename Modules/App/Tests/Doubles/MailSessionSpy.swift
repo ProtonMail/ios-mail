@@ -34,6 +34,18 @@ final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
+    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
+        fatalError()
+    }
+
+    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
+        fatalError()
+    }
+
+    func userContextFromSession(session: proton_app_uniffi.StoredSession) -> MailSessionUserContextFromSessionResult {
+        fatalError()
+    }
+
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
         fatalError()
     }
@@ -111,18 +123,6 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func logoutAccount(userId: String) async -> VoidSessionResult {
-        fatalError()
-    }
-
-    func newLoginFlow(challenge: (any ChallengeNotifier)?) async -> MailSessionNewLoginFlowResult {
-        fatalError()
-    }
-
-    func resumeLoginFlow(userId: String, sessionId: String, challenge: (any ChallengeNotifier)?) async -> MailSessionResumeLoginFlowResult {
-        fatalError()
-    }
-
-    func userContextFromSession(session: StoredSession, challenge: (any ChallengeNotifier)?) -> MailSessionUserContextFromSessionResult {
         fatalError()
     }
 
