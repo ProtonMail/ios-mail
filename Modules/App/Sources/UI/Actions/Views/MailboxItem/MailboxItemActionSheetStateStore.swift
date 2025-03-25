@@ -107,6 +107,12 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .notSpam(let model), .system(let model):
                 performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
             }
+        case .mailboxGeneralActionTapped(let generalAction):
+            switch generalAction {
+            case .print, .reportPhishing, .saveAsPdf, .viewHeaders,
+                 .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
+                toastStateStore.present(toast: .comingSoon)
+            }
         case .alertActionTapped(let action):
             state = state.copy(\.deleteConfirmationAlert, to: nil)
             if case .delete = action {

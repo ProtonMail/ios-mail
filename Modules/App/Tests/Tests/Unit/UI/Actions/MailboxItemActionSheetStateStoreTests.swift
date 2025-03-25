@@ -246,6 +246,36 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             verifyInvoked: { moveToActionsSpy.invokedMoveToConversation }
         )
     }
+    
+    // MARK: - General actions
+    
+    func testAction_WhenPrintMessageActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .print)
+    }
+    
+    func testAction_WhenReportPhishingActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .reportPhishing)
+    }
+    
+    func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .saveAsPdf)
+    }
+    
+    func testAction_WhenViewHeadersActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .viewHeaders)
+    }
+    
+    func testAction_WhenViewHTMLActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .viewHtml)
+    }
+    
+    func testAction_WhenViewMessageInDarkModeActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .viewMessageInDarkMode)
+    }
+    
+    func testAction_WhenViewMessageInLightModeActionInvoked_ItShowsComingSoonBanner() {
+        verifyGeneralAction(action: .viewMessageInLightMode)
+    }
 
     // MARK: - Private
 
@@ -302,6 +332,15 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toasts, [
             .moveTo(destinationName: destination.systemLabel.humanReadable.string)
         ])
+    }
+    
+    private func verifyGeneralAction(action: GeneralActions) {
+        let ids: [ID] = [.init(value: 1), .init(value: 7)]
+        let sut = sut(ids: ids, type: .message, title: .notUsed)
+        
+        sut.handle(action: .mailboxGeneralActionTapped(action))
+        
+        XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
     }
 
     private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {

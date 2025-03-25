@@ -82,7 +82,7 @@ struct MailboxItemActionSheet: View {
 
                         mailboxItemActionsSection(state: state, store: store)
                         moveToActionsSection(state: state, store: store)
-                        section(displayData: state.availableActions.generalActions.map(\.displayData))
+                        section(state: state, store: store)
                     }.padding(.all, DS.Spacing.large)
                 }
                 .background(DS.Color.BackgroundInverted.norm)
@@ -135,13 +135,16 @@ struct MailboxItemActionSheet: View {
         }
     }
 
-    private func section(displayData: [ActionDisplayData]) -> some View {
+    private func section(
+        state: MailboxItemActionSheetState,
+        store: MailboxItemActionSheetStateStore
+    ) -> some View {
         ActionSheetSection {
-            ForEachLast(collection: displayData) { displayData, isLast in
+            ForEachLast(collection: state.availableActions.generalActions) { action, isLast in
                 ActionSheetImageButton(
-                    displayData: displayData,
+                    displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { toastStateStore.present(toast: .comingSoon) }
+                    action: { store.handle(action: .mailboxGeneralActionTapped(action)) }
                 )
             }
         }
