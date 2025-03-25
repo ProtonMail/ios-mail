@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 enum ReportProblemAction: Sendable {
-    case textEntered(WritableKeyPath<ReportProblemState, String>, text: String)
+    case textEntered
     case sendLogsToggleSwitched(isEnabled: Bool)
     case scrollTo(element: ReportProblemScrollToElements?)
     case submit

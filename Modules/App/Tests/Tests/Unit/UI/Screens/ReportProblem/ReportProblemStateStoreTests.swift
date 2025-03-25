@@ -53,7 +53,8 @@ final class ReportProblemStateStoreTests {
 
     @Test
     func formSubmission_WhenSummaryHasLessThen10Characters_ItFailsValidation() async {
-        await sut.handle(action: .textEntered(\.summary, text: "Hello"))
+        sut.state = sut.state.copy(\.summary, to: "Hello")
+        await sut.handle(action: .textEntered)
         await sut.handle(action: .submit)
 
         #expect(sut.state.scrollTo == .topInfoText)
@@ -75,7 +76,8 @@ final class ReportProblemStateStoreTests {
         ]
 
         await fields.asyncForEach { field, text in
-            await sut.handle(action: .textEntered(field, text: "Hello \(text)!"))
+            sut.state = sut.state.copy(field, to: "Hello \(text)!")
+            await sut.handle(action: .textEntered)
         }
 
         #expect(sut.state.summary == "Hello summary!")
@@ -112,7 +114,8 @@ final class ReportProblemStateStoreTests {
     func formSubmission_WhenValidationSuccess_ItSendsRequestWithFailureAndPresentsToast() async {
         reportProblemServiceSpy.error = .other(.sessionExpired)
 
-        await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
+        sut.state = sut.state.copy(\.summary, to: "Hello world!")
+        await sut.handle(action: .textEntered)
         await sut.handle(action: .submit)
         #expect(reportProblemServiceSpy.invokedSendWithReport.count == 1)
         #expect(toastStateStore.state.toasts == [.error(message: L10n.ReportProblem.failureToast.string)])
@@ -123,7 +126,8 @@ final class ReportProblemStateStoreTests {
     func formSubmission_WhenDeviceIsOffline_ItPresentsToast() async {
         reportProblemServiceSpy.error = .other(.network)
 
-        await sut.handle(action: .textEntered(\.summary, text: "Hello world!"))
+        sut.state = sut.state.copy(\.summary, to: "Hello world!")
+        await sut.handle(action: .textEntered)
         await sut.handle(action: .submit)
         #expect(reportProblemServiceSpy.invokedSendWithReport.count == 1)
         #expect(toastStateStore.state.toasts == [.error(message: L10n.ReportProblem.offlineFailureToast.string)])

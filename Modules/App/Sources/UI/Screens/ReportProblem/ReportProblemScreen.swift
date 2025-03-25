@@ -108,7 +108,7 @@ struct ReportProblemScreen: View {
                 title: L10n.ReportProblem.summary,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
-                text: text(keyPath: \.summary, state: state, store: store),
+                text: text(keyPath: \.summary, store: store),
                 validation: store.binding(\.summaryValidation)
             )
             .focused($isSummaryFocused)
@@ -116,21 +116,21 @@ struct ReportProblemScreen: View {
                 title: L10n.ReportProblem.expectedResults,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
-                text: text(keyPath: \.expectedResults, state: state, store: store),
+                text: text(keyPath: \.expectedResults, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
-                text: text(keyPath: \.stepsToReproduce, state: state, store: store),
+                text: text(keyPath: \.stepsToReproduce, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.actualResults,
                 // FIXME: - Temporary. Waiting for final version
                 placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
-                text: text(keyPath: \.actualResults, state: state, store: store),
+                text: text(keyPath: \.actualResults, store: store),
                 validation: .noValidation
             )
             FormSwitchView(
@@ -170,12 +170,14 @@ struct ReportProblemScreen: View {
 
     private func text(
         keyPath: WritableKeyPath<ReportProblemState, String>,
-        state: ReportProblemState,
         store: ReportProblemStateStore
     ) -> Binding<String> {
         .init(
-            get: { state[keyPath: keyPath] },
-            set: { newValue in store.handle(action: .textEntered(keyPath, text: newValue)) }
+            get: { store.state[keyPath: keyPath] },
+            set: { newValue in
+                store.state[keyPath: keyPath] = newValue
+                store.handle(action: .textEntered)
+            }
         )
     }
 

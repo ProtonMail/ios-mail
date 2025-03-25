@@ -48,10 +48,8 @@ final class ReportProblemStateStore: StateStore {
     @MainActor
     func handle(action: ReportProblemAction) async {
         switch action {
-        case .textEntered(let keyPath, let text):
-            state = state
-                .copy(\.summaryValidation, to: .ok)
-                .copy(keyPath, to: text)
+        case .textEntered:
+            state = state.copy(\.summaryValidation, to: .ok)
         case .sendLogsToggleSwitched(let isEnabled):
             withAnimation(.easeInOut(duration: 0.2)) {
                 state = state.copy(\.sendLogsEnabled, to: isEnabled)
