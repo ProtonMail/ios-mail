@@ -107,7 +107,7 @@ final class MessageBodyStateStore: StateStore {
     
     @MainActor
     private func unblockSender(with options: TransformOpts) async {
-        switch await senderUnblocker.unblockSender(forMessageID: messageID) {
+        switch await senderUnblocker.unblock(forMessageID: messageID) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

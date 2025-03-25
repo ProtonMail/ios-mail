@@ -34,7 +34,7 @@ final class MessageBodyStateStoreTests {
         sut = .init(
             messageID: stubbedMessageID,
             mailbox: .dummy,
-            wrapper: .init(spy: wrapperSpy),
+            wrapper: wrapperSpy.testingInstance,
             toastStateStore: toastStateStore
         )
     }
@@ -439,25 +439,19 @@ private class RustWrappersSpy {
 
     var stubbedUnblockSenderResult: VoidActionResult = .ok
     var unblockSenderMessageIDs: [ID] = []
-}
-
-fileprivate extension RustMessageBodyWrapper {
     
-    init(spy: RustWrappersSpy) {
-        self.init(
-            messageBody: { _, messageID in
-                spy.messageBodyMessageIDs.append(messageID)
-                return spy.stubbedMessageBodyResult
-            },
-            markMessageHam: { _, messageID in
-                spy.markAsNotSpamMessageIDs.append(messageID)
-                return spy.stubbedMarkAsNotSpamResult
-            },
-            unblockSender: { _, messageID in
-                spy.unblockSenderMessageIDs.append(messageID)
-                return spy.stubbedUnblockSenderResult
-            }
-        )
-    }
-    
+    private(set) lazy var testingInstance = RustMessageBodyWrapper(
+        messageBody: { [unowned self] _, messageID in
+            messageBodyMessageIDs.append(messageID)
+            return stubbedMessageBodyResult
+        },
+        markMessageHam: { [unowned self] _, messageID in
+            markAsNotSpamMessageIDs.append(messageID)
+            return stubbedMarkAsNotSpamResult
+        },
+        unblockSender: { [unowned self] _, messageID in
+            unblockSenderMessageIDs.append(messageID)
+            return stubbedUnblockSenderResult
+        }
+    )
 }

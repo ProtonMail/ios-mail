@@ -24,7 +24,7 @@ struct SenderUnblocker {
         _unblockSender = { messageID in await wrapper.unblockSender(mailbox, messageID) }
     }
     
-    func unblockSender(forMessageID messageID: ID) async -> VoidActionResult {
+    func unblock(forMessageID messageID: ID) async -> VoidActionResult {
         await _unblockSender(messageID)
     }
 }
