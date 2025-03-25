@@ -35,24 +35,13 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
     }
 
     func enqueueAlertsForFailedAttachmentAdditions(errors: [DraftAttachmentError]) {
-        let attachmentErrors = aggregateAttachmentErrors(errors)
+        let attachmentErrors = aggregateAddingAttachmentErrors(errors)
         Task { await attachmentErrorState.enqueue(attachmentErrors) }
     }
 
     func enqueueAlertsForFailedAttachmentUploads(attachments: [DraftAttachment]) {
-        Task {
-            let failedAttachments = attachments.filter { $0.state.isError }
-            let uploadFailures = failedAttachments.map { attachment in
-                UploadAttachmentError(
-                    name: attachment.attachment.name,
-                    attachmentId: attachment.attachment.id,
-                    errorTimeStamp: attachment.stateModifiedTimestamp
-                )
-            }
-            if !uploadFailures.isEmpty {
-                await attachmentErrorState.enqueue([.somethingWentWrong(origin: .uploading(uploadFailures))])
-            }
-        }
+        let attachmentErrors = aggregateUploadingAttachmentErrors(attachments)
+        Task { await attachmentErrorState.enqueue(attachmentErrors) }
     }
 
     func errorDismissedShowNextError() {
@@ -64,7 +53,7 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
 
 extension AttachmentAlertState {
 
-    private func aggregateAttachmentErrors(_ errors: [DraftAttachmentError]) -> [AttachmentError] {
+    private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentError]) -> [AttachmentError] {
         var attachmentTooLargeCount = 0
         var tooManyAttachmentsCount = 0
         var otherCount = 0
@@ -96,5 +85,48 @@ extension AttachmentAlertState {
             result.append(.somethingWentWrong(origin: .adding(.defaultAddAttachmentError(count: otherCount))))
         }
         return result
+    }
+
+    private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentError] {
+        var tooLargeFailures = [DraftAttachment]()
+        var tooManyAttachmentsFailures = [DraftAttachment]()
+        var otherFailures = [DraftAttachment]()
+
+        for attachment in attachments {
+            guard let error = attachment.state.attachmentError else { continue }
+
+            switch error {
+            case .reason(let reason):
+                switch reason {
+                case .tooManyAttachments:
+                    tooManyAttachmentsFailures.append(attachment)
+                case .attachmentTooLarge:
+                    tooLargeFailures.append(attachment)
+                default:
+                    otherFailures.append(attachment)
+                }
+            case .other:
+                otherFailures.append(attachment)
+            }
+        }
+
+        var result = [AttachmentError]()
+        if !tooLargeFailures.isEmpty {
+            result.append(.overSizeLimit(origin: .uploading(tooLargeFailures.map(\.toUploadAttachmentError))))
+        }
+        if !tooManyAttachmentsFailures.isEmpty {
+            result.append(.tooMany(origin: .uploading(tooManyAttachmentsFailures.map(\.toUploadAttachmentError))))
+        }
+        if !otherFailures.isEmpty {
+            result.append(.somethingWentWrong(origin: .uploading(otherFailures.map(\.toUploadAttachmentError))))
+        }
+        return result
+    }
+}
+
+extension DraftAttachment {
+
+    var toUploadAttachmentError: UploadAttachmentError {
+        UploadAttachmentError(name: attachment.name, attachmentId: attachment.id, errorTimeStamp: stateModifiedTimestamp)
     }
 }

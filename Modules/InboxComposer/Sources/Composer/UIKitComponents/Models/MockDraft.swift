@@ -25,7 +25,7 @@ extension SingleRecipientEntry {
     }
 }
 
-final class MockDraft: AppDraftProtocol {
+final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockSender: String = .empty
     var mockSubject: String = .empty
     var mockToRecipientList = MockComposerRecipientList()
@@ -40,6 +40,14 @@ final class MockDraft: AppDraftProtocol {
         case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
         case .bcc: draft.mockBccRecipientList = .init(addedRecipients: recipients)
         }
+        return draft
+    }
+
+    static func makeWithAttachments(_ attachments: [DraftAttachment]) -> MockDraft {
+        let draft = MockDraft()
+        let mockAttachmentList = MockAttachmentList()
+        mockAttachmentList.mockAttachments = attachments
+        draft.mockAttachmentList = mockAttachmentList
         return draft
     }
 
@@ -128,7 +136,7 @@ extension AppDraftProtocol where Self == MockDraft {
  2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
  to update the ComposerState
  */
-final class MockComposerRecipientList: ComposerRecipientListProtocol {
+final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked Sendable {
     var addedRecipients: [ComposerRecipient] = []
     private(set) var callback: ComposerRecipientValidationCallback?
 
@@ -168,10 +176,12 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol {
     }
 }
 
-final class MockAttachmentList: AttachmentListProtocol {
+final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
+    var mockAttachments = [DraftAttachment]()
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddPathCalls = [String]()
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
+    var attachmentCallback: AsyncLiveQueryCallback?
 
     func add(path: String) async -> AttachmentListAddResult {
         capturedAddPathCalls.append(path)
@@ -185,7 +195,7 @@ final class MockAttachmentList: AttachmentListProtocol {
     }
     
     func attachments() async -> AttachmentListAttachmentsResult {
-        .ok([])
+        .ok(mockAttachments)
     }
 
     func remove(id: Id) async -> AttachmentListRemoveResult {

@@ -81,9 +81,6 @@ final class ComposerModel: ObservableObject {
         self.alertState = .init()
         self.state = makeState(from: draft)
         setUpCallbacks()
-        Task {
-            await updateStateAttachmentUIModels()
-        }
     }
 
     deinit {
@@ -96,6 +93,7 @@ final class ComposerModel: ObservableObject {
             showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
         }
         setInitialFocus()
+        await updateStateAttachmentUIModels()
         await permissionsHandler.requestAccessIfNeeded()
         await contactProvider.loadContacts()
     }

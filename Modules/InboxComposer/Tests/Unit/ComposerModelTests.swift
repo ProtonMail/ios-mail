@@ -25,6 +25,7 @@ import proton_app_uniffi
 import SwiftUI
 import XCTest
 
+@MainActor
 final class ComposerModelTests: BaseTestCase {
     private var mockDraft: MockDraft!
     private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
@@ -71,6 +72,8 @@ final class ComposerModelTests: BaseTestCase {
         try super.tearDownWithError()
     }
 
+    // MARK: init
+
     func testInit_whenNoStateIsPassed_itShouldReturnAnEmptyState() {
         let sut = ComposerModel(
             draft: .emptyMock,
@@ -91,19 +94,19 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: onLoad
 
-    func testInit_whenOriginIsRemote_itShouldNotNotifyTheUser() async {
+    func testOnLoad_whenOriginIsRemote_itShouldNotNotifyTheUser() async {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .server, contactProvider: testContactProvider)
         await sut.onLoad()
         XCTAssertNil(sut.toast)
     }
 
-    func testInit_whenOriginIsCached_itShouldNotifyTheUser() async {
+    func testOnLoad_whenOriginIsCached_itShouldNotifyTheUser() async {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
         await sut.onLoad()
         XCTAssertEqual(sut.toast, .information(message: L10n.Composer.draftLoadedOffline.string))
     }
 
-    func testInit_whenNoToRecipient_itShouldFocusOnToField() async {
+    func testOnLoad_whenNoToRecipient_itShouldFocusOnToField() async {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .cc)
         let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
         await sut.onLoad()
@@ -111,7 +114,7 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertFalse(sut.state.isInitialFocusInBody)
     }
 
-    func testInit_whenAtLeastOneToRecipient_itShouldFocusOnTheBody() async {
+    func testOnLoad_whenAtLeastOneToRecipient_itShouldFocusOnTheBody() async {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
         await sut.onLoad()
@@ -119,20 +122,40 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.toRecipients.controllerState, .collapsed)
     }
 
+    func testOnLoad_whenAttachmentWithoutErrorState_itDoesNotPresentsAlert() async throws {
+        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .uploaded)])
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+
+        await sut.onLoad()
+
+        XCTAssertFalse(sut.alertState.isAlertPresented)
+    }
+
+    func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
+        let draftError = DraftAttachmentError.reason(.attachmentTooLarge)
+        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .error(draftError))])
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+
+        await sut.onLoad()
+
+        XCTAssertTrue(sut.alertState.isAlertPresented)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentError().title)
+    }
+
     // MARK: startEditingRecipients
 
-    func testStartEditingRecipients_itShouldSetEditingForTargetGroupAndExpandedForOthers() async {
+    func testStartEditingRecipients_itShouldSetEditingForTargetGroupAndExpandedForOthers() {
         let mockDraft = MockDraft()
         mockDraft.mockToRecipientList = .init(addedRecipients: [singleRecipient1])
         mockDraft.mockCcRecipientList = .init(addedRecipients: [singleRecipient2])
         let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
 
-        await sut.startEditingRecipients(for: .to)
+        sut.startEditingRecipients(for: .to)
         XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
         XCTAssertEqual(sut.state.ccRecipients.controllerState, .expanded)
         XCTAssertEqual(sut.state.bccRecipients.controllerState, .expanded)
 
-        await sut.startEditingRecipients(for: .bcc)
+        sut.startEditingRecipients(for: .bcc)
         XCTAssertEqual(sut.state.toRecipients.controllerState, .expanded)
         XCTAssertEqual(sut.state.ccRecipients.controllerState, .expanded)
         XCTAssertEqual(sut.state.bccRecipients.controllerState, .editing)
@@ -140,7 +163,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: recipientToggleSelection
 
-    @MainActor
     func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
@@ -154,7 +176,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: removeRecipientsThatAreSelected
 
-    @MainActor
     func testRemoveRecipientsThatAreSelectedRecipients_itShouldRemoveSelectedItems() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
@@ -167,7 +188,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: selectLastRecipient
 
-    @MainActor
     func testSelectLastRecipient_whenLastRecipientIsNotSelected_itSholdUpdateItsSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
@@ -176,7 +196,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
     }
 
-    @MainActor
     func testSelectLastRecipient_whenLastRecipientIsSelected_itSholdNotUpdateItsSelectedStatus() {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
@@ -187,7 +206,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: addRecipient
 
-    @MainActor
     func testAddRecipient_itShouldAddTheRecipient() {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         sut.addRecipient(group: .to, address: dummyAddress1)
@@ -199,7 +217,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: addContact
 
-    @MainActor
     func testAddContact_whenIsSingleContact_andHasNameAndEmail_itShouldUpdateTheRecipients() {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         let contact: ComposerContact = .makeComposerContactSingle(name: dummyName1, email: dummyAddress1)
@@ -211,8 +228,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     // FIXME: When the SDK returns contact groups
-//    @MainActor
-//    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
+////    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
 //        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
 //        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
 //        sut.addContact(group: .to, contact: contact)
@@ -224,7 +240,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: matchContacts
 
-    @MainActor
     func testMatchContacts_whenThereIsMatch_itShouldUpdateStateWithMatchingContacts() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "a@example.com"),
@@ -240,7 +255,6 @@ final class ComposerModelTests: BaseTestCase {
         }
     }
 
-    @MainActor
     func testMatchContacts_whenThereIsMatch_itShouldUpdateControllerStateWithContactPicker() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "a@example.com")
@@ -257,7 +271,6 @@ final class ComposerModelTests: BaseTestCase {
         await fulfillment(of: [expectation], timeout: 1.0)
     }
 
-    @MainActor
     func testMatchContacts_whenThereIsNoMatch_itShouldUpdateStateWithoutMatchingContacts() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
@@ -279,7 +292,6 @@ final class ComposerModelTests: BaseTestCase {
         await testMatchContact(in: sut, test: MatchContactCountTestCase(input: "Mark", expectedMatchCount: 0))
     }
 
-    @MainActor
     func testMatchContacts_whenThereIsNoMatch_itShouldUpdateControllerStateWithContactEditing() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
@@ -308,7 +320,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: endEditingRecipients
 
-    @MainActor
     func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToCollapsed() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")
@@ -336,7 +347,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: updateSubject
 
-    @MainActor
     func testUpdateSubject_itShouldChangeTheSubjectState() async {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
         let newSubject = "new subject"
@@ -344,30 +354,27 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.subject, newSubject)
     }
 
-    // MARK: callback
+    // MARK: recipients callback
 
-    // FIXME: - Test is failing failing
-//    @MainActor
-//    func testComponerRecpientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {
-//        let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
-//            ComposerRecipientSingle(displayName: "a", address: "a@example.com", validState: validState)
-//        }
-//        let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
-//        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
-//
-//        let mockDraft: MockDraft = .makeWithRecipients([singleRecipientValid], group: .to)
-//        let sut = ComposerModel(draft: mockDraft, contactProvider: testContactProvider)
-//        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, true)
-//
-//        // We simulate a `validState` update
-//        mockDraft.mockToRecipientList.addedRecipients = [singleRecipientInvalid]
-//        mockDraft.mockToRecipientList.callback?.onUpdate()
-//
-//        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
-//    }
+    func testComposerRecipientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {
+        let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
+            ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)
+        }
+        let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
+        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
 
-    @MainActor
-    func testComponerRecpientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipientValid], group: .to)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, true)
+
+        // We simulate a `validState` update
+        mockDraft.mockToRecipientList.addedRecipients = [singleRecipientInvalid]
+        mockDraft.mockToRecipientList.callback?.onUpdate()
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
+    }
+
+    func testComposerRecipientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
         sut.recipientToggleSelection(group: .to, index: 0)
@@ -380,7 +387,6 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: addAttachments
 
-    @MainActor
     func testAddAttachments_whenSelectingFromPhotos_itShouldAddAttachmentToDraft() async throws {
         let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
@@ -391,7 +397,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
     }
 
-    @MainActor
     func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
         let draftAddResultError = DraftAttachmentError.reason(.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("photo1.jpg", .error(draftAddResultError))]
@@ -404,7 +409,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentError().title)
     }
 
-    @MainActor
     func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         let file1 = try filePickerTestsHelper.prepareItem(fileName: "file1.txt", createFile: true)
@@ -415,7 +419,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
     }
 
-    @MainActor
     func testAddAttachments_whenSelectingFromFilesReturnedError_itShouldShowAlertError() async throws {
         let draftAddResultError = DraftAttachmentError.reason(.tooManyAttachments)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(draftAddResultError))]
@@ -449,7 +452,6 @@ private extension ComposerModelTests {
         )
     }
 
-    @MainActor
     func testMatchContact(in sut: ComposerModel, test: MatchContactCountTestCase) async {
         let expectation = expectation(description: "\(#function): input '\(test.input)' matches \(test.expectedMatchCount)")
         fulfill(expectation, in: sut, when: { composerState in
@@ -530,5 +532,14 @@ private extension ComposerContact {
 
     init(type: ComposerContactType) {
         self.init(id: "__NOT_USED__", type: type, avatarColor: .blue)
+    }
+}
+
+private extension DraftAttachment {
+
+    static func makeMockDraftAttachment(withState state: DraftAttachmentState) -> DraftAttachment {
+        let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
+        let mockAttachment = AttachmentMetadata(id: .random(), disposition: .attachment, mimeType: mockMimeType, name: "attachment_1", size: 123456)
+        return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
     }
 }

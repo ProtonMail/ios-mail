@@ -108,10 +108,13 @@ struct ComposerLoadingView: View {
 }
 
 #Preview {
+    let toastStateStore = ToastStateStore(initialState: .initial)
+
     ComposerScreen(
         draft: .emptyMock,
         draftOrigin: .new,
         dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
         onSendingEvent: {}
     )
+    .environmentObject(toastStateStore)
 }
