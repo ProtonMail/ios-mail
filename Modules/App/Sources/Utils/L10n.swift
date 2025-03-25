@@ -527,21 +527,37 @@ enum L10n {
             "Summary (required)",
             comment: "Title of summary text field."
         )
+        static let summaryPlaceholder = LocalizedStringResource(
+            "The Mail app crashes when opening emails with large attachments.",
+            comment: "Placeholder of summary text field."
+        )
         static let summaryValidationError = LocalizedStringResource(
             "This field must be more than 10 characters",
             comment: "Summary field validation error"
-        )
-        static let expectedResults = LocalizedStringResource(
-            "Expected results",
-            comment: "Title of expected results text field."
         )
         static let stepsToReproduce = LocalizedStringResource(
             "Steps to reproduce",
             comment: "Title of steps to reproduce text field."
         )
+        static let stepsToReproducePlaceholder = LocalizedStringResource(
+            "1. Find an email with a large attachment (ex: video)\n2. Open the email\n3. Wait for the email to load",
+            comment: "Placeholder of steps to reproduce text field."
+        )
+        static let expectedResults = LocalizedStringResource(
+            "Expected results",
+            comment: "Title of expected results text field."
+        )
+        static let expectedResultsPlaceholder = LocalizedStringResource(
+            "Opening the email should show the message content and the attachments.",
+            comment: "Placeholder of expected results text field."
+        )
         static let actualResults = LocalizedStringResource(
             "Actual results",
             comment: "Title of actual results text field."
+        )
+        static let actualResultsPlaceholder = LocalizedStringResource(
+            "The Mail app crashes after loading for a few seconds.",
+            comment: "Placeholder of actual results text field."
         )
         static let sendErrorLogs = LocalizedStringResource(
             "Send error logs",

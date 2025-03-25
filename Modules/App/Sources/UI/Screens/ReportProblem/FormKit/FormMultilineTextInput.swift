@@ -34,12 +34,17 @@ struct FormMultilineTextInput: View {
     }
 
     private let title: LocalizedStringResource
-    private let placeholder: String
+    private let placeholder: LocalizedStringResource
     @Binding private var text: String
     @Binding private var validation: ValidationStatus
     @FocusState private var isFocused: Bool
 
-    init(title: LocalizedStringResource, placeholder: String, text: Binding<String>, validation: Binding<ValidationStatus>) {
+    init(
+        title: LocalizedStringResource,
+        placeholder: LocalizedStringResource,
+        text: Binding<String>,
+        validation: Binding<ValidationStatus>
+    ) {
         self.title = title
         self.placeholder = placeholder
         self._text = text
@@ -91,7 +96,7 @@ struct FormMultilineTextInput: View {
 
     // MARK: - Style
 
-    private let minimalContainerHight: CGFloat = 140
+    private let minimalContainerHight: CGFloat = 150
 }
 
 extension Binding where Value == FormMultilineTextInput.ValidationStatus {

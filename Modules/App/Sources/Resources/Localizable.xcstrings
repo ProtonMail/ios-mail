@@ -291,6 +291,9 @@
         }
       }
     },
+    "1. Find an email with a large attachment (ex: video)\n2. Open the email\n3. Wait for the email to load" : {
+      "comment" : "Placeholder of steps to reproduce text field."
+    },
     "A log is a type of file that shows us the actions you took that led to an error. We’ll only ever use them to help our engineers fix bugs." : {
       "comment" : "Information displayed under send error logs switch."
     },
@@ -2353,6 +2356,9 @@
         }
       }
     },
+    "Opening the email should show the message content and the attachments." : {
+      "comment" : "Placeholder of expected results text field."
+    },
     "Other" : {
       "comment" : "`Other` in the message details (e.g. starred, pinned messages).",
       "localizations" : {
@@ -3117,6 +3123,12 @@
     },
     "Summary (required)" : {
       "comment" : "Title of summary text field."
+    },
+    "The Mail app crashes after loading for a few seconds." : {
+      "comment" : "Placeholder of actual results text field."
+    },
+    "The Mail app crashes when opening emails with large attachments." : {
+      "comment" : "Placeholder of summary text field."
     },
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."

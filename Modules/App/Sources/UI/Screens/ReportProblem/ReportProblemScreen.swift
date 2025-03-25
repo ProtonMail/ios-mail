@@ -106,30 +106,26 @@ struct ReportProblemScreen: View {
                 .id(ReportProblemScrollToElements.topInfoText)
             FormMultilineTextInput(
                 title: L10n.ReportProblem.summary,
-                // FIXME: - Temporary. Waiting for final version
-                placeholder: "Example: Mail app crashes opening emails with large attachments.".notLocalized,
+                placeholder: L10n.ReportProblem.summaryPlaceholder,
                 text: text(keyPath: \.summary, store: store),
                 validation: store.binding(\.summaryValidation)
             )
             .focused($isSummaryFocused)
             FormMultilineTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
-                // FIXME: - Temporary. Waiting for final version
-                placeholder: "Example:\n1. Select email with large attachments\n2. Wait for loading.".notLocalized,
+                placeholder: L10n.ReportProblem.stepsToReproducePlaceholder,
                 text: text(keyPath: \.stepsToReproduce, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.expectedResults,
-                // FIXME: - Temporary. Waiting for final version
-                placeholder: "Example: Email opens normally, displaying content and attachments.".notLocalized,
+                placeholder: L10n.ReportProblem.expectedResultsPlaceholder,
                 text: text(keyPath: \.expectedResults, store: store),
                 validation: .noValidation
             )
             FormMultilineTextInput(
                 title: L10n.ReportProblem.actualResults,
-                // FIXME: - Temporary. Waiting for final version
-                placeholder: "Example: App freezes briefly, then crashes without showing email content.".notLocalized,
+                placeholder: L10n.ReportProblem.actualResultsPlaceholder,
                 text: text(keyPath: \.actualResults, store: store),
                 validation: .noValidation
             )
