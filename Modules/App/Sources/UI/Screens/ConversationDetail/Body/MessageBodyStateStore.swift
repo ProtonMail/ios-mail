@@ -43,12 +43,7 @@ final class MessageBodyStateStore: StateStore {
     private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
 
-    init(
-        messageID: ID,
-        mailbox: Mailbox,
-        wrapper: RustMessageBodyWrapper,
-        toastStateStore: ToastStateStore
-    ) {
+    init(messageID: ID, mailbox: Mailbox, wrapper: RustMessageBodyWrapper, toastStateStore: ToastStateStore) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
         self.legitMessageMarker = .init(mailbox: mailbox, wrapper: wrapper)
