@@ -33,6 +33,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
     var moveToActionsSpy: MoveToActionsSpy!
+    var generalActionsSpy: GeneralActionsPerfomerSpy!
     var toastStateStore: ToastStateStore!
 
     override func setUp() {
@@ -46,6 +47,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         readActionPerformerActionsSpy = .init()
         deleteActionsSpy = .init()
         moveToActionsSpy = .init()
+        generalActionsSpy = .init()
         toastStateStore = .init(initialState: .initial)
     }
 
@@ -262,6 +264,22 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
     }
     
+    func testAction_WhenReportPhishingActionConfirmed_ItMarksMessageAsPhishing() throws {
+        let ids: [ID] = [.init(value: 55), .init(value: 5)]
+        let sut = sut(ids: ids, type: .message, title: .notUsed)
+
+        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+
+        XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
+        
+        let confirmAction = try XCTUnwrap(sut.state.alert?.actions.filter { $0.title == L10n.Common.confirm }.first)
+        
+        confirmAction.action()
+        
+        XCTAssertEqual(sut.state.alert, nil)
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [ids])
+    }
+    
     func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
         verifyGeneralAction(action: .saveAsPdf)
     }
@@ -366,7 +384,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             deleteActions: deleteActionsSpy.testingInstance,
             moveToActions: moveToActionsSpy.testingInstance,
-            mailUserSession: .dummy, 
+            generalActions: generalActionsSpy.testingInstance,
+            mailUserSession: .dummy,
             toastStateStore: toastStateStore,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )

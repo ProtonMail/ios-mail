@@ -91,6 +91,7 @@ private struct MailboxActionSheets: ViewModifier {
             readActionPerformerActions: .productionInstance,
             deleteActions: .productionInstance,
             moveToActions: .productionInstance,
+            generalActions: .productionInstance,
             replyActions: replyActions,
             mailUserSession: AppContext.shared.userSession,
             navigation: navigation

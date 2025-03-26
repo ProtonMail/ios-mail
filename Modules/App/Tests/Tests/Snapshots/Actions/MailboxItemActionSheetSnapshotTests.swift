@@ -31,6 +31,7 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
             readActionPerformerActions: .dummy,
             deleteActions: .dummy,
             moveToActions: .dummy,
+            generalActions: .dummy,
             replyActions: { _, _ in },
             mailUserSession: .dummy,
             navigation: { _ in }

@@ -28,6 +28,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionPerformer: DeleteActionPerformer
     private let moveToActionPerformer: MoveToActionPerformer
+    private let generalActionsPerformer: GeneralActionsPerformer
     private let toastStateStore: ToastStateStore
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
@@ -39,6 +40,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
+        generalActions: GeneralActionsWrappers,
         mailUserSession: MailUserSession,
         toastStateStore: ToastStateStore,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
@@ -52,6 +54,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
+        self.generalActionsPerformer = .init(session: mailUserSession, generalActions: generalActions)
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
         self.navigation = navigation
@@ -123,6 +126,8 @@ class MailboxItemActionSheetStateStore: StateStore {
             if case .delete = action {
                 performDeleteAction(itemsIDs: input.ids, itemType: input.type)
             }
+        case .phishingConfirmationTapped:
+            break
         }
     }
 

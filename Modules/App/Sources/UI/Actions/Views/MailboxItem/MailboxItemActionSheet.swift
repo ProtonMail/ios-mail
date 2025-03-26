@@ -32,6 +32,7 @@ struct MailboxItemActionSheet: View {
     private let readActionPerformerActions: ReadActionPerformerActions
     private let deleteActions: DeleteActions
     private let moveToActions: MoveToActions
+    private let generalActions: GeneralActionsWrappers
     private let replyActions: ReplyActionsHandler
     private let mailUserSession: MailUserSession
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
@@ -44,6 +45,7 @@ struct MailboxItemActionSheet: View {
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
+        generalActions: GeneralActionsWrappers,
         replyActions: @escaping ReplyActionsHandler,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
@@ -55,6 +57,7 @@ struct MailboxItemActionSheet: View {
         self.readActionPerformerActions = readActionPerformerActions
         self.deleteActions = deleteActions
         self.moveToActions = moveToActions
+        self.generalActions = generalActions
         self.replyActions = replyActions
         self.mailUserSession = mailUserSession
         self.navigation = navigation
@@ -69,6 +72,7 @@ struct MailboxItemActionSheet: View {
             readActionPerformerActions: readActionPerformerActions,
             deleteActions: deleteActions,
             moveToActions: moveToActions,
+            generalActions: generalActions,
             mailUserSession: mailUserSession,
             toastStateStore: toastStateStore,
             navigation: navigation
@@ -182,6 +186,7 @@ struct MailboxItemActionSheet: View {
         readActionPerformerActions: .dummy,
         deleteActions: .dummy,
         moveToActions: .dummy,
+        generalActions: .dummy,
         replyActions: { _, _ in },
         mailUserSession: .dummy,
         navigation: { _ in }
