@@ -514,6 +514,29 @@ enum L10n {
         static let dismiss = LocalizedStringResource("Dismiss", comment: "Alert dismiss button")
     }
 
+    enum PINLock {
+        static let enterPinTitle = LocalizedStringResource(
+            "Enter your PIN to unlock you inbox.",
+            comment: "Information displayed on the top of PIN lock screen."
+        )
+        static let screenTopTitle = LocalizedStringResource(
+            "Enter PIN",
+            comment: "Top title of the pin lock screen."
+        )
+        static let confirmButtonTitle = LocalizedStringResource(
+            "Confirm",
+            comment: "Title of the button to confirm the pin code."
+        )
+        static let signOutConfirmationButton = LocalizedStringResource(
+            "Sign Out",
+            comment: "Title of the sign out confirmation alert button."
+        )
+        static let signOutConfirmationTitle = LocalizedStringResource(
+            "Are you sure you want to sign out?",
+            comment: "Title of the sign out confirmation alert."
+        )
+    }
+
     enum ReportProblem {
         static let mainTitle = LocalizedStringResource(
             "Report a problem",

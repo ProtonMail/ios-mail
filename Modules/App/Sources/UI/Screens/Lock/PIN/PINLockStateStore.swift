@@ -74,7 +74,11 @@ class PINLockStateStore: StateStore {
 extension AlertViewModel {
 
     static func logOutConfirmation() -> AlertViewModel<LogOutConformationAction> {
-        .init(title: "Are you sure you want to sign out?", message: nil, actions: [.cancel, .signOut])
+        .init(
+            title: L10n.PINLock.signOutConfirmationTitle,
+            message: nil,
+            actions: [.cancel, .signOut]
+        )
     }
 
 }

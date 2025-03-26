@@ -61,10 +61,9 @@ struct PINLockScreen: View {
                         .frame(height: 20, alignment: .center)
                         .frame(maxWidth: 300)
 
-                    if let error = store.state.error {
-                        Text(error)
-                            .foregroundStyle(DS.Color.Notification.error)
-                    }
+                    Text(store.state.error ?? "")
+                        .frame(height: 20)
+                        .foregroundStyle(DS.Color.Notification.error)
 
                     Spacer()
 
@@ -89,13 +88,16 @@ struct PINLockScreen: View {
 
                     Button(
                         action: { store.handle(action: .confirmTapped) },
-                        label: { Text("Confirm") }
+                        label: {
+                            Text(L10n.PINLock.confirmButtonTitle)
+                                .foregroundStyle(DS.Color.Text.inverted)
+                        }
                     )
                     .buttonStyle(BigButtonStyle())
                     .padding(DS.Spacing.large)
                 }
             }
-            .navigationTitle("Enter PIN")
+            .navigationTitle(L10n.PINLock.screenTopTitle.string)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -118,7 +120,7 @@ struct PINLockScreen: View {
     private func visualElement(for button: KeyboardButton) -> some View {
         switch button {
         case .digit(let value):
-            Text("\(value)")
+            Text("\(value)".notLocalized)
         case .delete:
             Image(systemName: DS.SFSymbols.deleteLeft)
         }
@@ -127,7 +129,7 @@ struct PINLockScreen: View {
     @ViewBuilder
     func pinIndicator() -> some View {
         if store.state.pin.isEmpty {
-            Text("Enter your PIN to unlock you inbox.")
+            Text(L10n.PINLock.enterPinTitle)
                 .foregroundStyle(DS.Color.Text.weak)
         } else {
             HStack(spacing: DS.Spacing.small) {

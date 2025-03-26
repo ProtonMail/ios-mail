@@ -27,7 +27,7 @@ enum LogOutConformationAction: AlertActionViewModel {
         case .cancel:
             L10n.Common.cancel
         case .signOut:
-            "Sign Out"
+            L10n.PINLock.signOutConfirmationButton
         }
     }
 
