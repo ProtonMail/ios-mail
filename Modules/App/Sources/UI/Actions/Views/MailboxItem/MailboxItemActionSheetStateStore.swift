@@ -117,7 +117,9 @@ class MailboxItemActionSheetStateStore: StateStore {
                 toastStateStore.present(toast: .comingSoon)
             case .reportPhishing:
                 // FIXME: Implement alert actions
-                let alert: AlertViewModel = .confirmPhishing(action: { action in })
+                let alert: AlertViewModel = .confirmPhishing(action: { [weak self] action in
+                    self?.handle(action: .phishingConfirmationTapped(action))
+                })
                 
                 state = state.copy(\.alert, to: alert)
             }
@@ -127,7 +129,8 @@ class MailboxItemActionSheetStateStore: StateStore {
                 performDeleteAction(itemsIDs: input.ids, itemType: input.type)
             }
         case .phishingConfirmationTapped:
-            break
+            state = state.copy(\.alert, to: nil)
+            performMarkPhishing()
         }
     }
 
@@ -211,6 +214,12 @@ class MailboxItemActionSheetStateStore: StateStore {
             itemsCount: input.ids.count,
             action: { [weak self] action in self?.handle(action: .deleteConfirmationTapped(action)) }
         )
+    }
+    
+    private func performMarkPhishing() {
+        Task {
+            await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids)
+        }
     }
 }
 
