@@ -18,42 +18,40 @@
 import SwiftUI
 import InboxCoreUI
 import InboxDesignSystem
+import InboxCore
+
+enum PINLockScreenAction {
+    case confirm(pin: String)
+    case logout
+}
 
 struct PINLockScreen: View {
-    enum ButtonType: Hashable {
+    enum KeyboardButton: Hashable {
         case digit(_ value: Int)
         case delete
-        case empty
 
         var isDigit: Bool {
             switch self {
             case .digit:
                 true
-            case .delete, .empty:
+            case .delete:
                 false
             }
         }
     }
-    @State private var pin: String = ""
 
-    var buttons: [[ButtonType]] = [
-        [.digit(1), .digit(2), .digit(3)],
-        [.digit(4), .digit(5), .digit(6)],
-        [.digit(7), .digit(8), .digit(9)],
-        [.empty, .digit(0), .delete]
-    ]
+    @State var pin: String
+    @Binding var errorText: String?
+    private let handleInParent: (PINLockScreenAction) -> Void
 
-    func handle(button: ButtonType) {
-        switch button {
-        case .digit(let value):
-            pin += "\(value)"
-        case .delete:
-            if !pin.isEmpty {
-                pin.removeLast()
-            }
-        case .empty:
-            break
-        }
+    init(
+        pin: String = .empty,
+        errorText: Binding<String?>,
+        handleInParent: @escaping (PINLockScreenAction) -> Void
+    ) {
+        _pin = .init(initialValue: pin)
+        self._errorText = errorText
+        self.handleInParent = handleInParent
     }
 
     var body: some View {
@@ -61,22 +59,29 @@ struct PINLockScreen: View {
             ZStack {
                 DS.Color.Background.norm
                     .ignoresSafeArea(.all)
+
                 VStack {
-                    Image(systemName: "lock")
+                    Image(systemName: DS.SFSymbols.lock)
                         .font(.title)
                         .padding(.vertical, DS.Spacing.large)
                     pinIndicator()
                         .frame(height: 20, alignment: .center)
                         .frame(maxWidth: 300)
+                    if let error = errorText {
+                        Text(error)
+                            .foregroundStyle(DS.Color.Notification.error)
+                    }
 
                     Spacer()
 
-                    VStack(spacing: DS.Spacing.medium) {
-                        ForEach(buttons, id: \.self) { rowButtons in
+                    VStack(alignment: .trailing, spacing: DS.Spacing.medium) {
+                        ForEach(keyboard, id: \.self) { rowButtons in
                             HStack(spacing: DS.Spacing.large) {
                                 ForEach(rowButtons, id: \.self) { button in
                                     Button(action: { handle(button: button) }) {
-                                        content(for: button)
+                                        visualElement(for: button)
+                                            .font(.title)
+                                            .foregroundStyle(DS.Color.Text.norm)
                                             .square(size: 92)
                                             .background(button.isDigit ? DS.Color.InteractionWeak.norm : .clear)
                                             .clipShape(Circle())
@@ -89,7 +94,7 @@ struct PINLockScreen: View {
                     Spacer()
 
                     Button(
-                        action: {  },
+                        action: { handle(action: .confirm(pin: pin)) },
                         label: { Text("Confirm") }
                     )
                     .buttonStyle(BigButtonStyle())
@@ -100,10 +105,8 @@ struct PINLockScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        print("Logout")
-                    }) {
-                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                    Button(action: { handle(action: .logout) }) {
+                        Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
                             .foregroundStyle(DS.Color.Icon.norm)
                     }
                 }
@@ -112,18 +115,12 @@ struct PINLockScreen: View {
     }
 
     @ViewBuilder
-    func content(for button: ButtonType) -> some View {
+    private func visualElement(for button: KeyboardButton) -> some View {
         switch button {
         case .digit(let value):
             Text("\(value)")
-                .font(.title)
-                .foregroundStyle(DS.Color.Text.norm)
         case .delete:
-            Image(systemName: "delete.left")
-                .foregroundStyle(DS.Color.Icon.norm)
-                .font(.title)
-        case .empty:
-            Color.clear
+            Image(systemName: DS.SFSymbols.deleteLeft)
         }
     }
 
@@ -141,6 +138,37 @@ struct PINLockScreen: View {
                 }
             }
         }
+    }
+
+    private func handle(action: PINLockScreenAction) {
+        switch action {
+        case .confirm(let pin):
+            self.pin = .empty
+            if pin.isEmpty == false {
+                handleInParent(action)
+            }
+        case .logout:
+            handleInParent(action)
+        }
+    }
+
+    private func handle(button: KeyboardButton) {
+        errorText = nil
+        switch button {
+        case .digit(let value):
+            pin = pin.appending("\(value)")
+        case .delete:
+            pin = String(pin.dropLast())
+        }
+    }
+
+    private var keyboard: [[KeyboardButton]] {
+        [
+            [.digit(1), .digit(2), .digit(3)],
+            [.digit(4), .digit(5), .digit(6)],
+            [.digit(7), .digit(8), .digit(9)],
+            [.digit(0), .delete]
+        ]
     }
 
 }

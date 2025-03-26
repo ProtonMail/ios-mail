@@ -22,7 +22,18 @@ import InboxTesting
 class PINLockScreenSnapshotTests: BaseTestCase {
 
     func testPINLockScreenLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: PINLockScreen())
+        assertSnapshotsOnIPhoneX(
+            of: PINLockScreen(pin: .empty, errorText: .constant(nil)) {_ in }, 
+            named: "empty_pin"
+        )
+        assertSnapshotsOnIPhoneX(
+            of: PINLockScreen(pin: "123456789", errorText: .constant(nil)) { _ in }, 
+            named: "non_empty_pin"
+        )
+        assertSnapshotsOnIPhoneX(
+            of: PINLockScreen(pin: .empty, errorText: .constant("This is the error message")) { _ in },
+            named: "error_message"
+        )
     }
 
 }
