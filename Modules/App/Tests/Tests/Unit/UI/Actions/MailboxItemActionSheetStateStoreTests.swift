@@ -253,8 +253,13 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         verifyGeneralAction(action: .print)
     }
     
-    func testAction_WhenReportPhishingActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .reportPhishing)
+    func testAction_WhenReportPhishingActionInvoked_ItPresentsConfirmPhishingAlert() {
+        let ids: [ID] = [.init(value: 55), .init(value: 5)]
+        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
+
+        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+
+        XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
     }
     
     func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {

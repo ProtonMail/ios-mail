@@ -555,7 +555,7 @@
       }
     },
     "Are you sure you want to delete these %lld messages permanently?" : {
-      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "comment" : "Message of alert displayed after delete permanently action tap.",
       "localizations" : {
         "de" : {
           "variations" : {
@@ -877,6 +877,9 @@
     "Confirm" : {
       "comment" : "`Confirm` action title."
     },
+    "Confirm phishing report" : {
+      "comment" : "Title of alert displayed after report phishing action tap."
+    },
     "Contacts" : {
       "comment" : "Button in the sidebar menu that redirects a user to the contacts screen.",
       "localizations" : {
@@ -1176,7 +1179,7 @@
       }
     },
     "Delete %lld messages" : {
-      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "comment" : "Title of alert displayed after delete permanently action tap.",
       "localizations" : {
         "de" : {
           "variations" : {
@@ -2697,6 +2700,9 @@
           }
         }
       }
+    },
+    "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." : {
+      "comment" : "Message of alert displayed after report phishing action tap."
     },
     "Reports are not end-to-end encrypted, please do not send any sensitive information." : {
       "comment" : "Report a problem screen, top information."

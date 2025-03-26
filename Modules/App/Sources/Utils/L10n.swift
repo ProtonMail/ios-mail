@@ -171,16 +171,29 @@ enum L10n {
                 static func title(itemsCount: Int) -> LocalizedStringResource {
                     .init(
                         "Delete \(itemsCount) messages",
-                        comment: "Title of alert action displayed after delete permanently action tap."
+                        comment: "Title of alert displayed after delete permanently action tap."
                     )
                 }
 
                 static func message(itemsCount: Int) -> LocalizedStringResource {
                     .init(
                         "Are you sure you want to delete these \(itemsCount) messages permanently?",
-                        comment: "Title of alert action displayed after delete permanently action tap."
+                        comment: "Message of alert displayed after delete permanently action tap."
                     )
                 }
+            }
+        }
+        
+        enum ReportPhishing {
+            enum Alert {
+                static let title = LocalizedStringResource(
+                    "Confirm phishing report",
+                    comment: "Title of alert displayed after report phishing action tap."
+                )
+                static let message = LocalizedStringResource(
+                    "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.",
+                    comment: "Message of alert displayed after report phishing action tap."
+                )
             }
         }
     }

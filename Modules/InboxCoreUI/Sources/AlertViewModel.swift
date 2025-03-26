@@ -44,3 +44,11 @@ public struct AlertViewModel: Equatable {
         self.actions = actions
     }
 }
+
+extension AlertAction {
+
+    public static func destructive(title: LocalizedStringResource, action: @escaping () -> Void) -> AlertAction {
+        AlertAction(title: title, buttonRole: .destructive, action: action)
+    }
+
+}

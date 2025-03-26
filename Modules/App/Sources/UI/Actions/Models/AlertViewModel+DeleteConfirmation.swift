@@ -17,6 +17,11 @@
 
 import InboxCoreUI
 
+enum PhishingConfirmationAlertAction {
+    case cancel
+    case confirm
+}
+
 extension AlertViewModel {
 
     static func deleteConfirmation(
@@ -29,6 +34,15 @@ extension AlertViewModel {
             actions: [.cancel(action: { action(.cancel) }), .delete(action: { action(.delete) })]
         )
     }
+    
+    static func confirmPhishing(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertViewModel {
+        
+        .init(
+            title: L10n.Action.ReportPhishing.Alert.title,
+            message: L10n.Action.ReportPhishing.Alert.message,
+            actions: [.cancel(action: { action(.cancel) }), .confirm(action: { action(.confirm) })]
+        )
+    }
 
 }
 
@@ -38,8 +52,12 @@ private extension AlertAction {
         AlertAction(title: L10n.Common.cancel, buttonRole: .cancel, action: action)
     }
 
+    static func confirm(action: @escaping () -> Void) -> AlertAction {
+        .destructive(title: L10n.Common.confirm, action: action)
+    }
+
     static func delete(action: @escaping () -> Void) -> AlertAction {
-        AlertAction(title: L10n.Common.delete, buttonRole: .destructive, action: action)
+        .destructive(title: L10n.Common.delete, action: action)
     }
 
 }
