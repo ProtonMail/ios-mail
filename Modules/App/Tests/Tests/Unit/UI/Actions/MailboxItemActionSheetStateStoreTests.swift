@@ -307,7 +307,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
-        sut.handle(action: .alertActionTapped(.delete))
+        sut.handle(action: .deleteConfirmationTapped(.delete))
 
         XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [expectedNavigation])

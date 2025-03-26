@@ -113,7 +113,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                  .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
                 toastStateStore.present(toast: .comingSoon)
             }
-        case .alertActionTapped(let action):
+        case .deleteConfirmationTapped(let action):
             state = state.copy(\.alert, to: nil)
             if case .delete = action {
                 performDeleteAction(itemsIDs: input.ids, itemType: input.type)
@@ -199,7 +199,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private var deleteConfirmationAlert: AlertViewModel {
         .deleteConfirmation(
             itemsCount: input.ids.count,
-            action: { [weak self] action in self?.handle(action: .alertActionTapped(action)) }
+            action: { [weak self] action in self?.handle(action: .deleteConfirmationTapped(action)) }
         )
     }
 }

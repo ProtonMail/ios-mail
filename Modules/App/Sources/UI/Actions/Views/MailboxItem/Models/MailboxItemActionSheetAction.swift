@@ -22,5 +22,5 @@ enum MailboxItemActionSheetAction {
     case mailboxItemActionSelected(MailboxItemAction)
     case moveTo(MoveToAction)
     case mailboxGeneralActionTapped(GeneralActions)
-    case alertActionTapped(DeleteConfirmationAlertAction)
+    case deleteConfirmationTapped(DeleteConfirmationAlertAction)
 }
