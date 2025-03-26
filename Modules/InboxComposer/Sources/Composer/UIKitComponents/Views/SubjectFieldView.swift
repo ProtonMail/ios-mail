@@ -43,6 +43,7 @@ final class SubjectFieldView: UIView {
         addSubview(stack)
 
         title.setContentHuggingPriority(.required, for: .horizontal)
+        title.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: leadingAnchor),
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),

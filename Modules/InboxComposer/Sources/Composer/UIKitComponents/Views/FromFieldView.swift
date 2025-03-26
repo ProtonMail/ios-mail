@@ -53,6 +53,7 @@ final class FromFieldView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         title.setContentHuggingPriority(.required, for: .horizontal)
+        title.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: leadingAnchor),
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
