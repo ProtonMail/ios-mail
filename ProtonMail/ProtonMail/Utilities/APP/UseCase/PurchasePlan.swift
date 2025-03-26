@@ -26,7 +26,7 @@ struct PurchasePlan {
         self.dependencies = dependencies
     }
 
-    func execute(storeKitProductId: InAppPurchasePlan.ProductId) async -> Output {
+    func execute(storeKitProductId: String) async -> Output {
         guard let plan = InAppPurchasePlan(storeKitProductId: storeKitProductId) else {
             return .error(PurchasePlanError.productNotFound(storeKitProductId: storeKitProductId))
         }

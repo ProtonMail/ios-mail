@@ -38,10 +38,11 @@ extension UserManager {
     }
 
     var isFido2Enabled: Bool {
-        return container.featureFlagsRepository.isEnabled(
-            CoreFeatureFlagType.fidoKeys,
-            for: userID.rawValue,
-            reloadValue: false
-        )
+        return true
+//        return container.featureFlagsRepository.isEnabled(
+//            CoreFeatureFlagType.fidoKeys,
+//            for: userID.rawValue,
+//            reloadValue: false
+//        )
     }
 }

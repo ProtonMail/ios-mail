@@ -18,6 +18,7 @@
 import ProtonCorePayments
 
 final class ServicePlanDataStorageImpl: ServicePlanDataStorage {
+    
     private let userDefaults: UserDefaults
 
     var servicePlansDetails: [Plan]? {
@@ -65,6 +66,21 @@ final class ServicePlanDataStorageImpl: ServicePlanDataStorage {
         }
         set {
             userDefaults[.isIAPAvailableOnBE] = newValue
+        }
+    }
+
+    var iapSupportStatus: ProtonCorePayments.IAPSupportStatus {
+        get {
+            userDefaults[.isIAPAvailableOnBE] ? .enabled : .disabled(localizedReason: nil)
+        }
+
+        set {
+            switch newValue {
+            case .enabled:
+                userDefaults[.isIAPAvailableOnBE] = true
+            case .disabled:
+                userDefaults[.isIAPAvailableOnBE] = false
+            }
         }
     }
 

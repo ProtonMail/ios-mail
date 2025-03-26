@@ -112,8 +112,6 @@ name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.3.3, source: 
 
 name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
-name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 26.3.3, source: https://github.com/ProtonMail/protoncore_ios
-
 name: Reachability.swift, nameSpecified: Reachability, owner: ashleymills, version: 5.2.3, source: https://github.com/ashleymills/Reachability.swift
 
 name: SDWebImage, nameSpecified: SDWebImage, owner: SDWebImage, version: 5.15.8, source: https://github.com/SDWebImage/SDWebImage
@@ -129,6 +127,8 @@ name: swift-syntax, nameSpecified: swift-syntax, owner: swiftlang, version: 600.
 name: SwiftOTP, nameSpecified: SwiftOTP, owner: lachlanbell, version: 2.0.3, source: https://github.com/lachlanbell/SwiftOTP
 
 name: TrustKit, nameSpecified: TrustKit, owner: ProtonMail, version: 1.0.3, source: https://github.com/ProtonMail/TrustKit
+
+name: Yams, nameSpecified: Yams, owner: jpsim, version: 5.3.1, source: https://github.com/jpsim/Yams
 
 add-version-numbers: false
 

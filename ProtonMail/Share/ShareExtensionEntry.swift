@@ -75,7 +75,7 @@ class ShareExtensionEntry: UINavigationController {
         default:
             environment = "production"
         }
-        PMLog.setEnvironment(environment: environment)
+        // PMLog.setEnvironment(environment: environment)
     }
 
     private func setupLogLocation() {
