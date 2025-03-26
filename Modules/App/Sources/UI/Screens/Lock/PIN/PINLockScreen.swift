@@ -20,11 +20,6 @@ import InboxCoreUI
 import InboxDesignSystem
 import InboxCore
 
-enum PINLockScreenAction {
-    case confirm(pin: String)
-    case logout
-}
-
 struct PINLockScreen: View {
     enum KeyboardButton: Hashable {
         case digit(_ value: Int)
@@ -40,18 +35,16 @@ struct PINLockScreen: View {
         }
     }
 
-    @State var pin: String
-    @Binding var errorText: String?
-    private let handleInParent: (PINLockScreenAction) -> Void
+    @StateObject var store: PINLockStateStore
+    @Binding var error: String?
 
     init(
         pin: String = .empty,
-        errorText: Binding<String?>,
-        handleInParent: @escaping (PINLockScreenAction) -> Void
+        error: Binding<String?>,
+        output: @escaping (PINLockScreenOutput) -> Void
     ) {
-        _pin = .init(initialValue: pin)
-        self._errorText = errorText
-        self.handleInParent = handleInParent
+        self._store = .init(wrappedValue: .init(state: .init(pin: pin), output: output))
+        self._error = error
     }
 
     var body: some View {
@@ -67,7 +60,8 @@ struct PINLockScreen: View {
                     pinIndicator()
                         .frame(height: 20, alignment: .center)
                         .frame(maxWidth: 300)
-                    if let error = errorText {
+
+                    if let error = store.state.error {
                         Text(error)
                             .foregroundStyle(DS.Color.Notification.error)
                     }
@@ -78,7 +72,7 @@ struct PINLockScreen: View {
                         ForEach(keyboard, id: \.self) { rowButtons in
                             HStack(spacing: DS.Spacing.large) {
                                 ForEach(rowButtons, id: \.self) { button in
-                                    Button(action: { handle(button: button) }) {
+                                    Button(action: { store.handle(action: .keyboardTapped(button)) }) {
                                         visualElement(for: button)
                                             .font(.title)
                                             .foregroundStyle(DS.Color.Text.norm)
@@ -94,7 +88,7 @@ struct PINLockScreen: View {
                     Spacer()
 
                     Button(
-                        action: { handle(action: .confirm(pin: pin)) },
+                        action: { store.handle(action: .confirmTapped) },
                         label: { Text("Confirm") }
                     )
                     .buttonStyle(BigButtonStyle())
@@ -105,11 +99,17 @@ struct PINLockScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { handle(action: .logout) }) {
+                    Button(action: { store.handle(action: .signOutTapped) }) {
                         Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
                             .foregroundStyle(DS.Color.Icon.norm)
                     }
                 }
+            }
+            .onChange(of: error, { _, newValue in
+                store.handle(action: .error(newValue))
+            })
+            .alert(model: $store.state.alert) { action in
+                store.handle(action: .alertActionTapped(action))
             }
         }
     }
@@ -126,39 +126,17 @@ struct PINLockScreen: View {
 
     @ViewBuilder
     func pinIndicator() -> some View {
-        if pin.isEmpty {
+        if store.state.pin.isEmpty {
             Text("Enter your PIN to unlock you inbox.")
                 .foregroundStyle(DS.Color.Text.weak)
         } else {
             HStack(spacing: DS.Spacing.small) {
-                ForEach(0..<pin.count, id: \.self) { _ in
+                ForEach(0..<store.state.pin.count, id: \.self) { _ in
                     Circle()
                         .fill(DS.Color.InteractionBrand.norm)
                         .square(size: 10)
                 }
             }
-        }
-    }
-
-    private func handle(action: PINLockScreenAction) {
-        switch action {
-        case .confirm(let pin):
-            self.pin = .empty
-            if pin.isEmpty == false {
-                handleInParent(action)
-            }
-        case .logout:
-            handleInParent(action)
-        }
-    }
-
-    private func handle(button: KeyboardButton) {
-        errorText = nil
-        switch button {
-        case .digit(let value):
-            pin = pin.appending("\(value)")
-        case .delete:
-            pin = String(pin.dropLast())
         }
     }
 
@@ -172,3 +150,4 @@ struct PINLockScreen: View {
     }
 
 }
+

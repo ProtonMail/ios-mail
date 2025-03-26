@@ -15,25 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
-import InboxTesting
-
-class PINLockScreenSnapshotTests: BaseTestCase {
-
-    func testPINLockScreenLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: .empty, error: .constant(nil)) {_ in }, 
-            named: "empty_pin"
-        )
-        assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: "123456789", error: .constant(nil)) { _ in }, 
-            named: "non_empty_pin"
-        )
-        assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: .empty, error: .constant("This is the error message")) { _ in },
-            named: "error_message"
-        )
-    }
-
+enum PINLockScreenOutput: Equatable {
+    case pin(String)
+    case logOut
 }
