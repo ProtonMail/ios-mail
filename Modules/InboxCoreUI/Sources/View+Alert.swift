@@ -19,21 +19,16 @@ import InboxCore
 import SwiftUI
 
 extension View {
-    public func alert<AlertAction: AlertActionViewModel>(
-        model: Binding<AlertViewModel<AlertAction>?>,
-        handleAction: @escaping (AlertAction) -> Void
-    ) -> some View {
-        modifier(AlertViewModifier(model: model, handleAction: handleAction))
+    public func alert(model: Binding<AlertViewModel?>) -> some View {
+        modifier(AlertViewModifier(model: model))
     }
 }
 
-private struct AlertViewModifier<AlertAction: AlertActionViewModel>: ViewModifier {
-    @Binding private var model: AlertViewModel<AlertAction>?
-    private let handleAction: (AlertAction) -> Void
+private struct AlertViewModifier: ViewModifier {
+    @Binding private var model: AlertViewModel?
 
-    init(model: Binding<AlertViewModel<AlertAction>?>, handleAction: @escaping (AlertAction) -> Void) {
+    init(model: Binding<AlertViewModel?>) {
         _model = model
-        self.handleAction = handleAction
     }
 
     func body(content: Content) -> some View {
@@ -42,9 +37,9 @@ private struct AlertViewModifier<AlertAction: AlertActionViewModel>: ViewModifie
             isPresented: isPresented,
             presenting: model,
             actions: { alert in
-                ForEach(alert.actions, id: \.self) { action in
-                    Button(action.title.string, role: action.buttonRole) {
-                        handleAction(action)
+                ForEach(alert.actions, id: \.title.string) { alertAction in
+                    Button(alertAction.title.string, role: alertAction.buttonRole) {
+                        alertAction.action()
                     }
                 }
             },

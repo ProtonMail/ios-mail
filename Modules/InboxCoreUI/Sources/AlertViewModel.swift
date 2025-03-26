@@ -17,17 +17,28 @@
 
 import SwiftUI
 
-public protocol AlertActionViewModel: Hashable {
-    var title: LocalizedStringResource { get }
-    var buttonRole: ButtonRole { get }
+public struct AlertAction: Equatable {
+    public let title: LocalizedStringResource
+    public let buttonRole: ButtonRole
+    public let action: () -> Void
+    
+    public init(title: LocalizedStringResource, buttonRole: ButtonRole, action: @escaping () -> Void) {
+        self.title = title
+        self.buttonRole = buttonRole
+        self.action = action
+    }
+    
+    public static func == (lhs: AlertAction, rhs: AlertAction) -> Bool {
+        lhs.title == rhs.title && lhs.buttonRole == rhs.buttonRole
+    }
 }
 
-public struct AlertViewModel<Action: AlertActionViewModel>: Equatable {
+public struct AlertViewModel: Equatable {
     public let title: LocalizedStringResource
     public let message: LocalizedStringResource?
-    public let actions: [Action]
+    public let actions: [AlertAction]
 
-    public init(title: LocalizedStringResource, message: LocalizedStringResource?, actions: [Action]) {
+    public init(title: LocalizedStringResource, message: LocalizedStringResource?, actions: [AlertAction]) {
         self.title = title
         self.message = message
         self.actions = actions

@@ -19,12 +19,27 @@ import InboxCoreUI
 
 extension AlertViewModel {
 
-    static func deleteConfirmation(itemsCount: Int) -> AlertViewModel<DeleteConfirmationAlertAction> {
+    static func deleteConfirmation(
+        itemsCount: Int,
+        action: @escaping (DeleteConfirmationAlertAction) -> Void
+    ) -> AlertViewModel {
         .init(
             title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
             message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
-            actions: [.cancel, .delete]
+            actions: [.cancel(action: { action(.cancel) }), .delete(action: { action(.delete) })]
         )
+    }
+
+}
+
+private extension AlertAction {
+
+    static func cancel(action: @escaping () -> Void) -> AlertAction {
+        AlertAction(title: L10n.Common.cancel, buttonRole: .cancel, action: action)
+    }
+
+    static func delete(action: @escaping () -> Void) -> AlertAction {
+        AlertAction(title: L10n.Common.delete, buttonRole: .destructive, action: action)
     }
 
 }

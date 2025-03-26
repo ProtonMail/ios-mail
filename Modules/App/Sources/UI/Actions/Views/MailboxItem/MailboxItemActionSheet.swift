@@ -88,9 +88,7 @@ struct MailboxItemActionSheet: View {
                 .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(state.title)
                 .navigationBarTitleDisplayMode(.inline)
-                .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
-                    store.handle(action: .alertActionTapped(action))
-                }
+                .alert(model: store.binding(\.deleteConfirmationAlert))
             }.onLoad { store.handle(action: .onLoad) }
         }
     }

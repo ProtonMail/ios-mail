@@ -18,25 +18,7 @@
 import InboxCoreUI
 import SwiftUI
 
-enum DeleteConfirmationAlertAction: AlertActionViewModel {
+enum DeleteConfirmationAlertAction {
     case cancel
     case delete
-
-    var title: LocalizedStringResource {
-        switch self {
-        case .cancel:
-            L10n.Common.cancel
-        case .delete:
-            L10n.Common.delete
-        }
-    }
-
-    var buttonRole: ButtonRole {
-        switch self {
-        case .cancel:
-            return .cancel
-        case .delete:
-            return .destructive
-        }
-    }
 }

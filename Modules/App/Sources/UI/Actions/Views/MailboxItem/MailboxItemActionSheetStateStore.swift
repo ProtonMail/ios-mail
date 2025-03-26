@@ -94,7 +94,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                     navigation: input.type.dismissNavigation
                 )
             case .delete:
-                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
+                state = state.copy(\.deleteConfirmationAlert, to: deleteConfirmationAlert)
             case .pin, .unpin:
                 break
             }
@@ -103,7 +103,7 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .moveTo:
                 navigation(.moveTo)
             case .permanentDelete:
-                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
+                state = state.copy(\.deleteConfirmationAlert, to: deleteConfirmationAlert)
             case .notSpam(let model), .system(let model):
                 performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
             }
@@ -194,6 +194,13 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func update(actions: AvailableActions) {
         state = state.copy(\.availableActions, to: actions)
+    }
+    
+    private var deleteConfirmationAlert: AlertViewModel {
+        .deleteConfirmation(
+            itemsCount: input.ids.count,
+            action: { [weak self] action in self?.handle(action: .alertActionTapped(action)) }
+        )
     }
 }
 

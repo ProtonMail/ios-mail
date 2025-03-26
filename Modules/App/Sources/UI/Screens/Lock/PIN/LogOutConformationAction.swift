@@ -18,7 +18,7 @@
 import SwiftUI
 import InboxCoreUI
 
-enum LogOutConformationAction: AlertActionViewModel {
+enum LogOutConformationAction: CaseIterable {
     case cancel
     case signOut
 

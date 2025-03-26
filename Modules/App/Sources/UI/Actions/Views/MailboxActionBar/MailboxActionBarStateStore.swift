@@ -113,9 +113,13 @@ final class MailboxActionBarStateStore: StateStore {
             dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
-            let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel<DeleteConfirmationAlertAction>?> =
+            let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
-            state = state.copy(keyPath, to: .deleteConfirmation(itemsCount: ids.count))
+            let alert: AlertViewModel = .deleteConfirmation(
+                itemsCount: ids.count,
+                action: { [weak self] action in self?.handle(action: .alertActionTapped(action, ids: ids)) }
+            )
+            state = state.copy(keyPath, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
             performMoveToAction(destination: model, ids: ids)
             toastStateStore.present(toast: .moveTo(destinationName: model.systemLabel.humanReadable.string))

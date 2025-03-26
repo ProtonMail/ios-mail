@@ -212,7 +212,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
 
-        XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count))
+        XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
         sut.handle(action: .alertActionTapped(.delete, ids: ids))
 

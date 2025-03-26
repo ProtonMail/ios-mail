@@ -110,9 +110,7 @@ struct PINLockScreen: View {
             .onChange(of: error, { _, newValue in
                 store.handle(action: .error(newValue))
             })
-            .alert(model: $store.state.alert) { action in
-                store.handle(action: .alertActionTapped(action))
-            }
+            .alert(model: $store.state.alert)
         }
     }
 

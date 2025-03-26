@@ -84,13 +84,9 @@ struct MailboxActionBarView: View {
                 MailboxActionBarMoreSheet(state: state) { action in
                     store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                 }
-                .alert(model: store.binding(\.moreDeleteConfirmationAlert)) { action in
-                    store.handle(action: .alertActionTapped(action, ids: selectedItemsIDs))
-                }
+                .alert(model: store.binding(\.moreDeleteConfirmationAlert))
             }
-            .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
-                store.handle(action: .alertActionTapped(action, ids: selectedItemsIDs))
-            }
+            .alert(model: store.binding(\.deleteConfirmationAlert))
         }
     }
 

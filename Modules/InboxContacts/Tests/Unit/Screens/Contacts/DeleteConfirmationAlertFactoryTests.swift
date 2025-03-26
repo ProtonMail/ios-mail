@@ -24,11 +24,10 @@ final class DeleteConfirmationAlertFactoryTests: XCTestCase {
     func testMakeAlertForContact_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .contact(.vip)
 
-        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete))
+        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in }))
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactItem.vip.name))
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.Contact.message)
-        XCTAssertEqual(alert.actions, [.confirm, .cancel])
         XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.delete, L10n.Contacts.DeletionAlert.cancel])
         XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
@@ -36,11 +35,10 @@ final class DeleteConfirmationAlertFactoryTests: XCTestCase {
     func testMakeAlertForContactGroup_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
 
-        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete))
+        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in }))
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactGroupItem.advisorsGroup.name))
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.ContactGroup.message)
-        XCTAssertEqual(alert.actions, [.confirm, .cancel])
         XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.delete, L10n.Contacts.DeletionAlert.cancel])
         XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }

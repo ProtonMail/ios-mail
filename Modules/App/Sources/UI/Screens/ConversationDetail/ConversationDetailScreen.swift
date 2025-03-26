@@ -58,14 +58,7 @@ struct ConversationDetailScreen: View {
             replyActions: handleReplyAction,
             goBackNavigation: { navigationPath.removeLast() }
         )
-        .alert(
-            model: $model.deleteConfirmationAlert,
-            handleAction: { action in model.handle(
-                action: action,
-                toastStateStore: toastStateStore,
-                goBack: { navigationPath.removeLast() }
-            )}
-        )
+        .alert(model: $model.deleteConfirmationAlert)
         .fullScreenCover(item: $model.attachmentIDToOpen) { id in
             AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                 .edgesIgnoringSafeArea([.top, .bottom])
