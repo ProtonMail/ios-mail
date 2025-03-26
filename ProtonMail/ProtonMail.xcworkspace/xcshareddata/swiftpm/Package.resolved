@@ -83,21 +83,12 @@
         }
       },
       {
-        "package": "ProtonCore",
-        "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
-        "state": {
-          "branch": null,
-          "revision": "b12cf4f4dc3f5474dd1d10f394c40f3b4beec303",
-          "version": "26.3.3"
-        }
-      },
-      {
         "package": "ProtonInboxICal",
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxical",
         "state": {
           "branch": null,
-          "revision": "c427e6dcde94128021c1b273882d18092a1db299",
-          "version": "1.0.0"
+          "revision": "0451bb3dafcad5c50ea68699db45d7fec559f991",
+          "version": "1.3.0"
         }
       },
       {
@@ -105,8 +96,8 @@
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
         "state": {
           "branch": null,
-          "revision": "55283dcc5b600bac0bba09253ee40d6a483bcc44",
-          "version": "2.3.0"
+          "revision": "4e798a5e7b981f8de4d8f5861bdb118b8606b797",
+          "version": "2.6.0"
         }
       },
       {
@@ -179,6 +170,15 @@
           "branch": null,
           "revision": "d107d7cc825f38ae2d6dc7c54af71d58145c3506",
           "version": "1.0.3"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "b4b8042411dc7bbb696300a34a4bf3ba1b7ad19b",
+          "version": "5.3.1"
         }
       }
     ]
