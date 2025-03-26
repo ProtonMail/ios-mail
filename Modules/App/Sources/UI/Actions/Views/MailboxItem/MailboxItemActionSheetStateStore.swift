@@ -109,9 +109,14 @@ class MailboxItemActionSheetStateStore: StateStore {
             }
         case .mailboxGeneralActionTapped(let generalAction):
             switch generalAction {
-            case .print, .reportPhishing, .saveAsPdf, .viewHeaders,
+            case .print, .saveAsPdf, .viewHeaders,
                  .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
                 toastStateStore.present(toast: .comingSoon)
+            case .reportPhishing:
+                // FIXME: Implement alert actions
+                let alert: AlertViewModel = .confirmPhishing(action: { action in })
+                
+                state = state.copy(\.alert, to: alert)
             }
         case .deleteConfirmationTapped(let action):
             state = state.copy(\.alert, to: nil)
