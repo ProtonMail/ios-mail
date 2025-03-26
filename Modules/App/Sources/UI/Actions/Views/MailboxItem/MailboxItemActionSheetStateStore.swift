@@ -128,9 +128,11 @@ class MailboxItemActionSheetStateStore: StateStore {
             if case .delete = action {
                 performDeleteAction(itemsIDs: input.ids, itemType: input.type)
             }
-        case .phishingConfirmationTapped:
+        case .phishingConfirmationTapped(let action):
             state = state.copy(\.alert, to: nil)
-            performMarkPhishing()
+            if case .confirm = action {
+                performMarkPhishing()
+            }
         }
     }
 
