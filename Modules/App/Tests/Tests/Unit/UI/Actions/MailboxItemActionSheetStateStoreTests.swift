@@ -280,6 +280,22 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [ids])
     }
     
+    func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishing() throws {
+        let ids: [ID] = [.init(value: 55), .init(value: 5)]
+        let sut = sut(ids: ids, type: .message, title: .notUsed)
+
+        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+
+        XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
+        
+        let cancelAction = try XCTUnwrap(sut.state.alert?.actions.filter { $0.title == L10n.Common.cancel }.first)
+        
+        cancelAction.action()
+        
+        XCTAssertEqual(sut.state.alert, nil)
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [])
+    }
+    
     func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
         verifyGeneralAction(action: .saveAsPdf)
     }
