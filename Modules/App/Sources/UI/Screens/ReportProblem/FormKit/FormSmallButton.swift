@@ -15,33 +15,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import InboxDesignSystem
+import SwiftUI
 
-struct FormSwitchView: View {
+struct FormSmallButton: View {
     private let title: LocalizedStringResource
     private let additionalInfo: LocalizedStringResource?
-    @Binding private var isOn: Bool
+    private let action: () -> Void
 
-    init(title: LocalizedStringResource, additionalInfo: LocalizedStringResource?, isOn: Binding<Bool>) {
+    init(
+        title: LocalizedStringResource,
+        additionalInfo: LocalizedStringResource?,
+        action: @escaping () -> Void
+    ) {
         self.title = title
         self.additionalInfo = additionalInfo
-        self._isOn = isOn
+        self.action = action
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-            HStack {
-                Text(title)
-                Spacer(minLength: DS.Spacing.standard)
-                Toggle(String.empty, isOn: $isOn)
-                    .tint(DS.Color.Text.accent)
+            Button(action: { action() }) {
+                HStack {
+                    Text(title)
+                    Spacer(minLength: DS.Spacing.medium)
+                    Image(systemName: "chevron.right")
+                }
+                .padding(.vertical, DS.Spacing.moderatelyLarge)
+                .padding(.horizontal, DS.Spacing.large)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
             }
-            .padding(.horizontal, DS.Spacing.large)
-            .padding(.vertical, DS.Spacing.mediumLight)
-            .frame(maxWidth: .infinity)
-            .background(DS.Color.BackgroundInverted.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
+            .buttonStyle(SettingsButtonStyle())
+            .applyRoundedRectangleStyle()
 
             if let additionalInfo {
                 Text(additionalInfo)

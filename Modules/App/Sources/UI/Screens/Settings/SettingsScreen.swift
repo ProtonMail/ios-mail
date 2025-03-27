@@ -151,7 +151,7 @@ struct SettingsScreen: View {
             }
             .buttonStyle(SettingsButtonStyle())
             .applyRoundedRectangleStyle()
-            .padding(.bottom, DS.Spacing.huge)
+            .padding(.bottom, DS.Spacing.large)
             .padding(.top, DS.Spacing.large)
         }
     }
@@ -235,7 +235,7 @@ private extension SettingsPreference {
 
 }
 
-private struct SettingsButtonStyle: ButtonStyle {
+struct SettingsButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration
@@ -245,7 +245,7 @@ private struct SettingsButtonStyle: ButtonStyle {
 
 }
 
-private extension View {
+extension View {
     func applyRoundedRectangleStyle() -> some View {
         modifier(RoundedRectangleStyleStyle())
     }
