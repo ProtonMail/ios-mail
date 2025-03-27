@@ -38,7 +38,6 @@ struct FormSection<Content: View>: View {
             content()
         }
         .padding(.top, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.extraLarge)
     }
 
 }

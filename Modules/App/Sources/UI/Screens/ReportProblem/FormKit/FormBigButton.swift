@@ -39,13 +39,12 @@ struct FormBigButton: View {
                     Text(title)
                         .font(.subheadline)
                         .foregroundStyle(DS.Color.Text.weak)
-                    Text(title)
+                    Text(value)
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 Spacer(minLength: DS.Spacing.small)
                 Image(systemName: icon)
-                    .resizable()
-                    .square(size: 20)
+                    .font(.system(size: 20))
                     .foregroundStyle(DS.Color.Text.hint)
             }
             .padding(DS.Spacing.large)

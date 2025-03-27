@@ -45,6 +45,7 @@ struct FormSwitchView: View {
 
             if let additionalInfo {
                 Text(additionalInfo)
+                    .font(.footnote)
                     .padding(.horizontal, DS.Spacing.large)
                     .foregroundStyle(DS.Color.Text.weak)
             }

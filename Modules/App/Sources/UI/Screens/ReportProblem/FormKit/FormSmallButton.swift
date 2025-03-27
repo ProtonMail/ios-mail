@@ -50,7 +50,8 @@ struct FormSmallButton: View {
             .applyRoundedRectangleStyle()
 
             if let additionalInfo {
-                Text(additionalInfo)
+                Text(additionalInfo) // FIXME: - Move to component
+                    .font(.footnote)
                     .padding(.horizontal, DS.Spacing.large)
                     .foregroundStyle(DS.Color.Text.weak)
             }
