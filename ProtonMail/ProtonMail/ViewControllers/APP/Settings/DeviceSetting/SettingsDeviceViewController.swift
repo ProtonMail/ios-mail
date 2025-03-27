@@ -151,7 +151,7 @@ extension SettingsDeviceViewController {
         if self.viewModel.sections.count > section {
             switch self.viewModel.sections[section] {
             case .account:
-                return 1
+                return self.viewModel.accountSettings.count
             case .app:
                 return self.viewModel.appSettings.count
             case .general:
@@ -170,11 +170,23 @@ extension SettingsDeviceViewController {
 
         switch eSection {
         case .account:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsAccountCell.CellID, for: indexPath)
-            if let settingsAccountCell = cell as? SettingsAccountCell {
-                settingsAccountCell.configure(name: self.viewModel.name, email: self.viewModel.email)
+            let item = self.viewModel.accountSettings[row]
+            switch item {
+            case .account:
+                let cell = tableView.dequeueReusableCell(withIdentifier: SettingsAccountCell.CellID, for: indexPath)
+                if let settingsAccountCell = cell as? SettingsAccountCell {
+                    settingsAccountCell.configure(name: self.viewModel.name, email: self.viewModel.email)
+                }
+                return cell
+            case .scan_qr_code:
+                let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+                if let settingsGeneralCell = cell as? SettingsGeneralCell {
+                    // TODO: Localize and move to the view model
+                    settingsGeneralCell.configure(left: "Sign in to another device")
+                }
+                return cell
             }
-            return cell
+
         case .app:
             let item = self.viewModel.appSettings[row]
 
@@ -303,7 +315,14 @@ extension SettingsDeviceViewController {
         let eSection = viewModel.sections[section]
         switch eSection {
         case .account:
-            coordinator?.go(to: .accountSetting)
+            let item = viewModel.accountSettings[row]
+            switch item {
+            case .account:
+                coordinator?.go(to: .accountSetting)
+            case .scan_qr_code:
+                coordinator?.go(to: .scanQRCode)
+            }
+
         case .app:
             let item = viewModel.appSettings[row]
             switch item {
