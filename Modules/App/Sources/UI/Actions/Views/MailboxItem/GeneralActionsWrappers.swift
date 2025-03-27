@@ -36,10 +36,10 @@ extension GeneralActionsWrappers {
 }
 
 struct GeneralActionsPerformer {
-    let markMessagePhishing: (_ ids: [ID]) async -> VoidActionResult
+    let markMessagePhishing: (_ messageIDs: [ID]) async -> VoidActionResult
     
     init(session: MailUserSession, generalActions: GeneralActionsWrappers) {
-        self.markMessagePhishing = { id in await generalActions.markMessagePhishing(session, id) }
+        self.markMessagePhishing = { messageIDs in await generalActions.markMessagePhishing(session, messageIDs) }
     }
     
     func markMessagePhishing(messageIDs: [ID]) async -> VoidActionResult {

@@ -113,9 +113,9 @@ final class MailboxActionBarStateStore: StateStore {
             dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
-            let keyPath: WritableKeyPath<MailboxActionBarState, AlertViewModel?> =
+            let keyPath: WritableKeyPath<MailboxActionBarState, AlertModel?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
-            let alert: AlertViewModel = .deleteConfirmation(
+            let alert: AlertModel = .deleteConfirmation(
                 itemsCount: ids.count,
                 action: { [weak self] action in self?.handle(action: .alertActionTapped(action, ids: ids)) }
             )

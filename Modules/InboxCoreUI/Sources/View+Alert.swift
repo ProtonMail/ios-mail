@@ -19,15 +19,15 @@ import InboxCore
 import SwiftUI
 
 extension View {
-    public func alert(model: Binding<AlertViewModel?>) -> some View {
+    public func alert(model: Binding<AlertModel?>) -> some View {
         modifier(AlertViewModifier(model: model))
     }
 }
 
 private struct AlertViewModifier: ViewModifier {
-    @Binding private var model: AlertViewModel?
+    @Binding private var model: AlertModel?
 
-    init(model: Binding<AlertViewModel?>) {
+    init(model: Binding<AlertModel?>) {
         _model = model
     }
 

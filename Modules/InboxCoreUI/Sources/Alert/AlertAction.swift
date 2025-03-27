@@ -15,21 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import SwiftUI
 
-enum DeleteConfirmationAlertAction: AlertActionInfo, CaseIterable {
-    case cancel
-    case delete
+public struct AlertAction: Equatable {
+    public let title: LocalizedStringResource
+    public let buttonRole: ButtonRole
+    public let action: () -> Void
     
-    // MARK: - AlertActionInfo
+    public init(details: AlertActionInfo, action: @escaping () -> Void) {
+        self.title = details.info.title
+        self.buttonRole = details.info.buttonRole
+        self.action = action
+    }
     
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
-        switch self {
-        case .cancel:
-            (L10n.Common.cancel, .cancel)
-        case .delete:
-            (L10n.Common.delete, .destructive)
-        }
+    public static func == (lhs: AlertAction, rhs: AlertAction) -> Bool {
+        lhs.title == rhs.title && lhs.buttonRole == rhs.buttonRole
     }
 }

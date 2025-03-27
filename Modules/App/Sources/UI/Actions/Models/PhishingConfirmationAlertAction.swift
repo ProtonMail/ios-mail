@@ -18,27 +18,18 @@
 import InboxCoreUI
 import SwiftUI
 
-enum PhishingConfirmationAlertAction: AlertActionProtocol, CaseIterable {
+enum PhishingConfirmationAlertAction: AlertActionInfo, CaseIterable {
     case cancel
     case confirm
     
-    // MARK: - AlertActionProtocol
+    // MARK: - AlertActionInfo
     
-    var title: LocalizedStringResource {
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:
-            L10n.Common.cancel
+            (L10n.Common.cancel, .cancel)
         case .confirm:
-            L10n.Common.confirm
-        }
-    }
-
-    var buttonRole: ButtonRole {
-        switch self {
-        case .cancel:
-            .cancel
-        case .confirm:
-            .destructive
+            (L10n.Common.confirm, .destructive)
         }
     }
 }

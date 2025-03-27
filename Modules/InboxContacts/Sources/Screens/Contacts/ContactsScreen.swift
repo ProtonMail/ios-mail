@@ -93,7 +93,7 @@ public struct ContactsScreen: View {
         )
     }
 
-    private var deletionAlert: Binding<AlertViewModel?> {
+    private var deletionAlert: Binding<AlertModel?> {
         .readonly {
             store.state.itemToDelete.map { itemType in
                 DeleteConfirmationAlertFactory.make(

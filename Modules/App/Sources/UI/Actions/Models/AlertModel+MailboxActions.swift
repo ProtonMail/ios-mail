@@ -17,12 +17,12 @@
 
 import InboxCoreUI
 
-extension AlertViewModel {
+extension AlertModel {
 
     static func deleteConfirmation(
         itemsCount: Int,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
-    ) -> AlertViewModel {
+    ) -> AlertModel {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }
@@ -34,7 +34,7 @@ extension AlertViewModel {
         )
     }
     
-    static func confirmPhishing(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertViewModel {
+    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertModel {
         let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }

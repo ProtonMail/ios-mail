@@ -64,7 +64,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         switch action {
         case .onLoad:
             loadActions()
-        case .actionSelected(let action):
+        case .mailboxItemActionSelected(let action):
             switch action {
             case .labelAs:
                 navigation(.labelAs)
@@ -112,11 +112,10 @@ class MailboxItemActionSheetStateStore: StateStore {
             }
         case .generalActionTapped(let generalAction):
             switch generalAction {
-            case .print, .saveAsPdf, .viewHeaders,
-                 .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
+            case .print, .saveAsPdf, .viewHeaders, .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
                 toastStateStore.present(toast: .comingSoon)
             case .reportPhishing:
-                let alert: AlertViewModel = .confirmPhishing(action: { [weak self] action in
+                let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
                     self?.handle(action: .phishingConfirmed(action))
                 })
                 
@@ -172,13 +171,10 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func performMarkPhishing(itemType: MailboxItemType) {
         Task {
-            switch await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids) {
-            case .ok:
+            if case .ok = await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids) {
                 Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                     self?.navigation(itemType.dismissNavigation)
                 }))
-            case .error:
-                break
             }
         }
     }
@@ -223,7 +219,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         state = state.copy(\.availableActions, to: actions)
     }
     
-    private var deleteConfirmationAlert: AlertViewModel {
+    private var deleteConfirmationAlert: AlertModel {
         .deleteConfirmation(
             itemsCount: input.ids.count,
             action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }

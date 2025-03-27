@@ -17,28 +17,7 @@
 
 import SwiftUI
 
-public protocol AlertActionProtocol {
-    var title: LocalizedStringResource { get }
-    var buttonRole: ButtonRole { get }
-}
-
-public struct AlertAction: Equatable {
-    public let title: LocalizedStringResource
-    public let buttonRole: ButtonRole
-    public let action: () -> Void
-    
-    public init(details: AlertActionProtocol, action: @escaping () -> Void) {
-        self.title = details.title
-        self.buttonRole = details.buttonRole
-        self.action = action
-    }
-    
-    public static func == (lhs: AlertAction, rhs: AlertAction) -> Bool {
-        lhs.title == rhs.title && lhs.buttonRole == rhs.buttonRole
-    }
-}
-
-public struct AlertViewModel: Equatable {
+public struct AlertModel: Equatable {
     public let title: LocalizedStringResource
     public let message: LocalizedStringResource?
     public let actions: [AlertAction]

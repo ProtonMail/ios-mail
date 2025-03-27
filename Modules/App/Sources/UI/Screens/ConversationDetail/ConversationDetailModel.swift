@@ -31,7 +31,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
     @Published var actionSheets: MailboxActionSheetsState = .initial()
-    @Published var deleteConfirmationAlert: AlertViewModel?
+    @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
     var areActionsDisabled: Bool {
@@ -145,7 +145,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .markUnread:
             markConversationAsUnread(goBack: goBack)
         case .permanentDelete:
-            let alert: AlertViewModel = .deleteConfirmation(
+            let alert: AlertModel = .deleteConfirmation(
                 itemsCount: 1,
                 action: { [weak self] action in
                     self?.handle(action: action, toastStateStore: toastStateStore, goBack: goBack)

@@ -24,8 +24,8 @@ struct MailboxActionBarState: Copying, Equatable {
     var moreActionSheetPresented: MailboxActionBarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
-    var deleteConfirmationAlert: AlertViewModel?
-    var moreDeleteConfirmationAlert: AlertViewModel?
+    var deleteConfirmationAlert: AlertModel?
+    var moreDeleteConfirmationAlert: AlertModel?
 }
 
 extension MailboxActionBarState {

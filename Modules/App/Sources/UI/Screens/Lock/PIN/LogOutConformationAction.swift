@@ -18,27 +18,18 @@
 import SwiftUI
 import InboxCoreUI
 
-enum LogOutConformationAction: AlertActionProtocol, CaseIterable {
+enum LogOutConformationAction: AlertActionInfo, CaseIterable {
     case cancel
     case signOut
     
-    // MARK: - AlertActionProtocol
-
-    var title: LocalizedStringResource {
+    // MARK: - AlertActionInfo
+    
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:
-            L10n.Common.cancel
+            (L10n.Common.cancel, .cancel)
         case .signOut:
-            L10n.PINLock.signOutConfirmationButton
-        }
-    }
-
-    var buttonRole: ButtonRole {
-        switch self {
-        case .cancel:
-            .cancel
-        case .signOut:
-            .destructive
+            (L10n.PINLock.signOutConfirmationButton, .destructive)
         }
     }
 }

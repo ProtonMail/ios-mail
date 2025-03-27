@@ -20,6 +20,6 @@ import InboxCoreUI
 
 struct PINLockState: Copying {
     var pin: String
-    var alert: AlertViewModel?
+    var alert: AlertModel?
     var error: String?
 }
