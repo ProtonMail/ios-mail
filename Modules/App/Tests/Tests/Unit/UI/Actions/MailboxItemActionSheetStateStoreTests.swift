@@ -271,9 +271,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
 
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
-        
-        let confirmAction = try XCTUnwrap(sut.state.alert?.actions.filter { $0.title == L10n.Common.confirm }.first)
-        
+
+        let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
         confirmAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
@@ -289,8 +288,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
         
-        let cancelAction = try XCTUnwrap(sut.state.alert?.actions.filter { $0.title == L10n.Common.cancel }.first)
-        
+        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
         cancelAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
@@ -422,4 +420,12 @@ private extension MoveToAction {
         }
     }
 
+}
+
+private extension MailboxItemActionSheetState {
+    
+    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
+        try XCTUnwrap(alert?.actions.findFirst(for: string, by: \.title))
+    }
+    
 }
