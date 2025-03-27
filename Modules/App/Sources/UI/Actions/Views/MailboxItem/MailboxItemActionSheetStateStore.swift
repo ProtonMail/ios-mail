@@ -116,7 +116,6 @@ class MailboxItemActionSheetStateStore: StateStore {
                  .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
                 toastStateStore.present(toast: .comingSoon)
             case .reportPhishing:
-                // FIXME: Implement alert actions
                 let alert: AlertViewModel = .confirmPhishing(action: { [weak self] action in
                     self?.handle(action: .phishingConfirmationTapped(action))
                 })
@@ -131,7 +130,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         case .phishingConfirmationTapped(let action):
             state = state.copy(\.alert, to: nil)
             if case .confirm = action {
-                performMarkPhishing()
+                performMarkPhishing(itemType: input.type)
             }
         }
     }
@@ -166,6 +165,15 @@ class MailboxItemActionSheetStateStore: StateStore {
             await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.presentDeletedToast()
+                self?.navigation(itemType.dismissNavigation)
+            }))
+        }
+    }
+
+    private func performMarkPhishing(itemType: MailboxItemType) {
+        Task {
+            _ = await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids)
+            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.navigation(itemType.dismissNavigation)
             }))
         }
@@ -216,12 +224,6 @@ class MailboxItemActionSheetStateStore: StateStore {
             itemsCount: input.ids.count,
             action: { [weak self] action in self?.handle(action: .deleteConfirmationTapped(action)) }
         )
-    }
-    
-    private func performMarkPhishing() {
-        Task {
-            await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids)
-        }
     }
 }
 

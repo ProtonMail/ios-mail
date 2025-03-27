@@ -278,6 +278,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [ids])
+        XCTAssertEqual(spiedNavigation, [.dismiss])
     }
     
     func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishing() throws {
@@ -294,6 +295,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [])
+        XCTAssertEqual(spiedNavigation, [])
     }
     
     func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
