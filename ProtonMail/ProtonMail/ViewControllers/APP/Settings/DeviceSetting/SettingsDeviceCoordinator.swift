@@ -33,6 +33,7 @@ class SettingsDeviceCoordinator {
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
         case messageSwipeNavigation = "settings_message_swipe_navigation"
+        case scanQRCode = "settings_scan_qr_code"
     }
 
     typealias Dependencies = HasSettingsViewsFactory
@@ -74,6 +75,8 @@ class SettingsDeviceCoordinator {
             openDarkMode()
         case .messageSwipeNavigation:
             openMessageSwipeNavigationSetting()
+        case .scanQRCode:
+            openScanQRCodeInstructionsView()
         }
     }
 
@@ -143,5 +146,12 @@ class SettingsDeviceCoordinator {
     func openApplicationLogsView() {
         let viewController = dependencies.settingsViewsFactory.makeApplicationLogsView()
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func openScanQRCodeInstructionsView() {
+        Task { @MainActor in
+            let viewController = dependencies.settingsViewsFactory.makeScanQRCodeInstructionsView()
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
