@@ -22,6 +22,7 @@ final class LegacyKeychain: Keychain {
     enum Key: String {
         case biometricsProtectedMainKey = "BioProtection"
         case pinProtectedMainKey = "PinProtection"
+        case pinProtectionSalt = "PinProtection.salt"
         case unprotectedMainKey = "NoneProtection"
     }
 

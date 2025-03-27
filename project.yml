@@ -50,6 +50,9 @@ packages:
   ProtonCoreET:
     path: ProtonPackages/et-protoncore/platform/apple/ProtonCoreET
     group: ProtonPackages
+  Scrypt:
+    url: https://github.com/greymass/swift-scrypt.git
+    from: "1.0.0"
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     from: "2.64.0"
@@ -163,6 +166,7 @@ targets:
           - AccountChallenge
           - AccountLogin
           - AccountManager
+      - package: Scrypt
       - package: SwiftUIIntrospect
     preBuildScripts:
       - name: Sourcery

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxKeychain
+import Scrypt
 import Testing
 
 @testable import ProtonMail
@@ -35,6 +36,24 @@ final class MainKeyUnlockerTests {
         try legacyKeychain.set(privateKey: secureEnclavePrivateKey, forLabel: .biometricProtection)
         try #expect(sut.biometricsProtectedMainKey() == decryptedMainKey)
     }
+
+    @Test
+    func unlocksPinProtectedMainKey() throws {
+        try legacyKeychain.set(pinProtectedMainKey, forKey: .pinProtectedMainKey)
+        try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
+
+        try #expect(sut.pinProtectedMainKey(pin: "1337") == decryptedMainKey)
+    }
+
+    @Test
+    func whenPinIsInvalid_decodingFailsToIndicateFailure() throws {
+        try legacyKeychain.set(pinProtectedMainKey, forKey: .pinProtectedMainKey)
+        try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
+
+        #expect(throws: DecodingError.self) {
+            try self.sut.pinProtectedMainKey(pin: "1111")
+        }
+    }
 }
 
 private extension MainKeyUnlockerTests {
@@ -48,5 +67,13 @@ private extension MainKeyUnlockerTests {
 
     var secureEnclavePrivateKey: Data {
         .init(base64Encoded: "BFuwuWIvO0xD/sPsehiUj41ghuI0dsklXOcKRqjRJwHVu421b4oVRQuumEzVLOM0texCRUEeauifVmdN9NxKi7QpRBQed2nHjESWqfIehGfZDMxyr9GWw/ijGtZWOyqvoQ==").unsafelyUnwrapped
+    }
+
+    var pinProtectedMainKey: Data {
+        .init(base64Encoded: "dAcGOBeHqCMJvQPyOOy303bveHdY+QmCt8RpD6xX8u6+7PLF3pnUXhn91fIb2UND5P7Se8wKkKboY9a9ayFOJMm9uviXe6jCnT9C9Mh8rT3Bn04ctKPIg1YwZXCQwz80kQ/y/tW8wWACS4xRJ70v2MG5nh9jCGsi2nZ3PfFuX4545dfK0H6K0IpdwYYaZqWT6WJrGr6x+QGkJZZc6qfzLvZ7O7lmenuzc2u/fS7+fRouUROQW/2O7bo=").unsafelyUnwrapped
+    }
+
+    var pinProtectionSalt: Data {
+        .init(base64Encoded: "+vhAsxgbj1c=").unsafelyUnwrapped
     }
 }

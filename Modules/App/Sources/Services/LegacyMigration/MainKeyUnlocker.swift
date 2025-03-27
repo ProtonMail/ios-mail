@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CommonCrypto
 import Foundation
+import Scrypt
 
 struct MainKeyUnlocker {
     enum MainKeyUnlockerError: Error {
@@ -73,5 +75,30 @@ struct MainKeyUnlocker {
         } else {
             throw error.unsafelyUnwrapped.takeRetainedValue()
         }
+    }
+
+    func pinProtectedMainKey(pin: String) throws -> Data {
+        guard
+            let encryptedMainKey = try legacyKeychain.data(forKey: .pinProtectedMainKey),
+            let salt = try legacyKeychain.data(forKey:  .pinProtectionSalt)
+        else {
+            throw MainKeyUnlockerError.missingKeychainData
+        }
+
+        let numberOfRoundsUsedByLegacyApp: UInt64 = 32768
+
+        let mainKeyEncryptionKey = try scrypt(
+            password: [UInt8](pin.utf8),
+            salt: [UInt8](salt),
+            length: kCCKeySizeAES256,
+            N: numberOfRoundsUsedByLegacyApp
+        )
+
+        let decryptedMainKey: [UInt8] = try LockedDataExtractor.decryptAndDecode(
+            data: encryptedMainKey,
+            using: Data(mainKeyEncryptionKey)
+        )
+
+        return Data(decryptedMainKey)
     }
 }

@@ -21,10 +21,11 @@ import InboxCore
 import InboxCoreUI
 
 @MainActor
-final class LegacyMigrationStateStore: ObservableObject, Sendable {
+final class LegacyMigrationStateStore: ObservableObject {
     enum State {
         case checkingIfMigrationIsNeeded
         case inProgress
+        case pinRequired(errorFromLatestAttempt: String?)
         case willNotMigrate
     }
 
@@ -52,9 +53,28 @@ final class LegacyMigrationStateStore: ObservableObject, Sendable {
                     state = .inProgress
                     unlockMainKeyAndResumeMigration()
                 case .failed:
-                    finishMigrationWithGenericError()
+                    toastStateStore.present(toast: .migrationError)
                 }
             }
+        }
+    }
+
+    func resumeMigration(using pin: String) {
+        do {
+            let mainKey = try mainKeyUnlocker.pinProtectedMainKey(pin: pin)
+
+            Task {
+                await legacyMigrationService.resume(protectedMainKey: mainKey)
+            }
+        } catch {
+            AppLogger.log(error: error, category: .legacyMigration)
+            state = .pinRequired(errorFromLatestAttempt: L10n.PINLock.invalidPIN.string)
+        }
+    }
+
+    func abortMigration() {
+        Task {
+            await legacyMigrationService.abortWithoutProvidingProtectedMainKey()
         }
     }
 
@@ -66,14 +86,9 @@ final class LegacyMigrationStateStore: ObservableObject, Sendable {
                     let mainKey = try mainKeyUnlocker.biometricsProtectedMainKey()
                     await legacyMigrationService.resume(protectedMainKey: mainKey)
                 case .pin:
-                    state = .willNotMigrate
-                    toastStateStore.present(
-                        toast: .migrationError(
-                            message: "Migrating a PIN-protected account is not supported yet."
-                        )
-                    )
+                    state = .pinRequired(errorFromLatestAttempt: nil)
                 case .none:
-                    break
+                    finishMigrationWithGenericError()
                 }
             } catch {
                 AppLogger.log(error: error, category: .legacyMigration)
@@ -83,13 +98,13 @@ final class LegacyMigrationStateStore: ObservableObject, Sendable {
     }
 
     private func finishMigrationWithGenericError() {
-        state = .willNotMigrate
-        toastStateStore.present(toast: .migrationError(message: L10n.LegacyMigration.migrationFailed.string))
+        abortMigration()
+        toastStateStore.present(toast: .migrationError)
     }
 }
 
 private extension Toast {
-    static func migrationError(message: String) -> Toast {
-        .error(message: message).duration(.toastMediumDuration)
+    static var migrationError: Toast {
+        .error(message: L10n.LegacyMigration.migrationFailed.string).duration(.toastMediumDuration)
     }
 }

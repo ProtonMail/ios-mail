@@ -1659,6 +1659,9 @@
         }
       }
     },
+    "Invalid PIN" : {
+      "comment" : "Error message when the user enters an invalid PIN"
+    },
     "Label" : {
       "comment" : "`Label` in the message details.",
       "localizations" : {

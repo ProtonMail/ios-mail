@@ -535,6 +535,10 @@ enum L10n {
             "Are you sure you want to sign out?",
             comment: "Title of the sign out confirmation alert."
         )
+        static let invalidPIN = LocalizedStringResource(
+            "Invalid PIN",
+            comment: "Error message when the user enters an invalid PIN"
+        )
     }
 
     enum ReportProblem {

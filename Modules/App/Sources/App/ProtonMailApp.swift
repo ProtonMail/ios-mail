@@ -133,6 +133,15 @@ private struct RootView: View {
             EmptyView()
         case .inProgress:
             MigrationInProgressView()
+        case .pinRequired(let errorFromLatestAttempt):
+            PINLockScreen(error: .constant(errorFromLatestAttempt)) { output in
+                switch output {
+                case .pin(let pin):
+                    legacyMigrationStateStore.resumeMigration(using: pin)
+                case .logOut:
+                    legacyMigrationStateStore.abortMigration()
+                }
+            }
         case .willNotMigrate:
             appContext.accountAuthCoordinator.accountView()
         }
