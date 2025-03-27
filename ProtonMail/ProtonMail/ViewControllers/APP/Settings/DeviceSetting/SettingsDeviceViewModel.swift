@@ -48,6 +48,11 @@ enum SettingDeviceSection: Int, CustomStringConvertible {
     }
 }
 
+enum AccountSectionItem: Int {
+    case account = 0
+    case scan_qr_code
+}
+
 enum DeviceSectionItem: Int, CustomStringConvertible {
     case darkMode = 0
     case appPIN
@@ -117,6 +122,8 @@ final class SettingsDeviceViewModel {
 #endif
         return standardSections
     }()
+
+    private(set) var accountSettings: [AccountSectionItem] = [.account, .scan_qr_code]
 
     lazy var appSettings: [DeviceSectionItem] = {
         var appSettings: [DeviceSectionItem] = [
