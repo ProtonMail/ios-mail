@@ -52,7 +52,7 @@ packages:
     group: ProtonPackages
   Scrypt:
     url: https://github.com/greymass/swift-scrypt.git
-    from: "1.0.0"
+    revision: "be61ddc3c1efb9cb35de251afa88f4897c6cc255"
   SwiftNIO:
     url: https://github.com/apple/swift-nio.git
     from: "2.64.0"
