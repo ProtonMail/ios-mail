@@ -17,47 +17,33 @@
 
 import InboxCoreUI
 
-enum PhishingConfirmationAlertAction {
-    case cancel
-    case confirm
-}
-
 extension AlertViewModel {
 
     static func deleteConfirmation(
         itemsCount: Int,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
     ) -> AlertViewModel {
-        .init(
+        let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
+        }
+        
+        return .init(
             title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
             message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
-            actions: [.cancel(action: { action(.cancel) }), .delete(action: { action(.delete) })]
+            actions: actions
         )
     }
     
     static func confirmPhishing(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertViewModel {
-        
-        .init(
+        let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
+        }
+    
+        return .init(
             title: L10n.Action.ReportPhishing.Alert.title,
             message: L10n.Action.ReportPhishing.Alert.message,
-            actions: [.cancel(action: { action(.cancel) }), .confirm(action: { action(.confirm) })]
+            actions: actions
         )
-    }
-
-}
-
-private extension AlertAction {
-
-    static func cancel(action: @escaping () -> Void) -> AlertAction {
-        AlertAction(title: L10n.Common.cancel, buttonRole: .cancel, action: action)
-    }
-
-    static func confirm(action: @escaping () -> Void) -> AlertAction {
-        .destructive(title: L10n.Common.confirm, action: action)
-    }
-
-    static func delete(action: @escaping () -> Void) -> AlertAction {
-        .destructive(title: L10n.Common.delete, action: action)
     }
 
 }

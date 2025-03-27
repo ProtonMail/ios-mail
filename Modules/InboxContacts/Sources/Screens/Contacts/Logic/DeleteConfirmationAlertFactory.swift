@@ -23,10 +23,9 @@ enum DeleteConfirmationAlertFactory {
         for itemToDelete: ContactItemType,
         action: @escaping (DeleteItemAlertAction) -> Void
     ) -> AlertViewModel {
-        let actions: [AlertAction] = [
-            .confirm(action: { action(.confirm) }),
-            .cancel(action: { action(.cancel) })
-        ]
+        let actions: [AlertAction] = DeleteItemAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
+        }
         switch itemToDelete {
         case .contact(let contactItem):
             return .init(
@@ -42,16 +41,4 @@ enum DeleteConfirmationAlertFactory {
             )
         }
     }
-}
-
-private extension AlertAction {
-    
-    static func confirm(action: @escaping () -> Void) -> AlertAction {
-        AlertAction(title: L10n.Contacts.DeletionAlert.delete, buttonRole: .destructive, action: action)
-    }
-    
-    static func cancel(action: @escaping () -> Void) -> AlertAction {
-        AlertAction(title: L10n.Contacts.DeletionAlert.cancel, buttonRole: .cancel, action: action)
-    }
-
 }

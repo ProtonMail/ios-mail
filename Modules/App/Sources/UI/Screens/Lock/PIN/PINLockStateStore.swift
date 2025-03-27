@@ -79,7 +79,7 @@ extension AlertViewModel {
     
     static func logOutConfirmation(action: @escaping (LogOutConformationAction) -> Void) -> AlertViewModel {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
-            .make(with: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { action(actionType) })
         }
         
         return .init(

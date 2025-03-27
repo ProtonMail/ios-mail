@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,27 +18,27 @@
 import InboxCoreUI
 import SwiftUI
 
-enum DeleteItemAlertAction: AlertActionProtocol, CaseIterable {
-    case confirm
+enum PhishingConfirmationAlertAction: AlertActionProtocol, CaseIterable {
     case cancel
+    case confirm
     
     // MARK: - AlertActionProtocol
     
     var title: LocalizedStringResource {
         switch self {
-        case .confirm:
-            L10n.Contacts.DeletionAlert.delete
         case .cancel:
-            L10n.Contacts.DeletionAlert.cancel
+            L10n.Common.cancel
+        case .confirm:
+            L10n.Common.confirm
         }
     }
-    
+
     var buttonRole: ButtonRole {
         switch self {
-        case .confirm:
-            return .destructive
         case .cancel:
-            return .cancel
+            .cancel
+        case .confirm:
+            .destructive
         }
     }
 }
