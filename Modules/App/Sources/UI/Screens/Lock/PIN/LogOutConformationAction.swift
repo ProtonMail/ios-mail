@@ -18,9 +18,11 @@
 import SwiftUI
 import InboxCoreUI
 
-enum LogOutConformationAction: CaseIterable {
+enum LogOutConformationAction: AlertActionProtocol, CaseIterable {
     case cancel
     case signOut
+    
+    // MARK: - AlertActionProtocol
 
     var title: LocalizedStringResource {
         switch self {

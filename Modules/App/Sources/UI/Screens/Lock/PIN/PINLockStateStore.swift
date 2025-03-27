@@ -76,10 +76,10 @@ class PINLockStateStore: StateStore {
 }
 
 extension AlertViewModel {
-
+    
     static func logOutConfirmation(action: @escaping (LogOutConformationAction) -> Void) -> AlertViewModel {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
-            AlertAction(title: actionType.title, buttonRole: actionType.buttonRole, action: { action(actionType) })
+            .make(with: actionType, action: { action(actionType) })
         }
         
         return .init(
@@ -88,5 +88,5 @@ extension AlertViewModel {
             actions: actions
         )
     }
-
+    
 }

@@ -17,6 +17,11 @@
 
 import SwiftUI
 
+public protocol AlertActionProtocol {
+    var title: LocalizedStringResource { get }
+    var buttonRole: ButtonRole { get }
+}
+
 public struct AlertAction: Equatable {
     public let title: LocalizedStringResource
     public let buttonRole: ButtonRole
@@ -30,6 +35,10 @@ public struct AlertAction: Equatable {
     
     public static func == (lhs: AlertAction, rhs: AlertAction) -> Bool {
         lhs.title == rhs.title && lhs.buttonRole == rhs.buttonRole
+    }
+    
+    public static func make(with details: AlertActionProtocol, action: @escaping () -> Void) -> AlertAction {
+        .init(title: details.title, buttonRole: details.buttonRole, action: action)
     }
 }
 
