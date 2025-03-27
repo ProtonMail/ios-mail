@@ -44,10 +44,8 @@ struct FormSwitchView: View {
             .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
 
             if let additionalInfo {
-                Text(additionalInfo)
-                    .font(.footnote)
+                FormFootnoteText(additionalInfo)
                     .padding(.horizontal, DS.Spacing.large)
-                    .foregroundStyle(DS.Color.Text.weak)
             }
         }
     }
