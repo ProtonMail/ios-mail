@@ -116,7 +116,7 @@ struct MailboxItemActionSheet: View {
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { store.handle(action: .mailboxItemActionSelected(action)) }
+                    action: { store.handle(action: .actionSelected(action)) }
                 )
             }
         }
@@ -146,7 +146,7 @@ struct MailboxItemActionSheet: View {
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { store.handle(action: .mailboxGeneralActionTapped(action)) }
+                    action: { store.handle(action: .generalActionTapped(action)) }
                 )
             }
         }

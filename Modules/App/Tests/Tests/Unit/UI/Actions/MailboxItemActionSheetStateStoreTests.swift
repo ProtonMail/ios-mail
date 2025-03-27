@@ -129,7 +129,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
         let sut = sut(ids: [], type: .message, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(.labelAs))
+        sut.handle(action: .actionSelected(.labelAs))
 
         XCTAssertEqual(spiedNavigation, [.labelAs])
     }
@@ -209,7 +209,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
         testDeletionFlow(
             itemType: .conversation,
-            action: .mailboxItemActionSelected(.delete),
+            action: .actionSelected(.delete),
             expectedNavigation: .dismissAndGoBack,
             verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
         )
@@ -218,7 +218,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
-            action: .mailboxItemActionSelected(.delete), 
+            action: .actionSelected(.delete), 
             expectedNavigation: .dismiss,
             verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
         )
@@ -259,7 +259,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: .conversation, title: .notUsed)
 
-        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+        sut.handle(action: .generalActionTapped(.reportPhishing))
 
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
     }
@@ -268,7 +268,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: .message, title: .notUsed)
 
-        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+        sut.handle(action: .generalActionTapped(.reportPhishing))
 
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
 
@@ -284,7 +284,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: .message, title: .notUsed)
 
-        sut.handle(action: .mailboxGeneralActionTapped(.reportPhishing))
+        sut.handle(action: .generalActionTapped(.reportPhishing))
 
         XCTAssertEqual(sut.state.alert, .confirmPhishing(action: { _ in }))
         
@@ -327,7 +327,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 55), .init(value: 5)]
         let sut = sut(ids: ids, type: itemType, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(action))
+        sut.handle(action: .actionSelected(action))
 
         XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [expectedNavigation])
@@ -346,7 +346,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
-        sut.handle(action: .deleteConfirmationTapped(.delete))
+        sut.handle(action: .deleteConfirmed(.delete))
 
         XCTAssertEqual(verifyInvoked(), ids)
         XCTAssertEqual(spiedNavigation, [expectedNavigation])
@@ -377,7 +377,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let ids: [ID] = [.init(value: 1), .init(value: 7)]
         let sut = sut(ids: ids, type: .message, title: .notUsed)
         
-        sut.handle(action: .mailboxGeneralActionTapped(action))
+        sut.handle(action: .generalActionTapped(action))
         
         XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
     }

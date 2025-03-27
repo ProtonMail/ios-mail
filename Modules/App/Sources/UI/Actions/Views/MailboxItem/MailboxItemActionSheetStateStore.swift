@@ -64,7 +64,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         switch action {
         case .onLoad:
             loadActions()
-        case .mailboxItemActionSelected(let action):
+        case .actionSelected(let action):
             switch action {
             case .labelAs:
                 navigation(.labelAs)
@@ -110,24 +110,24 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .notSpam(let model), .system(let model):
                 performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
             }
-        case .mailboxGeneralActionTapped(let generalAction):
+        case .generalActionTapped(let generalAction):
             switch generalAction {
             case .print, .saveAsPdf, .viewHeaders,
                  .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
                 toastStateStore.present(toast: .comingSoon)
             case .reportPhishing:
                 let alert: AlertViewModel = .confirmPhishing(action: { [weak self] action in
-                    self?.handle(action: .phishingConfirmationTapped(action))
+                    self?.handle(action: .phishingConfirmed(action))
                 })
                 
                 state = state.copy(\.alert, to: alert)
             }
-        case .deleteConfirmationTapped(let action):
+        case .deleteConfirmed(let action):
             state = state.copy(\.alert, to: nil)
             if case .delete = action {
                 performDeleteAction(itemsIDs: input.ids, itemType: input.type)
             }
-        case .phishingConfirmationTapped(let action):
+        case .phishingConfirmed(let action):
             state = state.copy(\.alert, to: nil)
             if case .confirm = action {
                 performMarkPhishing(itemType: input.type)
@@ -222,7 +222,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private var deleteConfirmationAlert: AlertViewModel {
         .deleteConfirmation(
             itemsCount: input.ids.count,
-            action: { [weak self] action in self?.handle(action: .deleteConfirmationTapped(action)) }
+            action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
         )
     }
 }

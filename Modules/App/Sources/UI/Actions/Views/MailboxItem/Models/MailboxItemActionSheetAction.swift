@@ -19,9 +19,9 @@ import proton_app_uniffi
 
 enum MailboxItemActionSheetAction {
     case onLoad
-    case mailboxItemActionSelected(MailboxItemAction)
+    case actionSelected(MailboxItemAction)
     case moveTo(MoveToAction)
-    case mailboxGeneralActionTapped(GeneralActions)
-    case deleteConfirmationTapped(DeleteConfirmationAlertAction)
-    case phishingConfirmationTapped(PhishingConfirmationAlertAction)
+    case generalActionTapped(GeneralActions)
+    case deleteConfirmed(DeleteConfirmationAlertAction)
+    case phishingConfirmed(PhishingConfirmationAlertAction)
 }
