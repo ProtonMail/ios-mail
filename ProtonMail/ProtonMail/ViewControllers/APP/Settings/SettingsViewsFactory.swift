@@ -81,7 +81,16 @@ final class SettingsViewsFactory {
     }
 
     @MainActor
-    func makeScanQRCodeInstructionsView() -> UIHostingController<ScanQRCodeInstructionsView> {
-        return UIHostingController(rootView: ScanQRCodeInstructionsView(viewModel: .init()))
+    func makeScanQRCodeInstructionsView() -> ShowingNavigationBarUIHostingController {
+        return ShowingNavigationBarUIHostingController(
+            rootView: AnyView(ScanQRCodeInstructionsView(viewModel: .init()))
+        )
+    }
+}
+
+class ShowingNavigationBarUIHostingController: UIHostingController<AnyView> {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
 }
