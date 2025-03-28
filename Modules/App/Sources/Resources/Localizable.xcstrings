@@ -361,6 +361,9 @@
         }
       }
     },
+    "Advanced" : {
+      "comment" : "Advanced section title in app settings."
+    },
     "All Drafts" : {
       "comment" : "Menu title of all drafts in the sidebar.",
       "localizations" : {
@@ -483,6 +486,9 @@
         }
       }
     },
+    "Alternative routing" : {
+      "comment" : "Alternative routing setting title in app settings."
+    },
     "App" : {
       "comment" : "Title of the App settings item.",
       "extractionState" : "stale",
@@ -514,7 +520,10 @@
       }
     },
     "App customisations" : {
-      "comment" : "Title of the App settings item."
+      "comment" : "Title of the App settings screen."
+    },
+    "Appearance" : {
+      "comment" : "Appearance setting title in app settings."
     },
     "Archive" : {
       "comment" : "Action title for moving message/conversation to the `Archive` folder in the action sheet.\nMenu title of all archived emails in the sidebar.",
@@ -743,6 +752,9 @@
         }
       }
     },
+    "Bypass firewalls or network issues in case Proton sites are blocked." : {
+      "comment" : "Alternative routing additional info in app settings."
+    },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet.",
       "localizations" : {
@@ -829,6 +841,9 @@
           }
         }
       }
+    },
+    "Combined contacts" : {
+      "comment" : "Combined Contacts setting title in app settings."
     },
     "Compose" : {
       "comment" : "The compose button title for creating new email.",
@@ -1292,6 +1307,9 @@
         }
       }
     },
+    "Device" : {
+      "comment" : "Device section title in app settings. The section contains configuration like notifications, language, appearance. (App settings)"
+    },
     "Dismiss" : {
       "comment" : "Alert dismiss button"
     },
@@ -1750,6 +1768,9 @@
         }
       }
     },
+    "Language" : {
+      "comment" : "Language setting title in app settings."
+    },
     "Location" : {
       "comment" : "`Location` in the message details.",
       "localizations" : {
@@ -1778,6 +1799,9 @@
           }
         }
       }
+    },
+    "Mail experience" : {
+      "comment" : "Mail experience section title in app settings."
     },
     "Mailbox organization" : {
       "comment" : "Subtitle of the Folders and labels settings item.",
@@ -2339,6 +2363,9 @@
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title."
     },
+    "Notifications" : {
+      "comment" : "Notifications setting title in app settings."
+    },
     "Notifications help you keep on top of your inbox even when you’re in another app." : {
       "comment" : "Body of the authorization prompt"
     },
@@ -2553,6 +2580,12 @@
     },
     "Problem report sent" : {
       "comment" : "Toast displayed after the report was successfully sent"
+    },
+    "Protection" : {
+      "comment" : "Protection setting title in app settings."
+    },
+    "Quickly move to the next or previous message in your inbox." : {
+      "comment" : "Swipe to next email setting additional info in app settings."
     },
     "Reply" : {
       "comment" : "Action title for replying to a sender of given message in the action sheet.",
@@ -3142,6 +3175,9 @@
     "Summary (required)" : {
       "comment" : "Title of summary text field."
     },
+    "Swipe to next email" : {
+      "comment" : "Swipe to next email setting title in app settings."
+    },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field."
     },
@@ -3229,6 +3265,9 @@
           }
         }
       }
+    },
+    "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." : {
+      "comment" : "Combined Contacts setting additional info in app settings."
     },
     "Unblock" : {
       "comment" : "Action to unblock the sender."
@@ -3328,6 +3367,9 @@
     },
     "Unsubscribe" : {
       "comment" : "Action to unsubscribe from the mailing list."
+    },
+    "View application logs" : {
+      "comment" : "View application logs button title in app settings."
     },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
