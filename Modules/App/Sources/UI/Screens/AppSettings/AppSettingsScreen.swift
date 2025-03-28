@@ -40,25 +40,25 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.notifications,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: store.state.areNotificationsEnabledHumanReadable,
+                                value: store.state.areNotificationsEnabledHumanReadable.string,
                                 action: { store.handle(action: .notificationButtonTapped) }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: "English",
+                                value: "English".notLocalized,
                                 action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.appearance,
                                 icon: DS.SFSymbols.chevronUpChevronDown,
-                                value: "Dark mode",
+                                value: "Dark mode".notLocalized,
                                 action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
-                                value: "PIN code",
+                                value: "PIN code".notLocalized,
                                 action: { comingSoon() }
                             )
                             FormSwitchView(

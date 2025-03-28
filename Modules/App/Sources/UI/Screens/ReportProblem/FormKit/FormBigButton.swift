@@ -19,12 +19,12 @@ import InboxDesignSystem
 import SwiftUI
 
 struct FormBigButton: View {
-    private let value: LocalizedStringResource
+    private let value: String
     private let title: LocalizedStringResource
     private let icon: String
     private let action: () -> Void
 
-    init(title: LocalizedStringResource, icon: String, value: LocalizedStringResource, action: @escaping () -> Void) {
+    init(title: LocalizedStringResource, icon: String, value: String, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
         self.value = value
