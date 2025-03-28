@@ -45,7 +45,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await handleNotificationsFlow()
         case .languageButtonTapped:
             await openNativeAppSettings()
-        case .onAppear:
+        case .enterForeground, .onLoad:
             await refreshDeviceSettings()
         }
     }

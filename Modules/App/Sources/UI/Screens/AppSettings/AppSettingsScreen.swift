@@ -21,6 +21,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct AppSettingsScreen: View {
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject var store: AppSettingsStateStore
 
@@ -46,8 +47,8 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: "English".notLocalized,
-                                action: { comingSoon() }
+                                value: store.state.appLanguage,
+                                action: { store.handle(action: .languageButtonTapped) }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.appearance,
@@ -94,8 +95,13 @@ struct AppSettingsScreen: View {
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            store.handle(action: .onAppear)
+            store.handle(action: .onLoad)
         }
+        .onChange(of: scenePhase, { _, newValue in
+            if newValue == .active {
+                store.handle(action: .enterForeground)
+            }
+        })
     }
 
     private var comingSoonBinding: Binding<Bool> {
