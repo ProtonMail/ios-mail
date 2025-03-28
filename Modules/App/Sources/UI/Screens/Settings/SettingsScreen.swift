@@ -291,18 +291,3 @@ private struct RoundedRectangleStyleStyle: ViewModifier {
         SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
     }
 }
-
-private extension AccountDetails {
-
-    var settings: AccountSettings {
-        .init(
-            name: name,
-            email: email,
-            avatarInfo: .init(
-                initials: avatarInformation.text,
-                color: Color(hex: avatarInformation.color)
-            )
-        )
-    }
-
-}

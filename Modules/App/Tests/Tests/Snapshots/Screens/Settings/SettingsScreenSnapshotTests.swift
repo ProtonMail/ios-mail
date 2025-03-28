@@ -27,7 +27,7 @@ class SettingsScreenSnapshotTests: BaseTestCase {
 
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let sut = SettingsScreen(
-            state: .initial.copy(with: .testData),
+            state: .initial.copy(\.accountSettings, to: AccountDetails.testData.settings),
             mailUserSession: MailUserSessionStub(noPointer: .init())
         )
 
