@@ -323,6 +323,26 @@ public extension MailSessionAllMessagesWereSentResult {
         }
     }
 }
+public extension MailSessionAppProtectionResult {
+    func get() throws(UserSessionError) -> AppProtection {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionChangeAppSettingsResult {
+    func get() throws(UserSessionError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionGetAccountResult {
     func get() throws(UserSessionError) -> StoredAccount? {
         switch self {
@@ -355,6 +375,16 @@ public extension MailSessionGetAccountStateResult {
 }
 public extension MailSessionGetAccountsResult {
     func get() throws(UserSessionError) -> [StoredAccount] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionGetAppSettingsResult {
+    func get() throws(UserSessionError) -> AppSettings {
         switch self {
         case .ok(let value):
             value

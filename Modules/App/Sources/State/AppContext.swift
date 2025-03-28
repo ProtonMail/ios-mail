@@ -99,7 +99,6 @@ final class AppContext: Sendable, ObservableObject {
 
 extension AppContext: AccountAuthDelegate {
     func accountSessionInitialization(storedSession: StoredSession) async throws {
-        try await initializeMailUserSession(session: storedSession)
     }
 
     func setupAccountBindings() {
@@ -127,12 +126,6 @@ extension AppContext: AccountAuthDelegate {
     }
 
     @MainActor
-    private func initializeMailUserSession(session: StoredSession) async throws {
-        let newUserSession = try mailSession.userContextFromSession(session: session).get()
-        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
-    }
-
-    @MainActor
     private func setupActiveUserSession(session: StoredSession) {
         switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
@@ -149,14 +142,6 @@ extension AppContext {
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let appConfigService: AppConfigService = AppConfigService.shared
         let userDefaults: UserDefaults = .standard
-    }
-}
-
-final class UserContextInitializationDelegate: MailUserSessionInitializationCallback, Sendable {
-    static let shared = UserContextInitializationDelegate()
-
-    func onStage(stage: proton_app_uniffi.MailUserSessionInitializationStage) {
-        AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStage stage: \(stage)")
     }
 }
 

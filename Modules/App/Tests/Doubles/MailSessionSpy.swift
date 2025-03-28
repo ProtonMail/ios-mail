@@ -34,19 +34,15 @@ final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
-    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
-        fatalError()
-    }
-
-    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
-        fatalError()
-    }
-
-    func userContextFromSession(session: proton_app_uniffi.StoredSession) -> MailSessionUserContextFromSessionResult {
-        fatalError()
-    }
-
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
+        fatalError()
+    }
+
+    func appProtection() async -> MailSessionAppProtectionResult {
+        fatalError()
+    }
+
+    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
         fatalError()
     }
 
@@ -79,6 +75,10 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getAccountsBlocking() -> MailSessionGetAccountsResult {
+        fatalError()
+    }
+
+    func getAppSettings() async -> MailSessionGetAppSettingsResult {
         fatalError()
     }
 
@@ -118,15 +118,27 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError()
     }
 
-    func isNetworkConnected() -> Bool {
-        fatalError()
-    }
-
     func logoutAccount(userId: String) async -> VoidSessionResult {
         fatalError()
     }
 
-    func setNetworkConnected(online: Bool) {
+    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
+        fatalError()
+    }
+
+    func pauseWork() {
+        fatalError()
+    }
+
+    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
+        fatalError()
+    }
+
+    func resumeWork() {
+        fatalError()
+    }
+
+    func setPinCode(pin: Data) async -> MailSessionSetPinCodeResult {
         fatalError()
     }
 
@@ -137,6 +149,14 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
+        fatalError()
+    }
+
+    func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
+        fatalError()
+    }
+
+    func verifyPinCode(pin: Data) async -> MailSessionVerifyPinCodeResult {
         fatalError()
     }
 
