@@ -20,7 +20,7 @@ import proton_app_uniffi
 struct RustMessageBodyWrapper {
     let messageBody: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
     let markMessageHam: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> VoidActionResult
-    let unblockSender: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> VoidActionResult
+    let unblockSender: @Sendable (_ mailbox: Mailbox, _ addressID: Id) async -> VoidActionResult
     
     init(
         messageBody: @escaping @Sendable (Mailbox, Id) async -> GetMessageBodyResult,

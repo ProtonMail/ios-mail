@@ -33,7 +33,7 @@ final class MessageBodyStateStore: StateStore {
         case displayEmbeddedImages
         case downloadRemoteContent
         case spamMarkAsLegitimate
-        case unblockSender
+        case unblockSender(addressID: ID)
     }
 
     @Published var state: MessageBodyState = .fetching
@@ -74,9 +74,9 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state {
                 await markAsNotSpam(with: body.html.options)
             }
-        case .unblockSender:
+        case .unblockSender(let addressID):
             if case let .loaded(body) = state {
-                await unblockSender(with: body.html.options)
+                await unblockSender(addressID: addressID, with: body.html.options)
             }
         }
     }
@@ -106,8 +106,8 @@ final class MessageBodyStateStore: StateStore {
     }
     
     @MainActor
-    private func unblockSender(with options: TransformOpts) async {
-        switch await senderUnblocker.unblock(forMessageID: messageID) {
+    private func unblockSender(addressID: ID, with options: TransformOpts) async {
+        switch await senderUnblocker.unblock(withAddressID: addressID) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

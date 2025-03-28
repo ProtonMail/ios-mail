@@ -294,9 +294,10 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        await sut.handle(action: .unblockSender)
+        let addressID: ID = .init(value: 42)
+        await sut.handle(action: .unblockSender(addressID: addressID))
         
-        #expect(wrapperSpy.unblockSenderMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.unblockSenderAddressIDs == [addressID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
@@ -338,9 +339,10 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        await sut.handle(action: .unblockSender)
+        let addressID: ID = .init(value: 69)
+        await sut.handle(action: .unblockSender(addressID: addressID))
         
-        #expect(wrapperSpy.unblockSenderMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.unblockSenderAddressIDs == [addressID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
@@ -438,7 +440,7 @@ private class RustWrappersSpy {
     var markAsNotSpamMessageIDs: [ID] = []
 
     var stubbedUnblockSenderResult: VoidActionResult = .ok
-    var unblockSenderMessageIDs: [ID] = []
+    var unblockSenderAddressIDs: [ID] = []
     
     private(set) lazy var testingInstance = RustMessageBodyWrapper(
         messageBody: { [unowned self] _, messageID in
@@ -449,8 +451,8 @@ private class RustWrappersSpy {
             markAsNotSpamMessageIDs.append(messageID)
             return stubbedMarkAsNotSpamResult
         },
-        unblockSender: { [unowned self] _, messageID in
-            unblockSenderMessageIDs.append(messageID)
+        unblockSender: { [unowned self] _, addressID in
+            unblockSenderAddressIDs.append(addressID)
             return stubbedUnblockSenderResult
         }
     )
