@@ -55,17 +55,26 @@ struct SettingsScreen: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItemFactory.back {
-                            popWebPage()
+                            popFromStack()
                         }
                         doneToolbarItem()
                     }
                     .navigationTitle(webPage.title.string)
                     .navigationBarBackButtonHidden(true)
             }
+            .navigationDestination(item: appSettings) { state in
+                AppSettingsScreen()
+                    .toolbar {
+                        ToolbarItemFactory.back {
+                            popFromStack()
+                        }
+                    }
+                    .navigationBarBackButtonHidden(true)
+            }
         }
         .task {
             if let details = await provider.accountDetails() {
-                state = state.copy(with: details)
+                state = state.copy(\.accountSettings, to: details.settings)
             }
         }
     }
@@ -75,7 +84,14 @@ struct SettingsScreen: View {
     private var presentedWebPage: Binding<ProtonAuthenticatedWebPage?> {
         Binding(
             get: { state.presentedWebPage },
-            set: { newValue in state = state.copy(presentedWebPage: newValue) }
+            set: { newValue in state = state.copy(\.presentedWebPage, to: newValue) }
+        )
+    }
+
+    private var appSettings: Binding<AppSettingsState?> {
+        Binding(
+            get: { state.appSettings },
+            set: { newValue in state = state.copy(\.appSettings, to: newValue) }
         )
     }
 
@@ -98,7 +114,12 @@ struct SettingsScreen: View {
                             title: preference.displayData.title,
                             isLast: isLast
                         ) {
-                            present(page: preference.webPage)
+                            switch preference {
+                            case .email, .filters, .foldersAndLabels, .privacyAndSecurity:
+                                present(page: preference.webPage)
+                            case .app:
+                                presentAppSettings()
+                            }
                         }
                         if !isLast {
                             DS.Color.Border.norm
@@ -185,14 +206,18 @@ struct SettingsScreen: View {
 
     private func present(page: ProtonAuthenticatedWebPage?) {
         if let page {
-            state = state.copy(presentedWebPage: page)
-        } else {
-            toastStateStore.present(toast: .comingSoon)
+            state = state.copy(\.presentedWebPage, to: page)
         }
     }
 
-    private func popWebPage() {
-        state = state.copy(presentedWebPage: nil)
+    private func presentAppSettings() {
+        state = state.copy(\.appSettings, to: .init())
+    }
+
+    private func popFromStack() {
+        state = state
+            .copy(\.presentedWebPage, to: nil)
+            .copy(\.appSettings, to: nil)
     }
 
 }
@@ -265,4 +290,19 @@ private struct RoundedRectangleStyleStyle: ViewModifier {
     NavigationStack {
         SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
     }
+}
+
+private extension AccountDetails {
+
+    var settings: AccountSettings {
+        .init(
+            name: name,
+            email: email,
+            avatarInfo: .init(
+                initials: avatarInformation.text,
+                color: Color(hex: avatarInformation.color)
+            )
+        )
+    }
+
 }

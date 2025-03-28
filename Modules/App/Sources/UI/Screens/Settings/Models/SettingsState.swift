@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-struct SettingsState {
-    let accountSettings: AccountSettings?
+struct SettingsState: Copying {
+    var accountSettings: AccountSettings?
     let preferences: [SettingsPreference]
-    let presentedWebPage: ProtonAuthenticatedWebPage?
+    var presentedWebPage: ProtonAuthenticatedWebPage?
+    var appSettings: AppSettingsState?
 }
 
 extension SettingsState {
@@ -30,27 +32,9 @@ extension SettingsState {
         .init(
             accountSettings: nil,
             preferences: .stale, 
-            presentedWebPage: nil
+            presentedWebPage: nil,
+            appSettings: nil
         )
-    }
-    
-    func copy(with accountDetails: AccountDetails) -> Self {
-        .init(
-            accountSettings: .init(
-                name: accountDetails.name,
-                email: accountDetails.email,
-                avatarInfo: .init(
-                    initials: accountDetails.avatarInformation.text,
-                    color: Color(hex: accountDetails.avatarInformation.color)
-                )
-            ),
-            preferences: preferences,
-            presentedWebPage: presentedWebPage
-        )
-    }
-
-    func copy(presentedWebPage: ProtonAuthenticatedWebPage?) -> Self {
-        .init(accountSettings: accountSettings, preferences: preferences, presentedWebPage: presentedWebPage)
     }
 
 }
