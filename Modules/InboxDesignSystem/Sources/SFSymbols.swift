@@ -6,7 +6,9 @@
 //
 
 public extension DS.SFSymbols {
+    static let arrowUpRightSquare = "arrow.up.right.square"
     static let chevronRight = "chevron.right"
+    static let chevronUpChevronDown = "chevron.up.chevron.down"
     static let deleteLeft = "delete.left"
     static let lock = "lock"
     static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"

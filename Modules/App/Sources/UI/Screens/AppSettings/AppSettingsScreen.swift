@@ -31,19 +31,19 @@ struct AppSettingsScreen: View {
                         VStack(spacing: DS.Spacing.moderatelyLarge) {
                             FormBigButton(
                                 title: "Notifications",
-                                icon: "arrow.up.right.square",
+                                icon: DS.SFSymbols.arrowUpRightSquare,
                                 value: .readonly(get: { "On" }),
                                 action: {}
                             )
                             FormBigButton(
                                 title: "Language",
-                                icon: "arrow.up.right.square",
+                                icon: DS.SFSymbols.arrowUpRightSquare,
                                 value: .readonly(get: { "English" }),
                                 action: {}
                             )
                             FormBigButton(
                                 title: "Appearance",
-                                icon: "chevron.up.chevron.down",
+                                icon: DS.SFSymbols.chevronUpChevronDown,
                                 value: .readonly(get: { "Dark mode" }),
                                 action: {}
                             )
