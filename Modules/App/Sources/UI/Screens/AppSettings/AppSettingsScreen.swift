@@ -78,11 +78,6 @@ struct AppSettingsScreen: View {
                                 additionalInfo: L10n.Settings.App.alternativeRoutingInfo,
                                 isOn: comingSoonBinding
                             )
-                            FormSmallButton(
-                                title: L10n.Settings.App.viewApplicationLogs,
-                                additionalInfo: nil,
-                                action: { comingSoon() }
-                            )
                         }
                     }
                 }

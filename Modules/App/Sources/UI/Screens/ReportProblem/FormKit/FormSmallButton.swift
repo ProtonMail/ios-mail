@@ -39,7 +39,7 @@ struct FormSmallButton: View {
                 HStack {
                     Text(title)
                     Spacer(minLength: DS.Spacing.medium)
-                    Image(systemName: "chevron.right")
+                    Image(systemName: DS.SFSymbols.chevronRight)
                 }
                 .padding(.vertical, DS.Spacing.moderatelyLarge)
                 .padding(.horizontal, DS.Spacing.large)

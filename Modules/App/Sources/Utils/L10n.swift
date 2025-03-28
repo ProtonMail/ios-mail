@@ -694,10 +694,6 @@ enum L10n {
                 "Bypass firewalls or network issues in case Proton sites are blocked.",
                 comment: "Alternative routing additional info in app settings."
             )
-            static let viewApplicationLogs = LocalizedStringResource(
-                "View application logs",
-                comment: "View application logs button title in app settings."
-            )
         }
 
         static let subscription = LocalizedStringResource(

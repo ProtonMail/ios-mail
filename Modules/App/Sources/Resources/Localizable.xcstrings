@@ -3368,9 +3368,6 @@
     "Unsubscribe" : {
       "comment" : "Action to unsubscribe from the mailing list."
     },
-    "View application logs" : {
-      "comment" : "View application logs button title in app settings."
-    },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
       "localizations" : {
