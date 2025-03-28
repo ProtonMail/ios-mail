@@ -129,4 +129,15 @@ final class CursorTextField: UITextField {
     private func textFieldDidChange(_ textField: UITextField) {
         onTextChanged?(text)
     }
+
+    override func paste(_ sender: Any?) {
+        guard let pastedText = UIPasteboard.general.string else {
+            super.paste(sender)
+            return
+        }
+        let sanitizedText = pastedText
+            .replacingOccurrences(of: "mailto:", with: "", options: .caseInsensitive, range: nil)
+            .withoutWhitespace
+        insertText(sanitizedText)
+    }
 }
