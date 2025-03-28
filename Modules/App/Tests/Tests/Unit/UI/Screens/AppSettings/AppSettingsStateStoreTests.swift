@@ -24,15 +24,27 @@ class AppSettingsStateStoreTests {
     var sut: AppSettingsStateStore!
     var notificationCenterSpy: UserNotificationCenterSpy!
     var urlOpenerSpy: URLOpenerSpy!
+    var bundleSpy: BundleSpy!
 
     init() {
         notificationCenterSpy = .init()
         urlOpenerSpy = .init()
+        bundleSpy = .init()
         sut = AppSettingsStateStore(
             state: .initial,
             notificationCenter: notificationCenterSpy,
-            urlOpener: urlOpenerSpy
+            urlOpener: urlOpenerSpy,
+            mainBundle: bundleSpy
         )
+
+        bundleSpy.preferredLocalizationsStub = ["en"]
+    }
+
+    deinit {
+        notificationCenterSpy = nil
+        urlOpenerSpy = nil
+        bundleSpy = nil
+        sut = nil
     }
 
     @Test
@@ -56,12 +68,14 @@ class AppSettingsStateStoreTests {
     }
 
     @Test
-    func whenViewAppear_ItRefreshesNotificationsStatus() async {
+    func whenViewAppear_ItRefreshesNotificationsStatusAndLangauge() async {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
+        bundleSpy.preferredLocalizationsStub = ["pl"]
 
         await sut.handle(action: .onAppear)
 
         #expect(sut.state.areNotificationsEnabled)
+        #expect(sut.state.appLanguage == "Polish")
     }
 
 }

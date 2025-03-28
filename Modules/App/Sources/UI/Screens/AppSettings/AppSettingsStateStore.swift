@@ -22,16 +22,20 @@ final class AppSettingsStateStore: StateStore, Sendable {
     @Published var state: AppSettingsState
     private let notificationCenter: UserNotificationCenter
     private let urlOpener: URLOpener
+    private let appLangaugeProvider: AppLangaugeProvider
 
     @MainActor
     init(
         state: AppSettingsState,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
-        urlOpener: URLOpener = UIApplication.shared
+        urlOpener: URLOpener = UIApplication.shared,
+        currentLocale: Locale = Locale.current,
+        mainBundle: Bundle = Bundle.main
     ) {
         self.state = state
         self.notificationCenter = notificationCenter
         self.urlOpener = urlOpener
+        self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
     }
 
     @MainActor
@@ -39,6 +43,8 @@ final class AppSettingsStateStore: StateStore, Sendable {
         switch action {
         case .notificationButtonTapped:
             await handleNotificationsFlow()
+        case .languageButtonTapped:
+            await openNativeAppSettings()
         case .onAppear:
             await refreshDeviceSettings()
         }
@@ -49,7 +55,18 @@ final class AppSettingsStateStore: StateStore, Sendable {
     @MainActor
     private func refreshDeviceSettings() async {
         let areNotificationsEnabled = await areNotificationsEnabled()
-        state = state.copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
+        state = state
+            .copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
+            .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
+    }
+
+    private func handleNotificationsFlow() async {
+        if await notificationCenter.authorizationStatus() == .notDetermined {
+            await requestNotificationAuthorization()
+            await refreshDeviceSettings()
+        } else {
+            await openNativeAppSettings()
+        }
     }
 
     private func requestNotificationAuthorization() async {
@@ -57,16 +74,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
             _ = try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
         } catch {
             AppLogger.log(error: error, category: .notifications)
-        }
-    }
-
-    @MainActor
-    private func handleNotificationsFlow() async {
-        if await notificationCenter.authorizationStatus() == .notDetermined {
-            await requestNotificationAuthorization()
-            await refreshDeviceSettings()
-        } else {
-            await urlOpener.open(.settings, options: [:])
         }
     }
 
@@ -79,6 +86,10 @@ final class AppSettingsStateStore: StateStore, Sendable {
         @unknown default:
             fatalError()
         }
+    }
+
+    private func openNativeAppSettings() async {
+        await urlOpener.open(.settings, options: [:])
     }
 
 }

@@ -112,6 +112,6 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .init(areNotificationsEnabled: false))
+        AppSettingsScreen(state: .init(areNotificationsEnabled: false, appLanguage: .empty))
     }
 }

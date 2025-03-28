@@ -15,22 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import SwiftUI
+import Foundation
 
-struct AppSettingsState: Hashable, Copying {
-    var areNotificationsEnabled: Bool
-    var appLanguage: String
-}
+struct AppLangaugeProvider {
+    private let currentLocale: Locale
+    private let mainBundle: Bundle
 
-extension AppSettingsState {
-
-    static var initial: Self {
-        .init(areNotificationsEnabled: false, appLanguage: .empty)
+    init(currentLocale: Locale, mainBundle: Bundle) {
+        self.currentLocale = currentLocale
+        self.mainBundle = mainBundle
     }
 
-    var areNotificationsEnabledHumanReadable: LocalizedStringResource {
-        areNotificationsEnabled ? L10n.Common.on : L10n.Common.off
+    var appLangauge: String {
+        let languageCode = mainBundle.preferredLocalizations.first ?? currentLocale.language.languageCode!.identifier
+        return currentLocale.localizedString(forLanguageCode: languageCode) ?? languageCode
     }
-
 }

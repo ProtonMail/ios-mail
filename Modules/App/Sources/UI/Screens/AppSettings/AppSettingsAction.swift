@@ -17,5 +17,6 @@
 
 enum AppSettingsAction {
     case notificationButtonTapped
+    case languageButtonTapped
     case onAppear
 }
