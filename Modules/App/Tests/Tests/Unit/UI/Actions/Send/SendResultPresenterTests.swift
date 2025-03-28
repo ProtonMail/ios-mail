@@ -25,7 +25,7 @@ import XCTest
 
 final class SendResultPresenterTests: BaseTestCase {
     private let regularDuration: TimeInterval = .toastDefaultDuration
-    private let extendedDuration: TimeInterval = 3.0
+    private let mediumDuration: TimeInterval = .toastMediumDuration
 
     private var sut: SendResultPresenter!
     private var cancellables: Set<AnyCancellable>!
@@ -72,7 +72,7 @@ final class SendResultPresenterTests: BaseTestCase {
         XCTAssertTrue(capturedToastActions.isSame(as: [
             .present(.sendingMessage(duration: regularDuration)),
             .dismiss(.sendingMessage(duration: regularDuration)),
-            .present(.messageSent(duration: extendedDuration, undoAction: {})),
+            .present(.messageSent(duration: mediumDuration, undoAction: {})),
         ]))
     }
 
@@ -88,7 +88,7 @@ final class SendResultPresenterTests: BaseTestCase {
         XCTAssertTrue(capturedToastActions.isSame(as: [
             .present(.sendingMessage(duration: regularDuration)),
             .dismiss(.sendingMessage(duration: regularDuration)),
-            .present(.error(message: dummyError.localizedDescription)),
+            .present(.error(message: dummyError.localizedDescription).duration(mediumDuration)),
         ]))
     }
 
@@ -118,8 +118,8 @@ final class SendResultPresenterTests: BaseTestCase {
 
         XCTAssertEqual(capturedToastActions.count, 2)
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: extendedDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: extendedDuration, undoAction: {})),
+            .present(.messageSent(duration: mediumDuration, undoAction: {})),
+            .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
         ]))
     }
 
@@ -146,9 +146,9 @@ final class SendResultPresenterTests: BaseTestCase {
 
         XCTAssertEqual(capturedToastActions.count, 3)
         XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: extendedDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: extendedDuration, undoAction: {})),
-            .present(.error(message: mockDraftUndoSendError.localizedDescription)),
+            .present(.messageSent(duration: mediumDuration, undoAction: {})),
+            .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
+            .present(.error(message: mockDraftUndoSendError.localizedDescription).duration(mediumDuration)),
         ]))
     }
 }

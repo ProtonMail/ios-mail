@@ -320,6 +320,25 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: endEditingRecipients
 
+    func testEndEditingRecipients_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
+        let hangingInput = "becky@example.com"
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
+        sut.startEditingRecipients(for: .to)
+
+        // Preparing some hanging input in the `to` recipient
+        let expectation1 = expectation(description: "\(#function)")
+        expectation1.assertForOverFulfill = false
+        fulfill(expectation1, in: sut, when: { composerState in
+            composerState.toRecipients.input == hangingInput
+        })
+        sut.matchContact(group: .to, text: hangingInput)
+        await fulfillment(of: [expectation1], timeout: 1.0)
+
+        sut.endEditingRecipients()
+        XCTAssertEqual(sut.state.toRecipients.recipients.count, 1)
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, hangingInput)
+    }
+
     func testEndEditingRecipients_itShouldCleanInputAndSetControllerStateToCollapsed() async {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "adrian@example.com")

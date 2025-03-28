@@ -57,7 +57,7 @@ final class SendResultPresenter {
 
         case .error(let error):
             if error.shouldBeDisplayed {
-                handleToast(.error(message: error.localizedDescription), for: info.messageId)
+                handleToast(.error(message: error.localizedDescription).duration(.toastMediumDuration), for: info.messageId)
             }
         }
     }
@@ -78,7 +78,7 @@ extension SendResultPresenter {
 
         let error = await undoSendProvider.undoSend(messageId)
         guard error == nil else {
-            present(toast: .error(message: error!.localizedDescription))
+            present(toast: .error(message: error!.localizedDescription).duration(.toastMediumDuration))
             return
         }
         await draftPresenter.openDraft(withId: messageId)
