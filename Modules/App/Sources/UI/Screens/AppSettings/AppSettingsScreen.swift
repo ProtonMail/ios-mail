@@ -54,8 +54,8 @@ struct AppSettingsScreen: View {
                                 action: {}
                             )
                             FormSwitchView(
-                                title: "Use device contacts",
-                                additionalInfo: "Auto-complete email addresses using contacts from your device.",
+                                title: "Combined contacts",
+                                additionalInfo: "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.",
                                 isOn: .readonly(get: { true })
                             )
                         }
@@ -66,16 +66,6 @@ struct AppSettingsScreen: View {
                                 title: "Swipe to next email",
                                 additionalInfo: "Quickly move to the next or previous message in your inbox.",
                                 isOn: .readonly(get: { true })
-                            )
-                            FormSmallButton(
-                                title: "Swipe actions",
-                                additionalInfo: "Set quick actions, such as delete or archive, when you swipe left or right. ",
-                                action: {}
-                            )
-                            FormSmallButton(
-                                title: "Customize toolbar",
-                                additionalInfo: nil,
-                                action: {}
                             )
                         }
                     }
@@ -101,7 +91,6 @@ struct AppSettingsScreen: View {
         .navigationTitle("App customisations")
         .navigationBarTitleDisplayMode(.inline)
     }
-
 }
 
 #Preview {

@@ -28,7 +28,7 @@ class AppSettingsSnapshotTests: BaseTestCase {
         }
         assertCustomHeightSnapshot(
             matching: UIHostingController(rootView: sut).view,
-            preferredHeight: 1200
+            preferredHeight: 1000
         )
     }
 
