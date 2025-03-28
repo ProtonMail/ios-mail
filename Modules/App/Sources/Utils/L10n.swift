@@ -637,6 +637,69 @@ enum L10n {
     }
 
     enum Settings {
+        enum App {
+            static let title = LocalizedStringResource(
+                "App customisations",
+                comment: "Title of the App settings screen."
+            )
+            static let deviceSectionTitle = LocalizedStringResource(
+                "Device",
+                comment: "Device section title in app settings. The section contains configuration like notifications, language, appearance. (App settings)"
+            )
+            static let notifications = LocalizedStringResource(
+                "Notifications",
+                comment: "Notifications setting title in app settings."
+            )
+            static let language = LocalizedStringResource(
+                "Language",
+                comment: "Language setting title in app settings."
+            )
+            static let appearance = LocalizedStringResource(
+                "Appearance",
+                comment: "Appearance setting title in app settings."
+            )
+            static let protection = LocalizedStringResource(
+                "Protection",
+                comment: "Protection setting title in app settings."
+            )
+            static let combinedContacts = LocalizedStringResource(
+                "Combined contacts",
+                comment: "Combined Contacts setting title in app settings."
+            )
+            static let combinedContactsInfo = LocalizedStringResource(
+                "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.",
+                comment: "Combined Contacts setting additional info in app settings."
+            )
+            static let mailExperience = LocalizedStringResource(
+                "Mail experience",
+                comment: "Mail experience section title in app settings."
+            )
+            static let swipeToNextEmail = LocalizedStringResource(
+                "Swipe to next email",
+                comment: "Swipe to next email setting title in app settings."
+            )
+            static let swipeToNextEmailInfo = LocalizedStringResource(
+                "Quickly move to the next or previous message in your inbox.",
+                comment: "Swipe to next email setting additional info in app settings."
+            )
+            static let advanced = LocalizedStringResource(
+                "Advanced",
+                comment: "Advanced section title in app settings."
+            )
+            static let alternativeRouting = LocalizedStringResource(
+                "Alternative routing",
+                comment: "Alternative routing setting title in app settings."
+            )
+            static let alternativeRoutingInfo = LocalizedStringResource(
+                "Bypass firewalls or network issues in case Proton sites are blocked.",
+                comment: "Alternative routing additional info in app settings."
+            )
+            static let viewApplicationLogs = LocalizedStringResource(
+                "View application logs",
+                comment: "View application logs button title in app settings."
+            )
+        }
+
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."
@@ -656,10 +719,6 @@ enum L10n {
         static let privacyAndSecurity = LocalizedStringResource(
             "Privacy and security",
             comment: "Title of the Privacy and security settings item."
-        )
-        static let appSettingsTitle = LocalizedStringResource(
-            "App customisations",
-            comment: "Title of the App settings item."
         )
     }
 

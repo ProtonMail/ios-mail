@@ -27,58 +27,58 @@ struct AppSettingsScreen: View {
 
             ScrollView {
                 VStack(spacing: DS.Spacing.extraLarge) {
-                    FormSection(header: "Device") {
+                    FormSection(header: L10n.Settings.App.deviceSectionTitle) {
                         VStack(spacing: DS.Spacing.moderatelyLarge) {
                             FormBigButton(
-                                title: "Notifications",
+                                title: L10n.Settings.App.notifications,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
                                 value: .readonly(get: { "On" }),
                                 action: {}
                             )
                             FormBigButton(
-                                title: "Language",
+                                title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
                                 value: .readonly(get: { "English" }),
                                 action: {}
                             )
                             FormBigButton(
-                                title: "Appearance",
+                                title: L10n.Settings.App.appearance,
                                 icon: DS.SFSymbols.chevronUpChevronDown,
                                 value: .readonly(get: { "Dark mode" }),
                                 action: {}
                             )
                             FormBigButton(
-                                title: "Protection",
+                                title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
                                 value: .readonly(get: { "PIN code" }),
                                 action: {}
                             )
                             FormSwitchView(
-                                title: "Combined contacts",
-                                additionalInfo: "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.",
+                                title: L10n.Settings.App.combinedContacts,
+                                additionalInfo: L10n.Settings.App.combinedContactsInfo,
                                 isOn: .readonly(get: { true })
                             )
                         }
                     }
-                    FormSection(header: "Mail experience") {
+                    FormSection(header: L10n.Settings.App.mailExperience) {
                         VStack(spacing: DS.Spacing.moderatelyLarge) {
                             FormSwitchView(
-                                title: "Swipe to next email",
-                                additionalInfo: "Quickly move to the next or previous message in your inbox.",
+                                title: L10n.Settings.App.swipeToNextEmail,
+                                additionalInfo: L10n.Settings.App.swipeToNextEmailInfo,
                                 isOn: .readonly(get: { true })
                             )
                         }
                     }
-                    FormSection(header: "Advanced") {
+                    FormSection(header: L10n.Settings.App.advanced) {
                         VStack(spacing: DS.Spacing.moderatelyLarge) {
                             FormSwitchView(
-                                title: "Alternative routing",
-                                additionalInfo: nil,
+                                title: L10n.Settings.App.alternativeRouting,
+                                additionalInfo: L10n.Settings.App.alternativeRoutingInfo,
                                 isOn: .readonly(get: { true })
                             )
                             FormSmallButton(
-                                title: "View application logs",
-                                additionalInfo: "Set quick actions, such as delete or archive, when you swipe left or right. ",
+                                title: L10n.Settings.App.viewApplicationLogs,
+                                additionalInfo: nil,
                                 action: {}
                             )
                         }
@@ -88,7 +88,7 @@ struct AppSettingsScreen: View {
                 .padding(.bottom, DS.Spacing.extraLarge)
             }
         }
-        .navigationTitle("App customisations")
+        .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
     }
 }

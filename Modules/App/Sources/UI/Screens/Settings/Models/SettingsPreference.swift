@@ -41,7 +41,7 @@ enum SettingsPreference: CaseIterable, Hashable {
         case .privacyAndSecurity:
             .init(title: L10n.Settings.privacyAndSecurity, icon: DS.Icon.icShield2Bolt)
         case .app:
-            .init(title: L10n.Settings.appSettingsTitle, icon: DS.Icon.icMobile)
+            .init(title: L10n.Settings.App.title, icon: DS.Icon.icMobile)
         }
     }
 
