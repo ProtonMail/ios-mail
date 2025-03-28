@@ -88,6 +88,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
+    @MainActor
     private func openNativeAppSettings() async {
         await urlOpener.open(.settings, options: [:])
     }
