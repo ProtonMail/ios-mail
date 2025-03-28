@@ -15,12 +15,96 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
+enum AppSettingsAction {
+    case notificationButtonTapped
+    case onAppear
+}
+
+final class AppSettingsStateStore: StateStore, Sendable {
+    @Published var state: AppSettingsState
+    private let notificationCenter: UserNotificationCenter
+    private let urlOpener: URLOpener
+
+    @MainActor
+    init(
+        state: AppSettingsState,
+        notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
+        urlOpener: URLOpener = UIApplication.shared
+    ) {
+        self.state = state
+        self.notificationCenter = notificationCenter
+        self.urlOpener = urlOpener
+    }
+
+    @MainActor
+    func handle(action: AppSettingsAction) async {
+        switch action {
+        case .notificationButtonTapped:
+            await handleNotificationsFlow()
+        case .onAppear:
+            await refreshDeviceSettings()
+        }
+    }
+
+    // MARK: - Private
+
+    @MainActor
+    private func refreshDeviceSettings() async {
+        let areNotificationsEnabled = await areNotificationsEnabled()
+        state = state.copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
+    }
+
+    private func requestNotificationAuthorization() async {
+        do {
+            _ = try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
+        } catch {
+            AppLogger.log(error: error, category: .notifications)
+        }
+    }
+
+    @MainActor
+    private func handleNotificationsFlow() async {
+        if await notificationCenter.authorizationStatus() == .notDetermined {
+            await requestNotificationAuthorization()
+            await refreshDeviceSettings()
+        } else {
+            await urlOpener.open(.settings, options: [:])
+        }
+    }
+
+    private func areNotificationsEnabled() async -> Bool {
+        switch await notificationCenter.authorizationStatus() {
+        case .authorized:
+            true
+        case .denied, .ephemeral, .notDetermined, .provisional:
+            false
+        @unknown default:
+            fatalError()
+        }
+    }
+
+}
+
+extension URL {
+
+    static var settings: URL {
+        URL(string: UIApplication.openSettingsURLString)!
+    }
+
+}
+
 struct AppSettingsScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @StateObject var store: AppSettingsStateStore
+
+    init(state: AppSettingsState = .initial) {
+        self._store = .init(wrappedValue: .init(state: state))
+    }
 
     var body: some View {
         ZStack {
@@ -34,25 +118,25 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.notifications,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: .readonly(get: { "Off" }),
-                                action: { comingSoon() }
+                                value: store.state.areNotificationsEnabledHumanReadable,
+                                action: { store.handle(action: .notificationButtonTapped) }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: .readonly(get: { "English" }),
+                                value: "English",
                                 action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.appearance,
                                 icon: DS.SFSymbols.chevronUpChevronDown,
-                                value: .readonly(get: { "Dark mode" }),
+                                value: "Dark mode",
                                 action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
-                                value: .readonly(get: { "PIN code" }),
+                                value: "PIN code",
                                 action: { comingSoon() }
                             )
                             FormSwitchView(
@@ -87,6 +171,9 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            store.handle(action: .onAppear)
+        }
     }
 
     private var comingSoonBinding: Binding<Bool> {
@@ -103,6 +190,6 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen()
+        AppSettingsScreen(state: .init(areNotificationsEnabled: false))
     }
 }

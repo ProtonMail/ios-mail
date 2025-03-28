@@ -19,16 +19,15 @@ import InboxDesignSystem
 import SwiftUI
 
 struct FormBigButton: View {
-
-    @Binding private var value: String
+    private let value: LocalizedStringResource
     private let title: LocalizedStringResource
     private let icon: String
     private let action: () -> Void
 
-    init(title: LocalizedStringResource, icon: String, value: Binding<String>, action: @escaping () -> Void) {
+    init(title: LocalizedStringResource, icon: String, value: LocalizedStringResource, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
-        self._value = value
+        self.value = value
         self.action = action
     }
 
@@ -53,5 +52,4 @@ struct FormBigButton: View {
         .buttonStyle(SettingsButtonStyle())
         .applyRoundedRectangleStyle()
     }
-
 }

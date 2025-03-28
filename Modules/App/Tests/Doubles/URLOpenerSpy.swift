@@ -15,21 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import SwiftUI
+@testable import ProtonMail
+import UIKit
 
-struct AppSettingsState: Hashable, Copying {
-    var areNotificationsEnabled: Bool
-}
+class URLOpenerSpy: URLOpener {
+    private(set) var openURLInvocations: [URL] = []
 
-extension AppSettingsState {
-
-    static var initial: Self {
-        .init(areNotificationsEnabled: false)
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool {
+        openURLInvocations.append(url)
+        return true
     }
-
-    var areNotificationsEnabledHumanReadable: LocalizedStringResource {
-        areNotificationsEnabled ? "On" : "Off"
-    }
-
 }

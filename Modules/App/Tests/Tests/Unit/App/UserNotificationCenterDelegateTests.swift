@@ -133,15 +133,6 @@ final class UserNotificationCenterDelegateTests {
     }
 }
 
-private class URLOpenerSpy: URLOpener {
-    private(set) var openURLInvocations: [URL] = []
-
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool {
-        openURLInvocations.append(url)
-        return true
-    }
-}
-
 private final class MailUserSessionStub: MailUserSession {
     private let id: String
 
