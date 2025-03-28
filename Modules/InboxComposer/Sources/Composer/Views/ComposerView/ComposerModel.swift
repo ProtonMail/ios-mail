@@ -108,8 +108,9 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
-    func viewDidDisappear() {
+    func viewDidDisappear() async {
         AppLogger.log(message: "composer did disappear", category: .composer)
+        await updateBodyDebounceTask?.executeImmediately()
         if !messageHasBeenSent {
             showDraftSavedToastIfNeeded()
         }
@@ -236,7 +237,6 @@ final class ComposerModel: ObservableObject {
     func sendMessage(dismissAction: Dismissable) {
         guard !messageHasBeenSent else { return }
         Task {
-            guard addHangingInputAsRecipientIfNeededAndContinueIfValid() else { return }
             await updateBodyDebounceTask?.executeImmediately()
 
             AppLogger.log(message: "sending message", category: .composer)

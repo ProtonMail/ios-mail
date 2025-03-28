@@ -62,7 +62,7 @@ struct ComposerView: View {
             ComposerControllerRepresentable(state: model.state, embeddedImageProvider: model.embeddedImageProvider) { event in
                 switch event {
                 case .viewDidDisappear:
-                    model.viewDidDisappear()
+                    Task { await model.viewDidDisappear() }
 
                 case let .recipientFieldEvent(recipientFieldEvent, group):
                     switch recipientFieldEvent {
