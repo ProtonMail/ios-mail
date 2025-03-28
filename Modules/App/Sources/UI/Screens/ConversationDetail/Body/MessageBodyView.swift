@@ -23,6 +23,7 @@ import SwiftUI
 struct MessageBodyView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     let messageID: ID
+    let addressID: ID
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
@@ -30,12 +31,14 @@ struct MessageBodyView: View {
     
     init(
         messageID: ID,
+        addressID: ID,
         attachments: [AttachmentDisplayModel],
         mailbox: Mailbox,
         attachmentIDToOpen: Binding<ID?>,
         htmlLoaded: @escaping () -> Void
     ) {
         self.messageID = messageID
+        self.addressID = addressID
         self.attachments = attachments
         self.mailbox = mailbox
         self._attachmentIDToOpen = attachmentIDToOpen
