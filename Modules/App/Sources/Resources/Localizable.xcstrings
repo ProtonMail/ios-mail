@@ -2369,6 +2369,9 @@
     "Notifications help you keep on top of your inbox even when you’re in another app." : {
       "comment" : "Body of the authorization prompt"
     },
+    "Off" : {
+      "comment" : "Indicates that a feature is disabled and not functioning."
+    },
     "Official" : {
       "comment" : "Proton official badge title.",
       "localizations" : {
@@ -2397,6 +2400,9 @@
           }
         }
       }
+    },
+    "On" : {
+      "comment" : "Indicates that a feature is enabled and actively functioning."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
