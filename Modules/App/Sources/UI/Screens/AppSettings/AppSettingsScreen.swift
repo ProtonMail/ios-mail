@@ -15,10 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
 struct AppSettingsScreen: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
 
     var body: some View {
         ZStack {
@@ -32,31 +34,31 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.notifications,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: .readonly(get: { "On" }),
-                                action: {}
+                                value: .readonly(get: { "Off" }),
+                                action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
                                 value: .readonly(get: { "English" }),
-                                action: {}
+                                action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.appearance,
                                 icon: DS.SFSymbols.chevronUpChevronDown,
                                 value: .readonly(get: { "Dark mode" }),
-                                action: {}
+                                action: { comingSoon() }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
                                 value: .readonly(get: { "PIN code" }),
-                                action: {}
+                                action: { comingSoon() }
                             )
                             FormSwitchView(
                                 title: L10n.Settings.App.combinedContacts,
                                 additionalInfo: L10n.Settings.App.combinedContactsInfo,
-                                isOn: .readonly(get: { true })
+                                isOn: comingSoonBinding
                             )
                         }
                     }
@@ -65,7 +67,7 @@ struct AppSettingsScreen: View {
                             FormSwitchView(
                                 title: L10n.Settings.App.swipeToNextEmail,
                                 additionalInfo: L10n.Settings.App.swipeToNextEmailInfo,
-                                isOn: .readonly(get: { true })
+                                isOn: comingSoonBinding
                             )
                         }
                     }
@@ -74,12 +76,12 @@ struct AppSettingsScreen: View {
                             FormSwitchView(
                                 title: L10n.Settings.App.alternativeRouting,
                                 additionalInfo: L10n.Settings.App.alternativeRoutingInfo,
-                                isOn: .readonly(get: { true })
+                                isOn: comingSoonBinding
                             )
                             FormSmallButton(
                                 title: L10n.Settings.App.viewApplicationLogs,
                                 additionalInfo: nil,
-                                action: {}
+                                action: { comingSoon() }
                             )
                         }
                     }
@@ -90,6 +92,17 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var comingSoonBinding: Binding<Bool> {
+        Binding(
+            get: { false },
+            set: { _ in comingSoon() }
+        )
+    }
+
+    private func comingSoon() {
+        toastStateStore.present(toast: .comingSoon)
     }
 }
 
