@@ -25,7 +25,7 @@ class AppSettingsSnapshotTests: BaseTestCase {
     func testAppSettingsLayoutCorrectly() {
         assertCustomHeightSnapshot(
             matching: UIHostingController(rootView: AppSettingsScreen()).view,
-            preferredHeight: 1000
+            preferredHeight: 900
         )
     }
 
