@@ -131,7 +131,7 @@ targets:
           - CFBundleTypeRole: Editor
             CFBundleURLName: ch.protonmail.protonmail
             CFBundleURLSchemes:
-              - protonmailET
+              - protonmail
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
         NSCameraUsageDescription: "{{Placeholder}}"

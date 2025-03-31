@@ -95,7 +95,7 @@ final class UserNotificationCenterDelegateTests {
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
-        #expect(urlOpener.openURLInvocations == [URL(string: "protonmailET://messages/foo?subject=Message%20subject")!])
+        #expect(urlOpener.openURLInvocations == [URL(string: "protonmail://messages/foo?subject=Message%20subject")!])
     }
 
     @Test

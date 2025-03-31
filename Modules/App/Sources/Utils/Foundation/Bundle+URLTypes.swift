@@ -19,7 +19,7 @@ import Foundation
 
 extension Bundle {
     enum URLScheme: String {
-        case protonmail = "protonmailET"
+        case protonmail = "protonmail"
     }
 
     struct URLTypes {
