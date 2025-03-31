@@ -95,7 +95,7 @@ targets:
       - path: Modules/App/Sources
     settings:
       base:
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         BUNDLE_DISPLAY_NAME: "Proton Mail (ET)"
         CODE_SIGN_IDENTITY: "Apple Development"
