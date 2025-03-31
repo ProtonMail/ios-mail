@@ -76,7 +76,8 @@ platform :ios do
     latest_testflight_build_number(
       api_key: api_key,
       app_identifier: APP_IDENTIFIER,
-      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET)
+      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET),
+      initial_build_number: 0
     )
   end
 
