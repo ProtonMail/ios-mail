@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import SwiftUI
+
 enum AppAppearance: CaseIterable {
     case system
     case dark
@@ -28,6 +30,17 @@ enum AppAppearance: CaseIterable {
             "Dark"
         case .light:
             "Light"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system:
+            nil
+        case .dark:
+            .dark
+        case .light:
+            .light
         }
     }
 }

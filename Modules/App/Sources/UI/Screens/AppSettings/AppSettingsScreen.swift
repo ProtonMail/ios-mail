@@ -20,9 +20,14 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
+class ColorSchemeStore: ObservableObject {
+    @Published var appearance: AppAppearance = .system
+}
+
 struct AppSettingsScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var colorSchemeStore: ColorSchemeStore
     @StateObject var store: AppSettingsStateStore
 
     init(state: AppSettingsState = .initial) {
@@ -97,6 +102,10 @@ struct AppSettingsScreen: View {
                 store.handle(action: .enterForeground)
             }
         })
+        .onChange(of: store.state.appearance, { _, newValue in
+            colorSchemeStore.appearance = newValue
+        })
+        .preferredColorScheme(colorSchemeStore.appearance.colorScheme)
     }
 
     @ViewBuilder
