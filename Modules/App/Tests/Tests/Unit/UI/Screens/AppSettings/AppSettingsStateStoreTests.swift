@@ -72,7 +72,7 @@ class AppSettingsStateStoreTests {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
         bundleStub.preferredLocalizationsStub = ["pl"]
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
 
         #expect(sut.state.areNotificationsEnabled)
         #expect(sut.state.appLanguage == "Polish")
