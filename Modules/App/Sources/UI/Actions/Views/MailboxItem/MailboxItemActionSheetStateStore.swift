@@ -171,7 +171,7 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func performMarkPhishing(itemType: MailboxItemType) {
         Task {
-            if case .ok = await generalActionsPerformer.markMessagePhishing(messageIDs: [input.id]) {
+            if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
                 Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                     self?.navigation(itemType.dismissNavigation)
                 }))

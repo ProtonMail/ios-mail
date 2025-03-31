@@ -22,8 +22,8 @@ class GeneralActionsPerfomerSpy {
     var stubbedMarkMessagePhishingResult: VoidActionResult = .ok
     private(set) var markMessagePhishingWithMessageIDsCalls: [ID] = []
 
-    private(set) lazy var testingInstance = GeneralActionsWrappers { [unowned self] _, ids in
-        markMessagePhishingWithMessageIDsCalls += ids
+    private(set) lazy var testingInstance = GeneralActionsWrappers { [unowned self] _, id in
+        markMessagePhishingWithMessageIDsCalls.append(id)
         return stubbedMarkMessagePhishingResult
     }
 }
