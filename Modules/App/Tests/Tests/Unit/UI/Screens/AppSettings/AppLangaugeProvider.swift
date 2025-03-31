@@ -22,7 +22,7 @@ class AppLanguageProviderTests {
 
     var sut: AppLangaugeProvider!
     var stubbedLocale: Locale!
-    private var bundleStub: BundleSpy!
+    private var bundleStub: BundleStub!
 
     init() {
         stubbedLocale = .init(identifier: "en")
