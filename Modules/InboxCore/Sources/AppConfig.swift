@@ -37,3 +37,9 @@ public extension AppConfig {
         return .init(appVersion: appVersion, userAgent: "Mozilla/5.0", envId: environment, proxy: nil)
     }
 }
+
+public extension ApiEnvId {
+    static func localhost(port: String) -> Self {
+        .custom("http://localhost:\(port)")
+    }
+}

@@ -214,6 +214,7 @@ targets:
       - package: SwiftNIOHTTP2
         product: NIOHTTP2
       - package: Scrypt
+      - package: TryCatch
     settings:
       configs:
         UITests:
@@ -258,6 +259,7 @@ schemes:
         - path: Modules/App/UITests/Plans/SmokeTests.xctestplan
           defaultPlan: true
         - path: Modules/App/UITests/Plans/RegressionTests.xctestplan
+        - path: Modules/App/UITests/Plans/PerformanceTests.xctestplan
       gatherCoverageData: true
       parallelizable: true
       randomExecutionOrder: true

@@ -21,38 +21,40 @@ final class TestService: Sendable {
     static let shared: TestService = .init()
 }
 
-#if UITESTS
 extension TestService: ApplicationServiceSetUp {
 
-    func setUpService() {
-        try! clearExistingDataIfNecessary()
-    }
-    
-    private func clearExistingDataIfNecessary() throws {
-        if let _ = UserDefaults.standard.string(forKey: "forceCleanState") {
-            
-            guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-                throw TestServiceError.applicationSupportDirectoryNotAccessible
-            }
-            guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                throw TestServiceError.cacheDirectoryNotAccessible
-            }
-            
-            try? FileManager.default.removeItem(atPath: applicationSupportFolder.path())
-            try? FileManager.default.removeItem(atPath: cacheFolder.path)
+    #if UITESTS
+        func setUpService() {
+            try! clearExistingDataIfNecessary()
+            disableOnboardingPrompts()
         }
-    }
-    
-    
-    enum TestServiceError: Error {
-        case applicationSupportDirectoryNotAccessible
-        case cacheDirectoryNotAccessible
-    }
-}
-#endif
 
-#if !UITESTS
-extension TestService: ApplicationServiceSetUp {
-    func setUpService() {}
+        private func clearExistingDataIfNecessary() throws {
+            if let _ = UserDefaults.standard.string(forKey: "forceCleanState") {
+                guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+                    throw TestServiceError.applicationSupportDirectoryNotAccessible
+                }
+
+                guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+                    throw TestServiceError.cacheDirectoryNotAccessible
+                }
+
+                try? FileManager.default.removeItem(atPath: applicationSupportFolder.path())
+                try? FileManager.default.removeItem(atPath: cacheFolder.path)
+            }
+        }
+
+        private func disableOnboardingPrompts() {
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(false, forKey: "showAlphaV1Onboarding")
+            userDefaults.set([Date()], forKey: "notificationAuthorizationRequestDates")
+        }
+
+        enum TestServiceError: Error {
+            case applicationSupportDirectoryNotAccessible
+            case cacheDirectoryNotAccessible
+        }
+    #else
+        func setUpService() {}
+    #endif
 }
-#endif

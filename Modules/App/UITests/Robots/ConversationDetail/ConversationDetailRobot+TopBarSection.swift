@@ -40,6 +40,10 @@ extension ConversationDetailRobot {
         backButton.tap()
     }
 
+    func tapBackChevronButton() {
+        application.buttons[Identifiers.backChevronButton].firstMatch.tap()
+    }
+
     func tapStarButton() {
         starButton.tap()
     }
@@ -57,6 +61,7 @@ extension ConversationDetailRobot {
 }
 
 private struct Identifiers {
+    static let backChevronButton = "ic-chevron-tiny-left"
     static let backButton = "detail.backButton"
     static let starButton = "detail.starButton"
     static let subjectText = "detail.subjectText"

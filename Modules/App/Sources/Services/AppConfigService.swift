@@ -29,9 +29,9 @@ final class AppConfigService: Sendable {
             // The `mockServerPort` value is computed by the UI Tests runner at runtime,
             // it can't be read from project.yml as a static value as it would prevent concurrent runs.
             if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
-                environment = .custom("https://localhost:\(mockServerPort)")
+                environment = .localhost(port: mockServerPort)
             } else {
-                environment = .custom("https://proton.pink")
+                environment = .prod
             }
 
             return AppConfig(environment: environment)

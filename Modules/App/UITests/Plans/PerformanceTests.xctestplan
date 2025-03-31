@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "59A9FCE9-43A8-41DC-A776-5F61F1335939",
+      "name" : "RegressionTests",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "LoadingConversationTest\/testOpenMessage()",
+        "LoadingInboxTests\/testLoadingInbox()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "F10B9F81555EBE694D795ECF",
+        "name" : "ProtonMailUITest"
+      }
+    }
+  ],
+  "version" : 1
+}

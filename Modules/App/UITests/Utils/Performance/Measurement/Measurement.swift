@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,7 +17,11 @@
 
 import Foundation
 
-enum UITestSidebarEntry: String {
-    case subscription = "Subscription"
-    case signOut = "Sign Out"
+public protocol MeasurementProtocol {
+    func addMetricToMeasures(_ key: String, _ value: String)
+}
+
+public protocol Measurement {
+    func onStartMeasurement(measurementProfile: MeasurementProfile)
+    func onStopMeasurement(measurementProfile: MeasurementProfile)
 }

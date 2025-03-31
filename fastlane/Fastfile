@@ -19,6 +19,7 @@ CONCURRENT_WORKERS=2
 MAX_CONCURRENT_SIMULATORS=2
 SMOKE_PLAN_NAME="SmokeTests"
 REGRESSION_PLAN_NAME="RegressionTests"
+PERFORMANCE_PLAN_NAME="PerformanceTests"
 
 ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
@@ -151,6 +152,28 @@ platform :ios do
         reset_simulator: true,
         result_bundle: true,
         testplan: REGRESSION_PLAN_NAME,
+        xcargs: "-skipPackagePluginValidation"
+      )
+  end
+
+  desc "Run UI Performance Tests"
+    lane :uitests_performance do
+      # more info: https://keith.github.io/xcode-man-pages/xcodebuild.1.html#TEST_RUNNER__VAR_
+      ['ET_USER', 'ET_USER_PWD', 'LOKI_ENDPOINT', 'CERTIFICATE_IOS_SDK_PASSPHRASE'].each { |env_var_key|
+        ENV["TEST_RUNNER_#{env_var_key}"] = ENV[env_var_key]
+      }
+
+      run_tests(
+        scheme: UI_TESTS_SCHEME,
+        devices: UI_TESTS_DEVICE,
+        max_concurrent_simulators: 1,
+        concurrent_workers: 1,
+        include_simulator_logs: true,
+        prelaunch_simulator: true,
+        reset_simulator: true,
+        result_bundle: true,
+        app_identifier: "ch.protonmail.protonmail",
+        testplan: PERFORMANCE_PLAN_NAME,
         xcargs: "-skipPackagePluginValidation"
       )
   end
