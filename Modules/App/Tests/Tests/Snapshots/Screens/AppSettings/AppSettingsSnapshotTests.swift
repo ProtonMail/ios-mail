@@ -23,8 +23,12 @@ import SwiftUI
 class AppSettingsSnapshotTests: BaseTestCase {
 
     func testAppSettingsLayoutCorrectly() {
+        let sut = AppSettingsScreen(state: .init(
+            areNotificationsEnabled: false,
+            appLanguage: "English"
+        ))
         assertCustomHeightSnapshot(
-            matching: UIHostingController(rootView: AppSettingsScreen()).view,
+            matching: UIHostingController(rootView: sut).view,
             preferredHeight: 900
         )
     }
