@@ -20,19 +20,21 @@ import Testing
 
 @testable import ProtonMail
 
-@Suite(.serialized) // we need serial execution, because we're accessing real UserDefaults
 final class LegacyMigrationServiceTests {
     private let legacyKeychain = LegacyKeychain.randomInstance()
-    private let legacyUserDefaults = UserDefaults.legacy
+    private let testUserDefaults = TestableUserDefaults.randomInstance()
     private var recordedCallsToMigrate: [MigrationData] = []
 
-    private lazy var sut = LegacyMigrationService(legacyKeychain: legacyKeychain) { [unowned self] in
+    private lazy var sut = LegacyMigrationService(
+        legacyKeychain: legacyKeychain,
+        legacyDataProvider: .init(userDefaults: testUserDefaults)
+    ) { [unowned self] in
         recordedCallsToMigrate.append($0)
     }
 
     deinit {
         legacyKeychain.removeEverything()
-        legacyUserDefaults.removePersistentDomain(forName: "group.ch.protonmail.protonmail")
+        testUserDefaults.removeSuite(named: testUserDefaults.suiteName)
     }
 
     @Test
@@ -116,15 +118,15 @@ final class LegacyMigrationServiceTests {
     }
 
     private func seedMainKeyOfTheOldAppInLegacyKeychain() throws {
-        try legacyKeychain.setOrError(mainKey, forKey: LegacyKeychain.Key.unprotectedMainKey.rawValue)
+        try legacyKeychain.set(mainKey, forKey: .unprotectedMainKey)
     }
 
     private func seedAuthCredentialsInLegacyUserDefaults() {
-        legacyUserDefaults.set(encryptedAuthCredentials, forKey: UserDefaults.LegacyDataKey.authCredentials.rawValue)
+        testUserDefaults.set(encryptedAuthCredentials, forKey: .authCredentials)
     }
 
     private func seedUserInfosInLegacyUserDefaults() {
-        legacyUserDefaults.set(encryptedUserInfos, forKey: UserDefaults.LegacyDataKey.userInfos.rawValue)
+        testUserDefaults.set(encryptedUserInfos, forKey: .userInfos)
     }
 
     private func currentState() async -> LegacyMigrationService.MigrationState {

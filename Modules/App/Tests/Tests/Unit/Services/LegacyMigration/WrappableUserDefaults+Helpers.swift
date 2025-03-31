@@ -17,23 +17,14 @@
 
 import Foundation
 
-extension UserDefaults {
-    enum LegacyDataKey: String, CaseIterable {
-        case authCredentials = "authKeychainStoreKeyProtectedWithMainKey"
-        case userInfos = "usersInfoKeyProtectedWithMainKey"
+@testable import ProtonMail
+
+extension TestableUserDefaults {
+    static func randomInstance(function: StaticString = #function) -> Self {
+        .init(suiteName: "\(function)_\(UUID().uuidString)")
     }
 
-    static var legacy: Self {
-        .init(suiteName: "group.ch.protonmail.protonmail").unsafelyUnwrapped
-    }
-
-    func legacyData(forKey key: LegacyDataKey) -> Data? {
-        data(forKey: key.rawValue)
-    }
-
-    func removeLegacyKeys() {
-        for legacyKey in LegacyDataKey.allCases {
-            removeObject(forKey: legacyKey.rawValue)
-        }
+    func set(_ value: Any?, forKey key: LegacyDataProvider.Key) {
+        set(value, forKey: key.rawValue)
     }
 }

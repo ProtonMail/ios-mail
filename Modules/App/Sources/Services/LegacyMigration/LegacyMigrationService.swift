@@ -45,7 +45,7 @@ actor LegacyMigrationService {
     }
 
     private let legacyKeychain: LegacyKeychain
-    private let legacyUserDefaults = UserDefaults.legacy
+    private let legacyDataProvider: LegacyDataProvider
     private let passMigrationPayloadToRustSDK: PassMigrationPayloadToRustSDK
     private let stateSubject = CurrentValueSubject<MigrationState, Never>(.notChecked)
 
@@ -63,13 +63,18 @@ actor LegacyMigrationService {
         }
     }
 
-    init(legacyKeychain: LegacyKeychain, passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK) {
+    init(
+        legacyKeychain: LegacyKeychain,
+        legacyDataProvider: LegacyDataProvider,
+        passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK
+    ) {
         self.legacyKeychain = legacyKeychain
+        self.legacyDataProvider = legacyDataProvider
         self.passMigrationPayloadToRustSDK = passMigrationPayloadToRustSDK
     }
 
     private init() {
-        self.init(legacyKeychain: .init()) {
+        self.init(legacyKeychain: .init(), legacyDataProvider: .init()) {
             try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
         }
     }
@@ -119,8 +124,8 @@ actor LegacyMigrationService {
 
     private func startMigrationIfNeeded() -> MigrationState {
         guard
-            let authCredentialData = legacyUserDefaults.legacyData(forKey: .authCredentials),
-            let userInfoData = legacyUserDefaults.legacyData(forKey: .userInfos)
+            let authCredentialData = legacyDataProvider.data(forKey: .authCredentials),
+            let userInfoData = legacyDataProvider.data(forKey: .userInfos)
         else {
             return .notNeeded
         }
@@ -166,10 +171,7 @@ actor LegacyMigrationService {
     // MARK: other methods
 
     private func decryptAndDecode<T: NSSecureCoding>(data encryptedData: Data, using key: Data) throws -> [T] {
-        let iv = encryptedData[0..<16]
-        let ciphertext = encryptedData[16...]
-        let decryptedArchives = try AES.CTR.decrypt(ciphertext: ciphertext, key: key, iv: iv)
-        let decodedArchive = try PropertyListDecoder().decode([Data].self, from: decryptedArchives)[0]
+        let decodedArchive: Data = try LockedDataExtractor.decryptAndDecode(data: encryptedData, using: key)[0]
 
         let relevantClasses: [AnyClass] = [
             NSArray.self,
@@ -210,7 +212,7 @@ actor LegacyMigrationService {
 
     private func cleanUpLegacyData() {
         legacyKeychain.removeEverything()
-        legacyUserDefaults.removeLegacyKeys()
+        legacyDataProvider.removeAll()
     }
 
     private func onIllegalStateTransition(
