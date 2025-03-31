@@ -84,7 +84,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .denied, .ephemeral, .notDetermined, .provisional:
             false
         @unknown default:
-            fatalError()
+            false
         }
     }
 

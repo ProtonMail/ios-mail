@@ -68,7 +68,7 @@ class AppSettingsStateStoreTests {
     }
 
     @Test
-    func whenViewAppear_ItRefreshesNotificationsStatusAndLangauge() async {
+    func whenViewLoads_ItRefreshesNotificationsStatusAndLangauge() async {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
         bundleStub.preferredLocalizationsStub = ["pl"]
 

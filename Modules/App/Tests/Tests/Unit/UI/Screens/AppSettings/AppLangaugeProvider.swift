@@ -21,23 +21,21 @@ import Testing
 class AppLanguageProviderTests {
 
     var sut: AppLangaugeProvider!
-    var stubbedLocale: Locale!
     private var bundleStub: BundleStub!
 
     init() {
-        stubbedLocale = .init(identifier: "en")
         bundleStub = BundleStub()
-        sut = AppLangaugeProvider(currentLocale: stubbedLocale, mainBundle: bundleStub)
+        sut = AppLangaugeProvider(currentLocale: .init(identifier: "en"), mainBundle: bundleStub)
     }
 
     deinit {
-        stubbedLocale = nil
         bundleStub = nil
         sut = nil
     }
 
     @Test
     func appLanguageWhenThereAreNoPreferedLanguages_ItReturnsCurrentLocaleLanguage() {
+        bundleStub.preferredLocalizationsStub = ["en"]
         #expect(sut.appLangauge == "English")
     }
 

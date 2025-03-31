@@ -26,7 +26,7 @@ struct AppSettingsScreen: View {
     @StateObject var store: AppSettingsStateStore
 
     init(state: AppSettingsState = .initial) {
-        self._store = .init(wrappedValue: .init(state: state))
+        _store = .init(wrappedValue: .init(state: state))
     }
 
     var body: some View {
@@ -94,7 +94,7 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
+        .onLoad {
             store.handle(action: .onLoad)
         }
         .onChange(of: scenePhase, { _, newValue in
