@@ -22,20 +22,17 @@ class AppLanguageProviderTests {
 
     var sut: AppLangaugeProvider!
     var stubbedLocale: Locale!
-    private var bundleSpy: BundleSpy!
+    private var bundleStub: BundleSpy!
 
     init() {
         stubbedLocale = .init(identifier: "en")
-        bundleSpy = BundleSpy()
-        sut = AppLangaugeProvider(
-            currentLocale: stubbedLocale,
-            mainBundle: bundleSpy
-        )
+        bundleStub = BundleStub()
+        sut = AppLangaugeProvider(currentLocale: stubbedLocale, mainBundle: bundleStub)
     }
 
     deinit {
         stubbedLocale = nil
-        bundleSpy = nil
+        bundleStub = nil
         sut = nil
     }
 
@@ -46,18 +43,8 @@ class AppLanguageProviderTests {
 
     @Test
     func appLanguageWhenThereThereArePreferedLanguages_ItReturnsFirstPrefferedLanguage() {
-        bundleSpy.preferredLocalizationsStub = ["pl"]
+        bundleStub.preferredLocalizationsStub = ["pl"]
         #expect(sut.appLangauge == "Polish")
-    }
-
-}
-
-class BundleSpy: Bundle, @unchecked Sendable {
-
-    var preferredLocalizationsStub: [String] = ["en"]
-
-    override var preferredLocalizations: [String] {
-        preferredLocalizationsStub
     }
 
 }

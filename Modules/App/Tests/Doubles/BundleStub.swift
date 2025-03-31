@@ -16,14 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 class BundleStub: Bundle, @unchecked Sendable {
+    var preferredLocalizationsStub: [String] = ["en"]
     private let _infoDictionary: [String: Any]?
 
-    init(infoDictionary: [String: Any]?) {
+    init(infoDictionary: [String: Any]? = nil) {
         self._infoDictionary = infoDictionary
         super.init()
     }
 
     override var infoDictionary: [String: Any]? {
         _infoDictionary
+    }
+
+    override var preferredLocalizations: [String] {
+        preferredLocalizationsStub
     }
 }
