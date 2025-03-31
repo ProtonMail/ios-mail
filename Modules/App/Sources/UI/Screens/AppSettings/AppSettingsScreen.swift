@@ -50,12 +50,7 @@ struct AppSettingsScreen: View {
                                 value: store.state.appLanguage,
                                 action: { store.handle(action: .languageButtonTapped) }
                             )
-                            FormBigButton(
-                                title: L10n.Settings.App.appearance,
-                                icon: DS.SFSymbols.chevronUpChevronDown,
-                                value: "Dark mode".notLocalized,
-                                action: { comingSoon() }
-                            )
+                            appearanceButton
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
@@ -104,6 +99,41 @@ struct AppSettingsScreen: View {
         })
     }
 
+    @ViewBuilder
+    private var appearanceButton: some View {
+        Menu(
+            content: {
+                ForEach(AppAppearance.allCases, id: \.self) { appearance in
+                    Button(action: {
+                        store.handle(action: .appearanceSelected(appearance))
+                    }) {
+                        HStack {
+                            Text(appearance.humanReadable)
+                            if appearance == store.state.appearance {
+                                Image(systemName: DS.SFSymbols.checkmark)
+                            }
+                        }
+                    }
+                }
+            },
+            label: {
+                FormBigButton(
+                    title: L10n.Settings.App.appearance,
+                    icon: DS.SFSymbols.chevronUpChevronDown,
+                    value: store.state.appearance.humanReadable,
+                    action: { store.handle(action: .appearanceTapped) }
+                )
+            }
+        )
+    }
+
+    private var isAppearanceMenuShown: Binding<Bool> {
+        .init(
+            get: { store.state.isAppearanceMenuShown },
+            set: { newValue in store.state = store.state.copy(\.isAppearanceMenuShown, to: newValue) }
+        )
+    }
+
     private var comingSoonBinding: Binding<Bool> {
         Binding(
             get: { false },
@@ -118,6 +148,11 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .init(areNotificationsEnabled: false, appLanguage: .empty))
+        AppSettingsScreen(state: .init(
+            areNotificationsEnabled: false,
+            appLanguage: .empty,
+            appearance: .system,
+            isAppearanceMenuShown: false
+        ))
     }
 }

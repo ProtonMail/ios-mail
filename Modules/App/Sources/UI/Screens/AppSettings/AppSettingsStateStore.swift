@@ -47,6 +47,10 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await openNativeAppSettings()
         case .enterForeground, .onLoad:
             await refreshDeviceSettings()
+        case .appearanceTapped:
+            state = state.copy(\.isAppearanceMenuShown, to: true)
+        case .appearanceSelected(let appearance):
+            state = state.copy(\.appearance, to: appearance)
         }
     }
 

@@ -78,4 +78,16 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.appLanguage == "Polish")
     }
 
+    @Test
+    func whenAppearanceIsTapped_WhenAppearanceIsChnaged_ItUpdatesAppearance() async {
+        #expect(sut.state.appearance == .system)
+        #expect(sut.state.isAppearanceMenuShown == false)
+
+        await sut.handle(action: .appearanceTapped)
+        #expect(sut.state.isAppearanceMenuShown == true)
+
+        await sut.handle(action: .appearanceSelected(.dark))
+        #expect(sut.state.appearance == .dark)
+    }
+
 }

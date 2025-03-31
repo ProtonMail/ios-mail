@@ -21,12 +21,19 @@ import SwiftUI
 struct AppSettingsState: Hashable, Copying {
     var areNotificationsEnabled: Bool
     var appLanguage: String
+    var appearance: AppAppearance
+    var isAppearanceMenuShown: Bool
 }
 
 extension AppSettingsState {
 
     static var initial: Self {
-        .init(areNotificationsEnabled: false, appLanguage: .empty)
+        .init(
+            areNotificationsEnabled: false,
+            appLanguage: .empty,
+            appearance: .system,
+            isAppearanceMenuShown: false
+        )
     }
 
     var areNotificationsEnabledHumanReadable: LocalizedStringResource {

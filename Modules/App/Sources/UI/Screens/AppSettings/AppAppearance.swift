@@ -15,11 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppSettingsAction {
-    case notificationButtonTapped
-    case languageButtonTapped
-    case onLoad
-    case enterForeground
-    case appearanceTapped
-    case appearanceSelected(AppAppearance)
+enum AppAppearance: CaseIterable {
+    case system
+    case dark
+    case light
+
+    var humanReadable: String {
+        switch self {
+        case .system:
+            "System"
+        case .dark:
+            "Dark"
+        case .light:
+            "Light"
+        }
+    }
 }

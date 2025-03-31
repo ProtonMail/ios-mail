@@ -25,7 +25,9 @@ class AppSettingsSnapshotTests: BaseTestCase {
     func testAppSettingsLayoutCorrectly() {
         let sut = AppSettingsScreen(state: .init(
             areNotificationsEnabled: false,
-            appLanguage: "English"
+            appLanguage: "English",
+            appearance: .system,
+            isAppearanceMenuShown: false
         ))
         assertCustomHeightSnapshot(
             matching: UIHostingController(rootView: sut).view,
