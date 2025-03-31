@@ -111,10 +111,22 @@ final class LegacyMigrationServiceTests {
         seedUserInfosInLegacyUserDefaults()
 
         await sut.proceed()
-        await sut.resume(protectedMainKey: mainKey)
+        await sut.resume(protectedMainKey: mainKey, protectionPreference: .biometrics)
 
         #expect(recordedCallsToMigrate.count == 1)
         await #expect(currentState() == .notNeeded)
+    }
+
+    @Test
+    func givenIsWaitingForMainKey_whenProvidedWithIt_thenPassesOnProtectionUsedToUnlockIt() async throws {
+        seedAuthCredentialsInLegacyUserDefaults()
+        seedUserInfosInLegacyUserDefaults()
+
+        await sut.proceed()
+        await sut.resume(protectedMainKey: mainKey, protectionPreference: .pin("1234"))
+
+        let pinThatWasSet = try #require(mailSessionStub.setPinCodeInvocations.first)
+        #expect([UInt8](pinThatWasSet) == [1, 2, 3, 4])
     }
 
     @Test

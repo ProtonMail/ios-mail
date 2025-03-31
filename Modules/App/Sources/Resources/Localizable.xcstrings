@@ -2503,6 +2503,12 @@
         }
       }
     },
+    "PIN is too long" : {
+      "comment" : "Error message when setting up PIN"
+    },
+    "PIN is too short" : {
+      "comment" : "Error message when setting up PIN"
+    },
     "Preferences" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -2595,6 +2601,9 @@
     },
     "Protection" : {
       "comment" : "Protection setting title in app settings."
+    },
+    "Provided value is not a valid PIN" : {
+      "comment" : "Error message when setting up PIN"
     },
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."

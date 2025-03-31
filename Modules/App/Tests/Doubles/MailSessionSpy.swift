@@ -29,6 +29,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
+    private(set) var setPinCodeInvocations: [Data] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
@@ -141,7 +142,8 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func setPinCode(pin: Data) async -> MailSessionSetPinCodeResult {
-        fatalError(#function)
+        setPinCodeInvocations.append(pin)
+        return .ok
     }
 
     func setPrimaryAccount(userId: String) async -> VoidSessionResult {

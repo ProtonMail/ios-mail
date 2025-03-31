@@ -473,6 +473,16 @@ public extension MailSessionResumeLoginFlowResult {
         }
     }
 }
+public extension MailSessionSetPinCodeResult {
+    func get() throws(PinSetError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionStartBackgroundExecutionResult {
     func get() throws(UserSessionError) -> BackgroundExecutionHandle {
         switch self {

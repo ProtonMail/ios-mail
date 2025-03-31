@@ -517,6 +517,23 @@ enum L10n {
     }
 
     enum PINLock {
+        enum Error {
+            static let tooLong = LocalizedStringResource(
+                "PIN is too long",
+                comment: "Error message when setting up PIN"
+            )
+
+            static let tooShort = LocalizedStringResource(
+                "PIN is too short",
+                comment: "Error message when setting up PIN"
+            )
+
+            static let malformed = LocalizedStringResource(
+                "Provided value is not a valid PIN",
+                comment: "Error message when setting up PIN"
+            )
+        }
+
         static let enterPinTitle = LocalizedStringResource(
             "Enter your PIN to unlock you inbox.",
             comment: "Information displayed on the top of PIN lock screen."

@@ -63,7 +63,7 @@ final class LegacyMigrationStateStore: ObservableObject {
         Task {
             do {
                 let mainKey = try await mainKeyUnlocker.pinProtectedMainKey(pin: pin)
-                await legacyMigrationService.resume(protectedMainKey: mainKey)
+                await legacyMigrationService.resume(protectedMainKey: mainKey, protectionPreference: .pin(pin))
             } catch {
                 AppLogger.log(error: error, category: .legacyMigration)
                 state = .pinRequired(errorFromLatestAttempt: L10n.PINLock.invalidPIN.string)
@@ -80,10 +80,10 @@ final class LegacyMigrationStateStore: ObservableObject {
     private func unlockMainKeyAndResumeMigration() {
         Task {
             do {
-                switch await try mainKeyUnlocker.legacyAppProtectionMethod() {
+                switch try await mainKeyUnlocker.legacyAppProtectionMethod() {
                 case .biometrics:
                     let mainKey = try await mainKeyUnlocker.biometricsProtectedMainKey()
-                    await legacyMigrationService.resume(protectedMainKey: mainKey)
+                    await legacyMigrationService.resume(protectedMainKey: mainKey, protectionPreference: .biometrics)
                 case .pin:
                     state = .pinRequired(errorFromLatestAttempt: nil)
                 case .none:
