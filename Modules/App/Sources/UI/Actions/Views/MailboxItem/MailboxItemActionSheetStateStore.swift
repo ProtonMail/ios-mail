@@ -71,28 +71,28 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .star:
                 performAction(
                     action: starActionPerformer.star,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .unstar:
                 performAction(
                     action: starActionPerformer.unstar,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .markRead:
                 performAction(
                     action: readActionPerformer.markAsRead,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .markUnread:
                 performAction(
                     action: readActionPerformer.markAsUnread,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: input.type.dismissNavigation
                 )
@@ -108,7 +108,7 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .permanentDelete:
                 state = state.copy(\.alert, to: deleteConfirmationAlert)
             case .notSpam(let model), .system(let model):
-                performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
+                performMoveToAction(destination: model, ids: [input.id], itemType: input.type)
             }
         case .generalActionTapped(let generalAction):
             switch generalAction {
@@ -124,7 +124,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         case .deleteConfirmed(let action):
             state = state.copy(\.alert, to: nil)
             if case .delete = action {
-                performDeleteAction(itemsIDs: input.ids, itemType: input.type)
+                performDeleteAction(itemsIDs: [input.id], itemType: input.type)
             }
         case .phishingConfirmed(let action):
             state = state.copy(\.alert, to: nil)
@@ -171,7 +171,7 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func performMarkPhishing(itemType: MailboxItemType) {
         Task {
-            if case .ok = await generalActionsPerformer.markMessagePhishing(messageIDs: input.ids) {
+            if case .ok = await generalActionsPerformer.markMessagePhishing(messageIDs: [input.id]) {
                 Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                     self?.navigation(itemType.dismissNavigation)
                 }))
@@ -208,7 +208,7 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func loadActions() {
         Task {
-            let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
+            let actions = await availableActionsProvider.actions(for: input.type, ids: [input.id])
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(actions: actions)
             }))
@@ -221,7 +221,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     
     private var deleteConfirmationAlert: AlertModel {
         .deleteConfirmation(
-            itemsCount: input.ids.count,
+            itemsCount: 1,
             action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
         )
     }

@@ -132,7 +132,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
             actionSheets = actionSheets
-                .copy(\.mailbox, to: .init(ids: [conversationID], type: .conversation, title: seed.subject))
+                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets = actionSheets
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))

@@ -153,12 +153,7 @@ struct MailboxItemActionSheet: View {
     }
 
     private func replyButton(action: ReplyAction) -> some View {
-        guard let messageId = input.ids.first else {
-            let message = "messageId not found for reply action"
-            AppLogger.log(message: message, category: .composer)
-            fatalError(message)
-        }
-        return Button(action: { replyActions(messageId, action) }) {
+        Button(action: { replyActions(input.id, action) }) {
             VStack(spacing: DS.Spacing.standard) {
                 Image(action.displayData.image)
                     .resizable()
@@ -179,7 +174,7 @@ struct MailboxItemActionSheet: View {
 
 #Preview {
     MailboxItemActionSheet(
-        input: .init(ids: [], type: .message, title: "Hello there".notLocalized),
+        input: .init(id: .init(value: 42), type: .message, title: "Hello there".notLocalized),
         mailbox: .dummy,
         actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
         starActionPerformerActions: .dummy,

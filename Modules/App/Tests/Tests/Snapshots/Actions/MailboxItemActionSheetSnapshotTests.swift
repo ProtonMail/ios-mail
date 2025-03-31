@@ -24,7 +24,7 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
     func testMessageConversationActionSheetLayoutsCorrectly() {
         let sut = MailboxItemActionSheet(
-            input: .init(ids: [.random()], type: .message, title: "Hello".notLocalized),
+            input: .init(id: .random(), type: .message, title: "Hello".notLocalized),
             mailbox: .dummy,
             actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
             starActionPerformerActions: .dummy,

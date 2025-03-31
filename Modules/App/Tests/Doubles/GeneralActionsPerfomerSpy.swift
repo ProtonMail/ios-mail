@@ -20,10 +20,10 @@ import proton_app_uniffi
 
 class GeneralActionsPerfomerSpy {
     var stubbedMarkMessagePhishingResult: VoidActionResult = .ok
-    private(set) var markMessagePhishingWithMessageIDsCalls: [[ID]] = []
+    private(set) var markMessagePhishingWithMessageIDsCalls: [ID] = []
 
     private(set) lazy var testingInstance = GeneralActionsWrappers { [unowned self] _, ids in
-        markMessagePhishingWithMessageIDsCalls.append(ids)
+        markMessagePhishingWithMessageIDsCalls += ids
         return stubbedMarkMessagePhishingResult
     }
 }

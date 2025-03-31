@@ -70,11 +70,11 @@ private struct MailboxActionSheets: ViewModifier {
             switch navigation {
             case .labelAs:
                 state = state
-                    .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: input.ids, type: input.type))
+                    .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [input.id], type: input.type))
                     .copy(\.mailbox, to: nil)
             case .moveTo:
                 state = state
-                    .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: input.ids, type: input.type))
+                    .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [input.id], type: input.type))
                     .copy(\.mailbox, to: nil)
             case .dismiss:
                 state = state.copy(\.mailbox, to: nil)

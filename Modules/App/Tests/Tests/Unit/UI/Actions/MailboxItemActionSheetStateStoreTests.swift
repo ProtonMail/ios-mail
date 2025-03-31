@@ -78,13 +78,13 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             generalActions: [.print]
         )
 
-        let messagesIDs: [ID] = [.init(value: 7), .init(value: 88)]
+        let messageID = ID(value: 7)
         let title = "Message title"
-        let sut = sut(ids: messagesIDs, type: .message, title: title)
+        let sut = sut(id: messageID.value, type: .message, title: title)
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(invokedWithMessagesIDs, messagesIDs)
+        XCTAssertEqual(invokedWithMessagesIDs, [messageID])
         XCTAssertEqual(invokedWithConversationIDs, [])
         XCTAssertEqual(sut.state, .init(
             title: title,
@@ -107,14 +107,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             generalActions: [.saveAsPdf]
         )
 
-        let conversationIDs: [ID] = [.init(value: 8), .init(value: 88)]
+        let conversationID = ID(value: 8)
         let title = "Conversation title"
-        let sut = sut(ids: conversationIDs, type: .conversation, title: title)
+        let sut = sut(id: conversationID.value, type: .conversation, title: title)
 
         sut.handle(action: .onLoad)
 
         XCTAssertEqual(invokedWithMessagesIDs, [])
-        XCTAssertEqual(invokedWithConversationIDs, conversationIDs)
+        XCTAssertEqual(invokedWithConversationIDs, [conversationID])
         XCTAssertEqual(sut.state, .init(
             title: title,
             availableActions: .init(
@@ -127,7 +127,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     }
 
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
-        let sut = sut(ids: [], type: .message, title: .notUsed)
+        let sut = sut(id: 99, type: .message, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(.labelAs))
 
@@ -256,8 +256,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     }
     
     func testAction_WhenReportPhishingActionInvoked_ItPresentsConfirmPhishingAlert() {
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: .conversation, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
 
         sut.handle(action: .generalActionTapped(.reportPhishing))
 
@@ -267,8 +267,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .ok
         
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
 
         sut.handle(action: .generalActionTapped(.reportPhishing))
 
@@ -276,17 +276,17 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
         confirmAction.action()
-        
+
         XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [ids])
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [id])
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
     
     func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .error(.other(.network))
         
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
 
         sut.handle(action: .generalActionTapped(.reportPhishing))
 
@@ -296,13 +296,13 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         confirmAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [ids])
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [id])
         XCTAssertEqual(spiedNavigation, [])
     }
     
     func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() throws {
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
 
         sut.handle(action: .generalActionTapped(.reportPhishing))
 
@@ -344,12 +344,12 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         expectedNavigation: MailboxItemActionSheetNavigation,
         verifyInvoked: () -> [ID]
     ) {
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: itemType, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: itemType, title: .notUsed)
 
         sut.handle(action: .mailboxItemActionSelected(action))
 
-        XCTAssertEqual(verifyInvoked(), ids)
+        XCTAssertEqual(verifyInvoked(), [id])
         XCTAssertEqual(spiedNavigation, [expectedNavigation])
     }
 
@@ -359,16 +359,16 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         expectedNavigation: MailboxItemActionSheetNavigation,
         verifyInvoked: () -> [ID]
     ) {
-        let ids: [ID] = [.init(value: 55), .init(value: 5)]
-        let sut = sut(ids: ids, type: itemType, title: .notUsed)
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: itemType, title: .notUsed)
 
         sut.handle(action: action)
 
-        XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
+        XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: 1, action: { _ in }))
 
         sut.handle(action: .deleteConfirmed(.delete))
 
-        XCTAssertEqual(verifyInvoked(), ids)
+        XCTAssertEqual(verifyInvoked(), [id])
         XCTAssertEqual(spiedNavigation, [expectedNavigation])
 
         XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
@@ -379,14 +379,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         action: MoveToAction,
         verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments]
     ) throws {
-        let ids: [ID] = [.init(value: 1), .init(value: 7)]
-        let sut = sut(ids: ids, type: itemType, title: .notUsed)
+        let id = ID(value: 1)
+        let sut = sut(id: id.value, type: itemType, title: .notUsed)
 
         sut.handle(action: .moveTo(action))
 
         let destination = try XCTUnwrap(action.destination)
 
-        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: ids)])
+        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
 
         XCTAssertEqual(toastStateStore.state.toasts, [
             .moveTo(destinationName: destination.systemLabel.humanReadable.string)
@@ -394,17 +394,16 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     }
     
     private func verifyGeneralAction(action: GeneralActions) {
-        let ids: [ID] = [.init(value: 42)]
-        let sut = sut(ids: ids, type: .message, title: .notUsed)
+        let sut = sut(id: 42, type: .message, title: .notUsed)
         
         sut.handle(action: .generalActionTapped(action))
         
         XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
     }
 
-    private func sut(ids: [ID], type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
+    private func sut(id: UInt64, type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
         MailboxItemActionSheetStateStore(
-            input: .init(ids: ids, type: type, title: title),
+            input: .init(id: .init(value: id), type: type, title: title),
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, ids in
