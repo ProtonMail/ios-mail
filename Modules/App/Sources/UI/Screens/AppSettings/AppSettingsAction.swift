@@ -21,5 +21,5 @@ enum AppSettingsAction {
     case onLoad
     case enterForeground
     case appearanceTapped
-    case appearanceSelected(AppAppearance)
+    case appearanceSelected(AppUserInterfaceStyle)
 }

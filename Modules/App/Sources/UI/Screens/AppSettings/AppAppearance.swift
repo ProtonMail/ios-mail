@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-enum AppAppearance: CaseIterable {
+enum AppUserInterfaceStyle: CaseIterable {
     case system
     case dark
     case light

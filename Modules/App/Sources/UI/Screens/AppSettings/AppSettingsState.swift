@@ -21,7 +21,7 @@ import SwiftUI
 struct AppSettingsState: Hashable, Copying {
     var areNotificationsEnabled: Bool
     var appLanguage: String
-    var appearance: AppAppearance
+    var appearance: AppUserInterfaceStyle
     var isAppearanceMenuShown: Bool
 }
 

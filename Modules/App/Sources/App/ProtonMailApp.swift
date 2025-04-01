@@ -28,7 +28,6 @@ struct ProtonMailApp: App {
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    @StateObject private var colorSchemeStore = ColorSchemeStore()
 
     var body: some Scene {
         WindowGroup {
@@ -38,9 +37,7 @@ struct ProtonMailApp: App {
                     .environmentObject(appUIStateStore)
                     .environmentObject(legacyMigrationStateStore)
                     .environmentObject(toastStateStore)
-                    .environmentObject(colorSchemeStore)
             }
-            .preferredColorScheme(colorSchemeStore.appearance.colorScheme)
         }
         .onChange(of: scenePhase, { oldValue, newValue in
             // scenePhase contains an aggregate phase for all scenes

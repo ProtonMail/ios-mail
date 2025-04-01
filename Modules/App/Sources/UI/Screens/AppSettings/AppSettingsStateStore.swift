@@ -100,7 +100,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
 
 }
 
-private extension AppAppearance {
+private extension AppUserInterfaceStyle {
     var style: UIUserInterfaceStyle {
         switch self {
         case .system:
