@@ -380,7 +380,7 @@ final class ComposerModelTests: BaseTestCase {
             ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)
         }
         let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
-        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
+        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.unknown)))
 
         let mockDraft: MockDraft = .makeWithRecipients([singleRecipientValid], group: .to)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
@@ -391,6 +391,24 @@ final class ComposerModelTests: BaseTestCase {
         mockDraft.mockToRecipientList.callback?.onUpdate()
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
+    }
+
+    @MainActor
+    func testComposerRecipientListCallbackUpdate_whenValidStateIsAddressDoesNotExist_itShouldShowErrorToast() async {
+        let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
+            ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)
+        }
+        let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
+        let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
+
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipientValid], group: .to)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+
+        // We simulate a `validState` update
+        mockDraft.mockToRecipientList.addedRecipients = [singleRecipientInvalid]
+        mockDraft.mockToRecipientList.callback?.onUpdate()
+
+        XCTAssertEqual(sut.toast, .error(message: L10n.ComposerError.addressDoesNotExist.string))
     }
 
     func testComposerRecipientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {

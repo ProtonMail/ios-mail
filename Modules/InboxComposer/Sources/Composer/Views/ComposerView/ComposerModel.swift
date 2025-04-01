@@ -371,6 +371,9 @@ extension ComposerModel {
                     guard let self else { return recipientFieldState }
                     let selectedIndexes = stateRecipientUIModels(for: group).selectedIndexes
                     let newRecipients = recipientUIModels(from: draft, for: group, selecting: selectedIndexes)
+                    if newRecipients.hasNewDoesNotExistAddressError(comparedTo: recipientFieldState.recipients) {
+                        showToast(.error(message: L10n.ComposerError.addressDoesNotExist.string))
+                    }
                     return recipientFieldState.copy(\.recipients, to: newRecipients)
                 }
             })
@@ -503,9 +506,11 @@ extension ComposerModel {
     }
 
     func showToast(_ toastToShow: Toast) {
-        DispatchQueue.main.async { [weak self] in
-            self?.toast = toastToShow
-        }
+        Dispatcher.dispatchOnMain(.init(
+            block: { [weak self] in
+                self?.toast = toastToShow
+            })
+        )
     }
 }
 
