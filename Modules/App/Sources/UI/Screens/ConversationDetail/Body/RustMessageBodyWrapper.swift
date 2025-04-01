@@ -39,7 +39,7 @@ extension RustMessageBodyWrapper {
         .init(
             messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) },
             markMessageHam: { mailbox, id in await markMessagesHam(mailbox: mailbox, messageId: id) },
-            unblockSender: { mailbox, id in .ok }
+            unblockSender: { mailbox, addressID in await unblockAddress(mailbox: mailbox, addressId: addressID) }
         )
     }
 
