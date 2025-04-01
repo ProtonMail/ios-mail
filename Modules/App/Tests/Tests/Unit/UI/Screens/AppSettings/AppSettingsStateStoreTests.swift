@@ -92,8 +92,8 @@ class AppSettingsStateStoreTests {
         await sut.handle(action: .appearanceTapped)
         #expect(sut.state.isAppearanceMenuShown == true)
 
-        await sut.handle(action: .appearanceSelected(.dark))
-        #expect(sut.state.appearance == .dark)
+        await sut.handle(action: .appearanceSelected(.darkMode))
+        #expect(sut.state.appearance == .darkMode)
         #expect(setUserInterfaceStyleCalled == [.dark])
     }
 
