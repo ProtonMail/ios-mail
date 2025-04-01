@@ -41,7 +41,7 @@ struct LegacyDataProvider {
     }
 
     func removeAll() {
-        userDefaults.removeSuite(named: userDefaults.suiteName)
+        userDefaults.removePersistentDomain(forName: userDefaults.suiteName)
     }
 }
 

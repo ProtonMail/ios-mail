@@ -35,7 +35,7 @@ final class LegacyMigrationServiceTests {
 
     deinit {
         legacyKeychain.removeEverything()
-        testUserDefaults.removeSuite(named: testUserDefaults.suiteName)
+        testUserDefaults.removePersistentDomain(forName: testUserDefaults.suiteName)
     }
 
     @Test

@@ -32,7 +32,7 @@ final class SettingsMigratorTests {
 
     deinit {
         legacyKeychain.removeEverything()
-        testUserDefaults.removeSuite(named: testUserDefaults.suiteName)
+        testUserDefaults.removePersistentDomain(forName: testUserDefaults.suiteName)
     }
 
     @Test("migrates AppAppearance", arguments: zip([0, 1, 2], [AppAppearance.system, .darkMode, .lightMode]))
