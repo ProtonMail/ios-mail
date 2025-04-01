@@ -33,9 +33,9 @@ final class Address: NSObject {
 extension Address: NSSecureCoding {
     /// These values must match the legacy app - do not change them.
     enum CoderKey: String {
-        case email      = "maxSpace"
-        case receive    = "privateKey"
-        case status     = "addressStatus"
+        case email = "maxSpace"
+        case receive = "privateKey"
+        case status = "addressStatus"
     }
 
     static let supportsSecureCoding = true

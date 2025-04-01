@@ -20,11 +20,19 @@ import InboxCore
 
 struct LegacyDataProvider {
     enum Key: String, CaseIterable {
-        case alternativeRouting = "doh_flag"
+        // session data
         case authCredentials = "authKeychainStoreKeyProtectedWithMainKey"
+        case userInfos = "usersInfoKeyProtectedWithMainKey"
+
+        // settings
+        case alternativeRouting = "doh_flag"
         case combineContacts = "combine_contact_flag"
         case darkMode = "dark_mode_flag"
-        case userInfos = "usersInfoKeyProtectedWithMainKey"
+
+        // signatures
+        case addressSignatureStatusPerUser = "user_with_default_signature_status"
+        case mobileSignatureContentPerUser = "user_with_local_mobile_signature_mainKeyProtected"
+        case mobileSignatureStatusPerUser = "user_with_local_mobile_signature_status"
     }
 
     private let userDefaults: TestableUserDefaults
@@ -35,6 +43,10 @@ struct LegacyDataProvider {
 
     func data(forKey key: Key) -> Data? {
         userDefaults.data(forKey: key.rawValue)
+    }
+
+    func dictionary<ValueType>(forKey key: Key) -> [String: ValueType] {
+        object(forKey: key) as? [String: ValueType] ?? [:]
     }
 
     func object(forKey key: Key) -> Any? {

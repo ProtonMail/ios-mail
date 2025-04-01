@@ -46,6 +46,7 @@ final class LegacyMigrationServiceTests {
         try seedMainKeyOfTheOldAppInLegacyKeychain()
         seedAuthCredentialsInLegacyUserDefaults()
         seedUserInfosInLegacyUserDefaults()
+        seedSignatureDataInLegacyUserDefaults()
 
         await sut.proceed()
 
@@ -156,6 +157,12 @@ final class LegacyMigrationServiceTests {
         testUserDefaults.set(encryptedUserInfos, forKey: .userInfos)
     }
 
+    private func seedSignatureDataInLegacyUserDefaults() {
+        testUserDefaults.set(addressSignatureStatusPerUser, forKey: .addressSignatureStatusPerUser)
+        testUserDefaults.set(encryptedMobileSignatureContentPerUser, forKey: .mobileSignatureContentPerUser)
+        testUserDefaults.set(mobileSignatureStatusPerUser, forKey: .mobileSignatureStatusPerUser)
+    }
+
     private func currentState() async -> LegacyMigrationService.MigrationState {
         await sut.statePublisher.values.first { _ in true }.unsafelyUnwrapped
     }
@@ -180,16 +187,37 @@ private extension LegacyMigrationServiceTests {
         ).unsafelyUnwrapped
     }
 
+    var addressSignatureStatusPerUser: [String: Bool] {
+        [userID: false]
+    }
+
+    var encryptedMobileSignatureContentPerUser: [String: Data] {
+        let content = Data(base64Encoded: "LC4gWIFKb+0P7n7k4tzCwwOrDJrKvkKHMeHGdioDOdasCXQXfBh6WNFdUpKpTzrQRxuPh1295aa6pBDYTLZ98Fl5y7Kg2eUBFVAyO0YJOTmmCzIY2n53+fhmdx8lsD9xPcwNHY+dtRDSOQ==")
+            .unsafelyUnwrapped
+        return [userID: content]
+    }
+
+    var mobileSignatureStatusPerUser: [String: Bool] {
+        [userID: true]
+    }
+
     var expectedMigrationPayload: MigrationData {
         .init(
             username: "kraqtest",
             displayName: "",
             primaryAddr: "kraqtest@proton.me",
+            addressSignatureEnabled: false,
+            mobileSignature: "Mobile signature set in current gen iOS app",
+            mobileSignatureEnabled: true,
             keySecret: "ACAwX00xKSL33dGQcsX3kCXqxPOx1xK",
-            userId: "zACrNDn8UdlQ-xLFRotHuIS6aLJzvgp_mP1P8xqvfTbrbdoE6aHfJ-6sdR2LqA708WXkGLCAHxdKAYPNxLEhsg==",
+            userId: userID,
             sessionId: "p5xecxmtgb5trouowcug6qsp5mcq7nii",
             passwordMode: .one,
             refreshToken: "uqj4sxr7p7tntmzvtpfhg5ne5vqlnd5x"
         )
+    }
+
+    private var userID: String {
+        "zACrNDn8UdlQ-xLFRotHuIS6aLJzvgp_mP1P8xqvfTbrbdoE6aHfJ-6sdR2LqA708WXkGLCAHxdKAYPNxLEhsg=="
     }
 }

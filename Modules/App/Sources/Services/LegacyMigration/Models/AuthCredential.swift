@@ -43,11 +43,11 @@ final class AuthCredential: NSObject {
 extension AuthCredential: NSSecureCoding {
     /// These values must match the legacy app - do not change them.
     enum CoderKey: String {
-        case mailboxPassword    = "AuthCredential.Password"
-        case refreshToken       = "refreshTokenCoderKey"
-        case sessionID          = "userIDCoderKey"
-        case userID             = "AuthCredential.UserID"
-        case userName           = "AuthCredential.UserName"
+        case mailboxPassword = "AuthCredential.Password"
+        case refreshToken = "refreshTokenCoderKey"
+        case sessionID = "userIDCoderKey"
+        case userID = "AuthCredential.UserID"
+        case userName = "AuthCredential.UserName"
     }
 
     static let supportsSecureCoding = true

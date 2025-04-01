@@ -26,6 +26,9 @@ actor LegacyMigrationService {
     struct EncryptedLegacyData: Equatable {
         let authCredentials: Data
         let userInfos: Data
+        let addressSignatureStatusPerUser: [String: Bool]
+        let mobileSignatureContentPerUser: [String: Data]
+        let mobileSignatureStatusPerUser: [String: Bool]
     }
 
     struct MigrationInputs: Equatable {
@@ -164,14 +167,9 @@ actor LegacyMigrationService {
     // MARK: state transitions
 
     private func startMigrationIfNeeded() -> MigrationState {
-        guard
-            let authCredentialData = legacyDataProvider.data(forKey: .authCredentials),
-            let userInfoData = legacyDataProvider.data(forKey: .userInfos)
-        else {
+        guard let encryptedLegacyData = loadEncryptedLegacyData() else {
             return .notNeeded
         }
-
-        let encryptedLegacyData = EncryptedLegacyData(authCredentials: authCredentialData, userInfos: userInfoData)
 
         do {
             if let unprotectedMainKey = try legacyKeychain.data(forKey: .unprotectedMainKey) {
@@ -206,7 +204,18 @@ actor LegacyMigrationService {
                 using: inputs.mainKey
             )
 
-            let migrationPayloads = prepareMigrationPayloads(authCredentials: authCredentials, userInfos: userInfos)
+            let decryptedMobileSignatures = try decryptMobileSignatures(
+                encryptedMobileSignatures: inputs.encryptedLegacyData.mobileSignatureContentPerUser,
+                using: inputs.mainKey
+            )
+
+            let migrationPayloads = prepareMigrationPayloads(
+                authCredentials: authCredentials,
+                userInfos: userInfos,
+                addressSignatureStatusPerUser: inputs.encryptedLegacyData.addressSignatureStatusPerUser,
+                mobileSignatureContentPerUser: decryptedMobileSignatures,
+                mobileSignatureStatusPerUser: inputs.encryptedLegacyData.mobileSignatureStatusPerUser
+            )
 
             try await passMigrationPayloadsToRustSDK(migrationPayloads)
 
@@ -226,6 +235,23 @@ actor LegacyMigrationService {
 
     // MARK: other methods
 
+    private func loadEncryptedLegacyData() -> EncryptedLegacyData? {
+        guard
+            let authCredentialData = legacyDataProvider.data(forKey: .authCredentials),
+            let userInfoData = legacyDataProvider.data(forKey: .userInfos)
+        else {
+            return nil
+        }
+
+        return .init(
+            authCredentials: authCredentialData,
+            userInfos: userInfoData,
+            addressSignatureStatusPerUser: legacyDataProvider.dictionary(forKey: .addressSignatureStatusPerUser),
+            mobileSignatureContentPerUser: legacyDataProvider.dictionary(forKey: .mobileSignatureContentPerUser),
+            mobileSignatureStatusPerUser: legacyDataProvider.dictionary(forKey: .mobileSignatureStatusPerUser)
+        )
+    }
+
     private func decryptAndDecode<T: NSSecureCoding>(data encryptedData: Data, using key: Data) throws -> [T] {
         let decodedArchive: Data = try LockedDataExtractor.decryptAndDecode(data: encryptedData, using: key)[0]
 
@@ -237,28 +263,49 @@ actor LegacyMigrationService {
             UserInfo.self,
         ]
 
-        guard let unarchived = try NSKeyedUnarchiver.unarchivedObject(
-            ofClasses: relevantClasses,
-            from: decodedArchive
-        ) as? [T] else {
+        guard
+            let unarchived = try NSKeyedUnarchiver.unarchivedObject(
+                ofClasses: relevantClasses,
+                from: decodedArchive
+            ) as? [T]
+        else {
             throw MigrationError.failedToUnarchive(T.self)
         }
 
         return unarchived
     }
 
-    private func prepareMigrationPayloads(authCredentials: [AuthCredential], userInfos: [UserInfo]) -> [MigrationData] {
+    private func decryptMobileSignatures(encryptedMobileSignatures: [String: Data], using key: Data) throws -> [String: String] {
+        try encryptedMobileSignatures.mapValues { encryptedMobileSignature in
+            try LockedDataExtractor.decryptAndDecode(data: encryptedMobileSignature, using: key)[0]
+        }
+    }
+
+    private func prepareMigrationPayloads(
+        authCredentials: [AuthCredential],
+        userInfos: [UserInfo],
+        addressSignatureStatusPerUser: [String: Bool],
+        mobileSignatureContentPerUser: [String: String],
+        mobileSignatureStatusPerUser: [String: Bool]
+    ) -> [MigrationData] {
         authCredentials.compactMap { authCredential in
-            guard let userInfo = userInfos.first(where: { $0.userId == authCredential.userID }) else {
-                return nil
+            let userID = authCredential.userID
+
+            guard let userInfo = userInfos.first(where: { $0.userId == userID }) else {
+                fatalError()
             }
+
+            let primaryAddress = userInfo.userAddresses.first { $0.receive == 1 && $0.status == 1 }?.email
 
             return MigrationData(
                 username: authCredential.userName,
                 displayName: userInfo.displayName,
-                primaryAddr: userInfo.userAddresses.first { $0.receive == 1 && $0.status == 1 }?.email ?? "",
+                primaryAddr: primaryAddress ?? "",
+                addressSignatureEnabled: addressSignatureStatusPerUser[userID],
+                mobileSignature: mobileSignatureContentPerUser[userID],
+                mobileSignatureEnabled: mobileSignatureStatusPerUser[userID],
                 keySecret: authCredential.mailboxPassword,
-                userId: authCredential.userID,
+                userId: userID,
                 sessionId: authCredential.sessionID,
                 passwordMode: userInfo.passwordMode == 2 ? .two : .one,
                 refreshToken: authCredential.refreshToken
