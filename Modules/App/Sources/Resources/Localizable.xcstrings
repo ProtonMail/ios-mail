@@ -1114,6 +1114,9 @@
         }
       }
     },
+    "Dark" : {
+      "comment" : "One of the appearance option to set in app settings."
+    },
     "Date" : {
       "comment" : "`Date` in the message details.",
       "localizations" : {
@@ -1770,6 +1773,9 @@
     },
     "Language" : {
       "comment" : "Language setting title in app settings."
+    },
+    "Light" : {
+      "comment" : "One of the appearance option to set in app settings."
     },
     "Location" : {
       "comment" : "`Location` in the message details.",
@@ -3183,6 +3189,9 @@
     },
     "Swipe to next email" : {
       "comment" : "Swipe to next email setting title in app settings."
+    },
+    "System" : {
+      "comment" : "One of the appearance option to set in app settings."
     },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field."

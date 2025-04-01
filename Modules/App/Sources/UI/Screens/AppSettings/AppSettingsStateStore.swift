@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import InboxCore
 import SwiftUI
 
@@ -100,14 +101,14 @@ final class AppSettingsStateStore: StateStore, Sendable {
 
 }
 
-private extension AppUserInterfaceStyle {
+private extension AppAppearance {
     var style: UIUserInterfaceStyle {
         switch self {
         case .system:
             .unspecified
-        case .dark:
+        case .darkMode:
             .dark
-        case .light:
+        case .lightMode:
             .light
         }
     }

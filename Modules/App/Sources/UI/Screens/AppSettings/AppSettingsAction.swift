@@ -15,11 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
+
 enum AppSettingsAction {
     case notificationButtonTapped
     case languageButtonTapped
     case onLoad
     case enterForeground
     case appearanceTapped
-    case appearanceSelected(AppUserInterfaceStyle)
+    case appearanceSelected(AppAppearance)
 }

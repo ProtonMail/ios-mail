@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct AppSettingsScreen: View {
@@ -103,7 +104,7 @@ struct AppSettingsScreen: View {
     private var appearanceButton: some View {
         Menu(
             content: {
-                ForEach(AppUserInterfaceStyle.allCases, id: \.self) { appearance in
+                ForEach(AppAppearance.allCases, id: \.self) { appearance in
                     Button(action: {
                         store.handle(action: .appearanceSelected(appearance))
                     }) {
@@ -155,4 +156,23 @@ struct AppSettingsScreen: View {
             isAppearanceMenuShown: false
         ))
     }
+}
+
+private extension AppAppearance {
+
+    var humanReadable: LocalizedStringResource {
+        switch self {
+        case .system:
+            L10n.Settings.App.system
+        case .darkMode:
+            L10n.Settings.App.dark
+        case .lightMode:
+            L10n.Settings.App.light
+        }
+    }
+
+    static var allCases: [Self] {
+        [.system, .darkMode, .lightMode]
+    }
+
 }
