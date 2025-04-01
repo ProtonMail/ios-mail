@@ -660,6 +660,18 @@ enum L10n {
                 "Appearance",
                 comment: "Appearance setting title in app settings."
             )
+            static let system = LocalizedStringResource(
+                "System",
+                comment: "One of the appearance option to set in app settings."
+            )
+            static let dark = LocalizedStringResource(
+                "Dark",
+                comment: "One of the appearance option to set in app settings."
+            )
+            static let light = LocalizedStringResource(
+                "Light",
+                comment: "One of the appearance option to set in app settings."
+            )
             static let protection = LocalizedStringResource(
                 "Protection",
                 comment: "Protection setting title in app settings."

@@ -120,7 +120,7 @@ struct AppSettingsScreen: View {
                 FormBigButton(
                     title: L10n.Settings.App.appearance,
                     icon: DS.SFSymbols.chevronUpChevronDown,
-                    value: store.state.appearance.humanReadable,
+                    value: store.state.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
                 )
             }

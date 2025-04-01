@@ -22,25 +22,14 @@ enum AppUserInterfaceStyle: CaseIterable {
     case dark
     case light
 
-    var humanReadable: String {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .system:
-            "System"
+            L10n.Settings.App.system
         case .dark:
-            "Dark"
+            L10n.Settings.App.dark
         case .light:
-            "Light"
-        }
-    }
-
-    var colorScheme: ColorScheme? {
-        switch self {
-        case .system:
-            nil
-        case .dark:
-            .dark
-        case .light:
-            .light
+            L10n.Settings.App.light
         }
     }
 }
