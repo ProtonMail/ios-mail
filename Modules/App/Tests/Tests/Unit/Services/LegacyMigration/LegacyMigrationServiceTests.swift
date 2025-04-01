@@ -22,15 +22,16 @@ import Testing
 
 final class LegacyMigrationServiceTests {
     private let legacyKeychain = LegacyKeychain.randomInstance()
+    private let mailSessionStub = MailSessionSpy()
     private let testUserDefaults = TestableUserDefaults.randomInstance()
     private var recordedCallsToMigrate: [MigrationData] = []
 
     private lazy var sut = LegacyMigrationService(
         legacyKeychain: legacyKeychain,
-        legacyDataProvider: .init(userDefaults: testUserDefaults)
-    ) { [unowned self] in
-        recordedCallsToMigrate.append($0)
-    }
+        legacyDataProvider: .init(userDefaults: testUserDefaults),
+        getMailSession: { [unowned self] in mailSessionStub },
+        passMigrationPayloadToRustSDK: { [unowned self] in recordedCallsToMigrate.append($0) }
+    )
 
     deinit {
         legacyKeychain.removeEverything()
@@ -70,6 +71,17 @@ final class LegacyMigrationServiceTests {
 
         #expect(recordedCallsToMigrate.count == 1)
         await #expect(currentState() == .notNeeded)
+    }
+
+    @Test
+    func migrationIncludesSettings() async throws {
+        try seedMainKeyOfTheOldAppInLegacyKeychain()
+        seedAuthCredentialsInLegacyUserDefaults()
+        seedUserInfosInLegacyUserDefaults()
+
+        await sut.proceed()
+
+        #expect(mailSessionStub.changeAppSettingsInvocations.count == 1)
     }
 
     // MARK: awaiting main key

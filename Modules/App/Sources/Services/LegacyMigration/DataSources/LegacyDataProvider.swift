@@ -19,7 +19,10 @@ import Foundation
 
 struct LegacyDataProvider {
     enum Key: String, CaseIterable {
+        case alternativeRouting = "doh_flag"
         case authCredentials = "authKeychainStoreKeyProtectedWithMainKey"
+        case combineContacts = "combine_contact_flag"
+        case darkMode = "dark_mode_flag"
         case userInfos = "usersInfoKeyProtectedWithMainKey"
     }
 
@@ -31,6 +34,10 @@ struct LegacyDataProvider {
 
     func data(forKey key: Key) -> Data? {
         userDefaults.data(forKey: key.rawValue)
+    }
+
+    func object(forKey key: Key) -> Any? {
+        userDefaults.object(forKey: key.rawValue)
     }
 
     func removeAll() {

@@ -28,6 +28,7 @@ final class MailSessionSpy: MailSessionProtocol {
         }
     }
 
+    private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
@@ -43,7 +44,8 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
-        fatalError()
+        changeAppSettingsInvocations.append(settings)
+        return .ok
     }
 
     func deleteAccount(userId: String) async -> VoidSessionResult {

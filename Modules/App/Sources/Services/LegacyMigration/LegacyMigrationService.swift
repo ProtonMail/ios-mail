@@ -46,7 +46,9 @@ actor LegacyMigrationService {
 
     private let legacyKeychain: LegacyKeychain
     private let legacyDataProvider: LegacyDataProvider
+    private let getMailSession: () -> MailSessionProtocol
     private let passMigrationPayloadToRustSDK: PassMigrationPayloadToRustSDK
+    private let settingsMigrator: SettingsMigrator
     private let stateSubject = CurrentValueSubject<MigrationState, Never>(.notChecked)
 
     private var state: MigrationState {
@@ -66,17 +68,25 @@ actor LegacyMigrationService {
     init(
         legacyKeychain: LegacyKeychain,
         legacyDataProvider: LegacyDataProvider,
+        getMailSession: @escaping () -> MailSessionProtocol,
         passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK
     ) {
         self.legacyKeychain = legacyKeychain
         self.legacyDataProvider = legacyDataProvider
+        self.getMailSession = getMailSession
         self.passMigrationPayloadToRustSDK = passMigrationPayloadToRustSDK
+        settingsMigrator = .init(legacyKeychain: legacyKeychain, legacyDataProvider: legacyDataProvider)
     }
 
     private init() {
-        self.init(legacyKeychain: .init(), legacyDataProvider: .init()) {
-            try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
-        }
+        self.init(
+            legacyKeychain: .init(),
+            legacyDataProvider: .init(),
+            getMailSession: { AppContext.shared.mailSession },
+            passMigrationPayloadToRustSDK: {
+                try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
+            }
+        )
     }
 
     // MARK: entry points
@@ -160,6 +170,9 @@ actor LegacyMigrationService {
             for migrationPayload in migrationPayloads {
                 try await passMigrationPayloadToRustSDK(migrationPayload)
             }
+
+            let mailSession = getMailSession()
+            await settingsMigrator.migrateSettings(in: mailSession)
 
             return .notNeeded
         } catch {
