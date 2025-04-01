@@ -36,6 +36,10 @@ final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
+    func pauseWorkAndWait() {
+        fatalError()
+    }
+
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
         fatalError(#function)
     }
