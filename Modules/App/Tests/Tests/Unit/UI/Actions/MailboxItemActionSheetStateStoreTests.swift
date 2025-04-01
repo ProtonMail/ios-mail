@@ -278,7 +278,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         confirmAction.action()
 
         XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [id])
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
     
@@ -296,7 +296,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         confirmAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [id])
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [])
     }
     
@@ -312,7 +312,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         cancelAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDsCalls, [])
+        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [])
         XCTAssertEqual(spiedNavigation, [])
     }
     
