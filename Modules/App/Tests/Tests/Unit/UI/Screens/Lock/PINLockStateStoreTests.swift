@@ -35,7 +35,7 @@ class PINLockStateStoreTests {
     }
     
     @Test
-    func usersSignsOut() async throws {
+    func usersSignsOut() throws {
         sut.handle(action: .signOutTapped)
         
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
@@ -47,7 +47,7 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func userResignSignOut() async throws {
+    func userResignSignOut() throws {
         sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert ==  .logOutConfirmation(action: { _ in }))
@@ -59,13 +59,13 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func userSubmitsEmptyPin() async {
+    func userSubmitsEmptyPin() {
         sut.handle(action: .confirmTapped)
         #expect(output == [])
     }
 
     @Test
-    func userSubmitsNonEmptyPin() async {
+    func userSubmitsNonEmptyPin() {
         sut.handle(action: .keyboardTapped(.digit(1)))
         sut.handle(action: .keyboardTapped(.digit(2)))
         sut.handle(action: .keyboardTapped(.digit(3)))
@@ -84,7 +84,7 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func errorAppear() async {
+    func errorAppear() {
         sut.handle(action: .error("Error"))
         #expect(sut.state.error == "Error")
 
