@@ -15,29 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import SwiftUI
 
-struct AppSettingsState: Hashable, Copying {
-    var areNotificationsEnabled: Bool
-    var appLanguage: String
-    var appearance: AppAppearance
-    var isAppearanceMenuShown: Bool
-}
+enum AppInterfaceStyle {
+    typealias InterfaceStyleSetter = (UIUserInterfaceStyle) -> Void
 
-extension AppSettingsState {
-
-    static var initial: Self {
-        .init(
-            areNotificationsEnabled: false,
-            appLanguage: .empty,
-            appearance: .system, // FIXME: - Read the value from SDK
-            isAppearanceMenuShown: false
-        )
+    @MainActor static var setUserInterfaceStyle: InterfaceStyleSetter = {
+        UIApplication.shared.keyWindow?.overrideUserInterfaceStyle = $0
     }
-
-    var areNotificationsEnabledHumanReadable: LocalizedStringResource {
-        areNotificationsEnabled ? L10n.Common.on : L10n.Common.off
-    }
-
 }

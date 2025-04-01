@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import SwiftUI
 import Testing
 
 @MainActor
@@ -80,6 +81,11 @@ class AppSettingsStateStoreTests {
 
     @Test
     func whenAppearanceIsTapped_WhenAppearanceIsChnaged_ItUpdatesAppearance() async {
+        var setUserInterfaceStyleCalled: [UIUserInterfaceStyle] = []
+        AppInterfaceStyle.setUserInterfaceStyle = { style in
+            setUserInterfaceStyleCalled.append(style)
+        }
+
         #expect(sut.state.appearance == .system)
         #expect(sut.state.isAppearanceMenuShown == false)
 
@@ -88,6 +94,7 @@ class AppSettingsStateStoreTests {
 
         await sut.handle(action: .appearanceSelected(.dark))
         #expect(sut.state.appearance == .dark)
+        #expect(setUserInterfaceStyleCalled == [.dark])
     }
 
 }

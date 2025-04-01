@@ -51,6 +51,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
             state = state.copy(\.isAppearanceMenuShown, to: true)
         case .appearanceSelected(let appearance):
             state = state.copy(\.appearance, to: appearance)
+            AppInterfaceStyle.setUserInterfaceStyle(appearance.style)
         }
     }
 
@@ -97,4 +98,17 @@ final class AppSettingsStateStore: StateStore, Sendable {
         await urlOpener.open(.settings, options: [:])
     }
 
+}
+
+private extension AppAppearance {
+    var style: UIUserInterfaceStyle {
+        switch self {
+        case .system:
+            .unspecified
+        case .dark:
+            .dark
+        case .light:
+            .light
+        }
+    }
 }
