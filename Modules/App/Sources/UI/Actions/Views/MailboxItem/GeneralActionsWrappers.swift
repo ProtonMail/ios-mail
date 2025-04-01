@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-typealias GeneralActionType = (_ session: MailUserSession, _ messageID: ID) async -> VoidActionResult
+typealias GeneralActionType = (_ mailbox: MailUserSession, _ messageID: ID) async -> VoidActionResult
 
 struct GeneralActionsWrappers {
     let markMessagePhishing: GeneralActionType
@@ -26,9 +26,9 @@ struct GeneralActionsWrappers {
 extension GeneralActionsWrappers {
 
     static var productionInstance: GeneralActionsWrappers {
-        .init(markMessagePhishing: { session, id in .ok })
+        .init(markMessagePhishing: { session, id in await phisingAttempt(mailbox: session, messageId: id) })
     }
-    
+
     static var dummy: GeneralActionsWrappers {
         .init(markMessagePhishing: { _, _ in .ok })
     }
