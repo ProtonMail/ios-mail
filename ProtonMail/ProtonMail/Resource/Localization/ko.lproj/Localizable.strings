@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "브라우저에서 다음 URL을 열려고 하고 있습니다";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "받은편지함";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "별표 표시됨";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "보관";
 
@@ -67,8 +68,8 @@
 "Drafts" = "임시 보관함";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "전체 메일함";
 
@@ -76,8 +77,8 @@
 "Sent" = "보낸 편지함";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "휴지통";
 
@@ -85,8 +86,8 @@
 "Spam" = "스팸";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "연락처";
 
@@ -97,8 +98,8 @@
 "Settings" = "설정";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "로그아웃";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "앱 잠그기";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "구독";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "계정 관리";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "첨부 파일 추가";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "비밀번호 변경";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "메일 쓰기";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "메시지 유효기간";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "사용자 정의";
 
@@ -403,13 +404,16 @@
 "Done" = "완료";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "취소";
+
+/* Dismiss popup action */
+"Dismiss" = "무시";
 
 /* Open action */
 "Open" = "열기";
@@ -433,14 +437,14 @@
 "From:" = "보낸사람:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "받는사람";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "참조";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "숨은참조:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "삭제";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "오랫동안 사용되지 않았거나, 세션을 취소시켰기 때문에 세션이 만료되었습니다. 다시 로그인해 주세요.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "검색";
 
@@ -479,8 +483,8 @@
 "Send" = "보내기";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "예약 전송";
 
@@ -518,8 +522,8 @@
 "Save" = "저장";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "편집";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "연락처가 삭제되었습니다. 연결이 가능하면 동기화됩니다.";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "확인";
 
@@ -605,8 +609,8 @@
 "Later" = "나중에";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "비활성화됨";
 
@@ -617,10 +621,10 @@
 "Back" = "이전";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "없음";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "유료 기능이므로 %@ 주소를 기본값으로 설정할 수 없습니다.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "계속";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "알 수 없는 오류";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "외부 콘텐츠 로드";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "파일을 열 수 없습니다";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "더 알아보기";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "보관함으로 이동";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "스팸으로 이동";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "대신 비밀번호를 설정하거나 다음 수신자에 대해 PGP를 비활성화하는 것이 권장됩니다:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "알림";
 
@@ -1052,7 +1056,7 @@
 "Is this bug report about an in-app purchase?" = "인앱 구매에 대한 버그 보고서입니까?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store 구매 시 앱에 제공한 기술 정보를 첨부하는 데 동의하실 경우 당사 고객 지원팀이 수동으로 서비스 계획을 활성화합니다. 여기에는 귀하의 iTunes 계정, Apple ID, 연결된 신용 카드 정보 및 기타 사용자 정보는 포함되지 않습니다. App Store 서버에서 결제 검증 및 확인에 대한 데이터만 포함됩니다.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "App Store 구매 시 앱에 제공한 기술 정보를 첨부하는 데 동의하실 경우 당사 고객 지원팀이 수동으로 서비스 플랜을 활성화합니다. 여기에는 사용자의 iTunes 계정, Apple ID, 연결된 신용 카드 정보 및 기타 사용자 정보는 포함되지 않습니다. App Store 서버에서 결제 검증 및 확인에 대한 데이터만 포함됩니다.";
 
 /* Error message */
 "Yes, attach details of payment" = "예, 지불 내역을 첨부합니다";
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "%@ 로 전환됩니다";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "정말로 로그아웃하시겠습니까?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "언어";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "병합된 연락처";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "%@ 계정으로 로그인함";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "별표";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "읽지 않음으로 표시";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "읽음으로 표시";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "휴지통으로 이동";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "다크 모드에서 메시지 보기";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Proton이 차단되었을 때 방화벽을 우회하거나 네트워크에 문제가 발생한 경우 대체 네트워크 라우팅을 이용해 접속을 시도합니다. 이 설정을 계속 켜두는게 좋습니다. %1$@";
 
@@ -2070,7 +2074,7 @@
 "Terms & conditions" = "이용 약관";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "저는 Proton Mail을 사용해왔고 귀하가 좋아할 거라고 생각합니다. Proton Mail은 당신의 사생활을 보호하는 안전한 이메일 서비스입니다. 1개월의 프리미엄 기능을 무료로 사용하려면 이 링크에 접속하세요:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "저는 Proton Mail을 사용해왔고 당신이 좋아할 거라고 생각합니다. Proton Mail은 당신의 사생활을 보호하는 안전한 이메일 서비스입니다. 1개월의 프리미엄 기능을 무료로 사용하려면 이 링크에 접속하세요:";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "연락처도 Proton Mail을 사용하면 더 나은 프라이버시를 경험하실 수 있어요. 친구들을 Proton에 초대한다면, 나와 상대방 모두 무료로 프리미엄 혜택을 누릴 수 있습니다.";
@@ -2131,9 +2135,6 @@
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Schedule messages at any time" = "언제든지 메시지를 예약하세요";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "무제한 폴더 및 라벨";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "최대 500 GB 저장공간";
@@ -2211,7 +2212,7 @@
 "Customize (verb)" = "사용자 지정";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "--저희가 귀하를 도와드리기 위해, 최대한 많은 상세 사항을 제공해 주십시오--\n\n요약:\n\n한 번 이상 문제가 발생했다: 예/아니오\n문제를 재현하는 방법:\n예상 결과:\n도출된 실제 결과:\n코멘트:";
+"Bug Report Place Holder" = "--저희가 회원님을 도와드리기 위해, 최대한 많은 상세 사항을 제공해 주세요--\n\n요약:\n\n한 번 이상 문제가 발생했다: 예/아니오\n문제를 재현하는 방법:\n예상 결과:\n도출된 실제 결과:\n코멘트:";
 
 /* Checkbox to attach local application logs to the bug report. */
 "Include logs" = "로그 포함";
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "이 작업은 이 폴더의 현재 메시지를 포함한 휴지통 및 스팸함의 메시지를 30일 이후에 모두 삭제합니다.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "활성화";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "PIN 코드 설정";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "PIN 코드 확인";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "메일함 비밀번호 변경";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "비밀번호 변경";
 
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+ %u개 프리미엄 기능";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "총 저장공간 %u GB";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "총 저장공간 %u TB";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "연간 무료 저장공간 보너스";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "사용자의 커스텀 이메일 도메인";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "일정 공유";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "사용자의 @pm.me 이메일 별칭";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "사용자 지정 스케줄과 방해금지 시간";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail 데스크톱 앱";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "버전 기록";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel 프로그램";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail 및 모든 프리미엄 생산성 기능들";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "버전 기록이 포함된 Proton Drive";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "자동 이메일 전달 기능이 포함된 Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "다크웹 모니터링이 포함된 Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "멀웨어 및 광고 차단이 포함된 Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all 이메일 주소";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "구성원의 이용 가능 여부를 확인하세요";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "자동 이메일 전달";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "신규 앱 및 기능에 더 빠른 접근";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "사용자 당 %u GB 저장 공간";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "사용자 당 %u개 이메일 주소";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "무제한 폴더 및 라벨";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u개 커스텀 이메일 도메인";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "데스크톱 앱 및 이메일 클라이언트 지원 (IMAP 기반)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%u배 더 많은 스토리지";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "프리미엄 가치 포함됨";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "구독이 곧 끝나게 됩니다";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "이 기능들을 유지하려면 %@까지 재활성화 하세요:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "구독 재활성화";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "구독 재활성화됨";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "구독 재활성화 실패";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "이메일을 놓치지 마세요";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "소식을 계속 받고싶으신가요?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "알림 기능으로 앱을 확인하지 않고 편지함을 계속 확인하세요.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "이메일 답장을 받았을 때 알기 위해 알림을 활성화하세요.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "푸시 알림 활성화";

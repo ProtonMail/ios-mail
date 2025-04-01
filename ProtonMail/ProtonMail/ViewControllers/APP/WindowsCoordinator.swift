@@ -540,7 +540,7 @@ extension WindowsCoordinator {
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
             UNUserNotificationCenter.current().delegate = dependencies.pushService
-            dependencies.pushService.registerForRemoteNotifications()
+            dependencies.pushService.registerIfAuthorized()
             self.go(dest: .appWindow)
         }
     }

@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Odprli boste spletni brskalnik in obiskali";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Prejeto";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "Z zvezdico";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Arhiv";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Osnutki";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Vsa pošta";
 
@@ -76,8 +77,8 @@
 "Sent" = "Poslano";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Smetnjak";
 
@@ -85,8 +86,8 @@
 "Spam" = "Neželena pošta";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Stiki";
 
@@ -97,8 +98,8 @@
 "Settings" = "Nastavitve";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Odjava";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Zakleni aplikacijo";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Naročnina";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Uredi račune";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Dodaj prilogo";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Nastavi geslo";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Napiši sporočilo";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Potek veljavnosti sporočila";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Po meri";
 
@@ -403,13 +404,16 @@
 "Done" = "Opravljeno";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Prekliči";
+
+/* Dismiss popup action */
+"Dismiss" = "Opusti";
 
 /* Open action */
 "Open" = "Odpri";
@@ -433,14 +437,14 @@
 "From:" = "Od:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "Do";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Kp";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "Skp:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Izbriši";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaša seja je potekla, ker ste bili nekaj časa neaktivni ali ker je bila preklicana. Prosimo, prijavite se znova.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Iskanje";
 
@@ -479,8 +483,8 @@
 "Send" = "Pošlji";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Načrtuj pošiljanje";
 
@@ -518,8 +522,8 @@
 "Save" = "Shrani";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Uredi";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Stik je bil izbrisan in se bo sinhroniziral, ko se povežete z internetom";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Potrdi";
 
@@ -605,8 +609,8 @@
 "Later" = "Kasneje";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Onemogočeno";
 
@@ -617,10 +621,10 @@
 "Back" = "Nazaj";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Brez";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "Naslova %@ ne morete nastaviti kot privzetega, ker je to plačljiva funkcija.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Nadaljuj";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "Neznana napaka";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Naloži oddaljeno vsebino";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "Ni mogoče odpreti datoteke";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Več o tem";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "Premakni v arhiv";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Premakni v neželeno pošto";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Priporočamo, da namesto tega nastavite geslo ali da onemogočite PGP za naslednje prejemnike:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Obvestila";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "Preklopili boste na račun %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Ali ste prepričani, da se želite izpisati?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "Jezik";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Združeni stiki";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "Prijavljen kot %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Zvezdica";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "Označi kot neprebrano";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Označi kot prebrano";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Premakni v smetnjak";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "Ogled sporočila v temnem načinu.";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Če so spletna mesta Proton blokirana, ta nastavitev aplikaciji omogoča, da poskuša z alternativnim usmerjanjem omrežja doseči Proton, kar je lahko koristno za izogibanje požarnim zidovom ali težavam z omrežjem. Priporočamo, da je za večjo zanesljivost ta nastavitev vklopljena. %1$@";
 
@@ -2133,9 +2137,6 @@
 "Schedule messages at any time" = "Načrtujte sporočila kadar koli";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Neomejeno število map in oznak";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Do 500 GB prostora za shranjevanje";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "S tem boste izbrisali vsa sporočila, ki so več kot 30 dni v smetnjaku ali neželeni pošti, vključno s sporočili, ki so trenutno v teh mapah.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Omogoči";
 
@@ -2274,7 +2275,7 @@
 "Clear out the junk" = "Očistite navlako";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Samodejno odstrani sporočila, starejša od 30 dni, iz smeti in neželene pošte. Z nadgradnjo lahko uživate v tej in drugih koristnih funkcijah.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Do 3 TB prostora za shranjevanje";
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Nastavi kodo PIN";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Ponovite kodo PIN";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Spremeni geslo poštnega nabiralnika";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Spremeni geslo";
 
@@ -2490,7 +2491,7 @@
 "1 GB Storage and 1 email" = "1 GB Storage and 1 email";
 
 /* Description of a feature of a paid subscription */
-"End-to-end encryption" = "End-to-end encryption";
+"End-to-end encryption" = "Celovito šifriranje";
 
 /* Description of a feature of a paid subscription */
 "Access to desktop app" = "Access to desktop app";
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium features";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB total storage";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB total storage";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Yearly free storage bonuses";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Your own custom email domain";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Deljenje koledarja";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Your own short @pm.me email alias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Custom schedule send and snooze times";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail desktop app";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Zgodovina različic";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel program";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail and all premium productivity features";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive including version history";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail with automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass with Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN with malware and ad-blocking";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all email address";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "See your colleagues’ availability";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatic email forwarding";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Early access to new apps and features";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB storage per user";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u email addresses per user";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Neomejeno število map in oznak";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u custom email domains";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktop app and email client support (via IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux more storage";
@@ -2574,7 +2653,7 @@
 "Group your contacts" = "Group your contacts";
 
 /* Subtitle of the upsell page */
-"Easily send emails to a group and enjoy other premium features with %@." = "Easily send emails to a group and enjoy other premium features with %@.";
+"Easily send emails to a group and enjoy other premium features with %@." = "Enostavno pošiljajte e-pošto skupini in uživajte v drugih premijskih funkcijah z %@.";
 
 /* Title of the upsell page */
 "Need more labels or folders?" = "Potrebujete več oznak ali map?";
@@ -2586,7 +2665,7 @@
 "Customize your signature" = "Customize your signature";
 
 /* Subtitle of the upsell page */
-"Use your own mobile signature and enjoy other premium features with %@." = "Use your own mobile signature and enjoy other premium features with %@.";
+"Use your own mobile signature and enjoy other premium features with %@." = "Uporabite svoj lastni mobilni podpis in uživajte v drugih premijskih funkcijah z %@.";
 
 /* Title of the upsell page */
 "Schedule now, send later" = "Schedule now, send later";
@@ -2607,7 +2686,7 @@
 "Annual" = "Letno";
 
 /* Label on the Proton Unlimited plan */
-"Best value" = "Best value";
+"Best value" = "Najboljša vrednost";
 
 /* Button to expand the feature list */
 "%u more features" = "%u more features";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Premium value included";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Your subscription is ending soon";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactivate by %@ to keep these features:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactivate subscription";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Subscription reactivated";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Subscription reactivation failed";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Don’t miss an email";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Want to stay updated?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifications help you keep on top of your inbox without checking the app.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Turn on notifications to know when you get a response to your email.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Enable push notifications";

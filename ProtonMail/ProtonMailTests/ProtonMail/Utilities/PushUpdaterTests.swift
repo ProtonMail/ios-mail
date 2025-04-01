@@ -19,13 +19,6 @@ import XCTest
 @testable import ProtonMail
 import ProtonCoreTestingToolkitUnitTestsCore
 
-final class NotificationCenterMock: NotificationCenterProtocol {
-    @FuncStub(NotificationCenterMock.removeDeliveredNotifications) var callRemove
-    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {
-        callRemove(identifiers)
-    }
-}
-
 final class BadgeMock: UIApplicationBadgeProtocol {
     @FuncStub(BadgeMock.setBadge) var callSetBadge
     func setBadge(badge: Int) {
@@ -35,13 +28,13 @@ final class BadgeMock: UIApplicationBadgeProtocol {
 
 final class PushUpdaterTests: XCTestCase {
     private var sut: PushUpdater!
-    private var ncMock: NotificationCenterMock!
+    private var ncMock: MockUserNotificationCenterProtocol!
     private var badgeMock: BadgeMock!
     private var userDefaults: UserDefaults!
 
     override func setUp() {
         super.setUp()
-        ncMock = NotificationCenterMock()
+        ncMock = .init()
         badgeMock = BadgeMock()
         userDefaults = TestContainer().userDefaults
         sut = PushUpdater(notificationCenter: ncMock,
@@ -59,22 +52,22 @@ final class PushUpdaterTests: XCTestCase {
 
     func testNotProvidingACollapseIdShouldTriggerNothing() {
         sut.update(with: [:])
-        XCTAssert(self.ncMock.callRemove.wasNotCalled)
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.wasNotCalled)
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
     func testProvidingACollapseIdShouldTriggerCleaningNotificationWithTheProvidedId() {
         let expectedId = String.randomString(Int.random(in: 1..<32))
         sut.update(with: ["collapseID": expectedId])
-        XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
-        XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.capturedArguments.first!.value.contains(expectedId))
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.wasCalledExactlyOnce)
     }
 
     func testProvidingACollapseIdWithoutAUIDShouldUpdateNotificationCenterWithoutUpdatingBadge() {
         let expectedId = String.randomString(Int.random(in: 1..<32))
         sut.update(with: ["collapseID": expectedId])
-        XCTAssert(self.ncMock.callRemove.capturedArguments.first!.value.contains(expectedId))
-        XCTAssert(self.ncMock.callRemove.wasCalledExactlyOnce)
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.capturedArguments.first!.value.contains(expectedId))
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.wasCalledExactlyOnce)
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 
@@ -82,7 +75,7 @@ final class PushUpdaterTests: XCTestCase {
         let expectedUID = String.randomString(Int.random(in: 1..<32))
         userDefaults[.primaryUserSessionId] = expectedUID
         sut.update(with: ["UID": expectedUID])
-        XCTAssert(self.ncMock.callRemove.wasNotCalled)
+        XCTAssert(self.ncMock.removeDeliveredNotificationsStub.wasNotCalled)
         XCTAssert(self.badgeMock.callSetBadge.wasNotCalled)
     }
 

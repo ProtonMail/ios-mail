@@ -18,11 +18,17 @@
 import Foundation
 import UIKit
 
-protocol NotificationCenterProtocol {
+// sourcery: mock
+protocol UserNotificationCenterProtocol {
+    func authorizationStatus() async -> UNAuthorizationStatus
     func removeDeliveredNotifications(withIdentifiers identifiers: [String])
 }
 
-extension UNUserNotificationCenter: NotificationCenterProtocol {}
+extension UNUserNotificationCenter: UserNotificationCenterProtocol {
+    func authorizationStatus() async -> UNAuthorizationStatus {
+        await notificationSettings().authorizationStatus
+    }
+}
 
 protocol UIApplicationBadgeProtocol {
     func setBadge(badge: Int)
@@ -44,7 +50,7 @@ struct PushUpdater {
     static private let unreadConversations = "unreadConversations"
     static private let unreadMessages = "unreadMessages"
 
-    private let notificationCenter: NotificationCenterProtocol
+    private let notificationCenter: UserNotificationCenterProtocol
     private let application: UIApplicationBadgeProtocol
     private let userDefaults: UserDefaults
 
@@ -63,7 +69,7 @@ struct PushUpdater {
     }
 
     init(
-        notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
+        notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current(),
         application: UIApplicationBadgeProtocol = UIApplicationBadge(),
         userDefaults: UserDefaults
     ) {

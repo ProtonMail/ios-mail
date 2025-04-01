@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "U staat op het punt de webbrowser te starten en te navigeren naar";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Inbox";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "Met ster";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Archief";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Concepten";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Alle berichten";
 
@@ -76,8 +77,8 @@
 "Sent" = "Verzonden";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Prullenbak";
 
@@ -85,8 +86,8 @@
 "Spam" = "Spam";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Contacten";
 
@@ -97,8 +98,8 @@
 "Settings" = "Instellingen";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Uitloggen";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "App vergrendelen";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Abonnement";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Accounts beheren";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Bijlage toevoegen";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Wachtwoord toepassen";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Opstellen";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Vervaldatum bericht";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Aangepast";
 
@@ -403,13 +404,16 @@
 "Done" = "Klaar";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Annuleren";
+
+/* Dismiss popup action */
+"Dismiss" = "Negeren";
 
 /* Open action */
 "Open" = "Open";
@@ -433,14 +437,14 @@
 "From:" = "Van:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "Aan";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Cc";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "Bcc:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Verwijderen";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Zoeken";
 
@@ -479,8 +483,8 @@
 "Send" = "Verstuur";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Ingepland versturen";
 
@@ -518,8 +522,8 @@
 "Save" = "Opslaan";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Bewerken";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Contact verwijderd, zal gesynchroniseerd worden zodra verbinding beschikbaar is";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Bevestigen";
 
@@ -605,8 +609,8 @@
 "Later" = "Later";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Uitgeschakeld";
 
@@ -617,10 +621,10 @@
 "Back" = "Terug";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Geen";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Doorgaan";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "Onbekende fout";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Externe inhoud laden";
 
@@ -865,7 +869,7 @@
 "The new password can't be empty." = "Het nieuwe wachtwoord kan niet leeg zijn.";
 
 /* update password error */
-"The private key update failed." = "Updaten van de geheime sleutel is mislukt.";
+"The private key update failed." = "Bijwerken van de geheime sleutel is mislukt.";
 
 /* update password error */
 "Password update failed" = "Wachtwoord wijzigen mislukt";
@@ -937,9 +941,9 @@
 "Can't open the file" = "Kan het bestand niet openen";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Meer informatie";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "Naar archief verplaatsen";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Naar spam verplaatsen";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We raden aan om een wachtwoord in te stellen of PGP uit te schakelen voor de volgende ontvangers:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Meldingen";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "U wordt overgeschakeld naar %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Weet u zeker dat u zich wilt afmelden?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "Taal";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Gecombineerde contacten";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "Ingelogd als %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Ster";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "Markeer als ongelezen";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Markeer als gelezen";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Naar prullenbak verplaatsen";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "Bericht bekijken in Donkere modus";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
 
@@ -2133,9 +2137,6 @@
 "Schedule messages at any time" = "Plan berichten in op ieder moment";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Onbeperkte mappen en labels";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Tot wel 500 GB opslag";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dit zal alle berichten die langer dan 30 dagen in de prullenbak of spam zitten verwijderen, inclusief berichten die nu in deze mappen zitten.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Inschakelen";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Pincode instellen";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Herhaal pincode";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Mailboxwachtwoord wijzigen";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Wachtwoord wijzigen";
 
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u premium functies";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB opslagruimte";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB opslagruimte";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Jaarlijkse gratis opslagbonussen";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Uw eigen aangepaste e-maildomein";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Agenda's delen";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Uw eigen korte @pm.me e-mailalias";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Aangepaste planning en snooze-tijden voor verzenden";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail-desktopapp";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Versiegeschiedenis";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Proton Sentinel-programma";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail en alle premium productiviteitsfuncties";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive inclusief versiegeschiedenis";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail met automatisch doorsturen e-mail";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass met Dark Web Monitoring";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN met malware en advertentieblokkering";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Catch-all e-mailadres";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Bekijk de beschikbaarheid van uw collega's";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatisch e-mail doorsturen";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Vroegtijdige toegang nieuwe applicaties functies";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB opslagruimte per gebruiker";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u e-mailadressen per gebruiker";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Onbeperkte mappen en labels";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u aangepaste e-maildomeinen";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Desktopapp en e-mailclientondersteuning (via IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%u keer meer opslag";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Producten inbegrepen";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Uw abonnement verloopt binnenkort";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Heractiveer voor %@ om de volgende functies te behouden:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Heractiveer abonnement";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Abonnement opnieuw geactiveerd";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Abonnement opnieuw activeren mislukt";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Mis geen e-mail";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Wilt u op de hoogte blijven?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Meldingen helpen u om op de hoogte van uw inbox te blijven zonder de app te openen.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Schakel meldingen in om te weten wanneer u een antwoord op uw e-mail krijgt.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Push-notificaties inschakelen";

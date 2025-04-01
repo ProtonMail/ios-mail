@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Chystáte se otevřít webový prohlížeč a přejít na";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Doručená pošta";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "S hvězdičkou";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Archiv";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Koncepty";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Všechna pošta";
 
@@ -76,8 +77,8 @@
 "Sent" = "Odeslané";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Koš";
 
@@ -85,8 +86,8 @@
 "Spam" = "Spam";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Kontakty";
 
@@ -97,8 +98,8 @@
 "Settings" = "Nastavení";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Odhlásit se";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Zamknout aplikaci";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Předplatné";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Spravovat účty";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Přidat přílohu";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Použít heslo";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Nová zpráva";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Vypršení zprávy";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Vlastní";
 
@@ -403,13 +404,16 @@
 "Done" = "Hotovo";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Zrušit";
+
+/* Dismiss popup action */
+"Dismiss" = "Zrušit";
 
 /* Open action */
 "Open" = "Otevřít";
@@ -433,14 +437,14 @@
 "From:" = "Od:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "Komu";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Kopie";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "Skrytá kopie:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Smazat";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaše relace vypršela, protože jste byli delší dobu neaktivní nebo byla aktuální relace zrušena. Přihlaste se prosím znovu.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Vyhledat";
 
@@ -479,8 +483,8 @@
 "Send" = "Odeslat";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Naplánovat odeslání";
 
@@ -518,8 +522,8 @@
 "Save" = "Uložit";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Upravit";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Kontakt smazán, bude synchronizován, jakmile bude k dispozici připojení";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Potvrdit";
 
@@ -605,8 +609,8 @@
 "Later" = "Později";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Vypnuto";
 
@@ -617,10 +621,10 @@
 "Back" = "Zpět";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Žádná";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Pokračovat";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "Neznámá chyba";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Načíst vzdálený obsah";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "Soubor nelze otevřít";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Zjistěte více";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "Přesunout do archivu";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Přesunout do Nevyžádané pošty";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Místo toho doporučujeme nastavit heslo nebo vypnout PGP pro následující příjemce:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Upozornění";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "Budete přepnuti do %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Opravdu se chcete odhlásit?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "Jazyk";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Sloučené kontakty";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "Přihlášeni jako %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Hvězdička";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "Označit jako nepřečtené";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Označit jako přečtené";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Přesunout do koše";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "Zobrazit zprávu v tmavém režimu";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
 
@@ -1699,7 +1703,7 @@
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Odesláno pomocí Proton Mail s nulovým přístupem šifrování, ověřenému příjemci";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Odesláno Vámi s end-to-end šifrováním";
+"Sent by you with end-to-end encryption" = "Odesláno vámi s koncovým šifrováním";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Odesláno pomocí Proton Mail s nulovým přístupem šifrování";
@@ -2133,9 +2137,6 @@
 "Schedule messages at any time" = "Plánování zpráv na libovolný čas";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Neomezený počet složek a štítků";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Až 500 GB úložiště";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Tímto budou mazány všechny zprávy, které budou v koši nebo spamu déle než 30 dní, včetně zpráv, které se v těchto složkách právě nacházejí.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Zapnout";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Nastavit PIN kód";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Opakovat PIN kód";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Změnit heslo poštovní schránky";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Změnit heslo";
 
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u prémiových funkcí";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB úložiště celkem";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB úložiště celkem";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Roční bonusy bezplatného úložiště";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Vaše vlastní e-mailová doména";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Sdílení kalendáře";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Váš vlastní krátký e-mailový alias @pm.me";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Vlastní harmonogram odesílání a odložení";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Desktopová aplikace Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Historie verzí";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Program Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail a všechny prémiové funkce produktivity";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive včetně historie verzí";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail s automatickým přesměrováním e-mailů";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass se sledováním Dark webu";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN s blokováním malware a reklamy";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "E-mailová adresa doménového koše";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Zjistěte dostupnost svých kolegů";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Automatické přesměrování e-mailů";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Předběžný přístup k novým aplikacím a funkcím";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB úložiště na uživatele";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u e-mailových adres na uživatele";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Neomezený počet složek a štítků";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u vlastních e-mailových domén";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Aplikace pro desktop a podpora e-mailových klientů (přes IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux více úložného prostoru";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Včetně prémiové hodnoty";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Vaše předplatné brzy skončí";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Chcete-li tyto funkce zachovat, proveďte opět aktivaci do %@:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Znovu aktivovat předplatné";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Předplatné znovu aktivováno";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Předplatné se nepodařilo znovu aktivovat";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Nepropásněte žádný e-mail";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Chcete zůstat v obraze?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Upozornění vám pomohou mít přehled o doručené poště, aniž byste museli kontrolovat aplikaci.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Zapněte upozornění, abyste věděli, kdy dostanete odpověď na svůj e-mail.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Povolit vyskakovací oznámení";

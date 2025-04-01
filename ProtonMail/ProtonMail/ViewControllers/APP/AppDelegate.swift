@@ -399,6 +399,7 @@ extension AppDelegate {
         FeatureFlagsRepository.shared.setApiService(PMAPIService.unauthorized(dependencies: dependencies))
 
         FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.dynamicPlan, true)
+        FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.fidoKeys, true)
 
         // TODO: This is a wayward fetch that will complete at an arbitrary point in time during app launch,
         // possibly resulting in an inconsistent behavior.
@@ -411,7 +412,7 @@ extension AppDelegate {
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         let pushService = dependencies.pushService
         UNUserNotificationCenter.current().delegate = pushService
-        pushService.registerForRemoteNotifications()
+        pushService.registerIfAuthorized()
         pushService.setNotificationFrom(launchOptions: launchOptions)
     }
 

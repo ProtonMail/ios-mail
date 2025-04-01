@@ -167,7 +167,7 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>other</key>
-        <string>残り%d回</string>
+        <string>残りの試行回数 %d回</string>
       </dict>
     </dict>
     <key>%d attempt remaining until secure data wipe!</key>

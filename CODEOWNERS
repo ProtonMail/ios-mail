@@ -1,0 +1,6 @@
+# ownership: loose
+*	@rbac/apple/inbox 
+/.gitlab-ci.d/	@rbac/apple/inbox 
+/.gitlab/	@rbac/apple/inbox 
+/ProtonMail/	@rbac/apple/inbox 
+/Scripts/	@rbac/apple/inbox 

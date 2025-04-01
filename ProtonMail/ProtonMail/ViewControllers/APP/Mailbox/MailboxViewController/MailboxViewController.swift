@@ -114,7 +114,6 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
 
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
-    private var previousMessageCount: Int?
     private var hasNetworking = true
     private var configuredActions: [SwipyCellDirection: SwipeActionSettingType] = [:]
 
@@ -708,6 +707,24 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
         self.reloadTableViewDataSource()
         self.updateUnreadButton(count: viewModel.unreadCount)
+    }
+
+    func requestNotificationAuthorizationIfApplicable(
+        trigger: MailboxViewModel.NotificationAuthorizationRequestTrigger
+    ) {
+        Task {
+            guard await viewModel.shouldRequestNotificationAuthorization(trigger: trigger) else { return }
+
+            await MainActor.run {
+                let prompt = NotificationAuthorizationPrompt(variant: trigger.promptVariant) { [weak self] accepted in
+                    self?.viewModel.userDidRespondToNotificationAuthorizationRequest(accepted: accepted)
+                }
+
+                let hosting = SheetLikeSpotlightViewController(rootView: prompt)
+                prompt.config.hostingController = hosting
+                self.present(hosting, animated: false)
+            }
+        }
     }
 
     // MARK: - Private methods
@@ -1308,6 +1325,8 @@ class MailboxViewController: AttachmentPreviewViewController, ComposeSaveHintPro
             showAutoImportContactsSpotlight()
         } else if viewModel.shouldShowSpotlight(for: .jumpToNextMessage) {
             showJumpToNextMessageSpotlight()
+        } else {
+            requestNotificationAuthorizationIfApplicable(trigger: .onboardingFinished)
         }
     }
 
@@ -2418,8 +2437,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-        fetchOlderMessageWhenNeeded(remappedSnapshot: remappedSnapshot)
-
         reloadTableViewDataSource(
             snapshot: remappedSnapshot
         ) {
@@ -2428,6 +2445,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 self.updateSelectAllButton()
                 self.refreshActionBarItems()
                 self.showNewMessageCount(self.newMessageCount)
+                self.showNoResultLabelIfNeeded()
             }
         }
     }
@@ -2481,41 +2499,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return mailboxItem.itemID
         })
         viewModel.removeDeletedIDFromSelectedItem(existingIDs: existingIDs)
-    }
-
-    // When current messages/ conversations are moved or deleted, need to fetch older data
-    private func fetchOlderMessageWhenNeeded(remappedSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>) {
-        DispatchQueue.main.async {
-            defer { self.previousMessageCount = remappedSnapshot.numberOfItems }
-            let indexPath = IndexPath(row: self.viewModel.rowCount(section: 0) - 1, section: 0)
-            guard
-                let previousMessageCount = self.previousMessageCount,
-                previousMessageCount != 0,
-                remappedSnapshot.numberOfItems == 0,
-                !self.viewModel.isLoggingOut,
-                let item = self.viewModel.mailboxItem(at: indexPath),
-                let date = item.time(labelID: self.viewModel.labelID)
-            else { return }
-            guard !self.fetchingOlder else {
-                self.showNoResultLabelIfNeeded()
-                return
-            }
-            self.tableView.showLoadingFooter()
-            self.viewModel.fetchMessages(
-                time: Int(date.timeIntervalSince1970),
-                isUnread: self.isShowingUnreadMessageOnly
-            ) { error in
-                DispatchQueue.main.async {
-                    self.tableView.hideLoadingFooter()
-                    if let error = error {
-                        self.handleRequestError(error as NSError)
-                    }
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.showNoResultLabelIfNeeded()
-                }
-            }
-        }
     }
 }
 

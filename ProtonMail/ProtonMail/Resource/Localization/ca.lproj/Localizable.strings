@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Safata d'entrada";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "Destacats";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Arxiu";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Esborranys";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Tot el correu";
 
@@ -76,8 +77,8 @@
 "Sent" = "Enviats";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Paperera";
 
@@ -85,8 +86,8 @@
 "Spam" = "Correu brossa";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Contactes";
 
@@ -97,8 +98,8 @@
 "Settings" = "Preferències";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Tanca la sessió";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Bloqueja l'aplicació";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Subscripció";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Gestionar comptes";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Afegir adjunt";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Aplica la contrasenya";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Redactar";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Caducitat del missatge";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Personalitzat";
 
@@ -403,13 +404,16 @@
 "Done" = "Fet";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Cancel·la";
+
+/* Dismiss popup action */
+"Dismiss" = "Descarta";
 
 /* Open action */
 "Open" = "Obrir";
@@ -433,14 +437,14 @@
 "From:" = "De:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "Per a";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Cc";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "Cco:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Elimina";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Cerca";
 
@@ -479,8 +483,8 @@
 "Send" = "Enviar";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Programar enviament";
 
@@ -518,8 +522,8 @@
 "Save" = "Desa";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Edita";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Confirma";
 
@@ -605,8 +609,8 @@
 "Later" = "Més tard";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Desactivat";
 
@@ -617,10 +621,10 @@
 "Back" = "Torna";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Cap";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "No podeu establir l'adreça %@ com a predeterminada perquè això és una característica de pagament.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Continua";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "Error desconegut";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Carrega el contingut remot";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "No es pot obrir el fitxer";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Més informació";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "Mou a l'arxiu";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Mou al correu brossa";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Recomanem configurar una contrasenya o desactivar PGP pels destinataris següents:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Notificacions";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "Sereu redirigit a %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Segur que voleu tancar la sessió?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "Idioma";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Contactes combinats";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "Sessió iniciada com a %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Destacat";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "Marca com a no llegit";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Marca com a llegit";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Mou a la paperera";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "Veure missatges en mode Fosc";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
 
@@ -2124,16 +2128,13 @@
 "Set your own schedule" = "Establiu la vostra pròpia planificació.";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquegeu la programació de missatges personalitzada i altres avantatges quan milloreu el pla.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Desbloquegeu la planificació personalitzada de missatges i altres avantatges quan milloreu el pla.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
 "Upgrade now" = "Millora ara";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Schedule messages at any time" = "Programeu missatges en qualsevol moment.";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Nombre il·limitat de carpetes i etiquetes";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Fins a 500 GB d'emmagatzematge";
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Això eliminarà tots els missatges que estiguin a la paperera o al correu brossa durant més de 30 dies, inclosos els missatges que es troben actualment en aquestes carpetes.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Activar";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Establir codi PIN";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Repetir codi PIN";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Canviar contrasenya de la bústia de correu";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Canvia la contrasenya";
 
@@ -2502,6 +2503,84 @@
 "+%u premium features" = "+%u característiques prèmium";
 
 /* Description of a feature of a paid subscription */
+"%u GB total storage" = "%u GB d'emmagatzematge total";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "%u TB d'emmagatzematge total";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Bonificacions anuals d'emmagatzematge gratuïtes";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "El vostre propi domini de correu electrònic personalitzat";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Compartició de calendaris";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "El vostre propi àlies de correu electrònic curt @pm.me";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Personalització de l'hora d'enviament i del temps de posposició";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Aplicació d'escriptori Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Historial de versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Programa Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail i totes les característiques de productivitat prèmium";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive amb historial de versions";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail amb reenviament automàtic de correu";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass amb monitoratge del web fosc";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN amb blocatge d'anuncis i programari maliciós";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Adreça de correu electrònic «capturar-ho tot»";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Consulteu la disponibilitat dels vostres companys";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Reenviament automàtic de correu electrònic";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Accés anticipat a noves aplicacions i característiques";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u GB d'emmagatzematge per usuari";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u adreces de correu electrònic per usuari";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Nombre il·limitat de carpetes i etiquetes";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u dominis de correu electrònic personalitzats";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Aplicació d'escriptori i compatibilitat amb clients de correu electrònic (a través d'IMAP)";
+
+/* Description of a feature of a paid subscription */
 "%ux more storage" = "%u vegades més emmagatzematge";
 
 /* Description of a feature of a paid subscription */
@@ -2514,7 +2593,7 @@
 "Create up to %u email addresses, including @pm.me ones, to meet your needs." = "Creeu fins a %u adreces de correu electrònic, incloses les @pm.me, per satisfer les vostres necessitats.";
 
 /* Description of a feature of a paid subscription */
-"Connect your own domain and send your professional or branded emails securely." = "Connecteu el vostre propi domini i envieu els vostres correus electrònics professionals o de marca de manera segura.";
+"Connect your own domain and send your professional or branded emails securely." = "Connecteu el vostre propi domini i envieu els correus electrònics professionals o de marca de manera segura.";
 
 /* Description of a feature of a paid subscription */
 "Open your email and calendar with one click and avoid browser distractions." = "Obriu el vostre correu electrònic i calendari amb un sol clic i eviteu les distraccions del navegador.";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Característiques prèmium incloses";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "La subscripció finalitzarà aviat.";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Reactiveu abans de %@ per a mantenir aquestes característiques:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Reactiva la subscripció";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "S'ha reactivat la subscripció.";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "No s'ha reactivat la subscripció.";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "No us perdeu cap correu electrònic";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Voleu mantenir-vos actualitzats?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Les notificacions us ajuden a mantenir-vos al capdavant de la vostra safata d'entrada sense comprovar l'aplicació.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Activeu les notificacions per saber quan rebeu una resposta al correu electrònic.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Activa les notificacions";

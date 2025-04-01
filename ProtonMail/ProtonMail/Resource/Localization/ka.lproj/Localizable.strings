@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "თქვენ ახლა გახსნით ბრაუზერს და გადახვალთ";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "შემომავალი";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "ვარსკვლავიანები";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "არქივი";
 
@@ -67,8 +68,8 @@
 "Drafts" = "მონახაზები";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "ყველა ელფოსტა";
 
@@ -76,8 +77,8 @@
 "Sent" = "გაგზავნილები";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "ნაგვის ყუთი";
 
@@ -85,8 +86,8 @@
 "Spam" = "სპამი";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "კონტაქტები";
 
@@ -97,8 +98,8 @@
 "Settings" = "მორგება";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "გასვლა";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "აპის ჩაკეტვა";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "გამოწერა";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "ანგარიშების მართვა";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "ფაილის მიმაგრება";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "პაროლის დაყენება";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "შედგენა";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "შეტყობინების ვადა";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "ხელით";
 
@@ -403,13 +404,16 @@
 "Done" = "მზადაა";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "გაუქმება";
+
+/* Dismiss popup action */
+"Dismiss" = "მოცილება";
 
 /* Open action */
 "Open" = "გახსნა";
@@ -433,14 +437,14 @@
 "From:" = "გამომგზავნელი:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "ვის";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "ასლი";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "ბრმა ასლი:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "წაშლა";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "თქვენი სესიის ვადა ამოიწურა, რადგან გარკვეული დროით უმოქმედო იყავით. ხელახლა შედით.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "ძებნა";
 
@@ -479,8 +483,8 @@
 "Send" = "გაგზავნა";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "გაგზავნის დაგეგმვა";
 
@@ -518,8 +522,8 @@
 "Save" = "შენახვა";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "ჩასწორება";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "კონტაქტი წაშლილია. დასინქრონდება ინტერნეტ-კავშირის აღდგენის შემდეგ";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "დასტური";
 
@@ -605,8 +609,8 @@
 "Later" = "მოგვიანებით";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "გათიშულია";
 
@@ -617,10 +621,10 @@
 "Back" = "უკან";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "არცერთი";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "თქვენ არ შეგიძლიათ %@-ის ნაგულისხმებ მისამართად დაყენება. ეს ფასიანი თვისებაა.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "გაგრძელება";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "უცნობი შეცდომა";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "გარე შემცველობის ჩატვირთვა";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "ფაილის გახსნის შეცდომა";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "მეტის ნახვა";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "არქივში გადატანა";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "სპამში გადატანა";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "გირჩევთ პაროლის დაყენებას ან PGP-ის გათიშვას შემდეგი მომხმარებლებისათვის:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "შეტყობინებები";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "თქვენ გადაირთვებით %@-ზე";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "ენა";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "გაერთიანებული კონტაქტები";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "შეხვედით, როგორც %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "ვარსკვლავი";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "წაუკითხავად მონიშვნა";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "წაკითხულად მონიშვნა";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "ნაგავში გადატანა";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "შეტყობინებების ბნელ რეჟიმში ნახვა";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "იმ შემთხვევაში, თუ Proton-ის საიტები დაბლოკილია, ეს პარამეტრი აპს საშუალებას აძლევს, Proton-მდე მისასვლელად ქსელის ალტერნატიული რაუტინგი სცადოს, რაც შეიძლება, სასარგებლო იყოს ბრანდმაუერის ან ქსელის პრობლემების გვერდის ავლით. მეტი საიმედოობისთვის გირჩევთ, ჩართოთ ეს პარამეტრი. %1$@";
 
@@ -2133,9 +2137,6 @@
 "Schedule messages at any time" = "შეტყობინებების განრიგში ნებისმიერ დროს ჩასმა";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "500გბ-მდე საცავი";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ეს ყველა შეტყობინებას, რომლებიც ნაგვის ყუთში ან სპამში 30 დღეზე მეტხანს, იმ შეტყობინებების ჩათვლით, რომლებიც ამჟამად ამ საქაღლდეებშია, წაშლის.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "ჩართვა";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "დააყენეთ PIN კოდი";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "გაიმეორეთ PIN კოდი";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "პაროლის შეცვლა";
 
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u ფასიანი ფუნქცია";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "ჯამში საცავი %u გბ";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "ჯამში საცავი %u ტბ";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "წლიური უფასო საცავის ბონუსები";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "თქვენი საკუთარი ელფოსტის დომენი";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "კალენდრის გაზიარება";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "თქვენი საკუთარი @pm.me ელფოსტის ფსევდონიმი";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "მომხმარებლის მიერ აღწერილი გაგზავნისა და დადუმების დრო";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Proton Mail-ის კომპიუტერის აპი";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "ვერსიის ისტორია";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "პროგრამა Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail და ყველა პროდუქიულობის ფასიანი თვისება";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive ვერსიების ისტორიის ჩათვლით";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail ავტომატური ელფოსტის გადაგზავნით";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass-ი Dark Web-ის მონიტორინგი";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN მავნე პროგრამებისა და რეკლამების დაბლოკვით";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "დომენის ყველა ელფოსტის მიმღები მისამართი";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "დაინახეთ კოლეგის ხელმისაწვდომობა";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "ავტომატური ელფოსტის გადაგზავნა";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "ადრეული წვდომა ახალ აპებთან და ფუნქციებთან";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "%u გბ საცავი თითოეული მომხმარებლისთვის";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "ელფოსტის %u მისამართი თითოეული მომხმარებლისთვის";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "ელფოსტის %u ხელით მითითებული დომენი";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "კომპიუტერის აპი და ელფოსტის კლიენტის მხარდაჭერა (IMAP-ით)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%u-ჯერ მეტი საცავი";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "ფასიანი ფუნქციების ჩათვლით";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "თქვენი გამოწერა მალე დასრულდება";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "გაააქტიურეთ თავიდან %@-მდე, რომ შეინარჩუნოთ შემდეგი ფუნქციები:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "გამოწერის ხელახლა გააქტიურება";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "გამოწერა თავიდან გააქტიურდა";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "გამოწერის თავიდან გააქტიურება ჩავარდა";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "არ გამოტოვოთ ელფოსტა";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "გნებავთ, ყოველთვის განახლებული ბრძანდებოდეთ?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "გაფრთხილებები დაგეხმარებათ, ყოველთვის იცოდეთ რა ხდება თქვენს საფოსტო ყუთში აპლიკაციის შემოწმების გარეშე.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "ჩართეთ გაფრთხილებები, რომ იცოდეთ, როდის გიპასუხებენ თქვენს ელფოსტაზე.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "პუშ-გაფრთხილებების ჩართვა";

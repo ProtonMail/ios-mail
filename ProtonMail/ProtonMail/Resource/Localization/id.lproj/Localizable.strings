@@ -1,4 +1,5 @@
 /* link opeining confirmation */
+
 "You are about to launch the web browser and navigate to" = "Anda akan membuka aplikasi browser dan mengunjungi";
 
 /* link opeining confirmation */
@@ -50,16 +51,16 @@
 "Inbox" = "Kotak masuk";
 
 /*
- menu title
- Springboard (3D Touch) shortcuts action
- VoiceOver: email is starred
+menu title
+Springboard (3D Touch) shortcuts action
+VoiceOver: email is starred
 */
 "Starred" = "Dibintangi";
 
 /*
- menu title
- Push notification action to archive
- The title of the archive action in action sheet
+menu title
+Push notification action to archive
+The title of the archive action in action sheet
 */
 "Archive" = "Arsip";
 
@@ -67,8 +68,8 @@
 "Drafts" = "Draf";
 
 /*
- mail location title
- menu title
+mail location title
+menu title
 */
 "All Mail" = "Seluruh Surat";
 
@@ -76,8 +77,8 @@
 "Sent" = "Terkirim";
 
 /*
- mail location desc
- menu title
+mail location desc
+menu title
 */
 "Trash" = "Sampah";
 
@@ -85,8 +86,8 @@
 "Spam" = "Spam";
 
 /*
- Action and title
- menu title
+Action and title
+menu title
 */
 "Contacts" = "Kontak";
 
@@ -97,8 +98,8 @@
 "Settings" = "Pengaturan";
 
 /*
- Alert title to confirm signout
- menu title
+Alert title to confirm signout
+menu title
 */
 "Sign out" = "Keluar";
 
@@ -106,8 +107,8 @@
 "Lock The App" = "Kunci Aplikasi";
 
 /*
- menu title
- The title of a subscription plans screen
+menu title
+The title of a subscription plans screen
 */
 "Subscription" = "Langganan";
 
@@ -115,8 +116,8 @@
 "Manage accounts" = "Kelola akun";
 
 /*
- menu title
- The voiceiver title of the add attachment button in the tool bar of composer
+menu title
+The voiceiver title of the add attachment button in the tool bar of composer
 */
 "Add attachment" = "Tambah lampiran";
 
@@ -211,8 +212,8 @@
 "Apply Password" = "Terapkan Kata Sandi";
 
 /*
- Action
- Springboard (3D Touch) shortcuts action
+Action
+Springboard (3D Touch) shortcuts action
 */
 "Compose" = "Tulis";
 
@@ -220,8 +221,8 @@
 "Message expiration" = "Waktu kedaluwarsa pesan";
 
 /*
- contacts default label type
- Custom option for time config picker
+contacts default label type
+Custom option for time config picker
 */
 "Custom" = "Sesuaikan";
 
@@ -403,13 +404,16 @@
 "Done" = "Selesai";
 
 /*
- Button to cancel encrypted search
- Cancel action
- general cancel action
- Title for the alert button to cancel delete all downloaded messages.
- Title for the alert button to cancel disable content search.
+Button to cancel encrypted search
+Cancel action
+general cancel action
+Title for the alert button to cancel delete all downloaded messages.
+Title for the alert button to cancel disable content search.
 */
 "Cancel" = "Batal";
+
+/* Dismiss popup action */
+"Dismiss" = "Abaikan";
 
 /* Open action */
 "Open" = "Buka";
@@ -433,14 +437,14 @@
 "From:" = "Dari:";
 
 /*
- message To: feild
- Title
+message To: feild
+Title
 */
 "To" = "Kepada";
 
 /*
- message Cc: feild
- Title
+message Cc: feild
+Title
 */
 "Cc" = "Cc";
 
@@ -448,9 +452,9 @@
 "Bcc:" = "Bcc:";
 
 /*
- general delete action
- The title of the delete action in action sheet
- Title for the alert button to delete all downloaded messages.
+general delete action
+The title of the delete action in action sheet
+Title for the alert button to delete all downloaded messages.
 */
 "Delete" = "Hapus";
 
@@ -461,8 +465,8 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda telah kedaluwarsa karena Anda sudah lama tidak aktif atau izin sesi Anda telah dicabut. Silakan masuk lagi.";
 
 /*
- Springboard (3D Touch) shortcuts action
- Title
+Springboard (3D Touch) shortcuts action
+Title
 */
 "Search" = "Pencarian";
 
@@ -479,8 +483,8 @@
 "Send" = "Kirim";
 
 /*
- Action
- The action title of the alert of the user trying to send a message that was schedule-send.
+Action
+The action title of the alert of the user trying to send a message that was schedule-send.
 */
 "Schedule send" = "Jadwalkan pengiriman";
 
@@ -518,8 +522,8 @@
 "Save" = "Simpan";
 
 /*
- Action
- The button title of the scheduled message banner.
+Action
+The button title of the scheduled message banner.
 */
 "Edit" = "Sunting";
 
@@ -584,8 +588,8 @@
 "Contact deleted, will be synced when connection is available" = "Kontak dihapus, akan disinkronkan ketika koneksi tersedia";
 
 /*
- Action
- The title of button of PIN code setup2
+Action
+The title of button of PIN code setup2
 */
 "Confirm" = "Konfirmasi";
 
@@ -605,8 +609,8 @@
 "Later" = "Nanti";
 
 /*
- Action
- The text for downloaded messages in local storage when encrypted search is disabled.
+Action
+The text for downloaded messages in local storage when encrypted search is disabled.
 */
 "Disabled" = "Dinonaktifkan";
 
@@ -617,10 +621,10 @@
 "Back" = "Kembali";
 
 /*
- A *short* description saying that there is no contact group associated with this contact email
- Action title of none
- The protection title of None protection
- Title
+A *short* description saying that there is no contact group associated with this contact email
+Action title of none
+The protection title of None protection
+Title
 */
 "None" = "Tidak ada";
 
@@ -652,8 +656,8 @@
 "You can't set %@ address as default because it is a paid feature." = "Anda tidak dapat mengatur %@ sebagai alamat default karena pengaturan alamat merupakan fitur berbayar.";
 
 /*
- Action
- The title of button of PIN code setup1
+Action
+The title of button of PIN code setup1
 */
 "Continue" = "Lanjut";
 
@@ -679,8 +683,8 @@
 "Unknown Error" = "Kesalahan yang Tidak Diketahui";
 
 /*
- Action
- The title of loading remote content banner.
+Action
+The title of loading remote content banner.
 */
 "Load remote content" = "Muat remote content";
 
@@ -937,9 +941,9 @@
 "Can't open the file" = "Berkas tidak dapat dibuka";
 
 /*
- Action
- alternative routing link name in description
- The title of learn more link
+Action
+alternative routing link name in description
+The title of learn more link
 */
 "Learn more" = "Pelajari lebih lanjut";
 
@@ -989,8 +993,8 @@
 "Move to archive" = "Pindahkan ke arsip";
 
 /*
- Action title of move to spam
- The title of the spam action in action sheet
+Action title of move to spam
+The title of the spam action in action sheet
 */
 "Move to spam" = "Pindahkan ke spam";
 
@@ -1037,8 +1041,8 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Kami menyarankan Anda untuk menyetel sandi atau menonaktifkan PGP bagi penerima berikut:";
 
 /*
- A option title that enable/disable notification feature
- cell title in device settings
+A option title that enable/disable notification feature
+cell title in device settings
 */
 "Notifications" = "Notifikasi";
 
@@ -1124,8 +1128,8 @@
 "You will be switched to %@" = "Anda akan dialihkan ke %@";
 
 /*
- Alert to confirm sign out
- Alert when sign out non-primary account from account manager
+Alert to confirm sign out
+Alert when sign out non-primary account from account manager
 */
 "Are you sure you want to sign out?" = "Apakah Anda yakin ingin keluar?";
 
@@ -1190,8 +1194,8 @@
 "Language" = "Bahasa";
 
 /*
- cell title in device settings
- The title of combined contact in settings
+cell title in device settings
+The title of combined contact in settings
 */
 "Combined contacts" = "Kontak gabungan";
 
@@ -1286,8 +1290,8 @@
 "Signed in as %@" = "Masuk sebagai %@";
 
 /*
- The title of the star action in action sheet
- VoiceOver title of star button in the message view
+The title of the star action in action sheet
+VoiceOver title of star button in the message view
 */
 "Star" = "Bintangi";
 
@@ -1298,14 +1302,14 @@
 "Mark as unread" = "Tandai belum dibaca";
 
 /*
- Push notification action mark as read
- The title of the read action in action sheet
+Push notification action mark as read
+The title of the read action in action sheet
 */
 "Mark as read" = "Tandai telah dibaca";
 
 /*
- Push notification action move to trash
- The title of the remove action in action sheet
+Push notification action move to trash
+The title of the remove action in action sheet
 */
 "Move to trash" = "Pindahkan ke sampah";
 
@@ -1319,8 +1323,8 @@
 "View message in Dark mode" = "Tampilkan pesan dalam mode Gelap";
 
 /*
- alternative routing description
- The footer of alternative routing setting
+alternative routing description
+The footer of alternative routing setting
 */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan. Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal. %1$@";
 
@@ -1974,7 +1978,7 @@
 "%1@ at %2@ %3@" = "%1@ pada %2@ %3@";
 
 /* Status in an email body sent with an invitation answer */
-"accepted" = "Diterima";
+"accepted" = "diterima";
 
 /* Status in an email body sent with an invitation answer */
 "declined" = "ditolak";
@@ -2133,9 +2137,6 @@
 "Schedule messages at any time" = "Jadwalkan pesan kapan pun";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Folder dan label tidak terbatas";
-
-/* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "Penyimpanan sampai dengan 500 GB";
 
 /* The up sell bullet point in the schedule send promotion view. */
@@ -2238,8 +2239,8 @@
 "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Hal ini akan menghapus seluruh pesan yang terdapat pada folder sampah dan spam selama lebih dari 30 hari, termasuk pesan yang saat ini berada pada kedua folder tersebut.";
 
 /*
- Button to enable encrypted search
- The title of the button to move to settings and enable encrypted search.
+Button to enable encrypted search
+The title of the button to move to settings and enable encrypted search.
 */
 "Enable" = "Aktifkan";
 
@@ -2334,8 +2335,8 @@
 "Set PIN code" = "Tentukan kode PIN";
 
 /*
- The title of PIN code setup2 view
- The title of textfield of PIN code setup2
+The title of PIN code setup2 view
+The title of textfield of PIN code setup2
 */
 "Repeat PIN code" = "Ulangi kode PIN";
 
@@ -2463,8 +2464,8 @@
 "Change mailbox password" = "Ubah kata sandi kotak surat";
 
 /*
- settings general section title
- title
+settings general section title
+title
 */
 "Change password" = "Ubah kata sandi";
 
@@ -2500,6 +2501,84 @@
 
 /* Description of a feature of a paid subscription */
 "+%u premium features" = "+%u fitur premium";
+
+/* Description of a feature of a paid subscription */
+"%u GB total storage" = "Ruang penyimpanan total %u GB";
+
+/* Description of a feature of a paid subscription */
+"%u TB total storage" = "Ruang penyimpanan total %u TB";
+
+/* Description of a feature of a paid subscription */
+"Yearly free storage bonuses" = "Bonus ruang penyimpanan gratis tahunan";
+
+/* Description of a feature of a paid subscription */
+"Your own custom email domain" = "Domain email khusus milik Anda";
+
+/* Description of a feature of a paid subscription */
+"Calendar sharing" = "Pembagian kalender";
+
+/* Description of a feature of a paid subscription */
+"Your own short @pm.me email alias" = "Alias email pendek @pm.me milik Anda";
+
+/* Description of a feature of a paid subscription */
+"Custom schedule send and snooze times" = "Waktu pengiriman dan penundaan yang dapat disesuaikan";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail desktop app" = "Aplikasi desktop Proton Mail";
+
+/* Description of a feature of a paid subscription */
+"Version history" = "Riwayat versi";
+
+/* Description of a feature of a paid subscription */
+"Proton Sentinel program" = "Program Proton Sentinel";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail and all premium productivity features" = "Proton Mail dan seluruh fitur produktivitas premium";
+
+/* Description of a feature of a paid subscription */
+"Proton Drive including version history" = "Proton Drive yang meliputi riwayat versi";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass" = "Proton Pass";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN" = "Proton VPN";
+
+/* Description of a feature of a paid subscription */
+"Proton Mail with automatic email forwarding" = "Proton Mail dengan penerusan email otomatis";
+
+/* Description of a feature of a paid subscription */
+"Proton Pass with Dark Web Monitoring" = "Proton Pass dengan Pemantauan Dark Web";
+
+/* Description of a feature of a paid subscription */
+"Proton VPN with malware and ad-blocking" = "Proton VPN dengan pemblokir malware dan iklan";
+
+/* Description of a feature of a paid subscription */
+"Catch-all email address" = "Alamat email catch-all";
+
+/* Description of a feature of a paid subscription */
+"See your colleagues’ availability" = "Lihat ketersediaan kolega Anda";
+
+/* Description of a feature of a paid subscription */
+"Automatic email forwarding" = "Penerusan email otomatis";
+
+/* Description of a feature of a paid subscription */
+"Early access to new apps and features" = "Akses dini ke berbagai aplikasi dan fitur";
+
+/* Description of a feature of a paid subscription */
+"%u GB storage per user" = "Ruang penyimpanan %u GB per pengguna";
+
+/* Description of a feature of a paid subscription */
+"%u email addresses per user" = "%u alamat email per pengguna";
+
+/* Description of a feature of a paid subscription */
+"Unlimited folders and labels" = "Folder dan label tidak terbatas";
+
+/* Description of a feature of a paid subscription */
+"%u custom email domains" = "%u domain email khusus";
+
+/* Description of a feature of a paid subscription */
+"Desktop app and email client support (via IMAP)" = "Dukungan aplikasi desktop dan klien email (melalui IMAP)";
 
 /* Description of a feature of a paid subscription */
 "%ux more storage" = "%ux lebih banyak penyimpanan";
@@ -2617,3 +2696,33 @@
 
 /* In the list of premium plan features */
 "Premium value included" = "Meliputi nilai premium";
+
+/* The title of the modal */
+"Your subscription is ending soon" = "Masa berlangganan kamu akan segera berakhir";
+
+/* The subtitle of the modal */
+"Reactivate by %@ to keep these features:" = "Aktifkan kembali selambat-lambatnya %@ untuk mempertahankan berbagai fitur berikut:";
+
+/* Title of the modal button */
+"Reactivate subscription" = "Aktifkan kembali langganan";
+
+/* Confirmation message after reactivation subscription */
+"Subscription reactivated" = "Langganan kembali diaktifkan";
+
+/* Error message while reactivation subscription */
+"Subscription reactivation failed" = "Pengaktifan kembali langganan gagal";
+
+/* Title of the authorization prompt */
+"Don’t miss an email" = "Jangan lewatkan email apa pun";
+
+/* Title of the authorization prompt */
+"Want to stay updated?" = "Ingin tetap terbarukan?";
+
+/* Body of the authorization prompt */
+"Notifications help you keep on top of your inbox without checking the app." = "Notifikasi membantu Anda untuk tetap terkini dengan kotak masuk Anda tanpa perlu membuka aplikasi.";
+
+/* Body of the authorization prompt */
+"Turn on notifications to know when you get a response to your email." = "Nyalakan notifikasi untuk mengetahui ketika Anda menerima respons pada email Anda.";
+
+/* Button to authorizate notifications */
+"Enable push notifications" = "Aktifkan notifikasi push";
