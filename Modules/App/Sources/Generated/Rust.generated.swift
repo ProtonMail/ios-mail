@@ -443,6 +443,16 @@ public extension MailSessionGetUnsentMessagesIdsInQueueResult {
         }
     }
 }
+public extension MailSessionInitializedUserContextFromSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewLoginFlowResult {
     func get() throws(LoginError) -> LoginFlow {
         switch self {
