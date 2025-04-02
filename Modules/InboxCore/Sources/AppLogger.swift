@@ -157,6 +157,7 @@ extension AppLogger {
         case mailbox = "Mailbox"
         case mailboxActions = "MailboxActions"
         case notifications = "Notifications"
+        case appSettings = "AppSettings"
         case recurringBackgroundTask = "RecurringBackgroundTask"
         case rustLibrary = "RustLibrary"
         case search = "Search"

@@ -22,7 +22,7 @@ import SwiftUI
 struct AppSettingsState: Hashable, Copying {
     var areNotificationsEnabled: Bool
     var appLanguage: String
-    var appearance: AppAppearance
+    var storedAppSettings: AppSettings
     var isAppearanceMenuShown: Bool
 }
 
@@ -32,7 +32,13 @@ extension AppSettingsState {
         .init(
             areNotificationsEnabled: false,
             appLanguage: .empty,
-            appearance: .system, // FIXME: - Read the value from SDK
+            storedAppSettings: .init(
+                appearance: .system,
+                protection: .none,
+                autoLock: .always,
+                useCombineContacts: false,
+                useAlternativeRouting: true
+            ),
             isAppearanceMenuShown: false
         )
     }

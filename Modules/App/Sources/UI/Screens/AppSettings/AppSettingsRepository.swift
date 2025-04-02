@@ -17,13 +17,9 @@
 
 import proton_app_uniffi
 
-enum AppSettingsAction {
-    case notificationButtonTapped
-    case languageButtonTapped
-    case onLoad
-    case enterForeground
-    case appearanceTapped
-    case appearanceSelected(AppAppearance)
-    case combinedContactsChanged(Bool)
-    case alternativeRoutingChanged(Bool)
+protocol AppSettingsRepository {
+    func getAppSettings() async -> MailSessionGetAppSettingsResult
+    func changeAppSettings(settings: AppSettingsDiff) async  -> MailSessionChangeAppSettingsResult
 }
+
+extension MailSession: AppSettingsRepository {}

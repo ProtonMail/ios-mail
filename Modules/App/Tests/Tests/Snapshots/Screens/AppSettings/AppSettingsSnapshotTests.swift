@@ -26,7 +26,13 @@ class AppSettingsSnapshotTests: BaseTestCase {
         let sut = AppSettingsScreen(state: .init(
             areNotificationsEnabled: false,
             appLanguage: "English",
-            appearance: .system,
+            storedAppSettings: .init(
+                appearance: .system,
+                protection: .pin,
+                autoLock: .always,
+                useCombineContacts: false,
+                useAlternativeRouting: true
+            ),
             isAppearanceMenuShown: false
         ))
         assertCustomHeightSnapshot(

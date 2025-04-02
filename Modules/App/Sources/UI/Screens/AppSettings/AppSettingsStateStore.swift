@@ -21,6 +21,7 @@ import SwiftUI
 
 final class AppSettingsStateStore: StateStore, Sendable {
     @Published var state: AppSettingsState
+    private let appSettingsRepository: AppSettingsRepository
     private let notificationCenter: UserNotificationCenter
     private let urlOpener: URLOpener
     private let appLangaugeProvider: AppLangaugeProvider
@@ -28,12 +29,14 @@ final class AppSettingsStateStore: StateStore, Sendable {
     @MainActor
     init(
         state: AppSettingsState,
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
         currentLocale: Locale = Locale.current,
         mainBundle: Bundle = Bundle.main
     ) {
         self.state = state
+        self.appSettingsRepository = appSettingsRepository
         self.notificationCenter = notificationCenter
         self.urlOpener = urlOpener
         self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
@@ -46,17 +49,40 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await handleNotificationsFlow()
         case .languageButtonTapped:
             await openNativeAppSettings()
-        case .enterForeground, .onLoad:
+        case .onLoad:
+            await refreshStoredAppSettings()
+            await refreshDeviceSettings()
+        case .enterForeground:
             await refreshDeviceSettings()
         case .appearanceTapped:
             state = state.copy(\.isAppearanceMenuShown, to: true)
         case .appearanceSelected(let appearance):
-            state = state.copy(\.appearance, to: appearance)
+            await update(setting: \.appearance, value: appearance)
             AppInterfaceStyle.setUserInterfaceStyle(appearance.style)
+        case .combinedContactsChanged(let value):
+            await update(setting: \.useCombineContacts, value: value)
+        case .alternativeRoutingChanged(let value):
+            await update(setting: \.useAlternativeRouting, value: value)
         }
     }
 
     // MARK: - Private
+
+    private func update<Value>(setting: WritableKeyPath<AppSettingsDiff, Value>, value: Value) async {
+        var settingsDiff = AppSettingsDiff(
+            appearance: nil,
+            autoLock: nil,
+            useCombineContacts: nil,
+            useAlternativeRouting: nil
+        )
+        settingsDiff[keyPath: setting] = value
+        do {
+            try await appSettingsRepository.changeAppSettings(settings: settingsDiff).get()
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+        await refreshStoredAppSettings()
+    }
 
     @MainActor
     private func refreshDeviceSettings() async {
@@ -64,6 +90,16 @@ final class AppSettingsStateStore: StateStore, Sendable {
         state = state
             .copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
             .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
+    }
+
+    @MainActor
+    private func refreshStoredAppSettings() async {
+        do {
+            let settings = try await appSettingsRepository.getAppSettings().get()
+            state = state.copy(\.storedAppSettings, to: settings)
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
     }
 
     private func handleNotificationsFlow() async {
@@ -79,7 +115,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         do {
             _ = try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
         } catch {
-            AppLogger.log(error: error, category: .notifications)
+            AppLogger.log(error: error, category: .appSettings)
         }
     }
 

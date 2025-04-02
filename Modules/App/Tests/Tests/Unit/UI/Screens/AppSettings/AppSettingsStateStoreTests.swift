@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
+import proton_app_uniffi
 import SwiftUI
 import Testing
 
@@ -26,13 +28,16 @@ class AppSettingsStateStoreTests {
     var notificationCenterSpy: UserNotificationCenterSpy!
     var urlOpenerSpy: URLOpenerSpy!
     var bundleStub: BundleStub!
+    private var appSettingsRepositorySpy: AppSettingsRepositorySpy!
 
     init() {
         notificationCenterSpy = .init()
         urlOpenerSpy = .init()
         bundleStub = .init()
+        appSettingsRepositorySpy = .init()
         sut = AppSettingsStateStore(
             state: .initial,
+            appSettingsRepository: appSettingsRepositorySpy,
             notificationCenter: notificationCenterSpy,
             urlOpener: urlOpenerSpy,
             mainBundle: bundleStub
@@ -45,6 +50,7 @@ class AppSettingsStateStoreTests {
         notificationCenterSpy = nil
         urlOpenerSpy = nil
         bundleStub = nil
+        appSettingsRepositorySpy = nil
         sut = nil
     }
 
@@ -69,14 +75,22 @@ class AppSettingsStateStoreTests {
     }
 
     @Test
-    func whenViewLoads_ItRefreshesNotificationsStatusAndLangauge() async {
+    func whenViewIsLoaded_ItOverrideDefaultStateValuesAndSetCorrectOnes() async {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
         bundleStub.preferredLocalizationsStub = ["pl"]
+        appSettingsRepositorySpy.stubbedAppSettings = .init(
+            appearance: .lightMode,
+            protection: .biometrics,
+            autoLock: .minutes(15),
+            useCombineContacts: true,
+            useAlternativeRouting: true
+        )
 
         await sut.handle(action: .onLoad)
 
         #expect(sut.state.areNotificationsEnabled)
         #expect(sut.state.appLanguage == "Polish")
+        #expect(sut.state.storedAppSettings == appSettingsRepositorySpy.stubbedAppSettings)
     }
 
     @Test
@@ -86,15 +100,120 @@ class AppSettingsStateStoreTests {
             setUserInterfaceStyleCalled.append(style)
         }
 
-        #expect(sut.state.appearance == .system)
+        #expect(sut.state.storedAppSettings.appearance == .system)
         #expect(sut.state.isAppearanceMenuShown == false)
 
         await sut.handle(action: .appearanceTapped)
         #expect(sut.state.isAppearanceMenuShown == true)
 
-        await sut.handle(action: .appearanceSelected(.darkMode))
-        #expect(sut.state.appearance == .darkMode)
+        await changeAppAppearance(.darkMode)
+
+        #expect(sut.state.storedAppSettings.appearance == .darkMode)
         #expect(setUserInterfaceStyleCalled == [.dark])
+
+        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [.diff(appearance: .darkMode)])
+    }
+
+    @Test
+    func whenAlternativeRoutingIsDisabledAndThenEnabled_ItUpdatesStoredValues() async {
+        #expect(sut.state.storedAppSettings.useAlternativeRouting == true)
+
+        await changeAlternativeRoutingValue(false)
+
+        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+            .diff(useAlternativeRouting: false)
+        ])
+        #expect(sut.state.storedAppSettings.useAlternativeRouting == false)
+
+        await changeAlternativeRoutingValue(true)
+
+        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+            .diff(useAlternativeRouting: false),
+            .diff(useAlternativeRouting: true),
+        ])
+        #expect(sut.state.storedAppSettings.useAlternativeRouting == true)
+    }
+
+    @Test
+    func whenCombinedContactsAreEnabledAndThenDisabled_ItUpdatesStoredValues() async {
+        #expect(sut.state.storedAppSettings.useCombineContacts == false)
+
+        await changeCombinedContactsValue(true)
+
+        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+            .diff(useCombineContacts: true)
+        ])
+        #expect(sut.state.storedAppSettings.useCombineContacts == true)
+
+        await changeCombinedContactsValue(false)
+
+        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+            .diff(useCombineContacts: true),
+            .diff(useCombineContacts: false),
+        ])
+        #expect(sut.state.storedAppSettings.useCombineContacts == false)
+    }
+
+    private func changeAppAppearance(_ appAppearance: AppAppearance) async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.appearance, to: appAppearance)
+        await sut.handle(action: .appearanceSelected(.darkMode))
+    }
+
+    private func changeCombinedContactsValue(_ value: Bool) async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.useCombineContacts, to: value)
+        await sut.handle(action: .combinedContactsChanged(value))
+    }
+
+    private func changeAlternativeRoutingValue(_ value: Bool) async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.useAlternativeRouting, to: value)
+        await sut.handle(action: .alternativeRoutingChanged(value))
+    }
+
+}
+
+extension AppSettings: @retroactive Copying {}
+
+private extension AppSettingsDiff {
+
+    static func diff(
+        appearance: AppAppearance? = nil,
+        useCombineContacts: Bool? = nil,
+        useAlternativeRouting: Bool? = nil
+    ) -> Self {
+        .init(
+            appearance: appearance,
+            autoLock: nil,
+            useCombineContacts: useCombineContacts,
+            useAlternativeRouting: useAlternativeRouting
+        )
+    }
+
+}
+
+private class AppSettingsRepositorySpy: AppSettingsRepository {
+
+    var stubbedAppSettings: AppSettings = .init(
+        appearance: .lightMode,
+        protection: .pin,
+        autoLock: .always,
+        useCombineContacts: false,
+        useAlternativeRouting: false
+    )
+    private(set) var changedAppSettingsWithDiff: [AppSettingsDiff] = []
+
+    // MARK: - AppSettingsRepository
+
+    func getAppSettings() async -> MailSessionGetAppSettingsResult {
+        .ok(stubbedAppSettings)
+    }
+
+    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
+        changedAppSettingsWithDiff.append(settings)
+
+        return .ok
     }
 
 }

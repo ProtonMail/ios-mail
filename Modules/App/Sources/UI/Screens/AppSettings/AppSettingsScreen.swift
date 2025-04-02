@@ -55,13 +55,13 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
-                                value: "PIN code".notLocalized,
+                                value: store.state.storedAppSettings.protection.humanReadable.string,
                                 action: { comingSoon() }
                             )
                             FormSwitchView(
                                 title: L10n.Settings.App.combinedContacts,
                                 additionalInfo: L10n.Settings.App.combinedContactsInfo,
-                                isOn: comingSoonBinding
+                                isOn: combinedContactsBinding
                             )
                         }
                     }
@@ -79,7 +79,7 @@ struct AppSettingsScreen: View {
                             FormSwitchView(
                                 title: L10n.Settings.App.alternativeRouting,
                                 additionalInfo: L10n.Settings.App.alternativeRoutingInfo,
-                                isOn: comingSoonBinding
+                                isOn: alternativeRoutingBinding
                             )
                         }
                     }
@@ -110,7 +110,7 @@ struct AppSettingsScreen: View {
                     }) {
                         HStack {
                             Text(appearance.humanReadable)
-                            if appearance == store.state.appearance {
+                            if appearance == store.state.storedAppSettings.appearance {
                                 Image(systemName: DS.SFSymbols.checkmark)
                             }
                         }
@@ -121,7 +121,7 @@ struct AppSettingsScreen: View {
                 FormBigButton(
                     title: L10n.Settings.App.appearance,
                     icon: DS.SFSymbols.chevronUpChevronDown,
-                    value: store.state.appearance.humanReadable.string,
+                    value: store.state.storedAppSettings.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
                 )
             }
@@ -132,6 +132,20 @@ struct AppSettingsScreen: View {
         .init(
             get: { store.state.isAppearanceMenuShown },
             set: { newValue in store.state = store.state.copy(\.isAppearanceMenuShown, to: newValue) }
+        )
+    }
+
+    private var combinedContactsBinding: Binding<Bool> {
+        .init(
+            get: { store.state.storedAppSettings.useCombineContacts },
+            set: { newValue in store.handle(action: .combinedContactsChanged(newValue)) }
+        )
+    }
+
+    private var alternativeRoutingBinding: Binding<Bool> {
+        .init(
+            get: { store.state.storedAppSettings.useAlternativeRouting },
+            set: { newValue in store.handle(action: .alternativeRoutingChanged(newValue)) }
         )
     }
 
@@ -149,12 +163,7 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .init(
-            areNotificationsEnabled: false,
-            appLanguage: .empty,
-            appearance: .system,
-            isAppearanceMenuShown: false
-        ))
+        AppSettingsScreen(state: .initial)
     }
 }
 
@@ -173,6 +182,21 @@ private extension AppAppearance {
 
     static var allCases: [Self] {
         [.system, .darkMode, .lightMode]
+    }
+
+}
+
+private extension AppProtection {
+
+    var humanReadable: LocalizedStringResource {
+        switch self {
+        case .none:
+            "None"
+        case .biometrics:
+            "Face ID" // FIXE: - Or touch ID. To update
+        case .pin:
+            "PIN code"
+        }
     }
 
 }
