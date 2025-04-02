@@ -18,7 +18,6 @@
 import Collections
 import InboxDesignSystem
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 

@@ -74,7 +74,7 @@ struct MessageBodyView: View {
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
                 }
-                MessageBodyHTMLView(messageId: messageID, messageBody: state, htmlLoaded: htmlLoaded)
+                MessageBodyHTMLView(messageBody: state, htmlLoaded: htmlLoaded)
             }
             .onLoad { store.handle(action: .onLoad) }
         }

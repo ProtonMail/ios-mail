@@ -19,14 +19,12 @@ import Foundation
 import proton_app_uniffi
 
 struct AppVersionProvider {
-    let bundle: Bundle
     let sdkVersionProvider: SDKVersionProvider
 
     /// Application and SDK version e.g. 1.18.0 (142) - 1.31.0
     var fullVersion: String { "\(Bundle.main.appVersion) - \(sdkVersionProvider.sdkVersion)" }
 
-    init(bundle: Bundle = .main, sdkVersionProvider: SDKVersionProvider = .production) {
-        self.bundle = bundle
+    init(sdkVersionProvider: SDKVersionProvider = .production) {
         self.sdkVersionProvider = sdkVersionProvider
     }
 }

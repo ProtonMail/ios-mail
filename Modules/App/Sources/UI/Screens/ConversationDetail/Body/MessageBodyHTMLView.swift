@@ -25,7 +25,6 @@ struct MessageBodyHTMLView: View {
     @Environment(\.openURL) var urlOpener
     @State var bodyContentHeight: CGFloat = 0.0
 
-    let messageId: ID
     let messageBody: MessageBodyState
     let htmlLoaded: () -> Void
     

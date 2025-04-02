@@ -59,7 +59,6 @@ class SidebarScreenSnapshotTests: BaseTestCase {
             sidebarFactory: { _ in self.sidebarSpy! }
         ) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
-            .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
@@ -69,11 +68,10 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0") ),
+            appVersionProvider: .init(sdkVersionProvider: .init(sdkVersion: "0.61.0") ),
             sidebarFactory: { _ in self.sidebarSpy! }
         ) { _ in }
             .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
-            .environment(\.mainBundle, bundleStub)
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 

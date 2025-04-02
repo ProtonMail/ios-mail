@@ -92,7 +92,7 @@ final class DraftAttachmentView: TapHighlightView {
         return expandedTouchArea.contains(point) ? removeButton : super.hitTest(point, with: event)
     }
 
-    @objc private func removeButtonTapped(_ sender: SpinnerButton) {
+    @objc private func removeButtonTapped(_: SpinnerButton) {
         guard let uiModel else { return }
         onEvent(.onButtonTap, uiModel)
     }

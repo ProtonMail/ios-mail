@@ -17,7 +17,6 @@
 
 import Foundation
 import InboxCore
-import InboxCoreUI
 import PhotosUI
 import enum proton_app_uniffi.DraftAttachmentError
 import SwiftUI

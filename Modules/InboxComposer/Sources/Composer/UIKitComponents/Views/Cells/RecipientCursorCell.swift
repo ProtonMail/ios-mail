@@ -84,7 +84,7 @@ final class RecipientCursorCell: UICollectionViewCell {
         intentionallyResigningResponder = false
     }
 
-    func configure(maxWidth: CGFloat, input: String, state: RecipientControllerStateType) {
+    func configure(maxWidth: CGFloat, input: String) {
         textField.text = input
         widthConstraint?.constant = maxWidth
     }
@@ -136,7 +136,7 @@ final class CursorTextField: UITextField {
     }
 
     @objc
-    private func textFieldDidChange(_ textField: UITextField) {
+    private func textFieldDidChange(_: UITextField) {
         onTextChanged?(text)
     }
 

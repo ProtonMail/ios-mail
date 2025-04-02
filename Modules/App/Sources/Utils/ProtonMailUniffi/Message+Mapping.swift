@@ -86,7 +86,6 @@ extension Message {
 
     func toCollapsedMessageCellUIModel() -> CollapsedMessageCellUIModel {
         .init(
-            id: id,
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             recipients: recipients.recipientsUIRepresentation,

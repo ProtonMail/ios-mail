@@ -40,7 +40,6 @@ extension View {
 
 private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
-    @EnvironmentObject var toastStateStore: ToastStateStore
     private let mailbox: () -> Mailbox
     private let replyActions: ReplyActionsHandler
     private let goBackNavigation: (() -> Void)?
@@ -102,10 +101,4 @@ private struct MailboxActionSheets: ViewModifier {
         .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
     }
 
-}
-
-extension MailboxActionSheetsState {
-    func dismissed() -> Self {
-        .init(mailbox: nil, labelAs: nil, moveTo: nil)
-    }
 }

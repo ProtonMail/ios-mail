@@ -40,7 +40,7 @@ final class ContactPickerController: UIViewController {
 
     var recipientsFieldState: RecipientFieldState? {
         didSet {
-            updateViewWith(oldValue: oldValue, newState: recipientsFieldState)
+            updateView(oldState: oldValue)
         }
     }
 
@@ -92,14 +92,14 @@ final class ContactPickerController: UIViewController {
         textField.becomeFirstResponder()
     }
 
-    private func updateViewWith(oldValue: RecipientFieldState?, newState: RecipientFieldState?) {
+    private func updateView(oldState: RecipientFieldState?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let state = recipientsFieldState else { return }
             label.text = state.group.string
             textField.text = state.input
             view.isHidden = state.controllerState != .contactPicker || state.matchingContacts.isEmpty
             
-            let matchedContactsChanged = oldValue?.matchingContacts != state.matchingContacts
+            let matchedContactsChanged = oldState?.matchingContacts != state.matchingContacts
             if matchedContactsChanged {
                 contacts = state.matchingContacts
                 textField.becomeFirstResponder()

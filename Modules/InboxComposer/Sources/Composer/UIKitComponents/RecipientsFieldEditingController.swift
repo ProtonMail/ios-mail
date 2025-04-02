@@ -209,7 +209,7 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
                 onEvent?(.onReturnKeyPressed)
             }
         }
-        cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input, state: state.controllerState)
+        cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input)
         return cursorCell
     }
 
