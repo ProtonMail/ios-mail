@@ -69,6 +69,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
         Task {
             switch await embeddedImageProvider.getEmbeddedAttachment(cid: cid) {
             case .ok(let image):
+                AppLogger.logTemporarily(message: "embedded image mime type: \(image.mime), content length: \(image.data.count), url: \(url.absoluteString)", category: .conversationDetail)
                 let response = URLResponse(
                     url: url,
                     mimeType: image.mime,
