@@ -10,12 +10,13 @@ let package = Package(
         .library(name: "InboxCore", targets: ["InboxCore"])
     ],
     dependencies: [
-        .package(path: "../../ProtonPackages/proton_app_uniffi")
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
+        .package(path: "../TryCatch")
     ],
     targets: [
         .target(
             name: "InboxCore",
-            dependencies: ["proton_app_uniffi"]
+            dependencies: ["proton_app_uniffi", "TryCatch"]
         )
     ]
 )

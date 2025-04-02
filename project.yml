@@ -62,6 +62,9 @@ packages:
   TestableNotificationService:
     path: Modules/TestableNotificationService
     group: Modules
+  TryCatch:
+    path: Modules/TryCatch
+    group: Modules
   ViewInspector:
     url: https://github.com/nalexn/ViewInspector.git
     from: "0.10.1"

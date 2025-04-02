@@ -1,0 +1,106 @@
+//
+//  SwiftTryCatch.h
+//
+//  Created by William Falcon on 10/10/14.
+//  Copyright (c) 2014 William Falcon. All rights reserved.
+//
+/*
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+
+#import "SwiftTryCatch.h"
+
+@implementation NSException ( SwiftTryCatch )
+- (NSError *) toError {
+    NSMutableDictionary * info = [NSMutableDictionary dictionary];
+    [info setValue:self.name forKey:@"MONExceptionName"];
+    [info setValue:self.reason forKey:@"MONExceptionReason"];
+    [info setValue:self.callStackReturnAddresses forKey:@"MONExceptionCallStackReturnAddresses"];
+    [info setValue:self.callStackSymbols forKey:@"MONExceptionCallStackSymbols"];
+    [info setValue:self.userInfo forKey:@"MONExceptionUserInfo"];
+    return [[NSError alloc] initWithDomain:@"com.ProtonMail.OpenPGP" code:1000000 userInfo:info];
+}
+@end
+
+
+@implementation ObjC
+
++ (BOOL)catchException:(void(^)(void))tryBlock error:(__autoreleasing NSError **)error {
+    @try {
+        tryBlock();
+        return YES;
+    }
+    @catch (NSException *exception) {
+        if (exception.name != NULL) {
+            *error = [[NSError alloc] initWithDomain:exception.name code:1000000 userInfo:exception.userInfo];
+        } else {
+            *error = [[NSError alloc] initWithDomain:@"ExceptionInObjC" code:1000000 userInfo:exception.userInfo];
+        }
+    }
+}
+
+@end
+
+
+@implementation SwiftTryCatch
+/**
+ Provides try catch functionality for swift by wrapping around Objective-C
+ */
++ (void)tryBlock:(void(^)(void))tryBlock catchBlock:(void(^)(NSException*exception))catchBlock finallyBlock:(void(^)(void))finallyBlock {
+    @try {
+        tryBlock ? tryBlock() : nil;
+    }
+
+    @catch (NSException *exception) {
+        catchBlock ? catchBlock(exception) : nil;
+    }
+    @finally {
+        finallyBlock ? finallyBlock() : nil;
+    }
+}
+
++ (void)tryBlock:(void(^)(void))tryBlock catchError:(void(^)(NSError*error))catchError finallyBlock:(void(^)(void))finallyBlock {
+    @try {
+        tryBlock ? tryBlock() : nil;
+    }
+    @catch (NSException *exception) {
+        NSError* e = nil;
+        //e = exception.toError()
+        catchError ? catchError(e) : nil;
+        //catchError ? catchError() : nil;
+    }
+    @finally {
+        finallyBlock ? finallyBlock() : nil;
+    }
+}
+
++ (void)throwString:(NSString*)s
+{
+    @throw [NSException exceptionWithName:s reason:s userInfo:nil];
+}
+
++ (void)throwException:(NSException*)e
+{
+    @throw e;
+}
+
+
+
+@end

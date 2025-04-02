@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import TryCatch
 import WebKit
 
 public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
@@ -76,9 +77,15 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
                     expectedContentLength: image.data.count,
                     textEncodingName: nil
                 )
-                urlSchemeTask.didReceive(response)
-                urlSchemeTask.didReceive(image.data)
-                urlSchemeTask.didFinish()
+                do {
+                    try ObjC.catchException {
+                        urlSchemeTask.didReceive(response)
+                        urlSchemeTask.didReceive(image.data)
+                        urlSchemeTask.didFinish()
+                    }
+                } catch {
+                    AppLogger.logTemporarily(message: "\(error)", category: .conversationDetail, isError: true)
+                }
             case .error(let error):
                 urlSchemeTask.didFailWithError(error)
             }
