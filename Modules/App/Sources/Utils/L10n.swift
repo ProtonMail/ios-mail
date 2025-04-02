@@ -171,16 +171,29 @@ enum L10n {
                 static func title(itemsCount: Int) -> LocalizedStringResource {
                     .init(
                         "Delete \(itemsCount) messages",
-                        comment: "Title of alert action displayed after delete permanently action tap."
+                        comment: "Title of alert displayed after delete permanently action tap."
                     )
                 }
 
                 static func message(itemsCount: Int) -> LocalizedStringResource {
                     .init(
                         "Are you sure you want to delete these \(itemsCount) messages permanently?",
-                        comment: "Title of alert action displayed after delete permanently action tap."
+                        comment: "Message of alert displayed after delete permanently action tap."
                     )
                 }
+            }
+        }
+        
+        enum ReportPhishing {
+            enum Alert {
+                static let title = LocalizedStringResource(
+                    "Confirm phishing report",
+                    comment: "Title of alert displayed after report phishing action tap."
+                )
+                static let message = LocalizedStringResource(
+                    "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.",
+                    comment: "Message of alert displayed after report phishing action tap."
+                )
             }
         }
     }
@@ -195,7 +208,10 @@ enum L10n {
     enum Common {
         static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
         static let cancel = LocalizedStringResource("Cancel", comment: "`Cancel` action title.")
+        static let confirm = LocalizedStringResource("Confirm", comment: "`Confirm` action title.")
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
+        static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
+        static let off = LocalizedStringResource("Off", comment: "Indicates that a feature is disabled and not functioning.")
     }
 
     enum Labels {
@@ -515,6 +531,23 @@ enum L10n {
     }
 
     enum PINLock {
+        enum Error {
+            static let tooLong = LocalizedStringResource(
+                "PIN is too long",
+                comment: "Error message when setting up PIN"
+            )
+
+            static let tooShort = LocalizedStringResource(
+                "PIN is too short",
+                comment: "Error message when setting up PIN"
+            )
+
+            static let malformed = LocalizedStringResource(
+                "Provided value is not a valid PIN",
+                comment: "Error message when setting up PIN"
+            )
+        }
+
         static let enterPinTitle = LocalizedStringResource(
             "Enter your PIN to unlock you inbox.",
             comment: "Information displayed on the top of PIN lock screen."
@@ -522,10 +555,6 @@ enum L10n {
         static let screenTopTitle = LocalizedStringResource(
             "Enter PIN",
             comment: "Top title of the pin lock screen."
-        )
-        static let confirmButtonTitle = LocalizedStringResource(
-            "Confirm",
-            comment: "Title of the button to confirm the pin code."
         )
         static let signOutConfirmationButton = LocalizedStringResource(
             "Sign Out",
@@ -636,6 +665,13 @@ enum L10n {
         )
     }
 
+    enum Session {
+        static let initializationDifficulties = LocalizedStringResource(
+            "Proton Mail needs to connect to the server to finish initialization. Please ensure you have a good internet connection.",
+            comment: "Error when the connection fails during session initialization."
+        )
+    }
+
     enum Settings {
         enum App {
             static let title = LocalizedStringResource(
@@ -657,6 +693,18 @@ enum L10n {
             static let appearance = LocalizedStringResource(
                 "Appearance",
                 comment: "Appearance setting title in app settings."
+            )
+            static let system = LocalizedStringResource(
+                "System",
+                comment: "One of the appearance option to set in app settings."
+            )
+            static let dark = LocalizedStringResource(
+                "Dark",
+                comment: "One of the appearance option to set in app settings."
+            )
+            static let light = LocalizedStringResource(
+                "Light",
+                comment: "One of the appearance option to set in app settings."
             )
             static let protection = LocalizedStringResource(
                 "Protection",

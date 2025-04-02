@@ -23,6 +23,7 @@ struct ApplicationServices {
     var enterBackgroundServices: [ApplicationServiceDidEnterBackground] = []
     var terminateServices: [ApplicationServiceTerminate] = []
 
+    @MainActor
     func setUp() {
         setUpServices.forEach { $0.setUpService() }
     }
@@ -41,6 +42,7 @@ struct ApplicationServices {
 }
 
 protocol ApplicationServiceSetUp {
+    @MainActor
     func setUpService()
 }
 

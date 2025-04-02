@@ -22,5 +22,5 @@ import SwiftUI
 struct MailboxItemActionSheetState: Equatable, Copying {
     let title: String
     var availableActions: AvailableActions
-    var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
+    var alert: AlertModel?
 }

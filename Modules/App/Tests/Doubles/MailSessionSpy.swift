@@ -28,46 +28,49 @@ final class MailSessionSpy: MailSessionProtocol {
         }
     }
 
+    private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
+    private(set) var setPinCodeInvocations: [Data] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
 
     // MARK: - MailSessionProtocol
 
-    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
-        fatalError()
-    }
-
-    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
-        fatalError()
-    }
-
-    func userContextFromSession(session: proton_app_uniffi.StoredSession) -> MailSessionUserContextFromSessionResult {
+    func pauseWorkAndWait() {
         fatalError()
     }
 
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
-        fatalError()
+        fatalError(#function)
+    }
+
+    func appProtection() async -> MailSessionAppProtectionResult {
+        fatalError(#function)
+    }
+
+    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
+        changeAppSettingsInvocations.append(settings)
+        return .ok
     }
 
     func deleteAccount(userId: String) async -> VoidSessionResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccount(userId: String) async -> MailSessionGetAccountResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccountBlocking(userId: String) -> MailSessionGetAccountResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccountSessions(account: StoredAccount) async -> MailSessionGetAccountSessionsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccountState(userId: String) async -> MailSessionGetAccountStateResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccountStateBlocking(userId: String) -> MailSessionGetAccountStateResult {
@@ -75,19 +78,23 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getAccounts() async -> MailSessionGetAccountsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getAccountsBlocking() -> MailSessionGetAccountsResult {
-        fatalError()
+        fatalError(#function)
+    }
+
+    func getAppSettings() async -> MailSessionGetAppSettingsResult {
+        fatalError(#function)
     }
 
     func getPrimaryAccount() async -> MailSessionGetPrimaryAccountResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getPrimaryAccountBlocking() -> MailSessionGetPrimaryAccountResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getSession(sessionId: String) async -> MailSessionGetSessionResult {
@@ -95,15 +102,15 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getSessionBlocking(sessionId: String) -> MailSessionGetSessionResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getSessionState(sessionId: String) async -> MailSessionGetSessionStateResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getSessionStateBlocking(sessionId: String) -> MailSessionGetSessionStateResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getSessions() async -> MailSessionGetSessionsResult {
@@ -111,23 +118,36 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getSessionsBlocking(account: StoredAccount) -> MailSessionGetAccountSessionsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func getUnsentMessagesIdsInQueue(userId: String) async -> MailSessionGetUnsentMessagesIdsInQueueResult {
-        fatalError()
-    }
-
-    func isNetworkConnected() -> Bool {
-        fatalError()
+        fatalError(#function)
     }
 
     func logoutAccount(userId: String) async -> VoidSessionResult {
-        fatalError()
+        fatalError(#function)
     }
 
-    func setNetworkConnected(online: Bool) {
-        fatalError()
+    func newLoginFlow() async -> MailSessionNewLoginFlowResult {
+        fatalError(#function)
+    }
+
+    func pauseWork() {
+        fatalError(#function)
+    }
+
+    func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
+        fatalError(#function)
+    }
+
+    func resumeWork() {
+        fatalError(#function)
+    }
+
+    func setPinCode(pin: Data) async -> MailSessionSetPinCodeResult {
+        setPinCodeInvocations.append(pin)
+        return .ok
     }
 
     func setPrimaryAccount(userId: String) async -> VoidSessionResult {
@@ -137,23 +157,44 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
-        fatalError()
+        fatalError(#function)
     }
 
-    func watchAccountSessions(account: StoredAccount, callback: any LiveQueryCallback) async -> MailSessionWatchAccountSessionsResult {
-        fatalError()
+    func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
+        fatalError(#function)
+    }
+    
+    func initializedUserContextFromSession(
+        session: StoredSession
+    ) -> MailSessionInitializedUserContextFromSessionResult {
+        fatalError(#function)
+    }
+
+    func verifyPinCode(pin: Data) async -> MailSessionVerifyPinCodeResult {
+        fatalError(#function)
+    }
+    
+    func deletePinCode(pin: Data) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
+        fatalError(#function)
+    }
+
+    func watchAccountSessions(
+        account: StoredAccount,
+        callback: any LiveQueryCallback
+    ) async -> MailSessionWatchAccountSessionsResult {
+        fatalError(#function)
     }
 
     func watchAccounts(callback: any LiveQueryCallback) async -> MailSessionWatchAccountsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func watchAccountsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchAccountsAsyncResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func watchSessions(callback: any LiveQueryCallback) async -> MailSessionWatchSessionsResult {
-        fatalError()
+        fatalError(#function)
     }
 
     func watchSessionsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchSessionsAsyncResult {

@@ -69,6 +69,7 @@ final class AppContext: Sendable, ObservableObject {
         self.dependencies = dependencies
     }
 
+    @MainActor
     private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
 
@@ -87,19 +88,13 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            switch mailSession.userContextFromSession(session: currentSession) {
-            case .ok(let newUserSession):
-                withAnimation { sessionState = .activeSession(session: newUserSession) }
-            case .error(let error):
-                throw error
-            }
+            setupActiveUserSession(session: currentSession)
         }
     }
 }
 
 extension AppContext: AccountAuthDelegate {
     func accountSessionInitialization(storedSession: StoredSession) async throws {
-        try await initializeMailUserSession(session: storedSession)
     }
 
     func setupAccountBindings() {
@@ -127,16 +122,27 @@ extension AppContext: AccountAuthDelegate {
     }
 
     @MainActor
-    private func initializeMailUserSession(session: StoredSession) async throws {
-        let newUserSession = try mailSession.userContextFromSession(session: session).get()
-        try await newUserSession.initialize(cb: UserContextInitializationDelegate.shared).get()
-    }
-
-    @MainActor
     private func setupActiveUserSession(session: StoredSession) {
+        let start = ContinuousClock.now
+
         switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
             withAnimation { self.sessionState = .activeSession(session: newUserSession) }
+        case .error(.other(.network)):
+            AppLogger.log(
+                message: "Failed to initialize session due to network error, will retry...",
+                category: .userSessions,
+                isError: true
+            )
+
+            withAnimation { sessionState = .waitingForSessionInitialization }
+
+            Task {
+                let minimumTimeBetweenRetries = Duration.seconds(5)
+                let earliestNextAttemptTime = start + minimumTimeBetweenRetries
+                try! await Task.sleep(until: earliestNextAttemptTime)
+                setupActiveUserSession(session: session)
+            }
         case .error(let error):
             AppLogger.log(error: error, category: .userSessions)
         }
@@ -149,14 +155,6 @@ extension AppContext {
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let appConfigService: AppConfigService = AppConfigService.shared
         let userDefaults: UserDefaults = .standard
-    }
-}
-
-final class UserContextInitializationDelegate: MailUserSessionInitializationCallback, Sendable {
-    static let shared = UserContextInitializationDelegate()
-
-    func onStage(stage: proton_app_uniffi.MailUserSessionInitializationStage) {
-        AppLogger.logTemporarily(message: "MailUserSessionInitializationStage.onStage stage: \(stage)")
     }
 }
 

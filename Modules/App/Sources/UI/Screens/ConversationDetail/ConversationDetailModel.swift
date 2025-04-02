@@ -31,7 +31,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
     @Published var actionSheets: MailboxActionSheetsState = .initial()
-    @Published var deleteConfirmationAlert: AlertViewModel<DeleteConfirmationAlertAction>?
+    @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
     var areActionsDisabled: Bool {
@@ -132,7 +132,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
             actionSheets = actionSheets
-                .copy(\.mailbox, to: .init(ids: [conversationID], type: .conversation, title: seed.subject))
+                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets = actionSheets
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
@@ -145,7 +145,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .markUnread:
             markConversationAsUnread(goBack: goBack)
         case .permanentDelete:
-            deleteConfirmationAlert = .deleteConfirmation(itemsCount: 1)
+            let alert: AlertModel = .deleteConfirmation(
+                itemsCount: 1,
+                action: { [weak self] action in
+                    self?.handle(action: action, toastStateStore: toastStateStore, goBack: goBack)
+                }
+            )
+            deleteConfirmationAlert = alert
         case .moveToSystemFolder(let label), .notSpam(let label):
             moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
         }

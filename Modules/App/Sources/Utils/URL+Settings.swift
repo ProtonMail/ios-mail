@@ -15,25 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import UIKit
 
-extension UserDefaults {
-    enum LegacyDataKey: String, CaseIterable {
-        case authCredentials = "authKeychainStoreKeyProtectedWithMainKey"
-        case userInfos = "usersInfoKeyProtectedWithMainKey"
+extension URL {
+
+    static var settings: URL {
+        URL(string: UIApplication.openSettingsURLString).unsafelyUnwrapped
     }
 
-    static var legacy: Self {
-        .init(suiteName: "group.ch.protonmail.protonmail").unsafelyUnwrapped
-    }
-
-    func legacyData(forKey key: LegacyDataKey) -> Data? {
-        data(forKey: key.rawValue)
-    }
-
-    func removeLegacyKeys() {
-        for legacyKey in LegacyDataKey.allCases {
-            removeObject(forKey: legacyKey.rawValue)
-        }
-    }
 }

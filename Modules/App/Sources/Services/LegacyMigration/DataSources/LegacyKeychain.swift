@@ -20,6 +20,7 @@ import InboxKeychain
 
 final class LegacyKeychain: Keychain {
     enum Key: String {
+        case autoLockTime
         case biometricsProtectedMainKey = "BioProtection"
         case pinProtectedMainKey = "PinProtection"
         case pinProtectionSalt = "PinProtection.salt"
@@ -40,6 +41,10 @@ final class LegacyKeychain: Keychain {
 
     func data(forKey key: Key) throws -> Data? {
         try dataOrError(forKey: key.rawValue)
+    }
+
+    func string(forKey key: Key) throws -> String? {
+        try stringOrError(forKey: key.rawValue)
     }
 
     func privateKey(labeled label: PrivateKeyLabel) throws -> SecKey? {

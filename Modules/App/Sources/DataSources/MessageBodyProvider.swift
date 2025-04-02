@@ -38,8 +38,8 @@ struct MessageBodyProvider {
 
     private let _messageBody: @Sendable (_ messageID: ID) async -> GetMessageBodyResult
 
-    init(mailbox: Mailbox, bodyWrapper: RustMessageBodyWrapper) {
-        _messageBody = { messageID in await bodyWrapper.messageBody(mailbox, messageID) }
+    init(mailbox: Mailbox, wrapper: RustMessageBodyWrapper) {
+        _messageBody = { messageID in await wrapper.messageBody(mailbox, messageID) }
     }
 
     func messageBody(forMessageID messageID: ID, with options: TransformOpts?) async -> Result {
@@ -59,22 +59,6 @@ struct MessageBodyProvider {
             return .error(error)
         }
     }
-}
-
-struct RustMessageBodyWrapper {
-    let messageBody: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
-    
-    init(messageBody: @escaping @Sendable (Mailbox, Id) async -> GetMessageBodyResult) {
-        self.messageBody = messageBody
-    }
-}
-
-extension RustMessageBodyWrapper {
-
-    static func productionInstance() -> Self {
-        .init(messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) })
-    }
-
 }
 
 private extension DecryptedMessage {

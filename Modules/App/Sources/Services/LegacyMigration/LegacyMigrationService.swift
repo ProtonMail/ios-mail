@@ -28,6 +28,12 @@ actor LegacyMigrationService {
         let userInfos: Data
     }
 
+    struct MigrationInputs: Equatable {
+        let encryptedLegacyData: EncryptedLegacyData
+        let mainKey: Data
+        let protectionPreference: ProtectionPreference?
+    }
+
     enum MigrationError: Error {
         case failedToUnarchive(NSSecureCoding.Type)
     }
@@ -35,9 +41,23 @@ actor LegacyMigrationService {
     enum MigrationState: Equatable {
         case notChecked
         case notNeeded
-        case inProgress(encryptedLegacyData: EncryptedLegacyData, mainKey: Data)
+        case inProgress(MigrationInputs)
         case awaitingProtectedMainKey(EncryptedLegacyData)
         case failed
+    }
+
+    enum ProtectionPreference: CustomStringConvertible, Equatable {
+        case biometrics
+        case pin(String)
+
+        var description: String {
+            switch self {
+            case .biometrics:
+                "biometrics"
+            case .pin(let secretValue):
+                "\(secretValue.count)-digit PIN"
+            }
+        }
     }
 
     var statePublisher: AnyPublisher<MigrationState, Never> {
@@ -45,8 +65,10 @@ actor LegacyMigrationService {
     }
 
     private let legacyKeychain: LegacyKeychain
-    private let legacyUserDefaults = UserDefaults.legacy
+    private let legacyDataProvider: LegacyDataProvider
+    private let getMailSession: () -> MailSessionProtocol
     private let passMigrationPayloadToRustSDK: PassMigrationPayloadToRustSDK
+    private let settingsMigrator: SettingsMigrator
     private let stateSubject = CurrentValueSubject<MigrationState, Never>(.notChecked)
 
     private var state: MigrationState {
@@ -63,15 +85,28 @@ actor LegacyMigrationService {
         }
     }
 
-    init(legacyKeychain: LegacyKeychain, passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK) {
+    init(
+        legacyKeychain: LegacyKeychain,
+        legacyDataProvider: LegacyDataProvider,
+        getMailSession: @escaping () -> MailSessionProtocol,
+        passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK
+    ) {
         self.legacyKeychain = legacyKeychain
+        self.legacyDataProvider = legacyDataProvider
+        self.getMailSession = getMailSession
         self.passMigrationPayloadToRustSDK = passMigrationPayloadToRustSDK
+        settingsMigrator = .init(legacyKeychain: legacyKeychain, legacyDataProvider: legacyDataProvider)
     }
 
     private init() {
-        self.init(legacyKeychain: .init()) {
-            try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
-        }
+        self.init(
+            legacyKeychain: .init(),
+            legacyDataProvider: .init(),
+            getMailSession: { AppContext.shared.mailSession },
+            passMigrationPayloadToRustSDK: {
+                try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
+            }
+        )
     }
 
     // MARK: entry points
@@ -82,8 +117,8 @@ actor LegacyMigrationService {
         switch state {
         case .notChecked:
             state = startMigrationIfNeeded()
-        case .inProgress(let encryptedLegacyData, let mainKey):
-            state = await performMigration(encryptedLegacyData: encryptedLegacyData, mainKey: mainKey)
+        case .inProgress(let inputs):
+            state = await performMigration(inputs: inputs)
         case .awaitingProtectedMainKey:
             break
         case .notNeeded, .failed:
@@ -95,10 +130,16 @@ actor LegacyMigrationService {
         }
     }
 
-    func resume(protectedMainKey: Data) async {
+    func resume(protectedMainKey: Data, protectionPreference: ProtectionPreference) async {
         switch state {
         case .awaitingProtectedMainKey(let encryptedLegacyData):
-            state = .inProgress(encryptedLegacyData: encryptedLegacyData, mainKey: protectedMainKey)
+            state = .inProgress(
+                .init(
+                    encryptedLegacyData: encryptedLegacyData,
+                    mainKey: protectedMainKey,
+                    protectionPreference: protectionPreference
+                )
+            )
             await proceed()
         default:
             onIllegalStateTransition()
@@ -119,8 +160,8 @@ actor LegacyMigrationService {
 
     private func startMigrationIfNeeded() -> MigrationState {
         guard
-            let authCredentialData = legacyUserDefaults.legacyData(forKey: .authCredentials),
-            let userInfoData = legacyUserDefaults.legacyData(forKey: .userInfos)
+            let authCredentialData = legacyDataProvider.data(forKey: .authCredentials),
+            let userInfoData = legacyDataProvider.data(forKey: .userInfos)
         else {
             return .notNeeded
         }
@@ -129,7 +170,13 @@ actor LegacyMigrationService {
 
         do {
             if let unprotectedMainKey = try legacyKeychain.data(forKey: .unprotectedMainKey) {
-                return .inProgress(encryptedLegacyData: encryptedLegacyData, mainKey: unprotectedMainKey)
+                return .inProgress(
+                    .init(
+                        encryptedLegacyData: encryptedLegacyData,
+                        mainKey: unprotectedMainKey,
+                        protectionPreference: nil
+                    )
+                )
             } else {
                 return .awaitingProtectedMainKey(encryptedLegacyData)
             }
@@ -139,21 +186,32 @@ actor LegacyMigrationService {
         }
     }
 
-    private func performMigration(encryptedLegacyData: EncryptedLegacyData, mainKey: Data) async -> MigrationState {
+    private func performMigration(inputs: MigrationInputs) async -> MigrationState {
         Address.registerNamespacedClassName()
         AuthCredential.registerNamespacedClassName()
 
         do {
             let authCredentials: [AuthCredential] = try decryptAndDecode(
-                data: encryptedLegacyData.authCredentials,
-                using: mainKey
+                data: inputs.encryptedLegacyData.authCredentials,
+                using: inputs.mainKey
             )
 
-            let userInfos: [UserInfo] = try decryptAndDecode(data: encryptedLegacyData.userInfos, using: mainKey)
+            let userInfos: [UserInfo] = try decryptAndDecode(
+                data: inputs.encryptedLegacyData.userInfos,
+                using: inputs.mainKey
+            )
+
             let migrationPayloads = prepareMigrationPayloads(authCredentials: authCredentials, userInfos: userInfos)
 
             for migrationPayload in migrationPayloads {
                 try await passMigrationPayloadToRustSDK(migrationPayload)
+            }
+
+            let mailSession = getMailSession()
+            await settingsMigrator.migrateSettings(in: mailSession)
+
+            if let protectionPreference = inputs.protectionPreference {
+                await setUpProtection(basedOn: protectionPreference)
             }
 
             return .notNeeded
@@ -166,10 +224,7 @@ actor LegacyMigrationService {
     // MARK: other methods
 
     private func decryptAndDecode<T: NSSecureCoding>(data encryptedData: Data, using key: Data) throws -> [T] {
-        let iv = encryptedData[0..<16]
-        let ciphertext = encryptedData[16...]
-        let decryptedArchives = try AES.CTR.decrypt(ciphertext: ciphertext, key: key, iv: iv)
-        let decodedArchive = try PropertyListDecoder().decode([Data].self, from: decryptedArchives)[0]
+        let decodedArchive: Data = try LockedDataExtractor.decryptAndDecode(data: encryptedData, using: key)[0]
 
         let relevantClasses: [AnyClass] = [
             NSArray.self,
@@ -208,9 +263,27 @@ actor LegacyMigrationService {
         }
     }
 
+    private func setUpProtection(basedOn protectionPreference: ProtectionPreference) async {
+        let mailSession = getMailSession()
+
+        do {
+            switch protectionPreference {
+            case .biometrics:
+                // TODO: tell the SDK to expect biometric protection
+                break
+            case .pin(let pinString):
+                // TODO: consider having the PINLockScreen provide an array of digits in the first place
+                let pinDigits = pinString.map { UInt8(String($0)).unsafelyUnwrapped }
+                try await mailSession.setPinCode(pin: Data(pinDigits)).get()
+            }
+        } catch {
+            AppLogger.log(error: error, category: .legacyMigration)
+        }
+    }
+
     private func cleanUpLegacyData() {
         legacyKeychain.removeEverything()
-        legacyUserDefaults.removeLegacyKeys()
+        legacyDataProvider.removeAll()
     }
 
     private func onIllegalStateTransition(

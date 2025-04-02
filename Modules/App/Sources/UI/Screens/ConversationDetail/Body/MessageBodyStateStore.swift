@@ -33,24 +33,21 @@ final class MessageBodyStateStore: StateStore {
         case displayEmbeddedImages
         case downloadRemoteContent
         case spamMarkAsLegitimate
+        case unblockSender(addressID: ID)
     }
 
     @Published var state: MessageBodyState = .fetching
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
+    private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
 
-    init(
-        messageID: ID,
-        mailbox: Mailbox,
-        bodyWrapper: RustMessageBodyWrapper,
-        actionsWrapper: RustMessageActionsWrapper,
-        toastStateStore: ToastStateStore
-    ) {
+    init(messageID: ID, mailbox: Mailbox, wrapper: RustMessageBodyWrapper, toastStateStore: ToastStateStore) {
         self.messageID = messageID
-        self.provider = .init(mailbox: mailbox, bodyWrapper: bodyWrapper)
-        self.legitMessageMarker = .init(mailbox: mailbox, actionsWrapper: actionsWrapper)
+        self.provider = .init(mailbox: mailbox, wrapper: wrapper)
+        self.legitMessageMarker = .init(mailbox: mailbox, wrapper: wrapper)
+        self.senderUnblocker = .init(mailbox: mailbox, wrapper: wrapper)
         self.toastStateStore = toastStateStore
     }
 
@@ -77,6 +74,10 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state {
                 await markAsNotSpam(with: body.html.options)
             }
+        case .unblockSender(let addressID):
+            if case let .loaded(body) = state {
+                await unblockSender(addressID: addressID, with: body.html.options)
+            }
         }
     }
 
@@ -97,6 +98,16 @@ final class MessageBodyStateStore: StateStore {
     @MainActor
     private func markAsNotSpam(with options: TransformOpts) async {
         switch await legitMessageMarker.markAsNotSpam(forMessageID: messageID) {
+        case .ok:
+            await loadMessageBody(with: options)
+        case .error(let error):
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
+    }
+    
+    @MainActor
+    private func unblockSender(addressID: ID, with options: TransformOpts) async {
+        switch await senderUnblocker.unblock(withAddressID: addressID) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

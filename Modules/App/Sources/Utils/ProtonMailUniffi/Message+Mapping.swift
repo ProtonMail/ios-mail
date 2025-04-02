@@ -68,6 +68,7 @@ extension Message {
                 avatar: sender.senderAvatar,
                 sender: .init(
                     name: sender.uiRepresentation,
+                    addressID: addressId,
                     address: sender.address,
                     encryptionInfo: "End to end encrypted and signed"
                 ), // TODO: !!

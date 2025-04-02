@@ -211,7 +211,7 @@ struct SettingsScreen: View {
     }
 
     private func presentAppSettings() {
-        state = state.copy(\.appSettings, to: .init())
+        state = state.copy(\.appSettings, to: .initial)
     }
 
     private func popFromStack() {

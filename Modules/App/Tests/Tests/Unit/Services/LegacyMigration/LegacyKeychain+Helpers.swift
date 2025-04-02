@@ -30,6 +30,10 @@ extension LegacyKeychain {
         try setOrError(data, forKey: key.rawValue)
     }
 
+    func set(_ string: String, forKey key: Key) throws {
+        try setOrError(string, forKey: key.rawValue)
+    }
+
     func set(privateKey privateKeyData: Data, forLabel label: PrivateKeyLabel) throws {
         let attributes: [CFString: Any] = [
             kSecAttrKeyClass: kSecAttrKeyClassPrivate,

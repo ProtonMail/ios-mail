@@ -15,26 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import SwiftUI
 
-extension DraftAttachmentError {
+public struct AlertModel: Equatable {
+    public let title: LocalizedStringResource
+    public let message: LocalizedStringResource?
+    public let actions: [AlertAction]
 
-    func toAttachmentError() -> AttachmentError {
-        switch self {
-        case .reason(let reason):
-            switch reason {
-            case .messageDoesNotExist, .retryInvalidState, .messageDoesNotExistOnServer, .crypto, .messageAlreadySent:
-                return .somethingWentWrong(origin: .adding([.makeUnique]))
-
-            case .tooManyAttachments:
-                return .tooMany(origin: .adding([.makeUnique]))
-
-            case .attachmentTooLarge:
-                return .overSizeLimit(origin: .adding([.makeUnique]))
-
-            }
-        case .other:
-            return .somethingWentWrong(origin: .adding([.makeUnique]))
-        }
+    public init(title: LocalizedStringResource, message: LocalizedStringResource?, actions: [AlertAction]) {
+        self.title = title
+        self.message = message
+        self.actions = actions
     }
 }

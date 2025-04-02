@@ -344,6 +344,7 @@ enum MessageDetail {
 
     struct Sender {
         let name: String
+        let addressID: ID
         let address: String
         let encryptionInfo: String
     }
@@ -406,6 +407,7 @@ enum MessageDetailsPreviewProvider {
             ),
             sender: .init(
                 name: "Camila Hall",
+                addressID: .init(value: 72),
                 address: "camila.hall@protonmail.ch",
                 encryptionInfo: "End to end encrypted and signed"
             ),

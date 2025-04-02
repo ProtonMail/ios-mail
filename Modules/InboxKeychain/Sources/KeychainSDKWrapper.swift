@@ -73,7 +73,7 @@ private extension OsKeyChainEntryKind {
     var key: String {
         switch self {
         case .encryptionKey: "mailApplicationKey"
-        case .deviceKey: "deviceKey"
+        default: String(describing: self)
         }
     }
 }

@@ -130,7 +130,7 @@ struct ConversationDetailListView: View {
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
             model.actionSheets = model.actionSheets.copy(
-                \.mailbox, to: .init(ids: [uiModel.id], type: .message, title: model.seed.subject)
+                \.mailbox, to: .init(id: uiModel.id, type: .message, title: model.seed.subject)
             )
         case .onSenderTap:
             senderActionTarget = uiModel

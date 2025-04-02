@@ -16,10 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import Testing
 
+@MainActor
 class PINLockStateStoreTests {
-
     var sut: PINLockStateStore!
     var output: [PINLockScreenOutput]!
 
@@ -32,61 +33,70 @@ class PINLockStateStoreTests {
         output = nil
         sut = nil
     }
-
+    
     @Test
-    func usersSignsOut() async {
-        await sut.handle(action: .signOutTapped)
-
-        sut.state.alert = .logOutConfirmation()
-
-        await sut.handle(action: .alertActionTapped(.signOut))
+    func usersSignsOut() throws {
+        sut.handle(action: .signOutTapped)
+        
+        #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
+        
+        let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOutConfirmationButton)
+        signOutAction.action()
 
         #expect(output == [.logOut])
     }
 
     @Test
-    func userResignSignOut() async {
-        await sut.handle(action: .signOutTapped)
+    func userResignSignOut() throws {
+        sut.handle(action: .signOutTapped)
 
-        sut.state.alert = .logOutConfirmation()
-
-        await sut.handle(action: .alertActionTapped(.cancel))
+        #expect(sut.state.alert ==  .logOutConfirmation(action: { _ in }))
+        
+        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
+        cancelAction.action()
 
         #expect(output == [])
     }
 
     @Test
-    func userSubmitsEmptyPin() async {
-        await sut.handle(action: .confirmTapped)
+    func userSubmitsEmptyPin() {
+        sut.handle(action: .confirmTapped)
         #expect(output == [])
     }
 
     @Test
-    func userSubmitsNonEmptyPin() async {
-        await sut.handle(action: .keyboardTapped(.digit(1)))
-        await sut.handle(action: .keyboardTapped(.digit(2)))
-        await sut.handle(action: .keyboardTapped(.digit(3)))
-        await sut.handle(action: .keyboardTapped(.digit(9)))
+    func userSubmitsNonEmptyPin() {
+        sut.handle(action: .keyboardTapped(.digit(1)))
+        sut.handle(action: .keyboardTapped(.digit(2)))
+        sut.handle(action: .keyboardTapped(.digit(3)))
+        sut.handle(action: .keyboardTapped(.digit(9)))
 
         #expect(sut.state.pin == "1239")
 
-        await sut.handle(action: .keyboardTapped(.delete))
+        sut.handle(action: .keyboardTapped(.delete))
 
         #expect(sut.state.pin == "123")
 
-        await sut.handle(action: .confirmTapped)
+        sut.handle(action: .confirmTapped)
 
         #expect(sut.state.pin.isEmpty)
         #expect(output == [.pin("123")])
     }
 
     @Test
-    func errorAppear() async {
-        await sut.handle(action: .error("Error"))
+    func errorAppear() {
+        sut.handle(action: .error("Error"))
         #expect(sut.state.error == "Error")
 
-        await sut.handle(action: .keyboardTapped(.digit(1)))
+        sut.handle(action: .keyboardTapped(.digit(1)))
         #expect(sut.state.error == nil)
     }
+}
 
+private extension PINLockState {
+    
+    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
+        try #require(alert?.actions.findFirst(for: string, by: \.title))
+    }
+    
 }

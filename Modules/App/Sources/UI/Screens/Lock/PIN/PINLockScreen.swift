@@ -89,7 +89,7 @@ struct PINLockScreen: View {
                     Button(
                         action: { store.handle(action: .confirmTapped) },
                         label: {
-                            Text(L10n.PINLock.confirmButtonTitle)
+                            Text(L10n.Common.confirm)
                                 .foregroundStyle(DS.Color.Text.inverted)
                         }
                     )
@@ -110,9 +110,7 @@ struct PINLockScreen: View {
             .onChange(of: error, { _, newValue in
                 store.handle(action: .error(newValue))
             })
-            .alert(model: $store.state.alert) { action in
-                store.handle(action: .alertActionTapped(action))
-            }
+            .alert(model: $store.state.alert)
         }
     }
 

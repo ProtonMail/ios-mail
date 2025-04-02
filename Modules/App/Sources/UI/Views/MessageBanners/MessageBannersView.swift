@@ -28,6 +28,7 @@ struct MessageBannersView: View {
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
         case spamMarkAsLegitimateTapped
+        case unblockSenderTapped
     }
     
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -57,7 +58,7 @@ struct MessageBannersView: View {
             switch type {
             case .blockedSender:
                 let button = Banner.Button(title: L10n.MessageBanner.blockedSenderAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.unblockSenderTapped)
                 }
                 
                 return .init(

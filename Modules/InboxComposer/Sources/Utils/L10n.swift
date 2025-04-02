@@ -209,6 +209,12 @@ enum L10n {
     }
 
     enum ComposerError {
+        static let addressDoesNotExist = LocalizedStringResource(
+            "The address does not exist",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Error shown when a non existing address is added as recipient."
+        )
+
         static func duplicateRecipient(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "Removed duplicate recipient: \(address)",
@@ -217,13 +223,13 @@ enum L10n {
             )
         }
 
-        static let draftSaveFailed =  LocalizedStringResource(
+        static let draftSaveFailed = LocalizedStringResource(
             "There was a problem saving the draft",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to save."
         )
 
-        static let draftDiscardFailed =  LocalizedStringResource(
+        static let draftDiscardFailed = LocalizedStringResource(
             "There was a problem discarding the draft",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to delete."

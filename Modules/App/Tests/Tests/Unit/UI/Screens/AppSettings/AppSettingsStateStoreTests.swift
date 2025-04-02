@@ -1,0 +1,100 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+@testable import ProtonMail
+import SwiftUI
+import Testing
+
+@MainActor
+class AppSettingsStateStoreTests {
+
+    var sut: AppSettingsStateStore!
+    var notificationCenterSpy: UserNotificationCenterSpy!
+    var urlOpenerSpy: URLOpenerSpy!
+    var bundleStub: BundleStub!
+
+    init() {
+        notificationCenterSpy = .init()
+        urlOpenerSpy = .init()
+        bundleStub = .init()
+        sut = AppSettingsStateStore(
+            state: .initial,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            mainBundle: bundleStub
+        )
+
+        bundleStub.preferredLocalizationsStub = ["en"]
+    }
+
+    deinit {
+        notificationCenterSpy = nil
+        urlOpenerSpy = nil
+        bundleStub = nil
+        sut = nil
+    }
+
+    @Test
+    func whenNotificationsButtonIsTapped_ItAskForNotificationsPermissions() async {
+        notificationCenterSpy.stubbedAuthorizationStatus = .notDetermined
+
+        await sut.handle(action: .notificationButtonTapped)
+
+        #expect(notificationCenterSpy.requestAuthorizationInvocations == [[.alert, .badge, .sound]])
+        #expect(urlOpenerSpy.openURLInvocations.isEmpty)
+    }
+
+    @Test
+    func whenNotificationsButtonIsTapped_ItOpensNativeSettings() async {
+        notificationCenterSpy.stubbedAuthorizationStatus = .authorized
+
+        await sut.handle(action: .notificationButtonTapped)
+
+        #expect(notificationCenterSpy.requestAuthorizationInvocations.isEmpty)
+        #expect(urlOpenerSpy.openURLInvocations == [.settings])
+    }
+
+    @Test
+    func whenViewLoads_ItRefreshesNotificationsStatusAndLangauge() async {
+        notificationCenterSpy.stubbedAuthorizationStatus = .authorized
+        bundleStub.preferredLocalizationsStub = ["pl"]
+
+        await sut.handle(action: .onLoad)
+
+        #expect(sut.state.areNotificationsEnabled)
+        #expect(sut.state.appLanguage == "Polish")
+    }
+
+    @Test
+    func whenAppearanceIsTapped_WhenAppearanceIsChnaged_ItUpdatesAppearance() async {
+        var setUserInterfaceStyleCalled: [UIUserInterfaceStyle] = []
+        AppInterfaceStyle.setUserInterfaceStyle = { style in
+            setUserInterfaceStyleCalled.append(style)
+        }
+
+        #expect(sut.state.appearance == .system)
+        #expect(sut.state.isAppearanceMenuShown == false)
+
+        await sut.handle(action: .appearanceTapped)
+        #expect(sut.state.isAppearanceMenuShown == true)
+
+        await sut.handle(action: .appearanceSelected(.darkMode))
+        #expect(sut.state.appearance == .darkMode)
+        #expect(setUserInterfaceStyleCalled == [.dark])
+    }
+
+}

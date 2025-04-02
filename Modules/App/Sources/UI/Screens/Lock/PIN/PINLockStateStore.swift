@@ -38,8 +38,12 @@ class PINLockStateStore: StateStore {
             output(.pin(state.pin))
             state = state.copy(\.pin, to: .empty)
         case .signOutTapped:
-            state = state.copy(\.alert, to: .logOutConfirmation())
+            let alert: AlertModel = .logOutConfirmation(
+                action: { [weak self] action in self?.handle(action: .alertActionTapped(action)) }
+            )
+            state = state.copy(\.alert, to: alert)
         case .alertActionTapped(let action):
+            state.alert = nil
             handleAlert(action: action)
         case .error(let error):
             state = state.copy(\.error, to: error)
@@ -71,14 +75,18 @@ class PINLockStateStore: StateStore {
     }
 }
 
-extension AlertViewModel {
-
-    static func logOutConfirmation() -> AlertViewModel<LogOutConformationAction> {
-        .init(
+extension AlertModel {
+    
+    static func logOutConfirmation(action: @escaping (LogOutConformationAction) -> Void) -> Self {
+        let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
+        }
+        
+        return .init(
             title: L10n.PINLock.signOutConfirmationTitle,
             message: nil,
-            actions: [.cancel, .signOut]
+            actions: actions
         )
     }
-
+    
 }

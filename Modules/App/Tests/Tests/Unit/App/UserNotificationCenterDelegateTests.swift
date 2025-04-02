@@ -61,7 +61,7 @@ final class UserNotificationCenterDelegateTests {
         mailSession.onPrimaryAccountChanged = nil
     }
 
-    @Test
+    @MainActor @Test
     func whenServicesAreSetUp_assignsItselfAsUserNotificationCenterDelegate() {
         sut.setUpService()
 
@@ -130,15 +130,6 @@ final class UserNotificationCenterDelegateTests {
         }
 
         return UNNotificationResponseStubFactory.makeResponse(content: content)
-    }
-}
-
-private class URLOpenerSpy: URLOpener {
-    private(set) var openURLInvocations: [URL] = []
-
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Bool {
-        openURLInvocations.append(url)
-        return true
     }
 }
 

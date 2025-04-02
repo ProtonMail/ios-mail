@@ -23,8 +23,20 @@ import SwiftUI
 class AppSettingsSnapshotTests: BaseTestCase {
 
     func testAppSettingsLayoutCorrectly() {
+        let sut = AppSettingsScreen(state: .init(
+            areNotificationsEnabled: false,
+            appLanguage: "English",
+            appearance: .system,
+            isAppearanceMenuShown: false
+        ))
         assertCustomHeightSnapshot(
-            matching: UIHostingController(rootView: AppSettingsScreen()).view,
+            matching: UIHostingController(rootView: sut).view,
+            styles: [.light],
+            preferredHeight: 900
+        )
+        assertCustomHeightSnapshot(
+            matching: UIHostingController(rootView: sut).view,
+            styles: [.dark],
             preferredHeight: 900
         )
     }

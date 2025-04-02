@@ -45,7 +45,7 @@ extension DraftUndoSendError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
-            return reason.errorMessage?.string
+            return reason.errorMessage.string
         case .other(let protonError):
             return protonError.errorDescription
         }
@@ -54,12 +54,36 @@ extension DraftUndoSendError: LocalizedError {
 
 private extension DraftUndoSendErrorReason {
 
-    var errorMessage: LocalizedStringResource? {
+    var errorMessage: LocalizedStringResource {
         switch self {
         case .messageCanNotBeUndoSent, .sendCanNoLongerBeUndone:
             L10n.Action.UndoSendError.sendCannotBeUndone
         case .messageIsNotADraft, .messageDoesNotExist:
             L10n.Action.UndoSendError.draftNotFound
+        }
+    }
+}
+
+extension PinSetError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let pinSetErrorReason):
+            return pinSetErrorReason.errorMessage.string
+        case .other(let protonError):
+            return protonError.localizedDescription
+        }
+    }
+}
+
+private extension PinSetErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .tooShort:
+            L10n.PINLock.Error.tooShort
+        case .tooLong:
+            L10n.PINLock.Error.tooLong
+        case .malformed:
+            L10n.PINLock.Error.malformed
         }
     }
 }

@@ -32,6 +32,7 @@ struct MailboxItemActionSheet: View {
     private let readActionPerformerActions: ReadActionPerformerActions
     private let deleteActions: DeleteActions
     private let moveToActions: MoveToActions
+    private let generalActions: GeneralActionsWrappers
     private let replyActions: ReplyActionsHandler
     private let mailUserSession: MailUserSession
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
@@ -44,6 +45,7 @@ struct MailboxItemActionSheet: View {
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
+        generalActions: GeneralActionsWrappers,
         replyActions: @escaping ReplyActionsHandler,
         mailUserSession: MailUserSession,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
@@ -55,6 +57,7 @@ struct MailboxItemActionSheet: View {
         self.readActionPerformerActions = readActionPerformerActions
         self.deleteActions = deleteActions
         self.moveToActions = moveToActions
+        self.generalActions = generalActions
         self.replyActions = replyActions
         self.mailUserSession = mailUserSession
         self.navigation = navigation
@@ -69,6 +72,7 @@ struct MailboxItemActionSheet: View {
             readActionPerformerActions: readActionPerformerActions,
             deleteActions: deleteActions,
             moveToActions: moveToActions,
+            generalActions: generalActions,
             mailUserSession: mailUserSession,
             toastStateStore: toastStateStore,
             navigation: navigation
@@ -82,15 +86,13 @@ struct MailboxItemActionSheet: View {
 
                         mailboxItemActionsSection(state: state, store: store)
                         moveToActionsSection(state: state, store: store)
-                        section(displayData: state.availableActions.generalActions.map(\.displayData))
+                        section(state: state, store: store)
                     }.padding(.all, DS.Spacing.large)
                 }
                 .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(state.title)
                 .navigationBarTitleDisplayMode(.inline)
-                .alert(model: store.binding(\.deleteConfirmationAlert)) { action in
-                    store.handle(action: .alertActionTapped(action))
-                }
+                .alert(model: store.binding(\.alert))
             }.onLoad { store.handle(action: .onLoad) }
         }
     }
@@ -135,25 +137,23 @@ struct MailboxItemActionSheet: View {
         }
     }
 
-    private func section(displayData: [ActionDisplayData]) -> some View {
+    private func section(
+        state: MailboxItemActionSheetState,
+        store: MailboxItemActionSheetStateStore
+    ) -> some View {
         ActionSheetSection {
-            ForEachLast(collection: displayData) { displayData, isLast in
+            ForEachLast(collection: state.availableActions.generalActions) { action, isLast in
                 ActionSheetImageButton(
-                    displayData: displayData,
+                    displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { toastStateStore.present(toast: .comingSoon) }
+                    action: { store.handle(action: .generalActionTapped(action)) }
                 )
             }
         }
     }
 
     private func replyButton(action: ReplyAction) -> some View {
-        guard let messageId = input.ids.first else {
-            let message = "messageId not found for reply action"
-            AppLogger.log(message: message, category: .composer)
-            fatalError(message)
-        }
-        return Button(action: { replyActions(messageId, action) }) {
+        Button(action: { replyActions(input.id, action) }) {
             VStack(spacing: DS.Spacing.standard) {
                 Image(action.displayData.image)
                     .resizable()
@@ -174,13 +174,14 @@ struct MailboxItemActionSheet: View {
 
 #Preview {
     MailboxItemActionSheet(
-        input: .init(ids: [], type: .message, title: "Hello there".notLocalized),
+        input: .init(id: .init(value: 42), type: .message, title: "Hello there".notLocalized),
         mailbox: .dummy,
         actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
         starActionPerformerActions: .dummy,
         readActionPerformerActions: .dummy,
         deleteActions: .dummy,
         moveToActions: .dummy,
+        generalActions: .dummy,
         replyActions: { _, _ in },
         mailUserSession: .dummy,
         navigation: { _ in }

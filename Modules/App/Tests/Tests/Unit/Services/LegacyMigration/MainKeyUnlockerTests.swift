@@ -31,27 +31,27 @@ final class MainKeyUnlockerTests {
     }
 
     @Test
-    func unlocksBiometricsProtectedMainKey() throws {
+    func unlocksBiometricsProtectedMainKey() async throws {
         try legacyKeychain.set(biometricsProtectedMainKey, forKey: .biometricsProtectedMainKey)
         try legacyKeychain.set(privateKey: secureEnclavePrivateKey, forLabel: .biometricProtection)
-        try #expect(sut.biometricsProtectedMainKey() == decryptedMainKey)
+        try await #expect(sut.biometricsProtectedMainKey() == decryptedMainKey)
     }
 
     @Test
-    func unlocksPinProtectedMainKey() throws {
+    func unlocksPinProtectedMainKey() async throws {
         try legacyKeychain.set(pinProtectedMainKey, forKey: .pinProtectedMainKey)
         try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
 
-        try #expect(sut.pinProtectedMainKey(pin: "1337") == decryptedMainKey)
+        try await #expect(sut.pinProtectedMainKey(pin: "1337") == decryptedMainKey)
     }
 
     @Test
-    func whenPinIsInvalid_decodingFailsToIndicateFailure() throws {
+    func whenPinIsInvalid_decodingFailsToIndicateFailure() async throws {
         try legacyKeychain.set(pinProtectedMainKey, forKey: .pinProtectedMainKey)
         try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
 
-        #expect(throws: DecodingError.self) {
-            try self.sut.pinProtectedMainKey(pin: "1111")
+        await #expect(throws: DecodingError.self) {
+            try await self.sut.pinProtectedMainKey(pin: "1111")
         }
     }
 }

@@ -23,8 +23,8 @@ import WebKit
 @MainActor
 class MessageBodyReaderViewTests {
     var sut: MessageBodyReaderView!
-    private var urlOpenerSpy: URLOpenerSpy!
-    
+    private var urlOpenerSpy: EnvironmentURLOpenerSpy!
+
     init() {
         urlOpenerSpy = .init()
         sut = MessageBodyReaderView(
@@ -94,7 +94,7 @@ private extension MessageBodyReaderView {
     }
 }
 
-private class URLOpenerSpy: URLOpenerProtocol {
+private class EnvironmentURLOpenerSpy: URLOpenerProtocol {
     private(set) var callAsFunctionInvokedWithURL: [URL] = []
 
     func callAsFunction(_ url: URL) {

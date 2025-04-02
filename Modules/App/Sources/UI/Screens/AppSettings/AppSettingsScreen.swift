@@ -15,12 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct AppSettingsScreen: View {
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @StateObject var store: AppSettingsStateStore
+
+    init(state: AppSettingsState = .initial) {
+        _store = .init(wrappedValue: .init(state: state))
+    }
 
     var body: some View {
         ZStack {
@@ -34,25 +42,20 @@ struct AppSettingsScreen: View {
                             FormBigButton(
                                 title: L10n.Settings.App.notifications,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: .readonly(get: { "Off" }),
-                                action: { comingSoon() }
+                                value: store.state.areNotificationsEnabledHumanReadable.string,
+                                action: { store.handle(action: .notificationButtonTapped) }
                             )
                             FormBigButton(
                                 title: L10n.Settings.App.language,
                                 icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: .readonly(get: { "English" }),
-                                action: { comingSoon() }
+                                value: store.state.appLanguage,
+                                action: { store.handle(action: .languageButtonTapped) }
                             )
-                            FormBigButton(
-                                title: L10n.Settings.App.appearance,
-                                icon: DS.SFSymbols.chevronUpChevronDown,
-                                value: .readonly(get: { "Dark mode" }),
-                                action: { comingSoon() }
-                            )
+                            appearanceButton
                             FormBigButton(
                                 title: L10n.Settings.App.protection,
                                 icon: DS.SFSymbols.chevronRight,
-                                value: .readonly(get: { "PIN code" }),
+                                value: "PIN code".notLocalized,
                                 action: { comingSoon() }
                             )
                             FormSwitchView(
@@ -87,6 +90,49 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
+        .onLoad {
+            store.handle(action: .onLoad)
+        }
+        .onChange(of: scenePhase, { _, newValue in
+            if newValue == .active {
+                store.handle(action: .enterForeground)
+            }
+        })
+    }
+
+    @ViewBuilder
+    private var appearanceButton: some View {
+        Menu(
+            content: {
+                ForEach(AppAppearance.allCases, id: \.self) { appearance in
+                    Button(action: {
+                        store.handle(action: .appearanceSelected(appearance))
+                    }) {
+                        HStack {
+                            Text(appearance.humanReadable)
+                            if appearance == store.state.appearance {
+                                Image(systemName: DS.SFSymbols.checkmark)
+                            }
+                        }
+                    }
+                }
+            },
+            label: {
+                FormBigButton(
+                    title: L10n.Settings.App.appearance,
+                    icon: DS.SFSymbols.chevronUpChevronDown,
+                    value: store.state.appearance.humanReadable.string,
+                    action: { store.handle(action: .appearanceTapped) }
+                )
+            }
+        )
+    }
+
+    private var isAppearanceMenuShown: Binding<Bool> {
+        .init(
+            get: { store.state.isAppearanceMenuShown },
+            set: { newValue in store.state = store.state.copy(\.isAppearanceMenuShown, to: newValue) }
+        )
     }
 
     private var comingSoonBinding: Binding<Bool> {
@@ -103,6 +149,30 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen()
+        AppSettingsScreen(state: .init(
+            areNotificationsEnabled: false,
+            appLanguage: .empty,
+            appearance: .system,
+            isAppearanceMenuShown: false
+        ))
     }
+}
+
+private extension AppAppearance {
+
+    var humanReadable: LocalizedStringResource {
+        switch self {
+        case .system:
+            L10n.Settings.App.system
+        case .darkMode:
+            L10n.Settings.App.dark
+        case .lightMode:
+            L10n.Settings.App.light
+        }
+    }
+
+    static var allCases: [Self] {
+        [.system, .darkMode, .lightMode]
+    }
+
 }

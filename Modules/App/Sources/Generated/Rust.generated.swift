@@ -323,6 +323,26 @@ public extension MailSessionAllMessagesWereSentResult {
         }
     }
 }
+public extension MailSessionAppProtectionResult {
+    func get() throws(UserSessionError) -> AppProtection {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionChangeAppSettingsResult {
+    func get() throws(UserSessionError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionGetAccountResult {
     func get() throws(UserSessionError) -> StoredAccount? {
         switch self {
@@ -355,6 +375,16 @@ public extension MailSessionGetAccountStateResult {
 }
 public extension MailSessionGetAccountsResult {
     func get() throws(UserSessionError) -> [StoredAccount] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionGetAppSettingsResult {
+    func get() throws(UserSessionError) -> AppSettings {
         switch self {
         case .ok(let value):
             value
@@ -413,6 +443,16 @@ public extension MailSessionGetUnsentMessagesIdsInQueueResult {
         }
     }
 }
+public extension MailSessionInitializedUserContextFromSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewLoginFlowResult {
     func get() throws(LoginError) -> LoginFlow {
         switch self {
@@ -428,6 +468,16 @@ public extension MailSessionResumeLoginFlowResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionSetPinCodeResult {
+    func get() throws(PinSetError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }

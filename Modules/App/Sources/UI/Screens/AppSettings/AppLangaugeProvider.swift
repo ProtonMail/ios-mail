@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-public protocol AlertActionViewModel: Hashable {
-    var title: LocalizedStringResource { get }
-    var buttonRole: ButtonRole { get }
-}
+struct AppLangaugeProvider {
+    private let currentLocale: Locale
+    private let mainBundle: Bundle
 
-public struct AlertViewModel<Action: AlertActionViewModel>: Equatable {
-    public let title: LocalizedStringResource
-    public let message: LocalizedStringResource?
-    public let actions: [Action]
+    init(currentLocale: Locale, mainBundle: Bundle) {
+        self.currentLocale = currentLocale
+        self.mainBundle = mainBundle
+    }
 
-    public init(title: LocalizedStringResource, message: LocalizedStringResource?, actions: [Action]) {
-        self.title = title
-        self.message = message
-        self.actions = actions
+    var appLangauge: String {
+        let languageCode = mainBundle.preferredLocalizations.first ?? currentLocale.language.languageCode!.identifier
+        return currentLocale.localizedString(forLanguageCode: languageCode) ?? languageCode
     }
 }

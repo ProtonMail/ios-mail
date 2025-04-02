@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,16 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
+import proton_app_uniffi
 
-extension AlertViewModel {
-
-    static func deleteConfirmation(itemsCount: Int) -> AlertViewModel<DeleteConfirmationAlertAction> {
-        .init(
-            title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
-            message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
-            actions: [.cancel, .delete]
-        )
+struct SenderUnblocker {
+    private let _unblockSender: @Sendable (_ addressID: ID) async -> VoidActionResult
+    
+    init(mailbox: Mailbox, wrapper: RustMessageBodyWrapper) {
+        _unblockSender = { addressID in await wrapper.unblockSender(mailbox, addressID) }
     }
-
+    
+    func unblock(withAddressID addressID: ID) async -> VoidActionResult {
+        await _unblockSender(addressID)
+    }
 }

@@ -18,25 +18,18 @@
 import InboxCoreUI
 import SwiftUI
 
-enum DeleteItemAlertAction: AlertActionViewModel {
-    case cancel
+enum DeleteItemAlertAction: AlertActionInfo, CaseIterable {
     case confirm
-
-    var title: LocalizedStringResource {
+    case cancel
+    
+    // MARK: - AlertActionInfo
+    
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
-        case .cancel:
-            L10n.Contacts.DeletionAlert.cancel
         case .confirm:
-            L10n.Contacts.DeletionAlert.delete
-        }
-    }
-
-    var buttonRole: ButtonRole {
-        switch self {
+            (L10n.Contacts.DeletionAlert.delete, .destructive)
         case .cancel:
-            return .cancel
-        case .confirm:
-            return .destructive
+            (L10n.Contacts.DeletionAlert.cancel, .cancel)
         }
     }
 }

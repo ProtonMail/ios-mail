@@ -18,7 +18,7 @@
 import Foundation
 import proton_app_uniffi
 
-enum AttachmentError: Hashable {
+enum AttachmentErrorAlertModel: Hashable {
     case overSizeLimit(origin: AttachmentErrorOrigin)
     case tooMany(origin: AttachmentErrorOrigin)
     case somethingWentWrong(origin: AttachmentErrorOrigin)
@@ -44,8 +44,8 @@ enum AttachmentError: Hashable {
     var message: LocalizedStringResource {
         switch self {
         case .overSizeLimit(let origin):
-            origin.count > 1
-            ? L10n.AttachmentError.multipleAttachmentOverSizeLimitMessage(count: origin.count)
+            origin.errorCount > 1
+            ? L10n.AttachmentError.multipleAttachmentOverSizeLimitMessage(count: origin.errorCount)
             : L10n.AttachmentError.singleAttachmentOverSizeLimitMessage
         case .tooMany:
             L10n.AttachmentError.tooManyAttachmentsMessage
@@ -71,7 +71,21 @@ enum AttachmentErrorOrigin: Hashable {
     case adding([AddAttachmentError])
     case uploading([UploadAttachmentError])
 
-    var count: Int {
+    var isAdding: Bool {
+        switch self {
+        case .adding: true
+        case .uploading: false
+        }
+    }
+
+    var isUploading: Bool {
+        switch self {
+        case .adding: false
+        case .uploading: true
+        }
+    }
+
+    var errorCount: Int {
         switch self {
         case .adding(let array):
             array.count
@@ -91,7 +105,7 @@ struct UploadAttachmentError: Identifiable, Hashable {
 struct AddAttachmentError: Identifiable, Hashable {
     let id: String
 
-    private init(timestamp: TimeInterval) {
+    init(timestamp: TimeInterval) {
         self.id = timestamp.description
     }
 

@@ -555,7 +555,7 @@
       }
     },
     "Are you sure you want to delete these %lld messages permanently?" : {
-      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "comment" : "Message of alert displayed after delete permanently action tap.",
       "localizations" : {
         "de" : {
           "variations" : {
@@ -875,7 +875,10 @@
       }
     },
     "Confirm" : {
-      "comment" : "Title of the button to confirm the pin code."
+      "comment" : "`Confirm` action title."
+    },
+    "Confirm phishing report" : {
+      "comment" : "Title of alert displayed after report phishing action tap."
     },
     "Contacts" : {
       "comment" : "Button in the sidebar menu that redirects a user to the contacts screen.",
@@ -1114,6 +1117,9 @@
         }
       }
     },
+    "Dark" : {
+      "comment" : "One of the appearance option to set in app settings."
+    },
     "Date" : {
       "comment" : "`Date` in the message details.",
       "localizations" : {
@@ -1173,7 +1179,7 @@
       }
     },
     "Delete %lld messages" : {
-      "comment" : "Title of alert action displayed after delete permanently action tap.",
+      "comment" : "Title of alert displayed after delete permanently action tap.",
       "localizations" : {
         "de" : {
           "variations" : {
@@ -1771,6 +1777,9 @@
     "Language" : {
       "comment" : "Language setting title in app settings."
     },
+    "Light" : {
+      "comment" : "One of the appearance option to set in app settings."
+    },
     "Location" : {
       "comment" : "`Location` in the message details.",
       "localizations" : {
@@ -2046,7 +2055,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mobile App Anpassung"
+            "value" : "Anpassung der mobilen App"
           }
         },
         "en" : {
@@ -2369,6 +2378,9 @@
     "Notifications help you keep on top of your inbox even when you’re in another app." : {
       "comment" : "Body of the authorization prompt"
     },
+    "Off" : {
+      "comment" : "Indicates that a feature is disabled and not functioning."
+    },
     "Official" : {
       "comment" : "Proton official badge title.",
       "localizations" : {
@@ -2397,6 +2409,9 @@
           }
         }
       }
+    },
+    "On" : {
+      "comment" : "Indicates that a feature is enabled and actively functioning."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
@@ -2491,6 +2506,12 @@
         }
       }
     },
+    "PIN is too long" : {
+      "comment" : "Error message when setting up PIN"
+    },
+    "PIN is too short" : {
+      "comment" : "Error message when setting up PIN"
+    },
     "Preferences" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -2584,6 +2605,12 @@
     "Protection" : {
       "comment" : "Protection setting title in app settings."
     },
+    "Proton Mail needs to connect to the server to finish initialization. Please ensure you have a good internet connection." : {
+      "comment" : "Error when the connection fails during session initialization."
+    },
+    "Provided value is not a valid PIN" : {
+      "comment" : "Error message when setting up PIN"
+    },
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."
     },
@@ -2676,6 +2703,9 @@
           }
         }
       }
+    },
+    "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." : {
+      "comment" : "Message of alert displayed after report phishing action tap."
     },
     "Reports are not end-to-end encrypted, please do not send any sensitive information." : {
       "comment" : "Report a problem screen, top information."
@@ -3177,6 +3207,9 @@
     },
     "Swipe to next email" : {
       "comment" : "Swipe to next email setting title in app settings."
+    },
+    "System" : {
+      "comment" : "One of the appearance option to set in app settings."
     },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field."

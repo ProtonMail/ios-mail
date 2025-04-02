@@ -15,4 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct AppSettingsState: Hashable {}
+import proton_app_uniffi
+import InboxCore
+import SwiftUI
+
+struct AppSettingsState: Hashable, Copying {
+    var areNotificationsEnabled: Bool
+    var appLanguage: String
+    var appearance: AppAppearance
+    var isAppearanceMenuShown: Bool
+}
+
+extension AppSettingsState {
+
+    static var initial: Self {
+        .init(
+            areNotificationsEnabled: false,
+            appLanguage: .empty,
+            appearance: .system, // FIXME: - Read the value from SDK
+            isAppearanceMenuShown: false
+        )
+    }
+
+    var areNotificationsEnabledHumanReadable: LocalizedStringResource {
+        areNotificationsEnabled ? L10n.Common.on : L10n.Common.off
+    }
+
+}

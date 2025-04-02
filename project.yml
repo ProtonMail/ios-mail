@@ -131,6 +131,7 @@ targets:
           - CFBundleTypeRole: Editor
             CFBundleURLName: ch.protonmail.protonmail
             CFBundleURLSchemes:
+              - mailto
               - protonmail
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES

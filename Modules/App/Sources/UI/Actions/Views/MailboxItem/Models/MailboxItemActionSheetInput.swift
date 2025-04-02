@@ -18,13 +18,7 @@
 import Foundation
 
 struct MailboxItemActionSheetInput: Hashable, Identifiable {
-    let ids: [ID]
+    let id: ID
     let type: MailboxItemType
     let title: String
-
-    // MARK: - Identifiable
-
-    var id: String {
-        title
-    }
 }

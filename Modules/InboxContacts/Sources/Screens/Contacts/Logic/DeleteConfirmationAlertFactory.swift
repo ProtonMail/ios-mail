@@ -19,9 +19,10 @@ import InboxCoreUI
 import proton_app_uniffi
 
 enum DeleteConfirmationAlertFactory {
-    static func make(for itemToDelete: ContactItemType) -> AlertViewModel<DeleteItemAlertAction> {
-        let actions: [DeleteItemAlertAction] = [.confirm, .cancel]
-
+    static func make(for itemToDelete: ContactItemType, action: @escaping (DeleteItemAlertAction) -> Void) -> AlertModel {
+        let actions: [AlertAction] = DeleteItemAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
+        }
         switch itemToDelete {
         case .contact(let contactItem):
             return .init(

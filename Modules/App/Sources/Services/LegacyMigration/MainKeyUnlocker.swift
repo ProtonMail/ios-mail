@@ -19,7 +19,7 @@ import CommonCrypto
 import Foundation
 import Scrypt
 
-struct MainKeyUnlocker {
+actor MainKeyUnlocker {
     enum MainKeyUnlockerError: Error {
         case missingKeychainData
         case privateKeyNotFound

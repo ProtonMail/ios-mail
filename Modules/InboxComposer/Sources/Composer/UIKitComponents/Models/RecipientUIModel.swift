@@ -90,6 +90,21 @@ extension Array where Element == RecipientUIModel {
     var selectedIndexes: Set<Int> {
         Set(enumerated().filter(\.element.isSelected).map(\.offset))
     }
+
+    func hasNewDoesNotExistAddressError(comparedTo oldArray: [RecipientUIModel]) -> Bool {
+        func extractAddressesThatDoNotExist(from array: [RecipientUIModel]) -> Set<String> {
+            return Set(array.compactMap { model in
+                if case let .single(singleRecipient) = model.composerRecipient,
+                   case .invalid(.doesNotExist) = singleRecipient.validState {
+                    return singleRecipient.address
+                }
+                return nil
+            })
+        }
+        let oldInvalidAddresses = extractAddressesThatDoNotExist(from: oldArray)
+        let newInvalidAddresses = extractAddressesThatDoNotExist(from: self)
+        return !newInvalidAddresses.subtracting(oldInvalidAddresses).isEmpty
+    }
 }
 
 private extension Bool {

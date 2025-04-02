@@ -28,6 +28,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionPerformer: DeleteActionPerformer
     private let moveToActionPerformer: MoveToActionPerformer
+    private let generalActionsPerformer: GeneralActionsPerformer
     private let toastStateStore: ToastStateStore
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
@@ -39,6 +40,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
         moveToActions: MoveToActions,
+        generalActions: GeneralActionsWrappers,
         mailUserSession: MailUserSession,
         toastStateStore: ToastStateStore,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
@@ -52,6 +54,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
+        self.generalActionsPerformer = .init(session: mailUserSession, generalActions: generalActions)
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
         self.navigation = navigation
@@ -68,33 +71,33 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .star:
                 performAction(
                     action: starActionPerformer.star,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .unstar:
                 performAction(
                     action: starActionPerformer.unstar,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .markRead:
                 performAction(
                     action: readActionPerformer.markAsRead,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: .dismiss
                 )
             case .markUnread:
                 performAction(
                     action: readActionPerformer.markAsUnread,
-                    ids: input.ids,
+                    ids: [input.id],
                     itemType: input.type,
                     navigation: input.type.dismissNavigation
                 )
             case .delete:
-                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
+                state = state.copy(\.alert, to: deleteConfirmationAlert)
             case .pin, .unpin:
                 break
             }
@@ -103,14 +106,30 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .moveTo:
                 navigation(.moveTo)
             case .permanentDelete:
-                state = state.copy(\.deleteConfirmationAlert, to: .deleteConfirmation(itemsCount: input.ids.count))
+                state = state.copy(\.alert, to: deleteConfirmationAlert)
             case .notSpam(let model), .system(let model):
-                performMoveToAction(destination: model, ids: input.ids, itemType: input.type)
+                performMoveToAction(destination: model, ids: [input.id], itemType: input.type)
             }
-        case .alertActionTapped(let action):
-            state = state.copy(\.deleteConfirmationAlert, to: nil)
+        case .generalActionTapped(let generalAction):
+            switch generalAction {
+            case .print, .saveAsPdf, .viewHeaders, .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
+                toastStateStore.present(toast: .comingSoon)
+            case .reportPhishing:
+                let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
+                    self?.handle(action: .phishingConfirmed(action))
+                })
+                
+                state = state.copy(\.alert, to: alert)
+            }
+        case .deleteConfirmed(let action):
+            state = state.copy(\.alert, to: nil)
             if case .delete = action {
-                performDeleteAction(itemsIDs: input.ids, itemType: input.type)
+                performDeleteAction(itemsIDs: [input.id], itemType: input.type)
+            }
+        case .phishingConfirmed(let action):
+            state = state.copy(\.alert, to: nil)
+            if case .confirm = action {
+                performMarkPhishing(itemType: input.type)
             }
         }
     }
@@ -150,6 +169,16 @@ class MailboxItemActionSheetStateStore: StateStore {
         }
     }
 
+    private func performMarkPhishing(itemType: MailboxItemType) {
+        Task {
+            if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.navigation(itemType.dismissNavigation)
+                }))
+            }
+        }
+    }
+
     private func performAction(
         action: ([ID], MailboxItemType, (() -> Void)?) -> Void,
         ids: [ID],
@@ -179,7 +208,7 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func loadActions() {
         Task {
-            let actions = await availableActionsProvider.actions(for: input.type, ids: input.ids)
+            let actions = await availableActionsProvider.actions(for: input.type, ids: [input.id])
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(actions: actions)
             }))
@@ -188,6 +217,13 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func update(actions: AvailableActions) {
         state = state.copy(\.availableActions, to: actions)
+    }
+    
+    private var deleteConfirmationAlert: AlertModel {
+        .deleteConfirmation(
+            itemsCount: 1,
+            action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
+        )
     }
 }
 

@@ -72,9 +72,7 @@ public struct ContactsScreen: View {
                 }
             }
         }
-        .alert(model: deletionAlert) { action in
-            store.handle(action: .onDeleteItemAlertAction(action))
-        }
+        .alert(model: deletionAlert)
         .searchable(
             text: $store.state.search.query,
             isPresented: $store.state.search.isActive,
@@ -95,8 +93,15 @@ public struct ContactsScreen: View {
         )
     }
 
-    private var deletionAlert: Binding<AlertViewModel<DeleteItemAlertAction>?> {
-        .readonly { store.state.itemToDelete.map(DeleteConfirmationAlertFactory.make) }
+    private var deletionAlert: Binding<AlertModel?> {
+        .readonly {
+            store.state.itemToDelete.map { itemType in
+                DeleteConfirmationAlertFactory.make(
+                    for: itemType,
+                    action: { action in store.handle(action: .onDeleteItemAlertAction(action)) }
+                )
+            }
+        }
     }
 }
 

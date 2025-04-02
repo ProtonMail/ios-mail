@@ -70,10 +70,6 @@ class MailUserSessionSpy: MailUserSessionProtocol {
         fatalError(#function)
     }
 
-    func initialize(cb: any MailUserSessionInitializationCallback) async -> VoidSessionResult {
-        fatalError(#function)
-    }
-
     func logout() async -> VoidSessionResult {
         fatalError(#function)
     }
