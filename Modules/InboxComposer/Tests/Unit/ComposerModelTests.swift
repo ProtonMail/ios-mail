@@ -139,7 +139,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.onLoad()
 
         XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentError().title)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
     }
 
     // MARK: startEditingRecipients
@@ -443,7 +443,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.addAttachments(selectedPhotosItems: [photo1])
 
         XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentError().title)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
@@ -465,7 +465,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.addAttachments(filePickerResult: .success([file1]))
 
         XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentError().title)
+        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 }
 

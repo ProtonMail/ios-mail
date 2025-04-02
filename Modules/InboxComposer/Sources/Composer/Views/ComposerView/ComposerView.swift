@@ -166,7 +166,7 @@ struct ComposerView: View {
     }
 
     @ViewBuilder
-    private func actionsForAttachmentAlert(error: AttachmentError) -> some View {
+    private func actionsForAttachmentAlert(error: AttachmentErrorAlertModel) -> some View {
         ForEach(error.actions) { action in
             Button(role: .cancel) {
                 if action.removeAttachment {

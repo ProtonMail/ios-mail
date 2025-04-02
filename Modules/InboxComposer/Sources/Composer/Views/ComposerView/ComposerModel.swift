@@ -298,7 +298,7 @@ final class ComposerModel: ObservableObject {
         Task { await draft.attachmentList().remove(id: attachmendId) }
     }
 
-    func removeAttachments(for error: AttachmentError) {
+    func removeAttachments(for error: AttachmentErrorAlertModel) {
         if case .uploading(let uploadAttachmentErrors) = error.origin {
             for attachment in uploadAttachmentErrors {
                 removeAttachment(id: attachment.attachmentId)

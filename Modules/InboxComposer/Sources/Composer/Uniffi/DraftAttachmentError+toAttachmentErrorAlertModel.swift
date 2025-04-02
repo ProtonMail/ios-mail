@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 extension DraftAttachmentError {
 
-    func toAttachmentError() -> AttachmentError {
+    func toAttachmentErrorAlertModel() -> AttachmentErrorAlertModel {
         switch self {
         case .reason(let reason):
             switch reason {

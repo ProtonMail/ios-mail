@@ -20,12 +20,12 @@ import SwiftUI
 
 final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
     @Published var isAlertPresented: Bool = false
-    private(set) var presentedError: AttachmentError? = nil
-    private let attachmentErrorState: AttachmentErrorState = .init()
+    private(set) var presentedError: AttachmentErrorAlertModel? = nil
+    private let attachmentErrorAlertState: AttachmentErrorAlertState = .init()
 
     init() {
         Task {
-            await attachmentErrorState.setOnErrorToPresent { [weak self] error in
+            await attachmentErrorAlertState.setOnErrorToPresent { [weak self] error in
                 DispatchQueue.main.async {
                     self?.presentedError = error
                     self?.isAlertPresented = true
@@ -35,98 +35,14 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
     }
 
     func enqueueAlertsForFailedAttachmentAdditions(errors: [DraftAttachmentError]) {
-        let attachmentErrors = aggregateAddingAttachmentErrors(errors)
-        Task { await attachmentErrorState.enqueue(attachmentErrors) }
+        Task { await attachmentErrorAlertState.enqueueAdditionErrors(errors) }
     }
 
     func enqueueAlertsForFailedAttachmentUploads(attachments: [DraftAttachment]) {
-        let attachmentErrors = aggregateUploadingAttachmentErrors(attachments)
-        Task { await attachmentErrorState.enqueue(attachmentErrors) }
+        Task { await attachmentErrorAlertState.enqueueAnyUploadError(attachments) }
     }
 
     func errorDismissedShowNextError() {
-        Task {
-            await attachmentErrorState.errorDismissedShowNextError()
-        }
-    }
-}
-
-extension AttachmentAlertState {
-
-    private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentError]) -> [AttachmentError] {
-        var attachmentTooLargeCount = 0
-        var tooManyAttachmentsCount = 0
-        var otherCount = 0
-
-        for error in errors {
-            switch error {
-            case .reason(let reason):
-                switch reason {
-                case .tooManyAttachments:
-                    tooManyAttachmentsCount += 1
-                case .attachmentTooLarge:
-                    attachmentTooLargeCount += 1
-                default:
-                    otherCount += 1
-                }
-            case .other:
-                otherCount += 1
-            }
-        }
-
-        var result = [AttachmentError]()
-        if attachmentTooLargeCount > 0 {
-            result.append(.overSizeLimit(origin: .adding(.defaultAddAttachmentError(count: attachmentTooLargeCount))))
-        }
-        if tooManyAttachmentsCount > 0 {
-            result.append(.tooMany(origin: .adding(.defaultAddAttachmentError(count: tooManyAttachmentsCount))))
-        }
-        if otherCount > 0 {
-            result.append(.somethingWentWrong(origin: .adding(.defaultAddAttachmentError(count: otherCount))))
-        }
-        return result
-    }
-
-    private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentError] {
-        var tooLargeFailures = [DraftAttachment]()
-        var tooManyAttachmentsFailures = [DraftAttachment]()
-        var otherFailures = [DraftAttachment]()
-
-        for attachment in attachments {
-            guard let error = attachment.state.attachmentError else { continue }
-
-            switch error {
-            case .reason(let reason):
-                switch reason {
-                case .tooManyAttachments:
-                    tooManyAttachmentsFailures.append(attachment)
-                case .attachmentTooLarge:
-                    tooLargeFailures.append(attachment)
-                default:
-                    otherFailures.append(attachment)
-                }
-            case .other:
-                otherFailures.append(attachment)
-            }
-        }
-
-        var result = [AttachmentError]()
-        if !tooLargeFailures.isEmpty {
-            result.append(.overSizeLimit(origin: .uploading(tooLargeFailures.map(\.toUploadAttachmentError))))
-        }
-        if !tooManyAttachmentsFailures.isEmpty {
-            result.append(.tooMany(origin: .uploading(tooManyAttachmentsFailures.map(\.toUploadAttachmentError))))
-        }
-        if !otherFailures.isEmpty {
-            result.append(.somethingWentWrong(origin: .uploading(otherFailures.map(\.toUploadAttachmentError))))
-        }
-        return result
-    }
-}
-
-extension DraftAttachment {
-
-    var toUploadAttachmentError: UploadAttachmentError {
-        UploadAttachmentError(name: attachment.name, attachmentId: attachment.id, errorTimeStamp: stateModifiedTimestamp)
+        Task { await attachmentErrorAlertState.errorDismissedShowNextError() }
     }
 }
