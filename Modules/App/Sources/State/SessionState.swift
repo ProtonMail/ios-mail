@@ -22,6 +22,7 @@ enum SessionState: Equatable {
     case noSession
     case activeSession(session: MailUserSession)
     case activeSessionTransition
+    case waitingForSessionInitialization
 
     var userSession: MailUserSession? {
         guard case .activeSession(let session) = self else { return nil }
@@ -33,6 +34,8 @@ enum SessionState: Equatable {
         case (.noSession, .noSession):
             return true
         case (.activeSessionTransition, .activeSessionTransition):
+            return true
+        case (.waitingForSessionInitialization, .waitingForSessionInitialization):
             return true
         case (.activeSession(let lhsSession), .activeSession(let rhsSession)):
             return lhsSession.sessionId() == rhsSession.sessionId()

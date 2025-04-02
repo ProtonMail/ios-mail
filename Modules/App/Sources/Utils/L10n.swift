@@ -665,6 +665,13 @@ enum L10n {
         )
     }
 
+    enum Session {
+        static let initializationDifficulties = LocalizedStringResource(
+            "Proton Mail needs to connect to the server to finish initialization. Please ensure you have a good internet connection.",
+            comment: "Error when the connection fails during session initialization."
+        )
+    }
+
     enum Settings {
         enum App {
             static let title = LocalizedStringResource(

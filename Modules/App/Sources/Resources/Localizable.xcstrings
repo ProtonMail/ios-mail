@@ -2605,6 +2605,9 @@
     "Protection" : {
       "comment" : "Protection setting title in app settings."
     },
+    "Proton Mail needs to connect to the server to finish initialization. Please ensure you have a good internet connection." : {
+      "comment" : "Error when the connection fails during session initialization."
+    },
     "Provided value is not a valid PIN" : {
       "comment" : "Error message when setting up PIN"
     },

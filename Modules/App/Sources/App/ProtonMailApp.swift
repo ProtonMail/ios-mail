@@ -119,6 +119,11 @@ private struct RootView: View {
 
                 case .activeSessionTransition:
                     EmptyView()
+                case .waitingForSessionInitialization:
+                    OperationInProgressView(
+                        text: nil,
+                        toast: .error(message: L10n.Session.initializationDifficulties.string)
+                    )
                 }
             }
             .transition(.opacity)
@@ -132,7 +137,7 @@ private struct RootView: View {
         case .checkingIfMigrationIsNeeded:
             EmptyView()
         case .inProgress:
-            MigrationInProgressView()
+            OperationInProgressView(text: L10n.LegacyMigration.migrationInProgress, toast: nil)
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(error: .constant(errorFromLatestAttempt)) { output in
                 switch output {
@@ -154,13 +159,26 @@ private struct RootView: View {
     }
 }
 
-private struct MigrationInProgressView: View {
+private struct OperationInProgressView: View {
+    let text: LocalizedStringResource?
+    let toast: Toast?
+
     var body: some View {
         ZStack(alignment: .center) {
             Color.clear
 
             ProgressView() {
-                Text(L10n.LegacyMigration.migrationInProgress)
+                if let text {
+                    Text(text)
+                }
+            }
+
+            if let toast {
+                VStack {
+                    Spacer()
+
+                    ToastView(model: toast) {}
+                }
             }
         }
     }

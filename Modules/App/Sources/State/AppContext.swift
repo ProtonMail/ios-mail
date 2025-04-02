@@ -69,6 +69,7 @@ final class AppContext: Sendable, ObservableObject {
         self.dependencies = dependencies
     }
 
+    @MainActor
     private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
 
@@ -87,12 +88,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            switch mailSession.userContextFromSession(session: currentSession) {
-            case .ok(let newUserSession):
-                withAnimation { sessionState = .activeSession(session: newUserSession) }
-            case .error(let error):
-                throw error
-            }
+            setupActiveUserSession(session: currentSession)
         }
     }
 }
@@ -127,9 +123,26 @@ extension AppContext: AccountAuthDelegate {
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
+        let start = ContinuousClock.now
+
         switch mailSession.userContextFromSession(session: session) {
         case .ok(let newUserSession):
             withAnimation { self.sessionState = .activeSession(session: newUserSession) }
+        case .error(.other(.network)):
+            AppLogger.log(
+                message: "Failed to initialize session due to network error, will retry...",
+                category: .userSessions,
+                isError: true
+            )
+
+            withAnimation { sessionState = .waitingForSessionInitialization }
+
+            Task {
+                let minimumTimeBetweenRetries = Duration.seconds(5)
+                let earliestNextAttemptTime = start + minimumTimeBetweenRetries
+                try! await Task.sleep(until: earliestNextAttemptTime)
+                setupActiveUserSession(session: session)
+            }
         case .error(let error):
             AppLogger.log(error: error, category: .userSessions)
         }

@@ -61,7 +61,7 @@ final class UserNotificationCenterDelegateTests {
         mailSession.onPrimaryAccountChanged = nil
     }
 
-    @Test
+    @MainActor @Test
     func whenServicesAreSetUp_assignsItselfAsUserNotificationCenterDelegate() {
         sut.setUpService()
 
