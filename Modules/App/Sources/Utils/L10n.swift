@@ -742,6 +742,22 @@ enum L10n {
                 "Bypass firewalls or network issues in case Proton sites are blocked.",
                 comment: "Alternative routing additional info in app settings."
             )
+            static let none = LocalizedStringResource(
+                "None",
+                comment: "App lock option."
+            )
+            static let faceID = LocalizedStringResource(
+                "Face ID",
+                comment: "App lock option."
+            )
+            static let touchID = LocalizedStringResource(
+                "Touch ID",
+                comment: "App lock option."
+            )
+            static let pinCode = LocalizedStringResource(
+                "PIN code",
+                comment: "App lock option."
+            )
         }
 
         static let subscription = LocalizedStringResource(

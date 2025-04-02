@@ -1561,6 +1561,9 @@
         }
       }
     },
+    "Face ID" : {
+      "comment" : "App lock option."
+    },
     "Failed to Send" : {
       "comment" : "Title of a tag displayed for each message that failed to send."
     },
@@ -2340,6 +2343,9 @@
         }
       }
     },
+    "None" : {
+      "comment" : "App lock option."
+    },
     "Not spam" : {
       "comment" : "Action title for moving a message out of `Spam` to `Inbox`\nAction title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
       "localizations" : {
@@ -2505,6 +2511,9 @@
           }
         }
       }
+    },
+    "PIN code" : {
+      "comment" : "App lock option."
     },
     "PIN is too long" : {
       "comment" : "Error message when setting up PIN"
@@ -3269,6 +3278,9 @@
           }
         }
       }
+    },
+    "Touch ID" : {
+      "comment" : "App lock option."
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",

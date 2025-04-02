@@ -191,11 +191,18 @@ private extension AppProtection {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .none:
-            "None"
+            L10n.Settings.App.none
         case .biometrics:
-            "Face ID" // FIXE: - Or touch ID. To update
+            switch Biometry.type {
+            case .faceID:
+                L10n.Settings.App.faceID
+            case .touchID:
+                L10n.Settings.App.touchID
+            case .none:
+                L10n.Settings.App.none
+            }
         case .pin:
-            "PIN code"
+            L10n.Settings.App.pinCode
         }
     }
 
