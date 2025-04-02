@@ -15,7 +15,8 @@ let package = Package(
     targets: [
         .target(
             name: "InboxCore",
-            dependencies: ["proton_app_uniffi"]
-        )
+            dependencies: ["proton_app_uniffi", "InboxCoreObjC"]
+        ),
+        .target(name: "InboxCoreObjC")
     ]
 )
