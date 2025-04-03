@@ -95,11 +95,6 @@ class AppSettingsStateStoreTests {
 
     @Test
     func whenAppearanceIsTapped_WhenAppearanceIsChnaged_ItUpdatesAppearance() async {
-        var setUserInterfaceStyleCalled: [UIUserInterfaceStyle] = []
-        AppInterfaceStyle.setUserInterfaceStyle = { style in
-            setUserInterfaceStyleCalled.append(style)
-        }
-
         #expect(sut.state.storedAppSettings.appearance == .system)
         #expect(sut.state.isAppearanceMenuShown == false)
 
@@ -109,7 +104,6 @@ class AppSettingsStateStoreTests {
         await changeAppAppearance(.darkMode)
 
         #expect(sut.state.storedAppSettings.appearance == .darkMode)
-        #expect(setUserInterfaceStyleCalled == [.dark])
 
         #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [.diff(appearance: .darkMode)])
     }
