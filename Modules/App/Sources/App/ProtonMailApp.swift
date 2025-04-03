@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
@@ -28,6 +29,7 @@ struct ProtonMailApp: App {
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
+    @StateObject var appAppearanceStore = AppAppearanceStore()
 
     var body: some Scene {
         WindowGroup {
@@ -37,7 +39,12 @@ struct ProtonMailApp: App {
                     .environmentObject(appUIStateStore)
                     .environmentObject(legacyMigrationStateStore)
                     .environmentObject(toastStateStore)
+                    .environmentObject(appAppearanceStore)
             }
+            .task {
+                await appAppearanceStore.updateColorScheme()
+            }
+            .preferredColorScheme(appAppearanceStore.colorScheme)
         }
         .onChange(of: scenePhase, { oldValue, newValue in
             // scenePhase contains an aggregate phase for all scenes

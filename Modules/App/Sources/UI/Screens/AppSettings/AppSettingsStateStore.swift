@@ -58,7 +58,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
             state = state.copy(\.isAppearanceMenuShown, to: true)
         case .appearanceSelected(let appearance):
             await update(setting: \.appearance, value: appearance)
-            AppInterfaceStyle.setUserInterfaceStyle(appearance.style)
         case .combinedContactsChanged(let value):
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):

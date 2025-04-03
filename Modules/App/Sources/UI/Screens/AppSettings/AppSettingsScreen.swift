@@ -24,6 +24,7 @@ import SwiftUI
 struct AppSettingsScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var appAppearanceStore: AppAppearanceStore
     @StateObject var store: AppSettingsStateStore
 
     init(state: AppSettingsState = .initial) {
@@ -96,6 +97,11 @@ struct AppSettingsScreen: View {
         .onChange(of: scenePhase, { _, newValue in
             if newValue == .active {
                 store.handle(action: .enterForeground)
+            }
+        })
+        .onChange(of: store.state.storedAppSettings.appearance, { _, _ in
+            Task {
+                await appAppearanceStore.updateColorScheme()
             }
         })
     }
