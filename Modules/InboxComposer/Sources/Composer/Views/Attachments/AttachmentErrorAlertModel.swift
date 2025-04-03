@@ -34,8 +34,13 @@ enum AttachmentErrorAlertModel: Hashable {
         switch self {
         case .overSizeLimit:
             L10n.AttachmentError.attachmentsOverSizeLimitTitle
-        case .tooMany:
-            L10n.AttachmentError.tooManyAttachmentsTitle
+        case .tooMany(let origin):
+            switch origin {
+            case .adding:
+                L10n.AttachmentError.tooManyAttachmentsTitle
+            case .uploading:
+                L10n.AttachmentError.tooManyAttachmentsFromServerTitle
+            }
         case .somethingWentWrong:
             L10n.AttachmentError.somethingWentWrongTitle
         }
@@ -48,7 +53,19 @@ enum AttachmentErrorAlertModel: Hashable {
             ? L10n.AttachmentError.multipleAttachmentOverSizeLimitMessage(count: origin.errorCount)
             : L10n.AttachmentError.singleAttachmentOverSizeLimitMessage
         case .tooMany:
-            L10n.AttachmentError.tooManyAttachmentsMessage
+            switch origin {
+            case .adding:
+                L10n.AttachmentError.tooManyAttachmentsMessage
+            case .uploading:
+                /**
+                 When the too many attachments error comes from the server, it could mean different things because of lack of granularity:
+                 - single attachment over 25 MB,
+                 - total attachment size over 25 MB,
+                 - total number of attachments over 100
+                 For this reason we go with a more generic message.
+                 */
+                L10n.AttachmentError.tooManyAttachmentsFromServerMessage
+            }
         case .somethingWentWrong:
             L10n.AttachmentError.somethingWentWrongMessage
         }

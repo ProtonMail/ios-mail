@@ -45,6 +45,9 @@
     "Attachment could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
     },
+    "Attachment limit" : {
+      "comment" : "Attachment failed because the total size was above the limit"
+    },
     "Attachments too big" : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
     },
@@ -271,6 +274,9 @@
     },
     "The recipient is unknown: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "The size limit for attachments is 25 MB." : {
+      "comment" : "Attachment failed because the total size was above the limit"
     },
     "There is a 25 MB limit on attachments per email and %lld attachments couldn't be added. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total attachment size is over the limit"

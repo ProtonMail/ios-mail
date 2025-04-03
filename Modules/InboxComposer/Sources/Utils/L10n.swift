@@ -186,6 +186,18 @@ enum L10n {
             comment: "Attachment failed because the total of number of attachments is over the limit"
         )
 
+        static let tooManyAttachmentsFromServerTitle = LocalizedStringResource(
+            "Attachment limit",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because the total size was above the limit"
+        )
+
+        static let tooManyAttachmentsFromServerMessage = LocalizedStringResource(
+            "The size limit for attachments is 25 MB.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because the total size was above the limit"
+        )
+
         static let somethingWentWrongTitle = LocalizedStringResource(
             "Something went wrong",
             bundle: .atURL(Bundle.module.bundleURL),

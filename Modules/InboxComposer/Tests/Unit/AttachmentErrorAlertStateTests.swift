@@ -66,14 +66,14 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testEnqueueAdditionErrors_whenSameErrorPassed_itShouldEnqueueTheSecondError() async {
-        let error = DraftAttachmentError.reason(.crypto)
+        let error = DraftAttachmentError.reason(.attachmentTooLarge)
 
         await sut.enqueueAdditionErrors([error])
         await sut.enqueueAdditionErrors([error])
 
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
-        #expect(errorToPresent?.title.string == L10n.AttachmentError.somethingWentWrongTitle.string)
+        #expect(errorToPresent?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
         #expect(pendingErrorCount == 1)
     }
 
@@ -98,7 +98,7 @@ final class AttachmentErrorAlertStateTests {
 
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
-        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsTitle.string)
+        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent!.origin.isUploading == true)
         #expect(errorToPresent?.origin.errorCount == 2)
         #expect(pendingErrorCount == 0)
@@ -133,7 +133,7 @@ final class AttachmentErrorAlertStateTests {
 
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
-        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsTitle.string)
+        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent?.origin.errorCount == 1)
         #expect(pendingErrorCount == 0)
     }
@@ -145,7 +145,7 @@ final class AttachmentErrorAlertStateTests {
 
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
-        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsTitle.string)
+        #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent?.origin.errorCount == 2)
         #expect(pendingErrorCount == 0)
     }
@@ -175,7 +175,7 @@ final class AttachmentErrorAlertStateTests {
         await sut.errorDismissedShowNextError()
 
         let errorToPresent2 = await sut.errorToPresent
-        #expect(errorToPresent2?.title.string == L10n.AttachmentError.tooManyAttachmentsTitle.string)
+        #expect(errorToPresent2?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
     }
 
     // MARK: onErrorToPresent
