@@ -34,12 +34,12 @@ class HomeScreenTests: BaseTestCase {
     private let appUIStateStore = AppUIStateStore()
     private let toastStateStore = ToastStateStore(initialState: .initial)
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
         userDefaults = .clearedTestInstance()
         sut = HomeScreen(
             appContext: .shared,
-            userSession: try .testInstance(),
+            userSession: try await .testInstance(),
             toastStateStore: toastStateStore
         )
     }
@@ -180,17 +180,17 @@ private extension InspectableView where View == ViewType.ClassifiedView {
 
 private extension MailUserSession {
 
-    static func testInstance() throws -> MailUserSession {
+    static func testInstance() async throws -> MailUserSession {
         let appContext = AppContext.shared
 
         guard let userSession = appContext.sessionState.userSession else {
-            return try newUserSession()
+            return try await newUserSession()
         }
 
         return userSession
     }
 
-    private static func newUserSession() throws -> MailUserSession {
+    private static func newUserSession() async throws -> MailUserSession {
         let applicationSupportFolder = FileManager.default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask)
             .first
@@ -229,7 +229,7 @@ private extension MailUserSession {
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 
-        switch mailSession.userContextFromSession(session: storedSession) {
+        switch await mailSession.userContextFromSession(session: storedSession) {
         case .ok(let mailUserSession):
             return mailUserSession
         case .error(let error):

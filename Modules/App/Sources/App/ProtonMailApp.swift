@@ -17,6 +17,7 @@
 
 import Combine
 import InboxCoreUI
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
@@ -125,12 +126,7 @@ private struct RootView: View {
                     .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
 
                 case .activeSessionTransition:
-                    EmptyView()
-                case .waitingForSessionInitialization:
-                    OperationInProgressView(
-                        text: nil,
-                        toast: .error(message: L10n.Session.initializationDifficulties.string)
-                    )
+                    SessionTransitionScreen()
                 }
             }
             .transition(.opacity)
@@ -144,7 +140,7 @@ private struct RootView: View {
         case .checkingIfMigrationIsNeeded:
             EmptyView()
         case .inProgress:
-            OperationInProgressView(text: L10n.LegacyMigration.migrationInProgress, toast: nil)
+            SessionTransitionScreen()
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(error: .constant(errorFromLatestAttempt)) { output in
                 switch output {
@@ -166,27 +162,70 @@ private struct RootView: View {
     }
 }
 
-private struct OperationInProgressView: View {
-    let text: LocalizedStringResource?
-    let toast: Toast?
+private struct SessionTransitionScreen: View {
+    @State private var showLoadingScreen = false
+
+    private let userDefaultsWithPromptsDisabled: UserDefaults = {
+        let userDefaults = UserDefaults(suiteName: "transition")!
+        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+        userDefaults[.notificationAuthorizationRequestDates] = [Date.now]
+        return userDefaults
+    }()
 
     var body: some View {
-        ZStack(alignment: .center) {
+        if showLoadingScreen {
+            ZStack {
+                fakeMailboxScreen
+
+                progressView
+            }
+        } else {
             Color.clear
-
-            ProgressView() {
-                if let text {
-                    Text(text)
+                .onLoad {
+                    Task {
+                        try await Task.sleep(for: .seconds(1))
+                        showLoadingScreen = true
+                    }
                 }
-            }
-
-            if let toast {
-                VStack {
-                    Spacer()
-
-                    ToastView(model: toast) {}
-                }
-            }
         }
+    }
+
+    private var fakeMailboxScreen: some View {
+        MailboxScreen(
+            mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
+            appRoute: .initialState,
+            notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
+            userSession: .init(noPointer: .init()),
+            userDefaults: userDefaultsWithPromptsDisabled,
+            draftPresenter: .dummy,
+            sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+        )
+        .blur(radius: 5)
+        .allowsHitTesting(false)
+    }
+
+    private var progressView: some View {
+        VStack(spacing: 0) {
+            ProtonSpinner()
+
+            Spacer()
+                .frame(height: DS.Spacing.huge)
+
+            Text(L10n.Session.Transition.title)
+                .font(.body)
+                .fontWeight(.bold)
+                .foregroundStyle(DS.Color.Text.norm)
+
+            Spacer()
+                .frame(height: DS.Spacing.mediumLight)
+
+            Text(L10n.Session.Transition.body)
+                .font(.callout)
+                .fontWeight(.regular)
+                .foregroundStyle(DS.Color.Text.weak)
+                .multilineTextAlignment(.center)
+        }
+        .offset(y: -50)
+        .padding(.horizontal, DS.Spacing.jumbo)
     }
 }

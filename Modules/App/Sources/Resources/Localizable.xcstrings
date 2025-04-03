@@ -1792,6 +1792,9 @@
     "Light" : {
       "comment" : "One of the appearance option to set in app settings."
     },
+    "Loading your mailbox..." : {
+      "comment" : "Text shown when user session is being initialized."
+    },
     "Location" : {
       "comment" : "`Location` in the message details.",
       "localizations" : {
@@ -2622,9 +2625,6 @@
     },
     "Protection" : {
       "comment" : "Protection setting title in app settings."
-    },
-    "Proton Mail needs to connect to the server to finish initialization. Please ensure you have a good internet connection." : {
-      "comment" : "Error when the connection fails during session initialization."
     },
     "Provided value is not a valid PIN" : {
       "comment" : "Error message when setting up PIN"
@@ -3543,6 +3543,9 @@
     },
     "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue." : {
       "comment" : "Event loop failed because an unexpected error."
+    },
+    "We’re almost there. Thanks for your patience!" : {
+      "comment" : "Text shown when user session is being initialized."
     },
     "You are currently offline, please try again with internet connection." : {
       "comment" : "Toast displayed after the report failed to send in offline."

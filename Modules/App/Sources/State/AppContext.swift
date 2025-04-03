@@ -88,7 +88,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            setupActiveUserSession(session: currentSession)
+            setupActiveUserSession(session: currentSession, pollEventsWhenFinished: false)
         }
     }
 }
@@ -108,41 +108,59 @@ extension AppContext {
                 // Needed for a smoother UI transition.
                 // Gives time to the AccountSwitcher for dismissing.
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.sessionChangeDelay) {
-                    withAnimation { self.sessionState = .activeSessionTransition }
-                    DispatchQueue.main.async {
-                        self.setupActiveUserSession(session: primaryAccountSession)
-                        self.pollEvents()
-                    }
+                    self.setupActiveUserSession(session: primaryAccountSession, pollEventsWhenFinished: true)
                 }
             }
             .store(in: &cancellables)
     }
 
     @MainActor
-    private func setupActiveUserSession(session: StoredSession) {
-        let start = ContinuousClock.now
+    private func setupActiveUserSession(session: StoredSession, pollEventsWhenFinished: Bool) {
+        animateTransition(into: .activeSessionTransition)
 
-        switch mailSession.userContextFromSession(session: session) {
-        case .ok(let newUserSession):
-            withAnimation { self.sessionState = .activeSession(session: newUserSession) }
-        case .error(.other(.network)):
-            AppLogger.log(
-                message: "Failed to initialize session due to network error, will retry...",
-                category: .userSessions,
-                isError: true
-            )
+        Task {
+            do {
+                if let newUserSession = try await self.initializeUserSession(session: session) {
+                     self.animateTransition(into: .activeSession(session: newUserSession))
 
-            withAnimation { sessionState = .waitingForSessionInitialization }
+                     if pollEventsWhenFinished {
+                        await self.pollEventsAsync()
+                     }
+                }
+            } catch {
+                AppLogger.log(error: error, category: .userSessions)
+            }
+        }
+    }
 
-            Task {
+    private func initializeUserSession(session: StoredSession) async throws -> MailUserSession? {
+        while !Task.isCancelled {
+            let start = ContinuousClock.now
+
+            switch await mailSession.userContextFromSession(session: session) {
+            case .ok(let newUserSession):
+                return newUserSession
+            case .error(.other(.network)):
+                AppLogger.log(
+                    message: "Failed to initialize session due to network error, will retry...",
+                    category: .userSessions,
+                    isError: true
+                )
+
                 let minimumTimeBetweenRetries = Duration.seconds(5)
                 let earliestNextAttemptTime = start + minimumTimeBetweenRetries
-                try! await Task.sleep(until: earliestNextAttemptTime)
-                setupActiveUserSession(session: session)
+                try await Task.sleep(until: earliestNextAttemptTime)
+            case .error(let error):
+                throw error
             }
-        case .error(let error):
-            AppLogger.log(error: error, category: .userSessions)
         }
+
+        return nil
+    }
+
+    @MainActor
+    private func animateTransition(into newSessionState: SessionState) {
+        withAnimation { sessionState = newSessionState }
     }
 }
 
