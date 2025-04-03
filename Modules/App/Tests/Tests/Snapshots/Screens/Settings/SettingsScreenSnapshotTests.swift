@@ -27,10 +27,12 @@ class SettingsScreenSnapshotTests: BaseTestCase {
 
     @MainActor
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
+        let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
+        store.colorScheme = nil
         let sut = SettingsScreen(
             state: .initial.copy(\.accountSettings, to: AccountDetails.testData.settings),
             mailUserSession: MailUserSessionStub(noPointer: .init())
-        ).environmentObject(AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) }))
+        ).environmentObject(store)
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
