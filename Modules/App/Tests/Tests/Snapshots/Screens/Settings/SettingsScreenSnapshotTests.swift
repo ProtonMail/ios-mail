@@ -25,11 +25,12 @@ import XCTest
 
 class SettingsScreenSnapshotTests: BaseTestCase {
 
+    @MainActor
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let sut = SettingsScreen(
             state: .initial.copy(\.accountSettings, to: AccountDetails.testData.settings),
             mailUserSession: MailUserSessionStub(noPointer: .init())
-        )
+        ).environmentObject(AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) }))
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
