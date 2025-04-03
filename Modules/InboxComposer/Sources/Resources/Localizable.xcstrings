@@ -30,6 +30,9 @@
         }
       }
     },
+    "Access to the camera was disabled. Please go to Settings and enable the camera permission." : {
+      "comment" : "Alert shown if permission to camera is denied when trying to use it for attachments."
+    },
     "Add attachments" : {
       "comment" : "Attachments action sheet title."
     },
@@ -44,6 +47,9 @@
     },
     "Attachments too big" : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
+    },
+    "Camera" : {
+      "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
     },
     "Cancel" : {
       "comment" : "Cancellation for the remove attachment action in a Draft."

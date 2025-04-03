@@ -121,6 +121,18 @@ enum L10n {
             comment: "Attachment failed to be added to a draft message."
         )
 
+        static let cameraAccessDeniedTitle = LocalizedStringResource(
+            "Camera",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Alert title shown if permission to camera is denied when trying to use it for attachments."
+        )
+
+        static let cameraAccessDeniedMessage = LocalizedStringResource(
+            "Access to the camera was disabled. Please go to Settings and enable the camera permission.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Alert shown if permission to camera is denied when trying to use it for attachments."
+        )
+
         static let someAttachmentCouldNotBeAdded = LocalizedStringResource(
             "Some attachmentments could not be added",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -138,7 +150,6 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Cancellation for the remove attachment action in a Draft."
         )
-
     }
 
     enum AttachmentError {

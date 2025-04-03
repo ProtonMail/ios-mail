@@ -21,6 +21,7 @@ import SwiftUI
 
 struct AttachmentSourcePickerSheet: View {
     @Environment(\.dismiss) var dismiss
+    @ObservedObject private var model: AttachmentSourcePickerSheetModel = .init()
     private let options: [AttachmentSource] = [.photoGallery, .camera, .files]
     var onSelection: (AttachmentSource) -> Void
 
@@ -30,8 +31,14 @@ struct AttachmentSourcePickerSheet: View {
                 VStack(spacing: .zero) {
                     ForEach(options) { option in
                         listItemView(image: option.image, title: option.title, separator: option != options.last) {
-                            onSelection(option)
-                            dismiss()
+                            if model.isAuthorized(source: option) {
+                                onSelection(option)
+                                dismiss()
+                            } else {
+                                if option == .camera {
+                                    model.setAlertModelForMissingCameraPermission()
+                                }
+                            }
                         }
                     }
                 }
@@ -42,6 +49,7 @@ struct AttachmentSourcePickerSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .background(DS.Color.BackgroundInverted.norm)
         }
+        .alert(model: $model.alertModel)
         .presentationDetents([.fraction(0.4)])
     }
 
