@@ -40,17 +40,12 @@ private extension Optional where Wrapped == ColorScheme {
 
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
-        case .none:
+        case .some(.light):
+            .light
+        case .some(.dark):
+            .dark
+        default:
             .unspecified
-        case .some(let value):
-            switch value {
-            case .light:
-                .light
-            case .dark:
-                .dark
-            @unknown default:
-                .unspecified
-            }
         }
     }
 

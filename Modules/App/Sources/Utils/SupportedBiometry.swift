@@ -17,7 +17,7 @@
 
 import LocalAuthentication
 
-enum Biometry {
+enum SupportedBiometry {
     enum `Type` {
         case none
         case touchID
@@ -26,9 +26,7 @@ enum Biometry {
 
     static var type: `Type` {
         let context = LAContext()
-        var error: NSError?
-
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             switch context.biometryType {
             case .faceID:
                 return .faceID

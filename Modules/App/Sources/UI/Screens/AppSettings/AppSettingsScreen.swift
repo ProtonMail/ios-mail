@@ -199,7 +199,7 @@ private extension AppProtection {
         case .none:
             L10n.Settings.App.none
         case .biometrics:
-            switch Biometry.type {
+            switch SupportedBiometry.type {
             case .faceID:
                 L10n.Settings.App.faceID
             case .touchID:

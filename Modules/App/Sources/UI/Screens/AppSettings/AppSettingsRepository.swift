@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 protocol AppSettingsRepository {
     func getAppSettings() async -> MailSessionGetAppSettingsResult
-    func changeAppSettings(settings: AppSettingsDiff) async  -> MailSessionChangeAppSettingsResult
+    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult
 }
 
 extension MailSession: AppSettingsRepository {}
