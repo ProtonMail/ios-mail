@@ -69,7 +69,7 @@ struct MessageBannersView: View {
                 )
             case .phishingAttempt:
                 let button = Banner.Button(title: L10n.MessageBanner.phishingAttemptAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.markAsLegitimateTapped)
                 }
                 
                 return .init(
