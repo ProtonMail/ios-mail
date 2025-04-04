@@ -185,7 +185,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `markAsLegitimate` action
     
     @Test
-    func testState_WhenMarkAsLegitimateActionSucceeds_ItMarksMessageAsNotSpamAndFetchesBodyWithLastOptions() async {
+    func testState_WhenMarkAsLegitimateActionSucceeds_ItMarksMessageHamAndFetchesBodyWithLastOptions() async {
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -194,7 +194,7 @@ final class MessageBodyStateStoreTests {
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
-        wrapperSpy.stubbedMarkAsNotSpamResult = .ok
+        wrapperSpy.stubbedMarkMessageHamResult = .ok
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .displayEmbeddedImages)
@@ -214,7 +214,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .markAsLegitimate)
         
-        #expect(wrapperSpy.markAsNotSpamMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamWithMessageIDs == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
@@ -238,7 +238,7 @@ final class MessageBodyStateStoreTests {
         let expectedActionError: ActionError = .other(.network)
         
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
-        wrapperSpy.stubbedMarkAsNotSpamResult = .error(expectedActionError)
+        wrapperSpy.stubbedMarkMessageHamResult = .error(expectedActionError)
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .displayEmbeddedImages)
@@ -258,7 +258,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .markAsLegitimate)
         
-        #expect(wrapperSpy.markAsNotSpamMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamWithMessageIDs == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
@@ -436,8 +436,8 @@ private class RustWrappersSpy {
     var stubbedMessageBodyResult: GetMessageBodyResult!
     var messageBodyMessageIDs: [ID] = []
     
-    var stubbedMarkAsNotSpamResult: VoidActionResult = .ok
-    var markAsNotSpamMessageIDs: [ID] = []
+    var stubbedMarkMessageHamResult: VoidActionResult = .ok
+    var markMessageHamWithMessageIDs: [ID] = []
 
     var stubbedUnblockSenderResult: VoidActionResult = .ok
     var unblockSenderAddressIDs: [ID] = []
@@ -448,8 +448,8 @@ private class RustWrappersSpy {
             return stubbedMessageBodyResult
         },
         markMessageHam: { [unowned self] _, messageID in
-            markAsNotSpamMessageIDs.append(messageID)
-            return stubbedMarkAsNotSpamResult
+            markMessageHamWithMessageIDs.append(messageID)
+            return stubbedMarkMessageHamResult
         },
         unblockSender: { [unowned self] _, addressID in
             unblockSenderAddressIDs.append(addressID)
