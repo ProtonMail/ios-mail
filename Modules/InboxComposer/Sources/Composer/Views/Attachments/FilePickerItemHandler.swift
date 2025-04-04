@@ -54,24 +54,16 @@ struct FilePickerItemHandler {
     private func copyFilePickerItems(files: [URL], destinationFolder: URL) -> AsyncStream<Result<URL, Error>> {
         return AsyncStream { continuation in
             Task {
-                await withTaskGroup(of: Result<URL, Error>.self) { group in
-                    for file in files {
-                        group.addTask {
-                            do {
-                                let copiedFile = try self.copySecurityScoped(file: file, to: destinationFolder)
-                                return .success(copiedFile)
-                            } catch {
-                                AppLogger.log(error: error, category: .composer)
-                                return .failure(error)
-                            }
-                        }
+                for file in files {
+                    do {
+                        let copiedFile = try copySecurityScoped(file: file, to: destinationFolder)
+                        continuation.yield(.success(copiedFile))
+                    } catch {
+                        AppLogger.log(error: error, category: .composer)
+                        continuation.yield(.failure(error))
                     }
-
-                    for await result in group {
-                        continuation.yield(result)
-                    }
-                    continuation.finish()
                 }
+                continuation.finish()
             }
         }
     }
