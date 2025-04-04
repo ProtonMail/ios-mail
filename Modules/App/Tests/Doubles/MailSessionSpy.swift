@@ -158,7 +158,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult {
-        fatalError(#function)
+        .ok
     }
 
     func setPinCode(pin: Data) async -> MailSessionSetPinCodeResult {

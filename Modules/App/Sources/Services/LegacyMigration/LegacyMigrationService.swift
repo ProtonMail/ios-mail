@@ -269,8 +269,7 @@ actor LegacyMigrationService {
         do {
             switch protectionPreference {
             case .biometrics:
-                // TODO: tell the SDK to expect biometric protection
-                break
+                try await mailSession.setBiometricsAppProtection().get()
             case .pin(let pinString):
                 // TODO: consider having the PINLockScreen provide an array of digits in the first place
                 let pinDigits = pinString.map { UInt8(String($0)).unsafelyUnwrapped }
