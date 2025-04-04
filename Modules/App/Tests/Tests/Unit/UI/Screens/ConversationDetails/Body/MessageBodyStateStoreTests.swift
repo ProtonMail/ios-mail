@@ -182,10 +182,10 @@ final class MessageBodyStateStoreTests {
         )))
     }
     
-    // MARK: - `markAsLegitimateSpam` action
+    // MARK: - `markAsLegitimate` action
     
     @Test
-    func testState_WhenSpamMarkAsLegitimateActionSucceeds_ItMarksMessageAsNotSpamAndFetchesBodyWithLastOptions() async {
+    func testState_WhenMarkAsLegitimateActionSucceeds_ItMarksMessageAsNotSpamAndFetchesBodyWithLastOptions() async {
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -212,7 +212,7 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        await sut.handle(action: .spamMarkAsLegitimate)
+        await sut.handle(action: .markAsLegitimate)
         
         #expect(wrapperSpy.markAsNotSpamMessageIDs == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
@@ -256,7 +256,7 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        await sut.handle(action: .spamMarkAsLegitimate)
+        await sut.handle(action: .markAsLegitimate)
         
         #expect(wrapperSpy.markAsNotSpamMessageIDs == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)

@@ -32,7 +32,7 @@ final class MessageBodyStateStore: StateStore {
         case onLoad
         case displayEmbeddedImages
         case downloadRemoteContent
-        case spamMarkAsLegitimate
+        case markAsLegitimate
         case unblockSender(addressID: ID)
     }
 
@@ -70,7 +70,7 @@ final class MessageBodyStateStore: StateStore {
                 
                 await loadMessageBody(with: updatedOptions)
             }
-        case .spamMarkAsLegitimate:
+        case .markAsLegitimate:
             if case let .loaded(body) = state {
                 await markAsNotSpam(with: body.html.options)
             }
