@@ -30,9 +30,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private let notificationScheduller: NotificationScheduler
     private let actionQueueStatusProvider: ActionQueueStatusProvider
 
-    private lazy var callback = LiveQueryCallbackWrapper { [weak self] in
-        Self.log("All actions executed, ending task")
-        Self.log("Handle present: \(self?.backgroundExecutionHandle != nil)?")
+    private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] completionStatus in
+        Self.log("All actions executed, with result: \(completionStatus)")
         self?.endBackgroundTask()
     }
 
@@ -56,8 +55,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     func becomeActiveService() {
         guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
-            Self.log("[Broken] Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
-            Self.log("[Broken] Handle present: \(self.backgroundExecutionHandle != nil)?")
+            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+            Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
         }
         Task {
@@ -107,8 +106,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     private func endBackgroundTask() {
         guard let backgroundTaskIdentifier else {
-            Self.log("[Broken] Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
-            Self.log("[Broken] Handle present: \(self.backgroundExecutionHandle != nil)?")
+            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+            Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
         }
         Task {
@@ -176,7 +175,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private static func log(_ message: String) {
         Task {
             let message = "\(message), time left: \(await UIApplication.shared.backgroundTimeRemaining)"
-            AppLogger.log(message: message, category: .thritySecondsBackgroundTask)
+            AppLogger.log(message: message, category: .thirtySecondsBackgroundTask)
         }
     }
 

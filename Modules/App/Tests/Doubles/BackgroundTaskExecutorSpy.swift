@@ -27,11 +27,13 @@ class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
 
     // MARK: - BackgroundTaskExecutor
 
-    func startBackgroundExecution(callback: LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
+    func startBackgroundExecution(callback: BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
         startBackgroundExecutionInvokeCount += 1
 
         if backgroundExecutionFinishedWithSuccess {
-            callback.onUpdate()
+            Task {
+                await callback.onExecutionCompleted(status: .executed)
+            }
         }
 
         return .ok(backgroundExecutionHandleStub)

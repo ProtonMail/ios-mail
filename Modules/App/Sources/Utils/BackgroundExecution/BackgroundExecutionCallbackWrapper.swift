@@ -17,9 +17,14 @@
 
 import proton_app_uniffi
 
-protocol BackgroundTaskExecutor {
-    func startBackgroundExecution(callback: BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult
-    func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult
-}
+final class BackgroundExecutionCallbackWrapper: BackgroundExecutionCallback, Sendable {
+    let callback: @Sendable (BackgroundExecutionStatus) -> Void
 
-extension MailSession: BackgroundTaskExecutor {}
+    init(callback: @escaping @Sendable (BackgroundExecutionStatus) -> Void) {
+        self.callback = callback
+    }
+
+    func onExecutionCompleted(status: BackgroundExecutionStatus) async {
+        callback(status)
+    }
+}

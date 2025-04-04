@@ -463,11 +463,31 @@ public extension MailSessionNewLoginFlowResult {
         }
     }
 }
+public extension MailSessionRemainingPinAttemptsResult {
+    func get() throws(UserSessionError) -> UInt32? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionResumeLoginFlowResult {
     func get() throws(LoginError) -> LoginFlow {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionSetBiometricsAppProtectionResult {
+    func get() throws(UserSessionError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
@@ -488,6 +508,26 @@ public extension MailSessionStartBackgroundExecutionResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionStartBackgroundExecutionWithDurationResult {
+    func get() throws(UserSessionError) -> BackgroundExecutionHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionUnsetBiometricsAppProtectionResult {
+    func get() throws(UserSessionError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }

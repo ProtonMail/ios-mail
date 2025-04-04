@@ -202,4 +202,27 @@ final class MailSessionSpy: MailSessionProtocol {
 
         return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noPointer: .init())))
     }
+
+    func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {
+        fatalError()
+    }
+
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult {
+        fatalError()
+    }
+
+    func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
+        fatalError()
+    }
+
+    func startBackgroundExecutionWithDuration(
+        durationSeconds: UInt64,
+        callback: any BackgroundExecutionCallback
+    ) -> MailSessionStartBackgroundExecutionWithDurationResult {
+        fatalError()
+    }
+
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult {
+        fatalError()
+    }
 }

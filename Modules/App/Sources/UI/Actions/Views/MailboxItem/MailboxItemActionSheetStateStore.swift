@@ -54,7 +54,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
-        self.generalActionsPerformer = .init(session: mailUserSession, generalActions: generalActions)
+        self.generalActionsPerformer = .init(mailbox: mailbox, generalActions: generalActions)
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
         self.navigation = navigation
