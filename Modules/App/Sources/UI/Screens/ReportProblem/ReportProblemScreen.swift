@@ -92,7 +92,7 @@ struct ReportProblemScreen: View {
             .onAppear {
                 isSummaryFocused = true
             }
-            .interactiveDismissDisabled(state.isLoading)
+            .interactiveDismissDisabled(true)
         }
     }
 
