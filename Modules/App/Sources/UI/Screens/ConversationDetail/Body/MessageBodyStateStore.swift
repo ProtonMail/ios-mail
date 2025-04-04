@@ -72,7 +72,7 @@ final class MessageBodyStateStore: StateStore {
             }
         case .markAsLegitimate:
             if case let .loaded(body) = state {
-                await markAsNotSpam(with: body.html.options)
+                await markAsLegitimate(with: body.html.options)
             }
         case .unblockSender(let addressID):
             if case let .loaded(body) = state {
@@ -96,8 +96,8 @@ final class MessageBodyStateStore: StateStore {
     }
     
     @MainActor
-    private func markAsNotSpam(with options: TransformOpts) async {
-        switch await legitMessageMarker.markAsNotSpam(forMessageID: messageID) {
+    private func markAsLegitimate(with options: TransformOpts) async {
+        switch await legitMessageMarker.markAsLegitimate(forMessageID: messageID) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

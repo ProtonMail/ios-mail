@@ -24,7 +24,7 @@ struct LegitMessageMarker {
         self.markMessageHam = { messageID in await wrapper.markMessageHam(mailbox, messageID) }
     }
 
-    func markAsNotSpam(forMessageID messageID: ID) async -> VoidActionResult {
+    func markAsLegitimate(forMessageID messageID: ID) async -> VoidActionResult {
         await markMessageHam(messageID)
     }
 }
