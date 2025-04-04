@@ -18,13 +18,11 @@
 import LocalAuthentication
 
 enum SupportedBiometry {
-    enum `Type` {
-        case none
-        case touchID
-        case faceID
-    }
+    case none
+    case touchID
+    case faceID
 
-    static var type: `Type` {
+    static var type: Self {
         let context = LAContext()
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             switch context.biometryType {
