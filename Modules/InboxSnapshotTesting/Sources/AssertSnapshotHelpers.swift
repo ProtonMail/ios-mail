@@ -115,6 +115,7 @@ public func assertCustomHeightSnapshot(
 public func assertSnapshotsOnIPhoneX(
     of view: some View,
     named name: String? = nil,
+    styles: [UIUserInterfaceStyle] = [.light, .dark],
     drawHierarchyInKeyWindow: Bool = false,
     precision: Float = 1,
     record recording: Bool = false,
@@ -123,7 +124,6 @@ public func assertSnapshotsOnIPhoneX(
     testName: String = #function,
     line: UInt = #line
 ) {
-    let styles: [UIUserInterfaceStyle] = [.light, .dark]
     styles.forEach { style in
         assertSnapshotOnIPhoneX(
             of: UIHostingController(rootView: view),
