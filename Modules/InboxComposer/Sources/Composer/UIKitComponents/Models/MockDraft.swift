@@ -163,12 +163,17 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked
         addedRecipients
     }
 
-    func removeGroup(groupName: String) {}
+    func removeGroup(groupName: String) -> RemoveRecipientError {
+        .ok
+    }
 
-    func removeRecipientFromGroup(groupName: String, email: String) {}
+    func removeRecipientFromGroup(groupName: String, email: String) -> RemoveRecipientError {
+        .ok
+    }
 
-    func removeSingleRecipient(email: String) {
+    func removeSingleRecipient(email: String) -> RemoveRecipientError {
         addedRecipients.removeAll(where: { !$0.isGroup && $0.singleRecipient?.address == email })
+        return .ok
     }
 
     func setCallback(cb: ComposerRecipientValidationCallback) {

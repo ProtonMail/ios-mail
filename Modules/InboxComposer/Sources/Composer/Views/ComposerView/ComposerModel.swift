@@ -433,15 +433,27 @@ extension ComposerModel {
     private func removeRecipients(for draft: AppDraftProtocol, group: RecipientGroupType, recipients uiModels: [RecipientUIModel]) {
         let recipientList = recipientList(from: draft, group: group)
         for uiModel in uiModels {
+            let result: RemoveRecipientError
             switch uiModel.composerRecipient {
             case .single(let single):
-                recipientList.removeSingleRecipient(email: single.address)
+                result = recipientList.removeSingleRecipient(email: single.address)
             case .group(let group):
-                recipientList.removeGroup(groupName: group.displayName)
+                result = recipientList.removeGroup(groupName: group.displayName)
             }
+            showToastIfError(result: result)
         }
         let uiModelsAfterRemove = recipientUIModels(from: draft, for: group)
         state.updateRecipientState(for: group) { $0.recipients = uiModelsAfterRemove }
+    }
+
+    private func showToastIfError(result: RemoveRecipientError) {
+        switch result {
+        case .ok:
+            return
+        case .emptyGroupName, .saveFailed:
+            AppLogger.log(message: "remove recipient error \(result)", category: .composer, isError: true)
+            showToast(.error(message: result.localizedErrorMessage().string))
+        }
     }
 
     private func endEditing(group: RecipientFieldState) -> RecipientFieldState {
