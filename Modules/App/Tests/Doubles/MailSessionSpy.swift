@@ -36,10 +36,6 @@ final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
-    func pauseWorkAndWait() {
-        fatalError()
-    }
-
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
         fatalError(#function)
     }
@@ -54,6 +50,10 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func deleteAccount(userId: String) async -> VoidSessionResult {
+        fatalError(#function)
+    }
+
+    func deletePinCode(pin: Data) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
         fatalError(#function)
     }
 
@@ -125,6 +125,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func initializedUserContextFromSession(session: StoredSession) -> MailSessionInitializedUserContextFromSessionResult {
+        fatalError(#function)
+    }
+
     func logoutAccount(userId: String) async -> VoidSessionResult {
         fatalError(#function)
     }
@@ -137,11 +141,23 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func pauseWorkAndWait() {
+        fatalError(#function)
+    }
+
+    func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {
+        fatalError(#function)
+    }
+
     func resumeLoginFlow(userId: String, sessionId: String) async -> MailSessionResumeLoginFlowResult {
         fatalError(#function)
     }
 
     func resumeWork() {
+        fatalError(#function)
+    }
+
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult {
         fatalError(#function)
     }
 
@@ -160,28 +176,30 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
+    func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
+        fatalError()
+    }
+
+    func startBackgroundExecutionWithDuration(
+        durationSeconds: UInt64,
+        callback: any BackgroundExecutionCallback
+    ) -> MailSessionStartBackgroundExecutionWithDurationResult {
         fatalError(#function)
     }
-    
-    func initializedUserContextFromSession(
-        session: StoredSession
-    ) -> MailSessionInitializedUserContextFromSessionResult {
+
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult {
+        fatalError(#function)
+    }
+
+    func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
         fatalError(#function)
     }
 
     func verifyPinCode(pin: Data) async -> MailSessionVerifyPinCodeResult {
         fatalError(#function)
     }
-    
-    func deletePinCode(pin: Data) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
-        fatalError(#function)
-    }
 
-    func watchAccountSessions(
-        account: StoredAccount,
-        callback: any LiveQueryCallback
-    ) async -> MailSessionWatchAccountSessionsResult {
+    func watchAccountSessions(account: StoredAccount, callback: any LiveQueryCallback) async -> MailSessionWatchAccountSessionsResult {
         fatalError(#function)
     }
 
@@ -199,30 +217,6 @@ final class MailSessionSpy: MailSessionProtocol {
 
     func watchSessionsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchSessionsAsyncResult {
         watchSessionsAsyncCallback = callback
-
         return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noPointer: .init())))
-    }
-
-    func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {
-        fatalError()
-    }
-
-    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult {
-        fatalError()
-    }
-
-    func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
-        fatalError()
-    }
-
-    func startBackgroundExecutionWithDuration(
-        durationSeconds: UInt64,
-        callback: any BackgroundExecutionCallback
-    ) -> MailSessionStartBackgroundExecutionWithDurationResult {
-        fatalError()
-    }
-
-    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult {
-        fatalError()
     }
 }
