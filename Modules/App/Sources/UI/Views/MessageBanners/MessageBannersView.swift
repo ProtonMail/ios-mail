@@ -27,7 +27,7 @@ struct MessageBannersView: View {
     enum Action {
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
-        case spamMarkAsLegitimateTapped
+        case markAsLegitimateTapped
         case unblockSenderTapped
     }
     
@@ -80,7 +80,7 @@ struct MessageBannersView: View {
                 )
             case .spam:
                 let button = Banner.Button(title: L10n.MessageBanner.spamAction) {
-                    action(.spamMarkAsLegitimateTapped)
+                    action(.markAsLegitimateTapped)
                 }
                 
                 return .init(

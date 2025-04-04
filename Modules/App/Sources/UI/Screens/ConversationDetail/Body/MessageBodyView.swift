@@ -63,7 +63,7 @@ struct MessageBodyView: View {
                                 store.handle(action: .displayEmbeddedImages)
                             case .downloadRemoteContentTapped:
                                 store.handle(action: .downloadRemoteContent)
-                            case .spamMarkAsLegitimateTapped:
+                            case .markAsLegitimateTapped:
                                 store.handle(action: .spamMarkAsLegitimate)
                             case .unblockSenderTapped:
                                 store.handle(action: .unblockSender(addressID: addressID))
