@@ -19,6 +19,9 @@ import proton_app_uniffi
 import SwiftUI
 
 class AppAppearanceStore: ObservableObject {
+    @MainActor
+    static let shared = AppAppearanceStore()
+
     @Published var colorScheme: ColorScheme?
     private let mailSession: () -> MailSession
 

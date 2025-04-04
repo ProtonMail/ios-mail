@@ -31,6 +31,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         }
     }
 
+    private let windowColorSchemeUpdater = WindowColorSchemeUpdater()
+
     // MARK: - UISceneDelegate
 
     func scene(
@@ -53,6 +55,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         let window = PassThroughWindow(windowScene: windowScene)
         window.rootViewController = overlayRootController(with: toastStateStore)
         window.isHidden = false
+
+        windowColorSchemeUpdater.subscribeToColorSchemeChanges(window: window)
 
         return window
     }
