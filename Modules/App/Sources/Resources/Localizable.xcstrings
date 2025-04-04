@@ -489,6 +489,9 @@
     "Alternative routing" : {
       "comment" : "Alternative routing setting title in app settings."
     },
+    "Any information you’ve entered will be lost." : {
+      "comment" : "Report problem dismiss confirmation alert message."
+    },
     "App" : {
       "comment" : "Title of the App settings item.",
       "extractionState" : "stale",
@@ -553,6 +556,9 @@
           }
         }
       }
+    },
+    "Are you sure you want to close this window?" : {
+      "comment" : "Report problem dismiss confirmation alert title."
     },
     "Are you sure you want to delete these %lld messages permanently?" : {
       "comment" : "Message of alert displayed after delete permanently action tap.",
@@ -841,6 +847,9 @@
           }
         }
       }
+    },
+    "Close" : {
+      "comment" : "`Close` action title."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."

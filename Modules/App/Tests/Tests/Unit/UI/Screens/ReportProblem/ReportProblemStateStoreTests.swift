@@ -133,6 +133,46 @@ final class ReportProblemStateStoreTests {
         #expect(toastStateStore.state.toasts == [.error(message: L10n.ReportProblem.offlineFailureToast.string)])
         #expect(dismissInvokeCount == 0)
     }
+
+    @Test
+    func formDismiss_WhenFormIsEmpty_ItDismissesTheScreenWithoutConfrimationAlert() async {
+        await sut.handle(action: .closeButtonTapped)
+
+        #expect(dismissInvokeCount == 1)
+        #expect(sut.state.alert == nil)
+    }
+
+    @Test
+    func formDismiss_WhenFormIsNotEmpty_WhenConfrimationAlertIsPresented_WhenCancelIsTapped_ItDoesNotDismissScreen() async {
+        sut.state = sut.state.copy(\.summary, to: "Hello world!")
+        await sut.handle(action: .textEntered)
+
+        await sut.handle(action: .closeButtonTapped)
+
+        #expect(dismissInvokeCount == 0)
+        #expect(sut.state.alert == .reportBugDismissConfirmationAlert(action: { _ in }))
+
+        await sut.handle(action: .alertActionTapped(.cancel))
+
+        #expect(dismissInvokeCount == 0)
+        #expect(sut.state.alert == nil)
+    }
+
+    @Test
+    func formDismiss_WhenFormIsNotEmpty_WhenConfrimationAlertIsPresented_WhenCloseIsTapped_ItDismissesScreen() async {
+        sut.state = sut.state.copy(\.expectedResults, to: "Hello world!")
+        await sut.handle(action: .textEntered)
+
+        await sut.handle(action: .closeButtonTapped)
+
+        #expect(dismissInvokeCount == 0)
+        #expect(sut.state.alert == .reportBugDismissConfirmationAlert(action: { _ in }))
+
+        await sut.handle(action: .alertActionTapped(.close))
+
+        #expect(dismissInvokeCount == 1)
+        #expect(sut.state.alert == nil)
+    }
 }
 
 private extension Sequence {

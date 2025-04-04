@@ -73,7 +73,7 @@ struct ReportProblemScreen: View {
                     .navigationTitle(L10n.ReportProblem.mainTitle.string)
                     .toolbar {
                         toolbarLeadingItem(state: state, store: store)
-                        toolbarTrailingItem(state: state)
+                        toolbarTrailingItem(state: state, store: store)
                     }
                     .onChange(of: state.scrollTo) { _, newValue in
                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -93,6 +93,7 @@ struct ReportProblemScreen: View {
                 isSummaryFocused = true
             }
             .interactiveDismissDisabled(true)
+            .alert(model: alertBinding(state: state, store: store))
         }
     }
 
@@ -154,9 +155,9 @@ struct ReportProblemScreen: View {
         }
     }
 
-    private func toolbarTrailingItem(state: ReportProblemState) -> some ToolbarContent {
+    private func toolbarTrailingItem(state: ReportProblemState, store: ReportProblemStateStore) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button(action: { dismiss.callAsFunction() }) {
+            Button(action: { store.handle(action: .closeButtonTapped) }) {
                 Image(DS.Icon.icCross)
                     .square(size: 20)
                     .tint(DS.Color.Text.weak)
@@ -185,6 +186,16 @@ struct ReportProblemScreen: View {
         .init(
             get: { state.sendLogsEnabled },
             set: { newValue in store.handle(action: .sendLogsToggleSwitched(isEnabled: newValue)) }
+        )
+    }
+
+    private func alertBinding(
+        state: ReportProblemState,
+        store: ReportProblemStateStore
+    ) -> Binding<AlertModel?> {
+        .init(
+            get: { state.alert },
+            set: { newValue in store.state = store.state.copy(\.alert, to: newValue) }
         )
     }
 }

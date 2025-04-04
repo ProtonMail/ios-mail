@@ -88,7 +88,28 @@ final class ReportProblemStateStore: StateStore {
                     toastStateStore.present(toast: .error(message: L10n.ReportProblem.failureToast.string))
                 }
             }
+        case .closeButtonTapped:
+            if isFormEmpty {
+                dismiss()
+            } else {
+                state = state.copy(\.alert, to: .reportBugDismissConfirmationAlert(action: { [weak self] action in
+                    self?.handle(action: .alertActionTapped(action))
+                }))
+            }
+        case .alertActionTapped(let action):
+            state = state.copy(\.alert, to: nil)
+            switch action {
+            case .cancel:
+                break
+            case .close:
+                dismiss()
+            }
         }
+    }
+
+    @MainActor
+    private var isFormEmpty: Bool {
+        [state.summary, state.actualResults, state.expectedResults, state.stepsToReproduce].allSatisfy(\.isEmpty)
     }
 
     @MainActor

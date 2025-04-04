@@ -208,6 +208,7 @@ enum L10n {
     enum Common {
         static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
         static let cancel = LocalizedStringResource("Cancel", comment: "`Cancel` action title.")
+        static let close = LocalizedStringResource("Close", comment: "`Close` action title.")
         static let confirm = LocalizedStringResource("Confirm", comment: "`Confirm` action title.")
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
         static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
@@ -643,6 +644,16 @@ enum L10n {
             "You are currently offline, please try again with internet connection.",
             comment: "Toast displayed after the report failed to send in offline."
         )
+        enum DismissConfirmationAlert {
+            static let title = LocalizedStringResource(
+                "Are you sure you want to close this window?",
+                comment: "Report problem dismiss confirmation alert title."
+            )
+            static let message = LocalizedStringResource(
+                "Any information you’ve entered will be lost.",
+                comment: "Report problem dismiss confirmation alert message."
+            )
+        }
     }
 
     enum Search {

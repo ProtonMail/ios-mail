@@ -22,6 +22,8 @@ enum ReportProblemAction: Sendable {
     case sendLogsToggleSwitched(isEnabled: Bool)
     case scrollTo(element: ReportProblemScrollToElements?)
     case submit
+    case closeButtonTapped
+    case alertActionTapped(ReportBugDismissConfirmationAlertAction)
 
     case reportResponse(Result<Void, UserSessionError>)
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 
 struct ReportProblemState: Copying {
     var summary: String
@@ -26,6 +27,7 @@ struct ReportProblemState: Copying {
     var scrollTo: ReportProblemScrollToElements?
     var summaryValidation: FormMultilineTextInput.ValidationStatus
     var isLoading: Bool
+    var alert: AlertModel?
 }
 
 extension ReportProblemState {
@@ -39,7 +41,8 @@ extension ReportProblemState {
             sendLogsEnabled: true,
             scrollTo: nil,
             summaryValidation: .ok,
-            isLoading: false
+            isLoading: false,
+            alert: nil
         )
     }
 
