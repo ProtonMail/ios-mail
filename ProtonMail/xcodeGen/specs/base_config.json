@@ -34,7 +34,7 @@
          "from": "1.0.0"
       },
       "ProtonCore": {
-         "url": "https://github.com/ProtonMail/protoncore_ios",
+         "url": "https://github.com/timoteipalade/protoncore_ios.git",
          "branch": "develop"
       },
       "ProtonCoreEventsLoop": {

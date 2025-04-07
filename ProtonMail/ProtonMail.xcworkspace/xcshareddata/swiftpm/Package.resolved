@@ -84,10 +84,10 @@
       },
       {
         "package": "ProtonCore",
-        "repositoryURL": "https://github.com/ProtonMail/protoncore_ios",
+        "repositoryURL": "https://github.com/timoteipalade/protoncore_ios.git",
         "state": {
           "branch": "develop",
-          "revision": "d92baaca0314290e9a362f699c176c245ea62d52",
+          "revision": "04064d3fa835c831832188ebb1e24c18e19004c4",
           "version": null
         }
       },
