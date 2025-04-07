@@ -3,7 +3,7 @@
    "options": {
       "createIntermediateGroups": true,
       "deploymentTarget": {
-         "iOS": "15.0"
+         "iOS": "16.0"
       },
       "postGenCommand": "xcodeGen/post_gen.sh"
    },
@@ -35,14 +35,14 @@
       },
       "ProtonCore": {
          "url": "https://github.com/ProtonMail/protoncore_ios",
-         "from": "26.3.3"
+         "branch": "develop"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
       },
       "ProtonInboxRSVP": {
          "url": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
-         "from": "2.2.0"
+         "branch": "main"
       },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",
