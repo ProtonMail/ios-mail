@@ -84,7 +84,7 @@ final class AppContext: Sendable, ObservableObject {
         _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion)", category: .rustLibrary)
 
-        accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession, authDelegate: self)
+        accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession)
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
@@ -93,10 +93,7 @@ final class AppContext: Sendable, ObservableObject {
     }
 }
 
-extension AppContext: AccountAuthDelegate {
-    func accountSessionInitialization(storedSession: StoredSession) async throws {
-    }
-
+extension AppContext {
     func setupAccountBindings() {
         accountAuthCoordinator.$primaryAccountSession
             .dropFirst()

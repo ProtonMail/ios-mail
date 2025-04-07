@@ -21,7 +21,7 @@ import InboxCore
 import proton_app_uniffi
 
 actor LegacyMigrationService {
-    typealias PassMigrationPayloadToRustSDK = @Sendable (MigrationData) async throws -> Void
+    typealias PassMigrationPayloadsToRustSDK = @Sendable ([MigrationData]) async throws -> Void
 
     struct EncryptedLegacyData: Equatable {
         let authCredentials: Data
@@ -67,7 +67,7 @@ actor LegacyMigrationService {
     private let legacyKeychain: LegacyKeychain
     private let legacyDataProvider: LegacyDataProvider
     private let getMailSession: () -> MailSessionProtocol
-    private let passMigrationPayloadToRustSDK: PassMigrationPayloadToRustSDK
+    private let passMigrationPayloadsToRustSDK: PassMigrationPayloadsToRustSDK
     private let settingsMigrator: SettingsMigrator
     private let stateSubject = CurrentValueSubject<MigrationState, Never>(.notChecked)
 
@@ -89,12 +89,12 @@ actor LegacyMigrationService {
         legacyKeychain: LegacyKeychain,
         legacyDataProvider: LegacyDataProvider,
         getMailSession: @escaping () -> MailSessionProtocol,
-        passMigrationPayloadToRustSDK: @escaping PassMigrationPayloadToRustSDK
+        passMigrationPayloadsToRustSDK: @escaping PassMigrationPayloadsToRustSDK
     ) {
         self.legacyKeychain = legacyKeychain
         self.legacyDataProvider = legacyDataProvider
         self.getMailSession = getMailSession
-        self.passMigrationPayloadToRustSDK = passMigrationPayloadToRustSDK
+        self.passMigrationPayloadsToRustSDK = passMigrationPayloadsToRustSDK
         settingsMigrator = .init(legacyKeychain: legacyKeychain, legacyDataProvider: legacyDataProvider)
     }
 
@@ -103,8 +103,8 @@ actor LegacyMigrationService {
             legacyKeychain: .init(),
             legacyDataProvider: .init(),
             getMailSession: { AppContext.shared.mailSession },
-            passMigrationPayloadToRustSDK: {
-                try await AppContext.shared.accountAuthCoordinator.migrateLegacySession(migrationData: $0)
+            passMigrationPayloadsToRustSDK: {
+                try await AppContext.shared.accountAuthCoordinator.migrateLegacySessions(migrationPayloads: $0)
             }
         )
     }
@@ -203,9 +203,7 @@ actor LegacyMigrationService {
 
             let migrationPayloads = prepareMigrationPayloads(authCredentials: authCredentials, userInfos: userInfos)
 
-            for migrationPayload in migrationPayloads {
-                try await passMigrationPayloadToRustSDK(migrationPayload)
-            }
+            try await passMigrationPayloadsToRustSDK(migrationPayloads)
 
             let mailSession = getMailSession()
             await settingsMigrator.migrateSettings(in: mailSession)

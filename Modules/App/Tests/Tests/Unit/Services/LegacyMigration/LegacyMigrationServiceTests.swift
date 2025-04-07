@@ -24,13 +24,13 @@ final class LegacyMigrationServiceTests {
     private let legacyKeychain = LegacyKeychain.randomInstance()
     private let mailSessionStub = MailSessionSpy()
     private let testUserDefaults = TestableUserDefaults.randomInstance()
-    private var recordedCallsToMigrate: [MigrationData] = []
+    private var recordedCallsToMigrate: [[MigrationData]] = []
 
     private lazy var sut = LegacyMigrationService(
         legacyKeychain: legacyKeychain,
         legacyDataProvider: .init(userDefaults: testUserDefaults),
         getMailSession: { [unowned self] in mailSessionStub },
-        passMigrationPayloadToRustSDK: { [unowned self] in recordedCallsToMigrate.append($0) }
+        passMigrationPayloadsToRustSDK: { [unowned self] in recordedCallsToMigrate.append($0) }
     )
 
     deinit {
@@ -46,7 +46,7 @@ final class LegacyMigrationServiceTests {
 
         await sut.proceed()
 
-        #expect(recordedCallsToMigrate == [expectedMigrationPayload])
+        #expect(recordedCallsToMigrate == [[expectedMigrationPayload]])
         await #expect(currentState() == .notNeeded)
     }
 

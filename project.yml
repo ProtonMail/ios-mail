@@ -38,9 +38,6 @@ packages:
   InboxTesting:
     path: Modules/InboxTesting
     group: Modules
-  Lottie:
-    url: https://github.com/airbnb/lottie-ios.git
-    from: "4.5.0"
   Nimble:
     url: https://github.com/Quick/Nimble
     from: "13.3.0"
@@ -161,7 +158,6 @@ targets:
       - package: InboxCoreUI
       - package: InboxDesignSystem
       - package: InboxKeychain
-      - package: Lottie
       - target: NotificationService
       - package: proton_app_uniffi
       - package: ProtonCoreET
