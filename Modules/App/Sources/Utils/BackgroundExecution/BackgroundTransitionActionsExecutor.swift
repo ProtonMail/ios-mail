@@ -31,8 +31,11 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private let actionQueueStatusProvider: ActionQueueStatusProvider
 
     private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] completionStatus in
-        Self.log("All actions executed, with result: \(completionStatus)")
-        self?.endBackgroundTask()
+        Task {
+            Self.log("All actions executed, with result: \(completionStatus)")
+            await self?.handleNotFinishedBackgroundActions()
+            self?.endBackgroundTask()
+        }
     }
 
     private var backgroundExecutionHandle: BackgroundExecutionHandle?
@@ -78,8 +81,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         backgroundTaskIdentifier = backgroundTransitionTaskScheduler.beginBackgroundTask(
             withName: Self.taskName,
             expirationHandler: { [weak self] in
-                Self.log("Time is up, ending task")
-                self?.endBackgroundTask()
+                Task {
+                    Self.log("Time is up, aborting task")
+                    await self?.abortBackgroundTask()
+                }
             }
         )
 
@@ -98,39 +103,45 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
                 Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             } catch {
                 Self.log("[Broken] Background execution failed to start: \(error.localizedDescription)")
+                endBackgroundTask()
             }
         }
     }
 
     // MARK: - Private
 
-    private func endBackgroundTask() {
+    private func abortBackgroundTask() async {
+        await backgroundExecutionHandle?.abort()
+        Self.log("Abort called, handle present: \(backgroundExecutionHandle != nil)")
+    }
+
+    private func handleNotFinishedBackgroundActions() async {
         guard let backgroundTaskIdentifier else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
         }
-        Task {
-            Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
-            let accessToInternetOnEnd = await isConnected()
+        Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
+        let accessToInternetOnEnd = await isConnected()
 
-            Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
-            await backgroundExecutionHandle?.abort()
-            Self.log("Abort called")
+        let allMessagesWereSent = await allMessagesWereSent()
+        Self.log("All messages were sent - \(allMessagesWereSent)")
 
-            let allMessagesWereSent = await allMessagesWereSent()
-            Self.log("All messages were sent - \(allMessagesWereSent)")
+        let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
+        Self.log("Background task executed in offline mode? - \(offline)")
 
-            let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
-            Self.log("Background task executed in offline mode? - \(offline)")
-
-            if !allMessagesWereSent && !offline {
-                await scheduleLocalNotification()
-            }
-
-            Self.log("Ending background task")
-            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
+        if !allMessagesWereSent && !offline {
+            await scheduleLocalNotification()
         }
+    }
+
+    private func endBackgroundTask() {
+        guard let backgroundTaskIdentifier else {
+            Self.log("Ending background task - missing backgroundTaskIdentifier")
+            return
+        }
+        Self.log("Ending background task")
+        backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
     }
 
     private func scheduleLocalNotification() async {
