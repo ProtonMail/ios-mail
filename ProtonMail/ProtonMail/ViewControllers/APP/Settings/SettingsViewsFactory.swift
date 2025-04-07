@@ -83,9 +83,13 @@ final class SettingsViewsFactory {
     @MainActor
     func makeScanQRCodeInstructionsView() -> ShowingNavigationBarUIHostingController {
         let passphrase = dependencies.user.mailboxPassword.value
+        let apiService = dependencies.user.apiService
+        let userEmail = dependencies.user.defaultEmail
         return ShowingNavigationBarUIHostingController(
             rootView: AnyView(ScanQRCodeInstructionsView(
-                viewModel: .init(dependencies: .init(passphrase: passphrase))))
+                viewModel: .init(
+                    dependencies: .init(passphrase: passphrase, userEmail: userEmail, apiService: apiService)))
+            )
         )
     }
 }
