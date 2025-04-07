@@ -74,6 +74,9 @@ struct PurchasePlan {
             return .cancelled
         case .renewalNotification:
             return nil
+        case .planAlreadyPurchased(error: let error):
+            // TODO: Return something better
+            return .error(error)
         }
     }
 }
