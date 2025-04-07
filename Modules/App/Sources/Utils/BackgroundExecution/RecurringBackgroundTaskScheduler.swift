@@ -95,11 +95,10 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
             let handle = try backgroundTaskExecutorProvider().startBackgroundExecution(callback: callback).get()
             log("Handle is returned, background actions in progress")
 
-            task.expirationHandler = { [handle, task] in
+            task.expirationHandler = { [handle] in
                 Task {
                     log("Background task expiration handler called")
                     await handle.abort()
-                    task.setTaskCompleted(success: true)
                 }
             }
         } catch {
