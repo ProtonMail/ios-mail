@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct ProtonAuthenticatedWebView: View {
-    @Environment (\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     @StateObject private var model: ProtonAuthenticatedWebModel
 
     init(webViewPage: ProtonAuthenticatedWebPage) {

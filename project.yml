@@ -172,6 +172,9 @@ targets:
       - package: Scrypt
       - package: SwiftUIIntrospect
     preBuildScripts:
+      - name: swift-format
+        script: xcrun swift-format lint -r Modules -p
+        basedOnDependencyAnalysis: false
       - name: Sourcery
         script: find sourcery/configs -name "*.yaml" -exec /opt/homebrew/bin/mint run sourcery --config {} \;
 
