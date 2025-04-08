@@ -31,7 +31,7 @@ ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
 def select_xcode
   xcodes(
-    version: '15.1',
+    version: '16.2',
     select_for_current_build_only: true,
   )
 end
