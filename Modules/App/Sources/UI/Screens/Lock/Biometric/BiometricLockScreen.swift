@@ -19,6 +19,11 @@ import InboxDesignSystem
 import SwiftUI
 
 struct BiometricLockScreen: View {
+    @StateObject var store: BiometricStateStore
+
+    init(state: BiometricState = .initial) {
+        _store = .init(wrappedValue: .init(state: state))
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -30,7 +35,25 @@ struct BiometricLockScreen: View {
                     .padding(.top, geometry.size.height * 0.37)
                     .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
                     .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
+                if store.state.displayUnlockButton {
+                    VStack {
+                        Spacer()
+                        Button(action: { store.handle(action: .unlockTapped) }) {
+                            Text("Unlock Proton Mail")
+                                .foregroundStyle(DS.Color.Text.norm)
+                                .padding(.vertical, DS.Spacing.medium)
+                                .frame(maxWidth: .infinity)
+                                .background(DS.Color.InteractionWeak.norm)
+                                .clipShape(Capsule())
+                        }
+                        .padding(.horizontal, DS.Spacing.extraLarge)
+                        .padding(.bottom, DS.Spacing.extraLarge)
+                    }
+                }
             }
+        }
+        .onLoad {
+            store.handle(action: .onLoad)
         }
     }
 
