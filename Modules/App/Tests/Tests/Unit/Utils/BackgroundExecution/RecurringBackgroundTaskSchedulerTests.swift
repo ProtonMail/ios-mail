@@ -91,7 +91,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         try execute(task: backgroundTask)
         backgroundTask.expirationHandler?()
 
-        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.invokedAbort, [false])
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [false])
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
@@ -164,7 +164,7 @@ private class BackgroundTaskSpy: BackgroundTask {
 
 class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Sendable {
 
-    private(set) var invokedAbort: [Bool] = []
+    private(set) var abortCalls: [Bool] = []
 
     init() {
         super.init(noPointer: .init())
@@ -177,7 +177,7 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
     // MARK: - BackgroundExecutionHandle
 
     override func abort(inForeground: Bool) async {
-        invokedAbort.append(inForeground)
+        abortCalls.append(inForeground)
     }
 
 }

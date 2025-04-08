@@ -42,7 +42,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     private var backgroundExecutionHandle: BackgroundExecutionHandle?
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
-    private var accessToInternetOnStart: Bool?
+    private var hasAccessToInternetOnStart: Bool?
 
     init(
         backgroundTransitionTaskScheduler: BackgroundTransitionTaskScheduler,
@@ -90,9 +90,9 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Self.log("Background task started")
 
         Task {
-            accessToInternetOnStart = await isConnected()
+            hasAccessToInternetOnStart = await isConnected()
 
-            Self.log("Internet connection on start: \(accessToInternetOnStart == true ? "Online" : "Offline")")
+            Self.log("Internet connection on start: \(hasAccessToInternetOnStart == true ? "Online" : "Offline")")
 
             do {
                 backgroundExecutionHandle = try backgroundTaskExecutorProvider().startBackgroundExecution(
@@ -121,12 +121,12 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             return
         }
         Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
-        let accessToInternetOnEnd = await isConnected()
+        let hasAccessToInternetOnEnd = await isConnected()
 
         let allMessagesWereSent = await allMessagesWereSent()
         Self.log("All messages were sent - \(allMessagesWereSent)")
 
-        let offline = !accessToInternetOnEnd && accessToInternetOnStart == false
+        let offline = !hasAccessToInternetOnEnd && hasAccessToInternetOnStart == false
         Self.log("Background task executed in offline mode? - \(offline)")
 
         if !allMessagesWereSent && !offline {

@@ -61,7 +61,7 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
 
         sut.becomeActiveService()
-        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.invokedAbort, [true])
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [true])
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
     }
