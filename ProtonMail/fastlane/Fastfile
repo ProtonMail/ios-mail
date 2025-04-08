@@ -21,17 +21,15 @@ DEVELOPER_KEYCHAIN_PASSWORD = "TUFJTF9JT1NfQ0VSVElGSUNBVEVfS0VZQ0hBSU4="
 CERTIFICATE_PATH = "Certificates.p12"
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
+TEST_DEVICE = "iPhone 16 Pro (18.2)"
 UNIT_TEST_SCHEME = "ProtonMailTests"
-UNIT_TEST_DEVICE = "iPhone 15"
-UI_TEST_IOS_VERSION = "17.2"
-UI_TEST_DEVICES = ["iPhone 15 Plus (#{UI_TEST_IOS_VERSION})"]
 UI_TEST_SCHEME = "ProtonMailUITests"
 
 ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
 def select_xcode
   xcodes(
-    version: '15.1',
+    version: '16.2',
     select_for_current_build_only: true,
   )
 end
@@ -147,7 +145,7 @@ platform :ios do
     select_xcode
 
     run_tests(
-      device: UNIT_TEST_DEVICE,
+      device: TEST_DEVICE,
       scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
@@ -168,7 +166,7 @@ platform :ios do
       test_without_building: true,
       parallel_testing: true,
       concurrent_workers: options[:concurrent_workers],
-      devices: UI_TEST_DEVICES,
+      device: TEST_DEVICE,
       testplan: options[:testplan],
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
