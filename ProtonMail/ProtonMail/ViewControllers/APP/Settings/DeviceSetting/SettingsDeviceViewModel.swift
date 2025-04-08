@@ -24,6 +24,7 @@ import Foundation
 import MBProgressHUD
 import ProtonCoreDataModel
 import ProtonCoreLog
+import ProtonCoreFeatureFlags
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account
@@ -123,7 +124,12 @@ final class SettingsDeviceViewModel {
         return standardSections
     }()
 
-    private(set) var accountSettings: [AccountSectionItem] = [.account, .scan_qr_code]
+
+    private(set) var accountSettings: [AccountSectionItem] = {
+        // TODO: Also check the user settings for edmOptOut.
+        let killSwitch = FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.easyDeviceMigrationDisabled)
+        return !killSwitch ? [.account, .scan_qr_code] : [.account]
+    }()
 
     lazy var appSettings: [DeviceSectionItem] = {
         var appSettings: [DeviceSectionItem] = [
