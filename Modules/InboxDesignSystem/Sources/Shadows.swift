@@ -35,6 +35,13 @@ public struct Shadow {
     public let y: CGFloat
     public let blur: CGFloat
     public let color: Color
+
+    public init(x: CGFloat, y: CGFloat, blur: CGFloat, color: Color) {
+        self.x = x
+        self.y = y
+        self.blur = blur
+        self.color = color
+    }
 }
 
 private extension Shadow {

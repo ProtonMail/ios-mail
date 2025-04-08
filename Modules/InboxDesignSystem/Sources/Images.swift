@@ -17,4 +17,5 @@ public extension DS.Images {
     static let onboardingThirdPage = ImageResource.onboardingAlphaV13
     static let searchNoResults = ImageResource.searchNoResults
     static let noConnection = ImageResource.noConnection
+    static let protonMail = ImageResource.protonMail
 }
