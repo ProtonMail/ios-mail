@@ -33,7 +33,9 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] completionStatus in
         Task {
             Self.log("All actions executed, with result: \(completionStatus)")
-            await self?.handleNotFinishedBackgroundActions()
+            if completionStatus.shouldCheckSendingStatus {
+                await self?.displayNotificationIfSendingIsUnfinished()
+            }
             self?.endBackgroundTask()
         }
     }
@@ -64,10 +66,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         }
         Task {
             Self.log("Abort called")
-            await backgroundExecutionHandle.abort()
-
-            Self.log("Ending background task")
-            backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
+            await abortBackgroundTask(afterEnteredForeground: true)
         }
     }
 
@@ -83,7 +82,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             expirationHandler: { [weak self] in
                 Task {
                     Self.log("Time is up, aborting task")
-                    await self?.abortBackgroundTask()
+                    await self?.abortBackgroundTask(afterEnteredForeground: false)
                 }
             }
         )
@@ -110,12 +109,12 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     // MARK: - Private
 
-    private func abortBackgroundTask() async {
-        await backgroundExecutionHandle?.abort()
+    private func abortBackgroundTask(afterEnteredForeground: Bool) async {
+        await backgroundExecutionHandle?.abort(inForeground: afterEnteredForeground)
         Self.log("Abort called, handle present: \(backgroundExecutionHandle != nil)")
     }
 
-    private func handleNotFinishedBackgroundActions() async {
+    private func displayNotificationIfSendingIsUnfinished() async {
         guard let backgroundTaskIdentifier else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
@@ -187,6 +186,19 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Task {
             let message = "\(message), time left: \(await UIApplication.shared.backgroundTimeRemaining)"
             AppLogger.log(message: message, category: .thirtySecondsBackgroundTask)
+        }
+    }
+
+}
+
+private extension BackgroundExecutionStatus {
+
+    var shouldCheckSendingStatus: Bool {
+        switch self {
+        case .abortedInBackground, .timedOut, .failed:
+            true
+        case .skippedNoActiveContexts, .executed, .abortedInForeground:
+            false
         }
     }
 

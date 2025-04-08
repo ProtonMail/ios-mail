@@ -55,17 +55,20 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
 
     func test_WhenUserEntersBackgroundAndEntersForeground_ItEndsBackgroundTask() {
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInForeground
+
         sut.enterBackgroundService()
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
 
         sut.becomeActiveService()
-        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortInvokedCount, 1)
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.invokedAbort, [true])
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
     }
 
     func test_WhenUserEntersBackground_ItExecutesBackgroundActionsWithSuccess() throws {
         actionQueueStatusProviderSpy.draftSendResultUnseenResultStub = .ok([.success])
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .executed
         sut.enterBackgroundService()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
@@ -79,10 +82,14 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
 
     func test_WhenUserEntersBackgroundAndTimeIsUpAndMessagesAreUnsent_ItDisplaysNotification() {
         backgroundTaskExecutorSpy.allMessagesWereSent = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
+
         sut.enterBackgroundService()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
+
+
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 1)
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }
@@ -90,6 +97,8 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
     @MainActor
     func test_WhenUserEntersBackgroundTaskExpiresThereAreNoMessagesToSend_ItFinishesWithSuccess() {
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
+
         sut.enterBackgroundService()
         backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.first?.handler?()
 

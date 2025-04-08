@@ -21,6 +21,7 @@ import proton_app_uniffi
 class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
 
     var backgroundExecutionFinishedWithSuccess = true
+    var executionCompletedWithStatus: BackgroundExecutionStatus?
     var backgroundExecutionHandleStub = BackgroundExecutionHandleStub()
     var allMessagesWereSent = true
     private(set) var startBackgroundExecutionInvokeCount = 0
@@ -30,9 +31,9 @@ class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
     func startBackgroundExecution(callback: BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
         startBackgroundExecutionInvokeCount += 1
 
-        if backgroundExecutionFinishedWithSuccess {
+        if let executionCompletedWithStatus {
             Task {
-                await callback.onExecutionCompleted(status: .executed)
+                await callback.onExecutionCompleted(status: executionCompletedWithStatus)
             }
         }
 

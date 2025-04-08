@@ -57,6 +57,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskIsRegisteredAndExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() async throws {
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .executed
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         XCTAssertEqual(invokedRegister.count, 1)
@@ -82,6 +83,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskIsRegisteredAndExecuted_WhenAbortIsCalled_ItCompletesWithSuccess() async throws {
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
 
         await submitTask()
 
@@ -89,7 +91,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         try execute(task: backgroundTask)
         backgroundTask.expirationHandler?()
 
-        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortInvokedCount, 1)
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.invokedAbort, [false])
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
@@ -162,7 +164,7 @@ private class BackgroundTaskSpy: BackgroundTask {
 
 class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Sendable {
 
-    private(set) var abortInvokedCount = 0
+    private(set) var invokedAbort: [Bool] = []
 
     init() {
         super.init(noPointer: .init())
@@ -174,8 +176,8 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
 
     // MARK: - BackgroundExecutionHandle
 
-    override func abort() async {
-        abortInvokedCount += 1
+    override func abort(inForeground: Bool) async {
+        invokedAbort.append(inForeground)
     }
 
 }

@@ -98,7 +98,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
             task.expirationHandler = { [handle] in
                 Task {
                     log("Background task expiration handler called")
-                    await handle.abort()
+                    await handle.abort(inForeground: false)
                 }
             }
         } catch {
