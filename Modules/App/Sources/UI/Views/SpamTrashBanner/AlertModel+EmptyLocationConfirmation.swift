@@ -28,8 +28,8 @@ extension AlertModel {
         }
         
         return .init(
-            title: "Empty \(location.humanReadable) Folder".notLocalized.stringResource,
-            message: "Are you sure you want to permanently delete all messages in the \(location.humanReadable) folder? This action cannot be undone.".notLocalized.stringResource,
+            title: L10n.EmptySpamTrashBanner.Alert.emptyFolderTitle(location: location.humanReadable),
+            message: L10n.EmptySpamTrashBanner.Alert.emptyFolderMessage(location: location.humanReadable),
             actions: actions
         )
     }
