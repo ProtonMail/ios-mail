@@ -51,26 +51,18 @@ struct EmptySpamTrashBannerView: View {
     
     // MARK: - Private
     
-    private func buttonModel(from type: EmptySpamTrashBanner.Button) -> Banner.Button {
+    private func buttonModel(from type: EmptySpamTrashBanner.ActionButton) -> Banner.Button {
         let model: Banner.Button
         switch type {
-        case .upgrade:
+        case .upgradePlan:
             model = .init(title: "Upgrade to Auto-delete".notLocalized.stringResource) {
                 // FIXME: Implement action
                 print(">>> upgrade to auto-delete")
             }
-        case .empty:
-            let location: String
-            switch state.type {
-            case .spam:
-                location = "spam"
-            case .trash:
-                location = "trash"
-            }
-            
-            model = .init(title: "Empty \(location) now".notLocalized.stringResource) {
+        case .emptyLocation:
+            model = .init(title: "Empty \(state.location.humanReadable) now".notLocalized.stringResource) {
                 // FIXME: Implement action
-                print(">>> Empty \(location) now")
+                print(">>> Empty \(state.location.humanReadable) now")
             }
         }
         
@@ -78,7 +70,7 @@ struct EmptySpamTrashBannerView: View {
     }
     
     private var title: String {
-        switch state.state {
+        switch state.userState {
         case .freePlan:
             "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days.".notLocalized
         case .paidAutoDeleteOn:
@@ -89,7 +81,7 @@ struct EmptySpamTrashBannerView: View {
     }
     
     private var icon: ImageResource {
-        switch state.state {
+        switch state.userState {
         case .freePlan, .paidAutoDeleteOn:
             DS.Icon.icTrashClock
         case .paidAutoDeleteOff:
@@ -97,22 +89,22 @@ struct EmptySpamTrashBannerView: View {
         }
     }
     
-    private var buttons: [EmptySpamTrashBanner.Button] {
-        switch state.state {
+    private var buttons: [EmptySpamTrashBanner.ActionButton] {
+        switch state.userState {
         case .freePlan:
-            return [.upgrade, .empty]
+            return [.upgradePlan, .emptyLocation]
         case .paidAutoDeleteOn:
-            return [.empty]
+            return [.emptyLocation]
         case .paidAutoDeleteOff:
-            return [.empty]
+            return [.emptyLocation]
         }
     }
 }
 
 #Preview {
     VStack(alignment: .center, spacing: 10) {
-        EmptySpamTrashBannerView(state: .init(type: .spam, state: .freePlan))
-        EmptySpamTrashBannerView(state: .init(type: .spam, state: .paidAutoDeleteOff))
-        EmptySpamTrashBannerView(state: .init(type: .spam, state: .paidAutoDeleteOff))
+        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .freePlan))
+        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
+        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
     }
 }

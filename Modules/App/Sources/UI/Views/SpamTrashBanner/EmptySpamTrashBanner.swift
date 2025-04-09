@@ -18,22 +18,31 @@
 import InboxCore
 
 struct EmptySpamTrashBanner {
-    enum State {
+    enum ActionButton {
+        case upgradePlan
+        case emptyLocation
+    }
+    
+    enum Location {
+        case spam
+        case trash
+        
+        var humanReadable: String {
+            switch self {
+            case .spam:
+                "spam"
+            case .trash:
+                "trash"
+            }
+        }
+    }
+
+    enum UserState {
         case freePlan
         case paidAutoDeleteOn
         case paidAutoDeleteOff
     }
-    
-    enum `Type` {
-        case spam
-        case trash
-    }
-    
-    enum Button {
-        case upgrade
-        case empty
-    }
 
-    let type: `Type`
-    let state: State
+    let location: Location
+    let userState: UserState
 }

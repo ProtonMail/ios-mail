@@ -55,8 +55,11 @@ struct EmptySpamTrashBannerViewSnapshotTests {
         assertSnapshotsOnIPhoneX(of: sut(.trash, .paidAutoDeleteOn))
     }
     
-    private func sut(_ type: EmptySpamTrashBanner.`Type`, _ state: EmptySpamTrashBanner.State) -> some View {
-        EmptySpamTrashBannerView(state: .init(type: type, state: state))
+    private func sut(
+        _ location: EmptySpamTrashBanner.Location,
+        _ userState: EmptySpamTrashBanner.UserState
+    ) -> some View {
+        EmptySpamTrashBannerView(state: .init(location: location, userState: userState))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }
 }
