@@ -63,9 +63,9 @@ struct EmptySpamTrashBannerView: View {
                 store.handle(action: .upgradeToAutoDelete)
             }
         case .emptyLocation:
-            let title = L10n.EmptySpamTrashBanner.emptyNowAction(location: store.model.location.humanReadable)
+            let location = store.model.location.humanReadable.lowercased()
             
-            model = .init(title: title) {
+            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(location: location)) {
                 store.handle(action: .emptyLocation)
             }
         }
