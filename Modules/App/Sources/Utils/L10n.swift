@@ -488,6 +488,31 @@ enum L10n {
             comment: "Banner indicating that the email is from a mailing list."
         )
     }
+    
+    enum EmptySpamTrashBanner {
+        static func emptyNowAction(location: String) -> LocalizedStringResource {
+            .init(
+                "Empty \(location) now",
+                comment: "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
+            )
+        }
+        static let upgradeAction = LocalizedStringResource(
+            "Upgrade to Auto-delete",
+            comment: "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
+        )
+        static let freeUserTitle = LocalizedStringResource(
+            "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days.",
+            comment: "Empty Spam/Trash Banner: Title shown to free users, encouraging them to upgrade to auto-delete."
+        )
+        static let paidUserAutoDeleteOnTitle = LocalizedStringResource(
+            "Messages in Trash and Spam will be automatically deleted after 30 days.",
+            comment: "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
+        )
+        static let paidUserAutoDeleteOffTitle = LocalizedStringResource(
+            "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually.",
+            comment: "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
+        )
+    }
 
     enum MessageDetails {
         static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")

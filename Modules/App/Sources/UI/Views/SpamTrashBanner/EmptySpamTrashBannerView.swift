@@ -25,7 +25,7 @@ struct EmptySpamTrashBannerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
             HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
-                BannerIconTextView(icon: icon, text: title, style: .regular, lineLimit: .none)
+                BannerIconTextView(icon: icon, text: title.string, style: .regular, lineLimit: .none)
             }
             .padding([.leading, .trailing], DS.Spacing.large)
             ForEachLast(collection: buttons) { type, isLast in
@@ -55,12 +55,12 @@ struct EmptySpamTrashBannerView: View {
         let model: Banner.Button
         switch type {
         case .upgradePlan:
-            model = .init(title: "Upgrade to Auto-delete".notLocalized.stringResource) {
+            model = .init(title: L10n.EmptySpamTrashBanner.upgradeAction) {
                 // FIXME: Implement action
                 print(">>> upgrade to auto-delete")
             }
         case .emptyLocation:
-            model = .init(title: "Empty \(state.location.humanReadable) now".notLocalized.stringResource) {
+            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(location: state.location.humanReadable)) {
                 // FIXME: Implement action
                 print(">>> Empty \(state.location.humanReadable) now")
             }
@@ -69,14 +69,14 @@ struct EmptySpamTrashBannerView: View {
         return model
     }
     
-    private var title: String {
+    private var title: LocalizedStringResource {
         switch state.userState {
         case .freePlan:
-            "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days.".notLocalized
+            L10n.EmptySpamTrashBanner.freeUserTitle
         case .paidAutoDeleteOn:
-            "Messages in Trash and Spam will be automatically deleted after 30 days.".notLocalized
+            L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle
         case .paidAutoDeleteOff:
-            "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually.".notLocalized
+            L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle
         }
     }
     
@@ -106,5 +106,9 @@ struct EmptySpamTrashBannerView: View {
         EmptySpamTrashBannerView(state: .init(location: .spam, userState: .freePlan))
         EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
         EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
+        
+        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .freePlan))
+        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .paidAutoDeleteOff))
+        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .paidAutoDeleteOff))
     }
 }

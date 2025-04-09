@@ -30,9 +30,9 @@ struct EmptySpamTrashBanner {
         var humanReadable: String {
             switch self {
             case .spam:
-                "spam"
+                L10n.Mailbox.SystemFolder.spam.string.lowercased()
             case .trash:
-                "trash"
+                L10n.Mailbox.SystemFolder.trash.string.lowercased()
             }
         }
     }
