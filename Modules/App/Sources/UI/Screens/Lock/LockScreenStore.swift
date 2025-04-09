@@ -60,7 +60,8 @@ class LockScreenStore: StateStore {
         case 0:
             lockOutput(.logOut)
         case 1...3:
-            state = state.copy(\.pinError, to: "\(numberOfAttempts) attempts remaining before sign-out.")
+            state = state
+                .copy(\.pinError, to: L10n.PINLock.remainingAttemptsWarning(numberOfAttempts).string)
         default:
             break
         }

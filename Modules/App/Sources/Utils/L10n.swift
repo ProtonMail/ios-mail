@@ -198,6 +198,17 @@ enum L10n {
         }
     }
 
+    enum BiometricLock {
+        static let biometryUnlockRationale = LocalizedStringResource(
+            "Please authenticate to unlock your screen.",
+            comment: "Displayed in the system PIN pop-up when FaceID for this app is disabled."
+        )
+        static let unlockButtonTitle = LocalizedStringResource(
+            "Unlock Proton Mail.",
+            comment: "Title of a button that triggers biometric authorization on the lock screen."
+        )
+    }
+
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
@@ -569,6 +580,12 @@ enum L10n {
             "Invalid PIN",
             comment: "Error message when the user enters an invalid PIN"
         )
+        static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(number) attempts remaining before sign-out.",
+                comment: "Remaning attempts warning displayed after a user entered a wrong PIN few times."
+            )
+        }
     }
 
     enum ReportProblem {

@@ -39,7 +39,7 @@ struct BiometricLockScreen: View {
                     VStack {
                         Spacer()
                         Button(action: { store.handle(action: .unlockTapped) }) {
-                            Text("Unlock Proton Mail")
+                            Text(L10n.BiometricLock.unlockButtonTitle)
                                 .foregroundStyle(DS.Color.Text.norm)
                                 .padding(.vertical, DS.Spacing.medium)
                                 .frame(maxWidth: .infinity)

@@ -107,6 +107,29 @@
         }
       }
     },
+    "%lld attempts remaining before sign-out." : {
+      "comment" : "Remaning attempts warning displayed after a user entered a wrong PIN few times.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld attempt remaining before sign-out."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld attempts remaining before sign-out."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld files" : {
       "comment" : "The number of attachments on conversation details screen.",
       "extractionState" : "stale",
@@ -2533,6 +2556,9 @@
     "PIN is too short" : {
       "comment" : "Error message when setting up PIN"
     },
+    "Please authenticate to unlock your screen." : {
+      "comment" : "Displayed in the system PIN pop-up when FaceID for this app is disabled."
+    },
     "Preferences" : {
       "comment" : "Title of a section in Settings.",
       "localizations" : {
@@ -3328,6 +3354,9 @@
     },
     "Undo operation failed because draft was not found" : {
       "comment" : "Error in the context of undoing a sent message"
+    },
+    "Unlock Proton Mail." : {
+      "comment" : "Title of a button that triggers biometric authorization on the lock screen."
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",
