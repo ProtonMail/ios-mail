@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct BiometricLockScreen: View {
-    @StateObject var store: BiometricLockStateStore
+    @StateObject var store: BiometricLockStore
 
     init(state: BiometricLockState = .initial, output: @escaping (BiometricLockScreenOutput) -> Void) {
         _store = .init(wrappedValue: .init(state: state, output: output))

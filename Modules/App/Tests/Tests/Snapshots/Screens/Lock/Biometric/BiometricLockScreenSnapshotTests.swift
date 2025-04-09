@@ -22,7 +22,11 @@ import InboxTesting
 class BiometricScreenSnapshotTests: BaseTestCase {
 
     func testBiometricScreenLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: BiometricLockScreen { _ in })
+        assertSnapshotsOnIPhoneX(of: BiometricLockScreen { _ in }, named: "without_button")
+        assertSnapshotsOnIPhoneX(
+            of: BiometricLockScreen(state: .init(displayUnlockButton: true)) { _ in },
+            named: "with_button"
+        )
     }
 
 }
