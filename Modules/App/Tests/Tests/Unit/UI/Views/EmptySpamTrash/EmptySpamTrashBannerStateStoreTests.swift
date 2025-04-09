@@ -74,7 +74,7 @@ final class EmptySpamTrashBannerStateStoreTests {
     }
     
     @Test
-    func testState_WhenCancelActionTapped_ItDismissesAlert() throws {
+    func testState_WhenCancelAlertActionTapped_ItDismissesAlert() throws {
         sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
         
         sut.handle(action: .emptyLocation)
@@ -86,8 +86,32 @@ final class EmptySpamTrashBannerStateStoreTests {
             alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
         ))
         
-        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
+        let cancelAction = try sut.state.alertAction(for: .cancel)
         cancelAction.action()
+        
+        #expect(sut.state == .init(
+            icon: DS.Icon.icTrashClock,
+            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            buttons: [.emptyLocation],
+            alert: .none
+        ))
+    }
+    
+    @Test
+    func testState_WhenConfirmAlertActionTapped_ItDismissesAlert() throws {
+        sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
+        
+        sut.handle(action: .emptyLocation)
+        
+        #expect(sut.state == .init(
+            icon: DS.Icon.icTrashClock,
+            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            buttons: [.emptyLocation],
+            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
+        ))
+        
+        let deleteAction = try sut.state.alertAction(for: .delete)
+        deleteAction.action()
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -100,8 +124,8 @@ final class EmptySpamTrashBannerStateStoreTests {
 
 private extension EmptySpamTrashBannerStateStore.State {
     
-    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
-        try #require(alert?.actions.findFirst(for: string, by: \.title))
+    func alertAction(for action: DeleteConfirmationAlertAction) throws -> AlertAction {
+        try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
 
 }

@@ -59,6 +59,7 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
                 state = state.copy(\.alert, to: nil)
             case .delete:
                 print("[FIXME]: Implement `Empty \(model.location.humanReadable) Folder` delete action")
+                state = state.copy(\.alert, to: nil)
             }
         }
     }
