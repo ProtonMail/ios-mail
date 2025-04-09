@@ -69,7 +69,7 @@ class LockScreenStore: StateStore {
 
     @MainActor
     private func verify(pin: String) async {
-        switch await pinVerifier.verifyPinCode(pin: pin) {
+        switch await pinVerifier.verifyPinCode(pin: Int(pin).unsafelyUnwrapped) {
         case .ok:
             lockOutput(.authenticated)
         case .error:

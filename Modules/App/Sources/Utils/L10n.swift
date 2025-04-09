@@ -204,7 +204,7 @@ enum L10n {
             comment: "Displayed in the system PIN pop-up when FaceID for this app is disabled."
         )
         static let unlockButtonTitle = LocalizedStringResource(
-            "Unlock Proton Mail.",
+            "Unlock Proton Mail",
             comment: "Title of a button that triggers biometric authorization on the lock screen."
         )
     }
