@@ -15,14 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
-import InboxTesting
+import InboxCore
 
-class BiometricScreenSnapshotTests: BaseTestCase {
+struct BiometricLockState: Equatable, Copying {
+    var displayUnlockButton: Bool
+}
 
-    func testBiometricScreenLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: BiometricLockScreen { _ in })
+extension BiometricLockState {
+
+    static var initial: Self {
+        .init(displayUnlockButton: false)
     }
 
 }

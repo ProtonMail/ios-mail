@@ -15,14 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
-import InboxTesting
+import proton_app_uniffi
 
-class BiometricScreenSnapshotTests: BaseTestCase {
-
-    func testBiometricScreenLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: BiometricLockScreen { _ in })
-    }
-
+protocol PINVerifier: Sendable {
+    func verifyPinCode(pin: String) async -> MailSessionVerifyPinCodeResult
+    func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult
 }
