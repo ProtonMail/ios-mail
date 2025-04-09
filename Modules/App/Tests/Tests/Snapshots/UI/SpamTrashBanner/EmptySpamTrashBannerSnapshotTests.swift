@@ -59,7 +59,7 @@ struct EmptySpamTrashBannerViewSnapshotTests {
         _ location: EmptySpamTrashBanner.Location,
         _ userState: EmptySpamTrashBanner.UserState
     ) -> some View {
-        EmptySpamTrashBannerView(state: .init(location: location, userState: userState))
+        EmptySpamTrashBannerView(model: .init(location: location, userState: userState))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }
 }

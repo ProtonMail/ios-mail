@@ -20,21 +20,19 @@ import InboxDesignSystem
 import SwiftUI
 
 struct EmptySpamTrashBannerView: View {
-    private struct DisplayModel {
-        let icon: ImageResource
-        let title: String
-        let buttons: [EmptySpamTrashBanner.ActionButton]
-    }
+    @StateObject var store: EmptySpamTrashBannerStateStore
     
-    let state: EmptySpamTrashBanner
+    init(model: EmptySpamTrashBanner) {
+        _store = .init(wrappedValue: .init(model: model))
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
             HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
-                BannerIconTextView(icon: displayModel.icon, text: displayModel.title, style: .regular, lineLimit: .none)
+                BannerIconTextView(icon: store.state.icon, text: store.state.title, style: .regular, lineLimit: .none)
             }
             .horizontalPadding()
-            ForEachLast(collection: displayModel.buttons) { type, isLast in
+            ForEachLast(collection: store.state.buttons) { type, isLast in
                 VStack(spacing: DS.Spacing.medium) {
                     BannerButton(model: buttonModel(from: type), style: .regular, maxWidth: .infinity)
                         .horizontalPadding()
@@ -57,43 +55,21 @@ struct EmptySpamTrashBannerView: View {
     
     private func buttonModel(from type: EmptySpamTrashBanner.ActionButton) -> Banner.Button {
         let model: Banner.Button
+
         switch type {
         case .upgradePlan:
             model = .init(title: L10n.EmptySpamTrashBanner.upgradeAction) {
-                // FIXME: Implement action
-                print(">>> upgrade to auto-delete")
+                store.handle(action: .upgradeToAutoDelete)
             }
         case .emptyLocation:
-            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(location: state.location.humanReadable)) {
-                // FIXME: Implement action
-                print(">>> Empty \(state.location.humanReadable) now")
+            let title = L10n.EmptySpamTrashBanner.emptyNowAction(location: store.model.location.humanReadable)
+            
+            model = .init(title: title) {
+                store.handle(action: .emptyLocation)
             }
         }
         
         return model
-    }
-    
-    private var displayModel: DisplayModel {
-        switch state.userState {
-        case .freePlan:
-            .init(
-                icon: DS.Icon.icTrashClock,
-                title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
-                buttons: [.upgradePlan, .emptyLocation]
-            )
-        case .paidAutoDeleteOn:
-            .init(
-                icon: DS.Icon.icTrashClock,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
-                buttons: [.emptyLocation]
-            )
-        case .paidAutoDeleteOff:
-            .init(
-                icon: DS.Icon.icTrash,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle.string,
-                buttons: [.emptyLocation]
-            )
-        }
     }
 }
 
@@ -106,13 +82,16 @@ private extension View {
 }
 
 #Preview {
-    VStack(alignment: .center, spacing: 10) {
-        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .freePlan))
-        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
-        EmptySpamTrashBannerView(state: .init(location: .spam, userState: .paidAutoDeleteOff))
-        
-        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .freePlan))
-        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .paidAutoDeleteOff))
-        EmptySpamTrashBannerView(state: .init(location: .trash, userState: .paidAutoDeleteOff))
+    ScrollView {
+        VStack(alignment: .center, spacing: 10) {
+            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .freePlan))
+            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .paidAutoDeleteOff))
+            
+            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .freePlan))
+            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .paidAutoDeleteOff))
+        }
+        .padding([.leading, .trailing], DS.Spacing.large)
     }
 }

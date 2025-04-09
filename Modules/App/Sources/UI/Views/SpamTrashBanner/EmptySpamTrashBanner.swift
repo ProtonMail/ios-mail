@@ -18,7 +18,7 @@
 import InboxCore
 
 struct EmptySpamTrashBanner {
-    enum ActionButton {
+    enum ActionButton: Equatable {
         case upgradePlan
         case emptyLocation
     }
