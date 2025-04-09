@@ -15,31 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import InboxCore
 
-public struct BannerIconTextView: View {
-    let icon: ImageResource
-    let text: String
-    let style: Banner.ContentStyle
-    let lineLimit: Int?
-    
-    public init(icon: ImageResource, text: String, style: Banner.ContentStyle, lineLimit: Int?) {
-        self.icon = icon
-        self.text = text
-        self.style = style
-        self.lineLimit = lineLimit
+struct EmptySpamTrashBanner {
+    enum State {
+        case freePlan
+        case paidAutoDeleteOn
+        case paidAutoDeleteOff
     }
     
-    public var body: some View {
-        Group {
-            Image(icon)
-                .foregroundColor(style.icon)
-            Text(text)
-                .font(.footnote)
-                .fontWeight(.regular)
-                .foregroundStyle(style.text)
-                .lineLimit(lineLimit)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
+    enum `Type` {
+        case spam
+        case trash
     }
+    
+    enum Button {
+        case upgrade
+        case empty
+    }
+
+    let type: `Type`
+    let state: State
 }

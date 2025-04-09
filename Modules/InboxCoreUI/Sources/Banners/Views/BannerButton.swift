@@ -18,18 +18,18 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct BannerButton: View {
+public struct BannerButton: View {
     let model: Banner.Button
     let style: Banner.ButtonStyle
     let maxWidth: CGFloat?
     
-    init(model: Banner.Button, style: Banner.ButtonStyle, maxWidth: CGFloat?) {
+    public init(model: Banner.Button, style: Banner.ButtonStyle, maxWidth: CGFloat?) {
         self.model = model
         self.style = style
         self.maxWidth = maxWidth
     }
     
-    var body: some View {
+    public var body: some View {
         Button(
             action: model.action,
             label: {
