@@ -90,30 +90,11 @@ struct BannerView: View {
     }
     
     private func smallButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
-        button(model: model, style: style, maxWidth: nil)
+        BannerButton(model: model, style: style, maxWidth: nil)
     }
     
     private func largeButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
-        button(model: model, style: style, maxWidth: .infinity)
-    }
-    
-    private func button(
-        model: Banner.Button,
-        style: Banner.ButtonStyle,
-        maxWidth: CGFloat?
-    ) -> some View {
-        Button(
-            action: model.action,
-            label: {
-                Text(model.title)
-                    .font(.subheadline)
-                    .fontWeight(.regular)
-                    .foregroundStyle(style.text)
-                    .frame(maxWidth: maxWidth)
-                    .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
-                    .background(style.background, in: Capsule())
-            }
-        )
+        BannerButton(model: model, style: style, maxWidth: .infinity)
     }
 }
 
