@@ -49,6 +49,7 @@ struct EmptySpamTrashBannerView: View {
                 .stroke(DS.Color.Border.strong, lineWidth: 1)
         }
         .frame(maxWidth: .infinity)
+        .alert(model: $store.state.alert)
     }
     
     // MARK: - Private
