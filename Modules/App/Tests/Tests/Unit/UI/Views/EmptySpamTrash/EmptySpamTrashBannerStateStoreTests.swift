@@ -72,4 +72,36 @@ final class EmptySpamTrashBannerStateStoreTests {
             alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
         ))
     }
+    
+    @Test
+    func testState_WhenCancelActionTapped_ItDismissesAlert() throws {
+        sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
+        
+        sut.handle(action: .emptyLocation)
+        
+        #expect(sut.state == .init(
+            icon: DS.Icon.icTrashClock,
+            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            buttons: [.emptyLocation],
+            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
+        ))
+        
+        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
+        cancelAction.action()
+        
+        #expect(sut.state == .init(
+            icon: DS.Icon.icTrashClock,
+            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            buttons: [.emptyLocation],
+            alert: .none
+        ))
+    }
+}
+
+private extension EmptySpamTrashBannerStateStore.State {
+    
+    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
+        try #require(alert?.actions.findFirst(for: string, by: \.title))
+    }
+
 }

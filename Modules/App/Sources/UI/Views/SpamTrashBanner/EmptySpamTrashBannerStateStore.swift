@@ -24,6 +24,7 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
     enum Action {
         case upgradeToAutoDelete
         case emptyLocation
+        case deleteConfirmed(DeleteConfirmationAlertAction)
     }
     
     struct State: Equatable, Copying {
@@ -48,10 +49,17 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
         case .emptyLocation:
             let alert: AlertModel = .emptyLocationConfirmation(
                 location: model.location,
-                action: { [model] _ in print("[FIXME]: Implement `Empty \(model.location.humanReadable) now` action") }
+                action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
             )
             
             state = state.copy(\.alert, to: alert)
+        case .deleteConfirmed(let action):
+            switch action {
+            case .cancel:
+                state = state.copy(\.alert, to: nil)
+            case .delete:
+                print("[FIXME]: Implement `Empty \(model.location.humanReadable) Folder` delete action")
+            }
         }
     }
 }
