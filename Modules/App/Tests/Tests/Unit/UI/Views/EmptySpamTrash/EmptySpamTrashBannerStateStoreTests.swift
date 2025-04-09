@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import InboxDesignSystem
 import Testing
 
@@ -35,7 +36,8 @@ final class EmptySpamTrashBannerStateStoreTests {
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
-            buttons: [.upgradePlan, .emptyLocation]
+            buttons: [.upgradePlan, .emptyLocation],
+            alert: .none
         ))
         
         sut.handle(action: .upgradeToAutoDelete)
@@ -43,20 +45,22 @@ final class EmptySpamTrashBannerStateStoreTests {
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
-            buttons: [.upgradePlan, .emptyLocation]
+            buttons: [.upgradePlan, .emptyLocation],
+            alert: .none
         ))
     }
     
     // MARK: - `.emptyLocation` action
     
     @Test
-    func testState_WhenEmptyTrashLocation_ItDoesNotUpdateTheState() {
+    func testState_WhenEmptyTrashLocationAction_ItPresentsEmptyLocationConfirmationAlert() {
         sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation]
+            buttons: [.emptyLocation],
+            alert: .none
         ))
         
         sut.handle(action: .emptyLocation)
@@ -64,7 +68,8 @@ final class EmptySpamTrashBannerStateStoreTests {
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation]
+            buttons: [.emptyLocation],
+            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
         ))
     }
 }

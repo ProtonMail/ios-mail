@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
@@ -24,10 +26,11 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
         case emptyLocation
     }
     
-    struct State: Equatable {
+    struct State: Equatable, Copying {
         let icon: ImageResource
         let title: String
         let buttons: [EmptySpamTrashBanner.ActionButton]
+        var alert: AlertModel?
     }
     
     let model: EmptySpamTrashBanner
@@ -43,7 +46,12 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
         case .upgradeToAutoDelete:
             print("[FIXME]: Implement `Upgrade to Auto-delete` action")
         case .emptyLocation:
-            print("[FIXME]: Implement `Empty \(model.location.humanReadable) now` action")
+            let alert: AlertModel = .emptyLocationConfirmation(
+                location: model.location,
+                action: { [model] _ in print("[FIXME]: Implement `Empty \(model.location.humanReadable) now` action") }
+            )
+            
+            state = state.copy(\.alert, to: alert)
         }
     }
 }
@@ -56,19 +64,22 @@ private extension EmptySpamTrashBanner {
             .init(
                 icon: DS.Icon.icTrashClock,
                 title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
-                buttons: [.upgradePlan, .emptyLocation]
+                buttons: [.upgradePlan, .emptyLocation],
+                alert: .none
             )
         case .paidAutoDeleteOn:
             .init(
                 icon: DS.Icon.icTrashClock,
                 title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
-                buttons: [.emptyLocation]
+                buttons: [.emptyLocation],
+                alert: .none
             )
         case .paidAutoDeleteOff:
             .init(
                 icon: DS.Icon.icTrash,
                 title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle.string,
-                buttons: [.emptyLocation]
+                buttons: [.emptyLocation],
+                alert: .none
             )
         }
     }
