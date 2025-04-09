@@ -583,7 +583,7 @@ enum L10n {
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
             LocalizedStringResource(
                 "\(number) attempts remaining before sign-out.",
-                comment: "Remaning attempts warning displayed after a user entered a wrong PIN few times."
+                comment: "Remaining attempts after a user has entered a wrong PIN a few times."
             )
         }
     }

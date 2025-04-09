@@ -29,14 +29,14 @@ struct BiometricAuthenticator: Sendable {
         case failure
     }
 
-    func authenticate() async throws -> AuthenticationStatus {
+    func authenticate() async -> AuthenticationStatus {
         let context = self.context()
         if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
             return .failure
         }
 
         let reason = L10n.BiometricLock.biometryUnlockRationale.string
-        return try await withCheckedThrowingContinuation { continuation in
+        return await withCheckedContinuation { continuation in
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 continuation.resume(with: .success(success ? AuthenticationStatus.success : .failure))
             }

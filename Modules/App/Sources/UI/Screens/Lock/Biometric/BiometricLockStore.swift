@@ -38,7 +38,7 @@ class BiometricLockStore: StateStore {
     func handle(action: BiometricLockScreenAction) async {
         switch action {
         case .onLoad, .unlockTapped:
-            let result = await authenticate()
+            let result = await biometricAuthenticator.authenticate()
             switch result {
             case .success:
                 output(.authenticated)
@@ -46,15 +46,6 @@ class BiometricLockStore: StateStore {
                 state = state
                     .copy(\.displayUnlockButton, to: true)
             }
-        }
-    }
-
-    @MainActor
-    private func authenticate() async -> BiometricAuthenticator.AuthenticationStatus {
-        do {
-            return try await biometricAuthenticator.authenticate()
-        } catch {
-            return .failure
         }
     }
 }
