@@ -34,7 +34,7 @@ final class ComposerController: UIViewController {
     private let scrollView = SubviewFactory.scrollView
     private let composerStack = SubviewFactory.composerStack
     private let contactPicker = ContactPickerController()
-    private let recipientsController = RecipientsViewController()
+    private let recipientsController: RecipientsViewController
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
     private let attachmentsController = DraftAttachmentsSectionViewController()
@@ -48,9 +48,15 @@ final class ComposerController: UIViewController {
         }
     }
 
-    init(state: ComposerState, embeddedImageProvider: EmbeddedImageProvider, onEvent: @escaping (ComposerControllerEvent) -> Void) {
+    init(
+        state: ComposerState,
+        embeddedImageProvider: EmbeddedImageProvider,
+        invalidAddressAlertStore: InvalidAddressAlertStateStore,
+        onEvent: @escaping (ComposerControllerEvent) -> Void
+    ) {
         self.state = state
         self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
+        self.recipientsController = RecipientsViewController(invalidAddressAlertStore: invalidAddressAlertStore)
 
         self.onEvent = onEvent
         super.init(nibName: nil, bundle: nil)

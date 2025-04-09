@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import Foundation
+import InboxCore
+import InboxCoreUI
 
 struct ComposerState: Equatable, Copying {
     var toRecipients: RecipientFieldState
@@ -38,6 +39,8 @@ struct ComposerState: Equatable, Copying {
     var isSendAvailable: Bool {
         !toRecipients.recipients.isEmpty // FIXME: Implement final logic
     }
+
+    var alert: AlertModel?
 
     mutating func overrideRecipientState(for group: RecipientGroupType, perform: (RecipientFieldState) -> RecipientFieldState) {
         let currentValue = self[keyPath: group.keyPath]

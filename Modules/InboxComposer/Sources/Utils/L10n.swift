@@ -263,6 +263,18 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer toast message when an invalid recipient is added by prematurely finishing text input"
         )
+
+        static let invalidAddressFormatTitle = LocalizedStringResource(
+            "Invalid recipient",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer alert telling the user the entered address has not a valid format"
+        )
+
+        static let invalidAddressFormatMessage = LocalizedStringResource(
+            "Please enter a valid email address",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer alert telling the user the entered address has not a valid format"
+        )
     }
 
     enum DraftSaveSendError {

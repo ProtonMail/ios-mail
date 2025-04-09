@@ -21,12 +21,13 @@ import UIKit
 enum RecipientsFieldEditingEvent {
     case onInputChange(text: String)
     case onRecipientSelected(index: Int)
-    case onReturnKeyPressed(text: String)
+    case onReturnKeyPressed
     case onDeleteKeyPressedInsideEmptyInputField
     case onDeleteKeyPressedOutsideInputField
 }
 
 final class RecipientsFieldEditingController: UIViewController {
+    private let invalidAddressAlertStore: InvalidAddressAlertStateStore
     private let collectionView = SubviewFactory.collectionView
 
     private var contentSizeObservation: NSKeyValueObservation?
@@ -50,8 +51,9 @@ final class RecipientsFieldEditingController: UIViewController {
 
     var onEvent: ((RecipientsFieldEditingEvent) -> Void)?
 
-    init(state: RecipientFieldState) {
+    init(state: RecipientFieldState, invalidAddressAlertStore: InvalidAddressAlertStateStore) {
         self.state = state
+        self.invalidAddressAlertStore = invalidAddressAlertStore
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -189,6 +191,11 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
 
     private func cursorCell(for collectionView: UICollectionView, at indexPath: IndexPath) -> RecipientCursorCell {
         let cursorCell: RecipientCursorCell = collectionView.dequeueReusableCell(for: indexPath)
+        cursorCell.shouldEndEditing = { [weak self] in
+            guard let self else { return true }
+            invalidAddressAlertStore.validateAndShowAlertIfNeeded()
+            return invalidAddressAlertStore.recipientAddressValidator.canResignFocus()
+        }
         cursorCell.onEvent = { [weak self] event in
             guard let self else { return }
             switch event {
@@ -197,9 +204,8 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
             case .onDeleteKeyPressedOnEmptyTextField:
                 if !cellUIModels.filter(\.isRecipient).isEmpty { removeFocusFromCursor() }
                 onEvent?(.onDeleteKeyPressedInsideEmptyInputField)
-            case .onReturnKeyPressed(let text):
-                clearCursor()
-                onEvent?(.onReturnKeyPressed(text: text))
+            case .onReturnKeyPressed:
+                onEvent?(.onReturnKeyPressed)
             }
         }
         cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input, state: state.controllerState)

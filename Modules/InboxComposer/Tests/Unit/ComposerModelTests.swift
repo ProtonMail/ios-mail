@@ -161,6 +161,29 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.bccRecipients.controllerState, .editing)
     }
 
+    func testStartEditingRecipients_whenHangingInputInEditingFieldIsInvalidFormat_itShouldShowAlert() async {
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
+
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: "invalid_address@example", for: .to)
+
+        sut.startEditingRecipients(for: .bcc)
+
+        XCTAssertNotNil(sut.state.alert)
+    }
+
+    func testStartEditingRecipients_whenNoHangingInputInEditingField_itShouldNotShowAlert() async {
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
+
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: "valid_address@example.com", for: .to)
+
+        sut.startEditingRecipients(for: .bcc)
+
+        XCTAssertNil(sut.state.alert)
+    }
+
+
     // MARK: recipientToggleSelection
 
     func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
@@ -204,13 +227,31 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
     }
 
-    // MARK: addRecipient
+    // MARK: addRecipientFromInput
 
-    func testAddRecipient_itShouldAddTheRecipient() {
+    func testaddRecipientFromInput_whenInputIsValid_itShouldAddTheRecipient() async {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
-        sut.addRecipient(group: .to, address: dummyAddress1)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: dummyAddress1, for: .to)
+
+        sut.addRecipientFromInput()
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyAddress1)
+        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+    }
+
+    func testaddRecipientFromInput_whenInputIsInvalid_itShouldShowAlert() async {
+        let invalid = "invalid_address"
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: invalid, for: .to)
+
+        sut.addRecipientFromInput()
+
+        XCTAssertNotNil(sut.state.alert)
+        XCTAssertEqual(sut.state.toRecipients.input, invalid)
+        XCTAssertTrue(sut.state.toRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }
@@ -325,14 +366,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
         sut.startEditingRecipients(for: .to)
 
-        // Preparing some hanging input in the `to` recipient
-        let expectation1 = expectation(description: "\(#function)")
-        expectation1.assertForOverFulfill = false
-        fulfill(expectation1, in: sut, when: { composerState in
-            composerState.toRecipients.input == hangingInput
-        })
-        sut.matchContact(group: .to, text: hangingInput)
-        await fulfillment(of: [expectation1], timeout: 1.0)
+        await prepareInput(sut: sut, input: hangingInput, for: .to)
 
         sut.endEditingRecipients()
         XCTAssertEqual(sut.state.toRecipients.recipients.count, 1)
@@ -487,6 +521,16 @@ private extension ComposerModelTests {
             cameraImageHandler: testCameraImageHandler,
             fileItemsHandler: testFilesItemsHandler
         )
+    }
+
+    private func prepareInput(sut: ComposerModel, input: String, for group: RecipientGroupType) async {
+        let expectation = expectation(description: "\(#function)")
+        expectation.assertForOverFulfill = false
+        fulfill(expectation, in: sut, when: { composerState in
+            composerState.toRecipients.input == input
+        })
+        sut.matchContact(group: group, text: input)
+        await fulfillment(of: [expectation], timeout: 1.0)
     }
 
     func testMatchContact(in sut: ComposerModel, test: MatchContactCountTestCase) async {

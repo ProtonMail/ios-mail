@@ -23,12 +23,14 @@ import UIKit
 
 enum RecipientCursorCellEvent {
     case onTextChanged(text: String)
-    case onReturnKeyPressed(text: String)
+    case onReturnKeyPressed
     case onDeleteKeyPressedOnEmptyTextField
 }
 
 final class RecipientCursorCell: UICollectionViewCell {
     private let textField = CursorTextField()
+    private var intentionallyResigningResponder = false
+    var shouldEndEditing: () -> Bool = { true }
     var onEvent: ((RecipientCursorCellEvent) -> Void)?
 
     private var widthConstraint: NSLayoutConstraint?
@@ -76,7 +78,9 @@ final class RecipientCursorCell: UICollectionViewCell {
     }
 
     func removeFocus() {
+        intentionallyResigningResponder = true
         textField.resignFirstResponder()
+        intentionallyResigningResponder = false
     }
 
     func configure(maxWidth: CGFloat, input: String, state: RecipientControllerStateType) {
@@ -89,9 +93,14 @@ extension RecipientCursorCell: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = textField.text, !text.isEmpty {
-            onEvent?(.onReturnKeyPressed(text: text))
+            onEvent?(.onReturnKeyPressed)
         }
         return true
+    }
+
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if intentionallyResigningResponder { return true }
+        return shouldEndEditing()
     }
 }
 

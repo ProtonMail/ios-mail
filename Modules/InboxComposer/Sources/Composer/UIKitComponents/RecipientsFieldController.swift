@@ -22,7 +22,7 @@ enum RecipientsFieldEvent {
     case onFieldTap
     case onInputChange(text: String)
     case onRecipientSelected(index: Int)
-    case onReturnKeyPressed(text: String)
+    case onReturnKeyPressed
     case onDeleteKeyPressedInsideEmptyInputField
     case onDeleteKeyPressedOutsideInputField
 }
@@ -42,10 +42,10 @@ final class RecipientsFieldController: UIViewController {
 
     var onEvent: ((RecipientsFieldEvent) -> Void)?
 
-    init(group: RecipientGroupType) {
+    init(group: RecipientGroupType, invalidAddressAlertStore: InvalidAddressAlertStateStore) {
         self.state = .initialState(group: group)
         self.expandedController = .init(state: self.state)
-        self.editingController = .init(state: self.state)
+        self.editingController = .init(state: self.state, invalidAddressAlertStore: invalidAddressAlertStore)
         label.text = group.string
         super.init(nibName: nil, bundle: nil)
     }
@@ -80,8 +80,8 @@ final class RecipientsFieldController: UIViewController {
                 self?.onEvent?(.onInputChange(text: text))
             case .onRecipientSelected(let index):
                 self?.onEvent?(.onRecipientSelected(index: index))
-            case .onReturnKeyPressed(let text):
-                self?.onEvent?(.onReturnKeyPressed(text: text))
+            case .onReturnKeyPressed:
+                self?.onEvent?(.onReturnKeyPressed)
             case .onDeleteKeyPressedInsideEmptyInputField:
                 self?.onEvent?(.onDeleteKeyPressedInsideEmptyInputField)
             case .onDeleteKeyPressedOutsideInputField:

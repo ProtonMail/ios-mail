@@ -17,6 +17,7 @@
 
 import InboxCore
 import Foundation
+import proton_app_uniffi
 
 enum RecipientControllerStateType {
     case collapsed      /* only first recipient and remaining recipient count are visible */

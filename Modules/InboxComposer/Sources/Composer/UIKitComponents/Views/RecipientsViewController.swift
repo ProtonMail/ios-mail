@@ -27,9 +27,9 @@ enum RecipientFieldsVisibility {
 final class RecipientsViewController: UIViewController {
     private let recipientsStack = SubviewFactory.recipientsStack
     private let toStack = SubviewFactory.toStack
-    private let toField = RecipientsFieldController(group: .to)
-    private let ccField = RecipientsFieldController(group: .cc)
-    private let bccField = RecipientsFieldController(group: .bcc)
+    private let toField: RecipientsFieldController
+    private let ccField: RecipientsFieldController
+    private let bccField: RecipientsFieldController
     private let chevronButton = SubviewFactory.chevronButton
     private let ccAndBccViews: [UIView]
 
@@ -47,7 +47,11 @@ final class RecipientsViewController: UIViewController {
         }
     }
 
-    init() {
+    init(invalidAddressAlertStore: InvalidAddressAlertStateStore) {
+        self.toField = RecipientsFieldController(group: .to, invalidAddressAlertStore: invalidAddressAlertStore)
+        self.ccField = RecipientsFieldController(group: .cc, invalidAddressAlertStore: invalidAddressAlertStore)
+        self.bccField = RecipientsFieldController(group: .bcc, invalidAddressAlertStore: invalidAddressAlertStore)
+
         self.ccAndBccViews = [ComposerSeparator(), ccField.view, ComposerSeparator(), bccField.view]
         super.init(nibName: nil, bundle: nil)
         setUpUI()

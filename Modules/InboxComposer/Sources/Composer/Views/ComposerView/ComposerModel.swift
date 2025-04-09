@@ -42,6 +42,24 @@ final class ComposerModel: ObservableObject {
     private let cameraImageHandler: CameraImageHandler
     private let fileItemsHandler: FilePickerItemHandler
 
+    lazy var invalidAddressAlertStore = InvalidAddressAlertStateStore(
+        validator: .init(
+            readState: { [weak self] in return self?.state },
+            composerWillDismiss: { [weak self] in return self?.composerWillDismiss ?? false }
+        ),
+        alertBinding: alertBinding
+    )
+
+    var alertBinding: Binding<AlertModel?> {
+        .init(
+            get: { [weak self] in self?.state.alert },
+            set: { [weak self] newValue in
+                guard let self else { return }
+                state = state.copy(\.alert, to: newValue)
+            }
+        )
+    }
+
     private let toCallback = ComposerRecipientCallbackWrapper()
     private let ccCallback = ComposerRecipientCallbackWrapper()
     private let bccCallback = ComposerRecipientCallbackWrapper()
@@ -50,6 +68,7 @@ final class ComposerModel: ObservableObject {
     private var updateBodyDebounceTask: DebouncedTask?
     
     private var messageHasBeenSent: Bool = false
+    private var composerWillDismiss: Bool = false
 
     var embeddedImageProvider: EmbeddedImageProvider {
         draft
@@ -118,6 +137,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func startEditingRecipients(for group: RecipientGroupType) {
+        guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
         endEditingRecipients()
 
         var newState = state
@@ -136,7 +156,8 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func endEditingRecipients() {
-        addHangingInputAsRecipientIfNeededAndContinueIfValid()
+        guard invalidAddressAlertStore.recipientAddressValidator.canResignFocus() else { return }
+        addRecipientFromInput()
         state = state.copy(\.toRecipients, to: endEditing(group: state.toRecipients))
             .copy(\.ccRecipients, to: endEditing(group: state.ccRecipients))
             .copy(\.bccRecipients, to: endEditing(group: state.bccRecipients))
@@ -190,8 +211,15 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
-    func addRecipient(group: RecipientGroupType, address: String) {
-        let entry = SingleRecipientEntry(name: nil, email: address)
+    func addRecipientFromInput() {
+        guard
+            invalidAddressAlertStore.validateAndShowAlertIfNeeded(),
+            let input = state.editingRecipientFieldState?.input.withoutWhitespace, !input.isEmpty,
+            let group = state.editingRecipientsGroup
+        else {
+            return
+        }
+        let entry = SingleRecipientEntry(name: nil, email: input)
         addEntryInRecipients(for: draft, entry: entry, group: group)
     }
 
@@ -236,6 +264,7 @@ final class ComposerModel: ObservableObject {
     @MainActor
     func sendMessage(dismissAction: Dismissable) {
         guard !messageHasBeenSent else { return }
+        guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
         Task {
             await updateBodyDebounceTask?.executeImmediately()
 
@@ -244,9 +273,7 @@ final class ComposerModel: ObservableObject {
             case .ok:
                 messageHasBeenSent = true
                 onSendingEvent()
-                DispatchQueue.main.async {
-                    dismissAction()
-                }
+                dismissComposer(dismissAction: dismissAction)
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
                 if draftError.shouldBeDisplayed {
@@ -310,6 +337,12 @@ final class ComposerModel: ObservableObject {
         Task {
             await draft.attachmentList().retry(attachmentId: uiModel.attachment.id)
         }
+    }
+
+    @MainActor
+    func dismissComposer(dismissAction: Dismissable) {
+        composerWillDismiss = true
+        dismissAction()
     }
 }
 
@@ -480,23 +513,6 @@ extension ComposerModel {
         guard let groupBeingEdited = state.editingRecipientFieldState else { return nil }
         guard !groupBeingEdited.input.withoutWhitespace.isEmpty else { return nil }
         return (groupBeingEdited.group, groupBeingEdited.input.withoutWhitespace)
-    }
-
-    @discardableResult
-    private func addHangingInputAsRecipientIfNeededAndContinueIfValid() -> Bool {
-        guard let addedOneMoreRecipient = addRecipientFromHangingInput() else { return true }
-        if !addedOneMoreRecipient.isValid {
-            showToast(.error(message: L10n.ComposerError.invalidLastRecipient.string))
-        }
-        return addedOneMoreRecipient.isValid
-    }
-
-    private func addRecipientFromHangingInput(onlyIfAddressIsValid: Bool = false) -> ComposerRecipient? {
-        guard let pendingData = hangingInputAndGroup() else { return nil }
-        let shouldAddRecipient = !onlyIfAddressIsValid || isValidEmailAddress(address: pendingData.input)
-        guard shouldAddRecipient else { return nil }
-        let entry = SingleRecipientEntry(name: nil, email: pendingData.input)
-        return addEntryInRecipients(for: draft, entry: entry, group: pendingData.group)
     }
 
     private func showDraftSavedToastIfNeeded() {

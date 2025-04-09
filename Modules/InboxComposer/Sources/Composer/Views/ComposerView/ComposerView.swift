@@ -56,10 +56,14 @@ struct ComposerView: View {
             ComposerTopBar(
                 isSendEnabled: model.state.isSendAvailable,
                 sendAction: { model.sendMessage(dismissAction: dismiss) },
-                dismissAction: { dismiss() }
+                dismissAction: { model.dismissComposer(dismissAction: dismiss) }
             )
 
-            ComposerControllerRepresentable(state: model.state, embeddedImageProvider: model.embeddedImageProvider) { event in
+            ComposerControllerRepresentable(
+                state: model.state,
+                embeddedImageProvider: model.embeddedImageProvider,
+                invalidAddressAlertStore: model.invalidAddressAlertStore
+            ) { event in
                 switch event {
                 case .viewDidDisappear:
                     Task { await model.viewDidDisappear() }
@@ -72,8 +76,8 @@ struct ComposerView: View {
                         model.matchContact(group: group, text: text)
                     case .onRecipientSelected(let index):
                         model.recipientToggleSelection(group: group, index: index)
-                    case .onReturnKeyPressed(let text):
-                        model.addRecipient(group: group, address: text)
+                    case .onReturnKeyPressed:
+                        model.addRecipientFromInput()
                     case .onDeleteKeyPressedInsideEmptyInputField:
                         model.selectLastRecipient(group: group)
                     case .onDeleteKeyPressedOutsideInputField:
@@ -136,6 +140,7 @@ struct ComposerView: View {
                 actions: { actionsForAttachmentAlert(error: $0) },
                 message: { Text($0.message) }
             )
+            .alert(model: model.alertBinding)
             .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
                 model.selectedAttachmentSource(selection)
             }

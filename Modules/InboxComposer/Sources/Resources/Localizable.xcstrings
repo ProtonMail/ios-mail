@@ -113,6 +113,9 @@
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
     },
+    "Invalid recipient" : {
+      "comment" : "Composer alert telling the user the entered address has not a valid format"
+    },
     "Message does not exist" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
@@ -124,6 +127,9 @@
     },
     "Message to be sent has no recipients" : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Please enter a valid email address" : {
+      "comment" : "Composer alert telling the user the entered address has not a valid format"
     },
     "Please verify your last recipient" : {
       "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"

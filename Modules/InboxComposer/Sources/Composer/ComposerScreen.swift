@@ -76,6 +76,7 @@ public struct ComposerScreen: View {
                 contactProvider: dependencies.contactProvider,
                 onSendingEvent: onSendingEvent
             )
+            .interactiveDismissDisabled()
         }
     }
 }
