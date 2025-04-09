@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ProtonMail/apple-fusion",
         "state": {
           "branch": null,
-          "revision": "86ac01d94a867182dc525963f8e337bc431b52a9",
-          "version": "2.1.4"
+          "revision": "4df5ec5ce3605e9c364803c28cd06730fdb7fac4",
+          "version": "2.1.5"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/hmlongco/Factory.git",
         "state": {
           "branch": null,
-          "revision": "fb04a8918848e413d3921d346a23bae7f81088d9",
-          "version": "2.4.3"
+          "revision": "c8110886836ab4dd1136dbac0c04f0f36cd68540",
+          "version": "2.4.5"
         }
       },
       {
@@ -84,11 +84,11 @@
       },
       {
         "package": "ProtonCore",
-        "repositoryURL": "https://github.com/timoteipalade/protoncore_ios.git",
+        "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
         "state": {
-          "branch": "develop",
-          "revision": "04064d3fa835c831832188ebb1e24c18e19004c4",
-          "version": null
+          "branch": null,
+          "revision": "d1202bbc10665fab9711c313e16933dd01cb46fd",
+          "version": "31.0.1"
         }
       },
       {
@@ -104,9 +104,9 @@
         "package": "ProtonInboxRSVP",
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
         "state": {
-          "branch": "main",
-          "revision": "0a169a40cf6ac308f274661b81dff26efc96d6f6",
-          "version": null
+          "branch": null,
+          "revision": "035dc8f3bc109950b8eba68fec0234bb1f727219",
+          "version": "2.7.0"
         }
       },
       {
