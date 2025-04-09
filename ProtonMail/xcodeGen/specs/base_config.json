@@ -34,15 +34,15 @@
          "from": "1.0.0"
       },
       "ProtonCore": {
-         "url": "https://github.com/ProtonMail/protoncore_ios",
-         "branch": "develop"
+         "url": "https://github.com/ProtonMail/protoncore_ios.git",
+         "from": "31.0.1"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
       },
       "ProtonInboxRSVP": {
          "url": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
-         "branch": "main"
+         "from": "2.7.0"
       },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",
