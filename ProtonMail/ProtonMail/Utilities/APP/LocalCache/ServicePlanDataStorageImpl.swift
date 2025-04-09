@@ -68,6 +68,20 @@ final class ServicePlanDataStorageImpl: ServicePlanDataStorage {
         }
     }
 
+    var iapSupportStatus: ProtonCorePayments.IAPSupportStatus {
+        get {
+            userDefaults[.isIAPAvailableOnBE] ? .enabled : .disabled(localizedReason: nil)
+        }
+        set {
+            switch newValue {
+            case .enabled:
+                userDefaults[.isIAPAvailableOnBE] = true
+            case .disabled:
+                userDefaults[.isIAPAvailableOnBE] = false
+            }
+        }
+    }
+
     init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
     }

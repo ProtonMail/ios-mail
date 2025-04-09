@@ -66,16 +66,7 @@ class ShareExtensionEntry: UINavigationController {
     }
 
     private func configureCoreLogger() {
-        let environment: String
-        switch BackendConfiguration.shared.environment {
-        case .black, .blackPayment:
-            environment = "black"
-        case .custom(let custom):
-            environment = custom
-        default:
-            environment = "production"
-        }
-        PMLog.setEnvironment(environment: environment)
+        PMLog.setExternalLoggerHost(BackendConfiguration.shared.environment.doh.defaultHost)
     }
 
     private func setupLogLocation() {

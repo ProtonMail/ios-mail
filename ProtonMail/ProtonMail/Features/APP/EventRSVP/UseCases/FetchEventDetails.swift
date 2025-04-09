@@ -276,7 +276,7 @@ struct FetchEventDetailsImpl: FetchEventDetails {
         )
 
         let attendeeData: [ICalAttendeeData] = apiEvent.attendees.map {
-            .init(eventID: apiEvent.ID, status: $0.status.rawValue, token: $0.token)
+            .init(eventID: apiEvent.ID, status: $0.status.rawValue, token: $0.token, comment: nil)
         }
 
         return iCalReader.parse_single_event_ics(dependecies: dependecies, attendeeData: attendeeData)

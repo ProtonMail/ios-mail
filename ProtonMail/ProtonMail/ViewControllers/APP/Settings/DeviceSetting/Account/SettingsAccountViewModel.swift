@@ -145,9 +145,7 @@ final class SettingsAccountViewModel {
         } else {
             items = [.loginPassword, .mailboxPassword]
         }
-        if userManager.isFido2Enabled {
-            items.append(.securityKeys)
-        }
+        items.append(.securityKeys)
         items.append(.recovery)
         if isAccountRecoveryEnabled,
            let accountRecovery = userManager.userInfo.accountRecovery,
