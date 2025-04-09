@@ -136,6 +136,7 @@ targets:
         LSRequiresIPhoneOS: YES
         NSCameraUsageDescription: "{{Placeholder}}"
         NSContactsUsageDescription: "{{Placeholder}}"
+        NSFaceIDUsageDescription: "{{Placeholder}}"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES

@@ -48,6 +48,18 @@
           }
         }
       }
+    },
+    "NSFaceIDUsageDescription" : {
+      "comment" : "Permission description displayed when requesting system permission to use Face ID. This permission is used to authenticate the user for secure access to sensitive features within the app, ensuring that only the registered user can unlock or authorise operations.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lets you quickly and securely unlock your application."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
