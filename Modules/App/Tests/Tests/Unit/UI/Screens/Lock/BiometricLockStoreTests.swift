@@ -48,7 +48,7 @@ class BiometricLockStoreTests {
         laContextSpy.canEvaluatePolicyStub = false
         await sut.handle(action: .onLoad)
 
-        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthenticationWithBiometrics])
+        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthentication])
         #expect(laContextSpy.evaluatePolicyCalls.count == 0)
         #expect(sut.state.displayUnlockButton == true)
         #expect(screenOutput == [])
@@ -61,9 +61,9 @@ class BiometricLockStoreTests {
 
         await sut.handle(action: .onLoad)
 
-        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthenticationWithBiometrics])
+        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthentication])
 
-        #expect(laContextSpy.evaluatePolicyCalls == [.deviceOwnerAuthenticationWithBiometrics])
+        #expect(laContextSpy.evaluatePolicyCalls == [.deviceOwnerAuthentication])
 
         #expect(sut.state.displayUnlockButton == true)
         #expect(screenOutput == [])

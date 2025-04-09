@@ -31,13 +31,13 @@ struct BiometricAuthenticator: Sendable {
 
     func authenticate() async throws -> AuthenticationStatus {
         let context = self.context()
-        if !context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+        if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
             return .failure
         }
 
         let reason = "Please authenticate to unlock your screen"
         return try await withCheckedThrowingContinuation { continuation in
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 continuation.resume(with: .success(success ? AuthenticationStatus.success : .failure))
             }
         }
