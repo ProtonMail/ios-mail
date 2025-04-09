@@ -26,7 +26,7 @@ struct PurchasePlan {
         self.dependencies = dependencies
     }
 
-    func execute(storeKitProductId: InAppPurchasePlan.ProductId) async -> Output {
+    func execute(storeKitProductId: String) async -> Output {
         guard let plan = InAppPurchasePlan(storeKitProductId: storeKitProductId) else {
             return .error(PurchasePlanError.productNotFound(storeKitProductId: storeKitProductId))
         }
@@ -74,6 +74,8 @@ struct PurchasePlan {
             return .cancelled
         case .renewalNotification:
             return nil
+        case .planAlreadyPurchased:
+            return .error(PurchasePlanError.planAlreadyPurchased)
         }
     }
 }
@@ -89,6 +91,7 @@ extension PurchasePlan {
 enum PurchasePlanError: LocalizedError {
     case productNotFound(storeKitProductId: String)
     case purchaseAlreadyInProgress
+    case planAlreadyPurchased
 
     var errorDescription: String? {
         switch self {
@@ -96,6 +99,9 @@ enum PurchasePlanError: LocalizedError {
             return String(format: L10n.Upsell.invalidProductID, storeKitProductId)
         case .purchaseAlreadyInProgress:
             return L10n.Upsell.purchaseAlreadyInProgress
+        case .planAlreadyPurchased:
+            // TODO: Localize
+            return "Plan already purchased"
         }
     }
 }

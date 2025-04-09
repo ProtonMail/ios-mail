@@ -152,6 +152,7 @@ final class UploadAttachment: UploadAttachmentUseCase {
                         customAuthCredential: params.cachedAuthCredential,
                         nonDefaultTimeout: timeout,
                         retryPolicy: .background,
+                        successStatusCodes: .init(arrayLiteral: .ok),
                         uploadProgress: nil,
                         jsonCompletion: { _, result in
                             switch result {
