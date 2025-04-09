@@ -35,6 +35,7 @@ struct EmptySpamTrashBannerView: View {
             ForEachLast(collection: store.state.buttons) { type, isLast in
                 VStack(spacing: DS.Spacing.medium) {
                     BannerButton(model: buttonModel(from: type), style: .regular, maxWidth: .infinity)
+                        .buttonStyle(.plain)
                         .horizontalPadding()
                     if !isLast {
                         DS.Color.Border.strong.frame(height: 1).frame(maxWidth: .infinity)
