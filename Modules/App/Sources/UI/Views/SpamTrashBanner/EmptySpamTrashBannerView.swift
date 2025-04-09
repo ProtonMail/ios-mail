@@ -20,22 +20,26 @@ import InboxDesignSystem
 import SwiftUI
 
 struct EmptySpamTrashBannerView: View {
+    private struct DisplayModel {
+        let icon: ImageResource
+        let title: String
+        let buttons: [EmptySpamTrashBanner.ActionButton]
+    }
+    
     let state: EmptySpamTrashBanner
     
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
             HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
-                BannerIconTextView(icon: icon, text: title.string, style: .regular, lineLimit: .none)
+                BannerIconTextView(icon: displayModel.icon, text: displayModel.title, style: .regular, lineLimit: .none)
             }
-            .padding([.leading, .trailing], DS.Spacing.large)
-            ForEachLast(collection: buttons) { type, isLast in
+            .horizontalPadding()
+            ForEachLast(collection: displayModel.buttons) { type, isLast in
                 VStack(spacing: DS.Spacing.medium) {
                     BannerButton(model: buttonModel(from: type), style: .regular, maxWidth: .infinity)
-                        .padding([.leading, .trailing], DS.Spacing.large)
+                        .horizontalPadding()
                     if !isLast {
-                        DS.Color.Border.strong
-                            .frame(height: 1)
-                            .frame(maxWidth: .infinity)
+                        DS.Color.Border.strong.frame(height: 1).frame(maxWidth: .infinity)
                     }
                 }
             }
@@ -69,36 +73,36 @@ struct EmptySpamTrashBannerView: View {
         return model
     }
     
-    private var title: LocalizedStringResource {
+    private var displayModel: DisplayModel {
         switch state.userState {
         case .freePlan:
-            L10n.EmptySpamTrashBanner.freeUserTitle
+            .init(
+                icon: DS.Icon.icTrashClock,
+                title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
+                buttons: [.upgradePlan, .emptyLocation]
+            )
         case .paidAutoDeleteOn:
-            L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle
+            .init(
+                icon: DS.Icon.icTrashClock,
+                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+                buttons: [.emptyLocation]
+            )
         case .paidAutoDeleteOff:
-            L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle
+            .init(
+                icon: DS.Icon.icTrash,
+                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle.string,
+                buttons: [.emptyLocation]
+            )
         }
+    }
+}
+
+private extension View {
+    
+    func horizontalPadding() -> some View {
+        padding([.leading, .trailing], DS.Spacing.large)
     }
     
-    private var icon: ImageResource {
-        switch state.userState {
-        case .freePlan, .paidAutoDeleteOn:
-            DS.Icon.icTrashClock
-        case .paidAutoDeleteOff:
-            DS.Icon.icTrash
-        }
-    }
-    
-    private var buttons: [EmptySpamTrashBanner.ActionButton] {
-        switch state.userState {
-        case .freePlan:
-            return [.upgradePlan, .emptyLocation]
-        case .paidAutoDeleteOn:
-            return [.emptyLocation]
-        case .paidAutoDeleteOff:
-            return [.emptyLocation]
-        }
-    }
 }
 
 #Preview {
