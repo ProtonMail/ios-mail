@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import Combine
 
 class LockScreenStore: StateStore {
@@ -48,20 +49,20 @@ class LockScreenStore: StateStore {
                 await verify(pin: pin)
             }
         case .pinScreenLoaded:
-            let numberOfAttempts = await readNumberOfAttempts()
-            if numberOfAttempts <= 3 {
-                state = state
-                    .copy(\.pinError, to: pinErrorMessage(numberOfAttempts: numberOfAttempts))
-            }
+            await verifyNumberOfAttempts()
         }
     }
 
     @MainActor
-    private func pinErrorMessage(numberOfAttempts: Int) -> String {
-        if numberOfAttempts <= 3 {
-            "\(numberOfAttempts) attempts remaining before sign-out." // FIXME: -
-        } else {
-            "Incorrect PIN. Try again." // FIXME: -
+    private func verifyNumberOfAttempts() async {
+        let numberOfAttempts = await readNumberOfAttempts()
+        switch numberOfAttempts {
+        case 0:
+            lockOutput(.logOut)
+        case 1...3:
+            state = state.copy(\.pinError, to: "\(numberOfAttempts) attempts remaining before sign-out.")
+        default:
+            break
         }
     }
 
@@ -71,19 +72,18 @@ class LockScreenStore: StateStore {
         case .ok:
             lockOutput(.authenticated)
         case .error:
-            let numberOfAttempts = await readNumberOfAttempts()
-            state = state
-                .copy(\.pinError, to: pinErrorMessage(numberOfAttempts: numberOfAttempts))
+            await verifyNumberOfAttempts()
         }
     }
 
     @MainActor
     private func readNumberOfAttempts() async -> Int {
         do {
-            let attempts = try await pinVerifier.remainingPinAttempts().get() ?? 0
+            let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
             return Int(attempts)
         } catch {
-            fatalError() // FIXME: - Add logger here
+            AppLogger.log(error: error)
+            return 0
         }
     }
 }

@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import Testing
 import LocalAuthentication
+import Testing
 
 class BiometricLockStoreTests {
 
