@@ -23,7 +23,7 @@ struct EmptySpamTrashBannerView: View {
     @StateObject var store: EmptySpamTrashBannerStateStore
     
     init(model: EmptySpamTrashBanner) {
-        _store = .init(wrappedValue: .init(model: model))
+        _store = .init(wrappedValue: .init(model: model, toastStateStore: .init(initialState: .initial)))
     }
     
     var body: some View {

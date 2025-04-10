@@ -36,16 +36,18 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
     
     let model: EmptySpamTrashBanner
     @Published var state: State
+    private let toastStateStore: ToastStateStore
     
-    init(model: EmptySpamTrashBanner) {
+    init(model: EmptySpamTrashBanner, toastStateStore: ToastStateStore) {
         self.model = model
         self.state = model.state
+        self.toastStateStore = toastStateStore
     }
     
     func handle(action: Action) {
         switch action {
         case .upgradeToAutoDelete:
-            print("[FIXME]: Implement `Upgrade to Auto-delete` action")
+            toastStateStore.present(toast: .comingSoon)
         case .emptyLocation:
             let alert: AlertModel = .emptyLocationConfirmation(
                 location: model.location,
@@ -58,7 +60,7 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
             case .cancel:
                 state = state.copy(\.alert, to: nil)
             case .delete:
-                print("[FIXME]: Implement `Empty \(model.location.humanReadable) Folder` delete action")
+                toastStateStore.present(toast: .comingSoon)
                 state = state.copy(\.alert, to: nil)
             }
         }

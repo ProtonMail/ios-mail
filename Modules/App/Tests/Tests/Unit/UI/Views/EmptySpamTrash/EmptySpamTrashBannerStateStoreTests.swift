@@ -20,18 +20,25 @@ import InboxCoreUI
 import InboxDesignSystem
 import Testing
 
+@MainActor
 final class EmptySpamTrashBannerStateStoreTests {
     var sut: EmptySpamTrashBannerStateStore!
+    var toastStateStore: ToastStateStore!
+    
+    init() {
+        toastStateStore = .init(initialState: .initial)
+    }
     
     deinit {
         sut = nil
+        toastStateStore = nil
     }
     
     // MARK: - `.upgradeToAutoDelete` action
 
     @Test
-    func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheState() {
-        sut = .init(model: .init(location: .spam, userState: .freePlan))
+    func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheStateAndPresentsComingSoon() {
+        sut = makeSUT(.spam, .freePlan)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -39,6 +46,7 @@ final class EmptySpamTrashBannerStateStoreTests {
             buttons: [.upgradePlan, .emptyLocation],
             alert: .none
         ))
+        #expect(toastStateStore.state.toasts == [])
         
         sut.handle(action: .upgradeToAutoDelete)
         
@@ -48,13 +56,14 @@ final class EmptySpamTrashBannerStateStoreTests {
             buttons: [.upgradePlan, .emptyLocation],
             alert: .none
         ))
+        #expect(toastStateStore.state.toasts == [.comingSoon])
     }
     
     // MARK: - `.emptyLocation` action
     
     @Test
     func testState_WhenEmptyTrashLocationAction_ItPresentsEmptyLocationConfirmationAlert() {
-        sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
+        sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -75,7 +84,7 @@ final class EmptySpamTrashBannerStateStoreTests {
     
     @Test
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() throws {
-        sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
+        sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         sut.handle(action: .emptyLocation)
         
@@ -98,8 +107,8 @@ final class EmptySpamTrashBannerStateStoreTests {
     }
     
     @Test
-    func testState_WhenConfirmAlertActionTapped_ItDismissesAlert() throws {
-        sut = .init(model: .init(location: .trash, userState: .paidAutoDeleteOn))
+    func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndPresentsComingSoon() throws {
+        sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         sut.handle(action: .emptyLocation)
         
@@ -109,6 +118,7 @@ final class EmptySpamTrashBannerStateStoreTests {
             buttons: [.emptyLocation],
             alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
         ))
+        #expect(toastStateStore.state.toasts == [])
         
         let deleteAction = try sut.state.alertAction(for: .delete)
         deleteAction.action()
@@ -119,6 +129,14 @@ final class EmptySpamTrashBannerStateStoreTests {
             buttons: [.emptyLocation],
             alert: .none
         ))
+        #expect(toastStateStore.state.toasts == [.comingSoon])
+    }
+    
+    private func makeSUT(
+        _ location: EmptySpamTrashBanner.Location,
+        _ userState: EmptySpamTrashBanner.UserState
+    ) -> EmptySpamTrashBannerStateStore {
+        .init(model: .init(location: location, userState: userState), toastStateStore: toastStateStore)
     }
 }
 
