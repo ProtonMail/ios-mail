@@ -23,15 +23,16 @@ class WindowColorSchemeUpdater {
 
     @MainActor
     let appState = AppAppearanceStore.shared
-    var cancellable: AnyCancellable?
+    var cancellables: Set<AnyCancellable> = .init()
 
     func subscribeToColorSchemeChanges(window: UIWindow) {
-        cancellable = appState
+        appState
             .$colorScheme
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { colorScheme in
                 window.overrideUserInterfaceStyle = colorScheme.userInterfaceStyle
             })
+            .store(in: &cancellables)
     }
 
 }
