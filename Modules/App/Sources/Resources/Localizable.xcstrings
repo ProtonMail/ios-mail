@@ -108,7 +108,7 @@
       }
     },
     "%lld attempts remaining before sign-out." : {
-      "comment" : "Remaning attempts warning displayed after a user entered a wrong PIN few times.",
+      "comment" : "Remaining attempts after a user has entered a wrong PIN a few times.",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -3355,7 +3355,7 @@
     "Undo operation failed because draft was not found" : {
       "comment" : "Error in the context of undoing a sent message"
     },
-    "Unlock Proton Mail." : {
+    "Unlock Proton Mail" : {
       "comment" : "Title of a button that triggers biometric authorization on the lock screen."
     },
     "Unpin" : {

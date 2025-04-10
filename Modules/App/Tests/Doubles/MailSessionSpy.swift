@@ -29,7 +29,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
-    private(set) var setPinCodeInvocations: [Data] = []
+    private(set) var setPinCodeInvocations: [[UInt32]] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
@@ -53,7 +53,7 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    func deletePinCode(pin: Data) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
+    func deletePinCode(pin: [UInt32]) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
         fatalError(#function)
     }
 
@@ -161,7 +161,7 @@ final class MailSessionSpy: MailSessionProtocol {
         .ok
     }
 
-    func setPinCode(pin: Data) async -> MailSessionSetPinCodeResult {
+    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult {
         setPinCodeInvocations.append(pin)
         return .ok
     }
@@ -195,7 +195,7 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    func verifyPinCode(pin: Data) async -> MailSessionVerifyPinCodeResult {
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {
         fatalError(#function)
     }
 

@@ -126,7 +126,7 @@ final class LegacyMigrationServiceTests {
         await sut.resume(protectedMainKey: mainKey, protectionPreference: .pin("1234"))
 
         let pinThatWasSet = try #require(mailSessionStub.setPinCodeInvocations.first)
-        #expect([UInt8](pinThatWasSet) == [1, 2, 3, 4])
+        #expect(pinThatWasSet == [1, 2, 3, 4])
     }
 
     @Test

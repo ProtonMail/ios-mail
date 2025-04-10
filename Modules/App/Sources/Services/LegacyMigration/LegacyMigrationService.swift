@@ -270,8 +270,10 @@ actor LegacyMigrationService {
                 try await mailSession.setBiometricsAppProtection().get()
             case .pin(let pinString):
                 // TODO: consider having the PINLockScreen provide an array of digits in the first place
-                let pinDigits = pinString.map { UInt8(String($0)).unsafelyUnwrapped }
-                try await mailSession.setPinCode(pin: Data(pinDigits)).get()
+                let pinDigits = pinString
+                    .compactMap(\.wholeNumberValue)
+                    .map(UInt32.init)
+                try await mailSession.setPinCode(pin: pinDigits).get()
             }
         } catch {
             AppLogger.log(error: error, category: .legacyMigration)
