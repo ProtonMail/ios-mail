@@ -64,10 +64,14 @@ extension BodyHtmlDocument {
         case onContentHeightChange
         case onEditorFocus
         case onEditorChange
+        case onCursorPositionChange
     }
 
     enum EventAttributeKey {
         static let height = "height"
+        static let cursorPosition = "cursorPosition"
+        static let cursorPositionX = "x"
+        static let cursorPositionY = "y"
     }
 
     enum JSFunction: String {
@@ -83,12 +87,14 @@ extension BodyHtmlDocument {
         case bodyResize
         case focus
         case editorChanged
+        case cursorPositionChanged
 
         var event: Event {
             switch self {
             case .bodyResize: .onContentHeightChange
             case .focus: .onEditorFocus
             case .editorChanged: .onEditorChange
+            case .cursorPositionChanged: .onCursorPositionChange
             }
         }
     }
@@ -151,6 +157,8 @@ private extension BodyHtmlDocument {
     """
     "use strict";
     var html_editor = {};
+    let lastCursorPosition = null;
+    let isProcessingNewLine = false;
 
     // --------------------
     // Event listeners
@@ -160,20 +168,24 @@ private extension BodyHtmlDocument {
         window.webkit.messageHandlers.\(JSEventHandler.focus).postMessage({ "messageHandler": "\(JSEventHandler.focus)" });
     });
 
-    document.getElementById('\(ID.editor)').addEventListener('input', function(){
+    document.getElementById('\(ID.editor)').addEventListener('input', function(event){
         window.webkit.messageHandlers.\(JSEventHandler.editorChanged).postMessage({ "messageHandler": "\(JSEventHandler.editorChanged)" });
+
+        handleUpdateCursorPosition(event);
     });
 
     const observer = new ResizeObserver(entries => {
         for (const entry of entries) {
-            console.log(entry.contentRect.height)
-            window.webkit.messageHandlers.\(JSEventHandler.bodyResize).postMessage({ "messageHandler": "\(JSEventHandler.bodyResize)", "\(EventAttributeKey.height)": entry.contentRect.height });
+            window.webkit.messageHandlers.\(JSEventHandler.bodyResize).postMessage({
+                "messageHandler": "\(JSEventHandler.bodyResize)",
+                "\(EventAttributeKey.height)": entry.contentRect.height
+            });
         }
     });
     observer.observe(document.querySelector('body'));
 
     // --------------------
-    // Functions
+    // Public Functions
     // --------------------
 
     \(JSFunction.setFocus.rawValue) = function () {
@@ -183,6 +195,87 @@ private extension BodyHtmlDocument {
     \(JSFunction.getHtmlContent.rawValue) = function () {
         return document.getElementById('\(ID.editor)').innerHTML;
     };
+
+    // --------------------
+    // Private Functions
+    // --------------------
+
+    function handleUpdateCursorPosition(event) {
+        var isEnterKeyPress = event.inputType === 'insertParagraph';
+        if (isEnterKeyPress && !isProcessingNewLine) {
+            isProcessingNewLine = true;
+
+            // wait until next render to ensure all layout changes are done
+            requestAnimationFrame(() => {
+                const position = getCursorCoordinates();
+                if (position) {
+                    window.webkit.messageHandlers.\(JSEventHandler.cursorPositionChanged).postMessage({
+                        "messageHandler": "\(JSEventHandler.cursorPositionChanged)",
+                        "\(EventAttributeKey.cursorPosition)": {
+                            "\(EventAttributeKey.cursorPositionX)": position.x,
+                            "\(EventAttributeKey.cursorPositionY)": position.y
+                        }
+                    });
+                }
+                isProcessingNewLine = false;
+            });
+        } else if (!isProcessingNewLine) {
+            updateCursorPosition();
+        }
+    }
+
+    /**
+     * Retrieves the cursor's position.
+     *
+     * This function works by temporarily inserting a zero-width character (`\\u200b`) at the cursor's
+     * current position, then measuring the position of that character. The temporary span is removed
+     * afterward, and the selection is restored to its original state.
+     */
+    function getCursorCoordinates() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return null;
+
+        const range = selection.getRangeAt(0);
+        if (!range.collapsed) return null;
+
+        // Create a temporary span with a zero-width character
+        const span = document.createElement('span');
+        span.appendChild(document.createTextNode('\\u200b'));
+        
+        // Insert the span
+        range.insertNode(span);
+        
+        // Get position
+        const rect = span.getBoundingClientRect();
+        
+        // Remove the span but keep the selection
+        const parent = span.parentNode;
+        const next = span.nextSibling;
+        parent.removeChild(span);
+        
+        // Restore selection
+        const newRange = document.createRange();
+        newRange.setStart(next || parent, 0);
+        newRange.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+        
+        return {x: rect.x, y: rect.y};
+    }
+
+    function updateCursorPosition() {
+        const position = getCursorCoordinates();
+        if (!position) return;
+        
+        const newPosition = JSON.stringify(position);
+        if (newPosition !== lastCursorPosition) {
+            lastCursorPosition = newPosition;
+            window.webkit.messageHandlers.\(JSEventHandler.cursorPositionChanged).postMessage({
+                "messageHandler": "\(JSEventHandler.cursorPositionChanged)",
+                "\(EventAttributeKey.cursorPosition)": position
+            });
+        }
+    }
 
     """
     }

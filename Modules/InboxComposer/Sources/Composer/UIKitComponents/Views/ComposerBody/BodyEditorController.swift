@@ -23,6 +23,7 @@ import WebKit
 enum BodyEditorEvent {
     case onStartEditing
     case onBodyChange(body: String)
+    case onCursorPositionChange(position: CGPoint)
 }
 
 final class BodyEditorController: UIViewController {
@@ -84,6 +85,8 @@ final class BodyEditorController: UIViewController {
                     guard let body = await htmlInterface.readMesasgeBody() else { return }
                     onEvent?(.onBodyChange(body: body))
                 }
+            case .onCursorPositionChange(let position):
+                onEvent?(.onCursorPositionChange(position: position))
             }
         }
     }

@@ -19,15 +19,16 @@ import Foundation
 import InboxCore
 import WebKit
 
-enum BodyEvent {
+enum BodyWebViewInterfaceEvent {
     case onContentHeightChange(height: CGFloat)
     case onEditorFocus
     case onEditorChange
+    case onCursorPositionChange(position: CGPoint)
 }
 
 final class BodyWebViewInterface: NSObject {
     let webView: WKWebView
-    var onEvent: ((BodyEvent) -> Void)?
+    var onEvent: ((BodyWebViewInterfaceEvent) -> Void)?
 
     private let htmlDocument: BodyHtmlDocument
 
@@ -88,6 +89,20 @@ extension BodyWebViewInterface: WKScriptMessageHandler {
             onEvent?(.onEditorChange)
         case .onEditorFocus:
             onEvent?(.onEditorFocus)
+        case .onCursorPositionChange:
+            let positionDict = userInfo[BodyHtmlDocument.EventAttributeKey.cursorPosition] as? [String: CGFloat] ?? [:]
+            guard let position = readCursorPosition(from: positionDict) else { return }
+            onEvent?(.onCursorPositionChange(position: position))
         }
+    }
+
+    private func readCursorPosition(from dict: [String: CGFloat]) -> CGPoint? {
+        guard
+            let x = dict[BodyHtmlDocument.EventAttributeKey.cursorPositionX],
+            let y = dict[BodyHtmlDocument.EventAttributeKey.cursorPositionY]
+        else {
+            return nil
+        }
+        return CGPoint(x: x, y: y)
     }
 }

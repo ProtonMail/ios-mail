@@ -26,7 +26,7 @@ enum ComposerControllerEvent {
     case fromFieldEvent(FromFieldViewEvent)
     case subjectFieldEvent(SubjectFieldViewEvent)
     case attachmentEvent(DraftAttachmentsSectionEvent)
-    case bodyEvent(BodyEditorEvent)
+    case bodyEvent(BodyEvent)
     case actionBarEvent(DraftActionBarEvent)
 }
 
@@ -103,7 +103,16 @@ final class ComposerController: UIViewController {
         fromField.onEvent = { [weak self] in self?.onEvent(.fromFieldEvent($0)) }
         subjectField.onEvent = { [weak self] in self?.onEvent(.subjectFieldEvent($0)) }
         attachmentsController.onEvent = { [weak self] in self?.onEvent(.attachmentEvent($0)) }
-        bodyEditor.onEvent = { [weak self] in self?.onEvent(.bodyEvent($0)) }
+        bodyEditor.onEvent = { [weak self] event in
+            guard let self else { return }
+            switch event {
+            case .onStartEditing, .onBodyChange:
+                guard let bodyEvent = event.toBodyEvent else { return }
+                self.onEvent(.bodyEvent(bodyEvent))
+            case .onCursorPositionChange(let position):
+                self.scrollToY(position.y)
+            }
+        }
         draftActionBarController.onEvent = { [weak self] in self?.onEvent(.actionBarEvent($0)) }
     }
 
@@ -148,6 +157,50 @@ final class ComposerController: UIViewController {
         attachmentsController.uiModels = state.attachments
         if state.isInitialFocusInBody {
             bodyEditor.setBodyInitialFocus()
+        }
+    }
+
+    private func scrollToY(_ yPosition: CGFloat) {
+        guard let bodyEditorFrame = bodyEditor.view.superview?.convert(bodyEditor.view.frame, to: scrollView) else {
+            return
+        }
+        let scrollViewVisibleArea = CGRect(origin: scrollView.contentOffset, size: scrollView.bounds.size)
+        let verticalPaddingForBetterVivibility: CGFloat = 50
+        let yPositionInScrollView = bodyEditorFrame.minY + yPosition
+        let minVisibleY = scrollViewVisibleArea.minY
+        let maxVisibleY = scrollViewVisibleArea.maxY - verticalPaddingForBetterVivibility
+
+        let isCursorOutsideVisibleArea = yPositionInScrollView < minVisibleY || yPositionInScrollView > maxVisibleY
+        guard isCursorOutsideVisibleArea else { return }
+
+        let newOffsetY: CGFloat
+        if yPositionInScrollView > maxVisibleY { // Cursor is below the visible area
+            newOffsetY = yPositionInScrollView - scrollView.bounds.height + verticalPaddingForBetterVivibility
+        } else { // Cursor is above the visible area
+            newOffsetY = yPositionInScrollView - verticalPaddingForBetterVivibility
+        }
+
+        let adjustedOffset = CGPoint(x: scrollView.contentOffset.x, y: max(0, newOffsetY))
+        scrollView.setContentOffset(adjustedOffset, animated: true)
+    }
+}
+
+
+enum BodyEvent {
+    case onStartEditing
+    case onBodyChange(body: String)
+}
+
+extension BodyEditorEvent {
+
+    var toBodyEvent: BodyEvent? {
+        switch self {
+        case .onStartEditing:
+            .onStartEditing
+        case .onBodyChange(let body):
+            .onBodyChange(body: body)
+        case .onCursorPositionChange:
+            nil
         }
     }
 }
