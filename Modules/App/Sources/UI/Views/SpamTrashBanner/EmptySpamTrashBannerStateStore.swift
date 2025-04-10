@@ -79,20 +79,24 @@ private extension EmptySpamTrashBanner {
                 alert: .none
             )
         case .paidAutoDeleteOn:
-            .init(
+            .paidNoAlert(
                 icon: DS.Icon.icTrashClock,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
-                buttons: [.emptyLocation],
-                alert: .none
+                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle
             )
         case .paidAutoDeleteOff:
-            .init(
+            .paidNoAlert(
                 icon: DS.Icon.icTrash,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle.string,
-                buttons: [.emptyLocation],
-                alert: .none
+                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle
             )
         }
+    }
+
+}
+
+private extension EmptySpamTrashBannerStateStore.State {
+
+    static func paidNoAlert(icon: ImageResource, title: LocalizedStringResource) -> Self {
+        .init(icon: icon, title: title.string, buttons: [.emptyLocation], alert: .none)
     }
 
 }
