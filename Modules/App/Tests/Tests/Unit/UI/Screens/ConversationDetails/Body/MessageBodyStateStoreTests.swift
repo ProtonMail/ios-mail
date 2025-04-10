@@ -59,13 +59,13 @@ final class MessageBodyStateStoreTests {
         
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
-        #expect(wrapperSpy.messageBodyMessageIDs == [])
+        #expect(wrapperSpy.messageBodyCalls == [])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 0)
         #expect(sut.state == .fetching)
 
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(sut.state == .loaded(.init(
             banners: [],
@@ -83,7 +83,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(sut.state == .noConnection)
     }
     
@@ -95,7 +95,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(sut.state == .error(expectedError))
     }
     
@@ -114,7 +114,7 @@ final class MessageBodyStateStoreTests {
 
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(sut.state == .loaded(.init(
             banners: [],
@@ -214,7 +214,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .markAsLegitimate)
         
-        #expect(wrapperSpy.markMessageHamWithMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
@@ -258,7 +258,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .markAsLegitimate)
         
-        #expect(wrapperSpy.markMessageHamWithMessageIDs == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
@@ -297,7 +297,7 @@ final class MessageBodyStateStoreTests {
         let emailAddress = "john.doe@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
         
-        #expect(wrapperSpy.unblockSenderWithEmailAddresses == [emailAddress])
+        #expect(wrapperSpy.unblockSenderCalls == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
@@ -342,7 +342,7 @@ final class MessageBodyStateStoreTests {
         let emailAddress = "steven.morcote@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
         
-        #expect(wrapperSpy.unblockSenderWithEmailAddresses == [emailAddress])
+        #expect(wrapperSpy.unblockSenderCalls == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
@@ -434,25 +434,25 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
 private class RustWrappersSpy {
     var stubbedMessageBodyResult: GetMessageBodyResult!
-    private(set) var messageBodyMessageIDs: [ID] = []
+    private(set) var messageBodyCalls: [ID] = []
     
     var stubbedMarkMessageHamResult: VoidActionResult = .ok
-    private(set) var markMessageHamWithMessageIDs: [ID] = []
+    private(set) var markMessageHamCalls: [ID] = []
 
     var stubbedUnblockSenderResult: VoidActionResult = .ok
-    private(set) var unblockSenderWithEmailAddresses: [String] = []
+    private(set) var unblockSenderCalls: [String] = []
     
     private(set) lazy var testingInstance = RustMessageBodyWrapper(
         messageBody: { [unowned self] _, messageID in
-            messageBodyMessageIDs.append(messageID)
+            messageBodyCalls.append(messageID)
             return stubbedMessageBodyResult
         },
         markMessageHam: { [unowned self] _, messageID in
-            markMessageHamWithMessageIDs.append(messageID)
+            markMessageHamCalls.append(messageID)
             return stubbedMarkMessageHamResult
         },
         unblockSender: { [unowned self] _, emailAddress in
-            unblockSenderWithEmailAddresses.append(emailAddress)
+            unblockSenderCalls.append(emailAddress)
             return stubbedUnblockSenderResult
         }
     )
