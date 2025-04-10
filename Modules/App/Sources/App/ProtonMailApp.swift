@@ -141,6 +141,12 @@ private struct RootView: View {
             EmptyView()
         case .inProgress:
             SessionTransitionScreen()
+        case .biometricUnlockRequired:
+            BiometricLockScreen(
+                authenticationMethod: .external {
+                    try await legacyMigrationStateStore.resumeByRequestABiometryCheck()
+                }, output: { _ in }
+            )
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(error: .constant(errorFromLatestAttempt)) { output in
                 switch output {

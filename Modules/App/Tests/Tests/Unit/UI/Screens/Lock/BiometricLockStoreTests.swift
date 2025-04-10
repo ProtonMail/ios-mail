@@ -30,7 +30,7 @@ class BiometricLockStoreTests {
         laContextSpy = .init()
         sut = .init(
             state: .initial,
-            context: { self.laContextSpy },
+            method: .builtIn { self.laContextSpy },
             output: { output in
                 self.screenOutput.append(output)
             }

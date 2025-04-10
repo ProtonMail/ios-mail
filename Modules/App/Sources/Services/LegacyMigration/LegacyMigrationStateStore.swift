@@ -25,6 +25,7 @@ final class LegacyMigrationStateStore: ObservableObject {
     enum State {
         case checkingIfMigrationIsNeeded
         case inProgress
+        case biometricUnlockRequired
         case pinRequired(errorFromLatestAttempt: String?)
         case willNotMigrate
     }
@@ -51,7 +52,7 @@ final class LegacyMigrationStateStore: ObservableObject {
                     state = .inProgress
                 case .awaitingProtectedMainKey:
                     state = .inProgress
-                    unlockMainKeyAndResumeMigration()
+                    promptUserToUnlockMainKey()
                 case .failed:
                     toastStateStore.present(toast: .migrationError)
                 }
@@ -71,19 +72,26 @@ final class LegacyMigrationStateStore: ObservableObject {
         }
     }
 
+    func resumeByRequestABiometryCheck() async throws {
+        let mainKey = try await mainKeyUnlocker.biometricsProtectedMainKey()
+
+        Task {
+            await legacyMigrationService.resume(protectedMainKey: mainKey, protectionPreference: .biometrics)
+        }
+    }
+
     func abortMigration() {
         Task {
             await legacyMigrationService.abortWithoutProvidingProtectedMainKey()
         }
     }
 
-    private func unlockMainKeyAndResumeMigration() {
+    private func promptUserToUnlockMainKey() {
         Task {
             do {
                 switch try await mainKeyUnlocker.legacyAppProtectionMethod() {
                 case .biometrics:
-                    let mainKey = try await mainKeyUnlocker.biometricsProtectedMainKey()
-                    await legacyMigrationService.resume(protectedMainKey: mainKey, protectionPreference: .biometrics)
+                    state = .biometricUnlockRequired
                 case .pin:
                     state = .pinRequired(errorFromLatestAttempt: nil)
                 case .none:

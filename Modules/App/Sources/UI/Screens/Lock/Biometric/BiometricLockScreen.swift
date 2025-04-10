@@ -21,8 +21,12 @@ import SwiftUI
 struct BiometricLockScreen: View {
     @StateObject var store: BiometricLockStore
 
-    init(state: BiometricLockState = .initial, output: @escaping (BiometricLockScreenOutput) -> Void) {
-        _store = .init(wrappedValue: .init(state: state, output: output))
+    init(
+        state: BiometricLockState = .initial,
+        authenticationMethod: BiometricAuthenticator.AuthenticationMethod = .builtIn { .init() },
+        output: @escaping (BiometricLockScreenOutput) -> Void
+    ) {
+        _store = .init(wrappedValue: .init(state: state, method: authenticationMethod, output: output))
     }
 
     var body: some View {

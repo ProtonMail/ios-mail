@@ -15,13 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import LocalAuthentication
 
 struct BiometricAuthenticator: Sendable {
-    private let context: () -> LAContext
+    private let method: AuthenticationMethod
 
-    init(context: @escaping () -> LAContext) {
-        self.context = context
+    init(method: AuthenticationMethod) {
+        self.method = method
+    }
+
+    enum AuthenticationMethod: Sendable {
+        case builtIn(@Sendable () -> LAContext)
+        case external(@Sendable () async throws -> Void)
     }
 
     enum AuthenticationStatus {
@@ -30,7 +36,15 @@ struct BiometricAuthenticator: Sendable {
     }
 
     func authenticate() async -> AuthenticationStatus {
-        let context = self.context()
+        switch method {
+        case .builtIn(let context):
+            await authenticate(with: context())
+        case .external(let block):
+            await authenticateByExecuting(block: block)
+        }
+    }
+
+    private func authenticate(with context: LAContext) async -> AuthenticationStatus {
         if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
             return .failure
         }
@@ -40,6 +54,16 @@ struct BiometricAuthenticator: Sendable {
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 continuation.resume(with: .success(success ? AuthenticationStatus.success : .failure))
             }
+        }
+    }
+
+    private func authenticateByExecuting(block: () async throws -> Void) async -> AuthenticationStatus {
+        do {
+            try await block()
+            return .success
+        } catch {
+            AppLogger.log(error: error)
+            return .failure
         }
     }
 }

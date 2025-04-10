@@ -26,11 +26,11 @@ class BiometricLockStore: StateStore {
 
     init(
         state: BiometricLockState,
-        context: @escaping () -> LAContext = LAContext.init,
+        method: BiometricAuthenticator.AuthenticationMethod,
         output: @escaping (BiometricLockScreenOutput) -> Void
     ) {
         self.state = state
-        self.biometricAuthenticator = .init(context: context)
+        self.biometricAuthenticator = .init(method: method)
         self.output = output
     }
 
