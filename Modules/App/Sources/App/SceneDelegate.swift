@@ -15,19 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import InboxCore
 import InboxCoreUI
+import proton_app_uniffi
 import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
 
     weak var windowScene: UIWindowScene?
     var overlayWindow: UIWindow?
+    var appProtectionWindow: UIWindow?
+    var appProtectionCancellable: AnyCancellable?
+    var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
 
     var toastStateStore: ToastStateStore? {
         didSet {
             if let toastStateStore {
                 setupOverlayWindow(with: toastStateStore)
             }
+        }
+    }
+
+    private var appProtection: AppProtection = .none {
+        didSet {
+            if let lockScreenType = appProtection.lockScreenType {
+                presentLockScreen(lockScreenType: lockScreenType)
+            } else {
+                appProtectionWindow?.rootViewController = nil
+            }
+            appProtectionWindow?.isHidden = appProtection.lockScreenType == nil
         }
     }
 
@@ -41,6 +58,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         windowScene = scene as? UIWindowScene
+        if let windowScene {
+            appProtectionWindow = appProtectionWindow(windowScene: windowScene)
+        }
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        appProtectionStore.checkProtection()
     }
 
     // MARK: - Private
@@ -59,6 +83,39 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         windowColorSchemeUpdater.subscribeToColorSchemeChanges(window: window)
 
         return window
+    }
+
+    private func appProtectionWindow(windowScene: UIWindowScene) -> UIWindow {
+        let window = UIWindow(windowScene: windowScene)
+        window.isHidden = true
+
+        windowColorSchemeUpdater.subscribeToColorSchemeChanges(window: window)
+
+        appProtectionCancellable = appProtectionStore
+            .protectionSubject
+            .receive(on: Dispatcher.mainScheduler)
+            .sink(receiveValue: { [weak self] appProtection in
+                self?.appProtection = appProtection
+            })
+
+        return window
+    }
+
+    private func presentLockScreen(lockScreenType: LockScreenState.LockScreenType) {
+        appProtectionWindow?.rootViewController = UIHostingController(rootView:
+            LockScreen(
+                state: .init(type: lockScreenType),
+                pinVerifier: AppContext.shared.mailSession,
+                output: { [weak self] output in
+                    switch output {
+                    case .logOut:
+                        self?.toastStateStore?.present(toast: .comingSoon)
+                    case .authenticated:
+                        self?.appProtectionStore.dismissLock()
+                    }
+                }
+            )
+        )
     }
 
     private func overlayRootController(with toastStateStore: ToastStateStore) -> UIViewController {

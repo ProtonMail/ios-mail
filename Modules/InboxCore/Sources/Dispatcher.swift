@@ -21,6 +21,8 @@ public enum Dispatcher {
     public typealias DispatchAfterType = (DispatchTime, DispatchWorkItem) -> Void
     public typealias Queue = DispatchQueue
 
+    public static nonisolated(unsafe) var mainScheduler: DispatchQueueScheduler = .init(DispatchQueue.main)
+
     public static nonisolated(unsafe) var globalQueue: (DispatchQoS.QoSClass) -> DispatchQueueScheduler = {
         .init(DispatchQueue.global(qos: $0))
     }

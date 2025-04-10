@@ -19,6 +19,7 @@ import proton_app_uniffi
 
 final class MailSessionSpy: MailSessionProtocol {
     var onPrimaryAccountChanged: ((String) -> Void)?
+    var appProtectionStub: AppProtection = .none
 
     var storedSessions: [StoredSessionStub] = [] {
         didSet {
@@ -54,7 +55,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func appProtection() async -> MailSessionAppProtectionResult {
-        fatalError(#function)
+        .ok(appProtectionStub)
     }
 
     func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {

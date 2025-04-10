@@ -20,6 +20,7 @@ import XCTest
 
 open class BaseTestCase: XCTestCase {
 
+    private var originalMainScheduler: DispatchQueueScheduler!
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
     private var originalGlobalQueue: ((DispatchQoS.QoSClass) -> DispatchQueueScheduler)!
@@ -30,6 +31,7 @@ open class BaseTestCase: XCTestCase {
     open override func setUp() {
         super.setUp()
 
+        originalMainScheduler = Dispatcher.mainScheduler
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
         originalGlobalQueue = Dispatcher.globalQueue
@@ -37,6 +39,7 @@ open class BaseTestCase: XCTestCase {
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
         originalCalendar = DateEnvironment.calendar
 
+        Dispatcher.mainScheduler = AnyScheduler(DispatchQueueImmediateScheduler())
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
         Dispatcher.globalQueue = { _ in .init(DispatchQueueImmediateScheduler()) }
@@ -48,6 +51,7 @@ open class BaseTestCase: XCTestCase {
     }
 
     open override func tearDown() {
+        Dispatcher.mainScheduler = originalMainScheduler
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
         Dispatcher.globalQueue = originalGlobalQueue
@@ -55,6 +59,7 @@ open class BaseTestCase: XCTestCase {
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
         DateEnvironment.calendar = originalCalendar
 
+        originalMainScheduler = nil
         originalDispatchOnMain = nil
         originalDispatchOnMainAfter = nil
         originalGlobalQueue = nil

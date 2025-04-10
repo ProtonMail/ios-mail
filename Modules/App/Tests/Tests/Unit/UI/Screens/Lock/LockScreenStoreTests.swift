@@ -108,13 +108,10 @@ private class PINVerifierSpy: PINVerifier, @unchecked Sendable {
     var verifyPinCodeStub: MailSessionVerifyPinCodeResult = .ok
     var remainingPinAttemptsStub: MailSessionRemainingPinAttemptsResult = .ok(10)
 
-    private(set) var verifyPinCodeCalled: [Int] = []
     private(set) var remainingPinAttemptsCallCount = 0
 
-    func verifyPinCode(pin: Int) async -> MailSessionVerifyPinCodeResult {
-        verifyPinCodeCalled.append(pin)
-
-        return verifyPinCodeStub
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {
+        verifyPinCodeStub
     }
     
     func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {

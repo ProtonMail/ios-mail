@@ -25,14 +25,20 @@ import XCTest
 final class SceneDelegateTests: BaseTestCase {
 
     private var sut: SceneDelegate!
+    var mailSessionSpy: MailSessionSpy!
 
     override func setUp() {
         super.setUp()
+
         sut = .init()
+        mailSessionSpy = .init()
+        sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
     }
 
     override func tearDown() {
         sut = nil
+        mailSessionSpy = nil
+
         super.tearDown()
     }
 
@@ -58,6 +64,31 @@ final class SceneDelegateTests: BaseTestCase {
         ))
         expect(overlayWindow.rootViewController?.view.backgroundColor) == .clear
         expect(overlayWindow.isHidden) == false
+    }
+
+    func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() throws {
+        mailSessionSpy.appProtectionStub = .biometrics
+        let scene = try scene()
+
+        sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
+        sut.sceneWillEnterForeground(scene)
+
+        let appProtectionWindow = try XCTUnwrap(sut.appProtectionWindow)
+
+        expect(appProtectionWindow).toNot(beNil())
+        expect(appProtectionWindow.isHidden).to(beFalse())
+        expect(appProtectionWindow.rootViewController).toNot(beNil())
+
+        sut.appProtectionStore.dismissLock()
+
+        expect(appProtectionWindow.isHidden).to(beTrue())
+        expect(appProtectionWindow.rootViewController).to(beNil())
+
+        sut.sceneWillEnterForeground(scene)
+
+        expect(appProtectionWindow).toNot(beNil())
+        expect(appProtectionWindow.isHidden).to(beFalse())
+        expect(appProtectionWindow.rootViewController).toNot(beNil())
     }
 
     // MARK: - Private

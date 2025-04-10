@@ -19,15 +19,14 @@ import Combine
 import proton_app_uniffi
 
 class AppProtectionStore {
-    private let mailSession: () -> MailSession
+    private let mailSession: () -> MailSessionProtocol
 
-    init(mailSession: @escaping () -> MailSession) {
+    init(mailSession: @escaping () -> MailSessionProtocol) {
         self.mailSession = mailSession
     }
 
     let protectionSubject: CurrentValueSubject<AppProtection, Never> = .init(.none)
 
-    @MainActor
     func checkProtection() {
         Task {
             let protection = try! await mailSession().appProtection().get()
