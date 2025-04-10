@@ -19,7 +19,7 @@ import InboxCore
 import InboxCoreUI
 
 struct PINLockState: Copying {
-    let disableLogoutButton: Bool
+    let hideLogoutButton: Bool
     var pin: String
     var alert: AlertModel?
     var error: String?

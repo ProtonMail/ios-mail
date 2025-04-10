@@ -100,11 +100,13 @@ struct PINLockScreen: View {
             .navigationTitle(L10n.PINLock.screenTopTitle.string)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { store.handle(action: .signOutTapped) }) {
-                        Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
-                            .foregroundStyle(DS.Color.Icon.norm)
-                    }.disabled(store.state.disableLogoutButton)
+                if !store.state.hideLogoutButton {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: { store.handle(action: .signOutTapped) }) {
+                            Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
+                                .foregroundStyle(DS.Color.Icon.norm)
+                        }
+                    }
                 }
             }
             .onChange(of: error, { _, newValue in
