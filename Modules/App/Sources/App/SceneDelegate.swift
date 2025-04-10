@@ -39,11 +39,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private var appProtection: AppProtection = .none {
         didSet {
-            if let lockScreenType = appProtection.lockScreenType {
-                presentLockScreen(lockScreenType: lockScreenType)
-            } else {
-                appProtectionWindow?.rootViewController = nil
-            }
+            appProtectionWindow?.rootViewController = lockScreenController(for: appProtection.lockScreenType)
             appProtectionWindow?.isHidden = appProtection.lockScreenType == nil
         }
     }
@@ -57,9 +53,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        windowScene = scene as? UIWindowScene
-        if let windowScene {
-            appProtectionWindow = appProtectionWindow(windowScene: windowScene)
+        if let scene = scene as? UIWindowScene {
+            windowScene = scene
+            appProtectionWindow = appProtectionWindow(windowScene: scene)
         }
     }
 
@@ -92,7 +88,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         windowColorSchemeUpdater.subscribeToColorSchemeChanges(window: window)
 
         appProtectionCancellable = appProtectionStore
-            .protectionSubject
+            .protection
             .receive(on: Dispatcher.mainScheduler)
             .sink(receiveValue: { [weak self] appProtection in
                 self?.appProtection = appProtection
@@ -101,8 +97,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         return window
     }
 
-    private func presentLockScreen(lockScreenType: LockScreenState.LockScreenType) {
-        appProtectionWindow?.rootViewController = UIHostingController(rootView:
+    private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType?) -> UIViewController? {
+        guard let lockScreenType else {
+            return nil
+        }
+
+        return UIHostingController(rootView:
             LockScreen(
                 state: .init(type: lockScreenType),
                 pinVerifier: AppContext.shared.mailSession,
@@ -123,6 +123,21 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         controller.view.backgroundColor = .clear
 
         return controller
+    }
+
+}
+
+private extension AppProtection {
+
+    var lockScreenType: LockScreenState.LockScreenType? {
+        switch self {
+        case .none:
+            return nil
+        case .biometrics:
+            return .biometric
+        case .pin:
+            return .pin
+        }
     }
 
 }

@@ -19,13 +19,16 @@ import Combine
 import proton_app_uniffi
 
 class AppProtectionStore {
+    var protection: AnyPublisher<AppProtection, Never> {
+        protectionSubject.eraseToAnyPublisher()
+    }
+
     private let mailSession: () -> MailSessionProtocol
+    private let protectionSubject: CurrentValueSubject<AppProtection, Never> = .init(.none)
 
     init(mailSession: @escaping () -> MailSessionProtocol) {
         self.mailSession = mailSession
     }
-
-    let protectionSubject: CurrentValueSubject<AppProtection, Never> = .init(.none)
 
     func checkProtection() {
         Task {
@@ -37,19 +40,4 @@ class AppProtectionStore {
     func dismissLock() {
         protectionSubject.send(.none)
     }
-}
-
-extension AppProtection {
-
-    var lockScreenType: LockScreenState.LockScreenType? {
-        switch self {
-        case .none:
-            return nil
-        case .biometrics:
-            return .biometric
-        case .pin:
-            return .pin
-        }
-    }
-
 }
