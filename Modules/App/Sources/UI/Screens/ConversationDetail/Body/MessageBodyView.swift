@@ -23,7 +23,7 @@ import SwiftUI
 struct MessageBodyView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     let messageID: ID
-    let addressID: ID
+    let emailAddress: String
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
@@ -31,14 +31,14 @@ struct MessageBodyView: View {
     
     init(
         messageID: ID,
-        addressID: ID,
+        emailAddress: String,
         attachments: [AttachmentDisplayModel],
         mailbox: Mailbox,
         attachmentIDToOpen: Binding<ID?>,
         htmlLoaded: @escaping () -> Void
     ) {
         self.messageID = messageID
-        self.addressID = addressID
+        self.emailAddress = emailAddress
         self.attachments = attachments
         self.mailbox = mailbox
         self._attachmentIDToOpen = attachmentIDToOpen
@@ -66,7 +66,7 @@ struct MessageBodyView: View {
                             case .markAsLegitimateTapped:
                                 store.handle(action: .markAsLegitimate)
                             case .unblockSenderTapped:
-                                store.handle(action: .unblockSender(addressID: addressID))
+                                store.handle(action: .unblockSender(emailAddress: emailAddress))
                             }
                         }
                     )

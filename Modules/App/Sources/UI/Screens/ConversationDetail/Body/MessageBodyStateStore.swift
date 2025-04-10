@@ -33,7 +33,7 @@ final class MessageBodyStateStore: StateStore {
         case displayEmbeddedImages
         case downloadRemoteContent
         case markAsLegitimate
-        case unblockSender(addressID: ID)
+        case unblockSender(emailAddress: String)
     }
 
     @Published var state: MessageBodyState = .fetching
@@ -74,9 +74,9 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state {
                 await markAsLegitimate(with: body.html.options)
             }
-        case .unblockSender(let addressID):
+        case .unblockSender(let emailAddress):
             if case let .loaded(body) = state {
-                await unblockSender(addressID: addressID, with: body.html.options)
+                await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
         }
     }
@@ -106,8 +106,8 @@ final class MessageBodyStateStore: StateStore {
     }
     
     @MainActor
-    private func unblockSender(addressID: ID, with options: TransformOpts) async {
-        switch await senderUnblocker.unblock(withAddressID: addressID) {
+    private func unblockSender(emailAddress: String, with options: TransformOpts) async {
+        switch await senderUnblocker.unblock(emailAddress: emailAddress) {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

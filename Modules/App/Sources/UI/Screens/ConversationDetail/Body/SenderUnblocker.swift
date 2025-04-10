@@ -18,13 +18,13 @@
 import proton_app_uniffi
 
 struct SenderUnblocker {
-    private let _unblockSender: @Sendable (_ addressID: ID) async -> VoidActionResult
+    private let _unblockSender: @Sendable (_ emailAddress: String) async -> VoidActionResult
     
     init(mailbox: Mailbox, wrapper: RustMessageBodyWrapper) {
-        _unblockSender = { addressID in await wrapper.unblockSender(mailbox, addressID) }
+        _unblockSender = { email in await wrapper.unblockSender(mailbox, email) }
     }
     
-    func unblock(withAddressID addressID: ID) async -> VoidActionResult {
-        await _unblockSender(addressID)
+    func unblock(emailAddress: String) async -> VoidActionResult {
+        await _unblockSender(emailAddress)
     }
 }

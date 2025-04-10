@@ -294,10 +294,10 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        let addressID: ID = .init(value: 42)
-        await sut.handle(action: .unblockSender(addressID: addressID))
+        let emailAddress = "john.doe@pm.me"
+        await sut.handle(action: .unblockSender(emailAddress: emailAddress))
         
-        #expect(wrapperSpy.unblockSenderAddressIDs == [addressID])
+        #expect(wrapperSpy.unblockSenderWithEmailAddresses == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
         #expect(sut.state == .loaded(.init(
@@ -339,10 +339,10 @@ final class MessageBodyStateStoreTests {
             )
         )))
         
-        let addressID: ID = .init(value: 69)
-        await sut.handle(action: .unblockSender(addressID: addressID))
+        let emailAddress = "steven.morcote@pm.me"
+        await sut.handle(action: .unblockSender(emailAddress: emailAddress))
         
-        #expect(wrapperSpy.unblockSenderAddressIDs == [addressID])
+        #expect(wrapperSpy.unblockSenderWithEmailAddresses == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
@@ -434,13 +434,13 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
 private class RustWrappersSpy {
     var stubbedMessageBodyResult: GetMessageBodyResult!
-    var messageBodyMessageIDs: [ID] = []
+    private(set) var messageBodyMessageIDs: [ID] = []
     
     var stubbedMarkMessageHamResult: VoidActionResult = .ok
-    var markMessageHamWithMessageIDs: [ID] = []
+    private(set) var markMessageHamWithMessageIDs: [ID] = []
 
     var stubbedUnblockSenderResult: VoidActionResult = .ok
-    var unblockSenderAddressIDs: [ID] = []
+    private(set) var unblockSenderWithEmailAddresses: [String] = []
     
     private(set) lazy var testingInstance = RustMessageBodyWrapper(
         messageBody: { [unowned self] _, messageID in
@@ -451,8 +451,8 @@ private class RustWrappersSpy {
             markMessageHamWithMessageIDs.append(messageID)
             return stubbedMarkMessageHamResult
         },
-        unblockSender: { [unowned self] _, addressID in
-            unblockSenderAddressIDs.append(addressID)
+        unblockSender: { [unowned self] _, emailAddress in
+            unblockSenderWithEmailAddresses.append(emailAddress)
             return stubbedUnblockSenderResult
         }
     )
