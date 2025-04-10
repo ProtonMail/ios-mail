@@ -20,7 +20,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-final class EmptySpamTrashBannerStateStore: ObservableObject {
+final class EmptySpamTrashBannerStateStore: StateStore {
     enum Action {
         case upgradeToAutoDelete
         case emptyLocation
@@ -43,6 +43,8 @@ final class EmptySpamTrashBannerStateStore: ObservableObject {
         self.state = model.state
         self.toastStateStore = toastStateStore
     }
+    
+    // MARK: - StateStore
     
     func handle(action: Action) {
         switch action {

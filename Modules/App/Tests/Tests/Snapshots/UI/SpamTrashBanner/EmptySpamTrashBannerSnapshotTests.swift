@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
@@ -60,6 +61,7 @@ struct EmptySpamTrashBannerViewSnapshotTests {
         _ userState: EmptySpamTrashBanner.UserState
     ) -> some View {
         EmptySpamTrashBannerView(model: .init(location: location, userState: userState))
+            .environmentObject(ToastStateStore(initialState: .initial))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }
 }

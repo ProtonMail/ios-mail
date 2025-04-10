@@ -20,42 +20,55 @@ import InboxDesignSystem
 import SwiftUI
 
 struct EmptySpamTrashBannerView: View {
-    @StateObject var store: EmptySpamTrashBannerStateStore
+    @EnvironmentObject var toastStateStore: ToastStateStore
+    private let model: EmptySpamTrashBanner
     
     init(model: EmptySpamTrashBanner) {
-        _store = .init(wrappedValue: .init(model: model, toastStateStore: .init(initialState: .initial)))
+        self.model = model
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
-            HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
-                BannerIconTextView(icon: store.state.icon, text: store.state.title, style: .regular, lineLimit: .none)
-            }
-            .horizontalPadding()
-            ForEachLast(collection: store.state.buttons) { type, isLast in
-                VStack(spacing: DS.Spacing.medium) {
-                    BannerButton(model: buttonModel(from: type), style: .regular, maxWidth: .infinity)
-                        .buttonStyle(.plain)
-                        .horizontalPadding()
-                    if !isLast {
-                        DS.Color.Border.strong.frame(height: 1).frame(maxWidth: .infinity)
+        StoreView(
+            store: EmptySpamTrashBannerStateStore(model: model, toastStateStore: toastStateStore)
+        ) { state, store in
+            VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+                HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
+                    BannerIconTextView(
+                        icon: state.icon,
+                        text: state.title,
+                        style: .regular,
+                        lineLimit: .none
+                    )
+                }
+                .horizontalPadding()
+                ForEachLast(collection: store.state.buttons) { type, isLast in
+                    VStack(spacing: DS.Spacing.medium) {
+                        BannerButton(model: buttonModel(from: type, store: store), style: .regular, maxWidth: .infinity)
+                            .buttonStyle(.plain)
+                            .horizontalPadding()
+                        if !isLast {
+                            DS.Color.Border.strong.frame(height: 1).frame(maxWidth: .infinity)
+                        }
                     }
                 }
             }
+            .padding([.top, .bottom], DS.Spacing.medium)
+            .background {
+                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                    .fill(DS.Color.Background.norm)
+                    .stroke(DS.Color.Border.strong, lineWidth: 1)
+            }
+            .frame(maxWidth: .infinity)
+            .alert(model: store.binding(\.alert))
         }
-        .padding([.top, .bottom], DS.Spacing.medium)
-        .background {
-            RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                .fill(DS.Color.Background.norm)
-                .stroke(DS.Color.Border.strong, lineWidth: 1)
-        }
-        .frame(maxWidth: .infinity)
-        .alert(model: $store.state.alert)
     }
     
     // MARK: - Private
     
-    private func buttonModel(from type: EmptySpamTrashBanner.ActionButton) -> Banner.Button {
+    private func buttonModel(
+        from type: EmptySpamTrashBanner.ActionButton,
+        store: EmptySpamTrashBannerStateStore
+    ) -> Banner.Button {
         let model: Banner.Button
 
         switch type {
