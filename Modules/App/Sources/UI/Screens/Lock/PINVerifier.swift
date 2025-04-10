@@ -18,6 +18,8 @@
 import proton_app_uniffi
 
 protocol PINVerifier: Sendable {
-    func verifyPinCode(pin: Int) async -> MailSessionVerifyPinCodeResult
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
     func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult
 }
+
+extension MailSession: PINVerifier {}
