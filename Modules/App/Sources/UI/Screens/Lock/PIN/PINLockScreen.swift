@@ -39,11 +39,11 @@ struct PINLockScreen: View {
     @Binding var error: String?
 
     init(
-        pin: String = .empty,
+        state: PINLockState,
         error: Binding<String?>,
         output: @escaping (PINLockScreenOutput) -> Void
     ) {
-        self._store = .init(wrappedValue: .init(state: .init(pin: pin), output: output))
+        self._store = .init(wrappedValue: .init(state: state, output: output))
         self._error = error
     }
 
@@ -104,7 +104,7 @@ struct PINLockScreen: View {
                     Button(action: { store.handle(action: .signOutTapped) }) {
                         Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
                             .foregroundStyle(DS.Color.Icon.norm)
-                    }
+                    }.disabled(store.state.disableLogoutButton)
                 }
             }
             .onChange(of: error, { _, newValue in

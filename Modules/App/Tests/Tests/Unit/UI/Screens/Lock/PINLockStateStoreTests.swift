@@ -26,7 +26,10 @@ class PINLockStateStoreTests {
 
     init() {
         output = []
-        sut = PINLockStateStore(state: .init(pin: .empty), output: { self.output.append($0) })
+        sut = PINLockStateStore(
+            state: .init(disableLogoutButton: false, pin: .empty),
+            output: { self.output.append($0) }
+        )
     }
 
     deinit {

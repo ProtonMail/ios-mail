@@ -23,15 +23,18 @@ class PINLockScreenSnapshotTests: BaseTestCase {
 
     func testPINLockScreenLayoutsCorrectly() {
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: .empty, error: .constant(nil)) {_ in }, 
+            of: PINLockScreen(state: .init(disableLogoutButton: false, pin: .empty), error: .constant(nil)) {_ in },
             named: "empty_pin"
         )
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: "123456789", error: .constant(nil)) { _ in }, 
+            of: PINLockScreen(state: .init(disableLogoutButton: false, pin: "123456789"), error: .constant(nil)) { _ in },
             named: "non_empty_pin"
         )
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(pin: .empty, error: .constant("This is the error message")) { _ in },
+            of: PINLockScreen(
+                state: .init(disableLogoutButton: false, pin: .empty),
+                error: .constant("This is the error message")
+            ) { _ in },
             named: "error_message"
         )
     }

@@ -148,7 +148,10 @@ private struct RootView: View {
                 }, output: { _ in }
             )
         case .pinRequired(let errorFromLatestAttempt):
-            PINLockScreen(error: .constant(errorFromLatestAttempt)) { output in
+            PINLockScreen(
+                state: .init(disableLogoutButton: false, pin: .empty),
+                error: .constant(errorFromLatestAttempt)
+            ) { output in
                 switch output {
                 case .pin(let pin):
                     legacyMigrationStateStore.resumeMigration(using: pin)

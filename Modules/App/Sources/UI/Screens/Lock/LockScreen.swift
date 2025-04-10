@@ -28,7 +28,7 @@ struct LockScreen: View {
     var body: some View {
         switch store.state.type {
         case .pin:
-            PINLockScreen(error: pinErrorBinding) { output in
+            PINLockScreen(state: .init(disableLogoutButton: true, pin: .empty), error: pinErrorBinding) { output in
                 store.handle(action: .pin(output))
             }.onLoad {
                 store.handle(action: .pinScreenLoaded)

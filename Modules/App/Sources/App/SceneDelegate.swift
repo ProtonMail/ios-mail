@@ -109,7 +109,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 output: { [weak self] output in
                     switch output {
                     case .logOut:
-                        self?.toastStateStore?.present(toast: .comingSoon)
+                        break // FIXME: - To add later
                     case .authenticated:
                         self?.appProtectionStore.dismissLock()
                     }
