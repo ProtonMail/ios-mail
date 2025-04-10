@@ -43,9 +43,9 @@ actor DeviceTokenRegistrar {
         let environment: DeviceEnvironment
 
 #if DEBUG
-        environment = .appleDevEt
+        environment = .appleDev
 #else
-        environment = .appleProdEt
+        environment = .appleProd
 #endif
 
         return RegisteredDevice(

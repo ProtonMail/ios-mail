@@ -2,8 +2,8 @@ opt_out_usage
 
 default_platform(:ios)
 
-APP_IDENTIFIER = "me.proton.mail.ios"
-NOTIFICATION_EXTENSION_IDENTIFIER = "me.proton.mail.ios.notification-service"
+APP_IDENTIFIER = "ch.protonmail.protonmail"
+NOTIFICATION_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.notifications"
 DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
 DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
 API_KEY_DURATION = 20 * 60 # 20 mins
@@ -76,12 +76,9 @@ platform :ios do
     latest_testflight_build_number(
       api_key: api_key,
       app_identifier: APP_IDENTIFIER,
-      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET)
+      version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET),
+      initial_build_number: 0
     )
-  end
-
-  def generate_new_build_number(latest_build_number)
-    latest_build_number == 1 ? latest_build_number : latest_build_number + 1
   end
 
   def current_marketing_version
@@ -182,7 +179,7 @@ platform :ios do
       get_xcode_profile(api_key)
 
       latest_build_number = get_latest_build_number(api_key)
-      new_build_number = generate_new_build_number(latest_build_number)
+      new_build_number = latest_build_number + 1
       increment_build_number(build_number: new_build_number)
 
       build_release_app

@@ -23,7 +23,7 @@ struct DeepLinkRouteCoderTests {
     private let sut = DeepLinkRouteCoder.self
 
     private let testSeed = MailboxMessageSeed(remoteId: .init(value: "foo123=="), subject: "foo bar 😀")
-    private let testURL = URL(string: "protonmailET://messages/foo123==?subject=foo%20bar%20%F0%9F%98%80")!
+    private let testURL = URL(string: "protonmail://messages/foo123==?subject=foo%20bar%20%F0%9F%98%80")!
 
     @Test
     func encoding_openMessageRoute() async throws {
