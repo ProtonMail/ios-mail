@@ -21,89 +21,38 @@ import Testing
 @testable import ProtonMail
 
 final class DeviceTokenRegistrarTests {
-    private let sut = DeviceTokenRegistrar()
     private let mailSession = MailSessionSpy()
 
-    private let deviceToken = Data("foo".utf8)
+    private lazy var sut = DeviceTokenRegistrar { [unowned self] in
+        mailSession
+    }
 
-    private var uploadDeviceTokenInvocations: [(String, [StoredSession])] = []
+    @Test
+    func whenTokenIsUpdatedSeveralTimes_registersOnlyOnce() async throws {
+        var lastCreatedHandle: RegisterDeviceTaskHandleSpy?
 
-    init() {
-        sut.uploadDeviceToken = { [unowned self] in
-            self.uploadDeviceTokenInvocations.append(($0, $1))
+        mailSession.stubbedRegisterDeviceTaskHandleFactory = {
+            let newHandle = RegisterDeviceTaskHandleSpy(noPointer: .init())
+            lastCreatedHandle = newHandle
+            return newHandle
         }
+
+        for token in ["foo", "bar", "xyz"] {
+            try await sut.onDeviceTokenReceived(token.utf8)
+        }
+
+        #expect(mailSession.registerDeviceCallCount == 1)
+
+        let registerDeviceTaskHandle = try #require(lastCreatedHandle)
+        #expect(registerDeviceTaskHandle.updateDeviceCalls.map(\.deviceToken) == ["666f6f", "626172", "78797a"])
     }
+}
 
-    @Test
-    func onlyAfterDeviceTokenIsReceived_uploadsTokenForAuthenticatedSessions() async throws {
-        mailSession.storedSessions = [
-            .init(id: "foo", state: .authenticated),
-            .init(id: "bar", state: .needKey)
-        ]
+private final class RegisterDeviceTaskHandleSpy: RegisterDeviceTaskHandle, @unchecked Sendable {
+    private(set) var updateDeviceCalls: [RegisteredDevice] = []
 
-        try await sut.startWatchingMailSessionForSessions(mailSession)
-
-        try await waitForPublishers()
-        #expect(uploadDeviceTokenInvocations.isEmpty)
-
-        sut.onDeviceTokenReceived(deviceToken)
-
-        try await waitForPublishers()
-        #expect(idsOfSessionsPerEachRecordedInvocation() == [Set(["foo"])])
-    }
-
-    @Test
-    func whenSessionIsLoggedOutOrRemoved_doesNotReuploadTokenForRemainingSessions() async throws {
-        mailSession.storedSessions = [
-            .init(id: "foo", state: .authenticated),
-            .init(id: "bar", state: .authenticated)
-        ]
-
-        try await sut.startWatchingMailSessionForSessions(mailSession)
-
-        sut.onDeviceTokenReceived(deviceToken)
-
-        try await waitForPublishers()
-        #expect(idsOfSessionsPerEachRecordedInvocation() == [Set(["foo", "bar"])])
-
-        mailSession.storedSessions[0] = .init(id: "foo", state: .needKey)
-
-        try await waitForPublishers()
-        #expect(uploadDeviceTokenInvocations.count == 1)
-
-        mailSession.storedSessions.remove(at: 0)
-
-        try await waitForPublishers()
-        #expect(uploadDeviceTokenInvocations.count == 1)
-    }
-
-    @Test
-    func whenSessionIsAuthenticatedLater_uploadsTokenForThatSessionOnly() async throws {
-        mailSession.storedSessions.append(.init(id: "foo", state: .authenticated))
-
-        try await sut.startWatchingMailSessionForSessions(mailSession)
-
-        sut.onDeviceTokenReceived(deviceToken)
-
-        try await waitForPublishers()
-        #expect(idsOfSessionsPerEachRecordedInvocation() == [Set(["foo"])])
-
-        mailSession.storedSessions.append(.init(id: "bar", state: .needKey))
-
-        try await waitForPublishers()
-        #expect(idsOfSessionsPerEachRecordedInvocation() == [Set(["foo"])])
-
-        mailSession.storedSessions[1] = .init(id: "bar", state: .authenticated)
-
-        try await waitForPublishers()
-        #expect(idsOfSessionsPerEachRecordedInvocation() == [Set(["foo"]), Set(["bar"])])
-    }
-
-    private func idsOfSessionsPerEachRecordedInvocation() -> [Set<String>] {
-        uploadDeviceTokenInvocations.map { Set($1.map { $0.sessionId() }) }
-    }
-
-    private func waitForPublishers() async throws {
-        try await Task.sleep(for: .milliseconds(50))
+    override func updateDevice(device: RegisteredDevice) -> VoidActionResult {
+        updateDeviceCalls.append(device)
+        return .ok
     }
 }

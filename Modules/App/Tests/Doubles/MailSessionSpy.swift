@@ -28,7 +28,12 @@ final class MailSessionSpy: MailSessionProtocol {
         }
     }
 
+    var stubbedRegisterDeviceTaskHandleFactory: () -> RegisterDeviceTaskHandle = {
+        fatalError("not stubbed")
+    }
+
     private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
+    private(set) var registerDeviceCallCount = 0
     private(set) var setPinCodeInvocations: [[UInt32]] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
@@ -145,6 +150,11 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func registerDeviceTask() -> MailSessionRegisterDeviceTaskResult {
+        registerDeviceCallCount += 1
+        return .ok(stubbedRegisterDeviceTaskHandleFactory())
+    }
+
     func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {
         fatalError(#function)
     }
@@ -170,10 +180,6 @@ final class MailSessionSpy: MailSessionProtocol {
         setPrimaryAccountInvocations.append(userId)
         onPrimaryAccountChanged?(userId)
         return .ok
-    }
-
-    func startBackgroundExecution(callback: any LiveQueryCallback) -> MailSessionStartBackgroundExecutionResult {
-        fatalError(#function)
     }
 
     func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {

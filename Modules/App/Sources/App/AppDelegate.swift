@@ -48,11 +48,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        deviceTokenRegistrar.onDeviceTokenReceived(deviceToken)
-
         Task {
             do {
-                try await deviceTokenRegistrar.startWatchingMailSessionForSessions(AppContext.shared.mailSession)
+                try await deviceTokenRegistrar.onDeviceTokenReceived(deviceToken)
             } catch {
                 AppLogger.log(error: error, category: .notifications)
             }

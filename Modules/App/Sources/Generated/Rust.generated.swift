@@ -233,16 +233,6 @@ public extension GetMessageBodyResult {
         }
     }
 }
-public extension GetRegisteredDeviceResult {
-    func get() throws(ActionError) -> RegisteredDevice? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension LabelConversationsAsResult {
     func get() throws(ActionError) -> Bool {
         switch self {
@@ -455,6 +445,16 @@ public extension MailSessionInitializedUserContextFromSessionResult {
 }
 public extension MailSessionNewLoginFlowResult {
     func get() throws(LoginError) -> LoginFlow {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionRegisterDeviceTaskResult {
+    func get() throws(ActionError) -> RegisterDeviceTaskHandle {
         switch self {
         case .ok(let value):
             value

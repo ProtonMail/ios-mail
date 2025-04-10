@@ -52,7 +52,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    private let starActionPerformer: StarActionPerformer
+    private lazy var starActionPerformer: StarActionPerformer = {
+        .init(mailUserSession: dependencies.appContext.userSession)
+    }()
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -64,7 +66,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.expandedMessages = .init()
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
-        self.starActionPerformer = .init(mailUserSession: dependencies.appContext.userSession)
     }
 
     func fetchInitialData() async {
