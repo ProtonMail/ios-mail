@@ -20,10 +20,18 @@ import InboxCore
 import proton_app_uniffi
 
 actor SettingsMigrator {
+    typealias AppAppearanceStoreGetter = @MainActor @Sendable () -> AppAppearanceStore
+
+    private let appAppearanceStore: AppAppearanceStoreGetter
     private let legacyKeychain: LegacyKeychain
     private let legacyDataProvider: LegacyDataProvider
 
-    init(legacyKeychain: LegacyKeychain, legacyDataProvider: LegacyDataProvider) {
+    init(
+        legacyKeychain: LegacyKeychain,
+        legacyDataProvider: LegacyDataProvider,
+        appAppearanceStore: @escaping AppAppearanceStoreGetter = { .shared }
+    ) {
+        self.appAppearanceStore = appAppearanceStore
         self.legacyKeychain = legacyKeychain
         self.legacyDataProvider = legacyDataProvider
     }
@@ -38,6 +46,7 @@ actor SettingsMigrator {
 
         do {
             try await session.changeAppSettings(settings: appSettingsDiff).get()
+            await updateAppAppearance()
         } catch {
             AppLogger.log(error: error, category: .legacyMigration)
         }
@@ -76,5 +85,10 @@ actor SettingsMigrator {
 
     private func migrateFromUserDefaults(key: LegacyDataProvider.Key) -> Bool? {
         legacyDataProvider.object(forKey: key) as? Bool
+    }
+
+    @MainActor
+    private func updateAppAppearance() async {
+        await appAppearanceStore().updateColorScheme()
     }
 }

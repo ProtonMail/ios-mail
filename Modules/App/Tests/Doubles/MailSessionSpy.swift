@@ -37,6 +37,14 @@ final class MailSessionSpy: MailSessionProtocol {
     private(set) var setPinCodeInvocations: [[UInt32]] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
 
+    private var stubbedAppSettings = AppSettings(
+        appearance: .system,
+        protection: .none,
+        autoLock: .minutes(0),
+        useCombineContacts: false,
+        useAlternativeRouting: true
+    )
+
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
 
     // MARK: - MailSessionProtocol
@@ -51,6 +59,23 @@ final class MailSessionSpy: MailSessionProtocol {
 
     func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
         changeAppSettingsInvocations.append(settings)
+
+        if let changedSetting = settings.appearance {
+            stubbedAppSettings.appearance = changedSetting
+        }
+
+        if let changedSetting = settings.autoLock {
+            stubbedAppSettings.autoLock = changedSetting
+        }
+
+        if let changedSetting = settings.useCombineContacts {
+            stubbedAppSettings.useCombineContacts = changedSetting
+        }
+
+        if let changedSetting = settings.useAlternativeRouting {
+            stubbedAppSettings.useAlternativeRouting = changedSetting
+        }
+
         return .ok
     }
 
@@ -91,7 +116,7 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func getAppSettings() async -> MailSessionGetAppSettingsResult {
-        fatalError(#function)
+        .ok(stubbedAppSettings)
     }
 
     func getPrimaryAccount() async -> MailSessionGetPrimaryAccountResult {

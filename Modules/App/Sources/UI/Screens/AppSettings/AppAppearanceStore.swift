@@ -23,10 +23,10 @@ class AppAppearanceStore: ObservableObject {
     static let shared = AppAppearanceStore()
 
     @Published var colorScheme: ColorScheme?
-    private let mailSession: () -> MailSession
+    private let mailSession: () -> MailSessionProtocol
 
     @MainActor
-    init(mailSession: @escaping () -> MailSession = { AppContext.shared.mailSession }) {
+    init(mailSession: @escaping () -> MailSessionProtocol = { AppContext.shared.mailSession }) {
         self.mailSession = mailSession
     }
 

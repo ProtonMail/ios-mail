@@ -18,6 +18,7 @@
 @testable import ProtonMail
 
 import proton_app_uniffi
+import SwiftUI
 import Testing
 
 final class SettingsMigratorTests {
@@ -25,9 +26,15 @@ final class SettingsMigratorTests {
     private let testUserDefaults = TestableUserDefaults.randomInstance()
     private let mailSession = MailSessionSpy()
 
+    @MainActor
+    private lazy var appAppearanceStore = AppAppearanceStore { [unowned self] in
+        mailSession
+    }
+
     private lazy var sut = SettingsMigrator(
         legacyKeychain: legacyKeychain,
-        legacyDataProvider: .init(userDefaults: testUserDefaults)
+        legacyDataProvider: .init(userDefaults: testUserDefaults),
+        appAppearanceStore: { [unowned self] in appAppearanceStore }
     )
 
     deinit {
@@ -35,14 +42,21 @@ final class SettingsMigratorTests {
         testUserDefaults.removePersistentDomain(forName: testUserDefaults.suiteName)
     }
 
-    @Test("migrates AppAppearance", arguments: zip([0, 1, 2], [AppAppearance.system, .darkMode, .lightMode]))
-    func migratesAppAppearance(legacyValue: Int, as expectedMigratedValue: AppAppearance) async throws {
+    @Test(
+        "migrates AppAppearance",
+        arguments: zip([0, 1, 2], [(AppAppearance.system, nil), (.darkMode, ColorScheme.dark), (.lightMode, .light)])
+    )
+    func migratesAppAppearance(
+        legacyValue: Int,
+        as expected: (migratedValue: AppAppearance, colorScheme: ColorScheme?)
+    ) async throws {
         testUserDefaults.set(legacyValue, forKey: .darkMode)
 
         await sut.migrateSettings(in: mailSession)
 
         let settingsUpdate = try #require(mailSession.changeAppSettingsInvocations.first)
-        #expect(settingsUpdate.appearance == expectedMigratedValue)
+        #expect(settingsUpdate.appearance == expected.migratedValue)
+        await #expect(appAppearanceStore.colorScheme == expected.colorScheme)
     }
 
     @Test("migrates AutoLock", arguments: zip(["-1", "0", "30"], [nil, AutoLock.always, .minutes(30)]))

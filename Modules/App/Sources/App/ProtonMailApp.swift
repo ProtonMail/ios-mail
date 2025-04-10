@@ -30,7 +30,7 @@ struct ProtonMailApp: App {
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    @StateObject var appAppearanceStore = AppAppearanceStore()
+    @StateObject var appAppearanceStore = AppAppearanceStore.shared
 
     var body: some Scene {
         WindowGroup {
