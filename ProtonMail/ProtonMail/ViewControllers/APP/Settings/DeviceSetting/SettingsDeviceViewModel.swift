@@ -24,6 +24,7 @@ import Foundation
 import MBProgressHUD
 import ProtonCoreDataModel
 import ProtonCoreLog
+import ProtonCoreFeatureFlags
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account
@@ -46,6 +47,11 @@ enum SettingDeviceSection: Int, CustomStringConvertible {
             return "Induce slowdown"
         }
     }
+}
+
+enum AccountSectionItem: Int {
+    case account = 0
+    case scanQRCode
 }
 
 enum DeviceSectionItem: Int, CustomStringConvertible {
@@ -116,6 +122,13 @@ final class SettingsDeviceViewModel {
         standardSections.append(.induceSlowdown)
 #endif
         return standardSections
+    }()
+
+
+    private(set) lazy var accountSettings: [AccountSectionItem] = {
+        let optedOut = self.dependencies.user.userInfo.edmOptOut == 1
+        let featureDisabled = FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.easyDeviceMigrationDisabled)
+        return (!featureDisabled && !optedOut) ? [.account, .scanQRCode] : [.account]
     }()
 
     lazy var appSettings: [DeviceSectionItem] = {
@@ -190,6 +203,10 @@ final class SettingsDeviceViewModel {
         default:
             return LocalString._app_pin
         }
+    }
+
+    var signInQRCodeTitle: String {
+        return LocalString._scan_qr_code_setting_title
     }
 
     init(dependencies: Dependencies) {

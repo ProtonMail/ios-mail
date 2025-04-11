@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
+import SwiftUI
+import ProtonCoreLoginUI
 
 final class SettingsViewsFactory {
     typealias Dependencies = AnyObject
@@ -76,5 +78,25 @@ final class SettingsViewsFactory {
     func makeMessageSwipeNavigationView() -> SwitchToggleViewController {
         let viewModel = MessageSwipeNavigationViewModel(userDefaults: dependencies.userDefaults)
         return SwitchToggleViewController(viewModel: viewModel)
+    }
+
+    @MainActor
+    func makeScanQRCodeInstructionsView() -> ShowingNavigationBarUIHostingController {
+        let passphrase = dependencies.user.mailboxPassword.value
+        let apiService = dependencies.user.apiService
+        let userEmail = dependencies.user.defaultEmail
+        return ShowingNavigationBarUIHostingController(
+            rootView: AnyView(ScanQRCodeInstructionsView(
+                viewModel: .init(
+                    dependencies: .init(passphrase: passphrase, userEmail: userEmail, apiService: apiService)))
+            )
+        )
+    }
+}
+
+class ShowingNavigationBarUIHostingController: UIHostingController<AnyView> {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
 }
