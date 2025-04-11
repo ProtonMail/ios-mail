@@ -42,7 +42,7 @@ final class CacheResetUseCaseTests: XCTestCase {
 
     func testExecute_conversationMode_eventIDWillBeUpdated() async throws {
         let newEventID = String.randomString(20)
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path == "/core/v4/events/latest" {
                 completion(nil, .success(["EventID": newEventID]))
             } else if path == "/mail/v4/conversations?Limit=50&LabelID=5&Desc=1&Sort=Time" {
@@ -61,7 +61,7 @@ final class CacheResetUseCaseTests: XCTestCase {
     func testExecute_singleMessage_eventIDWillBeUpdated() async throws {
         user.conversationStateService.viewMode = .singleMessage
         let newEventID = String.randomString(20)
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path == "/core/v4/events/latest" {
                 completion(nil, .success(["EventID": newEventID]))
             } else if path == "/mail/v4/messages" {

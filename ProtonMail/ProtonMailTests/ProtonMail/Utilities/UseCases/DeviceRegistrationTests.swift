@@ -134,7 +134,8 @@ private extension DeviceRegistrationTests {
             credit: nil,
             currency: nil,
             createTime: nil,
-            subscribed: nil
+            subscribed: nil,
+            edmOptOut: nil
         )
         let auth = AuthCredential(
             Credential(
@@ -160,13 +161,13 @@ private extension DeviceRegistrationTests {
 private extension APIServiceMock {
 
     func setUpToRespondSuccessfully() {
-        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(JSONDictionary()))
         }
     }
 
     func setUpToRespondWithError() {
-        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(NSError.badResponse()))
         }
     }

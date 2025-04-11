@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import enum ProtonCoreCrypto.Based64
+import enum ProtonCoreCrypto.Base64
 import struct ProtonCoreCrypto.Password
 import class ProtonCoreNetworking.AuthCredential
 import ProtonCoreServices
@@ -116,7 +116,7 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
             expirationTime: params.sendMetadata.timeToExpire,
             delaySeconds: params.undoSendDelay,
             messagePackage: addressesPackageBase,
-            body: Based64.encode(raw: params.sendMetadata.encryptedBody),
+            body: Base64.encode(raw: params.sendMetadata.encryptedBody),
             clearBody: sendBuilder.getClearBodyPackageIfNeeded(addressesPackageBase),
             clearAtts: sendBuilder.getClearAttachmentPackagesIfNeeded(addressesPackageBase),
             mimeDataPacket: sendBuilder.mimeBody,

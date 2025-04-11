@@ -37,7 +37,7 @@ final class MenuCoordinatorTests: XCTestCase {
             sideMenu: PMSideMenuController(),
             menuWidth: 300
         )
-        apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
     }
@@ -134,7 +134,7 @@ final class MenuCoordinatorTests: XCTestCase {
             ).utf8
         )
         let messageJSON = try JSONSerialization.jsonObject(with: messageData)
-        apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["Message": messageJSON]))
         }
     }

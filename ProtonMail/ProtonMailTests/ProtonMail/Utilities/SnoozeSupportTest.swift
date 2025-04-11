@@ -288,7 +288,7 @@ final class SnoozeSupportTest: XCTestCase {
         let apiMockExpectation = expectation(description: "Interrupt API")
         let snoozeDate = Date(timeInterval: 3_000, since: Date())
 
-        apiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/snooze")
 

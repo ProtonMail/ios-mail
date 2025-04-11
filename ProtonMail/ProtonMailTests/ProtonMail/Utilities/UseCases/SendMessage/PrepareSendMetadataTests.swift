@@ -266,7 +266,7 @@ extension PrepareSendMetadataTests {
             .url(forResource: "plainData", withExtension: "txt")!
 
         let encryption: (keyPacket: Data, url: URL)! = try! AttachmentCrypto.encrypt(attachment: AttachmentEntity(attachment), with: dummySenderAddressKey)
-        attachment.keyPacket = Based64.encode(raw: encryption.keyPacket)
+        attachment.keyPacket = Base64.encode(raw: encryption.keyPacket)
         return attachment
     }
 

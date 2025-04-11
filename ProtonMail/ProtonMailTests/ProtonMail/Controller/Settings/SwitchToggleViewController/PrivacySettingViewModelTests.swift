@@ -295,7 +295,7 @@ extension PrivacySettingViewModelTests {
     }
 
     private func requestStub(path: String, params: [String : Int], error: APIServiceMock.APIError?) {
-        apiMock.requestJSONStub.bodyIs { _, _, reqPath, reqParam, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, reqPath, reqParam, _, _, _, _, _, _, _, _, completion in
             guard reqPath == path else {
                 XCTFail("URL path is wrong")
                 return

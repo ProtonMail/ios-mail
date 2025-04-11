@@ -53,7 +53,7 @@ final class FetchMessageDetailTests: XCTestCase {
             responseData["Message"]?[key] = value
         }
 
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             guard path.starts(with: "/mail/v4/messages") else { return }
             completion(nil, .success(responseData))
         }

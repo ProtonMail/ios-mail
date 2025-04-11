@@ -70,7 +70,7 @@ final class UndoSendViewModelTests: XCTestCase {
 
     func testSelectItem_success() {
         let expectation = expectation(description: "get server response")
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             guard path == "/mail/v4/settings/delaysend" else {
                 XCTFail("Wrong path")
                 return
@@ -90,7 +90,7 @@ final class UndoSendViewModelTests: XCTestCase {
 
     func testSelectItem_failed() {
         let expectation = expectation(description: "get server response")
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             guard path == "/mail/v4/settings/delaysend" else {
                 XCTFail("Wrong path")
                 return

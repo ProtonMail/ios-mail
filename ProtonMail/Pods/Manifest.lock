@@ -17,7 +17,6 @@ PODS:
   - SkeletonView (1.30.4)
   - SwiftSoup (2.6.0)
   - SwipyCell (4.1.1)
-  - Yams (5.0.6)
 
 DEPENDENCIES:
   - Groot (= 3.0.1)
@@ -28,7 +27,6 @@ DEPENDENCIES:
   - SkeletonView (= 1.30.4)
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
-  - Yams
 
 SPEC REPOS:
   trunk:
@@ -37,7 +35,6 @@ SPEC REPOS:
     - PromiseKit
     - SkeletonView
     - SwiftSoup
-    - Yams
 
 EXTERNAL SOURCES:
   iosMonkey:
@@ -70,8 +67,7 @@ SPEC CHECKSUMS:
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
   SwiftSoup: dd9baab0fba4b6ab3ade23a6a47132ebd7d22cb1
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
-  Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
-PODFILE CHECKSUM: 04581dba02d3cb3fd315b648d8c301470cf89e42
+PODFILE CHECKSUM: 2d70184ca5d327f75925e6dad4e318d88355bbab
 
 COCOAPODS: 1.16.2

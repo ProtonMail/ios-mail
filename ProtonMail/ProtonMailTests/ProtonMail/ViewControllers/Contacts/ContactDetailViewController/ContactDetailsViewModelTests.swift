@@ -44,7 +44,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
     }
 
     func testGetDetails_overwritesTheCurrentContactProperty() async throws {
-        apiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             let response: [String: Any] = [
                 "Contact": [
                     "ID": "bar",

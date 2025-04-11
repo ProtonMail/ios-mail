@@ -52,7 +52,7 @@ class AttachmentViewModelTests: XCTestCase {
         testContainer.urlOpenerFactory.register { self.urlOpener }
 
         let apiService = APIServiceMock()
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
 
