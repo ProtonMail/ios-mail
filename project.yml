@@ -112,7 +112,7 @@ targets:
           PM_API_HOST: "proton.black"
         Debug:
           CODE_SIGN_STYLE: Manual
-          PROVISIONING_PROFILE_SPECIFIER: "Mail - Engineering Transformation Dev"
+          PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Dev"
           PM_API_HOST: "proton.me"
         Release:
           CODE_SIGN_STYLE: Manual
