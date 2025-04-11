@@ -173,7 +173,7 @@ final class ConversationDataServiceTests: XCTestCase {
     // MARK: Private methods
 
     private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains(expectedPath) {
                 completion(nil, .success(response))
             } else {

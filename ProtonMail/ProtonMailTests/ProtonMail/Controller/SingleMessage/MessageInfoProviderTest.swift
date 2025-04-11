@@ -149,7 +149,7 @@ final class MessageInfoProviderTest: XCTestCase {
     }
 
     func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() async throws {
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion(nil, .success(["Code": 33101, "Error": "Server failed validation"]))
             } else if path == AddressesAPI.path {

@@ -136,7 +136,7 @@ class UndoActionManagerTests: XCTestCase {
     }
 
     func testRequestUndoAction() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/undoactions") {
                 completion(nil, .success(["Code": 1001]))
             } else {
@@ -156,7 +156,7 @@ class UndoActionManagerTests: XCTestCase {
 
     func testRequestUndoSendAction() {
         let messageID = MessageID.generateLocalID().rawValue
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/messages/\(messageID)/cancel_send") {
                 completion(nil, .success(["Code": 1001]))
             } else if path.contains("/core/v4/events/") || path.contains("/core/v5/events/") {
@@ -189,7 +189,7 @@ class UndoActionManagerTests: XCTestCase {
         }
 
         let undoSendRequest = UndoSendRequest(messageID: messageID)
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/events/") || path.contains("/core/v5/events/") {
                 completion(nil, .success([
                     "Code": 1000,

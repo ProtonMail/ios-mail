@@ -1,13 +1,12 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks" "${PODS_CONFIGURATION_BUILD_DIR}/Yams" "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$(PLATFORM_DIR)/Developer/Library/Frameworks" "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Yams/Yams.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey/iosMonkey.framework/Headers"
-LD_RUNPATH_SEARCH_PATHS = $(inherited) /usr/lib/swift "$(PLATFORM_DIR)/Developer/Library/Frameworks" '@executable_path/Frameworks' '@loader_path/Frameworks'
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey/iosMonkey.framework/Headers"
 LIBRARY_SEARCH_PATHS = $(inherited) "${TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}" /usr/lib/swift
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Yams/Yams.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey/iosMonkey.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Yams" -iframework "$(PLATFORM_DIR)/Developer/Library/Frameworks" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
-OTHER_LDFLAGS = $(inherited) -ObjC -framework "XCTest" -framework "Yams" -framework "iosMonkey"
-OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/Yams" "-F${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey/iosMonkey.framework/Headers" -iframework "$(PLATFORM_DIR)/Developer/Library/Frameworks" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
+OTHER_LDFLAGS = $(inherited) -ObjC -framework "XCTest" -framework "iosMonkey"
+OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/iosMonkey"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

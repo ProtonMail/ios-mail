@@ -53,7 +53,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let apiIsCalled = expectation(description: "Api is called")
         let customLabel = LabelID(String.randomString(6))
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             defer { apiIsCalled.fulfill() }
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/label")
@@ -96,7 +96,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let ex = expectation(description: "Label finish")
         let apiIsCalled = expectation(description: "Api is called")
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             defer { apiIsCalled.fulfill() }
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/label")
@@ -139,7 +139,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let ex = expectation(description: "UnLabel finish")
         let apiIsCalled = expectation(description: "Api is called")
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             defer { apiIsCalled.fulfill() }
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/unlabel")
@@ -177,7 +177,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let ex = expectation(description: "UnLabel finish")
         let apiIsCalled = expectation(description: "Api is called")
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             defer { apiIsCalled.fulfill() }
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/unlabel")
@@ -216,7 +216,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let ex = expectation(description: "UnLabel finish")
         let apiIsCalled = expectation(description: "Api is called")
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             defer { apiIsCalled.fulfill() }
             XCTAssertEqual(method, .put)
             XCTAssertEqual(path, "/mail/v4/conversations/label")
@@ -258,7 +258,7 @@ final class ConversationDataServiceProxyTest: XCTestCase {
         let apiIsCalled = expectation(description: "Api is called")
         apiIsCalled.isInverted = true
 
-        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             apiIsCalled.fulfill()
         }
 

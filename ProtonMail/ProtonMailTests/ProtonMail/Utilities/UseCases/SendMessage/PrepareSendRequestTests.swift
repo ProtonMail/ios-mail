@@ -197,7 +197,7 @@ final class PrepareSendRequestTests: XCTestCase {
         XCTAssert(request.deliveryTime == dummyDeliveryTime)
         XCTAssert(request.delaySeconds == dummySendDelay)
         XCTAssert(request.clearAtts == nil)
-        XCTAssert(request.body == Based64.encode(raw: originalEncryptedBody))
+        XCTAssert(request.body == Base64.encode(raw: originalEncryptedBody))
     }
 
     private func assertMimeAttributes(for request: SendMessageRequest, areFilled: Bool) {

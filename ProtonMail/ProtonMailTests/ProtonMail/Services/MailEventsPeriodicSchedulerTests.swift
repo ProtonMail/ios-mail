@@ -950,7 +950,7 @@ private extension MailEventsPeriodicSchedulerTests {
 
         let newEventID = String.randomString(20)
         newEventIDMap[user.userID] = newEventID
-        api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, _, completion in
             if path.hasPrefix("/contacts/v4/contacts/") {
                 completion(nil, .failure(NSError.badResponse()))
             } else {

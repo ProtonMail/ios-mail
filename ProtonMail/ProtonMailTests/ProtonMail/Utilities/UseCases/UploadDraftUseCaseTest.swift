@@ -229,7 +229,7 @@ extension UploadDraftUseCaseTest {
     }
 
     private func stubAPI(expectedMethod: HTTPMethod, expectedPath: String, response: [String: Any]?, error: NSError?) {
-        apiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, method, path, body, _, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(method, expectedMethod)
             XCTAssertEqual(path, expectedPath)
             guard

@@ -69,7 +69,7 @@ final class EventsServiceTests: XCTestCase {
         let objectEmail = "dummy@example.com"
         let objectTime: TimeInterval = 1678721296
         let objectLocation = "14"
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = self.newBlockedSenderEventJson(
                     id: objectId,
@@ -111,7 +111,7 @@ final class EventsServiceTests: XCTestCase {
             incomingDefault.time = Date()
             _ = context.saveUpstreamIfNeeded()
         }
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = self.removedBlockedSenderEventJson(id: incomingDefaultId).toDictionary()!
                 completion(nil, .success(result))
@@ -144,7 +144,7 @@ final class EventsServiceTests: XCTestCase {
             incomingDefault.time = Date.distantPast
             _ = context.saveUpstreamIfNeeded()
         }
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = self.movedBlockedSenderToSpamEventJson(
                     id: incomingDefaultId,
@@ -192,7 +192,7 @@ final class EventsServiceTests: XCTestCase {
             conversationCount.total = 0
             _ = context.saveUpstreamIfNeeded()
         }
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = self.newMessageEventJson(msgID: msgID, conversationID: conversationID).toDictionary()!
                 completion(nil, .success(result))
@@ -216,7 +216,7 @@ final class EventsServiceTests: XCTestCase {
     }
 
     func testFetchEvents_whenNoContactMetaData_andLessThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = EventTestData.contactEvents_insertsAndUpdates_lessThan15.toDictionary()!
                 completion(nil, .success(result))
@@ -230,7 +230,7 @@ final class EventsServiceTests: XCTestCase {
     }
 
     func testFetchEvents_whenNoContactMetaData_andMoreThan15ContactEventsReceived_itEnqueuesTwoTasks() throws {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/events") {
                 let result = EventTestData.contactEvents_insertsAndUpdates_moreThan15.toDictionary()!
                 completion(nil, .success(result))

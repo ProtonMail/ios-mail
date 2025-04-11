@@ -61,7 +61,7 @@ final class AnswerInvitationTests: XCTestCase {
             }
         }
 
-        apiService.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, method, path, _, _, _, _, _, _, _, _, _, completion in
             switch (method, path) {
             case (.get, "/keys"):
                 let response = PublicKeysResponseTestData.successTestResponse(
@@ -154,7 +154,8 @@ final class AnswerInvitationTests: XCTestCase {
             user: .init(name: nil, email: ""),
             role: .required,
             status: .pending,
-            token: nil
+            token: nil,
+            comment: nil
         )
 
         let attendee = ICalAttendee(
@@ -163,7 +164,8 @@ final class AnswerInvitationTests: XCTestCase {
             user: .init(name: nil, email: ""),
             role: .required,
             status: .pending,
-            token: attendeeToken
+            token: attendeeToken,
+            comment: nil
         )
 
         let participant = Participant(attendee: attendee, address: address)

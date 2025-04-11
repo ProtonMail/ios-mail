@@ -49,7 +49,7 @@ final class LabelsDataServiceTests: XCTestCase {
     }
 
     func testFetchV4Labels_overwritesLocalFoldersAndLabelsWithOnesReturnedByBackend() throws {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             let type = Int(String(path.last!))!
 
             let id: String
@@ -96,7 +96,7 @@ final class LabelsDataServiceTests: XCTestCase {
     }
 
     func testFetchV4Labels_regeneratesSystemFolders() throws {
-        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["Labels": []]))
         }
 
@@ -128,7 +128,7 @@ final class LabelsDataServiceTests: XCTestCase {
     }
 
     func testFetchV4Labels_whenAPIFailed_shouldNotWipeDBData() throws {
-        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(NSError(domain: "test.proton", code: 998)))
         }
 

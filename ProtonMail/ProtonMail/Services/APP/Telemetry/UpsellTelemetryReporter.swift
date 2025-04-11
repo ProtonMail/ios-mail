@@ -52,25 +52,25 @@ final class UpsellTelemetryReporter {
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeAttempt(storeKitProductId: InAppPurchasePlan.ProductId) async {
+    func upgradeAttempt(storeKitProductId: String) async {
         let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
         let event = makeEvent(name: .upgradeAttempt, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeSuccess(storeKitProductId: InAppPurchasePlan.ProductId) async {
+    func upgradeSuccess(storeKitProductId: String) async {
         let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
         let event = makeEvent(name: .upgradeSuccess, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeFailed(storeKitProductId: InAppPurchasePlan.ProductId) async {
+    func upgradeFailed(storeKitProductId: String) async {
         let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
         let event = makeEvent(name: .upgradeFailed, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
     }
 
-    func upgradeCancelled(storeKitProductId: InAppPurchasePlan.ProductId) async {
+    func upgradeCancelled(storeKitProductId: String) async {
         let dimensions = makeDimensions(storeKitProductId: storeKitProductId)
         let event = makeEvent(name: .upgradeCancelled, dimensions: dimensions)
         await dependencies.telemetryService.sendEvent(event)
@@ -100,7 +100,7 @@ final class UpsellTelemetryReporter {
     }
 
     private func parsePlanNameAndCycle(
-        from storeKitProductId: InAppPurchasePlan.ProductId
+        from storeKitProductId: String
     ) -> (name: String, cycle: String)? {
         guard
             let regex = try? NSRegularExpression(

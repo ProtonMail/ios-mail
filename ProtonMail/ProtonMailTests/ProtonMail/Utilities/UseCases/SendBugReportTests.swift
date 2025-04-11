@@ -36,7 +36,7 @@ final class SendBugReportTests: XCTestCase {
             internetConnectionStatusProvider: internetConnectionStatusProvider
         )
 
-        apiService.uploadFilesJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.uploadFilesJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
     }

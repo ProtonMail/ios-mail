@@ -44,7 +44,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         let flagsValue = 3
         let response = PublicKeysResponseTestData.successTestResponse(flags: flagsValue, publicKey: dummyPublicKey)
 
-        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion(nil, .success(response))
             } else {
@@ -59,7 +59,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
     }
 
     func testExecute_whenOneEmailIsPassed_andRequestFails() async throws {
-        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(self.nsError))
         }
 
@@ -77,7 +77,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
         let dummyEmails = ["dummy@email", "different@email", "dummy@email"]
         let response = PublicKeysResponseTestData.successTestResponse(flags: 3, publicKey: dummyPublicKey)
 
-        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(response))
         }
         
@@ -91,7 +91,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
         }
 
-        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let email: String = (query as! [String: Any])["Email"] as! String
                 let index = Int(String(email.last!))!
@@ -118,7 +118,7 @@ final class FetchEmailAddressesPublicKeyTests: XCTestCase {
             PublicKeysResponseTestData.successTestResponse(flags: $0, publicKey: dummyPublicKey)
         }
 
-        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, _, completion in
+        mockApiServer.requestJSONStub.bodyIs { _, _, path, query, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let email: String = (query as! [String: Any])["Email"] as! String
                 let index = Int(String(email.last!))!

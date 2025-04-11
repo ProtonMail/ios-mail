@@ -50,7 +50,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     }
 
     func testGetFeatureFlag_whenRequestSucceeds_itShouldStoreTheReceivedValues() throws {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data
                 completion(nil, .success(response))
@@ -77,7 +77,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     }
 
     func testGetFeatureFlag_whenRequestFails_itShouldNotOverrideTheStoredValues() throws {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             guard path.contains("/core/v4/features") else {
                 XCTFail("Unexpected path")
                 return

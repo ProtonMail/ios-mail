@@ -46,7 +46,7 @@ class FetchLatestEventIdTests: XCTestCase {
 
     func testExecute_whenEventsService_returnsAnEvent() {
         let eventId = "dummy_event_id"
-        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["EventID": eventId]))
         }
 
@@ -61,7 +61,7 @@ class FetchLatestEventIdTests: XCTestCase {
     }
 
     func testExecute_whenEventsService_doesNotReturnAnEvent() {
-        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
         let expectation = expectation(description: "callback is called")

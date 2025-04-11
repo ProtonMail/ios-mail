@@ -49,7 +49,8 @@ extension TestContainer {
             credit: nil,
             currency: nil,
             createTime: nil,
-            subscribed: nil
+            subscribed: nil,
+            edmOptOut: nil
         )
 
         setupUserDefaultsWithUser(auth: auth, userInfo: userInfo)

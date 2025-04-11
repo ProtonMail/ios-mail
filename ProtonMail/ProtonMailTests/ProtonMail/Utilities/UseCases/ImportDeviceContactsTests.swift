@@ -311,7 +311,7 @@ extension ImportDeviceContactsTests {
             prepareContactInCoreData(dummyContactExistingInCoreData, cardData: "")
         }
         prepareDeviceContacts(dummyIdentifiers_toUpdateExistingContacts_uuidMatch)
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/contacts/v4/contacts/") {
                 completion(nil, .success([:]))
             } else {
