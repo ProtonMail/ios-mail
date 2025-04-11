@@ -23,16 +23,7 @@ import Testing
 @MainActor
 final class EmptySpamTrashBannerStateStoreTests {
     var sut: EmptySpamTrashBannerStateStore!
-    var toastStateStore: ToastStateStore!
-    
-    init() {
-        toastStateStore = .init(initialState: .initial)
-    }
-    
-    deinit {
-        sut = nil
-        toastStateStore = nil
-    }
+    let toastStateStore = ToastStateStore(initialState: .initial)
     
     // MARK: - `.upgradeToAutoDelete` action
 

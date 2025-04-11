@@ -26,34 +26,29 @@ import XCTest
 
 @MainActor
 struct EmptySpamTrashBannerViewSnapshotTests {
-    @Test
-    func testSpamForFreeUserLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.spam, .freePlan))
+    struct TestCase {
+        let location: EmptySpamTrashBanner.Location
+        let userState: EmptySpamTrashBanner.UserState
+        
+        init(_ location: EmptySpamTrashBanner.Location, _ userState: EmptySpamTrashBanner.UserState) {
+            self.location = location
+            self.userState = userState
+        }
     }
     
-    @Test
-    func testSpamForPaidUserAutoDeleteOffLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.spam, .paidAutoDeleteOff))
-    }
-    
-    @Test
-    func testSpamForPaidUserAutoDeleteOnLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.spam, .paidAutoDeleteOn))
-    }
-    
-    @Test
-    func testTrashFreeUserLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.trash, .freePlan))
-    }
-    
-    @Test
-    func testTrashForPaidUserAutoDeleteOffLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.trash, .paidAutoDeleteOff))
-    }
-    
-    @Test
-    func testTrashForPaidUserAutoDeleteOnLayoutsCorrectly() {
-        assertSnapshotsOnIPhoneX(of: sut(.trash, .paidAutoDeleteOn))
+    @Test(
+        "all snapshot variants",
+        arguments: [
+            TestCase(.spam, .freePlan),
+            TestCase(.spam, .paidAutoDeleteOff),
+            TestCase(.spam, .paidAutoDeleteOn),
+            TestCase(.trash, .freePlan),
+            TestCase(.trash, .paidAutoDeleteOff),
+            TestCase(.trash, .paidAutoDeleteOn),
+        ])
+    func snapshotAllVariants(_ testCase: TestCase) {
+        let snapshotSuffix = "\(testCase.location)_\(testCase.userState)"
+        assertSnapshotsOnIPhoneX(of: sut(testCase.location, testCase.userState), named: snapshotSuffix)
     }
     
     private func sut(
