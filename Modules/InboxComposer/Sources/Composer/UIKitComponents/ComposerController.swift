@@ -19,18 +19,19 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 
-enum ComposerControllerEvent {
-    case viewDidDisappear
-    case recipientFieldEvent(RecipientsFieldEvent, RecipientGroupType)
-    case contactPickerEvent(ContactPickerEvent, RecipientGroupType)
-    case fromFieldEvent(FromFieldViewEvent)
-    case subjectFieldEvent(SubjectFieldViewEvent)
-    case attachmentEvent(DraftAttachmentsSectionEvent)
-    case bodyEvent(BodyEvent)
-    case actionBarEvent(DraftActionBarEvent)
-}
-
 final class ComposerController: UIViewController {
+
+    enum Event {
+        case viewDidDisappear
+        case recipientFieldEvent(RecipientsFieldController.Event, RecipientGroupType)
+        case contactPickerEvent(ContactPickerController.Event, RecipientGroupType)
+        case fromFieldEvent(FromFieldView.Event)
+        case subjectFieldEvent(SubjectFieldView.Event)
+        case attachmentEvent(DraftAttachmentsSectionViewController.Event)
+        case bodyEvent(BodyEvent)
+        case actionBarEvent(DraftActionBarViewController.Event)
+    }
+
     private let scrollView = SubviewFactory.scrollView
     private let composerStack = SubviewFactory.composerStack
     private let contactPicker = ContactPickerController()
@@ -40,7 +41,7 @@ final class ComposerController: UIViewController {
     private let attachmentsController = DraftAttachmentsSectionViewController()
     private let bodyEditor: BodyEditorController
     private let draftActionBarController = DraftActionBarViewController()
-    private let onEvent: (ComposerControllerEvent) -> Void
+    private let onEvent: (Event) -> Void
 
     var state: ComposerState {
         didSet {
@@ -52,7 +53,7 @@ final class ComposerController: UIViewController {
         state: ComposerState,
         embeddedImageProvider: EmbeddedImageProvider,
         invalidAddressAlertStore: InvalidAddressAlertStateStore,
-        onEvent: @escaping (ComposerControllerEvent) -> Void
+        onEvent: @escaping (Event) -> Void
     ) {
         self.state = state
         self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
@@ -191,7 +192,7 @@ enum BodyEvent {
     case onBodyChange(body: String)
 }
 
-extension BodyEditorEvent {
+private extension BodyEditorController.Event {
 
     var toBodyEvent: BodyEvent? {
         switch self {
@@ -205,7 +206,7 @@ extension BodyEditorEvent {
     }
 }
 
-extension ComposerController {
+private extension ComposerController {
 
     private enum SubviewFactory {
 

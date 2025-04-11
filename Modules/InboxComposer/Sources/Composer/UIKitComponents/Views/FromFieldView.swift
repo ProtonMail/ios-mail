@@ -18,16 +18,17 @@
 import InboxDesignSystem
 import UIKit
 
-enum FromFieldViewEvent {
-    case onFieldTap
-}
-
 final class FromFieldView: UIView {
+
+    enum Event {
+        case onFieldTap
+    }
+
     private let stack = SubviewFactory.stack
     private let title = SubviewFactory.title
     private let label = SubviewFactory.label
     private let chevronButton = SubviewFactory.chevronButton
-    var onEvent: ((FromFieldViewEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     var text: String {
         get { label.text ?? .empty }

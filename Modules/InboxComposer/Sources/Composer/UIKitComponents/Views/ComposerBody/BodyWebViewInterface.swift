@@ -19,16 +19,17 @@ import Foundation
 import InboxCore
 import WebKit
 
-enum BodyWebViewInterfaceEvent {
-    case onContentHeightChange(height: CGFloat)
-    case onEditorFocus
-    case onEditorChange
-    case onCursorPositionChange(position: CGPoint)
-}
-
 final class BodyWebViewInterface: NSObject {
+
+    enum Event {
+        case onContentHeightChange(height: CGFloat)
+        case onEditorFocus
+        case onEditorChange
+        case onCursorPositionChange(position: CGPoint)
+    }
+
     let webView: WKWebView
-    var onEvent: ((BodyWebViewInterfaceEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     private let htmlDocument: BodyHtmlDocument
 
