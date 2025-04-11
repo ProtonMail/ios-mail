@@ -100,8 +100,7 @@ enum PurchasePlanError: LocalizedError {
         case .purchaseAlreadyInProgress:
             return L10n.Upsell.purchaseAlreadyInProgress
         case .planAlreadyPurchased:
-            // TODO: Localize
-            return "Plan already purchased"
+            return L10n.Upsell.planAlreadyPurchased
         }
     }
 }

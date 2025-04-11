@@ -205,6 +205,10 @@ final class SettingsDeviceViewModel {
         }
     }
 
+    var signInQRCodeTitle: String {
+        return LocalString._scan_qr_code_setting_title
+    }
+
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         induceSlowdownUseCase = .init(user: dependencies.user)

@@ -181,8 +181,7 @@ extension SettingsDeviceViewController {
             case .scan_qr_code:
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
                 if let settingsGeneralCell = cell as? SettingsGeneralCell {
-                    // TODO: Localize and move to the view model
-                    settingsGeneralCell.configure(left: "Sign in to another device")
+                    settingsGeneralCell.configure(left: viewModel.signInQRCodeTitle)
                 }
                 return cell
             }
