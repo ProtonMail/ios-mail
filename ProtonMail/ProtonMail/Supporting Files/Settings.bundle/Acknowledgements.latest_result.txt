@@ -102,8 +102,6 @@ name: CryptoSwift, nameSpecified: CryptoSwift, owner: krzyzanowskim, version: 1.
 
 name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.1.0, source: https://github.com/krzysztofzablocki/Difference
 
-name: EllipticCurveKeyPair, nameSpecified: EllipticCurveKeyPair, owner: agens-no, version: 2.0.0, source: https://github.com/agens-no/EllipticCurveKeyPair
-
 name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.4.5, source: https://github.com/hmlongco/Factory
 
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.4, source: https://github.com/krzysztofzablocki/LifetimeTracker
@@ -112,7 +110,7 @@ name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.3.3, source: 
 
 name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
-name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 31.0.1, source: https://github.com/ProtonMail/protoncore_ios
+name: protoncore_ios, nameSpecified: ProtonCore, owner: timoteipalade, version: , source: https://github.com/timoteipalade/protoncore_ios
 
 name: Reachability.swift, nameSpecified: Reachability, owner: ashleymills, version: 5.2.4, source: https://github.com/ashleymills/Reachability.swift
 

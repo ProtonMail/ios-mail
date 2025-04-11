@@ -38,15 +38,6 @@
         }
       },
       {
-        "package": "EllipticCurveKeyPair",
-        "repositoryURL": "https://github.com/agens-no/EllipticCurveKeyPair",
-        "state": {
-          "branch": null,
-          "revision": "944ae5c89ca045e9f1a113b736706c73fc51d1c2",
-          "version": "2.0.0"
-        }
-      },
-      {
         "package": "Factory",
         "repositoryURL": "https://github.com/hmlongco/Factory.git",
         "state": {
@@ -87,8 +78,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
         "state": {
           "branch": null,
-          "revision": "d1202bbc10665fab9711c313e16933dd01cb46fd",
-          "version": "31.0.1"
+          "revision": "fd78103dc80c1ac9af87be31bbedf8504bbe4ac0",
+          "version": "31.1.0"
         }
       },
       {
