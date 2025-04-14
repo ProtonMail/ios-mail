@@ -59,30 +59,31 @@ struct AppSettingsScreen: View {
                                 value: store.state.storedAppSettings.protection.humanReadable.string,
                                 action: { comingSoon() }
                             )
-                            FormSwitchView(
-                                title: L10n.Settings.App.combinedContacts,
-                                additionalInfo: L10n.Settings.App.combinedContactsInfo,
-                                isOn: combinedContactsBinding
-                            )
+                            FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
+                                FormSwitchView(
+                                    title: L10n.Settings.App.combinedContacts,
+                                    isOn: combinedContactsBinding
+                                )
+                            }
                         }
                     }
-                    FormSection(header: L10n.Settings.App.mailExperience) {
-                        VStack(spacing: DS.Spacing.moderatelyLarge) {
-                            FormSwitchView(
-                                title: L10n.Settings.App.swipeToNextEmail,
-                                additionalInfo: L10n.Settings.App.swipeToNextEmailInfo,
-                                isOn: comingSoonBinding
-                            )
-                        }
+                    FormSection(
+                        header: L10n.Settings.App.mailExperience,
+                        footer: L10n.Settings.App.swipeToNextEmailInfo
+                    ) {
+                        FormSwitchView(
+                            title: L10n.Settings.App.swipeToNextEmail,
+                            isOn: comingSoonBinding
+                        )
                     }
-                    FormSection(header: L10n.Settings.App.advanced) {
-                        VStack(spacing: DS.Spacing.moderatelyLarge) {
-                            FormSwitchView(
-                                title: L10n.Settings.App.alternativeRouting,
-                                additionalInfo: L10n.Settings.App.alternativeRoutingInfo,
-                                isOn: alternativeRoutingBinding
-                            )
-                        }
+                    FormSection(
+                        header: L10n.Settings.App.advanced,
+                        footer: L10n.Settings.App.alternativeRoutingInfo
+                    ) {
+                        FormSwitchView(
+                            title: L10n.Settings.App.alternativeRouting,
+                            isOn: alternativeRoutingBinding
+                        )
                     }
                 }
                 .padding(.horizontal, DS.Spacing.large)

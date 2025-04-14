@@ -42,17 +42,16 @@ struct FormSection<Content: View>: View {
                     .fontWeight(.semibold)
                     .padding(.leading, DS.Spacing.large)
                     .padding(.bottom, DS.Spacing.small)
+                    .padding(.top, DS.Spacing.large)
             }
 
             content()
 
             if let footer {
-                Text(footer)
-                    .font(.footnote)
+                FormFootnoteText(footer)
                     .padding(.horizontal, DS.Spacing.large)
             }
         }
-        .padding(.top, DS.Spacing.large)
     }
 
 }

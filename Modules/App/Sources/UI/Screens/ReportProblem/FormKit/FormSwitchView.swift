@@ -20,12 +20,10 @@ import InboxDesignSystem
 
 struct FormSwitchView: View {
     private let title: LocalizedStringResource
-    private let additionalInfo: LocalizedStringResource?
     @Binding private var isOn: Bool
 
-    init(title: LocalizedStringResource, additionalInfo: LocalizedStringResource?, isOn: Binding<Bool>) {
+    init(title: LocalizedStringResource, isOn: Binding<Bool>) {
         self.title = title
-        self.additionalInfo = additionalInfo
         self._isOn = isOn
     }
 
@@ -42,11 +40,6 @@ struct FormSwitchView: View {
             .frame(maxWidth: .infinity)
             .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
-
-            if let additionalInfo {
-                FormFootnoteText(additionalInfo)
-                    .padding(.horizontal, DS.Spacing.large)
-            }
         }
     }
 }

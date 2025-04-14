@@ -20,16 +20,13 @@ import SwiftUI
 
 struct FormSmallButton: View {
     private let title: LocalizedStringResource
-    private let additionalInfo: LocalizedStringResource?
     private let action: () -> Void
 
     init(
         title: LocalizedStringResource,
-        additionalInfo: LocalizedStringResource?,
         action: @escaping () -> Void
     ) {
         self.title = title
-        self.additionalInfo = additionalInfo
         self.action = action
     }
 
@@ -47,12 +44,6 @@ struct FormSmallButton: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(SettingsButtonStyle())
-            .applyRoundedRectangleStyle()
-
-            if let additionalInfo {
-                FormFootnoteText(additionalInfo)
-                    .padding(.horizontal, DS.Spacing.large)
-            }
         }
     }
 }

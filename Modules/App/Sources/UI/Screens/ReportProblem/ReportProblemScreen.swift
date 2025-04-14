@@ -132,7 +132,6 @@ struct ReportProblemScreen: View {
             )
             FormSwitchView(
                 title: L10n.ReportProblem.sendErrorLogs,
-                additionalInfo: nil,
                 isOn: sendErrorLogsToggle(state: state, store: store)
             )
         }
