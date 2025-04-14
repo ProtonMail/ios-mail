@@ -87,7 +87,7 @@ extension MailboxListView {
                     isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected
                 ))
             },
-            spamTrashBanner: $model.spamTrashBanner
+            emptyFolderBanner: $model.emptyFolderBanner
         )
         .injectIfNotNil(model.mailbox)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

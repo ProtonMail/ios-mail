@@ -21,8 +21,8 @@ import InboxDesignSystem
 import Testing
 
 @MainActor
-final class EmptySpamTrashBannerStateStoreTests {
-    var sut: EmptySpamTrashBannerStateStore!
+final class EmptyFolderBannerStateStoreTests {
+    var sut: EmptyFolderBannerStateStore!
     let toastStateStore = ToastStateStore(initialState: .initial)
     
     // MARK: - `.upgradeToAutoDelete` action
@@ -124,9 +124,9 @@ final class EmptySpamTrashBannerStateStoreTests {
     }
     
     private func makeSUT(
-        _ folder: EmptySpamTrashBanner.Folder,
-        _ userState: EmptySpamTrashBanner.UserState
-    ) -> EmptySpamTrashBannerStateStore {
+        _ folder: EmptyFolderBanner.Folder,
+        _ userState: EmptyFolderBanner.UserState
+    ) -> EmptyFolderBannerStateStore {
         .init(
             model: .init(folder: .init(labelID: .random(), type: folder), userState: userState),
             toastStateStore: toastStateStore
@@ -134,7 +134,7 @@ final class EmptySpamTrashBannerStateStoreTests {
     }
 }
 
-private extension EmptySpamTrashBannerStateStore.State {
+private extension EmptyFolderBannerStateStore.State {
     
     func alertAction(for action: DeleteConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))

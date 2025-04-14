@@ -25,12 +25,12 @@ import SwiftUI
 import XCTest
 
 @MainActor
-struct EmptySpamTrashBannerViewSnapshotTests {
+struct EmptyFolderBannerViewSnapshotTests {
     struct TestCase {
-        let folder: EmptySpamTrashBanner.Folder
-        let userState: EmptySpamTrashBanner.UserState
+        let folder: EmptyFolderBanner.Folder
+        let userState: EmptyFolderBanner.UserState
         
-        init(_ folder: EmptySpamTrashBanner.Folder, _ userState: EmptySpamTrashBanner.UserState) {
+        init(_ folder: EmptyFolderBanner.Folder, _ userState: EmptyFolderBanner.UserState) {
             self.folder = folder
             self.userState = userState
         }
@@ -52,10 +52,10 @@ struct EmptySpamTrashBannerViewSnapshotTests {
     }
     
     private func sut(
-        _ folder: EmptySpamTrashBanner.Folder,
-        _ userState: EmptySpamTrashBanner.UserState
+        _ folder: EmptyFolderBanner.Folder,
+        _ userState: EmptyFolderBanner.UserState
     ) -> some View {
-        EmptySpamTrashBannerView(model: .init(folder: .init(labelID: .random(), type: folder), userState: userState))
+        EmptyFolderBannerView(model: .init(folder: .init(labelID: .random(), type: folder), userState: userState))
             .environmentObject(ToastStateStore(initialState: .initial))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }

@@ -15,39 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import InboxCoreUI
 
-struct EmptySpamTrashBanner {
-    enum ActionButton: Equatable {
-        case upgradePlan
-        case emptyLocation
-    }
-    
-    struct FolderDetails {
-        let labelID: ID
-        let type: Folder
-    }
-    
-    enum Folder {
-        case spam
-        case trash
-        
-        var humanReadable: String {
-            switch self {
-            case .spam:
-                L10n.Mailbox.SystemFolder.spam.string
-            case .trash:
-                L10n.Mailbox.SystemFolder.trash.string
-            }
+extension AlertModel {
+
+    static func emptyFolderConfirmation(
+        folder: EmptyFolderBanner.Folder,
+        action: @escaping (DeleteConfirmationAlertAction) -> Void
+    ) -> Self {
+        let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { action(actionType) })
         }
+        
+        return .init(
+            title: L10n.EmptySpamTrashBanner.Alert.emptyFolderTitle(folderName: folder.humanReadable),
+            message: L10n.EmptySpamTrashBanner.Alert.emptyFolderMessage(folderName: folder.humanReadable),
+            actions: actions
+        )
     }
 
-    enum UserState {
-        case freePlan
-        case paidAutoDeleteOn
-        case paidAutoDeleteOff
-    }
-
-    let folder: FolderDetails
-    let userState: UserState
 }

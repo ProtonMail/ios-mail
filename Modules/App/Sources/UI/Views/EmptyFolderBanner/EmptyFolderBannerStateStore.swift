@@ -20,7 +20,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-final class EmptySpamTrashBannerStateStore: StateStore {
+final class EmptyFolderBannerStateStore: StateStore {
     enum Action {
         case upgradeToAutoDelete
         case emptyFolder
@@ -30,15 +30,15 @@ final class EmptySpamTrashBannerStateStore: StateStore {
     struct State: Equatable, Copying {
         let icon: ImageResource
         let title: String
-        let buttons: [EmptySpamTrashBanner.ActionButton]
+        let buttons: [EmptyFolderBanner.ActionButton]
         var alert: AlertModel?
     }
     
-    let model: EmptySpamTrashBanner
+    let model: EmptyFolderBanner
     @Published var state: State
     private let toastStateStore: ToastStateStore
     
-    init(model: EmptySpamTrashBanner, toastStateStore: ToastStateStore) {
+    init(model: EmptyFolderBanner, toastStateStore: ToastStateStore) {
         self.model = model
         self.state = model.state
         self.toastStateStore = toastStateStore
@@ -69,9 +69,9 @@ final class EmptySpamTrashBannerStateStore: StateStore {
     }
 }
 
-private extension EmptySpamTrashBanner {
+private extension EmptyFolderBanner {
 
-    var state: EmptySpamTrashBannerStateStore.State {
+    var state: EmptyFolderBannerStateStore.State {
         switch userState {
         case .freePlan:
             .init(
@@ -95,7 +95,7 @@ private extension EmptySpamTrashBanner {
 
 }
 
-private extension EmptySpamTrashBannerStateStore.State {
+private extension EmptyFolderBannerStateStore.State {
 
     static func paidNoAlert(icon: ImageResource, title: LocalizedStringResource) -> Self {
         .init(icon: icon, title: title.string, buttons: [.emptyLocation], alert: .none)

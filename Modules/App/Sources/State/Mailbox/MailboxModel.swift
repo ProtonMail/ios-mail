@@ -31,7 +31,7 @@ import class UIKit.UIImage
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
     @Published var toast: Toast?
-    @Published var spamTrashBanner: EmptySpamTrashBanner?
+    @Published var emptyFolderBanner: EmptyFolderBanner?
     let selectionMode: SelectionMode = .init()
     private(set) var selectedMailbox: SelectedMailbox
 
@@ -223,7 +223,7 @@ extension MailboxModel {
             self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-            spamTrashBanner = await emptyFolderBanner(mailbox: mailbox)
+            emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
@@ -264,7 +264,7 @@ extension MailboxModel {
     }
 
     // FIXME: [ET-2721] Use interface from Rust once released
-    private func emptyFolderBanner(mailbox: Mailbox) async -> EmptySpamTrashBanner? {
+    private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
         try! await Task.sleep(for: .seconds(1))
         
         switch selectedMailbox.systemFolder {

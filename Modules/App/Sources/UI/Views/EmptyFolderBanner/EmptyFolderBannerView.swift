@@ -19,17 +19,17 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct EmptySpamTrashBannerView: View {
+struct EmptyFolderBannerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
-    private let model: EmptySpamTrashBanner
+    private let model: EmptyFolderBanner
     
-    init(model: EmptySpamTrashBanner) {
+    init(model: EmptyFolderBanner) {
         self.model = model
     }
     
     var body: some View {
         StoreView(
-            store: EmptySpamTrashBannerStateStore(model: model, toastStateStore: toastStateStore)
+            store: EmptyFolderBannerStateStore(model: model, toastStateStore: toastStateStore)
         ) { state, store in
             VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                 HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
@@ -66,8 +66,8 @@ struct EmptySpamTrashBannerView: View {
     // MARK: - Private
     
     private func buttonModel(
-        from type: EmptySpamTrashBanner.ActionButton,
-        store: EmptySpamTrashBannerStateStore
+        from type: EmptyFolderBanner.ActionButton,
+        store: EmptyFolderBannerStateStore
     ) -> Banner.Button {
         let model: Banner.Button
 
@@ -99,21 +99,21 @@ private extension View {
 #Preview {
     ScrollView {
         VStack(alignment: .center, spacing: 10) {
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .freePlan))
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .freePlan))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
             
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .freePlan))
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
-            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .freePlan))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
         }
         .padding([.leading, .trailing], DS.Spacing.large)
     }
 }
 
-private extension EmptySpamTrashBanner.FolderDetails {
+private extension EmptyFolderBanner.FolderDetails {
     
-    static func preview(type: EmptySpamTrashBanner.Folder) -> Self {
+    static func preview(type: EmptyFolderBanner.Folder) -> Self {
         .init(labelID: .random(), type: type)
     }
     

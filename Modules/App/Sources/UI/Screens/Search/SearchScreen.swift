@@ -135,7 +135,7 @@ struct SearchScreen: View {
             emptyView: {
                 NoResultsView(variant: .search)
             },
-            spamTrashBanner: .constant(nil)
+            emptyFolderBanner: .constant(nil)
         )
         .injectIfNotNil(model.mailbox)
         .navigationBarTitleDisplayMode(.inline)

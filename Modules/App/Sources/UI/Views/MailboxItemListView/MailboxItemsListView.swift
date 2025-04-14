@@ -22,7 +22,7 @@ import SwiftUI
 struct MailboxItemsListView<EmptyView: View>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
-    @Binding var spamTrashBanner: EmptySpamTrashBanner?
+    @Binding var emptyFolderBanner: EmptyFolderBanner?
     @ObservedObject private(set) var selectionState: SelectionModeState
 
     // pull to refresh
@@ -34,12 +34,12 @@ struct MailboxItemsListView<EmptyView: View>: View {
     init(
         config: MailboxItemsListViewConfiguration,
         @ViewBuilder emptyView: () -> EmptyView,
-        spamTrashBanner: Binding<EmptySpamTrashBanner?>
+        emptyFolderBanner: Binding<EmptyFolderBanner?>
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
-        _spamTrashBanner = spamTrashBanner
+        _emptyFolderBanner = emptyFolderBanner
     }
 
     var body: some View {
@@ -55,8 +55,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
         PaginatedListView(
             dataSource: config.dataSource,
             headerView: {
-                if let spamTrashBanner, !config.dataSource.state.items.isEmpty {
-                    return EmptySpamTrashBannerView(model: spamTrashBanner)
+                if let emptyFolderBanner, !config.dataSource.state.items.isEmpty {
+                    return EmptyFolderBannerView(model: emptyFolderBanner)
                 } else {
                     return nil
                 }
@@ -187,7 +187,7 @@ private extension SelectionModeState {
             MailboxItemsListView(
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
-                spamTrashBanner: .constant(nil)
+                emptyFolderBanner: .constant(nil)
             )
             .task {
                 await dataSource.fetchInitialPage()
