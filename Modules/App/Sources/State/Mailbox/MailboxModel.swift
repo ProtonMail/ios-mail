@@ -266,12 +266,13 @@ extension MailboxModel {
     // FIXME: [ET-2721] Use interface from Rust once released
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
         try! await Task.sleep(for: .seconds(1))
+        let labelID: ID = mailbox.labelId()
         
         switch selectedMailbox.systemFolder {
         case .spam:
-            return .init(folder: .init(labelID: mailbox.labelId(), type: .spam), userState: .freePlan)
+            return .init(folder: .init(labelID: labelID, type: .spam), userState: .freePlan)
         case .trash:
-            return .init(folder: .init(labelID: mailbox.labelId(), type: .trash), userState: .freePlan)
+            return .init(folder: .init(labelID: labelID, type: .trash), userState: .freePlan)
         default:
             return nil
         }

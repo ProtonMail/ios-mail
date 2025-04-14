@@ -54,13 +54,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private var listView: some View {
         PaginatedListView(
             dataSource: config.dataSource,
-            headerView: {
-                if let emptyFolderBanner, !config.dataSource.state.items.isEmpty {
-                    return EmptyFolderBannerView(model: emptyFolderBanner)
-                } else {
-                    return nil
-                }
-            },
+            headerView: { headerView },
             emptyListView: { emptyView },
             cellView: { index, item in
                 cellView(index: index, item: item)
@@ -90,6 +84,14 @@ struct MailboxItemsListView<EmptyView: View>: View {
         .sensoryFeedback(trigger: selectionState.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
+    }
+    
+    private var headerView: EmptyFolderBannerView? {
+        guard let emptyFolderBanner, !config.dataSource.state.items.isEmpty else {
+            return nil
+        }
+        
+        return EmptyFolderBannerView(model: emptyFolderBanner)
     }
 
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
@@ -165,10 +167,7 @@ private struct MailboxListViewIdentifiers {
 private extension SelectionModeState {
 
     var selectedItemIDsReadOnlyBinding: Binding<Set<MailboxSelectedItem>> {
-        Binding(
-            get: { [weak self] in self?.selectedItems ?? [] },
-            set: { _ in }
-        )
+        .readonly(get: { [weak self] in self?.selectedItems ?? [] })
     }
 
 }
