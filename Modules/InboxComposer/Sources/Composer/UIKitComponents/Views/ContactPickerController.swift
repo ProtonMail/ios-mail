@@ -19,12 +19,13 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 
-enum ContactPickerEvent {
-    case onInputChange(text: String)
-    case onContactSelected(contact: ComposerContact)
-}
-
 final class ContactPickerController: UIViewController {
+
+    enum Event {
+        case onInputChange(text: String)
+        case onContactSelected(contact: ComposerContact)
+    }
+
     private let label = SubviewFactory.title
     private let textField = CursorTextField()
     private let tableView = SubviewFactory.tableView
@@ -43,7 +44,7 @@ final class ContactPickerController: UIViewController {
         }
     }
 
-    var onEvent: ((ContactPickerEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

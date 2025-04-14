@@ -21,17 +21,18 @@ import InboxDesignSystem
 import SwiftUI
 import UIKit
 
-enum RecipientCursorCellEvent {
-    case onTextChanged(text: String)
-    case onReturnKeyPressed
-    case onDeleteKeyPressedOnEmptyTextField
-}
-
 final class RecipientCursorCell: UICollectionViewCell {
+
+    enum Event {
+        case onTextChanged(text: String)
+        case onReturnKeyPressed
+        case onDeleteKeyPressedOnEmptyTextField
+    }
+
     private let textField = CursorTextField()
     private var intentionallyResigningResponder = false
     var shouldEndEditing: () -> Bool = { true }
-    var onEvent: ((RecipientCursorCellEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     private var widthConstraint: NSLayoutConstraint?
 

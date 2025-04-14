@@ -660,8 +660,14 @@
         }
       }
     },
+    "Are you sure you want to permanently delete all messages in the %@ folder? This action cannot be undone." : {
+      "comment" : "Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm \npermanent deletion of all messages in the specified location (e.g., Spam or Trash)."
+    },
     "Are you sure you want to sign out?" : {
       "comment" : "Title of the sign out confirmation alert."
+    },
+    "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
+      "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
     },
     "Automatic actions and sorting" : {
       "comment" : "Subtitle of the Filters settings item.",
@@ -1523,6 +1529,12 @@
         }
       }
     },
+    "Empty %@ Folder" : {
+      "comment" : "Empty Spam/Trash Banner: Title for the confirmation alert when the user \nis about to empty the specified location (e.g., Spam or Trash)."
+    },
+    "Empty %@ now" : {
+      "comment" : "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
+    },
     "Enter PIN" : {
       "comment" : "Top title of the pin lock screen."
     },
@@ -2079,6 +2091,9 @@
           }
         }
       }
+    },
+    "Messages in Trash and Spam will be automatically deleted after 30 days." : {
+      "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
     },
     "Migration failed. Please sign in again and submit a bug report." : {
       "comment" : "Error toast of the welcome screen."
@@ -3450,6 +3465,12 @@
     },
     "Unsubscribe" : {
       "comment" : "Action to unsubscribe from the mailing list."
+    },
+    "Upgrade to Auto-delete" : {
+      "comment" : "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
+    },
+    "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days." : {
+      "comment" : "Empty Spam/Trash Banner: Title shown to free users, encouraging them to upgrade to auto-delete."
     },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",

@@ -23,6 +23,13 @@ import SwiftUICore
 struct BodyHtmlDocument {
     private typealias ColorBundle = (background: String, text: String, brand: String)
 
+    enum Event {
+        case onContentHeightChange
+        case onEditorFocus
+        case onEditorChange
+        case onCursorPositionChange
+    }
+
     private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
         var env = EnvironmentValues()
         env.colorScheme = colorScheme
@@ -59,13 +66,6 @@ struct BodyHtmlDocument {
 }
 
 extension BodyHtmlDocument {
-
-    enum Event {
-        case onContentHeightChange
-        case onEditorFocus
-        case onEditorChange
-        case onCursorPositionChange
-    }
 
     enum EventAttributeKey {
         static let height = "height"

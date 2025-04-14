@@ -22,7 +22,7 @@ struct ComposerControllerRepresentable: UIViewControllerRepresentable {
     let state: ComposerState
     let embeddedImageProvider: EmbeddedImageProvider
     let invalidAddressAlertStore: InvalidAddressAlertStateStore
-    let onEvent: (ComposerControllerEvent) -> Void
+    let onEvent: (ComposerController.Event) -> Void
 
     func makeUIViewController(context: Context) -> ComposerController {
         ComposerController(

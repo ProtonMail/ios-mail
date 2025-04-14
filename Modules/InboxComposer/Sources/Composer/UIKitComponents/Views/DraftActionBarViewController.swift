@@ -18,18 +18,19 @@
 import InboxDesignSystem
 import UIKit
 
-enum DraftActionBarEvent {
-    case onPickAttachmentSource
-    case onDiscardDraft
-}
-
 final class DraftActionBarViewController: UIViewController {
+
+    enum Event {
+        case onPickAttachmentSource
+        case onDiscardDraft
+    }
+
     private let stack = SubviewFactory.stack
     private let attachmentButton = SubviewFactory.attachmentButton
     private let discardButton = SubviewFactory.discardButton
     private let spacer = UIView()
     private let buttonSize = 40.0
-    var onEvent: ((DraftActionBarEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     init() {
         super.init(nibName: nil, bundle: nil)

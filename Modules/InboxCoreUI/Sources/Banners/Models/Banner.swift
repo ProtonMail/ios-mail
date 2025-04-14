@@ -47,11 +47,19 @@ public struct Banner: Hashable {
     public struct ContentStyle: Hashable {
         let icon: Color
         let text: Color
+        
+        public static var regular: Self {
+            .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
+        }
     }
     
     public struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
+        
+        public static var regular: Self {
+            .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm)
+        }
     }
 
     public enum LargeType: Hashable {
@@ -74,8 +82,8 @@ public struct Banner: Hashable {
                 .init(
                     background: DS.Color.Background.norm,
                     border: DS.Color.Border.strong,
-                    button: .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm),
-                    content: .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
+                    button: .regular,
+                    content: .regular
                 )
             case .error:
                 .init(

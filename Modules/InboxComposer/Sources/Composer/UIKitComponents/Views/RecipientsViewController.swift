@@ -39,7 +39,7 @@ final class RecipientsViewController: UIViewController {
         }
     }
 
-    var onEvent: ((RecipientsFieldEvent, RecipientGroupType) -> Void)? {
+    var onEvent: ((RecipientsFieldController.Event, RecipientGroupType) -> Void)? {
         didSet {
             toField.onEvent = { [weak self] in self?.onEvent?($0, .to) }
             ccField.onEvent = { [weak self] in self?.onEvent?($0, .cc) }

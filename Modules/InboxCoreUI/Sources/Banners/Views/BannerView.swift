@@ -43,7 +43,12 @@ struct BannerView: View {
         switch model.size {
         case .small(let button):
             HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
-                iconText(icon: model.icon, text: model.message, style: model.style.color.content, lineLimit: 2)
+                BannerIconTextView(
+                    icon: model.icon,
+                    text: model.message,
+                    style: model.style.color.content,
+                    lineLimit: 2
+                )
                 if let button = button {
                     smallButton(model: button, style: model.style.color.button)
                 }
@@ -55,7 +60,12 @@ struct BannerView: View {
         case .large(let type):
             VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                 HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
-                    iconText(icon: model.icon, text: model.message, style: model.style.color.content, lineLimit: nil)
+                    BannerIconTextView(
+                        icon: model.icon,
+                        text: model.message,
+                        style: model.style.color.content,
+                        lineLimit: .none
+                    )
                 }
                 switch type {
                 case .one(let button):
@@ -71,49 +81,12 @@ struct BannerView: View {
         }
     }
     
-    private func iconText(
-        icon: ImageResource,
-        text: String,
-        style: Banner.ContentStyle,
-        lineLimit: Int?
-    ) -> some View {
-        Group {
-            Image(icon)
-                .foregroundColor(style.icon)
-            Text(text)
-                .font(.footnote)
-                .fontWeight(.regular)
-                .foregroundStyle(style.text)
-                .lineLimit(lineLimit)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-    
     private func smallButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
-        button(model: model, style: style, maxWidth: nil)
+        BannerButton(model: model, style: style, maxWidth: nil)
     }
     
     private func largeButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
-        button(model: model, style: style, maxWidth: .infinity)
-    }
-    
-    private func button(
-        model: Banner.Button,
-        style: Banner.ButtonStyle,
-        maxWidth: CGFloat?
-    ) -> some View {
-        Button(
-            action: model.action,
-            label: {
-                Text(model.title)
-                    .font(.subheadline)
-                    .fontWeight(.regular)
-                    .foregroundStyle(style.text)
-                    .frame(maxWidth: maxWidth)
-                    .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
-                    .background(style.background, in: Capsule())
-            }
-        )
+        BannerButton(model: model, style: style, maxWidth: .infinity)
     }
 }
 
