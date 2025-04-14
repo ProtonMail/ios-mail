@@ -38,11 +38,7 @@ public final class AppLogger: @unchecked Sendable {
      It will log in the OS logging system. This logs are good for real time monitor in combination with relevant system logs 
      like app extension, push notifications, background tasks, ...
      */
-    static private func logToUnifiedLoggingSystem(
-        message: String,
-        category: Category?,
-        isError: Bool
-    ) {
+    static private func logToUnifiedLoggingSystem(message: String, category: Category?, isError: Bool) {
         let osLog = shared.osLog(for: category)
         if isError {
             osLog.error("\(message, privacy: .public)")
@@ -98,15 +94,7 @@ public final class AppLogger: @unchecked Sendable {
     ///   - message: log message in plain text.
     ///   - category: describes the scope for this message and helps filtering the system logs.
     ///   - isError: error logs show a visible indicator in the Console app.
-    static public func log(
-        message: String,
-        category: Category? = nil,
-        isError: Bool = false,
-        file: StaticString = #file,
-        function: StaticString = #function,
-        line: Int = #line,
-        column: Int = #column
-    ) {
+    static public func log(message: String, category: Category? = nil, isError: Bool = false) {
         log(message: message, category: category, isError: isError, isDebug: false)
     }
 
@@ -118,12 +106,10 @@ public final class AppLogger: @unchecked Sendable {
     static public func log(
         error: Error,
         category: Category? = nil,
-        file: StaticString = #file,
-        function: StaticString = #function,
-        line: Int = #line,
-        column: Int = #column
+        fileID: String = #fileID,
+        line: Int = #line
     ) {
-        log(message: "\(error)", category: category, isError: true, isDebug: false)
+        log(message: "\(error) (\(fileID):\(line))", category: category, isError: true, isDebug: false)
     }
 
     /// Use this function instead of `log` to indicate that calls to this method can be removed from the codebase
@@ -133,15 +119,7 @@ public final class AppLogger: @unchecked Sendable {
     /// **If you are reading this documentation because you found a call to this function that is unnecessary, delete it :)**
     ///
     /// See `log(message:,category:,isError:)` for more details on the parameters.
-    static public func logTemporarily(
-        message: String,
-        category: Category? = nil,
-        isError: Bool = false,
-        file: StaticString = #file,
-        function: StaticString = #function,
-        line: Int = #line,
-        column: Int = #column
-    ) {
+    static public func logTemporarily(message: String, category: Category? = nil, isError: Bool = false) {
         log(message: message, category: category, isError: isError, isDebug: true)
     }
 }
@@ -164,19 +142,5 @@ extension AppLogger {
         case send = "Send"
         case thirtySecondsBackgroundTask = "ThirtySecondsBackgroundTask"
         case userSessions = "UserSessions"
-    }
-
-    struct Caller {
-        let file: String
-        let function: String
-        let line: Int
-        let column: Int
-
-        init(file: StaticString, function: StaticString, line: Int, column: Int) {
-            self.file = "\(file)"
-            self.function = "\(function)"
-            self.line = line
-            self.column = column
-        }
     }
 }
