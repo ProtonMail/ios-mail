@@ -107,30 +107,20 @@ struct SettingsScreen: View {
 
     private func preferencesSection() -> some View {
         FormSection(header: L10n.Settings.preferences) {
-            LazyVStack(spacing: .zero) {
-                ForEachLast(collection: state.preferences) { preference, isLast in
-                    VStack(spacing: .zero) {
-                        settingsRow(
-                            icon: preference.displayData.icon,
-                            title: preference.displayData.title,
-                            isLast: isLast
-                        ) {
-                            switch preference {
-                            case .email, .filters, .foldersAndLabels, .privacyAndSecurity:
-                                present(page: preference.webPage)
-                            case .app:
-                                presentAppSettings()
-                            }
-                        }
-                        if !isLast {
-                            DS.Color.Border.norm
-                                .frame(height: 1)
-                                .padding(.leading, 56)
+            FormList(collection: state.preferences) { preference in
+                settingsRow(
+                    icon: preference.displayData.icon,
+                    title: preference.displayData.title,
+                    action: {
+                        switch preference {
+                        case .email, .filters, .foldersAndLabels, .privacyAndSecurity:
+                            present(page: preference.webPage)
+                        case .app:
+                            presentAppSettings()
                         }
                     }
-                }
+                )
             }
-            .applyRoundedRectangleStyle()
         }
     }
 
@@ -181,7 +171,6 @@ struct SettingsScreen: View {
     private func settingsRow(
         icon: ImageResource,
         title: LocalizedStringResource,
-        isLast: Bool,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: { action() }) {
@@ -267,22 +256,6 @@ struct SettingsButtonStyle: ButtonStyle {
         configuration
             .label
             .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
-    }
-
-}
-
-extension View {
-    func applyRoundedRectangleStyle() -> some View {
-        modifier(RoundedRectangleStyleStyle())
-    }
-}
-
-private struct RoundedRectangleStyleStyle: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.BackgroundInverted.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
     }
 
 }

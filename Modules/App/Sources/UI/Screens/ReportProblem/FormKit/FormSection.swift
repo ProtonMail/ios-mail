@@ -20,24 +20,80 @@ import SwiftUI
 
 struct FormSection<Content: View>: View {
 
-    private let header: LocalizedStringResource
+    private let header: LocalizedStringResource?
+    private let footer: LocalizedStringResource?
     private let content: () -> Content
 
-    init(header: LocalizedStringResource, content: @escaping () -> Content) {
+    init(
+        header: LocalizedStringResource? = nil,
+        footer: LocalizedStringResource? = nil,
+        content: @escaping () -> Content
+    ) {
         self.header = header
+        self.footer = footer
         self.content = content
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
-            Text(header)
-                .font(.callout)
-                .fontWeight(.semibold)
-                .padding(.leading, DS.Spacing.large)
+        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+            if let header {
+                Text(header)
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .padding(.leading, DS.Spacing.large)
+                    .padding(.bottom, DS.Spacing.small)
+            }
 
             content()
+
+            if let footer {
+                Text(footer)
+                    .font(.footnote)
+                    .padding(.horizontal, DS.Spacing.large)
+            }
         }
         .padding(.top, DS.Spacing.large)
+    }
+
+}
+
+import InboxCoreUI
+
+struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View {
+    public let collection: Collection
+    public let elementContent: (Collection.Element) -> ElementContent
+
+    // MARK: - View
+
+    var body: some View {
+        LazyVStack(spacing: .zero) {
+            ForEachLast(collection: collection) { element, isLast in
+                VStack(spacing: .zero) {
+                    elementContent(element)
+
+                    if !isLast {
+                        DS.Color.Border.norm
+                            .frame(height: 1)
+                            .padding(.leading, 56)
+                    }
+                }
+            }
+        }.applyRoundedRectangleStyle()
+    }
+}
+
+extension View {
+    func applyRoundedRectangleStyle() -> some View {
+        modifier(RoundedRectangleStyleStyle())
+    }
+}
+
+private struct RoundedRectangleStyleStyle: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .background(DS.Color.BackgroundInverted.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
     }
 
 }
