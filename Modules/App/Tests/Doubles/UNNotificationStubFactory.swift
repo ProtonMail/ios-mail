@@ -28,18 +28,24 @@ enum UNNotificationResponseStubFactory {
         return notification
     }
 
-    static func makeResponse(content: UNNotificationContent) -> UNNotificationResponse {
+    static func makeResponse(actionIdentifier: String, content: UNNotificationContent) -> UNNotificationResponse {
         let response = class_createInstance(UNNotificationResponseStub.self, 0) as! UNNotificationResponseStub
+        response._actionIdentifier = actionIdentifier
         response._notification = makeNotification(content: content)
         return response
     }
 }
 
 private class UNNotificationResponseStub: UNNotificationResponse {
+    var _actionIdentifier: String?
     var _notification: UNNotification?
 
     override var notification: UNNotification {
         _notification ?? super.notification
+    }
+
+    override var actionIdentifier: String {
+        _actionIdentifier ?? super.actionIdentifier
     }
 
     @available(*, unavailable)

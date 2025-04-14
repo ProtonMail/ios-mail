@@ -18,25 +18,25 @@
 import Combine
 import InboxCore
 import proton_app_uniffi
-import UIKit
 import UserNotifications
 
 enum RemoteNotificationType {
-    case newMessage(sessionId: String, remoteId: String)
+    case newMessage(sessionId: String, remoteId: RemoteId)
     case urlToOpen(String)
 }
 
+@MainActor
 final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate, ApplicationServiceSetUp {
     private let sessionStatePublisher: AnyPublisher<SessionState, Never>
     private let urlOpener: URLOpener
     private let userNotificationCenter: UserNotificationCenter
-    private let getMailSession: () -> MailSessionProtocol
+    private let getMailSession: @Sendable () -> MailSessionProtocol
 
     init(
         sessionStatePublisher: AnyPublisher<SessionState, Never>,
         urlOpener: URLOpener,
         userNotificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
-        getMailSession: @escaping () -> MailSessionProtocol = { AppContext.shared.mailSession }
+        getMailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession }
     ) {
         self.getMailSession = getMailSession
         self.sessionStatePublisher = sessionStatePublisher
@@ -46,44 +46,62 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
 
     func setUpService() {
         userNotificationCenter.delegate = self
+        registerActions()
     }
 
-    func userNotificationCenter(
+    private func registerActions() {
+        let categories: Set<UNNotificationCategory> = [
+            .init(
+                identifier: NotificationQuickAction.category,
+                actions: NotificationQuickAction.allCases.map { $0.registrableAction() },
+                intentIdentifiers: []
+            )
+        ]
+
+        userNotificationCenter.setNotificationCategories(categories)
+    }
+
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
         [.banner, .list, .sound]
     }
 
-    @MainActor
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let notificationContent = response.notification.request.content
-        let notificationType = detectNotificationType(userInfo: notificationContent.userInfo)
+        let actionIdentifier = response.actionIdentifier
 
-        if let notificationType {
-            AppLogger.log(message: "Did receive notification: \(notificationType)", category: .notifications)
+        guard let notificationType = detectNotificationType(userInfo: notificationContent.userInfo) else {
+            AppLogger.log(message: "Unrecognized notification type", category: .notifications, isError: true)
+            return
         }
+
+        AppLogger.log(
+            message: "Received notification \(notificationType), performing \(actionIdentifier)",
+            category: .notifications
+        )
 
         switch notificationType {
         case .newMessage(let sessionId, let remoteId):
-            if
-                await switchPrimaryAccount(sessionId: sessionId),
-                let deepLink = makeDeepLink(basedOn: remoteId, subject: notificationContent.body)
-            {
-                await urlOpener.open(deepLink, options: [:])
-            }
+            await handleNewMessage(
+                remoteId: remoteId,
+                action: actionIdentifier,
+                sessionId: sessionId,
+                subject: notificationContent.body
+            )
         case .urlToOpen(let urlString):
             if let url = URL(string: urlString) {
                 await urlOpener.open(url, options: [:])
             }
-        case .none:
-            AppLogger.log(message: "Unrecognized notification type", category: .notifications, isError: true)
         }
+
+        AppLogger.log(message: "Finished handling notification", category: .notifications)
     }
 
     private func detectNotificationType(userInfo: [AnyHashable: Any]) -> RemoteNotificationType? {
         if let sessionId = userInfo["UID"] as? String, let messageId = userInfo["messageId"] as? String {
-            return .newMessage(sessionId: sessionId, remoteId: messageId)
+            return .newMessage(sessionId: sessionId, remoteId: .init(value: messageId))
         } else if let url = userInfo["url"] as? String {
             return .urlToOpen(url)
         } else {
@@ -91,23 +109,56 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         }
     }
 
-    private func switchPrimaryAccount(sessionId: String) async -> Bool {
-        let mailSession = getMailSession()
-
+    private func handleNewMessage(
+        remoteId: RemoteId,
+        action actionIdentifier: String,
+        sessionId: String,
+        subject: String
+    ) async {
         do {
-            guard let notificationRecipientSession = try await mailSession.getSession(sessionId: sessionId).get() else {
+            guard let storedSession = try await findNotificationRecipientSession(sessionId: sessionId) else {
                 AppLogger.log(message: "Session \(sessionId) not found", category: .notifications, isError: true)
-                return false
+                return
             }
 
-            try await mailSession.setPrimaryAccount(userId: notificationRecipientSession.userId()).get()
-            await waitUntilSessionBecomesActive(sessionId: sessionId)
-
-            return true
+            if let action = NotificationQuickAction(rawValue: actionIdentifier) {
+                try await execute(action: action, onMessageWith: remoteId, in: storedSession)
+            } else {
+                try await navigateToMessage(remoteId: remoteId, session: storedSession, subject: subject)
+            }
         } catch {
             AppLogger.log(error: error, category: .notifications)
-            return false
         }
+    }
+
+    private func findNotificationRecipientSession(sessionId: String) async throws -> StoredSession? {
+        try await getMailSession().getSession(sessionId: sessionId).get()
+    }
+
+    private func execute(action: NotificationQuickAction, onMessageWith remoteId: RemoteId, in session: StoredSession) async throws {
+        let mailUserSession = try await getMailSession()
+            .userContextFromSession(session: session)
+            .get()
+
+        let executableAction = action.executableAction(remoteId: remoteId)
+        try await mailUserSession.executeNotificationQuickAction(action: executableAction).get()
+    }
+
+    private func navigateToMessage(remoteId: RemoteId, session: StoredSession, subject: String) async throws {
+        try await switchPrimaryAccount(to: session)
+
+        guard let deepLink = makeDeepLink(basedOn: remoteId, subject: subject) else {
+            AppLogger.log(message: "Failed to navigate to message \(remoteId) (\(subject))")
+            return
+        }
+
+        await urlOpener.open(deepLink, options: [:])
+    }
+
+    private func switchPrimaryAccount(to notificationRecipientSession: StoredSession) async throws {
+        let mailSession = getMailSession()
+        try await mailSession.setPrimaryAccount(userId: notificationRecipientSession.userId()).get()
+        await waitUntilSessionBecomesActive(sessionId: notificationRecipientSession.sessionId())
     }
 
     private func waitUntilSessionBecomesActive(sessionId: String) async {
@@ -119,8 +170,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         _ = await activeSessionPublisher.next()
     }
 
-    private func makeDeepLink(basedOn rawRemoteMessageId: String, subject: String) -> URL? {
-        let remoteId = RemoteId(value: rawRemoteMessageId)
+    private func makeDeepLink(basedOn remoteId: RemoteId, subject: String) -> URL? {
         let route = Route.mailboxOpenMessage(seed: .init(remoteId: remoteId, subject: subject))
         return DeepLinkRouteCoder.encode(route: route)
     }

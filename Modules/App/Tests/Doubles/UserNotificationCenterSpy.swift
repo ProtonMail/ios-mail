@@ -25,6 +25,7 @@ final class UserNotificationCenterSpy: UserNotificationCenter {
     var stubbedAuthorizationStatus: UNAuthorizationStatus = .notDetermined
 
     private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
+    private(set) var setNotificationCategoriesInvocations: [Set<UNNotificationCategory>] = []
 
     func authorizationStatus() async -> UNAuthorizationStatus {
         stubbedAuthorizationStatus
@@ -34,5 +35,9 @@ final class UserNotificationCenterSpy: UserNotificationCenter {
         requestAuthorizationInvocations.append(options)
 
         return stubbedAuthorizationResult
+    }
+
+    func setNotificationCategories(_ categories: Set<UNNotificationCategory>) {
+        setNotificationCategoriesInvocations.append(categories)
     }
 }

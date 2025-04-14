@@ -23,11 +23,13 @@ import UIKit
 
 @testable import ProtonMail
 
+@MainActor
 final class UserNotificationCenterDelegateTests {
     private let mailSession: MailSessionSpy
     private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
     private let urlOpener = URLOpenerSpy()
     private let userNotificationCenter = UserNotificationCenterSpy()
+    private let userSessionStub = MailUserSessionStub(id: "session-1")
     private let sut: UserNotificationCenterDelegate
 
     private let testURL = URL(string: "https://example.com")!
@@ -38,6 +40,10 @@ final class UserNotificationCenterDelegateTests {
         mailSession.storedSessions = [
             .init(id: "session-1", userId: "user-1", state: .authenticated),
             .init(id: "session-2", userId: "user-2", state: .authenticated)
+        ]
+
+        mailSession.userSessions = [
+            userSessionStub
         ]
 
         self.mailSession = mailSession
@@ -69,6 +75,15 @@ final class UserNotificationCenterDelegateTests {
     }
 
     @Test
+    func whenServicesAreSetUp_registersNotificationActions() throws {
+        sut.setUpService()
+
+        let registeredCategory = try #require(userNotificationCenter.setNotificationCategoriesInvocations.first?.first)
+        #expect(registeredCategory.identifier == "message_created")
+        #expect(registeredCategory.actions.count == NotificationQuickAction.allCases.count)
+    }
+
+    @Test
     func whenNotificationIsReceivedInForeground_presentsItWithBannerAndSound() async {
         let notification = UNNotificationResponseStubFactory.makeNotification(content: .init())
 
@@ -79,7 +94,7 @@ final class UserNotificationCenterDelegateTests {
 
     @Test
     func givenMessageTypeNotification_whenUserOpensIt_switchesThePrimaryAccount() async throws {
-        let response = makeNotificationResponse(type: .newMessage(sessionId: "session-2", remoteId: ""))
+        let response = makeNotificationResponse(type: .newMessage(sessionId: "session-2", remoteId: .init(value: "")), action: nil)
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
@@ -89,8 +104,9 @@ final class UserNotificationCenterDelegateTests {
     @Test
     func givenMessageTypeNotification_whenUserOpensIt_navigatesToMessageThroughDeepLink() async {
         let response = makeNotificationResponse(
-            type: .newMessage(sessionId: "session-1", remoteId: "foo"),
-            body: "Message subject"
+            type: .newMessage(sessionId: "session-1", remoteId: .init(value: "foo")),
+            body: "Message subject",
+            action: nil
         )
 
         await sut.userNotificationCenter(.current(), didReceive: response)
@@ -99,8 +115,37 @@ final class UserNotificationCenterDelegateTests {
     }
 
     @Test
+    func givenMessageTypeNotification_whenUserSelectsAnAction_executesTheAction() async throws {
+        let remoteId = RemoteId(value: "foo")
+
+        let response = makeNotificationResponse(
+            type: .newMessage(sessionId: "session-1", remoteId: remoteId),
+            body: "Message subject",
+            action: .markAsRead
+        )
+
+        await sut.userNotificationCenter(.current(), didReceive: response)
+
+        #expect(userSessionStub.executeNotificationQuickActionInvocations == [.markAsRead(remoteId: remoteId)])
+    }
+
+    @Test
+    func givenMessageTypeNotification_whenUserSelectsAnAction_doesntDoAnythingElse() async {
+        let response = makeNotificationResponse(
+            type: .newMessage(sessionId: "session-1", remoteId: .init(value: "foo")),
+            body: "Message subject",
+            action: .markAsRead
+        )
+
+        await sut.userNotificationCenter(.current(), didReceive: response)
+
+        #expect(mailSession.setPrimaryAccountInvocations == [])
+        #expect(urlOpener.openURLInvocations == [])
+    }
+
+    @Test
     func givenURLTypeNotification_whenUserOpensIt_doesNotSwitchThePrimaryAccount() async {
-        let response = makeNotificationResponse(type: .urlToOpen(testURL.absoluteString))
+        let response = makeNotificationResponse(type: .urlToOpen(testURL.absoluteString), action: nil)
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
@@ -109,31 +154,36 @@ final class UserNotificationCenterDelegateTests {
 
     @Test
     func givenURLTypeNotification_whenUserOpensIt_opensURL() async {
-        let response = makeNotificationResponse(type: .urlToOpen(testURL.absoluteString))
+        let response = makeNotificationResponse(type: .urlToOpen(testURL.absoluteString), action: nil)
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
         #expect(urlOpener.openURLInvocations == [testURL])
     }
 
-    private func makeNotificationResponse(type: RemoteNotificationType, body: String = "") -> UNNotificationResponse {
+    private func makeNotificationResponse(type: RemoteNotificationType, body: String = "", action: NotificationQuickAction?) -> UNNotificationResponse {
         let content = UNMutableNotificationContent()
         content.body = body
 
         switch type {
         case .newMessage(let sessionId, let remoteId):
             content.userInfo["UID"] = sessionId
-            content.userInfo["messageId"] = remoteId
+            content.userInfo["messageId"] = remoteId.value
         case .urlToOpen(let url):
             content.userInfo["url"] = url
             content.userInfo["UID"] = "foo"
         }
 
-        return UNNotificationResponseStubFactory.makeResponse(content: content)
+        return UNNotificationResponseStubFactory.makeResponse(
+            actionIdentifier: action?.registrableAction().identifier ?? UNNotificationDefaultActionIdentifier,
+            content: content
+        )
     }
 }
 
-private final class MailUserSessionStub: MailUserSession {
+private final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
+    private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
+
     private let id: String
 
     init(id: String) {
@@ -149,5 +199,10 @@ private final class MailUserSessionStub: MailUserSession {
 
     override func sessionId() -> MailUserSessionSessionIdResult {
         .ok(id)
+    }
+
+    override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
+        executeNotificationQuickActionInvocations.append(action)
+        return .ok
     }
 }

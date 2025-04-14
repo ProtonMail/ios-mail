@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 final class MailSessionSpy: MailSessionProtocol {
-    var onPrimaryAccountChanged: ((String) -> Void)?
+    var onPrimaryAccountChanged: (@Sendable (String) -> Void)?
     var appProtectionStub: AppProtection = .none
 
     var storedSessions: [StoredSessionStub] = [] {
@@ -32,6 +32,8 @@ final class MailSessionSpy: MailSessionProtocol {
     var stubbedRegisterDeviceTaskHandleFactory: () -> RegisterDeviceTaskHandle = {
         fatalError("not stubbed")
     }
+
+    var userSessions: [MailUserSession] = []
 
     private(set) var changeAppSettingsInvocations: [AppSettingsDiff] = []
     private(set) var registerDeviceCallCount = 0
@@ -224,7 +226,11 @@ final class MailSessionSpy: MailSessionProtocol {
     }
 
     func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
-        fatalError(#function)
+        if let userSession = userSessions.first(where: { try! $0.sessionId().get() == session.sessionId() }) {
+            .ok(userSession)
+        } else {
+            fatalError("session not configured")
+        }
     }
 
     func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {

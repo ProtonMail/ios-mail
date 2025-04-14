@@ -22,6 +22,7 @@ protocol UserNotificationCenter: AnyObject {
 
     func authorizationStatus() async -> UNAuthorizationStatus
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
+    func setNotificationCategories(_ categories: Set<UNNotificationCategory>)
 }
 
 extension UNUserNotificationCenter: UserNotificationCenter {
