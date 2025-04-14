@@ -88,7 +88,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
-            setupActiveUserSession(session: currentSession, pollEventsWhenFinished: false)
+            setupActiveUserSession(session: currentSession)
         }
     }
 }
@@ -108,24 +108,20 @@ extension AppContext {
                 // Needed for a smoother UI transition.
                 // Gives time to the AccountSwitcher for dismissing.
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.sessionChangeDelay) {
-                    self.setupActiveUserSession(session: primaryAccountSession, pollEventsWhenFinished: true)
+                    self.setupActiveUserSession(session: primaryAccountSession)
                 }
             }
             .store(in: &cancellables)
     }
 
     @MainActor
-    private func setupActiveUserSession(session: StoredSession, pollEventsWhenFinished: Bool) {
+    private func setupActiveUserSession(session: StoredSession) {
         animateTransition(into: .activeSessionTransition)
 
         Task {
             do {
                 if let newUserSession = try await self.initializeUserSession(session: session) {
                      self.animateTransition(into: .activeSession(session: newUserSession))
-
-                     if pollEventsWhenFinished {
-                        await self.pollEventsAsync()
-                     }
                 }
             } catch {
                 AppLogger.log(error: error, category: .userSessions)
@@ -184,7 +180,7 @@ extension AppContext: ApplicationServiceSetUp {
     }
 }
 
-extension AppContext: EventLoopProvider {
+extension AppContext {
 
     func pollEvents() {
         Task { [weak self] in
@@ -199,7 +195,7 @@ extension AppContext: EventLoopProvider {
                 return
             }
             AppLogger.log(message: "poll events", category: .rustLibrary)
-            try await userSession.pollEvents().get()
+            try await userSession.forceEventLoopPoll().get()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
         }

@@ -83,8 +83,6 @@ extension AppLifeCycle {
             actionQueueStatusProvider: { appContext.sessionState.userSession }
         )
 
-        let eventLoop = EventLoopService(appContext: appContext, eventLoopProvider: appContext)
-
         let foregroundWorkService = ForegroundWorkService(mailSession: { appContext.mailSession })
 
         let userNotificationCenterDelegate = UserNotificationCenterDelegate(
@@ -104,13 +102,11 @@ extension AppLifeCycle {
             becomeActiveServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
-                eventLoop,
                 emailsPrefetchingNotifier
             ],
             enterBackgroundServices: [
                 foregroundWorkService,
                 appIconBadgeService,
-                eventLoop,
                 backgroundTransitionActionsExecutor
             ],
             terminateServices: []
