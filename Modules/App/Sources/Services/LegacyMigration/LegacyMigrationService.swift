@@ -48,7 +48,7 @@ actor LegacyMigrationService {
 
     enum ProtectionPreference: CustomStringConvertible, Equatable {
         case biometrics
-        case pin([UInt32])
+        case pin(PIN)
 
         var description: String {
             switch self {
