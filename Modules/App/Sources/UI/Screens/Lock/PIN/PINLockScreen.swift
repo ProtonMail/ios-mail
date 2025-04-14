@@ -22,7 +22,7 @@ import InboxCore
 
 struct PINLockScreen: View {
     enum KeyboardButton: Hashable {
-        case digit(_ value: Int)
+        case digit(_ value: UInt32)
         case delete
 
         var isDigit: Bool {

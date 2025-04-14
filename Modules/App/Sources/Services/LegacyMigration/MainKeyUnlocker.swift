@@ -77,7 +77,7 @@ actor MainKeyUnlocker {
         }
     }
 
-    func pinProtectedMainKey(pin: String) throws -> Data {
+    func pinProtectedMainKey(pin: [UInt32]) throws -> Data {
         guard
             let encryptedMainKey = try legacyKeychain.data(forKey: .pinProtectedMainKey),
             let salt = try legacyKeychain.data(forKey:  .pinProtectionSalt)
@@ -88,7 +88,7 @@ actor MainKeyUnlocker {
         let numberOfRoundsUsedByLegacyApp: UInt64 = 32768
 
         let mainKeyEncryptionKey = try scrypt(
-            password: [UInt8](pin.utf8),
+            password: pin.map(UInt8.init),
             salt: [UInt8](salt),
             length: kCCKeySizeAES256,
             N: numberOfRoundsUsedByLegacyApp

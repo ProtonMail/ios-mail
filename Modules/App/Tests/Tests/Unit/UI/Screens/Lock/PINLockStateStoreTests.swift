@@ -27,7 +27,7 @@ class PINLockStateStoreTests {
     init() {
         output = []
         sut = PINLockStateStore(
-            state: .init(hideLogoutButton: false, pin: .empty),
+            state: .init(hideLogoutButton: false, pin: []),
             output: { self.output.append($0) }
         )
     }
@@ -74,16 +74,16 @@ class PINLockStateStoreTests {
         sut.handle(action: .keyboardTapped(.digit(3)))
         sut.handle(action: .keyboardTapped(.digit(9)))
 
-        #expect(sut.state.pin == "1239")
+        #expect(sut.state.pin == [1, 2, 3, 9])
 
         sut.handle(action: .keyboardTapped(.delete))
 
-        #expect(sut.state.pin == "123")
+        #expect(sut.state.pin == [1, 2, 3])
 
         sut.handle(action: .confirmTapped)
 
         #expect(sut.state.pin.isEmpty)
-        #expect(output == [.pin("123")])
+        #expect(output == [.pin([1, 2, 3])])
     }
 
     @Test

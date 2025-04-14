@@ -60,7 +60,7 @@ final class LegacyMigrationStateStore: ObservableObject {
         }
     }
 
-    func resumeMigration(using pin: String) {
+    func resumeMigration(using pin: [UInt32]) {
         Task {
             do {
                 let mainKey = try await mainKeyUnlocker.pinProtectedMainKey(pin: pin)

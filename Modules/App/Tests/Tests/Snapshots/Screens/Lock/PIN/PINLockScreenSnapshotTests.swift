@@ -23,16 +23,19 @@ class PINLockScreenSnapshotTests: BaseTestCase {
 
     func testPINLockScreenLayoutsCorrectly() {
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(state: .init(hideLogoutButton: false, pin: .empty), error: .constant(nil)) {_ in },
+            of: PINLockScreen(state: .init(hideLogoutButton: false, pin: []), error: .constant(nil)) {_ in },
             named: "empty_pin"
         )
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(state: .init(hideLogoutButton: false, pin: "123456789"), error: .constant(nil)) { _ in },
+            of: PINLockScreen(state: .init(
+                hideLogoutButton: false,
+                pin: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            ), error: .constant(nil)) { _ in },
             named: "non_empty_pin"
         )
         assertSnapshotsOnIPhoneX(
             of: PINLockScreen(
-                state: .init(hideLogoutButton: false, pin: .empty),
+                state: .init(hideLogoutButton: false, pin: []),
                 error: .constant("This is the error message")
             ) { _ in },
             named: "error_message"
