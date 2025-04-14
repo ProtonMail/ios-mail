@@ -22,6 +22,7 @@ import SwiftUI
 struct MailboxItemsListView<EmptyView: View>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
+    @Binding var spamTrashBanner: EmptySpamTrashBanner?
     @ObservedObject private(set) var selectionState: SelectionModeState
 
     // pull to refresh
@@ -32,11 +33,13 @@ struct MailboxItemsListView<EmptyView: View>: View {
 
     init(
         config: MailboxItemsListViewConfiguration,
-        @ViewBuilder emptyView: () -> EmptyView
+        @ViewBuilder emptyView: () -> EmptyView,
+        spamTrashBanner: Binding<EmptySpamTrashBanner?>
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
+        _spamTrashBanner = spamTrashBanner
     }
 
     var body: some View {
@@ -51,6 +54,13 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private var listView: some View {
         PaginatedListView(
             dataSource: config.dataSource,
+            headerView: {
+                if let spamTrashBanner, !config.dataSource.state.items.isEmpty {
+                    return EmptySpamTrashBannerView(model: spamTrashBanner)
+                } else {
+                    return nil
+                }
+            },
             emptyListView: { emptyView },
             cellView: { index, item in
                 cellView(index: index, item: item)
@@ -176,7 +186,8 @@ private extension SelectionModeState {
         var body: some View {
             MailboxItemsListView(
                 config: makeConfiguration(),
-                emptyView: { Text("MAILBOX IS EMPTY".notLocalized) }
+                emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
+                spamTrashBanner: .constant(nil)
             )
             .task {
                 await dataSource.fetchInitialPage()
