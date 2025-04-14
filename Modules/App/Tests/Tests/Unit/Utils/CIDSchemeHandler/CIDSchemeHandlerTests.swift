@@ -83,10 +83,27 @@ class CIDSchemeHandlerTests: BaseTestCase {
         embeddedImageProviderSpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        expect(self.embeddedImageProviderSpy.invokedEmbeddedImageWithCID).toEventually(equal([cidValue]))
+        expect(self.urlSchemeTaskSpy.didFinishInvokeCount).toEventually(equal(1))
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url), [url])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType), ["image/png"])
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength), [Int64(image.data.count)])
+    }
+
+    func testFetchingEmbeddedImage_WhenStopIsCalled_ItDoesNotDoAnything() {
+        let cidValue = "abcdef"
+        let url = URL.cid(cidValue)
+        let image = EmbeddedAttachmentInfo.testData
+        urlSchemeTaskSpy = .init(request: .init(url: url))
+        embeddedImageProviderSpy.stubbedResult = .ok(image)
+        let webView = WKWebView()
+        sut.webView(webView, start: urlSchemeTaskSpy)
+
+        sut.webView(webView, stop: urlSchemeTaskSpy)
+
+        XCTAssertEqual(urlSchemeTaskSpy.didFinishInvokeCount, 0)
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse, [])
+        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceivedData, [])
+        XCTAssertTrue(urlSchemeTaskSpy.didInvokeFailWithError.isEmpty)
     }
 
     func testWebViewStopURLSchemeTask_ItDoesNotDoAnything() {

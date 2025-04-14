@@ -21,6 +21,8 @@ import WebKit
 
 public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
     private let embeddedImageProvider: EmbeddedImageProvider
+    private var urlSchemeActiveTasks = Set<ObjectIdentifier>()
+    private let queue = DispatchQueue(label:  "\(Bundle.defaultIdentifier).\(CIDSchemeHandler.self)")
 
     public init(embeddedImageProvider: EmbeddedImageProvider) {
         self.embeddedImageProvider = embeddedImageProvider
@@ -50,6 +52,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
     /// In above's case when html is loaded to the web view and this handler is registered as cid scheme handler for web view,
     /// it will call this function where the `urlSchemeTask` requested URL will be `cid:43affe26@protonmail.com`
     public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+        queue.sync { _ = urlSchemeActiveTasks.insert(ObjectIdentifier(urlSchemeTask)) }
         let url = urlSchemeTask.request.url
         guard let url, url.scheme == Self.handlerScheme else {
             urlSchemeTask.didFailWithError(HandlerError.missingCID)
@@ -62,34 +65,66 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
         finishTaskWithImage(url: url, cid: cid, urlSchemeTask: urlSchemeTask)
     }
 
-    public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+    public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+        AppLogger.log(message: "webView stop urlSchemeTask", category: .conversationDetail)
+        queue.sync { _ = urlSchemeActiveTasks.remove(ObjectIdentifier(urlSchemeTask)) }
+    }
 
     // MARK: - Private
+
+    private func performOnUrlSchemeActiveTasks<T>(_ block: @escaping (inout Set<ObjectIdentifier>) -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            queue.async { [weak self] in
+                guard let self else {
+                    continuation.resume(throwing: PerformOnUrlSchemeActiveTasksError.noSelf)
+                    return
+                }
+                let result = block(&self.urlSchemeActiveTasks)
+                continuation.resume(returning: result)
+            }
+        }
+    }
 
     private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
         Task {
             switch await embeddedImageProvider.getEmbeddedAttachment(cid: cid) {
             case .ok(let image):
-                AppLogger.logTemporarily(message: "embedded image mime type: \(image.mime), content length: \(image.data.count), url: \(url.absoluteString)", category: .conversationDetail)
-                let response = URLResponse(
-                    url: url,
-                    mimeType: image.mime,
-                    expectedContentLength: image.data.count,
-                    textEncodingName: nil
-                )
-                do {
-                    try ObjC.catchException {
-                        urlSchemeTask.didReceive(response)
-                        urlSchemeTask.didReceive(image.data)
-                        urlSchemeTask.didFinish()
-                    }
-                } catch {
-                    AppLogger.logTemporarily(message: "\(error)", category: .conversationDetail, isError: true)
-                }
+                let message = "embedded image mime type: \(image.mime), content length: \(image.data.count)"
+                AppLogger.logTemporarily(message: message, category: .conversationDetail)
+                await handleImage(image, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let error):
                 urlSchemeTask.didFailWithError(error)
             }
+            let taskId = ObjectIdentifier(urlSchemeTask)
+            try await performOnUrlSchemeActiveTasks { activeTasks in _ = activeTasks.remove(taskId) }
         }
+    }
+
+    private func handleImage(_ image: EmbeddedAttachmentInfo, url: URL, urlSchemeTask: WKURLSchemeTask) async {
+        let taskId = ObjectIdentifier(urlSchemeTask)
+        let response = URLResponse(
+            url: url,
+            mimeType: image.mime,
+            expectedContentLength: image.data.count,
+            textEncodingName: nil
+        )
+        do {
+            guard try await performOnUrlSchemeActiveTasks({ activeTasks in activeTasks.contains(taskId) }) else {
+                AppLogger.log(message: "urlSchemeTask not active anymore", category: .conversationDetail)
+                return
+            }
+            try ObjC.catchException {
+                urlSchemeTask.didReceive(response)
+                urlSchemeTask.didReceive(image.data)
+                urlSchemeTask.didFinish()
+            }
+        } catch {
+            AppLogger.logTemporarily(message: "\(error)", category: .conversationDetail, isError: true)
+        }
+    }
+
+    enum PerformOnUrlSchemeActiveTasksError: Error {
+        case noSelf
     }
 }
 
