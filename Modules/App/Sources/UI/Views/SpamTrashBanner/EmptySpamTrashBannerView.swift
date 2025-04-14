@@ -77,10 +77,10 @@ struct EmptySpamTrashBannerView: View {
                 store.handle(action: .upgradeToAutoDelete)
             }
         case .emptyLocation:
-            let location = store.model.location.humanReadable.lowercased()
+            let folder = store.model.folder.type.humanReadable.lowercased()
             
-            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(location: location)) {
-                store.handle(action: .emptyLocation)
+            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(folderName: folder)) {
+                store.handle(action: .emptyFolder)
             }
         }
         
@@ -99,14 +99,22 @@ private extension View {
 #Preview {
     ScrollView {
         VStack(alignment: .center, spacing: 10) {
-            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .freePlan))
-            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .paidAutoDeleteOff))
-            EmptySpamTrashBannerView(model: .init(location: .spam, userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .freePlan))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
             
-            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .freePlan))
-            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .paidAutoDeleteOff))
-            EmptySpamTrashBannerView(model: .init(location: .trash, userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .freePlan))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptySpamTrashBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
         }
         .padding([.leading, .trailing], DS.Spacing.large)
     }
+}
+
+private extension EmptySpamTrashBanner.FolderDetails {
+    
+    static func preview(type: EmptySpamTrashBanner.Folder) -> Self {
+        .init(labelID: .random(), type: type)
+    }
+    
 }

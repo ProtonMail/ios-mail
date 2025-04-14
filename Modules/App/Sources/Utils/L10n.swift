@@ -498,9 +498,9 @@ enum L10n {
     
     enum EmptySpamTrashBanner {
         enum Alert {
-            static func emptyFolderTitle(location: String) -> LocalizedStringResource {
+            static func emptyFolderTitle(folderName: String) -> LocalizedStringResource {
                 .init(
-                    "Empty \(location) Folder",
+                    "Empty \(folderName) Folder",
                     comment: """
                         Empty Spam/Trash Banner: Title for the confirmation alert when the user 
                         is about to empty the specified location (e.g., Spam or Trash).
@@ -508,9 +508,9 @@ enum L10n {
                 )
             }
             
-            static func emptyFolderMessage(location: String) -> LocalizedStringResource {
+            static func emptyFolderMessage(folderName: String) -> LocalizedStringResource {
                 .init(
-                    "Are you sure you want to permanently delete all messages in the \(location) folder? This action cannot be undone.",
+                    "Are you sure you want to permanently delete all messages in the \(folderName) folder? This action cannot be undone.",
                     comment: """
                         Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm 
                         permanent deletion of all messages in the specified location (e.g., Spam or Trash).
@@ -518,9 +518,9 @@ enum L10n {
                 )
             }
         }
-        static func emptyNowAction(location: String) -> LocalizedStringResource {
+        static func emptyNowAction(folderName: String) -> LocalizedStringResource {
             .init(
-                "Empty \(location) now",
+                "Empty \(folderName) now",
                 comment: "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
             )
         }

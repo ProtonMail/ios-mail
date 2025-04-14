@@ -23,7 +23,12 @@ struct EmptySpamTrashBanner {
         case emptyLocation
     }
     
-    enum Location {
+    struct FolderDetails {
+        let labelID: ID
+        let type: Folder
+    }
+    
+    enum Folder {
         case spam
         case trash
         
@@ -43,6 +48,6 @@ struct EmptySpamTrashBanner {
         case paidAutoDeleteOff
     }
 
-    let location: Location
+    let folder: FolderDetails
     let userState: UserState
 }

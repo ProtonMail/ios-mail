@@ -19,8 +19,8 @@ import InboxCoreUI
 
 extension AlertModel {
 
-    static func emptyLocationConfirmation(
-        location: EmptySpamTrashBanner.Location,
+    static func emptyFolderConfirmation(
+        folder: EmptySpamTrashBanner.Folder,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
     ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
@@ -28,8 +28,8 @@ extension AlertModel {
         }
         
         return .init(
-            title: L10n.EmptySpamTrashBanner.Alert.emptyFolderTitle(location: location.humanReadable),
-            message: L10n.EmptySpamTrashBanner.Alert.emptyFolderMessage(location: location.humanReadable),
+            title: L10n.EmptySpamTrashBanner.Alert.emptyFolderTitle(folderName: folder.humanReadable),
+            message: L10n.EmptySpamTrashBanner.Alert.emptyFolderMessage(folderName: folder.humanReadable),
             actions: actions
         )
     }

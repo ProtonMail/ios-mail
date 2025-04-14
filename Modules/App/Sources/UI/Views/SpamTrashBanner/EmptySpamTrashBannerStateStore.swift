@@ -23,7 +23,7 @@ import SwiftUI
 final class EmptySpamTrashBannerStateStore: StateStore {
     enum Action {
         case upgradeToAutoDelete
-        case emptyLocation
+        case emptyFolder
         case deleteConfirmed(DeleteConfirmationAlertAction)
     }
     
@@ -50,9 +50,9 @@ final class EmptySpamTrashBannerStateStore: StateStore {
         switch action {
         case .upgradeToAutoDelete:
             toastStateStore.present(toast: .comingSoon)
-        case .emptyLocation:
-            let alert: AlertModel = .emptyLocationConfirmation(
-                location: model.location,
+        case .emptyFolder:
+            let alert: AlertModel = .emptyFolderConfirmation(
+                folder: model.folder.type,
                 action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
             )
             

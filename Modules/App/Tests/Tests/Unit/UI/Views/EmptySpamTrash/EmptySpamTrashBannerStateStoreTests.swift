@@ -50,10 +50,10 @@ final class EmptySpamTrashBannerStateStoreTests {
         #expect(toastStateStore.state.toasts == [.comingSoon])
     }
     
-    // MARK: - `.emptyLocation` action
+    // MARK: - `.emptyFolder` action
     
     @Test
-    func testState_WhenEmptyTrashLocationAction_ItPresentsEmptyLocationConfirmationAlert() {
+    func testState_WhenEmptyTrashFolderAction_ItPresentsEmptyFolderConfirmationAlert() {
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         #expect(sut.state == .init(
@@ -63,13 +63,13 @@ final class EmptySpamTrashBannerStateStoreTests {
             alert: .none
         ))
         
-        sut.handle(action: .emptyLocation)
+        sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
-            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
+            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
     }
     
@@ -77,13 +77,13 @@ final class EmptySpamTrashBannerStateStoreTests {
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() throws {
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
-        sut.handle(action: .emptyLocation)
+        sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
-            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
+            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
         
         let cancelAction = try sut.state.alertAction(for: .cancel)
@@ -101,13 +101,13 @@ final class EmptySpamTrashBannerStateStoreTests {
     func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndPresentsComingSoon() throws {
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
-        sut.handle(action: .emptyLocation)
+        sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
             title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
-            alert: .emptyLocationConfirmation(location: .trash, action: { _ in })
+            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
         #expect(toastStateStore.state.toasts == [])
         
@@ -124,10 +124,13 @@ final class EmptySpamTrashBannerStateStoreTests {
     }
     
     private func makeSUT(
-        _ location: EmptySpamTrashBanner.Location,
+        _ folder: EmptySpamTrashBanner.Folder,
         _ userState: EmptySpamTrashBanner.UserState
     ) -> EmptySpamTrashBannerStateStore {
-        .init(model: .init(location: location, userState: userState), toastStateStore: toastStateStore)
+        .init(
+            model: .init(folder: .init(labelID: .random(), type: folder), userState: userState),
+            toastStateStore: toastStateStore
+        )
     }
 }
 

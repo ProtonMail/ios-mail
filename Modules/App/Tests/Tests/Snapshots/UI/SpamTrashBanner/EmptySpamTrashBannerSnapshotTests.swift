@@ -27,11 +27,11 @@ import XCTest
 @MainActor
 struct EmptySpamTrashBannerViewSnapshotTests {
     struct TestCase {
-        let location: EmptySpamTrashBanner.Location
+        let folder: EmptySpamTrashBanner.Folder
         let userState: EmptySpamTrashBanner.UserState
         
-        init(_ location: EmptySpamTrashBanner.Location, _ userState: EmptySpamTrashBanner.UserState) {
-            self.location = location
+        init(_ folder: EmptySpamTrashBanner.Folder, _ userState: EmptySpamTrashBanner.UserState) {
+            self.folder = folder
             self.userState = userState
         }
     }
@@ -47,15 +47,15 @@ struct EmptySpamTrashBannerViewSnapshotTests {
             TestCase(.trash, .paidAutoDeleteOn),
         ])
     func snapshotAllVariants(_ testCase: TestCase) {
-        let snapshotSuffix = "\(testCase.location)_\(testCase.userState)"
-        assertSnapshotsOnIPhoneX(of: sut(testCase.location, testCase.userState), named: snapshotSuffix)
+        let snapshotSuffix = "\(testCase.folder)_\(testCase.userState)"
+        assertSnapshotsOnIPhoneX(of: sut(testCase.folder, testCase.userState), named: snapshotSuffix)
     }
     
     private func sut(
-        _ location: EmptySpamTrashBanner.Location,
+        _ folder: EmptySpamTrashBanner.Folder,
         _ userState: EmptySpamTrashBanner.UserState
     ) -> some View {
-        EmptySpamTrashBannerView(model: .init(location: location, userState: userState))
+        EmptySpamTrashBannerView(model: .init(folder: .init(labelID: .random(), type: folder), userState: userState))
             .environmentObject(ToastStateStore(initialState: .initial))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }
