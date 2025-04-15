@@ -20,18 +20,6 @@ import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 
-struct MessageBodyState: Copying {
-    enum Body {
-        case fetching
-        case loaded(MessageBody)
-        case error(Error)
-        case noConnection
-    }
-    
-    var body: Body
-    var alert: AlertModel?
-}
-
 final class MessageBodyStateStore: StateStore {
     var makeTask = Task<Void, Never>.init(priority:operation:)
     
@@ -43,8 +31,20 @@ final class MessageBodyStateStore: StateStore {
         case markAsLegitimateConfirmed(PhishingConfirmationAlertAction)
         case unblockSender(emailAddress: String)
     }
+    
+    struct State: Copying {
+        enum Body {
+            case fetching
+            case loaded(MessageBody)
+            case error(Error)
+            case noConnection
+        }
+        
+        var body: Body
+        var alert: AlertModel?
+    }
 
-    @Published var state: MessageBodyState = .init(body: .fetching, alert: .none)
+    @Published var state = State(body: .fetching, alert: .none)
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
@@ -141,20 +141,4 @@ final class MessageBodyStateStore: StateStore {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
-}
-
-extension AlertModel {
-
-    static func confirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertModel {
-        let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
-        }
-        
-        return .init(
-            title: "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
-            message: nil,
-            actions: actions
-        )
-    }
-
 }

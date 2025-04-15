@@ -466,7 +466,7 @@ final class MessageBodyStateStoreTests {
     }
 }
 
-extension MessageBodyState: @retroactive Equatable {
+extension MessageBodyStateStore.State: @retroactive Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         guard lhs.alert == rhs.alert else {
@@ -579,7 +579,7 @@ private class RustWrappersSpy {
     )
 }
 
-private extension MessageBodyState {
+private extension MessageBodyStateStore.State {
     
     func alertAction(for action: PhishingConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
