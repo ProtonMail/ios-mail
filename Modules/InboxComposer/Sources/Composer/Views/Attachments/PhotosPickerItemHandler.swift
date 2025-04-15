@@ -21,11 +21,14 @@ import PhotosUI
 import enum proton_app_uniffi.DraftAttachmentError
 import SwiftUI
 
-struct PhotosPickerItemHandler {
+public struct PhotosPickerItemHandler {
     static let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
     let fileManager = FileManager.default
 
-    func addPickerPhotos(
+    public init() {
+    }
+
+    public func addPickerPhotos(
         to draft: AppDraftProtocol,
         photos: [PhotosPickerItemTransferable]
     ) async -> PhotosPickerItemHandlerResult {
@@ -135,9 +138,9 @@ struct PhotosPickerItemHandler {
     }
 }
 
-struct PhotosPickerItemHandlerResult {
-    let successfulContentIds: [String]
-    let errors: [DraftAttachmentError]
+public struct PhotosPickerItemHandlerResult {
+    public let successfulContentIds: [String]
+    public let errors: [DraftAttachmentError]
 }
 
 enum PhotosPickerItemHandlerError: Error {
@@ -145,7 +148,7 @@ enum PhotosPickerItemHandlerError: Error {
     case failConvertingHeicToJpeg
 }
 
-protocol PhotosPickerItemTransferable {
+public protocol PhotosPickerItemTransferable {
     func loadTransferable<T>(type: T.Type) async throws -> T? where T: Transferable
 }
 

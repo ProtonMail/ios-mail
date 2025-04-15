@@ -140,6 +140,7 @@ extension AppLogger {
         case rustLibrary = "RustLibrary"
         case search = "Search"
         case send = "Send"
+        case shareExtension = "ShareExtension"
         case thirtySecondsBackgroundTask = "ThirtySecondsBackgroundTask"
         case userSessions = "UserSessions"
     }

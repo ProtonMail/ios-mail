@@ -16,6 +16,20 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:Modules\/TestableShareExtension",
+        "identifier" : "TestableShareExtensionTests",
+        "name" : "TestableShareExtensionTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/TestableNotificationService",
+        "identifier" : "NotificationServiceTests",
+        "name" : "NotificationServiceTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:Modules\/InboxComposer",
         "identifier" : "InboxComposerTests",
         "name" : "InboxComposerTests"
@@ -30,9 +44,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxKeychain",
-        "identifier" : "InboxKeychainTests",
-        "name" : "InboxKeychainTests"
+        "containerPath" : "container:Modules\/InboxCoreUI",
+        "identifier" : "InboxCoreUITests",
+        "name" : "InboxCoreUITests"
       }
     },
     {
@@ -44,16 +58,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxCoreUI",
-        "identifier" : "InboxCoreUITests",
-        "name" : "InboxCoreUITests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Modules\/TestableNotificationService",
-        "identifier" : "NotificationServiceTests",
-        "name" : "NotificationServiceTests"
+        "containerPath" : "container:Modules\/InboxKeychain",
+        "identifier" : "InboxKeychainTests",
+        "name" : "InboxKeychainTests"
       }
     }
   ],

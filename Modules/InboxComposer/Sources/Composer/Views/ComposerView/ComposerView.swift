@@ -33,7 +33,7 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping () -> Void
+        onSendingEvent: @escaping (SendingEvent) -> Void
     ) {
         self._model = StateObject(
             wrappedValue: ComposerModel(

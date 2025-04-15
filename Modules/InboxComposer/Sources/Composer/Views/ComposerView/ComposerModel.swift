@@ -37,7 +37,7 @@ final class ComposerModel: ObservableObject {
     private let draftOrigin: DraftOrigin
     private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
-    private let onSendingEvent: () -> Void
+    private let onSendingEvent: (SendingEvent) -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
     private let cameraImageHandler: CameraImageHandler
@@ -80,7 +80,7 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping () -> Void,
+        onSendingEvent: @escaping (SendingEvent) -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
@@ -273,7 +273,6 @@ final class ComposerModel: ObservableObject {
             switch await draft.send() {
             case .ok:
                 messageHasBeenSent = true
-                onSendingEvent()
                 dismissComposer(dismissAction: dismissAction)
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
@@ -357,6 +356,7 @@ final class ComposerModel: ObservableObject {
     @MainActor
     func dismissComposer(dismissAction: Dismissable) {
         composerWillDismiss = true
+        onSendingEvent(messageHasBeenSent ? .sent : .cancelled)
         dismissAction()
     }
 }

@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -17,8 +18,7 @@
 
 import Foundation
 
-extension Bundle {
-    enum URLScheme: String {
-        case protonmail = "protonmail"
-    }
+enum L10n {
+    static let openApp = LocalizedStringResource("Open Proton Mail", bundle: .module, comment: "Button to open the main app from the Share extension")
+    static let needToSignIn = LocalizedStringResource("You need to sign-in to Proton Mail to share content.", bundle: .module, comment: "Error message when attempting to use the Share extension without being logged in")
 }

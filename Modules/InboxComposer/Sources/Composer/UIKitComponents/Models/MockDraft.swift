@@ -33,6 +33,8 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockBccRecipientList = MockComposerRecipientList()
     var mockAttachmentList = MockAttachmentList()
 
+    private var mockBody: String = .empty
+
     static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
         let draft = MockDraft()
         switch group {
@@ -69,12 +71,8 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockBccRecipientList
     }
 
-    func attachments() -> [AttachmentMetadata] {
-        []
-    }
-
     func body() -> String {
-        .empty
+        mockBody
     }
 
     func mimeType() -> MimeType {
@@ -91,7 +89,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func setBccRecipients(recipients: [String]) {}
 
-    func setBody(body: String) -> VoidDraftSaveSendResult { .ok }
+    func setBody(body: String) -> VoidDraftSaveSendResult {
+        mockBody = body
+        return .ok
+    }
 
     func setCcRecipients(recipients: [String]) {}
 
@@ -211,7 +212,7 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
             $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
         })?.result ?? AttachmentListAddInlineResult.ok("12345")
     }
-    
+
     func attachmentUploadDirectory() -> String {
         attachmentUploadDirectoryURL.path()
     }

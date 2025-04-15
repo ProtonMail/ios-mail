@@ -62,6 +62,9 @@ packages:
   TestableNotificationService:
     path: Modules/TestableNotificationService
     group: Modules
+  TestableShareExtension:
+    path: Modules/TestableShareExtension
+    group: Modules
   TryCatch:
     path: Modules/TryCatch
     group: Modules
@@ -91,6 +94,29 @@ settings:
       CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
     UITests:
       OTHER_SWIFT_FLAGS: "-Xfrontend -enable-actor-data-race-checks"
+
+targetTemplates:
+  Extension:
+    type: app-extension
+    platform: iOS
+    scheme: {}
+    sources:
+      - path: Modules/${target_name}/Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ${bundle_identifier}
+        CODE_SIGN_ENTITLEMENTS: ${target_name}.entitlements
+      configs:
+        Release:
+          PROVISIONING_PROFILE_SPECIFIER: ${release_provisioning_profile}
+    info:
+      path: Modules/${target_name}/Sources/SupportingFiles/Info.plist
+      properties:
+        CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: ${point_identifier}
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).${principal_class}
 
 targets:
   ProtonMail:
@@ -170,6 +196,7 @@ targets:
           - AccountLogin
           - AccountManager
       - package: Scrypt
+      - target: ShareExtension
       - package: SwiftUIIntrospect
     preBuildScripts:
       - name: swift-format
@@ -221,27 +248,40 @@ targets:
     scheme: ProtonMailUITest
 
   NotificationService:
-    type: app-extension
-    platform: iOS
+    templates:
+      - Extension
+    templateAttributes:
+      bundle_identifier: ch.protonmail.protonmail.notifications
+      principal_class: NotificationService
+      point_identifier: com.apple.usernotifications.service
+      release_provisioning_profile: "Mail - Notification Service Distribution"
     dependencies:
       - package: TestableNotificationService
-    scheme: {}
-    sources:
-      - path: Modules/NotificationService/Sources
-    settings:
-      base:
-        CODE_SIGN_ENTITLEMENTS: "NotificationService.entitlements"
-        PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail.notifications"
-      configs:
-        Release:
-          PROVISIONING_PROFILE_SPECIFIER: "Mail - Notification Service Distribution"
+
+  ShareExtension:
+    templates:
+      - Extension
+    templateAttributes:
+      bundle_identifier: ch.protonmail.protonmail.Share
+      principal_class: ShareViewController
+      point_identifier: com.apple.share-services
+      release_provisioning_profile: "Mail - Share Extension Distribution"
+    dependencies:
+      - package: TestableShareExtension
     info:
-      path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
-        CFBundleDisplayName: "$(BUNDLE_DISPLAY_NAME)"
         NSExtension:
-          NSExtensionPointIdentifier: 'com.apple.usernotifications.service'
-          NSExtensionPrincipalClass: '$(PRODUCT_MODULE_NAME).NotificationService'
+          NSExtensionAttributes:
+            NSExtensionActivationRule: >
+              SUBQUERY (
+                extensionItems,
+                $extensionItem,
+                SUBQUERY (
+                    $extensionItem.attachments,
+                    $attachment,
+                    ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.data"
+                ).@count > 0
+              ).@count > 0
 
 schemes:
   ProtonMailUITest:
