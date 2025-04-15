@@ -21,6 +21,7 @@ import InboxTesting
 import proton_app_uniffi
 import Testing
 
+@MainActor
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedMessageID: ID!
@@ -61,20 +62,23 @@ final class MessageBodyStateStoreTests {
 
         #expect(wrapperSpy.messageBodyCalls == [])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 0)
-        #expect(sut.state == .fetching)
+        #expect(sut.state == .init(body: .fetching, alert: .none))
 
         await sut.handle(action: .onLoad)
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy</html>",
-                options: initialOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
     }
     
     @Test
@@ -84,7 +88,7 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
-        #expect(sut.state == .noConnection)
+        #expect(sut.state == .init(body: .noConnection, alert: .none))
     }
     
     @Test
@@ -96,7 +100,7 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
-        #expect(sut.state == .error(expectedError))
+        #expect(sut.state == .init(body: .error(expectedError), alert: .none))
     }
     
     // MARK: - `displayEmbeddedImagesTapped` action
@@ -116,14 +120,17 @@ final class MessageBodyStateStoreTests {
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy</html>",
-                options: initialOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
         
         await sut.handle(action: .displayEmbeddedImages)
         
@@ -131,14 +138,17 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
     }
     
     // MARK: - `downloadRemoteContentTapped` action
@@ -157,14 +167,17 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy</html>",
-                options: initialOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
         
         await sut.handle(action: .downloadRemoteContent)
         
@@ -172,20 +185,23 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
     }
     
     // MARK: - `markAsLegitimate` action
     
     @Test
-    func testState_WhenMarkAsLegitimateActionSucceeds_ItMarksMessageHamAndFetchesBodyWithLastOptions() async {
+    func testState_WhenMarkAsLegitimateActionTapped_ItPresentsConfirmationAlert() async {
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -203,32 +219,90 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
         
         await sut.handle(action: .markAsLegitimate)
         
-        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamCalls == [])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .confirmation(action: { _ in })
+        ))
     }
     
     @Test
-    func testState_WhenSpamMarkAsLegitimateActionFails_ItDoesNotFetchBodyAndPresentsErrorToast() async {
+    func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyWithLastOptions() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        sut.makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        wrapperSpy.stubbedMarkMessageHamResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .markAsLegitimate)
+
+        let confirmAction = try sut.state.alertAction(for: .confirm)
+        confirmAction.action()
+        
+        await markAsLegitimateTask?.value
+        
+        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
+    }
+    
+    @Test
+    func testState_WhenSpamMarkAsLegitimateConfirmedAndFails_ItDoesNotFetchBodyAndPresentsErrorToast() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        sut.makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -241,27 +315,61 @@ final class MessageBodyStateStoreTests {
         wrapperSpy.stubbedMarkMessageHamResult = .error(expectedActionError)
 
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .displayEmbeddedImages)
-        
-        let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
-        
-        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
-        
         await sut.handle(action: .markAsLegitimate)
+        
+        let confirmAction = try sut.state.alertAction(for: .confirm)
+        confirmAction.action()
+        
+        await markAsLegitimateTask?.value
         
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
+    }
+    
+    @Test
+    func testState_WhenMarkAsLegitimateCancelled_ItDoesNotMarkMessageHam() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        sut.makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
+        let initialOptions = TransformOpts(
+            showBlockQuote: true,
+            hideRemoteImages: .none,
+            hideEmbeddedImages: .none
+        )
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+        
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        wrapperSpy.stubbedMarkMessageHamResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .markAsLegitimate)
+
+        let cancelAction = try sut.state.alertAction(for: .cancel)
+        cancelAction.action()
+        
+        await markAsLegitimateTask?.value
+        
+        #expect(wrapperSpy.markMessageHamCalls == [])
+        #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [])
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
     }
     
     // MARK: - `unblockSender` action
@@ -285,14 +393,17 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
         
         let emailAddress = "john.doe@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
@@ -300,14 +411,17 @@ final class MessageBodyStateStoreTests {
         #expect(wrapperSpy.unblockSenderCalls == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
     }
     
     @Test
@@ -330,14 +444,17 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .loaded(.init(
-            banners: [],
-            html: .init(
-                rawBody: "<html>dummy_with_custom_options</html>",
-                options: updatedOptions,
-                embeddedImageProvider: decryptedMessageSpy
-            )
-        )))
+        #expect(sut.state == .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                )
+            )),
+            alert: .none
+        ))
         
         let emailAddress = "steven.morcote@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
@@ -352,7 +469,11 @@ final class MessageBodyStateStoreTests {
 extension MessageBodyState: @retroactive Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
+        guard lhs.alert == rhs.alert else {
+            return false
+        }
+        
+        switch (lhs.body, rhs.body) {
         case (.fetching, .fetching):
             return true
         case (.loaded(let lhsBody), .loaded(let rhsBody)):
@@ -456,4 +577,12 @@ private class RustWrappersSpy {
             return stubbedUnblockSenderResult
         }
     )
+}
+
+private extension MessageBodyState {
+    
+    func alertAction(for action: PhishingConfirmationAlertAction) throws -> AlertAction {
+        try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
+    }
+
 }
