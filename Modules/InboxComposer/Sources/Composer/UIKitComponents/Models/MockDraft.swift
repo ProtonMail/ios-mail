@@ -178,7 +178,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSender
     }
 
-    func setBody(body: String) -> VoidDraftSaveResult { .ok }
+    func setBody(body: String) -> VoidDraftSaveResult {
+        mockBody = body
+        return .ok
+    }
 
     func setSubject(subject: String) -> VoidDraftSaveResult {
         mockSubject = subject

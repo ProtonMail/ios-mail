@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,6 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public enum JPEG {
-    public static let compressionQuality = 0.8
+import Foundation
+
+final class ExtensionContextSpy: NSExtensionContext {
+    var stubbedExpirationFlag = false
+
+    private(set) var cancelRequestInvocations: [Error] = []
+    private(set) var completeRequestInvocations: [[Any]?] = []
+
+    override func cancelRequest(withError error: any Error) {
+        cancelRequestInvocations.append(error)
+    }
+
+    override func completeRequest(returningItems items: [Any]?, completionHandler: ((Bool) -> Void)? = nil) {
+        completeRequestInvocations.append(items)
+        completionHandler?(stubbedExpirationFlag)
+    }
 }

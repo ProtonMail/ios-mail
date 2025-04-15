@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,6 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public enum JPEG {
-    public static let compressionQuality = 0.8
+import InboxIAP
+import proton_app_uniffi
+
+extension UpsellConfiguration {
+    /// The upsell screen should always show this particular plan.
+    static func mail(apiEnvId: ApiEnvId) -> Self {
+        .init(planName: "mail2022", arePaymentsEnabled: apiEnvId.arePaymentsEnabled)
+    }
 }

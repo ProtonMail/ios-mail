@@ -140,6 +140,7 @@ extension AppLogger {
         case rustLibrary
         case search
         case send
+        case shareExtension
         case snooze
         case thirtySecondsBackgroundTask
         case userSessions

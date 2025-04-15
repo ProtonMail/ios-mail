@@ -22,6 +22,13 @@
   "testTargets" : [
     {
       "target" : {
+        "containerPath" : "container:Modules\/InboxIAP",
+        "identifier" : "InboxIAPTests",
+        "name" : "InboxIAPTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:Modules\/InboxCoreUI",
         "identifier" : "InboxCoreUITests",
         "name" : "InboxCoreUITests"
@@ -29,9 +36,16 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxComposer",
-        "identifier" : "InboxComposerTests",
-        "name" : "InboxComposerTests"
+        "containerPath" : "container:Modules\/TestableShareExtension",
+        "identifier" : "ShareExtensionTests",
+        "name" : "ShareExtensionTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/TestableNotificationService",
+        "identifier" : "NotificationServiceTests",
+        "name" : "NotificationServiceTests"
       }
     },
     {
@@ -39,6 +53,13 @@
         "containerPath" : "container:Modules\/InboxRSVP",
         "identifier" : "InboxRSVPTests",
         "name" : "InboxRSVPTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxComposer",
+        "identifier" : "InboxComposerTests",
+        "name" : "InboxComposerTests"
       }
     },
     {
@@ -53,20 +74,6 @@
         "containerPath" : "container:ProtonMail.xcodeproj",
         "identifier" : "32A3C5CC30BF3A6DEA4DD3E5",
         "name" : "ProtonMailTest"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Modules\/InboxIAP",
-        "identifier" : "InboxIAPTests",
-        "name" : "InboxIAPTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Modules\/TestableNotificationService",
-        "identifier" : "NotificationServiceTests",
-        "name" : "NotificationServiceTests"
       }
     },
     {

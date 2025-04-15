@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -16,19 +17,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 
-extension ApiEnvId {
-    /// Payments are not available for sandbox users in production environment.
-    var arePaymentsEnabled: Bool {
-        return !(isAppInstalledThroughTestFlight && self == .prod)
+enum L10n {
+    enum Sending {
+        static let sendingInProgress = LocalizedStringResource("Sending...", bundle: .module, comment: "Alert shown while the message is being sent")
+
+        static let messageSent = LocalizedStringResource("Message sent!", bundle: .module, comment: "Alert shown after the message has been sent")
     }
 
-    private var isAppInstalledThroughTestFlight: Bool {
-        #if DEBUG
-            false
-        #else
-            Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-        #endif
-    }
+    static let needToSignIn = LocalizedStringResource("You need to sign-in to Proton Mail to share content.", bundle: .module, comment: "Error message when attempting to use the Share extension without being logged in")
+
+    static let openApp = LocalizedStringResource("Open Proton Mail", bundle: .module, comment: "Button to open the main app from the Share extension")
 }

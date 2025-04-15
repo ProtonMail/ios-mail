@@ -4,6 +4,7 @@ default_platform(:ios)
 
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 NOTIFICATION_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.notifications"
+SHARE_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.Share"
 DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
 DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
 CERTIFICATE_PATH = "fastlane/Certificates.p12"
@@ -54,7 +55,8 @@ platform :ios do
   def get_xcode_profile
     ids = [
       APP_IDENTIFIER,
-      NOTIFICATION_EXTENSION_IDENTIFIER
+      NOTIFICATION_EXTENSION_IDENTIFIER,
+      SHARE_EXTENSION_IDENTIFIER
     ]
 
     ids.each do |id|

@@ -37,7 +37,7 @@ extension FileManager {
     /**
      Moves the given `file` to `destinationFolder`. If a file with the same name exists, it creates a unique file name using `uniqueFileNameURL(in folder:,baseName:,fileExtension:)`
      */
-    func moveToUniqueURL(file: URL, to destinationFolder: URL) throws -> URL {
+    public func moveToUniqueURL(file: URL, to destinationFolder: URL) throws -> URL {
         let uniqueURL = uniqueFileNameURL(
             in: destinationFolder,
             baseName: file.deletingPathExtension().lastPathComponent,

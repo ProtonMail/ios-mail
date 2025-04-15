@@ -21,6 +21,8 @@ public final class MailSessionSpy: MailSessionProtocol {
     public var onPrimaryAccountChanged: (@Sendable (String) -> Void)?
     public var appProtectionStub: AppProtection = .none
 
+    public var primaryUserSessionStub: MailUserSession?
+
     public var storedSessions: [StoredSessionStub] = [] {
         didSet {
             Task {
@@ -242,7 +244,7 @@ public final class MailSessionSpy: MailSessionProtocol {
     }
 
     public func toPrimaryUserSession() async -> MailSessionToPrimaryUserSessionResult {
-        fatalError(#function)
+        .ok(primaryUserSessionStub!)
     }
 
     public func toUserSession(ffiFlow: LoginFlow) async -> MailSessionToUserSessionResult {

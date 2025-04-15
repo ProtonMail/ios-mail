@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,6 +16,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public enum JPEG {
-    public static let compressionQuality = 0.8
+import InboxSnapshotTesting
+import proton_app_uniffi
+import Testing
+
+@testable import TestableShareExtension
+
+@MainActor
+struct ErrorScreenSnapshotTests {
+    @Test
+    func withButtonToOpenApp() {
+        let sut = ErrorScreen(error: UserSessionError.reason(.userSessionNotInitialized), dismissExtension: {})
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
+
+    @Test
+    func withoutButtonToOpenApp() {
+        let sut = ErrorScreen(error: TestError(), dismissExtension: {})
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
 }
