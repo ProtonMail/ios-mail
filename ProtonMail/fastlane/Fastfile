@@ -74,7 +74,8 @@ end
 
 def get_latest_build_number()
   latest_testflight_build_number(
-    app_identifier: APP_IDENTIFIER
+    app_identifier: APP_IDENTIFIER,
+    version: get_version_number(xcodeproj: "ProtonMail.xcodeproj", target: "ProtonMail")
   )
 end
 
