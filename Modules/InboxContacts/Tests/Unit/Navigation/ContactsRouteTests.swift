@@ -22,7 +22,7 @@ import ViewInspector
 import XCTest
 
 @MainActor
-final class RouteTests: XCTestCase {
+final class ContactsRouteTests: XCTestCase {
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id = Id(value: 1)
         let view = try makeView(for: .contactDetails(id: id))
@@ -45,7 +45,7 @@ final class RouteTests: XCTestCase {
 
     // MARK: - Private
 
-    private func makeView(for route: Route) throws -> InspectableView<ViewType.ClassifiedView> {
+    private func makeView(for route: ContactsRoute) throws -> InspectableView<ViewType.ClassifiedView> {
         try route.view().inspect()
     }
 }

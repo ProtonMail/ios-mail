@@ -32,7 +32,7 @@ final class ContactsStateStore: ObservableObject {
 
     @Published var state: ContactsScreenState
 
-    let router = Router()
+    let router = Router<ContactsRoute>()
 
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactItemDeleterAdapter

@@ -58,7 +58,7 @@ public struct ContactsScreen: View {
             )
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
-            .navigationDestination(for: Route.self) { route in
+            .navigationDestination(for: ContactsRoute.self) { route in
                 route
                     .view()
                     .navigationBarBackButtonHidden()
@@ -86,7 +86,7 @@ public struct ContactsScreen: View {
 
     // MARK: - Private
 
-    private var navigationPath: Binding<[Route]> {
+    private var navigationPath: Binding<[ContactsRoute]> {
         .init(
             get: { store.router.stack },
             set: { newStack in store.router.stack = newStack }

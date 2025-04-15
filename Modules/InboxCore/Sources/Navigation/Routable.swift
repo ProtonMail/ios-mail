@@ -15,20 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-import SwiftUI
+import Foundation
 
-enum Route: Routable {
-    case contactDetails(id: Id)
-    case contactGroupDetails(id: Id)
+public protocol Routable: Hashable, Identifiable {}
 
-    @ViewBuilder
-    func view() -> some View {
-        switch self {
-        case .contactDetails(let id):
-            ContactDetailsScreen(id: id)
-        case .contactGroupDetails(let id):
-            ContactGroupDetailsScreen(id: id)
-        }
+extension Routable {
+    public var id: Self { self }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

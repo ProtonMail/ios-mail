@@ -15,20 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
+import proton_app_uniffi
 import SwiftUI
 
-final class Router: ObservableObject {
-    @Published var stack: [Route]
+enum ContactsRoute: Routable {
+    case contactDetails(id: Id)
+    case contactGroupDetails(id: Id)
 
-    init() {
-        self.stack = []
-    }
-
-    func go(to route: Route) {
-        stack.append(route)
-    }
-
-    func goBack() {
-        stack.removeLast()
+    @ViewBuilder
+    func view() -> some View {
+        switch self {
+        case .contactDetails(let id):
+            ContactDetailsScreen(id: id)
+        case .contactGroupDetails(let id):
+            ContactGroupDetailsScreen(id: id)
+        }
     }
 }
