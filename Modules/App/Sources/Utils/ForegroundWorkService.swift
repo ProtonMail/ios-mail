@@ -34,7 +34,7 @@ class ForegroundWorkService: ApplicationServiceDidBecomeActive, ApplicationServi
     // MARK: - ApplicationServiceDidEnterBackground
 
     func enterBackgroundService() {
-        mailSession().pauseWork()
+        mailSession().pauseWorkAndWait()
     }
 
 }
