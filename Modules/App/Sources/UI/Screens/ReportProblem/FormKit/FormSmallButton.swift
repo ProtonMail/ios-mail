@@ -20,13 +20,21 @@ import SwiftUI
 
 struct FormSmallButton: View {
     private let title: LocalizedStringResource
+    private let rightSymbol: Symbol?
     private let action: () -> Void
+
+    struct Symbol {
+        let name: String
+        let color: Color
+    }
 
     init(
         title: LocalizedStringResource,
+        rightSymbol: Symbol?,
         action: @escaping () -> Void
     ) {
         self.title = title
+        self.rightSymbol = rightSymbol
         self.action = action
     }
 
@@ -36,7 +44,10 @@ struct FormSmallButton: View {
                 HStack {
                     Text(title)
                     Spacer(minLength: DS.Spacing.medium)
-                    Image(systemName: DS.SFSymbols.chevronRight)
+                    if let rightSymbol {
+                        Image(systemName: rightSymbol.name)
+                            .foregroundStyle(rightSymbol.color)
+                    }
                 }
                 .padding(.vertical, DS.Spacing.moderatelyLarge)
                 .padding(.horizontal, DS.Spacing.large)

@@ -39,26 +39,28 @@ struct AppSettingsScreen: View {
             ScrollView {
                 VStack(spacing: DS.Spacing.extraLarge) {
                     FormSection(header: L10n.Settings.App.deviceSectionTitle) {
-                        VStack(spacing: DS.Spacing.moderatelyLarge) {
-                            FormBigButton(
-                                title: L10n.Settings.App.notifications,
-                                icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: store.state.areNotificationsEnabledHumanReadable.string,
-                                action: { store.handle(action: .notificationButtonTapped) }
-                            )
-                            FormBigButton(
-                                title: L10n.Settings.App.language,
-                                icon: DS.SFSymbols.arrowUpRightSquare,
-                                value: store.state.appLanguage,
-                                action: { store.handle(action: .languageButtonTapped) }
-                            )
-                            appearanceButton
-                            FormBigButton(
-                                title: L10n.Settings.App.protection,
-                                icon: DS.SFSymbols.chevronRight,
-                                value: store.state.storedAppSettings.protection.humanReadable.string,
-                                action: { comingSoon() }
-                            )
+                        VStack(spacing: .zero) {
+                            VStack(spacing: DS.Spacing.moderatelyLarge) {
+                                FormBigButton(
+                                    title: L10n.Settings.App.notifications,
+                                    icon: DS.SFSymbols.arrowUpRightSquare,
+                                    value: store.state.areNotificationsEnabledHumanReadable.string,
+                                    action: { store.handle(action: .notificationButtonTapped) }
+                                )
+                                FormBigButton(
+                                    title: L10n.Settings.App.language,
+                                    icon: DS.SFSymbols.arrowUpRightSquare,
+                                    value: store.state.appLanguage,
+                                    action: { store.handle(action: .languageButtonTapped) }
+                                )
+                                appearanceButton
+                                FormBigButton(
+                                    title: L10n.Settings.App.protection,
+                                    icon: DS.SFSymbols.chevronRight,
+                                    value: store.state.storedAppSettings.protection.humanReadable.string,
+                                    action: { comingSoon() }
+                                )
+                            }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
                                     title: L10n.Settings.App.combinedContacts,
@@ -200,7 +202,7 @@ private extension AppProtection {
         case .none:
             L10n.Settings.App.none
         case .biometrics:
-            switch SupportedBiometry.type {
+            switch SupportedBiometry.onDevice {
             case .faceID:
                 L10n.Settings.App.faceID
             case .touchID:

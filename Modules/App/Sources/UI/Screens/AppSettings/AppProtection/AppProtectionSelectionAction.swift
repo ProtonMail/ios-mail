@@ -15,26 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
-
-enum SupportedBiometry {
-    case none
-    case touchID
-    case faceID
-
-    static var onDevice: Self {
-        let context = LAContext()
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
-            switch context.biometryType {
-            case .faceID:
-                return .faceID
-            case .touchID:
-                return .touchID
-            default:
-                return .none
-            }
-        } else {
-            return .none
-        }
-    }
+enum AppProtectionSelectionAction {
+    case viewLoaded
+    case selected(AppProtectionMethodViewModel.MethodType)
 }

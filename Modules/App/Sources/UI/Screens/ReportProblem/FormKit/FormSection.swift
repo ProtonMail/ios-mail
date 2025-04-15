@@ -42,7 +42,6 @@ struct FormSection<Content: View>: View {
                     .fontWeight(.semibold)
                     .padding(.leading, DS.Spacing.large)
                     .padding(.bottom, DS.Spacing.small)
-                    .padding(.top, DS.Spacing.large)
             }
 
             content()
@@ -51,7 +50,7 @@ struct FormSection<Content: View>: View {
                 FormFootnoteText(footer)
                     .padding(.horizontal, DS.Spacing.large)
             }
-        }
+        }.padding(.top, DS.Spacing.large)
     }
 
 }
