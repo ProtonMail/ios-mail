@@ -51,15 +51,15 @@ extension FileManager {
 
     /**
      Returns a URL for a unique file name inside `folder`.
-
+    
      If there already exist a file with the same name, it will append a counter to the file base name.
-
+    
      For exemple in this pseudo code, calling the function twice with the same parameters:
      ```
      uniqueFileURL(in: "/dest_path", baseName: "my_file", fileExtension: "jpg")
      uniqueFileURL(in: "/dest_path", baseName: "my_file", fileExtension: "jpg")
      ```
-
+    
      would end up with these files in the destination folder:
      ```
      /dest_path/my_file.jpg

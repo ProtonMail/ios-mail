@@ -42,7 +42,7 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func mimeType() -> MimeType
     func save() async -> VoidDraftSaveSendResult
     func send() async -> VoidDraftSaveSendResult
-    func sender()  -> String
+    func sender() -> String
     func setBody(body: String) -> VoidDraftSaveSendResult
     func setSubject(subject: String) -> VoidDraftSaveSendResult
     func subject() -> String
@@ -58,7 +58,7 @@ extension Draft: AppDraftProtocol {
         let list: AttachmentList = self.attachmentList()
         return list
     }
-    
+
     public func toRecipients() -> ComposerRecipientListProtocol {
         let list: ComposerRecipientList = self.toRecipients()
         return list

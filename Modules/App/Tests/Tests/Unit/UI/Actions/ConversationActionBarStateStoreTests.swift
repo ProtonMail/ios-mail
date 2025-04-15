@@ -43,7 +43,7 @@ class ConversationActionBarStateStoreTests: BaseTestCase {
 
     func testState_WhenViewLoads_ItReturnsCorrectState() {
         stubbedBottomBarActions = .init(
-            hiddenBottomBarActions: [], 
+            hiddenBottomBarActions: [],
             visibleBottomBarActions: [.labelAs, .markUnread]
         )
 

@@ -26,7 +26,7 @@ class UITestVisibilityHelper: ApplicationHolder {
     static let shared = UITestVisibilityHelper()
     private let topSafeInsetSize = 60.0
     private let bottomSafeInsetSize = 50.0
-    
+
     func findElement(element: XCUIElement, parent: XCUIElement, maxAttempts: Int = 5) -> Bool {
         for _ in 1...maxAttempts {
             let visibility = evaluateElementVisibility(element: element)
@@ -44,10 +44,10 @@ class UITestVisibilityHelper: ApplicationHolder {
             }
             break
         }
-        
+
         return true
     }
-    
+
     private func evaluateElementVisibility(element: XCUIElement) -> UITestVisibilityResult {
         let applicationFrame = application.windows.element(boundBy: 0).frame.size
         let elementFrameMinY = element.frame.minY
@@ -55,12 +55,12 @@ class UITestVisibilityHelper: ApplicationHolder {
         if (elementFrameMinY <= topSafeInsetSize) {
             return UITestVisibilityResult(isWithinSafeBounds: false, adjustDirection: .downwards)
         }
-        
+
         let deltaBottom = applicationFrame.height - elementFrameMinY
         if (deltaBottom <= bottomSafeInsetSize) {
             return UITestVisibilityResult(isWithinSafeBounds: false, adjustDirection: .upwards)
         }
-        
+
         return UITestVisibilityResult(isWithinSafeBounds: true, adjustDirection: .none)
     }
 }
@@ -73,5 +73,5 @@ private enum UITestAdjustDirection {
 
 private struct UITestVisibilityResult {
     let isWithinSafeBounds: Bool
-    let adjustDirection : UITestAdjustDirection
+    let adjustDirection: UITestAdjustDirection
 }

@@ -64,7 +64,7 @@ struct UnreadFilterBarView: View {
         }
         .accessibilityAddTraits(state.isUnreadButtonSelected ? .isSelected : [])
         .padding(.vertical, DS.Spacing.standard)
-        .padding(.horizontal, DS.Spacing.medium*scale)
+        .padding(.horizontal, DS.Spacing.medium * scale)
         .background(
             RoundedRectangle(cornerRadius: DS.Radius.massive*scale, style: .continuous)
                 .fill(state.isUnreadButtonSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
@@ -91,7 +91,7 @@ struct UnreadFilterBarView: View {
             }
         }
         .padding(.vertical, DS.Spacing.standard)
-        .padding(.horizontal, DS.Spacing.medium*scale)
+        .padding(.horizontal, DS.Spacing.medium * scale)
         .overlay {
             RoundedRectangle(cornerRadius: DS.Radius.massive*scale, style: .continuous)
                 .stroke(DS.Color.Border.norm)
@@ -130,7 +130,6 @@ private struct UnreadFilterIdentifiers {
     static let countValue = "unread.filter.value"
 }
 
-
 #Preview {
     struct Preview: View {
         @State var stateRegular: FilterBarState = .init(visibilityMode: .regular, unreadCount: .known(unreadCount: 3))
@@ -148,4 +147,3 @@ private struct UnreadFilterIdentifiers {
 
     return Preview()
 }
-

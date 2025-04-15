@@ -106,7 +106,6 @@ final class SendResultPresenterTests: BaseTestCase {
         ]))
     }
 
-
     // MARK: undoAction
 
     @MainActor
@@ -138,7 +137,7 @@ final class SendResultPresenterTests: BaseTestCase {
     @MainActor
     func testUndoAction_whenSentHasBeenPresented_andUndoProviderReturnsError_itShouldDismissSentAndPresentError() async {
         sut = makeSut(undoSendProvider: .mockInstance(stubbedResult: mockDraftUndoSendError))
-        
+
         let messageId: ID = .random()
         sut.presentResultInfo(.init(messageId: messageId, type: .sent))
 
@@ -197,7 +196,7 @@ private extension SendResultToastAction {
 }
 
 private extension Array where Element == SendResultToastAction {
-    
+
     func isSame(as other: [SendResultToastAction]) -> Bool {
         guard self.count == other.count else { return false }
 

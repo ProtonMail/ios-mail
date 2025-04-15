@@ -40,7 +40,7 @@ final class UnreadCountFormatterTests: XCTestCase {
             .init(given: .init(count: 1, maxCount: 0), expected: "0+"),
             .init(given: .init(count: 1_000, maxCount: 999), expected: "999+"),
         ]
-        
+
         testCases.forEach { testCase in
             let formattedCount = UnreadCountFormatter.string(
                 count: testCase.given.count,

@@ -21,9 +21,9 @@ import InboxCoreUI
 enum LogOutConformationAction: AlertActionInfo, CaseIterable {
     case cancel
     case signOut
-    
+
     // MARK: - AlertActionInfo
-    
+
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:

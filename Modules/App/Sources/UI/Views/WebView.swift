@@ -22,7 +22,7 @@ import WebKit
 struct WebView: UIViewRepresentable {
     let url: URL
 
-    func makeUIView(context: Context) -> WKWebView  {
+    func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let webView = WKWebView()
         webView.isOpaque = false

@@ -101,7 +101,6 @@ private extension MailboxItemCellUIModel {
         )
     }
 
-
     static let emailSubjects: [String] = [
         "Weekly Team Sync – Agenda Attached",
         "Unlock 25% Off Your Next Order – Limited Time!",

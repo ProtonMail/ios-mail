@@ -48,7 +48,7 @@ enum MoveToSheetPreviewProvider {
             color: .init(value: "#F67900"),
             children: [
                 .init(
-                    localId: .init(value: 4), 
+                    localId: .init(value: 4),
                     name: "2",
                     color: .init(value: "#E93672"),
                     children: [

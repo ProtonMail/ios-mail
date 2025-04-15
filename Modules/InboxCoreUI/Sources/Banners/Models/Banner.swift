@@ -22,12 +22,12 @@ public struct Banner: Hashable {
     public struct Button: Hashable {
         public let title: String
         public let action: () -> Void
-        
+
         public init(title: LocalizedStringResource, action: @escaping () -> Void) {
             self.title = title.string
             self.action = action
         }
-        
+
         public static func == (lhs: Button, rhs: Button) -> Bool {
             lhs.title == rhs.title
         }
@@ -43,16 +43,16 @@ public struct Banner: Hashable {
         let button: ButtonStyle
         let content: ContentStyle
     }
-    
+
     public struct ContentStyle: Hashable {
         let icon: Color
         let text: Color
-        
+
         public static var regular: Self {
             .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
         }
     }
-    
+
     public struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
@@ -86,7 +86,7 @@ public struct Banner: Hashable {
     public enum Style: Hashable {
         case regular
         case error
-        
+
         var color: ColorStyle {
             switch self {
             case .regular:
@@ -116,7 +116,7 @@ public struct Banner: Hashable {
     public let message: String
     public let size: Size
     public let style: Style
-    
+
     public init(icon: ImageResource, message: LocalizedStringResource, size: Size, style: Style) {
         self.icon = icon
         self.message = message.string

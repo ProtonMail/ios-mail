@@ -24,7 +24,7 @@ extension MailboxRobot {
     func scrollDown() {
         rootElement.swipeUp()
     }
-    
+
     func scrollUp() {
         rootElement.swipeDown()
     }
@@ -60,12 +60,12 @@ extension MailboxRobot {
             unselectItemAt(index: index)
         }
     }
-    
+
     func tapAttachmentCapsuleAt(forItem item: Int, atIndex index: Int) {
         let model = UITestMailboxListItemEntryModel(index: item)
         model.tapAttachmentCapsuleAt(index)
     }
-    
+
     func waitForEntry(atIndex index: Int) {
         let model = UITestMailboxListItemEntryModel(index: index)
         model.waitForExistence(timeout: 30)
@@ -104,17 +104,17 @@ extension MailboxRobot {
         let model = UITestMailboxListItemEntryModel(index: 0)
         model.doesNotExist()
     }
-    
+
     func hasAttachmentPreviewEntries(index: Int, entries: UITestAttachmentPreviewItemEntry) {
         let model = UITestMailboxListItemEntryModel(index: index)
         model.hasAttachmentPreviews(entry: entries)
     }
-    
+
     func hasNoAttachmentPreviewEntries(index: Int) {
         let model = UITestMailboxListItemEntryModel(index: index)
         model.hasNoAttachmentPreviews()
     }
-    
+
     private func hasEntry(entry: UITestMailboxListItemEntry) {
         let model = UITestMailboxListItemEntryModel(index: entry.index)
 
@@ -126,7 +126,7 @@ extension MailboxRobot {
             model.hasAvatarImage()
             model.hasNoInitials()
         }
-        
+
         model.hasParticipants(entry.sender)
         model.hasSubject(entry.subject)
         model.hasDate(entry.date)
@@ -136,7 +136,7 @@ extension MailboxRobot {
         } else {
             model.hasNoCount()
         }
-        
+
         if let attachmentPreviews = entry.attachmentPreviews {
             model.hasAttachmentPreviews(entry: attachmentPreviews)
         } else {

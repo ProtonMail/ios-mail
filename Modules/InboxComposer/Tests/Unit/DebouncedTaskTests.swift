@@ -58,10 +58,9 @@ final class DebouncedTaskTests: XCTestCase {
         await sut.executeImmediately()
         XCTAssertEqual(result, [1])
 
-        try! await Task.sleep(for: duration+duration)
+        try! await Task.sleep(for: duration + duration)
         XCTAssertEqual(result, [1])
     }
-
 
     // MARK: Cancel
 
@@ -69,7 +68,7 @@ final class DebouncedTaskTests: XCTestCase {
         let duration: TimeInterval = 0.15
         let expectation = expectation(description: "task is executed")
         expectation.isInverted = true
-        sut = .init(duration: .milliseconds(duration), block: { expectation.fulfill() }, onBlockCompletion: { })
+        sut = .init(duration: .milliseconds(duration), block: { expectation.fulfill() }, onBlockCompletion: {})
         sut.debounce()
 
         sut.cancel()
@@ -81,7 +80,7 @@ final class DebouncedTaskTests: XCTestCase {
         let duration: TimeInterval = 0.1
         let expectation = expectation(description: "completion is executed")
         expectation.isInverted = true
-        sut = .init(duration: .milliseconds(duration), block: { }, onBlockCompletion: { expectation.fulfill() })
+        sut = .init(duration: .milliseconds(duration), block: {}, onBlockCompletion: { expectation.fulfill() })
         sut.debounce()
 
         sut.cancel()

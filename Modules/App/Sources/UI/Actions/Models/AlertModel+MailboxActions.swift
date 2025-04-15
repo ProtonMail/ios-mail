@@ -26,7 +26,7 @@ extension AlertModel {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }
-        
+
         return .init(
             title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
             message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
@@ -38,7 +38,7 @@ extension AlertModel {
         let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }
-    
+
         return .init(
             title: L10n.Action.ReportPhishing.Alert.title,
             message: L10n.Action.ReportPhishing.Alert.message,

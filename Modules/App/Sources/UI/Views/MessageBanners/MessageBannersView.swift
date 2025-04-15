@@ -30,12 +30,12 @@ struct MessageBannersView: View {
         case markAsLegitimateTapped
         case unblockSenderTapped
     }
-    
+
     @EnvironmentObject var toastStateStore: ToastStateStore
     let types: OrderedSet<MessageBanner>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
     let action: (Action) -> Void
-    
+
     @State private var currentDate: Date = DateEnvironment.currentDate()
 
     init(types: OrderedSet<MessageBanner>, timer: Timer.Type, action: @escaping (Action) -> Void) {
@@ -43,16 +43,16 @@ struct MessageBannersView: View {
         self.timerPublisher = timer.publish(every: 1, on: .main, in: .common).autoconnect()
         self.action = action
     }
-    
+
     var body: some View {
         BannersView(model: model(from: types, currentDate: currentDate))
             .onReceive(timerPublisher) { _ in
                 currentDate = DateEnvironment.currentDate()
             }
     }
-    
+
     // MARK: - Private
-    
+
     private func model(from types: OrderedSet<MessageBanner>, currentDate: Date) -> OrderedSet<Banner> {
         let banners: [Banner] = types.compactMap { type in
             switch type {
@@ -60,7 +60,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.blockedSenderAction) {
                     action(.unblockSenderTapped)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icCircleSlash,
                     message: L10n.MessageBanner.blockedSenderTitle,
@@ -71,7 +71,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icHook,
                     message: L10n.MessageBanner.phishingAttemptTitle,
@@ -82,7 +82,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icFire,
                     message: L10n.MessageBanner.spamTitle,
@@ -109,7 +109,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icEnvelopes,
                     message: L10n.MessageBanner.unsubscribeNewsletterTitle,
@@ -120,7 +120,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icClockPaperPlane,
                     message: L10n.MessageBanner.scheduledSendTitle(formattedTime: "tomorrow at 08:00"),
@@ -131,7 +131,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icClock,
                     message: L10n.MessageBanner.snoozedTitle(formattedTime: "tomorrow at 09:00"),
@@ -142,7 +142,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
                     action(.displayEmbeddedImagesTapped)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.embeddedImagesTitle,
@@ -153,7 +153,7 @@ struct MessageBannersView: View {
                 let button = Banner.Button(title: L10n.MessageBanner.remoteContentAction) {
                     action(.downloadRemoteContentTapped)
                 }
-                
+
                 return .init(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.remoteContentTitle,
@@ -164,7 +164,7 @@ struct MessageBannersView: View {
         }
         return OrderedSet(banners)
     }
-    
+
     private func smallNoButton(
         icon: ImageResource,
         message: LocalizedStringResource,

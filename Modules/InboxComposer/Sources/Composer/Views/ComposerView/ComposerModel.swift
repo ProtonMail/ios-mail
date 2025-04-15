@@ -67,7 +67,7 @@ final class ComposerModel: ObservableObject {
     private var attachmentWatcher: DraftAttachmentWatcher?
 
     private var updateBodyDebounceTask: DebouncedTask?
-    
+
     private var messageHasBeenSent: Bool = false
     private var composerWillDismiss: Bool = false
 
@@ -361,7 +361,7 @@ extension ComposerModel {
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
             senderEmail: draft.sender(),
             subject: draft.subject(),
-            attachments: [], // FIXME: Because the async nature of the SDK to read attachments, we read them separetely
+            attachments: [],  // FIXME: Because the async nature of the SDK to read attachments, we read them separetely
             initialBody: draft.body(),
             isInitialFocusInBody: false
         )
@@ -453,13 +453,13 @@ extension ComposerModel {
             state.overrideRecipientState(for: group) { recipientFieldState in
                 recipientFieldState.copy(
                     \.recipients,
-                     to: recipientFieldState.recipients + [RecipientUIModel(composerRecipient: lastRecipient)]
+                    to: recipientFieldState.recipients + [RecipientUIModel(composerRecipient: lastRecipient)]
                 )
                 .copy(\.input, to: .empty)
                 .copy(\.controllerState, to: .editing)
             }
             return lastRecipient
-        case .duplicate, .saveFailed: // FIXME: handle errors
+        case .duplicate, .saveFailed:  // FIXME: handle errors
             state.overrideRecipientState(for: group) { recipientFieldState in
                 recipientFieldState.copy(\.input, to: .empty)
                     .copy(\.controllerState, to: .editing)

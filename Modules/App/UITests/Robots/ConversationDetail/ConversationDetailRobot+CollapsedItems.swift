@@ -24,12 +24,12 @@ extension ConversationDetailRobot {
         let model = UITestConversationCollapsedItemEntryModel(
             index: index
         )
-        
+
         model.toggleItem()
     }
-    
+
     // MARK: Assertions
-    
+
     func hasCollapsedEntries(indexes: Int...) {
         for index in indexes {
             let model = UITestConversationCollapsedItemEntryModel(index: index)

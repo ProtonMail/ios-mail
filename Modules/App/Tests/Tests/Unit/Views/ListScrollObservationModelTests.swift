@@ -74,7 +74,7 @@ final class ListScrollObservationModelTests: XCTestCase {
         // Move further out of threshold, callback should not be called again
         sut.listOffsetUpdate(verticalAdjustedContentInset: 0, oldOffsetY: 0, newOffsetY: sut.sensitivityThreshold + 20)
 
-        XCTAssertEqual(onEventAtTopChangeCount, 1) // Still 1, no change
+        XCTAssertEqual(onEventAtTopChangeCount, 1)  // Still 1, no change
 
         // Move back within threshold
         sut.listOffsetUpdate(verticalAdjustedContentInset: 0, oldOffsetY: 0, newOffsetY: sut.sensitivityThreshold - 10)
@@ -83,4 +83,3 @@ final class ListScrollObservationModelTests: XCTestCase {
         XCTAssertEqual(onEventAtTopChangeValue, true)
     }
 }
-

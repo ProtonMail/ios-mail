@@ -19,17 +19,17 @@ import Contacts
 import InboxContacts
 
 class CNContactStorePartialStub: CNContactStoring {
-    
+
     // MARK: - CNContactStoring
-    
+
     class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         .denied
     }
-    
+
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void) {
         fatalError("Not implemented")
     }
-    
+
     func enumerateContacts(
         with fetchRequest: CNContactFetchRequest,
         usingBlock block: (CNContact, UnsafeMutablePointer<ObjCBool>) -> Void

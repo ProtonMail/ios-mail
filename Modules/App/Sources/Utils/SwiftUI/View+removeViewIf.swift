@@ -21,17 +21,17 @@ extension View {
 
     /**
      Remove the view of the view hierarchy based on a condition.
-
+    
      Example:
-
+    
      ```swift
      Text(String(numAttachments))
        .removeViewIf( numAttachments == 0 )
      ```
-
+    
      Before using this conditional view modifier take into account that any internal @State of the view can be lost
      */
-    @ViewBuilder 
+    @ViewBuilder
     func removeViewIf(_ condition: Bool) -> some View {
         if condition {
             EmptyView()

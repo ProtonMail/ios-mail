@@ -59,7 +59,7 @@ extension LegacyKeychain {
         let status = SecItemAdd(query as CFDictionary, nil)
 
         if status != errSecSuccess {
-             throw Keychain.AccessError.writeFailed(key: label.rawValue, error: status)
+            throw Keychain.AccessError.writeFailed(key: label.rawValue, error: status)
         }
     }
 

@@ -23,7 +23,7 @@ struct AttachmentViewController: UIViewControllerRepresentable {
 
     typealias UIViewControllerType = UINavigationController
     typealias Coordinator = AttachmentViewCoordinator
-    
+
     /// property accessed from the `Coordinator`
     let url: URL
 

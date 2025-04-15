@@ -27,7 +27,7 @@ public struct AlertAction: Equatable {
         self.buttonRole = details.info.buttonRole
         self.action = action
     }
-    
+
     public static func == (lhs: AlertAction, rhs: AlertAction) -> Bool {
         lhs.title == rhs.title && lhs.buttonRole == rhs.buttonRole
     }

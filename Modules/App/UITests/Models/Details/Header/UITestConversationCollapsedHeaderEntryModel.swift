@@ -20,57 +20,57 @@ import XCTest
 
 struct UITestConversationCollapsedHeaderEntryModel: ApplicationHolder {
     let index: Int
-    
+
     // MARK: UI Elements
-    
+
     private var rootItem: XCUIElement {
         application.otherElements["\(Identifiers.rootItem)#\(index)"]
     }
-    
+
     private var senderNameText: XCUIElement {
         rootItem.staticTexts[Identifiers.senderName]
     }
-    
+
     private var officialBadgeIcon: XCUIElement {
         rootItem.staticTexts[Identifiers.officialBadge]
     }
-    
+
     private var dateText: XCUIElement {
         rootItem.staticTexts[Identifiers.date]
     }
-    
+
     private var senderAddressText: XCUIElement {
         rootItem.staticTexts[Identifiers.senderAddress]
     }
-    
+
     private var toRecipientsText: XCUIElement {
         rootItem.buttons[Identifiers.toRecipientsSummary]
     }
-    
+
     // MARK: Actions
-    
+
     func expand() {
         toRecipientsText.tap()
     }
-    
+
     // MARK: Assertions
-    
+
     func hasSenderName(_ sender: String) {
         XCTAssertEqual(senderNameText.label, sender)
     }
-    
+
     func hasOfficialBadge(_ value: Bool) {
         XCTAssertEqual(officialBadgeIcon.exists, value)
     }
-    
+
     func hasSenderAddress(_ address: String) {
         XCTAssertEqual(senderAddressText.label, address)
     }
-    
+
     func hasDate(_ date: String) {
         XCTAssertEqual(dateText.label, date)
     }
-    
+
     func hasToRecipientsSummary(_ summary: String) {
         XCTAssertEqual(toRecipientsText.label, summary)
     }

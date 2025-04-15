@@ -23,7 +23,7 @@ import proton_app_uniffi
 final class SendResultCoordinator: ObservableObject {
     private let sendResultPublisher: SendResultPublisher
     private var anyCancellables = Set<AnyCancellable>()
-    
+
     let presenter: SendResultPresenter
 
     init(sendResultPublisher: SendResultPublisher, presenter: SendResultPresenter) {
@@ -33,7 +33,7 @@ final class SendResultCoordinator: ObservableObject {
         sendResultPublisher
             .results
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { value in Task { await presenter.presentResultInfo(value) }})
+            .sink(receiveValue: { value in Task { await presenter.presentResultInfo(value) } })
             .store(in: &anyCancellables)
     }
 

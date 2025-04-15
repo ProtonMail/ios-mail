@@ -27,7 +27,7 @@ struct MessageAddressActionPickerView: View {
 
     var body: some View {
         ActionPickerList(
-            headerContent: { 
+            headerContent: {
                 headerView
                     .listRowBackground(Color.clear)
             },

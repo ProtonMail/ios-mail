@@ -170,7 +170,7 @@ private extension MessageBody {
                 messageDetails: messageDetails
             ),
             hasShadow: false,
-            isFirstCell: true, 
+            isFirstCell: true,
             areActionsDisabled: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -184,8 +184,8 @@ private extension MessageBody {
                 messageDetails: messageDetails
             ),
             hasShadow: true,
-            isFirstCell: false, 
-            areActionsDisabled: false, 
+            isFirstCell: false,
+            areActionsDisabled: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}

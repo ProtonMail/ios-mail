@@ -29,7 +29,7 @@ struct ListScrollObservation: ViewModifier {
     func body(content: Content) -> some View {
         content
             .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
-                
+
                 model.observation = collectionView.observe(\.contentOffset, options: [.new, .old]) { view, change in
                     guard let newValueY = change.newValue?.y, let oldValueY = change.oldValue?.y else { return }
                     DispatchQueue.main.async {

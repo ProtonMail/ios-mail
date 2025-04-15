@@ -61,7 +61,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
             $0.verifyMailboxTitle(folder: UITestFolder.system(.inbox))
         }
     }
-    
+
     /// TestId 435484
     func testSentFoldersToConversationDetailsNavigation() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -94,22 +94,22 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 localPath: "message-id_435484_2.json"
             )
         )
-        
+
         navigator.navigateTo(.sent)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 1)
             $0.hasExpandedEntries(indexes: 2, 3)
         }
     }
-    
+
     /// TestId 435484/2
     func testSentFoldersToConversationDetailsNavigationWhenMessageIsLatest() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -118,7 +118,7 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 remotePath: "/mail/v4/conversations",
                 localPath: "conversations_empty.json",
                 ignoreQueryParams: true
-                            ),
+            ),
             NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/messages",
@@ -142,22 +142,22 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 localPath: "message-id_435484_2.json"
             )
         )
-        
+
         navigator.navigateTo(.sent)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 1)
             $0.hasExpandedEntries(indexes: 2)
         }
     }
-    
+
     /// TestId 435485
     func testMessageModeToConversationDetailsNavigationFromInboxWhenMessageIsLatest() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -186,22 +186,22 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 localPath: "message-id_435484_2.json"
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 1, 2)
             $0.hasExpandedEntries(indexes: 3)
         }
     }
-    
+
     /// TestId 435485/2
     func testMessageModeToConversationDetailsNavigationFromInbox() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -235,22 +235,22 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 localPath: "message-id_435484_2.json"
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 1)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 2)
             $0.hasExpandedEntries(indexes: 1, 3)
         }
     }
-    
+
     /// Testid 435505
     func testMessageModeToConversationDetailsNavigationFromInboxWithUnreadMessages() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -279,17 +279,17 @@ final class ConversationDetailNavigationTests: PMUIMockedNetworkTestCase {
                 localPath: "message-id_435505.json"
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 1, 2)
             $0.hasExpandedEntries(indexes: 3)
         }

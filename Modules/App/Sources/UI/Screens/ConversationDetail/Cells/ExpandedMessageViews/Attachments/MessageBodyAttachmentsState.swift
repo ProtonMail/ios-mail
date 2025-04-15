@@ -22,7 +22,7 @@ struct MessageBodyAttachmentsState: Copying {
         case short
         case long(isAttachmentsListOpen: Bool)
     }
-    
+
     let attachments: [AttachmentDisplayModel]
     var listState: ListState
 }

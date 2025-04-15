@@ -64,8 +64,7 @@ extension MockServer {
             print("Server up and running on: \(channel.localAddress!)")
 
             return channel.localAddress
-        }
-        catch {
+        } catch {
             XCTFail("Error on starting the mock server: \(error.localizedDescription)")
             return nil
         }
@@ -74,8 +73,7 @@ extension MockServer {
     func stop() {
         do {
             try eventLoopGroup.syncShutdownGracefully()
-        }
-        catch {
+        } catch {
             XCTFail("Error on stopping the mock server: \(error.localizedDescription)")
         }
     }

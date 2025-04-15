@@ -81,12 +81,12 @@ extension AlertModel {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
         }
-        
+
         return .init(
             title: L10n.PINLock.signOutConfirmationTitle,
             message: nil,
             actions: actions
         )
     }
-    
+
 }

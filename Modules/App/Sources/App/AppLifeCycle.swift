@@ -30,7 +30,7 @@ extension AppLifeCycle: UIApplicationDelegate {
 
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         AppLogger.log(message: "\(#function) | \(AppVersionProvider().fullVersion)", category: .appLifeCycle)
 
@@ -61,7 +61,6 @@ extension AppLifeCycle {
     }
 
 }
-
 
 // MARK: Private
 

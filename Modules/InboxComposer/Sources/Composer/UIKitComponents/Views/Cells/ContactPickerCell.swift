@@ -119,7 +119,6 @@ extension ContactPickerCell {
     }
 }
 
-
 private final class LabelsView: UIView {
     private let stack = SubviewFactory.stack
     private let title = SubviewFactory.titleLabel
@@ -153,7 +152,6 @@ private final class LabelsView: UIView {
         self.subtitle.text = subtitle
     }
 }
-
 
 private extension LabelsView {
 

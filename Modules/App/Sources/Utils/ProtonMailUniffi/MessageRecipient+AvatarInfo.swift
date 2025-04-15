@@ -24,4 +24,3 @@ extension MessageRecipient {
     }
 
 }
-

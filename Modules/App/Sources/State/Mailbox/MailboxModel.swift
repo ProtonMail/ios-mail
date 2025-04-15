@@ -235,7 +235,7 @@ extension MailboxModel {
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     session: userSession,
-                    labelId: mailbox.labelId(), 
+                    labelId: mailbox.labelId(),
                     filter: unreadFilter,
                     callback: scrollerCallback
                 ).get()

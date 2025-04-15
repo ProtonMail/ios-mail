@@ -85,7 +85,7 @@ extension FromFieldView {
         static var stack: UIStackView {
             ComposerSubviewFactory.regularFieldStack
         }
-        
+
         static var title: UILabel {
             let view = ComposerSubviewFactory.fieldTitle
             view.text = L10n.Composer.from.string

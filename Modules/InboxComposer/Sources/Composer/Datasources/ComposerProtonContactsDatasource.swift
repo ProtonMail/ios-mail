@@ -42,7 +42,7 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
 }
 
 private extension ContactSuggestion {
-    
+
     var toComposerContact: ComposerContact? {
         switch kind {
         case .contactGroup(let contacts):
@@ -53,13 +53,13 @@ private extension ContactSuggestion {
             return single(email: deviceItem.email)
         }
     }
-    
+
     private func single(email: String) -> ComposerContact {
         composerContact(type: .single(.init(initials: avatarInformation.text, name: name, email: email)))
     }
-    
+
     private func composerContact(type: ComposerContactType) -> ComposerContact {
         .init(id: key, type: type, avatarColor: Color(UIColor(hex: avatarInformation.color)))
     }
-    
+
 }

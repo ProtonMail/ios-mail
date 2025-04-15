@@ -96,7 +96,7 @@ final class ComposerController: UIViewController {
         contactPicker.view.isHidden = true
         view.addSubview(contactPicker.view)
 
-        recipientsController.onEvent = {[weak self] event, group in self?.onEvent(.recipientFieldEvent(event, group)) }
+        recipientsController.onEvent = { [weak self] event, group in self?.onEvent(.recipientFieldEvent(event, group)) }
         contactPicker.onEvent = { [weak self] event in
             guard let group = self?.state.editingRecipientsGroup else { return }
             self?.onEvent(.contactPickerEvent(event, group))
@@ -138,7 +138,7 @@ final class ComposerController: UIViewController {
             )
         ])
     }
-    
+
     private func setInitialStates(with state: ComposerState) {
         // FIXME: have a precached webview strategy
         DispatchQueue.main.async { [weak self] in
@@ -175,9 +175,9 @@ final class ComposerController: UIViewController {
         guard isCursorOutsideVisibleArea else { return }
 
         let newOffsetY: CGFloat
-        if yPositionInScrollView > maxVisibleY { // Cursor is below the visible area
+        if yPositionInScrollView > maxVisibleY {  // Cursor is below the visible area
             newOffsetY = yPositionInScrollView - scrollView.bounds.height + verticalPaddingForBetterVivibility
-        } else { // Cursor is above the visible area
+        } else {  // Cursor is above the visible area
             newOffsetY = yPositionInScrollView - verticalPaddingForBetterVivibility
         }
 
@@ -189,7 +189,6 @@ final class ComposerController: UIViewController {
         bodyEditor.handleBodyAction(action: action)
     }
 }
-
 
 enum BodyEvent {
     case onStartEditing

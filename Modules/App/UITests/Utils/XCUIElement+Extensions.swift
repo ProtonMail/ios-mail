@@ -19,7 +19,7 @@ import Foundation
 import XCTest
 
 extension XCUIElement {
-    
+
     func waitUntilShown(timeout: TimeInterval = 10) -> Bool {
         return self.waitForExistence(timeout: timeout)
     }
@@ -27,7 +27,7 @@ extension XCUIElement {
     func waitUntilGone(timeout: TimeInterval = 10) -> Bool {
         let predicateExpectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: self)
         let result = XCTWaiter.wait(for: [predicateExpectation], timeout: timeout)
-        
+
         return result == .completed
     }
 }

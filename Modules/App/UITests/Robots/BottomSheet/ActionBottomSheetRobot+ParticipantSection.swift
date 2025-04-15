@@ -19,19 +19,19 @@ import Foundation
 import XCTest
 
 extension ActionBottomSheetRobot {
-    
+
     private var avatarText: XCUIElement {
         rootElement.staticTexts[Identifiers.avatarText]
     }
-    
+
     private var participantName: XCUIElement {
         rootElement.staticTexts[Identifiers.participantName]
     }
-    
+
     private var participantAddress: XCUIElement {
         rootElement.staticTexts[Identifiers.participantAddress]
     }
-    
+
     func hasParticipant(entry: UITestActionSheetParticipantEntry) {
         XCTAssertEqual(avatarText.label, entry.avatarText)
         XCTAssertEqual(participantName.label, entry.participantName)
@@ -45,7 +45,7 @@ private struct Identifiers {
     static let participantAddress = "actionPicker.participant.address"
 }
 
-struct UITestActionSheetParticipantEntry{
+struct UITestActionSheetParticipantEntry {
     let avatarText: String
     let participantName: String
     let participantAddress: String

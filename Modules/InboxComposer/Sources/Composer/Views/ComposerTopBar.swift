@@ -25,7 +25,7 @@ struct ComposerTopBar: View {
 
     var body: some View {
         HStack(spacing: DS.Spacing.standard) {
-            Button(action:{ dismissAction?() }) {
+            Button(action: { dismissAction?() }) {
                 Image(DS.Icon.icCross)
                     .square(size: Layout.iconSize)
                     .foregroundStyle(DS.Color.Icon.weak)
@@ -33,7 +33,7 @@ struct ComposerTopBar: View {
             .square(size: Layout.buttonSize)
 
             Spacer()
-            Button(action:{ }) {
+            Button(action: {}) {
                 Image(DS.Icon.icClockPaperPlane)
                     .square(size: Layout.iconSize)
                     .foregroundStyle(DS.Color.InteractionBrand.disabled)

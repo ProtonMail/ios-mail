@@ -28,7 +28,7 @@ struct CreateFolderOrLabelScreen: View {
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(L10n.CreateFolderOrLabel.title.string)
-				.accessibilityElement()
+                .accessibilityElement()
                 .accessibilityIdentifier(SidebarWebViewScreenIdentifiers.rootItem(forPage: .createFolderOrLabel))
         }
     }

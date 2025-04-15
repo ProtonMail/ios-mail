@@ -22,13 +22,13 @@ import proton_app_uniffi
 import XCTest
 
 final class ContactSuggestionsRepositoryTests: BaseTestCase {
-    
+
     var sut: ContactSuggestionsRepository!
     var stubbedAllContacts: [ContactSuggestion]!
-    
+
     private var contactStoreSpy: CNContactStoreSpy!
     private var allContactsCalls: [[DeviceContact]] = []
-    
+
     override func setUp() {
         super.setUp()
         stubbedAllContacts = []
@@ -44,7 +44,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             mailUserSession: MailUserSession(noPointer: .init())
         )
     }
-    
+
     override func tearDown() {
         allContactsCalls = []
         contactStoreSpy = nil
@@ -53,7 +53,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         CNContactStoreSpy.cleanUp()
         super.tearDown()
     }
-    
+
     func testAllContacts_WhenPermissionsDenied_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
@@ -61,7 +61,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
     }
-    
+
     func testAllContacts_WhenPermissionsRestricted_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
 
@@ -69,9 +69,9 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
     }
-    
+
     // MARK: - Permissions granted
-    
+
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
@@ -85,10 +85,10 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             CNContactEmailAddressesKey.description
         ])
     }
-    
+
     func testAllContacts_WhenPermissionsGranted_ItRequestsForAllContactsWithDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
-        
+
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg
@@ -110,16 +110,16 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             )
         ])
     }
-    
+
     func testAllContacts_WhenPermissionsGranted_ItReturnsDeviceAndProtonContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
-        
+
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg,
             .marcus
         ]
-        
+
         stubbedAllContacts = [
             .group(.businessGroup),
             .protonJohn,
@@ -141,9 +141,9 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .deviceMarcus
         ])
     }
-    
+
     // MARK: - Permissions not granted
-    
+
     func testAllContacts_WhenPermissionsNotGranted_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
@@ -151,10 +151,10 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
     }
-    
+
     func testAllContacts_WhenPermissionsNotGranted_ItRequestForAllContactsWithoutDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
-        
+
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg
@@ -169,19 +169,19 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .deviceJonathanHorotvitz,
             .deviceTravisHulkenberg
         ]
-        
+
         XCTAssertEqual(allContactsCalls.count, 1)
         XCTAssertEqual(allContactsCalls.last, [])
     }
-    
+
     func testAllContacts_WhenPermissionsNotGranted_ItReturnsProtonContactsOnly() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
-        
+
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg
         ]
-        
+
         stubbedAllContacts = [
             .protonJohn,
             .protonMark
@@ -195,7 +195,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .protonMark
         ])
     }
-    
+
 }
 
 private class CNContactSpy: CNContact {
@@ -203,7 +203,7 @@ private class CNContactSpy: CNContact {
     let _givenName: String
     let _familyName: String
     let _emailAddresses: [String]
-    
+
     init(id: String, givenName: String, familyName: String, emails: [String]) {
         _id = id
         _givenName = givenName
@@ -211,23 +211,23 @@ private class CNContactSpy: CNContact {
         _emailAddresses = emails
         super.init()
     }
-    
+
     required init?(coder: NSCoder) {
         nil
     }
-    
+
     override var identifier: String {
         _id
     }
-    
+
     override var givenName: String {
         _givenName
     }
-    
+
     override var familyName: String {
         _familyName
     }
-    
+
     override var emailAddresses: [CNLabeledValue<NSString>] {
         _emailAddresses.map { email in
             CNLabeledValue(label: email, value: email as NSString)
@@ -236,7 +236,7 @@ private class CNContactSpy: CNContact {
 }
 
 private extension CNContact {
-    
+
     static var jonathanHorotvitz: CNContact {
         CNContactSpy(
             id: "1",
@@ -245,7 +245,7 @@ private extension CNContact {
             emails: ["jonathan@pm.me", "jonathan@gmail.com"]
         )
     }
-    
+
     static var travisHulkenberg: CNContact {
         CNContactSpy(
             id: "2",
@@ -254,7 +254,7 @@ private extension CNContact {
             emails: ["travis@pm.me", "travis@gmail.com"]
         )
     }
-    
+
     static var marcus: CNContact {
         CNContactSpy(
             id: "3",
@@ -263,7 +263,7 @@ private extension CNContact {
             emails: ["marcus@pm.me"]
         )
     }
-    
+
 }
 
 private extension ContactSuggestion {
@@ -276,29 +276,29 @@ private extension ContactSuggestion {
             kind: .contactGroup(groupItem.contacts.flatMap(\.emails))
         )
     }
-    
+
     static var protonJohn: Self {
         .proton(.init(id: 1, email: "john@pm.me"), "JD")
     }
-    
+
     static var protonMark: Self {
         .proton(.init(id: 2, email: "mark@pm.me"), "MW")
     }
-    
+
     static var deviceJonathanHorotvitz: Self {
         device(from: .jonathanHorotvitz, with: .init(text: "JH", color: "#FF5733"))
     }
-    
+
     static var deviceTravisHulkenberg: Self {
         device(from: .travisHulkenberg, with: .init(text: "TH", color: "#A1FF33"))
     }
-    
+
     static var deviceMarcus: Self {
         device(from: .marcus, with: .init(text: "M", color: "#FF5755"))
     }
-    
+
     // MARK: - Private
-    
+
     private static func proton(_ emailItem: ContactEmailItem, _ initials: String) -> Self {
         .init(
             key: "\(emailItem.id.value)",
@@ -307,13 +307,13 @@ private extension ContactSuggestion {
             kind: .contactItem(emailItem)
         )
     }
-    
+
     private static func device(
         from contact: CNContact,
         with avatarInformation: AvatarInformation
     ) -> Self {
         let email: String = contact.emailAddresses.first!.label!
-        
+
         return .init(
             key: contact.identifier,
             name: [contact.givenName, contact.familyName].joined(separator: " "),
@@ -321,28 +321,28 @@ private extension ContactSuggestion {
             kind: .deviceContact(.init(email: email))
         )
     }
-    
+
 }
 
 private class ContactSuggestionsStub: ContactSuggestions {
-    
+
     private let _all: [ContactSuggestion]
-    
+
     init(all: [ContactSuggestion]) {
         _all = all
         super.init(noPointer: .init())
     }
-    
+
     required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
-    
+
     override func all() -> [ContactSuggestion] {
         _all
     }
-    
+
     override func filtered(query: String) -> [ContactSuggestion] {
         return []
     }
-    
+
 }

@@ -153,7 +153,6 @@ extension DraftAttachment {
     }
 }
 
-
 #Preview {
 
     final class ContentState: ObservableObject, @unchecked Sendable {

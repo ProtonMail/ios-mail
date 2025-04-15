@@ -55,7 +55,7 @@ private extension ComposerRecipientValidState {
         switch self {
         case .valid: true
         case .invalid: false
-        case .validating: true // FIXME: have a validating UI, depends on product decision about lock icons
+        case .validating: true  // FIXME: have a validating UI, depends on product decision about lock icons
         }
     }
 }

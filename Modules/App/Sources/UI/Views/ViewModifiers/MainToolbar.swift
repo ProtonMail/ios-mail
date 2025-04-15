@@ -88,7 +88,7 @@ struct MainToolbar: ViewModifier {
 }
 
 extension View {
-    @MainActor 
+    @MainActor
     func mainToolbar(
         title: LocalizedStringResource,
         selectionMode: SelectionModeState? = nil,

@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 /**
- The Rust SDK by default strongly retains the callbacks/delegates set from the iOS app. This is because 
+ The Rust SDK by default strongly retains the callbacks/delegates set from the iOS app. This is because
  uniffi does not provide support to avoid retain cycles as stated in their
  documentation: https://mozilla.github.io/uniffi-rs/foreign_traits.html.
 

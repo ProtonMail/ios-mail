@@ -22,7 +22,7 @@ public struct ContactSuggestionsRepository {
     private let contactStore: CNContactStoring
     private let permissionsHandler: CNContactStoring.Type
     private let allContacts: ([DeviceContact]) async -> ContactSuggestionsProtocol?
-    
+
     public init(
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
@@ -33,7 +33,7 @@ public struct ContactSuggestionsRepository {
         self.permissionsHandler = permissionsHandler
         self.allContacts = { deviceContacts in
             let result = await allContactsProvider.contactSuggestions(deviceContacts, mailUserSession)
-            
+
             switch result {
             case .ok(let contactSuggestions):
                 return contactSuggestions
@@ -42,16 +42,16 @@ public struct ContactSuggestionsRepository {
             }
         }
     }
-    
+
     public func allContacts() async -> ContactSuggestionsProtocol? {
         let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
         let deviceContacts = permissionsGranted ? deviceContacts() : []
-        
+
         return await allContacts(deviceContacts)
     }
-    
+
     // MARK: - Private
-    
+
     private func deviceContacts() -> [DeviceContact] {
         let keys: [CNKeyDescriptor] = [
             CNContactGivenNameKey,
@@ -60,17 +60,17 @@ public struct ContactSuggestionsRepository {
         ] as [CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         var contacts: [DeviceContact] = []
-        
+
         try? contactStore.enumerateContacts(with: request) { contact, _ in
             let contact = DeviceContact(
                 key: contact.identifier,
                 name: [contact.givenName, contact.familyName].joined(separator: " "),
                 emails: contact.emailAddresses.compactMap { address in address.value as String }
             )
-            
+
             contacts.append(contact)
         }
-        
+
         return contacts
     }
 }

@@ -147,7 +147,6 @@ final class KeychainTests: XCTestCase {
         // given
         setUpSUT(resultUpdate: errSecInteractionNotAllowed)
 
-
         // when
         XCTAssertThrowsError(try out.setOrError(String(), forKey: "any.key")) { error in
 

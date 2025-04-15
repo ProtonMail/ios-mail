@@ -29,6 +29,6 @@ extension DraftProvider {
     }
 
     static var dummy: Self {
-        .init(makeDraft: { _, _  in  return NewDraftResult.ok(.init(noPointer: .init())) })
+        .init(makeDraft: { _, _ in return NewDraftResult.ok(.init(noPointer: .init())) })
     }
 }

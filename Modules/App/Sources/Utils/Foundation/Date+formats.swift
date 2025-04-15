@@ -18,10 +18,10 @@
 import Foundation
 
 extension Date {
-    
+
     /**
      Mailbox date format
-
+    
      The date will support the current locale which migth bring some differences to the following examples:
      ```
      Today:       11:24
@@ -43,7 +43,7 @@ extension Date {
 
     /**
      Mailbox date format
-
+    
      The date will support the current locale which migth bring some differences to the following examples:
      ```
      Today:           11:24
@@ -60,7 +60,7 @@ extension Date {
 
     /**
      Mailbox date format for voice over support
-
+    
      The date will support the current locale which migth bring some differences to the following examples:
      ```
      Today:       11:24
@@ -82,11 +82,11 @@ extension Date {
 
     /**
      Returns the time remaining to a future date.
-
+    
      The returned values will be positive if the given date is in the future or negative if the date is in the past.
      ```
      For a date:
-
+    
      24 hours from now:      year: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0
      90 minutes from now:    year: 0 month: 0 day: 0 hour: 1 minute: 30 second: 0
      30 days in the past:    year: 0 month: -1 day: 0 hour: 0 minute: 0 second: 0
@@ -98,11 +98,11 @@ extension Date {
 
     /**
      Returns the localised string for the time remaining to a future date
-
+    
      The result unit will be that of the highest value only
      ```
      For a date:
-
+    
      30 hours from now:      1 day
      150 minutes from now:   2 hours
      ```

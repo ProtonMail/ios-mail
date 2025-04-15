@@ -140,7 +140,7 @@ private extension Array where Element == MoveToCustomFolder {
             let displayData = ActionSelectableButtonDisplayData(
                 id: item.id,
                 visualAsset: .image(item.children.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders, color: item.color),
-                title: item.name, 
+                title: item.name,
                 isSelected: .unselected,
                 leadingSpacing: spacing
             )
@@ -154,7 +154,7 @@ private extension Array where Element == MoveToCustomFolder {
     MoveToSheet(
         input: .init(sheetType: .moveTo, ids: [], type: .message),
         mailbox: .dummy,
-        availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions, 
+        availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
         moveToActions: .dummy,
         navigation: { _ in }
     )

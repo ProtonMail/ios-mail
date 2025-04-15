@@ -18,11 +18,11 @@
 import Foundation
 
 final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }
-    
+
     /// TestId 448579
     func testUnreadBadgeShownOnUnreadItemsInConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -39,14 +39,14 @@ final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasUnreadFilterShown(withUnreadCount: "1")
         }
     }
-    
+
     /// TestId 448580
     func testUnreadBadgeShownOnUnreadItemsInConversationModeDisabled() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -70,14 +70,14 @@ final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasUnreadFilterShown(withUnreadCount: "2")
         }
     }
-    
+
     /// TestId 448581
     func testUnreadBadgeCountCappedAt99() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -94,14 +94,14 @@ final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasUnreadFilterShown(withUnreadCount: "99+")
         }
     }
-    
+
     /// TestId 448582
     func testUnreadBadgeNotShownOnAllRead() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -118,14 +118,14 @@ final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasNoUnreadFilterShown()
         }
     }
-    
+
     /// TestId 448692
     /// To be re-enabled when ET-983 is addressed.
     func skip_testUnreadBadgeUpdatingOnMailboxChanges() async {
@@ -143,24 +143,24 @@ final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasNoUnreadFilterShown()
-            
+
             $0.selectItemAt(index: 0)
             $0.tapAction1()
             $0.hasUnreadFilterShown(withUnreadCount: "1")
-            
+
             $0.selectItemAt(index: 1)
             $0.tapAction1()
             $0.hasUnreadFilterShown(withUnreadCount: "2")
-            
+
             $0.selectItemAt(index: 1)
             $0.tapAction1()
             $0.hasUnreadFilterShown(withUnreadCount: "1")
-            
+
             $0.selectItemAt(index: 0)
             $0.tapAction1()
             $0.hasNoUnreadFilterShown()

@@ -21,7 +21,7 @@ import XCTest
 extension SubscriptionRobot {
 
     // MARK: UI Elements
-    
+
     private var defaultTimeout: TimeInterval { 30 }
 
     private var webView: XCUIElement {

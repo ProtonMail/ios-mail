@@ -21,9 +21,9 @@ import SwiftUI
 enum PhishingConfirmationAlertAction: AlertActionInfo, CaseIterable {
     case cancel
     case confirm
-    
+
     // MARK: - AlertActionInfo
-    
+
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:

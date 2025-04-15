@@ -18,11 +18,11 @@
 import Foundation
 
 final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
-    
+
     /// TestId 440551
     func testComposeButtonsSingleRecipient() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -50,7 +50,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
             $0.hasComposeButtons()
         }
     }
-    
+
     /// TestId 440552
     func testComposeButtonsMultipleRecipients() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -78,7 +78,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
             $0.hasComposeButtons()
         }
     }
-    
+
     /// TestId 440553
     func testComposeButtonsWhenInBcc() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -106,7 +106,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
             $0.hasComposeButtons()
         }
     }
-    
+
     /// TestId 440554
     func testComposeButtonsMultipleRecipientsBccInSentFolder() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -143,16 +143,16 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
     
     private func withActionBottomSheetDisplayed(destination: UITestDestination = .inbox, interaction: (ActionBottomSheetRobot) -> Void) {
         navigator.navigateTo(destination)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.waitForLoaderToDisappear()
             $0.tapThreeDots(at: 0)
         }
-        
+
         ActionBottomSheetRobot {
             $0.verifyShown()
             interaction($0)

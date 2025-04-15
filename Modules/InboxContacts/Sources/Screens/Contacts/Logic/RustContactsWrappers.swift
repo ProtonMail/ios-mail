@@ -87,11 +87,11 @@ extension ContactsWatcher {
 }
 
 extension AllContactsProvider {
-    
+
     public static func productionInstance() -> Self {
         .init(contactSuggestions: contactSuggestions(deviceContacts:session:))
     }
-    
+
 }
 
 extension ContactSuggestionsRepository {

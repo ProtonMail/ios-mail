@@ -115,7 +115,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
             .first(where: { (try? $0.userSession?.sessionId().get()) == sessionId })
             .values
             .makeAsyncIterator()
-        
+
         _ = await activeSessionPublisher.next()
     }
 

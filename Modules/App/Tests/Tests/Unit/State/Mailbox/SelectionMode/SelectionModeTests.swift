@@ -77,7 +77,7 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.selectedItems, Set())
     }
 
-    @MainActor 
+    @MainActor
     func testRefreshSelectedItemsStatus_whenStatusDoesChange_itKeepsTheSameItemSelectionWithNewStatus() {
         let items: [MailboxSelectedItem] = [
             .testData(id: 1, isRead: false, isStarred: false),
@@ -102,7 +102,7 @@ final class SelectionModeTests: XCTestCase {
         }
     }
 
-    @MainActor 
+    @MainActor
     func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSameItemSelection() {
         let items: [MailboxSelectedItem] = [
             .testData(id: 1, isRead: true, isStarred: true),
@@ -121,7 +121,7 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
     }
 
-    @MainActor 
+    @MainActor
     func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
         let item1 = MailboxSelectedItem.testData(id: 1, isRead: true, isStarred: true)
         let item2 = MailboxSelectedItem.testData(id: 2, isRead: true, isStarred: true)
@@ -138,7 +138,7 @@ final class SelectionModeTests: XCTestCase {
         XCTAssertEqual(sut.selectionState.selectedItems, [])
     }
 
-    @MainActor 
+    @MainActor
     func testRefreshSelectedItemsStatus_whenMoreItemsAreReturned_itDoesNotAddTheNewItemsToTheSelection() {
         sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true)])
         XCTAssertEqual(sut.selectionState.hasItems, false)

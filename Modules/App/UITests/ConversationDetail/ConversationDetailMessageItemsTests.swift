@@ -18,11 +18,11 @@
 import Foundation
 
 final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
-    
+
     /// TestId 434031
     func testConversationDetailCollapsedItemsDefaultPreview() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -38,14 +38,14 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
                 localPath: "conversation-id_434031.json",
                 wildcardMatch: true
             ),
-            NetworkRequest( 
+            NetworkRequest(
                 method: .get,
                 remotePath: "/mail/v4/messages/*",
                 localPath: "message-id_434031.json",
                 wildcardMatch: true
             )
         )
-        
+
         let expectedCollapsedEntries = [
             UITestConversationCollapsedItemEntry(index: 0, senderName: "notsofree@proton.black", date: "Jun 17", preview: "to youngbee@proton.black"),
             UITestConversationCollapsedItemEntry(index: 1, senderName: "notsofree@proton.black", date: "Jun 18", preview: "to youngbee@proton.black"),
@@ -53,7 +53,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         ]
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
@@ -62,7 +62,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
             $0.verifyCollapsedEntries(expectedCollapsedEntries)
         }
     }
-    
+
     /// TestId 434032, 434036
     func testConversationDetailExpandCollapsedItem() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -97,14 +97,14 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         let expectedExpandedEntries = [
             UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "to notsofree@proton.black"),
             UITestConversationExpandedItemEntry(index: 2, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 16", recipientsSummary: "to Test Free Account"),
         ]
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
@@ -119,7 +119,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
             $0.hasExpandedEntries(indexes: 2)
         }
     }
-    
+
     /// TestId 434032/2, 434033
     func testConversationDetailExpandMultipleCollapsedItems() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -154,7 +154,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         let expectedExpandedEntries = [
             UITestConversationExpandedItemEntry(index: 0, senderName: "Young Bee", senderAddress: "youngbee@proton.black", date: "Jun 13", recipientsSummary: "to notsofree@proton.black"),
             UITestConversationExpandedItemEntry(index: 1, senderName: "Test Free Account", senderAddress: "notsofree@proton.black", date: "Jun 15", recipientsSummary: "to Young Bee"),
@@ -162,7 +162,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         ]
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
@@ -175,7 +175,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
             $0.verifyExpandedEntries(expectedExpandedEntries)
         }
     }
-    
+
     /// TestId 434034
     func testConversationDetailCannotCollapseLastMessage() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -212,7 +212,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
@@ -222,7 +222,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
             $0.hasExpandedEntries(indexes: 2)
         }
     }
-    
+
     /// TestId 434035
     func testConversationDetailCannotCollapseASingleMessageConversation() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -247,7 +247,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }

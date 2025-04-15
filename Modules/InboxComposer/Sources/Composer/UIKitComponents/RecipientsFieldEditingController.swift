@@ -57,7 +57,7 @@ final class RecipientsFieldEditingController: UIViewController {
         self.invalidAddressAlertStore = invalidAddressAlertStore
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) { nil }
 
     override func viewDidLoad() {
@@ -226,7 +226,7 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegate
 
-extension RecipientsFieldEditingController: UICollectionViewDelegate { 
+extension RecipientsFieldEditingController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cellModel = cellUIModels[indexPath.row]
@@ -254,9 +254,9 @@ extension RecipientsFieldEditingController: UIKeyInput {
 
     var hasText: Bool { false }
 
-    func insertText(_ text: String) { }
+    func insertText(_ text: String) {}
 
-    func deleteBackward() { 
+    func deleteBackward() {
         onEvent?(.onDeleteKeyPressedOutsideInputField)
     }
 }

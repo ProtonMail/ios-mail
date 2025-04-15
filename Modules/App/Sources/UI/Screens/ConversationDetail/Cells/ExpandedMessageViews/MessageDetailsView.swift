@@ -116,7 +116,7 @@ struct MessageDetailsView: View {
     private var headerActionsView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
-                action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) }, 
+                action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
                 image: uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll
             )
             headerActionButton(
@@ -198,7 +198,7 @@ struct MessageDetailsView: View {
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                ForEach(recipients.indices, id:\.self) { index in
+                ForEach(recipients.indices, id: \.self) { index in
                     let recipient = recipients[index]
                     Button {
                         onEvent(.onRecipientTap(recipient))
@@ -307,7 +307,7 @@ private enum RecipientGroup {
             L10n.MessageDetails.bcc
         }
     }
-    
+
     var accessibilityValue: String {
         switch self {
         case .to:
@@ -349,7 +349,7 @@ enum MessageDetail {
     }
 
     struct Recipient: Identifiable {
-        var id: String { address } // Identifiable needed to present the action sheet
+        var id: String { address }  // Identifiable needed to present the action sheet
         let name: String
         let address: String
         let avatarInfo: AvatarInfo
@@ -390,7 +390,7 @@ extension Array where Element == MessageDetail.Recipient {
         labels: [
             .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue),
             .init(labelId: .init(value: 2), text: "Work", color: .green),
-            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
+            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink)
         ])
 
     return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, areActionsDisabled: false, onEvent: { _ in })
@@ -414,7 +414,7 @@ enum MessageDetailsPreviewProvider {
                 .init(
                     name: "Me", address: "eric.norbert@protonmail.ch",
                     avatarInfo: .init(initials: "E", color: .red)
-                ),
+                )
             ],
             recipientsCc: [
                 .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
@@ -427,7 +427,7 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            other: [.starred, .pinned], 
+            other: [.starred, .pinned],
             attachments: .previewData
         )
     }
@@ -441,24 +441,24 @@ private struct MessageDetailsViewIdentifiers {
     static let senderAddress = "detail.header.sender.address"
     static let recipientsSummary = "detail.header.recipients.summary"
     static let threeDotsButton = "detail.header.button.actions"
-    
+
     static let expandedHeaderRootItem = "detail.header.expanded.root"
     static let expandedHeaderSenderLabel = "detail.header.expanded.sender.label"
     static let expandedHeaderSenderName = "detail.header.expanded.sender.name"
     static let expandedHeaderSenderAddress = "detail.header.expanded.sender.address"
-    
+
     static func expandedHeaderRecipientLabel(group: RecipientGroup) -> String {
         "details.header.expanded.\(group.accessibilityValue).label"
     }
-    
+
     static func expandedHeaderRecipientName(group: RecipientGroup, index: Int) -> String {
         "details.header.expanded.\(group.accessibilityValue).name#\(index)"
     }
-    
+
     static func expandedHeaderRecipientValue(group: RecipientGroup, index: Int) -> String {
         "details.header.expanded.\(group.accessibilityValue).value#\(index)"
     }
-    
+
     static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
 }

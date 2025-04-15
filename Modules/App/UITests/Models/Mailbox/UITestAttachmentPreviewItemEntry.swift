@@ -20,7 +20,7 @@ import Foundation
 struct UITestAttachmentPreviewItemEntry {
     let items: [UITestAttachmentPreviewCapsuleItemEntry]
     let extraItemsCount: Int?
-    
+
     init(items: [UITestAttachmentPreviewCapsuleItemEntry], extraItemsCount: Int? = nil) {
         self.items = items
         self.extraItemsCount = extraItemsCount

@@ -152,4 +152,3 @@ struct PINLockScreen: View {
     }
 
 }
-

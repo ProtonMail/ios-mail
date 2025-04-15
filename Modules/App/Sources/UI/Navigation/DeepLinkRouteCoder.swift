@@ -27,7 +27,7 @@ enum DeepLinkRouteCoder {
 
         switch route {
         case .mailbox:
-            return nil // no need to support this now
+            return nil  // no need to support this now
         case .mailboxOpenMessage(let seed):
             components.host = "messages"
 

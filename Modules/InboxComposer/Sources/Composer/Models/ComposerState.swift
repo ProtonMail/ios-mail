@@ -37,7 +37,7 @@ struct ComposerState: Equatable, Copying {
     }
 
     var isSendAvailable: Bool {
-        !toRecipients.recipients.isEmpty // FIXME: Implement final logic
+        !toRecipients.recipients.isEmpty  // FIXME: Implement final logic
     }
 
     var alert: AlertModel?

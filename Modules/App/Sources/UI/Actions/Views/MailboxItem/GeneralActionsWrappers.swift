@@ -37,11 +37,11 @@ extension GeneralActionsWrappers {
 
 struct GeneralActionsPerformer {
     let markMessagePhishing: (_ messageID: ID) async -> VoidActionResult
-    
+
     init(mailbox: Mailbox, generalActions: GeneralActionsWrappers) {
         self.markMessagePhishing = { messageID in await generalActions.markMessagePhishing(mailbox, messageID) }
     }
-    
+
     func markMessagePhishing(messageID: ID) async -> VoidActionResult {
         await markMessagePhishing(messageID)
     }

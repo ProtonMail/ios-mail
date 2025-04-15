@@ -27,7 +27,7 @@ struct MailboxActionSheetsState: Copying {
 }
 
 extension View {
-    @MainActor 
+    @MainActor
     func actionSheetsFlow(
         mailbox: @escaping () -> Mailbox,
         state: Binding<MailboxActionSheetsState>,
@@ -45,7 +45,7 @@ private struct MailboxActionSheets: ViewModifier {
     private let goBackNavigation: (() -> Void)?
 
     init(
-        mailbox: @escaping () -> Mailbox, 
+        mailbox: @escaping () -> Mailbox,
         state: Binding<MailboxActionSheetsState>,
         replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)?

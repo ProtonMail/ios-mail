@@ -27,7 +27,7 @@ struct MessageBodyHTMLView: View {
 
     let messageBody: MessageBodyStateStore.State.Body
     let htmlLoaded: () -> Void
-    
+
     /// This value is key to the conversation scrolling to the opened message. We don't
     /// know the height of the body before it has finished rendering in the webview, having a
     /// meaningful default size avoids more than one scroll movement (before and after the html rendering).

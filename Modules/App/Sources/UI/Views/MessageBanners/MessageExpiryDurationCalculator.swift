@@ -20,7 +20,7 @@ import Foundation
 enum MessageExpiryDurationCalculator {
     struct Duration {
         let interval: TimeInterval
-       
+
         var isOneMinuteOrMore: Bool {
             interval >= 60
         }

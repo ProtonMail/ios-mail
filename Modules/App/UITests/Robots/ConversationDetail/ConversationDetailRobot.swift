@@ -22,11 +22,11 @@ final class ConversationDetailRobot: Robot {
     var rootElement: XCUIElement {
         application.otherElements[Identifiers.rootItem]
     }
-    
+
     var loader: XCUIElement {
         application.activityIndicators[Identifiers.loader]
     }
-    
+
     func waitForLoaderToDisappear() {
         XCTAssertTrue(loader.waitUntilGone())
     }

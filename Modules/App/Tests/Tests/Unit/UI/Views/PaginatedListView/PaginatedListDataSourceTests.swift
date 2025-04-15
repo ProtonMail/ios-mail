@@ -178,7 +178,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
         await sut.updateItems(updatedItems)
 
         XCTAssertEqual(sut.state.items, updatedItems)
-     }
+    }
 }
 
 extension PaginatedListDataSourceTests {

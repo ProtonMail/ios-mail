@@ -35,4 +35,3 @@ private func suiteName(inFile fileName: StaticString = #file) -> String {
     let className = "\(fileName)".split(separator: ".")[0]
     return "com.proton.mail.test.\(className)"
 }
-

@@ -27,7 +27,7 @@ class MoveToSheetSnapshotTests: BaseTestCase {
         let sut = MoveToSheet(
             input: .init(sheetType: .moveTo, ids: [], type: .message),
             mailbox: .dummy,
-            availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,  
+            availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
             moveToActions: .dummy,
             navigation: { _ in }
         ).environmentObject(ToastStateStore(initialState: .initial))

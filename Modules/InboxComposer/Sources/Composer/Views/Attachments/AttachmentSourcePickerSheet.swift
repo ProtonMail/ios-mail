@@ -141,7 +141,6 @@ private struct AttachmentSourcePickerModifier: ViewModifier {
     }
 }
 
-
 extension View {
     func attachmentSourcePicker(isPresented: Binding<Bool>, onSelection: @escaping (AttachmentSource) -> Void) -> some View {
         modifier(AttachmentSourcePickerModifier(isPresented: isPresented, onSelection: onSelection))

@@ -194,7 +194,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNil(sut.state.alert)
     }
 
-
     // MARK: recipientToggleSelection
 
     func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
@@ -599,7 +598,7 @@ struct ComposerTestContactsDatasource: ComposerContactsDatasource {
 }
 
 private extension ComposerContact {
-    
+
     var toMatch: [String] {
         switch self.type {
         case .group(let group):
@@ -608,7 +607,7 @@ private extension ComposerContact {
             [singleItem.name.toContactMatchFormat(), singleItem.email.toContactMatchFormat()]
         }
     }
-    
+
 }
 
 extension ComposerState {

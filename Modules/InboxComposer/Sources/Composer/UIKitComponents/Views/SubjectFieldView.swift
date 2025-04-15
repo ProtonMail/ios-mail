@@ -77,7 +77,7 @@ final class SubjectFieldView: UIView {
 extension SubjectFieldView {
 
     private enum SubviewFactory {
-        
+
         static var stack: UIStackView {
             ComposerSubviewFactory.regularFieldStack
         }

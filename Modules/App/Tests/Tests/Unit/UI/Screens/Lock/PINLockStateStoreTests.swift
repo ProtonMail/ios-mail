@@ -36,13 +36,13 @@ class PINLockStateStoreTests {
         output = nil
         sut = nil
     }
-    
+
     @Test
     func usersSignsOut() async throws {
         sut.handle(action: .signOutTapped)
-        
+
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
-        
+
         let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOutConfirmationButton)
         await signOutAction.action()
 
@@ -53,8 +53,8 @@ class PINLockStateStoreTests {
     func userResignSignOut() async throws {
         sut.handle(action: .signOutTapped)
 
-        #expect(sut.state.alert ==  .logOutConfirmation(action: { _ in }))
-        
+        #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
+
         let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
         await cancelAction.action()
 
@@ -97,9 +97,9 @@ class PINLockStateStoreTests {
 }
 
 private extension PINLockState {
-    
+
     func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: string, by: \.title))
     }
-    
+
 }

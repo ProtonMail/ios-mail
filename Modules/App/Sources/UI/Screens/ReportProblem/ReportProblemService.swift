@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 protocol ReportProblemService: Sendable {
-    func send(report: IssueReport) async throws (UserSessionError)
+    func send(report: IssueReport) async throws(UserSessionError)
 }
 
 extension MailUserSession: ReportProblemService {

@@ -31,7 +31,7 @@ extension SettingsState {
     static var initial: Self {
         .init(
             accountSettings: nil,
-            preferences: .stale, 
+            preferences: .stale,
             presentedWebPage: nil,
             appSettings: nil
         )

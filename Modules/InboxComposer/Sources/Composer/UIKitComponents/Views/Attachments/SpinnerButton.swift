@@ -29,16 +29,16 @@ final class SpinnerButton: UIButton {
     }
 
     private lazy var progressLayer: CAShapeLayer = {
-         let layer = CAShapeLayer()
-         layer.isHidden = true
-         layer.lineWidth = Appearance.lineWidth
-         layer.lineCap = .round
-         layer.strokeStart = 0
-         layer.strokeEnd = 1
-         layer.fillColor = UIColor.clear.cgColor
-         layer.strokeColor = Appearance.spinnerColor.cgColor
-         return layer
-     }()
+        let layer = CAShapeLayer()
+        layer.isHidden = true
+        layer.lineWidth = Appearance.lineWidth
+        layer.lineCap = .round
+        layer.strokeStart = 0
+        layer.strokeEnd = 1
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = Appearance.spinnerColor.cgColor
+        return layer
+    }()
 
     required init?(coder: NSCoder) { nil }
 

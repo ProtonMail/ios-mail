@@ -88,12 +88,11 @@ extension SenderImageLoader {
     }
 }
 
-
 #Preview {
     class DummyDataSource: SenderImageDataSource {
         func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
             UIImage(resource: PreviewData.senderImage)
-        }        
+        }
     }
 
     return AsyncSenderImageView(senderImageParams: .init()) { image in

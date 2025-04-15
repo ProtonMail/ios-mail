@@ -22,12 +22,12 @@ extension OnboardingRobot {
     private var actionButton: XCUIElement {
         rootElement.buttons[Identifiers.actionButton]
     }
-    
+
     func dismissIfDisplayed() {
         var nextActionAttempts = 0
-        
+
         // Keep a threshold and make the test fail if for some reason the root element is not dismissed.
-        while(rootElement.isHittable && nextActionAttempts < nextActionThreshold) {
+        while (rootElement.isHittable && nextActionAttempts < nextActionThreshold) {
             nextActionAttempts += 1
             actionButton.tap()
         }

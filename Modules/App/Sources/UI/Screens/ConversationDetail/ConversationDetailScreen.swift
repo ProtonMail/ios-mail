@@ -159,7 +159,7 @@ private struct ModifiersForSmoothScreenTransition: ViewModifier {
         content
             .toolbarBackground(DS.Color.Background.norm, for: .navigationBar, .tabBar)
             .clipped()
-            .background(DS.Color.Background.norm) // has to go before the clipping
+            .background(DS.Color.Background.norm)  // has to go before the clipping
     }
 }
 
@@ -169,7 +169,6 @@ private extension View {
         self.modifier(ModifiersForSmoothScreenTransition())
     }
 }
-
 
 private extension ConversationDetailModel.State {
 

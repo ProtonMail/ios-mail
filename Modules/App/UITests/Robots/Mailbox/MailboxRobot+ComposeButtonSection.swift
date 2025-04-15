@@ -22,29 +22,29 @@ extension MailboxRobot {
     private var composeButtonRootElement: XCUIElement {
         application.buttons[Identifiers.rootElement]
     }
-    
+
     private var composeButtonIcon: XCUIElement {
         composeButtonRootElement.images[Identifiers.icon]
     }
-    
+
     private var composeButtonText: XCUIElement {
         composeButtonRootElement.staticTexts[Identifiers.text]
     }
-    
+
     func tapComposeButton() {
         composeButtonRootElement.tap()
     }
-    
+
     func hasComposeButtonCollapsed() {
         XCTAssertTrue(composeButtonIcon.isHittable)
         XCTAssertFalse(composeButtonText.exists)
     }
-    
+
     func hasComposeButtonExpanded() {
         XCTAssertTrue(composeButtonIcon.isHittable)
         XCTAssertEqual(composeButtonText.label, "Compose")
     }
-    
+
     func hasComposeButtonHidden() {
         XCTAssertFalse(composeButtonIcon.isHittable)
     }

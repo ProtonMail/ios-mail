@@ -46,5 +46,5 @@ extension View {
 
 private struct SizePreferenceKey: PreferenceKey {
     static let defaultValue = LayoutData(size: .zero, frameInCoordinateSpace: CGRect.zero, safeAreaInsets: EdgeInsets())
-    static func reduce(value: inout LayoutData, nextValue: () -> LayoutData) { }
+    static func reduce(value: inout LayoutData, nextValue: () -> LayoutData) {}
 }

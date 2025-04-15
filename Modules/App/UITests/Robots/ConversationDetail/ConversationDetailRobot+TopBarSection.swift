@@ -29,7 +29,7 @@ extension ConversationDetailRobot {
     private var starButton: XCUIElement {
         application.buttons[Identifiers.starButton].firstMatch
     }
-    
+
     private var subjectLine: XCUIElement {
         application.staticTexts[Identifiers.subjectText].firstMatch
     }
@@ -39,18 +39,18 @@ extension ConversationDetailRobot {
     func tapBackButton() {
         backButton.tap()
     }
-    
+
     func tapStarButton() {
         starButton.tap()
     }
-    
+
     // MARK: Assertions
 
     func hasTopBarItems() {
         XCTAssertTrue(backButton.isHittable)
         XCTAssertTrue(starButton.isHittable)
     }
-    
+
     func hasSubjectLine() {
         XCTAssertTrue(subjectLine.isHittable)
     }

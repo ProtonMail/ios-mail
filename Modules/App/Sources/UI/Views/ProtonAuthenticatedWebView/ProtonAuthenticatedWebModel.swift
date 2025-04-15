@@ -36,7 +36,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
         let appConfig = dependencies.appConfigService.appConfig
         let domain = appConfig.environment.domain
         let appVersion = appConfig.appVersion
-        
+
         Task {
             await updateState(.forkingSession)
             switch await userSession.fork() {

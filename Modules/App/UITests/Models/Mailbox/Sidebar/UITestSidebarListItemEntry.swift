@@ -22,7 +22,7 @@ struct UITestSidebarListItemEntry {
     let text: String
     let badge: String?
     let expandable: Bool
-    
+
     init(hasIcon: Bool = true, text: String, badge: String? = nil, expandable: Bool = false) {
         self.hasIcon = hasIcon
         self.text = text

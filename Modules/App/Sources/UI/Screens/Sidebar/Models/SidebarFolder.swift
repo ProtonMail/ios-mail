@@ -50,7 +50,7 @@ struct SidebarFolder: Equatable, Identifiable, SelectableItem {
             name: name,
             color: color,
             unreadCount: unreadCount,
-            expanded: expanded, 
+            expanded: expanded,
             childFolders: childFolders,
             isSelected: isSelected
         )

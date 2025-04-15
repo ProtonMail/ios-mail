@@ -31,7 +31,7 @@ class LabelAsSheetModel: ObservableObject {
 
     init(
         input: ActionSheetInput,
-        mailbox: Mailbox, 
+        mailbox: Mailbox,
         availableLabelAsActions: AvailableLabelAsActions,
         labelAsActions: LabelAsActions,
         toastStateStore: ToastStateStore,

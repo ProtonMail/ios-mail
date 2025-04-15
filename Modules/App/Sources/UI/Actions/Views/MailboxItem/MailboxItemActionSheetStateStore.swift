@@ -118,7 +118,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                 let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
                     self?.handle(action: .phishingConfirmed(action))
                 })
-                
+
                 state = state.copy(\.alert, to: alert)
             }
         case .deleteConfirmed(let action):
@@ -218,7 +218,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private func update(actions: AvailableActions) {
         state = state.copy(\.availableActions, to: actions)
     }
-    
+
     private var deleteConfirmationAlert: AlertModel {
         .deleteConfirmation(
             itemsCount: 1,

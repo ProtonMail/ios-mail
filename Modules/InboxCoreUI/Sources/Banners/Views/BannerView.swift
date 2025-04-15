@@ -20,11 +20,11 @@ import SwiftUI
 
 struct BannerView: View {
     let model: Banner
-    
+
     init(model: Banner) {
         self.model = model
     }
-    
+
     var body: some View {
         container()
             .background {
@@ -35,9 +35,9 @@ struct BannerView: View {
             .frame(maxWidth: .infinity)
             .padding([.horizontal, .bottom], DS.Spacing.large)
     }
-    
+
     // MARK: - Private
-    
+
     @ViewBuilder
     private func container() -> some View {
         switch model.size {
@@ -80,11 +80,11 @@ struct BannerView: View {
             .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
         }
     }
-    
+
     private func smallButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
         BannerButton(model: model, style: style, maxWidth: nil)
     }
-    
+
     private func largeButton(model: Banner.Button, style: Banner.ButtonStyle) -> some View {
         BannerButton(model: model, style: style, maxWidth: .infinity)
     }

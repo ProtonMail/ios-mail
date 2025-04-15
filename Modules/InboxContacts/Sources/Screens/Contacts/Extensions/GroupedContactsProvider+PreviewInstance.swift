@@ -832,7 +832,7 @@ extension ContactGroupItem {
                 emails: [contactEmail]
             )
         }
-        
+
         self.init(
             id: Id(value: id),
             name: name,

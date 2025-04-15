@@ -23,7 +23,7 @@ final class PassThroughWindow: UIWindow {
         guard let hitView = super.hitTest(point, with: event), let rootView = rootViewController?.view else {
             return nil
         }
-        
+
         if #available(iOS 18, *) {
             for subview in rootView.subviews.reversed() {
                 let convertedPoint = subview.convert(point, from: rootView)

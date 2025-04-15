@@ -70,7 +70,7 @@ extension Message {
                     name: sender.uiRepresentation,
                     address: sender.address,
                     encryptionInfo: "End to end encrypted and signed"
-                ), // TODO: !!
+                ),  // TODO: !!
                 isSenderProtonOfficial: sender.isProton,
                 recipientsTo: toList.map(\.toRecipient),
                 recipientsCc: ccList.map(\.toRecipient),
@@ -78,7 +78,7 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: exclusiveLocation?.model,
                 labels: labels,
-                other: other, 
+                other: other,
                 attachments: attachmentsMetadata.map(\.displayModel)
             )
         )

@@ -58,7 +58,7 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
             XCTFail("sinle contact expected")
         }
     }
-    
+
     func testAllContacts_itParsesSingleDeviceContactsCorrectly() async {
         let contacts = await sut.allContacts().contacts
         let composerContact = contacts.filter { $0.name == "Bob Ainsworth" }.first!
@@ -99,7 +99,7 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
 }
 
 private extension Array where Element == ContactSuggestion {
-    
+
     static var testData: Self {
         [
             .init(
@@ -138,7 +138,7 @@ private extension Array where Element == ContactSuggestion {
             ),
         ]
     }
-    
+
 }
 
 private extension MailUserSession {
@@ -169,7 +169,6 @@ private extension ContactGroupItem {
     }
 }
 
-
 private extension ContactEmailItem {
 
     init(id: UInt64, email: String) {
@@ -179,20 +178,20 @@ private extension ContactEmailItem {
 }
 
 private class ContactSuggestionsStub: ContactSuggestions {
-    
+
     private let _all: [ContactSuggestion]
-    
+
     init(all: [ContactSuggestion]) {
         _all = all
         super.init(noPointer: .init())
     }
-    
+
     required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
-    
+
     override func all() -> [ContactSuggestion] {
         _all
     }
-    
+
 }

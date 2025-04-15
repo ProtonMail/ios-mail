@@ -18,7 +18,7 @@
 import Foundation
 
 extension ActionBottomSheetRobot {
-    
+
     func hasEntries(_ entries: [UITestBottomSheetDynamicEntry]) {
         for entry in entries {
             hasEntry(entry)
@@ -26,7 +26,7 @@ extension ActionBottomSheetRobot {
     }
 
     private func hasEntry(_ entry: UITestBottomSheetDynamicEntry) {
-        
+
         let model = UITestBottomSheetDynamicEntryModel(
             section: entry.section,
             index: entry.index,

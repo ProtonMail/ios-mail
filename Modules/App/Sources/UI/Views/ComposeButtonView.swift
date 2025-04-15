@@ -20,7 +20,7 @@ import SwiftUI
 
 struct ComposeButtonView: View {
     private let animation: Animation = .easeInOut(duration: 0.2)
-    
+
     let text: LocalizedStringResource
     @Binding private(set) var isExpanded: Bool
     let onTap: () -> Void
@@ -66,7 +66,7 @@ private struct ComposeButtonStyle: ButtonStyle {
 
 #Preview {
     struct Container: View {
-        @State var expand: Bool =  true
+        @State var expand: Bool = true
         var body: some View {
             ComposeButtonView(text: "Compose", isExpanded: $expand) {
                 expand.toggle()

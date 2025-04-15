@@ -22,15 +22,15 @@ extension MailboxRobot {
     private var unreadCountRootElement: XCUIElement {
         application.buttons[Identifiers.rootItem]
     }
-    
+
     private var unreadCountLabel: XCUIElement {
         unreadCountRootElement.staticTexts[Identifiers.countLabel]
     }
-    
+
     private var unreadCountValue: XCUIElement {
         unreadCountRootElement.staticTexts[Identifiers.countValue]
     }
-    
+
     func tapUnreadFilter() {
         unreadCountRootElement.tap()
     }
@@ -40,7 +40,7 @@ extension MailboxRobot {
         XCTAssertEqual(unreadCountLabel.label, "Unread")
         XCTAssertEqual(unreadCountValue.label, count)
     }
-    
+
     func hasNoUnreadFilterShown() {
         XCTAssertTrue(unreadCountRootElement.waitUntilGone())
     }

@@ -22,13 +22,13 @@ public struct BannerButton: View {
     let model: Banner.Button
     let style: Banner.ButtonStyle
     let maxWidth: CGFloat?
-    
+
     public init(model: Banner.Button, style: Banner.ButtonStyle, maxWidth: CGFloat?) {
         self.model = model
         self.style = style
         self.maxWidth = maxWidth
     }
-    
+
     public var body: some View {
         Button(
             action: model.action,

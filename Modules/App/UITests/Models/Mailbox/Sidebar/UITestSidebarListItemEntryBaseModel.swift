@@ -20,17 +20,17 @@ import XCTest
 
 open class UITestSidebarListItemEntryBaseModel: ApplicationHolder {
     let parent: XCUIElement
-    
+
     init(parent: XCUIElement) {
         self.parent = parent
     }
-    
+
     // MARK: UI Elements
-    
+
     var rootItem: XCUIElement {
         fatalError("Must be overridden by subclasses")
     }
-    
+
     private var iconElement: XCUIElement {
         rootItem.children(matching: .any)[Identifiers.iconItem]
     }
@@ -38,19 +38,19 @@ open class UITestSidebarListItemEntryBaseModel: ApplicationHolder {
     private var textElement: XCUIElement {
         rootItem.staticTexts[Identifiers.textItem]
     }
-    
+
     // MARK: Actions
-    
+
     func findElement() {
         XCTAssertTrue(UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent))
     }
-    
+
     func tap() {
         rootItem.tap()
     }
-    
+
     // MARK: Assertions
-    
+
     func isNotShown() {
         XCTAssertFalse(rootItem.exists)
     }

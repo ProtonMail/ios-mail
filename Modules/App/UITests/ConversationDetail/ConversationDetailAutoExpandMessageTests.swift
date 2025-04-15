@@ -18,7 +18,7 @@
 import Foundation
 
 final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
@@ -54,13 +54,13 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
                 localPath: "message-id_435090_3.json"
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
@@ -69,7 +69,7 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
             $0.hasExpandedEntries(indexes: 2)
         }
     }
-    
+
     /// TestId 435091
     func testConversationDetailAutoExpandMessagesAllUnreadNoDrafts() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -96,22 +96,22 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
                 localPath: "message-id_435091_2.json"
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 1, 2)
             $0.hasExpandedEntries(indexes: 0, 3)
         }
     }
-    
+
     /// TestId 435092
     func testConversationDetailAutoExpandMessagesAllUnreadWithDraft() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -138,22 +138,22 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
                 localPath: "message-id_435092_2.json"
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 1, 2, 3)
             $0.hasExpandedEntries(indexes: 0, 4)
         }
     }
-    
+
     /// TestId 435093
     /// To be re-enabled when ET-856 is addressed.
     func skip_testConversationDetailAutoExpandMessagesAllReadWithDraft() async {
@@ -201,17 +201,17 @@ final class ConversationDetailAutoExpandMessageTests: PMUIMockedNetworkTestCase 
                 localPath: "message-id_435093_6.json"
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.hasCollapsedEntries(indexes: 0, 1, 2, 3)
             $0.hasExpandedEntries(indexes: 4, 5)
         }

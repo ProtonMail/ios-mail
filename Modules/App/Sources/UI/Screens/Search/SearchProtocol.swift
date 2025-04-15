@@ -20,9 +20,9 @@ import proton_app_uniffi
 protocol SearchProtocol: Sendable {
 
     func scrollerSearch(
-      session: MailUserSession,
-      options: SearchOptions,
-      callback: LiveQueryCallback
+        session: MailUserSession,
+        options: SearchOptions,
+        callback: LiveQueryCallback
     ) async -> ScrollerSearchResult
 }
 

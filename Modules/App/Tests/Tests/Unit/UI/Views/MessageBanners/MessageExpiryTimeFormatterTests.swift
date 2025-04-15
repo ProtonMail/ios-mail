@@ -39,7 +39,7 @@ struct MessageExpiryTimeFormatterTests {
             from: timestamp.rawValue,
             currentDate: currentDate
         )
-        
+
         #expect(formattedTime == expectedFormattedTime)
     }
 }

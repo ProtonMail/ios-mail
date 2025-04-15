@@ -57,7 +57,7 @@ final class DraftPresenterTests: BaseTestCase {
         XCTAssertEqual(capturedDraftToPresent.count, 1)
 
         switch capturedDraftToPresent.first! {
-        case .new: 
+        case .new:
             XCTFail("unexpected draft to present")
         case .openDraftId(let messageId):
             XCTAssertEqual(messageId, dummyMessageId)

@@ -390,7 +390,7 @@ extension ConversationDetailModel {
 
                 result.append(.init(id: message.id, type: messageCellUIModel))
             }
-            
+
             // last message
             let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
             result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
@@ -447,8 +447,8 @@ extension ConversationDetailModel {
 struct MessageCellUIModel {
     let id: ID
     let type: MessageCellUIModelType
-    
-    /// Used to identify Views in a way that allows to scroll to them and allows to refresh 
+
+    /// Used to identify Views in a way that allows to scroll to them and allows to refresh
     /// the screen when collapsiong/expanding cells. This is because we don't modify the
     /// existing view but we replace it with another type so we need a different
     /// id value: CollapsedMessageCell <--> ExpandedMessageCell

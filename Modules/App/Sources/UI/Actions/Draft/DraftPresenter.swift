@@ -46,7 +46,7 @@ struct DraftPresenter {
     }
 
     @MainActor
-    func handleReplyAction(for messageId: ID, action: ReplyAction , onError: (DraftOpenError) -> Void) async {
+    func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:
             await openReplyDraft(for: messageId, onError: onError)

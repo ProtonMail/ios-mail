@@ -37,7 +37,7 @@ struct UITestNavigator: ApplicationHolder {
         }
 
         MailboxRobot { $0.verifyShown() }
-    
+
         if (skipOnboarding) {
             dismissOnboarding()
         }
@@ -88,7 +88,7 @@ struct UITestNavigator: ApplicationHolder {
         )
         appWithLaunchArguments.launch()
     }
-    
+
     private func dismissOnboarding() {
         OnboardingRobot { $0.dismissIfDisplayed() }
     }

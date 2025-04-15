@@ -21,7 +21,7 @@ enum UnreadCountFormatter {
     static func string(count: UInt64, maxCount: UInt64 = 999) -> String {
         count.toBadgeCapped(at: maxCount)
     }
-    
+
     static func stringIfGreaterThan0(count: UInt64, maxCount: UInt64 = 999) -> String? {
         count == 0 ? nil : count.toBadgeCapped(at: maxCount)
     }

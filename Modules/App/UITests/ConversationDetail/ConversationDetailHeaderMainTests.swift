@@ -18,11 +18,11 @@
 import Foundation
 
 final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
-    
+
     let collapsedHeader = UITestConversationCollapsedHeaderEntry(
         index: 0,
         senderName: "Not Proton",
@@ -31,7 +31,7 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         date: "May 20",
         toRecipients: "to youngbee@proton.black"
     )
-    
+
     let expandedHeader = UITestConversationExpandedHeaderEntry(
         index: 0,
         senderName: "Not Proton",
@@ -39,7 +39,7 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         timestamp: 1716199297,
         toRecipients: [UITestHeaderRecipientEntry(index: 0, name: "youngbee@proton.black", address: "youngbee@proton.black")]
     )
-    
+
     /// TestId 434551
     func testConversationDetailCollapsedHeader() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -62,18 +62,18 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyCollapsedHeader(collapsedHeader)
         }
     }
-    
+
     /// TestId 434551/2, 434552
     func testConversationDetailExpandedHeader() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -96,19 +96,19 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.toggleCollapsedHeader(at: 0)
             $0.verifyExpandedHeader(expandedHeader)
         }
     }
-    
+
     /// TestId 434551/3, 434553
     func testConversationDetailExpandedAndCollapsedHeader() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -131,13 +131,13 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.toggleCollapsedHeader(at: 0)
             $0.verifyExpandedHeader(expandedHeader)

@@ -58,7 +58,7 @@ extension MailboxListView {
             listAtTop: { isListAtTop = $0 },
             pullToRefresh: { await model.onPullToRefresh() }
         )
-        
+
         config.cellEventHandler = .init(
             onCellEvent: { [weak model] event, item in
                 switch event {
@@ -78,7 +78,7 @@ extension MailboxListView {
                 model?.onMailboxItemAction(context, toastStateStore: toastStateStore)
             }
         )
-        
+
         return config
     }
 
@@ -158,4 +158,3 @@ private extension SystemFolderLabel {
     }
 
 }
-

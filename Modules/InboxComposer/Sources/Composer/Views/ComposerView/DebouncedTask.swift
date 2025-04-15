@@ -32,7 +32,7 @@ final class DebouncedTask {
     func debounce() {
         self.task = Task { [weak self] in
             guard let self else { return }
-            defer { if !Task.isCancelled { onBlockCompletion() }}
+            defer { if !Task.isCancelled { onBlockCompletion() } }
 
             try? await Task.sleep(for: duration)
             guard !Task.isCancelled else { return }

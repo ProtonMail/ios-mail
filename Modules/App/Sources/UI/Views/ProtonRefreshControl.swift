@@ -94,8 +94,8 @@ final class ProtonRefreshControl: UIRefreshControl, ObservableObject {
     func updateSpinnerProgressAndAlpha(withOffset offset: CGFloat) {
         guard !isAnimating else { return }
         let maxPullOffset: CGFloat = 150
-        let progress = min(offset/maxPullOffset, 1)
-        spinnerAnimation.alpha = 2*progress
-        spinnerAnimation.currentProgress = progress/4
+        let progress = min(offset / maxPullOffset, 1)
+        spinnerAnimation.alpha = 2 * progress
+        spinnerAnimation.currentProgress = progress / 4
     }
 }

@@ -23,7 +23,7 @@ class PINLockScreenSnapshotTests: BaseTestCase {
 
     func testPINLockScreenLayoutsCorrectly() {
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(state: .init(hideLogoutButton: false, pin: []), error: .constant(nil)) {_ in },
+            of: PINLockScreen(state: .init(hideLogoutButton: false, pin: []), error: .constant(nil)) { _ in },
             named: "empty_pin"
         )
         assertSnapshotsOnIPhoneX(

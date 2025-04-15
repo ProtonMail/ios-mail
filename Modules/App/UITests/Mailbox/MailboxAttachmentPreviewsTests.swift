@@ -18,11 +18,11 @@
 import Foundation
 
 final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }
-    
+
     /// TestId 443740
     func testAttachmentPreviewOpening() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -50,18 +50,18 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 mimeType: .octetStream
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
         }
-        
+
         SystemPreviewRobot {
             $0.verifyShown(withAttachmentName: "image")
         }
     }
-    
+
     /// TestId 448448
     func testAttachmentPreviewLoadingOnMetadataLoading() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -78,18 +78,18 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 latency: 100
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
         }
-        
+
         SystemPreviewRobot {
             $0.verifyLoading()
         }
     }
-    
+
     /// TestId 448448/2
     func testAttachmentPreviewLoadingOnBlobLoading() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -112,18 +112,18 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 mimeType: .octetStream
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
         }
-        
+
         SystemPreviewRobot {
             $0.verifyLoading()
         }
     }
-    
+
     /// TestId 448448/3, 448449
     func testAttachmentPreviewLoadingDismissal() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -140,25 +140,25 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 latency: 100
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapAttachmentCapsuleAt(forItem: 0, atIndex: 0)
         }
-        
+
         SystemPreviewRobot {
             $0.verifyLoading()
-            
+
             $0.tapDoneButton()
             $0.verifyGone()
         }
-        
+
         MailboxRobot {
             $0.verifyShown()
         }
     }
-    
+
     /// TestId 443741
     func testAttachmentCapsulePreview() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -169,17 +169,17 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "image.png")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules)
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 443741/2
     func testAttachmentCapsulePreviewInSentFolder() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -196,17 +196,17 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile_reply.zip")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules)
 
         navigator.navigateTo(UITestDestination.sent)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 443743
     func testMultipleAttachmentCapsulePreviews() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -217,7 +217,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "fifth.png"),
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "first.png")
@@ -225,12 +225,12 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 4)
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 448452
     func testNoAttachmentCapsuleShownOnEmbeddedImagesOnly() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -243,12 +243,12 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
-    
+
     /// TestId 448453
     /// To be re-enabled when ET-927 is addressed.
     func skip_testNoAttachmentCapsuleOnICSFileAttached() async {
@@ -262,12 +262,12 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
-    
+
     /// TestId 448454
     /// To be re-enabled when ET-927 is addressed.
     func skip_testNoAttachmentCapsuleOnASCFileAttached() async {
@@ -281,12 +281,12 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasNoAttachmentPreviewEntries(index: 0)
         }
     }
-    
+
     /// TestId 448455
     func testAttachmentCapsuleOnlyShownOnStandardAttachment() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -297,17 +297,17 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "image.png")]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: nil)
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 448456
     func testAttachmentPreviewCountFiltersOutInlineImages() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -318,20 +318,20 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile.zip"),
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "fifth.png")
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 5)
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 448457
     func testAttachmentPreviewCountOnConversationWithMultipleMessages() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -342,20 +342,20 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 7)
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }
     }
-    
+
     /// TestId 448458
     /// To be re-enabled when ET-927 is addressed.
     func skip_testAttachmentPreviewMultipleCountFiltersASCAndICSFiles() async {
@@ -367,7 +367,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
             UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
@@ -375,7 +375,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 1)
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasAttachmentPreviewEntries(index: 0, entries: attachmentPreviews)
         }

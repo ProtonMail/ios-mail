@@ -18,7 +18,7 @@
 import Foundation
 
 final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
@@ -54,7 +54,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
                 localPath: "message-id_435085_3.json"
             )
         )
-        
+
         let firstExpandedHeader = UITestConversationExpandedHeaderEntry(
             index: 0,
             senderName: "Test Free Account",
@@ -67,7 +67,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
                 UITestHeaderRecipientEntry(index: 0, name: "free@proton.black", address: "free@proton.black")
             ]
         )
-        
+
         let secondExpandedHeader = UITestConversationExpandedHeaderEntry(
             index: 1,
             senderName: "Young Bee",
@@ -80,7 +80,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
                 UITestHeaderRecipientEntry(index: 0, name: "proton133@proton.black", address: "proton133@proton.black")
             ]
         )
-        
+
         let thirdExpandedHeader = UITestConversationExpandedHeaderEntry(
             index: 2,
             senderName: "Young Bee",
@@ -97,24 +97,24 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
                 UITestHeaderRecipientEntry(index: 0, name: "plus@proton.black", address: "plus@proton.black")
             ]
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyShown()
             $0.waitForLoaderToDisappear()
-            
+
             $0.toggleCollapsedHeader(at: 2)
             $0.verifyExpandedHeader(thirdExpandedHeader)
 
             $0.tapCollapsedEntry(at: 1)
             $0.toggleCollapsedHeader(at: 1)
             $0.verifyExpandedHeader(secondExpandedHeader)
-            
+
             $0.toggleCollapsedHeader(at: 0)
             $0.verifyExpandedHeader(firstExpandedHeader)
         }

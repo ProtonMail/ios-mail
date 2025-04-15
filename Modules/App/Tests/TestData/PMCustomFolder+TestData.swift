@@ -44,7 +44,7 @@ extension PMCustomFolder {
             parentId: nil,
             children: children,
             color: .init(value: color),
-            description: .folder, 
+            description: .folder,
             display: false,
             expanded: true,
             name: name,

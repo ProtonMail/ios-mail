@@ -41,7 +41,7 @@ extension SidebarState {
         .init(
             system: [],
             labels: [],
-            folders: [], 
+            folders: [],
             other: .staleItems,
             createLabel: .createLabel,
             createFolder: .createFolder
@@ -51,7 +51,7 @@ extension SidebarState {
     func copy(system: [SystemFolder]) -> Self {
         .init(
             system: system,
-            labels: labels, 
+            labels: labels,
             folders: folders,
             other: other,
             createLabel: createLabel,
@@ -63,7 +63,7 @@ extension SidebarState {
         .init(
             system: system,
             labels: labels,
-            folders: folders, 
+            folders: folders,
             other: other,
             createLabel: createLabel,
             createFolder: createFolder
@@ -72,7 +72,7 @@ extension SidebarState {
 
     func copy(folders: [SidebarFolder]) -> Self {
         .init(
-            system: system, 
+            system: system,
             labels: labels,
             folders: folders,
             other: other,

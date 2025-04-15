@@ -24,7 +24,7 @@ enum MessageExpiryTimeFormatter {
 
         return formatter.string(from: duration.interval).unsafelyUnwrapped
     }
-    
+
     // MARK: - Private
 
     private static let mainFormatter = makeFormatter(units: [.day, .hour, .minute])

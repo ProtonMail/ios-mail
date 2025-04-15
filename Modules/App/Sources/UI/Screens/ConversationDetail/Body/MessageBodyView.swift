@@ -28,7 +28,7 @@ struct MessageBodyView: View {
     let mailbox: Mailbox
     let htmlLoaded: () -> Void
     @Binding var attachmentIDToOpen: ID?
-    
+
     init(
         messageID: ID,
         emailAddress: String,
@@ -44,7 +44,7 @@ struct MessageBodyView: View {
         self._attachmentIDToOpen = attachmentIDToOpen
         self.htmlLoaded = htmlLoaded
     }
-    
+
     var body: some View {
         StoreView(store: MessageBodyStateStore(
             messageID: messageID,

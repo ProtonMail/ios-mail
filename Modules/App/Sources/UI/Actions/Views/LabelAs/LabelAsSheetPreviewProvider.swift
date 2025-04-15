@@ -28,7 +28,7 @@ enum LabelAsSheetPreviewProvider {
             ),
             labelAsActions: .dummy,
             toastStateStore: .init(initialState: .initial),
-            dismiss: { }
+            dismiss: {}
         )
     }
 

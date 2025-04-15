@@ -102,7 +102,7 @@ struct SearchToolbarView: View {
                         .square(size: Layout.iconSquareSize)
                         .foregroundStyle(DS.Color.Icon.hint)
                 }
-                .padding(.trailing, DS.Spacing.mediumLight - Layout.searchBarCornerRadius/2)
+                .padding(.trailing, DS.Spacing.mediumLight - Layout.searchBarCornerRadius / 2)
                 .frame(height: Layout.buttonHeight)
             }
         }

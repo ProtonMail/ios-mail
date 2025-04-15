@@ -89,7 +89,6 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
 
-
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 1)
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }

@@ -35,7 +35,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     private var avatarCheckedElement: XCUIElement {
         rootItem.images[Identifiers.avatarChecked]
     }
-    
+
     private var avatarImageElement: XCUIElement {
         rootItem.images[Identifiers.avatarImage]
     }
@@ -59,11 +59,11 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     private var starElement: XCUIElement {
         rootItem.staticTexts[Identifiers.starIcon]
     }
-    
+
     private func attachmentCapsule(atIndex index: Int) -> XCUIElement {
         rootItem.buttons["\(Identifiers.attachmentCapsule)#\(index)"]
     }
-    
+
     private var extraAttachmentsIndicator: XCUIElement {
         rootItem.staticTexts[Identifiers.extraAttachments]
     }
@@ -85,11 +85,11 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func tapCheckedAvatar() {
         avatarCheckedElement.tap()
     }
-    
+
     func tapAttachmentCapsuleAt(_ index: Int) {
         attachmentCapsule(atIndex: index).tap()
     }
-    
+
     func waitForExistence(timeout: TimeInterval) {
         XCTAssertTrue(rootItem.waitForExistence(timeout: timeout))
     }
@@ -99,7 +99,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func doesNotExist() {
         XCTAssertFalse(rootItem.exists)
     }
-    
+
     func isItemSelected() {
         XCTAssertFalse(avatarTextElement.exists)
         XCTAssertTrue(avatarCheckedElement.exists)
@@ -109,11 +109,11 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
         XCTAssertTrue(avatarTextElement.exists)
         XCTAssertFalse(avatarCheckedElement.exists)
     }
-    
+
     func hasAvatarImage() {
         XCTAssertTrue(avatarImageElement.waitForExistence(timeout: 5))
     }
-    
+
     func hasNoAvatarImage() {
         XCTAssertFalse(avatarImageElement.exists)
     }
@@ -121,7 +121,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func hasInitials(_ value: String) {
         XCTAssertEqual(value, avatarTextElement.label)
     }
-    
+
     func hasNoInitials() {
         XCTAssertFalse(avatarTextElement.exists)
     }
@@ -145,20 +145,20 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
     func hasNoCount() {
         XCTAssertFalse(countElement.exists)
     }
-    
+
     func hasAttachmentPreviews(entry: UITestAttachmentPreviewItemEntry) {
         for item in entry.items {
             let capsule = attachmentCapsule(atIndex: item.index)
             XCTAssertEqual(capsule.label, item.attachmentName)
         }
-        
+
         if let extraItemsCount = entry.extraItemsCount {
             XCTAssertEqual(.plus(count: extraItemsCount), extraAttachmentsIndicator.label)
         } else {
             XCTAssertFalse(extraAttachmentsIndicator.exists)
         }
     }
-    
+
     func hasNoAttachmentPreviews() {
         XCTAssertFalse(attachmentCapsule(atIndex: 0).exists)
         XCTAssertFalse(extraAttachmentsIndicator.exists)

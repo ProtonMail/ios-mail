@@ -70,10 +70,10 @@ class ContactsScreenTests: BaseTestCase {
     ) {
         let expectation = sut.on(
             \.onLoad,
-             function: function,
-             file: file,
-             line: line,
-             perform: perform
+            function: function,
+            file: file,
+            line: line,
+            perform: perform
         )
 
         ViewHosting.host(view: sut.environment(\.dismissTestable, dismissSpy))

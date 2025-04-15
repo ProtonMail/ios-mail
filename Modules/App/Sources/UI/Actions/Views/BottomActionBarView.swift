@@ -61,7 +61,7 @@ struct BottomActionBarView: View {
 
 #Preview {
     BottomActionBarView(
-        actions: [.markRead, .labelAs, .moveTo, .notSpam(.init(localId: ID.random(), systemLabel: .inbox)), .more], 
+        actions: [.markRead, .labelAs, .moveTo, .notSpam(.init(localId: ID.random(), systemLabel: .inbox)), .more],
         tapAction: { _ in }
     )
 }

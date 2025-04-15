@@ -74,7 +74,7 @@ final class EmptyFolderBannerStateStoreTests {
             alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
     }
-    
+
     @Test
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() async throws {
         sut = makeSUT(.trash, .autoDeleteEnabled)
@@ -98,7 +98,7 @@ final class EmptyFolderBannerStateStoreTests {
             alert: .none
         ))
     }
-    
+
     @Test
     func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() async throws {
         let labelID: ID = .init(value: 99)
@@ -125,7 +125,7 @@ final class EmptyFolderBannerStateStoreTests {
         ))
         #expect(wrapperSpy.deleteAllCalls == [labelID])
     }
-    
+
     private func makeSUT(
         _ folder: SpamOrTrash,
         _ userState: AutoDeleteState,

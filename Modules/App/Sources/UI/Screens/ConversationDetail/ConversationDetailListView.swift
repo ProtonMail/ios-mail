@@ -100,13 +100,13 @@ struct ConversationDetailListView: View {
                     mailbox: model.mailbox.unsafelyUnwrapped,
                     uiModel: last,
                     hasShadow: !previous.isEmpty,
-                    isFirstCell: previous.isEmpty, 
+                    isFirstCell: previous.isEmpty,
                     areActionsDisabled: model.areActionsDisabled,
                     attachmentIDToOpen: $model.attachmentIDToOpen,
                     onEvent: { onExpandedMessageCellEvent($0, uiModel: last) },
                     htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: last.toActionMetadata()) }
                 )
-                .id(ConversationDetailModel.lastCellId) // static value because it won't be replaced with CollapsedMessageCell
+                .id(ConversationDetailModel.lastCellId)  // static value because it won't be replaced with CollapsedMessageCell
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(previous.count))
             }

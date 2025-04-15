@@ -19,7 +19,7 @@
 import Contacts
 
 class CNContactStoreSpy: CNContactStoring {
-    
+
     static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
     private(set) var requestAccessCalls: [
@@ -28,31 +28,31 @@ class CNContactStoreSpy: CNContactStoring {
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
     var requestAccessCompletionBlockCalledImmediately: Bool = false
-    
+
     static func cleanUp() {
         stubbedAuthorizationStatus = .default
     }
-    
+
     // MARK: - CNContactStoring
-    
+
     class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         stubbedAuthorizationStatus[entityType].unsafelyUnwrapped
     }
-    
+
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void) {
         requestAccessCalls.append((entityType, completionHandler))
-        
+
         if requestAccessCompletionBlockCalledImmediately {
             completionHandler(true, nil)
         }
     }
-    
+
     func enumerateContacts(
         with fetchRequest: CNContactFetchRequest,
         usingBlock block: (CNContact, UnsafeMutablePointer<ObjCBool>) -> Void
     ) throws {
         enumerateContactsCalls.append(fetchRequest)
-        
+
         let ok = UnsafeMutablePointer<ObjCBool>.init(bitPattern: 1)!
         stubbedEnumerateContacts.forEach { contact in
             block(contact, ok)

@@ -114,7 +114,7 @@ private struct RootView: View {
                         userSession: activeUserSession,
                         toastStateStore: toastStateStore
                     )
-                    .id(activeUserSession.userId()) // Forces the child view to be recreated when the user account changes
+                    .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 
                 case .activeSessionTransition:
                     SessionTransitionScreen()

@@ -28,8 +28,7 @@ extension Any? {
             default:
                 return nil
             }
-        }
-        else if let value = self as? Bool {
+        } else if let value = self as? Bool {
             return value
         }
 

@@ -53,7 +53,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateUIView(uiView)
     }
-    
+
     func updateUIView(_ view: WKWebView) {
         view.loadHTMLString(body.rawBody)
     }
@@ -95,9 +95,9 @@ extension MessageBodyReaderView {
 }
 
 private extension WKWebView {
-    
+
     func loadHTMLString(_ string: String) {
         loadHTMLString(string, baseURL: nil)
     }
-    
+
 }

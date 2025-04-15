@@ -42,7 +42,7 @@ class MessageBodyReaderViewTests {
             htmlLoaded: {}
         )
     }
-    
+
     deinit {
         urlOpenerSpy = nil
         sut = nil
@@ -63,19 +63,19 @@ class MessageBodyReaderViewTests {
         #expect(result == .allow)
         #expect(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty == true)
     }
-    
+
     @Test
     func test_WhenUpdateUIViewIsCalledByTheSystem_ItReloadsWebView() throws {
         let webViewSpy = WKWebViewSpy()
-        
+
         #expect(webViewSpy.loadHTMLStringCalls.count == 0)
-        
+
         sut.updateUIView(webViewSpy)
-        
+
         #expect(webViewSpy.loadHTMLStringCalls.count == 1)
-        
+
         let arguments = try #require(webViewSpy.loadHTMLStringCalls.last)
-        
+
         #expect(arguments.html == "<html>dummy</html>")
         #expect(arguments.baseURL == nil)
     }
@@ -121,13 +121,13 @@ private class NavigationActionStub: WKNavigationAction {
 }
 
 private class WKWebViewSpy: WKWebView {
-    
+
     private(set) var loadHTMLStringCalls: [(html: String, baseURL: URL?)] = []
-    
+
     override func loadHTMLString(_ string: String, baseURL: URL?) -> WKNavigation? {
         loadHTMLStringCalls.append((string, baseURL))
-        
+
         return nil
     }
-    
+
 }

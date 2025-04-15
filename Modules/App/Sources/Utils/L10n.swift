@@ -183,7 +183,7 @@ enum L10n {
                 }
             }
         }
-        
+
         enum ReportPhishing {
             enum Alert {
                 static let title = LocalizedStringResource(
@@ -409,7 +409,7 @@ enum L10n {
             comment: "Subtitle of the offline mode placeholder."
         )
     }
-    
+
     enum MessageBanner {
         enum LegitMessageConfirmationAlert {
             static let title = LocalizedStringResource(
@@ -548,7 +548,7 @@ enum L10n {
         static let date = LocalizedStringResource("Date", comment: "`Date` in the message details.")
         static let from = LocalizedStringResource("From", comment: "`From` in the message details.")
         static let label = LocalizedStringResource("Label", comment: "`Label` in the message details.")
-        static let location = LocalizedStringResource("Location",comment: "`Location` in the message details.")
+        static let location = LocalizedStringResource("Location", comment: "`Location` in the message details.")
         static let other = LocalizedStringResource(
             "Other",
             comment: "`Other` in the message details (e.g. starred, pinned messages)."
@@ -583,7 +583,7 @@ enum L10n {
         )
 
         static let body2 = LocalizedStringResource(
-            "A reply to your email? An important message? Get notified the moment they arrive.", 
+            "A reply to your email? An important message? Get notified the moment they arrive.",
             comment: "Body of the authorization prompt"
         )
 

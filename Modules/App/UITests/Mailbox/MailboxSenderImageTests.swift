@@ -18,11 +18,11 @@
 import Foundation
 
 final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }
-    
+
     /// TestId 441678
     func testSenderImageIsNotShownOnHideSenderImagesFeatureEnabled() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -47,7 +47,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
                 mimeType: .imagePng
             )
         )
-        
+
         let mailboxEntry = UITestMailboxListItemEntry(
             index: 0,
             avatar: .initials("P"),
@@ -58,12 +58,12 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: mailboxEntry)
         }
     }
-    
+
     /// TestId 448445
     func testSenderImageIsShownOnHideSenderImagesFeatureNotEnabledAndImageAvailable() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -87,7 +87,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
                 mimeType: .imagePng
             )
         )
-        
+
         let mailboxEntry = UITestMailboxListItemEntry(
             index: 0,
             avatar: .image,
@@ -98,12 +98,12 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: mailboxEntry)
         }
     }
-    
+
     /// TestId 448445/2, 448446
     func testSenderImageIsNotShownOnHideSenderImagesFeatureNotEnabledAndBeErrorOccurs() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -127,7 +127,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
                 status: 500
             )
         )
-        
+
         let mailboxEntry = UITestMailboxListItemEntry(
             index: 0,
             avatar: .initials("P"),
@@ -136,14 +136,14 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
             date: "Mar 6, 2023",
             count: nil
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: mailboxEntry)
         }
     }
-    
+
     /// TestId 448445/3, 448447
     func testSenderImageIsNotShownOnHideSenderImagesFeatureNotEnabledButNoImageAvailable() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -161,7 +161,7 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         let mailboxEntry = UITestMailboxListItemEntry(
             index: 0,
             avatar: .initials("P"),
@@ -170,9 +170,9 @@ final class MailboxSenderImageTests: PMUIMockedNetworkTestCase {
             date: "Mar 6, 2023",
             count: nil
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: mailboxEntry)
         }

@@ -19,23 +19,23 @@ import Foundation
 import XCTest
 
 extension ActionBottomSheetRobot {
-    
+
     // MARK: UI Elements
-    
+
     private var replyButton: XCUIElement {
         rootElement.buttons[Identifiers.replyButton]
     }
-    
+
     private var replyAllButton: XCUIElement {
         rootElement.buttons[Identifiers.replyAllButton]
     }
-    
+
     private var forwardButton: XCUIElement {
         rootElement.buttons[Identifiers.forwardButton]
     }
-    
+
     // MARK: Assertions
-    
+
     func hasComposeButtons() {
         XCTAssert(replyButton.exists)
         XCTAssert(replyAllButton.exists)

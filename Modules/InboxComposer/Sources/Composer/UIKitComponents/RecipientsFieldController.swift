@@ -67,7 +67,7 @@ final class RecipientsFieldController: UIViewController {
     private func setUpUI() {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)
-        
+
         stack.addArrangedSubview(idleController.view)
         stack.addArrangedSubview(editingController.view)
         stack.addArrangedSubview(expandedController.view)
@@ -75,7 +75,7 @@ final class RecipientsFieldController: UIViewController {
         editingController.view.isHidden = state.controllerState != .editing && state.controllerState != .contactPicker
         view.addSubview(stack)
 
-        editingController.onEvent = {[weak self] event in
+        editingController.onEvent = { [weak self] event in
             switch event {
             case .onInputChange(let text):
                 self?.onEvent?(.onInputChange(text: text))
@@ -109,7 +109,7 @@ final class RecipientsFieldController: UIViewController {
             stack.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
             stack.topAnchor.constraint(equalTo: view.topAnchor, constant: verticalMargin),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalMargin),
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalMargin)
         ])
     }
 

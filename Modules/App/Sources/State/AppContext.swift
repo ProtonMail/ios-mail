@@ -77,7 +77,7 @@ final class AppContext: Sendable, ObservableObject {
 
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
-        
+
         let params = MailSessionParamsFactory.make(appConfig: appConfig)
         accountChallengeCoordinator = .init(apiConfigProvider: { appConfig.apiEnvConfig })
 
@@ -171,7 +171,7 @@ extension AppContext {
 }
 
 extension AppContext: ApplicationServiceSetUp {
-    
+
     func setUpService() {
         do {
             try start()

@@ -121,10 +121,10 @@ class MailboxScreenTests: BaseTestCase {
     ) {
         let expectation = sut.on(
             \.didAppear,
-             function: function,
-             file: file,
-             line: line,
-             perform: perform
+            function: function,
+            file: file,
+            line: line,
+            perform: perform
         )
 
         let appUIStateStore = AppUIStateStore()

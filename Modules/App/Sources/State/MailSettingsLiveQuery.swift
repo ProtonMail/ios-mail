@@ -99,7 +99,7 @@ extension MailSettings {
             draftMimeType: .applicationJson,
             enableFolderColor: false,
             fontFace: nil,
-            hideRemoteImages: false, 
+            hideRemoteImages: false,
             hideEmbeddedImages: false,
             hideSenderImages: false,
             imageProxy: .max,

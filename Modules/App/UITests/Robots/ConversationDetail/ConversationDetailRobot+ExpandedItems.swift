@@ -18,14 +18,14 @@
 import Foundation
 
 extension ConversationDetailRobot {
-    
+
     // MARK: Actions
-    
+
     func tapThreeDots(at index: Int) {
         let model = UITestConversationExpandedItemEntryModel(
             index: index
         )
-        
+
         model.tapThreeDots()
     }
 
@@ -33,19 +33,19 @@ extension ConversationDetailRobot {
         let model = UITestConversationExpandedItemEntryModel(
             index: index
         )
-        
+
         model.toggleItem()
     }
-    
+
     // MARK: Assertions
-    
+
     func hasExpandedEntries(indexes: Int...) {
         for index in indexes {
             let model = UITestConversationExpandedItemEntryModel(index: index)
-            model.isDisplayed() 
+            model.isDisplayed()
         }
     }
-    
+
     func verifyExpandedEntries(_ entries: [UITestConversationExpandedItemEntry]) {
         for entry in entries {
             verifyEntry(entry)

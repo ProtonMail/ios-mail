@@ -79,7 +79,6 @@ final class RecipientChipView: UIView {
     }
 }
 
-
 extension RecipientChipView {
 
     private enum SubviewFactory {

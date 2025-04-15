@@ -18,11 +18,11 @@
 import Foundation
 
 final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
-    
+
     let collapsedHeader = UITestConversationCollapsedHeaderEntry(
         index: 0,
         senderName: "Not Proton",
@@ -54,7 +54,7 @@ final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCa
                 wildcardMatch: true
             )
         )
-        
+
         let collapsedProtonHeader = UITestConversationCollapsedHeaderEntry(
             index: 0,
             senderName: "Proton",
@@ -63,13 +63,13 @@ final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCa
             date: "May 20",
             toRecipients: "to youngbee@proton.black"
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
 
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.verifyCollapsedHeader(collapsedProtonHeader)
         }

@@ -73,7 +73,7 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideRemoteImages, to: false)
-                
+
                 await loadMessageBody(with: updatedOptions)
             }
         case .markAsLegitimate:
@@ -107,7 +107,7 @@ final class MessageBodyStateStore: StateStore {
             state = state.copy(\.body, to: .error(error))
         }
     }
-    
+
     @MainActor
     private func markAsLegitimate(with options: TransformOpts) async {
         switch await legitMessageMarker.markAsLegitimate(forMessageID: messageID) {
@@ -117,7 +117,7 @@ final class MessageBodyStateStore: StateStore {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
-    
+
     @MainActor
     private func unblockSender(emailAddress: String, with options: TransformOpts) async {
         switch await senderUnblocker.unblock(emailAddress: emailAddress) {

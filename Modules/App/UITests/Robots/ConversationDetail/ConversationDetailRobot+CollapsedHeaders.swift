@@ -18,16 +18,16 @@
 import Foundation
 
 extension ConversationDetailRobot {
-    
+
     // MARK: Actions
 
     func toggleCollapsedHeader(at index: Int) {
         let model = UITestConversationCollapsedHeaderEntryModel(index: index)
         model.expand()
     }
-    
+
     // MARK: Assertions
-    
+
     func verifyCollapsedHeader(_ entry: UITestConversationCollapsedHeaderEntry) {
         let model = UITestConversationCollapsedHeaderEntryModel(index: entry.index)
         model.hasSenderName(entry.senderName)

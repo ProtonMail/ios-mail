@@ -20,57 +20,57 @@ import XCTest
 
 struct UITestConversationCollapsedItemEntryModel: ApplicationHolder {
     let index: Int
-    
+
     // MARK: UI Elements
-    
+
     private var parent: XCUIElement {
         application.otherElements[Identifiers.parent]
     }
-    
+
     private var rootItem: XCUIElement {
         parent.otherElements["\(Identifiers.rootItem)#\(index)"]
     }
-    
+
     private var senderName: XCUIElement {
         rootItem.staticTexts[Identifiers.senderName]
     }
-    
+
     private var dateText: XCUIElement {
         rootItem.staticTexts[Identifiers.date]
     }
-    
+
     private var preview: XCUIElement {
         rootItem.staticTexts[Identifiers.preview]
     }
-        
+
     // MARK: - Actions
-    
+
     func toggleItem() {
         withItemDisplayed { rootItem.tap() }
     }
-    
+
     private func scrollTo() -> Bool {
         UITestVisibilityHelper.shared.findElement(element: rootItem, parent: parent)
     }
-    
+
     // MARK: - Assertions
-    
+
     func isDisplayed() {
         withItemDisplayed { XCTAssertTrue(rootItem.exists) }
     }
-    
+
     func hasSenderName(_ name: String) {
         withItemDisplayed { XCTAssertEqual(senderName.label, name) }
     }
-    
+
     func hasDate(_ date: String) {
         withItemDisplayed { XCTAssertEqual(dateText.label, date) }
     }
-    
+
     func hasPreview(_ value: String) {
         withItemDisplayed { XCTAssertEqual(preview.label, value) }
     }
-    
+
     func withItemDisplayed(block: () -> Void) {
         XCTAssertTrue(scrollTo())
         block()

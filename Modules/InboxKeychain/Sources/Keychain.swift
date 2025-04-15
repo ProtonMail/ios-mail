@@ -82,7 +82,7 @@ open class Keychain {
     ///   - key: key under which the data should be added / updated
     @available(*, deprecated, message: "Please use the throwing alternative: setOrError(:forKey:) and handle the error")
     public func set(_ data: Data, forKey key: String, attributes: [CFString: Any]? = nil) {
-       _ = self.add(data: data, forKey: key, attributes: attributes)
+        _ = self.add(data: data, forKey: key, attributes: attributes)
     }
 
     /// Adds or updates the value in the keychain.
@@ -225,7 +225,7 @@ open class Keychain {
         }
 
         if let attributes {
-            for(key, value) in attributes {
+            for (key, value) in attributes {
                 query[key as String] = value as AnyObject
             }
         }
@@ -310,7 +310,7 @@ open class Keychain {
         }
 
         if let attributes {
-            for(key, value) in attributes {
+            for (key, value) in attributes {
                 query[key as String] = value as AnyObject
             }
         }

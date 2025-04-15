@@ -177,7 +177,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.system) { item in
                 SidebarItemButton(
                     item: .system(item),
-                    action: { select(item: .system(item)) }, 
+                    action: { select(item: .system(item)) },
                     content: { systemItemContent(model: item) }
                 )
             }
@@ -206,7 +206,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.labels) { item in
                 SidebarItemButton(
                     item: .label(item),
-                    action: { select(item: .label(item)) }, 
+                    action: { select(item: .label(item)) },
                     content: { labelItemContent(model: item) }
                 )
             }
@@ -222,7 +222,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.other) { item in
                 SidebarItemButton(
                     item: .other(item),
-                    action: { select(item: .other(item)) }, 
+                    action: { select(item: .other(item)) },
                     content: { otherItemCotent(model: item) }
                 )
             }

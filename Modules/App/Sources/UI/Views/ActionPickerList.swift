@@ -121,7 +121,7 @@ struct ActionPickerListIdentifiers {
     static let rootElement = "actionPicker.rootItem"
     static let messageActionIcon = "actionPicker.action.icon"
     static let messageActionText = "actionPicker.action.text"
-    
+
     static func messageActionIdentifier(section: Int, index: Int) -> String {
         "actionPicker.section\(section).action\(index)"
     }

@@ -44,7 +44,7 @@ final class RecipientsFieldIdleController: UIViewController {
         extraRecipientsCount.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: Layout.minCellHeight + 2*verticalSpacing),
+            view.heightAnchor.constraint(equalToConstant: Layout.minCellHeight + 2 * verticalSpacing),
             recipientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             recipientView.topAnchor.constraint(equalTo: view.topAnchor, constant: verticalSpacing),
             recipientView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalSpacing),

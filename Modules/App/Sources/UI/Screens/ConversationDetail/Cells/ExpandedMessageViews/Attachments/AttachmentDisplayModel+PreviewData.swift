@@ -22,7 +22,7 @@ extension Array where Element == AttachmentDisplayModel {
     static var previewData: Self {
         [
             .init(
-                id: .init(value: 1), 
+                id: .init(value: 1),
                 mimeType: .init(mime: "pdf", category: .pdf),
                 name: "CV",
                 size: 1200

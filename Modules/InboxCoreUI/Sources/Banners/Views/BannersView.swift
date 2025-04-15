@@ -21,11 +21,11 @@ import SwiftUI
 
 public struct BannersView: View {
     let model: OrderedSet<Banner>
-    
+
     public init(model: OrderedSet<Banner>) {
         self.model = model
     }
-    
+
     public var body: some View {
         VStack(spacing: 0) {
             ForEach(model, id: \.id) { banner in
@@ -75,4 +75,3 @@ public struct BannersView: View {
         )
     ])
 }
-

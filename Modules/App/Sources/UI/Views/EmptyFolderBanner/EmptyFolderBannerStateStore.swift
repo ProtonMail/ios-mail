@@ -27,7 +27,7 @@ final class EmptyFolderBannerStateStore: StateStore {
         case emptyFolder
         case deleteConfirmed(DeleteConfirmationAlertAction)
     }
-    
+
     struct State: Equatable, Copying {
         let icon: ImageResource
         let title: String
@@ -51,7 +51,7 @@ final class EmptyFolderBannerStateStore: StateStore {
         self.toastStateStore = toastStateStore
         self.messagesDeleter = .init(mailUserSession: mailUserSession, wrapper: wrapper)
     }
-    
+
     // MARK: - StateStore
     
     @MainActor
@@ -64,7 +64,7 @@ final class EmptyFolderBannerStateStore: StateStore {
                 folder: model.folder.type,
                 action: { [weak self] action in await self?.handle(action: .deleteConfirmed(action)) }
             )
-            
+
             state = state.copy(\.alert, to: alert)
         case .deleteConfirmed(let action):
             state = state.copy(\.alert, to: nil)

@@ -28,7 +28,7 @@ extension PhotosItemFile: Transferable {
 
     /**
      Receives the transferred data and stores it in a temporary folder with a unique folder name.
-
+    
      Given that the `Transferable` works with static varibles, we can't pass the desired destination folder without
      risking facing some sort of race condition. To avoid that problem we use a unique folder to export the selected file to.
      */

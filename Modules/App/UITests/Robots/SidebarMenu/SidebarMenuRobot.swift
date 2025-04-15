@@ -22,7 +22,7 @@ final class SidebarMenuRobot: Robot {
     var rootElement: XCUIElement {
         application.otherElements[SidebarScreenIdentifiers.rootItem]
     }
-    
+
     func dismiss() {
         rootElement.swipeLeft()
     }

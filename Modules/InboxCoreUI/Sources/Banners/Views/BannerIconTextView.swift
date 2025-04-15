@@ -22,14 +22,14 @@ public struct BannerIconTextView: View {
     let text: String
     let style: Banner.ContentStyle
     let lineLimit: Int?
-    
+
     public init(icon: ImageResource, text: String, style: Banner.ContentStyle, lineLimit: Int?) {
         self.icon = icon
         self.text = text
         self.style = style
         self.lineLimit = lineLimit
     }
-    
+
     public var body: some View {
         Group {
             Image(icon)

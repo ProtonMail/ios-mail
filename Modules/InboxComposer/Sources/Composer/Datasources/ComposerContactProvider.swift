@@ -36,7 +36,7 @@ public final class ComposerContactProvider {
 
     /**
      Returns the filtered contacts that match the `text` input.
-
+    
      If this functions is called multiple times in a short interval, any ongoing task will be cancelled and
      only the latest one will finish. Only finished tasks will call the `completion` block.
      */
@@ -45,7 +45,7 @@ public final class ComposerContactProvider {
         task = Task {
             let textForMatching = text.toContactMatchFormat()
             var matchingContacts = [ComposerContact]()
-            
+
             if let contactsResult {
                 matchingContacts = contactsResult.filter(textForMatching)
             }

@@ -23,20 +23,20 @@ import InboxTesting
 import XCTest
 
 class MessageBannersViewSnapshotTests: BaseTestCase {
-    
+
     var originalCurrentDate: (() -> Date)!
-    
+
     override func setUp() {
         super.setUp()
         originalCurrentDate = DateEnvironment.currentDate
         DateEnvironment.currentDate = { .fixture("2025-02-07 09:32:00") }
     }
-    
+
     override func tearDown() {
         DateEnvironment.currentDate = originalCurrentDate
         super.tearDown()
     }
-    
+
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [
@@ -50,10 +50,10 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
             timer: Timer.self,
             action: { _ in }
         )
-        
+
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
-    
+
     func testMessageBannersViewSecondVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [
@@ -67,7 +67,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
             timer: Timer.self,
             action: { _ in }
         )
-        
+
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
 

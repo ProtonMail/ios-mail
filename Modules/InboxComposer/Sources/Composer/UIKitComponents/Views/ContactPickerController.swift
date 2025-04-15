@@ -70,12 +70,12 @@ final class ContactPickerController: UIViewController {
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DS.Spacing.large),
             label.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            
+
             textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
             textField.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.standard),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
             textField.heightAnchor.constraint(equalToConstant: 20),
-            
+
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: DS.Spacing.moderatelyLarge),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -98,7 +98,7 @@ final class ContactPickerController: UIViewController {
             label.text = state.group.string
             textField.text = state.input
             view.isHidden = state.controllerState != .contactPicker || state.matchingContacts.isEmpty
-            
+
             let matchedContactsChanged = oldState?.matchingContacts != state.matchingContacts
             if matchedContactsChanged {
                 contacts = state.matchingContacts
@@ -149,7 +149,7 @@ extension ContactPickerController: UITableViewDelegate {
 }
 
 extension ContactPickerController {
-    
+
     private enum SubviewFactory {
         static var title: UILabel {
             ComposerSubviewFactory.fieldTitle

@@ -21,7 +21,7 @@ struct RustMessageBodyWrapper {
     let messageBody: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> GetMessageBodyResult
     let markMessageHam: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> VoidActionResult
     let unblockSender: @Sendable (_ mailbox: Mailbox, _ email: String) async -> VoidActionResult
-    
+
     init(
         messageBody: @escaping @Sendable (Mailbox, Id) async -> GetMessageBodyResult,
         markMessageHam: @escaping @Sendable (Mailbox, Id) async -> VoidActionResult,

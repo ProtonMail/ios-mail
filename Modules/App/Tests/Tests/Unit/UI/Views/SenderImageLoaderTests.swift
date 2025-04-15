@@ -95,7 +95,6 @@ final class SenderImageLoaderTests: XCTestCase {
     }
 }
 
-
 private final class MockImageDataSource: SenderImageDataSource {
     var imageToReturn: UIImage?
 

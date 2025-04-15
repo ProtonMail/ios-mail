@@ -21,9 +21,9 @@ import SwiftUI
 enum DeleteConfirmationAlertAction: AlertActionInfo, CaseIterable {
     case cancel
     case delete
-    
+
     // MARK: - AlertActionInfo
-    
+
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:

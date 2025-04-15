@@ -18,11 +18,11 @@
 import Foundation
 
 final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }
-    
+
     /// TestId 439988, 439996, 439999
     func testMessageActionBottomSheetWhenInInbox() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -45,10 +45,10 @@ final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         verifyEntries(folder: .inbox, entries: UITestBottomSheetDefaultEntries.MessageActions.defaultInboxList)
     }
-    
+
     /// TestId 439989
     func testMessageActionBottomSheetWhenInTrash() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -74,7 +74,7 @@ final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
 
         verifyEntries(folder: .trash, entries: UITestBottomSheetDefaultEntries.MessageActions.defaultTrashList)
     }
-    
+
     /// TestId 439990
     func testMessageActionBottomSheetWhenInSpam() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -97,10 +97,10 @@ final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         verifyEntries(folder: .spam, entries: UITestBottomSheetDefaultEntries.MessageActions.defaultSpamList)
     }
-    
+
     /// TestId 439995
     func testMessageActionBottomSheetWhenInArchive() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -123,10 +123,10 @@ final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         verifyEntries(folder: .archive, entries: UITestBottomSheetDefaultEntries.MessageActions.defaultArchiveList)
     }
-    
+
     /// TestId 439998
     func testMessageActionBottomSheetWhenStarred() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -149,26 +149,26 @@ final class ConversationDetailBottomSheetTests: PMUIMockedNetworkTestCase {
                 wildcardMatch: true
             )
         )
-        
+
         let entries = [
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Unstar")
         ]
-        
+
         verifyEntries(folder: .inbox, entries: entries)
     }
-    
+
     private func verifyEntries(folder: UITestDestination, entries: [UITestBottomSheetDynamicEntry]) {
         navigator.navigateTo(folder)
-        
+
         MailboxRobot {
             $0.tapEntryAt(index: 0)
         }
-        
+
         ConversationDetailRobot {
             $0.waitForLoaderToDisappear()
             $0.tapThreeDots(at: 0)
         }
-        
+
         ActionBottomSheetRobot {
             $0.verifyShown()
             $0.hasEntries(entries)

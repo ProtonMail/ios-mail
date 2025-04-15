@@ -38,7 +38,7 @@ extension View {
     func accessibilityElementGroupedVoiceOver(
         value: String,
         uiTestSupport: AccessibilityChildBehavior = .contain
-    ) -> some View  {
+    ) -> some View {
         modifier(AccessibilityElementGroupedVoiceOver(voiceOverValue: value, uiTestSupport: uiTestSupport))
     }
 }

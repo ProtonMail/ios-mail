@@ -213,7 +213,7 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     func attachmentUploadDirectory() -> String {
         attachmentUploadDirectoryURL.path()
     }
-    
+
     func attachments() async -> AttachmentListAttachmentsResult {
         .ok(mockAttachments)
     }

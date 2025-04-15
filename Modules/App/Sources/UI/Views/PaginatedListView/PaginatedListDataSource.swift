@@ -29,7 +29,7 @@ final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecke
         self.pageSize = pageSize
         self.fetchPage = fetchPage
     }
-    
+
     /// This function is for convenience to be able to show the initial state if the operation to have the fetchPage ready
     /// takes some time and we are not ready to call `fetchInitialPage`.
     func resetToInitialState() async {
@@ -92,8 +92,8 @@ extension PaginatedListDataSource {
         var isLastPage: Bool = false
 
         var viewState: PaginatedListViewState {
-            let isFetchingFirstPage = isFetchingNextPage && currentPage == 0            
-            
+            let isFetchingFirstPage = isFetchingNextPage && currentPage == 0
+
             guard !isFetchingFirstPage else {
                 return .fetchingInitialPage
             }

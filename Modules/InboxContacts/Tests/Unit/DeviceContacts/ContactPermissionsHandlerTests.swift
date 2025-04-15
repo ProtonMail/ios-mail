@@ -22,49 +22,49 @@ import proton_app_uniffi
 import XCTest
 
 final class ContactPermissionsHandlerTests: BaseTestCase {
-    
+
     var sut: ContactPermissionsHandler!
     var contactStoreSpy: CNContactStoreSpy!
-    
+
     override func setUp() {
         super.setUp()
         contactStoreSpy = .init()
         sut = .init(permissionsHandler: CNContactStoreSpy.self, contactStore: contactStoreSpy)
     }
-    
+
     override func tearDown() {
         contactStoreSpy = nil
         sut = nil
         CNContactStoreSpy.cleanUp()
         super.tearDown()
     }
-    
+
     func testRequestAccessIfNeeded_WhenPermissionsNotDetermined_ItRequestForPermissions() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .notDetermined]
-        
+
         contactStoreSpy.requestAccessCompletionBlockCalledImmediately = true
-        
+
         let granted = await sut.requestAccessIfNeeded()
-        
+
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 1)
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.last?.entityType, .contacts)
         XCTAssertEqual(granted, true)
     }
-    
+
     func testRequestAccessIfNeeded_WhenPermissionsRestricted_ItDoesNotRequestForPermissions() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
-        
+
         let granted = await sut.requestAccessIfNeeded()
-        
+
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
         XCTAssertEqual(granted, false)
     }
-    
+
     func testRequestAccessIfNeeded_WhenPermissionsDenied_ItDoesNotRequestForPermissions() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
-        
+
         let granted = await sut.requestAccessIfNeeded()
-        
+
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
         XCTAssertEqual(granted, false)
     }
@@ -72,21 +72,21 @@ final class ContactPermissionsHandlerTests: BaseTestCase {
     func testRequestAccessIfNeeded_WhenPermissionsLimited_ItDoesNotRequestForPermissions() async {
         if #available(iOS 18.0, *) {
             CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .limited]
-            
+
             let granted = await sut.requestAccessIfNeeded()
-            
+
             XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
             XCTAssertEqual(granted, true)
         }
     }
-    
+
     func testRequestAccessIfNeeded_WhenPermissionsAuthorized_ItDoesNotRequestForPermissions() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
-        
+
         let granted = await sut.requestAccessIfNeeded()
-        
+
         XCTAssertEqual(contactStoreSpy.requestAccessCalls.count, 0)
         XCTAssertEqual(granted, true)
     }
-    
+
 }

@@ -176,7 +176,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                     self.invokedAvailableActionsWithConversationIDs = ids
                     return .ok(self.stubbedLabelAsActions)
                 }
-            ), 
+            ),
             labelAsActions: .init(
                 labelMessagesAs: { _, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
                     self.invokedLabelMessage.append(.init(
@@ -198,7 +198,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
                     return .ok(false)
                 }
-            ), 
+            ),
             toastStateStore: toastStateStore,
             dismiss: { self.invokedDismissCount += 1 }
         )

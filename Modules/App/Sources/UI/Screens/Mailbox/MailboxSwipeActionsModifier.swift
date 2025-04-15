@@ -74,7 +74,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
 
 extension View {
 
-    @ViewBuilder 
+    @ViewBuilder
     func mailboxSwipeActions(
         swipeActions: AssignedSwipeActions,
         isSwipeEnabled: Bool,

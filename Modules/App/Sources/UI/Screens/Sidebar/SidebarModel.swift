@@ -171,7 +171,7 @@ final class SidebarModel: Sendable, ObservableObject {
 
     private func unselected<Item: SelectableItem>(
         keyPath: KeyPath<SidebarState, [Item]>
-    ) -> [Item] where Item.SelectableItemType == Item{
+    ) -> [Item] where Item.SelectableItemType == Item {
         state[keyPath: keyPath].map { item in item.copy(isSelected: false) }
     }
 

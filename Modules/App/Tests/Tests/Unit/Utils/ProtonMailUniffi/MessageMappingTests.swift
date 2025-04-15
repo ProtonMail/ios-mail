@@ -70,7 +70,7 @@ final class MessageMappingTests: XCTestCase {
         let result = message.toMailboxItemCellUIModel(showLocation: false)
         XCTAssertNil(result.locationIcon)
     }
-    
+
 }
 
 private extension Message {
@@ -118,7 +118,7 @@ private extension Message {
             toList: to,
             unread: true,
             customLabels: [],
-            starred: true, 
+            starred: true,
             avatar: .init(text: .notUsed, color: .notUsed),
             isDraft: false
         )

@@ -20,14 +20,14 @@ import XCTest
 
 class UITestSidebarListItemEntryModel: UITestSidebarListItemEntryBaseModel {
     let label: String
-    
+
     init(parent: XCUIElement, label: String) {
         self.label = label
         super.init(parent: parent)
     }
-    
+
     // MARK: UI Elements
-    
+
     override var rootItem: XCUIElement {
         let predicate = NSPredicate(format: "label BEGINSWITH[c] %@", label)
         return application.buttons.containing(predicate).firstMatch
@@ -36,7 +36,7 @@ class UITestSidebarListItemEntryModel: UITestSidebarListItemEntryBaseModel {
     private var badgeElement: XCUIElement {
         rootItem.staticTexts[Identifiers.badgeItem]
     }
-    
+
     private var chevronButton: XCUIElement {
         rootItem.buttons[Identifiers.chevron]
     }
@@ -56,11 +56,11 @@ class UITestSidebarListItemEntryModel: UITestSidebarListItemEntryBaseModel {
     func isBadgeNotShown() {
         XCTAssertFalse(badgeElement.exists)
     }
-    
+
     func isChevronShown() {
         XCTAssertTrue(chevronButton.exists)
     }
-    
+
     func isChevronNotShown() {
         XCTAssertFalse(chevronButton.exists)
     }

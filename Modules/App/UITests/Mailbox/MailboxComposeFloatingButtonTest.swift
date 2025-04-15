@@ -18,11 +18,11 @@
 import Foundation
 
 final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
-    
+
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }
-    
+
     /// TestId 448600
     func testComposeButtonShownAsExpandedByDefault() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -33,14 +33,14 @@ final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasComposeButtonExpanded()
         }
     }
-    
+
     /// TestId 448601
     func testComposeButtonCollapsesOnScrollDownwardsGesture() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -51,17 +51,17 @@ final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasComposeButtonExpanded()
             $0.scrollDown()
-            
+
             $0.hasComposeButtonCollapsed()
         }
     }
-    
+
     /// TestId 448602
     func testComposeButtonReExpandsOnScrollUpwardsGesture() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -72,18 +72,18 @@ final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.hasComposeButtonExpanded()
             $0.scrollDown()
-            
+
             $0.scrollUp()
             $0.hasComposeButtonExpanded()
         }
     }
-    
+
     /// TestId 448603, 448604
     func testComposeButtonVisibilityDependsOnSelectionMode() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -94,13 +94,13 @@ final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
                 ignoreQueryParams: true
             )
         )
-        
+
         navigator.navigateTo(.inbox)
-        
+
         MailboxRobot {
             $0.selectItemAt(index: 0)
             $0.hasComposeButtonHidden()
-            
+
             $0.unselectItemAt(index: 0)
             $0.hasComposeButtonExpanded()
         }

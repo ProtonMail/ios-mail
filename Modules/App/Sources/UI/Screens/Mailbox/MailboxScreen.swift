@@ -115,7 +115,7 @@ struct MailboxScreen: View {
     }
 
     private func onboardingScreenDismissed() {
-         onboardingStore.shouldShowOnboarding = false
+        onboardingStore.shouldShowOnboarding = false
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -158,8 +158,8 @@ extension MailboxScreen {
             composeButtonView
                 .accessibilitySortPriority(1)
         }
-        .background(DS.Color.Background.norm) // sets also the color for the navigation bar
-        .toolbarBackground(.hidden, for: .navigationBar) // the purpose of this is to hide the toolbar shadow
+        .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
+        .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow
         .navigationBarTitleDisplayMode(.inline)
         .withAccountManager(
             isPresented: $isAccountManagerPresented,

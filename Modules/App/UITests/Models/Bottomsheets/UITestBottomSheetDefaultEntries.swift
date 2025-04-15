@@ -18,7 +18,7 @@
 import Foundation
 
 struct UITestBottomSheetDefaultEntries {
-    
+
     struct MessageActions {
         static let defaultInboxList = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Mark as unread"),
@@ -35,7 +35,7 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 2, index: 4, text: "View HTML"),
             UITestBottomSheetDynamicEntry(section: 2, index: 5, text: "Report phishing")
         ]
-        
+
         static let defaultTrashList = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Mark as unread"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Star"),
@@ -51,7 +51,7 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 2, index: 4, text: "View HTML"),
             UITestBottomSheetDynamicEntry(section: 2, index: 5, text: "Report phishing")
         ]
-        
+
         static let defaultSpamList = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Mark as unread"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Star"),
@@ -67,7 +67,7 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 2, index: 4, text: "View HTML"),
             UITestBottomSheetDynamicEntry(section: 2, index: 5, text: "Report phishing")
         ]
-        
+
         static let defaultArchiveList = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Mark as unread"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Star"),
@@ -83,7 +83,7 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 2, index: 4, text: "View HTML"),
             UITestBottomSheetDynamicEntry(section: 2, index: 5, text: "Report phishing")
         ]
-        
+
         static let defaultSenderActions = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Message"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),
@@ -91,7 +91,7 @@ struct UITestBottomSheetDefaultEntries {
             UITestBottomSheetDynamicEntry(section: 1, index: 1, text: "Copy name"),
             UITestBottomSheetDynamicEntry(section: 2, index: 0, text: "Block this contact"),
         ]
-        
+
         static let defaultRecipientActions = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Message"),
             UITestBottomSheetDynamicEntry(section: 0, index: 1, text: "Add to contacts"),

@@ -126,7 +126,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
                     self.invokedAvailableActionsWithConversationIDs = ids
                     return .ok([])
                 }
-            ), 
+            ),
             toastStateStore: toastStateStore,
             moveToActions: moveToActionsSpy.testingInstance,
             navigation: { self.invokedNavigation.append($0) }

@@ -42,7 +42,7 @@ private extension View {
 private struct ToastModifier: ViewModifier {
     @Binding var state: ToastStateStore.State
     @State private var automaticDismissalTasks: OrderedDictionary<Toast, DispatchWorkItem> = [:]
-    
+
     func body(content: Content) -> some View {
         content
             .overlay(
@@ -57,22 +57,22 @@ private struct ToastModifier: ViewModifier {
                 if new.isEmpty {
                     state.toastHeights = [:]
                 }
-                
+
                 new.forEach { toast in
                     if automaticDismissalTasks[toast] == nil && toast.duration > 0 {
                         let automaticDismissalTask = DispatchWorkItem {
                             dismissToast(toast: toast)
                         }
-                        
+
                         automaticDismissalTasks[toast] = automaticDismissalTask
-                        
+
                         Dispatcher.dispatchOnMainAfter(.now() + toast.duration, automaticDismissalTask)
                     }
                 }
             }
     }
-    
-    @ViewBuilder 
+
+    @ViewBuilder
     private func toastView(toast: Toast) -> some View {
         VStack {
             Spacer()
@@ -89,7 +89,7 @@ private struct ToastModifier: ViewModifier {
         }
         .transition(.move(edge: .bottom))
     }
-    
+
     private func dismissToast(toast: Toast) {
         state.toasts = state.toasts.filter { $0 != toast }
         state.toastHeights[toast] = nil

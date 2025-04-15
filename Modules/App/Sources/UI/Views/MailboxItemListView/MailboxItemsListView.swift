@@ -134,7 +134,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 topTrailingRadius: 0
             )
         )
-        .background(DS.Color.Background.norm) // cell background color after clipping
+        .background(DS.Color.Background.norm)  // cell background color after clipping
     }
 
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
@@ -185,8 +185,8 @@ private extension SelectionModeState {
         let dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(pageSize: 20) { currentPage, pageSize in
             try? await Task.sleep(nanoseconds: 1_000_000_000)
             let items = MailboxItemCellUIModel.testData()
-            let isLastPage = (currentPage+1) * pageSize > items.count
-            let range = currentPage * pageSize..<min(items.count, (currentPage+1) * pageSize)
+            let isLastPage = (currentPage + 1) * pageSize > items.count
+            let range = currentPage * pageSize..<min(items.count, (currentPage + 1) * pageSize)
             return .init(newItems: Array(items[range]), isLastPage: isLastPage)
         }
 
@@ -208,7 +208,7 @@ private extension SelectionModeState {
             return .init(
                 dataSource: dataSource,
                 selectionState: selectionState,
-                itemTypeForActionBar: .conversation, 
+                itemTypeForActionBar: .conversation,
                 isOutboxLocation: false,
                 swipeActions: .init(
                     left: .toggleRead,

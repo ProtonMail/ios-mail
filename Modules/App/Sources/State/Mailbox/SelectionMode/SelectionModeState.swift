@@ -21,7 +21,7 @@ import Foundation
  This class wraps the mailbox item selection state and its modifier.
 
  The reason to keep the writing logic in a separate object is to be able
- to differentiate entities that only observe the selection state from the 
+ to differentiate entities that only observe the selection state from the
  ones that are also responsible for updating it.
  */
 final class SelectionMode {

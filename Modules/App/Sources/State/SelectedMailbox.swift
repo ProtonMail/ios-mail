@@ -25,7 +25,6 @@ enum SelectedMailbox: Equatable {
     case customLabel(labelId: ID, name: LocalizedStringResource)
     case customFolder(labelId: ID, name: LocalizedStringResource)
 
-
     var isInbox: Bool {
         switch self {
         case .inbox:

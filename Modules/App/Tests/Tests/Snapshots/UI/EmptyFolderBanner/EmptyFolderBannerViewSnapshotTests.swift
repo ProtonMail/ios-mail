@@ -36,7 +36,7 @@ struct EmptyFolderBannerViewSnapshotTests {
             self.state = state
         }
     }
-    
+
     @Test(
         "all snapshot variants",
         arguments: [
@@ -51,7 +51,7 @@ struct EmptyFolderBannerViewSnapshotTests {
         let snapshotSuffix = "\(testCase.folder)_\(testCase.state)"
         assertSnapshotsOnIPhoneX(of: sut(testCase.folder, testCase.state), named: snapshotSuffix)
     }
-    
+
     private func sut(
         _ folder: SpamOrTrash,
         _ state: AutoDeleteState

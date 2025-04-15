@@ -22,12 +22,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.TinyBarracuda
     }
-    
+
     private let standaloneEntry = UITestSidebarListItemEntry(text: "Main Folder", badge: "1", expandable: false)
     private let parentEntry = UITestSidebarListItemEntry(text: "Parent Folder", badge: "2", expandable: true)
     private let childEntry = UITestSidebarListItemEntry(text: "Child Folder", expandable: true)
     private let subChildEntry = UITestSidebarListItemEntry(text: "Subchild Folder", expandable: false)
-    
+
     /// TestId 448501, 448505
     func testSidebarFoldersCollapsed() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -59,9 +59,9 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -71,7 +71,7 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             $0.hasNoEntries(childEntry, subChildEntry)
         }
     }
-    
+
     /// TestId 448507, 448513
     func testSidebarFoldersExpansion() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -103,9 +103,9 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -114,12 +114,12 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             $0.toggleItemExpansion(withLabel: parentEntry.text)
             $0.hasEntries(parentEntry, childEntry)
             $0.hasNoEntries(subChildEntry)
-            
+
             $0.toggleItemExpansion(withLabel: childEntry.text)
             $0.hasEntries(parentEntry, childEntry, subChildEntry)
         }
     }
-    
+
     /// TestId 448511
     func testSidebarFoldersExpansionIsRetainedOnSidebarReopening() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -151,9 +151,9 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -162,21 +162,21 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             $0.toggleItemExpansion(withLabel: parentEntry.text)
             $0.hasEntries(parentEntry, childEntry)
             $0.hasNoEntries(subChildEntry)
-            
+
             $0.dismiss()
             $0.verifyHidden()
         }
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
-        
+
         SidebarMenuRobot {
             $0.hasEntries(parentEntry, childEntry)
             $0.hasNoEntries(subChildEntry)
         }
     }
-    
+
     /// TestId 448516, 448517
     func testSidebarFoldersCollapsing() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -208,9 +208,9 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -219,20 +219,20 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
             $0.toggleItemExpansion(withLabel: parentEntry.text)
             $0.hasEntries(parentEntry, childEntry)
             $0.hasNoEntries(subChildEntry)
-            
+
             $0.toggleItemExpansion(withLabel: childEntry.text)
             $0.hasEntries(parentEntry, childEntry, subChildEntry)
-            
+
             $0.toggleItemExpansion(withLabel: childEntry.text)
             $0.hasEntries(parentEntry, childEntry)
             $0.hasNoEntries(subChildEntry)
-            
+
             $0.toggleItemExpansion(withLabel: parentEntry.text)
             $0.hasEntries(parentEntry)
             $0.hasNoEntries(childEntry, subChildEntry)
         }
     }
-    
+
     /// TestId 448506
     func testCreateFolderButton() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -245,7 +245,7 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -253,7 +253,7 @@ final class MailboxSidebarFoldersTests: PMUIMockedNetworkTestCase {
         SidebarMenuRobot {
             $0.tapCreateFolder()
         }
-        
+
         CreateFolderLabelRobot {
             $0.verifyShown()
         }

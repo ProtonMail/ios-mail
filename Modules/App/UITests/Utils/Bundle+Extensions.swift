@@ -29,13 +29,11 @@ extension Bundle {
             do {
                 let url = URL(fileURLWithPath: filepath)
                 return try Data(contentsOf: url)
-            }
-            catch {
+            } catch {
                 print("An error occurred while parsing file \(fileName).")
                 return nil
             }
-        }
-        else {
+        } else {
             print("Could not find file \(fileName), unable to retrieve file contents.")
             return nil
         }

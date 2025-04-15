@@ -40,7 +40,7 @@ struct MessageBodyAttachmentsView: View {
     }
 
     // MARK: - Private
-    
+
     @ViewBuilder
     private func makeBody() -> some View {
         switch state.listState {

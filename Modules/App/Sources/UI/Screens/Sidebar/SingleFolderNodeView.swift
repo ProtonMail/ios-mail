@@ -91,7 +91,7 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                         folder: childFolder,
                         padding: padding + DS.Spacing.large,
                         selected: selected,
-                        toggle: toggle, 
+                        toggle: toggle,
                         unreadTextView: unreadTextView
                     )
                 }

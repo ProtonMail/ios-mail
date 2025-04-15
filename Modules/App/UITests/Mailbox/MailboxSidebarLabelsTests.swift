@@ -35,7 +35,7 @@ final class MailboxSidebarLabelsTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }
@@ -43,12 +43,12 @@ final class MailboxSidebarLabelsTests: PMUIMockedNetworkTestCase {
         SidebarMenuRobot {
             $0.tapCreateLabel()
         }
-        
+
         CreateFolderLabelRobot {
             $0.verifyShown()
         }
     }
-    
+
     /// TestId 448521
     func testCustomLabelDisplayedWithCounter() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -73,12 +73,12 @@ final class MailboxSidebarLabelsTests: PMUIMockedNetworkTestCase {
                 serveOnce: true
             )
         )
-        
+
         let labelWithCounter = UITestSidebarListItemEntry(text: "Test Label", badge: "1")
         let labelNoCounter = UITestSidebarListItemEntry(text: "Test Label 2")
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.openSidebarMenu()
         }

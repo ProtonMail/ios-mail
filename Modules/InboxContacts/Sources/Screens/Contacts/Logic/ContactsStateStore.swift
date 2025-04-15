@@ -80,7 +80,7 @@ final class ContactsStateStore: ObservableObject {
             toastStateStore.present(toast: .comingSoon)
             // FIXME: To remove, added only to avoid changing tests and to remove navigation for the demo
             #if canImport(XCTest)
-            goToDetails(item: item)
+                goToDetails(item: item)
             #endif
         case .onLoad:
             startWatchingUpdates()

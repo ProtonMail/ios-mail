@@ -113,7 +113,7 @@ private class PINVerifierSpy: PINVerifier, @unchecked Sendable {
     func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {
         verifyPinCodeStub
     }
-    
+
     func remainingPinAttempts() async -> MailSessionRemainingPinAttemptsResult {
         remainingPinAttemptsCallCount += 1
 

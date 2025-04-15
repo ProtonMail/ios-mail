@@ -29,43 +29,43 @@ extension SidebarMenuRobot {
     func openSubscription() {
         tapEntry(withLabel: UITestSidebarEntry.subscription.rawValue)
     }
-    
+
     func openSent() {
         tapEntry(withLabel: UITestFolder.system(.sent).value)
     }
-    
+
     func openTrash() {
         tapEntry(withLabel: UITestFolder.system(.trash).value)
     }
-    
+
     func openSpam() {
         tapEntry(withLabel: UITestFolder.system(.spam).value)
     }
 
     func tapEntry(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)
-        
+
         model.findElement()
         model.tap()
-    
+
         // We wait for the root to disappear here because we don't expect a use case
         // where tapping an entry would not collapse the Sidebar Menu.
         _ = rootElement.waitUntilGone()
     }
-    
+
     func toggleItemExpansion(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)
-        
+
         model.findElement()
         model.tapChevron()
     }
-    
+
     func tapCreateFolder() {
         let model = UITestSidebarListCreateFolderEntryModel(parent: rootElement)
         model.findElement()
         model.tap()
     }
-    
+
     func tapCreateLabel() {
         let model = UITestSidebarListCreateLabelEntryModel(parent: rootElement)
         model.findElement()
@@ -77,7 +77,7 @@ extension SidebarMenuRobot {
             hasEntry(entry)
         }
     }
-    
+
     func hasNoEntries(_ entries: UITestSidebarListItemEntry...) {
         entries.forEach { entry in
             hasNoEntry(entry)
@@ -86,11 +86,11 @@ extension SidebarMenuRobot {
 
     private func hasEntry(_ entry: UITestSidebarListItemEntry) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: entry.text)
-        
+
         model.findElement()
         model.isIconDisplayed()
         model.isTextMatching(value: entry.text)
-        
+
         if entry.expandable {
             model.isChevronShown()
         } else {
@@ -99,12 +99,11 @@ extension SidebarMenuRobot {
 
         if let badge = entry.badge {
             model.isBadgeShown(value: badge)
-        }
-        else {
+        } else {
             model.isBadgeNotShown()
         }
     }
-    
+
     private func hasNoEntry(_ entry: UITestSidebarListItemEntry) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: entry.text)
         model.isNotShown()

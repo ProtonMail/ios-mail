@@ -251,7 +251,7 @@ actor LegacyMigrationService {
             return MigrationData(
                 username: authCredential.userName,
                 displayName: userInfo.displayName,
-                primaryAddr: userInfo.userAddresses.first { $0.receive == 1 && $0.status == 1}?.email ?? "",
+                primaryAddr: userInfo.userAddresses.first { $0.receive == 1 && $0.status == 1 }?.email ?? "",
                 keySecret: authCredential.mailboxPassword,
                 userId: authCredential.userID,
                 sessionId: authCredential.sessionID,

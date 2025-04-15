@@ -85,7 +85,7 @@ struct AttachmentsView: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .padding(.leading, DS.Spacing.small)
                 .accessibilityIdentifier(AttachmentsViewIdentifiers.extraAttachments)
-                .removeViewIf(extraAttachments < 1 )
+                .removeViewIf(extraAttachments < 1)
         }
     }
 }
@@ -170,7 +170,7 @@ fileprivate enum Layout {
 #Preview {
     VStack {
         AttachmentsView(
-            uiModel:[
+            uiModel: [
                 .init(
                     id: .init(value: 1),
                     icon: DS.Icon.icFileTypePages,
@@ -181,7 +181,7 @@ fileprivate enum Layout {
         .border(.red)
 
         AttachmentsView(
-            uiModel:[
+            uiModel: [
                 .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
                 .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
                 .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
@@ -212,6 +212,6 @@ private struct AttachmentsViewIdentifiers {
     static func attachmentCapsule(forIndex index: Int) -> String {
         "attachment.capsule#\(index)"
     }
-    
+
     static let extraAttachments = "attachment.extraIndicator"
 }

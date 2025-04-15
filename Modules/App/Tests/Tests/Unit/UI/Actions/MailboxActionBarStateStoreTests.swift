@@ -256,12 +256,12 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
                 }
             ),
             starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance, 
+            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             deleteActions: deleteActionsSpy.testingInstance,
             moveToActions: moveToActionsSpy.testingInstance,
             itemTypeForActionBar: viewMode.itemType,
             mailUserSession: .dummy,
-            mailbox: MailboxStub(viewMode: viewMode), 
+            mailbox: MailboxStub(viewMode: viewMode),
             toastStateStore: toastStateStore
         )
     }

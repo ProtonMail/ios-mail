@@ -27,7 +27,7 @@ extension AlertModel {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
         }
-        
+
         return .init(
             title: L10n.EmptyFolderBanner.Alert.emptyFolderTitle(folderName: folder.humanReadable),
             message: L10n.EmptyFolderBanner.Alert.emptyFolderMessage(folderName: folder.humanReadable),

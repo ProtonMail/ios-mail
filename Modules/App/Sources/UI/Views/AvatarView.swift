@@ -81,7 +81,6 @@ private struct AvatarViewIdentifiers {
     static let avatarImage = "avatar.image"
 }
 
-
 #Preview {
     let senderParams = SenderImageDataParameters(address: "aaron@proton.me", displaySenderImage: true)
     let avatarUIModel1 = AvatarUIModel(

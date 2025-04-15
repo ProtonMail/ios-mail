@@ -97,12 +97,12 @@ struct PaginatedListView<
 enum PaginatedListViewState: Equatable {
     case fetchingInitialPage
     case data(Data)
-    
+
     enum Data: Equatable {
         case items(isLastPage: Bool)
         case placeholder
     }
-    
+
     var showBottomSpinner: Bool {
         switch self {
         case .fetchingInitialPage:

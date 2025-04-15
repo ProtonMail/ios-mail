@@ -24,7 +24,7 @@ struct MessageBody: Sendable {
         let options: TransformOpts
         let embeddedImageProvider: EmbeddedImageProvider
     }
-    
+
     let banners: [MessageBanner]
     let html: HTML
 }
@@ -67,8 +67,8 @@ private extension DecryptedMessage {
         guard let options else {
             return try await bodyWithDefaults().get()
         }
-        
+
         return try await body(opts: options).get()
     }
-    
+
 }

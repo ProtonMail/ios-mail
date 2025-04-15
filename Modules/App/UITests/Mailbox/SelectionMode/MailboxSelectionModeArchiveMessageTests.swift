@@ -20,7 +20,7 @@ import Foundation
 final class MailboxSelectionModeArchiveMessageTests: PMUIMockedNetworkTestCase {
     private let firstSelectableItemIndex = 0
     private let secondSelectableItemIndex = 1
-    
+
     private let firstEntry = UITestMailboxListItemEntry(
         index: 0,
         avatar: UITestAvatarItemEntry.initials("S"),
@@ -29,7 +29,7 @@ final class MailboxSelectionModeArchiveMessageTests: PMUIMockedNetworkTestCase {
         date: "Jul 24, 2023",
         count: nil
     )
-    
+
     private let secondEntry = UITestMailboxListItemEntry(
         index: 1,
         avatar: UITestAvatarItemEntry.initials("S"),
@@ -61,27 +61,27 @@ final class MailboxSelectionModeArchiveMessageTests: PMUIMockedNetworkTestCase {
                 localPath: "conversation-label_base_placeholder.json"
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: firstEntry)
             $0.selectItemAt(index: firstSelectableItemIndex)
             $0.tapAction3()
-            
+
             $0.openSidebarMenu()
         }
-        
+
         SidebarMenuRobot {
             $0.openArchive()
         }
-        
+
         MailboxRobot {
             $0.verifyMailboxTitle(folder: UITestFolder.system(.archive))
             $0.hasEntries(entries: firstEntry)
         }
     }
-    
+
     /// TestId 433910
     func skip_testSelectionModeMultipleMoveToArchiveMessageMode() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -100,25 +100,25 @@ final class MailboxSelectionModeArchiveMessageTests: PMUIMockedNetworkTestCase {
         )
 
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: firstEntry, secondEntry)
             $0.selectItemsAt(indexes: [firstSelectableItemIndex, secondSelectableItemIndex])
             $0.tapAction3()
-            
+
             $0.openSidebarMenu()
         }
-        
+
         SidebarMenuRobot {
             $0.openArchive()
         }
-        
+
         MailboxRobot {
             $0.verifyMailboxTitle(folder: UITestFolder.system(.archive))
             $0.hasEntries(entries: firstEntry, secondEntry)
         }
     }
-    
+
     /// TestId 433912
     func skip_testSelectionModeMoveToArchiveMessageModeWithBeError() async {
         await environment.mockServer.addRequestsWithDefaults(
@@ -136,22 +136,22 @@ final class MailboxSelectionModeArchiveMessageTests: PMUIMockedNetworkTestCase {
                 status: 500
             )
         )
-        
+
         navigator.navigateTo(UITestDestination.inbox)
-        
+
         MailboxRobot {
             $0.hasEntries(entries: firstEntry)
             $0.selectItemAt(index: firstSelectableItemIndex)
             $0.tapAction3()
             $0.waitForEntry(atIndex: firstEntry.index)
-            
+
             $0.openSidebarMenu()
         }
-        
+
         SidebarMenuRobot {
             $0.openArchive()
         }
-        
+
         MailboxRobot {
             $0.verifyMailboxTitle(folder: UITestFolder.system(.archive))
             $0.hasNoEntries()

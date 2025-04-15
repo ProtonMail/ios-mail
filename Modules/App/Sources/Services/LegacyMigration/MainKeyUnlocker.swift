@@ -80,7 +80,7 @@ actor MainKeyUnlocker {
     func pinProtectedMainKey(pin: PIN) throws -> Data {
         guard
             let encryptedMainKey = try legacyKeychain.data(forKey: .pinProtectedMainKey),
-            let salt = try legacyKeychain.data(forKey:  .pinProtectionSalt)
+            let salt = try legacyKeychain.data(forKey: .pinProtectionSalt)
         else {
             throw MainKeyUnlockerError.missingKeychainData
         }

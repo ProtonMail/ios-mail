@@ -17,6 +17,6 @@
 
 import class SwiftUI.UIImage
 
-enum Caches{
+enum Caches {
     static let senderImageCache: MemoryCache<String, UIImage> = .init()
 }

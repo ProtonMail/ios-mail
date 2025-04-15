@@ -35,7 +35,7 @@ public final class AppLogger: @unchecked Sendable {
     }
 
     /**
-     It will log in the OS logging system. This logs are good for real time monitor in combination with relevant system logs 
+     It will log in the OS logging system. This logs are good for real time monitor in combination with relevant system logs
      like app extension, push notifications, background tasks, ...
      */
     static private func logToUnifiedLoggingSystem(message: String, category: Category?, isError: Bool) {
