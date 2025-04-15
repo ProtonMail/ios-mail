@@ -349,7 +349,11 @@ final class SignInCoordinator {
         alertController.addOKAction { [weak self] _ in
             self?.onFinish(result)
         }
-        DispatchQueue.main.async {
+
+        /// Fix: If the viewController is presenting a controller or dismissing one, we have to wait before we can actually show the alert.
+        /// Otherwise the app becomes unresponsive.
+        let delay: TimeInterval = self.viewController?.presentedViewController == nil ? 0 : 1
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() +  delay) {
             self.viewController?.present(alertController, animated: true, completion: nil)
         }
     }
