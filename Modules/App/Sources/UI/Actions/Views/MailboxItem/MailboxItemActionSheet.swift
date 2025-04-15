@@ -153,7 +153,10 @@ struct MailboxItemActionSheet: View {
     }
 
     private func replyButton(action: ReplyAction) -> some View {
-        Button(action: { replyActions(input.id, action) }) {
+        Button(action: {
+            navigation(.dismiss)
+            replyActions(input.id, action)
+        }) {
             VStack(spacing: DS.Spacing.standard) {
                 Image(action.displayData.image)
                     .resizable()
