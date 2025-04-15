@@ -25,6 +25,7 @@ struct AppSettingsScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var appAppearanceStore: AppAppearanceStore
+    @EnvironmentObject var router: Router<SettingsRoute>
     @StateObject var store: AppSettingsStateStore
 
     init(state: AppSettingsState = .initial) {
@@ -58,7 +59,7 @@ struct AppSettingsScreen: View {
                                     title: L10n.Settings.App.protection,
                                     icon: DS.SFSymbols.chevronRight,
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
-                                    action: { comingSoon() }
+                                    action: { router.go(to: .appProtection(store.state.storedAppSettings.protection)) }
                                 )
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {

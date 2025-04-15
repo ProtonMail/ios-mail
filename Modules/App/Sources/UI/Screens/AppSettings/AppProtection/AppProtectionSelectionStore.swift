@@ -26,6 +26,7 @@ class AppProtectionSelectionStore: StateStore {
         self.state = state
     }
 
+    @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
         case .viewLoaded:

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -23,16 +24,18 @@ import SwiftUI
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var appAppearanceStore: AppAppearanceStore
+    @StateObject var router: Router<SettingsRoute>
     @State private var state: SettingsState
     private let provider: AccountDetailsProvider
 
     init(state: SettingsState = .initial, mailUserSession: MailUserSession) {
         _state = .init(initialValue: state)
+        _router = .init(wrappedValue: .init())
         self.provider = .init(mailUserSession: mailUserSession)
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: navigationPath) {
             ZStack {
                 DS.Color.Background.secondary
                     .ignoresSafeArea()
@@ -48,28 +51,16 @@ struct SettingsScreen: View {
                 .toolbarBackground(DS.Color.BackgroundInverted.norm, for: .navigationBar)
                 .toolbar { doneToolbarItem() }
             }
-            .navigationDestination(item: presentedWebPage) { webPage in
-                ProtonAuthenticatedWebView(webViewPage: webPage)
-                    .background(DS.Color.BackgroundInverted.norm)
-                    .edgesIgnoringSafeArea(.bottom)
-                    .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: SettingsRoute.self) { route in
+                route
+                    .view()
+                    .environmentObject(router)
+                    .navigationBarBackButtonHidden()
                     .toolbar {
                         ToolbarItemFactory.back {
-                            popFromStack()
-                        }
-                        doneToolbarItem()
-                    }
-                    .navigationTitle(webPage.title.string)
-                    .navigationBarBackButtonHidden(true)
-            }
-            .navigationDestination(item: appSettings) { state in
-                AppSettingsScreen()
-                    .toolbar {
-                        ToolbarItemFactory.back {
-                            popFromStack()
+                            router.goBack()
                         }
                     }
-                    .navigationBarBackButtonHidden(true)
             }
         }
         .task {
@@ -82,20 +73,6 @@ struct SettingsScreen: View {
 
     // MARK: - Private
 
-    private var presentedWebPage: Binding<ProtonAuthenticatedWebPage?> {
-        Binding(
-            get: { state.presentedWebPage },
-            set: { newValue in state = state.copy(\.presentedWebPage, to: newValue) }
-        )
-    }
-
-    private var appSettings: Binding<AppSettingsState?> {
-        Binding(
-            get: { state.appSettings },
-            set: { newValue in state = state.copy(\.appSettings, to: newValue) }
-        )
-    }
-
     private func doneToolbarItem() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
@@ -103,6 +80,13 @@ struct SettingsScreen: View {
                     .foregroundStyle(DS.Color.InteractionBrand.norm)
             }
         }
+    }
+
+    private var navigationPath: Binding<[SettingsRoute]> {
+        .init(
+            get: { router.stack },
+            set: { router.stack = $0 }
+        )
     }
 
     private func preferencesSection() -> some View {
@@ -114,9 +98,11 @@ struct SettingsScreen: View {
                     action: {
                         switch preference {
                         case .email, .filters, .foldersAndLabels, .privacyAndSecurity:
-                            present(page: preference.webPage)
+                            if let page = preference.webPage {
+                                router.go(to: .webView(page))
+                            }
                         case .app:
-                            presentAppSettings()
+                            router.go(to: .appSettings)
                         }
                     }
                 )
@@ -128,7 +114,7 @@ struct SettingsScreen: View {
     private func accountDetails() -> some View {
         if let details = state.accountSettings {
             Button(action: {
-                present(page: .accountSettings)
+                router.go(to: .webView(.accountSettings))
             }) {
                 HStack(spacing: DS.Spacing.large) {
                     ZStack {
@@ -192,41 +178,6 @@ struct SettingsScreen: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(SettingsButtonStyle())
-    }
-
-    private func present(page: ProtonAuthenticatedWebPage?) {
-        if let page {
-            state = state.copy(\.presentedWebPage, to: page)
-        }
-    }
-
-    private func presentAppSettings() {
-        state = state.copy(\.appSettings, to: .initial)
-    }
-
-    private func popFromStack() {
-        state = state
-            .copy(\.presentedWebPage, to: nil)
-            .copy(\.appSettings, to: nil)
-    }
-
-}
-
-private extension ProtonAuthenticatedWebPage {
-
-    var title: LocalizedStringResource {
-        switch self {
-        case .accountSettings:
-            L10n.Settings.account
-        case .emailSettings:
-            L10n.Settings.email
-        case .spamFiltersSettings:
-            L10n.Settings.filters
-        case .privacySecuritySettings:
-            L10n.Settings.privacyAndSecurity
-        case .createFolderOrLabel:
-            L10n.Settings.foldersAndLabels
-        }
     }
 
 }

@@ -46,6 +46,7 @@ struct AppProtectionSelectionScreen: View {
         .background(DS.Color.BackgroundInverted.norm)
         .navigationTitle("Protection")
         .navigationBarTitleDisplayMode(.inline)
+        .onLoad { store.handle(action: .viewLoaded) }
     }
 
 }

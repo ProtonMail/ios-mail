@@ -22,8 +22,6 @@ import SwiftUI
 struct SettingsState: Copying {
     var accountSettings: AccountSettings?
     let preferences: [SettingsPreference]
-    var presentedWebPage: ProtonAuthenticatedWebPage?
-    var appSettings: AppSettingsState?
 }
 
 extension SettingsState {
@@ -31,9 +29,7 @@ extension SettingsState {
     static var initial: Self {
         .init(
             accountSettings: nil,
-            preferences: .stale,
-            presentedWebPage: nil,
-            appSettings: nil
+            preferences: .stale
         )
     }
 
