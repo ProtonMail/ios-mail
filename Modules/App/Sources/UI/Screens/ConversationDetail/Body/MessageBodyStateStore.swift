@@ -82,15 +82,10 @@ final class MessageBodyStateStore: StateStore {
             }
             state = state.copy(\.alert, to: alertModel)
         case .markAsLegitimateConfirmed(let action):
-            if case let .loaded(body) = state.body {
-                state = state.copy(\.alert, to: nil)
-
-                switch action {
-                case .cancel:
-                    break
-                case .markAsLegitimate:
-                    await markAsLegitimate(with: body.html.options)
-                }
+            state = state.copy(\.alert, to: nil)
+            
+            if case let .loaded(body) = state.body, case .markAsLegitimate = action {
+                await markAsLegitimate(with: body.html.options)
             }
         case .unblockSender(let emailAddress):
             if case let .loaded(body) = state.body {
