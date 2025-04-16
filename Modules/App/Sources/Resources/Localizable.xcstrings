@@ -2063,6 +2063,9 @@
         }
       }
     },
+    "Mark email as legitimate" : {
+
+    },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",
       "localizations" : {

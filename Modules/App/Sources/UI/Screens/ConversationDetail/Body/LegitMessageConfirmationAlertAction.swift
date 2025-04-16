@@ -16,19 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import SwiftUI
 
-extension AlertModel {
-
-    static func confirmation(action: @escaping (LegitMessageConfirmationAlertAction) -> Void) -> Self {
-        let actions: [AlertAction] = LegitMessageConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+enum LegitMessageConfirmationAlertAction: AlertActionInfo, CaseIterable {
+    case cancel
+    case markAsLegitimate
+    
+    // MARK: - AlertActionInfo
+    
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
+        switch self {
+        case .cancel:
+            (L10n.Common.cancel, .cancel)
+        case .markAsLegitimate:
+            ("Mark as legitimate", .destructive)
         }
-        
-        return .init(
-            title: "Mark email as legitimate",
-            message: "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
-            actions: actions
-        )
     }
-
 }

@@ -272,8 +272,8 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .markAsLegitimate)
 
-        let confirmAction = try sut.state.alertAction(for: .confirm)
-        confirmAction.action()
+        let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
+        markAsLegitimateAction.action()
         
         await markAsLegitimateTask?.value
         
@@ -317,8 +317,8 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .markAsLegitimate)
         
-        let confirmAction = try sut.state.alertAction(for: .confirm)
-        confirmAction.action()
+        let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
+        markAsLegitimateAction.action()
         
         await markAsLegitimateTask?.value
         
@@ -581,7 +581,7 @@ private class RustWrappersSpy {
 
 private extension MessageBodyStateStore.State {
     
-    func alertAction(for action: PhishingConfirmationAlertAction) throws -> AlertAction {
+    func alertAction(for action: LegitMessageConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
 

@@ -28,7 +28,7 @@ final class MessageBodyStateStore: StateStore {
         case displayEmbeddedImages
         case downloadRemoteContent
         case markAsLegitimate
-        case markAsLegitimateConfirmed(PhishingConfirmationAlertAction)
+        case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
         case unblockSender(emailAddress: String)
     }
     
@@ -80,7 +80,6 @@ final class MessageBodyStateStore: StateStore {
             }
         case .markAsLegitimate:
             let alertModel: AlertModel = .confirmation { [weak self] action in
-                
                 self?.markAsLegitimateConfirmed(action: action)
             }
             state = state.copy(\.alert, to: alertModel)
@@ -91,7 +90,7 @@ final class MessageBodyStateStore: StateStore {
                 switch action {
                 case .cancel:
                     break
-                case .confirm:
+                case .markAsLegitimate:
                     await markAsLegitimate(with: body.html.options)
                 }
             }
@@ -104,7 +103,7 @@ final class MessageBodyStateStore: StateStore {
 
     // MARK: - Private
     
-    private func markAsLegitimateConfirmed(action: PhishingConfirmationAlertAction) {
+    private func markAsLegitimateConfirmed(action: LegitMessageConfirmationAlertAction) {
         _ = makeTask(nil) { [weak self] in
             await self?.handle(action: .markAsLegitimateConfirmed(action))
         }
