@@ -73,13 +73,13 @@ struct EmptyFolderBannerView: View {
 
         switch type {
         case .upgradePlan:
-            model = .init(title: L10n.EmptySpamTrashBanner.upgradeAction) {
+            model = .init(title: L10n.EmptyFolderBanner.upgradeAction) {
                 store.handle(action: .upgradeToAutoDelete)
             }
         case .emptyLocation:
             let folder = store.model.folder.type.humanReadable.lowercased()
             
-            model = .init(title: L10n.EmptySpamTrashBanner.emptyNowAction(folderName: folder)) {
+            model = .init(title: L10n.EmptyFolderBanner.emptyNowAction(folderName: folder)) {
                 store.handle(action: .emptyFolder)
             }
         }

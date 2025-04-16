@@ -496,7 +496,7 @@ enum L10n {
         )
     }
     
-    enum EmptySpamTrashBanner {
+    enum EmptyFolderBanner {
         enum Alert {
             static func emptyFolderTitle(folderName: String) -> LocalizedStringResource {
                 .init(

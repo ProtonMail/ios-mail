@@ -76,19 +76,19 @@ private extension EmptyFolderBanner {
         case .freePlan:
             .init(
                 icon: DS.Icon.icTrashClock,
-                title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
+                title: L10n.EmptyFolderBanner.freeUserTitle.string,
                 buttons: [.upgradePlan, .emptyLocation],
                 alert: .none
             )
         case .paidAutoDeleteOn:
             .paidNoAlert(
                 icon: DS.Icon.icTrashClock,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle
+                title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle
             )
         case .paidAutoDeleteOff:
             .paidNoAlert(
                 icon: DS.Icon.icTrash,
-                title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOffTitle
+                title: L10n.EmptyFolderBanner.paidUserAutoDeleteOffTitle
             )
         }
     }

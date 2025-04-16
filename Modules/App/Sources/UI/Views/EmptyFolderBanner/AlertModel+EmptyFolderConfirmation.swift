@@ -28,8 +28,8 @@ extension AlertModel {
         }
         
         return .init(
-            title: L10n.EmptySpamTrashBanner.Alert.emptyFolderTitle(folderName: folder.humanReadable),
-            message: L10n.EmptySpamTrashBanner.Alert.emptyFolderMessage(folderName: folder.humanReadable),
+            title: L10n.EmptyFolderBanner.Alert.emptyFolderTitle(folderName: folder.humanReadable),
+            message: L10n.EmptyFolderBanner.Alert.emptyFolderMessage(folderName: folder.humanReadable),
             actions: actions
         )
     }

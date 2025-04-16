@@ -33,7 +33,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
+            title: L10n.EmptyFolderBanner.freeUserTitle.string,
             buttons: [.upgradePlan, .emptyLocation],
             alert: .none
         ))
@@ -43,7 +43,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.freeUserTitle.string,
+            title: L10n.EmptyFolderBanner.freeUserTitle.string,
             buttons: [.upgradePlan, .emptyLocation],
             alert: .none
         ))
@@ -58,7 +58,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .none
         ))
@@ -67,7 +67,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
@@ -81,7 +81,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
@@ -91,7 +91,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .none
         ))
@@ -105,7 +105,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
@@ -116,7 +116,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
-            title: L10n.EmptySpamTrashBanner.paidUserAutoDeleteOnTitle.string,
+            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
             buttons: [.emptyLocation],
             alert: .none
         ))
