@@ -58,12 +58,10 @@ final class EmptyFolderBannerStateStore: StateStore {
             
             state = state.copy(\.alert, to: alert)
         case .deleteConfirmed(let action):
-            switch action {
-            case .cancel:
-                state = state.copy(\.alert, to: nil)
-            case .delete:
+            state = state.copy(\.alert, to: nil)
+            
+            if case .delete = action {
                 toastStateStore.present(toast: .comingSoon)
-                state = state.copy(\.alert, to: nil)
             }
         }
     }
@@ -81,15 +79,9 @@ private extension EmptyFolderBanner {
                 alert: .none
             )
         case .paidAutoDeleteOn:
-            .paidNoAlert(
-                icon: DS.Icon.icTrashClock,
-                title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle
-            )
+            .paidNoAlert(icon: DS.Icon.icTrashClock, title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle)
         case .paidAutoDeleteOff:
-            .paidNoAlert(
-                icon: DS.Icon.icTrash,
-                title: L10n.EmptyFolderBanner.paidUserAutoDeleteOffTitle
-            )
+            .paidNoAlert(icon: DS.Icon.icTrash, title: L10n.EmptyFolderBanner.paidUserAutoDeleteOffTitle)
         }
     }
 
