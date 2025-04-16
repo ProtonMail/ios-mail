@@ -21,8 +21,6 @@ import InboxCoreUI
 import proton_app_uniffi
 
 final class MessageBodyStateStore: StateStore {
-    var makeTask = Task<Void, Never>.init(priority:operation:)
-    
     enum Action {
         case onLoad
         case displayEmbeddedImages
@@ -104,7 +102,7 @@ final class MessageBodyStateStore: StateStore {
     // MARK: - Private
     
     private func markAsLegitimateConfirmed(action: LegitMessageConfirmationAlertAction) {
-        _ = makeTask(nil) { [weak self] in
+        TaskFactory.makeTask { [weak self] in
             await self?.handle(action: .markAsLegitimateConfirmed(action))
         }
     }

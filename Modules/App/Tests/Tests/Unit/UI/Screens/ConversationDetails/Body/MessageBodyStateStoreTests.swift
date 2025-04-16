@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+@testable import InboxCore
 @testable import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
@@ -253,7 +254,7 @@ final class MessageBodyStateStoreTests {
     func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyWithLastOptions() async throws {
         var markAsLegitimateTask: Task<Void, Never>?
         
-        sut.makeTask = { priority, operation in
+        TaskFactory._makeTask = { priority, operation in
             let task = Task<Void, Never>.init(priority: priority, operation: operation)
             markAsLegitimateTask = task
             return task
@@ -297,7 +298,7 @@ final class MessageBodyStateStoreTests {
     func testState_WhenSpamMarkAsLegitimateConfirmedAndFails_ItDoesNotFetchBodyAndPresentsErrorToast() async throws {
         var markAsLegitimateTask: Task<Void, Never>?
         
-        sut.makeTask = { priority, operation in
+        TaskFactory._makeTask = { priority, operation in
             let task = Task<Void, Never>.init(priority: priority, operation: operation)
             markAsLegitimateTask = task
             return task
@@ -332,7 +333,7 @@ final class MessageBodyStateStoreTests {
     func testState_WhenMarkAsLegitimateCancelled_ItDoesNotMarkMessageHam() async throws {
         var markAsLegitimateTask: Task<Void, Never>?
         
-        sut.makeTask = { priority, operation in
+        TaskFactory._makeTask = { priority, operation in
             let task = Task<Void, Never>.init(priority: priority, operation: operation)
             markAsLegitimateTask = task
             return task
