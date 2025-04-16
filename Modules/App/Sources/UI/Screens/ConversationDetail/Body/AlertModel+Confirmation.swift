@@ -25,8 +25,8 @@ extension AlertModel {
         }
         
         return .init(
-            title: "Mark email as legitimate",
-            message: "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
+            title: L10n.MessageBanner.LegitMessageConfirmationAlert.title,
+            message: L10n.MessageBanner.LegitMessageConfirmationAlert.message,
             actions: actions
         )
     }

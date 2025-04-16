@@ -29,7 +29,7 @@ enum LegitMessageConfirmationAlertAction: AlertActionInfo, CaseIterable {
         case .cancel:
             (L10n.Common.cancel, .cancel)
         case .markAsLegitimate:
-            ("Mark as legitimate", .destructive)
+            (L10n.MessageBanner.LegitMessageConfirmationAlert.markAsLegitimateAction, .destructive)
         }
     }
 }

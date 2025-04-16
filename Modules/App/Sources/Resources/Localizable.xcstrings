@@ -2003,7 +2003,7 @@
       }
     },
     "Mark as legitimate" : {
-      "comment" : "Action to override the system's phishing detection and mark the email as safe.\nAction to override the system's spam detection and mark the email as safe."
+      "comment" : "Action button title allowing the user to confirm marking an email as legitimate.\nAction to override the system's phishing detection and mark the email as safe.\nAction to override the system's spam detection and mark the email as safe."
     },
     "Mark as read" : {
       "comment" : "Action title for marking message/conversation as read in the action sheet.",
@@ -2064,7 +2064,7 @@
       }
     },
     "Mark email as legitimate" : {
-
+      "comment" : "Title of the alert asking the user to confirm marking an email as legitimate."
     },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",
@@ -3592,7 +3592,7 @@
       }
     },
     "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate." : {
-
+      "comment" : "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
     },
     "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation." : {
       "comment" : "Mailbox failed because an unexpected error."

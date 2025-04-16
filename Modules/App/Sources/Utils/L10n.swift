@@ -407,6 +407,21 @@ enum L10n {
     }
     
     enum MessageBanner {
+        enum LegitMessageConfirmationAlert {
+            static let title = LocalizedStringResource(
+                "Mark email as legitimate",
+                comment: "Title of the alert asking the user to confirm marking an email as legitimate."
+            )
+            static let message = LocalizedStringResource(
+                "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
+                comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
+            )
+            static let markAsLegitimateAction = LocalizedStringResource(
+                "Mark as legitimate",
+                comment: "Action button title allowing the user to confirm marking an email as legitimate."
+            )
+        }
+        
         static func autoDeleteTitle(formattedTime: String) -> LocalizedStringResource {
             .init(
                 "This message will auto-delete in \(formattedTime)",
