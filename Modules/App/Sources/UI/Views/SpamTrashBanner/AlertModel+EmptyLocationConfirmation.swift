@@ -22,7 +22,7 @@ extension AlertModel {
     static func emptyLocationConfirmation(
         location: EmptySpamTrashBanner.Location,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
-    ) -> AlertModel {
+    ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }

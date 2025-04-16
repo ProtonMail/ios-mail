@@ -22,7 +22,7 @@ extension AlertModel {
 
     static func reportBugDismissConfirmationAlert(
         action: @escaping (ReportBugDismissConfirmationAlertAction) -> Void
-    ) -> AlertModel {
+    ) -> Self {
         let actions: [AlertAction] = ReportBugDismissConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }

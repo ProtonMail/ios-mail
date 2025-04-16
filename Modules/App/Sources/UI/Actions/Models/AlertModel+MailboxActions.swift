@@ -22,7 +22,7 @@ extension AlertModel {
     static func deleteConfirmation(
         itemsCount: Int,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
-    ) -> AlertModel {
+    ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }
@@ -34,7 +34,7 @@ extension AlertModel {
         )
     }
     
-    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> AlertModel {
+    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> Self {
         let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }
