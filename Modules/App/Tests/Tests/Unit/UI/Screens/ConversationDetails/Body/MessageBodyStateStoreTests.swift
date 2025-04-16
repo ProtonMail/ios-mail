@@ -22,7 +22,7 @@ import InboxTesting
 import proton_app_uniffi
 import Testing
 
-@MainActor
+@Suite(.serialized) @MainActor
 final class MessageBodyStateStoreTests {
     var sut: MessageBodyStateStore!
     var stubbedMessageID: ID!
