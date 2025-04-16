@@ -6,7 +6,6 @@ APP_IDENTIFIER = "ch.protonmail.protonmail"
 NOTIFICATION_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.notifications"
 DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
 DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
-API_KEY_DURATION = 20 * 60 # 20 mins
 CERTIFICATE_PATH = "fastlane/Certificates.p12"
 XCODEPROJ = "ProtonMail.xcodeproj"
 APP_TARGET = "ProtonMail"
@@ -47,17 +46,7 @@ platform :ios do
     )
   end
 
-  def set_up_app_store_api_key
-    app_store_connect_api_key(
-      key_id: ENV["APPSTORE_API_KEY_ID"],
-      issuer_id: ENV["APPSTORE_API_KEY_ISSUER"],
-      key_content: ENV["APPSTORE_API_KEY"],
-      duration: API_KEY_DURATION,
-      in_house: false
-    )
-  end
-
-  def get_xcode_profile(api_key)
+  def get_xcode_profile
     ids = [
       APP_IDENTIFIER,
       NOTIFICATION_EXTENSION_IDENTIFIER
@@ -66,15 +55,13 @@ platform :ios do
     ids.each do |id|
       get_provisioning_profile(
         app_identifier: id,
-        api_key: api_key,
         readonly: true,
       )
     end
   end
 
-  def get_latest_build_number(api_key)
+  def get_latest_build_number
     latest_testflight_build_number(
-      api_key: api_key,
       app_identifier: APP_IDENTIFIER,
       version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET),
       initial_build_number: 0
@@ -175,17 +162,18 @@ platform :ios do
       decode_distribution_certificate
       set_up_keychain
 
-      api_key = set_up_app_store_api_key
-      get_xcode_profile(api_key)
+      # parameters are passed from Apple App Store Connect integration: https://gitlab.protontech.ch/apple/inbox/mail/-/settings/integrations
+      app_store_connect_api_key
 
-      latest_build_number = get_latest_build_number(api_key)
+      get_xcode_profile
+
+      latest_build_number = get_latest_build_number
       new_build_number = latest_build_number + 1
       increment_build_number(build_number: new_build_number)
 
       build_release_app
 
       upload_to_testflight(
-        api_key: api_key,
         team_name: "Proton Technologies AG",
         skip_waiting_for_build_processing: true
       )
