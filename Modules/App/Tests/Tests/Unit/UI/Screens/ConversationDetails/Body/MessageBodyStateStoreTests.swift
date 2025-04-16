@@ -24,29 +24,15 @@ import Testing
 
 @Suite(.serialized) @MainActor
 final class MessageBodyStateStoreTests {
-    var sut: MessageBodyStateStore!
-    var stubbedMessageID: ID!
-    var toastStateStore: ToastStateStore!
-    private var wrapperSpy: RustWrappersSpy!
-    
-    init() {
-        stubbedMessageID = .init(value: 42)
-        wrapperSpy = .init()
-        toastStateStore = .init(initialState: .initial)
-        sut = .init(
-            messageID: stubbedMessageID,
-            mailbox: .dummy,
-            wrapper: wrapperSpy.testingInstance,
-            toastStateStore: toastStateStore
-        )
-    }
-    
-    deinit {
-        wrapperSpy = nil
-        toastStateStore = nil
-        stubbedMessageID = nil
-        sut = nil
-    }
+    lazy var sut = MessageBodyStateStore(
+        messageID: stubbedMessageID,
+        mailbox: .dummy,
+        wrapper: wrapperSpy.testingInstance,
+        toastStateStore: toastStateStore
+    )
+    let stubbedMessageID = ID(value: 42)
+    let toastStateStore = ToastStateStore(initialState: .initial)
+    private let wrapperSpy = RustWrappersSpy()
     
     // MARK: - `onLoad` action
 
@@ -67,7 +53,7 @@ final class MessageBodyStateStoreTests {
 
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(sut.state == .init(
             body: .loaded(.init(
@@ -88,7 +74,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(sut.state == .init(body: .noConnection, alert: .none))
     }
     
@@ -100,7 +86,7 @@ final class MessageBodyStateStoreTests {
         
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(sut.state == .init(body: .error(expectedError), alert: .none))
     }
     
@@ -119,7 +105,7 @@ final class MessageBodyStateStoreTests {
 
         await sut.handle(action: .onLoad)
         
-        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(sut.state == .init(
             body: .loaded(.init(
@@ -278,7 +264,7 @@ final class MessageBodyStateStoreTests {
         
         await markAsLegitimateTask?.value
         
-        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
         #expect(sut.state == .init(
@@ -323,7 +309,7 @@ final class MessageBodyStateStoreTests {
         
         await markAsLegitimateTask?.value
         
-        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID!])
+        #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [])
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
