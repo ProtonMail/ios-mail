@@ -224,6 +224,10 @@ enum L10n {
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
         static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
         static let off = LocalizedStringResource("Off", comment: "Indicates that a feature is disabled and not functioning.")
+        static let markAsLegitimate = LocalizedStringResource(
+            "Mark as legitimate",
+            comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
+        )
     }
 
     enum Labels {
@@ -416,10 +420,6 @@ enum L10n {
                 "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
                 comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
             )
-            static let markAsLegitimateAction = LocalizedStringResource(
-                "Mark as legitimate",
-                comment: "Action button title allowing the user to confirm marking an email as legitimate."
-            )
         }
         
         static func autoDeleteTitle(formattedTime: String) -> LocalizedStringResource {
@@ -450,10 +450,6 @@ enum L10n {
                 comment: "Banner indicating when a message will expire and no longer be accessible."
             )
         }
-        static let phishingAttemptAction = LocalizedStringResource(
-            "Mark as legitimate",
-            comment: "Action to override the system's phishing detection and mark the email as safe."
-        )
         static let phishingAttemptTitle = LocalizedStringResource(
             "Our system flagged this message as a phishing attempt. Please check to ensure that it is legitimate.",
             comment: "Banner warning the user that the system detected a possible phishing attempt."
@@ -485,10 +481,6 @@ enum L10n {
         static let snoozedAction = LocalizedStringResource(
             "Unsnooze",
             comment: "Action to restore a snoozed email immediately."
-        )
-        static let spamAction = LocalizedStringResource(
-            "Mark as legitimate",
-            comment: "Action to override the system's spam detection and mark the email as safe."
         )
         static let spamTitle = LocalizedStringResource(
             "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.",

@@ -2003,7 +2003,7 @@
       }
     },
     "Mark as legitimate" : {
-      "comment" : "Action button title allowing the user to confirm marking an email as legitimate.\nAction to override the system's phishing detection and mark the email as safe.\nAction to override the system's spam detection and mark the email as safe."
+      "comment" : "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
     },
     "Mark as read" : {
       "comment" : "Action title for marking message/conversation as read in the action sheet.",

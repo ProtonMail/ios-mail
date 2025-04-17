@@ -68,7 +68,7 @@ struct MessageBannersView: View {
                     style: .regular
                 )
             case .phishingAttempt:
-                let button = Banner.Button(title: L10n.MessageBanner.phishingAttemptAction) {
+                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
                 
@@ -79,7 +79,7 @@ struct MessageBannersView: View {
                     style: .error
                 )
             case .spam:
-                let button = Banner.Button(title: L10n.MessageBanner.spamAction) {
+                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
                 
