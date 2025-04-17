@@ -97,8 +97,8 @@ final class MessageBodyStateStore: StateStore {
     // MARK: - Private
     
     private func markAsLegitimateConfirmed(action: LegitMessageConfirmationAlertAction) {
-        TaskFactory.makeTask { [weak self] in
-            await self?.handle(action: .markAsLegitimateConfirmed(action))
+        Task {
+            await handle(action: .markAsLegitimateConfirmed(action))
         }
     }
 
