@@ -55,16 +55,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy</html>",
-                    options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy</html>",
+            options: initialOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -107,16 +101,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy</html>",
-                    options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy</html>",
+            options: initialOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
         
         await sut.handle(action: .displayEmbeddedImages)
@@ -125,16 +113,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -154,16 +136,10 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy</html>",
-                    options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy</html>",
+            options: initialOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
         
         await sut.handle(action: .downloadRemoteContent)
@@ -172,16 +148,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -206,16 +176,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
         
         await sut.handle(action: .markAsLegitimate)
@@ -267,16 +231,10 @@ final class MessageBodyStateStoreTests {
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: initialOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -346,16 +304,10 @@ final class MessageBodyStateStoreTests {
         #expect(wrapperSpy.markMessageHamCalls == [])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy</html>",
-                    options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy</html>",
+            options: initialOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -380,16 +332,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
         
         let emailAddress = "john.doe@pm.me"
@@ -398,16 +344,10 @@ final class MessageBodyStateStoreTests {
         #expect(wrapperSpy.unblockSenderCalls == [emailAddress])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions, updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
     }
     
@@ -431,16 +371,10 @@ final class MessageBodyStateStoreTests {
         
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [updatedOptions])
-        #expect(sut.state == .init(
-            body: .loaded(.init(
-                banners: [],
-                html: .init(
-                    rawBody: "<html>dummy_with_custom_options</html>",
-                    options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
-                )
-            )),
-            alert: .none
+        #expect(sut.state == .noBannersAlert(
+            rawBody: "<html>dummy_with_custom_options</html>",
+            options: updatedOptions,
+            embeddedImageProvider: decryptedMessageSpy
         ))
         
         let emailAddress = "steven.morcote@pm.me"
@@ -570,6 +504,28 @@ private extension MessageBodyStateStore.State {
     
     func alertAction(for action: LegitMessageConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
+    }
+
+}
+
+private extension MessageBodyStateStore.State {
+    
+    static func noBannersAlert(
+        rawBody: String,
+        options: TransformOpts,
+        embeddedImageProvider: EmbeddedImageProvider
+    ) -> Self {
+        .init(
+            body: .loaded(.init(
+                banners: [],
+                html: .init(
+                    rawBody: rawBody,
+                    options: options,
+                    embeddedImageProvider: embeddedImageProvider
+                )
+            )),
+            alert: .none
+        )
     }
 
 }
