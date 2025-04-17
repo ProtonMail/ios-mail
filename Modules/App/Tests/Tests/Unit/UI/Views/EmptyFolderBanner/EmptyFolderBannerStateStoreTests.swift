@@ -128,7 +128,7 @@ final class EmptyFolderBannerStateStoreTests {
     }
     
     private func makeSUT(
-        _ folder: EmptyFolderBanner.Folder,
+        _ folder: SpamOrTrash,
         _ userState: AutoDeleteState,
         _ labelID: ID = .random()
     ) -> EmptyFolderBannerStateStore {

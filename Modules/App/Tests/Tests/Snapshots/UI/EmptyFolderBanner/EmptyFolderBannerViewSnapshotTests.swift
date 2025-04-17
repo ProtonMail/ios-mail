@@ -28,10 +28,10 @@ import XCTest
 @MainActor
 struct EmptyFolderBannerViewSnapshotTests {
     struct TestCase {
-        let folder: EmptyFolderBanner.Folder
+        let folder: SpamOrTrash
         let state: AutoDeleteState
         
-        init(_ folder: EmptyFolderBanner.Folder, _ state: AutoDeleteState) {
+        init(_ folder: SpamOrTrash, _ state: AutoDeleteState) {
             self.folder = folder
             self.state = state
         }
@@ -53,7 +53,7 @@ struct EmptyFolderBannerViewSnapshotTests {
     }
     
     private func sut(
-        _ folder: EmptyFolderBanner.Folder,
+        _ folder: SpamOrTrash,
         _ state: AutoDeleteState
     ) -> some View {
         EmptyFolderBannerView(

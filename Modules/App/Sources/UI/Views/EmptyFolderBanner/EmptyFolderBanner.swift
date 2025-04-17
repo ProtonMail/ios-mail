@@ -26,23 +26,20 @@ struct EmptyFolderBanner {
     
     struct FolderDetails {
         let labelID: ID
-        let type: Folder
-    }
-    
-    enum Folder {
-        case spam
-        case trash
-        
-        var humanReadable: String {
-            switch self {
-            case .spam:
-                L10n.Mailbox.SystemFolder.spam.string
-            case .trash:
-                L10n.Mailbox.SystemFolder.trash.string
-            }
-        }
+        let type: SpamOrTrash
     }
 
     let folder: FolderDetails
     let userState: AutoDeleteState
+}
+
+extension SpamOrTrash {
+    var humanReadable: String {
+        switch self {
+        case .spam:
+            L10n.Mailbox.SystemFolder.spam.string
+        case .trash:
+            L10n.Mailbox.SystemFolder.trash.string
+        }
+    }
 }

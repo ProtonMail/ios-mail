@@ -271,7 +271,7 @@ extension MailboxModel {
             return nil
         }
         
-        return banner.emptyFolderBanner(labelID: labelID)
+        return .init(folder: .init(labelID: labelID, type: banner.folder), userState: banner.state)
     }
 
     private func prepareSwipeActions() async {
@@ -573,21 +573,5 @@ extension MailboxModel {
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
-    }
-}
-
-private extension AutoDeleteBanner {
-    
-    func emptyFolderBanner(labelID: ID) -> EmptyFolderBanner {
-        .init(folder: .init(labelID: labelID, type: toFolder), userState: state)
-    }
-    
-    private var toFolder: EmptyFolderBanner.Folder {
-        switch folder {
-        case .spam:
-            return .spam
-        case .trash:
-            return .trash
-        }
     }
 }

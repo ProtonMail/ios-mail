@@ -131,7 +131,7 @@ private extension EmptyFolderBannerView {
 
 private extension EmptyFolderBanner.FolderDetails {
     
-    static func preview(type: EmptyFolderBanner.Folder) -> Self {
+    static func preview(type: SpamOrTrash) -> Self {
         .init(labelID: .random(), type: type)
     }
     

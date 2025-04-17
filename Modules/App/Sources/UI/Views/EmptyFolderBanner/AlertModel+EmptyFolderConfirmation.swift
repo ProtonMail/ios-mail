@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import proton_app_uniffi
 
 extension AlertModel {
 
     static func emptyFolderConfirmation(
-        folder: EmptyFolderBanner.Folder,
+        folder: SpamOrTrash,
         action: @escaping (DeleteConfirmationAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
