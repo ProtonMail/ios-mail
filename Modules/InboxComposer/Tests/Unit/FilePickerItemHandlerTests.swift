@@ -56,7 +56,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
         XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(Set(mockDraft.mockAttachmentList.capturedAddPathCalls), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.mockAttachmentList.capturedAddCalls.map(\.path)), Set([destFile1.path, destFile2.path]))
     }
 
     func testAddSelectedFiles_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems_andReturnError() async throws {
@@ -70,7 +70,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertEqual(Set(mockDraft.mockAttachmentList.capturedAddPathCalls), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.mockAttachmentList.capturedAddCalls.map(\.path)), Set([destFile1.path, destFile2.path]))
         XCTAssertEqual(capturedErrors, [error])
     }
 
