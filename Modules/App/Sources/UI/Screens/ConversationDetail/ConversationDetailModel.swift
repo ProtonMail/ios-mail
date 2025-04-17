@@ -230,11 +230,15 @@ extension ConversationDetailModel {
     }
 
     private func initialiseMailbox(basedOn selectedMailbox: SelectedMailbox) async throws -> Mailbox {
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
+            throw ConversationModelError.noActiveSessionFound
+        }
+
         switch selectedMailbox {
         case .inbox:
-            try await newInboxMailbox(ctx: userSession).get()
+            return try await newInboxMailbox(ctx: userSession).get()
         case .systemFolder(let labelId, _), .customLabel(let labelId, _), .customFolder(let labelId, _):
-            try await newMailbox(ctx: userSession, labelId: labelId).get()
+            return try await newMailbox(ctx: userSession, labelId: labelId).get()
         }
     }
 
