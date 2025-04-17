@@ -202,6 +202,14 @@ final class MessageBodyStateStoreTests {
     
     @Test
     func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyWithLastOptions() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -217,7 +225,8 @@ final class MessageBodyStateStoreTests {
 
         let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
         markAsLegitimateAction.action()
-        await Task.yield()
+        
+        await markAsLegitimateTask?.value
         
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
@@ -231,6 +240,14 @@ final class MessageBodyStateStoreTests {
     
     @Test
     func testState_WhenSpamMarkAsLegitimateConfirmedAndFails_ItDoesNotFetchBodyAndPresentsErrorToast() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -247,7 +264,8 @@ final class MessageBodyStateStoreTests {
         
         let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
         markAsLegitimateAction.action()
-        await Task.yield()
+        
+        await markAsLegitimateTask?.value
         
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)
@@ -256,7 +274,15 @@ final class MessageBodyStateStoreTests {
     }
     
     @Test
-    func testState_WhenMarkAsLegitimateCancelled_ItDoesNotMarkMessageHam() async throws {        
+    func testState_WhenMarkAsLegitimateCancelled_ItDoesNotMarkMessageHam() async throws {
+        var markAsLegitimateTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            markAsLegitimateTask = task
+            return task
+        }
+        
         let initialOptions = TransformOpts(
             showBlockQuote: true,
             hideRemoteImages: .none,
@@ -272,7 +298,8 @@ final class MessageBodyStateStoreTests {
 
         let cancelAction = try sut.state.alertAction(for: .cancel)
         cancelAction.action()
-        await Task.yield()
+        
+        await markAsLegitimateTask?.value
         
         #expect(wrapperSpy.markMessageHamCalls == [])
         #expect(decryptedMessageSpy.bodyWithDefaultsCalls == 1)

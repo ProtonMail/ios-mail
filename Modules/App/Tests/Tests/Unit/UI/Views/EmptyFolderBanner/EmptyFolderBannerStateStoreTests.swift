@@ -78,6 +78,14 @@ final class EmptyFolderBannerStateStoreTests {
     
     @Test
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() async throws {
+        var deleteTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            deleteTask = task
+            return task
+        }
+        
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         await sut.handle(action: .emptyFolder)
@@ -91,7 +99,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         let cancelAction = try sut.state.alertAction(for: .cancel)
         cancelAction.action()
-        await Task.yield()
+        await deleteTask?.value
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -103,6 +111,14 @@ final class EmptyFolderBannerStateStoreTests {
     
     @Test
     func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() async throws {
+        var deleteTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            deleteTask = task
+            return task
+        }
+        
         let labelID: ID = .init(value: 99)
         sut = makeSUT(.trash, .paidAutoDeleteOn, labelID)
         
@@ -118,7 +134,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         let deleteAction = try sut.state.alertAction(for: .delete)
         deleteAction.action()
-        await Task.yield()
+        await deleteTask?.value
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,

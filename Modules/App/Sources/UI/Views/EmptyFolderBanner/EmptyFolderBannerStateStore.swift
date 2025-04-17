@@ -76,8 +76,8 @@ final class EmptyFolderBannerStateStore: StateStore {
     }
     
     private func deleteConfirmed(action: DeleteConfirmationAlertAction) {
-        Task {
-            await handle(action: .deleteConfirmed(action))
+        TaskFactory.makeTask { [weak self] in
+            await self?.handle(action: .deleteConfirmed(action))
         }
     }
 }
