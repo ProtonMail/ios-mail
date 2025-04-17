@@ -116,7 +116,7 @@ platform :ios do
   desc "Setup UI Tests assets"
     lane :setup_uitests_assets do
     sh("../scripts/uitests/setup-mock-network-assets.sh setup-remote")
-    sh("../xcodegen/bin/xcodegen -s ../project.yml") # We need to do it another time to include UI tests assets.
+    sh("cd .. && mint run xcodegen") # We need to do it another time to include UI tests assets.
   end
 
   desc "Run UI Smoke Tests"

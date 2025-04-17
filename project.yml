@@ -207,6 +207,7 @@ targets:
         product: NIOHTTP1
       - package: SwiftNIOHTTP2
         product: NIOHTTP2
+      - package: Scrypt
     settings:
       configs:
         UITests:
