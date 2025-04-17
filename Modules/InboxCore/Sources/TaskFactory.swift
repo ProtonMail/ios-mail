@@ -21,7 +21,7 @@ public enum TaskFactory {
     @discardableResult
     public static func makeTask(
         priority: TaskPriority? = nil,
-        operation: sending @escaping @isolated(any) () async -> Void
+        operation: @escaping @Sendable () async -> Void
     ) -> Task<Void, Never> {
         _makeTask(priority, operation)
     }
