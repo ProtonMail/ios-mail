@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+@testable import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import Testing
 
-@MainActor
+@Suite(.serialized) @MainActor
 final class EmptyFolderBannerStateStoreTests {
     var sut: EmptyFolderBannerStateStore!
     let toastStateStore = ToastStateStore(initialState: .initial)
@@ -30,7 +31,7 @@ final class EmptyFolderBannerStateStoreTests {
     // MARK: - `.upgradeToAutoDelete` action
 
     @Test
-    func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheStateAndPresentsComingSoon() {
+    func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheStateAndPresentsComingSoon() async {
         sut = makeSUT(.spam, .freePlan)
         
         #expect(sut.state == .init(
@@ -41,7 +42,7 @@ final class EmptyFolderBannerStateStoreTests {
         ))
         #expect(toastStateStore.state.toasts == [])
         
-        sut.handle(action: .upgradeToAutoDelete)
+        await sut.handle(action: .upgradeToAutoDelete)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -55,7 +56,7 @@ final class EmptyFolderBannerStateStoreTests {
     // MARK: - `.emptyFolder` action
     
     @Test
-    func testState_WhenEmptyTrashFolderAction_ItPresentsEmptyFolderConfirmationAlert() {
+    func testState_WhenEmptyTrashFolderAction_ItPresentsEmptyFolderConfirmationAlert() async {
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
         #expect(sut.state == .init(
@@ -65,7 +66,7 @@ final class EmptyFolderBannerStateStoreTests {
             alert: .none
         ))
         
-        sut.handle(action: .emptyFolder)
+        await sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -76,10 +77,18 @@ final class EmptyFolderBannerStateStoreTests {
     }
     
     @Test
-    func testState_WhenCancelAlertActionTapped_ItDismissesAlert() throws {
+    func testState_WhenCancelAlertActionTapped_ItDismissesAlert() async throws {
+        var deleteTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            deleteTask = task
+            return task
+        }
+        
         sut = makeSUT(.trash, .paidAutoDeleteOn)
         
-        sut.handle(action: .emptyFolder)
+        await sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -90,6 +99,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         let cancelAction = try sut.state.alertAction(for: .cancel)
         cancelAction.action()
+        await deleteTask?.value
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -100,11 +110,19 @@ final class EmptyFolderBannerStateStoreTests {
     }
     
     @Test
-    func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() throws {
+    func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() async throws {
+        var deleteTask: Task<Void, Never>?
+        
+        TaskFactory._makeTask = { priority, operation in
+            let task = Task<Void, Never>.init(priority: priority, operation: operation)
+            deleteTask = task
+            return task
+        }
+        
         let labelID: ID = .init(value: 99)
         sut = makeSUT(.trash, .paidAutoDeleteOn, labelID)
         
-        sut.handle(action: .emptyFolder)
+        await sut.handle(action: .emptyFolder)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -116,6 +134,7 @@ final class EmptyFolderBannerStateStoreTests {
         
         let deleteAction = try sut.state.alertAction(for: .delete)
         deleteAction.action()
+        await deleteTask?.value
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -149,7 +168,7 @@ private extension EmptyFolderBannerStateStore.State {
 }
 
 private class RustWrappersSpy {
-    var stubbedDeleteAllResult: VoidActionResult!
+    var stubbedDeleteAllResult: VoidActionResult = .ok
     private(set) var deleteAllCalls: [ID] = []
     
     private(set) lazy var testingInstance = RustEmptyFolderBannerWrapper(

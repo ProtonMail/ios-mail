@@ -54,14 +54,15 @@ final class EmptyFolderBannerStateStore: StateStore {
     
     // MARK: - StateStore
     
-    func handle(action: Action) {
+    @MainActor
+    func handle(action: Action) async {
         switch action {
         case .upgradeToAutoDelete:
             toastStateStore.present(toast: .comingSoon)
         case .emptyFolder:
             let alert: AlertModel = .emptyFolderConfirmation(
                 folder: model.folder.type,
-                action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
+                action: { [weak self] action in self?.deleteConfirmed(action: action) }
             )
             
             state = state.copy(\.alert, to: alert)
@@ -69,8 +70,14 @@ final class EmptyFolderBannerStateStore: StateStore {
             state = state.copy(\.alert, to: nil)
             
             if case .delete = action {
-                toastStateStore.present(toast: .comingSoon)
+                await messagesDeleter.deleteAll(labelID: model.folder.labelID)
             }
+        }
+    }
+    
+    private func deleteConfirmed(action: DeleteConfirmationAlertAction) {
+        TaskFactory.makeTask { [weak self] in
+            await self?.handle(action: .deleteConfirmed(action))
         }
     }
 }

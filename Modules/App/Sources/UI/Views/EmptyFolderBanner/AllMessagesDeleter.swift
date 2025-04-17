@@ -24,6 +24,7 @@ struct AllMessagesDeleter {
         self.deleteAll = { labelID in await wrapper.deleteAllMessages(mailUserSession, labelID) }
     }
     
+    @discardableResult
     func deleteAll(labelID: ID) async -> VoidActionResult {
         await deleteAll(labelID)
     }
