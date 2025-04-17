@@ -77,7 +77,7 @@ final class MessageBodyStateStore: StateStore {
                 await loadMessageBody(with: updatedOptions)
             }
         case .markAsLegitimate:
-            let alertModel: AlertModel = .confirmation { [weak self] action in
+            let alertModel: AlertModel = .legitMessageConfirmation { [weak self] action in
                 self?.markAsLegitimateConfirmed(action: action)
             }
             state = state.copy(\.alert, to: alertModel)

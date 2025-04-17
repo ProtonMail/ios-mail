@@ -19,7 +19,7 @@ import InboxCoreUI
 
 extension AlertModel {
 
-    static func confirmation(action: @escaping (LegitMessageConfirmationAlertAction) -> Void) -> Self {
+    static func legitMessageConfirmation(action: @escaping (LegitMessageConfirmationAlertAction) -> Void) -> Self {
         let actions: [AlertAction] = LegitMessageConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })
         }

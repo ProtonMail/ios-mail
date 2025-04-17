@@ -232,7 +232,7 @@ final class MessageBodyStateStoreTests {
                     embeddedImageProvider: decryptedMessageSpy
                 )
             )),
-            alert: .confirmation(action: { _ in })
+            alert: .legitMessageConfirmation(action: { _ in })
         ))
     }
     
