@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxCore
 import proton_app_uniffi
 
 protocol MailSettingLiveQuerying {
@@ -69,7 +70,7 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
                 self.watchHandle = settingsWatcher.watchHandle
                 settingsSubject.value = settingsWatcher.settings
             case .error(let error):
-                fatalError("\(error)")
+                AppLogger.log(error: error)
             }
         }
     }
