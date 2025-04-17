@@ -21,10 +21,10 @@ extension AlertModel {
 
     static func emptyFolderConfirmation(
         folder: EmptyFolderBanner.Folder,
-        action: @escaping (DeleteConfirmationAlertAction) -> Void
+        action: @escaping (DeleteConfirmationAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
         
         return .init(

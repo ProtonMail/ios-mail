@@ -62,7 +62,7 @@ final class EmptyFolderBannerStateStore: StateStore {
         case .emptyFolder:
             let alert: AlertModel = .emptyFolderConfirmation(
                 folder: model.folder.type,
-                action: { [weak self] action in self?.deleteConfirmed(action: action) }
+                action: { [weak self] action in await self?.handle(action: .deleteConfirmed(action)) }
             )
             
             state = state.copy(\.alert, to: alert)
@@ -72,12 +72,6 @@ final class EmptyFolderBannerStateStore: StateStore {
             if case .delete = action {
                 await messagesDeleter.deleteAll(labelID: model.folder.labelID)
             }
-        }
-    }
-    
-    private func deleteConfirmed(action: DeleteConfirmationAlertAction) {
-        TaskFactory.makeTask { [weak self] in
-            await self?.handle(action: .deleteConfirmed(action))
         }
     }
 }

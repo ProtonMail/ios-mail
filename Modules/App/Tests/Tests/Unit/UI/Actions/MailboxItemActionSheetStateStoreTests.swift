@@ -264,7 +264,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
     }
     
-    func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() throws {
+    func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() async throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .ok
         
         let id = ID(value: 55)
@@ -275,14 +275,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
 
         let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
-        confirmAction.action()
+        await confirmAction.action()
 
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
     
-    func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() throws {
+    func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() async throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .error(.other(.network))
         
         let id = ID(value: 55)
@@ -293,14 +293,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
 
         let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
-        confirmAction.action()
+        await confirmAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [])
     }
     
-    func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() throws {
+    func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() async throws {
         let id = ID(value: 55)
         let sut = sut(id: id.value, type: .message, title: .notUsed)
 
@@ -309,7 +309,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
         
         let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
-        cancelAction.action()
+        await cancelAction.action()
         
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [])

@@ -77,9 +77,9 @@ class PINLockStateStore: StateStore {
 
 extension AlertModel {
     
-    static func logOutConfirmation(action: @escaping (LogOutConformationAction) -> Void) -> Self {
+    static func logOutConfirmation(action: @escaping (LogOutConformationAction) async -> Void) -> Self {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
         
         return .init(

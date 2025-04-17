@@ -38,25 +38,25 @@ class PINLockStateStoreTests {
     }
     
     @Test
-    func usersSignsOut() throws {
+    func usersSignsOut() async throws {
         sut.handle(action: .signOutTapped)
         
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
         
         let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOutConfirmationButton)
-        signOutAction.action()
+        await signOutAction.action()
 
         #expect(output == [.logOut])
     }
 
     @Test
-    func userResignSignOut() throws {
+    func userResignSignOut() async throws {
         sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert ==  .logOutConfirmation(action: { _ in }))
         
         let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
-        cancelAction.action()
+        await cancelAction.action()
 
         #expect(output == [])
     }

@@ -78,7 +78,7 @@ final class MessageBodyStateStore: StateStore {
             }
         case .markAsLegitimate:
             let alertModel: AlertModel = .legitMessageConfirmation { [weak self] action in
-                self?.markAsLegitimateConfirmed(action: action)
+                await self?.handle(action: .markAsLegitimateConfirmed(action))
             }
             state = state.copy(\.alert, to: alertModel)
         case .markAsLegitimateConfirmed(let action):
@@ -95,12 +95,6 @@ final class MessageBodyStateStore: StateStore {
     }
 
     // MARK: - Private
-    
-    private func markAsLegitimateConfirmed(action: LegitMessageConfirmationAlertAction) {
-        TaskFactory.makeTask { [weak self] in
-            await self?.handle(action: .markAsLegitimateConfirmed(action))
-        }
-    }
 
     @MainActor
     private func loadMessageBody(with options: TransformOpts?) async {
