@@ -80,16 +80,16 @@ private extension EmptyFolderBanner {
 
     var state: EmptyFolderBannerStateStore.State {
         switch userState {
-        case .freePlan:
+        case .autoDeleteUpsell:
             .init(
                 icon: DS.Icon.icTrashClock,
                 title: L10n.EmptyFolderBanner.freeUserTitle.string,
                 buttons: [.upgradePlan, .emptyLocation],
                 alert: .none
             )
-        case .paidAutoDeleteOn:
+        case .autoDeleteEnabled:
             .paidNoAlert(icon: DS.Icon.icTrashClock, title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle)
-        case .paidAutoDeleteOff:
+        case .autoDeleteDisabled:
             .paidNoAlert(icon: DS.Icon.icTrash, title: L10n.EmptyFolderBanner.paidUserAutoDeleteOffTitle)
         }
     }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import proton_app_uniffi
 
 struct EmptyFolderBanner {
     enum ActionButton: Equatable {
@@ -42,12 +43,6 @@ struct EmptyFolderBanner {
         }
     }
 
-    enum UserState {
-        case freePlan
-        case paidAutoDeleteOn
-        case paidAutoDeleteOff
-    }
-
     let folder: FolderDetails
-    let userState: UserState
+    let userState: AutoDeleteState
 }

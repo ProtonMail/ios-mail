@@ -32,7 +32,7 @@ final class EmptyFolderBannerStateStoreTests {
 
     @Test
     func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheStateAndPresentsComingSoon() async {
-        sut = makeSUT(.spam, .freePlan)
+        sut = makeSUT(.spam, .autoDeleteUpsell)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -57,7 +57,7 @@ final class EmptyFolderBannerStateStoreTests {
     
     @Test
     func testState_WhenEmptyTrashFolderAction_ItPresentsEmptyFolderConfirmationAlert() async {
-        sut = makeSUT(.trash, .paidAutoDeleteOn)
+        sut = makeSUT(.trash, .autoDeleteEnabled)
         
         #expect(sut.state == .init(
             icon: DS.Icon.icTrashClock,
@@ -78,7 +78,7 @@ final class EmptyFolderBannerStateStoreTests {
     
     @Test
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() async throws {
-        sut = makeSUT(.trash, .paidAutoDeleteOn)
+        sut = makeSUT(.trash, .autoDeleteEnabled)
         
         await sut.handle(action: .emptyFolder)
         
@@ -103,7 +103,7 @@ final class EmptyFolderBannerStateStoreTests {
     @Test
     func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() async throws {
         let labelID: ID = .init(value: 99)
-        sut = makeSUT(.trash, .paidAutoDeleteOn, labelID)
+        sut = makeSUT(.trash, .autoDeleteEnabled, labelID)
         
         await sut.handle(action: .emptyFolder)
         
@@ -129,7 +129,7 @@ final class EmptyFolderBannerStateStoreTests {
     
     private func makeSUT(
         _ folder: EmptyFolderBanner.Folder,
-        _ userState: EmptyFolderBanner.UserState,
+        _ userState: AutoDeleteState,
         _ labelID: ID = .random()
     ) -> EmptyFolderBannerStateStore {
         .init(

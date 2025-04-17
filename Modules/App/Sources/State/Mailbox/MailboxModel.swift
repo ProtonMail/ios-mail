@@ -579,7 +579,7 @@ extension MailboxItemCellUIModel {
 private extension AutoDeleteBanner {
     
     func emptyFolderBanner(labelID: ID) -> EmptyFolderBanner {
-        .init(folder: .init(labelID: labelID, type: toFolder), userState: toUserState)
+        .init(folder: .init(labelID: labelID, type: toFolder), userState: state)
     }
     
     private var toFolder: EmptyFolderBanner.Folder {
@@ -588,17 +588,6 @@ private extension AutoDeleteBanner {
             return .spam
         case .trash:
             return .trash
-        }
-    }
-    
-    private var toUserState: EmptyFolderBanner.UserState {
-        switch state {
-        case .autoDeleteUpsell:
-            return .freePlan
-        case .autoDeleteDisabled:
-            return .paidAutoDeleteOff
-        case .autoDeleteEnabled:
-            return .paidAutoDeleteOn
         }
     }
 }

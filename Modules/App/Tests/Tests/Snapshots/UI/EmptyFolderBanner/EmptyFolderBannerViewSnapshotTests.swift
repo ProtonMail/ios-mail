@@ -21,6 +21,7 @@ import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
 import Testing
+import proton_app_uniffi
 import SwiftUI
 import XCTest
 
@@ -28,35 +29,35 @@ import XCTest
 struct EmptyFolderBannerViewSnapshotTests {
     struct TestCase {
         let folder: EmptyFolderBanner.Folder
-        let userState: EmptyFolderBanner.UserState
+        let state: AutoDeleteState
         
-        init(_ folder: EmptyFolderBanner.Folder, _ userState: EmptyFolderBanner.UserState) {
+        init(_ folder: EmptyFolderBanner.Folder, _ state: AutoDeleteState) {
             self.folder = folder
-            self.userState = userState
+            self.state = state
         }
     }
     
     @Test(
         "all snapshot variants",
         arguments: [
-            TestCase(.spam, .freePlan),
-            TestCase(.spam, .paidAutoDeleteOff),
-            TestCase(.spam, .paidAutoDeleteOn),
-            TestCase(.trash, .freePlan),
-            TestCase(.trash, .paidAutoDeleteOff),
-            TestCase(.trash, .paidAutoDeleteOn),
+            TestCase(.spam, .autoDeleteUpsell),
+            TestCase(.spam, .autoDeleteDisabled),
+            TestCase(.spam, .autoDeleteEnabled),
+            TestCase(.trash, .autoDeleteUpsell),
+            TestCase(.trash, .autoDeleteDisabled),
+            TestCase(.trash, .autoDeleteEnabled),
         ])
     func snapshotAllVariants(_ testCase: TestCase) {
-        let snapshotSuffix = "\(testCase.folder)_\(testCase.userState)"
-        assertSnapshotsOnIPhoneX(of: sut(testCase.folder, testCase.userState), named: snapshotSuffix)
+        let snapshotSuffix = "\(testCase.folder)_\(testCase.state)"
+        assertSnapshotsOnIPhoneX(of: sut(testCase.folder, testCase.state), named: snapshotSuffix)
     }
     
     private func sut(
         _ folder: EmptyFolderBanner.Folder,
-        _ userState: EmptyFolderBanner.UserState
+        _ state: AutoDeleteState
     ) -> some View {
         EmptyFolderBannerView(
-            model: .init(folder: .init(labelID: .random(), type: folder), userState: userState),
+            model: .init(folder: .init(labelID: .random(), type: folder), userState: state),
             mailUserSession: .dummy,
             wrapper: .previewInstance()
         )

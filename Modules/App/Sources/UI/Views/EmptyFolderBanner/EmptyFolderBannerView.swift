@@ -109,13 +109,13 @@ private extension View {
 #Preview {
     ScrollView {
         VStack(alignment: .center, spacing: 10) {
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .freePlan))
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteUpsell))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteDisabled))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteEnabled))
             
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .freePlan))
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
-            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteUpsell))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteDisabled))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteEnabled))
         }
         .padding([.leading, .trailing], DS.Spacing.large)
     }
