@@ -263,19 +263,15 @@ extension MailboxModel {
         }
     }
 
-    // FIXME: [ET-2721] Use interface from Rust once released
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
-        try! await Task.sleep(for: .seconds(1))
         let labelID: ID = mailbox.labelId()
+        let userSession = dependencies.appContext.userSession
         
-        switch selectedMailbox.systemFolder {
-        case .spam:
-            return .init(folder: .init(labelID: labelID, type: .spam), userState: .freePlan)
-        case .trash:
-            return .init(folder: .init(labelID: labelID, type: .trash), userState: .freePlan)
-        default:
+        guard let banner = try? await getAutoDeleteBanner(session: userSession, labelId: labelID).get() else {
             return nil
         }
+        
+        return banner.emptyFolderBanner(labelID: labelID)
     }
 
     private func prepareSwipeActions() async {
@@ -577,5 +573,32 @@ extension MailboxModel {
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
+    }
+}
+
+private extension AutoDeleteBanner {
+    
+    func emptyFolderBanner(labelID: ID) -> EmptyFolderBanner {
+        .init(folder: .init(labelID: labelID, type: toFolder), userState: toUserState)
+    }
+    
+    private var toFolder: EmptyFolderBanner.Folder {
+        switch folder {
+        case .spam:
+            return .spam
+        case .trash:
+            return .trash
+        }
+    }
+    
+    private var toUserState: EmptyFolderBanner.UserState {
+        switch state {
+        case .autoDeleteUpsell:
+            return .freePlan
+        case .autoDeleteDisabled:
+            return .paidAutoDeleteOff
+        case .autoDeleteEnabled:
+            return .paidAutoDeleteOn
+        }
     }
 }
