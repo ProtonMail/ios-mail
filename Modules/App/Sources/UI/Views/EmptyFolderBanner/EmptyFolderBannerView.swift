@@ -17,19 +17,29 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct EmptyFolderBannerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let model: EmptyFolderBanner
+    private let mailUserSession: MailUserSession
+    private let wrapper: RustEmptyFolderBannerWrapper
     
-    init(model: EmptyFolderBanner) {
+    init(model: EmptyFolderBanner, mailUserSession: MailUserSession, wrapper: RustEmptyFolderBannerWrapper) {
         self.model = model
+        self.mailUserSession = mailUserSession
+        self.wrapper = wrapper
     }
     
     var body: some View {
         StoreView(
-            store: EmptyFolderBannerStateStore(model: model, toastStateStore: toastStateStore)
+            store: EmptyFolderBannerStateStore(
+                model: model,
+                toastStateStore: toastStateStore,
+                mailUserSession: mailUserSession,
+                wrapper: wrapper
+            )
         ) { state, store in
             VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                 HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
@@ -99,16 +109,24 @@ private extension View {
 #Preview {
     ScrollView {
         VStack(alignment: .center, spacing: 10) {
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .freePlan))
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .freePlan))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .paidAutoDeleteOff))
             
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .freePlan))
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
-            EmptyFolderBannerView(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .freePlan))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
+            EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .paidAutoDeleteOff))
         }
         .padding([.leading, .trailing], DS.Spacing.large)
     }
+}
+
+private extension EmptyFolderBannerView {
+    
+    static func preview(model: EmptyFolderBanner) -> Self {
+        .init(model: model, mailUserSession: .dummy, wrapper: .previewInstance())
+    }
+    
 }
 
 private extension EmptyFolderBanner.FolderDetails {

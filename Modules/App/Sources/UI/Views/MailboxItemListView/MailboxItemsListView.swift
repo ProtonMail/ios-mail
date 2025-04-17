@@ -17,13 +17,15 @@
 
 import Combine
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct MailboxItemsListView<EmptyView: View>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
-    @Binding var emptyFolderBanner: EmptyFolderBanner?
     @ObservedObject private(set) var selectionState: SelectionModeState
+    private let mailUserSession: MailUserSession
+    @Binding var emptyFolderBanner: EmptyFolderBanner?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -34,11 +36,13 @@ struct MailboxItemsListView<EmptyView: View>: View {
     init(
         config: MailboxItemsListViewConfiguration,
         @ViewBuilder emptyView: () -> EmptyView,
-        emptyFolderBanner: Binding<EmptyFolderBanner?>
+        emptyFolderBanner: Binding<EmptyFolderBanner?>,
+        mailUserSession: MailUserSession
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
+        self.mailUserSession = mailUserSession
         _emptyFolderBanner = emptyFolderBanner
     }
 
@@ -91,7 +95,11 @@ struct MailboxItemsListView<EmptyView: View>: View {
             return nil
         }
         
-        return EmptyFolderBannerView(model: emptyFolderBanner)
+        return EmptyFolderBannerView(
+            model: emptyFolderBanner,
+            mailUserSession: mailUserSession,
+            wrapper: .productionInstance()
+        )
     }
 
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
@@ -186,7 +194,8 @@ private extension SelectionModeState {
             MailboxItemsListView(
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
-                emptyFolderBanner: .constant(nil)
+                emptyFolderBanner: .constant(nil),
+                mailUserSession: .dummy
             )
             .task {
                 await dataSource.fetchInitialPage()

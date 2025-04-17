@@ -18,12 +18,14 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import Testing
 
 @MainActor
 final class EmptyFolderBannerStateStoreTests {
     var sut: EmptyFolderBannerStateStore!
     let toastStateStore = ToastStateStore(initialState: .initial)
+    private let wrapperSpy = RustWrappersSpy()
     
     // MARK: - `.upgradeToAutoDelete` action
 
@@ -98,8 +100,9 @@ final class EmptyFolderBannerStateStoreTests {
     }
     
     @Test
-    func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndPresentsComingSoon() throws {
-        sut = makeSUT(.trash, .paidAutoDeleteOn)
+    func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() throws {
+        let labelID: ID = .init(value: 99)
+        sut = makeSUT(.trash, .paidAutoDeleteOn, labelID)
         
         sut.handle(action: .emptyFolder)
         
@@ -109,7 +112,7 @@ final class EmptyFolderBannerStateStoreTests {
             buttons: [.emptyLocation],
             alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
         ))
-        #expect(toastStateStore.state.toasts == [])
+        #expect(wrapperSpy.deleteAllCalls == [])
         
         let deleteAction = try sut.state.alertAction(for: .delete)
         deleteAction.action()
@@ -120,16 +123,19 @@ final class EmptyFolderBannerStateStoreTests {
             buttons: [.emptyLocation],
             alert: .none
         ))
-        #expect(toastStateStore.state.toasts == [.comingSoon])
+        #expect(wrapperSpy.deleteAllCalls == [labelID])
     }
     
     private func makeSUT(
         _ folder: EmptyFolderBanner.Folder,
-        _ userState: EmptyFolderBanner.UserState
+        _ userState: EmptyFolderBanner.UserState,
+        _ labelID: ID = .random()
     ) -> EmptyFolderBannerStateStore {
         .init(
-            model: .init(folder: .init(labelID: .random(), type: folder), userState: userState),
-            toastStateStore: toastStateStore
+            model: .init(folder: .init(labelID: labelID, type: folder), userState: userState),
+            toastStateStore: toastStateStore,
+            mailUserSession: .dummy,
+            wrapper: wrapperSpy.testingInstance
         )
     }
 }
@@ -140,4 +146,16 @@ private extension EmptyFolderBannerStateStore.State {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
 
+}
+
+private class RustWrappersSpy {
+    var stubbedDeleteAllResult: VoidActionResult!
+    private(set) var deleteAllCalls: [ID] = []
+    
+    private(set) lazy var testingInstance = RustEmptyFolderBannerWrapper(
+        deleteAllMessages: { [unowned self] _, labelID in
+            deleteAllCalls.append(labelID)
+            return stubbedDeleteAllResult
+        }
+    )
 }

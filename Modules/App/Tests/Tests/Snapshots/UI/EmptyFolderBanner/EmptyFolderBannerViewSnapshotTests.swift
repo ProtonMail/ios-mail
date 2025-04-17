@@ -55,7 +55,11 @@ struct EmptyFolderBannerViewSnapshotTests {
         _ folder: EmptyFolderBanner.Folder,
         _ userState: EmptyFolderBanner.UserState
     ) -> some View {
-        EmptyFolderBannerView(model: .init(folder: .init(labelID: .random(), type: folder), userState: userState))
+        EmptyFolderBannerView(
+            model: .init(folder: .init(labelID: .random(), type: folder), userState: userState),
+            mailUserSession: .dummy,
+            wrapper: .previewInstance()
+        )
             .environmentObject(ToastStateStore(initialState: .initial))
             .padding([.leading, .trailing], DS.Spacing.medium)
     }

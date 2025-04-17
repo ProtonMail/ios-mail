@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 final class EmptyFolderBannerStateStore: StateStore {
@@ -37,11 +38,18 @@ final class EmptyFolderBannerStateStore: StateStore {
     let model: EmptyFolderBanner
     @Published var state: State
     private let toastStateStore: ToastStateStore
+    private let messagesDeleter: AllMessagesDeleter
     
-    init(model: EmptyFolderBanner, toastStateStore: ToastStateStore) {
+    init(
+        model: EmptyFolderBanner,
+        toastStateStore: ToastStateStore,
+        mailUserSession: MailUserSession,
+        wrapper: RustEmptyFolderBannerWrapper
+    ) {
         self.model = model
         self.state = model.state
         self.toastStateStore = toastStateStore
+        self.messagesDeleter = .init(mailUserSession: mailUserSession, wrapper: wrapper)
     }
     
     // MARK: - StateStore

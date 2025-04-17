@@ -17,17 +17,20 @@
 
 import InboxDesignSystem
 import InboxCoreUI
+import proton_app_uniffi
 import SwiftUI
 
 struct MailboxListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: MailboxModel
+    private let mailUserSession: MailUserSession
 
     @Binding private var isListAtTop: Bool
 
-    init(isListAtTop: Binding<Bool>, model: MailboxModel) {
+    init(isListAtTop: Binding<Bool>, model: MailboxModel, mailUserSession: MailUserSession) {
         self._isListAtTop = isListAtTop
         self.model = model
+        self.mailUserSession = mailUserSession
     }
 
     var body: some View {
@@ -87,7 +90,8 @@ extension MailboxListView {
                     isUnreadFilterOn: model.state.filterBar.isUnreadButtonSelected
                 ))
             },
-            emptyFolderBanner: $model.emptyFolderBanner
+            emptyFolderBanner: $model.emptyFolderBanner,
+            mailUserSession: mailUserSession
         )
         .injectIfNotNil(model.mailbox)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -122,7 +126,8 @@ extension MailboxListView {
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route,
             draftPresenter: .dummy
-        )
+        ),
+        mailUserSession: .dummy
     )
 }
 
