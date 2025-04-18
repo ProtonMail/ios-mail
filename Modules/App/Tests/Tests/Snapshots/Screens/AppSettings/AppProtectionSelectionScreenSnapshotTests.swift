@@ -24,13 +24,13 @@ class AppProtectionSelectionScreenSnapshotTests: BaseTestCase {
 
     func testAppProtectionSelectionScreenLayoutsCorrectly() {
         let sut = AppProtectionSelectionScreen(state: .init(
-            selectedAppProtection: .biometrics,
+            selectedAppProtection: .pin,
             availableAppProtectionMethods: [
                 .init(type: .none, isSelected: false),
-                .init(type: .pin, isSelected: false),
-                .init(type: .faceID, isSelected: true),
-            ])
-        )
+                .init(type: .pin, isSelected: true),
+                .init(type: .faceID, isSelected: false),
+            ]
+        ))
 
         assertSnapshotsOnIPhoneX(of: sut)
     }

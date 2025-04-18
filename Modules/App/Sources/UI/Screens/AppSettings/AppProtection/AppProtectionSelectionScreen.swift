@@ -39,8 +39,16 @@ struct AppProtectionSelectionScreen: View {
                         }
                     }
                 }
+                if store.state.displayChangePasswordButton {
+                    FormSection {
+                        FormSmallButton(title: "Change PIN code", rightSymbol: .chevronRight) {
+                            // FIXME: - Trigger set new password flow
+                        }
+                        .applyRoundedRectangleStyle()
+                    }
+                }
                 Spacer()
-            }
+            }.animation(.easeInOut, value: store.state.displayChangePasswordButton)
         }
         .padding(.horizontal, DS.Spacing.large)
         .background(DS.Color.BackgroundInverted.norm)
@@ -70,6 +78,18 @@ private extension FormSmallButton.Symbol {
 
     static var checkmark: Self {
         .init(name: DS.SFSymbols.checkmark, color: DS.Color.Icon.accent)
+    }
+
+    static var chevronRight: Self {
+        .init(name: DS.SFSymbols.chevronRight, color: DS.Color.Text.hint)
+    }
+
+}
+
+private extension AppProtectionSelectionState {
+
+    var displayChangePasswordButton: Bool {
+        selectedAppProtection == .pin
     }
 
 }
