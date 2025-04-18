@@ -58,3 +58,15 @@ struct FormSmallButton: View {
         }
     }
 }
+
+extension FormSmallButton.Symbol {
+
+    static var checkmark: Self {
+        .init(name: DS.SFSymbols.checkmark, color: DS.Color.Icon.accent)
+    }
+
+    static var chevronRight: Self {
+        .init(name: DS.SFSymbols.chevronRight, color: DS.Color.Text.hint)
+    }
+
+}
