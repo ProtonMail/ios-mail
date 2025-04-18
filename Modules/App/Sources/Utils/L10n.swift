@@ -846,6 +846,18 @@ enum L10n {
                 "PIN code",
                 comment: "App lock option."
             )
+            static let protectionSelectionScreenTitle = LocalizedStringResource(
+                "Protection",
+                comment: "App protection selection screen title."
+            )
+            static let protectionSelectionListFooterInformation = LocalizedStringResource(
+                "All protection settings will be reset and wiped upon signing out of the app",
+                comment: "Protection selection list footer information."
+            )
+            static let changePINcode = LocalizedStringResource(
+                "Change PIN code",
+                comment: "Change PIN code button title."
+            )
         }
 
         static let subscription = LocalizedStringResource(

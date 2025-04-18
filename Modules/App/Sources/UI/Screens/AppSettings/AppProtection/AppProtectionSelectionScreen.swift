@@ -29,7 +29,7 @@ struct AppProtectionSelectionScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: .zero) {
-                FormSection(footer: "All protection settings will be reset and wiped upon signing out of the app") {
+                FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
                     FormList(collection: store.state.availableAppProtectionMethods) { viewModel in
                         FormSmallButton(
                             title: viewModel.type.name,
@@ -41,7 +41,7 @@ struct AppProtectionSelectionScreen: View {
                 }
                 if store.state.displayChangePasswordButton {
                     FormSection {
-                        FormSmallButton(title: "Change PIN code", rightSymbol: .chevronRight) {
+                        FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
                             // FIXME: - Trigger set new password flow
                         }
                         .applyRoundedRectangleStyle()
@@ -52,7 +52,7 @@ struct AppProtectionSelectionScreen: View {
         }
         .padding(.horizontal, DS.Spacing.large)
         .background(DS.Color.BackgroundInverted.norm)
-        .navigationTitle("Protection")
+        .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
         .navigationBarTitleDisplayMode(.inline)
         .onLoad { store.handle(action: .viewLoads) }
     }

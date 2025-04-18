@@ -32,13 +32,13 @@ struct AppProtectionMethodViewModel: Equatable {
         var name: LocalizedStringResource {
             switch self {
             case .none:
-                "None"
+                L10n.Settings.App.none
             case .pin:
-                "PIN code"
+                L10n.Settings.App.pinCode
             case .faceID:
-                "Face ID"
+                L10n.Settings.App.faceID
             case .touchID:
-                "Touch ID"
+                L10n.Settings.App.touchID
             }
         }
     }
