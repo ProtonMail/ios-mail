@@ -16,6 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum AppProtectionSelectionAction {
-    case viewLoaded
+    case viewLoads
     case selected(AppProtectionMethodViewModel.MethodType)
 }

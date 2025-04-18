@@ -203,7 +203,7 @@ private extension AppProtection {
         case .none:
             L10n.Settings.App.none
         case .biometrics:
-            switch SupportedBiometry.onDevice {
+            switch SupportedBiometry.onDevice() {
             case .faceID:
                 L10n.Settings.App.faceID
             case .touchID:

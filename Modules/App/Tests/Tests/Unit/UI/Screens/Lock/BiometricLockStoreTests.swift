@@ -81,11 +81,18 @@ class BiometricLockStoreTests {
 
 }
 
-private class LAContextSpy: LAContext {
+class LAContextSpy: LAContext { // FIXME: - Move to separate file
     var canEvaluatePolicyStub = true
     var evaluatePolicyStub = true
+    var biometryTypeStub: LABiometryType = .faceID
     private(set) var canEvaluatePolicyCalls: [LAPolicy] = []
     private(set) var evaluatePolicyCalls: [LAPolicy] = []
+
+    // MARK: - LAContext
+
+    override var biometryType: LABiometryType {
+        biometryTypeStub
+    }
 
     override func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
         canEvaluatePolicyCalls.append(policy)

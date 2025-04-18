@@ -18,18 +18,24 @@
 import Combine
 import InboxCore
 import proton_app_uniffi
+import LocalAuthentication
 
 class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState
+    private let laContext: () -> LAContext
 
-    init(state: AppProtectionSelectionState) {
+    init(
+        state: AppProtectionSelectionState,
+        laContext: @escaping () -> LAContext = { .init() }
+    ) {
         self.state = state
+        self.laContext = laContext
     }
 
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .viewLoaded:
+        case .viewLoads:
             state = state
                 .copy(
                     \.availableAppProtectionMethods,
@@ -58,7 +64,7 @@ class AppProtectionSelectionStore: StateStore {
     }
 
     private func supportedBiometry() -> AppProtectionMethodViewModel.MethodType? {
-        switch SupportedBiometry.onDevice {
+        switch SupportedBiometry.onDevice(context: laContext()) {
         case .none:
             nil
         case .faceID:
