@@ -264,8 +264,8 @@ extension MailboxModel {
     }
 
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
-        let labelID: ID = mailbox.labelId()
         let userSession = dependencies.appContext.userSession
+        let labelID: ID = mailbox.labelId()
         
         guard let banner = try? await getAutoDeleteBanner(session: userSession, labelId: labelID).get() else {
             return nil

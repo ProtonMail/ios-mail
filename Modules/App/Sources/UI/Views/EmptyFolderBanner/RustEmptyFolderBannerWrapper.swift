@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 struct RustEmptyFolderBannerWrapper {
-    let deleteAllMessages: @Sendable (_ mailUserSession: MailUserSession, _ labelID: Id) async -> VoidActionResult
+    let deleteAllMessages: @Sendable (_ mailUserSession: MailUserSession, _ labelID: ID) async -> VoidActionResult
 
     init(deleteAllMessages: @escaping @Sendable (MailUserSession, Id) async -> VoidActionResult) {
         self.deleteAllMessages = deleteAllMessages
@@ -32,7 +32,7 @@ extension RustEmptyFolderBannerWrapper {
             await deleteAllMessagesInLabel(session: mailUserSession, labelId: labelID)
         })
     }
-    
+
     static func previewInstance() -> Self {
         .init(deleteAllMessages: { _, _ in .ok })
     }

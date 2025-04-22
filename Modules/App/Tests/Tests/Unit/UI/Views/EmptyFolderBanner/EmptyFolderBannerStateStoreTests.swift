@@ -22,7 +22,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import Testing
 
-@Suite(.serialized) @MainActor
 final class EmptyFolderBannerStateStoreTests {
     var sut: EmptyFolderBannerStateStore!
     let toastStateStore = ToastStateStore(initialState: .initial)
