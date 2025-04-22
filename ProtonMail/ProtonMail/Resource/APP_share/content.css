@@ -211,6 +211,12 @@ table {
     min-height: auto !important;
 }
 
+@supports (height: fit-content) {
+    html {
+        height: fit-content;
+    }
+}
+
 svg:not(:root) {
     overflow: hidden;
 }
