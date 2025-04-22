@@ -17,7 +17,7 @@
 
 import Combine
 
-class EmailsPrefetchingNotifier: ApplicationServiceDidBecomeActive, @unchecked Sendable {
+class EmailsPrefetchingNotifier: ApplicationServiceWillEnterForeground, @unchecked Sendable {
 
     static let shared = EmailsPrefetchingNotifier()
     let subject = PassthroughSubject<Void, Never>()
@@ -30,9 +30,9 @@ class EmailsPrefetchingNotifier: ApplicationServiceDidBecomeActive, @unchecked S
         subject.send(())
     }
 
-    // MARK: - ApplicationServiceDidBecomeActive
+    // MARK: - ApplicationServiceWillEnterForeground
 
-    func becomeActiveService() {
+    func willEnterForeground() {
         notify()
     }
 

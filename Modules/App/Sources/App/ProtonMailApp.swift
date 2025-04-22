@@ -24,7 +24,6 @@ import SwiftUI
 @main
 struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @Environment(\.scenePhase) private var scenePhase
 
     // declaration of state objects
     private let appUIStateStore = AppUIStateStore()
@@ -47,14 +46,6 @@ struct ProtonMailApp: App {
             }
             .preferredColorScheme(appAppearanceStore.colorScheme)
         }
-        .onChange(of: scenePhase, { oldValue, newValue in
-            // scenePhase contains an aggregate phase for all scenes
-            if newValue == .active {
-                AppLifeCycle.shared.allScenesDidBecomeActive()
-            } else if newValue == .background {
-                AppLifeCycle.shared.allScenesDidEnterBackground()
-            }
-        })
     }
 
     init() {

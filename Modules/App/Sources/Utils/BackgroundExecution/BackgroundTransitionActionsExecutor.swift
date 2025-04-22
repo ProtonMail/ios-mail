@@ -19,7 +19,7 @@ import proton_app_uniffi
 import InboxCore
 import UIKit
 
-class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceDidBecomeActive, @unchecked Sendable {
+class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground, @unchecked Sendable {
 
     typealias ActionQueueStatusProvider = @Sendable () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = @Sendable () -> BackgroundTaskExecutor
@@ -56,9 +56,9 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         self.actionQueueStatusProvider = actionQueueStatusProvider
     }
 
-    // MARK: - ApplicationServiceDidBecomeActive
+    // MARK: - ApplicationServiceWillEnterForeground
 
-    func becomeActiveService() {
+    func willEnterForeground() {
         guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
@@ -72,7 +72,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     // MARK: - ApplicationServiceDidEnterBackground
 
-    func enterBackgroundService() {
+    func didEnterBackground() {
         guard actionQueueStatusProvider() != nil else {
             Self.log("No active session")
             return

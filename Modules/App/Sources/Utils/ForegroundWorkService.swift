@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-class ForegroundWorkService: ApplicationServiceDidBecomeActive, ApplicationServiceDidEnterBackground {
+class ForegroundWorkService: ApplicationServiceWillEnterForeground, ApplicationServiceDidEnterBackground {
 
     private let mailSession: () -> MailSessionProtocol
 
@@ -25,15 +25,15 @@ class ForegroundWorkService: ApplicationServiceDidBecomeActive, ApplicationServi
         self.mailSession = mailSession
     }
 
-    // MARK: - ApplicationServiceDidBecomeActive
+    // MARK: - ApplicationServiceWillEnterForeground
 
-    func becomeActiveService() {
+    func willEnterForeground() {
         mailSession().resumeWork()
     }
 
     // MARK: - ApplicationServiceDidEnterBackground
 
-    func enterBackgroundService() {
+    func didEnterBackground() {
         mailSession().pauseWorkAndWait()
     }
 

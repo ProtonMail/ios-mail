@@ -50,15 +50,16 @@ extension AppLifeCycle: UIApplicationDelegate {
 
 extension AppLifeCycle {
 
-    func allScenesDidBecomeActive() {
+    func sceneWillEnterForeground() {
         AppLogger.log(message: "\(#function)", category: .appLifeCycle)
-        applicationServices.becomeActive()
+        applicationServices.willEnterForeground()
     }
 
-    func allScenesDidEnterBackground() {
+    func sceneDidEnterBackground() {
         AppLogger.log(message: "\(#function)", category: .appLifeCycle)
-        applicationServices.enterBackground()
+        applicationServices.didEnterBackground()
     }
+
 }
 
 
@@ -99,12 +100,12 @@ extension AppLifeCycle {
                 recurringBackgroundTaskService,
                 userNotificationCenterDelegate
             ],
-            becomeActiveServices: [
+            willEnterForegroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
                 emailsPrefetchingNotifier
             ],
-            enterBackgroundServices: [
+            didEnterBackgroundServices: [
                 foregroundWorkService,
                 appIconBadgeService,
                 backgroundTransitionActionsExecutor

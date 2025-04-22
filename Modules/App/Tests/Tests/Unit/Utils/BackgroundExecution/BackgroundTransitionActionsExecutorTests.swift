@@ -57,10 +57,10 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInForeground
 
-        sut.enterBackgroundService()
+        sut.didEnterBackground()
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
 
-        sut.becomeActiveService()
+        sut.willEnterForeground()
         XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [true])
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
@@ -69,7 +69,7 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
     func test_WhenUserEntersBackground_ItExecutesBackgroundActionsWithSuccess() throws {
         actionQueueStatusProviderSpy.draftSendResultUnseenResultStub = .ok([.success])
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .executed
-        sut.enterBackgroundService()
+        sut.didEnterBackground()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
@@ -84,7 +84,7 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         backgroundTaskExecutorSpy.allMessagesWereSent = false
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
 
-        sut.enterBackgroundService()
+        sut.didEnterBackground()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
@@ -99,7 +99,7 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
 
-        sut.enterBackgroundService()
+        sut.didEnterBackground()
         backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.first?.handler?()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)

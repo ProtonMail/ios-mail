@@ -19,8 +19,8 @@ import Foundation
 
 struct ApplicationServices {
     var setUpServices: [ApplicationServiceSetUp] = []
-    var becomeActiveServices: [ApplicationServiceDidBecomeActive] = []
-    var enterBackgroundServices: [ApplicationServiceDidEnterBackground] = []
+    var willEnterForegroundServices: [ApplicationServiceWillEnterForeground] = []
+    var didEnterBackgroundServices: [ApplicationServiceDidEnterBackground] = []
     var terminateServices: [ApplicationServiceTerminate] = []
 
     @MainActor
@@ -28,12 +28,12 @@ struct ApplicationServices {
         setUpServices.forEach { $0.setUpService() }
     }
 
-    func becomeActive() {
-        becomeActiveServices.forEach { $0.becomeActiveService() }
+    func willEnterForeground() {
+        willEnterForegroundServices.forEach { $0.willEnterForeground() }
     }
 
-    func enterBackground() {
-        enterBackgroundServices.forEach { $0.enterBackgroundService() }
+    func didEnterBackground() {
+        didEnterBackgroundServices.forEach { $0.didEnterBackground() }
     }
 
     func terminate() {
@@ -50,10 +50,10 @@ protocol ApplicationServiceTerminate {
     func terminateService()
 }
 
-protocol ApplicationServiceDidBecomeActive {
-    func becomeActiveService()
+protocol ApplicationServiceWillEnterForeground {
+    func willEnterForeground()
 }
 
 protocol ApplicationServiceDidEnterBackground {
-    func enterBackgroundService()
+    func didEnterBackground()
 }

@@ -60,7 +60,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
+        AppLifeCycle.shared.sceneWillEnterForeground()
         appProtectionStore.checkProtection()
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        AppLifeCycle.shared.sceneDidEnterBackground()
     }
 
     // MARK: - Private

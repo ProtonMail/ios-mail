@@ -49,7 +49,7 @@ struct AppIconBadgeService {
 }
 
 extension AppIconBadgeService: ApplicationServiceDidEnterBackground {
-    func enterBackgroundService() {
+    func didEnterBackground() {
         Task {
             await enterBackgroundServiceAsync()
         }
