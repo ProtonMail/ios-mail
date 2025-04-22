@@ -3255,6 +3255,9 @@
     "System" : {
       "comment" : "One of the appearance option to set in app settings."
     },
+    "Testing app" : {
+
+    },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field."
     },

@@ -21,7 +21,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
+final class SceneDelegate2: UIResponder, UIWindowSceneDelegate, ObservableObject {
 
     weak var windowScene: UIWindowScene?
     var overlayWindow: UIWindow?

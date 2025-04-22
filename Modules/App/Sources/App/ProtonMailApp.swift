@@ -21,9 +21,117 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        print("*** SCENE ENTERED FOREGROUND")
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        print("*** SCENE ENTERED BACKGROUND")
+
+        openDB()
+    }
+}
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        configuration.delegateClass = SceneDelegate.self
+        return configuration
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+        true
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("*** APP ENTERED FOREGROUND")
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("*** APP ENTERED BACKGROUND")
+    }
+
+}
+
 @main
 struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+    var body: some Scene {
+        WindowGroup {
+            ZStack {
+                Text("Testing app")
+            }
+        }
+    }
+}
+
+import SQLite3
+
+var DB: OpaquePointer? = nil;
+
+func openDB() {
+    let cachesURL = FileManager
+            .default
+            .urls(for: .cachesDirectory, in: .userDomainMask)
+            .first!
+
+    // 2. Define your subdirectory
+    let myDirURL = cachesURL.appendingPathComponent("MyCacheDir", isDirectory: true)
+
+    // 3. Create the directory (if it doesn't already exist)
+    try! FileManager.default.createDirectory(
+        at: myDirURL,
+        withIntermediateDirectories: true,
+        attributes: nil
+    )
+
+    // 4. Define the text file URL
+    let fileURL = myDirURL.appendingPathComponent("sqlite.db")
+
+    if sqlite3_open(fileURL.path(), &DB) != SQLITE_OK {
+        print("Failed to open db")
+        return
+    }
+
+    if sqlite3_exec(DB,"PRAGMA JOURNAL_MODE=WAL", nil, nil,nil) != SQLITE_OK {
+        print("Failed to create table")
+        return
+    }
+
+
+    if sqlite3_exec(DB,"CREATE TABLE IF NOT EXISTS foo(id INTEGER PRIMARY KEY AUTOINCREMENT, bar TEXT NOT NULL DEFAULT '')", nil, nil,nil) != SQLITE_OK {
+        print("Failed to create table")
+        return
+    }
+
+    if sqlite3_exec(DB,"INSERT INTO foo (bar) VALUES('bar')", nil, nil,nil) != SQLITE_OK {
+        print("Failed to insert record")
+        return
+    }
+
+
+    if sqlite3_exec(DB,"BEGIN TRANSACTION IMMEDIATE", nil,nil,nil) != SQLITE_OK {
+        print("Failed to begin transaction")
+    } else {
+        print("Transaction started")
+    }
+
+    if sqlite3_exec(DB,"INSERT INTO foo (bar) VALUES('foobar')", nil, nil,nil) != SQLITE_OK {
+        print("Failed to insert record tx")
+        return
+    }
+
+}
+
+struct ProtonMailApp_2: App {
+    @UIApplicationDelegateAdaptor(AppDelegate2.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
 
     // declaration of state objects
@@ -49,6 +157,7 @@ struct ProtonMailApp: App {
         }
         .onChange(of: scenePhase, { oldValue, newValue in
             // scenePhase contains an aggregate phase for all scenes
+            print("*** SCENE PHASE HAS CHANGED, OLD: \(oldValue), NEW: \(newValue)")
             if newValue == .active {
                 AppLifeCycle.shared.allScenesDidBecomeActive()
             } else if newValue == .background {
@@ -91,7 +200,7 @@ private struct RootView: View {
     var body: some View {
         mainView()
             .onAppear {
-                sceneDelegate.toastStateStore = toastStateStore
+//                sceneDelegate.toastStateStore = toastStateStore
             }
             .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {

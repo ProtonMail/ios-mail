@@ -19,7 +19,7 @@ import InboxCore
 import ProtonCoreUtilities
 import SwiftUI
 
-final class AppDelegate: NSObject, UIApplicationDelegate {
+final class AppDelegate2: NSObject, UIApplicationDelegate {
     private let deviceTokenRegistrar = DeviceTokenRegistrar()
 
     func application(
@@ -28,7 +28,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
         let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
-        configuration.delegateClass = SceneDelegate.self
+        configuration.delegateClass = SceneDelegate2.self
         return configuration
     }
 

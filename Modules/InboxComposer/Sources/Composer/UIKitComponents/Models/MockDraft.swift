@@ -182,6 +182,7 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked
 }
 
 final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
+    
     var mockAttachments = [DraftAttachment]()
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddPathCalls = [String]()
