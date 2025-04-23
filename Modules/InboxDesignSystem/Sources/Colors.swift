@@ -24,6 +24,7 @@ public extension DS.Color {
     }
 
     enum Border {
+        public static let light = Color(.borderLight)
         public static let norm = Color(.borderNorm)
         public static let strong = Color(.borderStrong)
     }

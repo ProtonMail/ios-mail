@@ -57,7 +57,7 @@ struct EmptyFolderBannerView: View {
                             .buttonStyle(.plain)
                             .horizontalPadding()
                         if !isLast {
-                            DS.Color.Border.strong.frame(height: 1).frame(maxWidth: .infinity)
+                            DS.Color.Border.light.frame(height: 1).frame(maxWidth: .infinity)
                         }
                     }
                 }
@@ -66,7 +66,7 @@ struct EmptyFolderBannerView: View {
             .background {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                     .fill(DS.Color.Background.norm)
-                    .stroke(DS.Color.Border.strong, lineWidth: 1)
+                    .stroke(DS.Color.Border.norm, lineWidth: 1)
             }
             .frame(maxWidth: .infinity)
             .alert(model: store.binding(\.alert))
