@@ -116,9 +116,9 @@ private extension EmptyFolderBanner.ActionButton {
     var style: Banner.ButtonStyle {
         switch self {
         case .upgradePlan:
-            return .gradient
+            .gradient
         case .emptyLocation:
-            return .regular
+            .regular
         }
     }
 
