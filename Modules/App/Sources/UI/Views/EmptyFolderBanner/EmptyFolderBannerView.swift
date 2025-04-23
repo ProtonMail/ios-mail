@@ -55,7 +55,7 @@ struct EmptyFolderBannerView: View {
                     VStack(spacing: DS.Spacing.medium) {
                         BannerButton(
                             model: buttonModel(from: type, store: store),
-                            style: .regular(strokeColors: type.strokeColors),
+                            style: type.style,
                             maxWidth: .infinity
                         )
                             .buttonStyle(.plain)
@@ -112,16 +112,16 @@ private extension View {
 }
 
 private extension EmptyFolderBanner.ActionButton {
-    
-    var strokeColors: [Color] {
+
+    var style: Banner.ButtonStyle {
         switch self {
         case .upgradePlan:
-            return DS.Color.Gradient.crazy
+            return .gradient
         case .emptyLocation:
-            return []
+            return .regular
         }
     }
-    
+
 }
 
 #Preview {

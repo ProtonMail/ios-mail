@@ -58,8 +58,18 @@ public struct Banner: Hashable {
         let text: Color
         let strokeColors: [Color]
         
-        public static func regular(strokeColors: [Color]) -> Self {
-            .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm, strokeColors: strokeColors)
+        public static var regular: Self {
+            .textNorm(background: DS.Color.InteractionWeak.norm, strokeColors: [])
+        }
+        
+        public static var gradient: Self {
+            .textNorm(background: DS.Color.Background.norm, strokeColors: DS.Color.Gradient.crazy)
+        }
+        
+        // MARK: - Private
+        
+        private static func textNorm(background: Color, strokeColors: [Color]) -> Self {
+            .init(background: background, text: DS.Color.Text.norm, strokeColors: strokeColors)
         }
     }
 
@@ -83,7 +93,7 @@ public struct Banner: Hashable {
                 .init(
                     background: DS.Color.Background.norm,
                     border: DS.Color.Border.strong,
-                    button: .regular(strokeColors: []),
+                    button: .regular,
                     content: .regular
                 )
             case .error:
