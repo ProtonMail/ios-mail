@@ -99,6 +99,15 @@ final class BodyEditorController: UIViewController {
     func updateBody(html body: String) {
         htmlInterface.loadMessageBody(body)
     }
+
+    func handleBodyAction(action: ComposerBodyAction) {
+        switch action {
+        case .insertInlineImages(let cids):
+            Task {
+                await htmlInterface.insertImages(cids)
+            }
+        }
+    }
 }
 
 extension BodyEditorController: WKNavigationDelegate {

@@ -184,6 +184,10 @@ final class ComposerController: UIViewController {
         let adjustedOffset = CGPoint(x: scrollView.contentOffset.x, y: max(0, newOffsetY))
         scrollView.setContentOffset(adjustedOffset, animated: true)
     }
+
+    func handleBodyAction(action: ComposerBodyAction) {
+        bodyEditor.handleBodyAction(action: action)
+    }
 }
 
 

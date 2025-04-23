@@ -142,6 +142,17 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
     }
 
+    func testOnLoad_whenThereAreInlineAttachments_itShouldNotMapThemToUIModels() async throws {
+        let dummy1 = DraftAttachment.makeMockDraftAttachment(withState: .uploaded, disposition: .inline)
+        let dummy2 = DraftAttachment.makeMockDraftAttachment(withState: .uploaded, disposition: .attachment)
+        mockDraft.mockAttachmentList.mockAttachments = [dummy1, dummy2]
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.onLoad()
+
+        XCTAssertEqual(sut.state.attachments, [dummy2.toDraftAttachmentUIModel()])
+    }
+
     // MARK: startEditingRecipients
 
     func testStartEditingRecipients_itShouldSetEditingForTargetGroupAndExpandedForOthers() {
@@ -618,9 +629,12 @@ private extension ComposerContact {
 
 private extension DraftAttachment {
 
-    static func makeMockDraftAttachment(withState state: DraftAttachmentState) -> DraftAttachment {
+    static func makeMockDraftAttachment(
+        withState state: DraftAttachmentState,
+        disposition: Disposition = .attachment
+    ) -> DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
-        let mockAttachment = AttachmentMetadata(id: .random(), disposition: .attachment, mimeType: mockMimeType, name: "attachment_1", size: 123456)
+        let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: "attachment_1", size: 123456)
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
     }
 }

@@ -24,7 +24,7 @@ struct CameraImageHandler {
     let fileManager = FileManager.default
     let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
 
-    func addImage(to draft: AppDraftProtocol, image: UIImage, onError: (DraftAttachmentError) -> Void) async {
+    func addInlineImage(to draft: AppDraftProtocol, image: UIImage) async -> Result<String, DraftAttachmentError> {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         do {
             try fileManager.createDirectory(at: uploadFolder, withIntermediateDirectories: true)
@@ -33,14 +33,15 @@ struct CameraImageHandler {
                 .appendingPathExtension(UTType.jpeg.preferredFilenameExtension ?? "jpg")
             let imageData = image.jpegData(compressionQuality: JPEG.compressionQuality)
             try imageData?.write(to: destinationFile)
-            // FIXME: Add as inline image when supported by SDK
-            let result = await draft.attachmentList().add(path: destinationFile.path)
-            if case .error(let error) = result {
-                onError(error)
+            switch await draft.attachmentList().addInline(path: destinationFile.path, filenameOverride: nil) {
+            case .ok(let cid):
+                return .success(cid)
+            case .error(let error):
+                return .failure(error)
             }
         } catch {
             AppLogger.log(error: error, category: .composer)
-            onError(unexpectedError)
+            return .failure(unexpectedError)
         }
     }
 }

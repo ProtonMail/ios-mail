@@ -80,6 +80,8 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
                 urlSchemeTask.didReceive(image.data)
                 urlSchemeTask.didFinish()
             case .error(let error):
+                let message = "cid: \(cid), error: \(error)"
+                AppLogger.log(message: message, category: .composer, isError: true)
                 urlSchemeTask.didFailWithError(error)
             }
         }

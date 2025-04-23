@@ -77,6 +77,7 @@ extension BodyHtmlDocument {
     enum JSFunction: String {
         case setFocus = "html_editor.setFocus"
         case getHtmlContent = "html_editor.getHtmlContent"
+        case insertImages = "html_editor.insertImages"
 
         var callFunction: String {
             "\(self.rawValue)();"
@@ -130,6 +131,17 @@ private extension BodyHtmlDocument {
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <style>
                 \(HtmlPlaceholder.css)
+                /* In the editor, disallow drag, context menu and touch for img */
+                #\(ID.editor) img {
+                    -webkit-user-drag: none;
+                    -webkit-touch-callout: none;
+                    pointer-events: none;
+                }
+                /* In the editor, divs with img as direct children behave like a character to be able to be deleted */
+                #\(ID.editor) div:has(> img) {
+                    display: inline-block;
+                    user-select: contain;
+                }
             </style>
         </head>
         <body>
@@ -194,6 +206,28 @@ private extension BodyHtmlDocument {
 
     \(JSFunction.getHtmlContent.rawValue) = function () {
         return document.getElementById('\(ID.editor)').innerHTML;
+    };
+
+    \(JSFunction.insertImages.rawValue) = function (images) {
+        const editor = document.getElementById('\(ID.editor)');
+        const selection = window.getSelection();
+
+        const editorHasCursor = document.activeElement === editor && selection.rangeCount;
+        if (!editorHasCursor) {
+            // Add cursor in editor
+            const range = document.createRange();
+            range.setStart(editor, 0);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        
+        const html = images.map(function(cid) {
+            return `<div><img src="cid:${cid}" style="max-width: 100%;"></div><br>`;
+        }).join('');
+
+        document.execCommand('insertHTML', false, html);
+        editor.dispatchEvent(new Event('input'));
     };
 
     // --------------------

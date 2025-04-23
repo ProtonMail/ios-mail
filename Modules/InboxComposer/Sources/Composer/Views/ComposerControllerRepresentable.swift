@@ -20,20 +20,46 @@ import SwiftUI
 
 struct ComposerControllerRepresentable: UIViewControllerRepresentable {
     let state: ComposerState
+    @Binding var bodyAction: ComposerBodyAction?
     let embeddedImageProvider: EmbeddedImageProvider
     let invalidAddressAlertStore: InvalidAddressAlertStateStore
     let onEvent: (ComposerController.Event) -> Void
 
     func makeUIViewController(context: Context) -> ComposerController {
-        ComposerController(
+        let controller = ComposerController(
             state: state,
             embeddedImageProvider: embeddedImageProvider,
             invalidAddressAlertStore: invalidAddressAlertStore,
             onEvent: onEvent
         )
+        context.coordinator.controller = controller
+        return controller
     }
 
     func updateUIViewController(_ controller: ComposerController, context: Context) {
-        controller.state = state
+        context.coordinator.updateState(state)
+        if let action = bodyAction {
+            // DispatchQueue.main required to avoid publishing changes (bodyAction) during view updates
+            DispatchQueue.main.async {
+                bodyAction = nil
+                context.coordinator.handleBodyAction(action: action)
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+
+    final class Coordinator {
+        var controller: ComposerController!
+
+        func updateState(_ state: ComposerState) {
+            controller.state = state
+        }
+
+        func handleBodyAction(action: ComposerBodyAction) {
+            controller.handleBodyAction(action: action)
+        }
     }
 }
