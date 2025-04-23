@@ -20,6 +20,6 @@ public extension DS.Radius {
     /// 16px
     static let extraLarge: CGFloat = 16
     /// 24px
-    static let huge: CGFloat = 24
+    static let massive: CGFloat = 24
 
 }

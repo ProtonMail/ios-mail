@@ -32,7 +32,7 @@ public struct BigButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .background(
                 configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm,
-                in: RoundedRectangle(cornerRadius: DS.Radius.huge)
+                in: RoundedRectangle(cornerRadius: DS.Radius.massive)
             )
     }
 }

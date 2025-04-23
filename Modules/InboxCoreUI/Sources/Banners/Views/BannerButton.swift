@@ -40,7 +40,7 @@ public struct BannerButton: View {
                     .frame(maxWidth: maxWidth)
                     .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
                     .background {
-                        RoundedRectangle(cornerRadius: DS.Radius.huge)
+                        RoundedRectangle(cornerRadius: DS.Radius.massive)
                             .fill(style.background)
                             .stroke(
                                 LinearGradient(

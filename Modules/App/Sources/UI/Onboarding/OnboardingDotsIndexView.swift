@@ -28,7 +28,7 @@ struct OnboardingDotsIndexView: View {
     var body: some View {
         HStack(spacing: DS.Spacing.small) {
             ForEach(0..<pagesCount, id: \.self) { pageIndex in
-                RoundedRectangle(cornerRadius: DS.Radius.huge)
+                RoundedRectangle(cornerRadius: DS.Radius.massive)
                     .fill(color(forIndex: pageIndex))
                     .frame(width: width(forIndex: pageIndex), height: dotSize)
                     .animation(.easeInOut, value: selectedPageIndex)

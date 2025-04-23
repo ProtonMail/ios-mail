@@ -26,7 +26,7 @@ struct PickerViewStyle: ViewModifier {
             .background(DS.Color.Background.secondary)
             .safeAreaPadding(.top, DS.Spacing.extraLarge)
             .presentationContentInteraction(.scrolls)
-            .presentationCornerRadius(DS.Radius.huge)
+            .presentationCornerRadius(DS.Radius.massive)
             .presentationDetents(detents)
             .presentationDragIndicator(.visible)
     }
