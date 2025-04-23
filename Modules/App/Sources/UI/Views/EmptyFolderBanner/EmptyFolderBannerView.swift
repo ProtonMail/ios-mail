@@ -67,6 +67,7 @@ struct EmptyFolderBannerView: View {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                     .fill(DS.Color.Background.norm)
                     .stroke(DS.Color.Border.norm, lineWidth: 1)
+                    .shadow(DS.Shadows.softFull, isVisible: true)
             }
             .frame(maxWidth: .infinity)
             .alert(model: store.binding(\.alert))
@@ -118,6 +119,7 @@ private extension View {
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteEnabled))
         }
         .padding([.leading, .trailing], DS.Spacing.large)
+        .environmentObject(ToastStateStore(initialState: .initial))
     }
 }
 
