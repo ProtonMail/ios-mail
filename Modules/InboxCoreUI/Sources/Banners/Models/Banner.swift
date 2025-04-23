@@ -56,9 +56,10 @@ public struct Banner: Hashable {
     public struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
+        let strokeColors: [Color]
         
-        public static var regular: Self {
-            .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm)
+        public static func regular(strokeColors: [Color]) -> Self {
+            .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm, strokeColors: strokeColors)
         }
     }
 
@@ -82,14 +83,18 @@ public struct Banner: Hashable {
                 .init(
                     background: DS.Color.Background.norm,
                     border: DS.Color.Border.strong,
-                    button: .regular,
+                    button: .regular(strokeColors: []),
                     content: .regular
                 )
             case .error:
                 .init(
                     background: DS.Color.Notification.error,
                     border: .clear,
-                    button: .init(background: DS.Color.Global.white.opacity(0.2), text: DS.Color.Text.inverted),
+                    button: .init(
+                        background: DS.Color.Global.white.opacity(0.2),
+                        text: DS.Color.Text.inverted,
+                        strokeColors: []
+                    ),
                     content: .init(icon: DS.Color.Icon.inverted, text: DS.Color.Text.inverted)
                 )
             }

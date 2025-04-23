@@ -53,7 +53,11 @@ struct EmptyFolderBannerView: View {
                 .horizontalPadding()
                 ForEachLast(collection: store.state.buttons) { type, isLast in
                     VStack(spacing: DS.Spacing.medium) {
-                        BannerButton(model: buttonModel(from: type, store: store), style: .regular, maxWidth: .infinity)
+                        BannerButton(
+                            model: buttonModel(from: type, store: store),
+                            style: .regular(strokeColors: type.strokeColors),
+                            maxWidth: .infinity
+                        )
                             .buttonStyle(.plain)
                             .horizontalPadding()
                         if !isLast {
@@ -103,6 +107,19 @@ private extension View {
     
     func horizontalPadding() -> some View {
         padding([.leading, .trailing], DS.Spacing.large)
+    }
+    
+}
+
+private extension EmptyFolderBanner.ActionButton {
+    
+    var strokeColors: [Color] {
+        switch self {
+        case .upgradePlan:
+            return DS.Color.Gradient.crazy
+        case .emptyLocation:
+            return []
+        }
     }
     
 }

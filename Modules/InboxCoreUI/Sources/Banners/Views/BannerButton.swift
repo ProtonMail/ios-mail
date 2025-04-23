@@ -39,7 +39,18 @@ public struct BannerButton: View {
                     .foregroundStyle(style.text)
                     .frame(maxWidth: maxWidth)
                     .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
-                    .background(style.background, in: Capsule())
+                    .background {
+                        RoundedRectangle(cornerRadius: DS.Radius.huge)
+                            .fill(style.background)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: style.strokeColors),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ),
+                                lineWidth: 1
+                            )
+                    }
             }
         )
     }
