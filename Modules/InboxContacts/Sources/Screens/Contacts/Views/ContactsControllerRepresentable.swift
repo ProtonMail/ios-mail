@@ -30,11 +30,6 @@ struct ContactsControllerRepresentable: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: ContactsController, context: Context) {
-        let old = uiViewController.groupedContacts
-        let new = contacts
-        
-        if old != new {
-            uiViewController.groupedContacts = new
-        }
+        uiViewController.groupedContacts = contacts
     }
 }

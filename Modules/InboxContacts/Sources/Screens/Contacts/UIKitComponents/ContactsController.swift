@@ -25,8 +25,10 @@ final class ContactsController: UITableViewController {
 
     var groupedContacts: [GroupedContacts] {
         didSet {
-            setUpEmptyState(with: groupedContacts)
-            tableView.reloadData()
+            if oldValue != groupedContacts {
+                setUpEmptyState(with: groupedContacts)
+                tableView.reloadData()
+            }
         }
     }
 
@@ -126,6 +128,7 @@ final class ContactsController: UITableViewController {
         tableView.separatorInset = .zero
         tableView.registerCell(ContactCell.self)
         tableView.registerCell(ContactGroupCell.self)
+        setUpEmptyState(with: groupedContacts)
     }
 
     private func setUpEmptyState(with contacts: [GroupedContacts]) {
