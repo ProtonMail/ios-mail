@@ -3294,8 +3294,28 @@
     "This message is from a mailing list." : {
       "comment" : "Banner indicating that the email is from a mailing list."
     },
-    "This message will auto-delete in %@" : {
-      "comment" : "Banner indicating when a message will automatically be deleted."
+    "This message will auto-delete in %u days" : {
+      "comment" : "Banner indicating when a message will automatically be deleted.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "This message will auto-delete in %u day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "This message will auto-delete in %u days"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "This message will be sent %@" : {
       "comment" : "Banner showing the scheduled send time for an email."

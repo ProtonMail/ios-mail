@@ -99,10 +99,10 @@ struct MessageBannersView: View {
                     message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
                     style: duration.isOneMinuteOrMore ? .regular : .error
                 )
-            case .autoDelete:
+            case .autoDelete(_, let days):
                 return smallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.autoDeleteTitle(formattedTime: "20 days"),
+                    message: L10n.MessageBanner.autoDeleteTitle(days: days),
                     style: .regular
                 )
             case .unsubscribeNewsletter:
