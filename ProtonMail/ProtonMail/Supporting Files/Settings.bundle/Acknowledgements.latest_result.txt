@@ -106,7 +106,7 @@ name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.3.3, source: 
 
 name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
-name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 31.1.0, source: https://github.com/ProtonMail/protoncore_ios
+name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 31.1.5, source: https://github.com/ProtonMail/protoncore_ios
 
 name: Reachability.swift, nameSpecified: Reachability, owner: ashleymills, version: 5.2.4, source: https://github.com/ashleymills/Reachability.swift
 
