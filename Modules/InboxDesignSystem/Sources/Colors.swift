@@ -28,17 +28,12 @@ public extension DS.Color {
     
     enum Gradient {
         public static let crazy: [Color] = [
-            Gradient.neonMint,
-            Gradient.electricSky,
-            Gradient.brightAzure,
-            Gradient.vividOrchid,
-            Gradient.hotPinkPop
+            Color(.neonMint),
+            Color(.electricSky),
+            Color(.brightAzure),
+            Color(.vividOrchid),
+            Color(.hotPinkPop)
         ]
-        static let neonMint = Color(.neonMint)
-        static let electricSky = Color(.electricSky)
-        static let brightAzure = Color(.brightAzure)
-        static let vividOrchid = Color(.vividOrchid)
-        static let hotPinkPop = Color(.hotPinkPop)
     }
 
     enum BackgroundInverted {
