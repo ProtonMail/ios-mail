@@ -42,10 +42,10 @@ struct MessageBodyProvider {
         _messageBody = { messageID in await wrapper.messageBody(mailbox, messageID) }
     }
 
-    func messageBody(forMessageID messageID: ID, with options: TransformOpts?) async -> Result {
+    func messageBody(forMessageID messageID: ID, with options: TransformOpts) async -> Result {
         do {
             let decryptedMessage = try await _messageBody(messageID).get()
-            let decryptedBody = try await decryptedMessage.body(with: options)
+            let decryptedBody = try await decryptedMessage.body(opts: options).get()
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
@@ -59,17 +59,4 @@ struct MessageBodyProvider {
             return .error(error)
         }
     }
-}
-
-private extension DecryptedMessage {
-
-    func body(with options: TransformOpts?) async throws -> BodyOutput {
-        guard let options else {
-            // FIXME: `currentTheme` does nothing, the SDK only requires this parameter for compatibility with Android, and this whole method will be removed
-            return try await bodyWithDefaults(currentTheme: .lightMode).get()
-        }
-
-        return try await body(opts: options).get()
-    }
-
 }
