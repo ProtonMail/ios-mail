@@ -166,28 +166,31 @@ class MailboxItemActionSheetStateStore: StateStore {
                 presentToast(toast: .error(message: error.localizedDescription))
             }
 
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.navigation(itemType.dismissNavigation)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.navigation(itemType.dismissNavigation)
+                }))
         }
     }
 
     private func performDeleteAction(itemsIDs: [ID], itemType: MailboxItemType) {
         Task {
             await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType)
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.presentDeletedToast()
-                self?.navigation(itemType.dismissNavigation)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.presentDeletedToast()
+                    self?.navigation(itemType.dismissNavigation)
+                }))
         }
     }
 
     private func performMarkPhishing(itemType: MailboxItemType) {
         Task {
             if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.navigation(itemType.dismissNavigation)
-                }))
+                Dispatcher.dispatchOnMain(
+                    .init(block: { [weak self] in
+                        self?.navigation(itemType.dismissNavigation)
+                    }))
             }
         }
     }
@@ -199,9 +202,10 @@ class MailboxItemActionSheetStateStore: StateStore {
         navigation: MailboxItemActionSheetNavigation
     ) {
         action(ids, itemType) {
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.navigation(navigation)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.navigation(navigation)
+                }))
         }
     }
 
@@ -214,20 +218,22 @@ class MailboxItemActionSheetStateStore: StateStore {
     }
 
     private func presentToast(toast: Toast) {
-        Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-            self?.toastStateStore.present(toast: toast)
-        }))
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.present(toast: toast)
+            }))
     }
 
     private func loadActions() {
         Task {
             let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
+            let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
+            let actions = await availableActionsProvider.actions(for: input.type, id: input.id, themeOpts: themeOpts)
 
-            let actions = await availableActionsProvider.actions(for: input.type, ids: [input.id])
-                .filterDependingOn(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.update(actions: actions)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.update(actions: actions)
+                }))
         }
     }
 
@@ -270,22 +276,18 @@ private extension MailboxItemType {
 
 }
 
-private extension AvailableActions {
-    func filterDependingOn(colorScheme: ColorScheme, isForcingLightMode: Bool) -> Self {
-        .init(
-            replyActions: replyActions,
-            mailboxItemActions: mailboxItemActions,
-            moveActions: moveActions,
-            generalActions: generalActions.filter {
-                switch $0 {
-                case .viewMessageInLightMode:
-                    colorScheme == .dark && !isForcingLightMode
-                case .viewMessageInDarkMode:
-                    colorScheme == .dark && isForcingLightMode
-                default:
-                    true
-                }
-            }
-        )
+private extension ThemeOpts {
+    init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
+        self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)
+    }
+}
+
+private extension MailTheme {
+    static func converted(from colorScheme: ColorScheme) -> Self {
+        switch colorScheme {
+        case .light: .lightMode
+        case .dark: .darkMode
+        @unknown default: .lightMode
+        }
     }
 }

@@ -43,7 +43,7 @@ public extension AvailableActionsForConversationsResult {
         }
     }
 }
-public extension AvailableActionsForMessagesResult {
+public extension AvailableActionsForMessageResult {
     func get() throws(ActionError) -> MessageAvailableActions {
         switch self {
         case .ok(let value):
