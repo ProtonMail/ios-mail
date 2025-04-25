@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import BackgroundTasks
+import Combine
 import InboxCore
 import InboxTesting
 import XCTest
@@ -26,6 +27,9 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 
     var sut: RecurringBackgroundTaskScheduler!
     var invokedRegister: [(identifier: String, handler: (BackgroundTask) -> Void)]!
+    var invokedTimerFactoryWithInterval: [TimeInterval] = []
+    var timerSubject: PassthroughSubject<Void, Never>!
+    var sessionStateSubject: CurrentValueSubject<SessionState, Never>!
     private var backgroundTaskExecutorSpy: BackgroundTaskExecutorSpy!
     private var backgroundTaskSchedulerSpy: BackgroundTaskSchedulerSpy!
 
@@ -35,7 +39,14 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         invokedRegister = []
         backgroundTaskSchedulerSpy = .init()
         backgroundTaskExecutorSpy = .init()
+        timerSubject = .init()
+        sessionStateSubject = .init(.noSession)
         sut = .init(
+            sessionState: sessionStateSubject.eraseToAnyPublisher(),
+            timerFactory: { timeInterval in
+                self.invokedTimerFactoryWithInterval.append(timeInterval)
+                return self.timerSubject.eraseToAnyPublisher()
+            },
             backgroundTaskRegistration: .init(registerWithIdentifier: { identifier, _, handler in
                 self.invokedRegister.append((identifier, handler))
                 return true
@@ -93,6 +104,50 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 
         XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [false])
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
+        XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
+    }
+
+    func test_WhenTaskFinishesImmidiatelyWithSkippedNoActiveContextsResult_ItWaitsForSessionToConfigure() async throws {
+        sut.register()
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+
+        await submitTask()
+
+        let backgroundTask = BackgroundTaskSpy()
+        try execute(task: backgroundTask)
+
+        XCTAssertEqual(invokedTimerFactoryWithInterval, [0.5])
+        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+
+        timerSubject.send()
+
+        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+
+        sessionStateSubject.send(.activeSession(session: .dummy))
+
+        XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
+    }
+
+    func test_WhenTaskFinishesWithSkippedNoActiveContextsResult_WhenTaskExpiredWhenWaiting_ItFinishesTask() async throws {
+        sut.register()
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+
+        await submitTask()
+
+        let backgroundTask = BackgroundTaskSpy()
+        try execute(task: backgroundTask)
+
+        XCTAssertEqual(invokedTimerFactoryWithInterval, [0.5])
+        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+
+        timerSubject.send()
+
+        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
+
+        backgroundTask.expirationHandler?()
+
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
 

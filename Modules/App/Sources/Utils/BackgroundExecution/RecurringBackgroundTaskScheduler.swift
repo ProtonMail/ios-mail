@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import BackgroundTasks
 import InboxCore
 import proton_app_uniffi
@@ -22,10 +23,14 @@ import proton_app_uniffi
 class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
+    private let sessionState: AnyPublisher<SessionState, Never>
+    private let timerFactory: TimerPublisherFactory
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
     private let backgroundTaskExecutorProvider: BackgroundTaskExecutorProvider
     private var callback: BackgroundExecutionCallbackWrapper!
+    private let backgroundTaskExpired = PassthroughSubject<Void, Never>()
+    private var sessionSetUpCheckCancellable: AnyCancellable?
 
     convenience init(backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider) {
         self.init(
@@ -36,10 +41,14 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     }
 
     init(
+        sessionState: AnyPublisher<SessionState, Never> = AppContext.shared.$sessionState.eraseToAnyPublisher(),
+        timerFactory: @escaping TimerPublisherFactory = TimerFactory.make,
         backgroundTaskRegistration: BackgroundTaskRegistration,
         backgroundTaskScheduler: BackgroundTaskScheduler,
         backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider
     ) {
+        self.sessionState = sessionState
+        self.timerFactory = timerFactory
         self.backgroundTaskRegistration = backgroundTaskRegistration
         self.backgroundTaskScheduler = backgroundTaskScheduler
         self.backgroundTaskExecutorProvider = backgroundTaskExecutorProvider
@@ -86,18 +95,18 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     private func execute(task: BackgroundTask) async {
         await submit()
 
-        callback = .init { completionStatus in
-            log("Background task finished with: \(completionStatus)")
-            task.setTaskCompleted(success: true)
+        callback = .init { [weak self] completionStatus in
+            self?.backgroundExecutionHasCompleted(completionStatus: completionStatus, task: task)
         }
 
         do {
             let handle = try backgroundTaskExecutorProvider().startBackgroundExecution(callback: callback).get()
             log("Handle is returned, background actions in progress")
 
-            task.expirationHandler = { [handle] in
+            task.expirationHandler = { [weak self, handle] in
                 Task {
                     log("Background task expiration handler called")
+                    self?.backgroundTaskExpired.send()
                     await handle.abort(inForeground: false)
                 }
             }
@@ -114,6 +123,33 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
         return request
     }
 
+    private func backgroundExecutionHasCompleted(completionStatus: BackgroundExecutionStatus, task: BackgroundTask) {
+        switch completionStatus {
+        case .skippedNoActiveContexts:
+            log("Waiting for session to set up. Completion status: \(completionStatus)")
+            checkForSessionSetUpToComplete { [task] in
+                log("Background task finished after the session set up")
+                task.setTaskCompleted(success: true)
+            }
+        case .timedOut, .failed, .executed, .abortedInForeground, .abortedInBackground:
+            log("Background task finished with: \(completionStatus)")
+            task.setTaskCompleted(success: true)
+        }
+    }
+
+    private func checkForSessionSetUpToComplete(completion: @Sendable @escaping () -> Void) {
+        sessionSetUpCheckCancellable = Publishers
+            .CombineLatest(sessionState, timerFactory(0.5))
+            .map { sessionState, _ in sessionState }
+            .prefix(untilOutputFrom: backgroundTaskExpired)
+            .filter { sessionState in sessionState.isSessionSetUp }
+            .first()
+            .sink(
+                receiveCompletion: { _ in completion() },
+                receiveValue: { _ in }
+            )
+    }
+
 }
 
 private func log(_ message: String) {
@@ -124,4 +160,17 @@ extension Date {
     var thirthyMinutesAfter: Self {
         DateEnvironment.calendar.date(byAdding: .minute, value: 30, to: self).unsafelyUnwrapped
     }
+}
+
+private extension SessionState {
+
+    var isSessionSetUp: Bool {
+        switch self {
+        case .noSession:
+            false
+        case .activeSession, .activeSessionTransition:
+            true
+        }
+    }
+
 }
