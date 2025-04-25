@@ -123,6 +123,7 @@ extension AppContext {
                 if let newUserSession = try await self.initializeUserSession(session: session) {
                      self.animateTransition(into: .activeSession(session: newUserSession))
                 }
+                AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {
                 AppLogger.log(error: error, category: .userSessions)
             }
