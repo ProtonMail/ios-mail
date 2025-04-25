@@ -43,9 +43,9 @@ struct MessageBodyProvider {
     }
 
     func messageBody(forMessageID messageID: ID, with options: TransformOpts?) async -> Result {
-        switch await _messageBody(messageID) {
-        case .ok(let decryptedMessage):
-            let decryptedBody = await decryptedMessage.body(with: options)
+        do {
+            let decryptedMessage = try await _messageBody(messageID).get()
+            let decryptedBody = try await decryptedMessage.body(with: options)
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
@@ -53,9 +53,9 @@ struct MessageBodyProvider {
             )
             let body = MessageBody(banners: decryptedBody.bodyBanners, html: html)
             return .success(body)
-        case .error(.other(.network)):
+        } catch ActionError.other(.network) {
             return .noConnectionError
-        case .error(let error):
+        } catch {
             return .error(error)
         }
     }
@@ -63,12 +63,12 @@ struct MessageBodyProvider {
 
 private extension DecryptedMessage {
     
-    func body(with options: TransformOpts?) async -> BodyOutput {
+    func body(with options: TransformOpts?) async throws -> BodyOutput {
         guard let options else {
-            return await bodyWithDefaults()
+            return try await bodyWithDefaults().get()
         }
         
-        return await body(opts: options)
+        return try await body(opts: options).get()
     }
     
 }
