@@ -128,7 +128,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
         case .skippedNoActiveContexts:
             log("Waiting for session to set up. Completion status: \(completionStatus)")
             checkForSessionSetUpToComplete { [task] in
-                log("Background task finished after the session set up")
+                log("Background task finished after the session set up or task expired")
                 task.setTaskCompleted(success: true)
             }
         case .timedOut, .failed, .executed, .abortedInForeground, .abortedInBackground:
