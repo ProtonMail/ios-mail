@@ -35,6 +35,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     var moveToActionsSpy: MoveToActionsSpy!
     var generalActionsSpy: GeneralActionsPerfomerSpy!
     var toastStateStore: ToastStateStore!
+    private var messageAppearanceOverrideStore: MessageAppearanceOverrideStore!
 
     override func setUp() {
         super.setUp()
@@ -49,6 +50,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         moveToActionsSpy = .init()
         generalActionsSpy = .init()
         toastStateStore = .init(initialState: .initial)
+        messageAppearanceOverrideStore = .init()
     }
 
     override func tearDown() {
@@ -65,6 +67,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         deleteActionsSpy = nil
         moveToActionsSpy = nil
         toastStateStore = nil
+        messageAppearanceOverrideStore = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -328,12 +331,24 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         verifyGeneralAction(action: .viewHtml)
     }
 
-    func testAction_WhenViewMessageInDarkModeActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .viewMessageInDarkMode)
+    func testAction_WhenViewMessageInDarkModeActionInvoked_AllowsDarkModeAndDismisses() {
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
+
+        sut.handle(action: .generalActionTapped(.viewMessageInDarkMode))
+
+        XCTAssertEqual(messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: id), false)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
-    func testAction_WhenViewMessageInLightModeActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .viewMessageInLightMode)
+    func testAction_WhenViewMessageInLightModeActionInvoked_DisablesDarkModeAndDismisses() {
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
+
+        sut.handle(action: .generalActionTapped(.viewMessageInLightMode))
+
+        XCTAssertEqual(messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: id), true)
+        XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
     // MARK: - Private
@@ -422,6 +437,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             generalActions: generalActionsSpy.testingInstance,
             mailUserSession: .dummy,
             toastStateStore: toastStateStore,
+            messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+            colorScheme: .light,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
     }

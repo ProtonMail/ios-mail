@@ -81,34 +81,17 @@ struct ConversationDetailListView: View {
                             .accessibilityElement(children: .contain)
                             .accessibilityIdentifier(ConversationDetailListViewIdentifiers.collapsedCell(index))
                         case .expanded(let uiModel):
-                            ExpandedMessageCell(
-                                mailbox: model.mailbox.unsafelyUnwrapped,
-                                uiModel: uiModel,
-                                isFirstCell: index == 0,
-                                areActionsDisabled: model.areActionsDisabled,
-                                attachmentIDToOpen: $model.attachmentIDToOpen,
-                                onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
-                                htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
-                            )
-                            .id(cellUIModel.cellId)
-                            .accessibilityElement(children: .contain)
-                            .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(index))
+                            expandedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
+                                .id(cellUIModel.cellId)
+                                .accessibilityElement(children: .contain)
+                                .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(index))
                         }
                     }
                 }
-                ExpandedMessageCell(
-                    mailbox: model.mailbox.unsafelyUnwrapped,
-                    uiModel: last,
-                    hasShadow: !previous.isEmpty,
-                    isFirstCell: previous.isEmpty,
-                    areActionsDisabled: model.areActionsDisabled,
-                    attachmentIDToOpen: $model.attachmentIDToOpen,
-                    onEvent: { onExpandedMessageCellEvent($0, uiModel: last) },
-                    htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: last.toActionMetadata()) }
-                )
-                .id(ConversationDetailModel.lastCellId)  // static value because it won't be replaced with CollapsedMessageCell
-                .accessibilityElement(children: .contain)
-                .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(previous.count))
+                expandedMessageCell(uiModel: last, hasShadow: !previous.isEmpty, isFirstCell: previous.isEmpty)
+                    .id(ConversationDetailModel.lastCellId) // static value because it won't be replaced with CollapsedMessageCell
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(previous.count))
             }
             .task {
                 scrollView.scrollTo(model.scrollToMessage, anchor: .top)
@@ -116,6 +99,20 @@ struct ConversationDetailListView: View {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(ConversationDetailListViewIdentifiers.messageList)
         }
+    }
+
+    private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel, hasShadow: Bool = true, isFirstCell: Bool) -> some View {
+        ExpandedMessageCell(
+            mailbox: model.mailbox.unsafelyUnwrapped,
+            uiModel: uiModel,
+            hasShadow: hasShadow,
+            isFirstCell: isFirstCell,
+            areActionsDisabled: model.areActionsDisabled,
+            attachmentIDToOpen: $model.attachmentIDToOpen,
+            onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
+            htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
+        )
+        .environment(\.disableDarkModeInMessageBody, model.isDarkModeDisabled(forMessageWithId: uiModel.id))
     }
 
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {

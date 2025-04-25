@@ -61,6 +61,7 @@ struct ConversationDetailScreen: View {
             AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                 .edgesIgnoringSafeArea([.top, .bottom])
         }
+        .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
     }
 
     private var conversationView: some View {

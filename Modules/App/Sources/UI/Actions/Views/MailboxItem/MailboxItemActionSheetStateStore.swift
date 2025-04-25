@@ -18,6 +18,7 @@
 import Combine
 import InboxCore
 import InboxCoreUI
+import SwiftUI
 import proton_app_uniffi
 
 class MailboxItemActionSheetStateStore: StateStore {
@@ -30,6 +31,8 @@ class MailboxItemActionSheetStateStore: StateStore {
     private let moveToActionPerformer: MoveToActionPerformer
     private let generalActionsPerformer: GeneralActionsPerformer
     private let toastStateStore: ToastStateStore
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+    private let colorScheme: ColorScheme
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
     init(
@@ -43,6 +46,8 @@ class MailboxItemActionSheetStateStore: StateStore {
         generalActions: GeneralActionsWrappers,
         mailUserSession: MailUserSession,
         toastStateStore: ToastStateStore,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
+        colorScheme: ColorScheme,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
         self.input = input
@@ -57,6 +62,8 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.generalActionsPerformer = .init(mailbox: mailbox, generalActions: generalActions)
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
+        self.colorScheme = colorScheme
         self.navigation = navigation
     }
 
@@ -112,8 +119,14 @@ class MailboxItemActionSheetStateStore: StateStore {
             }
         case .generalActionTapped(let generalAction):
             switch generalAction {
-            case .print, .saveAsPdf, .viewHeaders, .viewHtml, .viewMessageInDarkMode, .viewMessageInLightMode:
+            case .print, .saveAsPdf, .viewHeaders, .viewHtml:
                 toastStateStore.present(toast: .comingSoon)
+            case .viewMessageInLightMode:
+                messageAppearanceOverrideStore.disableDarkMode(forMessageWithId: input.id)
+                navigation(.dismiss)
+            case .viewMessageInDarkMode:
+                messageAppearanceOverrideStore.allowDarkMode(forMessageWithId: input.id)
+                navigation(.dismiss)
             case .reportPhishing:
                 let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
                     self?.handle(action: .phishingConfirmed(action))
@@ -208,7 +221,10 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func loadActions() {
         Task {
+            let isDarkModeDisabled = messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: input.id)
+
             let actions = await availableActionsProvider.actions(for: input.type, ids: [input.id])
+                .filterDependingOn(colorScheme: colorScheme, isDarkModeDisabled: isDarkModeDisabled)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(actions: actions)
             }))
@@ -252,4 +268,24 @@ private extension MailboxItemType {
         }
     }
 
+}
+
+private extension AvailableActions {
+    func filterDependingOn(colorScheme: ColorScheme, isDarkModeDisabled: Bool) -> Self {
+        .init(
+            replyActions: replyActions,
+            mailboxItemActions: mailboxItemActions,
+            moveActions: moveActions,
+            generalActions: generalActions.filter {
+                switch $0 {
+                case .viewMessageInLightMode:
+                    colorScheme == .dark && !isDarkModeDisabled
+                case .viewMessageInDarkMode:
+                    colorScheme == .dark && isDarkModeDisabled
+                default:
+                    true
+                }
+            }
+        )
+    }
 }

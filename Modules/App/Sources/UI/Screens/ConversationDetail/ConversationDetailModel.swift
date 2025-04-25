@@ -35,6 +35,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
+    let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
+
     var areActionsDisabled: Bool {
         seed.isOutbox
     }
@@ -177,6 +179,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 }))
             }
         }
+    }
+
+    func isDarkModeDisabled(forMessageWithId messageId: ID) -> Bool {
+        messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: messageId)
     }
 }
 

@@ -23,21 +23,35 @@ import InboxTesting
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
     func testMessageConversationActionSheetLayoutsCorrectly() {
-        let sut = MailboxItemActionSheet(
-            input: .init(id: .random(), type: .message, title: "Hello".notLocalized),
-            mailbox: .dummy,
-            actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
-            starActionPerformerActions: .dummy,
-            readActionPerformerActions: .dummy,
-            deleteActions: .dummy,
-            moveToActions: .dummy,
-            generalActions: .dummy,
-            replyActions: { _, _ in },
-            mailUserSession: .dummy,
-            navigation: { _ in }
-        ).environmentObject(ToastStateStore(initialState: .initial))
+        for disableDarkModeInMessageBody in [false, true] {
+            let id = ID.random()
+            let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
 
-        assertSnapshotsOnIPhoneX(of: sut)
+            if disableDarkModeInMessageBody {
+                messageAppearanceOverrideStore.disableDarkMode(forMessageWithId: id)
+            }
+
+            let sut = MailboxItemActionSheet(
+                input: .init(id: id, type: .message, title: "Hello".notLocalized),
+                mailbox: .dummy,
+                actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
+                starActionPerformerActions: .dummy,
+                readActionPerformerActions: .dummy,
+                deleteActions: .dummy,
+                moveToActions: .dummy,
+                generalActions: .dummy,
+                replyActions: { _, _ in },
+                mailUserSession: .dummy,
+                navigation: { _ in }
+            )
+                .environmentObject(ToastStateStore(initialState: .initial))
+                .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
+
+            assertSnapshotsOnIPhoneX(
+                of: sut,
+                named: "dark_mode_\(disableDarkModeInMessageBody ? "disabled" : "allowed")"
+            )
+        }
     }
 
 }
