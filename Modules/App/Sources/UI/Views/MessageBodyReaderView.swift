@@ -21,7 +21,7 @@ import SwiftUI
 import WebKit
 
 extension EnvironmentValues {
-    @Entry var disableDarkModeInMessageBody: Bool = false
+    @Entry var forceLightModeInMessageBody: Bool = false
 }
 
 struct MessageBodyReaderView: UIViewRepresentable {
@@ -60,7 +60,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateUIView(uiView)
-        uiView.overrideUserInterfaceStyle = context.environment.disableDarkModeInMessageBody ? .light : .unspecified
+        uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
     }
 
     func updateUIView(_ view: WKWebView) {

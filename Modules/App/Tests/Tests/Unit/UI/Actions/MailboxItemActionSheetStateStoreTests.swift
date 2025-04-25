@@ -337,7 +337,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .generalActionTapped(.viewMessageInDarkMode))
 
-        XCTAssertEqual(messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: id), false)
+        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), false)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 
@@ -347,7 +347,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .generalActionTapped(.viewMessageInLightMode))
 
-        XCTAssertEqual(messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: id), true)
+        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), true)
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
 

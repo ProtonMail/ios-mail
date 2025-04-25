@@ -181,8 +181,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func isDarkModeDisabled(forMessageWithId messageId: ID) -> Bool {
-        messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: messageId)
+    func isForcingLightMode(forMessageWithId messageId: ID) -> Bool {
+        messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: messageId)
     }
 }
 

@@ -122,10 +122,10 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .print, .saveAsPdf, .viewHeaders, .viewHtml:
                 toastStateStore.present(toast: .comingSoon)
             case .viewMessageInLightMode:
-                messageAppearanceOverrideStore.disableDarkMode(forMessageWithId: input.id)
+                messageAppearanceOverrideStore.forceLightMode(forMessageWithId: input.id)
                 navigation(.dismiss)
             case .viewMessageInDarkMode:
-                messageAppearanceOverrideStore.allowDarkMode(forMessageWithId: input.id)
+                messageAppearanceOverrideStore.stopForcingLightMode(forMessageWithId: input.id)
                 navigation(.dismiss)
             case .reportPhishing:
                 let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
@@ -221,10 +221,10 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     private func loadActions() {
         Task {
-            let isDarkModeDisabled = messageAppearanceOverrideStore.isDarkModeDisabled(forMessageWithId: input.id)
+            let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
 
             let actions = await availableActionsProvider.actions(for: input.type, ids: [input.id])
-                .filterDependingOn(colorScheme: colorScheme, isDarkModeDisabled: isDarkModeDisabled)
+                .filterDependingOn(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(actions: actions)
             }))
@@ -271,7 +271,7 @@ private extension MailboxItemType {
 }
 
 private extension AvailableActions {
-    func filterDependingOn(colorScheme: ColorScheme, isDarkModeDisabled: Bool) -> Self {
+    func filterDependingOn(colorScheme: ColorScheme, isForcingLightMode: Bool) -> Self {
         .init(
             replyActions: replyActions,
             mailboxItemActions: mailboxItemActions,
@@ -279,9 +279,9 @@ private extension AvailableActions {
             generalActions: generalActions.filter {
                 switch $0 {
                 case .viewMessageInLightMode:
-                    colorScheme == .dark && !isDarkModeDisabled
+                    colorScheme == .dark && !isForcingLightMode
                 case .viewMessageInDarkMode:
-                    colorScheme == .dark && isDarkModeDisabled
+                    colorScheme == .dark && isForcingLightMode
                 default:
                     true
                 }

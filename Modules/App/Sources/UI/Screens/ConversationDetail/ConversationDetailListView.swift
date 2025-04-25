@@ -112,7 +112,7 @@ struct ConversationDetailListView: View {
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
             htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
-        .environment(\.disableDarkModeInMessageBody, model.isDarkModeDisabled(forMessageWithId: uiModel.id))
+        .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
     }
 
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {

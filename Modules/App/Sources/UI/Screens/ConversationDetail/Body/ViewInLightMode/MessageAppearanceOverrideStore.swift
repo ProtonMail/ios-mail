@@ -19,17 +19,17 @@ import Combine
 import SwiftUI
 
 final class MessageAppearanceOverrideStore {
-    @Published private var idsOfMessagesToAlwaysRenderInLightMode: Set<ID> = []
+    private var idsOfMessagesToAlwaysRenderInLightMode: Set<ID> = []
 
-    func isDarkModeDisabled(forMessageWithId messageId: ID) -> Bool {
+    func isForcingLightMode(forMessageWithId messageId: ID) -> Bool {
         idsOfMessagesToAlwaysRenderInLightMode.contains(messageId)
     }
 
-    func disableDarkMode(forMessageWithId messageId: ID) {
+    func forceLightMode(forMessageWithId messageId: ID) {
         idsOfMessagesToAlwaysRenderInLightMode.insert(messageId)
     }
 
-    func allowDarkMode(forMessageWithId messageId: ID) {
+    func stopForcingLightMode(forMessageWithId messageId: ID) {
         idsOfMessagesToAlwaysRenderInLightMode.remove(messageId)
     }
 }

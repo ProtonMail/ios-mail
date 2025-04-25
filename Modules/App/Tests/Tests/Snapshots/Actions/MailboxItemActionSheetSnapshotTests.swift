@@ -23,12 +23,12 @@ import InboxTesting
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
     func testMessageConversationActionSheetLayoutsCorrectly() {
-        for disableDarkModeInMessageBody in [false, true] {
+        for forceLightMode in [false, true] {
             let id = ID.random()
             let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
 
-            if disableDarkModeInMessageBody {
-                messageAppearanceOverrideStore.disableDarkMode(forMessageWithId: id)
+            if forceLightMode {
+                messageAppearanceOverrideStore.forceLightMode(forMessageWithId: id)
             }
 
             let sut = MailboxItemActionSheet(
@@ -49,7 +49,7 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
             assertSnapshotsOnIPhoneX(
                 of: sut,
-                named: "dark_mode_\(disableDarkModeInMessageBody ? "disabled" : "allowed")"
+                named: "lightMode\(forceLightMode ? "" : "Not")Forced"
             )
         }
     }
