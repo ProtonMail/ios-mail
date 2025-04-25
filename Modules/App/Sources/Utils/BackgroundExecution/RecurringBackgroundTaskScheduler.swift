@@ -23,7 +23,8 @@ import proton_app_uniffi
 class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     typealias BackgroundTaskExecutorProvider = () -> BackgroundTaskExecutor
     private static let identifier = "\(Bundle.defaultIdentifier).execute_pending_actions"
-    private let sessionState: AnyPublisher<SessionState, Never>
+    private let sessionStatePublisher: AnyPublisher<SessionState, Never>
+    private let sessionState: () -> SessionState
     private let timerFactory: TimerPublisherFactory
     private let backgroundTaskRegistration: BackgroundTaskRegistration
     private let backgroundTaskScheduler: BackgroundTaskScheduler
@@ -41,12 +42,14 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     }
 
     init(
-        sessionState: AnyPublisher<SessionState, Never> = AppContext.shared.$sessionState.eraseToAnyPublisher(),
+        sessionStatePublisher: AnyPublisher<SessionState, Never> = AppContext.shared.$sessionState.eraseToAnyPublisher(),
+        sessionState: @escaping () -> SessionState = { AppContext.shared.sessionState },
         timerFactory: @escaping TimerPublisherFactory = TimerFactory.make,
         backgroundTaskRegistration: BackgroundTaskRegistration,
         backgroundTaskScheduler: BackgroundTaskScheduler,
         backgroundTaskExecutorProvider: @escaping BackgroundTaskExecutorProvider
     ) {
+        self.sessionStatePublisher = sessionStatePublisher
         self.sessionState = sessionState
         self.timerFactory = timerFactory
         self.backgroundTaskRegistration = backgroundTaskRegistration
@@ -93,7 +96,9 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     // MARK: - Private
 
     private func execute(task: BackgroundTask) async {
-        await submit()
+        if sessionState().isAuthorized {
+            await submit()
+        }
 
         callback = .init { [weak self] completionStatus in
             self?.backgroundExecutionHasCompleted(completionStatus: completionStatus, task: task)
@@ -124,22 +129,16 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     }
 
     private func backgroundExecutionHasCompleted(completionStatus: BackgroundExecutionStatus, task: BackgroundTask) {
-        switch completionStatus {
-        case .skippedNoActiveContexts:
-            log("Waiting for session to set up. Completion status: \(completionStatus)")
-            checkForSessionSetUpToComplete { [task] in
-                log("Background task finished after the session set up or task expired")
-                task.setTaskCompleted(success: true)
-            }
-        case .timedOut, .failed, .executed, .abortedInForeground, .abortedInBackground:
-            log("Background task finished with: \(completionStatus)")
+        log("Waiting for session to set up. Completion status: \(completionStatus)")
+        checkForSessionSetUpToComplete {
+            log("Background task finished after the session set up or task expired")
             task.setTaskCompleted(success: true)
         }
     }
 
     private func checkForSessionSetUpToComplete(completion: @Sendable @escaping () -> Void) {
         sessionSetUpCheckCancellable = Publishers
-            .CombineLatest(sessionState, timerFactory(0.5))
+            .CombineLatest(sessionStatePublisher, timerFactory(0.5))
             .map { sessionState, _ in sessionState }
             .prefix(untilOutputFrom: backgroundTaskExpired)
             .filter { sessionState in sessionState.isSessionSetUp }

@@ -40,9 +40,10 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         backgroundTaskSchedulerSpy = .init()
         backgroundTaskExecutorSpy = .init()
         timerSubject = .init()
-        sessionStateSubject = .init(.noSession)
+        sessionStateSubject = .init(.activeSession(session: .dummy))
         sut = .init(
-            sessionState: sessionStateSubject.eraseToAnyPublisher(),
+            sessionStatePublisher: sessionStateSubject.eraseToAnyPublisher(),
+            sessionState: { self.sessionStateSubject.value },
             timerFactory: { timeInterval in
                 self.invokedTimerFactoryWithInterval.append(timeInterval)
                 return self.timerSubject.eraseToAnyPublisher()
@@ -108,6 +109,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     }
 
     func test_WhenTaskFinishesImmidiatelyWithSkippedNoActiveContextsResult_ItWaitsForSessionToConfigure() async throws {
+        sessionStateSubject.value = .noSession
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
@@ -131,6 +133,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 
     func test_WhenTaskFinishesWithSkippedNoActiveContextsResult_WhenTaskExpiredWhenWaiting_ItFinishesTask() async throws {
         sut.register()
+        sessionStateSubject.value = .noSession
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
         backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
 
@@ -142,13 +145,22 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertEqual(invokedTimerFactoryWithInterval, [0.5])
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
 
-        timerSubject.send()
-
-        XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
-
         backgroundTask.expirationHandler?()
 
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
+    }
+
+    func test_WhenUserSessionIsMissing_ItDoesNotScheduleNextTask() async throws {
+        sessionStateSubject.value = .noSession
+        sut.register()
+        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
+        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+
+        await submitTask()
+
+        try execute(task: BackgroundTaskSpy())
+
+        XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 1)
     }
 
     func test_WhenTwoTasksAreSubmitted_ItSchedulesOnlyOne() async {
@@ -178,6 +190,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         backgroundTaskSchedulerSpy.pendingTaskRequestsStub = []
         taskRegistration.handler(task)
+        timerSubject.send()
     }
 
 }
