@@ -27,23 +27,49 @@ struct PhotosPickerItemHandler {
 
     func addPickerPhotos(
         to draft: AppDraftProtocol,
-        photos: [PhotosPickerItemTransferable],
-        onErrors: ([DraftAttachmentError]) -> Void
-    ) async {
+        photos: [PhotosPickerItemTransferable]
+    ) async -> PhotosPickerItemHandlerResult {
+        var successfulContentIds = [String]()
         var allErrors = [DraftAttachmentError]()
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {
             case .success(let file):
-                let result = await draft.attachmentList().add(path: file.path)
-                if case .error(let error) = result {
+                do {
+                    if file.isImageType {
+                        let cid = try await addFileToDraftAsInlineAttachment(draft: draft, file: file)
+                        successfulContentIds.append(cid)
+                    } else {
+                        try await addFileToDraftAsAttachment(draft: draft, file: file)
+                    }
+                } catch {
                     allErrors.append(error)
                 }
+
             case .failure:
                 allErrors.append(Self.unexpectedError)
             }
         }
-        onErrors(allErrors)
+        return .init(successfulContentIds: successfulContentIds, errors: allErrors)
+    }
+
+    private func addFileToDraftAsInlineAttachment(
+        draft: AppDraftProtocol,
+        file: URL
+    ) async throws(DraftAttachmentError) -> String {
+        switch await draft.attachmentList().addInline(path: file.path, filenameOverride: nil) {
+        case .ok(let cid):
+            return cid
+        case .error(let error):
+            throw error
+        }
+    }
+
+    private func addFileToDraftAsAttachment(draft: AppDraftProtocol, file: URL) async throws(DraftAttachmentError) {
+        let result = await draft.attachmentList().add(path: file.path)
+        if case .error(let error) = result {
+            throw error
+        }
     }
 
     /**
@@ -80,7 +106,7 @@ struct PhotosPickerItemHandler {
             throw PhotosPickerItemHandlerError.loadTransferableFailed
         }
         do {
-            if UTType(filenameExtension: tempFile.url.pathExtension) == .heic {
+            if tempFile.url.isHeicType {
                 return try saveHeicImage(image: tempFile.url, destinationFolder: destinationFolder)
             } else {
                 let newUrl = try fileManager.moveToUniqueURL(file: tempFile.url, to: destinationFolder)
@@ -117,6 +143,11 @@ struct PhotosPickerItemHandler {
     }
 }
 
+struct PhotosPickerItemHandlerResult {
+    let successfulContentIds: [String]
+    let errors: [DraftAttachmentError]
+}
+
 enum PhotosPickerItemHandlerError: Error {
     case loadTransferableFailed
     case failConvertingHeicToJpeg
@@ -127,3 +158,27 @@ protocol PhotosPickerItemTransferable {
 }
 
 extension PhotosPickerItem: PhotosPickerItemTransferable {}
+
+private extension URL {
+    
+    /// File of type HEIC. This type identifies pictures taken with the camera of the device
+    var isHeicType: Bool {
+        utType?.conforms(to: .heic) ?? false
+    }
+
+    /// Type that identifies image data
+    var isImageType: Bool {
+        utType?.conforms(to: .image) ?? false
+    }
+
+    private var utType: UTType? {
+        do {
+            if let typeIdentifier = try resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+               return UTType(typeIdentifier)
+            }
+        } catch {
+            AppLogger.log(error: error, category: .composer)
+        }
+        return nil
+    }
+}

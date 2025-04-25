@@ -117,8 +117,14 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
 extension MockDraft {
 
-    func mockAttachments() -> [String] {
-        (attachmentList() as! MockAttachmentList).capturedAddCalls.map(\.path)
+    func attachmentPathsFor(dispositon: Disposition) -> [String] {
+        let list = (attachmentList() as! MockAttachmentList)
+        switch dispositon {
+        case .attachment:
+            return list.capturedAddCalls.map(\.path)
+        case .inline:
+            return list.capturedAddInlineCalls.map(\.path)
+        }
     }
 }
 
@@ -185,7 +191,9 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     var mockAttachments = [DraftAttachment]()
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddCalls: [(path: String, filenameOverride: String?)] = []
+    var capturedAddInlineCalls: [(path: String, filenameOverride: String?)] = []
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
+    var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
     var attachmentCallback: AsyncLiveQueryCallback?
 
     func add(path: String, filenameOverride: String?) async -> AttachmentListAddResult {
@@ -196,7 +204,10 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     }
 
     func addInline(path: String, filenameOverride: String?) async -> AttachmentListAddInlineResult {
-        fatalError(#function)
+        capturedAddInlineCalls.append((path, filenameOverride))
+        return mockAttachmentListAddInlineResult.first(where: {
+            $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
+        })?.result ?? AttachmentListAddInlineResult.ok("12345")
     }
     
     func attachmentUploadDirectory() -> String {

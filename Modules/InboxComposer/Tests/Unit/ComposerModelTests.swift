@@ -469,23 +469,36 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: addAttachments
 
-    func testAddAttachments_whenSelectingFromPhotos_itShouldAddAttachmentToDraft() async throws {
+    func testAddAttachments_whenSelectingFromPhotos_andIsNotAnImage_itShouldAddAttachmentToDraft() async throws {
+        let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "video.mp4", createFile: true)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(selectedPhotosItems: [photo1])
+
+        let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("video.mp4")
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path]))
+    }
+
+    func testAddAttachments_whenSelectingFromPhotos_andIsAnImage_itShouldAddInlineAttachmentToDraft_andSetBodyAction() async throws {
         let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         await sut.addAttachments(selectedPhotosItems: [photo1])
 
         let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("photo1.jpg")
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)), Set([destFile1.path]))
+        XCTAssertTrue(sut.bodyAction!.isInsertInlineImages)
     }
 
     func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
         let draftAddResultError = DraftAttachmentError.reason(.attachmentTooLarge)
-        mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("photo1.jpg", .error(draftAddResultError))]
+        mockDraft.mockAttachmentList.mockAttachmentListAddInlineResult = [("photo1.jpg", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
         await sut.addAttachments(selectedPhotosItems: [photo1])
+
+        await Task.yield()
 
         XCTAssertTrue(sut.alertState.isAlertPresented)
         XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
@@ -498,7 +511,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.addAttachments(filePickerResult: .success([file1]))
 
         let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("file1.txt")
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path]))
     }
 
     func testAddAttachments_whenSelectingFromFilesReturnedError_itShouldShowAlertError() async throws {
@@ -636,5 +649,14 @@ private extension DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
         let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: "attachment_1", size: 123456)
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
+    }
+}
+
+private extension ComposerBodyAction {
+
+    var isInsertInlineImages: Bool {
+        switch self {
+        case .insertInlineImages: return true
+        }
     }
 }

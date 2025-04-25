@@ -301,11 +301,12 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
     func addAttachments(selectedPhotosItems items: [PhotosPickerItemTransferable]) async {
         guard !items.isEmpty else { return }
-        await photosItemsHandler.addPickerPhotos(to: draft, photos: items, onErrors: { errors in
-            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
-        })
+        let result = await photosItemsHandler.addPickerPhotos(to: draft, photos: items)
+        bodyAction = .insertInlineImages(cids: result.successfulContentIds)
+        alertState.enqueueAlertsForFailedAttachmentAdditions(errors: result.errors)
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) async {

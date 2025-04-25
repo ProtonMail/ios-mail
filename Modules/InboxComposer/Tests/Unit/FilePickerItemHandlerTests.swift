@@ -92,7 +92,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
         XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(testsHelper.fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(testsHelper.fileManager.fileExists(atPath: destFile2.path))
     }
@@ -106,7 +106,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file1-1.txt")
 
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(testsHelper.fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(testsHelper.fileManager.fileExists(atPath: destFile2.path))
         XCTAssertTrue(capturedErrors.isEmpty)
@@ -120,7 +120,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
-        XCTAssertEqual(mockDraft.mockAttachments(), [destFile2.path])
+        XCTAssertEqual(mockDraft.attachmentPathsFor(dispositon: .attachment), [destFile2.path])
         XCTAssertFalse(testsHelper.fileManager.fileExists(atPath: destFile1.path))
         XCTAssertTrue(testsHelper.fileManager.fileExists(atPath: destFile2.path))
     }

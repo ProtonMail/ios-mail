@@ -38,9 +38,9 @@ struct ComposerControllerRepresentable: UIViewControllerRepresentable {
 
     func updateUIViewController(_ controller: ComposerController, context: Context) {
         context.coordinator.updateState(state)
-        if let action = bodyAction {
-            // DispatchQueue.main required to avoid publishing changes (bodyAction) during view updates
-            DispatchQueue.main.async {
+        // DispatchQueue.main required to avoid publishing changes (bodyAction) during view updates
+        DispatchQueue.main.async {
+            if let action = bodyAction {
                 bodyAction = nil
                 context.coordinator.handleBodyAction(action: action)
             }
