@@ -222,6 +222,10 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
         .ok
     }
 
+    func removeWithCid(contentId: String) async -> AttachmentListRemoveWithCidResult {
+        fatalError(#function)
+    }
+
     func retry(attachmentId: Id) async -> AttachmentListRetryResult {
         .ok
     }
