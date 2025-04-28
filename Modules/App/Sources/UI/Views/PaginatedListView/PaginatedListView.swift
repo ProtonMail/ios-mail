@@ -25,7 +25,7 @@ struct PaginatedListView<
     CellView: View
 >: View {
     @ObservedObject private var dataSource: PaginatedListDataSource<Item>
-    private var headerView: () -> HeaderView
+    private var headerView: () -> HeaderView?
     private var emptyListView: () -> EmptyListView
     private var cellView: (_ index: Int, Item) -> CellView
     private var viewState: PaginatedListViewState {
@@ -37,7 +37,7 @@ struct PaginatedListView<
 
     init(
         dataSource: PaginatedListDataSource<Item>,
-        headerView: @escaping () -> HeaderView = { EmptyView() },
+        headerView: @escaping () -> HeaderView?,
         emptyListView: @escaping () -> EmptyListView,
         cellView: @escaping (Int, Item) -> CellView,
         onScrollEvent: ((_ event: ListScrollOffsetTrackerView.ScrollEvent) -> Void)? = nil

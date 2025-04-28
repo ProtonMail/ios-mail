@@ -17,12 +17,15 @@
 
 import Combine
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct MailboxItemsListView<EmptyView: View>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
+    private let mailUserSession: MailUserSession
+    @Binding var emptyFolderBanner: EmptyFolderBanner?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -32,11 +35,15 @@ struct MailboxItemsListView<EmptyView: View>: View {
 
     init(
         config: MailboxItemsListViewConfiguration,
-        @ViewBuilder emptyView: () -> EmptyView
+        @ViewBuilder emptyView: () -> EmptyView,
+        emptyFolderBanner: Binding<EmptyFolderBanner?>,
+        mailUserSession: MailUserSession
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
+        self.mailUserSession = mailUserSession
+        _emptyFolderBanner = emptyFolderBanner
     }
 
     var body: some View {
@@ -51,6 +58,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private var listView: some View {
         PaginatedListView(
             dataSource: config.dataSource,
+            headerView: { headerView },
             emptyListView: { emptyView },
             cellView: { index, item in
                 cellView(index: index, item: item)
@@ -80,6 +88,18 @@ struct MailboxItemsListView<EmptyView: View>: View {
         .sensoryFeedback(trigger: selectionState.selectedItems) { oldValue, newValue in
             oldValue.count != newValue.count ? .selection : nil
         }
+    }
+    
+    private var headerView: EmptyFolderBannerView? {
+        guard let emptyFolderBanner, !config.dataSource.state.items.isEmpty else {
+            return nil
+        }
+        
+        return EmptyFolderBannerView(
+            model: emptyFolderBanner,
+            mailUserSession: mailUserSession,
+            wrapper: .productionInstance()
+        )
     }
 
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
@@ -155,10 +175,7 @@ private struct MailboxListViewIdentifiers {
 private extension SelectionModeState {
 
     var selectedItemIDsReadOnlyBinding: Binding<Set<MailboxSelectedItem>> {
-        Binding(
-            get: { [weak self] in self?.selectedItems ?? [] },
-            set: { _ in }
-        )
+        .readonly(get: { [weak self] in self?.selectedItems ?? [] })
     }
 
 }
@@ -176,7 +193,9 @@ private extension SelectionModeState {
         var body: some View {
             MailboxItemsListView(
                 config: makeConfiguration(),
-                emptyView: { Text("MAILBOX IS EMPTY".notLocalized) }
+                emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
+                emptyFolderBanner: .constant(nil),
+                mailUserSession: .dummy
             )
             .task {
                 await dataSource.fetchInitialPage()

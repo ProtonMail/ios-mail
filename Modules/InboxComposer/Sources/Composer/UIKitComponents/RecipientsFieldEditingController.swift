@@ -18,15 +18,16 @@
 import InboxCoreUI
 import UIKit
 
-enum RecipientsFieldEditingEvent {
-    case onInputChange(text: String)
-    case onRecipientSelected(index: Int)
-    case onReturnKeyPressed
-    case onDeleteKeyPressedInsideEmptyInputField
-    case onDeleteKeyPressedOutsideInputField
-}
-
 final class RecipientsFieldEditingController: UIViewController {
+
+    enum Event {
+        case onInputChange(text: String)
+        case onRecipientSelected(index: Int)
+        case onReturnKeyPressed
+        case onDeleteKeyPressedInsideEmptyInputField
+        case onDeleteKeyPressedOutsideInputField
+    }
+
     private let invalidAddressAlertStore: InvalidAddressAlertStateStore
     private let collectionView = SubviewFactory.collectionView
 
@@ -49,7 +50,7 @@ final class RecipientsFieldEditingController: UIViewController {
         }
     }
 
-    var onEvent: ((RecipientsFieldEditingEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     init(state: RecipientFieldState, invalidAddressAlertStore: InvalidAddressAlertStateStore) {
         self.state = state
@@ -208,7 +209,7 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
                 onEvent?(.onReturnKeyPressed)
             }
         }
-        cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input, state: state.controllerState)
+        cursorCell.configure(maxWidth: collectionContentWidth(), input: state.input)
         return cursorCell
     }
 

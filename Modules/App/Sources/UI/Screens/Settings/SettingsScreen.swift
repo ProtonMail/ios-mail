@@ -22,7 +22,6 @@ import SwiftUI
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var appAppearanceStore: AppAppearanceStore
     @State private var state: SettingsState
     private let provider: AccountDetailsProvider

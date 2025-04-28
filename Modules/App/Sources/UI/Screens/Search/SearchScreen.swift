@@ -35,6 +35,7 @@ struct SearchScreen: View {
     @State private var searchDraftPresenter: DraftPresenter
     @State private var sendResultPresenter: SendResultPresenter
     @State private var makeModalScreen: (ModalState) -> ComposerScreen
+    private let userSession: MailUserSession
 
     init(userSession: MailUserSession, sendResultPresenter: SendResultPresenter) {
         self._model = StateObject(wrappedValue: .init())
@@ -48,6 +49,7 @@ struct SearchScreen: View {
             }
         })
         self._sendResultPresenter = .init(initialValue: sendResultPresenter)
+        self.userSession = userSession
     }
 
     var body: some View {
@@ -134,7 +136,9 @@ struct SearchScreen: View {
             config: listConfiguration,
             emptyView: {
                 NoResultsView(variant: .search)
-            }
+            },
+            emptyFolderBanner: .constant(nil),
+            mailUserSession: userSession
         )
         .injectIfNotNil(model.mailbox)
         .navigationBarTitleDisplayMode(.inline)

@@ -173,7 +173,7 @@ targets:
       - package: SwiftUIIntrospect
     preBuildScripts:
       - name: Sourcery
-        script: /opt/homebrew/bin/sourcery --config sourcery/sourcery.yaml
+        script: /opt/homebrew/bin/mint run sourcery --config sourcery/sourcery.yaml
 
   ProtonMailTest:
     type: bundle.unit-test
@@ -210,6 +210,7 @@ targets:
         product: NIOHTTP1
       - package: SwiftNIOHTTP2
         product: NIOHTTP2
+      - package: Scrypt
     settings:
       configs:
         UITests:

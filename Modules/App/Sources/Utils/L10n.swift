@@ -224,6 +224,10 @@ enum L10n {
         static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
         static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
         static let off = LocalizedStringResource("Off", comment: "Indicates that a feature is disabled and not functioning.")
+        static let markAsLegitimate = LocalizedStringResource(
+            "Mark as legitimate",
+            comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
+        )
     }
 
     enum Labels {
@@ -407,9 +411,20 @@ enum L10n {
     }
     
     enum MessageBanner {
-        static func autoDeleteTitle(formattedTime: String) -> LocalizedStringResource {
+        enum LegitMessageConfirmationAlert {
+            static let title = LocalizedStringResource(
+                "Mark email as legitimate",
+                comment: "Title of the alert asking the user to confirm marking an email as legitimate."
+            )
+            static let message = LocalizedStringResource(
+                "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate.",
+                comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
+            )
+        }
+        
+        static func autoDeleteTitle(days: UInt32) -> LocalizedStringResource {
             .init(
-                "This message will auto-delete in \(formattedTime)",
+                "This message will auto-delete in \(days) days",
                 comment: "Banner indicating when a message will automatically be deleted."
             )
         }
@@ -435,10 +450,6 @@ enum L10n {
                 comment: "Banner indicating when a message will expire and no longer be accessible."
             )
         }
-        static let phishingAttemptAction = LocalizedStringResource(
-            "Mark as legitimate",
-            comment: "Action to override the system's phishing detection and mark the email as safe."
-        )
         static let phishingAttemptTitle = LocalizedStringResource(
             "Our system flagged this message as a phishing attempt. Please check to ensure that it is legitimate.",
             comment: "Banner warning the user that the system detected a possible phishing attempt."
@@ -471,10 +482,6 @@ enum L10n {
             "Unsnooze",
             comment: "Action to restore a snoozed email immediately."
         )
-        static let spamAction = LocalizedStringResource(
-            "Mark as legitimate",
-            comment: "Action to override the system's spam detection and mark the email as safe."
-        )
         static let spamTitle = LocalizedStringResource(
             "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.",
             comment: "Banner warning the user that the email failed authentication checks and may be spoofed."
@@ -486,6 +493,52 @@ enum L10n {
         static let unsubscribeNewsletterTitle = LocalizedStringResource(
             "This message is from a mailing list.",
             comment: "Banner indicating that the email is from a mailing list."
+        )
+    }
+    
+    enum EmptyFolderBanner {
+        enum Alert {
+            static func emptyFolderTitle(folderName: String) -> LocalizedStringResource {
+                .init(
+                    "Empty \(folderName) Folder",
+                    comment: """
+                        Empty Spam/Trash Banner: Title for the confirmation alert when the user 
+                        is about to empty the specified location (e.g., Spam or Trash).
+                        """
+                )
+            }
+            
+            static func emptyFolderMessage(folderName: String) -> LocalizedStringResource {
+                .init(
+                    "Are you sure you want to permanently delete all messages in the \(folderName) folder? This action cannot be undone.",
+                    comment: """
+                        Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm 
+                        permanent deletion of all messages in the specified location (e.g., Spam or Trash).
+                        """
+                )
+            }
+        }
+        static func emptyNowAction(folderName: String) -> LocalizedStringResource {
+            .init(
+                "Empty \(folderName) now",
+                comment: "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
+            )
+        }
+        static let upgradeAction = LocalizedStringResource(
+            "Upgrade to Auto-delete",
+            comment: "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
+        )
+        static let freeUserTitle = LocalizedStringResource(
+            "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days.",
+            comment: "Empty Spam/Trash Banner: Title shown to free users, encouraging them to upgrade to auto-delete."
+        )
+        static let paidUserAutoDeleteOnTitle = LocalizedStringResource(
+            "Messages in Trash and Spam will be automatically deleted after 30 days.",
+            comment: "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
+        )
+        static let paidUserAutoDeleteOffTitle = LocalizedStringResource(
+            "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually.",
+            comment: "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
         )
     }
 

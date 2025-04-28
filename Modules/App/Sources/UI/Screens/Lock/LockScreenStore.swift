@@ -68,8 +68,8 @@ class LockScreenStore: StateStore {
     }
 
     @MainActor
-    private func verify(pin: String) async {
-        switch await pinVerifier.verifyPinCode(pin: pin.uIntArray) {
+    private func verify(pin: [UInt32]) async {
+        switch await pinVerifier.verifyPinCode(pin: pin) {
         case .ok:
             lockOutput(.authenticated)
         case .error:
@@ -87,12 +87,4 @@ class LockScreenStore: StateStore {
             return 0
         }
     }
-}
-
-private extension String {
-
-    var uIntArray: [UInt32] {
-        compactMap { UInt32(String($0)) }
-    }
-
 }

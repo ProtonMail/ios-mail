@@ -21,16 +21,4 @@ extension Bundle {
     enum URLScheme: String {
         case protonmail = "protonmail"
     }
-
-    struct URLTypes {
-        let urlSchemes: [URLScheme]
-
-        init(dict: [String: Any]) {
-            urlSchemes = forceCast(dict["CFBundleURLSchemes"], [String].self).compactMap(URLScheme.init(rawValue:))
-        }
-    }
-
-    var urlTypes: [URLTypes] {
-        forceCast(infoDictionary?["CFBundleURLTypes"], [[String: Any]].self).map(URLTypes.init)
-    }
 }

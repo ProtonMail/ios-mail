@@ -17,7 +17,6 @@
 
 import Foundation
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 
 struct FilePickerItemHandler {

@@ -68,7 +68,7 @@ struct MessageBannersView: View {
                     style: .regular
                 )
             case .phishingAttempt:
-                let button = Banner.Button(title: L10n.MessageBanner.phishingAttemptAction) {
+                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
                 
@@ -79,7 +79,7 @@ struct MessageBannersView: View {
                     style: .error
                 )
             case .spam:
-                let button = Banner.Button(title: L10n.MessageBanner.spamAction) {
+                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
                     action(.markAsLegitimateTapped)
                 }
                 
@@ -99,10 +99,10 @@ struct MessageBannersView: View {
                     message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
                     style: duration.isOneMinuteOrMore ? .regular : .error
                 )
-            case .autoDelete:
+            case .autoDelete(_, let days):
                 return smallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.autoDeleteTitle(formattedTime: "20 days"),
+                    message: L10n.MessageBanner.autoDeleteTitle(days: days),
                     style: .regular
                 )
             case .unsubscribeNewsletter:

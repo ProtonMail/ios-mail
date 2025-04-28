@@ -93,6 +93,8 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
                 AppLogger.logTemporarily(message: message, category: .conversationDetail)
                 await handleImage(image, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let error):
+                let message = "cid: \(cid), error: \(error)"
+                AppLogger.log(message: message, category: .composer, isError: true)
                 urlSchemeTask.didFailWithError(error)
             }
             let taskId = ObjectIdentifier(urlSchemeTask)

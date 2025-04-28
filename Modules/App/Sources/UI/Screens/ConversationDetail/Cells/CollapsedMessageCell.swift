@@ -107,7 +107,6 @@ struct CollapsedMessageCell: View {
 }
 
 struct CollapsedMessageCellUIModel {
-    let id: ID
     let sender: String
     let date: Date
     let recipients: String
@@ -119,7 +118,6 @@ struct CollapsedMessageCellUIModel {
 #Preview {
     VStack(spacing: 0) {
         CollapsedMessageCell(uiModel: .init(
-            id: .init(value: 1),
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",
@@ -128,7 +126,6 @@ struct CollapsedMessageCellUIModel {
             avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
         ), isFirstCell: true, onTap: {})
         CollapsedMessageCell(uiModel: .init(
-            id: .init(value: 2),
             sender: "john@gmail.com",
             date: .now,
             recipients: "martha@proton.me",
@@ -137,7 +134,6 @@ struct CollapsedMessageCellUIModel {
             avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
         ), onTap: {})
         CollapsedMessageCell(uiModel: .init(
-            id: .init(value: 3),
             sender: "Martha",
             date: .now,
             recipients: "john@gmail.com",

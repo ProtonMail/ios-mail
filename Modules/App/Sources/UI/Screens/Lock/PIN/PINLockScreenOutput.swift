@@ -16,6 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum PINLockScreenOutput: Equatable {
-    case pin(String) // FIXME: - Update to [UInt32] instead of String
+    case pin(PIN)
     case logOut
 }

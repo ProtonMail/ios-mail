@@ -18,7 +18,6 @@
 import Collections
 import InboxDesignSystem
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -32,19 +31,20 @@ struct DraftAttachmentStatus: Hashable {
     let state: DraftAttachmentState
 }
 
-enum DraftAttachmentsSectionEvent {
-    case onTap(uiModel: DraftAttachmentUIModel)
-    case onRemove(uiModel: DraftAttachmentUIModel)
-    case onRetryAttachmentUpload(uiModel: DraftAttachmentUIModel)
-}
-
 final class DraftAttachmentsSectionViewController: UIViewController {
+
+    enum Event {
+        case onTap(uiModel: DraftAttachmentUIModel)
+        case onRemove(uiModel: DraftAttachmentUIModel)
+        case onRetryAttachmentUpload(uiModel: DraftAttachmentUIModel)
+    }
+
     private let stack = SubviewFactory.stack
     private var topConstraint: NSLayoutConstraint?
     var uiModels: [DraftAttachmentUIModel] = [] {
         didSet { updateUI() }
     }
-    var onEvent: ((DraftAttachmentsSectionEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

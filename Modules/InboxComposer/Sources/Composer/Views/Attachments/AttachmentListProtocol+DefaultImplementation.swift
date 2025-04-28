@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,15 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import proton_app_uniffi
 
-struct MainBundle: EnvironmentKey {
-    static let defaultValue = Bundle.main
-}
+extension AttachmentListProtocol {
 
-extension EnvironmentValues {
-    var mainBundle: Bundle {
-        get { self[MainBundle.self] }
-        set { self[MainBundle.self] = newValue }
+    func add(path: String) async -> AttachmentListAddResult {
+        await add(path: path, filenameOverride: nil)
     }
+
 }

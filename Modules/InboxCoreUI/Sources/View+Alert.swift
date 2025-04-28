@@ -39,7 +39,9 @@ private struct AlertViewModifier: ViewModifier {
             actions: { alert in
                 ForEach(alert.actions, id: \.title.string) { alertAction in
                     Button(alertAction.title.string, role: alertAction.buttonRole) {
-                        alertAction.action()
+                        Task {
+                            await alertAction.action()
+                        }
                     }
                 }
             },

@@ -233,6 +233,16 @@ public extension EmbeddedAttachmentInfoResult {
         }
     }
 }
+public extension GetAutoDeleteBannerResult {
+    func get() throws(ActionError) -> AutoDeleteBanner? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension GetMessageBodyResult {
     func get() throws(ActionError) -> DecryptedMessage {
         switch self {
@@ -665,6 +675,16 @@ public extension MailUserSessionGetAttachmentResult {
 }
 public extension MailUserSessionGetPaymentsPlansResult {
     func get() throws(UserSessionError) -> PaymentsPlans {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionGetPaymentsResourcesIconsResult {
+    func get() throws(UserSessionError) -> Data {
         switch self {
         case .ok(let value):
             value

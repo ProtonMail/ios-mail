@@ -53,7 +53,7 @@ class LockScreenStoreTests {
     func userEntersValidPin_ItEmitsLockAuthenticatedOutput() async {
         pinVerifierSpy.verifyPinCodeStub = .ok
 
-        await sut.handle(action: .pin(.pin("12345")))
+        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinError == nil)
         #expect(lockScreenOutput == [.authenticated])
@@ -63,7 +63,7 @@ class LockScreenStoreTests {
     func userEntersInvalidPinForFirstTime_ItDisplaysError() async {
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin("12345")))
+        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinError == nil)
         #expect(lockScreenOutput == [])
@@ -74,7 +74,7 @@ class LockScreenStoreTests {
         pinVerifierSpy.remainingPinAttemptsStub = .ok(9)
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin("12345")))
+        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinError == nil)
         #expect(lockScreenOutput == [])
@@ -85,7 +85,7 @@ class LockScreenStoreTests {
         pinVerifierSpy.remainingPinAttemptsStub = .ok(3)
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin("12345")))
+        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinError == "3 attempts remaining before sign-out.")
         #expect(lockScreenOutput == [])

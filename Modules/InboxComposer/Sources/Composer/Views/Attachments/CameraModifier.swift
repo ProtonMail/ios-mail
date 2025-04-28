@@ -19,19 +19,21 @@ import SwiftUI
 
 private struct CameraModifier: ViewModifier {
     @Binding var isPresented: Bool
-    var onPhotoTaken: (UIImage) -> Void
+    var onPhotoTaken: (UIImage) async -> Void
 
     func body(content: Content) -> some View {
         content
             .fullScreenCover(isPresented: $isPresented) {
-                CameraView() { onPhotoTaken($0) }
-                    .edgesIgnoringSafeArea(.all)
+                CameraView() { image in
+                    Task { await onPhotoTaken(image) }
+                }
+                .edgesIgnoringSafeArea(.all)
             }
     }
 }
 
 extension View {
-    func camera(isPresented: Binding<Bool>, onPhotoTaken: @escaping (UIImage) -> Void) -> some View {
+    func camera(isPresented: Binding<Bool>, onPhotoTaken: @escaping (UIImage) async -> Void) -> some View {
         modifier(CameraModifier(isPresented: isPresented, onPhotoTaken: onPhotoTaken))
     }
 }

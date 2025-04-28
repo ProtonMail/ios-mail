@@ -19,12 +19,13 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 
-enum ContactPickerEvent {
-    case onInputChange(text: String)
-    case onContactSelected(contact: ComposerContact)
-}
-
 final class ContactPickerController: UIViewController {
+
+    enum Event {
+        case onInputChange(text: String)
+        case onContactSelected(contact: ComposerContact)
+    }
+
     private let label = SubviewFactory.title
     private let textField = CursorTextField()
     private let tableView = SubviewFactory.tableView
@@ -39,11 +40,11 @@ final class ContactPickerController: UIViewController {
 
     var recipientsFieldState: RecipientFieldState? {
         didSet {
-            updateViewWith(oldValue: oldValue, newState: recipientsFieldState)
+            updateView(oldState: oldValue)
         }
     }
 
-    var onEvent: ((ContactPickerEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,14 +92,14 @@ final class ContactPickerController: UIViewController {
         textField.becomeFirstResponder()
     }
 
-    private func updateViewWith(oldValue: RecipientFieldState?, newState: RecipientFieldState?) {
+    private func updateView(oldState: RecipientFieldState?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let state = recipientsFieldState else { return }
             label.text = state.group.string
             textField.text = state.input
             view.isHidden = state.controllerState != .contactPicker || state.matchingContacts.isEmpty
             
-            let matchedContactsChanged = oldValue?.matchingContacts != state.matchingContacts
+            let matchedContactsChanged = oldState?.matchingContacts != state.matchingContacts
             if matchedContactsChanged {
                 contacts = state.matchingContacts
                 textField.becomeFirstResponder()

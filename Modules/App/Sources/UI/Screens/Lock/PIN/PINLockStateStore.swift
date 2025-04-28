@@ -36,7 +36,7 @@ class PINLockStateStore: StateStore {
         case .confirmTapped:
             guard !state.pin.isEmpty else { return }
             output(.pin(state.pin))
-            state = state.copy(\.pin, to: .empty)
+            state = state.copy(\.pin, to: [])
         case .signOutTapped:
             let alert: AlertModel = .logOutConfirmation(
                 action: { [weak self] action in self?.handle(action: .alertActionTapped(action)) }
@@ -65,11 +65,11 @@ class PINLockStateStore: StateStore {
         switch buttonTap {
         case .digit(let value):
             state = state
-                .copy(\.pin, to: state.pin.appending("\(value)"))
+                .copy(\.pin, to: state.pin + [value])
                 .copy(\.error, to: nil)
         case .delete:
             state = state
-                .copy(\.pin, to: String(state.pin.dropLast()))
+                .copy(\.pin, to: state.pin.dropLast())
                 .copy(\.error, to: nil)
         }
     }
@@ -77,9 +77,9 @@ class PINLockStateStore: StateStore {
 
 extension AlertModel {
     
-    static func logOutConfirmation(action: @escaping (LogOutConformationAction) -> Void) -> Self {
+    static func logOutConfirmation(action: @escaping (LogOutConformationAction) async -> Void) -> Self {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
         
         return .init(

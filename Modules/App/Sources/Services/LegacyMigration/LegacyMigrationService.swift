@@ -48,7 +48,7 @@ actor LegacyMigrationService {
 
     enum ProtectionPreference: CustomStringConvertible, Equatable {
         case biometrics
-        case pin(String)
+        case pin(PIN)
 
         var description: String {
             switch self {
@@ -268,12 +268,8 @@ actor LegacyMigrationService {
             switch protectionPreference {
             case .biometrics:
                 try await mailSession.setBiometricsAppProtection().get()
-            case .pin(let pinString):
-                // TODO: consider having the PINLockScreen provide an array of digits in the first place
-                let pinDigits = pinString
-                    .compactMap(\.wholeNumberValue)
-                    .map(UInt32.init)
-                try await mailSession.setPinCode(pin: pinDigits).get()
+            case .pin(let pin):
+                try await mailSession.setPinCode(pin: pin).get()
             }
         } catch {
             AppLogger.log(error: error, category: .legacyMigration)

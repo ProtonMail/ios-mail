@@ -28,13 +28,9 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
     private var sut: PhotosPickerItemHandler!
     private var testsHelper: PhotosPickerItemHandlerTestsHelper!
     private var mockDraft: MockDraft!
-    private var capturedErrors: [DraftAttachmentError]!
-    private var mockOnErrors: (([DraftAttachmentError]) -> Void)!
 
     override func setUpWithError() throws {
         testsHelper = try .init()
-        capturedErrors = []
-        mockOnErrors = { self.capturedErrors.append(contentsOf: $0) }
         mockDraft = .emptyMock
         mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = testsHelper.destinationFolder
         sut = .init()
@@ -42,8 +38,6 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
 
     override func tearDownWithError() throws {
         try testsHelper.tearDown()
-        capturedErrors = nil
-        mockOnErrors = nil
         mockDraft = nil
         sut = nil
     }
@@ -52,13 +46,13 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddPathCalls, [destFile1.path, destFile2.path])
+        XCTAssertTrue(result.errors.isEmpty)
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddCalls.map(\.path), [destFile1.path, destFile2.path])
     }
 
     func testAddPickerPhotos_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems_andReturnError() async throws {
@@ -67,26 +61,26 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddPathCalls, [destFile1.path, destFile2.path])
-        XCTAssertEqual(capturedErrors, [error])
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedAddCalls.map(\.path), [destFile1.path, destFile2.path])
+        XCTAssertEqual(result.errors, [error])
     }
 
     func testAddPickerPhotos_whenNoErrors_itShouldMoveFilesToDestinationFolder() async throws {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file2.txt")
 
-        XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
+        XCTAssertTrue(result.errors.isEmpty)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(testsHelper.fileExists(at: destFile1.path))
         XCTAssertTrue(testsHelper.fileExists(at: destFile2.path))
     }
@@ -95,46 +89,64 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
         let destFile2 = testsHelper.destinationFolder.appendingPathComponent("file1-1.txt")
 
-        XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path, destFile2.path]))
+        XCTAssertTrue(result.errors.isEmpty)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)), Set([destFile1.path, destFile2.path]))
         XCTAssertTrue(testsHelper.fileExists(at: destFile1.path))
         XCTAssertTrue(testsHelper.fileExists(at: destFile2.path))
+    }
+
+    func testAddPickerPhotos_whenPhotoItemIsImage_itShouldBeAddedToTheDraftAsInlineAttachment() async throws {
+        let mockItem1 = try testsHelper.makeMockPhotosPickerHeicImage(fileName: "image1.heic")
+
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1])
+
+        XCTAssertTrue(mockDraft.mockAttachmentList.capturedAddInlineCalls.count == 1)
+        XCTAssertTrue(result.successfulContentIds.count == 1)
+    }
+
+    func testAddPickerPhotos_whenPhotoItemIsVideo_itShouldBeAddedToTheDraftAsRegularAttachment() async throws {
+        let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "video.mp4", createFile: true)
+
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1])
+
+        XCTAssertTrue(mockDraft.mockAttachmentList.capturedAddCalls.count == 1)
+        XCTAssertTrue(result.successfulContentIds.count == 0)
     }
 
     func testAddPickerPhotos_whenPhotoItemTypeIsHeic_itShouldCreateAJpegInDestinationFolder() async throws {
         let mockItem1 = try testsHelper.makeMockPhotosPickerHeicImage(fileName: "image1.heic")
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("image1.jpg")
-        XCTAssertTrue(capturedErrors.isEmpty)
-        XCTAssertEqual(Set(mockDraft.mockAttachments()), Set([destFile1.path]))
+        XCTAssertTrue(result.errors.isEmpty)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)), Set([destFile1.path]))
         XCTAssertTrue(testsHelper.fileExists(at: destFile1.path))
     }
 
     func testAddPickerPhotos_whenUnexpectedError_itShouldNotMoveFilesToDestinationFolder_andReturnError() async throws {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: false)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1])
 
         let destFile1 = testsHelper.destinationFolder.appendingPathComponent("file1.txt")
-        XCTAssertEqual(mockDraft.mockAttachments(), [])
+        XCTAssertEqual(mockDraft.attachmentPathsFor(dispositon: .attachment), [])
         XCTAssertFalse(testsHelper.fileExists(at: destFile1.path))
-        XCTAssertEqual(capturedErrors, [PhotosPickerItemHandler.unexpectedError])
+        XCTAssertEqual(result.errors, [PhotosPickerItemHandler.unexpectedError])
     }
 
     func testAddPickerPhotos_whenMultipleUnexpectedError_itShouldReturnSameNumberOfErrors() async throws {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: false)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file2.txt", createFile: false)
 
-        await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2], onErrors: mockOnErrors)
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1, mockItem2])
 
-        XCTAssertEqual(capturedErrors, [PhotosPickerItemHandler.unexpectedError, PhotosPickerItemHandler.unexpectedError])
+        XCTAssertEqual(result.errors, [PhotosPickerItemHandler.unexpectedError, PhotosPickerItemHandler.unexpectedError])
     }
 }
 

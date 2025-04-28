@@ -19,16 +19,6 @@ import Foundation
 
 extension Bundle {
 
-    /// Returns the app version in a nice to read format
-    var appVersion: String {
-        "\(bundleShortVersion) (\(buildVersion))"
-    }
-
-    /// Returns the build version of the app.
-    var buildVersion: String {
-        forceCast(infoDictionary?["CFBundleVersion"], String.self)
-    }
-
     /// Returns the major version of the app.
     var bundleShortVersion: String {
         forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)

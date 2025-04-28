@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,26 +15,4 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-enum MailboxReadStatus: RawRepresentable {
-    typealias RawValue = Bool
-
-    var rawValue: Bool {
-        switch self {
-        case .read: return true
-        case .unread: return false
-        }
-    }
-
-    init(rawValue: Bool) {
-        if rawValue {
-            self = .read
-        } else {
-            self = .unread
-        }
-    }
-
-    case read
-    case unread
-}
+typealias PIN = [UInt32]

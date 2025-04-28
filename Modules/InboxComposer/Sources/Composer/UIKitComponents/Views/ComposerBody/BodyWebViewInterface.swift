@@ -19,16 +19,17 @@ import Foundation
 import InboxCore
 import WebKit
 
-enum BodyWebViewInterfaceEvent {
-    case onContentHeightChange(height: CGFloat)
-    case onEditorFocus
-    case onEditorChange
-    case onCursorPositionChange(position: CGPoint)
-}
-
 final class BodyWebViewInterface: NSObject {
+
+    enum Event {
+        case onContentHeightChange(height: CGFloat)
+        case onEditorFocus
+        case onEditorChange
+        case onCursorPositionChange(position: CGPoint)
+    }
+
     let webView: WKWebView
-    var onEvent: ((BodyWebViewInterfaceEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     private let htmlDocument: BodyHtmlDocument
 
@@ -65,10 +66,23 @@ final class BodyWebViewInterface: NSObject {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
-                guard let html = result as? String else {
+                guard let html = (result as? String)?.withoutWhitespace else {
                     return continuation.resume(returning: nil)
                 }
                 continuation.resume(returning: html)
+            }
+        }
+    }
+
+    @MainActor
+    func insertImages(_ contentIds: [String]) async {
+        let jsonArray = contentIds.map { "\"\($0)\"" }.joined(separator: ",")
+        let function = "\(BodyHtmlDocument.JSFunction.insertImages.rawValue)([" + jsonArray + "]);"
+
+        await withCheckedContinuation { continuation in
+            webView.evaluateJavaScript(function) { _, error in
+                if let error { AppLogger.log(error: error, category: .composer) }
+                continuation.resume()
             }
         }
     }

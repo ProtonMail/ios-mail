@@ -72,13 +72,6 @@ tmp/
 # UITest Mocks
 Modules/App/UITests/NetworkMocks/*
 
-# Bundler
-.bundle
-
-# XcodeGen Local Installation
-.xcodegen
-xcodegen
-
 # Testmo
 testmo-resources.json
 

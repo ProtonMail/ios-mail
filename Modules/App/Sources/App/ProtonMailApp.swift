@@ -140,7 +140,7 @@ private struct RootView: View {
             )
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(
-                state: .init(hideLogoutButton: false, pin: .empty),
+                state: .init(hideLogoutButton: false, pin: []),
                 error: .constant(errorFromLatestAttempt)
             ) { output in
                 switch output {

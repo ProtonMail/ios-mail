@@ -20,20 +20,21 @@ import InboxDesignSystem
 import UIKit
 import WebKit
 
-enum BodyEditorEvent {
-    case onStartEditing
-    case onBodyChange(body: String)
-    case onCursorPositionChange(position: CGPoint)
-}
-
 final class BodyEditorController: UIViewController {
+
+    enum Event {
+        case onStartEditing
+        case onBodyChange(body: String)
+        case onCursorPositionChange(position: CGPoint)
+    }
+
     private let htmlInterface: BodyWebViewInterface
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
     private lazy var initialFocusState = BodyInitialFocusState { [weak self] in
         await self?.htmlInterface.setFocus()
     }
-    var onEvent: ((BodyEditorEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     init(embeddedImageProvider: EmbeddedImageProvider) {
         self.htmlInterface = BodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
@@ -97,6 +98,15 @@ final class BodyEditorController: UIViewController {
 
     func updateBody(html body: String) {
         htmlInterface.loadMessageBody(body)
+    }
+
+    func handleBodyAction(action: ComposerBodyAction) {
+        switch action {
+        case .insertInlineImages(let cids):
+            Task {
+                await htmlInterface.insertImages(cids)
+            }
+        }
     }
 }
 

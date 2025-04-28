@@ -28,6 +28,7 @@ typealias Nested = NestedObservableObject
 
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
+    @Published var bodyAction: ComposerBodyAction?
     @Published var pickersState: AttachmentPickersState
     @Nested var alertState: AttachmentAlertState
     @Published var toast: Toast?
@@ -300,11 +301,12 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
     func addAttachments(selectedPhotosItems items: [PhotosPickerItemTransferable]) async {
         guard !items.isEmpty else { return }
-        await photosItemsHandler.addPickerPhotos(to: draft, photos: items, onErrors: { errors in
-            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
-        })
+        let result = await photosItemsHandler.addPickerPhotos(to: draft, photos: items)
+        bodyAction = .insertInlineImages(cids: result.successfulContentIds)
+        alertState.enqueueAlertsForFailedAttachmentAdditions(errors: result.errors)
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) async {
@@ -313,11 +315,13 @@ final class ComposerModel: ObservableObject {
         })
     }
 
-    func addAttachments(image: UIImage) {
-        Task {
-            await cameraImageHandler.addImage(to: draft, image: image, onError: { error in
-                alertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
-            })
+    @MainActor
+    func addAttachments(image: UIImage) async {
+        switch await cameraImageHandler.addInlineImage(to: draft, image: image) {
+        case .success(let cid):
+            bodyAction = .insertInlineImages(cids: [cid])
+        case .failure(let error):
+            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
         }
     }
 
@@ -417,7 +421,9 @@ extension ComposerModel {
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().toDraftAttachments()
-            state.attachments = draftAttachments.map { $0.toDraftAttachmentUIModel() }
+            state.attachments = draftAttachments
+                .filter { $0.attachment.disposition == .attachment }
+                .map { $0.toDraftAttachmentUIModel() }
             alertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {
             AppLogger.log(error: error, category: .composer)

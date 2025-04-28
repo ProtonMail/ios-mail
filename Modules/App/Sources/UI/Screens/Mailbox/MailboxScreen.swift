@@ -19,8 +19,8 @@ import AccountManager
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import SwiftUI
 import proton_app_uniffi
+import SwiftUI
 
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
@@ -152,7 +152,8 @@ extension MailboxScreen {
         ZStack(alignment: .bottomTrailing) {
             MailboxListView(
                 isListAtTop: $isComposeButtonExpanded,
-                model: mailboxModel
+                model: mailboxModel,
+                mailUserSession: userSession
             )
             composeButtonView
                 .accessibilitySortPriority(1)

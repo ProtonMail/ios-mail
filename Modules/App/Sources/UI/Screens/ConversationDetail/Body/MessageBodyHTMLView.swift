@@ -25,8 +25,7 @@ struct MessageBodyHTMLView: View {
     @Environment(\.openURL) var urlOpener
     @State var bodyContentHeight: CGFloat = 0.0
 
-    let messageId: ID
-    let messageBody: MessageBodyState
+    let messageBody: MessageBodyStateStore.State.Body
     let htmlLoaded: () -> Void
     
     /// This value is key to the conversation scrolling to the opened message. We don't

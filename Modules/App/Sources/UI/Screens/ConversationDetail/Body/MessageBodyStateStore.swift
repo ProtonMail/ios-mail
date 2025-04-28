@@ -20,23 +20,29 @@ import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 
-enum MessageBodyState {
-    case fetching
-    case loaded(MessageBody)
-    case error(Error)
-    case noConnection
-}
-
 final class MessageBodyStateStore: StateStore {
     enum Action {
         case onLoad
         case displayEmbeddedImages
         case downloadRemoteContent
         case markAsLegitimate
+        case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
         case unblockSender(emailAddress: String)
     }
+    
+    struct State: Copying {
+        enum Body {
+            case fetching
+            case loaded(MessageBody)
+            case error(Error)
+            case noConnection
+        }
+        
+        var body: Body
+        var alert: AlertModel?
+    }
 
-    @Published var state: MessageBodyState = .fetching
+    @Published var state = State(body: .fetching, alert: .none)
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
@@ -57,25 +63,32 @@ final class MessageBodyStateStore: StateStore {
         case .onLoad:
             await loadMessageBody(with: .none)
         case .displayEmbeddedImages:
-            if case let .loaded(body) = state {
+            if case let .loaded(body) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideEmbeddedImages, to: false)
 
                 await loadMessageBody(with: updatedOptions)
             }
         case .downloadRemoteContent:
-            if case let .loaded(body) = state {
+            if case let .loaded(body) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideRemoteImages, to: false)
                 
                 await loadMessageBody(with: updatedOptions)
             }
         case .markAsLegitimate:
-            if case let .loaded(body) = state {
+            let alertModel: AlertModel = .legitMessageConfirmation { [weak self] action in
+                await self?.handle(action: .markAsLegitimateConfirmed(action))
+            }
+            state = state.copy(\.alert, to: alertModel)
+        case .markAsLegitimateConfirmed(let action):
+            state = state.copy(\.alert, to: nil)
+            
+            if case let .loaded(body) = state.body, case .markAsLegitimate = action {
                 await markAsLegitimate(with: body.html.options)
             }
         case .unblockSender(let emailAddress):
-            if case let .loaded(body) = state {
+            if case let .loaded(body) = state.body {
                 await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
         }
@@ -87,11 +100,11 @@ final class MessageBodyStateStore: StateStore {
     private func loadMessageBody(with options: TransformOpts?) async {
         switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
-            state = .loaded(body)
+            state = state.copy(\.body, to: .loaded(body))
         case .noConnectionError:
-            state = .noConnection
+            state = state.copy(\.body, to: .noConnection)
         case .error(let error):
-            state = .error(error)
+            state = state.copy(\.body, to: .error(error))
         }
     }
     

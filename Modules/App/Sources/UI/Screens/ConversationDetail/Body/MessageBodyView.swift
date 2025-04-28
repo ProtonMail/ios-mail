@@ -53,7 +53,7 @@ struct MessageBodyView: View {
             toastStateStore: toastStateStore
         )) { state, store in
             VStack(spacing: .zero) {
-                if case .loaded(let body) = state, !body.banners.isEmpty {
+                if case .loaded(let body) = state.body, !body.banners.isEmpty {
                     MessageBannersView(
                         types: OrderedSet(body.banners),
                         timer: Timer.self,
@@ -74,8 +74,9 @@ struct MessageBodyView: View {
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
                 }
-                MessageBodyHTMLView(messageId: messageID, messageBody: state, htmlLoaded: htmlLoaded)
+                MessageBodyHTMLView(messageBody: state.body, htmlLoaded: htmlLoaded)
             }
+            .alert(model: store.binding(\.alert))
             .onLoad { store.handle(action: .onLoad) }
         }
     }

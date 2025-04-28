@@ -19,21 +19,22 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 
-enum DraftAttachmentViewEvent {
-    case onViewTap
-    case onButtonTap
-}
-
 final class DraftAttachmentView: TapHighlightView {
+
+    enum Event {
+        case onViewTap
+        case onButtonTap
+    }
+
     private let stack = SubviewFactory.stack
     private let icon = SubviewFactory.icon
     private let name = SubviewFactory.name
     private let size = SubviewFactory.size
     private let removeButton = SubviewFactory.removeButton
     private var uiModel: DraftAttachmentUIModel?
-    var onEvent: ((DraftAttachmentViewEvent, DraftAttachmentUIModel) -> Void)
+    var onEvent: ((Event, DraftAttachmentUIModel) -> Void)
 
-    init(onEvent: @escaping ((DraftAttachmentViewEvent, DraftAttachmentUIModel) -> Void)) {
+    init(onEvent: @escaping ((Event, DraftAttachmentUIModel) -> Void)) {
         self.onEvent = onEvent
         super.init(frame: .zero)
         setUpView()
@@ -91,7 +92,7 @@ final class DraftAttachmentView: TapHighlightView {
         return expandedTouchArea.contains(point) ? removeButton : super.hitTest(point, with: event)
     }
 
-    @objc private func removeButtonTapped(_ sender: SpinnerButton) {
+    @objc private func removeButtonTapped(_: SpinnerButton) {
         guard let uiModel else { return }
         onEvent(.onButtonTap, uiModel)
     }

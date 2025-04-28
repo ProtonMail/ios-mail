@@ -18,16 +18,17 @@
 import InboxDesignSystem
 import UIKit
 
-enum SubjectFieldViewEvent {
-    case onStartEditing
-    case onSubjectChange(String)
-}
-
 final class SubjectFieldView: UIView {
+
+    enum Event {
+        case onStartEditing
+        case onSubjectChange(String)
+    }
+
     private let stack = SubviewFactory.stack
     private let title = SubviewFactory.title
     private let textField = SubviewFactory.textField
-    var onEvent: ((SubjectFieldViewEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     var text: String {
         get { textField.text ?? .empty }

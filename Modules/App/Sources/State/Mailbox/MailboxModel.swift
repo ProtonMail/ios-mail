@@ -31,6 +31,7 @@ import class UIKit.UIImage
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
     @Published var toast: Toast?
+    @Published var emptyFolderBanner: EmptyFolderBanner?
     let selectionMode: SelectionMode = .init()
     private(set) var selectedMailbox: SelectedMailbox
 
@@ -222,6 +223,7 @@ extension MailboxModel {
             self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
             AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
+            emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
@@ -259,6 +261,17 @@ extension MailboxModel {
                 duration: 8.0
             )
         }
+    }
+
+    private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
+        let userSession = dependencies.appContext.userSession
+        let labelID: ID = mailbox.labelId()
+        
+        guard let banner = try? await getAutoDeleteBanner(session: userSession, labelId: labelID).get() else {
+            return nil
+        }
+        
+        return .init(folder: .init(labelID: labelID, type: banner.folder), userState: banner.state)
     }
 
     private func prepareSwipeActions() async {

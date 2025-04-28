@@ -47,11 +47,30 @@ public struct Banner: Hashable {
     public struct ContentStyle: Hashable {
         let icon: Color
         let text: Color
+        
+        public static var regular: Self {
+            .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
+        }
     }
     
     public struct ButtonStyle: Hashable {
         let background: Color
         let text: Color
+        let strokeColors: [Color]
+        
+        public static var regular: Self {
+            .textNorm(background: DS.Color.InteractionWeak.norm, strokeColors: [])
+        }
+        
+        public static var gradient: Self {
+            .textNorm(background: DS.Color.Background.norm, strokeColors: DS.Color.Gradient.crazy)
+        }
+        
+        // MARK: - Private
+        
+        private static func textNorm(background: Color, strokeColors: [Color]) -> Self {
+            .init(background: background, text: DS.Color.Text.norm, strokeColors: strokeColors)
+        }
     }
 
     public enum LargeType: Hashable {
@@ -74,14 +93,18 @@ public struct Banner: Hashable {
                 .init(
                     background: DS.Color.Background.norm,
                     border: DS.Color.Border.strong,
-                    button: .init(background: DS.Color.InteractionWeak.norm, text: DS.Color.Text.norm),
-                    content: .init(icon: DS.Color.Icon.weak, text: DS.Color.Text.weak)
+                    button: .regular,
+                    content: .regular
                 )
             case .error:
                 .init(
                     background: DS.Color.Notification.error,
                     border: .clear,
-                    button: .init(background: DS.Color.Global.white.opacity(0.2), text: DS.Color.Text.inverted),
+                    button: .init(
+                        background: DS.Color.Global.white.opacity(0.2),
+                        text: DS.Color.Text.inverted,
+                        strokeColors: []
+                    ),
                     content: .init(icon: DS.Color.Icon.inverted, text: DS.Color.Text.inverted)
                 )
             }

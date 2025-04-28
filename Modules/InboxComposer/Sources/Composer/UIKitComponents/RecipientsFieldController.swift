@@ -18,16 +18,17 @@
 import InboxDesignSystem
 import UIKit
 
-enum RecipientsFieldEvent {
-    case onFieldTap
-    case onInputChange(text: String)
-    case onRecipientSelected(index: Int)
-    case onReturnKeyPressed
-    case onDeleteKeyPressedInsideEmptyInputField
-    case onDeleteKeyPressedOutsideInputField
-}
-
 final class RecipientsFieldController: UIViewController {
+
+    enum Event {
+        case onFieldTap
+        case onInputChange(text: String)
+        case onRecipientSelected(index: Int)
+        case onReturnKeyPressed
+        case onDeleteKeyPressedInsideEmptyInputField
+        case onDeleteKeyPressedOutsideInputField
+    }
+
     private let label = SubviewFactory.title
     private let stack = SubviewFactory.stack
     private let idleController = RecipientsFieldIdleController()
@@ -40,7 +41,7 @@ final class RecipientsFieldController: UIViewController {
         }
     }
 
-    var onEvent: ((RecipientsFieldEvent) -> Void)?
+    var onEvent: ((Event) -> Void)?
 
     init(group: RecipientGroupType, invalidAddressAlertStore: InvalidAddressAlertStateStore) {
         self.state = .initialState(group: group)
