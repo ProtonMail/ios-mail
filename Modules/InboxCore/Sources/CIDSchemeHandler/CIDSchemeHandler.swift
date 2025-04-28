@@ -86,8 +86,17 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 
     private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
+        let taskId = ObjectIdentifier(urlSchemeTask)
+
         Task {
-            switch await embeddedImageProvider.getEmbeddedAttachment(cid: cid) {
+            let result = await embeddedImageProvider.getEmbeddedAttachment(cid: cid)
+
+            guard try await performOnUrlSchemeActiveTasks({ activeTasks in activeTasks.contains(taskId) }) else {
+                AppLogger.log(message: "urlSchemeTask not active anymore", category: .conversationDetail)
+                return
+            }
+
+            switch result {
             case .ok(let image):
                 let message = "embedded image mime type: \(image.mime), content length: \(image.data.count)"
                 AppLogger.logTemporarily(message: message, category: .conversationDetail)
@@ -95,15 +104,14 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
             case .error(let error):
                 let message = "cid: \(cid), error: \(error)"
                 AppLogger.log(message: message, category: .composer, isError: true)
-                urlSchemeTask.didFailWithError(error)
+                urlSchemeTask.markAsFailedCatchingExceptions(error)
             }
-            let taskId = ObjectIdentifier(urlSchemeTask)
+
             try await performOnUrlSchemeActiveTasks { activeTasks in _ = activeTasks.remove(taskId) }
         }
     }
 
     private func handleImage(_ image: EmbeddedAttachmentInfo, url: URL, urlSchemeTask: WKURLSchemeTask) async {
-        let taskId = ObjectIdentifier(urlSchemeTask)
         let response = URLResponse(
             url: url,
             mimeType: image.mime,
@@ -111,10 +119,6 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
             textEncodingName: nil
         )
         do {
-            guard try await performOnUrlSchemeActiveTasks({ activeTasks in activeTasks.contains(taskId) }) else {
-                AppLogger.log(message: "urlSchemeTask not active anymore", category: .conversationDetail)
-                return
-            }
             try ObjC.catchException {
                 urlSchemeTask.didReceive(response)
                 urlSchemeTask.didReceive(image.data)
@@ -131,3 +135,15 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 }
 
 extension ProtonError: Error {}
+
+private extension WKURLSchemeTask {
+    func markAsFailedCatchingExceptions(_ responseError: Error) {
+        do {
+            try ObjC.catchException {
+                self.didFailWithError(responseError)
+            }
+        } catch let exceptionError {
+            AppLogger.logTemporarily(message: "\(exceptionError)", category: .conversationDetail, isError: true)
+        }
+    }
+}
