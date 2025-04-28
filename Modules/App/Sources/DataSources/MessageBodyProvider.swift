@@ -65,10 +65,10 @@ private extension DecryptedMessage {
     
     func body(with options: TransformOpts?) async throws -> BodyOutput {
         guard let options else {
-            return await bodyWithDefaults()
+            return try await bodyWithDefaults().get()
         }
         
-        return await body(opts: options)
+        return try await body(opts: options).get()
     }
     
 }
