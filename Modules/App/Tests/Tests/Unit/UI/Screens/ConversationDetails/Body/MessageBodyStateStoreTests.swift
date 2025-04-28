@@ -412,10 +412,10 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     
     // MARK: - DecryptedMessage
 
-    override func bodyWithDefaults() async -> BodyOutput {
+    override func bodyWithDefaults() async -> BodyOutputResult {
         bodyWithDefaultsCalls += 1
         
-        return .init(
+        return .ok(.init(
             body: "<html>dummy</html>",
             hadBlockquote: true,
             tagsStripped: 0,
@@ -424,13 +424,13 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             embeddedImagesDisabled: 0,
             transformOpts: stubbedOptions,
             bodyBanners: []
-        )
+        ))
     }
     
-    override func body(opts: TransformOpts) async -> BodyOutput {
+    override func body(opts: TransformOpts) async -> BodyOutputResult {
         bodyWithOptionsCalls.append(opts)
         
-        return .init(
+        return .ok(.init(
             body: "<html>dummy_with_custom_options</html>",
             hadBlockquote: true,
             tagsStripped: 0,
@@ -439,7 +439,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             embeddedImagesDisabled: 0,
             transformOpts: opts,
             bodyBanners: []
-        )
+        ))
     }
 
 }
