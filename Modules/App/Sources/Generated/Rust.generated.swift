@@ -93,16 +93,6 @@ public extension AvailableMoveToActionsForMessagesResult {
         }
     }
 }
-public extension BodyOutputResult {
-    func get() throws(ProtonError) -> BodyOutput {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension ChallengeLoaderGetResult {
     func get() throws(ProtonError) -> ChallengeLoaderResponse {
         switch self {
