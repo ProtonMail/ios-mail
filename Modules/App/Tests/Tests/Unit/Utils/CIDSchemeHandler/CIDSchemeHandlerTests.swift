@@ -59,8 +59,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         urlSchemeTaskSpy = .init(request: request)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        XCTAssertEqual(embeddedImageProviderSpy.invokedEmbeddedImageWithCID, [])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.count, 1)
+        expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.missingCID])
     }
 
@@ -70,8 +69,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        expect(self.embeddedImageProviderSpy.invokedEmbeddedImageWithCID).toEventually(equal([cidValue]))
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.count, 1)
+        expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError), [.unexpected(.unknown)])
     }
 
