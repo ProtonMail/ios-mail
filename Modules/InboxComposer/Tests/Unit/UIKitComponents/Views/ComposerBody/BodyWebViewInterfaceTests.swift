@@ -51,7 +51,7 @@ final class BodyWebViewInterfaceTests {
 
         let html = await sut.readMesasgeBody()
         #expect(html == """
-        <div><img src=\"cid:12345\"></div><br><div><img src=\"cid:qwerty\"></div><br><p>initial message</p>
+        <img src="cid:12345"><br><img src="cid:qwerty"><br><p>initial message</p>
         """)
     }
 
@@ -64,7 +64,48 @@ final class BodyWebViewInterfaceTests {
         await sut.insertImages(["12345"])
 
         let html = await sut.readMesasgeBody()
-        #expect(html == "<p>first part</p><div><img src=\"cid:12345\"></div><br><p>second part</p>")
+        #expect(html == "<p>first part</p><img src=\"cid:12345\"><br><p>second part</p>")
+    }
+
+    // MARK: removeImage(containing:)
+
+    @Test
+    func testRemoveImage_whenThereIsCIDMatch_itRemovesTheImgObject() async {
+        sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>")
+        await waitForWebViewDidFinish(sut.webView)
+
+        await sut.removeImage(containing: "12345")
+
+        let html = await sut.readMesasgeBody()
+        #expect(html == """
+        <p>hello<br></p>
+        """)
+    }
+
+    @Test
+    func testRemoveImage_whenThereIsPartialCIDMatch_itDoesNotRemoveTheImage() async {
+        sut.loadMessageBody("<p>hello<img src=\"cid:123456789\"><br></p>")
+        await waitForWebViewDidFinish(sut.webView)
+
+        await sut.removeImage(containing: "12345")
+
+        let html = await sut.readMesasgeBody()
+        #expect(html == """
+        <p>hello<img src="cid:123456789"><br></p>
+        """)
+    }
+
+    @Test
+    func testRemoveImage_whenCIDDoesNotExist_itDoesNotModifyTheHTML() async {
+        sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>")
+        await waitForWebViewDidFinish(sut.webView)
+
+        await sut.removeImage(containing: "12567")
+
+        let html = await sut.readMesasgeBody()
+        #expect(html == """
+        <p>hello<img src="cid:12345"><br></p>
+        """)
     }
 }
 

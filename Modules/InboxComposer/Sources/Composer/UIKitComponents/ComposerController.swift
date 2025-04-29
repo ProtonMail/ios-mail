@@ -107,7 +107,8 @@ final class ComposerController: UIViewController {
         bodyEditor.onEvent = { [weak self] event in
             guard let self else { return }
             switch event {
-            case .onStartEditing, .onBodyChange:
+            case .onStartEditing, .onBodyChange, .onInlineImageRemoved, .onInlineImageRemovalRequested,
+                    .onInlineImageDispositionChangeRequested:
                 guard let bodyEvent = event.toBodyEvent else { return }
                 self.onEvent(.bodyEvent(bodyEvent))
             case .onCursorPositionChange(let position):
@@ -193,6 +194,9 @@ final class ComposerController: UIViewController {
 enum BodyEvent {
     case onStartEditing
     case onBodyChange(body: String)
+    case onInlineImageRemoved(cid: String)
+    case onInlineImageRemovalRequested(cid: String)
+    case onInlineImageDispositionChangeRequested(cid: String)
 }
 
 private extension BodyEditorController.Event {
@@ -203,6 +207,12 @@ private extension BodyEditorController.Event {
             .onStartEditing
         case .onBodyChange(let body):
             .onBodyChange(body: body)
+        case .onInlineImageRemoved(let cid):
+            .onInlineImageRemoved(cid: cid)
+        case .onInlineImageRemovalRequested(let cid):
+            .onInlineImageRemovalRequested(cid: cid)
+        case .onInlineImageDispositionChangeRequested(let cid):
+            .onInlineImageDispositionChangeRequested(cid: cid)
         case .onCursorPositionChange:
             nil
         }

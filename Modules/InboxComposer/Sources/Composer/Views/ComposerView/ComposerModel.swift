@@ -329,6 +329,17 @@ final class ComposerModel: ObservableObject {
         Task { await draft.attachmentList().remove(id: attachmendId) }
     }
 
+    @MainActor
+    func removeAttachment(cid: String) async {
+        switch await draft.attachmentList().removeWithCid(contentId: cid) {
+        case .ok:
+            bodyAction = .removeInlineImage(cid: cid)
+        case .error(let error):
+            let message = "Failed to remove attachment from draft using cid: \(error)"
+            AppLogger.log(message: message, category: .composer, isError: true)
+        }
+    }
+
     func removeAttachments(for error: AttachmentErrorAlertModel) {
         if case .uploading(let uploadAttachmentErrors) = error.origin {
             for attachment in uploadAttachmentErrors {

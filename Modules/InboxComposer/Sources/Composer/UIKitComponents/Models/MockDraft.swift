@@ -192,8 +192,10 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddCalls: [(path: String, filenameOverride: String?)] = []
     var capturedAddInlineCalls: [(path: String, filenameOverride: String?)] = []
+    var capturedRemoveCalls: [String] = []
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
     var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
+    var mockAttachmentListRemoveWithCidResult = [(cid: String, result: AttachmentListRemoveWithCidResult)]()
     var attachmentCallback: AsyncLiveQueryCallback?
 
     func add(path: String, filenameOverride: String?) async -> AttachmentListAddResult {
@@ -223,7 +225,10 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     }
 
     func removeWithCid(contentId: String) async -> AttachmentListRemoveWithCidResult {
-        fatalError(#function)
+        capturedRemoveCalls.append(contentId)
+        return mockAttachmentListRemoveWithCidResult.first(where: {
+            $0.cid == contentId
+        })?.result ?? AttachmentListRemoveWithCidResult.ok
     }
 
     func retry(attachmentId: Id) async -> AttachmentListRetryResult {

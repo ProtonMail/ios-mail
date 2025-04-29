@@ -480,13 +480,14 @@ final class ComposerModelTests: BaseTestCase {
 
     func testAddAttachments_whenSelectingFromPhotos_andIsAnImage_itShouldAddInlineAttachmentToDraft_andSetBodyAction() async throws {
         let photo1 = try photosPickerTestsHelper.makeMockPhotosPickerItem(fileName: "photo1.jpg", createFile: true)
+        mockDraft.mockAttachmentList.mockAttachmentListAddInlineResult = [("photo1.jpg", .ok("13579"))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         await sut.addAttachments(selectedPhotosItems: [photo1])
 
         let destFile1 = photosPickerTestsHelper.destinationFolder.appendingPathComponent("photo1.jpg")
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)), Set([destFile1.path]))
-        XCTAssertTrue(sut.bodyAction!.isInsertInlineImages)
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.insertInlineImages(cids: ["13579"]))
     }
 
     func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
@@ -523,6 +524,27 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertTrue(sut.alertState.isAlertPresented)
         XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
+    }
+
+    // MARK: removeAttachment(cid:)
+
+    func testRemoveAttachment_whenSuccessfullyRemovesAttachment_itShouldSetBodyAction() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.removeAttachment(cid: "123456")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveCalls.first, "123456")
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.removeInlineImage(cid: "123456"))
+    }
+
+    func testRemoveAttachment_whenRemoveAttachmentFails_itShouldNotSetBodyAction() async throws {
+        let draftAddResultError = DraftAttachmentError.reason(.messageAlreadySent)
+        mockDraft.mockAttachmentList.mockAttachmentListRemoveWithCidResult = [("56789", .error(draftAddResultError))]
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.removeAttachment(cid: "56789")
+
+        XCTAssertNil(sut.bodyAction)
     }
 }
 
@@ -648,14 +670,5 @@ private extension DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
         let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: "attachment_1", size: 123456)
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
-    }
-}
-
-private extension ComposerBodyAction {
-
-    var isInsertInlineImages: Bool {
-        switch self {
-        case .insertInlineImages: return true
-        }
     }
 }

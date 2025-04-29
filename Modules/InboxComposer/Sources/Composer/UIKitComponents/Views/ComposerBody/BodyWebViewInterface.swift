@@ -26,6 +26,8 @@ final class BodyWebViewInterface: NSObject {
         case onEditorFocus
         case onEditorChange
         case onCursorPositionChange(position: CGPoint)
+        case onInlineImageRemoved(cid: String)
+        case onInlineImageTapped(cid: String)
     }
 
     let webView: WKWebView
@@ -41,7 +43,7 @@ final class BodyWebViewInterface: NSObject {
     }
 
     private func setUpCallbacks() {
-        BodyHtmlDocument.JSEventHandler.allCases.forEach { eventHandler in
+        BodyHtmlDocument.JSEvent.allCases.forEach { eventHandler in
             webView.configuration.userContentController.add(self, name: eventHandler.rawValue)
         }
     }
@@ -86,6 +88,18 @@ final class BodyWebViewInterface: NSObject {
             }
         }
     }
+    
+    @MainActor
+    func removeImage(containing cid: String) async {
+        let function = "\(BodyHtmlDocument.JSFunction.removeImageWithCID.rawValue)('\(cid)');"
+        
+        await withCheckedContinuation { continuation in
+            webView.evaluateJavaScript(function) { _, error in
+                if let error { AppLogger.log(error: error, category: .composer) }
+                continuation.resume()
+            }
+        }
+    }
 }
 
 extension BodyWebViewInterface: WKScriptMessageHandler {
@@ -93,20 +107,28 @@ extension BodyWebViewInterface: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         let userInfo = message.body as! [String: Any]
         let messageHandler = userInfo["messageHandler"] as! String
-        let jsEventHandler = BodyHtmlDocument.JSEventHandler(rawValue: messageHandler)!
+        let jsEvent = BodyHtmlDocument.JSEvent(rawValue: messageHandler)!
 
-        switch jsEventHandler.event {
-        case .onContentHeightChange:
+        switch jsEvent {
+        case .bodyResize:
             let newHeight = userInfo[BodyHtmlDocument.EventAttributeKey.height] as! CGFloat
             onEvent?(.onContentHeightChange(height: newHeight))
-        case .onEditorChange:
+        case .editorChanged:
             onEvent?(.onEditorChange)
-        case .onEditorFocus:
+        case .focus:
             onEvent?(.onEditorFocus)
-        case .onCursorPositionChange:
+        case .cursorPositionChanged:
             let positionDict = userInfo[BodyHtmlDocument.EventAttributeKey.cursorPosition] as? [String: CGFloat] ?? [:]
             guard let position = readCursorPosition(from: positionDict) else { return }
             onEvent?(.onCursorPositionChange(position: position))
+        case .inlineImageRemoved:
+            if let cid = userInfo["cid"] as? String {
+                onEvent?(.onInlineImageRemoved(cid: cid))
+            }
+        case .inlineImageTapped:
+            if let cid = userInfo["cid"] as? String {
+                onEvent?(.onInlineImageTapped(cid: cid))
+            }
         }
     }
 

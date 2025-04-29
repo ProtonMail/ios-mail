@@ -204,6 +204,9 @@
         }
       }
     },
+    "Send as attachment" : {
+      "comment" : "Menu option to send inline image as attachment instead."
+    },
     "Sending message..." : {
       "comment" : "Composer toast message when send is tapped."
     },

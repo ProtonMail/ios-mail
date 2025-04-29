@@ -26,6 +26,9 @@ final class BodyEditorController: UIViewController {
         case onStartEditing
         case onBodyChange(body: String)
         case onCursorPositionChange(position: CGPoint)
+        case onInlineImageRemoved(cid: String)
+        case onInlineImageRemovalRequested(cid: String)
+        case onInlineImageDispositionChangeRequested(cid: String)
     }
 
     private let htmlInterface: BodyWebViewInterface
@@ -88,6 +91,10 @@ final class BodyEditorController: UIViewController {
                 }
             case .onCursorPositionChange(let position):
                 onEvent?(.onCursorPositionChange(position: position))
+            case .onInlineImageRemoved(let cid):
+                onEvent?(.onInlineImageRemoved(cid: cid))
+            case .onInlineImageTapped(let cid):
+                showInlineImageMenu(cid: cid)
             }
         }
     }
@@ -103,10 +110,26 @@ final class BodyEditorController: UIViewController {
     func handleBodyAction(action: ComposerBodyAction) {
         switch action {
         case .insertInlineImages(let cids):
-            Task {
-                await htmlInterface.insertImages(cids)
-            }
+            Task { await htmlInterface.insertImages(cids) }
+        case .removeInlineImage(let cid):
+            Task { await htmlInterface.removeImage(containing: cid) }
         }
+    }
+
+    private func showInlineImageMenu(cid: String) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let option1 = UIAlertAction(title: L10n.Attachments.sendAsAttachment.string, style: .default) { [weak self] _ in
+            self?.onEvent?(.onInlineImageDispositionChangeRequested(cid: cid))
+        }
+        let option2 = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
+            self?.onEvent?(.onInlineImageRemovalRequested(cid: cid))
+        }
+        let cancel = UIAlertAction(title: L10n.Attachments.cancelAttachment.string, style: .cancel)
+        alertController.addAction(option1)
+        alertController.addAction(option2)
+        alertController.addAction(cancel)
+        present(alertController, animated: true)
     }
 }
 

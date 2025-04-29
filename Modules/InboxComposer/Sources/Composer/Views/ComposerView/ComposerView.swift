@@ -123,6 +123,10 @@ struct ComposerView: View {
                         model.endEditingRecipients()
                     case .onBodyChange(let body):
                         model.updateBody(value: body)
+                    case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
+                        Task { await model.removeAttachment(cid: cid) }
+                    case .onInlineImageDispositionChangeRequested:
+                        toastStateStore.present(toast: .comingSoon)
                     }
 
                 case .actionBarEvent(let event):

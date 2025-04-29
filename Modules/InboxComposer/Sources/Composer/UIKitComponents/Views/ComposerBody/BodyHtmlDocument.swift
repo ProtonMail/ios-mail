@@ -23,13 +23,6 @@ import SwiftUICore
 struct BodyHtmlDocument {
     private typealias ColorBundle = (background: String, text: String, brand: String)
 
-    enum Event {
-        case onContentHeightChange
-        case onEditorFocus
-        case onEditorChange
-        case onCursorPositionChange
-    }
-
     private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
         var env = EnvironmentValues()
         env.colorScheme = colorScheme
@@ -78,26 +71,20 @@ extension BodyHtmlDocument {
         case setFocus = "html_editor.setFocus"
         case getHtmlContent = "html_editor.getHtmlContent"
         case insertImages = "html_editor.insertImages"
+        case removeImageWithCID = "html_editor.removeImageWithCID"
 
         var callFunction: String {
             "\(self.rawValue)();"
         }
     }
 
-    enum JSEventHandler: String, CaseIterable {
+    enum JSEvent: String, CaseIterable {
         case bodyResize
         case focus
         case editorChanged
         case cursorPositionChanged
-
-        var event: Event {
-            switch self {
-            case .bodyResize: .onContentHeightChange
-            case .focus: .onEditorFocus
-            case .editorChanged: .onEditorChange
-            case .cursorPositionChanged: .onCursorPositionChange
-            }
-        }
+        case inlineImageRemoved
+        case inlineImageTapped
     }
 }
 
@@ -131,16 +118,15 @@ private extension BodyHtmlDocument {
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <style>
                 \(HtmlPlaceholder.css)
-                /* In the editor, disallow drag, context menu and touch for img */
+                /* In the editor, disable drag and drop and contextual menus for images */
                 #\(ID.editor) img {
                     -webkit-user-drag: none;
                     -webkit-touch-callout: none;
-                    pointer-events: none;
-                }
-                /* In the editor, divs with img as direct children behave like a character to be able to be deleted */
-                #\(ID.editor) div:has(> img) {
-                    display: inline-block;
-                    user-select: contain;
+                    -webkit-user-select: none;
+                    -webkit-tap-highlight-color: transparent;
+                    user-select: none;
+                    pointer-events: all;
+                    cursor: pointer;
                 }
             </style>
         </head>
@@ -177,24 +163,57 @@ private extension BodyHtmlDocument {
     // --------------------
 
     document.getElementById('\(ID.editor)').addEventListener('focus', function(){
-        window.webkit.messageHandlers.\(JSEventHandler.focus).postMessage({ "messageHandler": "\(JSEventHandler.focus)" });
+        window.webkit.messageHandlers.\(JSEvent.focus).postMessage({ "messageHandler": "\(JSEvent.focus)" });
     });
 
     document.getElementById('\(ID.editor)').addEventListener('input', function(event){
-        window.webkit.messageHandlers.\(JSEventHandler.editorChanged).postMessage({ "messageHandler": "\(JSEventHandler.editorChanged)" });
+        window.webkit.messageHandlers.\(JSEvent.editorChanged).postMessage({ "messageHandler": "\(JSEvent.editorChanged)" });
 
         handleUpdateCursorPosition(event);
     });
 
-    const observer = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver(entries => {
         for (const entry of entries) {
-            window.webkit.messageHandlers.\(JSEventHandler.bodyResize).postMessage({
-                "messageHandler": "\(JSEventHandler.bodyResize)",
+            window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
+                "messageHandler": "\(JSEvent.bodyResize)",
                 "\(EventAttributeKey.height)": entry.contentRect.height
             });
         }
     });
-    observer.observe(document.querySelector('body'));
+    resizeObserver.observe(document.querySelector('body'));
+
+    const removeInlinImageObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList') {
+                mutation.removedNodes.forEach(node => {
+                    if (node.nodeName === 'IMG') {
+                        const src = node.getAttribute('src');
+                        if (src && src.startsWith('cid:')) {
+                            const cid = src.substring(4);
+                            window.webkit.messageHandlers.\(JSEvent.inlineImageRemoved).postMessage({
+                                "messageHandler": "\(JSEvent.inlineImageRemoved)",
+                                "cid": cid
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+    removeInlinImageObserver.observe(document.getElementById('\(ID.editor)'), {childList: true, subtree: true});
+
+    document.getElementById('\(ID.editor)').addEventListener('click', function(event) {
+        if (event.target.nodeName === 'IMG') {
+            const src = event.target.getAttribute('src');
+            if (src && src.startsWith('cid:')) {
+                const cid = src.substring(4);
+                window.webkit.messageHandlers.\(JSEvent.inlineImageTapped).postMessage({
+                    "messageHandler": "\(JSEvent.inlineImageTapped)",
+                    "cid": cid
+                });
+            }
+        }
+    });
 
     // --------------------
     // Public Functions
@@ -223,10 +242,32 @@ private extension BodyHtmlDocument {
         }
         
         const html = images.map(function(cid) {
-            return `<div><img src="cid:${cid}" style="max-width: 100%;"></div><br>`;
+            return `<img src="cid:${cid}" style="max-width: 100%;"><br>`;
         }).join('');
 
         document.execCommand('insertHTML', false, html);
+        editor.dispatchEvent(new Event('input'));
+    };
+
+    \(JSFunction.removeImageWithCID.rawValue) = function (cid) {
+        const editor = document.getElementById('\(ID.editor)');
+        const images = editor.getElementsByTagName('img');
+        const exactCidPattern = 'cid:' + cid + '(?![0-9a-zA-Z])'; // Matches exact CID
+        const cidRegex = new RegExp(exactCidPattern);
+        
+        for (let i = images.length - 1; i >= 0; i--) {
+            const img = images[i];
+            const attributes = img.attributes;
+            
+            for (let j = 0; j < attributes.length; j++) {
+                const attr = attributes[j];
+                if (cidRegex.test(attr.value)) {
+                    img.remove();
+                    break;
+                }
+            }
+        }
+        
         editor.dispatchEvent(new Event('input'));
     };
 
@@ -243,8 +284,8 @@ private extension BodyHtmlDocument {
             requestAnimationFrame(() => {
                 const position = getCursorCoordinates();
                 if (position) {
-                    window.webkit.messageHandlers.\(JSEventHandler.cursorPositionChanged).postMessage({
-                        "messageHandler": "\(JSEventHandler.cursorPositionChanged)",
+                    window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
+                        "messageHandler": "\(JSEvent.cursorPositionChanged)",
                         "\(EventAttributeKey.cursorPosition)": {
                             "\(EventAttributeKey.cursorPositionX)": position.x,
                             "\(EventAttributeKey.cursorPositionY)": position.y
@@ -304,8 +345,8 @@ private extension BodyHtmlDocument {
         const newPosition = JSON.stringify(position);
         if (newPosition !== lastCursorPosition) {
             lastCursorPosition = newPosition;
-            window.webkit.messageHandlers.\(JSEventHandler.cursorPositionChanged).postMessage({
-                "messageHandler": "\(JSEventHandler.cursorPositionChanged)",
+            window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
+                "messageHandler": "\(JSEvent.cursorPositionChanged)",
                 "\(EventAttributeKey.cursorPosition)": position
             });
         }
