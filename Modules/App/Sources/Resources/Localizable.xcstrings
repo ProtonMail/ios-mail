@@ -448,6 +448,9 @@
     "All messages have been sent" : {
       "comment" : "Outbox empty state message."
     },
+    "All protection settings will be reset and wiped upon signing out of the app" : {
+      "comment" : "Protection selection list footer information."
+    },
     "All Sent" : {
       "comment" : "Menu title of all sent emails in the sidebar.",
       "localizations" : {
@@ -876,6 +879,9 @@
           }
         }
       }
+    },
+    "Change PIN code" : {
+      "comment" : "Change PIN code button title."
     },
     "Close" : {
       "comment" : "`Close` action title."
@@ -2668,7 +2674,7 @@
       "comment" : "Toast displayed after the report was successfully sent"
     },
     "Protection" : {
-      "comment" : "Protection setting title in app settings."
+      "comment" : "App protection selection screen title.\nProtection setting title in app settings."
     },
     "Provided value is not a valid PIN" : {
       "comment" : "Error message when setting up PIN"

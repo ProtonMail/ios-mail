@@ -50,7 +50,8 @@ struct FormSection<Content: View>: View {
                 FormFootnoteText(footer)
                     .padding(.horizontal, DS.Spacing.large)
             }
-        }.padding(.top, DS.Spacing.large)
+        }
+        .padding(.top, DS.Spacing.large)
     }
 
 }

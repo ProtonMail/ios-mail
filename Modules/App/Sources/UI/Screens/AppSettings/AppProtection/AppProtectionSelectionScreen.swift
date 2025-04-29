@@ -39,7 +39,7 @@ struct AppProtectionSelectionScreen: View {
                         }
                     }
                 }
-                if store.state.displayChangePasswordButton {
+                if store.state.shouldShowChangePasswordButton {
                     FormSection {
                         FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
                             // FIXME: - Trigger set new password flow
@@ -48,13 +48,13 @@ struct AppProtectionSelectionScreen: View {
                     }
                 }
                 Spacer()
-            }.animation(.easeInOut, value: store.state.displayChangePasswordButton)
+            }.animation(.easeInOut, value: store.state.shouldShowChangePasswordButton)
         }
         .padding(.horizontal, DS.Spacing.large)
         .background(DS.Color.BackgroundInverted.norm)
         .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
         .navigationBarTitleDisplayMode(.inline)
-        .onLoad { store.handle(action: .viewLoads) }
+        .onLoad { store.handle(action: .onLoad) }
     }
 
 }
@@ -76,7 +76,7 @@ struct AppProtectionSelectionScreen: View {
 
 private extension AppProtectionSelectionState {
 
-    var displayChangePasswordButton: Bool {
+    var shouldShowChangePasswordButton: Bool {
         selectedAppProtection == .pin
     }
 

@@ -18,22 +18,16 @@
 @testable import ProtonMail
 import Testing
 
-class AppProtectionSelectionStoreTests {
-
-    var sut: AppProtectionSelectionStore!
-    var laContextSpy: LAContextSpy!
-
-    init() {
-        laContextSpy = .init()
-        sut = .init(
-            state: .initial(appProtection: .biometrics),
-            laContext: { self.laContextSpy }
-        )
-    }
+final class AppProtectionSelectionStoreTests {
+    private let laContextSpy = LAContextSpy()
+    private lazy var sut = AppProtectionSelectionStore(
+        state: .initial(appProtection: .biometrics),
+        laContext: { [unowned self] in self.laContextSpy }
+    )
 
     @Test
     func whenViewIsLoaded_ItLoadsSupportedProtectionTypes() async {
-        await sut.handle(action: .viewLoads)
+        await sut.handle(action: .onLoad)
         #expect(sut.state.availableAppProtectionMethods == [
             .init(type: .none, isSelected: false),
             .init(type: .pin, isSelected: false),
@@ -44,7 +38,7 @@ class AppProtectionSelectionStoreTests {
 
     @Test
     func whenPINOptionIsSelected_ItMarksPINAsSelectedProtectionMethod() async {
-        await sut.handle(action: .viewLoads)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.pin))
 
         #expect(sut.state.availableAppProtectionMethods == [
@@ -54,5 +48,4 @@ class AppProtectionSelectionStoreTests {
         ])
         #expect(sut.state.selectedAppProtection == .pin)
     }
-
 }

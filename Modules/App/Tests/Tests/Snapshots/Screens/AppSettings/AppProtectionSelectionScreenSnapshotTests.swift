@@ -18,11 +18,14 @@
 @testable import ProtonMail
 import InboxTesting
 import InboxSnapshotTesting
+import Testing
 import SwiftUI
 
-class AppProtectionSelectionScreenSnapshotTests: BaseTestCase {
+@MainActor
+struct AppProtectionSelectionScreenSnapshotTests {
 
-    func testAppProtectionSelectionScreenLayoutsCorrectly() {
+    @Test
+    func appProtectionSelectionScreenLayoutsCorrectly() {
         let sut = AppProtectionSelectionScreen(state: .init(
             selectedAppProtection: .pin,
             availableAppProtectionMethods: [

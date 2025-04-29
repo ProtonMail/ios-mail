@@ -38,6 +38,7 @@ struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View 
                     }
                 }
             }
-        }.applyRoundedRectangleStyle()
+        }
+        .applyRoundedRectangleStyle()
     }
 }

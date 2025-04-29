@@ -35,7 +35,7 @@ class AppProtectionSelectionStore: StateStore {
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .viewLoads:
+        case .onLoad:
             state = state
                 .copy(
                     \.availableAppProtectionMethods,
