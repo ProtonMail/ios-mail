@@ -135,6 +135,8 @@ targets:
             CFBundleURLSchemes:
               - mailto
               - protonmail
+        ITSAppUsesNonExemptEncryption: YES
+        ITSEncryptionExportComplianceCode: "d90af253-90ca-4698-95d3-40f4e4a36ce4"
         PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
         NSCameraUsageDescription: "{{Placeholder}}"
