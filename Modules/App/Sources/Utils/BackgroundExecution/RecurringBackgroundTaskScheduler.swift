@@ -141,7 +141,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
             .CombineLatest(sessionStatePublisher, timerFactory(0.5))
             .map { sessionState, _ in sessionState }
             .prefix(untilOutputFrom: backgroundTaskExpired)
-            .filter { sessionState in sessionState.isSessionSetUp }
+            .filter { sessionState in sessionState.isAuthorized }
             .first()
             .sink(
                 receiveCompletion: { _ in completion() },
@@ -159,17 +159,4 @@ extension Date {
     var thirthyMinutesAfter: Self {
         DateEnvironment.calendar.date(byAdding: .minute, value: 30, to: self).unsafelyUnwrapped
     }
-}
-
-private extension SessionState {
-
-    var isSessionSetUp: Bool {
-        switch self {
-        case .noSession:
-            false
-        case .activeSession, .activeSessionTransition:
-            true
-        }
-    }
-
 }
