@@ -23,7 +23,7 @@ enum NotificationQuickAction: String, CaseIterable {
     case moveToArchive
     case moveToTrash
 
-    static let category = "message_created"
+    static let applePushNotificationServiceCategory = "message_created"
 
     private var title: LocalizedStringResource {
         switch self {

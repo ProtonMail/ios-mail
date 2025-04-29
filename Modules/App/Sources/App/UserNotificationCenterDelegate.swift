@@ -52,7 +52,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     private func registerActions() {
         let categories: Set<UNNotificationCategory> = [
             .init(
-                identifier: NotificationQuickAction.category,
+                identifier: NotificationQuickAction.applePushNotificationServiceCategory,
                 actions: NotificationQuickAction.allCases.map { $0.registrableAction() },
                 intentIdentifiers: []
             )
