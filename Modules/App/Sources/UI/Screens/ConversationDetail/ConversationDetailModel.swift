@@ -30,6 +30,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var mailbox: Mailbox?
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
+    @Published private(set) var bottomBarActions: [BottomBarActions] = []
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
@@ -49,6 +50,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let liveQueryValues = await self.readLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
             self.updateStateToMessagesReady(with: liveQueryValues.messages)
+            await self.reloadBottomBarActions()
         }
     }
 
@@ -82,6 +84,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
             isStarred = liveQueryValues.isStarred
             updateStateToMessagesReady(with: liveQueryValues.messages)
+            await reloadBottomBarActions()
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch ActionError.other(.network) {
             updateState(.noConnection)
@@ -416,6 +419,17 @@ extension ConversationDetailModel {
             })
         }
     }
+
+    private func reloadBottomBarActions() async {
+        guard let mailbox, let conversationID else {
+            return
+        }
+
+        bottomBarActions = try! await dependencies
+            .bottomBarConversationActionsProvider(mailbox, [conversationID])
+            .get()
+            .visibleBottomBarActions
+    }
 }
 
 extension ConversationDetailModel {
@@ -438,9 +452,14 @@ extension ConversationDetailModel {
 
     struct Dependencies {
         let appContext: AppContext
+        let bottomBarConversationActionsProvider: ConversationBottomBarActionsProvider
 
-        init(appContext: AppContext = .shared) {
+        init(
+            appContext: AppContext = .shared,
+            bottomBarConversationActionsProvider: @escaping ConversationBottomBarActionsProvider = allAvailableBottomBarActionsForConversations
+        ) {
             self.appContext = appContext
+            self.bottomBarConversationActionsProvider = bottomBarConversationActionsProvider
         }
     }
 }

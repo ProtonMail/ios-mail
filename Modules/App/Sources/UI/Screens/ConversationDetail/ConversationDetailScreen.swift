@@ -37,12 +37,10 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if let mailbox = model.mailbox, let conversationID = model.conversationID, !model.areActionsDisabled {
-                ConversationActionBarView(
-                    conversationID: conversationID,
-                    bottomBarConversationActionsProvider: allAvailableBottomBarActionsForConversations,
-                    mailbox: mailbox,
-                    handleAction: { action in
+            if !model.areActionsDisabled {
+                BottomActionBarView(
+                    actions: model.bottomBarActions,
+                    tapAction: { action in
                         model.handleConversation(
                             action: action,
                             toastStateStore: toastStateStore,
