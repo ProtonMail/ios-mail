@@ -48,7 +48,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         Task { @MainActor in
             let liveQueryValues = await self.readLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
-            await self.updateStateToMessagesReady(with: liveQueryValues.messages)
+            self.updateStateToMessagesReady(with: liveQueryValues.messages)
         }
     }
 
@@ -69,7 +69,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     func fetchInitialData() async {
-        await updateState(.fetchingMessages)
+        updateState(.fetchingMessages)
         do {
             let (selectedMailbox, conversationID) = try await establishSelectedMailboxAndConversationID()
             let mailbox = try await initialiseMailbox(basedOn: selectedMailbox)
@@ -81,10 +81,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             )
 
             isStarred = liveQueryValues.isStarred
-            await updateStateToMessagesReady(with: liveQueryValues.messages)
+            updateStateToMessagesReady(with: liveQueryValues.messages)
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch ActionError.other(.network) {
-            await updateState(.noConnection)
+            updateState(.noConnection)
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
@@ -99,7 +99,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 expandedMessages.insert(messageId)
             }
             let liveQueryValues = await readLiveQueryValues()
-            await updateStateToMessagesReady(with: liveQueryValues.messages)
+            updateStateToMessagesReady(with: liveQueryValues.messages)
         }
     }
 
@@ -142,7 +142,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .unstar:
             unstarConversation()
         case .markRead:
-            markConversationAsRead()
+            markConversationAsRead(goBack: goBack)
         case .markUnread:
             markConversationAsUnread(goBack: goBack)
         case .permanentDelete:
@@ -216,10 +216,11 @@ extension ConversationDetailModel {
         }
     }
 
-    private func markConversationAsRead() {
+    private func markConversationAsRead(goBack: () -> Void) {
         guard let mailbox else { return }
         ReadActionPerformer(mailbox: mailbox)
             .markAsRead(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
+        goBack()
     }
 
     private func markConversationAsUnread(goBack: () -> Void) {
@@ -310,9 +311,9 @@ extension ConversationDetailModel {
         }
     }
 
-    private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) async {
+    private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) {
         if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
-            await updateState(.messagesReady(previous: messages.dropLast(), last: last))
+            updateState(.messagesReady(previous: messages.dropLast(), last: last))
         }
     }
 
@@ -403,7 +404,7 @@ extension ConversationDetailModel {
     }
 
     @MainActor
-    private func updateState(_ newState: State) async {
+    private func updateState(_ newState: State) {
         AppLogger.log(message: "conversation detail state \(newState.debugDescription)", category: .conversationDetail)
         state = newState
     }

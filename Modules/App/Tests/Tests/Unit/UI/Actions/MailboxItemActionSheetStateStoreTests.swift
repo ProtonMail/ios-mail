@@ -192,7 +192,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         test(
             action: .markUnread,
             itemType: .message,
-            expectedNavigation: .dismiss,
+            expectedNavigation: .dismissAndGoBack,
             verifyInvoked: { readActionPerformerActionsSpy.markMessageAsUnreadInvoked }
         )
     }

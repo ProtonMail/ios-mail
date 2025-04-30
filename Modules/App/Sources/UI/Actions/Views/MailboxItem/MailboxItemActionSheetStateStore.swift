@@ -94,7 +94,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                     action: readActionPerformer.markAsUnread,
                     ids: [input.id],
                     itemType: input.type,
-                    navigation: input.type.dismissNavigation
+                    navigation: .dismissAndGoBack
                 )
             case .delete:
                 state = state.copy(\.alert, to: deleteConfirmationAlert)
