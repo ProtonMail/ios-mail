@@ -247,6 +247,13 @@ private extension BodyHtmlDocument {
 
         document.execCommand('insertHTML', false, html);
         editor.dispatchEvent(new Event('input'));
+
+        const allImages = editor.getElementsByTagName('img');
+        waitForImagesLoaded(allImages).then(() => {
+            requestAnimationFrame(() => {
+                updateCursorPosition();
+            });
+        });
     };
 
     \(JSFunction.removeImageWithCID.rawValue) = function (cid) {
@@ -282,16 +289,7 @@ private extension BodyHtmlDocument {
 
             // wait until next render to ensure all layout changes are done
             requestAnimationFrame(() => {
-                const position = getCursorCoordinates();
-                if (position) {
-                    window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
-                        "messageHandler": "\(JSEvent.cursorPositionChanged)",
-                        "\(EventAttributeKey.cursorPosition)": {
-                            "\(EventAttributeKey.cursorPositionX)": position.x,
-                            "\(EventAttributeKey.cursorPositionY)": position.y
-                        }
-                    });
-                }
+                updateCursorPosition();
                 isProcessingNewLine = false;
             });
         } else if (!isProcessingNewLine) {
@@ -313,6 +311,10 @@ private extension BodyHtmlDocument {
         const range = selection.getRangeAt(0);
         if (!range.collapsed) return null;
 
+        // Get the node at cursor position
+        const node = range.startContainer;
+        const offset = range.startOffset;
+
         // Create a temporary span with a zero-width character
         const span = document.createElement('span');
         span.appendChild(document.createTextNode('\\u200b'));
@@ -321,7 +323,25 @@ private extension BodyHtmlDocument {
         range.insertNode(span);
         
         // Get position
-        const rect = span.getBoundingClientRect();
+        let rect = span.getBoundingClientRect();
+        
+        // If we got a zero position and we're at the start/end of a node,
+        // try to get position from adjacent content
+        if (rect.y === 0) {
+            const previousNode = node.previousSibling;
+            const nextNode = node.nextSibling;
+            
+            if (offset === 0 && previousNode) {
+                // Try to get position from end of previous node
+                rect = previousNode.getBoundingClientRect();
+                if (rect.y !== 0) {
+                    rect = {x: rect.x, y: rect.bottom};
+                }
+            } else if (offset === node.length && nextNode) {
+                // Try to get position from start of next node
+                rect = nextNode.getBoundingClientRect();
+            }
+        }
         
         // Remove the span but keep the selection
         const parent = span.parentNode;
@@ -335,21 +355,35 @@ private extension BodyHtmlDocument {
         selection.removeAllRanges();
         selection.addRange(newRange);
         
-        return {x: rect.x, y: rect.y};
+        // Only return position if we actually found one
+        return rect.y === 0 ? null : {x: rect.x, y: rect.y};
     }
 
     function updateCursorPosition() {
         const position = getCursorCoordinates();
         if (!position) return;
         
-        const newPosition = JSON.stringify(position);
-        if (newPosition !== lastCursorPosition) {
-            lastCursorPosition = newPosition;
+        if (position) {
             window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
                 "messageHandler": "\(JSEvent.cursorPositionChanged)",
-                "\(EventAttributeKey.cursorPosition)": position
+                "\(EventAttributeKey.cursorPosition)": {
+                    "\(EventAttributeKey.cursorPositionX)": position.x,
+                    "\(EventAttributeKey.cursorPositionY)": position.y
+                }
             });
         }
+    }
+
+    function waitForImagesLoaded(images) {
+        return Promise.all(Array.from(images).map(img => {
+            if (img.complete) {
+                return Promise.resolve();
+            }
+            return new Promise(resolve => {
+                img.onload = resolve;
+                img.onerror = resolve; // Handle load errors gracefully
+            });
+        }));
     }
 
     """
