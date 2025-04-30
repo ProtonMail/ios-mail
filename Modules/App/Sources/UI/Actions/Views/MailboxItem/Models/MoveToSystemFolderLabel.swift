@@ -17,15 +17,9 @@
 
 import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
-enum MoveToSystemFolderLabel: Equatable {
-    case trash
-    case spam
-    case archive
-    case inbox
-}
-
-extension MoveToSystemFolderLabel {
+extension MovableSystemFolder {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .inbox:

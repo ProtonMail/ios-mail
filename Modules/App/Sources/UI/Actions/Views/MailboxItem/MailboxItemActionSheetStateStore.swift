@@ -107,7 +107,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                 navigation(.moveTo)
             case .permanentDelete:
                 state = state.copy(\.alert, to: deleteConfirmationAlert)
-            case .notSpam(let model), .system(let model):
+            case .notSpam(let model), .moveToSystemFolder(let model):
                 performMoveToAction(destination: model, ids: [input.id], itemType: input.type)
             }
         case .generalActionTapped(let generalAction):
@@ -193,7 +193,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     }
 
     private func presentMoveToToast(destination: MoveToSystemFolderLocation) {
-        presentToast(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+        presentToast(toast: .moveTo(destinationName: destination.name.humanReadable.string))
     }
 
     private func presentDeletedToast() {

@@ -24,15 +24,15 @@ enum MailboxActionBarMoreSheetPreviewProvider {
             selectedItemsIDs: [.init(value: 1), .init(value: 2), .init(value: 3)],
             bottomBarActions: [
                 .markUnread,
-                .moveToSystemFolder(.init(localId: .init(value: 4), systemLabel: .archive)),
-                .moveToSystemFolder(.init(localId: .init(value: 5), systemLabel: .inbox)),
-                .moveToSystemFolder(.init(localId: .init(value: 6), systemLabel: .trash)),
+                .moveToSystemFolder(.init(localId: .init(value: 4), name: .archive)),
+                .moveToSystemFolder(.init(localId: .init(value: 5), name: .inbox)),
+                .moveToSystemFolder(.init(localId: .init(value: 6), name: .trash)),
                 .star
             ],
             moreSheetOnlyActions: [
                 .labelAs,
                 .moveTo,
-                .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .spam))
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .spam))
             ]
         )
     }

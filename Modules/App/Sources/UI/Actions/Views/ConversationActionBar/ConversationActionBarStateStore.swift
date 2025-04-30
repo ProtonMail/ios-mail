@@ -55,7 +55,6 @@ class ConversationActionBarStateStore: ObservableObject {
             let actions = try! await bottomBarConversationActionsProvider(mailbox, [conversationID])
                 .get()
                 .visibleBottomBarActions
-                .compactMap(\.action)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.state = actions
             }))

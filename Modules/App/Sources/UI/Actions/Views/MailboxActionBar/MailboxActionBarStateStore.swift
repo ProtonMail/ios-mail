@@ -122,7 +122,7 @@ final class MailboxActionBarStateStore: StateStore {
             state = state.copy(keyPath, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
             performMoveToAction(destination: model, ids: ids)
-            toastStateStore.present(toast: .moveTo(destinationName: model.systemLabel.humanReadable.string))
+            toastStateStore.present(toast: .moveTo(destinationName: model.name.humanReadable.string))
         }
     }
 
@@ -175,8 +175,8 @@ final class MailboxActionBarStateStore: StateStore {
 
     private func updateActions(actions: AllBottomBarMessageActions) {
         state = state
-            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions.compactMap(\.action))
-            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions.compactMap(\.action))
+            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions)
+            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions)
     }
 
     private func dismissMoreActionSheet() {
@@ -191,7 +191,7 @@ final class MailboxActionBarStateStore: StateStore {
     private func handleMoveAction(result: Result<MoveToSystemFolderLocation, Error>) {
         switch result {
         case .success(let destination):
-            toastStateStore.present(toast: .moveTo(destinationName: destination.systemLabel.humanReadable.string))
+            toastStateStore.present(toast: .moveTo(destinationName: destination.name.humanReadable.string))
         case .failure(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }

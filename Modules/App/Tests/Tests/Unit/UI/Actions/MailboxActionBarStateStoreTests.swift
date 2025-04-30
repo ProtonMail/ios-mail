@@ -154,7 +154,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             moreSheetOnlyActions: [
                 .notSpam(.testInbox),
                 .permanentDelete,
-                .moveToSystemFolder(.init(localId: .init(value: 7), systemLabel: .archive))
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
             ]
         ))
     }
@@ -230,7 +230,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(
             toastStateStore.state.toasts,
-            [.moveTo(destinationName: systemFolder.systemLabel.humanReadable.string)]
+            [.moveTo(destinationName: systemFolder.name.humanReadable.string)]
         )
         XCTAssertEqual(
             moveToActionsSpy.invokedMoveToMessage,
@@ -263,18 +263,6 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             mailUserSession: .dummy,
             mailbox: MailboxStub(viewMode: viewMode),
             toastStateStore: toastStateStore
-        )
-    }
-
-}
-
-// FIXME: - Move to separate file
-extension MoveToSystemFolderLocation {
-
-    static var testInbox: Self {
-        .init(
-            localId: MovableSystemFolderAction.testInbox.localId,
-            systemLabel: MovableSystemFolderAction.testInbox.name.moveToSystemFolderLabel
         )
     }
 

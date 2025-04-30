@@ -35,56 +35,45 @@ enum Action: ActionPickerListElement {
     case moveToInboxFromSpam
     case moveToSpam
     case moveToTrash
+    case pin
     case print
     case renderInLightMode
     case reportPhishing
     case saveAsPDF
     case star
     case snooze
+    case unpin
     case unstar
     case viewHeaders
     case viewHTML
 
     var name: LocalizedStringResource {
+        L10n.Action.self[keyPath: nameKeyPath]
+    }
+
+    private var nameKeyPath: KeyPath<L10n.Action.Type, LocalizedStringResource> {
         switch self {
-        case .deletePermanently:
-            L10n.Action.deletePermanently
-        case .labelAs:
-            L10n.Action.labelAs
-        case .markAsRead:
-            L10n.Action.markAsRead
-        case .markAsUnread:
-            L10n.Action.markAsUnread
-        case .moveTo:
-            L10n.Action.moveTo
-        case .moveToArchive:
-            L10n.Action.moveToArchive
-        case .moveToInbox:
-            L10n.Action.moveToInbox
-        case .moveToInboxFromSpam:
-            L10n.Action.moveToInboxFromSpam
-        case .moveToSpam:
-            L10n.Action.moveToSpam
-        case .moveToTrash:
-            L10n.Action.moveToTrash
-        case .print:
-            L10n.Action.print
-        case .renderInLightMode:
-            L10n.Action.renderInLightMode
-        case .reportPhishing:
-            L10n.Action.reportPhishing
-        case .saveAsPDF:
-            L10n.Action.saveAsPDF
-        case .snooze:
-            L10n.Action.snooze
-        case .star:
-            L10n.Action.star
-        case .unstar:
-            L10n.Action.unstar
-        case .viewHeaders:
-            L10n.Action.viewHeaders
-        case .viewHTML:
-            L10n.Action.viewHTML
+        case .deletePermanently:\.deletePermanently
+        case .markAsRead: \.markAsRead
+        case .markAsUnread: \.markAsUnread
+        case .labelAs: \.labelAs
+        case .moveTo: \.moveTo
+        case .moveToArchive: \.moveToArchive
+        case .moveToInbox: \.moveToInbox
+        case .moveToInboxFromSpam: \.moveToInboxFromSpam
+        case .moveToSpam: \.moveToSpam
+        case .moveToTrash: \.moveToTrash
+        case .pin: \.pin
+        case .print: \.print
+        case .renderInLightMode: \.renderInLightMode
+        case .reportPhishing: \.reportPhishing
+        case .saveAsPDF: \.saveAsPDF
+        case .star: \.star
+        case .snooze: \.snooze
+        case .unpin: \.unpin
+        case .unstar: \.unstar
+        case .viewHeaders: \.viewHeaders
+        case .viewHTML: \.viewHTML
         }
     }
 
@@ -110,6 +99,8 @@ enum Action: ActionPickerListElement {
             return DS.Icon.icSpam
         case .moveToTrash:
             return DS.Icon.icTrash
+        case .pin:
+            return DS.Icon.icPinAngled
         case .print:
             return DS.Icon.icPrinter
         case .renderInLightMode:
@@ -122,6 +113,8 @@ enum Action: ActionPickerListElement {
             return DS.Icon.icClock
         case .star:
             return DS.Icon.icStar
+        case .unpin:
+            return DS.Icon.icPinAngledSlash
         case .unstar:
             return DS.Icon.icStarSlash
         case .viewHeaders:

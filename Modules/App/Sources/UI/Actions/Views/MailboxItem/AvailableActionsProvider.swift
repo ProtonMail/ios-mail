@@ -39,7 +39,7 @@ extension MessageAvailableActions {
         .init(
             replyActions: replyActions,
             mailboxItemActions: messageActions.map(\.action),
-            moveActions: moveActions.map(\.moveToAction),
+            moveActions: moveActions,
             generalActions: generalActions
         )
     }
@@ -52,34 +52,9 @@ extension ConversationAvailableActions {
         .init(
             replyActions: nil,
             mailboxItemActions: conversationActions.map(\.action),
-            moveActions: moveActions.map(\.moveToAction),
+            moveActions: moveActions,
             generalActions: generalActions
         )
-    }
-
-}
-
-private extension MoveItemAction {
-
-    var moveToAction: MoveToAction {
-        switch self {
-        case .moveToSystemFolder(let systemFolder):
-            return .system(systemFolder.moveToSystemFolderLocation)
-        case .moveTo:
-            return .moveTo
-        case .notSpam(let systemFolder):
-            return .notSpam(systemFolder.moveToSystemFolderLocation)
-        case .permanentDelete:
-            return .permanentDelete
-        }
-    }
-
-}
-
-private extension MovableSystemFolderAction {
-
-    var moveToSystemFolderLocation: MoveToSystemFolderLocation {
-        .init(localId: localId, systemLabel: name.moveToSystemFolderLabel)
     }
 
 }

@@ -204,7 +204,7 @@ extension ConversationDetailModel {
                     itemType: .conversation
                 )
 
-                toast = .moveTo(destinationName: destination.systemLabel.humanReadable.string)
+                toast = .moveTo(destinationName: destination.name.humanReadable.string)
             } catch {
                 toast = .error(message: error.localizedDescription)
             }

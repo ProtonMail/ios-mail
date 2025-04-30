@@ -15,11 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-enum MoveToAction: Equatable {
-    case notSpam(MoveToSystemFolderLocation)
-    case system(MoveToSystemFolderLocation)
-    case moveTo
-    case permanentDelete
-}
+@available(*, deprecated, message: "Use MoveItemAction directly")
+typealias MoveToAction = MoveItemAction

@@ -91,7 +91,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             availableActions: .init(
                 replyActions: [.reply],
                 mailboxItemActions: [.delete],
-                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox)), .moveTo],
+                moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
                 generalActions: [.print]
             )
         ))
@@ -120,7 +120,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             availableActions: .init(
                 replyActions: nil,
                 mailboxItemActions: [.labelAs],
-                moveActions: [.system(.init(localId: .init(value: 1), systemLabel: .inbox)), .moveTo],
+                moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
                 generalActions: [.saveAsPdf]
             )
         ))
@@ -236,7 +236,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testAction_WhenMessageIsMovedOutOfSpam_ItMovesMessageOutOfSpam() throws {
         try testMoveToAction(
             itemType: .message,
-            action: .notSpam(.init(localId: .init(value: 1), systemLabel: .inbox)),
+            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
             verifyInvoked: { moveToActionsSpy.invokedMoveToMessage }
         )
     }
@@ -244,7 +244,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testAction_WhenConversationIsMovedToInbox_ItMovesConversationToInbox() throws {
         try testMoveToAction(
             itemType: .conversation,
-            action: .system(.init(localId: .init(value: 1), systemLabel: .inbox)),
+            action: .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
             verifyInvoked: { moveToActionsSpy.invokedMoveToConversation }
         )
     }
@@ -389,7 +389,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
 
         XCTAssertEqual(toastStateStore.state.toasts, [
-            .moveTo(destinationName: destination.systemLabel.humanReadable.string)
+            .moveTo(destinationName: destination.name.humanReadable.string)
         ])
     }
 
@@ -432,7 +432,7 @@ private extension MoveToAction {
 
     var destination: MoveToSystemFolderLocation? {
         switch self {
-        case .system(let label), .notSpam(let label):
+        case .moveToSystemFolder(let label), .notSpam(let label):
             return label
         case .moveTo, .permanentDelete:
             return nil

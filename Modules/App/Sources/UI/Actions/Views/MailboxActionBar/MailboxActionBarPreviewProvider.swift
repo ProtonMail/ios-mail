@@ -25,11 +25,11 @@ enum MailboxActionBarPreviewProvider {
                 .markRead,
                 .moveTo,
                 .labelAs,
-                .moveToSystemFolder(.init(localId: .init(value: 1), systemLabel: .archive)),
+                .moveToSystemFolder(.init(localId: .init(value: 1), name: .archive)),
                 .more
             ],
             moreSheetOnlyActions: [
-                .notSpam(.init(localId: .init(value: 1), systemLabel: .inbox)), .permanentDelete, .star
+                .notSpam(.init(localId: .init(value: 1), name: .inbox)), .permanentDelete, .star
             ],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,

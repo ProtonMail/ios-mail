@@ -15,17 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-enum BottomBarAction: Hashable {
-    case labelAs
-    case markRead
-    case markUnread
-    case more
-    case moveTo
-    case moveToSystemFolder(MoveToSystemFolderLocation)
-    case notSpam(MoveToSystemFolderLocation)
-    case permanentDelete
-    case star
-    case unstar
-}
+@available(*, deprecated, message: "Use BottomBarActions directly or rename the uniffi enum")
+typealias BottomBarAction = BottomBarActions

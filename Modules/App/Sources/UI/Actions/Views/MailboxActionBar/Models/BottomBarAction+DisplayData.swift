@@ -32,7 +32,7 @@ extension BottomBarAction {
         case .moveTo:
             return .init(icon: DS.Icon.icFolderArrowIn, name: L10n.Action.moveTo)
         case .moveToSystemFolder(let systemFolder):
-            switch systemFolder.systemLabel {
+            switch systemFolder.name {
             case .archive:
                 return .init(icon: DS.Icon.icArchiveBox, name: L10n.Action.moveToArchive)
             case .inbox:

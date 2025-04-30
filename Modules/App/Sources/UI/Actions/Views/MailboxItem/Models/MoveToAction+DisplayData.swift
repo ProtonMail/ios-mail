@@ -21,8 +21,8 @@ extension MoveToAction {
 
     var displayData: ActionDisplayData {
         switch self {
-        case .system(let systemFolder):
-            switch systemFolder.systemLabel {
+        case .moveToSystemFolder(let systemFolder):
+            switch systemFolder.name {
             case .inbox:
                 .init(title: L10n.Action.moveToInbox, image: DS.Icon.icInbox)
             case .archive:

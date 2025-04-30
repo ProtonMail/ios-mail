@@ -20,23 +20,19 @@ import InboxDesignSystem
 extension MailboxItemAction {
 
     var displayData: ActionDisplayData {
+        .init(title: correspondingAction.name, image: correspondingAction.icon) 
+    }
+
+    private var correspondingAction: Action {
         switch self {
-        case .star:
-            .init(title: L10n.Action.star, image: DS.Icon.icStar)
-        case .unstar:
-            .init(title: L10n.Action.unstar, image: DS.Icon.icStarSlash)
-        case .pin:
-            .init(title: L10n.Action.pin, image: DS.Icon.icPinAngled)
-        case .unpin:
-            .init(title: L10n.Action.unpin, image: DS.Icon.icPinAngledSlash)
-        case .labelAs:
-            .init(title: L10n.Action.labelAs, image: DS.Icon.icTag)
-        case .markRead:
-            .init(title: L10n.Action.markAsRead, image: DS.Icon.icEnvelopeDot)
-        case .markUnread:
-            .init(title: L10n.Action.markAsUnread, image: DS.Icon.icEnvelopeOpen)
-        case .delete:
-            .init(title: L10n.Action.deletePermanently, image: DS.Icon.icTrashCross)
+        case .star: .star
+        case .unstar: .unstar
+        case .pin: .pin
+        case .unpin: .unpin
+        case .labelAs: .labelAs
+        case .markRead: .markAsRead
+        case .markUnread: .markAsUnread
+        case .delete: .deletePermanently
         }
     }
 
