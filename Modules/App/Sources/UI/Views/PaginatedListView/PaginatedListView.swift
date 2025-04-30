@@ -68,7 +68,8 @@ struct PaginatedListView<
                 onScrollEvent?(event)
             }
 
-            headerView()
+            headerView()?
+                .listRowBackground(Color.clear)
 
             ForEachEnumerated(dataSource.state.items, id: \.element.id) { item, index in
                 cellView(index, item)
