@@ -46,6 +46,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         })
 
     private let dependencies: Dependencies
+    private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var cancellables: Set<AnyCancellable> = .init()
 
     init(searchScroller: SearchScroller? = nil, dependencies: Dependencies = .init()) {
@@ -91,9 +92,9 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             searchScroller?.handle().disconnect()
             await paginatedDataSource.resetToInitialState()
 
-            let result = await dependencies.searchProtocol.scrollerSearch(
+            let result = await scrollerSearch(
                 session: dependencies.appContext.userSession,
-                options: .init(query: query),
+                options: .init(keywords: query),
                 callback: scrollerCallback
             )
 
@@ -182,8 +183,15 @@ extension SearchModel {
         action(item.toSelectedItem())
     }
 
+    @MainActor
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
-        // TODO: is falls in the scope of actions
+        guard !selectionMode.selectionState.hasItems else {
+            applySelectionStateChangeInstead(mailboxItem: item)
+            return
+        }
+
+        let action = isStarred ? starActionPerformer.star : starActionPerformer.unstar
+        action([item.id], .message, nil)
     }
 
     @MainActor
@@ -194,10 +202,6 @@ extension SearchModel {
         }
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
 
-    }
-
-    func onMailboxItemAction(_ action: Action, itemIds: [ID]) {
-        // TODO: is falls in the scope of actions
     }
 }
 
@@ -213,13 +217,5 @@ extension SearchModel {
 
     struct Dependencies: Sendable {
         let appContext: AppContext = .shared
-        let searchProtocol: SearchProtocol = SearchWrapper()
-    }
-}
-
-struct SearchWrapper: SearchProtocol {
-
-    func scrollerSearch(session: MailUserSession, options: SearchOptions, callback: any LiveQueryCallback) async -> ScrollerSearchResult {
-        await proton_app_uniffi.scrollerSearch(session: session, options: .init(keywords: options.query), callback: callback)
     }
 }
