@@ -20,6 +20,7 @@ import Foundation
 struct ApplicationServices {
     var setUpServices: [ApplicationServiceSetUp] = []
     var willEnterForegroundServices: [ApplicationServiceWillEnterForeground] = []
+    var willResignActiveServices: [ApplicationServiceWillResignActive] = []
     var didEnterBackgroundServices: [ApplicationServiceDidEnterBackground] = []
     var terminateServices: [ApplicationServiceTerminate] = []
 
@@ -30,6 +31,10 @@ struct ApplicationServices {
 
     func willEnterForeground() {
         willEnterForegroundServices.forEach { $0.willEnterForeground() }
+    }
+
+    func willResignActive() {
+        willResignActiveServices.forEach { $0.willResignActive() }
     }
 
     func didEnterBackground() {
@@ -52,6 +57,10 @@ protocol ApplicationServiceTerminate {
 
 protocol ApplicationServiceWillEnterForeground {
     func willEnterForeground()
+}
+
+protocol ApplicationServiceWillResignActive {
+    func willResignActive()
 }
 
 protocol ApplicationServiceDidEnterBackground {

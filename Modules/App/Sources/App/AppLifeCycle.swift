@@ -55,6 +55,11 @@ extension AppLifeCycle {
         applicationServices.willEnterForeground()
     }
 
+    func sceneWillResignActive() {
+        AppLogger.log(message: "\(#function)", category: .appLifeCycle)
+        applicationServices.willResignActive()
+    }
+
     func sceneDidEnterBackground() {
         AppLogger.log(message: "\(#function)", category: .appLifeCycle)
         applicationServices.didEnterBackground()
@@ -104,9 +109,11 @@ extension AppLifeCycle {
                 backgroundTransitionActionsExecutor,
                 emailsPrefetchingNotifier
             ],
+            willResignActiveServices: [
+                appIconBadgeService
+            ],
             didEnterBackgroundServices: [
                 foregroundWorkService,
-                appIconBadgeService,
                 backgroundTransitionActionsExecutor
             ],
             terminateServices: []

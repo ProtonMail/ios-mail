@@ -20,16 +20,17 @@ import InboxCore
 import proton_app_uniffi
 import UserNotifications
 
-struct AppIconBadgeService {
-    private let inboxUnreadCount: () async throws -> UInt64
+struct AppIconBadgeService: Sendable {
+    private let inboxUnreadCount: @Sendable () async throws -> UInt64
 
-    init(inboxUnreadCount: @escaping () async throws -> UInt64) {
+    init(inboxUnreadCount: @escaping @Sendable () async throws -> UInt64) {
         self.inboxUnreadCount = inboxUnreadCount
     }
 
     init(appContext: AppContext) {
         self.init {
             guard let userSession = appContext.sessionState.userSession else {
+                AppLogger.log(message: "No active user session, clearing badge", category: .notifications)
                 return 0
             }
 
@@ -38,20 +39,21 @@ struct AppIconBadgeService {
         }
     }
 
-    func enterBackgroundServiceAsync() async {
+    func willResignActiveAsync() async {
         do {
             let unreadCount = Int(try await inboxUnreadCount())
+            AppLogger.log(message: "Will set badge to \(unreadCount)", category: .notifications)
             try await UNUserNotificationCenter.current().setBadgeCount(unreadCount)
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .notifications)
         }
     }
 }
 
-extension AppIconBadgeService: ApplicationServiceDidEnterBackground {
-    func didEnterBackground() {
+extension AppIconBadgeService: ApplicationServiceWillResignActive {
+    func willResignActive() {
         Task {
-            await enterBackgroundServiceAsync()
+            await willResignActiveAsync()
         }
     }
 }

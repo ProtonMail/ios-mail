@@ -64,6 +64,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         appProtectionStore.checkProtection()
     }
 
+    func sceneWillResignActive(_ scene: UIScene) {
+        AppLifeCycle.shared.sceneWillResignActive()
+    }
+
     func sceneDidEnterBackground(_ scene: UIScene) {
         AppLifeCycle.shared.sceneDidEnterBackground()
     }

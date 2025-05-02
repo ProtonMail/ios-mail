@@ -16,32 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
+import Testing
+import UIKit
 
-final class AppIconBadgeServiceTests: XCTestCase {
-    private var sut: AppIconBadgeService!
-    private var stubbedUnreadCount: UInt64!
-
-    override func setUp() {
-        super.setUp()
-
-        sut = .init { [unowned self] in
-            self.stubbedUnreadCount
-        }
+final class AppIconBadgeServiceTests {
+    @Test
+    func testWhenTheAppResignsActive_setsAppIconBadgeToTheUnreadCount() async {
+        await sut(stubbedUnreadCount: 5).willResignActiveAsync()
+        await #expect(UIApplication.shared.applicationIconBadgeNumber == 5)
     }
 
-    override func tearDown() {
-        sut = nil
-
-        super.tearDown()
-    }
-
-    func testWhenTheAppEntersBackground_setsAppIconBadgeToTheUnreadCount() async {
-        stubbedUnreadCount = 5
-
-        await sut.enterBackgroundServiceAsync()
-
-        let appIconBadge = await UIApplication.shared.applicationIconBadgeNumber
-        XCTAssertEqual(appIconBadge, 5)
+    private func sut(stubbedUnreadCount: UInt64) -> AppIconBadgeService {
+        .init { stubbedUnreadCount }
     }
 }
