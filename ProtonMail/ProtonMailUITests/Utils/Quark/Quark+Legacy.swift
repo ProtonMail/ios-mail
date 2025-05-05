@@ -1,5 +1,4 @@
-// swiftlint:disable:this file_name
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,23 +16,23 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreDataModel
-import ProtonCoreFeatureFlags
+import ProtonCoreQuarkCommands
 
-extension UserManager {
-    var isNewEventLoopEnabled: Bool {
-        false
-    }
+private let usersSubscription = "quark/raw::user:create:subscription"
 
-    var isMessageSwipeNavigationSettingEnabled: Bool {
-        container.featureFlagProvider.isEnabled(.nextMessageAfterMove)
-    }
+extension Quark {
+    @available(*, deprecated, renamed: "newSeedNewSubscriber", message: "`Use new payment provider`.")
+    @discardableResult
+    func enableSubscription(id: Int, plan: String) throws -> (data: Data, response: URLResponse) {
+        let args = [
+            "userID=\(id)",
+            "--planID=\(plan)"
+        ]
 
-    var isAccountRecoveryEnabled: Bool {
-        return container.featureFlagsRepository.isEnabled(
-            CoreFeatureFlagType.accountRecovery,
-            for: userID.rawValue,
-            reloadValue: false
-        )
+        let request = try route(usersSubscription)
+            .args(args)
+            .build()
+
+        return try executeQuarkRequest(request)
     }
 }

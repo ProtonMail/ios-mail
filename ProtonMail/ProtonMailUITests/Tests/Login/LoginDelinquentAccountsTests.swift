@@ -38,7 +38,7 @@ final class LoginDelinquentAccountsTests: FixtureAuthenticatedTestCase {
         password = StringUtils().randomAlphanumericString(length: 8)
         user = User(name: username, password: password)
 
-        try quarkCommands.seedNewSubscriber(user: user, plan: .mail2022, state: .availableLessThan7Days)
+        try quarkCommands.newSeedNewSubscriber(user: user, plan: .mail2022, cycle: 12)
         try quarkCommands.updateDelinquentState(state: .overdueMoreThan14Days, for: username)
     }
     

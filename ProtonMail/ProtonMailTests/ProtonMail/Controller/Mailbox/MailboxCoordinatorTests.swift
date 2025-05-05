@@ -182,7 +182,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let messageJSON = try JSONSerialization.jsonObject(with: messageData)
 
-        dummyAPIService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        dummyAPIService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["Message": messageJSON]))
         }
 

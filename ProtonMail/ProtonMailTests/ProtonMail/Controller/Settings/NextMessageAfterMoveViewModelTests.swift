@@ -63,7 +63,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
     func testCallToggleWithNewStatus_statusWillBeChangedToFalse() throws {
         let e = expectation(description: "Closure is called")
         mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMoveStub.fixture = true
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/next-message-on-move") {
                 completion(nil, .success([:]))
             } else {
@@ -86,7 +86,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
     func testCallToggleWithNewStatus_apiFail_statusBillNotBeChanged() throws {
         let e = expectation(description: "Closure is called")
         mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMoveStub.fixture = true
-        apiServiceMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(.badResponse()))
         }
 

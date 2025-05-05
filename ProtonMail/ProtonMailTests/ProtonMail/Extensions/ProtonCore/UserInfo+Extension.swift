@@ -37,7 +37,8 @@ extension UserInfo {
             credit: nil,
             currency: nil,
             createTime: nil,
-            subscribed: nil
+            subscribed: nil,
+            edmOptOut: nil
         )
     }
 }

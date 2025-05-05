@@ -138,7 +138,7 @@ final class UploadAttachmentUseCaseTest: XCTestCase {
             }
 
         }
-        apiService.uploadFromFileJsonStub.bodyIs { _, path, parameters, keyPacket, dataPacketSourceFileURL, signature, _, _, _, _, _, _, completion in
+        apiService.uploadFromFileJsonStub.bodyIs { _, path, parameters, keyPacket, dataPacketSourceFileURL, signature, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(path, "/mail/v4/attachments")
             guard
                 parameters["Disposition"] != nil,

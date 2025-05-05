@@ -31,7 +31,7 @@ final class TelemetryServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockApiService = .init()
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(path, "/data/v1/stats")
             let response = "{\"Code\": 1000}"
             completion(nil, .success(response.toDictionary()!))
@@ -105,7 +105,7 @@ final class TelemetryServiceTests: XCTestCase {
     }
 
     func testSendEvent_whenEventFrequencyIsOnceEvery24Hours_andRequestFails_itDoesNotPersistTheTimestamp() async {
-        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(.badResponse()))
         }
         let dummyEvent: TelemetryEvent = .dummyEvent(frequency: .onceEvery24Hours)

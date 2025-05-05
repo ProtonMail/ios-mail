@@ -24,23 +24,26 @@ final class UserInfoOrganizationRoleTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = UserInfo(maxSpace: nil,
-                       maxBaseSpace: nil,
-                       maxDriveSpace: nil,
-                       usedSpace: nil,
-                       usedBaseSpace: nil,
-                       usedDriveSpace: nil,
-                       language: nil,
-                       maxUpload: nil,
-                       role: nil,
-                       delinquent: nil,
-                       keys: nil,
-                       userId: nil,
-                       linkConfirmation: nil,
-                       credit: nil,
-                       currency: nil,
-                       createTime: nil,
-                       subscribed: nil)
+        sut = UserInfo(
+            maxSpace: nil,
+            maxBaseSpace: nil,
+            maxDriveSpace: nil,
+            usedSpace: nil,
+            usedBaseSpace: nil,
+            usedDriveSpace: nil,
+            language: nil,
+            maxUpload: nil,
+            role: nil,
+            delinquent: nil,
+            keys: nil,
+            userId: nil,
+            linkConfirmation: nil,
+            credit: nil,
+            currency: nil,
+            createTime: nil,
+            subscribed: nil,
+            edmOptOut: nil
+        )
     }
 
     override func tearDown() {

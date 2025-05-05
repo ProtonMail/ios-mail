@@ -160,7 +160,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
             }
         }
 
-        apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
 
             var headers: [String: String] = [:]

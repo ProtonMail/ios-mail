@@ -44,14 +44,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/EllipticCurveKeyPair</string>
-			<key>Title</key>
-			<string>EllipticCurveKeyPair</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/Factory</string>
 			<key>Title</key>
 			<string>Factory</string>
@@ -172,6 +164,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/swift-custom-dump</string>
+			<key>Title</key>
+			<string>swift-custom-dump</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/swift-snapshot-testing</string>
 			<key>Title</key>
 			<string>swift-snapshot-testing</string>
@@ -215,6 +215,14 @@
 			<string>Acknowledgements/TrustKit</string>
 			<key>Title</key>
 			<string>TrustKit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/xctest-dynamic-overlay</string>
+			<key>Title</key>
+			<string>xctest-dynamic-overlay</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

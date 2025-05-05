@@ -6,6 +6,7 @@ LD_RUNPATH_SEARCH_PATHS = $(inherited) /usr/lib/swift '@executable_path/Framewor
 LIBRARY_SEARCH_PATHS = $(inherited) "${TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}" /usr/lib/swift
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Groot/Groot.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD/MBProgressHUD.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/PromiseKit/PromiseKit.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup/SwiftSoup.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Groot" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/PromiseKit" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup"
 OTHER_LDFLAGS = $(inherited) -framework "CoreData" -framework "CoreGraphics" -framework "Foundation" -framework "Groot" -framework "MBProgressHUD" -framework "PromiseKit" -framework "QuartzCore" -framework "SwiftSoup" -framework "UIKit"
+OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/Groot" "-F${PODS_CONFIGURATION_BUILD_DIR}/MBProgressHUD" "-F${PODS_CONFIGURATION_BUILD_DIR}/PromiseKit" "-F${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

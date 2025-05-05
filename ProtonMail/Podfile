@@ -42,7 +42,6 @@ end
 target 'ProtonMailUITests' do
   inherit! :search_paths
   pod 'iosMonkey', :git => monkey_path, :commit => monkey_commit
-  pod 'Yams'
 end
 
 target 'Share' do

@@ -92,7 +92,8 @@ final class MailboxViewModelTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     createTime: nil,
-                                    subscribed: nil)
+                                    subscribed: nil,
+                                    edmOptOut: nil)
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,

@@ -1233,6 +1233,8 @@ class LocalizedString {
     var _title_notification_action_move_to_trash: String {
         L10n.PushNotificationAction.move_to_trash
     }
+
+    lazy var _scan_qr_code_setting_title: String = NSLocalizedString("Sign in to another device", comment: "The title of the Sign in to another device setting.")
 }
 
 enum L10n {
@@ -1704,6 +1706,7 @@ enum L10n {
         static let save = NSLocalizedString("Save %u%%", comment: "In the context of a discount")
         static let invalidProductID = NSLocalizedString("Invalid product ID: $@", comment: "Error when trying to purchase an invalid product")
         static let purchaseAlreadyInProgress = NSLocalizedString("Purchase already in progress", comment: "Error when the user tries to purchase a plan before the current transaction is finished")
+        static let planAlreadyPurchased = NSLocalizedString("Plan already purchased", comment: "Error when the user tries to purchase a plan they have already purchased")
 
         // pages
         static let autoDeleteTitle = NSLocalizedString("Clear out old trash and spam", comment: "Title of the upsell page")

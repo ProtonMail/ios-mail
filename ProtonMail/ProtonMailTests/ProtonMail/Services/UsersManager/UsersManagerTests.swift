@@ -90,7 +90,8 @@ class UsersManagerTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     createTime: nil,
-                                    subscribed: nil)
+                                    subscribed: nil,
+                                    edmOptOut: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
         let freeUserInfo = UserInfo(maxSpace: nil,
@@ -109,7 +110,8 @@ class UsersManagerTests: XCTestCase {
                                     credit: nil,
                                     currency: nil,
                                     createTime: nil,
-                                    subscribed: nil)
+                                    subscribed: nil,
+                                    edmOptOut: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
 
@@ -138,7 +140,8 @@ class UsersManagerTests: XCTestCase {
                                 credit: nil,
                                 currency: nil,
                                 createTime: nil,
-                                subscribed: nil)
+                                subscribed: nil,
+                                edmOptOut: nil)
         XCTAssertTrue(sut.users.isEmpty)
         try sut.add(auth: auth, user: userInfo, mailSettings: .init())
         XCTAssertFalse(sut.users.isEmpty)
@@ -175,7 +178,8 @@ class UsersManagerTests: XCTestCase {
                                    credit: nil,
                                    currency: nil,
                                    createTime: nil,
-                                   subscribed: .mail)
+                                   subscribed: .mail,
+                                   edmOptOut: nil)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
         XCTAssertTrue(sut.users[0].hasPaidMailPlan)
         XCTAssertEqual(sut.users[0].userInfo.maxSpace, 999)
@@ -411,7 +415,8 @@ class UsersManagerTests: XCTestCase {
                         credit: nil,
                         currency: nil,
                         createTime: nil,
-                        subscribed: nil)
+                        subscribed: nil,
+                        edmOptOut: nil)
     }
 
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
@@ -431,7 +436,8 @@ class UsersManagerTests: XCTestCase {
                                 credit: nil,
                                 currency: nil,
                                 createTime: nil,
-                                subscribed: isPaid ? .mail : .init(rawValue: 0))
+                                subscribed: isPaid ? .mail : .init(rawValue: 0),
+                                edmOptOut: nil)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,
                            userInfo: userInfo,

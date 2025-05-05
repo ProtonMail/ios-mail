@@ -226,7 +226,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             credit: nil,
             currency: nil,
             createTime: nil,
-            subscribed: nil
+            subscribed: nil,
+            edmOptOut: nil
         )
         let auth = AuthCredential(
             sessionID: "SessionID_\(userID)",

@@ -152,7 +152,7 @@ extension FetchAndVerifyContactsTests {
 
     private func makeMockApiService() -> APIServiceMock {
         let mockApiService = APIServiceMock()
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains("/contacts") {
                 if self.mockApiServiceShouldReturnError {
                     completion(nil, .failure(NSError(domain: "", code: -10)))

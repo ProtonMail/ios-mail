@@ -45,7 +45,7 @@ class BackendSearchUseCaseTests: XCTestCase {
 
     func testExecute_withApiError_errorIsReturned() {
         let keyword = "test@pm.me"
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains(check: "/messages") {
                 completion(nil, .failure(.badResponse()))
             }
@@ -69,7 +69,7 @@ class BackendSearchUseCaseTests: XCTestCase {
         let e = expectation(description: "Closure is called")
         let keyword = "test@pm.me"
         let msgID = String.randomString(20)
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, _, completion in
             if path.contains(check: "/messages") {
                 let rawTestMsg = MessageTestData.messageMetaData(
                     sender: "self@pm.me",

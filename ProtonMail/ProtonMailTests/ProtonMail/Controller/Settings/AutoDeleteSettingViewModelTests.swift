@@ -61,7 +61,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
     func testCallToggleToTrueWithNewStatus_statusWillBeChangedToTrue() throws {
         let e = expectation(description: "Closure is called")
         mockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabledStub.fixture = false
-        apiServiceMock.requestJSONStub.bodyIs { _, method, path, body, parameter, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, method, path, body, parameter, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(method, .put)
             guard let dict = body as? [String: Any] else {
                 XCTFail("Should contain a dictionary in body")
@@ -94,7 +94,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
     func testCallToggleToFalseWithNewStatus_statusWillBeChangedToFalse() throws {
         let e = expectation(description: "Closure is called")
         mockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabledStub.fixture = true
-        apiServiceMock.requestJSONStub.bodyIs { _, method, path, body, parameter, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, method, path, body, parameter, _, _, _, _, _, _, _, completion in
             XCTAssertEqual(method, .put)
             guard let dict = body as? [String: Any] else {
                 XCTFail("Should contain a dictionary in body")
@@ -128,7 +128,7 @@ final class AutoDeleteSettingViewModelTests: XCTestCase {
         let e = expectation(description: "Closure is called")
         let initialState = Bool.random()
         mockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabledStub.fixture = initialState
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, parameter, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, parameter, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(.badResponse()))
         }
 

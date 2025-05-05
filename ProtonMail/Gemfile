@@ -3,10 +3,8 @@ source "https://rubygems.org"
 gem "cocoapods"
 gem "fastlane"
 gem 'fastlane-plugin-sentry'
-# a fork that handles absolute paths, needed for code coverage when building on two different machines
-gem 'slather', git: 'https://github.com/Linquas/slather.git', ref: 'f5ac241'
+gem 'slather'
 
 # shouldn't be necessary, but it is, at least until Fastlane is updated: https://github.com/fastlane/fastlane/issues/29183#issuecomment-2567093826
 gem "abbrev"
-gem "mutex_m"
 gem "ostruct"

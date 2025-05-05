@@ -86,7 +86,7 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
 
     func testToggle_telemetrySetting_settingIsUpdated() {
         user.userInfo.telemetry = 1
-        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
         let e = expectation(description: "Closure is called")
@@ -101,7 +101,7 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
 
     func testToggle_telemetrySetting_apiError_settingIsNotUpdated() {
         user.userInfo.telemetry = 1
-        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(NSError.badResponse()))
         }
         let e = expectation(description: "Closure is called")
@@ -116,7 +116,7 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
 
     func testToggle_crashSetting_settingIsUpdated() {
         user.userInfo.crashReports = 1
-        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success([:]))
         }
         let e = expectation(description: "Closure is called")
@@ -131,7 +131,7 @@ final class PrivacyAndDataSettingViewModelTests: XCTestCase {
 
     func testToggle_crashSetting_apiError_settingIsNotUpdated() {
         user.userInfo.crashReports = 1
-        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(NSError.badResponse()))
         }
         let e = expectation(description: "Closure is called")
