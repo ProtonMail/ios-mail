@@ -82,6 +82,7 @@ final class AppContext: Sendable, ObservableObject {
         accountChallengeCoordinator = .init(apiConfigProvider: { appConfig.apiEnvConfig })
 
         _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
+        _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession)
