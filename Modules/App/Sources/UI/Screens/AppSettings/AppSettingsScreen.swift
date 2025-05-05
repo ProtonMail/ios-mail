@@ -28,8 +28,14 @@ struct AppSettingsScreen: View {
     @EnvironmentObject var router: Router<SettingsRoute>
     @StateObject var store: AppSettingsStateStore
 
-    init(state: AppSettingsState = .initial) {
-        _store = .init(wrappedValue: .init(state: state))
+    init(
+        state: AppSettingsState = .initial,
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
+    ) {
+        _store = .init(wrappedValue: .init(
+            state: state,
+            appSettingsRepository: appSettingsRepository
+        ))
     }
 
     var body: some View {

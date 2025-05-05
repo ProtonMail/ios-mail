@@ -28,6 +28,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     var appProtectionWindow: UIWindow?
     var appProtectionCancellable: AnyCancellable?
     var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
+    var pinVerifierFactory: () -> PINVerifier = { AppContext.shared.mailSession }
 
     var toastStateStore: ToastStateStore? {
         didSet {
@@ -110,7 +111,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         return UIHostingController(rootView:
             LockScreen(
                 state: .init(type: lockScreenType),
-                pinVerifier: AppContext.shared.mailSession,
+                pinVerifier: pinVerifierFactory(),
                 output: { [weak self] output in
                     switch output {
                     case .logOut:

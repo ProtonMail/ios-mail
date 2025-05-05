@@ -30,7 +30,8 @@ final class LegacyMigrationServiceTests {
         legacyKeychain: legacyKeychain,
         legacyDataProvider: .init(userDefaults: testUserDefaults),
         getMailSession: { [unowned self] in mailSessionStub },
-        passMigrationPayloadsToRustSDK: { [unowned self] in recordedCallsToMigrate.append($0) }
+        passMigrationPayloadsToRustSDK: { [unowned self] in recordedCallsToMigrate.append($0) },
+        appAppearanceStore: { .init(mailSession: { [unowned self] in mailSessionStub }) }
     )
 
     deinit {

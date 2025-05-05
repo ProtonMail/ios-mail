@@ -103,7 +103,8 @@ class LockScreenStoreTests {
 
 }
 
-private class PINVerifierSpy: PINVerifier, @unchecked Sendable {
+// FIXME: - Move to separate file
+class PINVerifierSpy: PINVerifier, @unchecked Sendable {
 
     var verifyPinCodeStub: MailSessionVerifyPinCodeResult = .ok
     var remainingPinAttemptsStub: MailSessionRemainingPinAttemptsResult = .ok(10)

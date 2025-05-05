@@ -187,7 +187,8 @@ private extension AppSettingsDiff {
 
 }
 
-private class AppSettingsRepositorySpy: AppSettingsRepository {
+// FIXME: - Move to separate file
+class AppSettingsRepositorySpy: AppSettingsRepository {
 
     var stubbedAppSettings: AppSettings = .init(
         appearance: .lightMode,
