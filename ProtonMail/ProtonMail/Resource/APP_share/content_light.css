@@ -53,6 +53,12 @@ table a, table p {
     word-break: break-word;
 }
 
+@supports (height: fit-content) {
+    html {
+        height: fit-content;
+    }
+}
+
 blockquote {
     padding: 0 0 0 0.6rem !important;
     margin: 0 !important;

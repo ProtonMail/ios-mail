@@ -954,11 +954,35 @@ extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverPr
 
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            self.bottomPadding?.constant = keyboardFrame.cgRectValue.height + Constant.toolBarHeight
-            self.toolbarBottom?.constant = -1 * keyboardFrame.cgRectValue.height
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
+            if UIDevice.current.isIpad {
+                keyboardWillShowOnIpad(keyboardFrame: keyboardFrame.cgRectValue)
+            } else {
+                adjustViewForKeyboard(extraBottomPadding: keyboardFrame.cgRectValue.height)
             }
+        }
+    }
+
+    private func keyboardWillShowOnIpad(keyboardFrame: CGRect) {
+        // this delay is needed, because the appearance of the keyboard might cause the view to move up a little
+        // we need to wait with `convert` until that happens
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let keyboardFrameInView = self.view.convert(keyboardFrame, from: nil)
+            let extraBottomPadding = self.view.bounds.height - max(0, keyboardFrameInView.origin.y)
+
+            guard extraBottomPadding >= 0 else {
+                return
+            }
+
+            self.adjustViewForKeyboard(extraBottomPadding: extraBottomPadding)
+        }
+    }
+
+    private func adjustViewForKeyboard(extraBottomPadding: CGFloat) {
+        bottomPadding?.constant = extraBottomPadding + Constant.toolBarHeight
+        toolbarBottom?.constant = -extraBottomPadding
+
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
         }
     }
 }
