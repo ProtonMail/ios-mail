@@ -16,26 +16,23 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreUtilities
 
 @main
 struct AppMainEntryPoint {
     static func main() {
-        if isProduction {
+        if isStandardLaunch {
             ProtonMailApp.main()
         } else {
             TestApp.main()
         }
     }
 
-    private static var isProduction: Bool {
-        !isRunningTests && !isXcodePreview
+    private static var isStandardLaunch: Bool {
+        !isRunningTests && !ProcessInfo.isRunningSwiftUIPreviews
     }
 
     private static var isRunningTests: Bool {
         NSClassFromString("XCTestCase") != nil
-    }
-
-    private static var isXcodePreview: Bool {
-        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
