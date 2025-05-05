@@ -21,7 +21,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-@main
 struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
