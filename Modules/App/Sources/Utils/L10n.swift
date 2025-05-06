@@ -422,7 +422,7 @@ enum L10n {
             )
         }
         
-        static func autoDeleteTitle(days: UInt32) -> LocalizedStringResource {
+        static func autoDeleteTitle(days: Int) -> LocalizedStringResource {
             .init(
                 "This message will auto-delete in \(days) days",
                 comment: "Banner indicating when a message will automatically be deleted."
