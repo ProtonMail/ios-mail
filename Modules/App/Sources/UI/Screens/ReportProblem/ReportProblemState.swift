@@ -25,7 +25,7 @@ struct ReportProblemState: Copying {
     var actualResults: String
     var sendLogsEnabled: Bool
     var scrollTo: ReportProblemScrollToElements?
-    var summaryValidation: FormMultilineTextInput.ValidationStatus
+    var summaryValidation: FormTextInput.ValidationStatus
     var isLoading: Bool
     var alert: AlertModel?
 }

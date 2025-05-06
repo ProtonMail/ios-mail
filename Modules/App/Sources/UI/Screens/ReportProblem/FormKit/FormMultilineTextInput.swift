@@ -18,7 +18,12 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct FormMultilineTextInput: View {
+struct FormTextInput: View {
+    enum InputType {
+        case secureOneline
+        case multiline
+    }
+
     enum ValidationStatus: Equatable {
         case ok
         case failure(LocalizedStringResource)
@@ -35,6 +40,8 @@ struct FormMultilineTextInput: View {
 
     private let title: LocalizedStringResource
     private let placeholder: LocalizedStringResource
+    private let footer: LocalizedStringResource
+    private let inputType: InputType
     @Binding private var text: String
     @Binding private var validation: ValidationStatus
     @FocusState private var isFocused: Bool
@@ -42,39 +49,32 @@ struct FormMultilineTextInput: View {
     init(
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
+        footer: LocalizedStringResource = .init(stringLiteral: .empty),
         text: Binding<String>,
-        validation: Binding<ValidationStatus>
+        validation: Binding<ValidationStatus>,
+        inputType: InputType
     ) {
         self.title = title
         self.placeholder = placeholder
+        self.footer = footer
         self._text = text
         self._validation = validation
+        self.inputType = inputType
     }
 
     // MARK: - View
 
     var body: some View {
         VStack(spacing: DS.Spacing.standard) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 Text(title)
                     .animation(.easeOut(duration: 0.2), value: isFocused)
                     .foregroundStyle(validation.isFailure ? DS.Color.Notification.error : (isFocused ? DS.Color.Text.accent : DS.Color.Text.weak))
-                ZStack(alignment: .topLeading) {
-                    TextEditor(text: $text)
-                        .scrollContentBackground(.hidden)
-                        .focused($isFocused)
-                        .padding(.top, -DS.Spacing.standard)
-                        .padding(.leading, -DS.Spacing.small)
-                        .accentColor(DS.Color.Text.accent)
-                    if text.isEmpty {
-                        Text(placeholder)
-                            .foregroundStyle(DS.Color.Text.hint)
-                            .allowsHitTesting(false)
-                    }
-                }
+                input()
+                    .focused($isFocused)
             }
             .padding(.all, DS.Spacing.large)
-            .frame(maxWidth: .infinity, minHeight: minimalContainerHight, alignment: .topLeading)
+            .frame(maxWidth: .infinity, minHeight: inputType.minimalContainerHight, alignment: .topLeading)
             .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
             .overlay(
@@ -89,6 +89,10 @@ struct FormMultilineTextInput: View {
                     .foregroundStyle(DS.Color.Notification.error)
                     .padding(.horizontal, DS.Spacing.large)
                     .transition(.move(edge: .top).combined(with: .opacity))
+            } else {
+                FormFootnoteText(footer)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, DS.Spacing.large)
             }
         }
         .animation(.easeInOut(duration: 0.2), value: validation)
@@ -96,13 +100,86 @@ struct FormMultilineTextInput: View {
 
     // MARK: - Style
 
-    private let minimalContainerHight: CGFloat = 150
+    @ViewBuilder
+    private func input() -> some View {
+        switch inputType {
+        case .secureOneline:
+            FormSecureTextInput(title: title, text: $text)
+        case .multiline:
+            ZStack(alignment: .topLeading) {
+                TextEditor(text: $text)
+                    .scrollContentBackground(.hidden)
+                    .focused($isFocused)
+                    .padding(.top, -DS.Spacing.standard)
+                    .padding(.leading, -DS.Spacing.small)
+                    .accentColor(DS.Color.Text.accent)
+                if text.isEmpty {
+                    Text(placeholder)
+                        .foregroundStyle(DS.Color.Text.hint)
+                        .allowsHitTesting(false)
+                }
+            }
+        }
+    }
 }
 
-extension Binding where Value == FormMultilineTextInput.ValidationStatus {
+extension Binding where Value == FormTextInput.ValidationStatus {
 
     static var noValidation: Self {
         Binding(get: { .ok }, set: { _ in })
+    }
+
+}
+
+private extension FormTextInput.InputType {
+
+    var minimalContainerHight: CGFloat {
+        switch self {
+        case .secureOneline: 80
+        case .multiline: 150
+        }
+    }
+
+}
+
+struct FormSecureTextInput: View {
+    private let title: LocalizedStringResource
+    @Binding private var text: String
+    @State var pin: String = .empty
+    @State var secureEntry: Bool = true
+
+    init(
+        title: LocalizedStringResource,
+        text: Binding<String>
+    ) {
+        self.title = title
+        self._text = text
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+            HStack(spacing: DS.Spacing.mediumLight) {
+                ZStack {
+                    SecureField(String.empty, text: $pin)
+                        .accentColor(DS.Color.Text.accent)
+                        .frame(height: 22)
+                        .opacity(secureEntry ? 1 : 0)
+                        .disabled(!secureEntry)
+
+                    TextField(String.empty, text: $pin)
+                        .accentColor(DS.Color.Text.accent)
+                        .frame(height: 22)
+                        .opacity(secureEntry ? 0 : 1)
+                        .disabled(secureEntry)
+                }
+                Button(action: { secureEntry.toggle() }) {
+                    Image(systemName: secureEntry ? "eye" : "eye.slash")
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
+            }
+        }
+        .background(DS.Color.BackgroundInverted.secondary)
+        .frame(maxWidth: .infinity)
     }
 
 }
