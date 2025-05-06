@@ -254,6 +254,7 @@
     },
     "Tap + to add your first contact." : {
       "comment" : "Contacts screen's empty state subtitle.",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -396,6 +397,9 @@
           }
         }
       }
+    },
+    "You don't have any contacts." : {
+      "comment" : "Contacts screen's empty state subtitle."
     }
   },
   "version" : "1.0"
