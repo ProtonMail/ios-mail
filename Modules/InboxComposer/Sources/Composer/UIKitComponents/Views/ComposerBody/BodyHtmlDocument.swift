@@ -118,6 +118,16 @@ private extension BodyHtmlDocument {
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <style>
                 \(HtmlPlaceholder.css)
+                /* In the editor, disable drag and drop and contextual menus for images */
+                #\(ID.editor) img {
+                    -webkit-user-drag: none;
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    -webkit-tap-highlight-color: transparent;
+                    user-select: none;
+                    pointer-events: all;
+                    cursor: pointer;
+                }
             </style>
         </head>
         <body>
@@ -232,8 +242,8 @@ private extension BodyHtmlDocument {
         }
         
         const html = images.map(function(cid) {
-            return `<span class="image-container"><img src="cid:${cid}"></br></span>`;
-        }).join('') + '<br>';
+            return `<img src="cid:${cid}" style="max-width: 100%;"><br>`;
+        }).join('');
 
         document.execCommand('insertHTML', false, html);
         editor.dispatchEvent(new Event('input'));
@@ -259,12 +269,7 @@ private extension BodyHtmlDocument {
             for (let j = 0; j < attributes.length; j++) {
                 const attr = attributes[j];
                 if (cidRegex.test(attr.value)) {
-                    const container = img.closest('.image-container');
-                    if (container) {
-                        container.remove();
-                    } else {
-                        img.remove();
-                    }
+                    img.remove();
                     break;
                 }
             }
