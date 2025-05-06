@@ -52,8 +52,7 @@ struct EnterPINView: View {
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.top, DS.Spacing.extraLarge)
-        .background(Color.red)
-        .navigationTitle(title.string)
+        .background(DS.Color.BackgroundInverted.norm)
         .navigationBarTitleDisplayMode(.inline)
         .onLoad { isFocused = true }
         .onChange(of: isFocused) { _, _ in
