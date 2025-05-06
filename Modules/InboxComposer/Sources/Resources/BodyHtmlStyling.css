@@ -263,3 +263,17 @@ body > #editor {
 #editor > #protonmail_mobile_signature_block {
     min-height: 40px;
 }
+
+#editor .image-container {
+    display: inline-block;
+    max-width: 100%;
+}
+
+#editor img {
+    -webkit-user-drag: none; /* Prevents image dragging in WebKit browsers */
+    -webkit-touch-callout: none; /* Disables context menu on long press in WebKit browsers */
+    -webkit-user-select: none; /* Disables text/image selection in WebKit browsers */
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight color on mobile (WebKit) */
+    pointer-events: all; /* Enables pointer events (e.g., clicks) on the image */
+    display: block; /* Makes the image a block-level element to remove extra space below */
+}
