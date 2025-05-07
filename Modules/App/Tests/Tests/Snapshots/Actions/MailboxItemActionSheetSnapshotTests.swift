@@ -20,6 +20,7 @@ import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
 
+@MainActor
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
     func testMessageConversationActionSheetLayoutsCorrectly() {

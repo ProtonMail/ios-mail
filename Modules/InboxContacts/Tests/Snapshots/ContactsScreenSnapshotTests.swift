@@ -20,30 +20,27 @@ import InboxSnapshotTesting
 import proton_app_uniffi
 import XCTest
 
+@MainActor
 final class ContactsScreenSnapshotTests: XCTestCase {
 
-    @MainActor
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
-    @MainActor
     func testContactsScreenWithSearchPhraseMatching5ItemsLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Ti"), items: items))
     }
 
-    @MainActor
     func testContactsScreenWithNonMatchingSearchPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Tix"), items: items))
     }
 
-    @MainActor
     func testContactsScreenWithActiveSearchButEmptyPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 

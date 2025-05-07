@@ -19,6 +19,7 @@
 import InboxSnapshotTesting
 import InboxTesting
 
+@MainActor
 class MailboxActionBarMoreSheetSnapshotTests: BaseTestCase {
 
     func testMailboxActionBarMoreSheetLayoutsCorrectly() {
