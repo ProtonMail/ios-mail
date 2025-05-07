@@ -33,6 +33,7 @@ final class SceneDelegateTests: BaseTestCase {
         sut = .init()
         mailSessionSpy = .init()
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
+        sut.pinVerifierFactory = { PINVerifierSpy() }
     }
 
     override func tearDown() {

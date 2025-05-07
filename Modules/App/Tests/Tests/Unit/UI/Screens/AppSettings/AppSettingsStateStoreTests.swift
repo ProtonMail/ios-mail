@@ -186,28 +186,3 @@ private extension AppSettingsDiff {
     }
 
 }
-
-private class AppSettingsRepositorySpy: AppSettingsRepository {
-
-    var stubbedAppSettings: AppSettings = .init(
-        appearance: .lightMode,
-        protection: .pin,
-        autoLock: .always,
-        useCombineContacts: false,
-        useAlternativeRouting: false
-    )
-    private(set) var changedAppSettingsWithDiff: [AppSettingsDiff] = []
-
-    // MARK: - AppSettingsRepository
-
-    func getAppSettings() async -> MailSessionGetAppSettingsResult {
-        .ok(stubbedAppSettings)
-    }
-
-    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
-        changedAppSettingsWithDiff.append(settings)
-
-        return .ok
-    }
-
-}

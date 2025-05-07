@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,18 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonMail
 import proton_app_uniffi
 
-struct ContactItemDeleterAdapter {
-    private let mailUserSession: MailUserSession
-    private let deleteItem: DeleteContactItem
+class AppSettingsRepositorySpy: AppSettingsRepository {
 
-    init(mailUserSession: MailUserSession, deleteItem: @escaping DeleteContactItem) {
-        self.mailUserSession = mailUserSession
-        self.deleteItem = deleteItem
+    var stubbedAppSettings: AppSettings = .init(
+        appearance: .lightMode,
+        protection: .pin,
+        autoLock: .always,
+        useCombineContacts: false,
+        useAlternativeRouting: false
+    )
+    private(set) var changedAppSettingsWithDiff: [AppSettingsDiff] = []
+
+    // MARK: - AppSettingsRepository
+
+    func getAppSettings() async -> MailSessionGetAppSettingsResult {
+        .ok(stubbedAppSettings)
     }
 
-    func delete(itemID: Id) async throws {
-        try await deleteItem(itemID, mailUserSession).get()
+    func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult {
+        changedAppSettingsWithDiff.append(settings)
+
+        return .ok
     }
+
 }

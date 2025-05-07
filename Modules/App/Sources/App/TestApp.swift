@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import SwiftUI
 
-extension DraftAttachment {
-
-    func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, status: .init(modifiedAt: stateModifiedTimestamp, state: state))
+struct TestApp: App {
+    var body: some Scene {
+        WindowGroup {}
     }
 }

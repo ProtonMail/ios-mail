@@ -18,7 +18,7 @@
 import Foundation
 import proton_app_uniffi
 
-extension DraftAttachmentError: @retroactive LocalizedError {
+extension DraftAttachmentError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -51,7 +51,7 @@ private extension DraftAttachmentErrorReason {
     }
 }
 
-extension DraftDiscardError: @retroactive LocalizedError {
+extension DraftDiscardError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -73,7 +73,7 @@ extension DraftDiscardErrorReason {
     }
 }
 
-extension DraftOpenError: @retroactive LocalizedError {
+extension DraftOpenError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -99,7 +99,7 @@ private extension DraftOpenErrorReason {
     }
 }
 
-extension DraftSaveSendError: @retroactive LocalizedError {
+extension DraftSaveSendError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):

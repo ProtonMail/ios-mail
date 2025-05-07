@@ -89,13 +89,18 @@ actor LegacyMigrationService {
         legacyKeychain: LegacyKeychain,
         legacyDataProvider: LegacyDataProvider,
         getMailSession: @escaping () -> MailSessionProtocol,
-        passMigrationPayloadsToRustSDK: @escaping PassMigrationPayloadsToRustSDK
+        passMigrationPayloadsToRustSDK: @escaping PassMigrationPayloadsToRustSDK,
+        appAppearanceStore: @escaping SettingsMigrator.AppAppearanceStoreGetter = { .shared }
     ) {
         self.legacyKeychain = legacyKeychain
         self.legacyDataProvider = legacyDataProvider
         self.getMailSession = getMailSession
         self.passMigrationPayloadsToRustSDK = passMigrationPayloadsToRustSDK
-        settingsMigrator = .init(legacyKeychain: legacyKeychain, legacyDataProvider: legacyDataProvider)
+        settingsMigrator = .init(
+            legacyKeychain: legacyKeychain,
+            legacyDataProvider: legacyDataProvider,
+            appAppearanceStore: appAppearanceStore
+        )
     }
 
     private init() {

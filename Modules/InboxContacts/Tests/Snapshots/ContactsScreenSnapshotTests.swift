@@ -66,14 +66,3 @@ final class ContactsScreenSnapshotTests: XCTestCase {
     }
 
 }
-
-private extension ContactListResult {
-    func get() throws -> [GroupedContacts] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}

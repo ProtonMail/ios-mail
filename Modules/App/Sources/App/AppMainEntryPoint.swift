@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,11 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
+import ProtonCoreUtilities
 
-extension DraftAttachment {
+@main
+struct AppMainEntryPoint {
+    static func main() {
+        if isStandardLaunch {
+            ProtonMailApp.main()
+        } else {
+            TestApp.main()
+        }
+    }
 
-    func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, status: .init(modifiedAt: stateModifiedTimestamp, state: state))
+    private static var isStandardLaunch: Bool {
+        !isRunningTests && !ProcessInfo.isRunningSwiftUIPreviews
+    }
+
+    private static var isRunningTests: Bool {
+        NSClassFromString("XCTestCase") != nil
     }
 }
