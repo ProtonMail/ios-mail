@@ -35,10 +35,9 @@ class ConfirmPINStore: StateStore {
                 .copy(\.repeatedPINValidation, to: .ok)
         case .confirmButtonTapped:
             let doesPINMatch = state.pin == state.repeatedPIN
-            // FIXME: - Add settings PIN code in Rust SDK
             state = state
                 .copy(\.repeatedPINValidation, to: doesPINMatch ? .ok : .failure("The PIN codes must match!"))
-            router.goBack(to: .appProtection(.pin))
+            router.goBack(to: .appProtection(.pin)) // FIXME: - Remove associated value
         }
     }
 }
