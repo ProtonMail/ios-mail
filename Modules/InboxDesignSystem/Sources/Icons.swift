@@ -40,7 +40,6 @@ public extension DS.Icon {
     static let icClock = ImageResource.icClock
     static let icClockPaperPlane = ImageResource.icClockPaperPlane
     static let icCogWheel = ImageResource.icCogWheel
-    static let icCross = ImageResource.icCross
     static let icCrossBig = ImageResource.icCrossBig
     static let icCrossCircle = ImageResource.icCrossCircle
     static let icCrossCircleFilled = ImageResource.icCrossCircleFilled

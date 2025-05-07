@@ -20,13 +20,13 @@ import SwiftUI
 
 public enum ToolbarItemFactory {
     public static func back(action: @escaping () -> Void) -> some ToolbarContent {
-        leading(DS.Icon.icChevronTinyLeft, action: action)
+        leading(Image(DS.Icon.icChevronTinyLeft), action: action)
     }
 
-    public static func leading(_ imageResource: ImageResource, action: @escaping () -> Void) -> some ToolbarContent {
+    public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button(action: action) {
-                Image(imageResource)
+                image
                     .foregroundStyle(DS.Color.Icon.weak)
             }
         }

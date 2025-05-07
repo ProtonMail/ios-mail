@@ -23,4 +23,5 @@ public extension DS.SFSymbols {
     static let deleteLeft = "delete.left"
     static let lock = "lock"
     static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+    static let xmark = "xmark"
 }

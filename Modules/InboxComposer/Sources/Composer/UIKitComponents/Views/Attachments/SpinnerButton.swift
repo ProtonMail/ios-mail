@@ -49,7 +49,7 @@ final class SpinnerButton: UIButton {
 
     private func setupUI() {
         backgroundColor = .clear
-        setImage(UIImage(resource: DS.Icon.icCross), for: .normal)
+        setImage(UIImage(systemName: DS.SFSymbols.xmark), for: .normal)
         tintColor = DS.Color.Icon.weak.toDynamicUIColor
         layer.addSublayer(progressLayer)
         startSpinning()
