@@ -130,84 +130,6 @@
         }
       }
     },
-    "%lld files" : {
-      "comment" : "The number of attachments on conversation details screen.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Datei"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld Dateien"
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld file"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld files"
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld fichier"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld fichiers"
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-bestand"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld-bestanden"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "%lld messages" : {
       "comment" : "Number of messages in a conversation.",
       "localizations" : {
@@ -518,36 +440,6 @@
     "Any information you’ve entered will be lost." : {
       "comment" : "Report problem dismiss confirmation alert message."
     },
-    "App" : {
-      "comment" : "Title of the App settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Application"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App"
-          }
-        }
-      }
-    },
     "App customisations" : {
       "comment" : "Title of the App settings screen."
     },
@@ -672,36 +564,6 @@
     "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
     },
-    "Automatic actions and sorting" : {
-      "comment" : "Subtitle of the Filters settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatische Aktionen und Sortierung"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatic actions and sorting"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actions automatiques et tri"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Automatische acties en sortering"
-          }
-        }
-      }
-    },
     "Bcc" : {
       "comment" : "`BCC` in the messsage details.",
       "localizations" : {
@@ -756,36 +618,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deze contactpersoon blokkeren?"
-          }
-        }
-      }
-    },
-    "Bug report" : {
-      "comment" : "Button in the sidebar menu that redirects a user to the bug report screen.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fehlerbericht"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bug report"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rapport de bug"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugrapport"
           }
         }
       }
@@ -1101,66 +933,6 @@
         }
       }
     },
-    "Create new folder" : {
-      "comment" : "Action title for creating new folder.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neuen Ordner erstellen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create new folder"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Créer un dossier"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nieuwe map aanmaken"
-          }
-        }
-      }
-    },
-    "Create new label" : {
-      "comment" : "Action title for creating new label.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neue Kategorie erstellen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create new label"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Créer un label"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nieuw label aanmaken"
-          }
-        }
-      }
-    },
     "Dark" : {
       "comment" : "One of the appearance option to set in app settings."
     },
@@ -1442,98 +1214,8 @@
     "Edit" : {
       "comment" : "Action to modify the scheduled send time."
     },
-    "Email" : {
-      "comment" : "Title of the Email settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail-Adresse"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adresse e-mail"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-mailadres"
-          }
-        }
-      }
-    },
-    "Email and mailbox preferences" : {
-      "comment" : "Subtitle of the Email settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail- und Postfach-Einstellungen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email and mailbox preferences"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Préférences pour la messagerie et les e-mails"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-mail- en mailboxvoorkeuren"
-          }
-        }
-      }
-    },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
-    },
-    "Email tracking protection" : {
-      "comment" : "Subtitle of the Privacy and security settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schutz vor E-Mail-Trackern"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email tracking protection"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protection contre le suivi des e-mails"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bescherming tegen e-mailtracking"
-          }
-        }
-      }
     },
     "Empty %@ Folder" : {
       "comment" : "Empty Spam/Trash Banner: Title for the confirmation alert when the user \nis about to empty the specified location (e.g., Spam or Trash)."
@@ -1797,36 +1479,6 @@
         }
       }
     },
-    "Labels" : {
-      "comment" : "Labels screen title.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kategorien"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labels"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labels"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labels"
-          }
-        }
-      }
-    },
     "Language" : {
       "comment" : "Language setting title in app settings."
     },
@@ -1867,36 +1519,6 @@
     },
     "Mail experience" : {
       "comment" : "Mail experience section title in app settings."
-    },
-    "Mailbox organization" : {
-      "comment" : "Subtitle of the Folders and labels settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Postfachverwaltung"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mailbox organization"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Organisation de la messagerie"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mailbox organisatie"
-          }
-        }
-      }
     },
     "Mailbox preferences" : {
       "comment" : "Title of the Email settings item."
@@ -2110,36 +1732,6 @@
     "Migration in progress" : {
       "comment" : "Shown under activity progress indicator"
     },
-    "Mobile app customization" : {
-      "comment" : "Subtitle of the App settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anpassung der mobilen App"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mobile app customization"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personnalisation de l'application mobile"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mobiele app aanpassen"
-          }
-        }
-      }
-    },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
       "localizations" : {
@@ -2223,36 +1815,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naar prullenbak verplaatsen"
-          }
-        }
-      }
-    },
-    "Move to.." : {
-      "comment" : "Folders title screen.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verschieben nach..."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move to.."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déplacer vers..."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaatsen naar…"
           }
         }
       }
@@ -3144,36 +2706,6 @@
         }
       }
     },
-    "Spam and custom filters" : {
-      "comment" : "Title of the Filters settings item.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spam- und benutzerdefinierte Filter"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spam and custom filters"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Filtres personnalisés et contre le spam"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spam en aangepaste filters"
-          }
-        }
-      }
-    },
     "Spam and filters" : {
       "comment" : "Title of the Filters settings item."
     },
@@ -3302,31 +2834,6 @@
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted."
-    },
-    "This message will auto-delete in %u days" : {
-      "comment" : "Banner indicating when a message will automatically be deleted.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "This message will auto-delete in %u day"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "This message will auto-delete in %u days"
-                }
-              }
-            }
-          }
-        }
-      },
-      "shouldTranslate" : false
     },
     "This message will be sent %@" : {
       "comment" : "Banner showing the scheduled send time for an email."
