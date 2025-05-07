@@ -30,12 +30,6 @@ struct SetPINScreen: View {
                 validation: store.binding(\.pinValidation)
             )
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { store.handle(action: .cancelTapped) }) {
-                        Text("Cancel")
-                            .foregroundStyle(DS.Color.Text.accent)
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { store.handle(action: .nextTapped) }) {
                         Text("Next")
