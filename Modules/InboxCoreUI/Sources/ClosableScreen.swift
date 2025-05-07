@@ -36,7 +36,6 @@ public struct ClosableScreen<ContentView: View>: View {
                                 Image(systemName: DS.SFSymbols.xmark)
                                     .foregroundStyle(DS.Color.Text.weak)
                                     .square(size: 20)
-                                Spacer()
                             }
                         }
                         .padding(DS.Spacing.mediumLight)
