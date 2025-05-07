@@ -39,7 +39,8 @@ struct BodyHtmlDocument {
         let lightBundle = colorBundle(for: .light)
         let darkBundle = colorBundle(for: .dark)
 
-        return content
+        return
+            content
             .replacingOccurrences(of: "\n", with: "")
             .replacingOccurrences(of: "{{proton-background-color}}", with: lightBundle.background)
             .replacingOccurrences(of: "{{proton-text-color}}", with: lightBundle.text)
@@ -65,6 +66,17 @@ extension BodyHtmlDocument {
         static let cursorPosition = "cursorPosition"
         static let cursorPositionX = "x"
         static let cursorPositionY = "y"
+        static let imageData = "imageData"
+    }
+
+    enum JSEvent: String, CaseIterable {
+        case bodyResize
+        case focus
+        case editorChanged
+        case cursorPositionChanged
+        case inlineImageRemoved
+        case inlineImageTapped
+        case imagePasted
     }
 
     enum JSFunction: String {
@@ -76,15 +88,6 @@ extension BodyHtmlDocument {
         var callFunction: String {
             "\(self.rawValue)();"
         }
-    }
-
-    enum JSEvent: String, CaseIterable {
-        case bodyResize
-        case focus
-        case editorChanged
-        case cursorPositionChanged
-        case inlineImageRemoved
-        case inlineImageTapped
     }
 }
 
@@ -108,42 +111,42 @@ private extension BodyHtmlDocument {
 private extension BodyHtmlDocument {
 
     var htmlTemplate: String {
-    """
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <title>Proton HTML Editor</title>
-            <meta id="myViewport" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
-            <meta id="myCSP" http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' 'unsafe-eval'">
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <style>
-                \(HtmlPlaceholder.css)
-                /* In the editor, disable drag and drop and contextual menus for images */
-                #\(ID.editor) img {
-                    -webkit-user-drag: none;
-                    -webkit-touch-callout: none;
-                    -webkit-user-select: none;
-                    -webkit-tap-highlight-color: transparent;
-                    user-select: none;
-                    pointer-events: all;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div id="editor_header">
-            </div>
-            <div role="textbox" aria-multiline="true" id="\(ID.editor)" contentEditable="true" placeholder="" class="placeholder">
-                \(HtmlPlaceholder.body)
-            </div>
-            <div id="editor_footer">
-            </div>
-            <script>
-                \(HtmlPlaceholder.script)
-            </script>
-        </body>
-    </html>
-    """
+        """
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <title>Proton HTML Editor</title>
+                <meta id="myViewport" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+                <meta id="myCSP" http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' 'unsafe-eval'">
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                <style>
+                    \(HtmlPlaceholder.css)
+                    /* In the editor, disable drag and drop and contextual menus for images */
+                    #\(ID.editor) img {
+                        -webkit-user-drag: none;
+                        -webkit-touch-callout: none;
+                        -webkit-user-select: none;
+                        -webkit-tap-highlight-color: transparent;
+                        user-select: none;
+                        pointer-events: all;
+                        cursor: pointer;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="editor_header">
+                </div>
+                <div role="textbox" aria-multiline="true" id="\(ID.editor)" contentEditable="true" placeholder="" class="placeholder">
+                    \(HtmlPlaceholder.body)
+                </div>
+                <div id="editor_footer">
+                </div>
+                <script>
+                    \(HtmlPlaceholder.script)
+                </script>
+            </body>
+        </html>
+        """
     }
 }
 
@@ -152,241 +155,262 @@ private extension BodyHtmlDocument {
 private extension BodyHtmlDocument {
 
     var script: String {
-    """
-    "use strict";
-    var html_editor = {};
-    let lastCursorPosition = null;
-    let isProcessingNewLine = false;
+        """
+        "use strict";
+        var html_editor = {};
+        let lastCursorPosition = null;
+        let isProcessingNewLine = false;
 
-    // --------------------
-    // Event listeners
-    // --------------------
+        // --------------------
+        // Event listeners
+        // --------------------
 
-    document.getElementById('\(ID.editor)').addEventListener('focus', function(){
-        window.webkit.messageHandlers.\(JSEvent.focus).postMessage({ "messageHandler": "\(JSEvent.focus)" });
-    });
+        document.getElementById('\(ID.editor)').addEventListener('focus', function(){
+            window.webkit.messageHandlers.\(JSEvent.focus).postMessage({ "messageHandler": "\(JSEvent.focus)" });
+        });
 
-    document.getElementById('\(ID.editor)').addEventListener('input', function(event){
-        window.webkit.messageHandlers.\(JSEvent.editorChanged).postMessage({ "messageHandler": "\(JSEvent.editorChanged)" });
+        document.getElementById('\(ID.editor)').addEventListener('input', function(event){
+            window.webkit.messageHandlers.\(JSEvent.editorChanged).postMessage({ "messageHandler": "\(JSEvent.editorChanged)" });
 
-        handleUpdateCursorPosition(event);
-    });
+            handleUpdateCursorPosition(event);
+        });
 
-    const resizeObserver = new ResizeObserver(entries => {
-        for (const entry of entries) {
-            window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
-                "messageHandler": "\(JSEvent.bodyResize)",
-                "\(EventAttributeKey.height)": entry.contentRect.height
-            });
-        }
-    });
-    resizeObserver.observe(document.querySelector('body'));
+        const resizeObserver = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
+                    "messageHandler": "\(JSEvent.bodyResize)",
+                    "\(EventAttributeKey.height)": entry.contentRect.height
+                });
+            }
+        });
+        resizeObserver.observe(document.querySelector('body'));
 
-    const removeInlinImageObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-            if (mutation.type === 'childList') {
-                mutation.removedNodes.forEach(node => {
-                    if (node.nodeName === 'IMG') {
-                        const src = node.getAttribute('src');
-                        if (src && src.startsWith('cid:')) {
-                            const cid = src.substring(4);
-                            window.webkit.messageHandlers.\(JSEvent.inlineImageRemoved).postMessage({
-                                "messageHandler": "\(JSEvent.inlineImageRemoved)",
-                                "cid": cid
-                            });
+        const removeInlinImageObserver = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'childList') {
+                    mutation.removedNodes.forEach(node => {
+                        if (node.nodeName === 'IMG') {
+                            const src = node.getAttribute('src');
+                            if (src && src.startsWith('cid:')) {
+                                const cid = src.substring(4);
+                                window.webkit.messageHandlers.\(JSEvent.inlineImageRemoved).postMessage({
+                                    "messageHandler": "\(JSEvent.inlineImageRemoved)",
+                                    "cid": cid
+                                });
+                            }
                         }
+                    });
+                }
+            });
+        });
+        removeInlinImageObserver.observe(document.getElementById('\(ID.editor)'), {childList: true, subtree: true});
+
+        document.getElementById('\(ID.editor)').addEventListener('click', function(event) {
+            if (event.target.nodeName === 'IMG') {
+                const src = event.target.getAttribute('src');
+                if (src && src.startsWith('cid:')) {
+                    const cid = src.substring(4);
+                    window.webkit.messageHandlers.\(JSEvent.inlineImageTapped).postMessage({
+                        "messageHandler": "\(JSEvent.inlineImageTapped)",
+                        "cid": cid
+                    });
+                }
+            }
+        });
+
+        document.getElementById('\(ID.editor)').addEventListener('paste', function(event) {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file') {
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64data = event.target.result.split(',')[1];
+                        window.webkit.messageHandlers.\(JSEvent.imagePasted).postMessage({
+                            "messageHandler": "\(JSEvent.imagePasted)",
+                            "\(EventAttributeKey.imageData)": base64data
+                        });
+                    };
+                    reader.readAsDataURL(blob);
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+
+        // --------------------
+        // Public Functions
+        // --------------------
+
+        \(JSFunction.setFocus.rawValue) = function () {
+            document.getElementById('\(ID.editor)').focus();
+        };
+
+        \(JSFunction.getHtmlContent.rawValue) = function () {
+            return document.getElementById('\(ID.editor)').innerHTML;
+        };
+
+        \(JSFunction.insertImages.rawValue) = function (images) {
+            const editor = document.getElementById('\(ID.editor)');
+            const selection = window.getSelection();
+
+            const editorHasCursor = document.activeElement === editor && selection.rangeCount;
+            if (!editorHasCursor) {
+                // Add cursor in editor
+                const range = document.createRange();
+                range.setStart(editor, 0);
+                range.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+            
+            const html = images.map(function(cid) {
+                return `<img src="cid:${cid}" style="max-width: 100%;"><br>`;
+            }).join('');
+
+            document.execCommand('insertHTML', false, html);
+            editor.dispatchEvent(new Event('input'));
+
+            const allImages = editor.getElementsByTagName('img');
+            waitForImagesLoaded(allImages).then(() => {
+                requestAnimationFrame(() => {
+                    updateCursorPosition();
+                });
+            });
+        };
+
+        \(JSFunction.removeImageWithCID.rawValue) = function (cid) {
+            const editor = document.getElementById('\(ID.editor)');
+            const images = editor.getElementsByTagName('img');
+            const exactCidPattern = 'cid:' + cid + '(?![0-9a-zA-Z])'; // Matches exact CID
+            const cidRegex = new RegExp(exactCidPattern);
+            
+            for (let i = images.length - 1; i >= 0; i--) {
+                const img = images[i];
+                const attributes = img.attributes;
+                
+                for (let j = 0; j < attributes.length; j++) {
+                    const attr = attributes[j];
+                    if (cidRegex.test(attr.value)) {
+                        img.remove();
+                        break;
+                    }
+                }
+            }
+            
+            editor.dispatchEvent(new Event('input'));
+        };
+
+        // --------------------
+        // Private Functions
+        // --------------------
+
+        function handleUpdateCursorPosition(event) {
+            var isEnterKeyPress = event.inputType === 'insertParagraph';
+            if (isEnterKeyPress && !isProcessingNewLine) {
+                isProcessingNewLine = true;
+
+                // wait until next render to ensure all layout changes are done
+                requestAnimationFrame(() => {
+                    updateCursorPosition();
+                    isProcessingNewLine = false;
+                });
+            } else if (!isProcessingNewLine) {
+                updateCursorPosition();
+            }
+        }
+
+        /**
+         * Retrieves the cursor's position.
+         *
+         * This function works by temporarily inserting a zero-width character (`\\u200b`) at the cursor's
+         * current position, then measuring the position of that character. The temporary span is removed
+         * afterward, and the selection is restored to its original state.
+         */
+        function getCursorCoordinates() {
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return null;
+
+            const range = selection.getRangeAt(0);
+            if (!range.collapsed) return null;
+
+            // Get the node at cursor position
+            const node = range.startContainer;
+            const offset = range.startOffset;
+
+            // Create a temporary span with a zero-width character
+            const span = document.createElement('span');
+            span.appendChild(document.createTextNode('\\u200b'));
+            
+            // Insert the span
+            range.insertNode(span);
+            
+            // Get position
+            let rect = span.getBoundingClientRect();
+            
+            // If we got a zero position and we're at the start/end of a node,
+            // try to get position from adjacent content
+            if (rect.y === 0) {
+                const previousNode = node.previousSibling;
+                const nextNode = node.nextSibling;
+                
+                if (offset === 0 && previousNode) {
+                    // Try to get position from end of previous node
+                    rect = previousNode.getBoundingClientRect();
+                    if (rect.y !== 0) {
+                        rect = {x: rect.x, y: rect.bottom};
+                    }
+                } else if (offset === node.length && nextNode) {
+                    // Try to get position from start of next node
+                    rect = nextNode.getBoundingClientRect();
+                }
+            }
+            
+            // Remove the span but keep the selection
+            const parent = span.parentNode;
+            const next = span.nextSibling;
+            parent.removeChild(span);
+            
+            // Restore selection
+            const newRange = document.createRange();
+            newRange.setStart(next || parent, 0);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+            
+            // Only return position if we actually found one
+            return rect.y === 0 ? null : {x: rect.x, y: rect.y};
+        }
+
+        function updateCursorPosition() {
+            const position = getCursorCoordinates();
+            if (!position) return;
+            
+            if (position) {
+                window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
+                    "messageHandler": "\(JSEvent.cursorPositionChanged)",
+                    "\(EventAttributeKey.cursorPosition)": {
+                        "\(EventAttributeKey.cursorPositionX)": position.x,
+                        "\(EventAttributeKey.cursorPositionY)": position.y
                     }
                 });
             }
-        });
-    });
-    removeInlinImageObserver.observe(document.getElementById('\(ID.editor)'), {childList: true, subtree: true});
+        }
 
-    document.getElementById('\(ID.editor)').addEventListener('click', function(event) {
-        if (event.target.nodeName === 'IMG') {
-            const src = event.target.getAttribute('src');
-            if (src && src.startsWith('cid:')) {
-                const cid = src.substring(4);
-                window.webkit.messageHandlers.\(JSEvent.inlineImageTapped).postMessage({
-                    "messageHandler": "\(JSEvent.inlineImageTapped)",
-                    "cid": cid
+        function waitForImagesLoaded(images) {
+            return Promise.all(Array.from(images).map(img => {
+                if (img.complete) {
+                    return Promise.resolve();
+                }
+                return new Promise(resolve => {
+                    img.onload = resolve;
+                    img.onerror = resolve; // Handle load errors gracefully
                 });
-            }
+            }));
         }
-    });
 
-    // --------------------
-    // Public Functions
-    // --------------------
-
-    \(JSFunction.setFocus.rawValue) = function () {
-        document.getElementById('\(ID.editor)').focus();
-    };
-
-    \(JSFunction.getHtmlContent.rawValue) = function () {
-        return document.getElementById('\(ID.editor)').innerHTML;
-    };
-
-    \(JSFunction.insertImages.rawValue) = function (images) {
-        const editor = document.getElementById('\(ID.editor)');
-        const selection = window.getSelection();
-
-        const editorHasCursor = document.activeElement === editor && selection.rangeCount;
-        if (!editorHasCursor) {
-            // Add cursor in editor
-            const range = document.createRange();
-            range.setStart(editor, 0);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-        
-        const html = images.map(function(cid) {
-            return `<img src="cid:${cid}" style="max-width: 100%;"><br>`;
-        }).join('');
-
-        document.execCommand('insertHTML', false, html);
-        editor.dispatchEvent(new Event('input'));
-
-        const allImages = editor.getElementsByTagName('img');
-        waitForImagesLoaded(allImages).then(() => {
-            requestAnimationFrame(() => {
-                updateCursorPosition();
-            });
-        });
-    };
-
-    \(JSFunction.removeImageWithCID.rawValue) = function (cid) {
-        const editor = document.getElementById('\(ID.editor)');
-        const images = editor.getElementsByTagName('img');
-        const exactCidPattern = 'cid:' + cid + '(?![0-9a-zA-Z])'; // Matches exact CID
-        const cidRegex = new RegExp(exactCidPattern);
-        
-        for (let i = images.length - 1; i >= 0; i--) {
-            const img = images[i];
-            const attributes = img.attributes;
-            
-            for (let j = 0; j < attributes.length; j++) {
-                const attr = attributes[j];
-                if (cidRegex.test(attr.value)) {
-                    img.remove();
-                    break;
-                }
-            }
-        }
-        
-        editor.dispatchEvent(new Event('input'));
-    };
-
-    // --------------------
-    // Private Functions
-    // --------------------
-
-    function handleUpdateCursorPosition(event) {
-        var isEnterKeyPress = event.inputType === 'insertParagraph';
-        if (isEnterKeyPress && !isProcessingNewLine) {
-            isProcessingNewLine = true;
-
-            // wait until next render to ensure all layout changes are done
-            requestAnimationFrame(() => {
-                updateCursorPosition();
-                isProcessingNewLine = false;
-            });
-        } else if (!isProcessingNewLine) {
-            updateCursorPosition();
-        }
-    }
-
-    /**
-     * Retrieves the cursor's position.
-     *
-     * This function works by temporarily inserting a zero-width character (`\\u200b`) at the cursor's
-     * current position, then measuring the position of that character. The temporary span is removed
-     * afterward, and the selection is restored to its original state.
-     */
-    function getCursorCoordinates() {
-        const selection = window.getSelection();
-        if (!selection.rangeCount) return null;
-
-        const range = selection.getRangeAt(0);
-        if (!range.collapsed) return null;
-
-        // Get the node at cursor position
-        const node = range.startContainer;
-        const offset = range.startOffset;
-
-        // Create a temporary span with a zero-width character
-        const span = document.createElement('span');
-        span.appendChild(document.createTextNode('\\u200b'));
-        
-        // Insert the span
-        range.insertNode(span);
-        
-        // Get position
-        let rect = span.getBoundingClientRect();
-        
-        // If we got a zero position and we're at the start/end of a node,
-        // try to get position from adjacent content
-        if (rect.y === 0) {
-            const previousNode = node.previousSibling;
-            const nextNode = node.nextSibling;
-            
-            if (offset === 0 && previousNode) {
-                // Try to get position from end of previous node
-                rect = previousNode.getBoundingClientRect();
-                if (rect.y !== 0) {
-                    rect = {x: rect.x, y: rect.bottom};
-                }
-            } else if (offset === node.length && nextNode) {
-                // Try to get position from start of next node
-                rect = nextNode.getBoundingClientRect();
-            }
-        }
-        
-        // Remove the span but keep the selection
-        const parent = span.parentNode;
-        const next = span.nextSibling;
-        parent.removeChild(span);
-        
-        // Restore selection
-        const newRange = document.createRange();
-        newRange.setStart(next || parent, 0);
-        newRange.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(newRange);
-        
-        // Only return position if we actually found one
-        return rect.y === 0 ? null : {x: rect.x, y: rect.y};
-    }
-
-    function updateCursorPosition() {
-        const position = getCursorCoordinates();
-        if (!position) return;
-        
-        if (position) {
-            window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
-                "messageHandler": "\(JSEvent.cursorPositionChanged)",
-                "\(EventAttributeKey.cursorPosition)": {
-                    "\(EventAttributeKey.cursorPositionX)": position.x,
-                    "\(EventAttributeKey.cursorPositionY)": position.y
-                }
-            });
-        }
-    }
-
-    function waitForImagesLoaded(images) {
-        return Promise.all(Array.from(images).map(img => {
-            if (img.complete) {
-                return Promise.resolve();
-            }
-            return new Promise(resolve => {
-                img.onload = resolve;
-                img.onerror = resolve; // Handle load errors gracefully
-            });
-        }));
-    }
-
-    """
+        """
     }
 }
 

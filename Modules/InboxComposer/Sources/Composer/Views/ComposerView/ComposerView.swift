@@ -123,6 +123,8 @@ struct ComposerView: View {
                         model.endEditingRecipients()
                     case .onBodyChange(let body):
                         model.updateBody(value: body)
+                    case .onImagePasted(let image):
+                        Task { await model.addAttachments(image: image) }
                     case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
                         Task { await model.removeAttachment(cid: cid) }
                     case .onInlineImageDispositionChangeRequested:
