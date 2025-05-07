@@ -27,7 +27,7 @@ final class ConfirmPINStoreTests {
     @Test
     func validPINIsEntered_AndConfirmButtonIsTapped_ItNavigatesToAppProtectionSelectionScreen() async {
         router.stack = [
-            .appProtection(.pin),
+            .appProtection,
             .setPIN,
             .confirmPIN(pin: "1234"),
         ]
@@ -36,14 +36,14 @@ final class ConfirmPINStoreTests {
         await sut.handle(action: .pinTyped("1234"))
         await sut.handle(action: .confirmButtonTapped)
 
-        #expect(router.stack == [.appProtection(.pin)])
+        #expect(router.stack == [.appProtection])
         #expect(sut.state.repeatedPINValidation == .ok)
     }
 
     @Test
     func noMatchingPINIsEntered_AndConfirmButtonIsTapped_ItDisplaysValidationError() async throws {
         router.stack = [
-            .appProtection(.pin),
+            .appProtection,
             .setPIN,
             .confirmPIN(pin: "1234"),
         ]

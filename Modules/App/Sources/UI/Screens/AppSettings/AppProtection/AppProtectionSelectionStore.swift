@@ -45,7 +45,11 @@ class AppProtectionSelectionStore: StateStore {
             let appProtection = await currentAppProtection()
             state = state
                 .copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
+                .copy(\.selectedAppProtection, to: appProtection)
         case .selected(let selectedMethod):
+            guard selectedMethod.appProtection != state.selectedAppProtection else {
+                return
+            }
             switch selectedMethod {
             case .none:
                 break
