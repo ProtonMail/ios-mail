@@ -23,7 +23,7 @@ import SwiftUI
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
-    case appProtection(AppProtection)
+    case appProtection
     case setPIN
     case confirmPIN(pin: String)
 
@@ -39,8 +39,8 @@ enum SettingsRoute: Routable {
                 .navigationBarBackButtonHidden(true)
         case .appSettings:
             AppSettingsScreen()
-        case .appProtection(let appProtection):
-            AppProtectionSelectionScreen(state: .initial(appProtection: appProtection))
+        case .appProtection:
+            AppProtectionSelectionScreen()
         case .setPIN:
             SetPINScreen()
         case .confirmPIN(let pin):

@@ -65,7 +65,7 @@ struct AppSettingsScreen: View {
                                     title: L10n.Settings.App.protection,
                                     icon: DS.SFSymbols.chevronRight,
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
-                                    action: { toastStateStore.present(toast: .comingSoon) }
+                                    action: { router.go(to: .appProtection) }
                                 )
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {

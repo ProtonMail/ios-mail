@@ -15,46 +15,50 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 struct AppProtectionSelectionScreen: View {
-    @StateObject var store: AppProtectionSelectionStore
+    private let state: AppProtectionSelectionState
+    @EnvironmentObject var router: Router<SettingsRoute>
 
-    init(state: AppProtectionSelectionState) {
-        _store = .init(wrappedValue: .init(state: state))
+    init(state: AppProtectionSelectionState = .initial) {
+        self.state = state
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: .zero) {
-                FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
-                    FormList(collection: store.state.availableAppProtectionMethods) { viewModel in
-                        FormSmallButton(
-                            title: viewModel.type.name,
-                            rightSymbol: viewModel.isSelected ? .checkmark : nil
-                        ) {
-                            store.handle(action: .selected(viewModel.type))
+        StoreView(store: AppProtectionSelectionStore(state: state, router: router)) { state, store in
+            ScrollView {
+                VStack(spacing: .zero) {
+                    FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
+                        FormList(collection: state.availableAppProtectionMethods) { viewModel in
+                            FormSmallButton(
+                                title: viewModel.type.name,
+                                rightSymbol: viewModel.isSelected ? .checkmark : nil
+                            ) {
+                                store.handle(action: .selected(viewModel.type))
+                            }
                         }
                     }
-                }
-                if store.state.shouldShowChangePasswordButton {
-                    FormSection {
-                        FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
-                            // FIXME: - Trigger set new password flow
+                    if state.shouldShowChangePasswordButton {
+                        FormSection {
+                            FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
+                                // FIXME: - Trigger set new password flow
+                            }
+                            .applyRoundedRectangleStyle()
                         }
-                        .applyRoundedRectangleStyle()
                     }
-                }
-                Spacer()
-            }.animation(.easeInOut, value: store.state.shouldShowChangePasswordButton)
+                    Spacer()
+                }.animation(.easeInOut, value: state.shouldShowChangePasswordButton)
+            }
+            .padding(.horizontal, DS.Spacing.large)
+            .background(DS.Color.BackgroundInverted.norm)
+            .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear { store.handle(action: .onAppear) }
         }
-        .padding(.horizontal, DS.Spacing.large)
-        .background(DS.Color.BackgroundInverted.norm)
-        .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
-        .navigationBarTitleDisplayMode(.inline)
-        .onLoad { store.handle(action: .onLoad) }
     }
 
 }
@@ -67,7 +71,7 @@ struct AppProtectionSelectionScreen: View {
                 availableAppProtectionMethods: [
                     .init(type: .none, isSelected: false),
                     .init(type: .pin, isSelected: false),
-                    .init(type: .faceID, isSelected: true)
+                    .init(type: .faceID, isSelected: true),
                 ]
             )
         )

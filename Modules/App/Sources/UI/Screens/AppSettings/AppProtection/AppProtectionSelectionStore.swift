@@ -22,36 +22,53 @@ import LocalAuthentication
 
 class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState
+    private let router: Router<SettingsRoute>
+    private let appSettingsRepository: AppSettingsRepository
     private let laContext: () -> LAContext
 
     init(
         state: AppProtectionSelectionState,
+        router: Router<SettingsRoute>,
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
         laContext: @escaping () -> LAContext = { .init() }
     ) {
         self.state = state
+        self.router = router
+        self.appSettingsRepository = appSettingsRepository
         self.laContext = laContext
     }
 
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .onLoad:
+        case .onAppear:
+            let appProtection = await currentAppProtection()
             state = state
-                .copy(
-                    \.availableAppProtectionMethods,
-                     to: availableAppProtectionMethods(selected: state.selectedAppProtection)
-                )
+                .copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
         case .selected(let selectedMethod):
-            state = state
-                .copy(\.selectedAppProtection, to: selectedMethod.appProtection)
-                .copy(
-                    \.availableAppProtectionMethods,
-                     to: availableAppProtectionMethods(selected: selectedMethod.appProtection)
-                )
+            switch selectedMethod {
+            case .none:
+                break
+            case .pin:
+                router.go(to: .setPIN)
+            case .faceID, .touchID:
+                break
+            }
         }
     }
 
-    private func availableAppProtectionMethods(selected: AppProtection) -> [AppProtectionMethodViewModel] {
+    @MainActor
+    private func currentAppProtection() async -> AppProtection? {
+        do {
+            return try await appSettingsRepository.getAppSettings().get().protection
+        } catch {
+            AppLogger.log(message: "") // FIXME: - Message
+            return nil
+        }
+    }
+
+    @MainActor
+    private func availableAppProtectionMethods(selected: AppProtection?) -> [AppProtectionMethodViewModel] {
         let availableMethods: [AppProtectionMethodViewModel.MethodType] =
             [.none, .pin] + [supportedBiometry()].compactMap { $0 }
 
@@ -63,6 +80,7 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
+    @MainActor
     private func supportedBiometry() -> AppProtectionMethodViewModel.MethodType? {
         switch SupportedBiometry.onDevice(context: laContext()) {
         case .none:

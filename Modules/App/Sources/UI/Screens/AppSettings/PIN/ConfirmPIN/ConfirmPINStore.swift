@@ -27,6 +27,7 @@ class ConfirmPINStore: StateStore {
         self.router = router
     }
 
+    @MainActor
     func handle(action: ConfirmPINAction) async {
         switch action {
         case .pinTyped(let repeatedPIN):
@@ -35,9 +36,12 @@ class ConfirmPINStore: StateStore {
                 .copy(\.repeatedPINValidation, to: .ok)
         case .confirmButtonTapped:
             let doesPINMatch = state.pin == state.repeatedPIN
-            state = state
+            state =
+                state
                 .copy(\.repeatedPINValidation, to: doesPINMatch ? .ok : .failure("The PIN codes must match!"))
-            router.goBack(to: .appProtection(.pin)) // FIXME: - Remove associated value
+            if doesPINMatch {
+                router.goBack(to: .appProtection)
+            }
         }
     }
 }

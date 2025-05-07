@@ -49,7 +49,7 @@ struct ConfirmPINScreen: View {
 
     private func pin(state: ConfirmPINState, store: ConfirmPINStore) -> Binding<String> {
         .init(
-            get: { state.pin },
+            get: { state.repeatedPIN },
             set: { pin in store.handle(action: .pinTyped(pin)) }
         )
     }

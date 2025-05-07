@@ -145,7 +145,6 @@ private extension FormTextInput.InputType {
 struct FormSecureTextInput: View {
     private let title: LocalizedStringResource
     @Binding private var text: String
-    @State var pin: String = .empty
     @State var secureEntry: Bool = true
 
     init(
@@ -159,19 +158,8 @@ struct FormSecureTextInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             HStack(spacing: DS.Spacing.mediumLight) {
-                ZStack {
-                    SecureField(String.empty, text: $pin)
-                        .accentColor(DS.Color.Text.accent)
-                        .frame(height: 22)
-                        .opacity(secureEntry ? 1 : 0)
-                        .disabled(!secureEntry)
-
-                    TextField(String.empty, text: $pin)
-                        .accentColor(DS.Color.Text.accent)
-                        .frame(height: 22)
-                        .opacity(secureEntry ? 0 : 1)
-                        .disabled(secureEntry)
-                }
+                ToggleSecureField(text: $text, isSecure: $secureEntry)
+                    .frame(height: 22)
                 Button(action: { secureEntry.toggle() }) {
                     Image(systemName: secureEntry ? "eye" : "eye.slash")
                         .foregroundStyle(DS.Color.Text.hint)
@@ -182,4 +170,43 @@ struct FormSecureTextInput: View {
         .frame(maxWidth: .infinity)
     }
 
+}
+
+struct ToggleSecureField: UIViewRepresentable {
+    @Binding var text: String
+    @Binding var isSecure: Bool
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField()
+        textField.delegate = context.coordinator
+        textField.isSecureTextEntry = isSecure
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.borderStyle = .none
+        textField.keyboardType = .numberPad
+        textField.tintColor = UIColor(DS.Color.Text.accent)
+        textField.addTarget(context.coordinator, action: #selector(Coordinator.textChanged), for: .editingChanged)
+        return textField
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        uiView.text = text
+        uiView.isSecureTextEntry = isSecure
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: ToggleSecureField
+
+        init(_ parent: ToggleSecureField) {
+            self.parent = parent
+        }
+
+        @objc func textChanged(_ sender: UITextField) {
+            parent.text = sender.text ?? ""
+        }
+    }
 }

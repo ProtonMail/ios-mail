@@ -27,6 +27,7 @@ class SetPINStore: StateStore {
         self.router = router
     }
 
+    @MainActor
     func handle(action: SetPINAction) async {
         switch action {
         case .pinTyped(let pin):
@@ -34,7 +35,7 @@ class SetPINStore: StateStore {
                 .copy(\.pin, to: pin)
                 .copy(\.pinValidation, to: .ok)
         case .cancelTapped:
-            router.go(to: .appProtection(.pin)) // FIXME: - Remove associated value
+            router.go(to: .appProtection)
         case .nextTapped:
             if state.pin.count >= 4 {
                 router.go(to: .confirmPIN(pin: state.pin))
