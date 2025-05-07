@@ -30,7 +30,9 @@ class ConfirmPINStore: StateStore {
     func handle(action: ConfirmPINAction) async {
         switch action {
         case .pinTyped(let repeatedPIN):
-            state = state.copy(\.repeatedPIN, to: repeatedPIN)
+            state = state
+                .copy(\.repeatedPIN, to: repeatedPIN)
+                .copy(\.repeatedPINValidation, to: .ok)
         case .confirmButtonTapped:
             let doesPINMatch = state.pin == state.repeatedPIN
             // FIXME: - Add settings PIN code in Rust SDK

@@ -58,7 +58,9 @@ final class ConfirmPINStoreTests {
     }
 }
 
-private extension FormTextInput.ValidationStatus {
+
+// FIXME: - Move somewhere
+extension FormTextInput.ValidationStatus {
 
     var failure: LocalizedStringResource? {
         if case let .failure(text) = self {
