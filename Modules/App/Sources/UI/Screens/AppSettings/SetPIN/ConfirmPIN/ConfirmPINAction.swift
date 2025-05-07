@@ -15,34 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
-import SwiftUI
-
-struct ConfirmPINScreen: View {
-    @State private var pin: String = .empty
-
-    var body: some View {
-        EnterPINView(
-            title: "Repeat PIN code",
-            text: $pin,
-            validation: .noValidation
-        )
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: { }) {
-                    Text("Confirm")
-                        .fontWeight(.bold)
-                        .foregroundStyle(DS.Color.Text.accent)
-                }
-            }
-        }
-        .navigationTitle("Repeat PIN code")
-    }
-
-}
-
-#Preview {
-    NavigationStack {
-        ConfirmPINScreen()
-    }
+enum ConfirmPINAction {
+    case pinTyped(String)
+    case confirmButtonTapped
 }

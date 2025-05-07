@@ -15,20 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
-import SwiftUI
-import Testing
+import InboxCore
 
-@MainActor
-struct ConfirmPINScreenSnapshotTests {
+struct ConfirmPINState: Copying {
+    let pin: String
+    var repeatedPIN: String
+    var repeatedPINValidation: FormTextInput.ValidationStatus
+}
 
-    @Test
-    func screenLayoutsCorrectly() {
-        let sut = NavigationStack {
-            ConfirmPINScreen(pin: "1234")
-        }
-        assertSnapshotsOnIPhoneX(of: sut)
+extension ConfirmPINState {
+    static func initial(pin: String) -> Self {
+        .init(pin: pin, repeatedPIN: .empty, repeatedPINValidation: .ok)
     }
-
 }

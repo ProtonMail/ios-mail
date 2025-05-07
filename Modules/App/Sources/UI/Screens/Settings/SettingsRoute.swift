@@ -24,6 +24,8 @@ enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
     case appProtection(AppProtection)
+    case setPIN
+    case confirmPIN(pin: String)
 
     @MainActor @ViewBuilder
     func view() -> some View {
@@ -39,6 +41,10 @@ enum SettingsRoute: Routable {
             AppSettingsScreen()
         case .appProtection(let appProtection):
             AppProtectionSelectionScreen(state: .initial(appProtection: appProtection))
+        case .setPIN:
+            SetPINScreen()
+        case .confirmPIN(let pin):
+            ConfirmPINScreen(pin: pin)
         }
     }
 }
