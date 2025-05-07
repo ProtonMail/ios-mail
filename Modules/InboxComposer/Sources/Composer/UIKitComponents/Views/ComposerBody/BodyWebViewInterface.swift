@@ -28,6 +28,7 @@ final class BodyWebViewInterface: NSObject {
         case onCursorPositionChange(position: CGPoint)
         case onInlineImageRemoved(cid: String)
         case onInlineImageTapped(cid: String)
+        case onImagePasted(image: Data)
     }
 
     let webView: WKWebView
@@ -88,11 +89,11 @@ final class BodyWebViewInterface: NSObject {
             }
         }
     }
-    
+
     @MainActor
     func removeImage(containing cid: String) async {
         let function = "\(BodyHtmlDocument.JSFunction.removeImageWithCID.rawValue)('\(cid)');"
-        
+
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
@@ -129,6 +130,9 @@ extension BodyWebViewInterface: WKScriptMessageHandler {
             if let cid = userInfo["cid"] as? String {
                 onEvent?(.onInlineImageTapped(cid: cid))
             }
+        case .imagePasted:
+            guard let data = readImageData(from: userInfo) else { return }
+            onEvent?(.onImagePasted(image: data))
         }
     }
 
@@ -140,5 +144,16 @@ extension BodyWebViewInterface: WKScriptMessageHandler {
             return nil
         }
         return CGPoint(x: x, y: y)
+    }
+
+    private func readImageData(from dict: [String: Any]) -> Data? {
+        guard
+            let imageBase64 = dict[BodyHtmlDocument.EventAttributeKey.imageData] as? String,
+            let data = Data(base64Encoded: imageBase64)
+        else {
+            AppLogger.log(message: "no image data retrieved", category: .composer, isError: true)
+            return nil
+        }
+        return data
     }
 }

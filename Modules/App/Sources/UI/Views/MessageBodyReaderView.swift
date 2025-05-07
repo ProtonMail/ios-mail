@@ -20,6 +20,10 @@ import InboxDesignSystem
 import SwiftUI
 import WebKit
 
+extension EnvironmentValues {
+    @Entry var forceLightModeInMessageBody: Bool = false
+}
+
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
@@ -47,11 +51,16 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
+#if targetEnvironment(simulator)
+        webView.isInspectable = true
+#endif
+
         return webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateUIView(uiView)
+        uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
     }
 
     func updateUIView(_ view: WKWebView) {
