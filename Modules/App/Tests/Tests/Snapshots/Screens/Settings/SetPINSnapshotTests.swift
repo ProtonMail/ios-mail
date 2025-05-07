@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxSnapshotTesting
 import SwiftUI
 import Testing
@@ -27,6 +28,7 @@ struct SetPINScreenSnapshotTests {
     func screenLayoutsCorrectly() {
         let sut = NavigationStack {
             SetPINScreen()
+                .environmentObject(Router<SettingsRoute>())
         }
         assertSnapshotsOnIPhoneX(of: sut)
     }
