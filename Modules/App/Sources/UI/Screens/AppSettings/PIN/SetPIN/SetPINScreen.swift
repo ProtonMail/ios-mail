@@ -19,50 +19,6 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-struct SetPINState: Copying {
-    var pin: String
-    var pinValidation: FormTextInput.ValidationStatus
-}
-
-extension SetPINState {
-    static var initial: Self {
-        .init(pin: .empty, pinValidation: .ok)
-    }
-}
-
-enum SetPINAction {
-    case pinTyped(String)
-    case cancelTapped
-    case nextTapped
-}
-
-class SetPINStore: StateStore {
-    @Published var state: SetPINState
-    let router: Router<SettingsRoute>
-
-    init(state: SetPINState, router: Router<SettingsRoute>) {
-        self.state = state
-        self.router = router
-    }
-
-    func handle(action: SetPINAction) async {
-        switch action {
-        case .pinTyped(let pin):
-            state = state
-                .copy(\.pin, to: pin)
-                .copy(\.pinValidation, to: .ok)
-        case .cancelTapped:
-            router.go(to: .appProtection(.pin)) // FIXME: -
-        case .nextTapped:
-            if state.pin.count >= 4 {
-                router.go(to: .confirmPIN(pin: state.pin))
-            } else {
-                state = state.copy(\.pinValidation, to: .failure("PIN is too short"))
-            }
-        }
-    }
-}
-
 struct SetPINScreen: View {
     @EnvironmentObject var router: Router<SettingsRoute>
 
