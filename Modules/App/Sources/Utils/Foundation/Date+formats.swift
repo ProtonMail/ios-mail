@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 extension Date {
 
@@ -93,7 +94,10 @@ extension Date {
      ```
      */
     func remainingTimeFromNow() -> DateComponents {
-        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: .now, to: self)
+        let now = DateEnvironment.currentDate()
+        let calendar = DateEnvironment.calendar
+
+        return calendar.dateComponents([.year, .month, .day, .hour, .minute], from: now, to: self)
     }
 
     /**

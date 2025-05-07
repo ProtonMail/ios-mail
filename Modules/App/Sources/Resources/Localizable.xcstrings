@@ -3300,7 +3300,7 @@
     "This message is from a mailing list." : {
       "comment" : "Banner indicating that the email is from a mailing list."
     },
-    "This message will auto-delete in %lld days" : {
+    "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted."
     },
     "This message will auto-delete in %u days" : {
@@ -3325,7 +3325,8 @@
             }
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "This message will be sent %@" : {
       "comment" : "Banner showing the scheduled send time for an email."
