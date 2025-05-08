@@ -1639,6 +1639,9 @@
     "Migration in progress" : {
       "comment" : "Shown under activity progress indicator"
     },
+    "Min 4 characters and max 21 characters" : {
+      "comment" : "Information displayed under the PIN input."
+    },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
       "localizations" : {
