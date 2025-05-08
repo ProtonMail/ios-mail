@@ -40,7 +40,7 @@ struct FormTextInput: View {
 
     private let title: LocalizedStringResource
     private let placeholder: LocalizedStringResource
-    private let footer: LocalizedStringResource
+    private let footer: LocalizedStringResource?
     private let inputType: InputType
     @Binding private var text: String
     @Binding private var validation: ValidationStatus
@@ -49,7 +49,7 @@ struct FormTextInput: View {
     init(
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
-        footer: LocalizedStringResource = .init(stringLiteral: .empty),
+        footer: LocalizedStringResource? = nil,
         text: Binding<String>,
         validation: Binding<ValidationStatus>,
         inputType: InputType
@@ -89,7 +89,7 @@ struct FormTextInput: View {
                     .foregroundStyle(DS.Color.Notification.error)
                     .padding(.horizontal, DS.Spacing.large)
                     .transition(.move(edge: .top).combined(with: .opacity))
-            } else {
+            } else if let footer {
                 FormFootnoteText(footer)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, DS.Spacing.large)
