@@ -21,7 +21,7 @@ DEVELOPER_KEYCHAIN_PASSWORD = "TUFJTF9JT1NfQ0VSVElGSUNBVEVfS0VZQ0hBSU4="
 CERTIFICATE_PATH = "Certificates.p12"
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
-TEST_DEVICE = "iPhone 16 Pro (18.2)"
+TEST_DEVICE = "iPhone 16 Pro (18.4)"
 UNIT_TEST_SCHEME = "ProtonMailTests"
 UI_TEST_SCHEME = "ProtonMailUITests"
 
@@ -29,7 +29,7 @@ ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
 def select_xcode
   xcodes(
-    version: '16.2',
+    version: '16.3',
     select_for_current_build_only: true,
   )
 end

@@ -55,7 +55,7 @@ stages:
   - cd ..
 
 .macos_job:
-  image: team-mail:2
+  image: team-mail:3
   cache:
     - key:
         files:
