@@ -25,7 +25,7 @@ import Testing
 struct ConfirmPINScreenSnapshotTests {
 
     @Test
-    func screenLayoutsCorrectly() {
+    func confirmPINScreenLayoutsCorrectly() {
         let sut = NavigationStack {
             ConfirmPINScreen(pin: "1234")
                 .environmentObject(Router<SettingsRoute>())

@@ -25,7 +25,7 @@ import Testing
 struct SetPINScreenSnapshotTests {
 
     @Test
-    func screenLayoutsCorrectly() {
+    func setPINScreenLayoutsCorrectly() {
         let sut = NavigationStack {
             SetPINScreen()
                 .environmentObject(Router<SettingsRoute>())
