@@ -17,6 +17,189 @@
 
 import SwiftUI
 import InboxCore
+import InboxDesignSystem
+
+struct PINValidator {
+    private let pinScreenType: PINScreenType
+
+    init(pinScreenType: PINScreenType) {
+        self.pinScreenType = pinScreenType
+    }
+
+    // FIXME: - Add Rust SDK validation to it
+    func validate(pin: String) -> FormTextInput.ValidationStatus {
+        switch pinScreenType {
+        case .set:
+            setPINValidation(pin: pin)
+        case .confirm(let repeatedPIN):
+            confirmPINValidation(pin: pin, repeatedPIN: repeatedPIN)
+        case .verify:
+            .ok
+        }
+    }
+
+    private func setPINValidation(pin: String) -> FormTextInput.ValidationStatus {
+        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort)
+    }
+
+    private func confirmPINValidation(pin: String, repeatedPIN: String) -> FormTextInput.ValidationStatus {
+        pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError)
+    }
+}
+
+struct PINActionPerformer {
+    enum Action {
+        case changePIN(old: String, new: String)
+        case verify(pin: String)
+    }
+
+    func perform(action: Action) async {
+        switch action {
+        case .changePIN(let old, let new):
+            // FIXME: - Call Rust to change PIN
+        case .verify(let pin):
+            // FIXME: - Call Rust to verify PIN
+        }
+    }
+}
+
+enum PINScreenType: Hashable {
+    case set
+    case confirm(pin: String)
+    case verify
+
+    var pinInputTitle: LocalizedStringResource {
+        switch self {
+        case .set:
+            L10n.Settings.App.setPINInputTitle
+        case .confirm:
+            L10n.Settings.App.repeatPIN
+        case .verify:
+            ""
+        }
+    }
+
+    var screenTitle: LocalizedStringResource {
+        switch self {
+        case .set:
+            L10n.Settings.App.setPINScreenTitle
+        case .confirm:
+            L10n.Settings.App.repeatPIN
+        case .verify:
+            ""
+        }
+    }
+
+    var trailingButtonTitle: LocalizedStringResource {
+        switch self {
+        case .set:
+            L10n.Common.next
+        case .confirm:
+            L10n.Common.confirm
+        case .verify:
+            ""
+        }
+    }
+
+}
+
+struct PINScreenState: Copying {
+    var pin: String
+    var pinValidation: FormTextInput.ValidationStatus
+    var pinInputTitle: LocalizedStringResource
+    var trailingButtonTitle: LocalizedStringResource
+    var screenTitle: LocalizedStringResource
+}
+
+extension PINScreenState {
+    static func initial(type: PINScreenType) -> Self {
+        .init(
+            pin: .empty,
+            pinValidation: .ok,
+            pinInputTitle: type.pinInputTitle,
+            trailingButtonTitle: type.trailingButtonTitle,
+            screenTitle: type.screenTitle
+        )
+    }
+}
+
+enum PINScreenAction {
+    case pinTyped(String)
+    case trailingButtonTapped
+}
+
+enum PINScreenCompletion: Hashable {
+    case entered(pin: String)
+    case confirmed(pin: String, repeatedPIN: String)
+    case verified
+}
+
+class PINStateStore: StateStore {
+    @Published var state: PINScreenState
+    private let pinScreenValidator: PINValidator
+    private let type: PINScreenType
+
+    init(state: PINScreenState, type: PINScreenType) {
+        self.state = state
+        self.type = type
+        self.pinScreenValidator = .init(pinScreenType: type)
+    }
+
+    @MainActor
+    func handle(action: PINScreenAction) async {
+        switch action {
+        case .pinTyped(let pin):
+            state = state.copy(\.pin, to: pin)
+                .copy(\.pinValidation, to: .ok)
+        case .trailingButtonTapped:
+            state = state.copy(\.pinValidation, to: pinScreenValidator.validate(pin: state.pin))
+            if state.pinValidation.isSuccess {
+                switch type {
+                case .set:
+
+                case .confirm(let pin):
+
+                case .verify:
+
+                }
+            }
+        }
+    }
+}
+
+struct PINScreen: View {
+    @StateObject var store: PINStateStore
+
+    init(type: PINScreenType) {
+        self._store = .init(wrappedValue: .init(state: .initial(type: type), type: type))
+    }
+
+    var body: some View {
+        EnterPINView(
+            title: L10n.Settings.App.repeatPIN,
+            text: pin,
+            validation: $store.state.pinValidation
+        )
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { store.handle(action: .trailingButtonTapped) }) {
+                    Text(L10n.Common.confirm)
+                        .fontWeight(.bold)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+        }
+        .navigationTitle(L10n.Settings.App.repeatPIN.string)
+    }
+
+    private var pin: Binding<String> {
+        .init(
+            get: { store.state.pin },
+            set: { pin in store.handle(action: .pinTyped(pin)) }
+        )
+    }
+
+}
 
 class ConfirmPINStore: StateStore {
     @Published var state: ConfirmPINState

@@ -36,6 +36,15 @@ struct FormTextInput: View {
                 true
             }
         }
+
+        var isSuccess: Bool {
+            switch self {
+            case .ok:
+                true
+            case .failure:
+                false
+            }
+        }
     }
 
     private let title: LocalizedStringResource

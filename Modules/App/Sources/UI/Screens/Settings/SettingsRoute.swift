@@ -19,13 +19,13 @@ import InboxCore
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+import Combine
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
     case appProtection
-    case setPIN
-    case confirmPIN(pin: String)
+    case pin(type: PINScreenType)
 
     @MainActor @ViewBuilder
     func view() -> some View {
@@ -41,10 +41,8 @@ enum SettingsRoute: Routable {
             AppSettingsScreen()
         case .appProtection:
             AppProtectionSelectionScreen()
-        case .setPIN:
-            SetPINScreen()
-        case .confirmPIN(let pin):
-            ConfirmPINScreen(pin: pin)
+        case .pin(let type):
+            PINScreen(type: type)
         }
     }
 }
