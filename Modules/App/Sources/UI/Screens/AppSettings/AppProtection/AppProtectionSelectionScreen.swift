@@ -22,14 +22,23 @@ import SwiftUI
 
 struct AppProtectionSelectionScreen: View {
     private let state: AppProtectionSelectionState
+    private let appSettingsRepository: AppSettingsRepository
     @EnvironmentObject var router: Router<SettingsRoute>
 
-    init(state: AppProtectionSelectionState = .initial) {
+    init(
+        state: AppProtectionSelectionState = .initial,
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
+    ) {
         self.state = state
+        self.appSettingsRepository = appSettingsRepository
     }
 
     var body: some View {
-        StoreView(store: AppProtectionSelectionStore(state: state, router: router)) { state, store in
+        StoreView(store: AppProtectionSelectionStore(
+            state: state,
+            router: router,
+            appSettingsRepository: appSettingsRepository
+        )) { state, store in
             ScrollView {
                 VStack(spacing: .zero) {
                     FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
@@ -73,7 +82,8 @@ struct AppProtectionSelectionScreen: View {
                     .init(type: .pin, isSelected: false),
                     .init(type: .faceID, isSelected: true),
                 ]
-            )
+            ),
+            appSettingsRepository: MailSession(noPointer: .init())
         )
     }
 }

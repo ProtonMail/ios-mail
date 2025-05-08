@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxTesting
 import InboxSnapshotTesting
 import Testing
@@ -26,14 +27,17 @@ struct AppProtectionSelectionScreenSnapshotTests {
 
     @Test
     func appProtectionSelectionScreenLayoutsCorrectly() {
-        let sut = AppProtectionSelectionScreen(state: .init(
-            selectedAppProtection: .pin,
-            availableAppProtectionMethods: [
-                .init(type: .none, isSelected: false),
-                .init(type: .pin, isSelected: true),
-                .init(type: .faceID, isSelected: false),
-            ]
-        ))
+        let sut = AppProtectionSelectionScreen(
+            state: .init(
+                selectedAppProtection: .pin,
+                availableAppProtectionMethods: [
+                    .init(type: .none, isSelected: false),
+                    .init(type: .pin, isSelected: true),
+                    .init(type: .faceID, isSelected: false),
+                ]
+            ), appSettingsRepository: AppSettingsRepositorySpy()
+        )
+        .environmentObject(Router<SettingsRoute>())
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
