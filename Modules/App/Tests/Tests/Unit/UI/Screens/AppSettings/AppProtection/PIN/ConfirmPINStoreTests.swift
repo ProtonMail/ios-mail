@@ -19,6 +19,7 @@
 import InboxCore
 import Testing
 
+@MainActor
 final class ConfirmPINStoreTests {
     var state: ConfirmPINState!
     let router = Router<SettingsRoute>()
@@ -58,8 +59,6 @@ final class ConfirmPINStoreTests {
     }
 }
 
-
-// FIXME: - Move somewhere
 extension FormTextInput.ValidationStatus {
 
     var failure: LocalizedStringResource? {
