@@ -221,6 +221,7 @@ enum L10n {
             "Mark as legitimate",
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
         )
+        static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
     }
 
     enum Labels {
@@ -488,7 +489,7 @@ enum L10n {
             comment: "Banner indicating that the email is from a mailing list."
         )
     }
-    
+
     enum EmptyFolderBanner {
         enum Alert {
             static func emptyFolderTitle(folderName: String) -> LocalizedStringResource {
@@ -500,7 +501,7 @@ enum L10n {
                         """
                 )
             }
-            
+
             static func emptyFolderMessage(folderName: String) -> LocalizedStringResource {
                 .init(
                     "Are you sure you want to permanently delete all messages in the \(folderName) folder? This action cannot be undone.",
@@ -845,6 +846,26 @@ enum L10n {
             static let changePINcode = LocalizedStringResource(
                 "Change PIN code",
                 comment: "Change PIN code button title."
+            )
+            static let repeatPIN = LocalizedStringResource(
+                "Repeat PIN code",
+                comment: "Repeat PIN code title."
+            )
+            static let repeatedPINValidationError = LocalizedStringResource(
+                "The PIN codes must match!",
+                comment: "Not matching PIN validation error message."
+            )
+            static let setPINScreenTitle = LocalizedStringResource(
+                "Set PIN code",
+                comment: "Set PIN code screen title."
+            )
+            static let setPINInputTitle = LocalizedStringResource(
+                "New PIN code",
+                comment: "Set PIN code screen PIN input title."
+            )
+            static let setPINInformation = LocalizedStringResource(
+                "Min 4 characters and max 21 characters",
+                comment: "Information displayed under the PIN input."
             )
         }
 

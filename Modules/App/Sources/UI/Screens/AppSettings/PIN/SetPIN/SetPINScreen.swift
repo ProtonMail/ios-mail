@@ -25,20 +25,20 @@ struct SetPINScreen: View {
     var body: some View {
         StoreView(store: SetPINStore(state: .initial, router: router)) { state, store in
             EnterPINView(
-                title: "New PIN code",
+                title: L10n.Settings.App.setPINInputTitle,
                 text: pin(state: state, store: store),
                 validation: store.binding(\.pinValidation)
             )
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { store.handle(action: .nextTapped) }) {
-                        Text("Next")
+                        Text(L10n.Common.next)
                             .fontWeight(.bold)
                             .foregroundStyle(DS.Color.Text.accent)
                     }
                 }
             }
-            .navigationTitle("Set PIN code")
+            .navigationTitle(L10n.Settings.App.setPINScreenTitle.string)
         }
     }
 

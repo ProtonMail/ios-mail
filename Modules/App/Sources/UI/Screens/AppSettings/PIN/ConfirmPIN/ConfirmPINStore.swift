@@ -31,14 +31,14 @@ class ConfirmPINStore: StateStore {
     func handle(action: ConfirmPINAction) async {
         switch action {
         case .pinTyped(let repeatedPIN):
-            state = state
-                .copy(\.repeatedPIN, to: repeatedPIN)
+            state = state.copy(\.repeatedPIN, to: repeatedPIN)
                 .copy(\.repeatedPINValidation, to: .ok)
         case .confirmButtonTapped:
             let doesPINMatch = state.pin == state.repeatedPIN
-            state =
-                state
-                .copy(\.repeatedPINValidation, to: doesPINMatch ? .ok : .failure("The PIN codes must match!"))
+            state = state.copy(
+                \.repeatedPINValidation,
+                to: doesPINMatch ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError)
+            )
             if doesPINMatch {
                 router.goBack(to: .appProtection)
             }

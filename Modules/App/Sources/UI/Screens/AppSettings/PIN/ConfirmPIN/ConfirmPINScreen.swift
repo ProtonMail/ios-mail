@@ -30,20 +30,20 @@ struct ConfirmPINScreen: View {
     var body: some View {
         StoreView(store: ConfirmPINStore(state: .initial(pin: pin), router: router)) { state, store in
             EnterPINView(
-                title: "Repeat PIN code",
+                title: L10n.Settings.App.repeatPIN,
                 text: pin(state: state, store: store),
                 validation: store.binding(\.repeatedPINValidation)
             )
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { store.handle(action: .confirmButtonTapped) }) {
-                        Text("Confirm")
+                        Text(L10n.Common.confirm)
                             .fontWeight(.bold)
                             .foregroundStyle(DS.Color.Text.accent)
                     }
                 }
             }
-            .navigationTitle("Repeat PIN code")
+            .navigationTitle(L10n.Settings.App.repeatPIN.string)
         }
     }
 

@@ -31,16 +31,13 @@ class SetPINStore: StateStore {
     func handle(action: SetPINAction) async {
         switch action {
         case .pinTyped(let pin):
-            state = state
-                .copy(\.pin, to: pin)
+            state = state.copy(\.pin, to: pin)
                 .copy(\.pinValidation, to: .ok)
-        case .cancelTapped:
-            router.go(to: .appProtection)
         case .nextTapped:
             if state.pin.count >= 4 {
                 router.go(to: .confirmPIN(pin: state.pin))
             } else {
-                state = state.copy(\.pinValidation, to: .failure("PIN is too short"))
+                state = state.copy(\.pinValidation, to: .failure(L10n.PINLock.Error.tooShort))
             }
         }
     }

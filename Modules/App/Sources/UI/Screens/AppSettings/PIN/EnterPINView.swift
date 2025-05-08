@@ -40,13 +40,12 @@ struct EnterPINView: View {
             FormTextInput(
                 title: title,
                 placeholder: .init(stringLiteral: .empty),
-                footer: "Min 4 characters and max 21 characters",
+                footer: L10n.Settings.App.setPINInformation,
                 text: $text,
                 validation: $validation,
                 inputType: .secureOneline
             )
             .focused($isFocused)
-            .keyboardType(.numberPad)
 
             Spacer()
         }
@@ -65,7 +64,7 @@ struct EnterPINView: View {
 #Preview {
     NavigationStack {
         EnterPINView(
-            title: "Set PIN code",
+            title: L10n.Settings.App.setPINInputTitle,
             text: .constant(.empty),
             validation: .noValidation
         )

@@ -1784,6 +1784,12 @@
         }
       }
     },
+    "New PIN code" : {
+      "comment" : "Set PIN code screen PIN input title."
+    },
+    "Next" : {
+      "comment" : "`Next` action title."
+    },
     "No matches" : {
       "comment" : "Search result is empty title",
       "localizations" : {
@@ -2145,6 +2151,9 @@
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."
     },
+    "Repeat PIN code" : {
+      "comment" : "Repeat PIN code title."
+    },
     "Reply" : {
       "comment" : "Action title for replying to a sender of given message in the action sheet.",
       "localizations" : {
@@ -2424,6 +2433,9 @@
         }
       }
     },
+    "Set PIN code" : {
+      "comment" : "Set PIN code screen title."
+    },
     "Settings" : {
       "comment" : "Settings menu title.",
       "localizations" : {
@@ -2691,6 +2703,9 @@
     },
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."
+    },
+    "The PIN codes must match!" : {
+      "comment" : "Not matching PIN validation error message."
     },
     "There was an error sending the report, please try again." : {
       "comment" : "Toast displayed after the report failed to send"

@@ -43,20 +43,17 @@ class AppProtectionSelectionStore: StateStore {
         switch action {
         case .onAppear:
             let appProtection = await currentAppProtection()
-            state = state
-                .copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
+            state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
                 .copy(\.selectedAppProtection, to: appProtection)
         case .selected(let selectedMethod):
-            guard selectedMethod.appProtection != state.selectedAppProtection else {
-                return
-            }
+            guard selectedMethod.appProtection != state.selectedAppProtection else { return }
             switch selectedMethod {
             case .none:
-                break
+                break // FIXME: - To be added in the next MR
             case .pin:
                 router.go(to: .setPIN)
             case .faceID, .touchID:
-                break
+                break // FIXME: - To be added in the next MR
             }
         }
     }
@@ -66,7 +63,7 @@ class AppProtectionSelectionStore: StateStore {
         do {
             return try await appSettingsRepository.getAppSettings().get().protection
         } catch {
-            AppLogger.log(message: "") // FIXME: - Message
+            AppLogger.log(error: error, category: .appSettings)
             return nil
         }
     }

@@ -22,7 +22,7 @@ import Testing
 @MainActor
 final class AppProtectionSelectionStoreTests {
     private let laContextSpy = LAContextSpy()
-    let router = Router<SettingsRoute>()
+    private let router = Router<SettingsRoute>()
     private lazy var appSettingsRepositorySpy = AppSettingsRepositorySpy()
     private lazy var sut = AppProtectionSelectionStore(
         state: .initial,

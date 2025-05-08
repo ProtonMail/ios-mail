@@ -17,6 +17,5 @@
 
 enum SetPINAction {
     case pinTyped(String)
-    case cancelTapped
     case nextTapped
 }

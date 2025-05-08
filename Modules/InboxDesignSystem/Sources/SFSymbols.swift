@@ -24,4 +24,6 @@ public extension DS.SFSymbols {
     static let lock = "lock"
     static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
     static let xmark = "xmark"
+    static let eye = "eye"
+    static let eyeSlash = "eye.slash"
 }
