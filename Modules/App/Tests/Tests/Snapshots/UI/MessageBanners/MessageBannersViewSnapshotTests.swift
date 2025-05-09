@@ -43,7 +43,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
                 .blockedSender,
                 .phishingAttempt,
                 .expiry(timestamp: 1_740_238_200),
-                .autoDelete(timestamp: 1_740_670_200),
+                .autoDelete(timestamp: 1_740_670_200, deleteDays: 20),
                 .unsubscribeNewsletter,
                 .embeddedImages
             ],
