@@ -252,35 +252,6 @@
         }
       }
     },
-    "Tap + to add your first contact." : {
-      "comment" : "Contacts screen's empty state subtitle.",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Drücke +, um deinen ersten Kontakt hinzuzufügen."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap + to add your first contact."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appuyez sur + pour ajouter votre premier contact."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tik op + om uw eerste contact toe te voegen."
-          }
-        }
-      }
-    },
     "This contact group will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact group.",
       "localizations" : {
@@ -396,6 +367,9 @@
           }
         }
       }
+    },
+    "You don't have any contacts." : {
+      "comment" : "Contacts screen's empty state subtitle."
     }
   },
   "version" : "1.0"

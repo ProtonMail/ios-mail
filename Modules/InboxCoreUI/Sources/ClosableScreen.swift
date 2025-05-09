@@ -33,10 +33,9 @@ public struct ClosableScreen<ContentView: View>: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: { dismiss.callAsFunction() }) {
                             HStack {
-                                Image(DS.Icon.icCross)
+                                Image(systemName: DS.SFSymbols.xmark)
+                                    .foregroundStyle(DS.Color.Text.weak)
                                     .square(size: 20)
-                                    .tint(DS.Color.Text.weak)
-                                Spacer()
                             }
                         }
                         .padding(DS.Spacing.mediumLight)

@@ -25,6 +25,8 @@ typealias ReplyActionsHandler = (_ messageId: ID, _ action: ReplyAction) -> Void
 
 struct MailboxItemActionSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
+    @Environment(\.colorScheme) var colorScheme
     private let input: MailboxItemActionSheetInput
     private let mailbox: Mailbox
     private let actionsProvider: ActionsProvider
@@ -75,6 +77,8 @@ struct MailboxItemActionSheet: View {
             generalActions: generalActions,
             mailUserSession: mailUserSession,
             toastStateStore: toastStateStore,
+            messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
+            colorScheme: colorScheme,
             navigation: navigation
         )) { state, store in
             ClosableScreen {

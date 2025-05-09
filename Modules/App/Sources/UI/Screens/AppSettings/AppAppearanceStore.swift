@@ -20,13 +20,13 @@ import SwiftUI
 
 class AppAppearanceStore: ObservableObject {
     @MainActor
-    static let shared = AppAppearanceStore()
+    static let shared = AppAppearanceStore(mailSession: { AppContext.shared.mailSession })
 
     @Published var colorScheme: ColorScheme?
     private let mailSession: () -> MailSessionProtocol
 
     @MainActor
-    init(mailSession: @escaping () -> MailSessionProtocol = { AppContext.shared.mailSession }) {
+    init(mailSession: @escaping () -> MailSessionProtocol) {
         self.mailSession = mailSession
     }
 

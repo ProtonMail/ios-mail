@@ -29,7 +29,7 @@ actor SettingsMigrator {
     init(
         legacyKeychain: LegacyKeychain,
         legacyDataProvider: LegacyDataProvider,
-        appAppearanceStore: @escaping AppAppearanceStoreGetter = { .shared }
+        appAppearanceStore: @escaping AppAppearanceStoreGetter
     ) {
         self.appAppearanceStore = appAppearanceStore
         self.legacyKeychain = legacyKeychain

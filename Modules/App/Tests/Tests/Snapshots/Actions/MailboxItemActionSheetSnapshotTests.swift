@@ -20,24 +20,39 @@ import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
 
+@MainActor
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
 
     func testMessageConversationActionSheetLayoutsCorrectly() {
-        let sut = MailboxItemActionSheet(
-            input: .init(id: .random(), type: .message, title: "Hello".notLocalized),
-            mailbox: .dummy,
-            actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
-            starActionPerformerActions: .dummy,
-            readActionPerformerActions: .dummy,
-            deleteActions: .dummy,
-            moveToActions: .dummy,
-            generalActions: .dummy,
-            replyActions: { _, _ in },
-            mailUserSession: .dummy,
-            navigation: { _ in }
-        ).environmentObject(ToastStateStore(initialState: .initial))
+        for forceLightMode in [false, true] {
+            let id = ID.random()
+            let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
 
-        assertSnapshotsOnIPhoneX(of: sut)
+            if forceLightMode {
+                messageAppearanceOverrideStore.forceLightMode(forMessageWithId: id)
+            }
+
+            let sut = MailboxItemActionSheet(
+                input: .init(id: id, type: .message, title: "Hello".notLocalized),
+                mailbox: .dummy,
+                actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
+                starActionPerformerActions: .dummy,
+                readActionPerformerActions: .dummy,
+                deleteActions: .dummy,
+                moveToActions: .dummy,
+                generalActions: .dummy,
+                replyActions: { _, _ in },
+                mailUserSession: .dummy,
+                navigation: { _ in }
+            )
+                .environmentObject(ToastStateStore(initialState: .initial))
+                .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
+
+            assertSnapshotsOnIPhoneX(
+                of: sut,
+                named: "lightMode\(forceLightMode ? "" : "Not")Forced"
+            )
+        }
     }
 
 }

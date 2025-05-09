@@ -18,23 +18,27 @@
 @testable import ProtonMail
 import InboxTesting
 import InboxSnapshotTesting
+import proton_app_uniffi
 import SwiftUI
 
 class AppSettingsSnapshotTests: BaseTestCase {
 
     func testAppSettingsLayoutCorrectly() {
-        let sut = AppSettingsScreen(state: .init(
-            areNotificationsEnabled: false,
-            appLanguage: "English",
-            storedAppSettings: .init(
-                appearance: .system,
-                protection: .pin,
-                autoLock: .always,
-                useCombineContacts: false,
-                useAlternativeRouting: true
+        let sut = AppSettingsScreen(
+            state: .init(
+                areNotificationsEnabled: false,
+                appLanguage: "English",
+                storedAppSettings: .init(
+                    appearance: .system,
+                    protection: .pin,
+                    autoLock: .always,
+                    useCombineContacts: false,
+                    useAlternativeRouting: true
+                ),
+                isAppearanceMenuShown: false
             ),
-            isAppearanceMenuShown: false
-        ))
+            appSettingsRepository: AppSettingsRepositorySpy()
+        )
         assertCustomHeightSnapshot(
             matching: UIHostingController(rootView: sut).view,
             styles: [.light],

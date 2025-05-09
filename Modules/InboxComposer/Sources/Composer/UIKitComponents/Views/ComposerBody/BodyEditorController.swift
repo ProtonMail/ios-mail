@@ -26,6 +26,7 @@ final class BodyEditorController: UIViewController {
         case onStartEditing
         case onBodyChange(body: String)
         case onCursorPositionChange(position: CGPoint)
+        case onImagePasted(image: UIImage)
         case onInlineImageRemoved(cid: String)
         case onInlineImageRemovalRequested(cid: String)
         case onInlineImageDispositionChangeRequested(cid: String)
@@ -67,7 +68,7 @@ final class BodyEditorController: UIViewController {
             webView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -margin),
-            heightConstraint
+            heightConstraint,
         ])
     }
 
@@ -95,6 +96,12 @@ final class BodyEditorController: UIViewController {
                 onEvent?(.onInlineImageRemoved(cid: cid))
             case .onInlineImageTapped(let cid):
                 showInlineImageMenu(cid: cid)
+            case .onImagePasted(let imageData):
+                guard let image = UIImage(data: imageData) else {
+                    AppLogger.log(message: "pasted data is not an image", category: .composer, isError: true)
+                    return
+                }
+                onEvent?(.onImagePasted(image: image))
             }
         }
     }

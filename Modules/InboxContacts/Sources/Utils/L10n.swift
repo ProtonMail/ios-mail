@@ -29,7 +29,7 @@ enum L10n {
                 comment: "Contacts screen's empty state title."
             )
             static let subtitle = LocalizedStringResource(
-                "Tap + to add your first contact.",
+                "You don't have any contacts.",
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Contacts screen's empty state subtitle."
             )

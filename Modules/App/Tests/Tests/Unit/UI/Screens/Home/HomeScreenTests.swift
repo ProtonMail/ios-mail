@@ -225,7 +225,7 @@ private extension MailUserSession {
             hvNotifier: nil
         ).get()
 
-        let authCoordinator = AccountAuthCoordinator(appContext: mailSession)
+        let authCoordinator = AccountAuthCoordinator(productName: "mail", appContext: mailSession)
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 

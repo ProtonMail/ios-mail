@@ -157,9 +157,9 @@ struct ReportProblemScreen: View {
     private func toolbarTrailingItem(state: ReportProblemState, store: ReportProblemStateStore) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button(action: { store.handle(action: .closeButtonTapped) }) {
-                Image(DS.Icon.icCross)
+                Image(systemName: DS.SFSymbols.xmark)
+                    .foregroundStyle(DS.Color.Text.weak)
                     .square(size: 20)
-                    .tint(DS.Color.Text.weak)
             }
             .disabled(state.isLoading)
         }

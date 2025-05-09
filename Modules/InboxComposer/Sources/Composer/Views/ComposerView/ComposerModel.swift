@@ -431,7 +431,7 @@ extension ComposerModel {
     @MainActor
     private func updateStateAttachmentUIModels() async {
         do {
-            let draftAttachments = try await draft.attachmentList().attachments().toDraftAttachments()
+            let draftAttachments = try await draft.attachmentList().attachments().get()
             state.attachments = draftAttachments
                 .filter { $0.attachment.disposition == .attachment }
                 .map { $0.toDraftAttachmentUIModel() }
@@ -534,10 +534,8 @@ extension ComposerModel {
 
     private func showDraftSavedToastIfNeeded() {
         Task {
-            if case .ok(let id) = await draft.messageId() {
-                if let id {
-                    draftSavedToastCoordinator.showDraftSavedToast(draftId: id)
-                }
+            if let id = try await draft.messageId().get() {
+                draftSavedToastCoordinator.showDraftSavedToast(draftId: id)
             }
         }
     }

@@ -99,14 +99,13 @@ struct MessageBannersView: View {
                     message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
                     style: duration.isOneMinuteOrMore ? .regular : .error
                 )
-            case .autoDelete(let timestamp, _):
-                let from = DateEnvironment.currentDate()
-                let to = Date(timeIntervalSince1970: TimeInterval(timestamp))
-                let days = DateEnvironment.calendar.dateComponents([.day], from: from, to: to).day.unsafelyUnwrapped
+            case .autoDelete(let timestamp):
+                let expirationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
+                let remainingTime = expirationDate.localisedRemainingTimeFromNow()
                 
                 return smallNoButton(
                     icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.autoDeleteTitle(days: days),
+                    message: L10n.MessageBanner.autoDeleteTitle(remainingTime: remainingTime),
                     style: .regular
                 )
             case .unsubscribeNewsletter:

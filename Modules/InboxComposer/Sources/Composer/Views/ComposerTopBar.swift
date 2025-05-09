@@ -26,9 +26,9 @@ struct ComposerTopBar: View {
     var body: some View {
         HStack(spacing: DS.Spacing.standard) {
             Button(action: { dismissAction?() }) {
-                Image(DS.Icon.icCross)
-                    .square(size: Layout.iconSize)
+                Image(systemName: DS.SFSymbols.xmark)
                     .foregroundStyle(DS.Color.Icon.weak)
+                    .square(size: Layout.iconSize)
             }
             .square(size: Layout.buttonSize)
 

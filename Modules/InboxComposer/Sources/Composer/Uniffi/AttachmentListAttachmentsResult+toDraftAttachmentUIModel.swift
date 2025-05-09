@@ -17,15 +17,6 @@
 
 import proton_app_uniffi
 
-extension AttachmentListAttachmentsResult {
-    func toDraftAttachments() throws -> [DraftAttachment] {
-        switch self {
-        case .ok(let items): items
-        case .error(let error): throw error
-        }
-    }
-}
-
 extension DraftAttachment {
 
     func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {

@@ -85,7 +85,7 @@ final class AppContext: Sendable, ObservableObject {
         _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion)", category: .rustLibrary)
 
-        accountAuthCoordinator = AccountAuthCoordinator(appContext: _mailSession)
+        accountAuthCoordinator = AccountAuthCoordinator(productName: "mail", appContext: _mailSession)
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {

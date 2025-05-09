@@ -421,10 +421,10 @@ enum L10n {
                 comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
             )
         }
-        
-        static func autoDeleteTitle(days: Int) -> LocalizedStringResource {
+
+        static func autoDeleteTitle(remainingTime: String) -> LocalizedStringResource {
             .init(
-                "This message will auto-delete in \(days) days",
+                "This message will auto-delete in \(remainingTime)",
                 comment: "Banner indicating when a message will automatically be deleted."
             )
         }

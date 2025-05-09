@@ -29,7 +29,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
     @MainActor
     init(
         state: AppSettingsState,
-        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
+        appSettingsRepository: AppSettingsRepository,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
         currentLocale: Locale = Locale.current,

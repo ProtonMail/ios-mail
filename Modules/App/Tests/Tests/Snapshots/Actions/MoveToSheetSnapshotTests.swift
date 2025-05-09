@@ -21,6 +21,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
+@MainActor
 class MoveToSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
