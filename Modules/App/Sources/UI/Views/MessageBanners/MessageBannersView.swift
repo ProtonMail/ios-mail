@@ -99,7 +99,7 @@ struct MessageBannersView: View {
                     message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
                     style: duration.isOneMinuteOrMore ? .regular : .error
                 )
-            case .autoDelete(let timestamp, _):
+            case .autoDelete(let timestamp):
                 let from = DateEnvironment.currentDate()
                 let to = Date(timeIntervalSince1970: TimeInterval(timestamp))
                 let days = DateEnvironment.calendar.dateComponents([.day], from: from, to: to).day.unsafelyUnwrapped
