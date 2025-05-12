@@ -16,29 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import SwiftUI
 
-class SetPINStore: StateStore {
-    @Published var state: SetPINState
-    let router: Router<SettingsRoute>
+struct PINScreenState: Copying {
+    let type: PINScreenType
+    var pin: String
+    var pinValidation: FormTextInput.ValidationStatus
+}
 
-    init(state: SetPINState, router: Router<SettingsRoute>) {
-        self.state = state
-        self.router = router
-    }
-
-    @MainActor
-    func handle(action: SetPINAction) async {
-        switch action {
-        case .pinTyped(let pin):
-            state = state.copy(\.pin, to: pin)
-                .copy(\.pinValidation, to: .ok)
-        case .nextTapped:
-            if state.pin.count >= 4 {
-                router.go(to: .confirmPIN(pin: state.pin))
-            } else {
-                state = state.copy(\.pinValidation, to: .failure(L10n.PINLock.Error.tooShort))
-            }
-        }
+extension PINScreenState {
+    static func initial(type: PINScreenType) -> Self {
+        .init(
+            type: type,
+            pin: .empty,
+            pinValidation: .ok
+        )
     }
 }

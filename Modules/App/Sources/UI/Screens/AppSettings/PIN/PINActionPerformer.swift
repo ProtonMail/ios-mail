@@ -15,15 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+struct PINActionPerformer {
+    enum Action {
+        case change(oldPIN: String, newPIN: String)
+        case set(pin: String)
+        case verify(pin: String)
+    }
 
-struct SetPINState: Copying {
-    var pin: String
-    var pinValidation: FormTextInput.ValidationStatus
-}
-
-extension SetPINState {
-    static var initial: Self {
-        .init(pin: .empty, pinValidation: .ok)
+    func perform(action: Action) async {
+        switch action {
+        case .change(let oldPIN, let newPIN):
+            // FIXME: - Call Rust to change PIN
+            break
+        case .verify(let pin):
+            // FIXME: - Call Rust to verify PIN
+            break
+        case .set(let pin):
+            // FIXME: - Call Rust to set PIN
+            break
+        }
     }
 }

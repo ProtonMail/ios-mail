@@ -51,7 +51,7 @@ class AppProtectionSelectionStore: StateStore {
             case .none:
                 break // FIXME: - To be added in the next MR
             case .pin:
-                router.go(to: .setPIN)
+                router.go(to: .pin(type: .set(oldPIN: nil)))
             case .faceID, .touchID:
                 break // FIXME: - To be added in the next MR
             }

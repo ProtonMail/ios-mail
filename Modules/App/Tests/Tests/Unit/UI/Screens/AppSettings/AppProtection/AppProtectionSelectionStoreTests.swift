@@ -52,7 +52,7 @@ final class AppProtectionSelectionStoreTests {
         await sut.handle(action: .onAppear)
         await sut.handle(action: .selected(.pin))
 
-        #expect(router.stack == [.setPIN])
+        #expect(router.stack == [.pin(type: .set(oldPIN: nil))])
     }
 
     @Test

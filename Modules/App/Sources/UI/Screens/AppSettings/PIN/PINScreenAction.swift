@@ -15,22 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxCore
-import InboxSnapshotTesting
-import SwiftUI
-import Testing
-
-@MainActor
-struct SetPINScreenSnapshotTests {
-
-    @Test
-    func setPINScreenLayoutsCorrectly() {
-        let sut = NavigationStack {
-            SetPINScreen()
-                .environmentObject(Router<SettingsRoute>())
-        }
-        assertSnapshotsOnIPhoneX(of: sut)
-    }
-
+enum PINScreenAction {
+    case pinTyped(String)
+    case trailingButtonTapped
 }

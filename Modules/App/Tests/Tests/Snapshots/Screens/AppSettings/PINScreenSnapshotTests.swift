@@ -22,15 +22,37 @@ import SwiftUI
 import Testing
 
 @MainActor
-struct ConfirmPINScreenSnapshotTests {
+struct PINScreenSnapshotTests {
 
-    @Test
-    func confirmPINScreenLayoutsCorrectly() {
+    @Test(arguments: [
+        PINScreenType.verify(nextFlow: .changePIN),
+        .confirm(pin: .empty),
+        .set(oldPIN: nil),
+        .change(oldPIN: .empty, newPIN: .empty),
+    ])
+    func pinScreensLayoutCorrectly(type: PINScreenType) {
         let sut = NavigationStack {
-            ConfirmPINScreen(pin: "1234")
+            PINScreen(type: type)
                 .environmentObject(Router<SettingsRoute>())
         }
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: sut, named: type.testName)
+    }
+
+}
+
+private extension PINScreenType {
+
+    var testName: String {
+        switch self {
+        case .change:
+            "change_pin"
+        case .confirm:
+            "confirm_pin"
+        case .set:
+            "set_pin"
+        case .verify:
+            "verify_pin"
+        }
     }
 
 }
