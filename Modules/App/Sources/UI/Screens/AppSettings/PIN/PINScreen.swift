@@ -17,19 +17,22 @@
 
 import SwiftUI
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 
 struct PINScreen: View {
     private let type: PINScreenType
-    @EnvironmentObject var router: Router<SettingsRoute>
+    private let dismiss: () -> Void
+    @EnvironmentObject var router: Router<PINRoute>
 
-    init(type: PINScreenType) {
+    init(type: PINScreenType, dismiss: @escaping () -> Void) {
         self.type = type
+        self.dismiss = dismiss
     }
 
     var body: some View {
         StoreView(
-            store: PINStateStore(state: .initial(type: type), router: router)
+            store: PINStateStore(state: .initial(type: type), router: router, dismiss: dismiss)
         ) { state, store in
             EnterPINView(
                 title: state.type.configuration.pinInputTitle,
@@ -37,6 +40,7 @@ struct PINScreen: View {
                 validation: validation(state: state)
             )
             .toolbar {
+                leadingButton(store: store)
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { store.handle(action: .trailingButtonTapped) }) {
                         Text(state.type.configuration.trailingButtonTitle)
@@ -46,6 +50,24 @@ struct PINScreen: View {
                 }
             }
             .navigationTitle(state.type.configuration.screenTitle.string)
+            .navigationBarBackButtonHidden()
+            .interactiveDismissDisabled(!router.stack.isEmpty)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private func leadingButton(store: PINStateStore) -> some ToolbarContent {
+        if router.stack.isEmpty {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: { store.handle(action: .leadingButtonTapped) }) {
+                    Text(L10n.Common.cancel)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+        } else {
+            ToolbarItemFactory.back {
+                store.handle(action: .leadingButtonTapped)
+            }
         }
     }
 
@@ -62,5 +84,4 @@ struct PINScreen: View {
             set: { _ in }
         )
     }
-
 }

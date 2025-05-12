@@ -17,11 +17,10 @@
 
 import Foundation
 
-enum PINScreenType: Hashable {
+enum PINScreenType: Hashable, Identifiable {
     case set(oldPIN: String?)
-    case change(oldPIN: String, newPIN: String)
-    case confirm(pin: String)
-    case verify(nextFlow: PINVerificationFlow)
+    case confirm(oldPIN: String?, newPIN: String)
+    case verify(reason: PINVerificationReason)
 
     struct Configuration {
         let pinInputTitle: LocalizedStringResource
@@ -37,7 +36,7 @@ enum PINScreenType: Hashable {
                 screenTitle: L10n.Settings.App.setPINScreenTitle,
                 trailingButtonTitle: L10n.Common.next
             )
-        case .change, .confirm:
+        case .confirm:
             .init(
                 pinInputTitle: L10n.Settings.App.repeatPIN,
                 screenTitle: L10n.Settings.App.repeatPIN,
@@ -45,6 +44,17 @@ enum PINScreenType: Hashable {
             )
         case .verify:
             .init(pinInputTitle: "", screenTitle: "", trailingButtonTitle: "")
+        }
+    }
+
+    var id: String { // FIXME: - 
+        switch self {
+        case .set(let oldPIN):
+            "set"
+        case .confirm(let oldPIN, let newPIN):
+            "confim"
+        case .verify(let reason):
+            "verify"
         }
     }
 }

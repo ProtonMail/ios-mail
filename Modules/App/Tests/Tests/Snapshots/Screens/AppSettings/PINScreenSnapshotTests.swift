@@ -25,10 +25,9 @@ import Testing
 struct PINScreenSnapshotTests {
 
     @Test(arguments: [
-        PINScreenType.verify(nextFlow: .changePIN),
-        .confirm(pin: .empty),
+        PINScreenType.verify(reason: .changePIN),
+        .confirm(oldPIN: .empty, newPIN: .empty),
         .set(oldPIN: nil),
-        .change(oldPIN: .empty, newPIN: .empty),
     ])
     func pinScreensLayoutCorrectly(type: PINScreenType) {
         let sut = NavigationStack {
@@ -44,8 +43,6 @@ private extension PINScreenType {
 
     var testName: String {
         switch self {
-        case .change:
-            "change_pin"
         case .confirm:
             "confirm_pin"
         case .set:

@@ -19,95 +19,71 @@
 import InboxCore
 import Testing
 
-struct PINStateStoreTests {
+@MainActor
+class PINStateStoreTests {
+    let router: Router<SettingsRoute> = .init()
+    var dismissCount = 0
 
-    @MainActor
-    class SetPIN {
-        lazy var router: Router<SettingsRoute> = .init()
-        lazy var sut = PINStateStore(
-            state: .initial(type: .set(oldPIN: nil)),
-            router: router
+    func makeSut(type: PINScreenType) -> PINStateStore {
+        PINStateStore(
+            state: .initial(type: type),
+            router: router,
+            dismiss: { [unowned self] in
+                dismissCount += 1
+            }
         )
-
-        @Test
-        func tooShortPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
-            await sut.handle(action: .pinTyped("123"))
-            await sut.handle(action: .trailingButtonTapped)
-
-            #expect(sut.state.pinValidation == .failure(L10n.PINLock.Error.tooShort))
-            #expect(router.stack == [])
-        }
-
-        @Test
-        func pinIsValid_ItNavigatesToConfirmPINScreen() async {
-            await sut.handle(action: .pinTyped("1234"))
-            await sut.handle(action: .trailingButtonTapped)
-
-            #expect(sut.state.pinValidation == .ok)
-            #expect(router.stack == [.pin(type: .confirm(pin: "1234"))])
-        }
     }
 
-    @MainActor
-    class ConfirmPIN {
-        lazy var router: Router<SettingsRoute> = .init()
-        lazy var sut = PINStateStore(
-            state: .initial(type: .confirm(pin: "1234")),
-            router: router
-        )
+    @Test
+    func setPIN_tooShortPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
+        let sut = makeSut(type: .set(oldPIN: nil))
+        await sut.handle(action: .pinTyped("123"))
+        await sut.handle(action: .trailingButtonTapped)
 
-        @Test
-        func typedPINDoesNotMatch_ItReturnsValidationError() async {
-            await sut.handle(action: .pinTyped("1235"))
-            await sut.handle(action: .trailingButtonTapped)
-
-            #expect(sut.state.pinValidation == .failure(L10n.Settings.App.repeatedPINValidationError))
-            #expect(router.stack == [])
-        }
-
-        @Test
-        func typedPINMatches_ItNavigatesToAppProtectionSelection() async {
-            await sut.handle(action: .pinTyped("1234"))
-            await sut.handle(action: .trailingButtonTapped)
-
-            #expect(sut.state.pinValidation == .ok)
-            #expect(router.stack == [.appProtection])
-        }
+        #expect(sut.state.pinValidation == .failure(L10n.PINLock.Error.tooShort))
+        #expect(router.stack == [])
     }
 
-    @MainActor
-    class ChangePIN {
-        lazy var router: Router<SettingsRoute> = .init()
-        lazy var sut = PINStateStore(
-            state: .initial(type: .change(oldPIN: "1234", newPIN: "4321")),
-            router: router
-        )
+    @Test
+    func setPIN_pinIsValid_ItNavigatesToConfirmPINScreen() async {
+        let sut = makeSut(type: .set(oldPIN: nil))
+        await sut.handle(action: .pinTyped("1234"))
+        await sut.handle(action: .trailingButtonTapped)
 
-        @Test
-        func pinIsValid_ItNavigatesToAppProtectionSelection() async {
-            await sut.handle(action: .pinTyped("1235"))
-            await sut.handle(action: .trailingButtonTapped)
-
-            #expect(sut.state.pinValidation == .ok)
-            #expect(router.stack == [.appProtection])
-        }
+        #expect(sut.state.pinValidation == .ok)
+        #expect(router.stack == [.pin(type: .confirm(oldPIN: nil, newPIN: "1234"))])
     }
 
-    @MainActor
-    class VerifyPIN {
-        @Test
-        func pinIsValidAndFlowIsDisablePIN_ItNavigatesToAppProtectionSelection() async {
-            let router: Router<SettingsRoute> = .init()
-            let sut = PINStateStore(
-                state: .initial(type: .verify(nextFlow: .disablePIN)),
-                router: router
-            )
+    @Test
+    func confirmPIN_pinDoesNotMatch_ItReturnsValidationError() async {
+        let sut = makeSut(type: .confirm(oldPIN: nil, newPIN: "1234"))
+        await sut.handle(action: .pinTyped("1235"))
+        await sut.handle(action: .trailingButtonTapped)
 
-            await sut.handle(action: .pinTyped("1235"))
-            await sut.handle(action: .trailingButtonTapped)
+        #expect(sut.state.pinValidation == .failure(L10n.Settings.App.repeatedPINValidationError))
+        #expect(router.stack == [])
+    }
 
-            #expect(sut.state.pinValidation == .ok)
-            #expect(router.stack == [.appProtection])
-        }
+    @Test
+    func confirmPIN_pinMatches_ItDismissesScreen() async {
+        let sut = makeSut(type: .confirm(oldPIN: nil, newPIN: "1234"))
+        await sut.handle(action: .pinTyped("1234"))
+        await sut.handle(action: .trailingButtonTapped)
+
+        #expect(sut.state.pinValidation == .ok)
+        #expect(router.stack == [])
+        #expect(dismissCount == 1)
+    }
+
+    @Test
+    func verifyPIN_pinIsValidReasonIsDisablePIN_ItDismissesScreen() async {
+        let sut = makeSut(type: .verify(reason: .disablePIN))
+
+        await sut.handle(action: .pinTyped("1235"))
+        await sut.handle(action: .trailingButtonTapped)
+
+        #expect(sut.state.pinValidation == .ok)
+        #expect(router.stack == [])
+        #expect(dismissCount == 1)
     }
 }

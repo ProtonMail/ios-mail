@@ -27,9 +27,9 @@ struct PINValidator {
         switch pinScreenType {
         case .set:
             setPINValidation(pin: pin)
-        case .confirm(let pinToConfirm):
-            confirmPINValidation(pin: pinToConfirm, repeatedPIN: pin)
-        case .change, .verify:
+        case .confirm(_, let newPIN):
+            confirmPINValidation(pin: newPIN, repeatedPIN: pin)
+        case .verify:
             .ok
         }
     }

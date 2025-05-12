@@ -22,13 +22,15 @@ class PINStateStore: StateStore {
     @Published var state: PINScreenState
     private let pinScreenValidator: PINValidator
     private let pinActionPerformer: PINActionPerformer
-    private let router: Router<SettingsRoute>
+    private let router: Router<PINRoute>
+    private let dismiss: () -> Void
 
-    init(state: PINScreenState, router: Router<SettingsRoute>) {
+    init(state: PINScreenState, router: Router<PINRoute>, dismiss: @escaping () -> Void) {
         self.state = state
         self.pinScreenValidator = .init(pinScreenType: state.type)
         self.pinActionPerformer = PINActionPerformer()
         self.router = router
+        self.dismiss = dismiss
     }
 
     @MainActor
@@ -37,29 +39,32 @@ class PINStateStore: StateStore {
         case .pinTyped(let pin):
             state = state.copy(\.pin, to: pin)
                 .copy(\.pinValidation, to: .ok)
+        case .leadingButtonTapped:
+            if router.stack.isEmpty {
+                dismiss()
+            } else {
+                router.goBack()
+            }
         case .trailingButtonTapped:
             state = state.copy(\.pinValidation, to: pinScreenValidator.validate(pin: state.pin))
             if state.pinValidation.isSuccess {
                 switch state.type {
                 case .set(let oldPIN):
+                    router.go(to: .pin(type: .confirm(oldPIN: oldPIN, newPIN: state.pin)))
+                case .confirm(let oldPIN, let newPIN):
                     if let oldPIN {
-                        router.go(to: .pin(type: .change(oldPIN: oldPIN, newPIN: state.pin)))
+                        await pinActionPerformer.perform(action: .change(oldPIN: oldPIN, newPIN: newPIN))
                     } else {
-                        router.go(to: .pin(type: .confirm(pin: state.pin)))
+                        await pinActionPerformer.perform(action: .set(pin: newPIN))
                     }
-                case .confirm(let pin):
-                    await pinActionPerformer.perform(action: .set(pin: pin))
-                    router.go(to: .appProtection)
-                case .change(let oldPIN, let newPIN):
-                    await pinActionPerformer.perform(action: .change(oldPIN: oldPIN, newPIN: newPIN))
-                    router.go(to: .appProtection)
+                    dismiss()
                 case .verify(let flow):
                     await pinActionPerformer.perform(action: .verify(pin: state.pin))
                     switch flow {
                     case .changePIN:
                         router.go(to: .pin(type: .set(oldPIN: state.pin)))
                     case .disablePIN:
-                        router.go(to: .appProtection)
+                        dismiss()
                     }
                 }
             }

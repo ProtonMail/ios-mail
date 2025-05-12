@@ -18,4 +18,5 @@
 enum PINScreenAction {
     case pinTyped(String)
     case trailingButtonTapped
+    case leadingButtonTapped
 }

@@ -23,7 +23,7 @@ import SwiftUI
 struct AppProtectionSelectionScreen: View {
     private let state: AppProtectionSelectionState
     private let appSettingsRepository: AppSettingsRepository
-    @EnvironmentObject var router: Router<SettingsRoute>
+    @EnvironmentObject var settingsRouter: Router<SettingsRoute>
 
     init(
         state: AppProtectionSelectionState = .initial,
@@ -34,11 +34,13 @@ struct AppProtectionSelectionScreen: View {
     }
 
     var body: some View {
-        StoreView(store: AppProtectionSelectionStore(
-            state: state,
-            router: router,
-            appSettingsRepository: appSettingsRepository
-        )) { state, store in
+        StoreView(
+            store: AppProtectionSelectionStore(
+                state: state,
+                router: settingsRouter,
+                appSettingsRepository: appSettingsRepository
+            )
+        ) { state, store in
             ScrollView {
                 VStack(spacing: .zero) {
                     FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
@@ -67,6 +69,9 @@ struct AppProtectionSelectionScreen: View {
             .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { store.handle(action: .onAppear) }
+            .sheet(item: store.binding(\.pinScreen)) { pinScreenType in
+                PINRouterView(type: pinScreenType)
+            }
         }
     }
 

@@ -15,23 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import InboxCore
 
-struct AppProtectionSelectionState: Copying {
-    var selectedAppProtection: AppProtection?
-    var availableAppProtectionMethods: [AppProtectionMethodViewModel]
-    var pinScreen: PINScreenType?
-}
-
-extension AppProtectionSelectionState {
-
-    static var initial: Self {
-        .init(
-            selectedAppProtection: nil,
-            availableAppProtectionMethods: [],
-            pinScreen: nil
-        )
-    }
-
+enum PINRoute: Routable {
+    case pin(type: PINScreenType)
 }
