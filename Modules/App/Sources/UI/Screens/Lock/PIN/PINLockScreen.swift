@@ -89,7 +89,7 @@ struct PINLockScreen: View {
                     Button(
                         action: { store.handle(action: .confirmTapped) },
                         label: {
-                            Text(L10n.Common.confirm)
+                            Text(CommonL10n.confirm)
                                 .foregroundStyle(DS.Color.Text.inverted)
                         }
                     )

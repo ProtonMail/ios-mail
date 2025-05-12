@@ -48,16 +48,6 @@ enum L10n {
         }
 
         enum DeletionAlert {
-            static let cancel = LocalizedStringResource(
-                "Cancel",
-                bundle: .atURL(Bundle.module.bundleURL),
-                comment: "Action title for cancelling deletion of given item."
-            )
-            static let delete = LocalizedStringResource(
-                "Delete",
-                bundle: .atURL(Bundle.module.bundleURL),
-                comment: "Action title for confirming deletion of given item."
-            )
             static func title(name: String) -> LocalizedStringResource {
                 LocalizedStringResource(
                     "Delete \(name)",

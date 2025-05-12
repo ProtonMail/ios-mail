@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import SwiftUI
 
@@ -27,9 +28,9 @@ enum DeleteItemAlertAction: AlertActionInfo, CaseIterable {
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .confirm:
-            (L10n.Contacts.DeletionAlert.delete, .destructive)
+            (CommonL10n.delete, .destructive)
         case .cancel:
-            (L10n.Contacts.DeletionAlert.cancel, .cancel)
+            (CommonL10n.cancel, .cancel)
         }
     }
 }

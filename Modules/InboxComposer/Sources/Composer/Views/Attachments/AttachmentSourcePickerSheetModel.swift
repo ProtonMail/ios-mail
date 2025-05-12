@@ -52,7 +52,7 @@ final class AttachmentSourcePickerSheetModel: ObservableObject {
 }
 
 private struct CameraPermissionInfo: AlertActionInfo {
-    let info: (title: LocalizedStringResource, buttonRole: ButtonRole) = (L10n.Common.gotIt, .cancel)
+    let info: (title: LocalizedStringResource, buttonRole: ButtonRole) = (L10n.Alert.gotIt, .cancel)
 }
 
 struct CameraPermissionProvider {

@@ -15,19 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import SwiftUI
 
 enum LegitMessageConfirmationAlertAction: AlertActionInfo, CaseIterable {
     case cancel
     case markAsLegitimate
-    
+
     // MARK: - AlertActionInfo
-    
+
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:
-            (L10n.Common.cancel, .cancel)
+            (CommonL10n.cancel, .cancel)
         case .markAsLegitimate:
             (L10n.Common.markAsLegitimate, .destructive)
         }

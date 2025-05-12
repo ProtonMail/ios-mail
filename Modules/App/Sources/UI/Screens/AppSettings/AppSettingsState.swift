@@ -44,7 +44,7 @@ extension AppSettingsState {
     }
 
     var areNotificationsEnabledHumanReadable: LocalizedStringResource {
-        areNotificationsEnabled ? L10n.Common.on : L10n.Common.off
+        areNotificationsEnabled ? CommonL10n.on : CommonL10n.off
     }
 
 }

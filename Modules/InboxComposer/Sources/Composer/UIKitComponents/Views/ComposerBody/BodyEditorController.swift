@@ -132,7 +132,7 @@ final class BodyEditorController: UIViewController {
         let option2 = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
             self?.onEvent?(.onInlineImageRemovalRequested(cid: cid))
         }
-        let cancel = UIAlertAction(title: L10n.Attachments.cancelAttachment.string, style: .cancel)
+        let cancel = UIAlertAction(title: CommonL10n.cancel.string, style: .cancel)
         alertController.addAction(option1)
         alertController.addAction(option2)
         alertController.addAction(cancel)

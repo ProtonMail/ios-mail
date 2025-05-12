@@ -58,7 +58,7 @@ private enum InvalidAddressFormatAlertAction: AlertActionInfo, CaseIterable {
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .close:
-            (L10n.Common.gotIt, .cancel)
+            (L10n.Alert.gotIt, .cancel)
         }
     }
 }

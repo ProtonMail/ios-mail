@@ -28,7 +28,7 @@ final class DeleteConfirmationAlertFactoryTests: XCTestCase {
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactItem.vip.name))
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.Contact.message)
-        XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.delete, L10n.Contacts.DeletionAlert.cancel])
+        XCTAssertEqual(alert.actions.map(\.title.string), ["Delete", "Cancel"])
         XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
 
@@ -39,7 +39,7 @@ final class DeleteConfirmationAlertFactoryTests: XCTestCase {
 
         XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactGroupItem.advisorsGroup.name))
         XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.ContactGroup.message)
-        XCTAssertEqual(alert.actions.map(\.title), [L10n.Contacts.DeletionAlert.delete, L10n.Contacts.DeletionAlert.cancel])
+        XCTAssertEqual(alert.actions.map(\.title.string), ["Delete", "Cancel"])
         XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
     }
 

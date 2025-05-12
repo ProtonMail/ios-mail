@@ -78,35 +78,6 @@
         }
       }
     },
-    "Cancel" : {
-      "comment" : "Action title for cancelling deletion of given item.",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuleren"
-          }
-        }
-      }
-    },
     "Contacts" : {
       "comment" : "Title of the contacts screen that displays contacts and contact groups.",
       "localizations" : {
@@ -132,35 +103,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contacten"
-          }
-        }
-      }
-    },
-    "Delete" : {
-      "comment" : "Action title for confirming deletion of given item.",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löschen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verwijderen"
           }
         }
       }

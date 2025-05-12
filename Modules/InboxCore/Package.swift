@@ -5,18 +5,22 @@ import PackageDescription
 
 let package = Package(
     name: "InboxCore",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
         .library(name: "InboxCore", targets: ["InboxCore"])
     ],
     dependencies: [
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
-        .package(path: "../TryCatch")
+        .package(path: "../TryCatch"),
     ],
     targets: [
         .target(
             name: "InboxCore",
-            dependencies: ["proton_app_uniffi", "TryCatch"]
+            dependencies: ["proton_app_uniffi", "TryCatch"],
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

@@ -98,7 +98,7 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         let remove = UIAlertAction(title: L10n.Attachments.removeAttachment.string, style: .default) { [weak self] _ in
             self?.onEvent?(.onRemove(uiModel: uiModel))
         }
-        let cancel = UIAlertAction(title: L10n.Attachments.cancelAttachment.string, style: .cancel)
+        let cancel = UIAlertAction(title: CommonL10n.cancel.string, style: .cancel)
         alertController.addAction(remove)
         alertController.addAction(cancel)
         present(alertController, animated: true)

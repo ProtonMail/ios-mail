@@ -54,9 +54,6 @@
     "Camera" : {
       "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
     },
-    "Cancel" : {
-      "comment" : "Cancellation for the remove attachment action in a Draft."
-    },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
     },

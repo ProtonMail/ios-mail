@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
@@ -76,7 +77,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             messageActions: [.delete],
             moveActions: [
                 .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                .moveTo
+                .moveTo,
             ],
             generalActions: [.print]
         )
@@ -89,15 +90,17 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(invokedWithMessagesIDs, [messageID])
         XCTAssertEqual(invokedWithConversationIDs, [])
-        XCTAssertEqual(sut.state, .init(
-            title: title,
-            availableActions: .init(
-                replyActions: [.reply],
-                mailboxItemActions: [.delete],
-                moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
-                generalActions: [.print]
-            )
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                title: title,
+                availableActions: .init(
+                    replyActions: [.reply],
+                    mailboxItemActions: [.delete],
+                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
+                    generalActions: [.print]
+                )
+            ))
     }
 
     func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
@@ -105,7 +108,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             conversationActions: [.labelAs],
             moveActions: [
                 .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                .moveTo
+                .moveTo,
             ],
             generalActions: [.saveAsPdf]
         )
@@ -118,15 +121,17 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(invokedWithMessagesIDs, [])
         XCTAssertEqual(invokedWithConversationIDs, [conversationID])
-        XCTAssertEqual(sut.state, .init(
-            title: title,
-            availableActions: .init(
-                replyActions: nil,
-                mailboxItemActions: [.labelAs],
-                moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
-                generalActions: [.saveAsPdf]
-            )
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                title: title,
+                availableActions: .init(
+                    replyActions: nil,
+                    mailboxItemActions: [.labelAs],
+                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
+                    generalActions: [.saveAsPdf]
+                )
+            ))
     }
 
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
@@ -266,7 +271,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
     }
-    
+
     func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() async throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .ok
 
@@ -277,14 +282,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
 
-        let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
+        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
         await confirmAction.action()
 
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [.dismiss])
     }
-    
+
     func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() async throws {
         generalActionsSpy.stubbedMarkMessagePhishingResult = .error(.other(.network))
 
@@ -295,14 +300,14 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
 
-        let confirmAction = try sut.state.alertAction(for: L10n.Common.confirm)
+        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
         await confirmAction.action()
-        
+
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
         XCTAssertEqual(spiedNavigation, [])
     }
-    
+
     func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() async throws {
         let id = ID(value: 55)
         let sut = sut(id: id.value, type: .message, title: .notUsed)
@@ -311,9 +316,9 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
 
-        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
+        let cancelAction = try sut.state.alertAction(for: CommonL10n.cancel)
         await cancelAction.action()
-        
+
         XCTAssertEqual(sut.state.alert, nil)
         XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [])
         XCTAssertEqual(spiedNavigation, [])
@@ -403,9 +408,11 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
 
-        XCTAssertEqual(toastStateStore.state.toasts, [
-            .moveTo(destinationName: destination.name.humanReadable.string)
-        ])
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [
+                .moveTo(destinationName: destination.name.humanReadable.string)
+            ])
     }
 
     private func verifyGeneralAction(action: GeneralActions) {

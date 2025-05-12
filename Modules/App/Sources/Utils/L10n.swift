@@ -217,13 +217,6 @@ enum L10n {
     }
 
     enum Common {
-        static let done = LocalizedStringResource("Done", comment: "`Done` action title.")
-        static let cancel = LocalizedStringResource("Cancel", comment: "`Cancel` action title.")
-        static let close = LocalizedStringResource("Close", comment: "`Close` action title.")
-        static let confirm = LocalizedStringResource("Confirm", comment: "`Confirm` action title.")
-        static let delete = LocalizedStringResource("Delete", comment: "`Delete` action title.")
-        static let on = LocalizedStringResource("On", comment: "Indicates that a feature is enabled and actively functioning.")
-        static let off = LocalizedStringResource("Off", comment: "Indicates that a feature is disabled and not functioning.")
         static let markAsLegitimate = LocalizedStringResource(
             "Mark as legitimate",
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
@@ -730,11 +723,6 @@ enum L10n {
         static let searchPlaceholder = LocalizedStringResource(
             "Search",
             comment: "Search textbox placeholder"
-        )
-        static let cancel = LocalizedStringResource(
-            "search.dismiss",
-            defaultValue: "Cancel",
-            comment: "Search screen dismiss"
         )
         static let noResultsTitle = LocalizedStringResource(
             "No matches",

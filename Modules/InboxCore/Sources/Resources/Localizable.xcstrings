@@ -1,0 +1,102 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Cancel" : {
+        "localizations" : {
+            "de" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Abbrechen"
+                }
+            },
+            "en" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Cancel"
+                }
+            },
+            "fr" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Annuler"
+                }
+            },
+            "nl" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Annuleren"
+                }
+            }
+        }
+    },
+    "Close" : {
+
+    },
+    "Confirm" : {
+
+    },
+    "Delete" : {
+        "localizations" : {
+            "de" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Löschen"
+                }
+            },
+            "en" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Delete"
+                }
+            },
+            "fr" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Supprimer"
+                }
+            },
+            "nl" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Verwijderen"
+                }
+            }
+        }
+    },
+    "Done" : {
+        "localizations" : {
+            "de" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Fertig"
+                }
+            },
+            "en" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Done"
+                }
+            },
+            "fr" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Terminé"
+                }
+            },
+            "nl" : {
+                "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "Klaar"
+                }
+            }
+        }
+    },
+    "Off" : {
+      "comment" : "Indicates that a feature is disabled and not functioning."
+    },
+    "On" : {
+      "comment" : "Indicates that a feature is enabled and actively functioning."
+    }
+  },
+  "version" : "1.0"
+}

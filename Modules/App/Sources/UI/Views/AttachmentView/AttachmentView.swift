@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import SwiftUI
 import proton_app_uniffi
 
@@ -65,12 +66,14 @@ private struct ShowDoneNavBarButton: ViewModifier {
         content
             .navigationBarItems(
                 leading:
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Text(L10n.Common.done)
-                            .fontWeight(.semibold)
-                    })
+                    Button(
+                        action: {
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        label: {
+                            Text(CommonL10n.done)
+                                .fontWeight(.semibold)
+                        })
             )
     }
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import InboxCore
 import InboxCoreUI
 
 enum LogOutConformationAction: AlertActionInfo, CaseIterable {
@@ -27,7 +28,7 @@ enum LogOutConformationAction: AlertActionInfo, CaseIterable {
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
         switch self {
         case .cancel:
-            (L10n.Common.cancel, .cancel)
+            (CommonL10n.cancel, .cancel)
         case .signOut:
             (L10n.PINLock.signOutConfirmationButton, .destructive)
         }

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
@@ -107,7 +108,7 @@ struct LabelAsSheet: View {
     private func doneButton() -> some View {
         Button(
             action: { model.handle(action: .doneButtonTapped) },
-            label: { Text(L10n.Common.done) }
+            label: { Text(CommonL10n.done) }
         )
         .buttonStyle(BigButtonStyle())
     }

@@ -150,12 +150,6 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Menu option to send inline image as attachment instead."
         )
-
-        static let cancelAttachment = LocalizedStringResource(
-            "Cancel",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Cancellation for the remove attachment action in a Draft."
-        )
     }
 
     enum AttachmentError {
@@ -217,7 +211,7 @@ enum L10n {
         )
     }
 
-    enum Common {
+    enum Alert {
 
         static let gotIt = LocalizedStringResource(
             "Got it",

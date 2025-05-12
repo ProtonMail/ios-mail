@@ -142,7 +142,7 @@ enum AttachmentErrorActions: String, Identifiable, Hashable {
     var title: String {
         switch self {
         case .gotIt, .gotItRemovingFromDraft:
-            L10n.Common.gotIt.string
+            L10n.Alert.gotIt.string
         }
     }
 

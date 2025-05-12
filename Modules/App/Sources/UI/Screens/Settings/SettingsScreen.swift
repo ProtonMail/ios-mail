@@ -76,7 +76,7 @@ struct SettingsScreen: View {
     private func doneToolbarItem() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: { dismiss.callAsFunction() }) {
-                Text(L10n.Common.done)
+                Text(CommonL10n.done)
                     .foregroundStyle(DS.Color.InteractionBrand.norm)
             }
         }

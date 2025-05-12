@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
@@ -113,7 +114,7 @@ struct SearchToolbarView: View {
 
     private var cancelButton: some View {
         Button(action: { onEvent(.onCancel) }) {
-            Text(L10n.Search.cancel)
+            Text(CommonL10n.cancel)
                 .font(.body)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.accent)

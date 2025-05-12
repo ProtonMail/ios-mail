@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxCoreUI
 import Testing
 
@@ -55,7 +56,7 @@ class PINLockStateStoreTests {
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
-        let cancelAction = try sut.state.alertAction(for: L10n.Common.cancel)
+        let cancelAction = try sut.state.alertAction(for: CommonL10n.cancel)
         await cancelAction.action()
 
         #expect(output == [])
