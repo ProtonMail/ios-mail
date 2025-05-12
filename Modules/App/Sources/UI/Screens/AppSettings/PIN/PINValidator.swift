@@ -22,7 +22,6 @@ struct PINValidator {
         self.pinScreenType = pinScreenType
     }
 
-    // FIXME: - Add Rust SDK validation to it
     func validate(pin: String) -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
