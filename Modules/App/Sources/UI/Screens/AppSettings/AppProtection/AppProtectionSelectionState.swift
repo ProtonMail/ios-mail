@@ -21,7 +21,7 @@ import InboxCore
 struct AppProtectionSelectionState: Copying {
     var selectedAppProtection: AppProtection?
     var availableAppProtectionMethods: [AppProtectionMethodViewModel]
-    var pinScreen: PINScreenType?
+    var presentedPINScreen: PINScreenType?
 }
 
 extension AppProtectionSelectionState {
@@ -30,7 +30,7 @@ extension AppProtectionSelectionState {
         .init(
             selectedAppProtection: nil,
             availableAppProtectionMethods: [],
-            pinScreen: nil
+            presentedPINScreen: nil
         )
     }
 

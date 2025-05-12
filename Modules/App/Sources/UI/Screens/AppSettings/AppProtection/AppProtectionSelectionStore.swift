@@ -51,7 +51,7 @@ class AppProtectionSelectionStore: StateStore {
             case .none:
                 break // FIXME: - To be added in the next MR
             case .pin:
-                state = state.copy(\.pinScreen, to: .set(oldPIN: nil))
+                state = state.copy(\.presentedPINScreen, to: .set(oldPIN: nil))
             case .faceID, .touchID:
                 break // FIXME: - To be added in the next MR
             }

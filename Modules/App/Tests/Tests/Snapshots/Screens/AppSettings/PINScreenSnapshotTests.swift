@@ -31,7 +31,7 @@ struct PINScreenSnapshotTests {
     ])
     func pinScreensLayoutCorrectly(type: PINScreenType) {
         let sut = NavigationStack {
-            PINScreen(type: type)
+            PINScreen(type: type, dismiss: {})
                 .environmentObject(Router<SettingsRoute>())
         }
         assertSnapshotsOnIPhoneX(of: sut, named: type.testName)

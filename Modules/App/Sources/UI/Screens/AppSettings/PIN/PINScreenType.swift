@@ -47,14 +47,7 @@ enum PINScreenType: Hashable, Identifiable {
         }
     }
 
-    var id: String { // FIXME: - 
-        switch self {
-        case .set(let oldPIN):
-            "set"
-        case .confirm(let oldPIN, let newPIN):
-            "confim"
-        case .verify(let reason):
-            "verify"
-        }
+    var id: PINScreenType {
+        self
     }
 }

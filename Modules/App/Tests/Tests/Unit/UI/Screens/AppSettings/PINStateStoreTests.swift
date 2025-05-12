@@ -21,7 +21,7 @@ import Testing
 
 @MainActor
 class PINStateStoreTests {
-    let router: Router<SettingsRoute> = .init()
+    let router: Router<PINRoute> = .init()
     var dismissCount = 0
 
     func makeSut(type: PINScreenType) -> PINStateStore {
