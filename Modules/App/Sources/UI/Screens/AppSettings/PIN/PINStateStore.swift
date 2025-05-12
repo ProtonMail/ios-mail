@@ -58,7 +58,7 @@ class PINStateStore: StateStore {
                     switch flow {
                     case .changePIN:
                         router.go(to: .pin(type: .set(oldPIN: state.pin)))
-                    case .verify:
+                    case .disablePIN:
                         router.go(to: .appProtection)
                     }
                 }

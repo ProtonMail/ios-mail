@@ -17,5 +17,5 @@
 
 enum PINVerificationFlow {
     case changePIN
-    case verify
+    case disablePIN
 }
