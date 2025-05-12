@@ -25,6 +25,7 @@ import MBProgressHUD
 import ProtonCoreDataModel
 import ProtonCoreLog
 import ProtonCoreFeatureFlags
+import LocalAuthentication
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account
@@ -128,7 +129,15 @@ final class SettingsDeviceViewModel {
     private(set) lazy var accountSettings: [AccountSectionItem] = {
         let optedOut = self.dependencies.user.userInfo.edmOptOut == 1
         let featureDisabled = FeatureFlagsRepository.shared.isEnabled(CoreFeatureFlagType.easyDeviceMigrationDisabled)
-        return (!featureDisabled && !optedOut) ? [.account, .scanQRCode] : [.account]
+        let isDeviceSecured: Bool = {
+#if targetEnvironment(simulator)
+            return true
+#else
+            return LAContext().canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+#endif
+        }()
+
+        return (!featureDisabled && !optedOut && isDeviceSecured) ? [.account, .scanQRCode] : [.account]
     }()
 
     lazy var appSettings: [DeviceSectionItem] = {
