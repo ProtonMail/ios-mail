@@ -56,7 +56,12 @@ public struct Shadow {
 private extension Shadow {
 
     static func make(x: CGFloat, y: CGFloat, color: Color) -> Shadow {
-        .init(x: x, y: y, blur: 15, color: color)
+        .init(x: x, y: y, blur: blur, color: color)
+    }
+
+    // Figma blur is 10, but in the app a blur of 5 produces a visually equivalent effect.
+    private static var blur: CGFloat {
+        5
     }
 
 }
