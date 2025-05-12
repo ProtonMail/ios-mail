@@ -32,20 +32,20 @@ struct PINScreen: View {
             store: PINStateStore(state: .initial(type: type), router: router)
         ) { state, store in
             EnterPINView(
-                title: state.type.pinInputTitle,
+                title: state.type.configuration.pinInputTitle,
                 text: pin(state: state, store: store),
                 validation: validation(state: state)
             )
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { store.handle(action: .trailingButtonTapped) }) {
-                        Text(state.type.trailingButtonTitle)
+                        Text(state.type.configuration.trailingButtonTitle)
                             .fontWeight(.bold)
                             .foregroundStyle(DS.Color.Text.accent)
                     }
                 }
             }
-            .navigationTitle(state.type.screenTitle.string)
+            .navigationTitle(state.type.configuration.screenTitle.string)
         }
     }
 

@@ -23,37 +23,28 @@ enum PINScreenType: Hashable {
     case confirm(pin: String)
     case verify(nextFlow: PINVerificationFlow)
 
-    var pinInputTitle: LocalizedStringResource {
-        switch self {
-        case .set:
-            L10n.Settings.App.setPINInputTitle
-        case .change, .confirm:
-            L10n.Settings.App.repeatPIN
-        case .verify:
-            ""
-        }
+    struct Configuration {
+        let pinInputTitle: LocalizedStringResource
+        let screenTitle: LocalizedStringResource
+        let trailingButtonTitle: LocalizedStringResource
     }
 
-    var screenTitle: LocalizedStringResource {
+    var configuration: Configuration {
         switch self {
         case .set:
-            L10n.Settings.App.setPINScreenTitle
+            .init(
+                pinInputTitle: L10n.Settings.App.setPINInputTitle,
+                screenTitle: L10n.Settings.App.setPINScreenTitle,
+                trailingButtonTitle: L10n.Common.next
+            )
         case .change, .confirm:
-            L10n.Settings.App.repeatPIN
+            .init(
+                pinInputTitle: L10n.Settings.App.repeatPIN,
+                screenTitle: L10n.Settings.App.repeatPIN,
+                trailingButtonTitle: L10n.Common.confirm
+            )
         case .verify:
-            ""
+            .init(pinInputTitle: "", screenTitle: "", trailingButtonTitle: "")
         }
     }
-
-    var trailingButtonTitle: LocalizedStringResource {
-        switch self {
-        case .set:
-            L10n.Common.next
-        case .change, .confirm:
-            L10n.Common.confirm
-        case .verify:
-            ""
-        }
-    }
-
 }
