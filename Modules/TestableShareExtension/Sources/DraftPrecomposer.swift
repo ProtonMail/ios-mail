@@ -51,10 +51,8 @@ public enum DraftPrecomposer {
             AppLogger.log(error: error, category: .shareExtension)
         }
 
-        let inlineAttachmentSection = result.successfulContentIds.map { cid in
-            "<div><img src=\"cid:\(cid)\" style=\"max-width: 100%;\"></div><br>"
-        }.joined()
-        try prependToBody(text: inlineAttachmentSection, in: draft)
+        let inlineImageHTML = InlineImageHTML.html(for: result.successfulContentIds)
+        try prependToBody(text: inlineImageHTML, in: draft)
     }
 
     private static func add(nonInlineAttachments: [NSItemProvider], to draft: AppDraftProtocol) async throws {

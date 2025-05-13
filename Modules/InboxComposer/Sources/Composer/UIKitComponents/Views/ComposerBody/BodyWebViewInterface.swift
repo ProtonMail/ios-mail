@@ -79,8 +79,8 @@ final class BodyWebViewInterface: NSObject {
 
     @MainActor
     func insertImages(_ contentIds: [String]) async {
-        let jsonArray = contentIds.map { "\"\($0)\"" }.joined(separator: ",")
-        let function = "\(BodyHtmlDocument.JSFunction.insertImages.rawValue)([" + jsonArray + "]);"
+        let inlineImageHTML = InlineImageHTML.html(for: contentIds)
+        let function = "\(BodyHtmlDocument.JSFunction.insertImages.rawValue)('\(inlineImageHTML)');"
 
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in

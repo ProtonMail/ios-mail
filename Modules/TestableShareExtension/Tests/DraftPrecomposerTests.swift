@@ -78,7 +78,7 @@ final class DraftPrecomposerTests {
         try await sut.populate(draft: draft, with: sharedContent)
 
         let expectedBody =
-            #"Some body<div><img src="cid:12345" style="max-width: 100%;"></div><br><div><img src="cid:12345" style="max-width: 100%;"></div><br><div><img src="cid:12345" style="max-width: 100%;"></div><br>"#
+            #"Some body<img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br>"#
         #expect(draft.body() == expectedBody)
 
         let expectedAttachmentPaths = sourceURLs.map {
