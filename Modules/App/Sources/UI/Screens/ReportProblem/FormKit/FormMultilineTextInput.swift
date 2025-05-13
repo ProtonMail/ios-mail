@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
@@ -135,7 +136,7 @@ struct FormTextInput: View {
 extension Binding where Value == FormTextInput.ValidationStatus {
 
     static var noValidation: Self {
-        Binding(get: { .ok }, set: { _ in })
+        .readonly { .ok }
     }
 
 }

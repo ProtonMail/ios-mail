@@ -80,9 +80,6 @@ struct PINScreen: View {
     }
 
     private func validation(state: PINScreenState) -> Binding<FormTextInput.ValidationStatus> {
-        .init(
-            get: { state.pinValidation },
-            set: { _ in }
-        )
+        .readonly { state.pinValidation }
     }
 }

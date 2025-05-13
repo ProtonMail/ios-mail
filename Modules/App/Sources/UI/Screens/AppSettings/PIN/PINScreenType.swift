@@ -46,17 +46,9 @@ enum PINScreenType: Hashable, Identifiable {
         case .verify(let reason):
             switch reason {
             case .changePIN:
-                .init(
-                    pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
-                    screenTitle: L10n.Settings.App.changePINcode,
-                    trailingButtonTitle: CommonL10n.confirm
-                )
+                .verify(screenTitle: L10n.Settings.App.changePINcode, trailingButtonTitle: CommonL10n.confirm)
             case .disablePIN:
-                .init(
-                    pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
-                    screenTitle: L10n.Settings.App.disablePINScreenTitle,
-                    trailingButtonTitle: L10n.Common.next
-                )
+                .verify(screenTitle: L10n.Settings.App.disablePINScreenTitle, trailingButtonTitle: L10n.Common.next)
             }
         }
     }
@@ -73,4 +65,16 @@ enum PINScreenType: Hashable, Identifiable {
     var id: PINScreenType {
         self
     }
+}
+
+private extension PINScreenType.Configuration {
+
+    static func verify(screenTitle: LocalizedStringResource, trailingButtonTitle: LocalizedStringResource) -> Self {
+        .init(
+            pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
+            screenTitle: screenTitle,
+            trailingButtonTitle: trailingButtonTitle
+        )
+    }
+
 }

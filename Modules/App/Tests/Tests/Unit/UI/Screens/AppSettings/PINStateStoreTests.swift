@@ -24,16 +24,6 @@ class PINStateStoreTests {
     let router: Router<PINRoute> = .init()
     var dismissCount = 0
 
-    func makeSut(type: PINScreenType) -> PINStateStore {
-        PINStateStore(
-            state: .initial(type: type),
-            router: router,
-            dismiss: { [unowned self] in
-                dismissCount += 1
-            }
-        )
-    }
-
     @Test
     func setPIN_tooShortPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
         let sut = makeSut(type: .set(oldPIN: nil))
@@ -97,5 +87,15 @@ class PINStateStoreTests {
         #expect(sut.state.pinValidation == .ok)
         #expect(router.stack == [.pin(type: .set(oldPIN: "1235"))])
         #expect(dismissCount == 0)
+    }
+
+    private func makeSut(type: PINScreenType) -> PINStateStore {
+        PINStateStore(
+            state: .initial(type: type),
+            router: router,
+            dismiss: { [unowned self] in
+                dismissCount += 1
+            }
+        )
     }
 }
