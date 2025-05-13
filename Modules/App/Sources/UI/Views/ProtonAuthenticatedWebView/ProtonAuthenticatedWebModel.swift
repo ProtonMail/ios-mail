@@ -17,6 +17,7 @@
 
 import InboxCore
 import Foundation
+import proton_app_uniffi
 import enum SwiftUI.ColorScheme
 
 final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
@@ -35,7 +36,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
 
         let appConfig = dependencies.appConfigService.appConfig
         let domain = appConfig.environment.domain
-        let appVersion = appConfig.appVersion
+        let appVersion = appConfig.apiEnvConfig.appVersion
 
         Task {
             await updateState(.forkingSession)
@@ -62,8 +63,8 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
 
     private func webPageUrl(domain: String, appVersion: String, theme: String, selector: String) -> URL {
 //        let params = "?action=\(webViewPage.action)&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
-        let params = "?action=\(webViewPage.action)&theme=\(theme)#selector=\(selector)" // TODO: put app-version back
-        return URL(string:"https://account.\(domain)/lite\(params)")!
+        let params = "?action=\(webViewPage.action)&theme=\(theme)#selector=\(selector)"  // TODO: put app-version back
+        return URL(string: "https://account.\(domain)/lite\(params)")!
     }
 }
 
@@ -115,5 +116,20 @@ enum ProtonAuthenticatedWebPage: Int, Identifiable {
 
     var id: Int {
         rawValue
+    }
+}
+
+private extension ApiEnvId {
+    var domain: String {
+        switch self {
+        case .prod:
+            "proton.me"
+        case .atlas:
+            "proton.black"
+        case .scientist(let name):
+            "\(name).proton.black"
+        case .custom(let fullURL):
+            URL(string: fullURL)!.host()!
+        }
     }
 }

@@ -105,7 +105,8 @@ class HomeScreenTests: BaseTestCase {
         )
 
         ViewHosting.host(
-            view: sut
+            view:
+                sut
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
         )
@@ -138,7 +139,8 @@ private extension InspectableView where View == ViewType.View<HomeScreen> {
         _ toastStateStore: ToastStateStore
     ) throws -> any SwiftUI.View {
         let mailboxScreen = try find(MailboxScreen.self)
-        let mailboxScreenView = try mailboxScreen
+        let mailboxScreenView =
+            try mailboxScreen
             .actualView()
             .environmentObject(appUIStateStore)
             .environmentObject(toastStateStore)
@@ -151,7 +153,8 @@ private extension InspectableView where View == ViewType.View<HomeScreen> {
         _ toastStateStore: ToastStateStore
     ) throws -> any SwiftUI.View {
         let sidebarScreen = try find(SidebarScreen.self)
-        let sidebarScreenView = try sidebarScreen
+        let sidebarScreenView =
+            try sidebarScreen
             .actualView()
             .environmentObject(appUIStateStore)
             .environmentObject(toastStateStore)
@@ -196,15 +199,7 @@ private extension MailUserSession {
             .first
             .unsafelyUnwrapped
         let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first.unsafelyUnwrapped
-        let domain = "localhost:8000"
-        let environment = AppConfig.Environment(
-            domain: domain,
-            apiBaseUrl: "http://\(domain)",
-            userAgent: "Mozilla/5.0",
-            isSrpProofSkipped: true,
-            isHttpAllowed: true
-        )
-        let appConfig = AppConfig(appVersion: "Other", environment: environment)
+        let appConfig = AppConfig(environment: .custom("https://localhost:8000"))
 
         let applicationSupportPath = applicationSupportFolder.path()
         let cachePath = cacheFolder.path()
