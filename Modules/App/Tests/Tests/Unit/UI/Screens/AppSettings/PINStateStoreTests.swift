@@ -76,7 +76,7 @@ class PINStateStoreTests {
     }
 
     @Test
-    func verifyPIN_pinIsValidReasonIsDisablePIN_ItDismissesScreen() async {
+    func verifyPIN_pinIsValidAndReasonIsDisablePIN_ItDismissesScreen() async {
         let sut = makeSut(type: .verify(reason: .disablePIN))
 
         await sut.handle(action: .pinTyped("1235"))
@@ -85,5 +85,17 @@ class PINStateStoreTests {
         #expect(sut.state.pinValidation == .ok)
         #expect(router.stack == [])
         #expect(dismissCount == 1)
+    }
+
+    @Test
+    func verifyPIN_pinIsValidAndReasonIsChangePIN_ItNavigatesToSetPINScreen() async {
+        let sut = makeSut(type: .verify(reason: .changePIN))
+
+        await sut.handle(action: .pinTyped("1235"))
+        await sut.handle(action: .trailingButtonTapped)
+
+        #expect(sut.state.pinValidation == .ok)
+        #expect(router.stack == [.pin(type: .set(oldPIN: "1235"))])
+        #expect(dismissCount == 0)
     }
 }

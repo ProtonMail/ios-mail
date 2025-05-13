@@ -61,7 +61,6 @@ struct EnterPINView: View {
             isFocused = true
         }
     }
-
 }
 
 #Preview {
