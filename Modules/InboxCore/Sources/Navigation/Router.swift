@@ -28,12 +28,6 @@ public final class Router<Route: Routable>: ObservableObject {
         stack.append(route)
     }
 
-    public func goBack(to route: Route) {
-        if let index = stack.firstIndex(of: route) {
-            stack = Array(stack.prefix(through: index))
-        }
-    }
-
     public func goBack() {
         stack.removeLast()
     }

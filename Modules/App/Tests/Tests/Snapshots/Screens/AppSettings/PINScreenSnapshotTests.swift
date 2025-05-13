@@ -26,13 +26,14 @@ struct PINScreenSnapshotTests {
 
     @Test(arguments: [
         PINScreenType.verify(reason: .changePIN),
+        .verify(reason: .disablePIN),
         .confirm(oldPIN: .empty, newPIN: .empty),
         .set(oldPIN: nil),
     ])
     func pinScreensLayoutCorrectly(type: PINScreenType) {
         let sut = NavigationStack {
             PINScreen(type: type, dismiss: {})
-                .environmentObject(Router<SettingsRoute>())
+                .environmentObject(Router<PINRoute>())
         }
         assertSnapshotsOnIPhoneX(of: sut, named: type.testName)
     }
@@ -47,8 +48,13 @@ private extension PINScreenType {
             "confirm_pin"
         case .set:
             "set_pin"
-        case .verify:
-            "verify_pin"
+        case .verify(let reason):
+            switch reason {
+            case .changePIN:
+                "change_pin"
+            case .disablePIN:
+                "disable_pin"
+            }
         }
     }
 

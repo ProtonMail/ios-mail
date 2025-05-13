@@ -42,8 +42,21 @@ enum PINScreenType: Hashable, Identifiable {
                 screenTitle: L10n.Settings.App.repeatPIN,
                 trailingButtonTitle: L10n.Common.confirm
             )
-        case .verify:
-            .init(pinInputTitle: "", screenTitle: "", trailingButtonTitle: "")
+        case .verify(let reason):
+            switch reason {
+            case .changePIN:
+                .init(
+                    pinInputTitle: "Old PIN code",
+                    screenTitle: "Disable PIN code",
+                    trailingButtonTitle: L10n.Common.confirm
+                )
+            case .disablePIN:
+                .init(
+                    pinInputTitle: "Old PIN code",
+                    screenTitle: "Change PIN code",
+                    trailingButtonTitle: L10n.Common.next
+                )
+            }
         }
     }
 
