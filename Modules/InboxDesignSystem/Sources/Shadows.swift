@@ -59,10 +59,8 @@ private extension Shadow {
         .init(x: x, y: y, blur: blur, color: color)
     }
 
-    // Figma blur is 10, but in the app a blur of 5 produces a visually equivalent effect.
-    private static var blur: CGFloat {
-        5
-    }
+    /// Figma blur is 10, but in the app a blur of 5 produces a visually equivalent effect.
+    private static let blur: CGFloat = 5
 
 }
 
