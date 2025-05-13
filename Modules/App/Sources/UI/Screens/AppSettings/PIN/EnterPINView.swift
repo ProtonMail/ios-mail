@@ -23,14 +23,17 @@ struct EnterPINView: View {
     @Binding private var validation: FormTextInput.ValidationStatus
     @FocusState private var isFocused: Bool
     private let title: LocalizedStringResource
+    private let isInputFooterVisible: Bool
 
     init(
         title: LocalizedStringResource,
         text: Binding<String>,
+        isInputFooterVisible: Bool,
         validation: Binding<FormTextInput.ValidationStatus>
     ) {
         self.title = title
         self._text = text
+        self.isInputFooterVisible = isInputFooterVisible
         self._validation = validation
     }
 
@@ -40,7 +43,7 @@ struct EnterPINView: View {
             FormTextInput(
                 title: title,
                 placeholder: .init(stringLiteral: .empty),
-                footer: L10n.Settings.App.setPINInformation,
+                footer: isInputFooterVisible ? L10n.Settings.App.setPINInformation : nil,
                 text: $text,
                 validation: $validation,
                 inputType: .secureOneline
@@ -66,6 +69,7 @@ struct EnterPINView: View {
         EnterPINView(
             title: L10n.Settings.App.setPINInputTitle,
             text: .constant(.empty),
+            isInputFooterVisible: true,
             validation: .noValidation
         )
     }

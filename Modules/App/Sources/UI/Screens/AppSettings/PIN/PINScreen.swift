@@ -37,6 +37,7 @@ struct PINScreen: View {
             EnterPINView(
                 title: state.type.configuration.pinInputTitle,
                 text: pin(state: state, store: store),
+                isInputFooterVisible: state.type.isCodeHintVisible,
                 validation: validation(state: state)
             )
             .toolbar {

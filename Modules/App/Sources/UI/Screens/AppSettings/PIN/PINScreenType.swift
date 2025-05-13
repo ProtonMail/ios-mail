@@ -47,16 +47,25 @@ enum PINScreenType: Hashable, Identifiable {
             case .changePIN:
                 .init(
                     pinInputTitle: "Old PIN code",
-                    screenTitle: "Disable PIN code",
+                    screenTitle: "Change PIN code",
                     trailingButtonTitle: L10n.Common.confirm
                 )
             case .disablePIN:
                 .init(
                     pinInputTitle: "Old PIN code",
-                    screenTitle: "Change PIN code",
+                    screenTitle: "Disable PIN code",
                     trailingButtonTitle: L10n.Common.next
                 )
             }
+        }
+    }
+
+    var isCodeHintVisible: Bool {
+        switch self {
+        case .set:
+            true
+        case .confirm, .verify:
+            false
         }
     }
 
