@@ -61,7 +61,7 @@ struct PINScreen: View {
         if router.stack.isEmpty {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { store.handle(action: .leadingButtonTapped) }) {
-                    Text(L10n.Common.cancel)
+                    Text(CommonL10n.cancel)
                         .foregroundStyle(DS.Color.Text.accent)
                 }
             }

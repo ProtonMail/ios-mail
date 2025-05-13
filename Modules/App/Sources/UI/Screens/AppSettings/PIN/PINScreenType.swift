@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 enum PINScreenType: Hashable, Identifiable {
     case set(oldPIN: String?)
@@ -40,7 +41,7 @@ enum PINScreenType: Hashable, Identifiable {
             .init(
                 pinInputTitle: L10n.Settings.App.repeatPIN,
                 screenTitle: L10n.Settings.App.repeatPIN,
-                trailingButtonTitle: L10n.Common.confirm
+                trailingButtonTitle: CommonL10n.confirm
             )
         case .verify(let reason):
             switch reason {
@@ -48,7 +49,7 @@ enum PINScreenType: Hashable, Identifiable {
                 .init(
                     pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
                     screenTitle: L10n.Settings.App.changePINcode,
-                    trailingButtonTitle: L10n.Common.confirm
+                    trailingButtonTitle: CommonL10n.confirm
                 )
             case .disablePIN:
                 .init(
