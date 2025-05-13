@@ -684,7 +684,7 @@
       }
     },
     "Change PIN code" : {
-      "comment" : "Change PIN code button title."
+      "comment" : "Change PIN code title."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."
@@ -1067,6 +1067,9 @@
     },
     "Device" : {
       "comment" : "Device section title in app settings. The section contains configuration like notifications, language, appearance. (App settings)"
+    },
+    "Disable PIN code" : {
+      "comment" : "Disable PIN code screen title."
     },
     "Dismiss" : {
       "comment" : "Alert dismiss button"
@@ -1949,6 +1952,9 @@
           }
         }
       }
+    },
+    "Old PIN code" : {
+      "comment" : "Verify PIN code screen PIN input title."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."

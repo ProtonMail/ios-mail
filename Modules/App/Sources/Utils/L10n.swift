@@ -845,7 +845,7 @@ enum L10n {
             )
             static let changePINcode = LocalizedStringResource(
                 "Change PIN code",
-                comment: "Change PIN code button title."
+                comment: "Change PIN code title."
             )
             static let repeatPIN = LocalizedStringResource(
                 "Repeat PIN code",
@@ -866,6 +866,14 @@ enum L10n {
             static let setPINInformation = LocalizedStringResource(
                 "Min 4 characters and max 21 characters",
                 comment: "Information displayed under the PIN input."
+            )
+            static let verifyPINInputTitle = LocalizedStringResource(
+                "Old PIN code",
+                comment: "Verify PIN code screen PIN input title."
+            )
+            static let disablePINScreenTitle = LocalizedStringResource(
+                "Disable PIN code",
+                comment: "Disable PIN code screen title."
             )
         }
 

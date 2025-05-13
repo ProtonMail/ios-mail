@@ -46,14 +46,14 @@ enum PINScreenType: Hashable, Identifiable {
             switch reason {
             case .changePIN:
                 .init(
-                    pinInputTitle: "Old PIN code",
-                    screenTitle: "Change PIN code",
+                    pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
+                    screenTitle: L10n.Settings.App.changePINcode,
                     trailingButtonTitle: L10n.Common.confirm
                 )
             case .disablePIN:
                 .init(
-                    pinInputTitle: "Old PIN code",
-                    screenTitle: "Disable PIN code",
+                    pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
+                    screenTitle: L10n.Settings.App.disablePINScreenTitle,
                     trailingButtonTitle: L10n.Common.next
                 )
             }
