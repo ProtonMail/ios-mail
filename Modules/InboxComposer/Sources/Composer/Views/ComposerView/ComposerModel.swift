@@ -37,7 +37,8 @@ final class ComposerModel: ObservableObject {
     private let draftOrigin: DraftOrigin
     private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
-    private let onSendingEvent: (SendingEvent) -> Void
+    private let onSendingEvent: () -> Void
+    private let onCancel: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
     private let cameraImageHandler: CameraImageHandler
@@ -80,7 +81,8 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping (SendingEvent) -> Void,
+        onSendingEvent: @escaping () -> Void,
+        onCancel: @escaping () -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
@@ -92,6 +94,7 @@ final class ComposerModel: ObservableObject {
         self.draftSavedToastCoordinator = draftSavedToastCoordinator
         self.contactProvider = contactProvider
         self.onSendingEvent = onSendingEvent
+        self.onCancel = onCancel
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
         self.pickersState = .init()
@@ -273,6 +276,7 @@ final class ComposerModel: ObservableObject {
             switch await draft.send() {
             case .ok:
                 messageHasBeenSent = true
+                onSendingEvent()
                 dismissComposer(dismissAction: dismissAction)
             case .error(let draftError):
                 AppLogger.log(error: draftError, category: .composer)
@@ -356,8 +360,11 @@ final class ComposerModel: ObservableObject {
     @MainActor
     func dismissComposer(dismissAction: Dismissable) {
         composerWillDismiss = true
-        onSendingEvent(messageHasBeenSent ? .sent : .cancelled)
         dismissAction()
+
+        if !messageHasBeenSent {
+            onCancel()
+        }
     }
 }
 

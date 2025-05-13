@@ -21,21 +21,18 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-public enum SendingEvent {
-    case sent
-    case cancelled
-}
-
 public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
-    private let onSendingEvent: (SendingEvent) -> Void
+    private let onSendingEvent: () -> Void
+    private let onCancel: () -> Void
     private let dependencies: Dependencies
 
-    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping (SendingEvent) -> Void) {
+    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping () -> Void, onCancel: @escaping () -> Void = {}) {
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
+        self.onCancel = onCancel
         self._model = StateObject(
             wrappedValue:
                 ComposerScreenModel(
@@ -49,10 +46,12 @@ public struct ComposerScreen: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         dependencies: Dependencies,
-        onSendingEvent: @escaping (SendingEvent) -> Void
+        onSendingEvent: @escaping () -> Void,
+        onCancel: @escaping () -> Void = {}
     ) {
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
+        self.onCancel = onCancel
         self._model = StateObject(
             wrappedValue: ComposerScreenModel(
                 draft: draft,
@@ -79,7 +78,8 @@ public struct ComposerScreen: View {
                 draftOrigin: draftOrigin,
                 draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
                 contactProvider: dependencies.contactProvider,
-                onSendingEvent: onSendingEvent
+                onSendingEvent: onSendingEvent,
+                onCancel: onCancel
             )
             .interactiveDismissDisabled()
         }
@@ -120,7 +120,8 @@ struct ComposerLoadingView: View {
         draft: .emptyMock,
         draftOrigin: .new,
         dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
-        onSendingEvent: { _ in }
+        onSendingEvent: {},
+        onCancel: {}
     )
     .environmentObject(toastStateStore)
 }

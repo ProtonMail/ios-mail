@@ -33,7 +33,8 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping (SendingEvent) -> Void
+        onSendingEvent: @escaping () -> Void,
+        onCancel: @escaping () -> Void
     ) {
         self._model = StateObject(
             wrappedValue: ComposerModel(
@@ -42,6 +43,7 @@ struct ComposerView: View {
                 draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
                 onSendingEvent: onSendingEvent,
+                onCancel: onCancel,
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
                 photosItemsHandler: .init(),
