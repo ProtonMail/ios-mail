@@ -104,6 +104,7 @@ final class ComposerViewFactory {
         controller.delegate = composerDelegate
         let navigationVC = UINavigationController(rootViewController: controller)
         router.setupNavigation(navigationVC)
+        navigationVC.modalPresentationStyle = .pageSheet
         return navigationVC
     }
 
