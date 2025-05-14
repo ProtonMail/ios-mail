@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,18 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import proton_app_uniffi
+import Testing
 
-extension ApiConfig {
-    static let current = Self.init(envId: .current)
+@testable import ProtonMail
 
-    init(envId: ApiEnvId) {
-        self.init(
-            appVersion: "ios-mail@\(Bundle.main.effectiveAppVersion)",
-            userAgent: "Mozilla/5.0",
-            envId: envId,
-            proxy: nil
-        )
+struct ApiEnvIdTests {
+    @Test(
+        arguments: [
+            ("proton.me", ApiEnvId.prod),
+            ("proton.black", .atlas),
+            ("payments.proton.black", .scientist("payments")),
+            ("account.mock.proton.black", .scientist("account.mock")),
+            ("http://localhost:8000", .custom("http://localhost:8000")),
+        ]
+    )
+    func dynamicDomainMapping(dynamicDomain: String, expectedEnv: ApiEnvId) {
+        #expect(ApiEnvId(dynamicDomain: dynamicDomain) == expectedEnv)
     }
 }
