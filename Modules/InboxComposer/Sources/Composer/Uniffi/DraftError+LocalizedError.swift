@@ -18,7 +18,7 @@
 import Foundation
 import proton_app_uniffi
 
-extension DraftAttachmentError: LocalizedError {
+extension DraftAttachmentUploadError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -29,24 +29,24 @@ extension DraftAttachmentError: LocalizedError {
     }
 }
 
-private extension DraftAttachmentErrorReason {
+private extension DraftAttachmentUploadErrorReason {
 
     var errorMessage: LocalizedStringResource {
         switch self {
         case .attachmentTooLarge:
-            L10n.DraftAttachmentError.attachmentTooLarge
+            L10n.DraftAttachmentUploadError.attachmentTooLarge
         case .crypto:
-            L10n.DraftAttachmentError.crypto
+            L10n.DraftAttachmentUploadError.crypto
         case .messageAlreadySent:
-            L10n.DraftAttachmentError.messageAlreadySent
+            L10n.DraftAttachmentUploadError.messageAlreadySent
         case .messageDoesNotExist:
-            L10n.DraftAttachmentError.messageDoesNotExist
+            L10n.DraftAttachmentUploadError.messageDoesNotExist
         case .messageDoesNotExistOnServer:
-            L10n.DraftAttachmentError.messageDoesNotExistOnServer
+            L10n.DraftAttachmentUploadError.messageDoesNotExistOnServer
         case .retryInvalidState:
-            L10n.DraftAttachmentError.retryInvalidState
+            L10n.DraftAttachmentUploadError.retryInvalidState
         case .tooManyAttachments:
-            L10n.DraftAttachmentError.tooManyAttachments
+            L10n.DraftAttachmentUploadError.tooManyAttachments
         }
     }
 }
@@ -99,7 +99,7 @@ private extension DraftOpenErrorReason {
     }
 }
 
-extension DraftSaveSendError: LocalizedError {
+extension DraftSaveError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -110,33 +110,83 @@ extension DraftSaveSendError: LocalizedError {
     }
 }
 
-private extension DraftSaveSendErrorReason {
+private extension DraftSaveErrorReason {
     var errorMessage: LocalizedStringResource {
         switch self {
         case .addressDoesNotHavePrimaryKey(let value):
-            L10n.DraftSaveSendError.addressDoesNotHavePrimaryKey(address: value)
+            L10n.DraftSaveError.addressDoesNotHavePrimaryKey(address: value)
         case .addressDisabled(let value):
-            L10n.DraftSaveSendError.addressDisabled(address: value)
+            L10n.DraftSaveError.addressDisabled(address: value)
         case .alreadySent, .messageAlreadySent:
-            L10n.DraftSaveSendError.messageAlreadySent
-        case .attachmentUpload:
-            L10n.DraftSaveSendError.attachmentUpload
+            L10n.DraftSaveError.messageAlreadySent
         case .messageDoesNotExist:
-            L10n.DraftSaveSendError.messageDoesNotExist
+            L10n.DraftSaveError.messageDoesNotExist
         case .messageIsNotADraft:
-            L10n.DraftSaveSendError.messageIsNotADraft
-        case .missingAttachmentUploads:
-            L10n.DraftSaveSendError.missingAttachmentUploads
-        case .noRecipients:
-            L10n.DraftSaveSendError.noRecipients
-        case .packageError(let value):
-            L10n.DraftSaveSendError.packageError(error: value)
+            L10n.DraftSaveError.messageIsNotADraft
         case .recipientEmailInvalid(let value):
-            L10n.DraftSaveSendError.recipientInvalidAddress(address: value)
+            L10n.DraftSaveError.recipientInvalidAddress(address: value)
         case .protonRecipientDoesNotExist(let value):
-            L10n.DraftSaveSendError.protonRecipientNotFound(address: value)
+            L10n.DraftSaveError.protonRecipientNotFound(address: value)
         case .unknownRecipientValidationError(let value):
-            L10n.DraftSaveSendError.unknownRecipientValidation(address: value)
+            L10n.DraftSaveError.unknownRecipientValidation(address: value)
+        }
+    }
+}
+
+extension DraftSendError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension DraftSendFailure: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .save(let draftSaveErrorReason):
+            draftSaveErrorReason.errorMessage.string
+        case .send(let draftSendErrorReason):
+            draftSendErrorReason.errorMessage.string
+        case .attachmentUpload(let draftAttachmentUploadErrorReason):
+            draftAttachmentUploadErrorReason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+private extension DraftSendErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .addressDoesNotHavePrimaryKey(let value):
+            L10n.DraftSendError.addressDoesNotHavePrimaryKey(address: value)
+        case .addressDisabled(let value):
+            L10n.DraftSendError.addressDisabled(address: value)
+        case .alreadySent, .messageAlreadySent:
+            L10n.DraftSendError.messageAlreadySent
+        case .messageDoesNotExist:
+            L10n.DraftSendError.messageDoesNotExist
+        case .messageIsNotADraft:
+            L10n.DraftSendError.messageIsNotADraft
+        case .missingAttachmentUploads:
+            L10n.DraftSendError.missingAttachmentUploads
+        case .noRecipients:
+            L10n.DraftSendError.noRecipients
+        case .packageError(let value):
+            L10n.DraftSendError.packageError(error: value)
+        case .recipientEmailInvalid(let value):
+            L10n.DraftSendError.recipientInvalidAddress(address: value)
+        case .protonRecipientDoesNotExist(let value):
+            L10n.DraftSendError.protonRecipientNotFound(address: value)
+        case .scheduleSendExpired:
+            L10n.DraftSendError.scheduleSendExpired
+        case .unknownRecipientValidationError(let value):
+            L10n.DraftSendError.unknownRecipientValidation(address: value)
         }
     }
 }

@@ -22,9 +22,9 @@ import UIKit
 
 struct CameraImageHandler {
     let fileManager = FileManager.default
-    let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
+    let unexpectedError = DraftAttachmentUploadError.other(.unexpected(.fileSystem))
 
-    func addInlineImage(to draft: AppDraftProtocol, image: UIImage) async -> Result<String, DraftAttachmentError> {
+    func addInlineImage(to draft: AppDraftProtocol, image: UIImage) async -> Result<String, DraftAttachmentUploadError> {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         do {
             try fileManager.createDirectory(at: uploadFolder, withIntermediateDirectories: true)

@@ -132,7 +132,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
-        let draftError = DraftAttachmentError.reason(.attachmentTooLarge)
+        let draftError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .error(draftError))])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
@@ -491,7 +491,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.attachmentTooLarge)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddInlineResult = [("photo1.jpg", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
@@ -515,7 +515,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testAddAttachments_whenSelectingFromFilesReturnedError_itShouldShowAlertError() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.tooManyAttachments)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.tooManyAttachments)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
@@ -538,7 +538,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testRemoveAttachment_whenRemoveAttachmentFails_itShouldNotSetBodyAction() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.messageAlreadySent)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.messageAlreadySent)
         mockDraft.mockAttachmentList.mockAttachmentListRemoveWithCidResult = [("56789", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 

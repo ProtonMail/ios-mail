@@ -56,7 +56,7 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
     }
 
     func testAddPickerPhotos_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems_andReturnError() async throws {
-        let error = DraftAttachmentError.reason(DraftAttachmentErrorReason.attachmentTooLarge)
+        let error = DraftAttachmentUploadError.reason(DraftAttachmentUploadErrorReason.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(error)), ("file2.txt", .ok)]
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "file1.txt", createFile: true)
         let mockItem2 = try testsHelper.makeMockPhotosPickerItem(fileName: "file2.txt", createFile: true)

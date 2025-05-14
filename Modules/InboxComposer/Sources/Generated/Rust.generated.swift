@@ -4,7 +4,7 @@ import Foundation
 import proton_app_uniffi
 
 public extension AttachmentListAddInlineResult {
-    func get() throws(DraftAttachmentError) -> String {
+    func get() throws(DraftAttachmentUploadError) -> String {
         switch self {
         case .ok(let value):
             value
@@ -14,7 +14,7 @@ public extension AttachmentListAddInlineResult {
     }
 }
 public extension AttachmentListAddResult {
-    func get() throws(DraftAttachmentError) {
+    func get() throws(DraftAttachmentUploadError) {
         switch self {
         case .ok:
             break
@@ -24,7 +24,7 @@ public extension AttachmentListAddResult {
     }
 }
 public extension AttachmentListAttachmentsResult {
-    func get() throws(DraftAttachmentError) -> [DraftAttachment] {
+    func get() throws(DraftAttachmentUploadError) -> [DraftAttachment] {
         switch self {
         case .ok(let value):
             value
@@ -34,7 +34,7 @@ public extension AttachmentListAttachmentsResult {
     }
 }
 public extension AttachmentListRemoveResult {
-    func get() throws(DraftAttachmentError) {
+    func get() throws(ProtonError) {
         switch self {
         case .ok:
             break
@@ -44,7 +44,7 @@ public extension AttachmentListRemoveResult {
     }
 }
 public extension AttachmentListRemoveWithCidResult {
-    func get() throws(DraftAttachmentError) {
+    func get() throws(DraftAttachmentUploadError) {
         switch self {
         case .ok:
             break
@@ -54,7 +54,7 @@ public extension AttachmentListRemoveWithCidResult {
     }
 }
 public extension AttachmentListRetryResult {
-    func get() throws(DraftAttachmentError) {
+    func get() throws(DraftAttachmentUploadError) {
         switch self {
         case .ok:
             break
@@ -64,7 +64,7 @@ public extension AttachmentListRetryResult {
     }
 }
 public extension AttachmentListWatcherResult {
-    func get() throws(DraftAttachmentError) -> DraftAttachmentWatcher {
+    func get() throws(DraftAttachmentUploadError) -> DraftAttachmentWatcher {
         switch self {
         case .ok(let value):
             value
@@ -135,6 +135,16 @@ public extension CreateMailSessionResult {
 }
 public extension DraftMessageIdResult {
     func get() throws(ProtonError) -> Id? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension DraftScheduleSendOptionsResult {
+    func get() throws(ProtonError) -> DraftScheduleSendOption {
         switch self {
         case .ok(let value):
             value
@@ -783,8 +793,18 @@ public extension VoidDraftDiscardResult {
         }
     }
 }
-public extension VoidDraftSaveSendResult {
-    func get() throws(DraftSaveSendError) {
+public extension VoidDraftSaveResult {
+    func get() throws(DraftSaveError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension VoidDraftSendResult {
+    func get() throws(DraftSendError) {
         switch self {
         case .ok:
             break

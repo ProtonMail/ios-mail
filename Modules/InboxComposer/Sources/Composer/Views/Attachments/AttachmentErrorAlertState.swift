@@ -34,7 +34,7 @@ actor AttachmentErrorAlertState {
         onErrorToPresent = closure
     }
 
-    func enqueueAdditionErrors(_ errors: [DraftAttachmentError]) {
+    func enqueueAdditionErrors(_ errors: [DraftAttachmentUploadError]) {
         let attachmentErrors = aggregateAddingAttachmentErrors(errors)
         queue.append(contentsOf: attachmentErrors)
         nextErrorToPresent()
@@ -66,8 +66,8 @@ actor AttachmentErrorAlertState {
 
 extension AttachmentErrorAlertState {
 
-    /// Groups together `DraftAttachmentError` by error type to reduce the total number of alerts.
-    private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentError]) -> [AttachmentErrorAlertModel] {
+    /// Groups together `DraftAttachmentUploadError` by error type to reduce the total number of alerts.
+    private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentUploadError]) -> [AttachmentErrorAlertModel] {
         var attachmentTooLargeCount = 0
         var tooManyAttachmentsCount = 0
         var otherCount = 0
@@ -108,7 +108,7 @@ extension AttachmentErrorAlertState {
         var otherFailures = [DraftAttachment]()
 
         for attachment in attachments {
-            guard let error = attachment.state.attachmentError else { continue }
+            guard let error = attachment.state.attachmentUploadError else { continue }
 
             switch error {
             case .reason(let reason):

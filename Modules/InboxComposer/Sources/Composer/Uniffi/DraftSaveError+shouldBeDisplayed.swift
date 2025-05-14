@@ -17,16 +17,26 @@
 
 import proton_app_uniffi
 
-extension DraftAttachmentState {
+extension DraftSaveError {
 
-    var isError: Bool {
-        attachmentUploadError != nil
-    }
-
-    var attachmentUploadError: DraftAttachmentUploadError? {
-        if case .error(let error) = self {
-            return error
+    public var shouldBeDisplayed: Bool {
+        switch self {
+        case .reason(let reason):
+            reason.shouldBeDisplayed
+        case .other:
+            true
         }
-        return nil
+    }
+}
+
+extension DraftSaveErrorReason {
+
+    public var shouldBeDisplayed: Bool {
+        switch self {
+        case .messageAlreadySent, .alreadySent:
+            false
+        default:
+            true
+        }
     }
 }

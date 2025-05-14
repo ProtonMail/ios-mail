@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-extension DraftAttachmentError {
+extension DraftAttachmentUploadError {
 
     func toAttachmentErrorAlertModel() -> AttachmentErrorAlertModel {
         switch self {
