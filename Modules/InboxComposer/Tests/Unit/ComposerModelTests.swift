@@ -128,7 +128,7 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.onLoad()
 
-        XCTAssertFalse(sut.alertState.isAlertPresented)
+        XCTAssertFalse(sut.attachmentAlertState.isAlertPresented)
     }
 
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
@@ -138,8 +138,8 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.onLoad()
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
     }
 
     func testOnLoad_whenThereAreInlineAttachments_itShouldNotMapThemToUIModels() async throws {
@@ -500,8 +500,8 @@ final class ComposerModelTests: BaseTestCase {
 
         await Task.yield()
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
@@ -522,8 +522,8 @@ final class ComposerModelTests: BaseTestCase {
         let file1 = try filePickerTestsHelper.prepareItem(fileName: "file1.txt", createFile: true)
         await sut.addAttachments(filePickerResult: .success([file1]))
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     // MARK: removeAttachment(cid:)

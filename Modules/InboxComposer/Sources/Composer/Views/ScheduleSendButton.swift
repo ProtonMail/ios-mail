@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,17 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public extension DS.SFSymbols {
-    static let arrowUpRightSquare = "arrow.up.right.square"
-    static let checkmark = "checkmark"
-    static let chevronRight = "chevron.right"
-    static let chevronUpChevronDown = "chevron.up.chevron.down"
-    static let deleteLeft = "delete.left"
-    static let lock = "lock"
-    static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
-    static let suitcase = "suitcase"
-    static let sunMax = "sun.max"
-    static let xmark = "xmark"
-    static let eye = "eye"
-    static let eyeSlash = "eye.slash"
+import InboxDesignSystem
+import SwiftUI
+
+struct ScheduleSendButton: View {
+    @Environment(\.isEnabled) var isEnabled
+    let onTap: () -> Void
+
+    private var iconColor: Color {
+        isEnabled ? DS.Color.InteractionBrand.norm : DS.Color.InteractionBrand.disabled
+    }
+
+    var body: some View {
+        Button(
+            action: onTap,
+            label: {
+                Image(DS.Icon.icClockPaperPlane)
+                    .foregroundStyle(iconColor)
+            }
+        )
+    }
 }

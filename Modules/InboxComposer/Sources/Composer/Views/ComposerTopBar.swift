@@ -20,6 +20,7 @@ import SwiftUI
 
 struct ComposerTopBar: View {
     var isSendEnabled: Bool
+    var scheduleSendAction: (() -> Void)?
     var sendAction: (() -> Void)?
     var dismissAction: (() -> Void)?
 
@@ -31,15 +32,9 @@ struct ComposerTopBar: View {
                     .square(size: Layout.iconSize)
             }
             .square(size: Layout.buttonSize)
-
             Spacer()
-            Button(action: {}) {
-                Image(DS.Icon.icClockPaperPlane)
-                    .square(size: Layout.iconSize)
-                    .foregroundStyle(DS.Color.InteractionBrand.disabled)
-            }
-            .square(size: Layout.buttonSize)
-
+            ScheduleSendButton { scheduleSendAction?() }
+                .disabled(!isSendEnabled)
             SendButton { sendAction?() }
                 .disabled(!isSendEnabled)
         }
@@ -52,5 +47,12 @@ struct ComposerTopBar: View {
     private enum Layout {
         static let iconSize: CGFloat = 24
         static let buttonSize: CGFloat = 40
+    }
+}
+
+#Preview {
+    VStack {
+        ComposerTopBar(isSendEnabled: true)
+        ComposerTopBar(isSendEnabled: false)
     }
 }

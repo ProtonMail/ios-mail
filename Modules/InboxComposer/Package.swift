@@ -8,7 +8,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxComposer", targets: ["InboxComposer"]),
+        .library(name: "InboxComposer", targets: ["InboxComposer"])
     ],
     dependencies: [
         .package(path: "../InboxContacts"),
@@ -16,7 +16,8 @@ let package = Package(
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxDesignSystem"),
         .package(path: "../InboxTesting"),
-        .package(path: "../../ProtonPackages/proton_app_uniffi")
+        .package(path: "../InboxSnapshotTesting"),
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
     ],
     targets: [
         .target(
@@ -30,8 +31,9 @@ let package = Package(
             name: "InboxComposerTests",
             dependencies: [
                 .target(name: "InboxComposer"),
-                .product(name: "InboxTesting", package: "InboxTesting")
+                .product(name: "InboxTesting", package: "InboxTesting"),
+                .product(name: "InboxSnapshotTesting", package: "InboxSnapshotTesting"),
             ]
-        )
+        ),
     ]
 )

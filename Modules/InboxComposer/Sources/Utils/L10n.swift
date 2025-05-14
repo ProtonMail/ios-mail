@@ -473,4 +473,50 @@ enum L10n {
             comment: "Error in the context of opening a draft in the composer"
         )
     }
+
+    enum ScheduleSend {
+
+        static let customTitle = LocalizedStringResource(
+            "Custom",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option tile"
+        )
+
+        static let customSubtitleFreeUser = LocalizedStringResource(
+            "Upgrade for full flexibility",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option subtitle for free user"
+        )
+
+        static let customSubtitle = LocalizedStringResource(
+            "Pick time and date",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option subtitle"
+        )
+
+        static let monday = LocalizedStringResource(
+            "Monday",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send predefined time option"
+        )
+
+        static let previouslySet = LocalizedStringResource(
+            "Previously set",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of a schedule send option that shows the time when the message was last scheduled"
+        )
+
+        static let title = LocalizedStringResource(
+            "Schedule send",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the schedule send view"
+        )
+
+        static let tomorrow = LocalizedStringResource(
+            "Tomorrow",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send predefined time option"
+        )
+
+    }
 }

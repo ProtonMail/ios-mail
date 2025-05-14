@@ -54,6 +54,9 @@
     "Camera" : {
       "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
     },
+    "Custom" : {
+      "comment" : "Schedule send custom time option tile"
+    },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
     },
@@ -125,11 +128,20 @@
     "Message to be sent has no recipients" : {
       "comment" : "Error in the context of sending a draft before being sent."
     },
+    "Monday" : {
+      "comment" : "Schedule send predefined time option"
+    },
+    "Pick time and date" : {
+      "comment" : "Schedule send custom time option subtitle"
+    },
     "Please enter a valid email address" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
     },
     "Please verify your last recipient" : {
       "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"
+    },
+    "Previously set" : {
+      "comment" : "Title of a schedule send option that shows the time when the message was last scheduled"
     },
     "Recipient address is invalid: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
@@ -171,6 +183,9 @@
     },
     "Retry failed, please remove the attachment" : {
       "comment" : "Error in the context of retrying to upload a draft."
+    },
+    "Schedule send" : {
+      "comment" : "Title of the schedule send view"
     },
     "Send" : {
       "comment" : "Message send button.",
@@ -360,11 +375,17 @@
         }
       }
     },
+    "Tomorrow" : {
+      "comment" : "Schedule send predefined time option"
+    },
     "Too many attachments" : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
     },
     "Undo" : {
       "comment" : "Undo action after message has been sent."
+    },
+    "Upgrade for full flexibility" : {
+      "comment" : "Schedule send custom time option subtitle for free user"
     },
     "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"

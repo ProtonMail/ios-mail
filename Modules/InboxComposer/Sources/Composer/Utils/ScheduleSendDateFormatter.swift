@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,17 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public extension DS.SFSymbols {
-    static let arrowUpRightSquare = "arrow.up.right.square"
-    static let checkmark = "checkmark"
-    static let chevronRight = "chevron.right"
-    static let chevronUpChevronDown = "chevron.up.chevron.down"
-    static let deleteLeft = "delete.left"
-    static let lock = "lock"
-    static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
-    static let suitcase = "suitcase"
-    static let sunMax = "sun.max"
-    static let xmark = "xmark"
-    static let eye = "eye"
-    static let eyeSlash = "eye.slash"
+import Foundation
+
+struct ScheduleSendDateFormatter {
+    private let dateFormatter: DateFormatter
+
+    init(locale: Locale = .current, timeZone: TimeZone = .current) {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.timeZone = timeZone
+        formatter.setLocalizedDateFormatFromTemplate("d MMM 'at' HH:mm")
+        self.dateFormatter = formatter
+    }
+
+    func string(from timestamp: UInt64) -> String {
+        dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
+    }
 }

@@ -27,12 +27,15 @@ struct SendButton: View {
     }
 
     var body: some View {
-        Button(action: onTap, label: {
-            Text(L10n.Composer.send)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(textColor)
-        })
+        Button(
+            action: onTap,
+            label: {
+                Text(L10n.Composer.send)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(textColor)
+            }
+        )
         .buttonStyle(SendButtonStyle())
     }
 }
