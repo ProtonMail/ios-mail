@@ -415,7 +415,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onTapItem(.contact(.amandaArcher)))
 
-        XCTAssertEqual(sut.router.stack, [.contactDetails(id: ContactItem.amandaArcher.id)])
+        XCTAssertEqual(sut.router.stack, [.contactDetails(.amandaArcher)])
     }
 
     func testOnTapItemAction_WhenTapOnContactGroup_ItNavigatesToContactGroupDetails() {

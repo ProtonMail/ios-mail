@@ -20,6 +20,15 @@ import proton_app_uniffi
 
 extension ContactItem {
 
+    static func testData(id: UInt64) -> Self {
+        .init(
+            id: id,
+            name: "__NOT_USED__",
+            avatarInformation: .init(text: "AA", color: "#FF5733"),
+            emails: []
+        )
+    }
+
     static var vip: Self {
         .init(
             id: 1_000,

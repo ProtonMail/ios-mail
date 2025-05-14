@@ -29,7 +29,37 @@ final class ContactDetailsScreenSnapshotTests: XCTestCase {
     // MARK: - Private
 
     private func makeSUT() -> ContactDetailsScreen {
-        .init(id: .init(value: 1_911))
+        let groupItems: [[ContactDetailItem]] = [
+            [
+                .init(label: "Work", value: "ben.ale@protonmail.com", isInteractive: true),
+                .init(label: "Private", value: "alexander@proton.me", isInteractive: true)
+            ],
+            [
+                .init(label: "Address", value: "Lettensteg 10, 8037 Zürich", isInteractive: true),
+                .init(label: "Address", value: "Uetlibergstrasse 872, 8025 Zürich", isInteractive: true)
+            ],
+            [
+                .init(label: "Birthday", value: "Jan 23, 2004", isInteractive: false)
+            ],
+            [
+                .init(
+                    label: "Note",
+                    value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
+                    isInteractive: false
+                )
+            ]
+        ]
+
+        return .init(
+            model: .init(
+                id: .init(value: 1_911),
+                avatarInformation: .init(text: "B", color: "#3357FF"),
+                displayName: "Benjamin Alexander",
+                primaryEmail: "ben.ale@protonmail.com",
+                primaryPhone: .none,
+                groupItems: groupItems
+            )
+        )
     }
 
 }
