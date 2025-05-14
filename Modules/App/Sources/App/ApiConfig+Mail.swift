@@ -16,27 +16,29 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import InboxCore
 import proton_app_uniffi
 
-final class AppConfigService: Sendable {
-    static let shared: AppConfigService = .init()
+public extension ApiConfig {
+    static let current = Self.init(envId: .current)
 
-    let appConfig: AppConfig = {
-        #if UITESTS
-            let environment: ApiEnvId
+    init(envId: ApiEnvId) {
+        self.init(
+            appVersion: "ios-mail@\(Bundle.main.effectiveAppVersion)",
+            userAgent: "Mozilla/5.0",
+            envId: envId,
+            proxy: nil
+        )
+    }
+}
 
-            // The `mockServerPort` value is computed by the UI Tests runner at runtime,
-            // it can't be read from project.yml as a static value as it would prevent concurrent runs.
-            if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
-                environment = .custom("https://localhost:\(mockServerPort)")
-            } else {
-                environment = .custom("https://proton.pink")
+public extension ApiEnvId {
+    static var current: Self {
+        #if TESTFLIGHT || DEBUG
+            if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
+                return .custom(dynamicDomain)
             }
-
-            return AppConfig(environment: environment)
-        #else
-            return .default
         #endif
-    }()
+
+        return .prod
+    }
 }

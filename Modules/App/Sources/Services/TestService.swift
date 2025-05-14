@@ -17,42 +17,20 @@
 
 import Foundation
 
-final class TestService: Sendable {
-    static let shared: TestService = .init()
-}
-
-#if UITESTS
-extension TestService: ApplicationServiceSetUp {
-
-    func setUpService() {
-        try! clearExistingDataIfNecessary()
-    }
-    
-    private func clearExistingDataIfNecessary() throws {
-        if let _ = UserDefaults.standard.string(forKey: "forceCleanState") {
-            
-            guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-                throw TestServiceError.applicationSupportDirectoryNotAccessible
-            }
-            guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                throw TestServiceError.cacheDirectoryNotAccessible
-            }
-            
-            try? FileManager.default.removeItem(atPath: applicationSupportFolder.path())
-            try? FileManager.default.removeItem(atPath: cacheFolder.path)
+final class TestService: ApplicationServiceSetUp {
+    #if DEBUG
+        func setUpService() {
+            clearExistingDataIfNecessary()
         }
-    }
-    
-    
-    enum TestServiceError: Error {
-        case applicationSupportDirectoryNotAccessible
-        case cacheDirectoryNotAccessible
-    }
-}
-#endif
 
-#if !UITESTS
-extension TestService: ApplicationServiceSetUp {
-    func setUpService() {}
+        private func clearExistingDataIfNecessary() {
+            if UserDefaults.standard.bool(forKey: "forceCleanState") {
+                let fileManager = FileManager.default
+                try? fileManager.removeItem(atPath: fileManager.sharedSupportDirectory.path())
+                try? fileManager.removeItem(atPath: fileManager.sharedCacheDirectory.path)
+            }
+        }
+    #else
+        func setUpService() {}
+    #endif
 }
-#endif

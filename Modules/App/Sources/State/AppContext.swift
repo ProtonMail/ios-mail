@@ -73,13 +73,13 @@ final class AppContext: Sendable, ObservableObject {
     private func start() throws {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
 
-        let appConfig = dependencies.appConfigService.appConfig
+        let apiConfig = ApiConfig.current
 
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
 
-        let params = MailSessionParamsFactory.make(appConfig: appConfig)
-        accountChallengeCoordinator = .init(apiConfigProvider: { appConfig.apiEnvConfig })
+        let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
+        accountChallengeCoordinator = .init(apiConfigProvider: { apiConfig })
 
         _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
         _mailSession.pauseWork()
@@ -166,8 +166,7 @@ extension AppContext {
 
     struct Dependencies {
         let keychain: OsKeyChain = KeychainSDKWrapper()
-        let appConfigService: AppConfigService = AppConfigService.shared
-        let userDefaults: UserDefaults = .standard
+        let userDefaults: UserDefaults = .appGroup
     }
 }
 

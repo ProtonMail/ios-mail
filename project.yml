@@ -71,14 +71,13 @@ packages:
 
 configs:
   Debug: debug
-  Release: release
-  UITests: debug
+  TestFlight: release
+  AppStore: release
 
 settings:
   base:
     BUNDLE_DISPLAY_NAME: "Proton Mail"
-    CODE_SIGN_IDENTITY: "Apple Development"
-    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_STYLE: Manual
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 2SB5Z68H26
     MARKETING_VERSION: 5.1.0
@@ -86,11 +85,8 @@ settings:
   configs:
     Debug:
       OTHER_SWIFT_FLAGS: "-Xfrontend -enable-actor-data-race-checks"
-    Release:
-      CODE_SIGN_STYLE: Manual
-      CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
-    UITests:
-      OTHER_SWIFT_FLAGS: "-Xfrontend -enable-actor-data-race-checks"
+    TestFlight:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: "TESTFLIGHT"
 
 targets:
   ProtonMail:
@@ -106,21 +102,16 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail"
-        PROVISIONING_PROFILE_SPECIFIER: ""
+        PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Release"
         SWIFT_EMIT_LOC_STRINGS: YES
         CODE_SIGN_ENTITLEMENTS: "ProtonMail.entitlements"
-        SWIFT_ENABLE_OPAQUE_TYPE_ERASURE: NO
+        CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
       configs:
-        UITests:
-          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
-          PM_API_HOST: "proton.black"
         Debug:
-          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Apple Development"
           PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Dev"
-          PM_API_HOST: "proton.me"
-        Release:
-          PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Release"
-          PM_API_HOST: "proton.me"
+        TestFlight:
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
     info:
       path: Modules/App/Sources/SupportingFiles/Info.plist
       properties:
@@ -135,7 +126,6 @@ targets:
               - protonmail
         ITSAppUsesNonExemptEncryption: YES
         ITSEncryptionExportComplianceCode: "d90af253-90ca-4698-95d3-40f4e4a36ce4"
-        PMApiHost: "$(PM_API_HOST)"
         LSRequiresIPhoneOS: YES
         NSCameraUsageDescription: "{{Placeholder}}"
         NSContactsUsageDescription: "{{Placeholder}}"
@@ -214,10 +204,7 @@ targets:
       - package: SwiftNIOHTTP2
         product: NIOHTTP2
       - package: Scrypt
-    settings:
-      configs:
-        UITests:
-          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "UITESTS"
+      - package: TryCatch
     scheme: ProtonMailUITest
 
   NotificationService:
@@ -231,10 +218,14 @@ targets:
     settings:
       base:
         CODE_SIGN_ENTITLEMENTS: "NotificationService.entitlements"
+        CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
         PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail.notifications"
+        PROVISIONING_PROFILE_SPECIFIER: "Mail - Notification Service Distribution"
       configs:
-        Release:
-          PROVISIONING_PROFILE_SPECIFIER: "Mail - Notification Service Distribution"
+        Debug:
+          CODE_SIGN_IDENTITY: "Apple Development"
+          CODE_SIGN_STYLE: Automatic
+          PROVISIONING_PROFILE_SPECIFIER: ""
     info:
       path: Modules/NotificationService/Sources/SupportingFiles/Info.plist
       properties:
@@ -246,12 +237,12 @@ targets:
 schemes:
   ProtonMailUITest:
     build:
-      config: UITests
+      config: Debug
       targets:
         ProtonMail: all
         ProtonMailUITest: all
     test:
-      config: UITests
+      config: Debug
       targets:
         - ProtonMailUITest
       testPlans:
@@ -270,3 +261,12 @@ schemes:
       debugEnabled: false
       testPlans:
         - path: TestPlans/AllUnitAndSnapshotTests.xctestplan
+
+  TestFlight:
+    build:
+      targets:
+        ProtonMail: [run, archive]
+    run:
+      config: TestFlight
+    archive:
+      config: TestFlight

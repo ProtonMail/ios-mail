@@ -73,7 +73,7 @@ extension AppLifeCycle {
 
     @MainActor
     private func applicationServicesInitialisation() {
-        let testService = TestService.shared
+        let testService = TestService()
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
