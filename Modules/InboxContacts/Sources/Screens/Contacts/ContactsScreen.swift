@@ -43,8 +43,7 @@ public struct ContactsScreen: View {
                 contactsWrappers: .productionInstance(
                     contactsProvider: contactsProvider,
                     contactsWatcher: contactsWatcher
-                ),
-                toastStateStore: toastStateStore
+                )
             )
         )
     }

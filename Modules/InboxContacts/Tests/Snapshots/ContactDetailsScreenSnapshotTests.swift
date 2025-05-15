@@ -32,11 +32,11 @@ final class ContactDetailsScreenSnapshotTests: XCTestCase {
         let groupItems: [[ContactDetailItem]] = [
             [
                 .init(label: "Work", value: "ben.ale@protonmail.com", isInteractive: true),
-                .init(label: "Private", value: "alexander@proton.me", isInteractive: true)
+                .init(label: "Private", value: "alexander@proton.me", isInteractive: true),
             ],
             [
                 .init(label: "Address", value: "Lettensteg 10, 8037 Zürich", isInteractive: true),
-                .init(label: "Address", value: "Uetlibergstrasse 872, 8025 Zürich", isInteractive: true)
+                .init(label: "Address", value: "Uetlibergstrasse 872, 8025 Zürich", isInteractive: true),
             ],
             [
                 .init(label: "Birthday", value: "Jan 23, 2004", isInteractive: false)
@@ -47,7 +47,7 @@ final class ContactDetailsScreenSnapshotTests: XCTestCase {
                     value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
                     isInteractive: false
                 )
-            ]
+            ],
         ]
 
         return .init(
