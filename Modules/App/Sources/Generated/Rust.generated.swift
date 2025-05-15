@@ -3,8 +3,28 @@
 import Foundation
 import proton_app_uniffi
 
+public extension MailSessionDeletePinCodeResult {
+    func get() throws(PinAuthError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionSetPinCodeResult {
     func get() throws(PinSetError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionVerifyPinCodeResult {
+    func get() throws(PinAuthError) {
         switch self {
         case .ok:
             break

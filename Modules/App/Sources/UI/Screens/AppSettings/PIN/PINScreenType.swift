@@ -47,7 +47,7 @@ enum PINScreenType: Hashable, Identifiable {
             switch reason {
             case .changePIN:
                 .verify(screenTitle: L10n.Settings.App.changePINcode, trailingButtonTitle: L10n.Common.next)
-            case .disablePIN:
+            case .disablePIN, .changeToBiometry:
                 .verify(screenTitle: L10n.Settings.App.disablePINScreenTitle, trailingButtonTitle: CommonL10n.confirm)
             }
         }

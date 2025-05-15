@@ -32,7 +32,7 @@ class PINStateStoreTests {
         await sut.handle(action: .pinTyped("123"))
         await sut.handle(action: .trailingButtonTapped)
 
-        #expect(sut.state.pinValidation == .failure(L10n.PINLock.Error.tooShort))
+        #expect(sut.state.pinValidation == .failure(L10n.PINLock.Error.tooShort.string))
         #expect(router.stack == [])
     }
 
@@ -52,7 +52,7 @@ class PINStateStoreTests {
         await sut.handle(action: .pinTyped("1235"))
         await sut.handle(action: .trailingButtonTapped)
 
-        #expect(sut.state.pinValidation == .failure(L10n.Settings.App.repeatedPINValidationError))
+        #expect(sut.state.pinValidation == .failure(L10n.Settings.App.repeatedPINValidationError.string))
         #expect(router.stack == [])
     }
 
@@ -140,13 +140,19 @@ class PINStateStoreTests {
 
 import proton_app_uniffi
 
-class AppProtectionConfiguratorSpy: AppProtectionConfigurator {
+final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
 
     var deletePinCodeResultStub = MailSessionDeletePinCodeResult.ok
     var setPinCodeResultStub = MailSessionSetPinCodeResult.ok
+    var verifyPinCodeResultStub = MailSessionVerifyPinCodeResult.ok
+    var setBiometricsAppProtectionResultStub = MailSessionSetBiometricsAppProtectionResult.ok
+    var mailSessionUnsetBiometricsAppProtectionResultStub = MailSessionUnsetBiometricsAppProtectionResult.ok
 
+    private(set) var setBiometricsAppProtectionInvokeCount = 0
+    private(set) var unsetBiometricsAppProtectionInvokeCount = 0
     private(set) var invokedDeletePINCode: [[UInt32]] = []
     private(set) var invokedSetPINCode: [[UInt32]] = []
+    private(set) var invokedVerifyPINCode: [[UInt32]] = []
 
     // MARK: - AppProtectionConfigurator
 
@@ -155,11 +161,29 @@ class AppProtectionConfiguratorSpy: AppProtectionConfigurator {
 
         return deletePinCodeResultStub
     }
-    
+
     func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult {
         invokedSetPINCode.append(pin)
 
         return setPinCodeResultStub
+    }
+
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult {
+        setBiometricsAppProtectionInvokeCount += 1
+
+        return setBiometricsAppProtectionResultStub
+    }
+
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult {
+        unsetBiometricsAppProtectionInvokeCount += 1
+
+        return mailSessionUnsetBiometricsAppProtectionResultStub
+    }
+
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {
+        invokedVerifyPINCode.append(pin)
+
+        return verifyPinCodeResultStub
     }
 
 }

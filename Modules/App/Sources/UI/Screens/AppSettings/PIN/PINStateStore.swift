@@ -23,6 +23,29 @@ import proton_app_uniffi
 protocol AppProtectionConfigurator: Sendable {
     func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
     func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult
+}
+
+extension PinAuthError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let errorReason):
+            switch errorReason {
+            case .incorrectPin:
+                "Incorrect PIN" // FIXME: - Check text
+            case .tooManyAttempts:
+                "Too many attemts" // FIXME: - Check text
+            case .tooFrequentAttempts:
+                "Too frequent attempts" // FIXME: - Check text
+            }
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+
 }
 
 extension MailSession: AppProtectionConfigurator {}
@@ -32,6 +55,7 @@ class PINStateStore: StateStore {
     private let pinScreenValidator: PINValidator
     private let router: Router<PINRoute>
     private let appProtectionConfigurator: AppProtectionConfigurator
+    private let biometricAuthenticator: BiometricAuthenticator
     private let dismiss: () -> Void
 
     init(
@@ -39,12 +63,14 @@ class PINStateStore: StateStore {
         router: Router<PINRoute>,
         pinVerifier: PINVerifier,
         appProtectionConfigurator: AppProtectionConfigurator,
+        laContext: @Sendable @escaping () -> LAContext = { LAContext() },
         dismiss: @escaping () -> Void
     ) {
         self.state = state
         self.pinScreenValidator = .init(pinScreenType: state.type, pinVerifier: pinVerifier)
         self.router = router
         self.appProtectionConfigurator = appProtectionConfigurator
+        self.biometricAuthenticator = .init(method: .builtIn(laContext))
         self.dismiss = dismiss
     }
 
@@ -93,15 +119,38 @@ class PINStateStore: StateStore {
         case .changePIN:
             router.go(to: .pin(type: .set))
         case .disablePIN:
-            switch await appProtectionConfigurator.deletePinCode(pin: state.pin.digits) {
-            case .ok:
+            do {
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
                 dismiss()
-            case .error(let error):
-                state = state.copy(\.pinValidation, to: .failure("Incorrect PIN"))
+            } catch {
+                state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
+            }
+        case .changeToBiometry:
+            do {
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
+                await setUpBioemtryProtection()
+            } catch {
+                state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
             }
         }
     }
+
+    @MainActor
+    private func setUpBioemtryProtection() async {
+        guard await biometricAuthenticator.authenticate().isSuccess else {
+            dismiss()
+            return
+        }
+        do {
+            try await appProtectionConfigurator.setBiometricsAppProtection().get()
+        } catch {
+            AppLogger.log(error: error)
+        }
+        dismiss()
+    }
 }
+
+import LocalAuthentication
 
 extension String {
 
@@ -109,4 +158,14 @@ extension String {
         compactMap { UInt32(String($0)) }
     }
 
+}
+extension BiometricAuthenticator.AuthenticationStatus {
+    var isSuccess: Bool {
+        switch self {
+        case .success:
+            true
+        case .failure:
+            false
+        }
+    }
 }

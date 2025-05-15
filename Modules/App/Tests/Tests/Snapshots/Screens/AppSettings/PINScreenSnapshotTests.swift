@@ -57,7 +57,7 @@ private extension PINScreenType {
             switch reason {
             case .changePIN:
                 "change_pin"
-            case .disablePIN:
+            case .disablePIN, .changeToBiometry:
                 "disable_pin"
             }
         }

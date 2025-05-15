@@ -27,29 +27,29 @@ struct PINValidator {
     func validate(pin: String) async -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
-            setPINValidation(pin: pin)
+            return setPINValidation(pin: pin)
         case .confirm(let newPIN):
-            confirmPINValidation(pin: newPIN, repeatedPIN: pin)
+            return confirmPINValidation(pin: newPIN, repeatedPIN: pin)
         case .verify(let reason):
             switch reason {
             case .changePIN:
-                switch await pinVerifier.verifyPinCode(pin: pin.digits) {
-                case .ok:
-                    .ok
-                case .error:
-                    .failure("Incorrect PIN")
+                do {
+                    try await pinVerifier.verifyPinCode(pin: pin.digits).get()
+                    return .ok
+                } catch {
+                    return .failure(error.localizedDescription)
                 }
-            case .disablePIN:
-                .ok
+            case .disablePIN, .changeToBiometry:
+                return .ok
             }
         }
     }
 
     private func setPINValidation(pin: String) -> FormTextInput.ValidationStatus {
-        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort)
+        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
     }
 
     private func confirmPINValidation(pin: String, repeatedPIN: String) -> FormTextInput.ValidationStatus {
-        pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError)
+        pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError.string)
     }
 }

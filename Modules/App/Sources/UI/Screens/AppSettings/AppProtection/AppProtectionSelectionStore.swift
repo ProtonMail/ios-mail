@@ -24,17 +24,22 @@ class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState
     private let router: Router<SettingsRoute>
     private let appSettingsRepository: AppSettingsRepository
+    private let biometricAuthenticator: BiometricAuthenticator
+    private let appProtectionConfigurator: AppProtectionConfigurator
     private let laContext: () -> LAContext
 
     init(
         state: AppProtectionSelectionState,
         router: Router<SettingsRoute>,
         appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
-        laContext: @escaping () -> LAContext = { .init() }
+        appProtectionConfigurator: AppProtectionConfigurator,
+        laContext: @Sendable @escaping () -> LAContext = { .init() }
     ) {
         self.state = state
         self.router = router
         self.appSettingsRepository = appSettingsRepository
+        self.biometricAuthenticator = .init(method: .builtIn(laContext))
+        self.appProtectionConfigurator = appProtectionConfigurator
         self.laContext = laContext
     }
 
@@ -44,36 +49,79 @@ class AppProtectionSelectionStore: StateStore {
         case .onAppear:
             let appProtection = await currentAppProtection()
             state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
-                .copy(\.selectedAppProtection, to: appProtection)
+                .copy(\.currentProtection, to: appProtection)
         case .selected(let selectedMethod):
-            guard selectedMethod.appProtection != state.selectedAppProtection else { return }
+            guard selectedMethod.appProtection != state.currentProtection else { return }
             switch selectedMethod {
             case .none:
-                disableProtection()
+                await disableProtection()
+                await handle(action: .onAppear)
             case .pin:
-                state = state.copy(\.presentedPINScreen, to: .set)
+                await setPINProtection()
             case .faceID, .touchID:
-                break // FIXME: - To be added in the next MR
+                await enableBiometricProtection()
+                await handle(action: .onAppear)
             }
         case .pinScreenPresentationChanged(let screenType):
             state = state.copy(\.presentedPINScreen, to: screenType)
             if screenType == nil {
                 await handle(action: .onAppear)
             }
-        case .changePasswordTapped:
+        case .changePINTapped:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .changePIN))
         }
     }
 
     @MainActor
-    private func disableProtection() {
-        switch state.selectedAppProtection {
+    private func disableProtection() async {
+        switch state.currentProtection {
         case .none:
             break
         case .biometrics:
-            break // FIXME: - Disable BIO protection
+            await disableBiometricProtection()
         case .pin:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .disablePIN))
+        }
+    }
+
+    @MainActor
+    private func disableBiometricProtection() async {
+        guard await biometricAuthenticator.authenticate().isSuccess else { return }
+        do {
+            try await appProtectionConfigurator.unsetBiometricsAppProtection().get()
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+    }
+
+    @MainActor
+    private func enableBiometricProtection() async {
+        switch state.currentProtection {
+        case .none:
+            guard await biometricAuthenticator.authenticate().isSuccess else { return }
+            do {
+                try await appProtectionConfigurator.setBiometricsAppProtection().get()
+            } catch {
+                AppLogger.log(error: error, category: .appSettings)
+            }
+        case .biometrics:
+            break
+        case .pin:
+            state = state.copy(\.presentedPINScreen, to: .verify(reason: .changeToBiometry))
+        }
+    }
+
+    @MainActor
+    private func setPINProtection() async {
+        switch state.currentProtection {
+        case .pin:
+            break
+        case .none:
+            state = state.copy(\.presentedPINScreen, to: .set)
+        case .biometrics:
+            if await biometricAuthenticator.authenticate().isSuccess {
+                state = state.copy(\.presentedPINScreen, to: .set)
+            }
         }
     }
 

@@ -23,16 +23,18 @@ import Testing
 final class AppProtectionSelectionStoreTests {
     private let laContextSpy = LAContextSpy()
     private let router = Router<SettingsRoute>()
+    private let appProtectionConfiguratorSpy = AppProtectionConfiguratorSpy()
     private lazy var appSettingsRepositorySpy = AppSettingsRepositorySpy()
     private lazy var sut = AppProtectionSelectionStore(
         state: .initial,
         router: router,
         appSettingsRepository: appSettingsRepositorySpy,
+        appProtectionConfigurator: appProtectionConfiguratorSpy,
         laContext: { [unowned self] in self.laContextSpy }
     )
 
     @Test
-    func whenViewAppears_ItLoadsSupportedProtectionTypes() async {
+    func viewAppears_ItLoadsSupportedProtectionTypes() async {
         await sut.handle(action: .onAppear)
         #expect(
             sut.state.availableAppProtectionMethods == [
@@ -41,11 +43,11 @@ final class AppProtectionSelectionStoreTests {
                 .init(type: .faceID, isSelected: false),
             ]
         )
-        #expect(sut.state.selectedAppProtection == .pin)
+        #expect(sut.state.currentProtection == .pin)
     }
 
     @Test
-    func whenCurrentProtectionIsBiometricAndPINOptionIsSelected_ItTriggersSetPINFlow() async {
+    func protectionIsBiometricAndPINOptionIsSelected_ItTriggersSetPINFlow() async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .biometrics)
 
@@ -56,10 +58,88 @@ final class AppProtectionSelectionStoreTests {
     }
 
     @Test
-    func whenCurrentProtectionIsPINAndPINOptionIsSelected_ItDoesNotTriggerSetPINFlow() async {
+    func protectionIsPINAndPINOptionIsSelected_ItDoesNotTriggerSetPINFlow() async {
         await sut.handle(action: .onAppear)
         await sut.handle(action: .selected(.pin))
 
         #expect(router.stack == [])
+    }
+
+    @Test
+    func protectionIsNonAndPINIsSelected_ItTriggersSetPINFlow() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .none)
+
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.pin))
+
+        #expect(sut.state.presentedPINScreen == .set)
+    }
+
+    @Test
+    func protectionIsNonAndFaceIDIsSelected_ItEnablesBiometryProtection() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .none)
+
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.faceID))
+
+        #expect(appProtectionConfiguratorSpy.setBiometricsAppProtectionInvokeCount == 1)
+    }
+
+    @Test
+    func protectionIsBiometricsAndNoneIsSelected_ItDisablesBiometryProtection() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .biometrics)
+
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.none))
+
+        #expect(laContextSpy.evaluatePolicyCalls.count == 1)
+        #expect(appProtectionConfiguratorSpy.unsetBiometricsAppProtectionInvokeCount == 1)
+    }
+
+    @Test
+    func protectionIsPINAndNoneIsSelected_ItPresentsPINVerificationScreen() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .pin)
+
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.none))
+
+        #expect(sut.state.presentedPINScreen == .verify(reason: .disablePIN))
+    }
+
+    @Test
+    func protectionIsPINAndFaceIDIsSelected_ItPresentsPINVerificationScreen() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .pin)
+
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.faceID))
+
+        #expect(sut.state.presentedPINScreen == .verify(reason: .changeToBiometry))
+    }
+
+    @Test
+    func pinScreenIsPresented_PINIsDisabledAndPINScreenIsDismissed_ItReloadsData() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .pin)
+
+        await sut.handle(action: .onAppear)
+
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .none)
+
+        await sut.handle(action: .pinScreenPresentationChanged(presentedPINScreen: nil))
+
+        #expect(sut.state.currentProtection == .none)
+    }
+
+    @Test
+    func changePINButtonIsTapped_ItPresentsPINVerifyScreen() async {
+        await sut.handle(action: .changePINTapped)
+
+        #expect(sut.state.presentedPINScreen == .verify(reason: .changePIN))
     }
 }
