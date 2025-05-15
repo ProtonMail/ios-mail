@@ -56,23 +56,35 @@ struct AppProtectionSelectionScreen: View {
                     if state.shouldShowChangePasswordButton {
                         FormSection {
                             FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
-                                // FIXME: - Trigger set new password flow
+                                store.handle(action: .changePasswordTapped)
                             }
                             .applyRoundedRectangleStyle()
-                        }
+                        }.animation(.easeInOut, value: state.shouldShowChangePasswordButton)
                     }
                     Spacer()
-                }.animation(.easeInOut, value: state.shouldShowChangePasswordButton)
+                }
             }
             .padding(.horizontal, DS.Spacing.large)
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { store.handle(action: .onAppear) }
-            .sheet(item: store.binding(\.presentedPINScreen)) { pinScreenType in
+            .onAppear {
+                store.handle(action: .onAppear)
+            }
+            .sheet(item: presentPINScreen(state: state, store: store)) { pinScreenType in
                 PINRouterView(type: pinScreenType)
             }
         }
+    }
+
+    private func presentPINScreen(
+        state: AppProtectionSelectionState,
+        store: AppProtectionSelectionStore
+    ) -> Binding<PINScreenType?> {
+        .init(
+            get: { state.presentedPINScreen },
+            set: { store.handle(action: .pinScreenPresentationChanged(presentedPINScreen: $0)) }
+        )
     }
 
 }

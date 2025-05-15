@@ -1328,6 +1328,9 @@
         }
       }
     },
+    "Incorrect PIN" : {
+
+    },
     "Invalid PIN" : {
       "comment" : "Error message when the user enters an invalid PIN"
     },

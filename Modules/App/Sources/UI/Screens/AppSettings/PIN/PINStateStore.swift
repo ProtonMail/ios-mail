@@ -18,18 +18,33 @@
 import SwiftUI
 import InboxCore
 
+import proton_app_uniffi
+
+protocol AppProtectionConfigurator: Sendable {
+    func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
+    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
+}
+
+extension MailSession: AppProtectionConfigurator {}
+
 class PINStateStore: StateStore {
     @Published var state: PINScreenState
     private let pinScreenValidator: PINValidator
-    private let pinActionPerformer: PINActionPerformer
     private let router: Router<PINRoute>
+    private let appProtectionConfigurator: AppProtectionConfigurator
     private let dismiss: () -> Void
 
-    init(state: PINScreenState, router: Router<PINRoute>, dismiss: @escaping () -> Void) {
+    init(
+        state: PINScreenState,
+        router: Router<PINRoute>,
+        pinVerifier: PINVerifier,
+        appProtectionConfigurator: AppProtectionConfigurator,
+        dismiss: @escaping () -> Void
+    ) {
         self.state = state
-        self.pinScreenValidator = .init(pinScreenType: state.type)
-        self.pinActionPerformer = PINActionPerformer()
+        self.pinScreenValidator = .init(pinScreenType: state.type, pinVerifier: pinVerifier)
         self.router = router
+        self.appProtectionConfigurator = appProtectionConfigurator
         self.dismiss = dismiss
     }
 
@@ -46,28 +61,52 @@ class PINStateStore: StateStore {
                 router.goBack()
             }
         case .trailingButtonTapped:
-            state = state.copy(\.pinValidation, to: pinScreenValidator.validate(pin: state.pin))
-            if state.pinValidation.isSuccess {
-                switch state.type {
-                case .set(let oldPIN):
-                    router.go(to: .pin(type: .confirm(oldPIN: oldPIN, newPIN: state.pin)))
-                case .confirm(let oldPIN, let newPIN):
-                    if let oldPIN {
-                        await pinActionPerformer.perform(action: .change(oldPIN: oldPIN, newPIN: newPIN))
-                    } else {
-                        await pinActionPerformer.perform(action: .set(pin: newPIN))
-                    }
-                    dismiss()
-                case .verify(let flow):
-                    await pinActionPerformer.perform(action: .verify(pin: state.pin))
-                    switch flow {
-                    case .changePIN:
-                        router.go(to: .pin(type: .set(oldPIN: state.pin)))
-                    case .disablePIN:
-                        dismiss()
-                    }
-                }
+            let pinValidationResult = await pinScreenValidator.validate(pin: state.pin)
+            state = state.copy(\.pinValidation, to: pinValidationResult)
+            guard pinValidationResult.isSuccess else {
+                return
+            }
+            switch state.type {
+            case .set:
+                router.go(to: .pin(type: .confirm(pin: state.pin)))
+            case .confirm(let pin):
+                await confirm(pin: pin)
+            case .verify(let reason):
+                await verifyPIN(reason: reason)
             }
         }
     }
+
+    @MainActor
+    private func confirm(pin: String) async {
+        do {
+            try await appProtectionConfigurator.setPinCode(pin: pin.digits).get()
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+        dismiss()
+    }
+
+    @MainActor
+    private func verifyPIN(reason: PINVerificationReason) async {
+        switch reason {
+        case .changePIN:
+            router.go(to: .pin(type: .set))
+        case .disablePIN:
+            switch await appProtectionConfigurator.deletePinCode(pin: state.pin.digits) {
+            case .ok:
+                dismiss()
+            case .error(let error):
+                state = state.copy(\.pinValidation, to: .failure("Incorrect PIN"))
+            }
+        }
+    }
+}
+
+extension String {
+
+    var digits: [UInt32] {
+        compactMap { UInt32(String($0)) }
+    }
+
 }

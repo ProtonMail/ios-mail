@@ -17,19 +17,31 @@
 
 struct PINValidator {
     private let pinScreenType: PINScreenType
+    private let pinVerifier: PINVerifier
 
-    init(pinScreenType: PINScreenType) {
+    init(pinScreenType: PINScreenType, pinVerifier: PINVerifier) {
         self.pinScreenType = pinScreenType
+        self.pinVerifier = pinVerifier
     }
 
-    func validate(pin: String) -> FormTextInput.ValidationStatus {
+    func validate(pin: String) async -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
             setPINValidation(pin: pin)
-        case .confirm(_, let newPIN):
+        case .confirm(let newPIN):
             confirmPINValidation(pin: newPIN, repeatedPIN: pin)
-        case .verify:
-            .ok
+        case .verify(let reason):
+            switch reason {
+            case .changePIN:
+                switch await pinVerifier.verifyPinCode(pin: pin.digits) {
+                case .ok:
+                    .ok
+                case .error:
+                    .failure("Incorrect PIN")
+                }
+            case .disablePIN:
+                .ok
+            }
         }
     }
 

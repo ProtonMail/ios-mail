@@ -49,22 +49,41 @@ class AppProtectionSelectionStore: StateStore {
             guard selectedMethod.appProtection != state.selectedAppProtection else { return }
             switch selectedMethod {
             case .none:
-                break // FIXME: - To be added in the next MR
+                disableProtection()
             case .pin:
-                state = state.copy(\.presentedPINScreen, to: .set(oldPIN: nil))
+                state = state.copy(\.presentedPINScreen, to: .set)
             case .faceID, .touchID:
                 break // FIXME: - To be added in the next MR
             }
+        case .pinScreenPresentationChanged(let screenType):
+            state = state.copy(\.presentedPINScreen, to: screenType)
+            if screenType == nil {
+                await handle(action: .onAppear)
+            }
+        case .changePasswordTapped:
+            state = state.copy(\.presentedPINScreen, to: .verify(reason: .changePIN))
         }
     }
 
     @MainActor
-    private func currentAppProtection() async -> AppProtection? {
+    private func disableProtection() {
+        switch state.selectedAppProtection {
+        case .none:
+            break
+        case .biometrics:
+            break // FIXME: - Disable BIO protection
+        case .pin:
+            state = state.copy(\.presentedPINScreen, to: .verify(reason: .disablePIN))
+        }
+    }
+
+    @MainActor
+    private func currentAppProtection() async -> AppProtection {
         do {
             return try await appSettingsRepository.getAppSettings().get().protection
         } catch {
             AppLogger.log(error: error, category: .appSettings)
-            return nil
+            return .none
         }
     }
 

@@ -22,11 +22,13 @@ import Testing
 @MainActor
 class PINStateStoreTests {
     let router: Router<PINRoute> = .init()
+    let pinVerifierSpy = PINVerifierSpy()
+    let appProtectionConfiguratorSpy = AppProtectionConfiguratorSpy()
     var dismissCount = 0
 
     @Test
     func setPIN_tooShortPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
-        let sut = makeSut(type: .set(oldPIN: nil))
+        let sut = makeSut(type: .set)
         await sut.handle(action: .pinTyped("123"))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -36,17 +38,17 @@ class PINStateStoreTests {
 
     @Test
     func setPIN_pinIsValid_ItNavigatesToConfirmPINScreen() async {
-        let sut = makeSut(type: .set(oldPIN: nil))
+        let sut = makeSut(type: .set)
         await sut.handle(action: .pinTyped("1234"))
         await sut.handle(action: .trailingButtonTapped)
 
         #expect(sut.state.pinValidation == .ok)
-        #expect(router.stack == [.pin(type: .confirm(oldPIN: nil, newPIN: "1234"))])
+        #expect(router.stack == [.pin(type: .confirm(pin: "1234"))])
     }
 
     @Test
     func confirmPIN_pinDoesNotMatch_ItReturnsValidationError() async {
-        let sut = makeSut(type: .confirm(oldPIN: nil, newPIN: "1234"))
+        let sut = makeSut(type: .confirm(pin: "1234"))
         await sut.handle(action: .pinTyped("1235"))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -56,7 +58,7 @@ class PINStateStoreTests {
 
     @Test
     func confirmPIN_pinMatches_ItDismissesScreen() async {
-        let sut = makeSut(type: .confirm(oldPIN: nil, newPIN: "1234"))
+        let sut = makeSut(type: .confirm(pin: "1234"))
         await sut.handle(action: .pinTyped("1234"))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -78,6 +80,20 @@ class PINStateStoreTests {
     }
 
     @Test
+    func verifyPIN_pinIsInvalidAndReasonIsDisablePIN_ItDisplaysValidationError() async {
+        let sut = makeSut(type: .verify(reason: .disablePIN))
+
+        appProtectionConfiguratorSpy.deletePinCodeResultStub = .error(.reason(.incorrectPin))
+
+        await sut.handle(action: .pinTyped("1235"))
+        await sut.handle(action: .trailingButtonTapped)
+
+        #expect(sut.state.pinValidation == .failure("Incorrect PIN"))
+        #expect(router.stack == [])
+        #expect(dismissCount == 0)
+    }
+
+    @Test
     func verifyPIN_pinIsValidAndReasonIsChangePIN_ItNavigatesToSetPINScreen() async {
         let sut = makeSut(type: .verify(reason: .changePIN))
 
@@ -85,17 +101,65 @@ class PINStateStoreTests {
         await sut.handle(action: .trailingButtonTapped)
 
         #expect(sut.state.pinValidation == .ok)
-        #expect(router.stack == [.pin(type: .set(oldPIN: "1235"))])
+        #expect(router.stack == [.pin(type: .set)])
         #expect(dismissCount == 0)
+    }
+
+    @Test
+    func leadingButtonIsTappedAndStackIsEmpty_ItDismissesScreen() async {
+        router.stack = []
+        let sut = makeSut(type: .set)
+
+        await sut.handle(action: .leadingButtonTapped)
+
+        #expect(dismissCount == 1)
+    }
+
+    @Test
+    func leadingButtonIsTappedAndStackIsNotEmpty_ItPopsScreenFromStack() async {
+        router.stack = [.pin(type: .set)]
+        let sut = makeSut(type: .confirm(pin: "1234"))
+        await sut.handle(action: .leadingButtonTapped)
+
+        #expect(dismissCount == 0)
+        #expect(router.stack == [])
     }
 
     private func makeSut(type: PINScreenType) -> PINStateStore {
         PINStateStore(
             state: .initial(type: type),
             router: router,
+            pinVerifier: pinVerifierSpy,
+            appProtectionConfigurator: appProtectionConfiguratorSpy,
             dismiss: { [unowned self] in
                 dismissCount += 1
             }
         )
     }
+}
+
+import proton_app_uniffi
+
+class AppProtectionConfiguratorSpy: AppProtectionConfigurator {
+
+    var deletePinCodeResultStub = MailSessionDeletePinCodeResult.ok
+    var setPinCodeResultStub = MailSessionSetPinCodeResult.ok
+
+    private(set) var invokedDeletePINCode: [[UInt32]] = []
+    private(set) var invokedSetPINCode: [[UInt32]] = []
+
+    // MARK: - AppProtectionConfigurator
+
+    func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult {
+        invokedDeletePINCode.append(pin)
+
+        return deletePinCodeResultStub
+    }
+    
+    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult {
+        invokedSetPINCode.append(pin)
+
+        return setPinCodeResultStub
+    }
+
 }

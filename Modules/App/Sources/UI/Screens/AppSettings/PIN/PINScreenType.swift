@@ -19,8 +19,8 @@ import Foundation
 import InboxCore
 
 enum PINScreenType: Hashable, Identifiable {
-    case set(oldPIN: String?)
-    case confirm(oldPIN: String?, newPIN: String)
+    case set
+    case confirm(pin: String)
     case verify(reason: PINVerificationReason)
 
     struct Configuration {
@@ -46,9 +46,9 @@ enum PINScreenType: Hashable, Identifiable {
         case .verify(let reason):
             switch reason {
             case .changePIN:
-                .verify(screenTitle: L10n.Settings.App.changePINcode, trailingButtonTitle: CommonL10n.confirm)
+                .verify(screenTitle: L10n.Settings.App.changePINcode, trailingButtonTitle: L10n.Common.next)
             case .disablePIN:
-                .verify(screenTitle: L10n.Settings.App.disablePINScreenTitle, trailingButtonTitle: L10n.Common.next)
+                .verify(screenTitle: L10n.Settings.App.disablePINScreenTitle, trailingButtonTitle: CommonL10n.confirm)
             }
         }
     }

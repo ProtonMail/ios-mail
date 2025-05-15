@@ -18,4 +18,6 @@
 enum AppProtectionSelectionAction {
     case onAppear
     case selected(AppProtectionMethodViewModel.MethodType)
+    case changePasswordTapped
+    case pinScreenPresentationChanged(presentedPINScreen: PINScreenType?)
 }
