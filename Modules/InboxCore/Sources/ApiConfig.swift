@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,17 +17,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
-extension Bundle {
-
-    /// Returns the app version in a nice to read format
-    var appVersion: String {
-        "\(bundleShortVersion) (\(buildVersion))"
+public extension ApiConfig {
+    init(envId: ApiEnvId) {
+        self.init(
+            appVersion: "ios-mail@\(Bundle.main.effectiveAppVersion)",
+            userAgent: "Mozilla/5.0",
+            envId: envId,
+            proxy: nil
+        )
     }
-
-    /// Returns the build version of the app.
-    var buildVersion: String {
-        forceCast(infoDictionary?["CFBundleVersion"], String.self)
-    }
-
 }

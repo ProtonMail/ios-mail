@@ -23,14 +23,16 @@ import proton_app_uniffi
 public actor MailUserSessionFactory: Sendable {
     typealias CreateMailSession = (MailSessionParams, KeychainSDKWrapper) -> CreateMailIosExtensionSessionResult
 
+    private let apiConfig: ApiConfig
     private let createMailSession: CreateMailSession
     private var cachedMailSession: MailSession?
 
-    public init() {
-        self.init(createMailSession: createMailIosExtensionSession)
+    public init(apiConfig: ApiConfig) {
+        self.init(apiConfig: apiConfig, createMailSession: createMailIosExtensionSession)
     }
 
-    init(createMailSession: @escaping CreateMailSession) {
+    init(apiConfig: ApiConfig, createMailSession: @escaping CreateMailSession) {
+        self.apiConfig = apiConfig
         self.createMailSession = createMailSession
     }
 
@@ -40,7 +42,7 @@ public actor MailUserSessionFactory: Sendable {
         if let cachedMailSession = cachedMailSession {
             mailSession = cachedMailSession
         } else {
-            let params = MailSessionParamsFactory.make(appConfig: .default)
+            let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
             let keychain = KeychainSDKWrapper()
             mailSession = try createMailSession(params, keychain).get()
             cachedMailSession = mailSession

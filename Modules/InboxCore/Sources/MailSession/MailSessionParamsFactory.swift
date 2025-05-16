@@ -19,7 +19,7 @@ import Foundation
 import proton_app_uniffi
 
 public enum MailSessionParamsFactory {
-    public static func make(appConfig: AppConfig) -> MailSessionParams {
+    public static func make(apiConfig: ApiConfig) -> MailSessionParams {
         let fileManager = FileManager.default
 
         // TODO: exclude application support from iCloud backup
@@ -37,7 +37,7 @@ public enum MailSessionParamsFactory {
             mailCacheSize: mailCacheSize.bytes,
             logDir: cachePath,
             logDebug: false,
-            apiEnvConfig: appConfig.apiEnvConfig
+            apiEnvConfig: apiConfig
         )
     }
 }

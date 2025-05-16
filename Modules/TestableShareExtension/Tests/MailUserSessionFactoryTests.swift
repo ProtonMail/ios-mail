@@ -23,7 +23,7 @@ import proton_app_uniffi
 
 final class MailUserSessionFactoryTests {
     private lazy var sut: MailUserSessionFactory = {
-        .init { [unowned self] _, _ in
+        .init(apiConfig: .init(appVersion: "", userAgent: "", envId: .atlas, proxy: nil)) { [unowned self] _, _ in
             self.createMailSessionCallCount += 1
             return .ok(FakeMailSession(noPointer: .init()))
         }

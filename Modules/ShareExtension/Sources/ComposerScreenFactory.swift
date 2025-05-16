@@ -22,7 +22,7 @@ import TestableShareExtension
 import proton_app_uniffi
 
 enum ComposerScreenFactory {
-    private static let mailUserSessionFactory = MailUserSessionFactory()
+    private static let mailUserSessionFactory = MailUserSessionFactory(apiConfig: .init(envId: .current))
 
     @MainActor
     static func makeComposer(extensionContext: NSExtensionContext) async throws -> ComposerScreen {
@@ -65,5 +65,17 @@ private extension NSExtensionContext {
 
         let cancelledError = NSError(domain: Bundle.main.bundleIdentifier!, code: NSUserCancelledError)
         cancelRequest(withError: cancelledError)
+    }
+}
+
+extension ApiEnvId {
+    static var current: Self {
+        #if QA
+            if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
+                return .custom(dynamicDomain)
+            }
+        #endif
+
+        return .prod
     }
 }

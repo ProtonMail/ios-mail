@@ -34,9 +34,9 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
 
-        let appConfig = dependencies.appConfigService.appConfig
-        let domain = appConfig.environment.domain
-        let appVersion = appConfig.apiEnvConfig.appVersion
+        let apiConfig = ApiConfig.current
+        let domain = apiConfig.envId.domain
+        let appVersion = apiConfig.appVersion
 
         Task {
             await updateState(.forkingSession)
@@ -81,11 +81,9 @@ extension ProtonAuthenticatedWebModel {
 
     struct Dependencies {
         let appContext: AppContext
-        let appConfigService: AppConfigService
 
-        init(appContext: AppContext = .shared, appConfigService: AppConfigService = .shared) {
+        init(appContext: AppContext = .shared) {
             self.appContext = appContext
-            self.appConfigService = appConfigService
         }
     }
 }
@@ -116,20 +114,5 @@ enum ProtonAuthenticatedWebPage: Int, Identifiable {
 
     var id: Int {
         rawValue
-    }
-}
-
-private extension ApiEnvId {
-    var domain: String {
-        switch self {
-        case .prod:
-            "proton.me"
-        case .atlas:
-            "proton.black"
-        case .scientist(let name):
-            "\(name).proton.black"
-        case .custom(let fullURL):
-            URL(string: fullURL)!.host()!
-        }
     }
 }
