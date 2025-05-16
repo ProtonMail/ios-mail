@@ -147,8 +147,9 @@ struct SettingsScreen: View {
                 .padding(.all, DS.Spacing.large)
                 .contentShape(Rectangle())
             }
-            .buttonStyle(SettingsButtonStyle())
-            .applyRoundedRectangleStyle()
+            .buttonStyle(DefaultPressedButtonStyle())
+            .background(DS.Color.BackgroundInverted.secondary)
+            .roundedRectangleStyle()
             .padding(.bottom, DS.Spacing.large)
             .padding(.top, DS.Spacing.large)
         }
@@ -177,7 +178,7 @@ struct SettingsScreen: View {
             }
             .contentShape(Rectangle())
         }
-        .buttonStyle(SettingsButtonStyle())
+        .buttonStyle(DefaultPressedButtonStyle())
     }
 
 }
@@ -197,16 +198,6 @@ private extension SettingsPreference {
         case .app:
             return nil
         }
-    }
-
-}
-
-struct SettingsButtonStyle: ButtonStyle {
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
     }
 
 }

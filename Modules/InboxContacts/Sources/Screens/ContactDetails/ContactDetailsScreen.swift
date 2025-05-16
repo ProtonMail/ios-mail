@@ -39,11 +39,12 @@ struct ContactActionButton: View {
             }
             .frame(maxWidth: .infinity)
             .padding(DS.Spacing.large)
+            .contentShape(Rectangle())
         }
         .background(DS.Color.BackgroundInverted.secondary)
-        .buttonStyle(DefaultButtonStyle())
-        .cornerRadius(DS.Radius.large, corners: .allCorners)
+        .buttonStyle(DefaultPressedButtonStyle())
         .disabled(disabled)
+        .roundedRectangleStyle()
     }
 
     // MARK: - Private
@@ -51,17 +52,6 @@ struct ContactActionButton: View {
     private var foregroundColor: Color {
         disabled ? DS.Color.Text.disabled : DS.Color.Text.weak
     }
-}
-
-// FIXME: Extract SettingsButtonStyle to InboxCoreUI
-struct DefaultButtonStyle: ButtonStyle {
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
-    }
-
 }
 
 struct ContactDetails {
@@ -90,7 +80,7 @@ struct ContactDetailsScreen: View {
                         Rectangle()
                             .fill(Color(hex: model.avatarInformation.color))
                             .square(size: 100)
-                            .cornerRadius(DS.Radius.giant, corners: .allCorners)
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
                         Text(model.avatarInformation.text)
                             .font(.title)
                             .fontWeight(.regular)
@@ -162,7 +152,7 @@ struct ContactDetailsScreen_Previews: PreviewProvider {
                     value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
                     isInteractive: false
                 )
-            ]
+            ],
         ]
 
         ContactDetailsScreen(
@@ -185,7 +175,13 @@ struct ContactDetailsGroup: View {
         LazyVStack(spacing: .zero) {
             ForEachLast(collection: items) { item, isLast in
                 VStack(spacing: .zero) {
-                    ContactDetailsItem(model: item)
+                    FormBigButton(
+                        title: item.label.stringResource,
+                        icon: .none,
+                        value: item.value,
+                        action: { print(">>> action") },
+                        isInteractive: item.isInteractive
+                    )
 
                     if !isLast {
                         DS.Color.BackgroundInverted.border.frame(height: 1)
@@ -193,53 +189,6 @@ struct ContactDetailsGroup: View {
                 }
             }
         }
-        .background(DS.Color.BackgroundInverted.secondary)
-        .cornerRadius(DS.Radius.extraLarge, corners: .allCorners)
-    }
-}
-
-// FIXME: Replace with FormBigButton
-struct ContactDetailsItem: View {
-    let model: ContactDetailItem
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-            Text(model.label)
-                .font(.subheadline)
-                .fontWeight(.regular)
-                .foregroundColor(DS.Color.Text.weak)
-            Text(model.value)
-                .font(.body)
-                .fontWeight(.regular)
-                .foregroundColor(model.isInteractive ? DS.Color.Text.accent : DS.Color.Text.norm)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(DS.Spacing.large)
-    }
-}
-
-// FIXME: To remove
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
-struct RoundedCorner: Shape {
-    let radius: CGFloat
-    let corners: UIRectCorner
-
-    init(radius: CGFloat = .infinity, corners: UIRectCorner = .allCorners) {
-        self.radius = radius
-        self.corners = corners
-    }
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
+        .roundedRectangleStyle()
     }
 }

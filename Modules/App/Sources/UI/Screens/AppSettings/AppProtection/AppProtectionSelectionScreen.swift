@@ -58,7 +58,7 @@ struct AppProtectionSelectionScreen: View {
                             FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
                                 // FIXME: - Trigger set new password flow
                             }
-                            .applyRoundedRectangleStyle()
+                            .roundedRectangleStyle()
                         }
                     }
                     Spacer()

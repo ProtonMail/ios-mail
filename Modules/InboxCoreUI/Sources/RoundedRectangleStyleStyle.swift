@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 
 extension View {
-    func applyRoundedRectangleStyle() -> some View {
+    public func roundedRectangleStyle() -> some View {
         modifier(RoundedRectangleStyleStyle())
     }
 }
@@ -28,7 +28,6 @@ private struct RoundedRectangleStyleStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(DS.Color.BackgroundInverted.secondary)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
     }
 

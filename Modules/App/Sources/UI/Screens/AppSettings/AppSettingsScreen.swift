@@ -54,12 +54,14 @@ struct AppSettingsScreen: View {
                                     value: store.state.areNotificationsEnabledHumanReadable.string,
                                     action: { store.handle(action: .notificationButtonTapped) }
                                 )
+                                .roundedRectangleStyle()
                                 FormBigButton(
                                     title: L10n.Settings.App.language,
                                     icon: DS.SFSymbols.arrowUpRightSquare,
                                     value: store.state.appLanguage,
                                     action: { store.handle(action: .languageButtonTapped) }
                                 )
+                                .roundedRectangleStyle()
                                 appearanceButton
                                 FormBigButton(
                                     title: L10n.Settings.App.protection,
@@ -67,6 +69,7 @@ struct AppSettingsScreen: View {
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }
                                 )
+                                .roundedRectangleStyle()
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
@@ -140,6 +143,7 @@ struct AppSettingsScreen: View {
                     value: store.state.storedAppSettings.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
                 )
+                .roundedRectangleStyle()
             }
         )
     }
