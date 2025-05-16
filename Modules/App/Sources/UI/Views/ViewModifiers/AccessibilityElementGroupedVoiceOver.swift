@@ -22,13 +22,21 @@ struct AccessibilityElementGroupedVoiceOver: ViewModifier {
     let uiTestSupport: AccessibilityChildBehavior
 
     func body(content: Content) -> some View {
-        #if UITESTS
-        content
-            .accessibilityElement(children: uiTestSupport)
+        if isRunningUITests {
+            content
+                .accessibilityElement(children: uiTestSupport)
+        } else {
+            content
+                .accessibilityElement(children: .ignore)
+                .accessibilityValue(voiceOverValue)
+        }
+    }
+
+    var isRunningUITests: Bool {
+        #if DEBUG
+            UserDefaults.standard.bool(forKey: "uiTesting")
         #else
-        content
-            .accessibilityElement(children: .ignore)
-            .accessibilityValue(voiceOverValue)
+            false
         #endif
     }
 }

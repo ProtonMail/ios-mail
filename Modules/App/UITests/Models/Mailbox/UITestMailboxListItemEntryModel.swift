@@ -153,7 +153,7 @@ struct UITestMailboxListItemEntryModel: ApplicationHolder {
         }
 
         if let extraItemsCount = entry.extraItemsCount {
-            XCTAssertEqual(.plus(count: extraItemsCount), extraAttachmentsIndicator.label)
+            XCTAssertEqual("+\(extraItemsCount)", extraAttachmentsIndicator.label)
         } else {
             XCTAssertFalse(extraAttachmentsIndicator.exists)
         }
