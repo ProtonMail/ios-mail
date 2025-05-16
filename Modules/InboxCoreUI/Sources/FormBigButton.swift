@@ -65,5 +65,6 @@ public struct FormBigButton: View {
         }
         .background(DS.Color.BackgroundInverted.secondary)
         .buttonStyle(DefaultPressedButtonStyle())
+        .disabled(!isInteractive)
     }
 }
