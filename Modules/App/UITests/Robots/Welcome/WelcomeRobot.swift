@@ -21,7 +21,7 @@ import XCTest
 final class WelcomeRobot: Robot {
 
     func verifyIsDisplayed() {
-        var timeout: TimeInterval { 10 }
+        let timeout: TimeInterval = 10
         XCTAssert(
             application.buttons["welcome.signInButton"].firstMatch.waitForExistence(timeout: timeout),
             "Element of \(self) is not displayed."
