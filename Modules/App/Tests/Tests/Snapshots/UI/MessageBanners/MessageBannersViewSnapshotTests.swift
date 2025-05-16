@@ -17,14 +17,25 @@
 
 @testable import ProtonMail
 import InboxCore
+import InboxComposer
 import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
 class MessageBannersViewSnapshotTests: BaseTestCase {
-
     var originalCurrentDate: (() -> Date)!
+    var scheduleDateFormatter: ScheduleSendDateFormatter {
+        .init(locale: DateEnvironment.calendar.locale!, timeZone: DateEnvironment.calendar.timeZone)
+    }
+    var tomorrowAt8AM: UInt64 {
+        var components = DateComponents()
+        components.hour = 8
+        components.minute = 0
+        components.second = 0
+        let tomorrow = DateEnvironment.calendar.nextDate(after: .now, matching: components, matchingPolicy: .nextTime)!
+        return UInt64(tomorrow.timeIntervalSince1970)
+    }
 
     override func setUp() {
         super.setUp()
@@ -45,9 +56,11 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
                 .expiry(timestamp: 1_740_238_200),
                 .autoDelete(timestamp: 1_740_670_200),
                 .unsubscribeNewsletter,
-                .embeddedImages
+                .embeddedImages,
+                .scheduledSend(timestamp: tomorrowAt8AM),
             ],
             timer: Timer.self,
+            scheduleSendDateFormatter: scheduleDateFormatter,
             action: { _ in }
         )
 
@@ -60,11 +73,12 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
                 .blockedSender,
                 .spam,
                 .expiry(timestamp: 1_738_920_762),
-                .scheduledSend(timestamp: 1_740_238_200),
+                .scheduledSend(timestamp: 1_905_004_876),
                 .snoozed(timestamp: 1_740_238_200),
-                .remoteContent
+                .remoteContent,
             ],
             timer: Timer.self,
+            scheduleSendDateFormatter: scheduleDateFormatter,
             action: { _ in }
         )
 

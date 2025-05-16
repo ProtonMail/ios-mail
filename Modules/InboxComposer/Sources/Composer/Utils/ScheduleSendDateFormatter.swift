@@ -17,18 +17,32 @@
 
 import Foundation
 
-struct ScheduleSendDateFormatter {
+public struct ScheduleSendDateFormatter {
     private let dateFormatter: DateFormatter
 
-    init(locale: Locale = .current, timeZone: TimeZone = .current) {
+    public init(locale: Locale = .current, timeZone: TimeZone = .current) {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.timeZone = timeZone
-        formatter.setLocalizedDateFormatFromTemplate("d MMM 'at' HH:mm")
         self.dateFormatter = formatter
     }
 
     func string(from timestamp: UInt64) -> String {
-        dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
+        dateFormatter.setLocalizedDateFormatFromTemplate("d MMM 'at' j:mm")
+        return dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
+    }
+
+    public func stringWithRelativeDate(from timestamp: UInt64) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let calendar = Calendar.current
+
+        if calendar.isDateInToday(date) || calendar.isDateInTomorrow(date) {
+            dateFormatter.doesRelativeDateFormatting = true
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .short
+            return dateFormatter.string(from: date)
+        } else {
+            return string(from: timestamp)
+        }
     }
 }

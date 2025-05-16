@@ -62,10 +62,11 @@ struct MessageBodyProvider {
 }
 
 private extension DecryptedMessage {
-    
+
     func body(with options: TransformOpts?) async throws -> BodyOutput {
         guard let options else {
-            return try await bodyWithDefaults().get()
+            // FIXME: `currentTheme` does nothing, the SDK only requires this parameter for compatibility with Android, and this whole method will be removed
+            return try await bodyWithDefaults(currentTheme: .lightMode).get()
         }
 
         return try await body(opts: options).get()

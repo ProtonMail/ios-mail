@@ -23,12 +23,12 @@ struct AvailableActionsProvider {
     let actionsProvider: ActionsProvider
     let mailbox: Mailbox
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> AvailableActions {
+    func actions(for type: MailboxItemType, id: ID, themeOpts: ThemeOpts) async -> AvailableActions {
         switch type {
         case .conversation:
-            try! await actionsProvider.conversation(mailbox, ids).get().availableActions
+            try! await actionsProvider.conversation(mailbox, [id]).get().availableActions
         case .message:
-            try! await actionsProvider.message(mailbox, ids).get().availableActions
+            try! await actionsProvider.message(mailbox, themeOpts, id).get().availableActions
         }
     }
 }

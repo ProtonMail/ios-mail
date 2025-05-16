@@ -35,11 +35,11 @@ extension ScheduleSendOptionsProvider {
     static func dummy(
         isCustomAvailable: Bool,
         stubTomorrowTime: UInt64? = nil,
-        stubMondayTime: UInt64? = nil
+        stubMondayTime: UInt64? = nil,
+        calendar: Calendar = .current
     ) -> ScheduleSendOptionsProvider {
         .init(
             options: {
-                let calendar = Calendar.current
                 let now = Date()
 
                 var components = DateComponents()

@@ -393,6 +393,16 @@ public extension MailSessionSetBiometricsAppProtectionResult {
         }
     }
 }
+public extension MailSessionShouldAutoLockResult {
+    func get() throws(UserSessionError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionStartBackgroundExecutionResult {
     func get() throws(UserSessionError) -> BackgroundExecutionHandle {
         switch self {

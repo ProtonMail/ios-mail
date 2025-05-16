@@ -45,7 +45,8 @@ struct EmptyFolderBannerView: View {
                 HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
                     BannerIconTextView(
                         icon: state.icon,
-                        text: state.title,
+                        title: state.title,
+                        subtitle: nil,
                         style: .regular,
                         lineLimit: .none
                     )

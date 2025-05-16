@@ -210,6 +210,10 @@ final class MailSessionSpy: MailSessionProtocol {
         return .ok
     }
 
+    func shouldAutoLock() async -> MailSessionShouldAutoLockResult {
+        fatalError(#function)
+    }
+
     func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
         fatalError()
     }

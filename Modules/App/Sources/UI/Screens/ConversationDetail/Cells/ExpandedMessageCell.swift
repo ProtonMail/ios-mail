@@ -90,16 +90,19 @@ struct ExpandedMessageCell: View {
                     htmlLoaded: htmlLoaded
                 )
                 if !areActionsDisabled {
-                    MessageActionButtonsView(isSingleRecipient: uiModel.messageDetails.isSingleRecipient, onEvent: { event in
-                        switch event {
-                        case .reply:
-                            onEvent(.onReply)
-                        case .replyAll:
-                            onEvent(.onReplyAll)
-                        case .forward:
-                            onEvent(.onForward)
+                    MessageActionButtonsView(
+                        isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
+                        onEvent: { event in
+                            switch event {
+                            case .reply:
+                                onEvent(.onReply)
+                            case .replyAll:
+                                onEvent(.onReplyAll)
+                            case .forward:
+                                onEvent(.onForward)
+                            }
                         }
-                    })
+                    )
                     .padding(.top, DS.Spacing.moderatelyLarge)
                     .padding(.bottom, DS.Spacing.large)
                 }
@@ -136,21 +139,6 @@ enum ExpandedMessageCellEvent {
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
-}
-
-private extension MessageBody {
-
-    static func testInstance(rawBody: String) -> Self {
-        .init(
-            banners: [],
-            html: .init(
-                rawBody: rawBody,
-                options: .init(showBlockQuote: true, hideRemoteImages: .none, hideEmbeddedImages: .none),
-                embeddedImageProvider: DecryptedMessage(noPointer: .init())
-            )
-        )
-    }
-
 }
 
 #Preview {

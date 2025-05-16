@@ -24,7 +24,7 @@ import XCTest
 
 class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
-    var invokedWithMessagesIDs: [ID]!
+    var invokedWithMessagesID: ID?
     var invokedWithConversationIDs: [ID]!
     var spiedNavigation: [MailboxItemActionSheetNavigation]!
     var stubbedMessageActions: MessageAvailableActions!
@@ -41,7 +41,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     override func setUp() {
         super.setUp()
 
-        invokedWithMessagesIDs = []
+        invokedWithMessagesID = nil
         invokedWithConversationIDs = []
         spiedNavigation = []
 
@@ -57,7 +57,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     override func tearDown() {
         super.tearDown()
 
-        invokedWithMessagesIDs = nil
+        invokedWithMessagesID = nil
         invokedWithConversationIDs = nil
         spiedNavigation = nil
         stubbedMessageActions = nil
@@ -88,7 +88,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(invokedWithMessagesIDs, [messageID])
+        XCTAssertEqual(invokedWithMessagesID, messageID)
         XCTAssertEqual(invokedWithConversationIDs, [])
         XCTAssertEqual(
             sut.state,
@@ -119,7 +119,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(invokedWithMessagesIDs, [])
+        XCTAssertNil(invokedWithMessagesID)
         XCTAssertEqual(invokedWithConversationIDs, [conversationID])
         XCTAssertEqual(
             sut.state,
@@ -428,8 +428,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             input: .init(id: .init(value: id), type: type, title: title),
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
-                message: { _, ids in
-                    self.invokedWithMessagesIDs = ids
+                message: { _, _, messageID in
+                    self.invokedWithMessagesID = messageID
                     return .ok(self.stubbedMessageActions)
                 },
                 conversation: { _, ids in

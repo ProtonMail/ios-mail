@@ -15,20 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-struct ActionsProvider {
-    let message: (_ mailbox: Mailbox, _ themeOpts: ThemeOpts, _ messageID: ID) async -> AvailableActionsForMessageResult
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async -> AvailableActionsForConversationsResult
+extension Locale {
+    static let enUS = Locale(identifier: "en_US")
 }
 
-extension ActionsProvider {
+extension TimeZone {
+    static let zurich = TimeZone(identifier: "Europe/Zurich")!
+}
 
-    static var productionInstance: ActionsProvider {
-        .init(
-            message: availableActionsForMessage,
-            conversation: availableActionsForConversations
-        )
-    }
-
+extension Calendar {
+    static let zurich = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .zurich
+        return calendar
+    }()
 }
