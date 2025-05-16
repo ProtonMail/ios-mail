@@ -60,13 +60,6 @@ public struct FormList<Collection: RandomAccessCollection, ElementContent: View>
 }
 
 extension FormListSeparator {
-
-    public static var invertedNoPadding: Self {
-        .init(leadingPadding: .zero, color: DS.Color.BackgroundInverted.border)
-    }
-
-    public static var normLeftPadding: Self {
-        .init(leadingPadding: 56, color: DS.Color.Border.norm)
-    }
-
+    public static let invertedNoPadding = Self(leadingPadding: .zero, color: DS.Color.BackgroundInverted.border)
+    public static var normLeftPadding = Self(leadingPadding: 56, color: DS.Color.Border.norm)
 }

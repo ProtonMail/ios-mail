@@ -22,8 +22,8 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
-    @State var state: ContactDetails
     let provider: ContactDetailsProvider
+    @State var state: ContactDetails
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(

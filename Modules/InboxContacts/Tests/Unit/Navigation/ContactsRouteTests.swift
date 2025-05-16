@@ -25,7 +25,7 @@ import XCTest
 final class ContactsRouteTests: XCTestCase {
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id: UInt64 = 1
-        let view = try makeView(for: .contactDetails(.testData(id: 1)))
+        let view = try makeView(for: .contactDetails(.testData(id: id)))
 
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
