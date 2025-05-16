@@ -34,7 +34,8 @@ struct AppProtectionSelectionScreenSnapshotTests {
                     .init(type: .none, isSelected: false),
                     .init(type: .pin, isSelected: true),
                     .init(type: .faceID, isSelected: false),
-                ]
+                ],
+                autoLock: .always
             ),
             appSettingsRepository: AppSettingsRepositorySpy(),
             appProtectionConfigurator: AppProtectionConfiguratorSpy()
