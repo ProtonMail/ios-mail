@@ -22,36 +22,54 @@ import LocalAuthentication
 
 class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState
+    private let router: Router<SettingsRoute>
+    private let appSettingsRepository: AppSettingsRepository
     private let laContext: () -> LAContext
 
     init(
         state: AppProtectionSelectionState,
+        router: Router<SettingsRoute>,
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
         laContext: @escaping () -> LAContext = { .init() }
     ) {
         self.state = state
+        self.router = router
+        self.appSettingsRepository = appSettingsRepository
         self.laContext = laContext
     }
 
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .onLoad:
-            state = state
-                .copy(
-                    \.availableAppProtectionMethods,
-                     to: availableAppProtectionMethods(selected: state.selectedAppProtection)
-                )
+        case .onAppear:
+            let appProtection = await currentAppProtection()
+            state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
+                .copy(\.selectedAppProtection, to: appProtection)
         case .selected(let selectedMethod):
-            state = state
-                .copy(\.selectedAppProtection, to: selectedMethod.appProtection)
-                .copy(
-                    \.availableAppProtectionMethods,
-                     to: availableAppProtectionMethods(selected: selectedMethod.appProtection)
-                )
+            guard selectedMethod.appProtection != state.selectedAppProtection else { return }
+            switch selectedMethod {
+            case .none:
+                break // FIXME: - To be added in the next MR
+            case .pin:
+                state = state.copy(\.presentedPINScreen, to: .set(oldPIN: nil))
+            case .faceID, .touchID:
+                break // FIXME: - To be added in the next MR
+            }
         }
     }
 
-    private func availableAppProtectionMethods(selected: AppProtection) -> [AppProtectionMethodViewModel] {
+    @MainActor
+    private func currentAppProtection() async -> AppProtection? {
+        do {
+            return try await appSettingsRepository.getAppSettings().get().protection
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+            return nil
+        }
+    }
+
+    @MainActor
+    private func availableAppProtectionMethods(selected: AppProtection?) -> [AppProtectionMethodViewModel] {
         let availableMethods: [AppProtectionMethodViewModel.MethodType] =
             [.none, .pin] + [supportedBiometry()].compactMap { $0 }
 
@@ -63,6 +81,7 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
+    @MainActor
     private func supportedBiometry() -> AppProtectionMethodViewModel.MethodType? {
         switch SupportedBiometry.onDevice(context: laContext()) {
         case .none:

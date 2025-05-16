@@ -19,11 +19,9 @@ import InboxDesignSystem
 import SwiftUI
 
 extension View {
-
-    func shadow(_ shadow: Shadow, isVisible: Bool) -> some View {
+    public func shadow(_ shadow: Shadow, isVisible: Bool) -> some View {
         modifier(ConditionalShadow(shadow: shadow, isVisible: isVisible))
     }
-
 }
 
 private struct ConditionalShadow: ViewModifier {

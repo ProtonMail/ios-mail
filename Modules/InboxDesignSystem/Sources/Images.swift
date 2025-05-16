@@ -28,4 +28,5 @@ public extension DS.Images {
     static let searchNoResults = ImageResource.searchNoResults
     static let noConnection = ImageResource.noConnection
     static let protonMail = ImageResource.protonMail
+    static let lock = ImageResource.lock
 }

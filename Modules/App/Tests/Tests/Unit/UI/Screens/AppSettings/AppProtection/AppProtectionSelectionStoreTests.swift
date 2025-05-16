@@ -16,36 +16,50 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import Testing
 
+@MainActor
 final class AppProtectionSelectionStoreTests {
     private let laContextSpy = LAContextSpy()
+    private let router = Router<SettingsRoute>()
+    private lazy var appSettingsRepositorySpy = AppSettingsRepositorySpy()
     private lazy var sut = AppProtectionSelectionStore(
-        state: .initial(appProtection: .biometrics),
+        state: .initial,
+        router: router,
+        appSettingsRepository: appSettingsRepositorySpy,
         laContext: { [unowned self] in self.laContextSpy }
     )
 
     @Test
-    func whenViewIsLoaded_ItLoadsSupportedProtectionTypes() async {
-        await sut.handle(action: .onLoad)
-        #expect(sut.state.availableAppProtectionMethods == [
-            .init(type: .none, isSelected: false),
-            .init(type: .pin, isSelected: false),
-            .init(type: .faceID, isSelected: true)
-        ])
-        #expect(sut.state.selectedAppProtection == .biometrics)
+    func whenViewAppears_ItLoadsSupportedProtectionTypes() async {
+        await sut.handle(action: .onAppear)
+        #expect(
+            sut.state.availableAppProtectionMethods == [
+                .init(type: .none, isSelected: false),
+                .init(type: .pin, isSelected: true),
+                .init(type: .faceID, isSelected: false),
+            ]
+        )
+        #expect(sut.state.selectedAppProtection == .pin)
     }
 
     @Test
-    func whenPINOptionIsSelected_ItMarksPINAsSelectedProtectionMethod() async {
-        await sut.handle(action: .onLoad)
+    func whenCurrentProtectionIsBiometricAndPINOptionIsSelected_ItTriggersSetPINFlow() async {
+        appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
+            .copy(\.protection, to: .biometrics)
+
+        await sut.handle(action: .onAppear)
         await sut.handle(action: .selected(.pin))
 
-        #expect(sut.state.availableAppProtectionMethods == [
-            .init(type: .none, isSelected: false),
-            .init(type: .pin, isSelected: true),
-            .init(type: .faceID, isSelected: false)
-        ])
-        #expect(sut.state.selectedAppProtection == .pin)
+        #expect(sut.state.presentedPINScreen == .set(oldPIN: nil))
+    }
+
+    @Test
+    func whenCurrentProtectionIsPINAndPINOptionIsSelected_ItDoesNotTriggerSetPINFlow() async {
+        await sut.handle(action: .onAppear)
+        await sut.handle(action: .selected(.pin))
+
+        #expect(router.stack == [])
     }
 }

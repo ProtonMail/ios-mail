@@ -15,28 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import InboxDesignSystem
+import SwiftUI
 
-extension DraftSaveSendError {
+struct ScheduleSendButton: View {
+    @Environment(\.isEnabled) var isEnabled
+    let onTap: () -> Void
 
-    public var shouldBeDisplayed: Bool {
-        switch self {
-        case .reason(let reason):
-            reason.shouldBeDisplayed
-        case .other:
-            true
-        }
+    private var iconColor: Color {
+        isEnabled ? DS.Color.InteractionBrand.norm : DS.Color.InteractionBrand.disabled
     }
-}
 
-extension DraftSaveSendErrorReason {
-
-    public var shouldBeDisplayed: Bool {
-        switch self {
-        case .messageAlreadySent, .alreadySent:
-            return false
-        default:
-            return true
-        }
+    var body: some View {
+        Button(
+            action: onTap,
+            label: {
+                Image(DS.Icon.icClockPaperPlane)
+                    .foregroundStyle(iconColor)
+            }
+        )
     }
 }

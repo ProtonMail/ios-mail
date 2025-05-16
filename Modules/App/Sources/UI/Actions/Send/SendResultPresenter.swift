@@ -19,6 +19,7 @@ import Combine
 import Foundation
 import InboxCoreUI
 import InboxComposer
+import enum proton_app_uniffi.DraftSendFailure
 
 /**
  This class handles all toast notifications related to sending a message, from the moment
@@ -81,7 +82,7 @@ extension SendResultPresenter {
             present(toast: .error(message: error!.localizedDescription).duration(.toastMediumDuration))
             return
         }
-        await draftPresenter.openDraft(withId: messageId)
+        draftPresenter.openDraft(withId: messageId)
     }
 
     private func handleToast(_ toast: Toast, for messageId: MessageID) {

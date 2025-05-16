@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 struct AttachmentPickersState: Equatable {
-    var isAttachmentSourcePickerPresented: Bool = false
     var isPhotosPickerPresented: Bool = false
     var isCameraPresented: Bool = false
     var isFileImporterPresented: Bool = false

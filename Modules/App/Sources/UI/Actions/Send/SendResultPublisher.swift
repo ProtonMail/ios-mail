@@ -56,10 +56,14 @@ final class SendResultPublisher: Sendable, ObservableObject {
         for result in results {
             let messageId = result.messageId
             switch result.origin {
-            case .save:
-                // TODO:
+            // TODO: pending discussion about `DraftSendResult` scenarios
+            case .attachmentUpload:
                 break
-            case .saveBeforeSend, .send:
+            case .save:
+                break
+            case .saveBeforeSend:
+                break
+            case .send:
                 AppLogger.log(message: "send result received \(result)", category: .send)
                 switch result.error {
                 case .success:
@@ -67,7 +71,7 @@ final class SendResultPublisher: Sendable, ObservableObject {
                 case .failure(let draftError):
                     subject.send(.init(messageId: messageId, type: .error(draftError)))
                 }
-            case .attachmentUpload:
+            case .scheduleSend:
                 break
             }
         }

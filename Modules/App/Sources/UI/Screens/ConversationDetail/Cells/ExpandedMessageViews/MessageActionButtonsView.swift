@@ -60,8 +60,7 @@ private struct MessageActionButtonView: View {
             .background(
                 ZStack {
                     Capsule()
-                        .fill(DS.Color.Background.norm)
-                        .strokeBorder(DS.Color.Border.strong, lineWidth: 1)
+                        .fill(DS.Color.InteractionWeak.norm)
                 }
             )
         }

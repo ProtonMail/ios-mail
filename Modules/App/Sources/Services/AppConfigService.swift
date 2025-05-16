@@ -17,40 +17,26 @@
 
 import Foundation
 import InboxCore
+import proton_app_uniffi
 
 final class AppConfigService: Sendable {
     static let shared: AppConfigService = .init()
 
     let appConfig: AppConfig = {
-#if UITESTS
-        let appVersion = "Other"
-        let environment: AppConfig.Environment
+        #if UITESTS
+            let environment: ApiEnvId
 
-        // The `mockServerPort` value is computed by the UI Tests runner at runtime,
-        // it can't be read from project.yml as a static value as it would prevent concurrent runs.
-        if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
-            let domain = "localhost:\(mockServerPort)"
-            environment = AppConfig.Environment(
-                domain: domain,
-                apiBaseUrl: "http://\(domain)",
-                userAgent: "Mozilla/5.0",
-                isSrpProofSkipped: true,
-                isHttpAllowed: true
-            )
-        } else {
-            let domain = "proton.black"
-            environment = AppConfig.Environment(
-                domain: domain,
-                apiBaseUrl: "https://mail-api.\(domain)",
-                userAgent: "Mozilla/5.0",
-                isSrpProofSkipped: false,
-                isHttpAllowed: false
-            )
-        }
+            // The `mockServerPort` value is computed by the UI Tests runner at runtime,
+            // it can't be read from project.yml as a static value as it would prevent concurrent runs.
+            if let mockServerPort = UserDefaults.standard.string(forKey: "mockServerPort") {
+                environment = .custom("https://localhost:\(mockServerPort)")
+            } else {
+                environment = .custom("https://proton.pink")
+            }
 
-        return AppConfig(appVersion: appVersion, environment: environment)
-#else
-        return .default
-#endif
+            return AppConfig(environment: environment)
+        #else
+            return .default
+        #endif
     }()
 }

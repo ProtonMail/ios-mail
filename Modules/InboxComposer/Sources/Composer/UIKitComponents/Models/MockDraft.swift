@@ -79,9 +79,9 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         .textHtml
     }
 
-    func save() async -> VoidDraftSaveSendResult { .ok }
+    func save() async -> VoidDraftSaveResult { .ok }
 
-    func send() async -> VoidDraftSaveSendResult { .ok }
+    func send() async -> VoidDraftSendResult { .ok }
 
     func sender() -> String {
         mockSender
@@ -89,14 +89,14 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func setBccRecipients(recipients: [String]) {}
 
-    func setBody(body: String) -> VoidDraftSaveSendResult {
+    func setBody(body: String) -> VoidDraftSaveResult {
         mockBody = body
         return .ok
     }
 
     func setCcRecipients(recipients: [String]) {}
 
-    func setSubject(subject: String) -> VoidDraftSaveSendResult {
+    func setSubject(subject: String) -> VoidDraftSaveResult {
         mockSubject = subject
         return .ok
     }

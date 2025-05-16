@@ -31,6 +31,7 @@ struct BannerView: View {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
                     .fill(model.style.color.background)
                     .stroke(model.style.color.border, lineWidth: 1)
+                    .shadow(DS.Shadows.softFull, isVisible: true)
             }
             .frame(maxWidth: .infinity)
             .padding([.horizontal, .bottom], DS.Spacing.large)

@@ -129,18 +129,18 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.onLoad()
 
-        XCTAssertFalse(sut.alertState.isAlertPresented)
+        XCTAssertFalse(sut.attachmentAlertState.isAlertPresented)
     }
 
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
-        let draftError = DraftAttachmentError.reason(.attachmentTooLarge)
+        let draftError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .error(draftError))])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         await sut.onLoad()
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
     }
 
     func testOnLoad_whenThereAreInlineAttachments_itShouldNotMapThemToUIModels() async throws {
@@ -492,7 +492,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testAddAttachments_whenSelectingFromPhotosReturnsError_itShouldShowAlertError() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.attachmentTooLarge)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddInlineResult = [("photo1.jpg", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
@@ -501,8 +501,8 @@ final class ComposerModelTests: BaseTestCase {
 
         await Task.yield()
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
@@ -516,15 +516,15 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testAddAttachments_whenSelectingFromFilesReturnedError_itShouldShowAlertError() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.tooManyAttachments)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.tooManyAttachments)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         let file1 = try filePickerTestsHelper.prepareItem(fileName: "file1.txt", createFile: true)
         await sut.addAttachments(filePickerResult: .success([file1]))
 
-        XCTAssertTrue(sut.alertState.isAlertPresented)
-        XCTAssertEqual(sut.alertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
+        XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
+        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     // MARK: removeAttachment(cid:)
@@ -539,7 +539,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testRemoveAttachment_whenRemoveAttachmentFails_itShouldNotSetBodyAction() async throws {
-        let draftAddResultError = DraftAttachmentError.reason(.messageAlreadySent)
+        let draftAddResultError = DraftAttachmentUploadError.reason(.messageAlreadySent)
         mockDraft.mockAttachmentList.mockAttachmentListRemoveWithCidResult = [("56789", .error(draftAddResultError))]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 

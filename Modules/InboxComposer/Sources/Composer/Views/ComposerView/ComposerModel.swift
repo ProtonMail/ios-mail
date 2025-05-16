@@ -29,8 +29,7 @@ typealias Nested = NestedObservableObject
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
     @Published var bodyAction: ComposerBodyAction?
-    @Published var pickersState: AttachmentPickersState
-    @Nested var alertState: AttachmentAlertState
+    @Nested var attachmentAlertState: AttachmentAlertState
     @Published var toast: Toast?
 
     private let draft: AppDraftProtocol
@@ -97,11 +96,10 @@ final class ComposerModel: ObservableObject {
         self.onCancel = onCancel
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
-        self.pickersState = .init()
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
-        self.alertState = .init()
+        self.attachmentAlertState = .init()
         self.state = makeState(from: draft)
         setUpCallbacks()
     }
@@ -288,33 +286,16 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
-    func pickAttachmentSource() {
-        pickersState.isAttachmentSourcePickerPresented = true
-    }
-
-    @MainActor
-    func selectedAttachmentSource(_ source: AttachmentSource) {
-        switch source {
-        case .photoGallery:
-            pickersState.isPhotosPickerPresented = true
-        case .camera:
-            pickersState.isCameraPresented = true
-        case .files:
-            pickersState.isFileImporterPresented = true
-        }
-    }
-
-    @MainActor
     func addAttachments(selectedPhotosItems items: [PhotosPickerItemTransferable]) async {
         guard !items.isEmpty else { return }
         let result = await photosItemsHandler.addPickerPhotos(to: draft, photos: items)
         bodyAction = .insertInlineImages(cids: result.successfulContentIds)
-        alertState.enqueueAlertsForFailedAttachmentAdditions(errors: result.errors)
+        attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: result.errors)
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) async {
         await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, onErrors: { errors in
-            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+            attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
         })
     }
 
@@ -324,7 +305,7 @@ final class ComposerModel: ObservableObject {
         case .success(let cid):
             bodyAction = .insertInlineImages(cids: [cid])
         case .failure(let error):
-            alertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
+            attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
         }
     }
 
@@ -442,7 +423,7 @@ extension ComposerModel {
             state.attachments = draftAttachments
                 .filter { $0.attachment.disposition == .attachment }
                 .map { $0.toDraftAttachmentUIModel() }
-            alertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
+            attachmentAlertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {
             AppLogger.log(error: error, category: .composer)
             showToast(.error(message: error.localizedDescription))

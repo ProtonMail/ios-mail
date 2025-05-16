@@ -18,11 +18,11 @@
 import Foundation
 import InboxCore
 import PhotosUI
-import enum proton_app_uniffi.DraftAttachmentError
+import enum proton_app_uniffi.DraftAttachmentUploadError
 import SwiftUI
 
 public struct PhotosPickerItemHandler {
-    static let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
+    static let unexpectedError = DraftAttachmentUploadError.other(.unexpected(.fileSystem))
     let fileManager = FileManager.default
 
     public init() {
@@ -33,7 +33,7 @@ public struct PhotosPickerItemHandler {
         photos: [PhotosPickerItemTransferable]
     ) async -> PhotosPickerItemHandlerResult {
         var successfulContentIds = [String]()
-        var allErrors = [DraftAttachmentError]()
+        var allErrors = [DraftAttachmentUploadError]()
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {
@@ -59,11 +59,11 @@ public struct PhotosPickerItemHandler {
     private func addFileToDraftAsInlineAttachment(
         draft: AppDraftProtocol,
         file: URL
-    ) async throws(DraftAttachmentError) -> String {
+    ) async throws(DraftAttachmentUploadError) -> String {
         try await draft.attachmentList().addInline(path: file.path, filenameOverride: nil).get()
     }
 
-    private func addFileToDraftAsAttachment(draft: AppDraftProtocol, file: URL) async throws(DraftAttachmentError) {
+    private func addFileToDraftAsAttachment(draft: AppDraftProtocol, file: URL) async throws(DraftAttachmentUploadError) {
         try await draft.attachmentList().add(path: file.path).get()
     }
 
@@ -140,7 +140,7 @@ public struct PhotosPickerItemHandler {
 
 public struct PhotosPickerItemHandlerResult {
     public let successfulContentIds: [String]
-    public let errors: [DraftAttachmentError]
+    public let errors: [DraftAttachmentUploadError]
 }
 
 enum PhotosPickerItemHandlerError: Error {

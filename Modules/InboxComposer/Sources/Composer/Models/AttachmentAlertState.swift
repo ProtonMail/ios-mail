@@ -34,7 +34,7 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
         }
     }
 
-    func enqueueAlertsForFailedAttachmentAdditions(errors: [DraftAttachmentError]) {
+    func enqueueAlertsForFailedAttachmentAdditions(errors: [DraftAttachmentUploadError]) {
         Task { await attachmentErrorAlertState.enqueueAdditionErrors(errors) }
     }
 

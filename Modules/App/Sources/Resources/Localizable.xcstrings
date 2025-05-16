@@ -684,7 +684,7 @@
       }
     },
     "Change PIN code" : {
-      "comment" : "Change PIN code button title."
+      "comment" : "Change PIN code title."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."
@@ -1067,6 +1067,9 @@
     },
     "Device" : {
       "comment" : "Device section title in app settings. The section contains configuration like notifications, language, appearance. (App settings)"
+    },
+    "Disable PIN code" : {
+      "comment" : "Disable PIN code screen title."
     },
     "Dismiss" : {
       "comment" : "Alert dismiss button"
@@ -1639,6 +1642,9 @@
     "Migration in progress" : {
       "comment" : "Shown under activity progress indicator"
     },
+    "Min 4 characters and max 21 characters" : {
+      "comment" : "Information displayed under the PIN input."
+    },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
       "localizations" : {
@@ -1783,6 +1789,12 @@
           }
         }
       }
+    },
+    "New PIN code" : {
+      "comment" : "Set PIN code screen PIN input title."
+    },
+    "Next" : {
+      "comment" : "`Next` action title."
     },
     "No matches" : {
       "comment" : "Search result is empty title",
@@ -1940,6 +1952,9 @@
           }
         }
       }
+    },
+    "Old PIN code" : {
+      "comment" : "Verify PIN code screen PIN input title."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
@@ -2144,6 +2159,9 @@
     },
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."
+    },
+    "Repeat PIN code" : {
+      "comment" : "Repeat PIN code title."
     },
     "Reply" : {
       "comment" : "Action title for replying to a sender of given message in the action sheet.",
@@ -2424,6 +2442,9 @@
         }
       }
     },
+    "Set PIN code" : {
+      "comment" : "Set PIN code screen title."
+    },
     "Settings" : {
       "comment" : "Settings menu title.",
       "localizations" : {
@@ -2691,6 +2712,9 @@
     },
     "The message will download when device is back online" : {
       "comment" : "Subtitle of the offline mode placeholder."
+    },
+    "The PIN codes must match!" : {
+      "comment" : "Not matching PIN validation error message."
     },
     "There was an error sending the report, please try again." : {
       "comment" : "Toast displayed after the report failed to send"

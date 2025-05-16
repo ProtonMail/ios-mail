@@ -92,7 +92,7 @@ public struct Banner: Hashable {
             case .regular:
                 .init(
                     background: DS.Color.Background.norm,
-                    border: DS.Color.Border.strong,
+                    border: DS.Color.Border.norm,
                     button: .regular,
                     content: .regular
                 )

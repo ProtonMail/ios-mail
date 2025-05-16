@@ -69,41 +69,44 @@ final class SendResultPresenterTests: BaseTestCase {
         sut.presentResultInfo(.init(messageId: messageId, type: .sent))
         XCTAssertEqual(capturedToastActions.count, 3)
 
-        XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: regularDuration)),
-            .dismiss(.sendingMessage(duration: regularDuration)),
-            .present(.messageSent(duration: mediumDuration, undoAction: {})),
-        ]))
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(.sendingMessage(duration: regularDuration)),
+                .dismiss(.sendingMessage(duration: regularDuration)),
+                .present(.messageSent(duration: mediumDuration, undoAction: {})),
+            ]))
     }
 
     @MainActor
     func testPresentResultInfo_whenSending_andThenErrorForTheSameMessageId_itShouldDismissToastFirstAndThenPresentAToast() async {
         let messageId: ID = .random()
-        let dummyError = DraftSaveSendError.reason(.messageDoesNotExist)
+        let dummyError = DraftSendFailure.send(.messageDoesNotExist)
         sut.presentResultInfo(.init(messageId: messageId, type: .sending))
 
         sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyError)))
         XCTAssertEqual(capturedToastActions.count, 3)
 
-        XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: regularDuration)),
-            .dismiss(.sendingMessage(duration: regularDuration)),
-            .present(.error(message: dummyError.localizedDescription).duration(mediumDuration)),
-        ]))
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(.sendingMessage(duration: regularDuration)),
+                .dismiss(.sendingMessage(duration: regularDuration)),
+                .present(.error(message: dummyError.localizedDescription).duration(mediumDuration)),
+            ]))
     }
 
     @MainActor
     func testPresentResultInfo_whenSending_andThenErrorThatShouldNotBeDisplayed_itShouldNotPresentTheErrorToast() async {
         let messageId: ID = .random()
-        let dummyError = DraftSaveSendError.reason(.alreadySent)
+        let dummyError = DraftSendFailure.send(.alreadySent)
         sut.presentResultInfo(.init(messageId: messageId, type: .sending))
 
         sut.presentResultInfo(.init(messageId: messageId, type: .error(dummyError)))
         XCTAssertEqual(capturedToastActions.count, 1)
 
-        XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.sendingMessage(duration: regularDuration))
-        ]))
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(.sendingMessage(duration: regularDuration))
+            ]))
     }
 
     // MARK: undoAction
@@ -116,10 +119,11 @@ final class SendResultPresenterTests: BaseTestCase {
         await sut.undoActionForTestingPurposes()(messageId)
 
         XCTAssertEqual(capturedToastActions.count, 2)
-        XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: mediumDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
-        ]))
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(.messageSent(duration: mediumDuration, undoAction: {})),
+                .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
+            ]))
     }
 
     @MainActor
@@ -144,11 +148,12 @@ final class SendResultPresenterTests: BaseTestCase {
         await sut.undoActionForTestingPurposes()(messageId)
 
         XCTAssertEqual(capturedToastActions.count, 3)
-        XCTAssertTrue(capturedToastActions.isSame(as: [
-            .present(.messageSent(duration: mediumDuration, undoAction: {})),
-            .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
-            .present(.error(message: mockDraftUndoSendError.localizedDescription).duration(mediumDuration)),
-        ]))
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(.messageSent(duration: mediumDuration, undoAction: {})),
+                .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
+                .present(.error(message: mockDraftUndoSendError.localizedDescription).duration(mediumDuration)),
+            ]))
     }
 }
 

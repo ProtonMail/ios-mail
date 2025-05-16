@@ -40,7 +40,7 @@
       "comment" : "Error in the context of opening a draft in the composer"
     },
     "An attachmemt failed to upload" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "Attachment could not be added" : {
       "comment" : "Attachment failed to be added to a draft message."
@@ -53,6 +53,9 @@
     },
     "Camera" : {
       "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
+    },
+    "Custom" : {
+      "comment" : "Schedule send custom time option tile"
     },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
@@ -123,7 +126,13 @@
       "comment" : "Composer toast message after sent."
     },
     "Message to be sent has no recipients" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent."
+    },
+    "Monday" : {
+      "comment" : "Schedule send predefined time option"
+    },
+    "Pick time and date" : {
+      "comment" : "Schedule send custom time option subtitle"
     },
     "Please enter a valid email address" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
@@ -131,11 +140,14 @@
     "Please verify your last recipient" : {
       "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"
     },
+    "Previously set" : {
+      "comment" : "Title of a schedule send option that shows the time when the message was last scheduled"
+    },
     "Recipient address is invalid: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "Recipient primary key is missing: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft."
@@ -171,6 +183,9 @@
     },
     "Retry failed, please remove the attachment" : {
       "comment" : "Error in the context of retrying to upload a draft."
+    },
+    "Schedule send" : {
+      "comment" : "Title of the schedule send view"
     },
     "Send" : {
       "comment" : "Message send button.",
@@ -249,7 +264,7 @@
       "comment" : "Error shown when a non existing address is added as recipient."
     },
     "The address is disabled: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "The attachment could not be added, please try again" : {
       "comment" : "Attachment failed because an unexpected error"
@@ -261,7 +276,7 @@
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "The draft to be sent was not found" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "The limit of attachments has been reached" : {
       "comment" : "Error in the context of saving a draft before being sent."
@@ -270,16 +285,19 @@
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "The message to be sent is not a draft" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "The message was already sent" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "The Proton address in the recipient does not exist: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "The recipient is unknown: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    },
+    "The scheduled send date has expired" : {
+      "comment" : "Error in the context of setting a schedule time for a message."
     },
     "The size limit for attachments is 25 MB." : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -326,7 +344,7 @@
       }
     },
     "There was a problem sending the message: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "To:" : {
       "comment" : "Composer to recipients.",
@@ -357,11 +375,17 @@
         }
       }
     },
+    "Tomorrow" : {
+      "comment" : "Schedule send predefined time option"
+    },
     "Too many attachments" : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
     },
     "Undo" : {
       "comment" : "Undo action after message has been sent."
+    },
+    "Upgrade for full flexibility" : {
+      "comment" : "Schedule send custom time option subtitle for free user"
     },
     "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"

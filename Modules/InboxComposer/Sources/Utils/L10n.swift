@@ -277,7 +277,7 @@ enum L10n {
         )
     }
 
-    enum DraftSaveSendError {
+    enum DraftSaveError {
 
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -293,11 +293,6 @@ enum L10n {
             )
         }
 
-        static let attachmentUpload = LocalizedStringResource(
-            "An attachmemt failed to upload",
-            comment: "Error in the context of saving a draft before being sent."
-        )
-
         static let messageAlreadySent = LocalizedStringResource(
             "The message was already sent",
             comment: "Error in the context of saving a draft before being sent."
@@ -312,23 +307,6 @@ enum L10n {
             "The message to be sent is not a draft",
             comment: "Error in the context of saving a draft before being sent."
         )
-
-        static let missingAttachmentUploads = LocalizedStringResource(
-            "The attachment is missing",
-            comment: "Error in the context of managing attachments in a draft."
-        )
-
-        static let noRecipients = LocalizedStringResource(
-            "Message to be sent has no recipients",
-            comment: "Error in the context of saving a draft before being sent."
-        )
-
-        static func packageError(error: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "There was a problem sending the message: \(error)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
 
         static func protonRecipientNotFound(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -352,7 +330,88 @@ enum L10n {
         }
     }
 
-    enum DraftAttachmentError {
+
+    enum DraftSendError {
+
+        static func addressDisabled(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The address is disabled: \(address)",
+                comment: "Error in the context of sending a draft before being sent."
+            )
+        }
+
+        static func addressDoesNotHavePrimaryKey(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Recipient primary key is missing: \(address)",
+                comment: "Error in the context of sending a draft before being sent."
+            )
+        }
+
+        static let attachmentUpload = LocalizedStringResource(
+            "An attachmemt failed to upload",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
+        static let messageAlreadySent = LocalizedStringResource(
+            "The message was already sent",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
+        static let messageDoesNotExist = LocalizedStringResource(
+            "The draft to be sent was not found",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
+        static let messageIsNotADraft = LocalizedStringResource(
+            "The message to be sent is not a draft",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
+        static let missingAttachmentUploads = LocalizedStringResource(
+            "The attachment is missing",
+            comment: "Error in the context of managing attachments in a draft."
+        )
+
+        static let noRecipients = LocalizedStringResource(
+            "Message to be sent has no recipients",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
+        static func packageError(error: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "There was a problem sending the message: \(error)",
+                comment: "Error in the context of sending a draft before being sent."
+            )
+        }
+
+        static func protonRecipientNotFound(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The Proton address in the recipient does not exist: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static func recipientInvalidAddress(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Recipient address is invalid: \(address)",
+                comment: "Error in the context of saving a draft before being sent."
+            )
+        }
+
+        static let scheduleSendExpired = LocalizedStringResource(
+            "The scheduled send date has expired",
+            comment: "Error in the context of setting a schedule time for a message."
+        )
+
+        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "The recipient is unknown: \(address)",
+                comment: "Error in the context of sending a draft before being sent."
+            )
+        }
+    }
+
+    enum DraftAttachmentUploadError {
         static let attachmentTooLarge = LocalizedStringResource(
             "The attachments is too large",
             comment: "Error in the context of saving a draft before being sent."
@@ -413,5 +472,51 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error in the context of opening a draft in the composer"
         )
+    }
+
+    enum ScheduleSend {
+
+        static let customTitle = LocalizedStringResource(
+            "Custom",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option tile"
+        )
+
+        static let customSubtitleFreeUser = LocalizedStringResource(
+            "Upgrade for full flexibility",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option subtitle for free user"
+        )
+
+        static let customSubtitle = LocalizedStringResource(
+            "Pick time and date",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send custom time option subtitle"
+        )
+
+        static let monday = LocalizedStringResource(
+            "Monday",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send predefined time option"
+        )
+
+        static let previouslySet = LocalizedStringResource(
+            "Previously set",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of a schedule send option that shows the time when the message was last scheduled"
+        )
+
+        static let title = LocalizedStringResource(
+            "Schedule send",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the schedule send view"
+        )
+
+        static let tomorrow = LocalizedStringResource(
+            "Tomorrow",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Schedule send predefined time option"
+        )
+
     }
 }

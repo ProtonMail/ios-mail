@@ -19,11 +19,12 @@ import InboxCore
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+import Combine
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
-    case appProtection(AppProtection)
+    case appProtection
 
     @MainActor @ViewBuilder
     func view() -> some View {
@@ -37,8 +38,8 @@ enum SettingsRoute: Routable {
                 .navigationBarBackButtonHidden(true)
         case .appSettings:
             AppSettingsScreen()
-        case .appProtection(let appProtection):
-            AppProtectionSelectionScreen(state: .initial(appProtection: appProtection))
+        case .appProtection:
+            AppProtectionSelectionScreen()
         }
     }
 }

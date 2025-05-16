@@ -19,27 +19,9 @@ import Foundation
 import proton_app_uniffi
 
 public struct AppConfig: Sendable {
-    public let appVersion: String
-    public let environment: Environment
+    public let environment: ApiEnvId
 
-    public struct Environment: Sendable {
-        public let domain: String
-        public let apiBaseUrl: String
-        public let userAgent: String
-        public let isSrpProofSkipped: Bool
-        public let isHttpAllowed: Bool
-
-        public init(domain: String, apiBaseUrl: String, userAgent: String, isSrpProofSkipped: Bool, isHttpAllowed: Bool) {
-            self.domain = domain
-            self.apiBaseUrl = apiBaseUrl
-            self.userAgent = userAgent
-            self.isSrpProofSkipped = isSrpProofSkipped
-            self.isHttpAllowed = isHttpAllowed
-        }
-    }
-
-    public init(appVersion: String, environment: Environment) {
-        self.appVersion = appVersion
+    public init(environment: ApiEnvId) {
         self.environment = environment
     }
 }
@@ -47,30 +29,11 @@ public struct AppConfig: Sendable {
 public extension AppConfig {
 
     static let `default`: Self = {
-        let domain = Bundle.main.infoDictionary?["PMApiHost"] as? String ?? "proton.me"
-        let appVersion = "ios-mail@\(Bundle.main.effectiveAppVersion)"
-        let environment = AppConfig.Environment(
-            domain: domain,
-            apiBaseUrl: "https://mail-api.\(domain)",
-            userAgent: "Mozilla/5.0",
-            isSrpProofSkipped: false,
-            isHttpAllowed: false
-        )
-
-        return .init(appVersion: appVersion, environment: environment)
+        return .init(environment: .prod)
     }()
 
     var apiEnvConfig: ApiConfig {
-        let environment = self.environment
-
-        // FIXME: muon removed arguments to config for UI tests!
-//        return ApiConfig(
-//            allowHttp: environment.isHttpAllowed, 
-//            appVersion: appVersion,
-//            baseUrl: environment.apiBaseUrl,
-//            skipSrpProofValidation: environment.isSrpProofSkipped, 
-//            userAgent: environment.userAgent
-//        )
-        return ApiConfig(appVersion: appVersion, userAgent: environment.userAgent, envId: .prod, proxy: nil)
+        let appVersion = "ios-mail@\(Bundle.main.effectiveAppVersion)"
+        return .init(appVersion: appVersion, userAgent: "Mozilla/5.0", envId: environment, proxy: nil)
     }
 }

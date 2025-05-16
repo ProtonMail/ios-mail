@@ -105,30 +105,34 @@ struct ReportProblemScreen: View {
                 .padding(.top, DS.Spacing.standard)
                 .foregroundStyle(DS.Color.Text.weak)
                 .id(ReportProblemScrollToElements.topInfoText)
-            FormMultilineTextInput(
+            FormTextInput(
                 title: L10n.ReportProblem.summary,
                 placeholder: L10n.ReportProblem.summaryPlaceholder,
                 text: text(keyPath: \.summary, store: store),
-                validation: store.binding(\.summaryValidation)
+                validation: store.binding(\.summaryValidation),
+                inputType: .multiline
             )
             .focused($isSummaryFocused)
-            FormMultilineTextInput(
+            FormTextInput(
                 title: L10n.ReportProblem.stepsToReproduce,
                 placeholder: L10n.ReportProblem.stepsToReproducePlaceholder,
                 text: text(keyPath: \.stepsToReproduce, store: store),
-                validation: .noValidation
+                validation: .noValidation,
+                inputType: .multiline
             )
-            FormMultilineTextInput(
+            FormTextInput(
                 title: L10n.ReportProblem.expectedResults,
                 placeholder: L10n.ReportProblem.expectedResultsPlaceholder,
                 text: text(keyPath: \.expectedResults, store: store),
-                validation: .noValidation
+                validation: .noValidation,
+                inputType: .multiline
             )
-            FormMultilineTextInput(
+            FormTextInput(
                 title: L10n.ReportProblem.actualResults,
                 placeholder: L10n.ReportProblem.actualResultsPlaceholder,
                 text: text(keyPath: \.actualResults, store: store),
-                validation: .noValidation
+                validation: .noValidation,
+                inputType: .multiline
             )
             FormSwitchView(
                 title: L10n.ReportProblem.sendErrorLogs,
