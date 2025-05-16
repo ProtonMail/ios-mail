@@ -18,7 +18,7 @@
 import Foundation
 
 final class TestService: ApplicationServiceSetUp {
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults = UserDefaults.appGroup
 
     func setUpService() {
         if userDefaults.bool(forKey: "uiTesting") {
@@ -30,8 +30,8 @@ final class TestService: ApplicationServiceSetUp {
     private func clearExistingDataIfNecessary() {
         if userDefaults.bool(forKey: "forceCleanState") {
             let fileManager = FileManager.default
-            try? fileManager.removeItem(atPath: fileManager.sharedSupportDirectory.path())
-            try? fileManager.removeItem(atPath: fileManager.sharedCacheDirectory.path)
+            try? fileManager.removeItem(at: fileManager.sharedSupportDirectory)
+            try? fileManager.removeItem(at: fileManager.sharedCacheDirectory)
         }
     }
 
