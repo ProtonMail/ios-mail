@@ -34,7 +34,7 @@ final class AppProtectionSelectionStoreTests {
     )
 
     @Test
-    func viewAppears_ItLoadsSupportedProtectionTypes() async {
+    func viewAppears_ItLoadsData() async {
         await sut.handle(action: .onAppear)
         #expect(
             sut.state.availableAppProtectionMethods == [
@@ -44,6 +44,7 @@ final class AppProtectionSelectionStoreTests {
             ]
         )
         #expect(sut.state.currentProtection == .pin)
+        #expect(sut.state.autoLock == .always)
     }
 
     @Test
@@ -141,5 +142,12 @@ final class AppProtectionSelectionStoreTests {
         await sut.handle(action: .changePINTapped)
 
         #expect(sut.state.presentedPINScreen == .verify(reason: .changePIN))
+    }
+
+    @Test
+    func autoLockButtonIsTapped_ItPresentsAutoLockScreen() async {
+        await sut.handle(action: .autoLockTapped)
+
+        #expect(router.stack == [.autoLock])
     }
 }

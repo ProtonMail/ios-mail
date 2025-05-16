@@ -65,6 +65,17 @@ struct AppProtectionSelectionScreen: View {
                             .applyRoundedRectangleStyle()
                         }.animation(.easeInOut, value: state.shouldShowChangePINButton)
                     }
+                    if state.shouldShowAutoLockButton {
+                        FormSection {
+                            FormBigButton(
+                                title: "Auto-Lock",
+                                icon: DS.SFSymbols.chevronRight,
+                                value: state.autoLock?.humanReadable.string ?? .empty
+                            ) {
+                                store.handle(action: .autoLockTapped)
+                            }
+                        }.animation(.easeInOut, value: state.shouldShowAutoLockButton)
+                    }
                     Spacer()
                 }
             }
@@ -111,6 +122,10 @@ struct AppProtectionSelectionScreen: View {
 }
 
 private extension AppProtectionSelectionState {
+
+    var shouldShowAutoLockButton: Bool {
+        currentProtection != .none
+    }
 
     var shouldShowChangePINButton: Bool {
         currentProtection == .pin

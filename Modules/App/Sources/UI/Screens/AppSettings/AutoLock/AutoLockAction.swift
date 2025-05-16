@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onAppear
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresentationChanged(presentedPINScreen: PINScreenType?)
+import proton_app_uniffi
+
+enum AutoLockAction {
+    case optionSelected(AutoLock)
+    case onLoad
 }

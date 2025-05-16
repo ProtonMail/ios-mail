@@ -47,9 +47,11 @@ class AppProtectionSelectionStore: StateStore {
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
         case .onAppear:
-            let appProtection = await currentAppProtection()
-            state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: appProtection))
-                .copy(\.currentProtection, to: appProtection)
+            guard let settings = await currentAppSettings() else { return }
+            let protection = settings.protection
+            state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: protection))
+                .copy(\.currentProtection, to: protection)
+                .copy(\.autoLock, to: settings.autoLock)
         case .selected(let selectedMethod):
             guard selectedMethod.appProtection != state.currentProtection else { return }
             switch selectedMethod {
@@ -69,6 +71,8 @@ class AppProtectionSelectionStore: StateStore {
             }
         case .changePINTapped:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .changePIN))
+        case .autoLockTapped:
+            router.go(to: .autoLock)
         }
     }
 
@@ -126,12 +130,12 @@ class AppProtectionSelectionStore: StateStore {
     }
 
     @MainActor
-    private func currentAppProtection() async -> AppProtection {
+    private func currentAppSettings() async -> AppSettings? {
         do {
-            return try await appSettingsRepository.getAppSettings().get().protection
+            return try await appSettingsRepository.getAppSettings().get()
         } catch {
             AppLogger.log(error: error, category: .appSettings)
-            return .none
+            return nil
         }
     }
 

@@ -21,6 +21,7 @@ import InboxCore
 struct AppProtectionSelectionState: Copying {
     var currentProtection: AppProtection
     var availableAppProtectionMethods: [AppProtectionMethodViewModel]
+    var autoLock: AutoLock?
     var presentedPINScreen: PINScreenType?
 }
 
@@ -30,6 +31,7 @@ extension AppProtectionSelectionState {
         .init(
             currentProtection: .none,
             availableAppProtectionMethods: [],
+            autoLock: nil,
             presentedPINScreen: nil
         )
     }

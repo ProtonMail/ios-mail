@@ -15,30 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
-import InboxDesignSystem
+@testable import ProtonMail
+import InboxCore
+import InboxSnapshotTesting
 import SwiftUI
+import Testing
 
-struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View {
-    public let collection: Collection
-    public let elementContent: (Collection.Element) -> ElementContent
+@MainActor
+struct AutLockScreenSnapshotTests {
 
-    // MARK: - View
-
-    var body: some View {
-        LazyVStack(spacing: .zero) {
-            ForEachLast(collection: collection) { element, isLast in
-                VStack(spacing: .zero) {
-                    elementContent(element)
-
-                    if !isLast {
-                        DS.Color.Border.norm
-                            .frame(height: 1)
-                            .padding(.leading, DS.Spacing.large)
-                    }
-                }
-            }
+    @Test
+    func appLockScreenLayoutsCorrectly() {
+        let sut = NavigationStack {
+            AutoLockScreen(
+                state: .init(selectedOption: .always),
+                appSettingsRepository: AppSettingsRepositorySpy()
+            )
+            .environmentObject(Router<SettingsRoute>())
         }
-        .applyRoundedRectangleStyle()
+        assertSnapshotsOnIPhoneX(of: sut)
     }
+
 }
