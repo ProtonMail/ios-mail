@@ -46,7 +46,8 @@ struct BannerView: View {
             HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
                 BannerIconTextView(
                     icon: model.icon,
-                    text: model.message,
+                    title: model.title,
+                    subtitle: model.subtitle,
                     style: model.style.color.content,
                     lineLimit: 2
                 )
@@ -54,16 +55,18 @@ struct BannerView: View {
                     smallButton(model: button, style: model.style.color.button)
                 }
             }
-            .padding(.init(
-                vertical: button == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
-                horizontal: DS.Spacing.large
-            ))
+            .padding(
+                .init(
+                    vertical: button == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
+                    horizontal: DS.Spacing.large
+                ))
         case .large(let type):
             VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                 HStack(alignment: .top, spacing: DS.Spacing.moderatelyLarge) {
                     BannerIconTextView(
                         icon: model.icon,
-                        text: model.message,
+                        title: model.title,
+                        subtitle: model.subtitle,
                         style: model.style.color.content,
                         lineLimit: .none
                     )
@@ -97,7 +100,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    subtitle: nil,
                     size: .small(nil),
                     style: .regular
                 )
@@ -105,7 +109,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    subtitle: nil,
                     size: .small(nil),
                     style: .error
                 )
@@ -113,7 +118,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet",
+                    title: "Lorem ipsum dolor sit amet",
+                    subtitle: nil,
                     size: .small(.init(title: "Action", action: {})),
                     style: .regular
                 )
@@ -121,7 +127,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet",
+                    title: "Lorem ipsum dolor sit amet",
+                    subtitle: nil,
                     size: .small(.init(title: "Action", action: {})),
                     style: .error
                 )
@@ -129,7 +136,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet",
+                    title: "Lorem ipsum dolor sit amet",
+                    subtitle: nil,
                     size: .small(.init(title: "Action", action: {})),
                     style: .regular
                 )
@@ -137,7 +145,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet",
+                    title: "Lorem ipsum dolor sit amet",
+                    subtitle: nil,
                     size: .small(nil),
                     style: .error
                 )
@@ -145,7 +154,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    subtitle: "Vivamus non vehicula odio",
                     size: .large(.one(.init(title: "Action", action: {}))),
                     style: .regular
                 )
@@ -153,7 +163,8 @@ struct BannerView: View {
             BannerView(
                 model: .init(
                     icon: DS.Icon.icFire,
-                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus ipsum non purus pretium.",
+                    subtitle: nil,
                     size: .large(
                         .two(left: .init(title: "Left", action: {}), right: .init(title: "Right", action: {}))
                     ),

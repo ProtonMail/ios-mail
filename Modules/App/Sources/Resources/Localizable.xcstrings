@@ -1121,8 +1121,8 @@
         }
       }
     },
-    "Edit" : {
-      "comment" : "Action to modify the scheduled send time."
+    "Edit message" : {
+      "comment" : "Action to modify a scheduled message."
     },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
@@ -2731,7 +2731,7 @@
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted."
     },
-    "This message will be sent %@" : {
+    "This message will be sent" : {
       "comment" : "Banner showing the scheduled send time for an email."
     },
     "This message will expire in %@" : {

@@ -57,17 +57,17 @@ public struct Banner: Hashable {
         let background: Color
         let text: Color
         let strokeColors: [Color]
-        
+
         public static var regular: Self {
             .textNorm(background: DS.Color.InteractionWeak.norm, strokeColors: [])
         }
-        
+
         public static var gradient: Self {
             .textNorm(background: DS.Color.Background.norm, strokeColors: DS.Color.Gradient.crazy)
         }
-        
+
         // MARK: - Private
-        
+
         private static func textNorm(background: Color, strokeColors: [Color]) -> Self {
             .init(background: background, text: DS.Color.Text.norm, strokeColors: strokeColors)
         }
@@ -113,13 +113,15 @@ public struct Banner: Hashable {
 
     let id: UUID = UUID()
     public let icon: ImageResource
-    public let message: String
+    public let title: String
+    public let subtitle: String?
     public let size: Size
     public let style: Style
 
-    public init(icon: ImageResource, message: LocalizedStringResource, size: Size, style: Style) {
+    public init(icon: ImageResource, title: String, subtitle: String?, size: Size, style: Style) {
         self.icon = icon
-        self.message = message.string
+        self.title = title
+        self.subtitle = subtitle
         self.size = size
         self.style = style
     }

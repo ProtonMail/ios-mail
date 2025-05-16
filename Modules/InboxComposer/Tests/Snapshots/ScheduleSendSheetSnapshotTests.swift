@@ -22,10 +22,7 @@ import SwiftUI
 
 @MainActor
 final class ScheduleSendSheetSnapshotTests {
-    let dateFormatter = ScheduleSendDateFormatter(
-        locale: Locale(identifier: "en_US"),
-        timeZone: TimeZone(identifier: "Europe/Zurich")!
-    )
+    let dateFormatter = ScheduleSendDateFormatter(locale: Locale.enUS, timeZone: TimeZone.zurich)
 
     @Test
     func testScheduleSend_whenFreeUser_itLayoutsCorrectOnIphoneX() {

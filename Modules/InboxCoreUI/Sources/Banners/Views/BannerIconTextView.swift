@@ -19,13 +19,15 @@ import SwiftUI
 
 public struct BannerIconTextView: View {
     let icon: ImageResource
-    let text: String
+    let title: String
+    let subtitle: String?
     let style: Banner.ContentStyle
     let lineLimit: Int?
 
-    public init(icon: ImageResource, text: String, style: Banner.ContentStyle, lineLimit: Int?) {
+    public init(icon: ImageResource, title: String, subtitle: String?, style: Banner.ContentStyle, lineLimit: Int?) {
         self.icon = icon
-        self.text = text
+        self.title = title
+        self.subtitle = subtitle
         self.style = style
         self.lineLimit = lineLimit
     }
@@ -34,12 +36,22 @@ public struct BannerIconTextView: View {
         Group {
             Image(icon)
                 .foregroundColor(style.icon)
-            Text(text)
-                .font(.footnote)
-                .fontWeight(.regular)
-                .foregroundStyle(style.text)
-                .lineLimit(lineLimit)
-                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.footnote)
+                    .fontWeight(.regular)
+                    .foregroundStyle(style.text)
+                    .lineLimit(lineLimit)
+
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundStyle(style.text)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
