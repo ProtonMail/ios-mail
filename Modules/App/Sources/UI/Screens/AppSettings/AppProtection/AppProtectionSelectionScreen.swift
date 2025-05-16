@@ -68,7 +68,7 @@ struct AppProtectionSelectionScreen: View {
                     if state.shouldShowAutoLockButton {
                         FormSection {
                             FormBigButton(
-                                title: "Auto-Lock",
+                                title: L10n.Settings.App.autoLock,
                                 icon: DS.SFSymbols.chevronRight,
                                 value: state.autoLock?.humanReadable.string ?? .empty
                             ) {

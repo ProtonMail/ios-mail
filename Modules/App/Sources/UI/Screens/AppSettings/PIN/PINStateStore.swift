@@ -15,40 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import LocalAuthentication
 import SwiftUI
 import InboxCore
-
-import proton_app_uniffi
-
-protocol AppProtectionConfigurator: Sendable {
-    func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
-    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
-    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult
-    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
-    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult
-}
-
-extension PinAuthError: LocalizedError {
-
-    public var errorDescription: String? {
-        switch self {
-        case .reason(let errorReason):
-            switch errorReason {
-            case .incorrectPin:
-                "Incorrect PIN" // FIXME: - Check text
-            case .tooManyAttempts:
-                "Too many attemts" // FIXME: - Check text
-            case .tooFrequentAttempts:
-                "Too frequent attempts" // FIXME: - Check text
-            }
-        case .other(let protonError):
-            protonError.localizedDescription
-        }
-    }
-
-}
-
-extension MailSession: AppProtectionConfigurator {}
 
 class PINStateStore: StateStore {
     @Published var state: PINScreenState
@@ -78,6 +47,7 @@ class PINStateStore: StateStore {
     func handle(action: PINScreenAction) async {
         switch action {
         case .pinTyped(let pin):
+            // Conversion
             state = state.copy(\.pin, to: pin)
                 .copy(\.pinValidation, to: .ok)
         case .leadingButtonTapped:
@@ -104,9 +74,9 @@ class PINStateStore: StateStore {
     }
 
     @MainActor
-    private func confirm(pin: String) async {
+    private func confirm(pin: [UInt32]) async {
         do {
-            try await appProtectionConfigurator.setPinCode(pin: pin.digits).get()
+            try await appProtectionConfigurator.setPinCode(pin: pin).get()
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }
@@ -120,14 +90,14 @@ class PINStateStore: StateStore {
             router.go(to: .pin(type: .set))
         case .disablePIN:
             do {
-                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
                 dismiss()
             } catch {
                 state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
             }
         case .changeToBiometry:
             do {
-                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
                 await setUpBioemtryProtection()
             } catch {
                 state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
@@ -147,25 +117,5 @@ class PINStateStore: StateStore {
             AppLogger.log(error: error)
         }
         dismiss()
-    }
-}
-
-import LocalAuthentication
-
-extension String {
-
-    var digits: [UInt32] {
-        compactMap { UInt32(String($0)) }
-    }
-
-}
-extension BiometricAuthenticator.AuthenticationStatus {
-    var isSuccess: Bool {
-        switch self {
-        case .success:
-            true
-        case .failure:
-            false
-        }
     }
 }

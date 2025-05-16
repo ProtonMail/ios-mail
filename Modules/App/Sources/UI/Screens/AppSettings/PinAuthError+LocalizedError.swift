@@ -15,25 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
+import Foundation
+import proton_app_uniffi
 
-enum SupportedBiometry {
-    case none
-    case touchID
-    case faceID
+extension PinAuthError: LocalizedError {
 
-    static func onDevice(context: LAContext = LAContext()) -> Self {
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
-            switch context.biometryType {
-            case .faceID:
-                return .faceID
-            case .touchID:
-                return .touchID
-            default:
-                return .none
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let errorReason):
+            switch errorReason {
+            case .incorrectPin:
+                "Incorrect PIN".notLocalized // FIXME: - Waiting for final text
+            case .tooManyAttempts:
+                "Too many attemts".notLocalized // FIXME: - Waiting for final text
+            case .tooFrequentAttempts:
+                "Too frequent attempts".notLocalized // FIXME: - Waiting for final text
             }
-        } else {
-            return .none
+        case .other(let protonError):
+            protonError.localizedDescription
         }
     }
+
 }

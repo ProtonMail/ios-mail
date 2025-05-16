@@ -15,25 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
+import proton_app_uniffi
 
-enum SupportedBiometry {
-    case none
-    case touchID
-    case faceID
-
-    static func onDevice(context: LAContext = LAContext()) -> Self {
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
-            switch context.biometryType {
-            case .faceID:
-                return .faceID
-            case .touchID:
-                return .touchID
-            default:
-                return .none
-            }
-        } else {
-            return .none
-        }
-    }
+protocol AppProtectionConfigurator: Sendable {
+    func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
+    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult
 }
+
+extension MailSession: AppProtectionConfigurator {}

@@ -52,7 +52,7 @@ struct AutoLockScreen: View {
                 }
                 .padding(DS.Spacing.large)
             }
-            .navigationTitle("Auto-Lock")
+            .navigationTitle(L10n.Settings.App.autoLock.string)
             .navigationBarTitleDisplayMode(.inline)
             .background(DS.Color.BackgroundInverted.norm)
             .onLoad { store.handle(action: .onLoad) }
@@ -65,9 +65,9 @@ extension AutoLock {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .always:
-            "Always ask for PIN"
+            L10n.Settings.App.autoLockAlways
         case .minutes(let value):
-            "\(value) minutes"
+            L10n.Settings.App.autoLock(minutes: value)
         }
     }
 

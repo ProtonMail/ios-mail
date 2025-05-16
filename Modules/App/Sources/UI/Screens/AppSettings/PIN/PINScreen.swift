@@ -89,12 +89,28 @@ struct PINScreen: View {
 
     private func pin(state: PINScreenState, store: PINStateStore) -> Binding<String> {
         .init(
-            get: { state.pin },
-            set: { pin in store.handle(action: .pinTyped(pin)) }
+            get: { state.pin.toString },
+            set: { pin in store.handle(action: .pinTyped(pin.digits)) }
         )
     }
 
     private func validation(state: PINScreenState) -> Binding<FormTextInput.ValidationStatus> {
         .readonly { state.pinValidation }
     }
+}
+
+private extension Array where Element == UInt32 {
+
+    var toString: String {
+        map(String.init).joined()
+    }
+
+}
+
+private extension String {
+
+    var digits: [UInt32] {
+        compactMap { UInt32(String($0)) }
+    }
+
 }

@@ -24,7 +24,7 @@ struct PINValidator {
         self.pinVerifier = pinVerifier
     }
 
-    func validate(pin: String) async -> FormTextInput.ValidationStatus {
+    func validate(pin: [UInt32]) async -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
             return setPINValidation(pin: pin)
@@ -34,7 +34,7 @@ struct PINValidator {
             switch reason {
             case .changePIN:
                 do {
-                    try await pinVerifier.verifyPinCode(pin: pin.digits).get()
+                    try await pinVerifier.verifyPinCode(pin: pin).get()
                     return .ok
                 } catch {
                     return .failure(error.localizedDescription)
@@ -45,11 +45,11 @@ struct PINValidator {
         }
     }
 
-    private func setPINValidation(pin: String) -> FormTextInput.ValidationStatus {
+    private func setPINValidation(pin: [UInt32]) -> FormTextInput.ValidationStatus {
         pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
     }
 
-    private func confirmPINValidation(pin: String, repeatedPIN: String) -> FormTextInput.ValidationStatus {
+    private func confirmPINValidation(pin: [UInt32], repeatedPIN: [UInt32]) -> FormTextInput.ValidationStatus {
         pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError.string)
     }
 }

@@ -33,6 +33,15 @@ struct BiometricAuthenticator: Sendable {
     enum AuthenticationStatus {
         case success
         case failure
+
+        var isSuccess: Bool {
+            switch self {
+            case .success:
+                true
+            case .failure:
+                false
+            }
+        }
     }
 
     func authenticate() async -> AuthenticationStatus {

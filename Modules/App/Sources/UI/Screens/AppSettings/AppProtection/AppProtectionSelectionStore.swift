@@ -79,12 +79,12 @@ class AppProtectionSelectionStore: StateStore {
     @MainActor
     private func disableProtection() async {
         switch state.currentProtection {
-        case .none:
-            break
         case .biometrics:
             await disableBiometricProtection()
         case .pin:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .disablePIN))
+        case .none:
+            break
         }
     }
 
@@ -108,24 +108,24 @@ class AppProtectionSelectionStore: StateStore {
             } catch {
                 AppLogger.log(error: error, category: .appSettings)
             }
-        case .biometrics:
-            break
         case .pin:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .changeToBiometry))
+        case .biometrics:
+            break
         }
     }
 
     @MainActor
     private func setPINProtection() async {
         switch state.currentProtection {
-        case .pin:
-            break
         case .none:
             state = state.copy(\.presentedPINScreen, to: .set)
         case .biometrics:
             if await biometricAuthenticator.authenticate().isSuccess {
                 state = state.copy(\.presentedPINScreen, to: .set)
             }
+        case .pin:
+            break
         }
     }
 
