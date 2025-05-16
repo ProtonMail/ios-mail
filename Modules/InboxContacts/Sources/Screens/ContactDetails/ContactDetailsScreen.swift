@@ -126,7 +126,7 @@ struct ContactDetailsScreen: View {
     private func loadDetails(forContactID contactID: Id) {
         Task {
             let details = await provider.contactDetails(forContactID: contactID)
-            state = details
+            state = state.copy(with: details.groupItems)
         }
     }
 }
@@ -150,9 +150,20 @@ private extension ContactDetails {
             id: contact.id,
             avatarInformation: contact.avatarInformation,
             displayName: contact.name,
-            primaryEmail: .empty,
-            primaryPhone: .empty,
+            primaryEmail: contact.emails.first?.email ?? .empty,
+            primaryPhone: .none,
             groupItems: []
+        )
+    }
+
+    func copy(with groupItems: [[ContactDetailsItem]]) -> Self {
+        .init(
+            id: id,
+            avatarInformation: avatarInformation,
+            displayName: displayName,
+            primaryEmail: primaryEmail,
+            primaryPhone: primaryPhone,
+            groupItems: groupItems
         )
     }
 
