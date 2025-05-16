@@ -22,7 +22,7 @@ struct SendResultInfo {
     enum ToastType {
         case sending
         case sent
-        case error(DraftSaveSendError)
+        case error(DraftSendFailure)
     }
 
     let messageId: ID

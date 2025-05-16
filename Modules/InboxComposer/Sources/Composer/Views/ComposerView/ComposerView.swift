@@ -27,6 +27,8 @@ struct ComposerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerModel
     @State var selectedPhotosItems: [PhotosPickerItem] = []
+    @State var modalState: ComposerViewModalState?
+    @State var attachmentPickerState: AttachmentPickersState = .init()
 
     init(
         draft: AppDraftProtocol,
@@ -52,9 +54,12 @@ struct ComposerView: View {
     }
 
     var body: some View {
+        let modalFactory = ComposerViewModalFactory(pickerState: $attachmentPickerState)
+
         VStack(spacing: 0) {
             ComposerTopBar(
                 isSendEnabled: model.state.isSendAvailable,
+                scheduleSendAction: { modalState = .scheduleSend },
                 sendAction: { model.sendMessage(dismissAction: dismiss) },
                 dismissAction: { model.dismissComposer(dismissAction: dismiss) }
             )
@@ -134,42 +139,38 @@ struct ComposerView: View {
                 case .actionBarEvent(let event):
                     switch event {
                     case .onPickAttachmentSource:
-                        model.pickAttachmentSource()
+                        modalState = .attachmentPicker
                     case .onDiscardDraft:
                         toastStateStore.present(toast: .comingSoon)
                     }
                 }
             }
             .alert(
-                Text(model.alertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
-                isPresented: $model.alertState.isAlertPresented,
-                presenting: model.alertState.presentedError,
+                Text(model.attachmentAlertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
+                isPresented: $model.attachmentAlertState.isAlertPresented,
+                presenting: model.attachmentAlertState.presentedError,
                 actions: { actionsForAttachmentAlert(error: $0) },
                 message: { Text($0.message) }
             )
             .alert(model: model.alertBinding)
-            .attachmentSourcePicker(isPresented: $model.pickersState.isAttachmentSourcePickerPresented) { selection in
-                model.selectedAttachmentSource(selection)
-            }
-            .photosPicker(isPresented: $model.pickersState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
-            .camera(isPresented: $model.pickersState.isCameraPresented, onPhotoTaken: model.addAttachments(image:))
-            .fileImporter(isPresented: $model.pickersState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
-            .onChange(of: selectedPhotosItems, {
+            .photosPicker(isPresented: $attachmentPickerState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
+            .camera(isPresented: $attachmentPickerState.isCameraPresented, onPhotoTaken: model.addAttachments(image:))
+            .fileImporter(isPresented: $attachmentPickerState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
+            .onChange(of: selectedPhotosItems) {
                 Task {
                     let photos = $selectedPhotosItems.wrappedValue
                     $selectedPhotosItems.wrappedValue = []
                     await model.addAttachments(selectedPhotosItems: photos)
                 }
-            })
+            }
+            .sheet(item: $modalState, content: modalFactory.makeModal(for:))
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
                 toastStateStore.present(toast: newValue)
                 model.toast = nil
             }
             .onLoad {
-                Task {
-                    await model.onLoad()
-                }
+                Task { await model.onLoad() }
             }
 
             Spacer()
@@ -184,7 +185,7 @@ struct ComposerView: View {
                 if action.removeAttachment {
                     model.removeAttachments(for: error)
                 }
-                model.alertState.errorDismissedShowNextError()
+                model.attachmentAlertState.errorDismissedShowNextError()
             } label: {
                 Text(action.title)
             }

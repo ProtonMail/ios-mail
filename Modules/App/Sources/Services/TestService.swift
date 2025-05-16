@@ -17,44 +17,26 @@
 
 import Foundation
 
-final class TestService: Sendable {
-    static let shared: TestService = .init()
-}
+final class TestService: ApplicationServiceSetUp {
+    private let userDefaults = UserDefaults.standard
 
-extension TestService: ApplicationServiceSetUp {
-
-    #if UITESTS
-        func setUpService() {
-            try! clearExistingDataIfNecessary()
+    func setUpService() {
+        if userDefaults.bool(forKey: "uiTesting") {
+            clearExistingDataIfNecessary()
             disableOnboardingPrompts()
         }
+    }
 
-        private func clearExistingDataIfNecessary() throws {
-            if let _ = UserDefaults.standard.string(forKey: "forceCleanState") {
-                guard let applicationSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-                    throw TestServiceError.applicationSupportDirectoryNotAccessible
-                }
-
-                guard let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                    throw TestServiceError.cacheDirectoryNotAccessible
-                }
-
-                try? FileManager.default.removeItem(atPath: applicationSupportFolder.path())
-                try? FileManager.default.removeItem(atPath: cacheFolder.path)
-            }
+    private func clearExistingDataIfNecessary() {
+        if userDefaults.bool(forKey: "forceCleanState") {
+            let fileManager = FileManager.default
+            try? fileManager.removeItem(atPath: fileManager.sharedSupportDirectory.path())
+            try? fileManager.removeItem(atPath: fileManager.sharedCacheDirectory.path)
         }
+    }
 
-        private func disableOnboardingPrompts() {
-            let userDefaults = UserDefaults.standard
-            userDefaults.set(false, forKey: "showAlphaV1Onboarding")
-            userDefaults.set([Date()], forKey: "notificationAuthorizationRequestDates")
-        }
-
-        enum TestServiceError: Error {
-            case applicationSupportDirectoryNotAccessible
-            case cacheDirectoryNotAccessible
-        }
-    #else
-        func setUpService() {}
-    #endif
+    private func disableOnboardingPrompts() {
+        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+        userDefaults[.notificationAuthorizationRequestDates] = [.now]
+    }
 }

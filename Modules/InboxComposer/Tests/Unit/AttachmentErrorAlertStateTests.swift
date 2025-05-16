@@ -41,7 +41,7 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testEnqueueAdditionErrors_whenOneErrorPassed_itShouldPresentThePassedError() async {
-        let error = DraftAttachmentError.reason(.messageAlreadySent)
+        let error = DraftAttachmentUploadError.reason(.messageAlreadySent)
 
         await sut.enqueueAdditionErrors([error])
 
@@ -53,8 +53,8 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testEnqueueAdditionErrors_whenTwoErrorsPassed_itShouldEnqueueTheSecond() async {
-        let error1 = DraftAttachmentError.reason(.attachmentTooLarge)
-        let error2 = DraftAttachmentError.reason(.tooManyAttachments)
+        let error1 = DraftAttachmentUploadError.reason(.attachmentTooLarge)
+        let error2 = DraftAttachmentUploadError.reason(.tooManyAttachments)
 
         await sut.enqueueAdditionErrors([error1, error2])
 
@@ -66,7 +66,7 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testEnqueueAdditionErrors_whenSameErrorPassed_itShouldEnqueueTheSecondError() async {
-        let error = DraftAttachmentError.reason(.attachmentTooLarge)
+        let error = DraftAttachmentUploadError.reason(.attachmentTooLarge)
 
         await sut.enqueueAdditionErrors([error])
         await sut.enqueueAdditionErrors([error])

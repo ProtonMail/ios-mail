@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,28 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import Foundation
 
-extension DraftSaveSendError {
-
-    public var shouldBeDisplayed: Bool {
-        switch self {
-        case .reason(let reason):
-            reason.shouldBeDisplayed
-        case .other:
-            true
-        }
-    }
-}
-
-extension DraftSaveSendErrorReason {
-
-    public var shouldBeDisplayed: Bool {
-        switch self {
-        case .messageAlreadySent, .alreadySent:
-            return false
-        default:
-            return true
-        }
+public extension UserDefaults {
+    static var appGroup: UserDefaults {
+        .init(suiteName: AppGroup.mail)!
     }
 }

@@ -199,7 +199,7 @@ private extension MailUserSession {
             .first
             .unsafelyUnwrapped
         let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first.unsafelyUnwrapped
-        let appConfig = AppConfig(environment: .localhost(port: "8000"))
+        let apiConfig = ApiConfig(envId: .custom("http://localhost:8000"))
 
         let applicationSupportPath = applicationSupportFolder.path()
         let cachePath = cacheFolder.path()
@@ -211,7 +211,7 @@ private extension MailUserSession {
             mailCacheSize: 1_000_000,
             logDir: cachePath,
             logDebug: true,
-            apiEnvConfig: appConfig.apiEnvConfig
+            apiEnvConfig: apiConfig
         )
 
         let mailSession = try createMailSession(

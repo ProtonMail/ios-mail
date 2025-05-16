@@ -20,10 +20,10 @@ import proton_app_uniffi
 extension DraftAttachmentState {
 
     var isError: Bool {
-        attachmentError != nil
+        attachmentUploadError != nil
     }
 
-    var attachmentError: DraftAttachmentError? {
+    var attachmentUploadError: DraftAttachmentUploadError? {
         if case .error(let error) = self {
             return error
         }

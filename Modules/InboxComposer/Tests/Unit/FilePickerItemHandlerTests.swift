@@ -25,8 +25,8 @@ final class FilePickerItemHandlerTests: XCTestCase {
     var sut: FilePickerItemHandler!
     private var testsHelper: FilePickerItemHandlerTestsHelper!
     private var mockDraft: MockDraft!
-    private var capturedErrors: [DraftAttachmentError]!
-    private var mockOnErrors: (([DraftAttachmentError]) -> Void)!
+    private var capturedErrors: [DraftAttachmentUploadError]!
+    private var mockOnErrors: (([DraftAttachmentUploadError]) -> Void)!
 
     override func setUpWithError() throws {
         testsHelper = try .init()
@@ -60,7 +60,7 @@ final class FilePickerItemHandlerTests: XCTestCase {
     }
 
     func testAddSelectedFiles_whenDraftAddPathReturnsErrorForOneItem_itShouldCallAddFilesToDraftForAllItems_andReturnError() async throws {
-        let error = DraftAttachmentError.reason(DraftAttachmentErrorReason.attachmentTooLarge)
+        let error = DraftAttachmentUploadError.reason(DraftAttachmentUploadErrorReason.attachmentTooLarge)
         mockDraft.mockAttachmentList.mockAttachmentListAddResult = [("file1.txt", .error(error)), ("file2.txt", .ok)]
         let file1 = try testsHelper.prepareItem(fileName: "file1.txt", createFile: true)
         let file2 = try testsHelper.prepareItem(fileName: "file2.txt", createFile: true)

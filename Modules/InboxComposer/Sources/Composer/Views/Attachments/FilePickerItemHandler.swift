@@ -20,18 +20,18 @@ import InboxCore
 import proton_app_uniffi
 
 struct FilePickerItemHandler {
-    static let unexpectedError = DraftAttachmentError.other(.unexpected(.fileSystem))
+    static let unexpectedError = DraftAttachmentUploadError.other(.unexpected(.fileSystem))
     let fileManager = FileManager.default
 
     func addSelectedFiles(
         to draft: AppDraftProtocol,
         selectionResult: Result<[URL], any Error>,
-        onErrors: ([DraftAttachmentError]) -> Void
+        onErrors: ([DraftAttachmentUploadError]) -> Void
     ) async {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         switch selectionResult {
         case .success(let urls):
-            var allErrors = [DraftAttachmentError]()
+            var allErrors = [DraftAttachmentUploadError]()
             for await result in copyFilePickerItems(files: urls, destinationFolder: uploadFolder) {
                 switch result {
                 case .success(let file):

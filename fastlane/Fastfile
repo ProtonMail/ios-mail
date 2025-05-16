@@ -92,17 +92,6 @@ platform :ios do
     sh "base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE"
   end
 
-  desc "Build the release app"
-  lane :build_release_app do
-    build_app(
-      scheme: "ProtonMail",
-      clean: true,
-      output_directory: "outputs/",
-      export_method: "app-store",
-      xcargs: "-skipPackagePluginValidation"
-    )
-  end
-
   desc "Run unit tests"
   lane :tests do
     select_xcode
@@ -179,7 +168,7 @@ platform :ios do
   end
 
   desc "Deploy to Test Flight"
-  lane :deploy do
+  lane :deploy do |options|
     begin
       select_xcode
 
@@ -195,7 +184,13 @@ platform :ios do
       new_build_number = latest_build_number + 1
       increment_build_number(build_number: new_build_number)
 
-      build_release_app
+      build_app(
+        scheme: options[:scheme],
+        clean: true,
+        output_directory: "outputs/",
+        export_method: "app-store",
+        xcargs: "-skipPackagePluginValidation"
+      )
 
       upload_to_testflight(
         team_name: "Proton Technologies AG",

@@ -81,6 +81,12 @@ public extension DS.Icon {
     static let icSignOut = ImageResource.icArrowOutFromRectangle
 }
 
+// MARK: brand
+
+public extension DS.Icon {
+    static let icBrandProtonMailUpsell = ImageResource.icBrandProtonMailUpsell
+}
+
 // MARK: mailbox messages
 
 public extension DS.Icon {

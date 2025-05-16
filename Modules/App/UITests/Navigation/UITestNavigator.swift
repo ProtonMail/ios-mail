@@ -107,7 +107,7 @@ struct UITestNavigator: ApplicationHolder {
         app.launchArguments += ["-AppleLocale", "en_US"]
 
         if let serverPort = environment.mockServerPort {
-            app.launchArguments += ["-mockServerPort", "\(serverPort)"]
+            app.launchArguments += ["-DYNAMIC_DOMAIN", "http://localhost:\(serverPort)"]
         }
 
         return app

@@ -15,31 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import proton_app_uniffi
+import InboxDesignSystem
+import SwiftUI
 
-public struct AppConfig: Sendable {
-    public let environment: ApiEnvId
+struct ScheduleSendButton: View {
+    @Environment(\.isEnabled) var isEnabled
+    let onTap: () -> Void
 
-    public init(environment: ApiEnvId) {
-        self.environment = environment
+    private var iconColor: Color {
+        isEnabled ? DS.Color.InteractionBrand.norm : DS.Color.InteractionBrand.disabled
     }
-}
 
-public extension AppConfig {
-
-    static let `default`: Self = {
-        return .init(environment: .prod)
-    }()
-
-    var apiEnvConfig: ApiConfig {
-        let appVersion = "ios-mail@\(Bundle.main.effectiveAppVersion)"
-        return .init(appVersion: appVersion, userAgent: "Mozilla/5.0", envId: environment, proxy: nil)
-    }
-}
-
-public extension ApiEnvId {
-    static func localhost(port: String) -> Self {
-        .custom("http://localhost:\(port)")
+    var body: some View {
+        Button(
+            action: onTap,
+            label: {
+                Image(DS.Icon.icClockPaperPlane)
+                    .foregroundStyle(iconColor)
+            }
+        )
     }
 }

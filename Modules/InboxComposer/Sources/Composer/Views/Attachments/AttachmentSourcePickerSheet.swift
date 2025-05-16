@@ -23,7 +23,7 @@ struct AttachmentSourcePickerSheet: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var model: AttachmentSourcePickerSheetModel = .init()
     private let options: [AttachmentSource] = [.photoGallery, .camera, .files]
-    var onSelection: (AttachmentSource) -> Void
+    var pickerState: Binding<AttachmentPickersState>
 
     var body: some View {
         ClosableScreen {
@@ -32,7 +32,15 @@ struct AttachmentSourcePickerSheet: View {
                     ForEach(options) { option in
                         listItemView(image: option.image, title: option.title, separator: option != options.last) {
                             if model.isAuthorized(source: option) {
-                                onSelection(option)
+                                switch option {
+                                case .photoGallery:
+                                    pickerState.wrappedValue.isPhotosPickerPresented = true
+                                case .camera:
+                                    pickerState.wrappedValue.isCameraPresented = true
+                                case .files:
+                                    pickerState.wrappedValue.isFileImporterPresented = true
+                                }
+
                                 dismiss()
                             } else {
                                 if option == .camera {
@@ -88,8 +96,8 @@ private struct RegularButtonStyle: ButtonStyle {
             .label
             .background(
                 configuration.isPressed
-                ? DS.Color.InteractionWeak.pressed
-                : DS.Color.BackgroundInverted.secondary
+                    ? DS.Color.InteractionWeak.pressed
+                    : DS.Color.BackgroundInverted.secondary
             )
     }
 }
@@ -126,23 +134,5 @@ private extension AttachmentSource {
         case .files:
             L10n.Attachments.attachmentImport.string
         }
-    }
-}
-
-private struct AttachmentSourcePickerModifier: ViewModifier {
-    @Binding var isPresented: Bool
-    var onSelection: (AttachmentSource) -> Void
-
-    func body(content: Content) -> some View {
-        content
-            .sheet(isPresented: $isPresented) {
-                AttachmentSourcePickerSheet(onSelection: onSelection)
-            }
-    }
-}
-
-extension View {
-    func attachmentSourcePicker(isPresented: Binding<Bool>, onSelection: @escaping (AttachmentSource) -> Void) -> some View {
-        modifier(AttachmentSourcePickerModifier(isPresented: isPresented, onSelection: onSelection))
     }
 }
