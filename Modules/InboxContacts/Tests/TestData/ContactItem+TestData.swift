@@ -97,6 +97,17 @@ extension ContactItem {
         )
     }
 
+    static var benjaminAlexander: Self {
+        .init(
+            id: 1_911,
+            name: "Benjamin Alexander",
+            avatarInformation: .init(text: "B", color: "#3357FF"),
+            emails: [
+                .init(id: 1_912, email: "ben.ale@protonmail.com")
+            ]
+        )
+    }
+
     static var elenaErickson: Self {
         .init(
             id: 11,

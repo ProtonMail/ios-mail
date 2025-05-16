@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import InboxSnapshotTesting
-import proton_app_uniffi
-import Testing
+import InboxCoreUI
+import SwiftUI
 
-@MainActor
-final class ContactDetailsScreenSnapshotTests {
+struct ContactDetailsSection: View {
+    let items: [ContactDetailsItem]
 
-    @Test
-    func testContactDetailsScreenLayoutsCorrectOnIphoneX() async {
-        let previewInstace = ContactDetailsProvider.previewInstance()
-        let details = await previewInstace.contactDetails(forContactID: ContactItem.benjaminAlexander.id)
-        let sut = ContactDetailsScreen(contact: .benjaminAlexander, provider: .previewInstance(), state: details)
-
-        assertSnapshotsOnIPhoneX(of: sut)
+    var body: some View {
+        FormList(collection: items, separator: .invertedNoPadding) { item in
+            FormBigButton(
+                title: item.label.stringResource,
+                icon: .none,
+                value: item.value,
+                action: {
+                    // FIXME: Implement action for specific item
+                },
+                isInteractive: item.isInteractive
+            )
+        }
     }
-
 }

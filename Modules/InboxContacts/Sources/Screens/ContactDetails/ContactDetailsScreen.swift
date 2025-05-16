@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -20,166 +20,114 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-struct ContactActionButton: View {
-    let image: ImageResource
-    let title: String
-    let disabled: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: DS.Spacing.standard) {
-                Image(image)
-                    .square(size: 24)
-                    .foregroundStyle(foregroundColor)
-                Text(title)
-                    .font(.footnote)
-                    .fontWeight(.regular)
-                    .foregroundStyle(foregroundColor)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(DS.Spacing.large)
-            .contentShape(Rectangle())
-        }
-        .background(DS.Color.BackgroundInverted.secondary)
-        .buttonStyle(DefaultPressedButtonStyle())
-        .disabled(disabled)
-        .roundedRectangleStyle()
-    }
-
-    // MARK: - Private
-
-    private var foregroundColor: Color {
-        disabled ? DS.Color.Text.disabled : DS.Color.Text.weak
-    }
-}
-
-struct ContactDetails {
-    let id: Id
-    let avatarInformation: AvatarInformation
-    let displayName: String
-    let primaryEmail: String
-    let primaryPhone: String?
-    let groupItems: [[ContactDetailItem]]
-}
-
-struct ContactDetailItem: Hashable {
-    let label: String
-    let value: String
-    let isInteractive: Bool
-}
-
 struct ContactDetailsScreen: View {
-    let model: ContactDetails
+    let contact: ContactItem
+    @State var state: ContactDetails
+    let provider: ContactDetailsProvider
+
+    /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
+    init(
+        contact: ContactItem,
+        provider: ContactDetailsProvider,
+        state: ContactDetails? = nil
+    ) {
+        self.contact = contact
+        self.provider = provider
+        _state = .init(initialValue: state ?? .details(with: contact))
+    }
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: DS.Spacing.large) {
-                    ZStack {
-                        Rectangle()
-                            .fill(Color(hex: model.avatarInformation.color))
-                            .square(size: 100)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
-                        Text(model.avatarInformation.text)
-                            .font(.title)
-                            .fontWeight(.regular)
-                            .foregroundStyle(DS.Color.Text.inverted)
-                    }
-
-                    VStack(spacing: DS.Spacing.compact) {
-                        Text(model.displayName)
-                            .font(.body)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(DS.Color.Text.norm)
-                        Text(model.primaryEmail)
-                            .font(.subheadline)
-                            .fontWeight(.regular)
-                            .foregroundStyle(DS.Color.Text.weak)
-                    }
-
-                    HStack(spacing: DS.Spacing.standard) {
-                        ContactActionButton(
-                            image: DS.Icon.icPenSquare,
-                            title: "Message",
-                            disabled: false,
-                            action: { print(">>> message") }
-                        )
-                        ContactActionButton(
-                            image: DS.Icon.icPhone,
-                            title: "Call",
-                            disabled: model.primaryPhone == nil,
-                            action: { print(">>> call") }
-                        )
-                        ContactActionButton(
-                            image: DS.Icon.icArrowUpFromSquare,
-                            title: "Share",
-                            disabled: false,
-                            action: { print(">>> share") }
-                        )
-                    }
-                    ForEach(model.groupItems, id: \.self) { items in
-                        ContactDetailsGroup(items: items)
-                    }
+        ScrollView {
+            VStack(spacing: DS.Spacing.large) {
+                ZStack {
+                    Rectangle()
+                        .fill(Color(hex: state.avatarInformation.color))
+                        .square(size: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
+                    Text(state.avatarInformation.text)
+                        .font(.title)
+                        .fontWeight(.regular)
+                        .foregroundStyle(DS.Color.Text.inverted)
                 }
-                .padding(.horizontal, DS.Spacing.large)
+
+                VStack(spacing: DS.Spacing.compact) {
+                    Text(state.displayName)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DS.Color.Text.norm)
+                    Text(state.primaryEmail)
+                        .font(.subheadline)
+                        .fontWeight(.regular)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }
+
+                HStack(spacing: DS.Spacing.standard) {
+                    ContactDetailsActionButton(
+                        image: DS.Icon.icPenSquare,
+                        title: "Message",
+                        disabled: false,
+                        action: {
+                            // FIXME: Implement new message action
+                        }
+                    )
+                    ContactDetailsActionButton(
+                        image: DS.Icon.icPhone,
+                        title: "Call",
+                        disabled: state.primaryPhone == nil,
+                        action: {
+                            // FIXME: Implement call action
+                        }
+                    )
+                    ContactDetailsActionButton(
+                        image: DS.Icon.icArrowUpFromSquare,
+                        title: "Share",
+                        disabled: false,
+                        action: {
+                            // FIXME: Implement share action
+                        }
+                    )
+                }
+                ForEach(state.groupItems, id: \.self) { items in
+                    ContactDetailsSection(items: items)
+                }
             }
-            .background(DS.Color.Background.secondary)
+            .padding(.horizontal, DS.Spacing.large)
+        }
+        .background(DS.Color.Background.secondary)
+        .onLoad { loadDetails(forContactID: contact.id) }
+    }
+
+    private func loadDetails(forContactID contactID: Id) {
+        Task {
+            let details = await provider.contactDetails(forContactID: contactID)
+            state = details
         }
     }
 }
 
-struct ContactDetailsScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        let groupItems: [[ContactDetailItem]] = [
-            [
-                .init(label: "Work", value: "ben.ale@protonmail.com", isInteractive: true),
-                .init(label: "Private", value: "alexander@proton.me", isInteractive: true),
-            ],
-            [
-                .init(label: "Home", value: "+370 (637) 98 998", isInteractive: true),
-                .init(label: "Work", value: "+370 (637) 98 999", isInteractive: true),
-            ],
-            [
-                .init(label: "Address", value: "Lettensteg 10, 8037 Zurich", isInteractive: true)
-            ],
-            [
-                .init(label: "Birthday", value: "Dec 09, 2006", isInteractive: false)
-            ],
-            [
-                .init(
-                    label: "Note",
-                    value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
-                    isInteractive: false
-                )
-            ],
-        ]
+#Preview {
+    ContactDetailsScreen(
+        contact: .init(
+            id: .random(),
+            name: .empty,
+            avatarInformation: .init(text: "BA", color: "#3357FF"),
+            emails: []
+        ),
+        provider: .previewInstance()
+    )
+}
 
-        ContactDetailsScreen(
-            model: .init(
-                id: .init(value: 50),
-                avatarInformation: .init(text: "BA", color: "#3357FF"),
-                displayName: "Benjamin Alexander",
-                primaryEmail: "ben.ale@protonmail.com",
-                primaryPhone: .none,
-                groupItems: groupItems
-            )
+private extension ContactDetails {
+
+    static func details(with contact: ContactItem) -> Self {
+        .init(
+            id: contact.id,
+            avatarInformation: contact.avatarInformation,
+            displayName: contact.name,
+            primaryEmail: .empty,
+            primaryPhone: .empty,
+            groupItems: []
         )
     }
-}
 
-struct ContactDetailsGroup: View {
-    let items: [ContactDetailItem]
-
-    var body: some View {
-        FormList(collection: items, separator: .invertedNoPadding) { item in
-            FormBigButton(
-                title: item.label.stringResource,
-                icon: .none,
-                value: item.value,
-                action: { print(">>> action") },
-                isInteractive: item.isInteractive
-            )
-        }
-    }
 }

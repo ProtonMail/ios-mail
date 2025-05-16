@@ -27,39 +27,7 @@ enum ContactsRoute: Routable {
     func view() -> some View {
         switch self {
         case .contactDetails(let contact):
-            let groupItems: [[ContactDetailItem]] = [
-                [
-                    .init(label: "Work", value: "ben.ale@protonmail.com", isInteractive: true),
-                    .init(label: "Private", value: "alexander@proton.me", isInteractive: true),
-                ],
-                [
-                    .init(label: "Home", value: "+370 (637) 98 998", isInteractive: true),
-                    .init(label: "Work", value: "+370 (637) 98 999", isInteractive: true),
-                ],
-                [
-                    .init(label: "Address", value: "Lettensteg 10, 8037 Zurich", isInteractive: true)
-                ],
-                [
-                    .init(label: "Birthday", value: "Dec 09, 2006", isInteractive: false)
-                ],
-                [
-                    .init(
-                        label: "Note",
-                        value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
-                        isInteractive: false
-                    )
-                ]
-            ]
-            ContactDetailsScreen(
-                model: .init(
-                    id: contact.id,
-                    avatarInformation: contact.avatarInformation,
-                    displayName: contact.name,
-                    primaryEmail: contact.emails.first?.email ?? "",
-                    primaryPhone: .none,
-                    groupItems: groupItems
-                )
-            )
+            ContactDetailsScreen(contact: contact, provider: .previewInstance()) // FIXME: Replace with production instance
         case .contactGroupDetails(let id):
             ContactGroupDetailsScreen(id: id)
         }

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import InboxSnapshotTesting
 import proton_app_uniffi
-import Testing
 
-@MainActor
-final class ContactDetailsScreenSnapshotTests {
-
-    @Test
-    func testContactDetailsScreenLayoutsCorrectOnIphoneX() async {
-        let previewInstace = ContactDetailsProvider.previewInstance()
-        let details = await previewInstace.contactDetails(forContactID: ContactItem.benjaminAlexander.id)
-        let sut = ContactDetailsScreen(contact: .benjaminAlexander, provider: .previewInstance(), state: details)
-
-        assertSnapshotsOnIPhoneX(of: sut)
-    }
-
+struct ContactDetailsItem: Hashable {
+    let label: String
+    let value: String
+    let isInteractive: Bool
 }

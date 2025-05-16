@@ -30,7 +30,7 @@ final class ContactsRouteTests: XCTestCase {
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        XCTAssertEqual(screen.model.id.value, id)
+        XCTAssertEqual(screen.contact.id.value, id)
     }
 
     func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() throws {
