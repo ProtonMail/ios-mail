@@ -15,26 +15,41 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View {
+public struct FormListSeparator {
+    public let leadingPadding: CGFloat
+    public let color: Color
+}
+
+public struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View {
     public let collection: Collection
+    public let separator: FormListSeparator
     public let elementContent: (Collection.Element) -> ElementContent
+
+    public init(
+        collection: Collection,
+        separator: FormListSeparator,
+        elementContent: @escaping (Collection.Element) -> ElementContent
+    ) {
+        self.collection = collection
+        self.separator = separator
+        self.elementContent = elementContent
+    }
 
     // MARK: - View
 
-    var body: some View {
+    public var body: some View {
         LazyVStack(spacing: .zero) {
             ForEachLast(collection: collection) { element, isLast in
                 VStack(spacing: .zero) {
                     elementContent(element)
 
                     if !isLast {
-                        DS.Color.Border.norm
+                        separator.color
                             .frame(height: 1)
-                            .padding(.leading, 56)
+                            .padding(.leading, separator.leadingPadding)
                     }
                 }
             }
@@ -42,4 +57,16 @@ struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View 
         .background(DS.Color.BackgroundInverted.secondary)
         .roundedRectangleStyle()
     }
+}
+
+extension FormListSeparator {
+
+    public static var invertedNoPadding: Self {
+        .init(leadingPadding: .zero, color: DS.Color.BackgroundInverted.border)
+    }
+
+    public static var normLeftPadding: Self {
+        .init(leadingPadding: 56, color: DS.Color.Border.norm)
+    }
+
 }

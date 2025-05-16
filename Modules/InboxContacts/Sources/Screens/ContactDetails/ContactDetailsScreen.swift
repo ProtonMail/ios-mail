@@ -172,23 +172,14 @@ struct ContactDetailsGroup: View {
     let items: [ContactDetailItem]
 
     var body: some View {
-        LazyVStack(spacing: .zero) {
-            ForEachLast(collection: items) { item, isLast in
-                VStack(spacing: .zero) {
-                    FormBigButton(
-                        title: item.label.stringResource,
-                        icon: .none,
-                        value: item.value,
-                        action: { print(">>> action") },
-                        isInteractive: item.isInteractive
-                    )
-
-                    if !isLast {
-                        DS.Color.BackgroundInverted.border.frame(height: 1)
-                    }
-                }
-            }
+        FormList(collection: items, separator: .invertedNoPadding) { item in
+            FormBigButton(
+                title: item.label.stringResource,
+                icon: .none,
+                value: item.value,
+                action: { print(">>> action") },
+                isInteractive: item.isInteractive
+            )
         }
-        .roundedRectangleStyle()
     }
 }

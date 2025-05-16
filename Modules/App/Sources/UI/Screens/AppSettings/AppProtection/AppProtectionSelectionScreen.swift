@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -44,7 +45,10 @@ struct AppProtectionSelectionScreen: View {
             ScrollView {
                 VStack(spacing: .zero) {
                     FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
-                        FormList(collection: state.availableAppProtectionMethods) { viewModel in
+                        FormList(
+                            collection: state.availableAppProtectionMethods,
+                            separator: .normLeftPadding
+                        ) { viewModel in
                             FormSmallButton(
                                 title: viewModel.type.name,
                                 rightSymbol: viewModel.isSelected ? .checkmark : nil

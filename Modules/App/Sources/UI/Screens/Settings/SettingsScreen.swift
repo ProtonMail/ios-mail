@@ -91,7 +91,7 @@ struct SettingsScreen: View {
 
     private func preferencesSection() -> some View {
         FormSection(header: L10n.Settings.preferences) {
-            FormList(collection: state.preferences) { preference in
+            FormList(collection: state.preferences, separator: .normLeftPadding) { preference in
                 settingsRow(
                     icon: preference.displayData.icon,
                     title: preference.displayData.title,
