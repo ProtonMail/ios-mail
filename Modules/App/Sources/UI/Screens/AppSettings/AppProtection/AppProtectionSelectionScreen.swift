@@ -63,7 +63,9 @@ struct AppProtectionSelectionScreen: View {
                                 store.handle(action: .changePINTapped)
                             }
                             .applyRoundedRectangleStyle()
-                        }.animation(.easeInOut, value: state.shouldShowChangePINButton)
+                        }
+                        .animation(.easeInOut, value: state.shouldShowChangePINButton)
+                        .padding(.top, DS.Spacing.standard)
                     }
                     if state.shouldShowAutoLockButton {
                         FormSection {
