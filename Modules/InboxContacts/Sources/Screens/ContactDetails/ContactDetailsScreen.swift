@@ -39,62 +39,88 @@ struct ContactDetailsScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: DS.Spacing.large) {
-                ZStack {
-                    Rectangle()
-                        .fill(Color(hex: state.avatarInformation.color))
-                        .square(size: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
-                    Text(state.avatarInformation.text)
-                        .font(.title)
-                        .fontWeight(.regular)
-                        .foregroundStyle(DS.Color.Text.inverted)
-                }
-
-                VStack(spacing: DS.Spacing.compact) {
-                    Text(state.displayName)
-                        .font(.body)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(DS.Color.Text.norm)
-                    Text(state.primaryEmail)
-                        .font(.subheadline)
-                        .fontWeight(.regular)
-                        .foregroundStyle(DS.Color.Text.weak)
-                }
-
-                HStack(spacing: DS.Spacing.standard) {
-                    ContactDetailsActionButton(
-                        image: DS.Icon.icPenSquare,
-                        title: "Message",
-                        disabled: false,
-                        action: {
-                            // FIXME: Implement new message action
-                        }
-                    )
-                    ContactDetailsActionButton(
-                        image: DS.Icon.icPhone,
-                        title: "Call",
-                        disabled: state.primaryPhone == nil,
-                        action: {
-                            // FIXME: Implement call action
-                        }
-                    )
-                    ContactDetailsActionButton(
-                        image: DS.Icon.icArrowUpFromSquare,
-                        title: "Share",
-                        disabled: false,
-                        action: {
-                            // FIXME: Implement share action
-                        }
-                    )
-                }
-                ForEach(state.groupItems, id: \.self) { items in
-                    ContactDetailsSection(items: items)
-                }
+                avatarView
+                contactDetails
+                actionButtons
+                fields
             }
             .padding(.horizontal, DS.Spacing.large)
         }
         .background(DS.Color.Background.secondary)
         .onLoad { loadDetails(forContactID: contact.id) }
+    }
+
+    // MARK: - Private
+
+    private var avatarView: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color(hex: state.avatarInformation.color))
+                .square(size: 100)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
+            Text(state.avatarInformation.text)
+                .font(.title)
+                .fontWeight(.regular)
+                .foregroundStyle(DS.Color.Text.inverted)
+        }
+    }
+
+    private var contactDetails: some View {
+        VStack(spacing: DS.Spacing.compact) {
+            Text(state.displayName)
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.norm)
+            Text(state.primaryEmail)
+                .font(.subheadline)
+                .fontWeight(.regular)
+                .foregroundStyle(DS.Color.Text.weak)
+        }
+    }
+
+    private var actionButtons: some View {
+        HStack(spacing: DS.Spacing.standard) {
+            ContactDetailsActionButton(
+                image: DS.Icon.icPenSquare,
+                title: "Message",
+                disabled: false,
+                action: {
+                    // FIXME: Implement new message action
+                }
+            )
+            ContactDetailsActionButton(
+                image: DS.Icon.icPhone,
+                title: "Call",
+                disabled: state.primaryPhone == nil,
+                action: {
+                    // FIXME: Implement call action
+                }
+            )
+            ContactDetailsActionButton(
+                image: DS.Icon.icArrowUpFromSquare,
+                title: "Share",
+                disabled: false,
+                action: {
+                    // FIXME: Implement share action
+                }
+            )
+        }
+    }
+
+    private var fields: some View {
+        ForEach(state.groupItems, id: \.self) { items in
+            FormList(collection: items, separator: .invertedNoPadding) { item in
+                FormBigButton(
+                    title: item.label.stringResource,
+                    icon: .none,
+                    value: item.value,
+                    action: {
+                        // FIXME: Implement action for specific item
+                    },
+                    isInteractive: item.isInteractive
+                )
+            }
+        }
     }
 
     private func loadDetails(forContactID contactID: Id) {
