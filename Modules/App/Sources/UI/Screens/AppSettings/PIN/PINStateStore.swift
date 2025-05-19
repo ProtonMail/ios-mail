@@ -44,7 +44,6 @@ class PINStateStore: StateStore {
         self.dismiss = dismiss
     }
 
-    @MainActor
     func handle(action: PINScreenAction) async {
         switch action {
         case .pinTyped(let pin):
@@ -73,7 +72,6 @@ class PINStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func confirm(pin: [UInt32]) async {
         do {
             try await appProtectionConfigurator.setPinCode(pin: pin).get()
@@ -83,7 +81,6 @@ class PINStateStore: StateStore {
         dismiss()
     }
 
-    @MainActor
     private func verifyPIN(reason: PINVerificationReason) async {
         switch reason {
         case .changePIN:
@@ -105,7 +102,6 @@ class PINStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func setUpBioemtryProtection() async {
         guard await biometricAuthenticator.authenticate().isSuccess else {
             dismiss()
