@@ -18,14 +18,14 @@
 import proton_app_uniffi
 
 struct ContactDetailsProvider {
-    let _contactDetails: (Id) async -> ContactDetails
+    let _contactDetails: (ContactItem) async -> ContactDetails
 
-    init(contactDetails: @escaping (Id) async -> ContactDetails) {
+    init(contactDetails: @escaping (ContactItem) async -> ContactDetails) {
         _contactDetails = contactDetails
     }
 
-    func contactDetails(forContactID contactID: Id) async -> ContactDetails {
-        await _contactDetails(contactID)
+    func contactDetails(for contact: ContactItem) async -> ContactDetails {
+        await _contactDetails(contact)
     }
 }
 
@@ -53,16 +53,22 @@ extension ContactDetailsProvider {
             ],
         ]
 
-        let details = ContactDetails(
-            id: .init(value: 50),
-            avatarInformation: .init(text: "B", color: "#3357FF"),
-            displayName: "Benjamin Alexander",
-            primaryEmail: "ben.ale@protonmail.com",
+        return .init(contactDetails: { contact in .new(with: contact, groupItems: groupItems) })
+    }
+
+}
+
+private extension ContactDetails {
+
+    static func new(with contact: ContactItem, groupItems: [[ContactDetailsItem]]) -> Self {
+        .init(
+            id: contact.id,
+            avatarInformation: contact.avatarInformation,
+            displayName: contact.name,
+            primaryEmail: contact.emails.first?.email ?? .empty,
             primaryPhone: .none,
             groupItems: groupItems
         )
-
-        return .init(contactDetails: { _ in details })
     }
 
 }

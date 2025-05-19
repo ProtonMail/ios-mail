@@ -47,7 +47,7 @@ struct ContactDetailsScreen: View {
             .padding(.horizontal, DS.Spacing.large)
         }
         .background(DS.Color.Background.secondary)
-        .onLoad { loadDetails(forContactID: contact.id) }
+        .onLoad { loadDetails(for: contact) }
     }
 
     // MARK: - Private
@@ -123,10 +123,10 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    private func loadDetails(forContactID contactID: Id) {
+    private func loadDetails(for contact: ContactItem) {
         Task {
-            let details = await provider.contactDetails(forContactID: contactID)
-            state = state.copy(with: details.groupItems)
+            let details = await provider.contactDetails(for: contact)
+            state = details
         }
     }
 }
@@ -153,17 +153,6 @@ private extension ContactDetails {
             primaryEmail: contact.emails.first?.email ?? .empty,
             primaryPhone: .none,
             groupItems: []
-        )
-    }
-
-    func copy(with groupItems: [[ContactDetailsItem]]) -> Self {
-        .init(
-            id: id,
-            avatarInformation: avatarInformation,
-            displayName: displayName,
-            primaryEmail: primaryEmail,
-            primaryPhone: primaryPhone,
-            groupItems: groupItems
         )
     }
 

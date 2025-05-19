@@ -26,7 +26,7 @@ final class ContactDetailsScreenSnapshotTests {
     @Test
     func testContactDetailsScreenLayoutsCorrectOnIphoneX() async {
         let previewInstace = ContactDetailsProvider.previewInstance()
-        let details = await previewInstace.contactDetails(forContactID: ContactItem.benjaminAlexander.id)
+        let details = await previewInstace.contactDetails(for: .benjaminAlexander)
         let sut = ContactDetailsScreen(contact: .benjaminAlexander, provider: .previewInstance(), state: details)
 
         assertSnapshotsOnIPhoneX(of: sut)
