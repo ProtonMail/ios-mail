@@ -110,7 +110,7 @@ private extension Array where Element == UInt32 {
 private extension String {
 
     var digits: [UInt32] {
-        compactMap { UInt32(String($0)) }
+        compactMap(\.wholeNumberValue).map(UInt32.init)
     }
 
 }

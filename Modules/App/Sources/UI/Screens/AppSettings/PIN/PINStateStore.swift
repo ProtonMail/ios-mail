@@ -19,6 +19,7 @@ import LocalAuthentication
 import SwiftUI
 import InboxCore
 
+@MainActor
 class PINStateStore: StateStore {
     @Published var state: PINScreenState
     private let pinScreenValidator: PINValidator
@@ -47,7 +48,6 @@ class PINStateStore: StateStore {
     func handle(action: PINScreenAction) async {
         switch action {
         case .pinTyped(let pin):
-            // Conversion
             state = state.copy(\.pin, to: pin)
                 .copy(\.pinValidation, to: .ok)
         case .leadingButtonTapped:

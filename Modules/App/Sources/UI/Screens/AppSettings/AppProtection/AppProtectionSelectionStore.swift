@@ -46,34 +46,39 @@ class AppProtectionSelectionStore: StateStore {
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .onAppear:
-            guard let settings = await currentAppSettings() else { return }
-            let protection = settings.protection
-            state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: protection))
-                .copy(\.currentProtection, to: protection)
-                .copy(\.autoLock, to: settings.autoLock)
+        case .onLoad:
+            await reloadProtectionData()
         case .selected(let selectedMethod):
             guard selectedMethod.appProtection != state.currentProtection else { return }
             switch selectedMethod {
             case .none:
                 await disableProtection()
-                await handle(action: .onAppear)
+                await reloadProtectionData()
             case .pin:
                 await setPINProtection()
             case .faceID, .touchID:
                 await enableBiometricProtection()
-                await handle(action: .onAppear)
+                await reloadProtectionData()
             }
-        case .pinScreenPresentationChanged(let screenType):
+        case .pinScreenDismissed:
+            state = state.copy(\.presentedPINScreen, to: nil)
+            await reloadProtectionData()
+        case .pinScreenPresented(let screenType):
             state = state.copy(\.presentedPINScreen, to: screenType)
-            if screenType == nil {
-                await handle(action: .onAppear)
-            }
         case .changePINTapped:
             state = state.copy(\.presentedPINScreen, to: .verify(reason: .changePIN))
         case .autoLockTapped:
             router.go(to: .autoLock)
         }
+    }
+
+    @MainActor
+    private func reloadProtectionData() async {
+        guard let settings = await currentAppSettings() else { return }
+        let protection = settings.protection
+        state = state.copy(\.availableAppProtectionMethods, to: availableAppProtectionMethods(selected: protection))
+            .copy(\.currentProtection, to: protection)
+            .copy(\.autoLock, to: settings.autoLock)
     }
 
     @MainActor
@@ -90,7 +95,7 @@ class AppProtectionSelectionStore: StateStore {
 
     @MainActor
     private func disableBiometricProtection() async {
-        guard await biometricAuthenticator.authenticate().isSuccess else { return }
+        guard await biometricAuthDidSucceed() else { return }
         do {
             try await appProtectionConfigurator.unsetBiometricsAppProtection().get()
         } catch {
@@ -102,7 +107,7 @@ class AppProtectionSelectionStore: StateStore {
     private func enableBiometricProtection() async {
         switch state.currentProtection {
         case .none:
-            guard await biometricAuthenticator.authenticate().isSuccess else { return }
+            guard await biometricAuthDidSucceed() else { return }
             do {
                 try await appProtectionConfigurator.setBiometricsAppProtection().get()
             } catch {
@@ -162,5 +167,10 @@ class AppProtectionSelectionStore: StateStore {
         case .touchID:
             .touchID
         }
+    }
+
+    @MainActor
+    private func biometricAuthDidSucceed() async -> Bool {
+        await biometricAuthenticator.authenticate().isSuccess
     }
 }

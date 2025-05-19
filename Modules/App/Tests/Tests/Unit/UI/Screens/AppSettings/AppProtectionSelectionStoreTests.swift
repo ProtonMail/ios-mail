@@ -34,8 +34,8 @@ final class AppProtectionSelectionStoreTests {
     )
 
     @Test
-    func viewAppears_ItLoadsData() async {
-        await sut.handle(action: .onAppear)
+    func viewLoads_ItLoadsData() async {
+        await sut.handle(action: .onLoad)
         #expect(
             sut.state.availableAppProtectionMethods == [
                 .init(type: .none, isSelected: false),
@@ -52,7 +52,7 @@ final class AppProtectionSelectionStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .biometrics)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.pin))
 
         #expect(sut.state.presentedPINScreen == .set)
@@ -60,29 +60,29 @@ final class AppProtectionSelectionStoreTests {
 
     @Test
     func protectionIsPINAndPINOptionIsSelected_ItDoesNotTriggerSetPINFlow() async {
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.pin))
 
         #expect(router.stack == [])
     }
 
     @Test
-    func protectionIsNonAndPINIsSelected_ItTriggersSetPINFlow() async {
+    func protectionIsNoneAndPINIsSelected_ItTriggersSetPINFlow() async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .none)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.pin))
 
         #expect(sut.state.presentedPINScreen == .set)
     }
 
     @Test
-    func protectionIsNonAndFaceIDIsSelected_ItEnablesBiometryProtection() async {
+    func protectionIsNoneAndFaceIDIsSelected_ItEnablesBiometryProtection() async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .none)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.faceID))
 
         #expect(appProtectionConfiguratorSpy.setBiometricsAppProtectionInvokeCount == 1)
@@ -93,7 +93,7 @@ final class AppProtectionSelectionStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .biometrics)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.none))
 
         #expect(laContextSpy.evaluatePolicyCalls.count == 1)
@@ -105,7 +105,7 @@ final class AppProtectionSelectionStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .pin)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.none))
 
         #expect(sut.state.presentedPINScreen == .verify(reason: .disablePIN))
@@ -116,7 +116,7 @@ final class AppProtectionSelectionStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .pin)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
         await sut.handle(action: .selected(.faceID))
 
         #expect(sut.state.presentedPINScreen == .verify(reason: .changeToBiometry))
@@ -127,12 +127,12 @@ final class AppProtectionSelectionStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .pin)
 
-        await sut.handle(action: .onAppear)
+        await sut.handle(action: .onLoad)
 
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.protection, to: .none)
 
-        await sut.handle(action: .pinScreenPresentationChanged(presentedPINScreen: nil))
+        await sut.handle(action: .pinScreenDismissed)
 
         #expect(sut.state.currentProtection == .none)
     }

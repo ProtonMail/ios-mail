@@ -59,16 +59,3 @@ struct AutoLockScreen: View {
         }
     }
 }
-
-extension AutoLock {
-
-    var humanReadable: LocalizedStringResource {
-        switch self {
-        case .always:
-            L10n.Settings.App.autoLockAlways
-        case .minutes(let value):
-            L10n.Settings.App.autoLock(minutes: value)
-        }
-    }
-
-}

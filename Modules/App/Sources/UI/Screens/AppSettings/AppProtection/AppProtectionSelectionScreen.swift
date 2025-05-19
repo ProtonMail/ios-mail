@@ -85,9 +85,7 @@ struct AppProtectionSelectionScreen: View {
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                store.handle(action: .onAppear)
-            }
+            .onLoad { store.handle(action: .onLoad) }
             .sheet(item: presentPINScreen(state: state, store: store)) { pinScreenType in
                 PINRouterView(type: pinScreenType)
             }
@@ -100,7 +98,13 @@ struct AppProtectionSelectionScreen: View {
     ) -> Binding<PINScreenType?> {
         .init(
             get: { state.presentedPINScreen },
-            set: { store.handle(action: .pinScreenPresentationChanged(presentedPINScreen: $0)) }
+            set: { newValue in
+                if let newValue {
+                    store.handle(action: .pinScreenPresented(newValue))
+                } else {
+                    store.handle(action: .pinScreenDismissed)
+                }
+            }
         )
     }
 

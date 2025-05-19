@@ -45,10 +45,12 @@ struct PINValidator {
         }
     }
 
+    // FIXME: - This validation logic will be moved to Rust
     private func setPINValidation(pin: [UInt32]) -> FormTextInput.ValidationStatus {
         pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
     }
 
+    // FIXME: - This validation logic will be moved to Rust
     private func confirmPINValidation(pin: [UInt32], repeatedPIN: [UInt32]) -> FormTextInput.ValidationStatus {
         pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError.string)
     }
