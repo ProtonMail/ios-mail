@@ -126,21 +126,26 @@ public final class AppLogger: @unchecked Sendable {
 
 extension AppLogger {
 
-    public enum Category: String {
-        case appLifeCycle = "AppLifeCycle"
-        case appRoute = "AppRoute"
-        case conversationDetail = "ConversationDetail"
-        case composer = "Composer"
-        case legacyMigration = "LegacyMigration"
-        case mailbox = "Mailbox"
-        case mailboxActions = "MailboxActions"
-        case notifications = "Notifications"
-        case appSettings = "AppSettings"
-        case recurringBackgroundTask = "RecurringBackgroundTask"
-        case rustLibrary = "RustLibrary"
-        case search = "Search"
-        case send = "Send"
-        case thirtySecondsBackgroundTask = "ThirtySecondsBackgroundTask"
-        case userSessions = "UserSessions"
+    public enum Category {
+        case appLifeCycle
+        case appRoute
+        case conversationDetail
+        case composer
+        case legacyMigration
+        case mailbox
+        case mailboxActions
+        case notifications
+        case appSettings
+        case payments
+        case recurringBackgroundTask
+        case rustLibrary
+        case search
+        case send
+        case thirtySecondsBackgroundTask
+        case userSessions
+
+        var rawValue: String {
+            String(describing: self).capitalized
+        }
     }
 }

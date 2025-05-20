@@ -19,7 +19,7 @@ import Foundation
 import proton_app_uniffi
 
 extension ApiEnvId {
-    static var current: Self {
+    static let current: Self = {
         #if QA || DEBUG
             if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
                 return .init(dynamicDomain: dynamicDomain)
@@ -27,7 +27,7 @@ extension ApiEnvId {
         #endif
 
         return .prod
-    }
+    }()
 
     init(dynamicDomain: String) {
         let scientistSuffix = Self.scientist(.empty).domain

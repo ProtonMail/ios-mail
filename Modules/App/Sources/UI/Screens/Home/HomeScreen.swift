@@ -29,16 +29,14 @@ struct HomeScreen: View {
         case settings
         case draft(ComposerModalParams)
         case reportProblem
+        case subscriptions
 
         // MARK: - Identifiable
 
         var id: String {
             switch self {
-            case .contacts: "contacts"
-            case .labelOrFolderCreation: "labelOrFolderCreation"
-            case .settings: "settings"
             case .draft: "draft"
-            case .reportProblem: "reportProblem"
+            default: .init(describing: self)
             }
         }
     }
@@ -105,10 +103,12 @@ struct HomeScreen: View {
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
                 case .system(let systemFolder):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .systemFolder(
-                        labelId: systemFolder.id,
-                        systemFolder: systemFolder.type
-                    )))
+                    appRoute.updateRoute(
+                        to: .mailbox(
+                            selectedMailbox: .systemFolder(
+                                labelId: systemFolder.id,
+                                systemFolder: systemFolder.type
+                            )))
                 case .other(let otherItem):
                     switch otherItem.type {
                     case .bugReport:
@@ -122,20 +122,24 @@ struct HomeScreen: View {
                     case .shareLogs:
                         presentShareFileController()
                     case .subscriptions:
-                        toastStateStore.present(toast: .comingSoon)
+                        modalState = .subscriptions
                     case .signOut:
                         presentSignOutDialog = true
                     }
                 case .label(let label):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .customLabel(
-                        labelId: label.id,
-                        name: label.name.stringResource
-                    )))
+                    appRoute.updateRoute(
+                        to: .mailbox(
+                            selectedMailbox: .customLabel(
+                                labelId: label.id,
+                                name: label.name.stringResource
+                            )))
                 case .folder(let folder):
-                    appRoute.updateRoute(to: .mailbox(selectedMailbox: .customFolder(
-                        labelId: folder.id,
-                        name: folder.name.stringResource
-                    )))
+                    appRoute.updateRoute(
+                        to: .mailbox(
+                            selectedMailbox: .customFolder(
+                                labelId: folder.id,
+                                name: folder.name.stringResource
+                            )))
                 }
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)

@@ -18,6 +18,7 @@
 import InboxComposer
 import InboxContacts
 import InboxCoreUI
+import PaymentsUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -27,6 +28,7 @@ struct HomeScreenModalFactory {
     private let makeComposerScreen: (ComposerModalParams) -> ComposerScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
+    private let makeSubscriptionsScreen: () -> AvailablePlansView
 
     init(mailUserSession: MailUserSession, toastStateStore: ToastStateStore) {
         self.makeContactsScreen = {
@@ -42,6 +44,7 @@ struct HomeScreenModalFactory {
         }
         self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
+        self.makeSubscriptionsScreen = { AvailablePlansViewFactory.make(mailUserSession: mailUserSession) }
     }
 
     @MainActor @ViewBuilder
@@ -57,6 +60,8 @@ struct HomeScreenModalFactory {
             makeSettingsScreen()
         case .reportProblem:
             makeReportProblemScreen()
+        case .subscriptions:
+            makeSubscriptionsScreen()
         }
     }
 }
