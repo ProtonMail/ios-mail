@@ -26,6 +26,8 @@ extension AutoLock {
             L10n.Settings.App.autoLockAlways
         case .minutes(let value):
             L10n.Settings.App.autoLock(minutes: value)
+        case .never:
+            L10n.Settings.App.autoLockNever
         }
     }
 

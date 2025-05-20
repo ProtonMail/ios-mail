@@ -1819,6 +1819,9 @@
         }
       }
     },
+    "Never" : {
+      "comment" : "Auto option."
+    },
     "New PIN code" : {
       "comment" : "Set PIN code screen PIN input title."
     },

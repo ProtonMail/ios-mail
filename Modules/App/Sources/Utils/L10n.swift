@@ -881,6 +881,10 @@ enum L10n {
                 "Always",
                 comment: "Auto option."
             )
+            static let autoLockNever = LocalizedStringResource(
+                "Never",
+                comment: "Auto option."
+            )
             static func autoLock(minutes: UInt8) -> LocalizedStringResource {
                 .init("\(minutes) minutes", comment: "NumberAuto lock option.")
             }
