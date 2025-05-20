@@ -79,7 +79,10 @@ final class MailboxMessageCellHelperTests: XCTestCase {
 
     func testDisplaysRecipientsInsteadOfSenderForSentMessages() throws {
         let testSender = TestPerson(name: "Mr. Foo", address: "foo@example.com")
-        let testRecipients = [TestPerson(name: "Mr. Bar", address: "bar@example.com")]
+        let testRecipients = [
+            TestPerson(name: "Mr. Bar", address: "bar@example.com"),
+            TestPerson(name: "Mr. Xyz", address: "xyz@example.com")
+        ]
 
         let email = EmailEntity.make(email: testSender.address, name: testSender.name)
 
@@ -97,7 +100,7 @@ final class MailboxMessageCellHelperTests: XCTestCase {
                                                  groupContacts: [],
                                                  shouldReplaceSenderWithRecipients: true)
 
-        XCTAssertEqual(components, [.string("Mr. Bar")])
+        XCTAssertEqual(components, [.string("Mr. Bar"), .string(", Mr. Xyz")])
     }
 
     func testDisplaysSenderForSentMessagesIfReplacementIsDisabled() throws {
