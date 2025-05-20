@@ -71,6 +71,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         AppLifeCycle.shared.sceneDidEnterBackground()
+        coverAppContent()
     }
 
     // MARK: - Private
@@ -112,26 +113,38 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
             return nil
         }
 
-        return UIHostingController(rootView:
-            LockScreen(
-                state: .init(type: lockScreenType),
-                pinVerifier: pinVerifierFactory(),
-                output: { [weak self] output in
-                    switch output {
-                    case .logOut:
-                        break // FIXME: - To add later
-                    case .authenticated:
-                        self?.appProtectionStore.dismissLock()
+        return UIHostingController(
+            rootView:
+                LockScreen(
+                    state: .init(type: lockScreenType),
+                    pinVerifier: pinVerifierFactory(),
+                    output: { [weak self] output in
+                        switch output {
+                        case .logOut:
+                            break  // FIXME: - To add later
+                        case .authenticated:
+                            self?.appProtectionStore.dismissLock()
+                        }
                     }
-                }
-            )
+                )
         )
+    }
+
+    private func coverAppContent() {
+        appProtectionWindow?.rootViewController = coverController
+        appProtectionWindow?.isHidden = false
     }
 
     private func overlayRootController(with toastStateStore: ToastStateStore) -> UIViewController {
         let controller = UIHostingController(rootView: ToastSceneView().environmentObject(toastStateStore))
         controller.view.backgroundColor = .clear
 
+        return controller
+    }
+
+    private var coverController: UIViewController {
+        let controller = UIHostingController(rootView: BlurredCoverView())
+        controller.view.backgroundColor = .clear
         return controller
     }
 

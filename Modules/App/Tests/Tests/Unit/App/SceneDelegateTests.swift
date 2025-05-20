@@ -92,6 +92,23 @@ final class SceneDelegateTests: BaseTestCase {
         expect(appProtectionWindow.rootViewController).toNot(beNil())
     }
 
+    func testWindowScene_WhenUserEntersBackground_ItCoversAppContent() throws {
+        let scene = try scene()
+
+        sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
+        sut.sceneWillEnterForeground(scene)
+        sut.sceneDidEnterBackground(scene)
+
+        let appProtectionWindow = try XCTUnwrap(sut.appProtectionWindow)
+
+        expect(appProtectionWindow).toNot(beNil())
+        expect(appProtectionWindow.isHidden).to(beFalse())
+        expect(appProtectionWindow.rootViewController).toNot(beNil())
+        expect(appProtectionWindow.rootViewController).to(beAKindOf(
+            UIHostingController<BlurredCoverView>.self
+        ))
+    }
+
     // MARK: - Private
 
     private func scene() throws -> UIWindowScene {
