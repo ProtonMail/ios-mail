@@ -29,13 +29,16 @@ struct AppProtectionSelectionScreenSnapshotTests {
     func appProtectionSelectionScreenLayoutsCorrectly() {
         let sut = AppProtectionSelectionScreen(
             state: .init(
-                selectedAppProtection: .pin,
+                currentProtection: .pin,
                 availableAppProtectionMethods: [
                     .init(type: .none, isSelected: false),
                     .init(type: .pin, isSelected: true),
                     .init(type: .faceID, isSelected: false),
-                ]
-            ), appSettingsRepository: AppSettingsRepositorySpy()
+                ],
+                autoLock: .always
+            ),
+            appSettingsRepository: AppSettingsRepositorySpy(),
+            appProtectionConfigurator: AppProtectionConfiguratorSpy()
         )
         .environmentObject(Router<SettingsRoute>())
 

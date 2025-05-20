@@ -15,11 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+import InboxCore
+import proton_app_uniffi
+
+struct AutoLockState: Copying {
+    let allOptions: [AutoLock] = .available
+    var selectedOption: AutoLock?
+}
+
+extension Array where Element == AutoLock {
+    static var available: [AutoLock] {
+        [
+            .always,
+            .minutes(1),
+            .minutes(2),
+            .minutes(5),
+            .minutes(10),
+            .minutes(15),
+            .minutes(30),
+            .minutes(60),
+        ]
+    }
 }

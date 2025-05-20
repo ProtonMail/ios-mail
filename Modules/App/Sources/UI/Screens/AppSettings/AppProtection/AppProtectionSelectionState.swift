@@ -19,8 +19,9 @@ import proton_app_uniffi
 import InboxCore
 
 struct AppProtectionSelectionState: Copying {
-    var selectedAppProtection: AppProtection?
+    var currentProtection: AppProtection
     var availableAppProtectionMethods: [AppProtectionMethodViewModel]
+    var autoLock: AutoLock?
     var presentedPINScreen: PINScreenType?
 }
 
@@ -28,8 +29,9 @@ extension AppProtectionSelectionState {
 
     static var initial: Self {
         .init(
-            selectedAppProtection: nil,
+            currentProtection: .none,
             availableAppProtectionMethods: [],
+            autoLock: nil,
             presentedPINScreen: nil
         )
     }

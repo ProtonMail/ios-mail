@@ -25,6 +25,7 @@ enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
     case appProtection
+    case autoLock
 
     @MainActor @ViewBuilder
     func view() -> some View {
@@ -40,6 +41,8 @@ enum SettingsRoute: Routable {
             AppSettingsScreen()
         case .appProtection:
             AppProtectionSelectionScreen()
+        case .autoLock:
+            AutoLockScreen()
         }
     }
 }

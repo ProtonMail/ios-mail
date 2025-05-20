@@ -22,17 +22,32 @@ import InboxDesignSystem
 
 struct PINScreen: View {
     private let type: PINScreenType
+    private let pinVerifier: PINVerifier
+    private let appProtectionConfigurator: AppProtectionConfigurator
     private let dismiss: () -> Void
     @EnvironmentObject var router: Router<PINRoute>
 
-    init(type: PINScreenType, dismiss: @escaping () -> Void) {
+    init(
+        type: PINScreenType,
+        pinVerifier: PINVerifier = AppContext.shared.mailSession,
+        appProtectionConfigurator: AppProtectionConfigurator = AppContext.shared.mailSession,
+        dismiss: @escaping () -> Void
+    ) {
         self.type = type
+        self.pinVerifier = pinVerifier
+        self.appProtectionConfigurator = appProtectionConfigurator
         self.dismiss = dismiss
     }
 
     var body: some View {
         StoreView(
-            store: PINStateStore(state: .initial(type: type), router: router, dismiss: dismiss)
+            store: PINStateStore(
+                state: .initial(type: type),
+                router: router,
+                pinVerifier: pinVerifier,
+                appProtectionConfigurator: appProtectionConfigurator,
+                dismiss: dismiss
+            )
         ) { state, store in
             EnterPINView(
                 title: state.type.configuration.pinInputTitle,
@@ -74,12 +89,28 @@ struct PINScreen: View {
 
     private func pin(state: PINScreenState, store: PINStateStore) -> Binding<String> {
         .init(
-            get: { state.pin },
-            set: { pin in store.handle(action: .pinTyped(pin)) }
+            get: { state.pin.toString },
+            set: { pin in store.handle(action: .pinTyped(pin.digits)) }
         )
     }
 
     private func validation(state: PINScreenState) -> Binding<FormTextInput.ValidationStatus> {
         .readonly { state.pinValidation }
     }
+}
+
+private extension Array where Element == UInt32 {
+
+    var toString: String {
+        map(String.init).joined()
+    }
+
+}
+
+private extension String {
+
+    var digits: [UInt32] {
+        compactMap(\.wholeNumberValue).map(UInt32.init)
+    }
+
 }

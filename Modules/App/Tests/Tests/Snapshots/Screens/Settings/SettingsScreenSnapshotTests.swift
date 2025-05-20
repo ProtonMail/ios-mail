@@ -30,22 +30,14 @@ class SettingsScreenSnapshotTests: BaseTestCase {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
         let sut = SettingsScreen(
             state: .initial.copy(\.accountSettings, to: AccountDetails.testData.settings),
-            mailUserSession: MailUserSessionStub(noPointer: .init())
+            mailUserSession: MailUserSessionStub(id: "")
         )
         assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
     }
 
 }
 
-private final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
-
-    override func accountDetails() async -> MailUserSessionAccountDetailsResult {
-        .ok(.testData)
-    }
-
-}
-
-private extension AccountDetails {
+extension AccountDetails {
 
     static var testData: Self {
         AccountDetails(

@@ -15,11 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+import Foundation
+import proton_app_uniffi
+
+extension ApiEnvId {
+    /// Payments are not available for sandbox users in production environment.
+    var arePaymentsEnabled: Bool {
+        return !(isAppInstalledThroughTestFlight && self == .prod)
+    }
+
+    private var isAppInstalledThroughTestFlight: Bool {
+        #if DEBUG
+            false
+        #else
+            Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+        #endif
+    }
 }

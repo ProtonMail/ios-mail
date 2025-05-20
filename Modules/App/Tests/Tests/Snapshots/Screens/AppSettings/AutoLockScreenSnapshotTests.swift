@@ -15,11 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+@testable import ProtonMail
+import InboxCore
+import InboxSnapshotTesting
+import SwiftUI
+import Testing
+
+@MainActor
+struct AutLockScreenSnapshotTests {
+
+    @Test
+    func appLockScreenLayoutsCorrectly() {
+        let sut = NavigationStack {
+            AutoLockScreen(
+                state: .init(selectedOption: .always),
+                appSettingsRepository: AppSettingsRepositorySpy()
+            )
+            .environmentObject(Router<SettingsRoute>())
+        }
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
+
 }

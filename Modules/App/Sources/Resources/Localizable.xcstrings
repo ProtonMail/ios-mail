@@ -236,6 +236,29 @@
         }
       }
     },
+    "%u minutes" : {
+      "comment" : "NumberAuto lock option.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u minute"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%u minutes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "1. Find an email with a large attachment (ex: video)\n2. Open the email\n3. Wait for the email to load" : {
       "comment" : "Placeholder of steps to reproduce text field."
     },
@@ -437,6 +460,9 @@
     "Alternative routing" : {
       "comment" : "Alternative routing setting title in app settings."
     },
+    "Always" : {
+      "comment" : "Auto option."
+    },
     "Any information you’ve entered will be lost." : {
       "comment" : "Report problem dismiss confirmation alert message."
     },
@@ -563,6 +589,9 @@
     },
     "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
+    },
+    "Auto-Lock" : {
+      "comment" : "Auto lock button and screen title."
     },
     "Bcc" : {
       "comment" : "`BCC` in the messsage details.",
@@ -1789,6 +1818,9 @@
           }
         }
       }
+    },
+    "Never" : {
+      "comment" : "Auto option."
     },
     "New PIN code" : {
       "comment" : "Set PIN code screen PIN input title."

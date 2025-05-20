@@ -24,7 +24,7 @@ import XCTest
 
 class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
-    var invokedWithMessagesID: ID?
+    var invokedWithMessageID: ID?
     var invokedWithConversationIDs: [ID]!
     var spiedNavigation: [MailboxItemActionSheetNavigation]!
     var stubbedMessageActions: MessageAvailableActions!
@@ -41,7 +41,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     override func setUp() {
         super.setUp()
 
-        invokedWithMessagesID = nil
+        invokedWithMessageID = nil
         invokedWithConversationIDs = []
         spiedNavigation = []
 
@@ -57,7 +57,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     override func tearDown() {
         super.tearDown()
 
-        invokedWithMessagesID = nil
+        invokedWithMessageID = nil
         invokedWithConversationIDs = nil
         spiedNavigation = nil
         stubbedMessageActions = nil
@@ -88,7 +88,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(invokedWithMessagesID, messageID)
+        XCTAssertEqual(invokedWithMessageID, messageID)
         XCTAssertEqual(invokedWithConversationIDs, [])
         XCTAssertEqual(
             sut.state,
@@ -119,7 +119,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertNil(invokedWithMessagesID)
+        XCTAssertNil(invokedWithMessageID)
         XCTAssertEqual(invokedWithConversationIDs, [conversationID])
         XCTAssertEqual(
             sut.state,
@@ -429,7 +429,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, _, messageID in
-                    self.invokedWithMessagesID = messageID
+                    self.invokedWithMessageID = messageID
                     return .ok(self.stubbedMessageActions)
                 },
                 conversation: { _, ids in

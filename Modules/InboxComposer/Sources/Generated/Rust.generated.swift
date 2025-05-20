@@ -144,7 +144,7 @@ public extension DraftMessageIdResult {
     }
 }
 public extension DraftScheduleSendOptionsResult {
-    func get() throws(ProtonError) -> DraftScheduleSendOption {
+    func get() throws(ProtonError) -> DraftScheduleSendOptions {
         switch self {
         case .ok(let value):
             value

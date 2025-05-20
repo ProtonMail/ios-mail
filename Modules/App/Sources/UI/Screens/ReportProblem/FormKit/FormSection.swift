@@ -39,6 +39,7 @@ struct FormSection<Content: View>: View {
             if let header {
                 Text(header)
                     .font(.callout)
+                    .foregroundStyle(DS.Color.Text.norm)
                     .fontWeight(.semibold)
                     .padding(.leading, DS.Spacing.large)
                     .padding(.bottom, DS.Spacing.small)

@@ -15,11 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+import Foundation
+import proton_app_uniffi
+
+extension PinAuthError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let errorReason):
+            switch errorReason {
+            case .incorrectPin:
+                "Incorrect PIN".notLocalized // FIXME: - Waiting for final text
+            case .tooManyAttempts:
+                "Too many attemts".notLocalized // FIXME: - Waiting for final text
+            case .tooFrequentAttempts:
+                "Too frequent attempts".notLocalized // FIXME: - Waiting for final text
+            }
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+
 }

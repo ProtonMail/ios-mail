@@ -15,11 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+import PaymentsNG
+import PaymentsUI
+import proton_app_uniffi
+
+@MainActor
+enum AvailablePlansViewFactory {
+    static func make(mailUserSession: MailUserSession) -> AvailablePlansView {
+        AvailablePlansView(
+            viewModel: .init(
+                appVersion: ApiConfig.current.appVersion,
+                presentationMode: .modal,
+                rustSession: mailUserSession
+            )
+        )
+    }
 }

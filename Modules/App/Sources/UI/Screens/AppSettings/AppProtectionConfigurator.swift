@@ -15,11 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum AppProtectionSelectionAction {
-    case onLoad
-    case selected(AppProtectionMethodViewModel.MethodType)
-    case changePINTapped
-    case autoLockTapped
-    case pinScreenPresented(PINScreenType)
-    case pinScreenDismissed
+import proton_app_uniffi
+
+protocol AppProtectionConfigurator: Sendable {
+    func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
+    func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
+    func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult
+    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
+    func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult
 }
+
+extension MailSession: AppProtectionConfigurator {}

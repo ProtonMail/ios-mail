@@ -32,10 +32,12 @@ struct AppSettingsScreen: View {
         state: AppSettingsState = .initial,
         appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
     ) {
-        _store = .init(wrappedValue: .init(
-            state: state,
-            appSettingsRepository: appSettingsRepository
-        ))
+        _store = .init(
+            wrappedValue: .init(
+                state: state,
+                appSettingsRepository: appSettingsRepository
+            )
+        )
     }
 
     var body: some View {
@@ -107,16 +109,21 @@ struct AppSettingsScreen: View {
         .onLoad {
             store.handle(action: .onLoad)
         }
-        .onChange(of: scenePhase, { _, newValue in
-            if newValue == .active {
-                store.handle(action: .enterForeground)
+        .onChange(
+            of: scenePhase,
+            { _, newValue in
+                if newValue == .active {
+                    store.handle(action: .enterForeground)
+                }
             }
-        })
-        .onChange(of: store.state.storedAppSettings.appearance, { _, _ in
-            Task {
-                await appAppearanceStore.updateColorScheme()
-            }
-        })
+        )
+        .onChange(
+            of: store.state.storedAppSettings.appearance,
+            { _, _ in
+                Task {
+                    await appAppearanceStore.updateColorScheme()
+                }
+            })
     }
 
     @ViewBuilder

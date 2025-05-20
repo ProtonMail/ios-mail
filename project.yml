@@ -41,6 +41,12 @@ packages:
   Nimble:
     url: https://github.com/Quick/Nimble
     from: "13.3.0"
+  PaymentsNG:
+    path: ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG
+    group: ProtonPackages
+  PaymentsUI:
+    path: ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsUI
+    group: ProtonPackages
   proton_app_uniffi:
     path: ProtonPackages/proton_app_uniffi
     group: ProtonPackages
@@ -153,6 +159,7 @@ targets:
       - package: InboxDesignSystem
       - package: InboxKeychain
       - target: NotificationService
+      - package: PaymentsUI
       - package: proton_app_uniffi
       - package: ProtonCoreET
         products:

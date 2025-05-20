@@ -24,14 +24,17 @@ import SwiftUI
 struct AppProtectionSelectionScreen: View {
     private let state: AppProtectionSelectionState
     private let appSettingsRepository: AppSettingsRepository
+    private let appProtectionConfigurator: AppProtectionConfigurator
     @EnvironmentObject var settingsRouter: Router<SettingsRoute>
 
     init(
         state: AppProtectionSelectionState = .initial,
-        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
+        appProtectionConfigurator: AppProtectionConfigurator = AppContext.shared.mailSession
     ) {
         self.state = state
         self.appSettingsRepository = appSettingsRepository
+        self.appProtectionConfigurator = appProtectionConfigurator
     }
 
     var body: some View {
@@ -39,7 +42,8 @@ struct AppProtectionSelectionScreen: View {
             store: AppProtectionSelectionStore(
                 state: state,
                 router: settingsRouter,
-                appSettingsRepository: appSettingsRepository
+                appSettingsRepository: appSettingsRepository,
+                appProtectionConfigurator: appProtectionConfigurator
             )
         ) { state, store in
             ScrollView {
@@ -57,26 +61,56 @@ struct AppProtectionSelectionScreen: View {
                             }
                         }
                     }
-                    if state.shouldShowChangePasswordButton {
+                    if state.shouldShowChangePINButton {
                         FormSection {
                             FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
-                                // FIXME: - Trigger set new password flow
+                                store.handle(action: .changePINTapped)
                             }
                             .roundedRectangleStyle()
                         }
+                        .animation(.easeInOut, value: state.shouldShowChangePINButton)
+                        .padding(.top, DS.Spacing.standard)
+                    }
+                    if state.shouldShowAutoLockButton {
+                        FormSection {
+                            FormBigButton(
+                                title: L10n.Settings.App.autoLock,
+                                icon: DS.SFSymbols.chevronRight,
+                                value: state.autoLock?.humanReadable.string ?? .empty
+                            ) {
+                                store.handle(action: .autoLockTapped)
+                            }
+                            .roundedRectangleStyle()
+                        }.animation(.easeInOut, value: state.shouldShowAutoLockButton)
                     }
                     Spacer()
-                }.animation(.easeInOut, value: state.shouldShowChangePasswordButton)
+                }
             }
             .padding(.horizontal, DS.Spacing.large)
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { store.handle(action: .onAppear) }
-            .sheet(item: store.binding(\.presentedPINScreen)) { pinScreenType in
+            .onLoad { store.handle(action: .onLoad) }
+            .sheet(item: presentPINScreen(state: state, store: store)) { pinScreenType in
                 PINRouterView(type: pinScreenType)
             }
         }
+    }
+
+    private func presentPINScreen(
+        state: AppProtectionSelectionState,
+        store: AppProtectionSelectionStore
+    ) -> Binding<PINScreenType?> {
+        .init(
+            get: { state.presentedPINScreen },
+            set: { newValue in
+                if let newValue {
+                    store.handle(action: .pinScreenPresented(newValue))
+                } else {
+                    store.handle(action: .pinScreenDismissed)
+                }
+            }
+        )
     }
 
 }
@@ -85,22 +119,27 @@ struct AppProtectionSelectionScreen: View {
     NavigationStack {
         AppProtectionSelectionScreen(
             state: .init(
-                selectedAppProtection: .biometrics,
+                currentProtection: .biometrics,
                 availableAppProtectionMethods: [
                     .init(type: .none, isSelected: false),
                     .init(type: .pin, isSelected: false),
                     .init(type: .faceID, isSelected: true),
                 ]
             ),
-            appSettingsRepository: MailSession(noPointer: .init())
+            appSettingsRepository: MailSession(noPointer: .init()),
+            appProtectionConfigurator: MailSession(noPointer: .init())
         )
     }
 }
 
 private extension AppProtectionSelectionState {
 
-    var shouldShowChangePasswordButton: Bool {
-        selectedAppProtection == .pin
+    var shouldShowAutoLockButton: Bool {
+        currentProtection != .none
+    }
+
+    var shouldShowChangePINButton: Bool {
+        currentProtection == .pin
     }
 
 }

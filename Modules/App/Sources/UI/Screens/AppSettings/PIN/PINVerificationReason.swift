@@ -18,4 +18,5 @@
 enum PINVerificationReason {
     case changePIN
     case disablePIN
+    case changeToBiometry
 }

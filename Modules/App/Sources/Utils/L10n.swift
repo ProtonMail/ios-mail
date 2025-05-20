@@ -873,6 +873,21 @@ enum L10n {
                 "Disable PIN code",
                 comment: "Disable PIN code screen title."
             )
+            static let autoLock = LocalizedStringResource(
+                "Auto-Lock",
+                comment: "Auto lock button and screen title."
+            )
+            static let autoLockAlways = LocalizedStringResource(
+                "Always",
+                comment: "Auto option."
+            )
+            static let autoLockNever = LocalizedStringResource(
+                "Never",
+                comment: "Auto option."
+            )
+            static func autoLock(minutes: UInt8) -> LocalizedStringResource {
+                .init("\(minutes) minutes", comment: "NumberAuto lock option.")
+            }
         }
 
         static let subscription = LocalizedStringResource(
