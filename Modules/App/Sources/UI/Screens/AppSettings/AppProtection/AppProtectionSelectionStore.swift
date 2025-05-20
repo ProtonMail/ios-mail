@@ -46,7 +46,7 @@ class AppProtectionSelectionStore: StateStore {
     @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
-        case .onLoad:
+        case .onAppear:
             await reloadProtectionData()
         case .selected(let selectedMethod):
             guard selectedMethod.appProtection != state.currentProtection else { return }
