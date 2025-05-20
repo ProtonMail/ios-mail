@@ -140,7 +140,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType) -> UIViewController {
-        UIHostingController(
+        let controller = UIHostingController(
             rootView:
                 LockScreen(
                     state: .init(type: lockScreenType),
@@ -155,6 +155,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                     }
                 )
         )
+        controller.view.backgroundColor = .clear
+        return controller
     }
 
     @MainActor

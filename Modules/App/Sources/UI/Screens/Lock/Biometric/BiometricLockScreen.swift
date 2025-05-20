@@ -32,13 +32,7 @@ struct BiometricLockScreen: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                DS.Color.Background.norm
-                    .ignoresSafeArea(.all)
-                Image(DS.Images.protonMail)
-                    .square(size: 120)
-                    .padding(.top, geometry.size.height * 0.37)
-                    .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
-                    .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
+                BlurredCoverView()
                 if store.state.displayUnlockButton {
                     VStack {
                         Spacer()
