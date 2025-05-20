@@ -78,6 +78,9 @@
         }
       }
     },
+    "Call" : {
+      "comment" : "Contact details’ “Call” button title for calling the given contact."
+    },
     "Contacts" : {
       "comment" : "Title of the contacts screen that displays contacts and contact groups.",
       "localizations" : {
@@ -136,6 +139,9 @@
         }
       }
     },
+    "Message" : {
+      "comment" : "Contact details’ “Message” button title for creating a new message to the given contact."
+    },
     "No attachment with this content ID" : {
       "comment" : "Error message.",
       "localizations" : {
@@ -193,6 +199,9 @@
           }
         }
       }
+    },
+    "Share" : {
+      "comment" : "Contact details’ “Share” button title for sharing the given contact’s information."
     },
     "This contact group will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact group.",

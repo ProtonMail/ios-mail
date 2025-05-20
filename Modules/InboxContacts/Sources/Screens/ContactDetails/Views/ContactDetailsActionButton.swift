@@ -21,7 +21,7 @@ import SwiftUI
 
 struct ContactDetailsActionButton: View {
     let image: ImageResource
-    let title: String
+    let title: LocalizedStringResource
     let disabled: Bool
     let action: () -> Void
 

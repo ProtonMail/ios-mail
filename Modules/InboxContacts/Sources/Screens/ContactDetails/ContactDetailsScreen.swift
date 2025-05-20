@@ -82,7 +82,7 @@ struct ContactDetailsScreen: View {
         HStack(spacing: DS.Spacing.standard) {
             ContactDetailsActionButton(
                 image: DS.Icon.icPenSquare,
-                title: "Message",
+                title: L10n.ContactDetails.newMessage,
                 disabled: false,
                 action: {
                     // FIXME: Implement new message action
@@ -90,7 +90,7 @@ struct ContactDetailsScreen: View {
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
-                title: "Call",
+                title: L10n.ContactDetails.call,
                 disabled: state.primaryPhone == nil,
                 action: {
                     // FIXME: Implement call action
@@ -98,7 +98,7 @@ struct ContactDetailsScreen: View {
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icArrowUpFromSquare,
-                title: "Share",
+                title: L10n.ContactDetails.share,
                 disabled: false,
                 action: {
                     // FIXME: Implement share action
