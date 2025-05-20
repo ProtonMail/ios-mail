@@ -30,6 +30,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
     var pinVerifierFactory: () -> PINVerifier = { AppContext.shared.mailSession }
 
+    var checkAutoLockSetting: (_ completion: @MainActor @escaping @Sendable (Bool) -> Void) -> Void = { completion in
+        Task {
+            do {
+                let value = try await AppContext.shared.mailSession.shouldAutoLock().get()
+                await completion(value)
+            } catch {
+                AppLogger.log(error: error, category: .appSettings)
+                await completion(false)
+            }
+        }
+    }
+
     var toastStateStore: ToastStateStore? {
         didSet {
             if let toastStateStore {
@@ -40,8 +52,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private var appProtection: AppProtection = .none {
         didSet {
-            appProtectionWindow?.rootViewController = lockScreenController(for: appProtection.lockScreenType)
-            appProtectionWindow?.isHidden = appProtection.lockScreenType == nil
+            handleLockScreenVisibility(type: appProtection.lockScreenType)
         }
     }
 
@@ -108,12 +119,28 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         return window
     }
 
-    private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType?) -> UIViewController? {
-        guard let lockScreenType else {
-            return nil
+    private func handleLockScreenVisibility(type: LockScreenState.LockScreenType?) {
+        guard let type else {
+            showAppContent()
+            return
         }
+        checkAutoLockSetting { [weak self] shouldShowLockScreen in
+            if shouldShowLockScreen {
+                self?.showLockScreen(lockScreenType: type)
+            } else {
+                self?.showAppContent()
+            }
+        }
+    }
 
-        return UIHostingController(
+    @MainActor
+    private func showLockScreen(lockScreenType: LockScreenState.LockScreenType) {
+        appProtectionWindow?.isHidden = false
+        appProtectionWindow?.rootViewController = lockScreenController(for: lockScreenType)
+    }
+
+    private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType) -> UIViewController {
+        UIHostingController(
             rootView:
                 LockScreen(
                     state: .init(type: lockScreenType),
@@ -130,6 +157,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         )
     }
 
+    @MainActor
+    private func showAppContent() {
+        appProtectionWindow?.rootViewController = nil
+        appProtectionWindow?.isHidden = true
+    }
+
+    @MainActor
     private func coverAppContent() {
         appProtectionWindow?.rootViewController = coverController
         appProtectionWindow?.isHidden = false

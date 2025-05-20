@@ -26,14 +26,15 @@ final class SceneDelegateTests: BaseTestCase {
 
     private var sut: SceneDelegate!
     var mailSessionSpy: MailSessionSpy!
+    var shouldAutoLockStub: Bool = true
 
-    override func setUp() {
-        super.setUp()
-
+    @MainActor
+    override func setUp() async throws {
         sut = .init()
         mailSessionSpy = .init()
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
         sut.pinVerifierFactory = { PINVerifierSpy() }
+        sut.checkAutoLockSetting = { completion in completion(self.shouldAutoLockStub) }
     }
 
     override func tearDown() {
@@ -67,8 +68,10 @@ final class SceneDelegateTests: BaseTestCase {
         expect(overlayWindow.isHidden) == false
     }
 
-    func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() throws {
+    func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() async throws {
         mailSessionSpy.appProtectionStub = .biometrics
+        shouldAutoLockStub = true
+
         let scene = try scene()
 
         sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
