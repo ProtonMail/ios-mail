@@ -30,7 +30,7 @@ public struct FormBigButton: View {
         icon: String?,
         value: String,
         action: @escaping () -> Void,
-        isInteractive: Bool = false
+        isInteractive: Bool = true
     ) {
         self.title = title
         self.systemIconName = icon
