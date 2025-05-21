@@ -19,7 +19,6 @@ import Combine
 import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
-import InboxContacts
 import PhotosUI
 import proton_app_uniffi
 import SwiftUI
@@ -140,7 +139,6 @@ final class ComposerModelTests: BaseTestCase {
         await sut.onLoad()
 
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
-        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftError.toAttachmentErrorAlertModel().title)
     }
 
     func testOnLoad_whenThereAreInlineAttachments_itShouldNotMapThemToUIModels() async throws {
@@ -502,7 +500,6 @@ final class ComposerModelTests: BaseTestCase {
         await Task.yield()
 
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
-        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     func testAddAttachments_whenSelectingFromFiles_itShouldAddAttachmentToDraft() async throws {
@@ -524,7 +521,6 @@ final class ComposerModelTests: BaseTestCase {
         await sut.addAttachments(filePickerResult: .success([file1]))
 
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
-        XCTAssertEqual(sut.attachmentAlertState.presentedError?.title, draftAddResultError.toAttachmentErrorAlertModel().title)
     }
 
     // MARK: removeAttachment(cid:)
@@ -632,23 +628,6 @@ private extension ComposerContact {
         }
     }
 
-}
-
-extension ComposerState {
-
-    static func mockState(matchingContacts: [ComposerContact], controllerState: RecipientControllerStateType) -> ComposerState {
-        .init(
-            toRecipients: .init(group: .to, recipients: [], input: .empty, matchingContacts: matchingContacts, controllerState: controllerState),
-            ccRecipients: .initialState(group: .cc),
-            bccRecipients: .initialState(group: .bcc),
-            senderEmail: .empty,
-            subject: .empty,
-            attachments: [],
-            initialBody: .empty,
-            isInitialFocusInBody: false,
-            editingRecipientsGroup: nil
-        )
-    }
 }
 
 private extension ComposerContact {

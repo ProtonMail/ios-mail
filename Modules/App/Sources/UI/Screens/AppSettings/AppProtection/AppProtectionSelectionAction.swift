@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum AppProtectionSelectionAction {
-    case onLoad
+    case onAppear
     case selected(AppProtectionMethodViewModel.MethodType)
     case changePINTapped
     case autoLockTapped

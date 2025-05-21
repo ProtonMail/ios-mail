@@ -21,6 +21,7 @@ import InboxSnapshotTesting
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 class AppSettingsSnapshotTests: BaseTestCase {
 
     func testAppSettingsLayoutCorrectly() {

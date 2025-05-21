@@ -514,12 +514,6 @@ extension ComposerModel {
         }
     }
 
-    private func hangingInputAndGroup() -> (group: RecipientGroupType, input: String)? {
-        guard let groupBeingEdited = state.editingRecipientFieldState else { return nil }
-        guard !groupBeingEdited.input.withoutWhitespace.isEmpty else { return nil }
-        return (groupBeingEdited.group, groupBeingEdited.input.withoutWhitespace)
-    }
-
     private func showDraftSavedToastIfNeeded() {
         Task {
             if let id = try await draft.messageId().get() {

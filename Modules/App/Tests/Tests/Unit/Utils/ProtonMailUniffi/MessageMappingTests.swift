@@ -23,7 +23,6 @@ final class MessageMappingTests: XCTestCase {
     private let recipient1: MessageRecipient = .testData(name: "The Rec.A", address: "a@example.com")
     private let recipient2: MessageRecipient = .testData(name: "", address: "b@example.com")
     private let recipient3: MessageRecipient = .testData(name: "The Rec.C", address: "c@example.com")
-    private let sender: MessageSender = .testData(name: "", address: "sender@example.com")
 
     func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() {
         let message = Message.testData(messageId: 33)

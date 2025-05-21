@@ -81,4 +81,21 @@ enum L10n {
             static let unknownMessage = LocalizedStringResource("This message does not exist", comment: "Error message.")
         }
     }
+    enum ContactDetails {
+        static let newMessage = LocalizedStringResource(
+            "Message",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Contact details’ “Message” button title for creating a new message to the given contact."
+        )
+        static let call = LocalizedStringResource(
+            "Call",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Contact details’ “Call” button title for calling the given contact."
+        )
+        static let share = LocalizedStringResource(
+            "Share",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Contact details’ “Share” button title for sharing the given contact’s information."
+        )
+    }
 }

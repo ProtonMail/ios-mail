@@ -26,14 +26,19 @@ final class SceneDelegateTests: BaseTestCase {
 
     private var sut: SceneDelegate!
     var mailSessionSpy: MailSessionSpy!
+    var shouldAutoLockStub: Bool = true
 
-    override func setUp() {
-        super.setUp()
-
+    @MainActor
+    override func setUp() async throws {
         sut = .init()
         mailSessionSpy = .init()
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
         sut.pinVerifierFactory = { PINVerifierSpy() }
+        sut.checkAutoLockSetting = { completion in completion(self.shouldAutoLockStub) }
+        sut.transitionAnimation = { _, _, _, animation, completion in
+            animation?()
+            completion?(true)
+        }
     }
 
     override func tearDown() {
@@ -69,6 +74,8 @@ final class SceneDelegateTests: BaseTestCase {
 
     func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() throws {
         mailSessionSpy.appProtectionStub = .biometrics
+        shouldAutoLockStub = true
+
         let scene = try scene()
 
         sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
@@ -90,6 +97,23 @@ final class SceneDelegateTests: BaseTestCase {
         expect(appProtectionWindow).toNot(beNil())
         expect(appProtectionWindow.isHidden).to(beFalse())
         expect(appProtectionWindow.rootViewController).toNot(beNil())
+    }
+
+    func testWindowScene_WhenUserEntersBackground_ItCoversAppContent() throws {
+        let scene = try scene()
+
+        sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
+        sut.sceneWillEnterForeground(scene)
+        sut.sceneDidEnterBackground(scene)
+
+        let appProtectionWindow = try XCTUnwrap(sut.appProtectionWindow)
+
+        expect(appProtectionWindow).toNot(beNil())
+        expect(appProtectionWindow.isHidden).to(beFalse())
+        expect(appProtectionWindow.rootViewController).toNot(beNil())
+        expect(appProtectionWindow.rootViewController).to(beAKindOf(
+            UIHostingController<BlurredCoverView>.self
+        ))
     }
 
     // MARK: - Private

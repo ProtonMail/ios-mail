@@ -20,7 +20,6 @@ import Combine
 import InboxContacts
 import proton_app_uniffi
 import struct SwiftUI.Color
-import InboxTesting
 import XCTest
 
 final class ComposerProtonContactsDatasourceTests: XCTestCase {
@@ -148,27 +147,6 @@ private extension MailUserSession {
     }
 }
 
-private extension ContactGroupItem {
-
-    init(id: UInt64, name: String, avatarColor: String, contacts emailItems: [ContactEmailItem]) {
-        let contactItems: [ContactItem] = emailItems.map { contactEmail in
-            ContactItem(
-                id: contactEmail.id,
-                name: contactEmail.email,
-                avatarInformation: .init(text: "__NOT_USED__", color: avatarColor),
-                emails: [contactEmail]
-            )
-        }
-
-        self.init(
-            id: Id(value: id),
-            name: name,
-            avatarColor: avatarColor,
-            contacts: contactItems
-        )
-    }
-}
-
 private extension ContactEmailItem {
 
     init(id: UInt64, email: String) {
@@ -192,6 +170,32 @@ private class ContactSuggestionsStub: ContactSuggestions {
 
     override func all() -> [ContactSuggestion] {
         _all
+    }
+
+}
+
+private extension ComposerContact {
+
+    var name: String {
+        type.name
+    }
+
+}
+
+private extension ComposerContactType {
+
+    var isGroup: Bool {
+        switch self {
+        case .single: false
+        case .group: true
+        }
+    }
+
+    var name: String {
+        switch self {
+        case .single(let single): single.name
+        case .group(let group): group.name
+        }
     }
 
 }

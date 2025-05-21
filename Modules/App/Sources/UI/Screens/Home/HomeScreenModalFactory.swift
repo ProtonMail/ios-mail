@@ -36,7 +36,6 @@ struct HomeScreenModalFactory {
                 mailUserSession: mailUserSession,
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance(),
-                toastStateStore: toastStateStore
             )
         }
         self.makeComposerScreen = { composerParams in

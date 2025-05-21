@@ -23,12 +23,33 @@ import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
 
+    typealias TransitionAnimation = @MainActor (
+        _ view: UIView,
+        _ duration: TimeInterval,
+        _ options: UIView.AnimationOptions,
+        _ animations: (() -> Void)?,
+        _ completion: ((Bool) -> Void)?
+    ) -> Void
+
     weak var windowScene: UIWindowScene?
     var overlayWindow: UIWindow?
     var appProtectionWindow: UIWindow?
     var appProtectionCancellable: AnyCancellable?
     var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
     var pinVerifierFactory: () -> PINVerifier = { AppContext.shared.mailSession }
+    var transitionAnimation: TransitionAnimation = UIView.transition
+
+    var checkAutoLockSetting: (_ completion: @MainActor @escaping @Sendable (Bool) -> Void) -> Void = { completion in
+        Task {
+            do {
+                let value = try await AppContext.shared.mailSession.shouldAutoLock().get()
+                await completion(value)
+            } catch {
+                AppLogger.log(error: error, category: .appSettings)
+                await completion(false)
+            }
+        }
+    }
 
     var toastStateStore: ToastStateStore? {
         didSet {
@@ -40,8 +61,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private var appProtection: AppProtection = .none {
         didSet {
-            appProtectionWindow?.rootViewController = lockScreenController(for: appProtection.lockScreenType)
-            appProtectionWindow?.isHidden = appProtection.lockScreenType == nil
+            handleLockScreenVisibility(type: appProtection.lockScreenType)
         }
     }
 
@@ -71,6 +91,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         AppLifeCycle.shared.sceneDidEnterBackground()
+        coverAppContent()
     }
 
     // MARK: - Private
@@ -104,34 +125,80 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 self?.appProtection = appProtection
             })
 
+        appProtectionStore.checkProtection()
+
         return window
     }
 
-    private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType?) -> UIViewController? {
-        guard let lockScreenType else {
-            return nil
+    private func handleLockScreenVisibility(type: LockScreenState.LockScreenType?) {
+        guard let type else {
+            showAppContent()
+            return
         }
+        checkAutoLockSetting { [weak self] shouldShowLockScreen in
+            if shouldShowLockScreen {
+                self?.showLockScreen(lockScreenType: type)
+            } else {
+                self?.showAppContent()
+            }
+        }
+    }
 
-        return UIHostingController(rootView:
-            LockScreen(
-                state: .init(type: lockScreenType),
-                pinVerifier: pinVerifierFactory(),
-                output: { [weak self] output in
-                    switch output {
-                    case .logOut:
-                        break // FIXME: - To add later
-                    case .authenticated:
-                        self?.appProtectionStore.dismissLock()
+    @MainActor
+    private func showLockScreen(lockScreenType: LockScreenState.LockScreenType) {
+        appProtectionWindow?.isHidden = false
+        appProtectionWindow?.rootViewController = lockScreenController(for: lockScreenType)
+    }
+
+    private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType) -> UIViewController {
+        let controller = UIHostingController(
+            rootView:
+                LockScreen(
+                    state: .init(type: lockScreenType),
+                    pinVerifier: pinVerifierFactory(),
+                    output: { [weak self] output in
+                        switch output {
+                        case .logOut:
+                            break  // FIXME: - To add later
+                        case .authenticated:
+                            self?.appProtectionStore.dismissLock()
+                        }
                     }
-                }
-            )
+                )
         )
+        controller.view.backgroundColor = .clear
+        return controller
+    }
+
+    @MainActor
+    private func showAppContent() {
+        guard let appProtectionWindow else { return }
+        transitionAnimation(
+            appProtectionWindow, 0.2, .transitionCrossDissolve,
+            {
+                appProtectionWindow.rootViewController = nil
+            },
+            { _ in
+                appProtectionWindow.isHidden = true
+            })
+    }
+
+    @MainActor
+    private func coverAppContent() {
+        appProtectionWindow?.rootViewController = coverController
+        appProtectionWindow?.isHidden = false
     }
 
     private func overlayRootController(with toastStateStore: ToastStateStore) -> UIViewController {
         let controller = UIHostingController(rootView: ToastSceneView().environmentObject(toastStateStore))
         controller.view.backgroundColor = .clear
 
+        return controller
+    }
+
+    private var coverController: UIViewController {
+        let controller = UIHostingController(rootView: BlurredCoverView())
+        controller.view.backgroundColor = .clear
         return controller
     }
 

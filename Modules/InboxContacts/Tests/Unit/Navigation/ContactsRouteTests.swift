@@ -24,13 +24,13 @@ import XCTest
 @MainActor
 final class ContactsRouteTests: XCTestCase {
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
-        let id = Id(value: 1)
-        let view = try makeView(for: .contactDetails(id: id))
+        let id: UInt64 = 1
+        let view = try makeView(for: .contactDetails(.testData(id: id)))
 
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        XCTAssertEqual(screen.id, id)
+        XCTAssertEqual(screen.contact.id.value, id)
     }
 
     func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() throws {

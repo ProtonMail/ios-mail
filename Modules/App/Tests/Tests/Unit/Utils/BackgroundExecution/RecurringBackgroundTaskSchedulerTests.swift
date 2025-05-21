@@ -18,7 +18,6 @@
 @testable import ProtonMail
 import BackgroundTasks
 import Combine
-import InboxCore
 import InboxTesting
 import XCTest
 import proton_app_uniffi

@@ -24,7 +24,7 @@ class AppProtectionStore {
     }
 
     private let mailSession: () -> MailSessionProtocol
-    private let protectionSubject: CurrentValueSubject<AppProtection, Never> = .init(.none)
+    private let protectionSubject: PassthroughSubject<AppProtection, Never> = .init()
 
     init(mailSession: @escaping () -> MailSessionProtocol) {
         self.mailSession = mailSession

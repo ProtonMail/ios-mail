@@ -18,38 +18,52 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct FormBigButton: View {
+public struct FormBigButton: View {
     private let value: String
     private let title: LocalizedStringResource
-    private let icon: String
+    private let systemIconName: String?
     private let action: () -> Void
+    private let hasAccentTextColor: Bool
 
-    init(title: LocalizedStringResource, icon: String, value: String, action: @escaping () -> Void) {
+    public init(
+        title: LocalizedStringResource,
+        icon: String?,
+        value: String,
+        action: @escaping () -> Void,
+        hasAccentTextColor: Bool = false
+    ) {
         self.title = title
-        self.icon = icon
+        self.systemIconName = icon
         self.value = value
         self.action = action
+        self.hasAccentTextColor = hasAccentTextColor
     }
 
-    var body: some View {
-        Button(action: { action() }) {
+    public var body: some View {
+        Button(action: action) {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                     Text(title)
                         .font(.subheadline)
+                        .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.weak)
                     Text(value)
-                        .foregroundStyle(DS.Color.Text.norm)
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
                 }
-                Spacer(minLength: DS.Spacing.small)
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                    .foregroundStyle(DS.Color.Text.hint)
+                if let systemIconName {
+                    Spacer(minLength: DS.Spacing.small)
+                    Image(systemName: systemIconName)
+                        .font(.system(size: 20))
+                        .foregroundStyle(DS.Color.Text.hint)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DS.Spacing.large)
             .contentShape(Rectangle())
         }
-        .buttonStyle(SettingsButtonStyle())
-        .applyRoundedRectangleStyle()
+        .background(DS.Color.BackgroundInverted.secondary)
+        .buttonStyle(DefaultPressedButtonStyle())
     }
 }

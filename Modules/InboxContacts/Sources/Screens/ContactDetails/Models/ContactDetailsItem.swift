@@ -15,12 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import proton_app_uniffi
 
-enum AppInterfaceStyle {
-    typealias InterfaceStyleSetter = (UIUserInterfaceStyle) -> Void
-
-    @MainActor static var setUserInterfaceStyle: InterfaceStyleSetter = {
-        UIApplication.shared.keyWindow?.overrideUserInterfaceStyle = $0
-    }
+struct ContactDetailsItem: Hashable {
+    let label: String
+    let value: String
+    let isInteractive: Bool
 }

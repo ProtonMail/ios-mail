@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,10 +17,11 @@
 
 import proton_app_uniffi
 
-/**
- Objects provided by the Rust library are thread safe but the uniffi library is not able to mark as Sendable yet.
- In order to remove excessive warnings, we mark the objects as `@unchecked Sendable`
- */
-
-extension MailSession: @unchecked Sendable {}
-extension MailUserSession: @unchecked Sendable {}
+struct ContactDetails {
+    let id: Id
+    let avatarInformation: AvatarInformation
+    let displayName: String
+    let primaryEmail: String
+    let primaryPhone: String?
+    let groupItems: [[ContactDetailsItem]]
+}

@@ -18,4 +18,4 @@
 import Combine
 import Foundation
 
-public typealias TimerPublisherFactory = (TimeInterval) -> AnyPublisher<Void, Never>
+typealias TimerPublisherFactory = (TimeInterval) -> AnyPublisher<Void, Never>

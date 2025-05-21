@@ -115,12 +115,6 @@ enum L10n {
             comment: "Attachments action sheet import option."
         )
 
-        static let attachmentCouldNotBeAdded = LocalizedStringResource(
-            "Attachment could not be added",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Attachment failed to be added to a draft message."
-        )
-
         static let cameraAccessDeniedTitle = LocalizedStringResource(
             "Camera",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -131,12 +125,6 @@ enum L10n {
             "Access to the camera was disabled. Please go to Settings and enable the camera permission.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Alert shown if permission to camera is denied when trying to use it for attachments."
-        )
-
-        static let someAttachmentCouldNotBeAdded = LocalizedStringResource(
-            "Some attachmentments could not be added",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Attachment failed to be added to a draft message."
         )
 
         static let removeAttachment = LocalizedStringResource(
@@ -258,12 +246,6 @@ enum L10n {
             comment: "Error shown when the draft fails to delete."
         )
 
-        static let invalidLastRecipient = LocalizedStringResource(
-            "Please verify your last recipient",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Composer toast message when an invalid recipient is added by prematurely finishing text input"
-        )
-
         static let invalidAddressFormatTitle = LocalizedStringResource(
             "Invalid recipient",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -346,11 +328,6 @@ enum L10n {
                 comment: "Error in the context of sending a draft before being sent."
             )
         }
-
-        static let attachmentUpload = LocalizedStringResource(
-            "An attachmemt failed to upload",
-            comment: "Error in the context of sending a draft before being sent."
-        )
 
         static let messageAlreadySent = LocalizedStringResource(
             "The message was already sent",

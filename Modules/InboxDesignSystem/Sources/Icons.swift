@@ -19,6 +19,7 @@ import SwiftUI
 
 public extension DS.Icon {
     static let icArchiveBox = ImageResource.icArchiveBox
+    static let icArrowUpFromSquare = ImageResource.icArrowUpFromSquare
     static let icArrowOutFromRectangle = ImageResource.icArrowOutFromRectangle
     static let icArrowRotateRight = ImageResource.icArrowRotateRight
     static let icBookmark = ImageResource.icBookmark

@@ -17,18 +17,6 @@
 
 import proton_app_uniffi
 
-extension DraftSaveError {
-
-    public var shouldBeDisplayed: Bool {
-        switch self {
-        case .reason(let reason):
-            reason.shouldBeDisplayed
-        case .other:
-            true
-        }
-    }
-}
-
 extension DraftSaveErrorReason {
 
     public var shouldBeDisplayed: Bool {
@@ -38,11 +26,5 @@ extension DraftSaveErrorReason {
         default:
             true
         }
-    }
-}
-
-public extension ApiEnvId {
-    static func localhost(port: String) -> Self {
-        .custom("http://localhost:\(port)")
     }
 }

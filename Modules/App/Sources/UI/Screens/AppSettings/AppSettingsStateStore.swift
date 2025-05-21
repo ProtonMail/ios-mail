@@ -49,7 +49,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await handleNotificationsFlow()
         case .languageButtonTapped:
             await openNativeAppSettings()
-        case .onLoad:
+        case .onAppear:
             await refreshStoredAppSettings()
             await refreshDeviceSettings()
         case .enterForeground:
@@ -134,17 +134,4 @@ final class AppSettingsStateStore: StateStore, Sendable {
         await urlOpener.open(.settings, options: [:])
     }
 
-}
-
-private extension AppAppearance {
-    var style: UIUserInterfaceStyle {
-        switch self {
-        case .system:
-            .unspecified
-        case .darkMode:
-            .dark
-        case .lightMode:
-            .light
-        }
-    }
 }

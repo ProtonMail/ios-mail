@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxComposer
-import InboxTesting
 import proton_app_uniffi
 import Testing
 
@@ -83,7 +82,7 @@ final class AttachmentErrorAlertStateTests {
     func testEnqueueAnyUploadError_whenNoErrorsPassed_itShouldNotEnqueueErrors() async {
         await sut.enqueueAnyUploadError([
             DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
-            DraftAttachment.makeMock(state: .pending, timestamp: 2)
+            DraftAttachment.makeMock(state: .pending, timestamp: 2),
         ])
 
         let errorToPresent = await sut.errorToPresent
@@ -188,5 +187,14 @@ final class AttachmentErrorAlertStateTests {
         await sut.enqueueAnyUploadError([tooManyError1])
 
         #expect(onErrorToPresentWasCalled == true)
+    }
+}
+
+private extension AttachmentErrorOrigin {
+    var isUploading: Bool {
+        switch self {
+        case .adding: false
+        case .uploading: true
+        }
     }
 }

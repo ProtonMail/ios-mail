@@ -23,9 +23,9 @@ import InboxTesting
 import SwiftUI
 import XCTest
 
+@MainActor
 class SettingsScreenSnapshotTests: BaseTestCase {
 
-    @MainActor
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
         let sut = SettingsScreen(

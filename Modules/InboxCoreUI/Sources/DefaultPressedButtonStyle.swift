@@ -18,18 +18,14 @@
 import InboxDesignSystem
 import SwiftUI
 
-extension View {
-    func applyRoundedRectangleStyle() -> some View {
-        modifier(RoundedRectangleStyleStyle())
+public struct DefaultPressedButtonStyle: ButtonStyle {
+    public init() {}
+
+    // MARK: - ButtonStyle
+
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration
+            .label
+            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : .clear)
     }
-}
-
-private struct RoundedRectangleStyleStyle: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .background(DS.Color.BackgroundInverted.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-    }
-
 }

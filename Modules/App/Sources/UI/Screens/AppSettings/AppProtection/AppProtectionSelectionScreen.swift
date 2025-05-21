@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -48,7 +49,10 @@ struct AppProtectionSelectionScreen: View {
             ScrollView {
                 VStack(spacing: .zero) {
                     FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
-                        FormList(collection: state.availableAppProtectionMethods) { viewModel in
+                        FormList(
+                            collection: state.availableAppProtectionMethods,
+                            separator: .normLeftPadding
+                        ) { viewModel in
                             FormSmallButton(
                                 title: viewModel.type.name,
                                 rightSymbol: viewModel.isSelected ? .checkmark : nil
@@ -62,7 +66,7 @@ struct AppProtectionSelectionScreen: View {
                             FormSmallButton(title: L10n.Settings.App.changePINcode, rightSymbol: .chevronRight) {
                                 store.handle(action: .changePINTapped)
                             }
-                            .applyRoundedRectangleStyle()
+                            .roundedRectangleStyle()
                         }
                         .animation(.easeInOut, value: state.shouldShowChangePINButton)
                         .padding(.top, DS.Spacing.standard)
@@ -76,6 +80,7 @@ struct AppProtectionSelectionScreen: View {
                             ) {
                                 store.handle(action: .autoLockTapped)
                             }
+                            .roundedRectangleStyle()
                         }.animation(.easeInOut, value: state.shouldShowAutoLockButton)
                     }
                     Spacer()
@@ -85,7 +90,7 @@ struct AppProtectionSelectionScreen: View {
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
-            .onLoad { store.handle(action: .onLoad) }
+            .onAppear { store.handle(action: .onAppear) }
             .sheet(item: presentPINScreen(state: state, store: store)) { pinScreenType in
                 PINRouterView(type: pinScreenType)
             }

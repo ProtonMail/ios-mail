@@ -17,7 +17,6 @@
 
 import Combine
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -39,7 +38,6 @@ final class ContactsStateStore: ObservableObject {
     private let contactGroupDeleter: ContactItemDeleterAdapter
     private let makeContactsLiveQuery: () -> ContactsLiveQueryCallbackWrapper
     private let watchContacts: (ContactsLiveQueryCallback) async throws -> WatchedContactList
-    private let toastStateStore: ToastStateStore
     private lazy var contactsLiveQueryCallback: ContactsLiveQueryCallbackWrapper = makeContactsLiveQuery()
     private var cancellables: Set<AnyCancellable> = Set()
     private var watchContactsConnection: WatchedContactList?
@@ -48,7 +46,6 @@ final class ContactsStateStore: ObservableObject {
         state: ContactsScreenState,
         mailUserSession session: MailUserSession,
         contactsWrappers wrappers: RustContactsWrappers,
-        toastStateStore: ToastStateStore,
         makeContactsLiveQuery: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
         self.state = state
@@ -59,7 +56,6 @@ final class ContactsStateStore: ObservableObject {
         self.watchContacts = { callback in
             try await wrappers.contactsWatcher.watch(session, callback).get()
         }
-        self.toastStateStore = toastStateStore
         setUpNestedObservableObjectUpdates()
     }
 
@@ -72,11 +68,7 @@ final class ContactsStateStore: ObservableObject {
         case .onDeleteItem(let item):
             state = state.copy(\.itemToDelete, to: item)
         case .onTapItem(let item):
-            toastStateStore.present(toast: .comingSoon)
-            // FIXME: To remove, added only to avoid changing tests and to remove navigation for the demo
-            #if canImport(XCTest)
-                goToDetails(item: item)
-            #endif
+            goToDetails(item: item)
         case .onLoad:
             startWatchingUpdates()
             loadAllContacts()
@@ -142,7 +134,7 @@ final class ContactsStateStore: ObservableObject {
     private func goToDetails(item: ContactItemType) {
         switch item {
         case .contact(let contactItem):
-            router.go(to: .contactDetails(id: contactItem.id))
+            router.go(to: .contactDetails(contactItem))
         case .group(let contactGroupItem):
             router.go(to: .contactGroupDetails(id: contactGroupItem.id))
         }

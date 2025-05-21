@@ -19,7 +19,6 @@
 import InboxCoreUI
 import InboxDesignSystem
 import InboxSnapshotTesting
-import InboxTesting
 import Testing
 import proton_app_uniffi
 import SwiftUI

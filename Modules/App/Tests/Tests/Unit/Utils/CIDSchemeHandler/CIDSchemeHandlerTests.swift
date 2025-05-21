@@ -36,10 +36,6 @@ class CIDSchemeHandlerTests: BaseTestCase {
     var embeddedImageProviderSpy: EmbeddedImageProviderSpy!
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
-    var stubbedMessageID: ID {
-        .init(value: 7)
-    }
-
     override func setUp() {
         super.setUp()
 

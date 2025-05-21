@@ -33,7 +33,6 @@ public struct ContactsScreen: View {
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider,
         contactsWatcher: ContactsWatcher,
-        toastStateStore: ToastStateStore
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
         _store = .init(
@@ -43,8 +42,7 @@ public struct ContactsScreen: View {
                 contactsWrappers: .productionInstance(
                     contactsProvider: contactsProvider,
                     contactsWatcher: contactsWatcher
-                ),
-                toastStateStore: toastStateStore
+                )
             )
         )
     }
@@ -110,6 +108,5 @@ public struct ContactsScreen: View {
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),
-        toastStateStore: .init(initialState: .initial)
     )
 }

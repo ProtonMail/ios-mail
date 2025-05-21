@@ -75,7 +75,7 @@ class AppSettingsStateStoreTests {
     }
 
     @Test
-    func whenViewIsLoaded_ItOverrideDefaultStateValuesAndSetCorrectOnes() async {
+    func whenViewAppears_ItOverrideDefaultStateValuesAndSetCorrectOnes() async {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
         bundleStub.preferredLocalizationsStub = ["pl"]
         appSettingsRepositorySpy.stubbedAppSettings = .init(
@@ -86,7 +86,7 @@ class AppSettingsStateStoreTests {
             useAlternativeRouting: true
         )
 
-        await sut.handle(action: .onLoad)
+        await sut.handle(action: .onAppear)
 
         #expect(sut.state.areNotificationsEnabled)
         #expect(sut.state.appLanguage == "Polish")

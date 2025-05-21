@@ -17,7 +17,6 @@
 
 @testable import ProtonMail
 import AccountLogin
-import InboxCore
 import InboxCoreUI
 import InboxKeychain
 import InboxTesting

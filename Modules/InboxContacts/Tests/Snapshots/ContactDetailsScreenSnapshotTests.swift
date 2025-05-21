@@ -18,18 +18,18 @@
 @testable import InboxContacts
 import InboxSnapshotTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-final class ContactDetailsScreenSnapshotTests: XCTestCase {
+@MainActor
+final class ContactDetailsScreenSnapshotTests {
 
-    func testContactDetailsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: makeSUT())
-    }
+    @Test
+    func testContactDetailsScreenLayoutsCorrectOnIphoneX() async {
+        let previewInstace = ContactDetailsProvider.previewInstance()
+        let details = await previewInstace.contactDetails(for: .benjaminAlexander)
+        let sut = ContactDetailsScreen(contact: .benjaminAlexander, provider: .previewInstance(), state: details)
 
-    // MARK: - Private
-
-    private func makeSUT() -> ContactDetailsScreen {
-        .init(id: .init(value: 1_911))
+        assertSnapshotsOnIPhoneX(of: sut)
     }
 
 }

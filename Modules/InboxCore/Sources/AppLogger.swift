@@ -133,7 +133,6 @@ extension AppLogger {
         case composer
         case legacyMigration
         case mailbox
-        case mailboxActions
         case notifications
         case appSettings
         case payments

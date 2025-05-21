@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -42,7 +43,10 @@ struct AutoLockScreen: View {
             )
         ) { state, store in
             ScrollView {
-                FormList(collection: state.allOptions) { lockOption in
+                FormList(
+                    collection: state.allOptions,
+                    separator: .normLeftPadding
+                ) { lockOption in
                     FormSmallButton(
                         title: lockOption.humanReadable,
                         rightSymbol: state.selectedOption == lockOption ? .checkmark : nil

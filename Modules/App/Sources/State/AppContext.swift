@@ -58,13 +58,6 @@ final class AppContext: Sendable, ObservableObject {
     private(set) var accountAuthCoordinator: AccountAuthCoordinator!
     private(set) var accountChallengeCoordinator: AccountChallengeCoordinator!
 
-    var hasActiveUser: Bool {
-        if case .activeSession = sessionState {
-            return true
-        }
-        return false
-    }
-
     init(dependencies: Dependencies = .init()) {
         self.dependencies = dependencies
     }

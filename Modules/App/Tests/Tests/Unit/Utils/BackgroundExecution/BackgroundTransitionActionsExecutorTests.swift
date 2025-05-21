@@ -111,10 +111,6 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
 
 private extension DraftSendResult {
 
-    static var failure: Self {
-        .init(messageId: .random(), timestamp: 0, error: .failure(.other(.network)), origin: .save)
-    }
-
     static var success: Self {
         .init(messageId: .random(), timestamp: 0, error: .success(1), origin: .save)
     }

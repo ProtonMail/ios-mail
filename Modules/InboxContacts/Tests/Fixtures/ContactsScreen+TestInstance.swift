@@ -29,7 +29,6 @@ extension ContactsScreen {
             mailUserSession: .testInstance(),
             contactsProvider: .previewInstance(),
             contactsWatcher: .previewInstance(),
-            toastStateStore: .init(initialState: .initial)
         )
     }
 

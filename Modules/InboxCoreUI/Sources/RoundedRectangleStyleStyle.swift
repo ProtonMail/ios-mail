@@ -15,30 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View {
-    public let collection: Collection
-    public let elementContent: (Collection.Element) -> ElementContent
-
-    // MARK: - View
-
-    var body: some View {
-        LazyVStack(spacing: .zero) {
-            ForEachLast(collection: collection) { element, isLast in
-                VStack(spacing: .zero) {
-                    elementContent(element)
-
-                    if !isLast {
-                        DS.Color.Border.norm
-                            .frame(height: 1)
-                            .padding(.leading, DS.Spacing.large)
-                    }
-                }
-            }
-        }
-        .applyRoundedRectangleStyle()
+extension View {
+    public func roundedRectangleStyle() -> some View {
+        modifier(RoundedRectangleStyleStyle())
     }
+}
+
+private struct RoundedRectangleStyleStyle: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+    }
+
 }

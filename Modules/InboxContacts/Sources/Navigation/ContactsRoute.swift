@@ -20,14 +20,14 @@ import proton_app_uniffi
 import SwiftUI
 
 enum ContactsRoute: Routable {
-    case contactDetails(id: Id)
+    case contactDetails(ContactItem)
     case contactGroupDetails(id: Id)
 
     @ViewBuilder
     func view() -> some View {
         switch self {
-        case .contactDetails(let id):
-            ContactDetailsScreen(id: id)
+        case .contactDetails(let contact):
+            ContactDetailsScreen(contact: contact, provider: .previewInstance()) // FIXME: Replace with production instance
         case .contactGroupDetails(let id):
             ContactGroupDetailsScreen(id: id)
         }

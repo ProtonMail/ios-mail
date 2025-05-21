@@ -29,10 +29,6 @@ struct ComposerContact: Identifiable, Equatable {
         self.avatarColor = avatarColor
     }
 
-    var name: String {
-        type.name
-    }
-
     func toUIModel(alreadySelected: Bool = false) -> ComposerContactUIModel {
         switch type {
         case .single(let single):
@@ -77,20 +73,6 @@ extension ComposerContact {
 enum ComposerContactType: Equatable {
     case single(ComposerContactSingle)
     case group(ComposerContactGroup)
-
-    var isGroup: Bool {
-        switch self {
-        case .single: false
-        case .group: true
-        }
-    }
-
-    var name: String {
-        switch self {
-        case .single(let single): single.name
-        case .group(let group): group.name
-        }
-    }
 }
 
 struct ComposerContactSingle: Equatable {
