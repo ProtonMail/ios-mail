@@ -103,10 +103,6 @@ class PINStateStore: StateStore {
     }
 
     private func setUpBioemtryProtection() async {
-        guard await biometricAuthenticator.authenticate().isSuccess else {
-            dismiss()
-            return
-        }
         do {
             try await appProtectionConfigurator.setBiometricsAppProtection().get()
         } catch {

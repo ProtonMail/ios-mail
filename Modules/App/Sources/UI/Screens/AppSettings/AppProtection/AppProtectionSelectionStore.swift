@@ -107,7 +107,6 @@ class AppProtectionSelectionStore: StateStore {
     private func enableBiometricProtection() async {
         switch state.currentProtection {
         case .none:
-            guard await biometricAuthDidSucceed() else { return }
             do {
                 try await appProtectionConfigurator.setBiometricsAppProtection().get()
             } catch {
