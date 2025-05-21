@@ -17,10 +17,10 @@
 
 import Foundation
 
-public extension Bundle {
+extension Bundle {
 
     /// Returns the major version of the app.
-    var bundleShortVersion: String {
+    public var bundleShortVersion: String {
         forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)
     }
 
@@ -36,7 +36,7 @@ public extension Bundle {
      Once the app's internal version naturally reaches or exceeds "7.0.0", this property
      will reflect the real app version, so we can get rid of it and start using bundleShortVersion.
      */
-    var effectiveAppVersion: String {
+    public var effectiveAppVersion: String {
         bundleShortVersion.compare(
             targetReleaseVersion,
             options: .numeric
