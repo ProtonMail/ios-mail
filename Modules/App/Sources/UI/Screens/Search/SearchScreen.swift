@@ -100,9 +100,11 @@ struct SearchScreen: View {
 
     private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
         .draft(
-            ComposerModalParams(draftToPresent: draftToPresent, onSendingEvent: { draftId in
-                sendResultPresenter.presentResultInfo(.init(messageId: draftId, type: .sending))
-            })
+            ComposerModalParams(
+                draftToPresent: draftToPresent,
+                onSendingEvent: { draftId, event in
+                    sendResultPresenter.presentResultInfo(.init(messageId: draftId, type: event.toastType))
+                })
         )
     }
 

@@ -19,6 +19,8 @@ import Combine
 import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
+import InboxContacts
+import InboxCoreUI
 import PhotosUI
 import proton_app_uniffi
 import SwiftUI
@@ -34,6 +36,7 @@ final class ComposerModelTests: BaseTestCase {
     private var testCameraImageHandler: CameraImageHandler!
     private var testFilesItemsHandler: FilePickerItemHandler!
     private var filePickerTestsHelper: FilePickerItemHandlerTestsHelper!
+    private var sendingEventObserver: [SendEvent]!
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
@@ -54,6 +57,7 @@ final class ComposerModelTests: BaseTestCase {
         self.testCameraImageHandler = .init()
         self.testFilesItemsHandler = .init()
         self.filePickerTestsHelper = try .init()
+        self.sendingEventObserver = []
         self.mockDraft = .init()
         self.mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = photosPickerTestsHelper.destinationFolder
         self.cancellables = []
@@ -67,6 +71,7 @@ final class ComposerModelTests: BaseTestCase {
         testPhotosItemsHandler = nil
         testCameraImageHandler = nil
         testFilesItemsHandler = nil
+        sendingEventObserver = nil
         cancellables = nil
         try super.tearDownWithError()
     }
@@ -79,7 +84,7 @@ final class ComposerModelTests: BaseTestCase {
             draftOrigin: .new,
             draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: testContactProvider,
-            onSendingEvent: {},
+            onSendingEvent: { _ in },
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
@@ -542,6 +547,64 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertNil(sut.bodyAction)
     }
+
+    // MARK: sendMessage
+
+    func testSendMessage_whenSuccess_itNotifiesTheSendEventAndDismisses() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let dismissSpy = DismissSpy()
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertTrue(mockDraft.sendWasCalled)
+        XCTAssertEqual(sendingEventObserver, [.send])
+        XCTAssertEqual(dismissSpy.callsCount, 1)
+        XCTAssertEqual(sut.toast, nil)
+    }
+
+    func testSendMessage_whenFails_itShowsToastError() async throws {
+        let sendError = DraftSendError.reason(.noRecipients)
+        mockDraft.mockSendResult = .error(sendError)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let dismissSpy = DismissSpy()
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertTrue(mockDraft.sendWasCalled)
+        XCTAssertEqual(sendingEventObserver, [])
+        XCTAssertEqual(dismissSpy.callsCount, 0)
+        XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+    }
+
+    func testSendMessage_atSpecificTime_whenSuccess_itNotifiesTheSendEventAndDismisses() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let dismissSpy = DismissSpy()
+
+        let scheduleTime: UInt64 = 1905427712
+        await sut.sendMessage(at: scheduleTime.date, dismissAction: dismissSpy)
+
+        XCTAssertTrue(mockDraft.scheduleSendWasCalled)
+        XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
+        XCTAssertEqual(sendingEventObserver, [.scheduleSend(date: scheduleTime.date)])
+        XCTAssertEqual(dismissSpy.callsCount, 1)
+        XCTAssertEqual(sut.toast, nil)
+    }
+
+    func testSendMessage_atSpecificTime_whenFails_itShowsToastError() async throws {
+        let sendError = DraftSendError.reason(.missingAttachmentUploads)
+        mockDraft.mockSendResult = .error(sendError)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let dismissSpy = DismissSpy()
+
+        let scheduleTime: UInt64 = 1905427712
+        await sut.sendMessage(at: scheduleTime.date, dismissAction: dismissSpy)
+
+        XCTAssertTrue(mockDraft.scheduleSendWasCalled)
+        XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
+        XCTAssertEqual(sendingEventObserver, [])
+        XCTAssertEqual(dismissSpy.callsCount, 0)
+        XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+    }
 }
 
 // MARK: Helpers
@@ -555,7 +618,7 @@ private extension ComposerModelTests {
             draftOrigin: draftOrigin,
             draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: contactProvider,
-            onSendingEvent: {},
+            onSendingEvent: { self.sendingEventObserver.append($0) },
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,

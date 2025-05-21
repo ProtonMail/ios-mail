@@ -162,8 +162,8 @@ struct HomeScreen: View {
         .draft(
             ComposerModalParams(
                 draftToPresent: draftToPresent,
-                onSendingEvent: { draftId in
-                    sendResultCoordinator.presenter.presentResultInfo(.init(messageId: draftId, type: .sending))
+                onSendingEvent: { draftId, event in
+                    sendResultCoordinator.presenter.presentResultInfo(.init(messageId: draftId, type: event.toastType))
                     requestNotificationAuthorizationIfApplicable()
                 }
             )

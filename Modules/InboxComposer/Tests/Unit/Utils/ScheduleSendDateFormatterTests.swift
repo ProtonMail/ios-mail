@@ -22,43 +22,59 @@ import Testing
 
 final class ScheduleSendDateFormatterTests {
     private var sut: ScheduleSendDateFormatter! = .init(locale: .enUS, timeZone: .zurich)
-    private var todayTime: UInt64 {
+    private var todayTime: Date {
         let calendar: Calendar = .zurich
         let startOfDay = calendar.startOfDay(for: .now)
-        let todayAt2359 = calendar.date(byAdding: DateComponents(hour: 23, minute: 59), to: startOfDay)!
-        return UInt64(todayAt2359.timeIntervalSince1970)
+        return calendar.date(byAdding: DateComponents(hour: 23, minute: 59), to: startOfDay)!
     }
-    private var tomorrowTime: UInt64 {
-        ScheduleSendOptionsProvider.dummy(isCustomAvailable: false, calendar: .zurich).options().tomorrowTime
+    private var tomorrowTime: Date {
+        try! ScheduleSendOptionsProvider
+            .dummy(isCustomAvailable: false, calendar: .zurich)
+            .scheduleSendOptions()
+            .get()
+            .tomorrowTime
+            .date
     }
-    private var distantFutureTimestamp: UInt64 = 1889427600
+    private var distantFuture: Date { Date(timeIntervalSince1970: 1889427600) }
 
-    // MARK: string(from:)
+    // MARK: Format.short
 
     @Test
-    func testString_withRelativeDate() async {
-        #expect(sut.string(from: tomorrowTime).lowercased().contains("tomorrow") == false)
-    }
-
-    @Test
-    func testString_withDistantFutureDate() async {
-        #expect(sut.string(from: distantFutureTimestamp) == "Nov 15 at 10:00 AM")
-    }
-
-    // MARK: stringWithRelativeDate(from:)
-
-    @Test
-    func testStringWithRelativeDate_withRelativeDate_today() async {
-        #expect(sut.stringWithRelativeDate(from: todayTime) == "Today at 11:59 PM")
+    func testString_withRelativeDate_andShortFormat_itDoesNotReturnRelative() async {
+        #expect(sut.string(from: tomorrowTime, format: .short).lowercased().contains("tomorrow") == false)
     }
 
     @Test
-    func testStringWithRelativeDate_withRelativeDate_tomorrow() async {
-        #expect(sut.stringWithRelativeDate(from: tomorrowTime) == "Tomorrow at 8:00 AM")
+    func testString_withDistantFutureDate_andShortFormat() async {
+        #expect(sut.string(from: distantFuture, format: .short) == "Nov 15 at 10:00 AM")
+    }
+
+    // MARK: Format.relativeOrShort
+
+    @Test
+    func testString_withRelativeDate_today_andRelativeFormat() async {
+        #expect(sut.string(from: todayTime, format: .relativeOrShort) == "Today at 11:59 PM")
     }
 
     @Test
-    func testStringWithRelativeDate_withDistantFutureDate() async {
-        #expect(sut.stringWithRelativeDate(from: distantFutureTimestamp) == "Nov 15 at 10:00 AM")
+    func testString_withRelativeDate_tomorrow_andRelativeFormat() async {
+        #expect(sut.string(from: tomorrowTime, format: .relativeOrShort) == "Tomorrow at 8:00 AM")
+    }
+
+    @Test
+    func testString_withDistantFutureDate_andRelativeFormat() async {
+        #expect(sut.string(from: distantFuture, format: .relativeOrShort) == "Nov 15 at 10:00 AM")
+    }
+
+    // MARK: Format.long
+
+    @Test
+    func testString_withRelativeDate_andLongFormat_itDoesNotReturnRelative() async {
+        #expect(sut.string(from: tomorrowTime, format: .short).lowercased().contains("tomorrow") == false)
+    }
+
+    @Test
+    func testString_withDistantFutureDate_andLongFormat() async {
+        #expect(sut.string(from: distantFuture, format: .long) == "Thursday, November 15 at 10:00 AM")
     }
 }

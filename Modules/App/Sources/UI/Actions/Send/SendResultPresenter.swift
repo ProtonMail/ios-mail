@@ -47,6 +47,13 @@ final class SendResultPresenter {
     @MainActor
     func presentResultInfo(_ info: SendResultInfo) {
         switch info.type {
+        case .scheduled(let time):
+            let formattedTime = ScheduleSendDateFormatter().string(from: time, format: .long)
+            let toast: Toast = .scheduledMessage(duration: extendedDuration, scheduledTime: formattedTime) { [weak self] in
+                self?.handleToast(.comingSoon, for: info.messageId)
+            }
+            handleToast(toast, for: info.messageId)
+
         case .sending:
             handleToast(.sendingMessage(duration: regularDuration), for: info.messageId)
 

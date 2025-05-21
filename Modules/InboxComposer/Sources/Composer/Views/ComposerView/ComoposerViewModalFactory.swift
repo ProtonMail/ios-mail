@@ -15,27 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 struct ComposerViewModalFactory {
-    private let makeScheduleSend: () -> ScheduleSendPickerSheet
+    private let makeScheduleSend: (DraftScheduleSendOptions) -> ScheduleSendPickerSheet
     private let makeAttachmentPicker: () -> AttachmentSourcePickerSheet
 
-    init(pickerState: Binding<AttachmentPickersState>) {
-        self.makeScheduleSend = {
-            ScheduleSendPickerSheet(provider: .dummy(isCustomAvailable: false))  // TODO: use .productionInstance when SDK is ready
+    init(scheduleSendAction: @escaping (Date) async -> Void, attachmentPickerState: Binding<AttachmentPickersState>) {
+        self.makeScheduleSend = { schduleSendOptions in
+            ScheduleSendPickerSheet(
+                predefinedTimeOptions: schduleSendOptions.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+                isCustomOptionAvailable: schduleSendOptions.isCustomOptionAvailable,
+                onTimeSelected: scheduleSendAction
+            )
         }
         self.makeAttachmentPicker = {
-            AttachmentSourcePickerSheet(pickerState: pickerState)
+            AttachmentSourcePickerSheet(pickerState: attachmentPickerState)
         }
     }
 
     @ViewBuilder
     func makeModal(for state: ComposerViewModalState) -> some View {
         switch state {
-        case .scheduleSend:
-            makeScheduleSend()
+        case .scheduleSend(let sendTimeOptions):
+            makeScheduleSend(sendTimeOptions)
         case .attachmentPicker:
             makeAttachmentPicker()
         }

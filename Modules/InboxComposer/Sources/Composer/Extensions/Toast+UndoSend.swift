@@ -20,6 +20,20 @@ import InboxCoreUI
 
 public extension Toast {
 
+    static func scheduledMessage(duration: TimeInterval, scheduledTime: String, undoAction: (() -> Void)?) -> Toast {
+        var undoButton: Button?
+        if let undoAction {
+            undoButton = .init(type: .smallTrailing(content: .title(L10n.Composer.undoSend.string)), action: undoAction)
+        }
+        return Toast(
+            title: nil,
+            message: L10n.Composer.messageWillBeSentOn(time: scheduledTime).string,
+            button: undoButton,
+            style: .information,
+            duration: duration
+        )
+    }
+
     static func sendingMessage(duration: TimeInterval) -> Toast {
         Toast(
             title: nil,

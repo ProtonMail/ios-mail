@@ -18,6 +18,15 @@
 import Foundation
 
 public struct ScheduleSendDateFormatter {
+    public enum Format {
+        /** Nov 15 at 10:00 AM */
+        case short
+        /** Tomorrow at 10:00 AM */
+        case relativeOrShort
+        /** Thursday, November 15 at 10:00 AM */
+        case long
+    }
+
     private let dateFormatter: DateFormatter
 
     public init(locale: Locale = .current, timeZone: TimeZone = .current) {
@@ -27,13 +36,23 @@ public struct ScheduleSendDateFormatter {
         self.dateFormatter = formatter
     }
 
-    func string(from timestamp: UInt64) -> String {
-        dateFormatter.setLocalizedDateFormatFromTemplate("d MMM 'at' j:mm")
-        return dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
+    public func string(from date: Date, format: Format) -> String {
+        switch format {
+        case .short:
+            stringShortFormat(from: date)
+        case .relativeOrShort:
+            stringWithRelativeDate(from: date)
+        case .long:
+            stringLongFormat(from: date)
+        }
     }
 
-    public func stringWithRelativeDate(from timestamp: UInt64) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+    private func stringShortFormat(from date: Date) -> String {
+        dateFormatter.setLocalizedDateFormatFromTemplate("d MMM 'at' j:mm")
+        return dateFormatter.string(from: date)
+    }
+
+    private func stringWithRelativeDate(from date: Date) -> String {
         let calendar = Calendar.current
 
         if calendar.isDateInToday(date) || calendar.isDateInTomorrow(date) {
@@ -42,7 +61,12 @@ public struct ScheduleSendDateFormatter {
             dateFormatter.timeStyle = .short
             return dateFormatter.string(from: date)
         } else {
-            return string(from: timestamp)
+            return string(from: date, format: .short)
         }
+    }
+
+    private func stringLongFormat(from date: Date) -> String {
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, d MMMM 'at' j:mm")
+        return dateFormatter.string(from: date)
     }
 }

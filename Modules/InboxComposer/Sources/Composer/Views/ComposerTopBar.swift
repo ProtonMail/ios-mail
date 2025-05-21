@@ -21,7 +21,7 @@ import SwiftUI
 struct ComposerTopBar: View {
     var isSendEnabled: Bool
     var scheduleSendAction: (() -> Void)?
-    var sendAction: (() -> Void)?
+    var sendAction: (() async -> Void)?
     var dismissAction: (() -> Void)?
 
     var body: some View {
@@ -35,7 +35,7 @@ struct ComposerTopBar: View {
             Spacer()
             ScheduleSendButton { scheduleSendAction?() }
                 .disabled(!isSendEnabled)
-            SendButton { sendAction?() }
+            SendButton { Task { await sendAction?() } }
                 .disabled(!isSendEnabled)
         }
         .padding(.leading, DS.Spacing.standard)

@@ -32,6 +32,11 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockCcRecipientList = MockComposerRecipientList()
     var mockBccRecipientList = MockComposerRecipientList()
     var mockAttachmentList = MockAttachmentList()
+    var mockSendResult: VoidDraftSendResult = .ok
+
+    private(set) var sendWasCalled: Bool = false
+    private(set) var scheduleSendWasCalled: Bool = false
+    private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
 
     static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
         let draft = MockDraft()
@@ -73,7 +78,27 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         .empty
     }
 
-    func send() async -> VoidDraftSendResult { .ok }
+    func mimeType() -> MimeType {
+        .textHtml
+    }
+
+    func save() async -> VoidDraftSaveResult { .ok }
+
+    func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
+        let options = try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: false).scheduleSendOptions().get()
+        return .ok(options)
+    }
+
+    func schedule(timestamp: UInt64) async -> VoidDraftSendResult {
+        scheduleSendWasCalled = true
+        scheduleSendWasCalledWithTime = timestamp
+        return mockSendResult
+    }
+
+    func send() async -> VoidDraftSendResult {
+        sendWasCalled = true
+        return mockSendResult
+    }
 
     func sender() -> String {
         mockSender
@@ -190,7 +215,7 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
             $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
         })?.result ?? AttachmentListAddInlineResult.ok("12345")
     }
-    
+
     func attachmentUploadDirectory() -> String {
         attachmentUploadDirectoryURL.path()
     }
