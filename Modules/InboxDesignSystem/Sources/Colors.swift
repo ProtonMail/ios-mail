@@ -18,28 +18,27 @@
 import SwiftUI
 
 public extension DS.Color {
-
     enum Background {
         public static let norm = Color(.shade0)
         public static let secondary = Color(.shade10)
         public static let deep = Color(.backgroundDeep)
         public static let avatar = Color(.backgroundAvatar)
     }
-    
+
     enum Gradient {
         public static let crazy: [Color] = [
             Color(.neonMint),
             Color(.electricSky),
             Color(.brightAzure),
             Color(.vividOrchid),
-            Color(.hotPinkPop)
+            Color(.hotPinkPop),
         ]
     }
 
     enum BackgroundInverted {
         public static let norm = Color(.backgroundInvertedNorm)
         public static let secondary = Color(.backgroundInvertedSecondary)
-        public static let deep = Color(.backgroundInvertedSecondary)
+        public static let deep = Color(.backgroundInvertedDeep)
         public static let border = Color(.backgroundInvertedBorder)
     }
 
@@ -72,7 +71,7 @@ public extension DS.Color {
         public static let hint = Color(.iconHint)
         public static let disabled = Color(.iconDisabled)
         public static let inverted = Color(.shade0)
-        public static let accent = Color(.brandNorm)
+        public static let accent = Color(.brandPlus10)
     }
 
     enum InteractionBrand {
@@ -145,6 +144,6 @@ public extension DS.Color {
         public static let hint = Color(.textHint)
         public static let disabled = Color(.textDisabled)
         public static let inverted = Color(.shade0)
-        public static let accent = Color(.brandNorm)
+        public static let accent = Color(.brandPlus10)
     }
 }
