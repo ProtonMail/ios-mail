@@ -55,7 +55,7 @@ struct BiometricAuthenticator: Sendable {
 
     private func authenticate(with context: LAContext) async -> AuthenticationStatus {
         if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
-            return .failure
+            return .failure // FIXME: - Display error and not let user enter the app
         }
 
         let reason = L10n.BiometricLock.biometryUnlockRationale.string

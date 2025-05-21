@@ -35,6 +35,10 @@ final class SceneDelegateTests: BaseTestCase {
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
         sut.pinVerifierFactory = { PINVerifierSpy() }
         sut.checkAutoLockSetting = { completion in completion(self.shouldAutoLockStub) }
+        sut.transitionAnimation = { _, _, _, animation, completion in
+            animation?()
+            completion?(true)
+        }
     }
 
     override func tearDown() {

@@ -23,12 +23,21 @@ import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
 
+    typealias TransitionAnimation = @MainActor (
+        _ view: UIView,
+        _ duration: TimeInterval,
+        _ options: UIView.AnimationOptions,
+        _ animations: (() -> Void)?,
+        _ completion: ((Bool) -> Void)?
+    ) -> Void
+
     weak var windowScene: UIWindowScene?
     var overlayWindow: UIWindow?
     var appProtectionWindow: UIWindow?
     var appProtectionCancellable: AnyCancellable?
     var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
     var pinVerifierFactory: () -> PINVerifier = { AppContext.shared.mailSession }
+    var transitionAnimation: TransitionAnimation = UIView.transition
 
     var checkAutoLockSetting: (_ completion: @MainActor @escaping @Sendable (Bool) -> Void) -> Void = { completion in
         Task {
@@ -116,6 +125,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 self?.appProtection = appProtection
             })
 
+        appProtectionStore.checkProtection()
+
         return window
     }
 
@@ -161,8 +172,15 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     @MainActor
     private func showAppContent() {
-        appProtectionWindow?.rootViewController = nil
-        appProtectionWindow?.isHidden = true
+        guard let appProtectionWindow else { return }
+        transitionAnimation(
+            appProtectionWindow, 0.2, .transitionCrossDissolve,
+            {
+                appProtectionWindow.rootViewController = nil
+            },
+            { _ in
+                appProtectionWindow.isHidden = true
+            })
     }
 
     @MainActor
