@@ -15,17 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import proton_app_uniffi
+import InboxComposer
 
-struct SendResultInfo {
-    enum ToastType {
-        case scheduled(date: Date)
-        case sending
-        case sent
-        case error(DraftSendFailure)
+extension SendEvent {
+
+    var toastType: SendResultInfo.ToastType {
+        switch self {
+        case .scheduleSend(let date):
+            .scheduled(date: date)
+        case .send:
+            .sending
+        }
     }
-
-    let messageId: ID
-    let type: ToastType
 }

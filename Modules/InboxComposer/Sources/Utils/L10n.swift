@@ -71,6 +71,14 @@ enum L10n {
             comment: "Composer toast message confirming draft discarded"
         )
 
+        static func messageWillBeSentOn(time: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "This message will be sent on \(time)",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Composer toast message when message has been scheduled."
+            )
+        }
+
         static let sendingMessage = LocalizedStringResource(
             "Sending message...",
             bundle: .atURL(Bundle.module.bundleURL),

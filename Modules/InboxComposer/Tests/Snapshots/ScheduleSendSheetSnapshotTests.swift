@@ -17,6 +17,7 @@
 
 @testable import InboxComposer
 import InboxSnapshotTesting
+import proton_app_uniffi
 import Testing
 import SwiftUI
 
@@ -25,38 +26,49 @@ final class ScheduleSendSheetSnapshotTests {
     let dateFormatter = ScheduleSendDateFormatter(locale: Locale.enUS, timeZone: TimeZone.zurich)
 
     @Test
-    func testScheduleSend_whenFreeUser_itLayoutsCorrectOnIphoneX() {
-        let provider: ScheduleSendOptionsProvider = .dummy(
+    func testScheduleSend_whenFreeUser_itLayoutsCorrectOnIphoneX() throws {
+        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
             isCustomAvailable: false,
             stubTomorrowTime: 1810210838,
             stubMondayTime: 1810729238
+        ).scheduleSendOptions().get()
+        let scheduleSend = ScheduleSendPickerSheet(
+            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+            isCustomOptionAvailable: options.isCustomOptionAvailable,
+            dateFormatter: dateFormatter,
+            onTimeSelected: { _ in }
         )
-        let scheduleSend = ScheduleSendPickerSheet(provider: provider, dateFormatter: dateFormatter)
         assertSnapshotsOnIPhoneX(of: scheduleSend, precision: 0.98)
     }
 
     @Test
-    func testScheduleSend_whenPaidUser_itLayoutsCorrectOnIphoneX() {
-        let provider: ScheduleSendOptionsProvider = .dummy(
+    func testScheduleSend_whenPaidUser_itLayoutsCorrectOnIphoneX() throws {
+        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
             isCustomAvailable: true,
             stubTomorrowTime: 1810210838,
             stubMondayTime: 1810729238
+        ).scheduleSendOptions().get()
+        let scheduleSend = ScheduleSendPickerSheet(
+            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+            isCustomOptionAvailable: options.isCustomOptionAvailable,
+            dateFormatter: dateFormatter,
+            onTimeSelected: { _ in }
         )
-        let scheduleSend = ScheduleSendPickerSheet(provider: provider, dateFormatter: dateFormatter)
         assertSnapshotsOnIPhoneX(of: scheduleSend)
     }
 
     @Test
-    func testScheduleSend_whenPaidUser_andPreviouslySetTime_itLayoutsCorrectOnIphoneX() {
-        let provider: ScheduleSendOptionsProvider = .dummy(
+    func testScheduleSend_whenPaidUser_andPreviouslySetTime_itLayoutsCorrectOnIphoneX() throws {
+        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
             isCustomAvailable: true,
             stubTomorrowTime: 1810210838,
             stubMondayTime: 1810729238
-        )
+        ).scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
-            provider: provider,
+            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: 1810483200),
+            isCustomOptionAvailable: options.isCustomOptionAvailable,
             dateFormatter: dateFormatter,
-            lastScheduleSendTime: 1810483200
+            onTimeSelected: { _ in }
         )
         assertSnapshotsOnIPhoneX(of: scheduleSend)
     }

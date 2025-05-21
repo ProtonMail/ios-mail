@@ -25,11 +25,11 @@ public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
-    private let onSendingEvent: () -> Void
+    private let onSendingEvent: (SendEvent) -> Void
     private let onCancel: () -> Void
     private let dependencies: Dependencies
 
-    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping () -> Void, onCancel: @escaping () -> Void = {}) {
+    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping (SendEvent) -> Void, onCancel: @escaping () -> Void = {}) {
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
         self.onCancel = onCancel
@@ -46,7 +46,7 @@ public struct ComposerScreen: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         dependencies: Dependencies,
-        onSendingEvent: @escaping () -> Void,
+        onSendingEvent: @escaping (SendEvent) -> Void,
         onCancel: @escaping () -> Void = {}
     ) {
         self.dependencies = dependencies
@@ -120,7 +120,7 @@ struct ComposerLoadingView: View {
         draft: .emptyMock,
         draftOrigin: .new,
         dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
-        onSendingEvent: {},
+        onSendingEvent: { _ in },
         onCancel: {}
     )
     .environmentObject(toastStateStore)

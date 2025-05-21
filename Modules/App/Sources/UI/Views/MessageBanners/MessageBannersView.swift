@@ -128,7 +128,7 @@ struct MessageBannersView: View {
                     style: .regular
                 )
             case .scheduledSend(let scheduledTime):
-                let formattedTime = scheduleSendDateFormatter.stringWithRelativeDate(from: scheduledTime)
+                let formattedTime = scheduleSendDateFormatter.string(from: scheduledTime.date, format: .relativeOrShort)
                 let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }

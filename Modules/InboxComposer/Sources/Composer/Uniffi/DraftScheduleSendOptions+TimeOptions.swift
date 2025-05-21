@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,14 +18,13 @@
 import Foundation
 import proton_app_uniffi
 
-struct SendResultInfo {
-    enum ToastType {
-        case scheduled(date: Date)
-        case sending
-        case sent
-        case error(DraftSendFailure)
-    }
+extension DraftScheduleSendOptions {
 
-    let messageId: ID
-    let type: ToastType
+    func toScheduleSendPickerTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendPickerSheet.TimeOptions {
+        .init(
+            tomorrow: tomorrowTime.date,
+            nextMonday: mondayTime.date,
+            lastScheduleSendTime: lastScheduleSendTime?.date
+        )
+    }
 }

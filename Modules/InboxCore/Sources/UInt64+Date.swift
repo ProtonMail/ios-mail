@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,16 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 
-struct SendResultInfo {
-    enum ToastType {
-        case scheduled(date: Date)
-        case sending
-        case sent
-        case error(DraftSendFailure)
+extension UInt64 {
+
+    public var date: Date {
+        Date(timeIntervalSince1970: TimeInterval(self))
     }
-
-    let messageId: ID
-    let type: ToastType
 }

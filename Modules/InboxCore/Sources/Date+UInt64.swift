@@ -16,16 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 
-struct SendResultInfo {
-    enum ToastType {
-        case scheduled(date: Date)
-        case sending
-        case sent
-        case error(DraftSendFailure)
+extension Date {
+
+    public var uint64: UInt64 {
+        UInt64(timeIntervalSince1970)
     }
-
-    let messageId: ID
-    let type: ToastType
 }

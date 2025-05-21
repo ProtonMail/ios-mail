@@ -32,6 +32,11 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockCcRecipientList = MockComposerRecipientList()
     var mockBccRecipientList = MockComposerRecipientList()
     var mockAttachmentList = MockAttachmentList()
+    var mockSendResult: VoidDraftSendResult = .ok
+
+    private(set) var sendWasCalled: Bool = false
+    private(set) var scheduleSendWasCalled: Bool = false
+    private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
 
     private var mockBody: String = .empty
 
@@ -75,7 +80,27 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockBody
     }
 
-    func send() async -> VoidDraftSendResult { .ok }
+    func mimeType() -> MimeType {
+        .textHtml
+    }
+
+    func save() async -> VoidDraftSaveResult { .ok }
+
+    func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
+        let options = try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: false).scheduleSendOptions().get()
+        return .ok(options)
+    }
+
+    func schedule(timestamp: UInt64) async -> VoidDraftSendResult {
+        scheduleSendWasCalled = true
+        scheduleSendWasCalledWithTime = timestamp
+        return mockSendResult
+    }
+
+    func send() async -> VoidDraftSendResult {
+        sendWasCalled = true
+        return mockSendResult
+    }
 
     func sender() -> String {
         mockSender

@@ -35,7 +35,7 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping () -> Void,
+        onSendingEvent: @escaping (SendEvent) -> Void,
         onCancel: @escaping () -> Void
     ) {
         self._model = StateObject(
@@ -56,13 +56,16 @@ struct ComposerView: View {
     }
 
     var body: some View {
-        let modalFactory = ComposerViewModalFactory(pickerState: $attachmentPickerState)
+        let modalFactory = ComposerViewModalFactory(
+            scheduleSendAction: { time in await model.sendMessage(at: time, dismissAction: dismiss) },
+            attachmentPickerState: $attachmentPickerState
+        )
 
         VStack(spacing: 0) {
             ComposerTopBar(
                 isSendEnabled: model.state.isSendAvailable,
-                scheduleSendAction: { modalState = .scheduleSend },
-                sendAction: { model.sendMessage(dismissAction: dismiss) },
+                scheduleSendAction: { modalState = model.scheduleSendState() },
+                sendAction: { await model.sendMessage(dismissAction: dismiss) },
                 dismissAction: { model.dismissComposer(dismissAction: dismiss) }
             )
 

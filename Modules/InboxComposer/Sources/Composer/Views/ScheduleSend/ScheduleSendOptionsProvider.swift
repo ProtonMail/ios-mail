@@ -18,16 +18,8 @@
 import Foundation
 import proton_app_uniffi
 
-typealias ScheduleSendOptionsClosure = () -> ScheduleSendOptions
-
-struct ScheduleSendOptions {
-    let tomorrowTime: UInt64
-    let mondayTime: UInt64
-    let isCustomOptionAvailable: Bool
-}
-
 struct ScheduleSendOptionsProvider {
-    let options: ScheduleSendOptionsClosure
+    let scheduleSendOptions: () -> DraftScheduleSendOptionsResult
 }
 
 extension ScheduleSendOptionsProvider {
@@ -39,7 +31,7 @@ extension ScheduleSendOptionsProvider {
         calendar: Calendar = .current
     ) -> ScheduleSendOptionsProvider {
         .init(
-            options: {
+            scheduleSendOptions: {
                 let now = Date()
 
                 var components = DateComponents()
@@ -54,11 +46,12 @@ extension ScheduleSendOptionsProvider {
                 components.second = 0
                 let nextMonday = calendar.nextDate(after: now, matching: components, matchingPolicy: .nextTime)!
 
-                return ScheduleSendOptions(
-                    tomorrowTime: stubTomorrowTime ?? UInt64(tomorrow.timeIntervalSince1970),
-                    mondayTime: stubMondayTime ?? UInt64(nextMonday.timeIntervalSince1970),
-                    isCustomOptionAvailable: isCustomAvailable
-                )
+                return DraftScheduleSendOptionsResult.ok(
+                    .init(
+                        tomorrowTime: stubTomorrowTime ?? UInt64(tomorrow.timeIntervalSince1970),
+                        mondayTime: stubMondayTime ?? UInt64(nextMonday.timeIntervalSince1970),
+                        isCustomOptionAvailable: isCustomAvailable
+                    ))
             }
         )
     }

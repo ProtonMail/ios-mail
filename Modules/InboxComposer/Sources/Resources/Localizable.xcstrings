@@ -334,6 +334,9 @@
     "There was a problem sending the message: %@" : {
       "comment" : "Error in the context of sending a draft before being sent."
     },
+    "This message will be sent on %@" : {
+      "comment" : "Composer toast message when message has been scheduled."
+    },
     "To:" : {
       "comment" : "Composer to recipients.",
       "localizations" : {

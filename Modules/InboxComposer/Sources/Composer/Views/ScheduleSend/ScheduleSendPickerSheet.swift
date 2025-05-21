@@ -17,18 +17,33 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct ScheduleSendPickerSheet: View {
-    @Environment(\.dismiss) var dismiss
-    private let dateFormatter: ScheduleSendDateFormatter
-    private let options: ScheduleSendOptions
-    private var lastScheduleSendTime: UInt64?
+    struct TimeOptions {
+        let tomorrow: Date
+        let nextMonday: Date
+        let lastScheduleSendTime: Date?
+    }
 
-    init(provider: ScheduleSendOptionsProvider, dateFormatter: ScheduleSendDateFormatter = .init(), lastScheduleSendTime: UInt64? = nil) {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+    private let dateFormatter: ScheduleSendDateFormatter
+    private let predefinedTimeOptions: TimeOptions
+    private let isCustomOptionAvailable: Bool
+    private let onTimeSelected: (Date) async -> Void
+
+    init(
+        predefinedTimeOptions: TimeOptions,
+        isCustomOptionAvailable: Bool,
+        dateFormatter: ScheduleSendDateFormatter = .init(),
+        onTimeSelected: @escaping (Date) async -> Void
+    ) {
         self.dateFormatter = dateFormatter
-        self.options = provider.options()
-        self.lastScheduleSendTime = lastScheduleSendTime
+        self.predefinedTimeOptions = predefinedTimeOptions
+        self.isCustomOptionAvailable = isCustomOptionAvailable
+        self.onTimeSelected = onTimeSelected
     }
 
     var body: some View {
@@ -41,24 +56,26 @@ struct ScheduleSendPickerSheet: View {
                     .fontWeight(.semibold)
                     .padding(.bottom, DS.Spacing.small)
 
-                if let lastScheduleSendTime {
-                    previouslySet(time: dateFormatter.string(from: lastScheduleSendTime))
+                if let lastScheduleSendTime = predefinedTimeOptions.lastScheduleSendTime {
+                    previouslySet(time: lastScheduleSendTime)
                 }
 
                 HStack(spacing: DS.Spacing.large) {
                     predefinedOption(
                         icon: DS.SFSymbols.sunMax,
                         title: L10n.ScheduleSend.tomorrow.string,
-                        subtitle: dateFormatter.string(from: options.tomorrowTime)
+                        time: predefinedTimeOptions.tomorrow,
+                        onTap: onTimeSelected
                     )
                     predefinedOption(
                         icon: DS.SFSymbols.suitcase,
                         title: L10n.ScheduleSend.monday.string,
-                        subtitle: dateFormatter.string(from: options.mondayTime)
+                        time: predefinedTimeOptions.nextMonday,
+                        onTap: onTimeSelected
                     )
                 }
 
-                customOption(isCustomOptionAvailable: options.isCustomOptionAvailable)
+                customOption(isCustomOptionAvailable: isCustomOptionAvailable)
 
                 Spacer()
             }
@@ -70,8 +87,8 @@ struct ScheduleSendPickerSheet: View {
     }
 
     @ViewBuilder
-    private func predefinedOption(icon: String, title: String, subtitle: String) -> some View {
-        Button(action: {}) {
+    private func predefinedOption(icon: String, title: String, time: Date, onTap: @escaping (Date) async -> Void) -> some View {
+        Button(action: { Task { await onTap(time) } }) {
             VStack(spacing: DS.Spacing.small) {
                 Image(systemName: icon)
                     .font(.title2)
@@ -80,7 +97,7 @@ struct ScheduleSendPickerSheet: View {
                 Text(title)
                     .foregroundStyle(DS.Color.Text.norm)
                     .font(.callout)
-                Text(subtitle)
+                Text(dateFormatter.string(from: time, format: .short))
                     .foregroundStyle(DS.Color.Text.weak)
                     .font(.footnote)
             }
@@ -97,7 +114,9 @@ struct ScheduleSendPickerSheet: View {
                 ? L10n.ScheduleSend.customSubtitle.string
                 : L10n.ScheduleSend.customSubtitleFreeUser.string
         }
-        Button(action: {}) {
+        Button(action: {
+            toastStateStore.present(toast: .comingSoon)
+        }) {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(L10n.ScheduleSend.customTitle.string)
@@ -125,14 +144,14 @@ struct ScheduleSendPickerSheet: View {
     }
 
     @ViewBuilder
-    private func previouslySet(time: String) -> some View {
-        Button(action: {}) {
+    private func previouslySet(time: Date) -> some View {
+        Button(action: { Task { await onTimeSelected(time) } }) {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(L10n.ScheduleSend.previouslySet.string)
                         .foregroundStyle(DS.Color.Text.weak)
                         .font(.subheadline)
-                    Text(time)
+                    Text(dateFormatter.string(from: time, format: .short))
                         .foregroundStyle(DS.Color.Text.norm)
                         .font(.callout)
                 }
@@ -161,9 +180,26 @@ private extension View {
 }
 
 #Preview {
-    VStack {
-        ScheduleSendPickerSheet(provider: .dummy(isCustomAvailable: false))
-
-        ScheduleSendPickerSheet(provider: .dummy(isCustomAvailable: true), lastScheduleSendTime: 1904565584)
+    var toastStateStore: ToastStateStore = .init(initialState: .initial)
+    var options: (Bool, UInt64?) -> ScheduleSendPickerSheet.TimeOptions = { isCustomAvailable, lastScheduledTime in
+        try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: isCustomAvailable)
+            .scheduleSendOptions()
+            .get()
+            .toScheduleSendPickerTimeOptions(lastScheduleSendTime: lastScheduledTime)
     }
+
+    VStack {
+        ScheduleSendPickerSheet(
+            predefinedTimeOptions: options(false, nil),
+            isCustomOptionAvailable: false,
+            onTimeSelected: { _ in }
+        )
+
+        ScheduleSendPickerSheet(
+            predefinedTimeOptions: options(true, 1904565584),
+            isCustomOptionAvailable: true,
+            onTimeSelected: { _ in }
+        )
+    }
+    .environmentObject(toastStateStore)
 }

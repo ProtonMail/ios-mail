@@ -36,12 +36,13 @@ final class ComposerModel: ObservableObject {
     private let draftOrigin: DraftOrigin
     private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
-    private let onSendingEvent: () -> Void
+    private let onSendingEvent: (SendEvent) -> Void
     private let onCancel: () -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
     private let cameraImageHandler: CameraImageHandler
     private let fileItemsHandler: FilePickerItemHandler
+    private let scheduleSendOptionsProvider: ScheduleSendOptionsProvider
 
     lazy var invalidAddressAlertStore = InvalidAddressAlertStateStore(
         validator: .init(
@@ -68,7 +69,7 @@ final class ComposerModel: ObservableObject {
 
     private var updateBodyDebounceTask: DebouncedTask?
 
-    private var messageHasBeenSent: Bool = false
+    private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
     var embeddedImageProvider: EmbeddedImageProvider {
@@ -80,7 +81,7 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping () -> Void,
+        onSendingEvent: @escaping (SendEvent) -> Void,
         onCancel: @escaping () -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
@@ -100,6 +101,7 @@ final class ComposerModel: ObservableObject {
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
         self.attachmentAlertState = .init()
+        self.scheduleSendOptionsProvider = .init(scheduleSendOptions: draft.scheduleSendOptions)
         self.state = makeState(from: draft)
         setUpCallbacks()
     }
@@ -132,7 +134,7 @@ final class ComposerModel: ObservableObject {
     func viewDidDisappear() async {
         AppLogger.log(message: "composer did disappear", category: .composer)
         await updateBodyDebounceTask?.executeImmediately()
-        if !messageHasBeenSent {
+        if !messageHasBeenSentOrScheduled {
             showDraftSavedToastIfNeeded()
         }
     }
@@ -250,7 +252,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func updateBody(value: String) {
-        guard !messageHasBeenSent else { return }
+        guard !messageHasBeenSentOrScheduled else { return }
         debounce { [weak self] in  // FIXME: Move debounce to SDK
             guard let self else { return }
             switch draft.setBody(body: value) {
@@ -263,24 +265,32 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
-    func sendMessage(dismissAction: Dismissable) {
-        guard !messageHasBeenSent else { return }
-        guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
-        Task {
-            await updateBodyDebounceTask?.executeImmediately()
+    func scheduleSendState() -> ComposerViewModalState? {
+        do {
+            let timeOptions = try scheduleSendOptionsProvider.scheduleSendOptions().get()
+            return .scheduleSend(timeOptions)
+        } catch let error {
+            toast = .error(message: error.localizedDescription)
+            return nil
+        }
+    }
 
-            AppLogger.log(message: "sending message", category: .composer)
-            switch await draft.send() {
-            case .ok:
-                messageHasBeenSent = true
-                onSendingEvent()
-                dismissComposer(dismissAction: dismissAction)
-            case .error(let draftError):
-                AppLogger.log(error: draftError, category: .composer)
-                if draftError.shouldBeDisplayed {
-                    showToast(.error(message: draftError.localizedDescription))
-                }
+    @MainActor
+    func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
+        guard !messageHasBeenSentOrScheduled else { return }
+        guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
+        await updateBodyDebounceTask?.executeImmediately()
+
+        let (result, event) = await performSendOrSchedule(date: date)
+        switch result {
+        case .ok:
+            messageHasBeenSentOrScheduled = true
+            onSendingEvent(event)
+            dismissComposer(dismissAction: dismissAction)
+        case .error(let draftError):
+            AppLogger.log(error: draftError, category: .composer)
+            if draftError.shouldBeDisplayed {
+                showToast(.error(message: draftError.localizedDescription))
             }
         }
     }
@@ -294,9 +304,9 @@ final class ComposerModel: ObservableObject {
     }
 
     func addAttachments(filePickerResult: Result<[URL], any Error>) async {
-        await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult, onErrors: { errors in
+        await fileItemsHandler.addSelectedFiles(to: draft, selectionResult: filePickerResult) { errors in
             attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
-        })
+        }
     }
 
     @MainActor
@@ -343,7 +353,7 @@ final class ComposerModel: ObservableObject {
         composerWillDismiss = true
         dismissAction()
 
-        if !messageHasBeenSent {
+        if !messageHasBeenSentOrScheduled {
             onCancel()
         }
     }
@@ -400,8 +410,8 @@ extension ComposerModel {
     }
 
     private func updateStateRecipientUIModels(for group: RecipientGroupType) {
-        Dispatcher.dispatchOnMain(.init(
-            block: { [weak self] in
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
                 guard let self else { return }
                 state.overrideRecipientState(for: group) { [weak self] recipientFieldState in
                     guard let self else { return recipientFieldState }
@@ -420,8 +430,7 @@ extension ComposerModel {
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().get()
-            state.attachments = draftAttachments
-                .filter { $0.attachment.disposition == .attachment }
+            state.attachments = draftAttachments.filter { $0.attachment.disposition == .attachment }
                 .map { $0.toDraftAttachmentUIModel() }
             attachmentAlertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {
@@ -497,8 +506,7 @@ extension ComposerModel {
     private func endEditing(group: RecipientFieldState) -> RecipientFieldState {
         var newRecipients = group.recipients
         group.recipients.indices.forEach { newRecipients[$0].isSelected = false }
-        return group
-            .copy(\.recipients, to: newRecipients)
+        return group.copy(\.recipients, to: newRecipients)
             .copy(\.input, to: .empty)
             .copy(\.controllerState, to: .collapsed)
     }
@@ -511,6 +519,18 @@ extension ComposerModel {
             draft.ccRecipients()
         case .bcc:
             draft.bccRecipients()
+        }
+    }
+
+   private func performSendOrSchedule(date: Date?) async -> (VoidDraftSendResult, SendEvent) {
+        if let date {
+            AppLogger.log(message: "scheduling message", category: .composer)
+            let result = await draft.schedule(timestamp: UInt64(date.timeIntervalSince1970))
+            return (result, .scheduleSend(date: date))
+        } else {
+            AppLogger.log(message: "sending message", category: .composer)
+            let result = await draft.send()
+            return (result, .send)
         }
     }
 
@@ -531,11 +551,7 @@ extension ComposerModel {
     }
 
     func showToast(_ toastToShow: Toast) {
-        Dispatcher.dispatchOnMain(.init(
-            block: { [weak self] in
-                self?.toast = toastToShow
-            })
-        )
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toast = toastToShow }))
     }
 }
 

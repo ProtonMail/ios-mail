@@ -39,7 +39,7 @@ enum ComposerScreenFactory {
 
         return ComposerScreen(
             draft: draft, draftOrigin: .new, dependencies: dependencies,
-            onSendingEvent: {
+            onSendingEvent: { _ in
                 extensionContext.complete()
             },
             onCancel: {
