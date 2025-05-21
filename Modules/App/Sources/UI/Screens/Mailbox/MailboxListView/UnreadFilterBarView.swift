@@ -47,11 +47,6 @@ struct UnreadFilterBarView: View {
             state.isUnreadButtonSelected.toggle()
         } label: {
             HStack(spacing: DS.Spacing.small) {
-                Image(DS.Icon.icEnvelopeDot)
-                    .resizable()
-                    .square(size: 16)
-                    .tint(DS.Color.Icon.norm)
-
                 Text(L10n.Mailbox.unread)
                     .font(.footnote)
                     .foregroundStyle(DS.Color.Text.weak)
@@ -66,11 +61,11 @@ struct UnreadFilterBarView: View {
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.medium * scale)
         .background(
-            RoundedRectangle(cornerRadius: DS.Radius.massive*scale, style: .continuous)
+            RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
                 .fill(state.isUnreadButtonSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
         )
         .overlay {
-            RoundedRectangle(cornerRadius: DS.Radius.massive*scale, style: .continuous)
+            RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
                 .stroke(DS.Color.Border.norm)
         }
     }
@@ -93,7 +88,7 @@ struct UnreadFilterBarView: View {
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.medium * scale)
         .overlay {
-            RoundedRectangle(cornerRadius: DS.Radius.massive*scale, style: .continuous)
+            RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
                 .stroke(DS.Color.Border.norm)
         }
     }
