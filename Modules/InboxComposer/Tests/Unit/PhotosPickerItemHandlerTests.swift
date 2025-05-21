@@ -17,7 +17,6 @@
 
 import CoreTransferable
 @testable import InboxComposer
-import InboxCoreUI
 import InboxTesting
 import PhotosUI
 import proton_app_uniffi

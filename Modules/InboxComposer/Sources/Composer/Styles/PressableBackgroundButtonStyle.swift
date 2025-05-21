@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
-import InboxDesignSystem
 
 struct PressableBackgroundButtonStyle: ButtonStyle {
     let normalColor: Color

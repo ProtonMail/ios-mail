@@ -23,7 +23,6 @@ import proton_app_uniffi
 final class PaymentsService: ApplicationServiceSetUp {
     private let sessionState: AnyPublisher<SessionState, Never>
     private let transactionsObserver: TransactionsObserverProviding
-    private var cancellables = Set<AnyCancellable>()
 
     init(
         sessionState: any Publisher<SessionState, Never>,

@@ -39,15 +39,11 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func messageId() async -> DraftMessageIdResult
     func attachmentList() -> AttachmentListProtocol
     func body() -> String
-    func mimeType() -> MimeType
-    func save() async -> VoidDraftSaveResult
     func send() async -> VoidDraftSendResult
     func sender() -> String
     func setBody(body: String) -> VoidDraftSaveResult
     func setSubject(subject: String) -> VoidDraftSaveResult
     func subject() -> String
-
-    func discard() async -> VoidDraftDiscardResult
 }
 
 /**

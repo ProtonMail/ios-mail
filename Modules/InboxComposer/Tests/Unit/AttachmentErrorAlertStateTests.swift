@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxComposer
-import InboxTesting
 import proton_app_uniffi
 import Testing
 
@@ -99,7 +98,6 @@ final class AttachmentErrorAlertStateTests {
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
-        #expect(errorToPresent!.origin.isUploading == true)
         #expect(errorToPresent?.origin.errorCount == 2)
         #expect(pendingErrorCount == 0)
     }

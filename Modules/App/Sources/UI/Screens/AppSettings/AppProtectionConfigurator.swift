@@ -21,7 +21,6 @@ protocol AppProtectionConfigurator: Sendable {
     func deletePinCode(pin: [UInt32]) async -> MailSessionDeletePinCodeResult
     func setPinCode(pin: [UInt32]) async -> MailSessionSetPinCodeResult
     func setBiometricsAppProtection() async -> MailSessionSetBiometricsAppProtectionResult
-    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult
     func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult
 }
 

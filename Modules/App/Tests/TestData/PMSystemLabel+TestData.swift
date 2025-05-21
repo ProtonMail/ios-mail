@@ -27,9 +27,7 @@ extension PMSystemLabel {
     static func testData(
         id: UInt64 = UInt64.random(in: 1...UInt64.max),
         systemLabel: SystemLabel?,
-        parentId: UInt64? = nil,
         name: String,
-        color: String = "#000000",
         displayOrder: UInt32 = UInt32.random(in: 1...UInt32.max)
     ) -> Self {
         .init(

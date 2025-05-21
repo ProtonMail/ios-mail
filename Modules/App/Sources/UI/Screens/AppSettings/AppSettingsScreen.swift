@@ -153,13 +153,6 @@ struct AppSettingsScreen: View {
         )
     }
 
-    private var isAppearanceMenuShown: Binding<Bool> {
-        .init(
-            get: { store.state.isAppearanceMenuShown },
-            set: { newValue in store.state = store.state.copy(\.isAppearanceMenuShown, to: newValue) }
-        )
-    }
-
     private var combinedContactsBinding: Binding<Bool> {
         .init(
             get: { store.state.storedAppSettings.useCombineContacts },

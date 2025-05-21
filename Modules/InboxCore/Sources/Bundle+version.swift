@@ -17,7 +17,7 @@
 
 import Foundation
 
-extension Bundle {
+public extension Bundle {
 
     /// Returns the major version of the app.
     var bundleShortVersion: String {

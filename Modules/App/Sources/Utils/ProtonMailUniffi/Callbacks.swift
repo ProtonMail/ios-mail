@@ -37,15 +37,3 @@ final class LiveQueryCallbackWrapper: Sendable, LiveQueryCallback {
     }
 
 }
-
-final class AsyncLiveQueryCallbackWrapper: Sendable, AsyncLiveQueryCallback {
-    let callback: @Sendable () async -> Void
-
-    init(callback: @escaping @Sendable () async -> Void) {
-        self.callback = callback
-    }
-
-    func onUpdate() async {
-        await callback()
-    }
-}

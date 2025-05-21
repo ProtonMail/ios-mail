@@ -88,20 +88,6 @@ enum AttachmentErrorOrigin: Hashable {
     case adding([AddAttachmentError])
     case uploading([UploadAttachmentError])
 
-    var isAdding: Bool {
-        switch self {
-        case .adding: true
-        case .uploading: false
-        }
-    }
-
-    var isUploading: Bool {
-        switch self {
-        case .adding: false
-        case .uploading: true
-        }
-    }
-
     var errorCount: Int {
         switch self {
         case .adding(let array):

@@ -22,7 +22,6 @@ final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
 
     var deletePinCodeResultStub = MailSessionDeletePinCodeResult.ok
     var setPinCodeResultStub = MailSessionSetPinCodeResult.ok
-    var verifyPinCodeResultStub = MailSessionVerifyPinCodeResult.ok
     var setBiometricsAppProtectionResultStub = MailSessionSetBiometricsAppProtectionResult.ok
     var mailSessionUnsetBiometricsAppProtectionResultStub = MailSessionUnsetBiometricsAppProtectionResult.ok
 
@@ -30,7 +29,6 @@ final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
     private(set) var unsetBiometricsAppProtectionInvokeCount = 0
     private(set) var invokedDeletePINCode: [[UInt32]] = []
     private(set) var invokedSetPINCode: [[UInt32]] = []
-    private(set) var invokedVerifyPINCode: [[UInt32]] = []
 
     // MARK: - AppProtectionConfigurator
 
@@ -56,12 +54,6 @@ final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
         unsetBiometricsAppProtectionInvokeCount += 1
 
         return mailSessionUnsetBiometricsAppProtectionResultStub
-    }
-
-    func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {
-        invokedVerifyPINCode.append(pin)
-
-        return verifyPinCodeResultStub
     }
 
 }

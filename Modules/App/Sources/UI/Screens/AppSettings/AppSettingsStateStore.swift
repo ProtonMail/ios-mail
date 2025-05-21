@@ -135,16 +135,3 @@ final class AppSettingsStateStore: StateStore, Sendable {
     }
 
 }
-
-private extension AppAppearance {
-    var style: UIUserInterfaceStyle {
-        switch self {
-        case .system:
-            .unspecified
-        case .darkMode:
-            .dark
-        case .lightMode:
-            .light
-        }
-    }
-}

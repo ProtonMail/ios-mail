@@ -17,7 +17,6 @@
 
 import Combine
 import InboxCore
-import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 

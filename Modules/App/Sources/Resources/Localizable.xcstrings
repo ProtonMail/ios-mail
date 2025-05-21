@@ -1668,9 +1668,6 @@
     "Migration failed. Please sign in again and submit a bug report." : {
       "comment" : "Error toast of the welcome screen."
     },
-    "Migration in progress" : {
-      "comment" : "Shown under activity progress indicator"
-    },
     "Min 4 characters and max 21 characters" : {
       "comment" : "Information displayed under the PIN input."
     },

@@ -18,8 +18,6 @@
 @testable import InboxKeychain
 @testable import ProtonMail
 
-import InboxCore
-
 extension LegacyKeychain {
     static func randomInstance(function: StaticString = #function) -> Self {
         Self.legacyService = "\(function)_\(UUID().uuidString)"

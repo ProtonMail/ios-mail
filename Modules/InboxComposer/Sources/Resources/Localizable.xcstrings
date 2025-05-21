@@ -39,12 +39,6 @@
     "Address not found" : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
-    "An attachmemt failed to upload" : {
-      "comment" : "Error in the context of sending a draft before being sent."
-    },
-    "Attachment could not be added" : {
-      "comment" : "Attachment failed to be added to a draft message."
-    },
     "Attachment limit" : {
       "comment" : "Attachment failed because the total size was above the limit"
     },
@@ -137,9 +131,6 @@
     "Please enter a valid email address" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
     },
-    "Please verify your last recipient" : {
-      "comment" : "Composer toast message when an invalid recipient is added by prematurely finishing text input"
-    },
     "Previously set" : {
       "comment" : "Title of a schedule send option that shows the time when the message was last scheduled"
     },
@@ -221,9 +212,6 @@
     },
     "Sending message..." : {
       "comment" : "Composer toast message when send is tapped."
-    },
-    "Some attachmentments could not be added" : {
-      "comment" : "Attachment failed to be added to a draft message."
     },
     "Something went wrong" : {
       "comment" : "Attachment failed because an unexpected error"

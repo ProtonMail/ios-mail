@@ -69,19 +69,9 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockBccRecipientList
     }
 
-    func attachments() -> [AttachmentMetadata] {
-        []
-    }
-
     func body() -> String {
         .empty
     }
-
-    func mimeType() -> MimeType {
-        .textHtml
-    }
-
-    func save() async -> VoidDraftSaveResult { .ok }
 
     func send() async -> VoidDraftSendResult { .ok }
 
@@ -89,18 +79,12 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSender
     }
 
-    func setBccRecipients(recipients: [String]) {}
-
     func setBody(body: String) -> VoidDraftSaveResult { .ok }
-
-    func setCcRecipients(recipients: [String]) {}
 
     func setSubject(subject: String) -> VoidDraftSaveResult {
         mockSubject = subject
         return .ok
     }
-
-    func setToRecipients(recipients: [String]) {}
 
     func subject() -> String {
         mockSubject
@@ -108,10 +92,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult {
         .error(.network)
-    }
-
-    func discard() async -> VoidDraftDiscardResult {
-        .ok
     }
 }
 
@@ -196,7 +176,6 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
     var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
     var mockAttachmentListRemoveWithCidResult = [(cid: String, result: AttachmentListRemoveWithCidResult)]()
-    var attachmentCallback: AsyncLiveQueryCallback?
 
     func add(path: String, filenameOverride: String?) async -> AttachmentListAddResult {
         capturedAddCalls.append((path, filenameOverride))
