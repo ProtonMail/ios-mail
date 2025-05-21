@@ -72,7 +72,7 @@ final class SceneDelegateTests: BaseTestCase {
         expect(overlayWindow.isHidden) == false
     }
 
-    func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() async throws {
+    func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() throws {
         mailSessionSpy.appProtectionStub = .biometrics
         shouldAutoLockStub = true
 
