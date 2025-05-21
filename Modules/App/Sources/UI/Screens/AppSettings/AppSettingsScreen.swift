@@ -106,9 +106,7 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
-        .onLoad {
-            store.handle(action: .onLoad)
-        }
+        .onAppear { store.handle(action: .onAppear) }
         .onChange(
             of: scenePhase,
             { _, newValue in

@@ -20,7 +20,7 @@ import proton_app_uniffi
 enum AppSettingsAction {
     case notificationButtonTapped
     case languageButtonTapped
-    case onLoad
+    case onAppear
     case enterForeground
     case appearanceTapped
     case appearanceSelected(AppAppearance)
