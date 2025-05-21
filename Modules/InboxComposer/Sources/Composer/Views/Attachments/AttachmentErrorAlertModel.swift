@@ -50,8 +50,8 @@ enum AttachmentErrorAlertModel: Hashable {
         switch self {
         case .overSizeLimit(let origin):
             origin.errorCount > 1
-            ? L10n.AttachmentError.multipleAttachmentOverSizeLimitMessage(count: origin.errorCount)
-            : L10n.AttachmentError.singleAttachmentOverSizeLimitMessage
+                ? L10n.AttachmentError.multipleAttachmentOverSizeLimitMessage(count: origin.errorCount)
+                : L10n.AttachmentError.singleAttachmentOverSizeLimitMessage
         case .tooMany:
             switch origin {
             case .adding:

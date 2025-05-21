@@ -82,7 +82,7 @@ final class AttachmentErrorAlertStateTests {
     func testEnqueueAnyUploadError_whenNoErrorsPassed_itShouldNotEnqueueErrors() async {
         await sut.enqueueAnyUploadError([
             DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
-            DraftAttachment.makeMock(state: .pending, timestamp: 2)
+            DraftAttachment.makeMock(state: .pending, timestamp: 2),
         ])
 
         let errorToPresent = await sut.errorToPresent
@@ -98,6 +98,7 @@ final class AttachmentErrorAlertStateTests {
         let errorToPresent = await sut.errorToPresent
         let pendingErrorCount = await sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
+        #expect(errorToPresent!.origin.isUploading == true)
         #expect(errorToPresent?.origin.errorCount == 2)
         #expect(pendingErrorCount == 0)
     }
@@ -186,5 +187,14 @@ final class AttachmentErrorAlertStateTests {
         await sut.enqueueAnyUploadError([tooManyError1])
 
         #expect(onErrorToPresentWasCalled == true)
+    }
+}
+
+private extension AttachmentErrorOrigin {
+    var isUploading: Bool {
+        switch self {
+        case .adding: false
+        case .uploading: true
+        }
     }
 }
