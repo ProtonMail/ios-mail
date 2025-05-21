@@ -23,20 +23,20 @@ public struct FormBigButton: View {
     private let title: LocalizedStringResource
     private let systemIconName: String?
     private let action: () -> Void
-    private let isInteractive: Bool
+    private let hasAccentTextColor: Bool
 
     public init(
         title: LocalizedStringResource,
         icon: String?,
         value: String,
         action: @escaping () -> Void,
-        isInteractive: Bool = true
+        hasAccentTextColor: Bool = false
     ) {
         self.title = title
         self.systemIconName = icon
         self.value = value
         self.action = action
-        self.isInteractive = isInteractive
+        self.hasAccentTextColor = hasAccentTextColor
     }
 
     public var body: some View {
@@ -50,7 +50,7 @@ public struct FormBigButton: View {
                     Text(value)
                         .font(.body)
                         .fontWeight(.regular)
-                        .foregroundStyle(isInteractive ? DS.Color.Text.accent : DS.Color.Text.norm)
+                        .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
                 }
                 if let systemIconName {
                     Spacer(minLength: DS.Spacing.small)
@@ -65,6 +65,5 @@ public struct FormBigButton: View {
         }
         .background(DS.Color.BackgroundInverted.secondary)
         .buttonStyle(DefaultPressedButtonStyle())
-        .disabled(!isInteractive)
     }
 }

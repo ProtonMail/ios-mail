@@ -117,8 +117,9 @@ struct ContactDetailsScreen: View {
                     action: {
                         // FIXME: Implement action for specific item
                     },
-                    isInteractive: item.isInteractive
+                    hasAccentTextColor: item.isInteractive
                 )
+                .disabled(!item.isInteractive)
             }
         }
     }
