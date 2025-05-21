@@ -19,4 +19,5 @@ import Foundation
 
 enum UITestSidebarEntry: String {
     case subscription = "Subscription"
+    case signOut = "Sign Out"
 }

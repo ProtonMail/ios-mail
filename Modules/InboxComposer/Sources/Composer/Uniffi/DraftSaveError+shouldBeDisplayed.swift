@@ -40,3 +40,9 @@ extension DraftSaveErrorReason {
         }
     }
 }
+
+public extension ApiEnvId {
+    static func localhost(port: String) -> Self {
+        .custom("http://localhost:\(port)")
+    }
+}

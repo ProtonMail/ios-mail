@@ -19,6 +19,7 @@
 import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
+import SwiftUI
 
 @MainActor
 class MailboxItemActionSheetSnapshotTests: BaseTestCase {
@@ -45,13 +46,17 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
                 mailUserSession: .dummy,
                 navigation: { _ in }
             )
-                .environmentObject(ToastStateStore(initialState: .initial))
-                .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
+            .environmentObject(ToastStateStore(initialState: .initial))
+            .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
 
-            assertSnapshotsOnIPhoneX(
-                of: sut,
-                named: "lightMode\(forceLightMode ? "" : "Not")Forced"
-            )
+            for style in [UIUserInterfaceStyle.light, .dark] {
+                assertCustomHeightSnapshot(
+                    matching: UIHostingController(rootView: sut).view,
+                    styles: [style],
+                    preferredHeight: 1050,
+                    named: "lightMode\(forceLightMode ? "" : "Not")Forced",
+                )
+            }
         }
     }
 

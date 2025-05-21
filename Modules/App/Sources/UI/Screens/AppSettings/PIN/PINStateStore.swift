@@ -15,25 +15,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import LocalAuthentication
 import SwiftUI
 import InboxCore
 
+@MainActor
 class PINStateStore: StateStore {
     @Published var state: PINScreenState
     private let pinScreenValidator: PINValidator
-    private let pinActionPerformer: PINActionPerformer
     private let router: Router<PINRoute>
+    private let appProtectionConfigurator: AppProtectionConfigurator
+    private let biometricAuthenticator: BiometricAuthenticator
     private let dismiss: () -> Void
 
-    init(state: PINScreenState, router: Router<PINRoute>, dismiss: @escaping () -> Void) {
+    init(
+        state: PINScreenState,
+        router: Router<PINRoute>,
+        pinVerifier: PINVerifier,
+        appProtectionConfigurator: AppProtectionConfigurator,
+        laContext: @Sendable @escaping () -> LAContext = { LAContext() },
+        dismiss: @escaping () -> Void
+    ) {
         self.state = state
-        self.pinScreenValidator = .init(pinScreenType: state.type)
-        self.pinActionPerformer = PINActionPerformer()
+        self.pinScreenValidator = .init(pinScreenType: state.type, pinVerifier: pinVerifier)
         self.router = router
+        self.appProtectionConfigurator = appProtectionConfigurator
+        self.biometricAuthenticator = .init(method: .builtIn(laContext))
         self.dismiss = dismiss
     }
 
-    @MainActor
     func handle(action: PINScreenAction) async {
         switch action {
         case .pinTyped(let pin):
@@ -46,28 +56,62 @@ class PINStateStore: StateStore {
                 router.goBack()
             }
         case .trailingButtonTapped:
-            state = state.copy(\.pinValidation, to: pinScreenValidator.validate(pin: state.pin))
-            if state.pinValidation.isSuccess {
-                switch state.type {
-                case .set(let oldPIN):
-                    router.go(to: .pin(type: .confirm(oldPIN: oldPIN, newPIN: state.pin)))
-                case .confirm(let oldPIN, let newPIN):
-                    if let oldPIN {
-                        await pinActionPerformer.perform(action: .change(oldPIN: oldPIN, newPIN: newPIN))
-                    } else {
-                        await pinActionPerformer.perform(action: .set(pin: newPIN))
-                    }
-                    dismiss()
-                case .verify(let flow):
-                    await pinActionPerformer.perform(action: .verify(pin: state.pin))
-                    switch flow {
-                    case .changePIN:
-                        router.go(to: .pin(type: .set(oldPIN: state.pin)))
-                    case .disablePIN:
-                        dismiss()
-                    }
-                }
+            let pinValidationResult = await pinScreenValidator.validate(pin: state.pin)
+            state = state.copy(\.pinValidation, to: pinValidationResult)
+            guard pinValidationResult.isSuccess else {
+                return
+            }
+            switch state.type {
+            case .set:
+                router.go(to: .pin(type: .confirm(pin: state.pin)))
+            case .confirm(let pin):
+                await confirm(pin: pin)
+            case .verify(let reason):
+                await verifyPIN(reason: reason)
             }
         }
+    }
+
+    private func confirm(pin: [UInt32]) async {
+        do {
+            try await appProtectionConfigurator.setPinCode(pin: pin).get()
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+        dismiss()
+    }
+
+    private func verifyPIN(reason: PINVerificationReason) async {
+        switch reason {
+        case .changePIN:
+            router.go(to: .pin(type: .set))
+        case .disablePIN:
+            do {
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
+                dismiss()
+            } catch {
+                state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
+            }
+        case .changeToBiometry:
+            do {
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
+                await setUpBioemtryProtection()
+            } catch {
+                state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
+            }
+        }
+    }
+
+    private func setUpBioemtryProtection() async {
+        guard await biometricAuthenticator.authenticate().isSuccess else {
+            dismiss()
+            return
+        }
+        do {
+            try await appProtectionConfigurator.setBiometricsAppProtection().get()
+        } catch {
+            AppLogger.log(error: error)
+        }
+        dismiss()
     }
 }

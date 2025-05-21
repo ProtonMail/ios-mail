@@ -82,6 +82,9 @@ extension AppLifeCycle {
         let notificationAuthorizationService = NotificationAuthorizationService(
             remoteNotificationRegistrar: UIApplication.shared
         )
+
+        let paymentsService = PaymentsService(sessionState: appContext.$sessionState)
+
         let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor(
             backgroundTransitionTaskScheduler: UIApplication.shared,
             backgroundTaskExecutorProvider: { appContext.mailSession },
@@ -101,20 +104,21 @@ extension AppLifeCycle {
                 appContext,
                 legacyMigrationService,
                 notificationAuthorizationService,
+                paymentsService,
                 recurringBackgroundTaskService,
-                userNotificationCenterDelegate
+                userNotificationCenterDelegate,
             ],
             willEnterForegroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
-                emailsPrefetchingNotifier
+                emailsPrefetchingNotifier,
             ],
             willResignActiveServices: [
                 appIconBadgeService
             ],
             didEnterBackgroundServices: [
                 foregroundWorkService,
-                backgroundTransitionActionsExecutor
+                backgroundTransitionActionsExecutor,
             ],
             terminateServices: []
         )

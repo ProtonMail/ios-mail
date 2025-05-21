@@ -129,7 +129,7 @@ final class ReportProblemStateStore: StateStore {
 private extension FormTextInput.ValidationStatus {
 
     static var summaryLessThen10Characters: Self {
-        .failure(L10n.ReportProblem.summaryValidationError)
+        .failure(L10n.ReportProblem.summaryValidationError.string)
     }
 
 }

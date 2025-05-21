@@ -144,7 +144,7 @@ public extension DraftMessageIdResult {
     }
 }
 public extension DraftScheduleSendOptionsResult {
-    func get() throws(ProtonError) -> DraftScheduleSendOption {
+    func get() throws(ProtonError) -> DraftScheduleSendOptions {
         switch self {
         case .ok(let value):
             value
@@ -388,6 +388,16 @@ public extension MailSessionSetBiometricsAppProtectionResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionShouldAutoLockResult {
+    func get() throws(UserSessionError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }

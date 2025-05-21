@@ -31,6 +31,7 @@ struct FormSwitchView: View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             HStack {
                 Text(title)
+                    .foregroundStyle(DS.Color.Text.norm)
                 Spacer(minLength: DS.Spacing.standard)
                 Toggle(String.empty, isOn: $isOn)
                     .tint(DS.Color.Text.accent)

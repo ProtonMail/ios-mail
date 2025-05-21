@@ -55,6 +55,14 @@ Run UI Smoke Tests
 
 Run UI Full Regression Tests
 
+### ios uitests_performance
+
+```sh
+[bundle exec] fastlane ios uitests_performance
+```
+
+Run UI Performance Tests
+
 ### ios deploy
 
 ```sh

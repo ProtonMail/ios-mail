@@ -31,11 +31,7 @@ class MessageBodyReaderViewTests {
             bodyContentHeight: .constant(.zero),
             body: .init(
                 rawBody: "<html>dummy</html>",
-                options: .init(
-                    showBlockQuote: true,
-                    hideRemoteImages: .none,
-                    hideEmbeddedImages: .none
-                ),
+                options: .init(),
                 embeddedImageProvider: EmbeddedImageProviderSpy()
             ),
             urlOpener: urlOpenerSpy,

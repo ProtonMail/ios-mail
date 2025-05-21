@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import struct InboxComposer.ScheduleSendDateFormatter
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
@@ -34,13 +35,20 @@ struct MessageBannersView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     let types: OrderedSet<MessageBanner>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
+    let scheduleSendDateFormatter: ScheduleSendDateFormatter
     let action: (Action) -> Void
 
     @State private var currentDate: Date = DateEnvironment.currentDate()
 
-    init(types: OrderedSet<MessageBanner>, timer: Timer.Type, action: @escaping (Action) -> Void) {
+    init(
+        types: OrderedSet<MessageBanner>,
+        timer: Timer.Type,
+        scheduleSendDateFormatter: ScheduleSendDateFormatter = .init(),
+        action: @escaping (Action) -> Void
+    ) {
         self.types = types
         self.timerPublisher = timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        self.scheduleSendDateFormatter = scheduleSendDateFormatter
         self.action = action
     }
 
@@ -61,7 +69,7 @@ struct MessageBannersView: View {
                     action(.unblockSenderTapped)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icCircleSlash,
                     message: L10n.MessageBanner.blockedSenderTitle,
                     size: .small(button),
@@ -72,7 +80,7 @@ struct MessageBannersView: View {
                     action(.markAsLegitimateTapped)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icHook,
                     message: L10n.MessageBanner.phishingAttemptTitle,
                     size: .large(.one(button)),
@@ -83,7 +91,7 @@ struct MessageBannersView: View {
                     action(.markAsLegitimateTapped)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icFire,
                     message: L10n.MessageBanner.spamTitle,
                     size: .large(.one(button)),
@@ -102,7 +110,7 @@ struct MessageBannersView: View {
             case .autoDelete(let timestamp):
                 let expirationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
                 let remainingTime = expirationDate.localisedRemainingTimeFromNow()
-                
+
                 return smallNoButton(
                     icon: DS.Icon.icTrashClock,
                     message: L10n.MessageBanner.autoDeleteTitle(remainingTime: remainingTime),
@@ -113,21 +121,23 @@ struct MessageBannersView: View {
                     toastStateStore.present(toast: .comingSoon)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icEnvelopes,
                     message: L10n.MessageBanner.unsubscribeNewsletterTitle,
                     size: .small(button),
                     style: .regular
                 )
-            case .scheduledSend:
+            case .scheduledSend(let scheduledTime):
+                let formattedTime = scheduleSendDateFormatter.stringWithRelativeDate(from: scheduledTime)
                 let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }
 
                 return .init(
                     icon: DS.Icon.icClockPaperPlane,
-                    message: L10n.MessageBanner.scheduledSendTitle(formattedTime: "tomorrow at 08:00"),
-                    size: .small(button),
+                    title: L10n.MessageBanner.scheduledSendTitle.string,
+                    subtitle: formattedTime,
+                    size: .large(.one(button)),
                     style: .regular
                 )
             case .snoozed:
@@ -135,7 +145,7 @@ struct MessageBannersView: View {
                     toastStateStore.present(toast: .comingSoon)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icClock,
                     message: L10n.MessageBanner.snoozedTitle(formattedTime: "tomorrow at 09:00"),
                     size: .small(button),
@@ -146,7 +156,7 @@ struct MessageBannersView: View {
                     action(.displayEmbeddedImagesTapped)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.embeddedImagesTitle,
                     size: .small(button),
@@ -157,7 +167,7 @@ struct MessageBannersView: View {
                     action(.downloadRemoteContentTapped)
                 }
 
-                return .init(
+                return oneLine(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.remoteContentTitle,
                     size: .small(button),
@@ -173,6 +183,15 @@ struct MessageBannersView: View {
         message: LocalizedStringResource,
         style: Banner.Style
     ) -> Banner {
-        .init(icon: icon, message: message, size: .small(.none), style: style)
+        .init(icon: icon, title: message.string, subtitle: nil, size: .small(.none), style: style)
+    }
+
+    private func oneLine(
+        icon: ImageResource,
+        message: LocalizedStringResource,
+        size: Banner.Size,
+        style: Banner.Style
+    ) -> Banner {
+        .init(icon: icon, title: message.string, subtitle: .none, size: size, style: style)
     }
 }

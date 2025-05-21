@@ -19,7 +19,7 @@ import InboxCore
 
 struct PINScreenState: Copying {
     let type: PINScreenType
-    var pin: String
+    var pin: [UInt32]
     var pinValidation: FormTextInput.ValidationStatus
 }
 
@@ -27,7 +27,7 @@ extension PINScreenState {
     static func initial(type: PINScreenType) -> Self {
         .init(
             type: type,
-            pin: .empty,
+            pin: [],
             pinValidation: .ok
         )
     }

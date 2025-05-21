@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-protocol AppSettingsRepository {
+protocol AppSettingsRepository: Sendable {
     func getAppSettings() async -> MailSessionGetAppSettingsResult
     func changeAppSettings(settings: AppSettingsDiff) async -> MailSessionChangeAppSettingsResult
 }

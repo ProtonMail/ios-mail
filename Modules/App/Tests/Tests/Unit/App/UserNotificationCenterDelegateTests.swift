@@ -180,29 +180,3 @@ final class UserNotificationCenterDelegateTests {
         )
     }
 }
-
-private final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
-    private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
-
-    private let id: String
-
-    init(id: String) {
-        self.id = id
-
-        super.init(noPointer: .init())
-    }
-
-    @available(*, unavailable)
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
-    }
-
-    override func sessionId() -> MailUserSessionSessionIdResult {
-        .ok(id)
-    }
-
-    override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
-        executeNotificationQuickActionInvocations.append(action)
-        return .ok
-    }
-}

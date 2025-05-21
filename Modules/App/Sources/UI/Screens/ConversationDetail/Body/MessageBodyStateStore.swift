@@ -61,7 +61,7 @@ final class MessageBodyStateStore: StateStore {
     func handle(action: Action) async {
         switch action {
         case .onLoad:
-            await loadMessageBody(with: .none)
+            await loadMessageBody(with: .init())
         case .displayEmbeddedImages:
             if case let .loaded(body) = state.body {
                 let updatedOptions = body.html.options
@@ -97,7 +97,7 @@ final class MessageBodyStateStore: StateStore {
     // MARK: - Private
 
     @MainActor
-    private func loadMessageBody(with options: TransformOpts?) async {
+    private func loadMessageBody(with options: TransformOpts) async {
         switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
             state = state.copy(\.body, to: .loaded(body))

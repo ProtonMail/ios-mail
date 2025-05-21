@@ -16,17 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import proton_app_uniffi
 
 extension Array where Element == SidebarOtherItem {
 
     static var staleItems: [Element] {
-        [
-            .init(
-                type: .subscriptions,
-                icon: DS.Icon.icPencil,
-                name: L10n.Settings.subscription.string,
-                isSelected: false
-            ),
+        var items: [Element] = [
             .init(
                 type: .settings,
                 icon: DS.Icon.icCogWheel,
@@ -56,8 +51,22 @@ extension Array where Element == SidebarOtherItem {
                 icon: DS.Icon.icSignOut,
                 name: "Sign Out".notLocalized,
                 isSelected: false
-            )
+            ),
         ]
+
+        if ApiEnvId.current.arePaymentsEnabled {
+            items.insert(
+                .init(
+                    type: .subscriptions,
+                    icon: DS.Icon.icPencil,
+                    name: L10n.Settings.subscription.string,
+                    isSelected: false
+                ),
+                at: 0
+            )
+        }
+
+        return items
     }
 
 }

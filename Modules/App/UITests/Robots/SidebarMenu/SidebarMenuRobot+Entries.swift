@@ -42,6 +42,17 @@ extension SidebarMenuRobot {
         tapEntry(withLabel: UITestFolder.system(.spam).value)
     }
 
+    func signOutProperly() {
+        application.buttons["Sign Out"].firstMatch.tap()
+        let signOutAlert = application.buttons["Sign out"].firstMatch
+        signOutAlert.waitUntilShown()
+        signOutAlert.tap()
+    }
+
+    func signOut() {
+        tapEntry(withLabel: UITestSidebarEntry.signOut.rawValue)
+    }
+
     func tapEntry(withLabel label: String) {
         let model = UITestSidebarListItemEntryModel(parent: rootElement, label: label)
 

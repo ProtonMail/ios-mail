@@ -43,6 +43,7 @@ struct FormSmallButton: View {
             Button(action: { action() }) {
                 HStack {
                     Text(title)
+                        .foregroundStyle(DS.Color.Text.norm)
                     Spacer(minLength: DS.Spacing.medium)
                     if let rightSymbol {
                         Image(systemName: rightSymbol.name)

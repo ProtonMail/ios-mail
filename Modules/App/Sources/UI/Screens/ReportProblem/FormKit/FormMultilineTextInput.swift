@@ -27,7 +27,7 @@ struct FormTextInput: View {
 
     enum ValidationStatus: Equatable {
         case ok
-        case failure(LocalizedStringResource)
+        case failure(String)
 
         var isFailure: Bool {
             switch self {

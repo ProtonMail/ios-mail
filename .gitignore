@@ -71,6 +71,8 @@ tmp/
 
 # UITest Mocks
 Modules/App/UITests/NetworkMocks/*
+Modules/App/UITests/Mailbox/certificate_ios_sdk.p12
+Modules/App/UITests/Loki.plist
 
 # Testmo
 testmo-resources.json

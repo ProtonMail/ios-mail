@@ -17,27 +17,41 @@
 
 struct PINValidator {
     private let pinScreenType: PINScreenType
+    private let pinVerifier: PINVerifier
 
-    init(pinScreenType: PINScreenType) {
+    init(pinScreenType: PINScreenType, pinVerifier: PINVerifier) {
         self.pinScreenType = pinScreenType
+        self.pinVerifier = pinVerifier
     }
 
-    func validate(pin: String) -> FormTextInput.ValidationStatus {
+    func validate(pin: [UInt32]) async -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
-            setPINValidation(pin: pin)
-        case .confirm(_, let newPIN):
-            confirmPINValidation(pin: newPIN, repeatedPIN: pin)
-        case .verify:
-            .ok
+            return setPINValidation(pin: pin)
+        case .confirm(let newPIN):
+            return confirmPINValidation(pin: newPIN, repeatedPIN: pin)
+        case .verify(let reason):
+            switch reason {
+            case .changePIN:
+                do {
+                    try await pinVerifier.verifyPinCode(pin: pin).get()
+                    return .ok
+                } catch {
+                    return .failure(error.localizedDescription)
+                }
+            case .disablePIN, .changeToBiometry:
+                return .ok
+            }
         }
     }
 
-    private func setPINValidation(pin: String) -> FormTextInput.ValidationStatus {
-        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort)
+    // FIXME: - This validation logic will be moved to Rust
+    private func setPINValidation(pin: [UInt32]) -> FormTextInput.ValidationStatus {
+        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
     }
 
-    private func confirmPINValidation(pin: String, repeatedPIN: String) -> FormTextInput.ValidationStatus {
-        pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError)
+    // FIXME: - This validation logic will be moved to Rust
+    private func confirmPINValidation(pin: [UInt32], repeatedPIN: [UInt32]) -> FormTextInput.ValidationStatus {
+        pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError.string)
     }
 }

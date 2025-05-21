@@ -456,15 +456,13 @@ enum L10n {
             "Download images and other remote content?",
             comment: "Banner asking if the user wants to download remote content such as images from external sources."
         )
-        static func scheduledSendTitle(formattedTime: String) -> LocalizedStringResource {
-            .init(
-                "This message will be sent \(formattedTime)",
-                comment: "Banner showing the scheduled send time for an email."
-            )
-        }
+        static let scheduledSendTitle = LocalizedStringResource (
+            "This message will be sent",
+            comment: "Banner showing the scheduled send time for an email."
+        )
         static let scheduledSendAction = LocalizedStringResource(
-            "Edit",
-            comment: "Action to modify the scheduled send time."
+            "Edit message",
+            comment: "Action to modify a scheduled message."
         )
         static func snoozedTitle(formattedTime: String) -> LocalizedStringResource {
             .init(
@@ -875,6 +873,21 @@ enum L10n {
                 "Disable PIN code",
                 comment: "Disable PIN code screen title."
             )
+            static let autoLock = LocalizedStringResource(
+                "Auto-Lock",
+                comment: "Auto lock button and screen title."
+            )
+            static let autoLockAlways = LocalizedStringResource(
+                "Always",
+                comment: "Auto option."
+            )
+            static let autoLockNever = LocalizedStringResource(
+                "Never",
+                comment: "Auto option."
+            )
+            static func autoLock(minutes: UInt8) -> LocalizedStringResource {
+                .init("\(minutes) minutes", comment: "NumberAuto lock option.")
+            }
         }
 
         static let subscription = LocalizedStringResource(

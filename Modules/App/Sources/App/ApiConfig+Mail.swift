@@ -21,28 +21,3 @@ import proton_app_uniffi
 extension ApiConfig {
     static let current = Self.init(envId: .current)
 }
-
-extension ApiEnvId {
-    static var current: Self {
-        #if QA || DEBUG
-            if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
-                return .custom(dynamicDomain)
-            }
-        #endif
-
-        return .prod
-    }
-
-    var domain: String {
-        switch self {
-        case .prod:
-            "proton.me"
-        case .atlas:
-            "proton.black"
-        case .scientist(let name):
-            "\(name).proton.black"
-        case .custom(let fullURL):
-            URL(string: fullURL)!.host()!
-        }
-    }
-}

@@ -34,7 +34,7 @@ struct FormList<Collection: RandomAccessCollection, ElementContent: View>: View 
                     if !isLast {
                         DS.Color.Border.norm
                             .frame(height: 1)
-                            .padding(.leading, 56)
+                            .padding(.leading, DS.Spacing.large)
                     }
                 }
             }

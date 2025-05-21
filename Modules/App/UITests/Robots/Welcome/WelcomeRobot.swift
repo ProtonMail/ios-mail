@@ -19,6 +19,15 @@ import Foundation
 import XCTest
 
 final class WelcomeRobot: Robot {
+
+    func verifyIsDisplayed() {
+        let timeout: TimeInterval = 10
+        XCTAssert(
+            application.buttons["welcome.signInButton"].firstMatch.waitForExistence(timeout: timeout),
+            "Element of \(self) is not displayed."
+        )
+    }
+
     var rootElement: XCUIElement {
         application.otherElements["welcome.rootElement"]
     }

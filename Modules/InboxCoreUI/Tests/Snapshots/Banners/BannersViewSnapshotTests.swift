@@ -27,55 +27,64 @@ class BannersViewSnapshotTests: BaseTestCase {
         let bannersView = BannersView(model: [
             .init(
                 icon: DS.Icon.icFire,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                subtitle: nil,
                 size: .small(nil),
                 style: .regular
             ),
             .init(
                 icon: DS.Icon.icFire,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                subtitle: nil,
                 size: .small(nil),
                 style: .error
             ),
             .init(
                 icon: DS.Icon.icCogWheel,
-                message: "Lorem ipsum dolor sit amet.",
+                title: "Lorem ipsum dolor sit amet.",
+                subtitle: nil,
                 size: .small(.init(title: "Action", action: {})),
                 style: .regular
             ),
             .init(
                 icon: DS.Icon.icCogWheel,
-                message: "Lorem ipsum dolor sit amet.",
+                title: "Lorem ipsum dolor sit amet.",
+                subtitle: nil,
                 size: .small(.init(title: "Action", action: {})),
                 style: .error
             ),
             .init(
                 icon: DS.Icon.icHook,
-                message: "Lorem ipsum dolor sit amet.",
+                title: "Lorem ipsum dolor sit amet.",
+                subtitle: nil,
                 size: .small(nil),
                 style: .regular
             ),
             .init(
                 icon: DS.Icon.icHook,
-                message: "Lorem ipsum dolor sit amet.",
+                title: "Lorem ipsum dolor sit amet.",
+                subtitle: nil,
                 size: .small(nil),
                 style: .error
             ),
             .init(
                 icon: DS.Icon.icCogWheel,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                subtitle: nil,
                 size: .large(.one(.init(title: "One button action", action: {}))),
                 style: .regular
             ),
             .init(
                 icon: DS.Icon.icCogWheel,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                size: .large(.two(
-                    left: .init(title: "Left", action: {}),
-                    right: .init(title: "Right", action: {})
-                )),
+                title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                subtitle: nil,
+                size: .large(
+                    .two(
+                        left: .init(title: "Left", action: {}),
+                        right: .init(title: "Right", action: {})
+                    )),
                 style: .error
-            )
+            ),
         ])
 
         assertSnapshotsOnIPhoneX(of: bannersView)

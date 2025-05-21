@@ -18,15 +18,25 @@
 import Foundation
 
 final class TestService: ApplicationServiceSetUp {
+    private let userDefaults = UserDefaults.appGroup
+
     func setUpService() {
-        clearExistingDataIfNecessary()
+        if userDefaults.bool(forKey: "uiTesting") {
+            clearExistingDataIfNecessary()
+            disableOnboardingPrompts()
+        }
     }
 
     private func clearExistingDataIfNecessary() {
-        if UserDefaults.standard.bool(forKey: "forceCleanState") {
+        if userDefaults.bool(forKey: "forceCleanState") {
             let fileManager = FileManager.default
-            try? fileManager.removeItem(atPath: fileManager.sharedSupportDirectory.path())
-            try? fileManager.removeItem(atPath: fileManager.sharedCacheDirectory.path)
+            try? fileManager.removeItem(at: fileManager.sharedSupportDirectory)
+            try? fileManager.removeItem(at: fileManager.sharedCacheDirectory)
         }
+    }
+
+    private func disableOnboardingPrompts() {
+        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+        userDefaults[.notificationAuthorizationRequestDates] = [.now]
     }
 }

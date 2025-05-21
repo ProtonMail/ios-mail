@@ -24,4 +24,5 @@ enum UITestDestination {
     case spam
     case trash
     case subscription
+    case signOut
 }

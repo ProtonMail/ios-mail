@@ -21,6 +21,7 @@ import XCTest
 struct UITestNavigator: ApplicationHolder {
     let environment: UITestEnvironment
     let loginType: UITestLoginType
+    let app = XCUIApplication()
 
     func navigateTo(
         _ destination: UITestDestination,
@@ -60,6 +61,9 @@ struct UITestNavigator: ApplicationHolder {
         case .subscription:
             MailboxRobot { $0.openSidebarMenu() }
             SidebarMenuRobot { $0.openSubscription() }
+        case .signOut:
+            MailboxRobot { $0.openSidebarMenu() }
+            SidebarMenuRobot { $0.signOut() }
         }
     }
 
