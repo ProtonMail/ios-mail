@@ -54,7 +54,7 @@ struct MainToolbar: ViewModifier {
                                     Spacer()
                                     Image(state.icon)
                                         .resizable()
-                                        .square(size: 24)
+                                        .square(size: 40)
                                         .id(state.rawValue)
                                         .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
                                 }
@@ -77,7 +77,7 @@ struct MainToolbar: ViewModifier {
                         label: {
                             HStack {
                                 Spacer()
-                                Image(DS.Icon.icMagnifier)
+                                Image(systemName: DS.SFSymbols.magnifier)
                                     .resizable()
                                     .square(size: 24)
                             }

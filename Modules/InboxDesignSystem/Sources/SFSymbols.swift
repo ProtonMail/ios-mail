@@ -22,6 +22,7 @@ public extension DS.SFSymbols {
     static let chevronUpChevronDown = "chevron.up.chevron.down"
     static let deleteLeft = "delete.left"
     static let lock = "lock"
+    static let magnifier = "magnifyingglass"
     static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
     static let suitcase = "suitcase"
     static let sunMax = "sun.max"
