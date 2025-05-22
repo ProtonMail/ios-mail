@@ -17,27 +17,6 @@
 
 import proton_app_uniffi
 
-/**
- The Rust SDK by default strongly retains the callbacks/delegates set from the iOS app. This is because
- uniffi does not provide support to avoid retain cycles as stated in their
- documentation: https://mozilla.github.io/uniffi-rs/foreign_traits.html.
-
- This could change in the future, but in the meantime we replicate any callback declared in the Rust SDK
- with a proxy callback retaining a weak reference to the Swift object.
- */
-final class LiveQueryCallbackWrapper: Sendable, LiveQueryCallback {
-    let callback: @Sendable () -> Void
-
-    init(callback: @escaping @Sendable () -> Void) {
-        self.callback = callback
-    }
-
-    func onUpdate() {
-        callback()
-    }
-
-}
-
 final class MessageScrollerLiveQueryCallbackkWrapper: Sendable, MessageScrollerLiveQueryCallback {
     let callback: @Sendable (MessageScrollerUpdate) -> Void
 

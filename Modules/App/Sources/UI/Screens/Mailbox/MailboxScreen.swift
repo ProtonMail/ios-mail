@@ -19,6 +19,7 @@ import AccountManager
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -91,6 +92,9 @@ struct MailboxScreen: View {
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
+                }
+                .sheet(item: $mailboxModel.state.upsellPresented) { upsellScreenModel in
+                    UpsellScreen(model: upsellScreenModel)
                 }
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
                     mailboxItemDestination(uiModel: uiModel)
@@ -196,6 +200,8 @@ extension MailboxScreen {
             mailboxModel.selectionMode.selectionModifier.exitSelectionMode()
         case .onSearch:
             mailboxModel.state.isSearchPresented = true
+        case .onUpsell(let upsellScreenModel):
+            mailboxModel.state.upsellPresented = upsellScreenModel
         }
     }
 

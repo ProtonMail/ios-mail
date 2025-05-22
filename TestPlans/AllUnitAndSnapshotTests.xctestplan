@@ -22,9 +22,9 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxComposer",
-        "identifier" : "InboxComposerTests",
-        "name" : "InboxComposerTests"
+        "containerPath" : "container:Modules\/InboxContacts",
+        "identifier" : "InboxContactsTests",
+        "name" : "InboxContactsTests"
       }
     },
     {
@@ -36,16 +36,9 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Modules\/InboxKeychain",
-        "identifier" : "InboxKeychainTests",
-        "name" : "InboxKeychainTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Modules\/InboxContacts",
-        "identifier" : "InboxContactsTests",
-        "name" : "InboxContactsTests"
+        "containerPath" : "container:Modules\/InboxComposer",
+        "identifier" : "InboxComposerTests",
+        "name" : "InboxComposerTests"
       }
     },
     {
@@ -53,6 +46,20 @@
         "containerPath" : "container:Modules\/InboxCoreUI",
         "identifier" : "InboxCoreUITests",
         "name" : "InboxCoreUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxIAP",
+        "identifier" : "InboxIAPTests",
+        "name" : "InboxIAPTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/InboxKeychain",
+        "identifier" : "InboxKeychainTests",
+        "name" : "InboxKeychainTests"
       }
     },
     {

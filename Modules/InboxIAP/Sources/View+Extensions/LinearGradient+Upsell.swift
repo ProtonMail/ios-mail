@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,28 +16,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import proton_app_uniffi
+import InboxDesignSystem
+import SwiftUI
 
-protocol BackOnlineActionExecuting {
-    func execute(action: @Sendable @escaping @MainActor () async -> Void)
-}
-
-struct BackOnlineActionExecutor: BackOnlineActionExecuting {
-    private let mailUserSession: () -> MailUserSession
-
-    init(mailUserSession: @escaping () -> MailUserSession) {
-        self.mailUserSession = mailUserSession
+extension LinearGradient {
+    static var screenBackground: Self {
+        .init(
+            colors: [.init(hex: "#1D121D"), DS.Color.Brand.norm],
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 
-    // MARK: - BackOnlineActionExecuting
+    static var fading: Self {
+        .init(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
+    }
 
-    func execute(action: @Sendable @escaping @MainActor () async -> Void) {
-        let callback = LiveQueryCallbackWrapper {
-            Task {
-                await action()
-            }
-        }
-        mailUserSession().executeWhenOnline(callback: callback)
+    static var highlight: Self {
+        .init(
+            colors: DS.Color.Gradient.crazy,
+            startPoint: .leading,
+            endPoint: .trailing
+        )
     }
 }

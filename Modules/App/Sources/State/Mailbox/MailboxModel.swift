@@ -19,6 +19,7 @@ import AccountManager
 import Combine
 import InboxCore
 import InboxCoreUI
+import InboxIAP
 import Foundation
 import SwiftUI
 import proton_app_uniffi
@@ -651,6 +652,8 @@ extension MailboxModel {
 
         var labelAsSheetPresented: ActionSheetInput?
         var moveToSheetPresented: ActionSheetInput?
+
+        var upsellPresented: UpsellScreenModel?
     }
 }
 

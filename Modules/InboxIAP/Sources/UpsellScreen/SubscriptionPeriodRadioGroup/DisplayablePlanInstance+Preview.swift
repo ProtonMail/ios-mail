@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,28 +16,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import proton_app_uniffi
-
-protocol BackOnlineActionExecuting {
-    func execute(action: @Sendable @escaping @MainActor () async -> Void)
-}
-
-struct BackOnlineActionExecutor: BackOnlineActionExecuting {
-    private let mailUserSession: () -> MailUserSession
-
-    init(mailUserSession: @escaping () -> MailUserSession) {
-        self.mailUserSession = mailUserSession
-    }
-
-    // MARK: - BackOnlineActionExecuting
-
-    func execute(action: @Sendable @escaping @MainActor () async -> Void) {
-        let callback = LiveQueryCallbackWrapper {
-            Task {
-                await action()
-            }
-        }
-        mailUserSession().executeWhenOnline(callback: callback)
-    }
+extension DisplayablePlanInstance {
+    static let previews: [DisplayablePlanInstance] = [
+        .init(
+            storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing",
+            cycleInMonths: 12,
+            monthlyPrice: "$3.99",
+            discount: 20
+        ),
+        .init(
+            storeKitProductId: "iosmail_mail2022_1_usd_auto_renewing",
+            cycleInMonths: 1,
+            monthlyPrice: "$4.99",
+            discount: nil
+        ),
+    ]
 }

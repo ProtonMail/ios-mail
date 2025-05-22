@@ -1,0 +1,54 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " %@" : {
+
+    },
+    "/month" : {
+      "comment" : "Displayed next to the monthly price"
+    },
+    "%lld" : {
+
+    },
+    "Access to desktop app" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "Auto-renews at the same price and terms unless canceled" : {
+      "comment" : "Notice at the bottom"
+    },
+    "Choose your plan" : {
+      "comment" : "Displayed above the plans"
+    },
+    "Custom email domain" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "Email addresses" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "Free" : {
+      "comment" : "Name of the free plan"
+    },
+    "Get %@" : {
+      "comment" : "CTA button to purchase a plan (e.g. Get Mail Plus)"
+    },
+    "Plus" : {
+      "comment" : "As in Mail Plus - short name for the plan"
+    },
+    "Priority customer support" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "Storage" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "To unlock more storage and premium features." : {
+      "comment" : "Subtitle of the upsell page."
+    },
+    "Unlimited folders and labels" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
+    "Upgrade to %@" : {
+      "comment" : "Title of the upsell page"
+    }
+  },
+  "version" : "1.0"
+}

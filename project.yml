@@ -29,6 +29,9 @@ packages:
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
+  InboxIAP:
+    path: Modules/InboxIAP
+    group: Modules
   InboxKeychain:
     path: Modules/InboxKeychain
     group: Modules
@@ -160,6 +163,7 @@ targets:
       - package: InboxCore
       - package: InboxCoreUI
       - package: InboxDesignSystem
+      - package: InboxIAP
       - package: InboxKeychain
       - target: NotificationService
       - package: PaymentsUI

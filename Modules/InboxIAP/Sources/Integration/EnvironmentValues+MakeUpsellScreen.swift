@@ -15,28 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import proton_app_uniffi
+import SwiftUI
 
-protocol BackOnlineActionExecuting {
-    func execute(action: @Sendable @escaping @MainActor () async -> Void)
+public struct MakeUpsellScreen {
+    public typealias Action = () -> UpsellScreenModel
+
+    private let action: Action
+
+    public init(action: @escaping Action) {
+        self.action = action
+    }
+
+    public func callAsFunction() -> UpsellScreenModel {
+        action()
+    }
 }
 
-struct BackOnlineActionExecutor: BackOnlineActionExecuting {
-    private let mailUserSession: () -> MailUserSession
-
-    init(mailUserSession: @escaping () -> MailUserSession) {
-        self.mailUserSession = mailUserSession
-    }
-
-    // MARK: - BackOnlineActionExecuting
-
-    func execute(action: @Sendable @escaping @MainActor () async -> Void) {
-        let callback = LiveQueryCallbackWrapper {
-            Task {
-                await action()
-            }
-        }
-        mailUserSession().executeWhenOnline(callback: callback)
-    }
+public extension EnvironmentValues {
+    @Entry var makeUpsellScreen: MakeUpsellScreen?
 }

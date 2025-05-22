@@ -18,9 +18,11 @@
 import AccountManager
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import SwiftUI
 
 struct MainToolbar<AvatarView: View>: ViewModifier {
+    @Environment(\.makeUpsellScreen) private var makeUpsellScreen
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
     let avatarView: () -> AvatarView
@@ -76,10 +78,19 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                     SelectionTitleView(title: title)
                         .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
                     if !selectionMode.hasItems {
                         HStack(spacing: DS.Spacing.standard) {
-                            searchButton()
+                            if let makeUpsellScreen {
+                                toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
+                                    let upsellScreenModel = makeUpsellScreen()
+                                    onEvent(.onUpsell(upsellScreenModel))
+                                }
+                            }
+
+                            toolbarButton(icon: .init(symbol: .magnifier)) {
+                                onEvent(.onSearch)
+                            }
                             avatarView()
                         }
                     }
@@ -89,11 +100,11 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             .tint(DS.Color.Text.norm)
     }
 
-    private func searchButton() -> some View {
+    private func toolbarButton(icon: Image, action: @escaping () -> Void) -> some View {
         Button(
-            action: { onEvent(.onSearch) },
+            action: action,
             label: {
-                Image(symbol: .magnifier)
+                icon
                     .square(size: 24)
                     .padding(10)
             }
@@ -135,6 +146,7 @@ enum MainToolbarEvent {
     case onOpenMenu
     case onExitSelectionMode
     case onSearch
+    case onUpsell(UpsellScreenModel)
 }
 
 #Preview {

@@ -30,4 +30,8 @@ public extension DS.Images {
     static let noConnection = ImageResource.noConnection
     static let protonMail = ImageResource.protonMail
     static let lock = ImageResource.lock
+
+    enum Upsell {
+        public static let logoDefault = ImageResource.upsellLogoDefault
+    }
 }

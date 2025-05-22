@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,28 +16,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import proton_app_uniffi
+import PaymentsNG
 
-protocol BackOnlineActionExecuting {
-    func execute(action: @Sendable @escaping @MainActor () async -> Void)
+protocol PlanPurchasing {
+    func purchase(storeKitProductId: String) async throws
 }
 
-struct BackOnlineActionExecutor: BackOnlineActionExecuting {
-    private let mailUserSession: () -> MailUserSession
-
-    init(mailUserSession: @escaping () -> MailUserSession) {
-        self.mailUserSession = mailUserSession
+extension ProtonPlansManager: PlanPurchasing {
+    func purchase(storeKitProductId: String) async throws {
+        _ = try await purchase(productId: storeKitProductId)
     }
+}
 
-    // MARK: - BackOnlineActionExecuting
-
-    func execute(action: @Sendable @escaping @MainActor () async -> Void) {
-        let callback = LiveQueryCallbackWrapper {
-            Task {
-                await action()
-            }
-        }
-        mailUserSession().executeWhenOnline(callback: callback)
+struct DummyPlanPurchasing: PlanPurchasing {
+    func purchase(storeKitProductId: String) async throws {
+        try await Task.sleep(for: .seconds(2))
     }
 }
