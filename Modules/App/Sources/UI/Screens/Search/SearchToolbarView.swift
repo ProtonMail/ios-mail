@@ -60,13 +60,7 @@ struct SearchToolbarView: View {
                     onEvent(.onExitSelection)
                 },
                 label: {
-                    HStack {
-                        Spacer()
-                        Image(DS.Icon.icChevronTinyLeft)
-                            .resizable()
-                            .square(size: 24)
-                    }
-                    .padding(10)
+                    Image(systemName: DS.SFSymbols.xmark)
                 }
             )
             .square(size: 40)
