@@ -22,7 +22,7 @@ final class ComposerSeparator: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = DS.Color.Border.norm.toDynamicUIColor
+        backgroundColor = DS.Color.Border.light.toDynamicUIColor
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
