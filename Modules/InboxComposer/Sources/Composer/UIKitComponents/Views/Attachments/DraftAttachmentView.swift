@@ -61,11 +61,13 @@ final class DraftAttachmentView: TapHighlightView {
         size.setContentCompressionResistancePriority(.required, for: .horizontal)
         spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
+        let padding: CGFloat = DS.Spacing.moderatelyLarge
+
         NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DS.Spacing.medium),
-            stack.topAnchor.constraint(equalTo: topAnchor, constant: DS.Spacing.mediumLight),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DS.Spacing.medium),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DS.Spacing.mediumLight),
+            stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            stack.topAnchor.constraint(equalTo: topAnchor, constant: padding),
+            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding),
             icon.widthAnchor.constraint(equalToConstant: 20),
             icon.heightAnchor.constraint(equalTo: icon.widthAnchor),
             removeButton.widthAnchor.constraint(equalToConstant: 20),
