@@ -46,7 +46,7 @@ class PINLockStateStore: StateStore {
                 .copy(\.pin, to: pin)
                 .copy(\.error, to: shouldClearError ? nil : state.error)
         case .alertActionTapped(let action):
-            state.alert = nil
+            state = state.copy(\.alert, to: nil)
             handleAlert(action: action)
         case .error(let error):
             state =

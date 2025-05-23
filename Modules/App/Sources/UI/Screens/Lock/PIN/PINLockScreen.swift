@@ -40,7 +40,7 @@ struct PINLockScreen: View {
                 BlurredCoverView(showLogo: false)
                 HStack {
                     Spacer()
-                    Button(action: {}) {
+                    Button(action: { store.handle(action: .signOutTapped) }) {
                         Text(L10n.PINLock.signOut)
                             .foregroundStyle(DS.Color.Text.norm)
                     }
@@ -78,6 +78,7 @@ struct PINLockScreen: View {
                         .padding(.bottom, DS.Spacing.extraLarge)
                 }
             }
+            .alert(model: $store.state.alert)
             .onAppear {
                 isFocused = true
             }

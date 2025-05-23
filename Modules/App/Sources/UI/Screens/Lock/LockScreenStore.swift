@@ -17,19 +17,27 @@
 
 import InboxCore
 import Combine
+import proton_app_uniffi
 
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
+    private let signOutService: SignOutService
     private let dismissLock: () -> Void
 
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
+        mailUserSession: @escaping @Sendable () -> MailUserSession = { AppContext.shared.userSession },
+        signOutAllAccountsWrapper: SignOutAllAccountsWrapper = .productionInstance,
         dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
+        self.signOutService = .init(
+            mailUserSession: mailUserSession,
+            signOutAllAccountsWrapper: signOutAllAccountsWrapper
+        )
         self.dismissLock = dismissLock
     }
 
@@ -44,8 +52,7 @@ class LockScreenStore: StateStore {
         case .pin(let output):
             switch output {
             case .logOut:
-                // FIXME: - Logout here
-                dismissLock()
+                await signOutAllAccounts()
             case .pin(let pin):
                 await verify(pin: pin)
             }
@@ -54,6 +61,16 @@ class LockScreenStore: StateStore {
             if pinAttemptsRemaining <= 3 {
                 handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
             }
+        }
+    }
+
+    @MainActor
+    private func signOutAllAccounts() async {
+        do {
+            try await signOutService.signOutAllAccounts()
+            dismissLock()
+        } catch {
+            AppLogger.log(error: error) // FIXME: - Categorize
         }
     }
 
@@ -90,7 +107,7 @@ class LockScreenStore: StateStore {
             let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
             return Int(attempts)
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error)  // FIXME: - Categorize
             return 0
         }
     }

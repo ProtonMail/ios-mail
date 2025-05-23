@@ -2506,7 +2506,7 @@
         }
       }
     },
-    "sign Out" : {
+    "Sign out" : {
       "comment" : "Title of the sign out button."
     },
     "Snooze" : {
