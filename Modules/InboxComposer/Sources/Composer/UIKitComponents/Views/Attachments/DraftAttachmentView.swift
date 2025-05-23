@@ -101,7 +101,7 @@ final class DraftAttachmentView: TapHighlightView {
 
     func configure(uiModel: DraftAttachmentUIModel) {
         self.uiModel = uiModel
-        icon.image = UIImage(resource: uiModel.attachment.mimeType.category.bigIcon)
+        icon.image = UIImage(resource: uiModel.attachment.mimeType.category.icon)
         name.text = uiModel.attachment.name
         size.text = Formatter.bytesFormatter.string(fromByteCount: Int64(uiModel.attachment.size))
 
