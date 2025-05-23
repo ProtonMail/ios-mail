@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 
 struct LockScreenState: Equatable, Copying {
     let type: LockScreenType
-    var pinError: String?
+    var pinAuthenticationError: PINAuthenticationError?
 
     enum LockScreenType {
         case pin

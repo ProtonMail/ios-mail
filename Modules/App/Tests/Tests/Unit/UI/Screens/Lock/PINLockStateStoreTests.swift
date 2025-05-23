@@ -29,19 +29,19 @@ class PINLockStateStoreTests {
     var output: [PINLockScreenOutput] = []
 
     @Test
-    func usersSignsOut() async throws {
+    func userSignsOut_ItEmitsLogOutOutput() async throws {
         await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
-        let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOutConfirmationButton)
+        let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOut)
         await signOutAction.action()
 
         #expect(output == [.logOut])
     }
 
     @Test
-    func userResignSignOut() async throws {
+    func userResignsSignOut_ItDoesNotEmitAnyOutput() async throws {
         await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
@@ -53,9 +53,33 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func userSubmitsEmptyPin() async {
+    func userSubmitsEmptyPIN_ItDoesNotEmitAnyOutput() async {
         await sut.handle(action: .confirmTapped)
         #expect(output == [])
+    }
+
+    @Test
+    func userSubmitsValidPIN_ItEmitsPINInOutput() async {
+        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+        await sut.handle(action: .confirmTapped)
+
+        #expect(output == [.pin([1, 2, 3, 4, 5])])
+    }
+
+    @Test
+    func remainingAttemtsErrorIsPresented_WhenPINIsEntered_ItStillShowsError() async {
+        await sut.handle(action: .error(.attemptsRemaining(3)))
+        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+
+        #expect(sut.state.error == .attemptsRemaining(3))
+    }
+
+    @Test
+    func customErrorIsPresented_WhenPINIsEntered_ItHidesError() async {
+        await sut.handle(action: .error(.custom("Error")))
+        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+
+        #expect(sut.state.error == nil)
     }
 
 }

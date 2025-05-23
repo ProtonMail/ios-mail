@@ -747,6 +747,9 @@
         }
       }
     },
+    "Confirm it's you to continue." : {
+      "comment" : "Subtitle of PIN lock screen."
+    },
     "Confirm phishing report" : {
       "comment" : "Title of alert displayed after report phishing action tap."
     },
@@ -1163,10 +1166,7 @@
       "comment" : "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
     },
     "Enter PIN" : {
-      "comment" : "Top title of the pin lock screen."
-    },
-    "Enter your PIN to unlock you inbox." : {
-      "comment" : "Information displayed on the top of PIN lock screen."
+      "comment" : "Title of the pin lock screen."
     },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."
@@ -1357,7 +1357,7 @@
         }
       }
     },
-    "Invalid PIN" : {
+    "Incorrect PIN. Try again." : {
       "comment" : "Error message when the user enters an invalid PIN"
     },
     "Label" : {
@@ -2081,6 +2081,9 @@
     "PIN code" : {
       "comment" : "App lock option."
     },
+    "PIN Code" : {
+      "comment" : "PIN input placeholder."
+    },
     "PIN is too long" : {
       "comment" : "Error message when setting up PIN"
     },
@@ -2504,7 +2507,7 @@
       }
     },
     "Sign Out" : {
-      "comment" : "Title of the sign out confirmation alert button."
+      "comment" : "Title of the sign out button."
     },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",

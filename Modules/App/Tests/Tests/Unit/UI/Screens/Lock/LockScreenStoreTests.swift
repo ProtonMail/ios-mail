@@ -19,28 +19,19 @@
 import proton_app_uniffi
 import Testing
 
+@MainActor
 class LockScreenStoreTests {
 
-    var sut: LockScreenStore!
-    var lockScreenOutput: [LockScreenOutput]!
-    private var pinVerifierSpy: PINVerifierSpy!
+    lazy var sut: LockScreenStore = .init(
+        state: .init(type: .pin, pinAuthenticationError: nil),
+        pinVerifier: pinVerifierSpy,
+        lockOutput: { [unowned self] output in
+            lockScreenOutput.append(output)
+        }
+    )
 
-    init() {
-        pinVerifierSpy = PINVerifierSpy()
-        lockScreenOutput = []
-        sut = .init(
-            state: .init(type: .pin, pinError: nil),
-            pinVerifier: pinVerifierSpy,
-            lockOutput: { output in
-                self.lockScreenOutput.append(output)
-            }
-        )
-    }
-
-    deinit {
-        pinVerifierSpy = nil
-        sut = nil
-    }
+    var lockScreenOutput: [LockScreenOutput] = []
+    private let pinVerifierSpy: PINVerifierSpy = .init()
 
     @Test
     func handleBiometricAuthenticatedOutput_ItEmitsLockAuthenticatedOutput() async {
@@ -55,7 +46,7 @@ class LockScreenStoreTests {
 
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
-        #expect(sut.state.pinError == nil)
+        #expect(sut.state.pinAuthenticationError == nil)
         #expect(lockScreenOutput == [.authenticated])
     }
 
@@ -65,18 +56,7 @@ class LockScreenStoreTests {
 
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
-        #expect(sut.state.pinError == nil)
-        #expect(lockScreenOutput == [])
-    }
-
-    @Test
-    func userEntersInvalidPinForFirstTime_ItDoesNotDisplayError() async {
-        pinVerifierSpy.remainingPinAttemptsStub = .ok(9)
-        pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
-
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
-
-        #expect(sut.state.pinError == nil)
+        #expect(sut.state.pinAuthenticationError == .custom(L10n.PINLock.invalidPIN.string))
         #expect(lockScreenOutput == [])
     }
 
@@ -87,7 +67,7 @@ class LockScreenStoreTests {
 
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
-        #expect(sut.state.pinError == "3 attempts remaining before sign-out.")
+        #expect(sut.state.pinAuthenticationError == .attemptsRemaining(3))
         #expect(lockScreenOutput == [])
     }
 

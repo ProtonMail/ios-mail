@@ -36,7 +36,7 @@ class PINLockScreenSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(
             of: PINLockScreen(
                 state: .init(hideLogoutButton: false, pin: []),
-                error: .constant("This is the error message")
+                error: .constant(.custom("This is the error message"))
             ) { _ in },
             named: "error_message"
         )
