@@ -32,7 +32,7 @@ struct BiometricLockScreen: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                BlurredCoverView()
+                BlurredCoverView(showLogo: true)
                 if store.state.displayUnlockButton {
                     VStack {
                         Spacer()

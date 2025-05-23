@@ -99,7 +99,7 @@ struct PINScreen: View {
     }
 }
 
-private extension Array where Element == UInt32 {
+extension Array where Element == UInt32 { // FIXME: - Move to separate file
 
     var toString: String {
         map(String.init).joined()
@@ -107,7 +107,7 @@ private extension Array where Element == UInt32 {
 
 }
 
-private extension String {
+extension String { // FIXME: - Move to separate file
 
     var digits: [UInt32] {
         compactMap(\.wholeNumberValue).map(UInt32.init)

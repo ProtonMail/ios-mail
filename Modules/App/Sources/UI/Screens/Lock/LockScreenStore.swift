@@ -73,6 +73,9 @@ class LockScreenStore: StateStore {
         case .ok:
             lockOutput(.authenticated)
         case .error:
+            state = state // FIXME: - To fix
+                .copy(\.pinError, to: "Incorrect PIN. Try again.")
+
             await verifyNumberOfAttempts()
         }
     }

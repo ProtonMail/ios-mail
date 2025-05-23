@@ -147,6 +147,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     @MainActor
     private func showLockScreen(lockScreenType: LockScreenState.LockScreenType) {
         appProtectionWindow?.isHidden = false
+        appProtectionWindow?.makeKey()
         appProtectionWindow?.rootViewController = lockScreenController(for: lockScreenType)
     }
 
@@ -173,6 +174,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     @MainActor
     private func showAppContent() {
         guard let appProtectionWindow else { return }
+        overlayWindow?.makeKey()
         transitionAnimation(
             appProtectionWindow, 0.2, .transitionCrossDissolve,
             {
@@ -197,7 +199,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     private var coverController: UIViewController {
-        let controller = UIHostingController(rootView: BlurredCoverView())
+        let controller = UIHostingController(rootView: BlurredCoverView(showLogo: true))
         controller.view.backgroundColor = .clear
         return controller
     }
