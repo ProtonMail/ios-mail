@@ -40,24 +40,27 @@ struct MainToolbar: ViewModifier {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack(spacing: .zero) {
-                        Button(action: {
-                            switch state {
-                            case .noSelection:
-                                onEvent(.onOpenMenu)
-                            case .selection:
-                                onEvent(.onExitSelectionMode)
+                        Button(
+                            action: {
+                                switch state {
+                                case .noSelection:
+                                    onEvent(.onOpenMenu)
+                                case .selection:
+                                    onEvent(.onExitSelectionMode)
+                                }
+                            },
+                            label: {
+                                HStack {
+                                    Spacer()
+                                    Image(state.icon)
+                                        .resizable()
+                                        .square(size: 24)
+                                        .id(state.rawValue)
+                                        .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
+                                }
+                                .padding(10)
                             }
-                        }, label: {
-                            HStack {
-                                Spacer()
-                                Image(state.icon)
-                                    .resizable()
-                                    .square(size: 24)
-                                    .id(state.rawValue)
-                                    .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
-                            }
-                            .padding(10)
-                        })
+                        )
                         .square(size: 40)
                         .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                     }
@@ -67,17 +70,20 @@ struct MainToolbar: ViewModifier {
                         .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        onEvent(.onSearch)
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Image(DS.Icon.icMagnifier)
-                                .resizable()
-                                .square(size: 24)
+                    Button(
+                        action: {
+                            onEvent(.onSearch)
+                        },
+                        label: {
+                            HStack {
+                                Spacer()
+                                Image(DS.Icon.icMagnifier)
+                                    .resizable()
+                                    .square(size: 24)
+                            }
+                            .padding(10)
                         }
-                        .padding(10)
-                    })
+                    )
                     .opacity(selectionMode.hasItems ? 0 : 1)
                     .square(size: 40)
                 }
@@ -135,12 +141,12 @@ enum MainToolbarEvent {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy,
-        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+        draftPresenter: .dummy(),
+        sendResultPresenter: .init(draftPresenter: .dummy())
     )
-        .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
-        .environmentObject(appUIStateStore)
-        .environmentObject(toastStateStore)
+    .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
+    .environmentObject(appUIStateStore)
+    .environmentObject(toastStateStore)
 }
 
 private struct MainToolbarIdentifiers {

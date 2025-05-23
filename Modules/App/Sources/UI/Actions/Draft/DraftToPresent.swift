@@ -19,5 +19,5 @@ import proton_app_uniffi
 
 enum DraftToPresent {
     case new(draft: Draft)
-    case openDraftId(messageId: ID)
+    case openDraftId(messageId: ID, lastScheduledTime: UInt64?)
 }

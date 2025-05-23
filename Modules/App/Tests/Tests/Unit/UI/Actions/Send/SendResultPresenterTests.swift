@@ -28,10 +28,14 @@ final class SendResultPresenterTests: BaseTestCase {
     private let mediumDuration: TimeInterval = .toastMediumDuration
 
     private var sut: SendResultPresenter!
+    private let scheduledTime = Date.distantFuture
+    private let scheduleDateFormatter = ScheduleSendDateFormatter()
     private var cancellables: Set<AnyCancellable>!
     private var capturedToastActions: [SendResultToastAction]!
     private var capturedDraftsToPresent: [DraftToPresent]!
     private let mockDraftUndoSendError: DraftUndoSendError = .reason(.sendCanNoLongerBeUndone)
+    private var mockDraftUndoScheduleResult: DraftCancelScheduleSendResult { .error(mockDraftUndoScheduleError) }
+    private let mockDraftUndoScheduleError: DraftCancelScheduleSendError = .reason(.messageNotScheduled)
 
     override func setUp() {
         super.setUp()
@@ -109,14 +113,14 @@ final class SendResultPresenterTests: BaseTestCase {
             ]))
     }
 
-    // MARK: undoAction
+    // MARK: undoSendAction
 
     @MainActor
-    func testUndoAction_whenSentHasBeenPresented_itShouldDismissSent() async {
+    func testUndoSendAction_whenSentHasBeenPresented_itShouldDismissSent() async {
         let messageId: ID = .random()
         sut.presentResultInfo(.init(messageId: messageId, type: .sent))
 
-        await sut.undoActionForTestingPurposes()(messageId)
+        await sut.undoSendActionForTestingPurposes()(messageId)
 
         XCTAssertEqual(capturedToastActions.count, 2)
         XCTAssertTrue(
@@ -127,11 +131,11 @@ final class SendResultPresenterTests: BaseTestCase {
     }
 
     @MainActor
-    func testUndoAction_whenSentHasBeenPresented_itShouldOpenDraftForTheMessageId() async {
+    func testUndoSendAction_whenSentHasBeenPresented_itShouldOpenDraftForTheMessageId() async {
         let messageId: ID = .random()
         sut.presentResultInfo(.init(messageId: messageId, type: .sent))
 
-        await sut.undoActionForTestingPurposes()(messageId)
+        await sut.undoSendActionForTestingPurposes()(messageId)
 
         XCTAssertEqual(capturedToastActions.count, 2)
         XCTAssertEqual(capturedDraftsToPresent.count, 1)
@@ -139,13 +143,13 @@ final class SendResultPresenterTests: BaseTestCase {
     }
 
     @MainActor
-    func testUndoAction_whenSentHasBeenPresented_andUndoProviderReturnsError_itShouldDismissSentAndPresentError() async {
-        sut = makeSut(undoSendProvider: .mockInstance(stubbedResult: mockDraftUndoSendError))
+    func testUndoSendAction_whenSentHasBeenPresented_andUndoReturnsError_itShouldDismissSentAndPresentError() async {
+        sut = makeSut(draftPresenter: .dummy(undoSendProvider: .mockInstance(stubbedResult: mockDraftUndoSendError)))
 
         let messageId: ID = .random()
         sut.presentResultInfo(.init(messageId: messageId, type: .sent))
 
-        await sut.undoActionForTestingPurposes()(messageId)
+        await sut.undoSendActionForTestingPurposes()(messageId)
 
         XCTAssertEqual(capturedToastActions.count, 3)
         XCTAssertTrue(
@@ -155,12 +159,68 @@ final class SendResultPresenterTests: BaseTestCase {
                 .present(.error(message: mockDraftUndoSendError.localizedDescription).duration(mediumDuration)),
             ]))
     }
+
+    // MARK: undoScheduleSendAction
+
+    @MainActor
+    func testUndoScheduleSendAction_whenScheduledHasBeenPresented_itShouldDismissScheduled() async {
+        let messageId: ID = .random()
+        sut.presentResultInfo(.init(messageId: messageId, type: .scheduled(date: scheduledTime)))
+        await sut.undoScheduleSendActionForTestingPurposes()(messageId)
+
+        let expectedToast: Toast = .scheduledMessage(
+            duration: mediumDuration,
+            scheduledTime: scheduleDateFormatter.string(from: scheduledTime, format: .long),
+            undoAction: {}
+        )
+        XCTAssertEqual(capturedToastActions.count, 2)
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(expectedToast),
+                .dismiss(expectedToast),
+            ]))
+    }
+
+    @MainActor
+    func testUndoScheduleSendAction_whenScheduledHasBeenPresented_itShouldOpenDraftForTheMessageId() async {
+        let messageId: ID = .random()
+        sut.presentResultInfo(.init(messageId: messageId, type: .scheduled(date: scheduledTime)))
+
+        await sut.undoScheduleSendActionForTestingPurposes()(messageId)
+
+        XCTAssertEqual(capturedToastActions.count, 2)
+        XCTAssertEqual(capturedDraftsToPresent.count, 1)
+        XCTAssertEqual(capturedDraftsToPresent.first!.messageIdToOpen, messageId)
+    }
+
+    @MainActor
+    func testUndoScheduleSendAction_whenScheduledHasBeenPresented_andUndoReturnsError_itShouldDismissScheduledAndPresentError() async throws {
+        sut = makeSut(draftPresenter: .dummy(undoScheduleSendProvider: .mockInstance(stubbedResult: mockDraftUndoScheduleResult)))
+
+        let messageId: ID = .random()
+        sut.presentResultInfo(.init(messageId: messageId, type: .scheduled(date: scheduledTime)))
+
+        await sut.undoScheduleSendActionForTestingPurposes()(messageId)
+
+        let expectedToast: Toast = .scheduledMessage(
+            duration: mediumDuration,
+            scheduledTime: scheduleDateFormatter.string(from: scheduledTime, format: .long),
+            undoAction: {}
+        )
+        XCTAssertEqual(capturedToastActions.count, 3)
+        XCTAssertTrue(
+            capturedToastActions.isSame(as: [
+                .present(expectedToast),
+                .dismiss(expectedToast),
+                .present(.error(message: mockDraftUndoScheduleError.localizedDescription).duration(mediumDuration)),
+            ]))
+    }
 }
 
 private extension SendResultPresenterTests {
 
-    func makeSut(undoSendProvider: UndoSendProvider = .mockInstance, draftPresenter: DraftPresenter = .dummy) -> SendResultPresenter {
-        let sut = SendResultPresenter(undoSendProvider: undoSendProvider, draftPresenter: draftPresenter)
+    func makeSut(draftPresenter: DraftPresenter = .dummy()) -> SendResultPresenter {
+        let sut = SendResultPresenter(draftPresenter: draftPresenter)
         sut.toastAction.sink { self.capturedToastActions.append($0) }.store(in: &cancellables)
         draftPresenter.draftToPresent.sink { self.capturedDraftsToPresent.append($0) }.store(in: &cancellables)
 
@@ -220,7 +280,7 @@ private extension DraftToPresent {
         switch self {
         case .new:
             return nil
-        case .openDraftId(let id):
+        case .openDraftId(let id, _):
             return id
         }
     }

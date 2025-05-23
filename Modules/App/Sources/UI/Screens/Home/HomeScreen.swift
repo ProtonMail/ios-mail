@@ -72,7 +72,12 @@ struct HomeScreen: View {
                 selectedItem: selectedItem
             )
         }
-        let draftPresenter = DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+        let draftPresenter = DraftPresenter(
+            userSession: userSession,
+            draftProvider: .productionInstance,
+            undoSendProvider: .productionInstance(userSession: userSession),
+            undoScheduleSendProvider: .productionInstance(userSession: userSession)
+        )
         self._draftPresenter = .init(initialValue: draftPresenter)
         self._sendResultCoordinator = .init(
             wrappedValue: SendResultCoordinator(userSession: userSession, draftPresenter: draftPresenter)

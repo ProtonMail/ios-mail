@@ -262,10 +262,15 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func scheduleSendState() -> ComposerViewModalState? {
+    func scheduleSendState(lastScheduledTime: UInt64?) -> ComposerViewModalState? {
         do {
             let timeOptions = try scheduleSendOptionsProvider.scheduleSendOptions().get()
-            return .scheduleSend(timeOptions)
+            let predefinedOptions = [timeOptions.tomorrowTime, timeOptions.mondayTime]
+            var previouslySet: UInt64? = nil
+            if let lastScheduledTime, !predefinedOptions.contains(lastScheduledTime) {
+                previouslySet = lastScheduledTime
+            }
+            return .scheduleSend(timeOptions, lastScheduledTime: previouslySet)
         } catch let error {
             toast = .error(message: error.localizedDescription)
             return nil
@@ -515,7 +520,7 @@ extension ComposerModel {
         }
     }
 
-   private func performSendOrSchedule(date: Date?) async -> (VoidDraftSendResult, SendEvent) {
+    private func performSendOrSchedule(date: Date?) async -> (VoidDraftSendResult, SendEvent) {
         if let date {
             AppLogger.log(message: "scheduling message", category: .composer)
             let result = await draft.schedule(timestamp: UInt64(date.timeIntervalSince1970))

@@ -1150,6 +1150,12 @@
         }
       }
     },
+    "Edit and reschedule" : {
+      "comment" : "Alert title for editing a scheduled message."
+    },
+    "Edit draft" : {
+      "comment" : "Alert confirmation button title for editing a scheduled message."
+    },
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
@@ -1661,6 +1667,9 @@
           }
         }
       }
+    },
+    "Message was not scheduled" : {
+      "comment" : "Error in the context of undoing a scheduled message"
     },
     "Messages in Trash and Spam will be automatically deleted after 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
@@ -2759,6 +2768,9 @@
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted."
+    },
+    "This message will be moved to Drafts so you can edit it. You'll need to reschedule when it will be sent." : {
+      "comment" : "Alert message for editing a scheduled message."
     },
     "This message will be sent" : {
       "comment" : "Banner showing the scheduled send time for an email."

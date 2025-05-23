@@ -49,6 +49,19 @@ enum L10n {
         }
 
         enum Send {
+            static let editScheduledAlertTitle = LocalizedStringResource(
+                "Edit and reschedule",
+                comment: "Alert title for editing a scheduled message."
+            )
+            static let editScheduledAlertMessage = LocalizedStringResource(
+                "This message will be moved to Drafts so you can edit it. You'll need to reschedule when it will be sent.",
+                comment: "Alert message for editing a scheduled message."
+            )
+            static let editScheduledAlertConfimationButton = LocalizedStringResource(
+                "Edit draft",
+                comment: "Alert confirmation button title for editing a scheduled message."
+            )
+
             static let forward = LocalizedStringResource(
                 "Forward",
                 comment: "Action title for forwarding given message in the action sheet."
@@ -72,6 +85,13 @@ enum L10n {
             static let draftNotFound = LocalizedStringResource(
                 "Undo operation failed because draft was not found",
                 comment: "Error in the context of undoing a sent message"
+            )
+        }
+
+        enum UndoScheduleSendError {
+            static let messageWasNotScheduled = LocalizedStringResource(
+                "Message was not scheduled",
+                comment: "Error in the context of undoing a scheduled message"
             )
         }
 

@@ -3,6 +3,16 @@
 import Foundation
 import proton_app_uniffi
 
+public extension DraftCancelScheduleSendResult {
+    func get() throws(DraftCancelScheduleSendError) -> DraftCancelScheduledSendInfo {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionDeletePinCodeResult {
     func get() throws(PinAuthError) {
         switch self {

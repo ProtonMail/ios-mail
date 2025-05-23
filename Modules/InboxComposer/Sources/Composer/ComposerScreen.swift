@@ -25,10 +25,17 @@ public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
+    private let messageLastScheduledTime: UInt64?
     private let onSendingEvent: (SendEvent) -> Void
     private let dependencies: Dependencies
 
-    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping (SendEvent) -> Void) {
+    public init(
+        messageId: ID,
+        messageLastScheduledTime: UInt64? = nil,
+        dependencies: Dependencies,
+        onSendingEvent: @escaping (SendEvent) -> Void
+    ) {
+        self.messageLastScheduledTime = messageLastScheduledTime
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
         self._model = StateObject(
@@ -46,6 +53,7 @@ public struct ComposerScreen: View {
         dependencies: Dependencies,
         onSendingEvent: @escaping (SendEvent) -> Void
     ) {
+        self.messageLastScheduledTime = nil
         self.dependencies = dependencies
         self.onSendingEvent = onSendingEvent
         self._model = StateObject(
@@ -72,6 +80,7 @@ public struct ComposerScreen: View {
             ComposerView(
                 draft: draft,
                 draftOrigin: draftOrigin,
+                draftLastScheduledTime: messageLastScheduledTime,
                 draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
                 contactProvider: dependencies.contactProvider,
                 onSendingEvent: onSendingEvent

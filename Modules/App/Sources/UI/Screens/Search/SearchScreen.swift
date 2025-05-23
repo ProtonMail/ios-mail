@@ -40,7 +40,12 @@ struct SearchScreen: View {
     init(userSession: MailUserSession, sendResultPresenter: SendResultPresenter) {
         self._model = StateObject(wrappedValue: .init())
         self._searchDraftPresenter = State(
-            initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+            initialValue: DraftPresenter(
+                userSession: userSession,
+                draftProvider: .productionInstance,
+                undoSendProvider: .productionInstance(userSession: userSession),
+                undoScheduleSendProvider: .productionInstance(userSession: userSession)
+            )
         )
         self._makeModalScreen = .init(initialValue: { state in
             switch state {

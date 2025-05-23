@@ -73,7 +73,7 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model)
+                    ConversationDetailListView(model: model, goBack: { navigationPath.removeLast() })
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
@@ -212,7 +212,7 @@ private extension ConversationDetailModel.State {
                 ),
                 selectedMailbox: .inbox
             ),
-            draftPresenter: .dummy,
+            draftPresenter: .dummy(),
             navigationPath: .constant(.init())
         )
     }
@@ -225,7 +225,7 @@ private extension ConversationDetailModel.State {
                 remoteId: .init(value: ""),
                 subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
             )),
-            draftPresenter: .dummy,
+            draftPresenter: .dummy(),
             navigationPath: .constant(.init())
         )
     }

@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 enum ComposerViewModalState: Identifiable {
-    case scheduleSend(DraftScheduleSendOptions)
+    case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
     case attachmentPicker
 
     var id: String {

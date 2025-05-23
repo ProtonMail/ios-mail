@@ -26,6 +26,7 @@ import SwiftUI
 
 struct MessageBannersView: View {
     enum Action {
+        case editScheduledMessageTapped
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
         case markAsLegitimateTapped
@@ -130,7 +131,7 @@ struct MessageBannersView: View {
             case .scheduledSend(let scheduledTime):
                 let formattedTime = scheduleSendDateFormatter.string(from: scheduledTime.date, format: .relativeOrShort)
                 let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.editScheduledMessageTapped)
                 }
 
                 return .init(

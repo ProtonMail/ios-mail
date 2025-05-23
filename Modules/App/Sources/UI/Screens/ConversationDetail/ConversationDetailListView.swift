@@ -22,13 +22,15 @@ import SwiftUI
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
+    private let goBack: () -> Void
 
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
-    init(model: ConversationDetailModel) {
+    init(model: ConversationDetailModel, goBack: @escaping () -> Void) {
         self.model = model
+        self.goBack = goBack
     }
 
     var body: some View {
@@ -47,6 +49,7 @@ struct ConversationDetailListView: View {
         }
         .sheet(item: $senderActionTarget, content: senderActionPicker)
         .sheet(item: $recipientActionTarget, content: recipientActionPicker)
+        .alert(model: $model.editScheduledMessageConfirmationAlert)
     }
 
     private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
@@ -133,6 +136,8 @@ struct ConversationDetailListView: View {
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):
             recipientActionTarget = recipient
+        case .onEditScheduledMessage:
+            model.onEditScheduledMessage(withId: uiModel.id, goBack: goBack, toastStateStore: toastStateStore)
         }
     }
 }

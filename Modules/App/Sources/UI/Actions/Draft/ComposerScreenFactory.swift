@@ -28,13 +28,17 @@ struct ComposerScreenFactory {
         return switch composerParams.draftToPresent {
         case .new(let draft):
             ComposerScreen(
-                draft: draft, draftOrigin: .new, dependencies: dependencies,
+                draft: draft,
+                draftOrigin: .new,
+                dependencies: dependencies,
                 onSendingEvent: { event in
                     Task { try await composerParams.onSendingEvent(draft.messageId().get()!, event) }
                 })
-        case .openDraftId(let messageId):
+        case .openDraftId(let messageId, let lastScheduledTime):
             ComposerScreen(
-                messageId: messageId, dependencies: dependencies,
+                messageId: messageId,
+                messageLastScheduledTime: lastScheduledTime,
+                dependencies: dependencies,
                 onSendingEvent: { event in
                     composerParams.onSendingEvent(messageId, event)
                 })

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -19,18 +19,18 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-enum DeleteItemAlertAction: AlertActionInfo, CaseIterable {
-    case confirm
+enum EditScheduleAlertAction: AlertActionInfo, CaseIterable {
     case cancel
+    case edit
 
     // MARK: - AlertActionInfo
 
     var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
         switch self {
-        case .confirm:
-            (CommonL10n.delete, .destructive)
         case .cancel:
             (CommonL10n.cancel, .cancel)
+        case .edit:
+            (L10n.Action.Send.editScheduledAlertConfimationButton, nil)
         }
     }
 }

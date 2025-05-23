@@ -26,6 +26,7 @@ struct MessageBodyView: View {
     let emailAddress: String
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
+    let editScheduledMessage: () -> Void
     let htmlLoaded: () -> Void
     @Binding var attachmentIDToOpen: ID?
 
@@ -35,6 +36,7 @@ struct MessageBodyView: View {
         attachments: [AttachmentDisplayModel],
         mailbox: Mailbox,
         attachmentIDToOpen: Binding<ID?>,
+        editScheduledMessage: @escaping () -> Void,
         htmlLoaded: @escaping () -> Void
     ) {
         self.messageID = messageID
@@ -42,16 +44,19 @@ struct MessageBodyView: View {
         self.attachments = attachments
         self.mailbox = mailbox
         self._attachmentIDToOpen = attachmentIDToOpen
+        self.editScheduledMessage = editScheduledMessage
         self.htmlLoaded = htmlLoaded
     }
 
     var body: some View {
-        StoreView(store: MessageBodyStateStore(
-            messageID: messageID,
-            mailbox: mailbox,
-            wrapper: .productionInstance(),
-            toastStateStore: toastStateStore
-        )) { state, store in
+        StoreView(
+            store: MessageBodyStateStore(
+                messageID: messageID,
+                mailbox: mailbox,
+                wrapper: .productionInstance(),
+                toastStateStore: toastStateStore
+            )
+        ) { state, store in
             VStack(spacing: .zero) {
                 if case .loaded(let body) = state.body, !body.banners.isEmpty {
                     MessageBannersView(
@@ -59,6 +64,8 @@ struct MessageBodyView: View {
                         timer: Timer.self,
                         action: { action in
                             switch action {
+                            case .editScheduledMessageTapped:
+                                editScheduledMessage()
                             case .displayEmbeddedImagesTapped:
                                 store.handle(action: .displayEmbeddedImages)
                             case .downloadRemoteContentTapped:

@@ -36,8 +36,8 @@ class MailboxScreenTests: BaseTestCase {
             notificationAuthorizationStore: .init(userDefaults: userDefaults),
             userSession: .dummy,
             userDefaults: userDefaults,
-            draftPresenter: .dummy,
-            sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+            draftPresenter: .dummy(),
+            sendResultPresenter: .init(draftPresenter: .dummy())
         )
 
         // the tests are disabled until we can determine why they're failing after upgrading to Xcode 16
