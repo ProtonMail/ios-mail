@@ -19,6 +19,7 @@
 import InboxSnapshotTesting
 import InboxTesting
 
+@MainActor
 class PINLockScreenSnapshotTests: BaseTestCase {
 
     func testPINLockScreenLayoutsCorrectly() {
@@ -27,10 +28,12 @@ class PINLockScreenSnapshotTests: BaseTestCase {
             named: "empty_pin"
         )
         assertSnapshotsOnIPhoneX(
-            of: PINLockScreen(state: .init(
-                hideLogoutButton: false,
-                pin: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            ), error: .constant(nil)) { _ in },
+            of: PINLockScreen(
+                state: .init(
+                    hideLogoutButton: false,
+                    pin: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                ), error: .constant(nil)
+            ) { _ in },
             named: "non_empty_pin"
         )
         assertSnapshotsOnIPhoneX(

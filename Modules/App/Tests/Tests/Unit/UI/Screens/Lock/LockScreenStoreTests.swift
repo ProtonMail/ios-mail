@@ -25,11 +25,17 @@ class LockScreenStoreTests {
     lazy var sut: LockScreenStore = .init(
         state: .init(type: .pin, pinAuthenticationError: nil),
         pinVerifier: pinVerifierSpy,
+        mailUserSession: { .dummy },
+        signOutAllAccountsWrapper: .init(signOutAllAccounts: { [unowned self] _ in
+            signOutAllAccountsInvokeCount += 1
+            return .ok
+        }),
         dismissLock: { [unowned self] in
             dismissLockInvokeCount += 1
         }
     )
 
+    var signOutAllAccountsInvokeCount = 0
     var dismissLockInvokeCount = 0
     private let pinVerifierSpy: PINVerifierSpy = .init()
 
@@ -79,6 +85,13 @@ class LockScreenStoreTests {
 
         #expect(pinVerifierSpy.remainingPinAttemptsCallCount == 1)
         #expect(dismissLockInvokeCount == 1)
+    }
+
+    @Test
+    func signOutButtonIsTappedOnPINLockScreen_ItSignOutsFromAllAccounts() async {
+        await sut.handle(action: .pin(.logOut))
+
+        #expect(signOutAllAccountsInvokeCount == 1)
     }
 
 }

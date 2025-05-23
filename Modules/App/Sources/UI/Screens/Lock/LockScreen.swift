@@ -21,8 +21,17 @@ import proton_app_uniffi
 struct LockScreen: View {
     @StateObject var store: LockScreenStore
 
-    init(state: LockScreenState, pinVerifier: PINVerifier, dismissLock: @escaping () -> Void) {
-        _store = .init(wrappedValue: .init(state: state, pinVerifier: pinVerifier, dismissLock: dismissLock))
+    init(
+        state: LockScreenState,
+        pinVerifier: PINVerifier,
+        dismissLock: @escaping () -> Void
+    ) {
+        _store = .init(
+            wrappedValue: .init(
+                state: state,
+                pinVerifier: pinVerifier,
+                dismissLock: dismissLock)
+        )
     }
 
     var body: some View {
