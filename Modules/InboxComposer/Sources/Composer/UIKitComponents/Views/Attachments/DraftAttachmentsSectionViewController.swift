@@ -67,7 +67,7 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     }
 
     private func updateUI() {
-        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.large
+        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
         stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for uiModel in uiModels {
