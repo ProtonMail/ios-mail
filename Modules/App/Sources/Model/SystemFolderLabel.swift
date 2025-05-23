@@ -19,6 +19,7 @@ import DeveloperToolsSupport
 import Foundation
 import InboxDesignSystem
 import proton_app_uniffi
+import SwiftUI
 
 typealias SystemFolderLabel = SystemLabel
 
@@ -58,30 +59,30 @@ extension SystemFolderLabel {
         }
     }
 
-    var icon: ImageResource {
+    var icon: Image {
         switch self {
         case .inbox:
-            DS.Icon.icInbox
+            DS.Icon.icInbox.image
         case .allDrafts, .drafts:
-            DS.Icon.icFile
+            DS.Icon.icFile.image
         case .outbox:
-            DS.Icon.icOutbox
+            DS.Icon.icOutbox.image
         case .allSent, .sent:
-            DS.Icon.icPaperPlane
+            DS.Icon.icPaperPlane.image
         case .trash:
-            DS.Icon.icTrash
+            DS.Icon.icTrash.image
         case .spam:
-            DS.Icon.icFire
+            DS.Icon.icFire.image
         case .allMail, .almostAllMail:
-            DS.Icon.icEnvelopes
+            DS.Icon.icEnvelopes.image
         case .archive:
-            DS.Icon.icArchiveBox
+            DS.Icon.icArchiveBox.image
         case .starred:
-            DS.Icon.icStar
+            Image(systemName: DS.SFSymbols.star)
         case .scheduled:
-            DS.Icon.icClockPaperPlane
+            DS.Icon.icClockPaperPlane.image
         case .snoozed:
-            DS.Icon.icClock
+            DS.Icon.icClock.image
         case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
             fatalError("Not implemented")
         }

@@ -34,7 +34,6 @@ public extension DS.Icon {
     static let icChevronTinyDown = ImageResource.icChevronTinyDown
     static let icChevronTinyUp = ImageResource.icChevronTinyUp
     static let icChevronTinyRight = ImageResource.icChevronTinyRight
-    static let icChevronTinyLeft = ImageResource.icChevronTinyLeft
     static let icChevronDownFilled = ImageResource.icChevronDownFilled
     static let icChevronUpFilled = ImageResource.icChevronUpFilled
     static let icCircleFilled = ImageResource.icCircleFilled
@@ -70,7 +69,6 @@ public extension DS.Icon {
     static let icSpam = ImageResource.icSpam
     static let icNotSpam = ImageResource.icNoSpam
     static let icOutbox = ImageResource.icOutbox
-    static let icStarFilled = ImageResource.icStarFilled
     static let icStarFilledStrong = ImageResource.icStarFilledStrong
     static let icStarStrong = ImageResource.icStarStrong
     static let icTrash = ImageResource.icTrash
@@ -109,8 +107,6 @@ public extension DS.Icon {
     static let icPinAngled = ImageResource.icPinAngled
     static let icPinAngledSlash = ImageResource.icPinAngledSlash
     static let icPrinter = ImageResource.icPrinter
-    static let icStar = ImageResource.icStar
-    static let icStarSlash = ImageResource.icStarSlash
     static let icSun = ImageResource.icSun
     static let icTag = ImageResource.icTag
     static let icThreeDotsHorizontal = ImageResource.icThreeDotsHorizontal

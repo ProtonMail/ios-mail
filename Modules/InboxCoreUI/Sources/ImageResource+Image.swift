@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,25 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import SwiftUI
 
-struct ActionSheetImageButton: View {
-    let displayData: ActionDisplayData
-    let displayBottomSeparator: Bool
-    let action: () -> Void
+extension ImageResource {
 
-    var body: some View {
-        ActionSheetButton(displayBottomSeparator: displayBottomSeparator, action: action) {
-            HStack(spacing: DS.Spacing.large) {
-                displayData.image
-                    .resizable()
-                    .square(size: 20)
-                    .foregroundStyle(DS.Color.Icon.norm)
-                Text(displayData.title)
-                    .foregroundStyle(DS.Color.Text.norm)
-                Spacer()
-            }
-        }
+    public var image: Image {
+        Image(self)
     }
+
 }

@@ -30,12 +30,12 @@ extension ExclusiveLocation {
         }
     }
 
-    var mailboxLocationIcon: ImageResource {
+    var mailboxLocationIcon: Image {
         switch self {
         case .system(let systemLabel, _):
             systemLabel.icon
         case .custom:
-            DS.Icon.icFolder
+            DS.Icon.icFolder.image
         }
     }
 
@@ -44,7 +44,7 @@ extension ExclusiveLocation {
         case .system(let systemLabel, _):
             .init(name: systemLabel.humanReadable, icon: systemLabel.icon, iconColor: nil)
         case .custom(let name, _, let color):
-            .init(name: name.stringResource, icon: DS.Icon.icFolderOpenFilled, iconColor: Color(hex: color.value))
+            .init(name: name.stringResource, icon: DS.Icon.icFolderOpenFilled.image, iconColor: Color(hex: color.value))
         }
     }
 

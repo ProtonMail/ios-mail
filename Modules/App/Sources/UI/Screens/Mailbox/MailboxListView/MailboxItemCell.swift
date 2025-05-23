@@ -130,8 +130,8 @@ extension MailboxItemCell {
 
     @ViewBuilder
     private var locationView: some View {
-        if let icon = uiModel.locationIcon {
-            Image(icon)
+        if let image = uiModel.locationIcon {
+            image
                 .resizable()
                 .square(size: 20)
                 .foregroundColor(DS.Color.Text.weak)
@@ -216,7 +216,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let emails: String
     let subject: String
     let date: Date
-    let locationIcon: ImageResource?
+    let locationIcon: Image?
     let isRead: Bool
     let isStarred: Bool
     let isSelected: Bool
@@ -237,7 +237,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         emails: String,
         subject: String,
         date: Date,
-        locationIcon: ImageResource?,
+        locationIcon: Image?,
         isRead: Bool,
         isStarred: Bool,
         isSelected: Bool,
@@ -335,7 +335,7 @@ enum MailboxItemCellEvent {
                 emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-                locationIcon: DS.Icon.icInbox,
+                locationIcon: DS.Icon.icInbox.image,
                 isRead: false,
                 isStarred: true,
                 isSelected: false,

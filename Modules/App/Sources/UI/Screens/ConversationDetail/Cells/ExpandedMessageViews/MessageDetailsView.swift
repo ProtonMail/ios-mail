@@ -246,7 +246,7 @@ struct MessageDetailsView: View {
                 CapsuleView(
                     text: model.name,
                     color: DS.Color.Background.secondary,
-                    icon: Image(model.icon),
+                    icon: model.icon,
                     iconColor: model.iconColor,
                     style: .attachment
                 )
@@ -285,7 +285,7 @@ struct MessageDetailsView: View {
         CapsuleView(
             text: L10n.Mailbox.SystemFolder.starred,
             color: DS.Color.Background.secondary,
-            icon: Image(DS.Icon.icStarFilled),
+            icon: Image(systemName: DS.SFSymbols.starFilled),
             iconColor: DS.Color.Star.selected,
             style: .attachment
         )
@@ -357,7 +357,7 @@ enum MessageDetail {
 
     struct Location: Equatable {
         let name: LocalizedStringResource
-        let icon: ImageResource
+        let icon: Image
         let iconColor: Color?
     }
 

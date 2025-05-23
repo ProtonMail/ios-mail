@@ -18,6 +18,7 @@
 import DeveloperToolsSupport
 import Foundation
 import InboxDesignSystem
+import SwiftUI
 
 /**
  List of all the actions that can take place over a message or a conversation.
@@ -53,7 +54,7 @@ enum Action: ActionPickerListElement {
 
     private var nameKeyPath: KeyPath<L10n.Action.Type, LocalizedStringResource> {
         switch self {
-        case .deletePermanently:\.deletePermanently
+        case .deletePermanently: \.deletePermanently
         case .markAsRead: \.markAsRead
         case .markAsUnread: \.markAsUnread
         case .labelAs: \.labelAs
@@ -77,50 +78,50 @@ enum Action: ActionPickerListElement {
         }
     }
 
-    var icon: ImageResource {
+    var icon: Image {
         switch self {
         case .deletePermanently:
-            return DS.Icon.icTrashCross
+            DS.Icon.icTrashCross.image
         case .labelAs:
-            return DS.Icon.icTag
+            DS.Icon.icTag.image
         case .markAsRead:
-            return DS.Icon.icEnvelopeOpen
+            DS.Icon.icEnvelopeOpen.image
         case .markAsUnread:
-            return DS.Icon.icEnvelopeDot
+            DS.Icon.icEnvelopeDot.image
         case .moveTo:
-            return DS.Icon.icFolderArrowIn
+            DS.Icon.icFolderArrowIn.image
         case .moveToArchive:
-            return DS.Icon.icArchiveBox
+            DS.Icon.icArchiveBox.image
         case .moveToInbox:
-            return DS.Icon.icInbox
+            DS.Icon.icInbox.image
         case .moveToInboxFromSpam:
-            return DS.Icon.icNotSpam
+            DS.Icon.icNotSpam.image
         case .moveToSpam:
-            return DS.Icon.icSpam
+            DS.Icon.icSpam.image
         case .moveToTrash:
-            return DS.Icon.icTrash
+            DS.Icon.icTrash.image
         case .pin:
-            return DS.Icon.icPinAngled
+            DS.Icon.icPinAngled.image
         case .print:
-            return DS.Icon.icPrinter
+            DS.Icon.icPrinter.image
         case .renderInLightMode:
-            return DS.Icon.icSun
+            DS.Icon.icSun.image
         case .reportPhishing:
-            return DS.Icon.icHook
+            DS.Icon.icHook.image
         case .saveAsPDF:
-            return DS.Icon.icFilePDF
+            DS.Icon.icFilePDF.image
         case .snooze:
-            return DS.Icon.icClock
+            DS.Icon.icClock.image
         case .star:
-            return DS.Icon.icStar
+            Image(systemName: DS.SFSymbols.star)
         case .unpin:
-            return DS.Icon.icPinAngledSlash
+            DS.Icon.icPinAngledSlash.image
         case .unstar:
-            return DS.Icon.icStarSlash
+            Image(systemName: DS.SFSymbols.starSlash)
         case .viewHeaders:
-            return DS.Icon.icFileLines
+            DS.Icon.icFileLines.image
         case .viewHTML:
-            return DS.Icon.icCode
+            DS.Icon.icCode.image
         }
     }
 }

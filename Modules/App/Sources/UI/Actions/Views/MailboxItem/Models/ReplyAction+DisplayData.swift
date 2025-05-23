@@ -23,11 +23,11 @@ extension ReplyAction {
     var displayData: ActionDisplayData {
         switch self {
         case .reply:
-            .init(title: L10n.Action.Send.reply, image: DS.Icon.icReply)
+            .init(title: L10n.Action.Send.reply, imageResource: DS.Icon.icReply)
         case .replyAll:
-            .init(title: L10n.Action.Send.replyAll, image: DS.Icon.icReplyAll)
+            .init(title: L10n.Action.Send.replyAll, imageResource: DS.Icon.icReplyAll)
         case .forward:
-            .init(title: L10n.Action.Send.forward, image: DS.Icon.icForward)
+            .init(title: L10n.Action.Send.forward, imageResource: DS.Icon.icForward)
         }
     }
 

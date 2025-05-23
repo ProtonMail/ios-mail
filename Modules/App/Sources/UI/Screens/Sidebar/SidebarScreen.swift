@@ -266,14 +266,14 @@ struct SidebarScreen: View {
 
     private func otherItemCotent(model: SidebarOtherItem) -> some View {
         HStack {
-            sidebarItemImage(icon: model.icon, isSelected: model.isSelected)
+            sidebarItemImage(icon: model.icon.image, isSelected: model.isSelected)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
             Spacer()
         }
     }
 
-    private func sidebarItemImage(icon: ImageResource, isSelected: Bool) -> some View {
-        Image(icon)
+    private func sidebarItemImage(icon: Image, isSelected: Bool) -> some View {
+        icon
             .renderingMode(.template)
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)

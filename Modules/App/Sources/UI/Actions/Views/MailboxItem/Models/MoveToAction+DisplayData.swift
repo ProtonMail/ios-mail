@@ -24,20 +24,20 @@ extension MoveToAction {
         case .moveToSystemFolder(let systemFolder):
             switch systemFolder.name {
             case .inbox:
-                .init(title: L10n.Action.moveToInbox, image: DS.Icon.icInbox)
+                .init(title: L10n.Action.moveToInbox, imageResource: DS.Icon.icInbox)
             case .archive:
-                .init(title: L10n.Mailbox.SystemFolder.archive, image: DS.Icon.icArchiveBox)
+                .init(title: L10n.Mailbox.SystemFolder.archive, imageResource: DS.Icon.icArchiveBox)
             case .spam:
-                .init(title: L10n.Action.moveToSpam, image: DS.Icon.icFire)
+                .init(title: L10n.Action.moveToSpam, imageResource: DS.Icon.icFire)
             case .trash:
-                .init(title: L10n.Action.moveToTrash, image: DS.Icon.icTrash)
+                .init(title: L10n.Action.moveToTrash, imageResource: DS.Icon.icTrash)
             }
         case .moveTo:
-            .init(title: L10n.Action.moveTo, image: DS.Icon.icFolderArrowIn)
+            .init(title: L10n.Action.moveTo, imageResource: DS.Icon.icFolderArrowIn)
         case .notSpam:
-            .init(title: L10n.Action.notSpam, image: DS.Icon.icNotSpam)
+            .init(title: L10n.Action.notSpam, imageResource: DS.Icon.icNotSpam)
         case .permanentDelete:
-            .init(title: L10n.Action.deletePermanently, image: DS.Icon.icTrashCross)
+            .init(title: L10n.Action.deletePermanently, imageResource: DS.Icon.icTrashCross)
         }
     }
 

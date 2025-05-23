@@ -20,7 +20,7 @@ import InboxDesignSystem
 import SwiftUI
 
 protocol ActionPickerListElement: Equatable {
-    var icon: ImageResource { get }
+    var icon: Image { get }
     var name: LocalizedStringResource { get }
 }
 
@@ -74,12 +74,14 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
                     .onTapGesture {
                         onElementTap(element)
                     }
-                    .onLongPressGesture(perform: {}, onPressingChanged: { isPressed in
-                        highlightedElement = isPressed ? element : nil
-                    })
+                    .onLongPressGesture(
+                        perform: {},
+                        onPressingChanged: { isPressed in
+                            highlightedElement = isPressed ? element : nil
+                        }
+                    )
                     .listRowBackground(
-                        highlightedElement == element ?
-                            DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary
+                        highlightedElement == element ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary
                     )
                     .accessibilityElement(children: .contain)
                     .accessibilityIdentifier(
@@ -91,7 +93,7 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 
     private func cell(for element: Element) -> some View {
         HStack(spacing: DS.Spacing.large) {
-            Image(element.icon)
+            element.icon
                 .actionSheetSmallIconModifier()
                 .accessibilityIdentifier(ActionPickerListIdentifiers.messageActionIcon)
 
@@ -107,14 +109,16 @@ struct ActionPickerList<Header: View, Element: ActionPickerListElement>: View {
 
 #Preview {
     struct Item: ActionPickerListElement {
-        let icon: ImageResource = PreviewData.senderImage
+        let icon: Image = Image(PreviewData.senderImage)
         let name: LocalizedStringResource = "Item".notLocalized.stringResource
     }
 
-    return ActionPickerList(headerContent: {
-        Text("Header".notLocalized)
-    }, sections: [[Item()]]) { _ in }
-        .border(.purple)
+    return ActionPickerList(
+        headerContent: {
+            Text("Header".notLocalized)
+        }, sections: [[Item()]]
+    ) { _ in }
+    .border(.purple)
 }
 
 struct ActionPickerListIdentifiers {

@@ -19,5 +19,15 @@ import SwiftUI
 
 struct ActionDisplayData {
     let title: LocalizedStringResource
-    let image: ImageResource
+    let image: Image
+
+    init(title: LocalizedStringResource, image: Image) {
+        self.title = title
+        self.image = image
+    }
+
+    init(title: LocalizedStringResource, imageResource: ImageResource) {
+        self.title = title
+        self.image = imageResource.image
+    }
 }
