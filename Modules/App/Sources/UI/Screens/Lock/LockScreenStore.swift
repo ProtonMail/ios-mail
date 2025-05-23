@@ -49,21 +49,26 @@ class LockScreenStore: StateStore {
                 await verify(pin: pin)
             }
         case .pinScreenLoaded:
-            await verifyNumberOfAttempts()
+            let pinAttemptsRemaining = await readNumberOfAttempts()
+            if pinAttemptsRemaining <= 3 {
+                handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
+            }
         }
     }
 
     @MainActor
-    private func verifyNumberOfAttempts() async {
-        let numberOfAttempts = await readNumberOfAttempts()
-        switch numberOfAttempts {
+    private func handlePinAuthenticationError(attemptsLeft: Int) {
+        switch attemptsLeft {
         case 0:
             lockOutput(.logOut)
         case 1...3:
-            state = state
-                .copy(\.pinError, to: L10n.PINLock.remainingAttemptsWarning(numberOfAttempts).string)
+            state =
+                state
+                .copy(\.pinAuthenticationError, to: .attemptsRemaining(attemptsLeft))
         default:
-            break
+            state =
+                state
+                .copy(\.pinAuthenticationError, to: .custom(L10n.PINLock.invalidPIN.string))
         }
     }
 
@@ -73,10 +78,8 @@ class LockScreenStore: StateStore {
         case .ok:
             lockOutput(.authenticated)
         case .error:
-            state = state // FIXME: - To fix
-                .copy(\.pinError, to: "Incorrect PIN. Try again.")
-
-            await verifyNumberOfAttempts()
+            let pinAttemptsRemaining = await readNumberOfAttempts()
+            handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
         }
     }
 

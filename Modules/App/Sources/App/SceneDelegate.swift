@@ -132,14 +132,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private func handleLockScreenVisibility(type: LockScreenState.LockScreenType?) {
         guard let type else {
-            showAppContent()
+            hideAppProtectionWindow()
             return
         }
         checkAutoLockSetting { [weak self] shouldShowLockScreen in
             if shouldShowLockScreen {
                 self?.showLockScreen(lockScreenType: type)
             } else {
-                self?.showAppContent()
+                self?.hideAppProtectionWindow()
             }
         }
     }
@@ -160,7 +160,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                     output: { [weak self] output in
                         switch output {
                         case .logOut:
-                            break  // FIXME: - To add later
+                            self?.appProtectionStore.dismissLock()
                         case .authenticated:
                             self?.appProtectionStore.dismissLock()
                         }
@@ -172,8 +172,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     @MainActor
-    private func showAppContent() {
-        guard let appProtectionWindow else { return }
+    private func hideAppProtectionWindow() {
+        guard let appProtectionWindow, !appProtectionWindow.isHidden else { return }
         overlayWindow?.makeKey()
         transitionAnimation(
             appProtectionWindow, 0.2, .transitionCrossDissolve,

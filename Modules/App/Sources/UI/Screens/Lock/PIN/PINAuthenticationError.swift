@@ -15,10 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum PINLockScreenAction {
-    case confirmTapped
-    case signOutTapped
-    case pinEntered([UInt32])
-    case alertActionTapped(LogOutConformationAction)
-    case error(PINAuthenticationError)
+enum PINAuthenticationError: Equatable {
+    case custom(String)
+    case attemptsRemaining(Int)
+
+    var humanReadable: String {
+        switch self {
+        case .custom(let text):
+            text
+        case .attemptsRemaining(let value):
+            L10n.PINLock.remainingAttemptsWarning(value).string
+        }
+    }
 }

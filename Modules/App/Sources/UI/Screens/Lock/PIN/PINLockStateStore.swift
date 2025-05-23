@@ -32,6 +32,7 @@ class PINLockStateStore: StateStore {
     func handle(action: PINLockScreenAction) async {
         switch action {
         case .confirmTapped:
+            guard !state.pin.isEmpty else { return }
             output(.pin(state.pin))
         case .signOutTapped:
             let alert: AlertModel = .logOutConfirmation(
@@ -39,10 +40,11 @@ class PINLockStateStore: StateStore {
             )
             state = state.copy(\.alert, to: alert)
         case .pinEntered(let pin):
+            let shouldClearError = state.error?.isCustom ?? true
             state =
                 state
                 .copy(\.pin, to: pin)
-                .copy(\.error, to: nil)
+                .copy(\.error, to: shouldClearError ? nil : state.error)
         case .alertActionTapped(let action):
             state.alert = nil
             handleAlert(action: action)
@@ -78,6 +80,19 @@ extension AlertModel {
             message: nil,
             actions: actions
         )
+    }
+
+}
+
+private extension PINAuthenticationError {
+
+    var isCustom: Bool {
+        switch self {
+        case .custom:
+            true
+        case .attemptsRemaining:
+            false
+        }
     }
 
 }

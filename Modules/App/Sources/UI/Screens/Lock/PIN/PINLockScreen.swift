@@ -22,12 +22,12 @@ import InboxCore
 
 struct PINLockScreen: View {
     @StateObject var store: PINLockStateStore
-    @Binding var error: String?
+    @Binding var error: PINAuthenticationError?
     @FocusState var isFocused: Bool
 
     init(
         state: PINLockState,
-        error: Binding<String?>,
+        error: Binding<PINAuthenticationError?>,
         output: @escaping (PINLockScreenOutput) -> Void
     ) {
         self._store = .init(wrappedValue: .init(state: state, output: output))
@@ -41,7 +41,7 @@ struct PINLockScreen: View {
                 HStack {
                     Spacer()
                     Button(action: {}) {
-                        Text("Sign out")
+                        Text(L10n.PINLock.signOut)
                             .foregroundStyle(DS.Color.Text.norm)
                     }
                     .padding(.trailing, DS.Spacing.large)
@@ -53,25 +53,19 @@ struct PINLockScreen: View {
                         .padding(.top, geometry.size.height * 0.20)
                         .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
                         .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
-                    Text("Enter PIN")
+                    Text(L10n.PINLock.title)
                         .foregroundStyle(DS.Color.Text.norm)
                         .font(.title)
                         .fontWeight(.semibold)
                         .padding(.top, DS.Spacing.huge)
                         .padding(.bottom, DS.Spacing.standard)
-                    if let error = store.state.error {
-                        Text(error)
-                            .foregroundStyle(DS.Color.Notification.error)
-                    } else {
-                        Text("Confirm it's you to continue.")
-                            .font(.callout)
-                            .foregroundStyle(DS.Color.Text.weak)
-                    }
 
-                    SecureField("PIN Code", text: pinBinding)
+                    subtitle
+                        .transition(.opacity)
+
+                    SecureField(L10n.PINLock.pinInputPlaceholder.string, text: pinBinding)
                         .font(.title3)
                         .fontWeight(.semibold)
-
                         .tint(DS.Color.Text.accent)
                         .focused($isFocused)
                         .keyboardType(.numberPad)
@@ -89,8 +83,25 @@ struct PINLockScreen: View {
             }
             .onChange(of: isFocused) { _, _ in isFocused = true }
             .onChange(of: error) { _, description in
-                store.handle(action: .error(description))
+                if let description {
+                    store.handle(action: .error(description))
+                }
             }
+            .onChange(of: store.state.error) { _, newValue in
+                error = newValue
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var subtitle: some View {
+        if let error = store.state.error?.humanReadable {
+            Text(error)
+                .foregroundStyle(DS.Color.Notification.error)
+        } else {
+            Text(L10n.PINLock.subtitle)
+                .font(.callout)
+                .foregroundStyle(DS.Color.Text.weak)
         }
     }
 

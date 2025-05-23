@@ -28,7 +28,10 @@ struct LockScreen: View {
     var body: some View {
         switch store.state.type {
         case .pin:
-            PINLockScreen(state: .init(hideLogoutButton: true, pin: []), error: pinErrorBinding) { output in
+            PINLockScreen(
+                state: .init(hideLogoutButton: true, pin: []),
+                error: $store.state.pinAuthenticationError
+            ) { output in
                 store.handle(action: .pin(output))
             }.onLoad {
                 store.handle(action: .pinScreenLoaded)
@@ -39,12 +42,4 @@ struct LockScreen: View {
             }
         }
     }
-
-    private var pinErrorBinding: Binding<String?> {
-        .init(
-            get: { store.state.pinError },
-            set: { _ in }
-        )
-    }
-
 }
