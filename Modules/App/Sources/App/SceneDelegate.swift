@@ -157,13 +157,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 LockScreen(
                     state: .init(type: lockScreenType),
                     pinVerifier: pinVerifierFactory(),
-                    output: { [weak self] output in
-                        switch output {
-                        case .logOut:
-                            self?.appProtectionStore.dismissLock()
-                        case .authenticated:
-                            self?.appProtectionStore.dismissLock()
-                        }
+                    dismissLock: { [weak self] in
+                        self?.appProtectionStore.dismissLock()
                     }
                 )
         )

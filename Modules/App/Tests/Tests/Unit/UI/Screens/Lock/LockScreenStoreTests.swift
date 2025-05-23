@@ -25,19 +25,19 @@ class LockScreenStoreTests {
     lazy var sut: LockScreenStore = .init(
         state: .init(type: .pin, pinAuthenticationError: nil),
         pinVerifier: pinVerifierSpy,
-        lockOutput: { [unowned self] output in
-            lockScreenOutput.append(output)
+        dismissLock: { [unowned self] in
+            dismissLockInvokeCount += 1
         }
     )
 
-    var lockScreenOutput: [LockScreenOutput] = []
+    var dismissLockInvokeCount = 0
     private let pinVerifierSpy: PINVerifierSpy = .init()
 
     @Test
     func handleBiometricAuthenticatedOutput_ItEmitsLockAuthenticatedOutput() async {
         await sut.handle(action: .biometric(.authenticated))
 
-        #expect(lockScreenOutput == [.authenticated])
+        #expect(dismissLockInvokeCount == 1)
     }
 
     @Test
@@ -47,7 +47,7 @@ class LockScreenStoreTests {
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinAuthenticationError == nil)
-        #expect(lockScreenOutput == [.authenticated])
+        #expect(dismissLockInvokeCount == 1)
     }
 
     @Test
@@ -57,7 +57,7 @@ class LockScreenStoreTests {
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinAuthenticationError == .custom(L10n.PINLock.invalidPIN.string))
-        #expect(lockScreenOutput == [])
+        #expect(dismissLockInvokeCount == 0)
     }
 
     @Test
@@ -68,7 +68,7 @@ class LockScreenStoreTests {
         await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
 
         #expect(sut.state.pinAuthenticationError == .attemptsRemaining(3))
-        #expect(lockScreenOutput == [])
+        #expect(dismissLockInvokeCount == 0)
     }
 
     @Test
@@ -78,7 +78,7 @@ class LockScreenStoreTests {
         await sut.handle(action: .pinScreenLoaded)
 
         #expect(pinVerifierSpy.remainingPinAttemptsCallCount == 1)
-        #expect(lockScreenOutput == [.logOut])
+        #expect(dismissLockInvokeCount == 1)
     }
 
 }

@@ -21,16 +21,16 @@ import Combine
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
-    private let lockOutput: (LockScreenOutput) -> Void
+    private let dismissLock: () -> Void
 
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
-        lockOutput: @escaping (LockScreenOutput) -> Void
+        dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
-        self.lockOutput = lockOutput
+        self.dismissLock = dismissLock
     }
 
     @MainActor
@@ -39,12 +39,13 @@ class LockScreenStore: StateStore {
         case .biometric(let output):
             switch output {
             case .authenticated:
-                lockOutput(.authenticated)
+                dismissLock()
             }
         case .pin(let output):
             switch output {
             case .logOut:
-                lockOutput(.logOut)
+                // FIXME: - Logout here
+                dismissLock()
             case .pin(let pin):
                 await verify(pin: pin)
             }
@@ -60,7 +61,7 @@ class LockScreenStore: StateStore {
     private func handlePinAuthenticationError(attemptsLeft: Int) {
         switch attemptsLeft {
         case 0:
-            lockOutput(.logOut)
+            dismissLock()
         case 1...3:
             state =
                 state
@@ -76,7 +77,7 @@ class LockScreenStore: StateStore {
     private func verify(pin: [UInt32]) async {
         switch await pinVerifier.verifyPinCode(pin: pin) {
         case .ok:
-            lockOutput(.authenticated)
+            dismissLock()
         case .error:
             let pinAttemptsRemaining = await readNumberOfAttempts()
             handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
