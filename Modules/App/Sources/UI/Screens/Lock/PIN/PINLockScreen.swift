@@ -21,22 +21,9 @@ import InboxDesignSystem
 import InboxCore
 
 struct PINLockScreen: View {
-    enum KeyboardButton: Hashable {
-        case digit(_ value: UInt32)
-        case delete
-
-        var isDigit: Bool {
-            switch self {
-            case .digit:
-                true
-            case .delete:
-                false
-            }
-        }
-    }
-
     @StateObject var store: PINLockStateStore
     @Binding var error: String?
+    @FocusState var isFocused: Bool
 
     init(
         state: PINLockState,
@@ -48,107 +35,86 @@ struct PINLockScreen: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                DS.Color.Background.norm
-                    .ignoresSafeArea(.all)
-
-                VStack {
-                    Image(systemName: DS.SFSymbols.lock)
+        GeometryReader { geometry in
+            ZStack(alignment: .top) {
+                BlurredCoverView(showLogo: false)
+                HStack {
+                    Spacer()
+                    Button(action: {}) {
+                        Text("Sign out")
+                            .foregroundStyle(DS.Color.Text.norm)
+                    }
+                    .padding(.trailing, DS.Spacing.large)
+                }
+                VStack(alignment: .center, spacing: .zero) {
+                    Image(DS.Images.protonMail)
+                        .resizable()
+                        .square(size: 90)
+                        .padding(.top, geometry.size.height * 0.20)
+                        .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
+                        .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
+                    Text("Enter PIN")
+                        .foregroundStyle(DS.Color.Text.norm)
                         .font(.title)
-                        .padding(.vertical, DS.Spacing.large)
-                    pinIndicator()
-                        .frame(height: 20, alignment: .center)
-                        .frame(maxWidth: 300)
-
-                    Text(store.state.error ?? "")
-                        .frame(height: 20)
-                        .foregroundStyle(DS.Color.Notification.error)
-
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: DS.Spacing.medium) {
-                        ForEach(keyboard, id: \.self) { rowButtons in
-                            HStack(spacing: DS.Spacing.large) {
-                                ForEach(rowButtons, id: \.self) { button in
-                                    Button(action: { store.handle(action: .keyboardTapped(button)) }) {
-                                        visualElement(for: button)
-                                            .font(.title)
-                                            .foregroundStyle(DS.Color.Text.norm)
-                                            .square(size: 92)
-                                            .background(button.isDigit ? DS.Color.InteractionWeak.norm : .clear)
-                                            .clipShape(Circle())
-                                    }
-                                }
-                            }
-                        }
+                        .fontWeight(.semibold)
+                        .padding(.top, DS.Spacing.huge)
+                        .padding(.bottom, DS.Spacing.standard)
+                    if let error = store.state.error {
+                        Text(error)
+                            .foregroundStyle(DS.Color.Notification.error)
+                    } else {
+                        Text("Confirm it's you to continue.")
+                            .font(.callout)
+                            .foregroundStyle(DS.Color.Text.weak)
                     }
 
+                    SecureField("PIN Code", text: pinBinding)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+
+                        .tint(DS.Color.Text.accent)
+                        .focused($isFocused)
+                        .keyboardType(.numberPad)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, DS.Spacing.huge)
+
                     Spacer()
-
-                    Button(
-                        action: { store.handle(action: .confirmTapped) },
-                        label: {
-                            Text(CommonL10n.confirm)
-                                .foregroundStyle(DS.Color.Text.inverted)
-                        }
-                    )
-                    .buttonStyle(BigButtonStyle())
-                    .padding(DS.Spacing.large)
+                    confirmButton
+                        .padding(.horizontal, DS.Spacing.extraLarge)
+                        .padding(.bottom, DS.Spacing.extraLarge)
                 }
             }
-            .navigationTitle(L10n.PINLock.screenTopTitle.string)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                if !store.state.hideLogoutButton {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: { store.handle(action: .signOutTapped) }) {
-                            Image(systemName: DS.SFSymbols.rectanglePortraitAndArrowRight)
-                                .foregroundStyle(DS.Color.Icon.norm)
-                        }
-                    }
-                }
+            .onAppear {
+                isFocused = true
             }
-            .onChange(of: error, { _, newValue in
-                store.handle(action: .error(newValue))
-            })
-            .alert(model: $store.state.alert)
-        }
-    }
-
-    @ViewBuilder
-    private func visualElement(for button: KeyboardButton) -> some View {
-        switch button {
-        case .digit(let value):
-            Text("\(value)".notLocalized)
-        case .delete:
-            Image(systemName: DS.SFSymbols.deleteLeft)
-        }
-    }
-
-    @ViewBuilder
-    func pinIndicator() -> some View {
-        if store.state.pin.isEmpty {
-            Text(L10n.PINLock.enterPinTitle)
-                .foregroundStyle(DS.Color.Text.weak)
-        } else {
-            HStack(spacing: DS.Spacing.small) {
-                ForEach(0..<store.state.pin.count, id: \.self) { _ in
-                    Circle()
-                        .fill(DS.Color.InteractionBrand.norm)
-                        .square(size: 10)
-                }
+            .onChange(of: isFocused) { _, _ in isFocused = true }
+            .onChange(of: error) { _, description in
+                store.handle(action: .error(description))
             }
         }
     }
 
-    private var keyboard: [[KeyboardButton]] {
-        [
-            [.digit(1), .digit(2), .digit(3)],
-            [.digit(4), .digit(5), .digit(6)],
-            [.digit(7), .digit(8), .digit(9)],
-            [.digit(0), .delete]
-        ]
+    private var pinBinding: Binding<String> {
+        .init(
+            get: { store.state.pin.toString },
+            set: { newValue in store.handle(action: .pinEntered(newValue.digits)) }
+        )
     }
 
+    private var confirmButton: some View {
+        Button(
+            action: { store.handle(action: .confirmTapped) },
+            label: { Text(CommonL10n.confirm) }
+        )
+        .buttonStyle(BigButtonStyle())
+    }
+
+}
+
+#Preview {
+    PINLockScreen(
+        state: .init(hideLogoutButton: false, pin: []),
+        error: .readonly(get: { nil }),
+        output: { _ in }
+    )
 }

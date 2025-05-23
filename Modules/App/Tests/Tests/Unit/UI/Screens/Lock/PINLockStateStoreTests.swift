@@ -22,25 +22,15 @@ import Testing
 
 @MainActor
 class PINLockStateStoreTests {
-    var sut: PINLockStateStore!
-    var output: [PINLockScreenOutput]!
-
-    init() {
-        output = []
-        sut = PINLockStateStore(
-            state: .init(hideLogoutButton: false, pin: []),
-            output: { self.output.append($0) }
-        )
-    }
-
-    deinit {
-        output = nil
-        sut = nil
-    }
+    lazy var sut: PINLockStateStore = PINLockStateStore(
+        state: .init(hideLogoutButton: false, pin: []),
+        output: { [unowned self] in output.append($0) }
+    )
+    var output: [PINLockScreenOutput] = []
 
     @Test
     func usersSignsOut() async throws {
-        sut.handle(action: .signOutTapped)
+        await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
@@ -52,7 +42,7 @@ class PINLockStateStoreTests {
 
     @Test
     func userResignSignOut() async throws {
-        sut.handle(action: .signOutTapped)
+        await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
@@ -63,38 +53,11 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func userSubmitsEmptyPin() {
-        sut.handle(action: .confirmTapped)
+    func userSubmitsEmptyPin() async {
+        await sut.handle(action: .confirmTapped)
         #expect(output == [])
     }
 
-    @Test
-    func userSubmitsNonEmptyPin() {
-        sut.handle(action: .keyboardTapped(.digit(1)))
-        sut.handle(action: .keyboardTapped(.digit(2)))
-        sut.handle(action: .keyboardTapped(.digit(3)))
-        sut.handle(action: .keyboardTapped(.digit(9)))
-
-        #expect(sut.state.pin == [1, 2, 3, 9])
-
-        sut.handle(action: .keyboardTapped(.delete))
-
-        #expect(sut.state.pin == [1, 2, 3])
-
-        sut.handle(action: .confirmTapped)
-
-        #expect(sut.state.pin.isEmpty)
-        #expect(output == [.pin([1, 2, 3])])
-    }
-
-    @Test
-    func errorAppear() {
-        sut.handle(action: .error("Error"))
-        #expect(sut.state.error == "Error")
-
-        sut.handle(action: .keyboardTapped(.digit(1)))
-        #expect(sut.state.error == nil)
-    }
 }
 
 private extension PINLockState {

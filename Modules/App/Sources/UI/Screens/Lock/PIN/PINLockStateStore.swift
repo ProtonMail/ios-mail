@@ -29,24 +29,28 @@ class PINLockStateStore: StateStore {
     }
 
     @MainActor
-    func handle(action: PINLockScreenAction) {
+    func handle(action: PINLockScreenAction) async {
         switch action {
-        case .keyboardTapped(let button):
-            handle(buttonTap: button)
         case .confirmTapped:
-            guard !state.pin.isEmpty else { return }
             output(.pin(state.pin))
-            state = state.copy(\.pin, to: [])
         case .signOutTapped:
             let alert: AlertModel = .logOutConfirmation(
                 action: { [weak self] action in self?.handle(action: .alertActionTapped(action)) }
             )
             state = state.copy(\.alert, to: alert)
+        case .pinEntered(let pin):
+            state =
+                state
+                .copy(\.pin, to: pin)
+                .copy(\.error, to: nil)
         case .alertActionTapped(let action):
             state.alert = nil
             handleAlert(action: action)
         case .error(let error):
-            state = state.copy(\.error, to: error)
+            state =
+                state
+                .copy(\.error, to: error)
+                .copy(\.pin, to: [])
         }
     }
 
@@ -60,23 +64,10 @@ class PINLockStateStore: StateStore {
         }
     }
 
-    @MainActor
-    private func handle(buttonTap: PINLockScreen.KeyboardButton) {
-        switch buttonTap {
-        case .digit(let value):
-            state = state
-                .copy(\.pin, to: state.pin + [value])
-                .copy(\.error, to: nil)
-        case .delete:
-            state = state
-                .copy(\.pin, to: state.pin.dropLast())
-                .copy(\.error, to: nil)
-        }
-    }
 }
 
 extension AlertModel {
-    
+
     static func logOutConfirmation(action: @escaping (LogOutConformationAction) async -> Void) -> Self {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
