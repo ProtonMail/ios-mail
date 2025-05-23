@@ -61,7 +61,6 @@ struct PINLockScreen: View {
                         .padding(.bottom, DS.Spacing.standard)
 
                     subtitle
-                        .transition(.opacity)
 
                     SecureField(L10n.PINLock.pinInputPlaceholder.string, text: pinBinding)
                         .font(.title3)
@@ -91,19 +90,27 @@ struct PINLockScreen: View {
             .onChange(of: store.state.error) { _, newValue in
                 error = newValue
             }
+            .sensoryFeedback(.error, trigger: store.state.error) { _, newValue in
+                newValue != nil
+            }
         }
     }
 
     @ViewBuilder
     private var subtitle: some View {
-        if let error = store.state.error?.humanReadable {
-            Text(error)
-                .foregroundStyle(DS.Color.Notification.error)
-        } else {
-            Text(L10n.PINLock.subtitle)
-                .font(.callout)
-                .foregroundStyle(DS.Color.Text.weak)
-        }
+        ZStack {
+            if let error = store.state.error?.humanReadable {
+                Text(error)
+                    .font(.callout)
+                    .foregroundStyle(DS.Color.Notification.error)
+                    .transition(.opacity)
+            } else {
+                Text(L10n.PINLock.subtitle)
+                    .font(.callout)
+                    .foregroundStyle(DS.Color.Text.weak)
+                    .transition(.opacity)
+            }
+        }.animation(.easeInOut(duration: 0.2), value: store.state.error)
     }
 
     private var pinBinding: Binding<String> {
