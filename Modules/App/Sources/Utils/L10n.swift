@@ -633,7 +633,7 @@ enum L10n {
             comment: "PIN input placeholder."
         )
         static let signOut = LocalizedStringResource(
-            "Sign Out",
+            "sign Out",
             comment: "Title of the sign out button."
         )
         static let signOutConfirmationTitle = LocalizedStringResource(
