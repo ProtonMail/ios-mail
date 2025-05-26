@@ -106,7 +106,7 @@ class PINStateStore: StateStore {
         do {
             try await appProtectionConfigurator.setBiometricsAppProtection().get()
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .appSettings)
         }
         dismiss()
     }
