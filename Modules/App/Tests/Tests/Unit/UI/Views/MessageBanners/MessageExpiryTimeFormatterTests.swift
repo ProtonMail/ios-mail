@@ -22,18 +22,20 @@ struct MessageExpiryTimeFormatterTests {
     enum Timestamp: Int {
         case _2025_02_22_15_30_00 = 1740238200
     }
-    
-    @Test("Formats expiration time correctly", arguments: [
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:01"), "0 seconds"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:00"), "0 seconds"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:51"), "9 seconds"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:45"), "15 seconds"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:00"), "1 minute"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:00:00"), "30 minutes"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 12:13:59"), "3 hours, 16 minutes"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-12 09:11:00"), "10 days, 6 hours, 19 minutes"),
-        (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-12 15:31:00"), "9 days, 23 hours, 59 minutes")
-    ])
+
+    @Test(
+        "Formats expiration time correctly",
+        arguments: [
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:01"), "0 seconds"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:30:00"), "0 seconds"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:51"), "9 seconds"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:45"), "15 seconds"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:29:00"), "1 minute"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 15:00:00"), "30 minutes"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-22 12:13:59"), "3 hours, 16 minutes"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-12 09:11:00"), "10 days, 6 hours, 19 minutes"),
+            (Timestamp._2025_02_22_15_30_00, Date.fixture("2025-02-12 15:31:00"), "9 days, 23 hours, 59 minutes"),
+        ])
     func formattedTime(timestamp: Timestamp, currentDate: Date, expectedFormattedTime: String) {
         let formattedTime = MessageExpiryTimeFormatter.string(
             from: timestamp.rawValue,
