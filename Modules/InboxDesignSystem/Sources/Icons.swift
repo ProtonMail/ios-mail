@@ -85,14 +85,6 @@ public extension DS.Icon {
     static let icBrandProtonMailUpsell = ImageResource.icBrandProtonMailUpsell
 }
 
-// MARK: mailbox messages
-
-public extension DS.Icon {
-    static let icForward = ImageResource.icForward
-    static let icReply = ImageResource.icReply
-    static let icReplyAll = ImageResource.icReplyAll
-}
-
 // MARK: mailbox item actions
 
 public extension DS.Icon {

@@ -17,17 +17,18 @@
 
 import InboxDesignSystem
 import proton_app_uniffi
+import SwiftUI
 
 extension ReplyAction {
 
     var displayData: ActionDisplayData {
         switch self {
         case .reply:
-            .init(title: L10n.Action.Send.reply, imageResource: DS.Icon.icReply)
+            .init(title: L10n.Action.Send.reply, image: Image(systemName: DS.SFSymbols.reply))
         case .replyAll:
-            .init(title: L10n.Action.Send.replyAll, imageResource: DS.Icon.icReplyAll)
+            .init(title: L10n.Action.Send.replyAll, image: Image(systemName: DS.SFSymbols.replyAll))
         case .forward:
-            .init(title: L10n.Action.Send.forward, imageResource: DS.Icon.icForward)
+            .init(title: L10n.Action.Send.forward, image: Image(systemName: DS.SFSymbols.forward))
         }
     }
 

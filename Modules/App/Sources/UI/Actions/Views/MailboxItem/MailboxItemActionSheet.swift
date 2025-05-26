@@ -163,7 +163,6 @@ struct MailboxItemActionSheet: View {
         }) {
             VStack(spacing: DS.Spacing.standard) {
                 action.displayData.image
-                    .resizable()
                     .square(size: 24)
                     .foregroundStyle(DS.Color.Icon.norm)
                 Text(action.displayData.title)

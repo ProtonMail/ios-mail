@@ -117,21 +117,20 @@ struct MessageDetailsView: View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
-                image: uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll
+                image: Image(systemName: uiModel.isSingleRecipient ? DS.SFSymbols.reply : DS.SFSymbols.replyAll)
             )
             headerActionButton(
                 action: { onEvent(.onMoreActions) },
-                image: DS.Icon.icThreeDotsHorizontal
+                image: DS.Icon.icThreeDotsHorizontal.image
             )
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)
     }
 
-    private func headerActionButton(action: @escaping () -> Void, image: ImageResource) -> some View {
+    private func headerActionButton(action: @escaping () -> Void, image: Image) -> some View {
         Button(action: action) {
-            Image(image)
-                .resizable()
+            image
                 .square(size: 20)
         }
         .square(size: 36)

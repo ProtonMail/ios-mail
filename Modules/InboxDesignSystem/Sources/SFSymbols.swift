@@ -33,4 +33,7 @@ public extension DS.SFSymbols {
     static let xmark = "xmark"
     static let eye = "eye"
     static let eyeSlash = "eye.slash"
+    static let forward = "arrowshape.turn.up.forward"
+    static let reply = "arrowshape.turn.up.backward"
+    static let replyAll = "arrowshape.turn.up.backward.2"
 }
