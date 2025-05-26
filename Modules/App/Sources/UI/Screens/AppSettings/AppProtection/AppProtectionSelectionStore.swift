@@ -158,7 +158,7 @@ class AppProtectionSelectionStore: StateStore {
 
     @MainActor
     private func supportedBiometry() -> AppProtectionMethodViewModel.MethodType? {
-        switch SupportedBiometry.onDevice(context: laContext()) {
+        switch SupportedBiometry.configuredOnDevice(context: laContext()) {
         case .none:
             nil
         case .faceID:

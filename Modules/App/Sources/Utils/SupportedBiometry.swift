@@ -22,7 +22,7 @@ enum SupportedBiometry {
     case touchID
     case faceID
 
-    static func onDevice(context: LAContext = LAContext()) -> Self {
+    static func configuredOnDevice(context: LAContext = LAContext()) -> Self {
         if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
             switch context.biometryType {
             case .faceID:
