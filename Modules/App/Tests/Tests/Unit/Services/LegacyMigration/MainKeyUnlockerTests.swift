@@ -42,7 +42,7 @@ final class MainKeyUnlockerTests {
         try legacyKeychain.set(pinProtectedMainKey, forKey: .pinProtectedMainKey)
         try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
 
-        try await #expect(sut.pinProtectedMainKey(pin: [1, 3, 3, 7]) == decryptedMainKey)
+        try await #expect(sut.pinProtectedMainKey(pin: .init(digits: [1, 3, 3, 7])) == decryptedMainKey)
     }
 
     @Test
@@ -51,7 +51,7 @@ final class MainKeyUnlockerTests {
         try legacyKeychain.set(pinProtectionSalt, forKey: .pinProtectionSalt)
 
         await #expect(throws: DecodingError.self) {
-            try await self.sut.pinProtectedMainKey(pin: [1, 1, 1, 1])
+            try await self.sut.pinProtectedMainKey(pin: .init(digits: [1, 1, 1, 1]))
         }
     }
 }

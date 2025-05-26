@@ -55,7 +55,7 @@ actor LegacyMigrationService {
             case .biometrics:
                 "biometrics"
             case .pin(let secretValue):
-                "\(secretValue.count)-digit PIN"
+                "\(secretValue.digits.count)-digit PIN"
             }
         }
     }
@@ -274,7 +274,7 @@ actor LegacyMigrationService {
             case .biometrics:
                 try await mailSession.setBiometricsAppProtection().get()
             case .pin(let pin):
-                try await mailSession.setPinCode(pin: pin).get()
+                try await mailSession.setPinCode(pin: pin.digits).get()
             }
         } catch {
             AppLogger.log(error: error, category: .legacyMigration)

@@ -18,7 +18,7 @@
 enum PINLockScreenAction {
     case confirmTapped
     case signOutTapped
-    case pinEntered([UInt32])
+    case pinEntered(PIN)
     case alertActionTapped(LogOutConformationAction)
     case error(PINAuthenticationError)
 }

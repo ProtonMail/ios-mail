@@ -15,4 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-typealias PIN = [UInt32]
+struct PIN: Hashable {
+    let digits: [UInt32]
+
+    init(digits: [UInt32]) {
+        self.digits = digits
+    }
+
+    init(text: String) {
+        self.digits = text.compactMap(\.wholeNumberValue).map(UInt32.init)
+    }
+
+    var toString: String {
+        digits.map(String.init).joined()
+    }
+}
+
+extension PIN {
+    static var empty: PIN {
+        .init(digits: [])
+    }
+}

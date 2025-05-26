@@ -23,7 +23,7 @@ import Testing
 @MainActor
 class PINLockStateStoreTests {
     lazy var sut: PINLockStateStore = PINLockStateStore(
-        state: .init(hideLogoutButton: false, pin: []),
+        state: .init(hideLogoutButton: false, pin: .empty),
         output: { [unowned self] in output.append($0) }
     )
     var output: [PINLockScreenOutput] = []
@@ -60,16 +60,16 @@ class PINLockStateStoreTests {
 
     @Test
     func userSubmitsValidPIN_ItEmitsPINInOutput() async {
-        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
         await sut.handle(action: .confirmTapped)
 
-        #expect(output == [.pin([1, 2, 3, 4, 5])])
+        #expect(output == [.pin(.init(digits: [1, 2, 3, 4, 5]))])
     }
 
     @Test
     func remainingAttemtsErrorIsPresented_WhenPINIsEntered_ItStillShowsError() async {
         await sut.handle(action: .error(.attemptsRemaining(3)))
-        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
 
         #expect(sut.state.error == .attemptsRemaining(3))
     }
@@ -77,7 +77,7 @@ class PINLockStateStoreTests {
     @Test
     func customErrorIsPresented_WhenPINIsEntered_ItHidesError() async {
         await sut.handle(action: .error(.custom("Error")))
-        await sut.handle(action: .pinEntered([1, 2, 3, 4, 5]))
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
 
         #expect(sut.state.error == nil)
     }

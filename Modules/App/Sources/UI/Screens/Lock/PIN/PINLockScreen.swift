@@ -116,7 +116,7 @@ struct PINLockScreen: View {
     private var pinBinding: Binding<String> {
         .init(
             get: { store.state.pin.toString },
-            set: { newValue in store.handle(action: .pinEntered(newValue.digits)) }
+            set: { newValue in store.handle(action: .pinEntered(.init(text: newValue))) }
         )
     }
 
@@ -132,7 +132,7 @@ struct PINLockScreen: View {
 
 #Preview {
     PINLockScreen(
-        state: .init(hideLogoutButton: false, pin: []),
+        state: .init(hideLogoutButton: false, pin: .empty),
         error: .readonly(get: { nil }),
         output: { _ in }
     )
