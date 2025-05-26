@@ -70,7 +70,7 @@ class LockScreenStore: StateStore {
             try await signOutService.signOutAllAccounts()
             dismissLock()
         } catch {
-            AppLogger.log(error: error) // FIXME: - Categorize
+            AppLogger.log(error: error, category: .appSettings)
         }
     }
 
@@ -107,7 +107,7 @@ class LockScreenStore: StateStore {
             let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
             return Int(attempts)
         } catch {
-            AppLogger.log(error: error)  // FIXME: - Categorize
+            AppLogger.log(error: error, category: .appSettings)
             return 0
         }
     }
