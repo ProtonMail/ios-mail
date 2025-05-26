@@ -50,7 +50,7 @@ class LockScreenStoreTests {
     func userEntersValidPin_ItEmitsLockAuthenticatedOutput() async {
         pinVerifierSpy.verifyPinCodeStub = .ok
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
         #expect(sut.state.pinAuthenticationError == nil)
         #expect(dismissLockInvokeCount == 1)
@@ -60,7 +60,7 @@ class LockScreenStoreTests {
     func userEntersInvalidPinForFirstTime_ItDisplaysError() async {
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
         #expect(sut.state.pinAuthenticationError == .custom(L10n.PINLock.invalidPIN.string))
         #expect(dismissLockInvokeCount == 0)
@@ -71,7 +71,7 @@ class LockScreenStoreTests {
         pinVerifierSpy.remainingPinAttemptsStub = .ok(3)
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
         #expect(sut.state.pinAuthenticationError == .attemptsRemaining(3))
         #expect(dismissLockInvokeCount == 0)

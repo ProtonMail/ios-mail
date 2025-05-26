@@ -124,7 +124,7 @@ final class LegacyMigrationServiceTests {
         seedUserInfosInLegacyUserDefaults()
 
         await sut.proceed()
-        await sut.resume(protectedMainKey: mainKey, protectionPreference: .pin([1, 2, 3, 4]))
+        await sut.resume(protectedMainKey: mainKey, protectionPreference: .pin(.init(digits: [1, 2, 3, 4])))
 
         let pinThatWasSet = try #require(mailSessionStub.setPinCodeInvocations.first)
         #expect(pinThatWasSet == [1, 2, 3, 4])

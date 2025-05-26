@@ -32,7 +32,7 @@ class PINLockStateStore: StateStore {
     func handle(action: PINLockScreenAction) async {
         switch action {
         case .confirmTapped:
-            guard !state.pin.isEmpty else { return }
+            guard !state.pin.digits.isEmpty else { return }
             output(.pin(state.pin))
         case .signOutTapped:
             let alert: AlertModel = .logOutConfirmation(
@@ -52,7 +52,7 @@ class PINLockStateStore: StateStore {
             state =
                 state
                 .copy(\.error, to: error)
-                .copy(\.pin, to: [])
+                .copy(\.pin, to: .empty)
         }
     }
 

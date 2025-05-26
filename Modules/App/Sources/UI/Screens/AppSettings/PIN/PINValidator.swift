@@ -24,7 +24,7 @@ struct PINValidator {
         self.pinVerifier = pinVerifier
     }
 
-    func validate(pin: [UInt32]) async -> FormTextInput.ValidationStatus {
+    func validate(pin: PIN) async -> FormTextInput.ValidationStatus {
         switch pinScreenType {
         case .set:
             return setPINValidation(pin: pin)
@@ -34,7 +34,7 @@ struct PINValidator {
             switch reason {
             case .changePIN:
                 do {
-                    try await pinVerifier.verifyPinCode(pin: pin).get()
+                    try await pinVerifier.verifyPinCode(pin: pin.digits).get()
                     return .ok
                 } catch {
                     return .failure(error.localizedDescription)
@@ -46,12 +46,12 @@ struct PINValidator {
     }
 
     // FIXME: - This validation logic will be moved to Rust
-    private func setPINValidation(pin: [UInt32]) -> FormTextInput.ValidationStatus {
-        pin.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
+    private func setPINValidation(pin: PIN) -> FormTextInput.ValidationStatus {
+        pin.digits.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
     }
 
     // FIXME: - This validation logic will be moved to Rust
-    private func confirmPINValidation(pin: [UInt32], repeatedPIN: [UInt32]) -> FormTextInput.ValidationStatus {
+    private func confirmPINValidation(pin: PIN, repeatedPIN: PIN) -> FormTextInput.ValidationStatus {
         pin == repeatedPIN ? .ok : .failure(L10n.Settings.App.repeatedPINValidationError.string)
     }
 }

@@ -20,7 +20,7 @@ import InboxCore
 
 enum PINScreenType: Hashable, Identifiable {
     case set
-    case confirm(pin: [UInt32])
+    case confirm(pin: PIN)
     case verify(reason: PINVerificationReason)
 
     struct Configuration {

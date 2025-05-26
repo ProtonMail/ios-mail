@@ -91,8 +91,8 @@ class LockScreenStore: StateStore {
     }
 
     @MainActor
-    private func verify(pin: [UInt32]) async {
-        switch await pinVerifier.verifyPinCode(pin: pin) {
+    private func verify(pin: PIN) async {
+        switch await pinVerifier.verifyPinCode(pin: pin.digits) {
         case .ok:
             dismissLock()
         case .error:
