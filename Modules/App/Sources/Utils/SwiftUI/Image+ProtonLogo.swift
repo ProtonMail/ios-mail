@@ -15,27 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import InboxDesignSystem
+import SwiftUI
 
-struct BlurredCoverView: View {
-    private let showLogo: Bool
+extension Image {
 
-    init(showLogo: Bool) {
-        self.showLogo = showLogo
+    @MainActor
+    static func protonLogo(size: CGFloat) -> some View {
+        Image(DS.Images.protonMail)
+            .resizable()
+            .square(size: size)
+            .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
+            .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
     }
 
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                TransparentBlur()
-
-                if showLogo {
-                    Image
-                        .protonLogo(size: 120)
-                        .padding(.top, geometry.size.height * 0.37)
-                }
-            }
-        }.ignoresSafeArea()
-    }
 }
