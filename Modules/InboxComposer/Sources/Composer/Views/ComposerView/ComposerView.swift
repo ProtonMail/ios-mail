@@ -29,10 +29,12 @@ struct ComposerView: View {
     @State var selectedPhotosItems: [PhotosPickerItem] = []
     @State var modalState: ComposerViewModalState?
     @State var attachmentPickerState: AttachmentPickersState = .init()
+    private let draftLastScheduledTime: UInt64?
 
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
+        draftLastScheduledTime: UInt64? = nil,
         draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
         onSendingEvent: @escaping (SendEvent) -> Void
@@ -51,6 +53,7 @@ struct ComposerView: View {
                 fileItemsHandler: .init()
             )
         )
+        self.draftLastScheduledTime = draftLastScheduledTime
     }
 
     var body: some View {
@@ -62,7 +65,7 @@ struct ComposerView: View {
         VStack(spacing: 0) {
             ComposerTopBar(
                 isSendEnabled: model.state.isSendAvailable,
-                scheduleSendAction: { modalState = model.scheduleSendState() },
+                scheduleSendAction: { modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime) },
                 sendAction: { await model.sendMessage(dismissAction: dismiss) },
                 dismissAction: { model.dismissComposer(dismissAction: dismiss) }
             )

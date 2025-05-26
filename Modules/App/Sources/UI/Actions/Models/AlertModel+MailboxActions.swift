@@ -19,6 +19,18 @@ import InboxCoreUI
 
 extension AlertModel {
 
+    static func editScheduleConfirmation(action: @escaping @MainActor (EditScheduleAlertAction) async -> Void) -> Self {
+        let actions: [AlertAction] = EditScheduleAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { await action(actionType) })
+        }
+
+        return .init(
+            title: L10n.Action.Send.editScheduledAlertTitle,
+            message: L10n.Action.Send.editScheduledAlertMessage,
+            actions: actions
+        )
+    }
+
     static func deleteConfirmation(
         itemsCount: Int,
         action: @escaping (DeleteConfirmationAlertAction) -> Void
@@ -33,7 +45,7 @@ extension AlertModel {
             actions: actions
         )
     }
-    
+
     static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> Self {
         let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { action(actionType) })

@@ -245,11 +245,11 @@ extension MailboxScreen {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy,
-        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+        draftPresenter: .dummy(),
+        sendResultPresenter: .init(draftPresenter: .dummy())
     )
-        .environmentObject(appUIStateStore)
-        .environmentObject(toastStateStore)
+    .environmentObject(appUIStateStore)
+    .environmentObject(toastStateStore)
 }
 
 private struct MailboxScreenIdentifiers {

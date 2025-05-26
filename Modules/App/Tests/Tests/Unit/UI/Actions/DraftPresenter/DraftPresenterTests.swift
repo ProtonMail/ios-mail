@@ -23,23 +23,17 @@ import XCTest
 
 final class DraftPresenterTests: BaseTestCase {
     private var sut: DraftPresenter!
-    private var stubbedResult: NewDraftResult!
     private let emptyErrorCallback: (DraftOpenError) -> Void = { _ in }
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
-
-        sut = .init(
-            userSession: .dummy,
-            draftProvider: .init(makeDraft: { [unowned self] session, createMode in stubbedResult })
-        )
+        sut = makeSUT()
         cancellables = .init()
     }
 
     override func tearDown() {
         sut = nil
-        stubbedResult = nil
         cancellables = nil
 
         super.tearDown()
@@ -53,13 +47,13 @@ final class DraftPresenterTests: BaseTestCase {
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         let dummyMessageId: ID = .random()
-        await sut.openDraft(withId: dummyMessageId)
+        sut.openDraft(withId: dummyMessageId)
         XCTAssertEqual(capturedDraftToPresent.count, 1)
 
         switch capturedDraftToPresent.first! {
         case .new:
             XCTFail("unexpected draft to present")
-        case .openDraftId(let messageId):
+        case .openDraftId(let messageId, _):
             XCTAssertEqual(messageId, dummyMessageId)
         }
     }
@@ -68,7 +62,6 @@ final class DraftPresenterTests: BaseTestCase {
 
     @MainActor
     func testOpenNewDraft_whenDraftIsCreated_itShouldPublishADraftToPresent() async {
-        stubbedResult = .ok(.dummyDraft)
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
@@ -78,7 +71,7 @@ final class DraftPresenterTests: BaseTestCase {
 
     @MainActor
     func testOpenNewDraft_whenDraftFailsToCreate_itShouldNotPublishAnything() async {
-        stubbedResult = .error(.other(.sessionExpired))
+        sut = makeSUT(stubbedNewDraftResult: .error(.other(.sessionExpired)))
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
@@ -92,7 +85,6 @@ final class DraftPresenterTests: BaseTestCase {
 
     @MainActor
     func testHandleReplyAction_whenDraftForMessageReplyIsCreated_itShouldPublishADraftToPresent() async {
-        stubbedResult = .ok(.dummyDraft)
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
@@ -103,15 +95,89 @@ final class DraftPresenterTests: BaseTestCase {
 
     @MainActor
     func testHandleReplyAction_whenDraftFailsToCreate_itShouldNotPublishAnything() async {
-        stubbedResult = .error(.other(.network))
+        sut = makeSUT(stubbedNewDraftResult: .error(.other(.network)))
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         let dummyMessageId: ID = .random()
-        await sut.handleReplyAction(for: dummyMessageId, action: .reply, onError: { error in
-            XCTAssertEqual(error, .other(.network))
-        })
+        await sut.handleReplyAction(
+            for: dummyMessageId, action: .reply,
+            onError: { error in
+                XCTAssertEqual(error, .other(.network))
+            })
         XCTAssertEqual(capturedDraftToPresent.count, 0)
+    }
+
+    // MARK: undoSentMessageAndOpenDraft
+
+    @MainActor
+    func testUndoSentMessageAndOpenDraft_whenDraftForMessageReplyIsCreated_itShouldPublishADraftToPresent() async throws {
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let dummyMessageId: ID = .random()
+        try await sut.undoSentMessageAndOpenDraft(for: dummyMessageId)
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+    }
+
+    @MainActor
+    func testUndoSentMessageAndOpenDraft_whenUndoFails_itShouldThrowAndNotPublishAnything() async {
+        sut = makeSUT(stubbedUndoSendError: .reason(.messageCanNotBeUndoSent))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        do {
+            try await sut.undoSentMessageAndOpenDraft(for: .random())
+            XCTFail("Expected error")
+        } catch {
+            XCTAssertEqual(error, .reason(.messageCanNotBeUndoSent))
+        }
+        XCTAssertEqual(capturedDraftToPresent.count, 0)
+    }
+
+    // MARK: cancelScheduledMessageAndOpenDraft
+
+    @MainActor
+    func testcancelScheduledMessageAndOpenDraft_whenDraftForMessageReplyIsCreated_itShouldPublishADraftToPresent() async throws {
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let dummyMessageId: ID = .random()
+        try await sut.cancelScheduledMessageAndOpenDraft(for: dummyMessageId)
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+    }
+
+    @MainActor
+    func testcancelScheduledMessageAndOpenDraft_whenUndoScheduleFails_itShouldThrowAndNotPublishAnything() async {
+        sut = makeSUT(stubbedCancelScheduleResult: .error(.reason(.messageNotScheduled)))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        do {
+            try await sut.cancelScheduledMessageAndOpenDraft(for: .random())
+            XCTFail("Expected error")
+        } catch {
+            XCTAssertEqual(error, .reason(.messageNotScheduled))
+        }
+        XCTAssertEqual(capturedDraftToPresent.count, 0)
+    }
+}
+
+extension DraftPresenterTests {
+
+    func makeSUT(
+        stubbedNewDraftResult: NewDraftResult = .ok(.dummyDraft),
+        stubbedUndoSendError: DraftUndoSendError? = nil,
+        stubbedCancelScheduleResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1747728129))
+    ) -> DraftPresenter {
+        DraftPresenter(
+            userSession: .dummy,
+            draftProvider: .init(makeDraft: { session, createMode in stubbedNewDraftResult }),
+            undoSendProvider: .mockInstance(stubbedResult: stubbedUndoSendError),
+            undoScheduleSendProvider: .mockInstance(stubbedResult: stubbedCancelScheduleResult)
+        )
     }
 }
 

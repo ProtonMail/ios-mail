@@ -19,9 +19,9 @@ import SwiftUI
 
 public struct AlertAction: Equatable {
     public let title: LocalizedStringResource
-    public let buttonRole: ButtonRole
+    public let buttonRole: ButtonRole?
     public let action: () async -> Void
-    
+
     public init(details: AlertActionInfo, action: @escaping () async -> Void) {
         self.title = details.info.title
         self.buttonRole = details.info.buttonRole

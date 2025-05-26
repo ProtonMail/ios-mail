@@ -53,7 +53,7 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
             ),
             .init(
                 given: .system(.scheduled),
-                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClock, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClockPaperPlane, iconColor: nil)
             ),
             .init(
                 given: .system(.outbox),

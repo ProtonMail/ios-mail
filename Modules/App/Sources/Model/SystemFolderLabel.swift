@@ -78,7 +78,9 @@ extension SystemFolderLabel {
             DS.Icon.icArchiveBox
         case .starred:
             DS.Icon.icStar
-        case .scheduled, .snoozed:
+        case .scheduled:
+            DS.Icon.icClockPaperPlane
+        case .snoozed:
             DS.Icon.icClock
         case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
             fatalError("Not implemented")

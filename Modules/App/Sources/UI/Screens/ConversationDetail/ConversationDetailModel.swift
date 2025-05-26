@@ -32,6 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var isStarred: Bool
     @Published private(set) var bottomBarActions: [BottomBarActions] = []
     @Published var actionSheets: MailboxActionSheetsState = .initial()
+    @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
@@ -118,6 +119,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     func onForwardMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
         onReplyAction(messageId: messageId, action: .forward, toastStateStore: toastStateStore)
+    }
+
+    @MainActor
+    func onEditScheduledMessage(withId messageId: ID, goBack: @escaping () -> Void, toastStateStore: ToastStateStore) {
+        let alert: AlertModel = .editScheduleConfirmation(action: { [weak self] action in
+            await self?.handle(action: action, messageId: messageId, toastStateStore: toastStateStore, goBack: goBack)
+        })
+        editScheduledMessageConfirmationAlert = alert
     }
 
     func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
@@ -423,6 +432,24 @@ extension ConversationDetailModel {
             await draftPresenter.handleReplyAction(for: messageId, action: action, onError: { error in
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             })
+        }
+    }
+
+    @MainActor
+    private func handle(
+        action: EditScheduleAlertAction,
+        messageId: ID,
+        toastStateStore: ToastStateStore,
+        goBack: @escaping () -> Void
+    ) async {
+        editScheduledMessageConfirmationAlert = nil
+        if action == .edit {
+            do {
+                try await self.draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
+                goBack()
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 
