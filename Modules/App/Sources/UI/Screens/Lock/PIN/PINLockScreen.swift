@@ -47,12 +47,9 @@ struct PINLockScreen: View {
                     .padding(.trailing, DS.Spacing.large)
                 }
                 VStack(alignment: .center, spacing: .zero) {
-                    Image(DS.Images.protonMail)
-                        .resizable()
-                        .square(size: 90)
+                    Image
+                        .protonLogo(size: 90)
                         .padding(.top, geometry.size.height * 0.20)
-                        .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
-                        .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
                     Text(L10n.PINLock.title)
                         .foregroundStyle(DS.Color.Text.norm)
                         .font(.title)
