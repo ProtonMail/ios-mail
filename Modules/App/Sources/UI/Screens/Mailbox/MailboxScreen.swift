@@ -162,6 +162,7 @@ extension MailboxScreen {
         .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow
         .navigationBarTitleDisplayMode(.inline)
         .withAccountManager(
+            isSwitcherVisible: !mailboxModel.selectionMode.selectionState.hasItems,
             isPresented: $isAccountManagerPresented,
             coordinator: mailboxModel.accountManagerCoordinator
         )
