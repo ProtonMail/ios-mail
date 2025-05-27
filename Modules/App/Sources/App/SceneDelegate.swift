@@ -149,6 +149,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         appProtectionWindow?.isHidden = false
         appProtectionWindow?.makeKey()
         appProtectionWindow?.rootViewController = lockScreenController(for: lockScreenType)
+        appProtectionWindow?.accessibilityViewIsModal = true
     }
 
     private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType) -> UIViewController {
