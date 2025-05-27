@@ -17,20 +17,25 @@
 
 import Combine
 import InboxCore
+import InboxCoreUI
 import LocalAuthentication
+import SwiftUI
 
 class BiometricLockStore: StateStore {
     @Published var state: BiometricLockState
     private let output: (BiometricLockScreenOutput) -> Void
     private let biometricAuthenticator: BiometricAuthenticator
+    private let laContext: () -> LAContext
 
     init(
         state: BiometricLockState,
         method: BiometricAuthenticator.AuthenticationMethod,
+        laContext: @escaping () -> LAContext = { LAContext() },
         output: @escaping (BiometricLockScreenOutput) -> Void
     ) {
         self.state = state
         self.biometricAuthenticator = .init(method: method)
+        self.laContext = laContext
         self.output = output
     }
 
@@ -42,10 +47,72 @@ class BiometricLockStore: StateStore {
             switch result {
             case .success:
                 output(.authenticated)
-            case .failure:
-                state = state
+            case .failure(let cannotEvaluatePolicy):
+                state =
+                    state
                     .copy(\.displayUnlockButton, to: true)
+                    .copy(\.alert, to: cannotEvaluatePolicy ? cannotEvaluatePolicyAlert : nil)
             }
+        }
+    }
+
+    @MainActor
+    private func handle(alertAction: CannotEvaluatePolicyAlertAction) async {
+        switch alertAction {
+        case .ok:
+            break
+        case .signInAgain:
+            output(.logOut)
+        }
+        state = state.copy(\.alert, to: nil)
+    }
+
+    private var cannotEvaluatePolicyAlert: AlertModel {
+        AlertModel.cannotEvaluatePolicyAlert(
+            action: { [weak self] action in await self?.handle(alertAction: action) },
+            laContext: laContext
+        )
+    }
+}
+
+extension AlertModel {
+
+    static func cannotEvaluatePolicyAlert(
+        action: @escaping (CannotEvaluatePolicyAlertAction) async -> Void,
+        laContext: @escaping () -> LAContext
+    ) -> Self {
+        let message =
+            switch SupportedBiometry.availableOnDevice(context: laContext()) {
+            case .faceID:
+                "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app."
+            case .touchID:
+                "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app."
+            case .none:
+                "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app."
+            }
+        let ok = AlertAction(details: CannotEvaluatePolicyAlertAction.ok, action: { await action(.ok) })
+        let signInAgain = AlertAction(details: CannotEvaluatePolicyAlertAction.signInAgain) {
+            await action(.signInAgain)
+        }
+        return AlertModel(
+            title: "Enable access",
+            message: message.stringResource,
+            actions: [signInAgain, ok]
+        )
+    }
+
+}
+
+enum CannotEvaluatePolicyAlertAction: AlertActionInfo {
+    case ok
+    case signInAgain
+
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
+        switch self {
+        case .ok:
+            ("Ok", .cancel)
+        case .signInAgain:
+            ("Sign in again", .destructive)
         }
     }
 }

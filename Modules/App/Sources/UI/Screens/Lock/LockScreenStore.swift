@@ -48,6 +48,8 @@ class LockScreenStore: StateStore {
             switch output {
             case .authenticated:
                 dismissLock()
+            case .logOut:
+                await signOutAllAccounts()
             }
         case .pin(let output):
             switch output {

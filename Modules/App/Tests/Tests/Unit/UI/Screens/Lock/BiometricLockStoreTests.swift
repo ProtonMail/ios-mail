@@ -16,45 +16,35 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCoreUI
 import LocalAuthentication
 import Testing
 
 class BiometricLockStoreTests {
 
-    var sut: BiometricLockStore!
-    var screenOutput: [BiometricLockScreenOutput]!
-    private var laContextSpy: LAContextSpy!
+    lazy var sut: BiometricLockStore = .init(
+        state: .initial,
+        method: .builtIn { [unowned self] in self.laContextSpy },
+        laContext: { [unowned self] in self.laContextSpy },
+        output: { [unowned self] output in
+            screenOutput.append(output)
+        }
+    )
+    var screenOutput: [BiometricLockScreenOutput] = []
+    private var laContextSpy = LAContextSpy()
 
-    init() {
-        screenOutput = []
-        laContextSpy = .init()
-        sut = .init(
-            state: .initial,
-            method: .builtIn { self.laContextSpy },
-            output: { output in
-                self.screenOutput.append(output)
-            }
-        )
-    }
-
-    deinit {
-        sut = nil
-        screenOutput = nil
-        laContextSpy = nil
-    }
-
-    @Test
+    @Test @MainActor
     func viewLoadsAndCannotEvaluatePolicy_ItDisplaysButtonAndDoesNotEmitOutput() async {
         laContextSpy.canEvaluatePolicyStub = false
         await sut.handle(action: .onLoad)
 
-        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthentication])
+        #expect(laContextSpy.canEvaluatePolicyCalls == [.deviceOwnerAuthentication, .deviceOwnerAuthentication])
         #expect(laContextSpy.evaluatePolicyCalls.count == 0)
         #expect(sut.state.displayUnlockButton == true)
         #expect(screenOutput == [])
     }
 
-    @Test
+    @Test @MainActor
     func viewLoadsAndPolicyEvaluationFails_ItDisplaysButtonAndDoesNotEmitOutput() async {
         laContextSpy.canEvaluatePolicyStub = true
         laContextSpy.evaluatePolicyStub = false
@@ -69,7 +59,7 @@ class BiometricLockStoreTests {
         #expect(screenOutput == [])
     }
 
-    @Test
+    @Test @MainActor
     func viewLoadsAndPolicyEvaluationSuccess_ItEmitsOutput() async {
         laContextSpy.canEvaluatePolicyStub = true
         laContextSpy.evaluatePolicyStub = true
@@ -79,9 +69,46 @@ class BiometricLockStoreTests {
         #expect(screenOutput == [.authenticated])
     }
 
+    @Test @MainActor
+    func viewLoadsAndBiometryIsNotConfiguredOnDevice_ItDisplaysAlert() async {
+        laContextSpy.canEvaluatePolicyStub = false
+
+        await sut.handle(action: .onLoad)
+
+        #expect(sut.state.alert == cannotEvaluatePolicyAlert)
+    }
+
+    @Test @MainActor
+    func cannotEvaluatePolicyAlert_OkActionIsTapped_ItDismissesAlert() async {
+        laContextSpy.canEvaluatePolicyStub = false
+
+        await sut.handle(action: .onLoad)
+        await sut.state.alert?.actions.first(where: { $0.title == "Ok" })?.action()
+
+        #expect(sut.state.alert == nil)
+    }
+
+    @Test @MainActor
+    func cannotEvaluatePolicyAlert_SignInAgainActionIsTapped_ItDismissesAlertAndEmitsLogOutOutput() async {
+        laContextSpy.canEvaluatePolicyStub = false
+
+        await sut.handle(action: .onLoad)
+        await sut.state.alert?.actions.first(where: { $0.title == "Sign in again" })?.action()
+
+        #expect(sut.state.alert == nil)
+        #expect(screenOutput == [.logOut])
+    }
+
+    private var cannotEvaluatePolicyAlert: AlertModel {
+        .cannotEvaluatePolicyAlert(
+            action: { _ in },
+            laContext: { [unowned self] in self.laContextSpy }
+        )
+    }
+
 }
 
-class LAContextSpy: LAContext { // FIXME: - Move to separate file
+class LAContextSpy: LAContext {  // FIXME: - Move to separate file
     var canEvaluatePolicyStub = true
     var evaluatePolicyStub = true
     var biometryTypeStub: LABiometryType = .faceID

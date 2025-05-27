@@ -50,6 +50,7 @@ struct BiometricLockScreen: View {
                 }
             }
         }
+        .alert(model: $store.state.alert)
         .onLoad {
             store.handle(action: .onLoad)
         }

@@ -94,4 +94,11 @@ class LockScreenStoreTests {
         #expect(signOutAllAccountsInvokeCount == 1)
     }
 
+    @Test
+    func signOutButtonIsTappedOnBioemtryScreen_ItSignOutsFromAllAccounts() async {
+        await sut.handle(action: .biometric(.logOut))
+
+        #expect(signOutAllAccountsInvokeCount == 1)
+    }
+
 }

@@ -36,4 +36,16 @@ enum SupportedBiometry {
             return .none
         }
     }
+
+    static func availableOnDevice(context: LAContext = LAContext()) -> Self {
+        _ = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+        switch context.biometryType {
+        case .faceID:
+            return .faceID
+        case .touchID:
+            return .touchID
+        default:
+            return .none
+        }
+    }
 }
