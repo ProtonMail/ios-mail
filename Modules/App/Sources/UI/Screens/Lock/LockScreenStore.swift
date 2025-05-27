@@ -17,20 +17,28 @@
 
 import InboxCore
 import Combine
+import proton_app_uniffi
 
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
-    private let lockOutput: (LockScreenOutput) -> Void
+    private let signOutService: SignOutService
+    private let dismissLock: () -> Void
 
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
-        lockOutput: @escaping (LockScreenOutput) -> Void
+        mailUserSession: @escaping @Sendable () -> MailUserSession = { AppContext.shared.userSession },
+        signOutAllAccountsWrapper: SignOutAllAccountsWrapper = .productionInstance,
+        dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
-        self.lockOutput = lockOutput
+        self.signOutService = .init(
+            mailUserSession: mailUserSession,
+            signOutAllAccountsWrapper: signOutAllAccountsWrapper
+        )
+        self.dismissLock = dismissLock
     }
 
     @MainActor
@@ -39,41 +47,57 @@ class LockScreenStore: StateStore {
         case .biometric(let output):
             switch output {
             case .authenticated:
-                lockOutput(.authenticated)
+                dismissLock()
             }
         case .pin(let output):
             switch output {
             case .logOut:
-                lockOutput(.logOut)
+                await signOutAllAccounts()
             case .pin(let pin):
                 await verify(pin: pin)
             }
         case .pinScreenLoaded:
-            await verifyNumberOfAttempts()
+            let pinAttemptsRemaining = await readNumberOfAttempts()
+            if pinAttemptsRemaining <= 3 {
+                handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
+            }
         }
     }
 
     @MainActor
-    private func verifyNumberOfAttempts() async {
-        let numberOfAttempts = await readNumberOfAttempts()
-        switch numberOfAttempts {
+    private func signOutAllAccounts() async {
+        do {
+            try await signOutService.signOutAllAccounts()
+            dismissLock()
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+    }
+
+    @MainActor
+    private func handlePinAuthenticationError(attemptsLeft: Int) {
+        switch attemptsLeft {
         case 0:
-            lockOutput(.logOut)
+            dismissLock()
         case 1...3:
-            state = state
-                .copy(\.pinError, to: L10n.PINLock.remainingAttemptsWarning(numberOfAttempts).string)
+            state =
+                state
+                .copy(\.pinAuthenticationError, to: .attemptsRemaining(attemptsLeft))
         default:
-            break
+            state =
+                state
+                .copy(\.pinAuthenticationError, to: .custom(L10n.PINLock.invalidPIN.string))
         }
     }
 
     @MainActor
-    private func verify(pin: [UInt32]) async {
-        switch await pinVerifier.verifyPinCode(pin: pin) {
+    private func verify(pin: PIN) async {
+        switch await pinVerifier.verifyPinCode(pin: pin.digits) {
         case .ok:
-            lockOutput(.authenticated)
+            dismissLock()
         case .error:
-            await verifyNumberOfAttempts()
+            let pinAttemptsRemaining = await readNumberOfAttempts()
+            handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
         }
     }
 
@@ -83,7 +107,7 @@ class LockScreenStore: StateStore {
             let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
             return Int(attempts)
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .appSettings)
             return 0
         }
     }

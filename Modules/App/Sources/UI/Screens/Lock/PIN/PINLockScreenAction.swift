@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum PINLockScreenAction {
-    case keyboardTapped(PINLockScreen.KeyboardButton)
     case confirmTapped
     case signOutTapped
+    case pinEntered(PIN)
     case alertActionTapped(LogOutConformationAction)
-    case error(String?)
+    case error(PINAuthenticationError)
 }

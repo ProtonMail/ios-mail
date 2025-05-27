@@ -15,27 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-import InboxDesignSystem
+enum PINAuthenticationError: Equatable {
+    case custom(String)
+    case attemptsRemaining(Int)
 
-struct BlurredCoverView: View {
-    private let showLogo: Bool
-
-    init(showLogo: Bool) {
-        self.showLogo = showLogo
-    }
-
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .top) {
-                TransparentBlur()
-
-                if showLogo {
-                    Image
-                        .protonLogo(size: 120)
-                        .padding(.top, geometry.size.height * 0.37)
-                }
-            }
-        }.ignoresSafeArea()
+    var humanReadable: String {
+        switch self {
+        case .custom(let text):
+            text
+        case .attemptsRemaining(let value):
+            L10n.PINLock.remainingAttemptsWarning(value).string
+        }
     }
 }

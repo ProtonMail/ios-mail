@@ -18,9 +18,9 @@
 import InboxCore
 import InboxCoreUI
 
-struct PINLockState: Copying {
+struct PINLockState: Copying, Equatable {
     let hideLogoutButton: Bool
     var pin: PIN
     var alert: AlertModel?
-    var error: String?
+    var error: PINAuthenticationError?
 }

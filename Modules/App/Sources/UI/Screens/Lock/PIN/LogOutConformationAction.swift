@@ -30,7 +30,7 @@ enum LogOutConformationAction: AlertActionInfo, CaseIterable {
         case .cancel:
             (CommonL10n.cancel, .cancel)
         case .signOut:
-            (L10n.PINLock.signOutConfirmationButton, .destructive)
+            (L10n.PINLock.signOut, .destructive)
         }
     }
 }

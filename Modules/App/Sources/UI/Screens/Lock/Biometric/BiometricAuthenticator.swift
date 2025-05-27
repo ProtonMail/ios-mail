@@ -71,7 +71,7 @@ struct BiometricAuthenticator: Sendable {
             try await block()
             return .success
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .appSettings)
             return .failure
         }
     }

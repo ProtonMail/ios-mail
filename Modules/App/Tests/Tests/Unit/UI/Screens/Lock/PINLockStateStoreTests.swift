@@ -22,37 +22,27 @@ import Testing
 
 @MainActor
 class PINLockStateStoreTests {
-    var sut: PINLockStateStore!
-    var output: [PINLockScreenOutput]!
-
-    init() {
-        output = []
-        sut = PINLockStateStore(
-            state: .init(hideLogoutButton: false, pin: []),
-            output: { self.output.append($0) }
-        )
-    }
-
-    deinit {
-        output = nil
-        sut = nil
-    }
+    lazy var sut: PINLockStateStore = PINLockStateStore(
+        state: .init(hideLogoutButton: false, pin: .empty),
+        output: { [unowned self] in output.append($0) }
+    )
+    var output: [PINLockScreenOutput] = []
 
     @Test
-    func usersSignsOut() async throws {
-        sut.handle(action: .signOutTapped)
+    func userSignsOut_ItEmitsLogOutOutput() async throws {
+        await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
-        let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOutConfirmationButton)
+        let signOutAction = try sut.state.alertAction(for: L10n.PINLock.signOut)
         await signOutAction.action()
 
         #expect(output == [.logOut])
     }
 
     @Test
-    func userResignSignOut() async throws {
-        sut.handle(action: .signOutTapped)
+    func userResignsSignOut_ItDoesNotEmitAnyOutput() async throws {
+        await sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
@@ -63,38 +53,35 @@ class PINLockStateStoreTests {
     }
 
     @Test
-    func userSubmitsEmptyPin() {
-        sut.handle(action: .confirmTapped)
+    func userSubmitsEmptyPIN_ItDoesNotEmitAnyOutput() async {
+        await sut.handle(action: .confirmTapped)
         #expect(output == [])
     }
 
     @Test
-    func userSubmitsNonEmptyPin() {
-        sut.handle(action: .keyboardTapped(.digit(1)))
-        sut.handle(action: .keyboardTapped(.digit(2)))
-        sut.handle(action: .keyboardTapped(.digit(3)))
-        sut.handle(action: .keyboardTapped(.digit(9)))
+    func userSubmitsValidPIN_ItEmitsPINInOutput() async {
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
+        await sut.handle(action: .confirmTapped)
 
-        #expect(sut.state.pin == [1, 2, 3, 9])
-
-        sut.handle(action: .keyboardTapped(.delete))
-
-        #expect(sut.state.pin == [1, 2, 3])
-
-        sut.handle(action: .confirmTapped)
-
-        #expect(sut.state.pin.isEmpty)
-        #expect(output == [.pin([1, 2, 3])])
+        #expect(output == [.pin(.init(digits: [1, 2, 3, 4, 5]))])
     }
 
     @Test
-    func errorAppear() {
-        sut.handle(action: .error("Error"))
-        #expect(sut.state.error == "Error")
+    func remainingAttemtsErrorIsPresented_WhenPINIsEntered_ItStillShowsError() async {
+        await sut.handle(action: .error(.attemptsRemaining(3)))
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
 
-        sut.handle(action: .keyboardTapped(.digit(1)))
+        #expect(sut.state.error == .attemptsRemaining(3))
+    }
+
+    @Test
+    func customErrorIsPresented_WhenPINIsEntered_ItHidesError() async {
+        await sut.handle(action: .error(.custom("Error")))
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
+
         #expect(sut.state.error == nil)
     }
+
 }
 
 private extension PINLockState {

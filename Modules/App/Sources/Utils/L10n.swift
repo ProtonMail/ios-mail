@@ -620,24 +620,28 @@ enum L10n {
             )
         }
 
-        static let enterPinTitle = LocalizedStringResource(
-            "Enter your PIN to unlock you inbox.",
-            comment: "Information displayed on the top of PIN lock screen."
+        static let subtitle = LocalizedStringResource(
+            "Confirm it's you to continue.",
+            comment: "Subtitle of PIN lock screen."
         )
-        static let screenTopTitle = LocalizedStringResource(
+        static let title = LocalizedStringResource(
             "Enter PIN",
-            comment: "Top title of the pin lock screen."
+            comment: "Title of the pin lock screen."
         )
-        static let signOutConfirmationButton = LocalizedStringResource(
-            "Sign Out",
-            comment: "Title of the sign out confirmation alert button."
+        static let pinInputPlaceholder = LocalizedStringResource(
+            "PIN Code",
+            comment: "PIN input placeholder."
+        )
+        static let signOut = LocalizedStringResource(
+            "Sign out",
+            comment: "Title of the sign out button."
         )
         static let signOutConfirmationTitle = LocalizedStringResource(
             "Are you sure you want to sign out?",
             comment: "Title of the sign out confirmation alert."
         )
         static let invalidPIN = LocalizedStringResource(
-            "Invalid PIN",
+            "Incorrect PIN. Try again.",
             comment: "Error message when the user enters an invalid PIN"
         )
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
