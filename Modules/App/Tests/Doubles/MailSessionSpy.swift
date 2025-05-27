@@ -170,6 +170,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func newSignupFlow() async -> MailSessionNewSignupFlowResult {
+        fatalError(#function)
+    }
+
     func pauseWork() {
         fatalError(#function)
     }

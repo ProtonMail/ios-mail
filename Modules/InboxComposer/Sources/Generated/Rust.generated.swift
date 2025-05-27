@@ -173,6 +173,16 @@ public extension EmbeddedAttachmentInfoResult {
         }
     }
 }
+public extension GetContactDetailsResult {
+    func get() throws(UserSessionError) -> ContactDetailCard? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowMigrateResult {
     func get() throws(LoginError) {
         switch self {
@@ -355,6 +365,16 @@ public extension MailSessionInitializedUserContextFromSessionResult {
 }
 public extension MailSessionNewLoginFlowResult {
     func get() throws(LoginError) -> LoginFlow {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionNewSignupFlowResult {
+    func get() throws(UserSessionError) -> SignupFlow {
         switch self {
         case .ok(let value):
             value
