@@ -161,15 +161,15 @@ extension MailboxScreen {
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
         .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow
         .navigationBarTitleDisplayMode(.inline)
-        .withAccountManager(
-            isSwitcherVisible: !mailboxModel.selectionMode.selectionState.hasItems,
+        .withAccountManagerSwitcher(
             isPresented: $isAccountManagerPresented,
             coordinator: mailboxModel.accountManagerCoordinator
         )
         .mainToolbar(
             title: mailboxModel.state.mailboxTitle,
             selectionMode: mailboxModel.selectionMode.selectionState,
-            onEvent: handleMainToolbarEvent
+            onEvent: handleMainToolbarEvent,
+            avatarView: { AnyView(mailboxModel.accountManagerCoordinator.avatarView()) }
         )
         .accessibilityElement(children: .contain)
     }
