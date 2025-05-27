@@ -47,17 +47,17 @@ class BiometricLockStore: StateStore {
             switch result {
             case .success:
                 output(.authenticated)
-            case .failure(let cannotEvaluatePolicy):
+            case .failure(let policyUnavailable):
                 state =
                     state
                     .copy(\.displayUnlockButton, to: true)
-                    .copy(\.alert, to: cannotEvaluatePolicy ? cannotEvaluatePolicyAlert : nil)
+                    .copy(\.alert, to: policyUnavailable ? policyUnavailableAlert : nil)
             }
         }
     }
 
     @MainActor
-    private func handle(alertAction: CannotEvaluatePolicyAlertAction) async {
+    private func handle(alertAction: PolicyUnavailableAlertAction) async {
         switch alertAction {
         case .ok:
             break
@@ -67,8 +67,8 @@ class BiometricLockStore: StateStore {
         state = state.copy(\.alert, to: nil)
     }
 
-    private var cannotEvaluatePolicyAlert: AlertModel {
-        AlertModel.cannotEvaluatePolicyAlert(
+    private var policyUnavailableAlert: AlertModel {
+        AlertModel.policyUnavailableAlert(
             action: { [weak self] action in await self?.handle(alertAction: action) },
             laContext: laContext
         )
@@ -77,8 +77,8 @@ class BiometricLockStore: StateStore {
 
 extension AlertModel {
 
-    static func cannotEvaluatePolicyAlert(
-        action: @escaping (CannotEvaluatePolicyAlertAction) async -> Void,
+    static func policyUnavailableAlert(
+        action: @escaping (PolicyUnavailableAlertAction) async -> Void,
         laContext: @escaping () -> LAContext
     ) -> Self {
         let message =
@@ -90,8 +90,8 @@ extension AlertModel {
             case .none:
                 "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app."
             }
-        let ok = AlertAction(details: CannotEvaluatePolicyAlertAction.ok, action: { await action(.ok) })
-        let signInAgain = AlertAction(details: CannotEvaluatePolicyAlertAction.signInAgain) {
+        let ok = AlertAction(details: PolicyUnavailableAlertAction.ok, action: { await action(.ok) })
+        let signInAgain = AlertAction(details: PolicyUnavailableAlertAction.signInAgain) {
             await action(.signInAgain)
         }
         return AlertModel(
@@ -103,7 +103,7 @@ extension AlertModel {
 
 }
 
-enum CannotEvaluatePolicyAlertAction: AlertActionInfo {
+enum PolicyUnavailableAlertAction: AlertActionInfo {
     case ok
     case signInAgain
 

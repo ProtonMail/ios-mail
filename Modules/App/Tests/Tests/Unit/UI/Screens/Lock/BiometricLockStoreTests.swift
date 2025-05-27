@@ -75,11 +75,11 @@ class BiometricLockStoreTests {
 
         await sut.handle(action: .onLoad)
 
-        #expect(sut.state.alert == cannotEvaluatePolicyAlert)
+        #expect(sut.state.alert == policyUnavailableAlert)
     }
 
     @Test @MainActor
-    func cannotEvaluatePolicyAlert_OkActionIsTapped_ItDismissesAlert() async {
+    func policyUnavailableAlert_OkActionIsTapped_ItDismissesAlert() async {
         laContextSpy.canEvaluatePolicyStub = false
 
         await sut.handle(action: .onLoad)
@@ -89,7 +89,7 @@ class BiometricLockStoreTests {
     }
 
     @Test @MainActor
-    func cannotEvaluatePolicyAlert_SignInAgainActionIsTapped_ItDismissesAlertAndEmitsLogOutOutput() async {
+    func policyUnavailableAlert_SignInAgainActionIsTapped_ItDismissesAlertAndEmitsLogOutOutput() async {
         laContextSpy.canEvaluatePolicyStub = false
 
         await sut.handle(action: .onLoad)
@@ -99,8 +99,8 @@ class BiometricLockStoreTests {
         #expect(screenOutput == [.logOut])
     }
 
-    private var cannotEvaluatePolicyAlert: AlertModel {
-        .cannotEvaluatePolicyAlert(
+    private var policyUnavailableAlert: AlertModel {
+        .policyUnavailableAlert(
             action: { _ in },
             laContext: { [unowned self] in self.laContextSpy }
         )
