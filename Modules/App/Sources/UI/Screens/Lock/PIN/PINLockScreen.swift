@@ -70,8 +70,7 @@ struct PINLockScreen: View {
 
                     Spacer()
                     confirmButton
-                        .padding(.horizontal, DS.Spacing.extraLarge)
-                        .padding(.bottom, DS.Spacing.extraLarge)
+                        .padding([.horizontal, .bottom], DS.Spacing.extraLarge)
                 }
             }
             .alert(model: $store.state.alert)
