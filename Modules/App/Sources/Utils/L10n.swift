@@ -219,7 +219,7 @@ enum L10n {
     }
 
     enum BiometricLock {
-        static let biometryUnlockRationale = LocalizedStringResource(
+        static let biometricUnlockRationale = LocalizedStringResource(
             "Please authenticate to unlock your screen.",
             comment: "Displayed in the system PIN pop-up when FaceID for this app is disabled."
         )
@@ -227,6 +227,28 @@ enum L10n {
             "Unlock Proton Mail",
             comment: "Title of a button that triggers biometric authorization on the lock screen."
         )
+        enum BiometricsNotAvailableAlert {
+            static let signInAgainAction = LocalizedStringResource(
+                "Sign in again",
+                comment: "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let title = LocalizedStringResource(
+                "Enable access",
+                comment: "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let messageFaceID = LocalizedStringResource(
+                "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let messageTouchID = LocalizedStringResource(
+                "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let defaultMessage = LocalizedStringResource(
+                "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+        }
     }
 
     enum EventLoopError {
@@ -242,6 +264,7 @@ enum L10n {
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
         )
         static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
+        static let ok = LocalizedStringResource("Ok", comment: "`Ok` action title.")
     }
 
     enum Labels {

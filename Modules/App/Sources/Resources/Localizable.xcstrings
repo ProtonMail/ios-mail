@@ -1171,6 +1171,9 @@
     "Empty %@ now" : {
       "comment" : "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
     },
+    "Enable access" : {
+      "comment" : "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
     "Enter PIN" : {
       "comment" : "Title of the pin lock screen."
     },
@@ -1991,6 +1994,9 @@
         }
       }
     },
+    "Ok" : {
+      "comment" : "`Ok` action title."
+    },
     "Old PIN code" : {
       "comment" : "Verify PIN code screen PIN input title."
     },
@@ -2086,6 +2092,15 @@
           }
         }
       }
+    },
+    "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
     "PIN code" : {
       "comment" : "App lock option."
@@ -2514,6 +2529,9 @@
           }
         }
       }
+    },
+    "Sign in again" : {
+      "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
     "Sign out" : {
       "comment" : "Title of the sign out button."

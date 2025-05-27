@@ -83,7 +83,7 @@ class BiometricLockStoreTests {
         laContextSpy.canEvaluatePolicyStub = false
 
         await sut.handle(action: .onLoad)
-        await sut.state.alert?.actions.first(where: { $0.title == "Ok" })?.action()
+        await sut.state.alert?.actions.first(where: { $0.title == L10n.Common.ok })?.action()
 
         #expect(sut.state.alert == nil)
     }
@@ -93,7 +93,9 @@ class BiometricLockStoreTests {
         laContextSpy.canEvaluatePolicyStub = false
 
         await sut.handle(action: .onLoad)
-        await sut.state.alert?.actions.first(where: { $0.title == "Sign in again" })?.action()
+        await sut.state.alert?.actions
+            .first(where: { $0.title == L10n.BiometricLock.BiometricsNotAvailableAlert.signInAgainAction })?
+            .action()
 
         #expect(sut.state.alert == nil)
         #expect(screenOutput == [.logOut])
@@ -106,33 +108,4 @@ class BiometricLockStoreTests {
         )
     }
 
-}
-
-class LAContextSpy: LAContext {  // FIXME: - Move to separate file
-    var canEvaluatePolicyStub = true
-    var evaluatePolicyStub = true
-    var biometryTypeStub: LABiometryType = .faceID
-    private(set) var canEvaluatePolicyCalls: [LAPolicy] = []
-    private(set) var evaluatePolicyCalls: [LAPolicy] = []
-
-    // MARK: - LAContext
-
-    override var biometryType: LABiometryType {
-        biometryTypeStub
-    }
-
-    override func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
-        canEvaluatePolicyCalls.append(policy)
-
-        return canEvaluatePolicyStub
-    }
-
-    override func evaluatePolicy(
-        _ policy: LAPolicy,
-        localizedReason: String,
-        reply: @escaping (Bool, (any Error)?) -> Void
-    ) {
-        evaluatePolicyCalls.append(policy)
-        reply(evaluatePolicyStub, nil)
-    }
 }

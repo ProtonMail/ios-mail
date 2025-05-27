@@ -58,7 +58,7 @@ struct BiometricAuthenticator: Sendable {
             return .failure(policyUnavailable: true)
         }
 
-        let reason = L10n.BiometricLock.biometryUnlockRationale.string
+        let reason = L10n.BiometricLock.biometricUnlockRationale.string
         return await withCheckedContinuation { continuation in
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 continuation.resume(
