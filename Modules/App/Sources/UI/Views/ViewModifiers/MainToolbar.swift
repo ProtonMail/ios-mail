@@ -20,10 +20,10 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MainToolbar: ViewModifier {
+struct MainToolbar<AvatarView: View>: ViewModifier {
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
-    let avatarView: () -> AnyView
+    let avatarView: () -> AvatarView
 
     private let title: LocalizedStringResource
 
@@ -35,7 +35,7 @@ struct MainToolbar: ViewModifier {
         title: LocalizedStringResource,
         selectionMode: SelectionModeState,
         onEvent: @escaping (MainToolbarEvent) -> Void,
-        avatarView: @escaping () -> AnyView
+        avatarView: @escaping () -> AvatarView
     ) {
         self.title = title
         self.selectionMode = selectionMode
@@ -108,7 +108,7 @@ extension View {
         title: LocalizedStringResource,
         selectionMode: SelectionModeState? = nil,
         onEvent: @escaping (MainToolbarEvent) -> Void,
-        @ViewBuilder avatarView: @escaping () -> AnyView
+        avatarView: @escaping () -> some View
     ) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
         return modifier(
@@ -155,7 +155,7 @@ enum MainToolbarEvent {
         title: "Inbox",
         selectionMode: .init(),
         onEvent: { _ in },
-        avatarView: { AnyView(EmptyView()) }
+        avatarView: { EmptyView() }
     )
     .environmentObject(appUIStateStore)
     .environmentObject(toastStateStore)

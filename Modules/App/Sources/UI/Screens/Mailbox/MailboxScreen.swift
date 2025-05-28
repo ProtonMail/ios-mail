@@ -169,7 +169,7 @@ extension MailboxScreen {
             title: mailboxModel.state.mailboxTitle,
             selectionMode: mailboxModel.selectionMode.selectionState,
             onEvent: handleMainToolbarEvent,
-            avatarView: { AnyView(mailboxModel.accountManagerCoordinator.avatarView()) }
+            avatarView: { mailboxModel.accountManagerCoordinator.avatarView() }
         )
         .accessibilityElement(children: .contain)
     }
