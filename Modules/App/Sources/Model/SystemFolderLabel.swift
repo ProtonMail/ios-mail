@@ -78,7 +78,7 @@ extension SystemFolderLabel {
         case .archive:
             DS.Icon.icArchiveBox.image
         case .starred:
-            Image(systemName: DS.SFSymbols.star)
+            Image(symbol: .star)
         case .scheduled:
             DS.Icon.icClockPaperPlane.image
         case .snoozed:

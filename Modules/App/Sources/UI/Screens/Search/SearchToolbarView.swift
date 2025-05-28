@@ -60,7 +60,7 @@ struct SearchToolbarView: View {
                     onEvent(.onExitSelection)
                 },
                 label: {
-                    Image(systemName: DS.SFSymbols.xmark)
+                    Image(symbol: .xmark)
                 }
             )
             .square(size: 40)
@@ -73,8 +73,7 @@ struct SearchToolbarView: View {
 
     private var searchTextField: some View {
         HStack(spacing: 0) {
-            Image(systemName: DS.SFSymbols.magnifier)
-                .resizable()
+            Image(symbol: .magnifier)
                 .square(size: Layout.iconSquareSize)
                 .foregroundStyle(DS.Color.Icon.hint)
                 .padding(.leading, DS.Spacing.moderatelyLarge)

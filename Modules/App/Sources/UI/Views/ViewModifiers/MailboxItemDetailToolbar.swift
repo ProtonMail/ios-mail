@@ -39,7 +39,7 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                             presentationMode.wrappedValue.dismiss()
                         },
                         label: {
-                            Image(systemName: DS.SFSymbols.chevronLeft)
+                            Image(symbol: .chevronLeft)
                                 .foregroundStyle(DS.Color.Icon.norm)
                         }
                     )

@@ -48,9 +48,9 @@ extension BottomBarAction {
         case .permanentDelete:
             return .init(imageResource: DS.Icon.icTrashCross, name: L10n.Action.deletePermanently)
         case .star:
-            return .init(icon: Image(systemName: DS.SFSymbols.star), name: L10n.Action.star)
+            return .init(icon: Image(symbol: .star), name: L10n.Action.star)
         case .unstar:
-            return .init(icon: Image(systemName: DS.SFSymbols.starSlash), name: L10n.Action.unstar)
+            return .init(icon: Image(symbol: .starSlash), name: L10n.Action.unstar)
         }
     }
 

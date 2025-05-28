@@ -112,7 +112,7 @@ struct ContactDetailsScreen: View {
             FormList(collection: items, separator: .invertedNoPadding) { item in
                 FormBigButton(
                     title: item.label.stringResource,
-                    icon: .none,
+                    symbol: .none,
                     value: item.value,
                     action: {
                         // FIXME: Implement action for specific item

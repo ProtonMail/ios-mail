@@ -143,20 +143,20 @@ extension MailboxItemCell {
         if uiModel.replyIcons.shouldShowIcon {
             HStack(spacing: DS.Spacing.tiny) {
                 if uiModel.replyIcons.shouldShowRepliedIcon {
-                    imageForReplyIcon(systemName: DS.SFSymbols.reply)
+                    imageForReplyIcon(symbol: .reply)
                 }
                 if uiModel.replyIcons.shouldShowRepliedAllIcon {
-                    imageForReplyIcon(systemName: DS.SFSymbols.replyAll)
+                    imageForReplyIcon(symbol: .replyAll)
                 }
                 if uiModel.replyIcons.shouldShowForwardedIcon {
-                    imageForReplyIcon(systemName: DS.SFSymbols.forward)
+                    imageForReplyIcon(symbol: .forward)
                 }
             }
         }
     }
 
-    private func imageForReplyIcon(systemName: String) -> some View {
-        Image(systemName: systemName)
+    private func imageForReplyIcon(symbol: DS.SFSymbol) -> some View {
+        Image(symbol: symbol)
             .square(size: 20)
             .foregroundColor(DS.Color.Text.weak)
     }

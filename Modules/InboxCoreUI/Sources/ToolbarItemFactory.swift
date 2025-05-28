@@ -20,7 +20,7 @@ import SwiftUI
 
 public enum ToolbarItemFactory {
     public static func back(action: @escaping () -> Void) -> some ToolbarContent {
-        leading(Image(systemName: DS.SFSymbols.chevronLeft), action: action)
+        leading(Image(symbol: .chevronLeft), action: action)
     }
 
     public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {

@@ -21,19 +21,19 @@ import SwiftUI
 public struct FormBigButton: View {
     private let value: String
     private let title: LocalizedStringResource
-    private let systemIconName: String?
+    private let symbol: DS.SFSymbol?
     private let action: () -> Void
     private let hasAccentTextColor: Bool
 
     public init(
         title: LocalizedStringResource,
-        icon: String?,
+        symbol: DS.SFSymbol?,
         value: String,
         action: @escaping () -> Void,
         hasAccentTextColor: Bool = false
     ) {
         self.title = title
-        self.systemIconName = icon
+        self.symbol = symbol
         self.value = value
         self.action = action
         self.hasAccentTextColor = hasAccentTextColor
@@ -52,9 +52,9 @@ public struct FormBigButton: View {
                         .fontWeight(.regular)
                         .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
                 }
-                if let systemIconName {
+                if let symbol {
                     Spacer(minLength: DS.Spacing.small)
-                    Image(systemName: systemIconName)
+                    Image(symbol: symbol)
                         .font(.system(size: 20))
                         .foregroundStyle(DS.Color.Text.hint)
                 }

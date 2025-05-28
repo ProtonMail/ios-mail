@@ -25,7 +25,7 @@ struct FormSmallButton: View {
     private let action: () -> Void
 
     struct Symbol {
-        let name: String
+        let name: DS.SFSymbol
         let color: Color
     }
 
@@ -47,7 +47,7 @@ struct FormSmallButton: View {
                         .foregroundStyle(DS.Color.Text.norm)
                     Spacer(minLength: DS.Spacing.medium)
                     if let rightSymbol {
-                        Image(systemName: rightSymbol.name)
+                        Image(symbol: rightSymbol.name)
                             .foregroundStyle(rightSymbol.color)
                     }
                 }
@@ -65,11 +65,11 @@ struct FormSmallButton: View {
 extension FormSmallButton.Symbol {
 
     static var checkmark: Self {
-        .init(name: DS.SFSymbols.checkmark, color: DS.Color.Icon.accent)
+        .init(name: .checkmark, color: DS.Color.Icon.accent)
     }
 
     static var chevronRight: Self {
-        .init(name: DS.SFSymbols.chevronRight, color: DS.Color.Text.hint)
+        .init(name: .chevronRight, color: DS.Color.Text.hint)
     }
 
 }

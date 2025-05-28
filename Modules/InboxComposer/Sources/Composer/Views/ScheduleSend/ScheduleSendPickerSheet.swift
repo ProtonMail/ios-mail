@@ -62,13 +62,13 @@ struct ScheduleSendPickerSheet: View {
 
                 HStack(spacing: DS.Spacing.large) {
                     predefinedOption(
-                        icon: DS.SFSymbols.sunMax,
+                        symbol: .sunMax,
                         title: L10n.ScheduleSend.tomorrow.string,
                         time: predefinedTimeOptions.tomorrow,
                         onTap: onTimeSelected
                     )
                     predefinedOption(
-                        icon: DS.SFSymbols.suitcase,
+                        symbol: .suitcase,
                         title: L10n.ScheduleSend.monday.string,
                         time: predefinedTimeOptions.nextMonday,
                         onTap: onTimeSelected
@@ -87,10 +87,10 @@ struct ScheduleSendPickerSheet: View {
     }
 
     @ViewBuilder
-    private func predefinedOption(icon: String, title: String, time: Date, onTap: @escaping (Date) async -> Void) -> some View {
+    private func predefinedOption(symbol: DS.SFSymbol, title: String, time: Date, onTap: @escaping (Date) async -> Void) -> some View {
         Button(action: { Task { await onTap(time) } }) {
             VStack(spacing: DS.Spacing.small) {
-                Image(systemName: icon)
+                Image(symbol: symbol)
                     .font(.title2)
                     .foregroundColor(.primary)
                     .padding(.bottom, DS.Spacing.small)
@@ -130,7 +130,7 @@ struct ScheduleSendPickerSheet: View {
                 Spacer()
 
                 if isCustomOptionAvailable {
-                    Image(systemName: DS.SFSymbols.chevronRight)
+                    Image(symbol: .chevronRight)
                         .foregroundStyle(DS.Color.Text.hint)
                 } else {
                     Image(DS.Icon.icBrandProtonMailUpsell)

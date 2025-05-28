@@ -136,7 +136,7 @@ struct ConversationDetailScreen: View {
                     model.toggleStarState()
                 },
                 label: {
-                    Image(systemName: model.isStarred ? DS.SFSymbols.starFilled : DS.SFSymbols.star)
+                    Image(symbol: model.isStarred ? .starFilled : .star)
                         .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
                 })
         } else {

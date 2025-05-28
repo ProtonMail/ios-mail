@@ -41,7 +41,7 @@ extension AssignedSwipeAction {
         case .labelAs:
             DS.Icon.icTag.image
         case .toggleStar:
-            Image(systemName: isStarred ? DS.SFSymbols.star : DS.SFSymbols.starSlash)
+            Image(symbol: isStarred ? .star : .starSlash)
         case .toggleRead:
             isRead ? DS.Icon.icEnvelopeOpen.image : DS.Icon.icEnvelopeDot.image
         }

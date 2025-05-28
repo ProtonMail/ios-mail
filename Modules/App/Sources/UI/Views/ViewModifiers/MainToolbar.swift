@@ -93,7 +93,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
         Button(
             action: { onEvent(.onSearch) },
             label: {
-                Image(systemName: DS.SFSymbols.magnifier)
+                Image(symbol: .magnifier)
                     .square(size: 24)
                     .padding(10)
             }
@@ -126,7 +126,7 @@ enum MainToolbarState: Int {
         case .noSelection:
             Image(DS.Icon.icHamburguer)
         case .selection:
-            Image(systemName: DS.SFSymbols.xmark)
+            Image(symbol: .xmark)
         }
     }
 }

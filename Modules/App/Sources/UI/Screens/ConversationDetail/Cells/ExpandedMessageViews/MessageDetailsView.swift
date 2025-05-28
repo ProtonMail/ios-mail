@@ -117,7 +117,7 @@ struct MessageDetailsView: View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
-                image: Image(systemName: uiModel.isSingleRecipient ? DS.SFSymbols.reply : DS.SFSymbols.replyAll)
+                image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
             headerActionButton(
                 action: { onEvent(.onMoreActions) },
@@ -284,7 +284,7 @@ struct MessageDetailsView: View {
         CapsuleView(
             text: L10n.Mailbox.SystemFolder.starred,
             color: DS.Color.Background.secondary,
-            icon: Image(systemName: DS.SFSymbols.starFilled),
+            icon: Image(symbol: .starFilled),
             iconColor: DS.Color.Star.selected,
             style: .attachment
         )

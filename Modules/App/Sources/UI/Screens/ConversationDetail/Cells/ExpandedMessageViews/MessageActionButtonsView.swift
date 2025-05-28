@@ -26,24 +26,24 @@ struct MessageActionButtonsView: View {
 
     var body: some View {
         HStack() {
-            MessageActionButtonView(imageSystemName: DS.SFSymbols.reply, text: L10n.Action.Send.reply) { onEvent(.reply) }
-            MessageActionButtonView(imageSystemName: DS.SFSymbols.replyAll, text: L10n.Action.Send.replyAll) { onEvent(.replyAll) }
+            MessageActionButtonView(symbol: .reply, text: L10n.Action.Send.reply) { onEvent(.reply) }
+            MessageActionButtonView(symbol: .replyAll, text: L10n.Action.Send.replyAll) { onEvent(.replyAll) }
                 .removeViewIf(isSingleRecipient)
-            MessageActionButtonView(imageSystemName: DS.SFSymbols.forward, text: L10n.Action.Send.forward) { onEvent(.forward) }
+            MessageActionButtonView(symbol: .forward, text: L10n.Action.Send.forward) { onEvent(.forward) }
         }
         .padding(.horizontal, DS.Spacing.large)
     }
 }
 
 private struct MessageActionButtonView: View {
-    let imageSystemName: String
+    let symbol: DS.SFSymbol
     let text: LocalizedStringResource
     var onButtonTap: () -> Void
 
     var body: some View {
         Button(action: onButtonTap) {
             HStack(spacing: DS.Spacing.medium) {
-                Image(systemName: imageSystemName)
+                Image(symbol: symbol)
                     .foregroundColor(DS.Color.Icon.norm)
                     .aspectRatio(contentMode: .fill)
                     .square(size: 20)

@@ -113,11 +113,11 @@ enum Action: ActionPickerListElement {
         case .snooze:
             DS.Icon.icClock.image
         case .star:
-            Image(systemName: DS.SFSymbols.star)
+            Image(symbol: .star)
         case .unpin:
             DS.Icon.icPinAngledSlash.image
         case .unstar:
-            Image(systemName: DS.SFSymbols.starSlash)
+            Image(symbol: .starSlash)
         case .viewHeaders:
             DS.Icon.icFileLines.image
         case .viewHTML:
