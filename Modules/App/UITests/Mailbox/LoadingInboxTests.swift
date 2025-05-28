@@ -20,7 +20,7 @@ import XCTest
 import NIO
 
 extension XCUIApplication {
-    
+
     func setAppLaunchArguments() -> XCUIApplication {
         self.launchArguments += ["-uiTesting", "true"]
         self.launchArguments += ["-AppleLanguages", "[\"en\"]"]
@@ -30,16 +30,16 @@ extension XCUIApplication {
 }
 
 final class LoadingInboxTests: XCTestCase {
-    
+
     private let app = XCUIApplication().setAppLaunchArguments()
-    
+
     private lazy var measurementContext = MeasurementContext(MeasurementConfig.self)
-    
+
     override func setUp() {
         super.setUp()
         app.launch()
     }
-    
+
     override func tearDown() {
         super.tearDown()
         app.terminate()
@@ -52,27 +52,27 @@ final class LoadingInboxTests: XCTestCase {
             .setEnvironment("black")
             .setLokiCertificate("certificate_ios_sdk")
             .setLokiCertificatePassphrase(getTestConfigValue(forKey: "CERTIFICATE_IOS_SDK_PASSPHRASE"))
-        
+
         let measurementProfile = measurementContext.setWorkflow("ios_functional_load_time", forTest: self.name)
         measurementProfile
             .addMeasurement(DurationMeasurement())
             .setServiceLevelIndicator("inbox_load_time")
-        
+
         WelcomeRobot { $0.tapSignIn() }
         SignInRobot {
             $0.typeUsername(getTestConfigValue(forKey: "ET_USER"))
             $0.typePassword(getTestConfigValue(forKey: "ET_USER_PWD"))
         }
-        
+
         /// Measure inbox load time in measure block below
         measurementProfile.measure {
             SignInRobot { $0.tapSignIn() }
-            MailboxRobot{ $0.verifyShown() }
+            MailboxRobot { $0.verifyShown() }
         }
-        
+
         /// Sign out user
-        MailboxRobot{ $0.openSidebarMenu() }
-        SidebarMenuRobot { $0.signOutProperly()}
+        MailboxRobot { $0.openSidebarMenu() }
+        SidebarMenuRobot { $0.signOutProperly() }
         WelcomeRobot { $0.verifyIsDisplayed() }
     }
 }

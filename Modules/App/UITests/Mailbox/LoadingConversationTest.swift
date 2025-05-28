@@ -20,16 +20,16 @@ import XCTest
 import NIO
 
 final class LoadingConversationTest: XCTestCase {
-    
+
     private let app = XCUIApplication().setAppLaunchArguments()
-    
+
     private lazy var measurementContext = MeasurementContext(MeasurementConfig.self)
-    
+
     override func setUp() {
         super.setUp()
         app.launch()
     }
-    
+
     override func tearDown() {
         super.tearDown()
         app.terminate()
@@ -42,12 +42,12 @@ final class LoadingConversationTest: XCTestCase {
             .setEnvironment("pink")
             .setLokiCertificate("certificate_ios_sdk")
             .setLokiCertificatePassphrase(getTestConfigValue(forKey: "CERTIFICATE_IOS_SDK_PASSPHRASE"))
-        
+
         let measurementProfile = measurementContext.setWorkflow("ios_functional_load_time", forTest: self.name)
         measurementProfile
             .addMeasurement(DurationMeasurement())
             .setServiceLevelIndicator("message_load_time")
-        
+
         WelcomeRobot {
             $0.tapSignIn()
         }
@@ -56,23 +56,23 @@ final class LoadingConversationTest: XCTestCase {
             $0.typePassword(getTestConfigValue(forKey: "ET_USER_PWD"))
             $0.tapSignIn()
         }
-        
+
         let messageSubject = "Get started with Proton Mail and increase your storage for free"
-        
+
         MailboxRobot {
             $0.verifyShown()
             $0.waitMessageBySubject(subject: messageSubject)
         }
         /// Measure inbox load time in measure block below
         measurementProfile.measure {
-            MailboxRobot{
+            MailboxRobot {
                 $0.clickMessageBySubject(subject: messageSubject)
             }
             ConversationDetailRobot {
                 $0.waitForLoaderToDisappear()
             }
         }
-        
+
         ConversationDetailRobot {
             $0.tapBackChevronButton()
         }
