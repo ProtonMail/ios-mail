@@ -183,6 +183,16 @@ public extension GetContactDetailsResult {
         }
     }
 }
+public extension LoginFlowLoginResult {
+    func get() throws(LoginError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowMigrateResult {
     func get() throws(LoginError) {
         switch self {
@@ -203,11 +213,21 @@ public extension LoginFlowSessionIdResult {
         }
     }
 }
-public extension LoginFlowToUserContextResult {
-    func get() throws(LoginError) -> MailUserSession {
+public extension LoginFlowSubmitMailboxPasswordResult {
+    func get() throws(LoginError) {
         switch self {
-        case .ok(let value):
-            value
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension LoginFlowSubmitTotpResult {
+    func get() throws(LoginError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
@@ -363,16 +383,6 @@ public extension MailSessionInitializedUserContextFromSessionResult {
         }
     }
 }
-public extension MailSessionNewLoginFlowResult {
-    func get() throws(LoginError) -> LoginFlow {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MailSessionNewSignupFlowResult {
     func get() throws(UserSessionError) -> SignupFlow {
         switch self {
@@ -385,16 +395,6 @@ public extension MailSessionNewSignupFlowResult {
 }
 public extension MailSessionRemainingPinAttemptsResult {
     func get() throws(UserSessionError) -> UInt32? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailSessionResumeLoginFlowResult {
-    func get() throws(LoginError) -> LoginFlow {
         switch self {
         case .ok(let value):
             value
@@ -813,6 +813,116 @@ public extension SearchScrollerFetchMoreResult {
         }
     }
 }
+public extension SignupFlowAvailableCountriesResult {
+    func get() throws(SignupError) -> Countries {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowAvailableDomainsResult {
+    func get() throws(SignupError) -> [String] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowCompleteResult {
+    func get() throws(SignupError) -> UserAddrId {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowCreateResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSkipRecoveryResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowStepBackResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSubmitExternalUsernameResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSubmitInternalUsernameResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSubmitPasswordResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSubmitRecoveryEmailResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SignupFlowSubmitRecoveryPhoneResult {
+    func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension VoidDraftDiscardResult {
     func get() throws(DraftDiscardError) {
         switch self {
@@ -835,16 +945,6 @@ public extension VoidDraftSaveResult {
 }
 public extension VoidDraftSendResult {
     func get() throws(DraftSendError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension VoidLoginResult {
-    func get() throws(LoginError) {
         switch self {
         case .ok:
             break

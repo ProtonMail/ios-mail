@@ -229,6 +229,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func toUserContext(ffiFlow: LoginFlow) async -> MailSessionToUserContextResult {
+        fatalError(#function)
+    }
+
     func unsetBiometricsAppProtection() async -> MailSessionUnsetBiometricsAppProtectionResult {
         fatalError(#function)
     }

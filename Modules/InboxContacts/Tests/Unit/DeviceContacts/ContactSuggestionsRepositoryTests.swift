@@ -79,11 +79,13 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 1)
         XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 3)
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description), [
-            CNContactGivenNameKey.description,
-            CNContactFamilyNameKey.description,
-            CNContactEmailAddressesKey.description
-        ])
+        XCTAssertEqual(
+            contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description),
+            [
+                CNContactGivenNameKey.description,
+                CNContactFamilyNameKey.description,
+                CNContactEmailAddressesKey.description,
+            ])
     }
 
     func testAllContacts_WhenPermissionsGranted_ItRequestsForAllContactsWithDeviceContacts() async {
@@ -91,24 +93,26 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
-            .travisHulkenberg
+            .travisHulkenberg,
         ]
 
         _ = await sut.allContacts()
 
         XCTAssertEqual(allContactsCalls.count, 1)
-        XCTAssertEqual(allContactsCalls.last, [
-            .init(
-                key: "1",
-                name: "Jonathan Horovitz",
-                emails: ["jonathan@pm.me", "jonathan@gmail.com"]
-            ),
-            .init(
-                key: "2",
-                name: "Travis Hulkenberg",
-                emails: ["travis@pm.me", "travis@gmail.com"]
-            )
-        ])
+        XCTAssertEqual(
+            allContactsCalls.last,
+            [
+                .init(
+                    key: "1",
+                    name: "Jonathan Horovitz",
+                    emails: ["jonathan@pm.me", "jonathan@gmail.com"]
+                ),
+                .init(
+                    key: "2",
+                    name: "Travis Hulkenberg",
+                    emails: ["travis@pm.me", "travis@gmail.com"]
+                ),
+            ])
     }
 
     func testAllContacts_WhenPermissionsGranted_ItReturnsDeviceAndProtonContacts() async {
@@ -117,7 +121,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg,
-            .marcus
+            .marcus,
         ]
 
         stubbedAllContacts = [
@@ -126,20 +130,22 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .protonMark,
             .deviceJonathanHorotvitz,
             .deviceTravisHulkenberg,
-            .deviceMarcus
+            .deviceMarcus,
         ]
 
         let receivedContacts = await sut.allContacts()?.all() ?? []
 
         XCTAssertEqual(receivedContacts.count, 6)
-        XCTAssertEqual(receivedContacts, [
-            .group(.businessGroup),
-            .protonJohn,
-            .protonMark,
-            .deviceJonathanHorotvitz,
-            .deviceTravisHulkenberg,
-            .deviceMarcus
-        ])
+        XCTAssertEqual(
+            receivedContacts,
+            [
+                .group(.businessGroup),
+                .protonJohn,
+                .protonMark,
+                .deviceJonathanHorotvitz,
+                .deviceTravisHulkenberg,
+                .deviceMarcus,
+            ])
     }
 
     // MARK: - Permissions not granted
@@ -157,7 +163,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
-            .travisHulkenberg
+            .travisHulkenberg,
         ]
 
         _ = await sut.allContacts()
@@ -167,7 +173,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .protonJohn,
             .protonMark,
             .deviceJonathanHorotvitz,
-            .deviceTravisHulkenberg
+            .deviceTravisHulkenberg,
         ]
 
         XCTAssertEqual(allContactsCalls.count, 1)
@@ -179,21 +185,23 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
-            .travisHulkenberg
+            .travisHulkenberg,
         ]
 
         stubbedAllContacts = [
             .protonJohn,
-            .protonMark
+            .protonMark,
         ]
 
         let receivedContacts = await sut.allContacts()?.all() ?? []
 
         XCTAssertEqual(receivedContacts.count, 2)
-        XCTAssertEqual(receivedContacts, [
-            .protonJohn,
-            .protonMark
-        ])
+        XCTAssertEqual(
+            receivedContacts,
+            [
+                .protonJohn,
+                .protonMark,
+            ])
     }
 
 }
@@ -273,7 +281,7 @@ private extension ContactSuggestion {
             key: "\(groupItem.id.value)",
             name: groupItem.name,
             avatarInformation: .init(text: "", color: groupItem.avatarColor),
-            kind: .contactGroup(groupItem.contacts.flatMap(\.emails))
+            kind: .contactGroup(groupItem.contactEmails)
         )
     }
 
