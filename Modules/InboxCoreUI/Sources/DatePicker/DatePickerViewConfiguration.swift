@@ -16,15 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 
-extension DraftScheduleSendOptions {
+public protocol DatePickerViewConfiguration {
+    var title: LocalizedStringResource { get }
 
-    func toScheduleSendTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendTimeOptions {
-        .init(
-            tomorrow: tomorrowTime.date,
-            nextMonday: mondayTime.date,
-            lastScheduleSendTime: lastScheduleSendTime?.date
-        )
-    }
+    var selectTitle: LocalizedStringResource { get }
+
+    /// Time picker minute increment
+    var minuteInterval: TimeInterval { get }
+
+    /// Range of dates allowed in the DatePicker
+    var range: ClosedRange<Date> { get }
+
+    func formatDate(_ date: Date) -> String
 }
