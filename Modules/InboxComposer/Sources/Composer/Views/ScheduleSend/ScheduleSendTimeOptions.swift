@@ -16,15 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 
-extension DraftScheduleSendOptions {
-
-    func toScheduleSendTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendTimeOptions {
-        .init(
-            tomorrow: tomorrowTime.date,
-            nextMonday: mondayTime.date,
-            lastScheduleSendTime: lastScheduleSendTime?.date
-        )
-    }
+struct ScheduleSendTimeOptions {
+    let tomorrow: Date
+    let nextMonday: Date
+    let lastScheduleSendTime: Date?
 }

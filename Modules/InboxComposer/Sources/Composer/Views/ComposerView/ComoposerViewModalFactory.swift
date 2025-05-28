@@ -26,7 +26,7 @@ struct ComposerViewModalFactory {
     init(scheduleSendAction: @escaping (Date) async -> Void, attachmentPickerState: Binding<AttachmentPickersState>) {
         self.makeScheduleSend = { schduleSendOptions, lastScheduledTime in
             ScheduleSendPickerSheet(
-                predefinedTimeOptions: schduleSendOptions.toScheduleSendPickerTimeOptions(lastScheduleSendTime: lastScheduledTime),
+                predefinedTimeOptions: schduleSendOptions.toScheduleSendTimeOptions(lastScheduleSendTime: lastScheduledTime),
                 isCustomOptionAvailable: schduleSendOptions.isCustomOptionAvailable,
                 onTimeSelected: scheduleSendAction
             )

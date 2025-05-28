@@ -33,7 +33,7 @@ final class ScheduleSendSheetSnapshotTests {
             stubMondayTime: 1810729238
         ).scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
-            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+            predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: nil),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
             dateFormatter: dateFormatter,
             onTimeSelected: { _ in }
@@ -49,7 +49,7 @@ final class ScheduleSendSheetSnapshotTests {
             stubMondayTime: 1810729238
         ).scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
-            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+            predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: nil),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
             dateFormatter: dateFormatter,
             onTimeSelected: { _ in }
@@ -65,7 +65,7 @@ final class ScheduleSendSheetSnapshotTests {
             stubMondayTime: 1810729238
         ).scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
-            predefinedTimeOptions: options.toScheduleSendPickerTimeOptions(lastScheduleSendTime: 1810483200),
+            predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: 1810483200),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
             dateFormatter: dateFormatter,
             onTimeSelected: { _ in }
