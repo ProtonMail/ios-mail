@@ -7,6 +7,8 @@ include:
 
 # This job grabs translations from I18N_SYNC_BRANCH and sends them to Crowdin
 i18n-sync-crowdin:
+  needs: []
+  dependencies: []
   variables:
     I18N_SYNC_CROWDIN_PROJECT: "apple-mail-v4"
     I18N_SYNC_BRANCH: "develop"
