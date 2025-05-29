@@ -37,6 +37,16 @@ class PINStateStoreTests {
     }
 
     @Test
+    func setPIN_tooLongPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
+        let sut = makeSut(type: .set)
+        await sut.handle(action: .pinTyped(.init(digits: Array(repeating: 1, count: 22))))
+        await sut.handle(action: .trailingButtonTapped)
+
+        #expect(sut.state.pinValidation == .failure(L10n.PINLock.Error.tooLong.string))
+        #expect(router.stack == [])
+    }
+
+    @Test
     func setPIN_pinIsValid_ItNavigatesToConfirmPINScreen() async {
         let sut = makeSut(type: .set)
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3, 4])))

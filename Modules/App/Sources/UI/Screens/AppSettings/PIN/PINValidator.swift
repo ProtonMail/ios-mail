@@ -47,7 +47,14 @@ struct PINValidator {
 
     // FIXME: - This validation logic will be moved to Rust
     private func setPINValidation(pin: PIN) -> FormTextInput.ValidationStatus {
-        pin.digits.count >= 4 ? .ok : .failure(L10n.PINLock.Error.tooShort.string)
+        switch pin.digits.count {
+        case ..<4:
+            .failure(L10n.PINLock.Error.tooShort.string)
+        case 22...:
+            .failure(L10n.PINLock.Error.tooLong.string)
+        default:
+            .ok
+        }
     }
 
     // FIXME: - This validation logic will be moved to Rust
