@@ -45,8 +45,11 @@ final class SendResultPresenter {
     @MainActor
     func presentResultInfo(_ info: SendResultInfo) {
         switch info.type {
-        case .scheduled(let time):
-            let formattedTime = ScheduleSendDateFormatter().string(from: time, format: .long)
+        case .scheduling:
+            handleToast(.schedulingMessage(duration: regularDuration), for: info.messageId)
+
+        case .scheduled(let deliveryTime):
+            let formattedTime = ScheduleSendDateFormatter().string(from: deliveryTime, format: .long)
             let toast: Toast = .scheduledMessage(duration: extendedDuration, scheduledTime: formattedTime) { [weak self] in
                 Task { await self?.undoScheduleSendAction(for: info.messageId) }
             }
@@ -55,9 +58,15 @@ final class SendResultPresenter {
         case .sending:
             handleToast(.sendingMessage(duration: regularDuration), for: info.messageId)
 
-        case .sent:
-            let toast: Toast = .messageSent(duration: extendedDuration) { [weak self] in
-                Task { await self?.undoSendAction(for: info.messageId) }
+        case .sent(let secondsToUndo):
+            let duration = min(TimeInterval(secondsToUndo), extendedDuration)
+            let toast: Toast
+            if duration > 0 {
+                toast = .messageSent(duration: duration) { [weak self] in
+                    Task { await self?.undoSendAction(for: info.messageId) }
+                }
+            } else {
+                toast = .messageSentWithoutUndo(duration: regularDuration)
             }
             handleToast(toast, for: info.messageId)
 

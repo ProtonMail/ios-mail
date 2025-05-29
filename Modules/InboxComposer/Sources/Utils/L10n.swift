@@ -85,6 +85,12 @@ enum L10n {
             comment: "Composer toast message when send is tapped."
         )
 
+        static let schedulingMessage = LocalizedStringResource(
+            "Scheduling message...",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message when schedule a message is tapped."
+        )
+
         static let messageSent = LocalizedStringResource(
             "Message sent",
             bundle: .atURL(Bundle.module.bundleURL),

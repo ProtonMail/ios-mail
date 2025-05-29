@@ -178,6 +178,9 @@
     "Schedule send" : {
       "comment" : "Title of the schedule send view"
     },
+    "Scheduling message..." : {
+      "comment" : "Composer toast message when schedule a message is tapped."
+    },
     "Send" : {
       "comment" : "Message send button.",
       "localizations" : {

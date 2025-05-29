@@ -54,6 +54,7 @@ final class SendResultPublisher: Sendable, ObservableObject {
 
     private func publish(results: [DraftSendResult]) {
         for result in results {
+            AppLogger.log(message: "send result received: \(result)", category: .send)
             let messageId = result.messageId
             switch result.origin {
             // TODO: pending discussion about `DraftSendResult` scenarios
@@ -64,15 +65,20 @@ final class SendResultPublisher: Sendable, ObservableObject {
             case .saveBeforeSend:
                 break
             case .send:
-                AppLogger.log(message: "send result received \(result)", category: .send)
                 switch result.error {
-                case .success:
-                    subject.send(.init(messageId: messageId, type: .sent))
+                case .success(let secondsUntilCancel, _):
+                    subject.send(.init(messageId: messageId, type: .sent(secondsToUndo: secondsUntilCancel)))
                 case .failure(let draftError):
                     subject.send(.init(messageId: messageId, type: .error(draftError)))
                 }
             case .scheduleSend:
-                break
+                switch result.error {
+                case .success(_, let deliveryTime):
+                    let date = Date(timeIntervalSince1970: TimeInterval(deliveryTime))
+                    subject.send(.init(messageId: messageId, type: .scheduled(deliveryTime: date)))
+                case .failure(let draftError):
+                    subject.send(.init(messageId: messageId, type: .error(draftError)))
+                }
             }
         }
     }

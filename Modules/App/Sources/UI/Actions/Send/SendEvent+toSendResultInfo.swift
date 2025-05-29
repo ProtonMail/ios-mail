@@ -21,8 +21,8 @@ extension SendEvent {
 
     var toastType: SendResultInfo.ToastType {
         switch self {
-        case .scheduleSend(let date):
-            .scheduled(date: date)
+        case .scheduleSend:
+            .scheduling
         case .send:
             .sending
         }

@@ -21,14 +21,16 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-final class DraftPresenterTests: BaseTestCase {
+final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
     private var sut: DraftPresenter!
     private let emptyErrorCallback: (DraftOpenError) -> Void = { _ in }
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
-        sut = makeSUT()
+        MainActor.assumeIsolated {
+            sut = makeSUT()
+        }
         cancellables = .init()
     }
 
@@ -167,6 +169,7 @@ final class DraftPresenterTests: BaseTestCase {
 
 extension DraftPresenterTests {
 
+    @MainActor
     func makeSUT(
         stubbedNewDraftResult: NewDraftResult = .ok(.dummyDraft),
         stubbedUndoSendError: DraftUndoSendError? = nil,

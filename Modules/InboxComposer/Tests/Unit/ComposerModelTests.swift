@@ -585,7 +585,7 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
         XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
-        XCTAssertEqual(sendingEventObserver, [.scheduleSend(date: scheduleTime.date)])
+        XCTAssertEqual(sendingEventObserver, [.scheduleSend])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
     }

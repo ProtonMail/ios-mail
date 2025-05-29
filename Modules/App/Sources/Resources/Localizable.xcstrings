@@ -3116,6 +3116,9 @@
         }
       }
     },
+    "You need to be online to edit scheduled messages" : {
+      "comment" : "Toast message when editing fails because there is no internet connection."
+    },
     "Your device is offline" : {
       "comment" : "Title of the offline mode placeholder."
     }

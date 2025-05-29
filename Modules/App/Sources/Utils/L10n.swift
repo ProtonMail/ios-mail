@@ -61,7 +61,10 @@ enum L10n {
                 "Edit draft",
                 comment: "Alert confirmation button title for editing a scheduled message."
             )
-
+            static let editScheduleNetworkIsRequired = LocalizedStringResource(
+                "You need to be online to edit scheduled messages",
+                comment: "Toast message when editing fails because there is no internet connection."
+            )
             static let forward = LocalizedStringResource(
                 "Forward",
                 comment: "Action title for forwarding given message in the action sheet."

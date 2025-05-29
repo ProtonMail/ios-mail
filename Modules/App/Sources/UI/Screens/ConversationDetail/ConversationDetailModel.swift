@@ -146,10 +146,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .labelAs:
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
-            actionSheets = actionSheets
+            actionSheets =
+                actionSheets
                 .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
-            actionSheets = actionSheets
+            actionSheets =
+                actionSheets
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
         case .star:
             starConversation()
@@ -182,10 +184,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             Task {
                 await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
                     .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-                Dispatcher.dispatchOnMain(.init(block: {
-                    toastStateStore.present(toast: .deleted())
-                    goBack()
-                }))
+                Dispatcher.dispatchOnMain(
+                    .init(block: {
+                        toastStateStore.present(toast: .deleted())
+                        goBack()
+                    }))
             }
         }
     }
@@ -227,10 +230,11 @@ extension ConversationDetailModel {
                 toast = .error(message: error.localizedDescription)
             }
 
-            Dispatcher.dispatchOnMain(.init(block: {
-                toastStateStore.present(toast: toast)
-                goBack()
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: {
+                    toastStateStore.present(toast: toast)
+                    goBack()
+                }))
         }
     }
 
@@ -429,9 +433,11 @@ extension ConversationDetailModel {
 
     private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
         Task {
-            await draftPresenter.handleReplyAction(for: messageId, action: action, onError: { error in
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
-            })
+            await draftPresenter.handleReplyAction(
+                for: messageId, action: action,
+                onError: { error in
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                })
         }
     }
 
@@ -448,7 +454,12 @@ extension ConversationDetailModel {
                 try await self.draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
                 goBack()
             } catch {
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
+                switch error {
+                case .other(let protonError) where protonError == .network:
+                    toastStateStore.present(toast: .information(message: L10n.Action.Send.editScheduleNetworkIsRequired.string))
+                default:
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                }
             }
         }
     }
@@ -458,7 +469,8 @@ extension ConversationDetailModel {
             return
         }
 
-        bottomBarActions = try! await dependencies
+        bottomBarActions =
+            try! await dependencies
             .bottomBarConversationActionsProvider(mailbox, [conversationID])
             .get()
             .visibleBottomBarActions

@@ -42,7 +42,7 @@ struct ScheduleDatePickerConfiguration: DatePickerViewConfiguration {
         Calendar.current.date(byAdding: .day, value: 89, to: rangeStart)!
     }
 
-    let title: LocalizedStringResource = L10n.Composer.send
+    let title: LocalizedStringResource = L10n.ScheduleSend.title
     let selectTitle: LocalizedStringResource = L10n.Composer.send
     let minuteInterval: TimeInterval = 5
 
@@ -58,6 +58,5 @@ struct ScheduleDatePickerConfiguration: DatePickerViewConfiguration {
     func formatDate(_ date: Date) -> String {
         dateFormatter.string(from: date, format: .medium)
     }
-
 
 }

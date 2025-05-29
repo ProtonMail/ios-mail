@@ -19,5 +19,5 @@ import Foundation
 
 public enum SendEvent: Equatable {
     case send
-    case scheduleSend(date: Date)
+    case scheduleSend
 }
