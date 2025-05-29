@@ -36,14 +36,12 @@ import ProtonCoreNetworking
 struct SettingsAPI {
     /// base settings api path
     static let path: String = "/\(Constants.App.API_PREFIXED)/settings"
-
-    static let settingsPath: String = "/settings"
 }
 
 // Mark : get settings -- SettingsResponse
 struct GetUserSettings: Request {
     var path: String {
-        return SettingsAPI.settingsPath
+        return SettingsAPI.path
     }
 }
 

@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
         "state": {
           "branch": null,
-          "revision": "8c2d17cd022d0efdd721279242d8b6c995bd7876",
-          "version": "32.0.6"
+          "revision": "eaadc25b07df32fa6bea3acd489f38bdc1f0bd0b",
+          "version": "32.3.1"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
         "state": {
           "branch": null,
-          "revision": "4589f82132097558d386710b139bfe9c35c64d4a",
-          "version": "8.48.0"
+          "revision": "65b3d2a7608685e8d4a37c68fa2c64f28d0b537e",
+          "version": "8.51.1"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
         "state": {
           "branch": null,
-          "revision": "1be8144023c367c5de701a6313ed29a3a10bf59b",
-          "version": "1.18.3"
+          "revision": "37230a37e83f1b7023be08e1b1a2603fcb1567fb",
+          "version": "1.18.4"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "b4b8042411dc7bbb696300a34a4bf3ba1b7ad19b",
-          "version": "5.3.1"
+          "revision": "3d6871d5b4a5cd519adf233fbb576e0a2af71c17",
+          "version": "5.4.0"
         }
       }
     ]

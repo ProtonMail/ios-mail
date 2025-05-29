@@ -31,14 +31,15 @@ import ProtonCoreServices
 import ProtonCoreTestingToolkitUnitTestsDataModel
 import ProtonCoreTestingToolkitUnitTestsLogin
 import ProtonCoreTestingToolkitUnitTestsLoginUI
+import ProtonCoreUtilities
 
 @testable import ProtonMail
 
 final class PMLoginStubFactory {
-    var makeArgs: (name: String, accountType: AccountType, passwordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool)?
+    var makeArgs: (name: String, passwordRestrictions: PasswordRestrictions, isCloseButton: Bool)?
     var instance: LoginInterfaceMock?
-    lazy var make: (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface = { [weak self] name, accountType, passwordRestrictions, isCloseButton in
-        self?.makeArgs = (name, accountType, passwordRestrictions, isCloseButton)
+    lazy var make: (String, PasswordRestrictions, Bool) -> LoginAndSignupInterface = { [weak self] name, passwordRestrictions, isCloseButton in
+        self?.makeArgs = (name, passwordRestrictions, isCloseButton)
         let login = LoginInterfaceMock()
         self?.instance = login
         return login
