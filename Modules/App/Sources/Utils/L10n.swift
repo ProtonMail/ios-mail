@@ -819,9 +819,9 @@ enum L10n {
                 "Light",
                 comment: "One of the appearance option to set in app settings."
             )
-            static let protection = LocalizedStringResource(
-                "Protection",
-                comment: "Protection setting title in app settings."
+            static let appLock = LocalizedStringResource(
+                "App lock",
+                comment: "App lock setting title in app settings."
             )
             static let combinedContacts = LocalizedStringResource(
                 "Combined contacts",
@@ -856,35 +856,31 @@ enum L10n {
                 comment: "Alternative routing additional info in app settings."
             )
             static let none = LocalizedStringResource(
-                "None",
+                "Don't lock",
                 comment: "App lock option."
             )
             static let faceID = LocalizedStringResource(
-                "Face ID",
+                "Secure with Face ID",
                 comment: "App lock option."
             )
             static let touchID = LocalizedStringResource(
-                "Touch ID",
+                "Secure with Touch ID",
                 comment: "App lock option."
             )
             static let pinCode = LocalizedStringResource(
-                "PIN code",
+                "Secure with PIN",
                 comment: "App lock option."
             )
-            static let protectionSelectionScreenTitle = LocalizedStringResource(
-                "Protection",
-                comment: "App protection selection screen title."
-            )
             static let protectionSelectionListFooterInformation = LocalizedStringResource(
-                "All protection settings will be reset and wiped upon signing out of the app",
+                "All app lock settings, including the PIN, will reset when you sign out of the app",
                 comment: "Protection selection list footer information."
             )
             static let changePINcode = LocalizedStringResource(
-                "Change PIN code",
+                "Change PIN",
                 comment: "Change PIN code title."
             )
             static let repeatPIN = LocalizedStringResource(
-                "Repeat PIN code",
+                "Repeat PIN",
                 comment: "Repeat PIN code title."
             )
             static let repeatedPINValidationError = LocalizedStringResource(
@@ -892,11 +888,11 @@ enum L10n {
                 comment: "Not matching PIN validation error message."
             )
             static let setPINScreenTitle = LocalizedStringResource(
-                "Set PIN code",
+                "Set PIN",
                 comment: "Set PIN code screen title."
             )
             static let setPINInputTitle = LocalizedStringResource(
-                "New PIN code",
+                "New PIN",
                 comment: "Set PIN code screen PIN input title."
             )
             static let setPINInformation = LocalizedStringResource(
@@ -904,19 +900,19 @@ enum L10n {
                 comment: "Information displayed under the PIN input."
             )
             static let verifyPINInputTitle = LocalizedStringResource(
-                "Old PIN code",
+                "Current PIN",
                 comment: "Verify PIN code screen PIN input title."
             )
-            static let disablePINScreenTitle = LocalizedStringResource(
-                "Disable PIN code",
-                comment: "Disable PIN code screen title."
+            static let verifyPINScreenTitle = LocalizedStringResource(
+                "Confirm PIN",
+                comment: "Verify PIN code screen title."
             )
             static let autoLock = LocalizedStringResource(
-                "Auto-Lock",
+                "Auto-lock",
                 comment: "Auto lock button and screen title."
             )
-            static let autoLockAlways = LocalizedStringResource(
-                "Always",
+            static let immediately = LocalizedStringResource(
+                "Immediately",
                 comment: "Auto option."
             )
             static let autoLockNever = LocalizedStringResource(
@@ -924,7 +920,7 @@ enum L10n {
                 comment: "Auto option."
             )
             static func autoLock(minutes: UInt8) -> LocalizedStringResource {
-                .init("\(minutes) minutes", comment: "NumberAuto lock option.")
+                .init("After \(minutes) minutes", comment: "Auto lock option.")
             }
         }
 

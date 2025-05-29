@@ -62,9 +62,9 @@ class PINStateStore: StateStore {
                 return
             }
             switch state.type {
-            case .set:
-                router.go(to: .pin(type: .confirm(pin: state.pin)))
-            case .confirm(let pin):
+            case .set(let reason):
+                router.go(to: .pin(type: .confirm(pin: state.pin, reason: reason)))
+            case .confirm(let pin, _):
                 await confirm(pin: pin)
             case .verify(let reason):
                 await verifyPIN(reason: reason)
@@ -84,7 +84,7 @@ class PINStateStore: StateStore {
     private func verifyPIN(reason: PINVerificationReason) async {
         switch reason {
         case .changePIN:
-            router.go(to: .pin(type: .set))
+            router.go(to: .pin(type: .set(reason: .changePIN)))
         case .disablePIN:
             do {
                 try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()

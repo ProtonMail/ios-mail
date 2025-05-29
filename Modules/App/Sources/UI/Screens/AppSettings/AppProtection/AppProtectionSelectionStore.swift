@@ -123,10 +123,10 @@ class AppProtectionSelectionStore: StateStore {
     private func setPINProtection() async {
         switch state.currentProtection {
         case .none:
-            state = state.copy(\.presentedPINScreen, to: .set)
+            state = state.copy(\.presentedPINScreen, to: .set(reason: .setNewPIN))
         case .biometrics:
             if await biometricAuthenticator.authenticate().isSuccess {
-                state = state.copy(\.presentedPINScreen, to: .set)
+                state = state.copy(\.presentedPINScreen, to: .set(reason: .setNewPIN))
             }
         case .pin:
             break

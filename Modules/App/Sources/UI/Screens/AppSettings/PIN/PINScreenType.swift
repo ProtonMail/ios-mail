@@ -18,9 +18,23 @@
 import Foundation
 import InboxCore
 
+enum PINConfigurationReason {
+    case setNewPIN
+    case changePIN
+
+    var screenTitle: LocalizedStringResource {
+        switch self {
+        case .setNewPIN:
+            L10n.Settings.App.setPINScreenTitle
+        case .changePIN:
+            L10n.Settings.App.changePINcode
+        }
+    }
+}
+
 enum PINScreenType: Hashable, Identifiable {
-    case set
-    case confirm(pin: PIN)
+    case set(reason: PINConfigurationReason)
+    case confirm(pin: PIN, reason: PINConfigurationReason)
     case verify(reason: PINVerificationReason)
 
     struct Configuration {
@@ -31,24 +45,24 @@ enum PINScreenType: Hashable, Identifiable {
 
     var configuration: Configuration {
         switch self {
-        case .set:
+        case .set(let reason):
             .init(
                 pinInputTitle: L10n.Settings.App.setPINInputTitle,
-                screenTitle: L10n.Settings.App.setPINScreenTitle,
+                screenTitle: reason.screenTitle,
                 trailingButtonTitle: L10n.Common.next
             )
-        case .confirm:
+        case .confirm(_, let reason):
             .init(
                 pinInputTitle: L10n.Settings.App.repeatPIN,
-                screenTitle: L10n.Settings.App.repeatPIN,
+                screenTitle: reason.screenTitle,
                 trailingButtonTitle: CommonL10n.confirm
             )
         case .verify(let reason):
             switch reason {
             case .changePIN:
-                .verify(screenTitle: L10n.Settings.App.changePINcode, trailingButtonTitle: L10n.Common.next)
+                .verify(trailingButtonTitle: L10n.Common.next)
             case .disablePIN, .changeToBiometry:
-                .verify(screenTitle: L10n.Settings.App.disablePINScreenTitle, trailingButtonTitle: CommonL10n.confirm)
+                .verify(trailingButtonTitle: CommonL10n.confirm)
             }
         }
     }
@@ -69,10 +83,10 @@ enum PINScreenType: Hashable, Identifiable {
 
 private extension PINScreenType.Configuration {
 
-    static func verify(screenTitle: LocalizedStringResource, trailingButtonTitle: LocalizedStringResource) -> Self {
+    static func verify(trailingButtonTitle: LocalizedStringResource) -> Self {
         .init(
             pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
-            screenTitle: screenTitle,
+            screenTitle: L10n.Settings.App.verifyPINScreenTitle,
             trailingButtonTitle: trailingButtonTitle
         )
     }

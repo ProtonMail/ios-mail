@@ -1654,6 +1654,7 @@
     },
     "%u minutes" : {
       "comment" : "NumberAuto lock option.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -2072,6 +2073,32 @@
     "Advanced" : {
       "comment" : "Advanced section title in app settings."
     },
+    "After %u minutes" : {
+      "comment" : "Auto lock option.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "After %u minute"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "After %u minutes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "All app lock settings, including the PIN, will reset when you sign out of the app" : {
+      "comment" : "Protection selection list footer information."
+    },
     "All Drafts" : {
       "comment" : "Menu title of all drafts in the sidebar.",
       "localizations" : {
@@ -2456,9 +2483,6 @@
     },
     "All messages have been sent" : {
       "comment" : "Outbox empty state message."
-    },
-    "All protection settings will be reset and wiped upon signing out of the app" : {
-      "comment" : "Protection selection list footer information."
     },
     "All Sent" : {
       "comment" : "Menu title of all sent emails in the sidebar.",
@@ -2848,14 +2872,14 @@
     "Alternative routing" : {
       "comment" : "Alternative routing setting title in app settings."
     },
-    "Always" : {
-      "comment" : "Auto option."
-    },
     "Any information you’ve entered will be lost." : {
       "comment" : "Report problem dismiss confirmation alert message."
     },
     "App customisations" : {
       "comment" : "Title of the App settings screen."
+    },
+    "App lock" : {
+      "comment" : "App lock setting title in app settings."
     },
     "Appearance" : {
       "comment" : "Appearance setting title in app settings."
@@ -3686,7 +3710,7 @@
     "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
     },
-    "Auto-Lock" : {
+    "Auto-lock" : {
       "comment" : "Auto lock button and screen title."
     },
     "Bcc" : {
@@ -4456,7 +4480,7 @@
         }
       }
     },
-    "Change PIN code" : {
+    "Change PIN" : {
       "comment" : "Change PIN code title."
     },
     "Combined contacts" : {
@@ -4658,6 +4682,9 @@
     },
     "Confirm phishing report" : {
       "comment" : "Title of alert displayed after report phishing action tap."
+    },
+    "Confirm PIN" : {
+      "comment" : "Verify PIN code screen title."
     },
     "Contacts" : {
       "comment" : "Button in the sidebar menu that redirects a user to the contacts screen.",
@@ -5804,6 +5831,9 @@
           }
         }
       }
+    },
+    "Current PIN" : {
+      "comment" : "Verify PIN code screen PIN input title."
     },
     "Dark" : {
       "comment" : "One of the appearance option to set in app settings."
@@ -7007,9 +7037,6 @@
     "Device" : {
       "comment" : "Device section title in app settings. The section contains configuration like notifications, language, appearance. (App settings)"
     },
-    "Disable PIN code" : {
-      "comment" : "Disable PIN code screen title."
-    },
     "Dismiss" : {
       "comment" : "Alert dismiss button"
     },
@@ -7018,6 +7045,9 @@
     },
     "Display embedded images?" : {
       "comment" : "Banner asking if the user wants to display images embedded in the email."
+    },
+    "Don't lock" : {
+      "comment" : "App lock option."
     },
     "Don’t miss an email" : {
       "comment" : "Title of the authorization prompt"
@@ -7634,9 +7664,6 @@
         }
       }
     },
-    "Face ID" : {
-      "comment" : "App lock option."
-    },
     "Failed to Send" : {
       "comment" : "Title of a tag displayed for each message that failed to send."
     },
@@ -8215,6 +8242,9 @@
           }
         }
       }
+    },
+    "Immediately" : {
+      "comment" : "Auto option."
     },
     "Inbox" : {
       "comment" : "Menu title of all received emails in the sidebar.",
@@ -11362,7 +11392,7 @@
     "Never" : {
       "comment" : "Auto option."
     },
-    "New PIN code" : {
+    "New PIN" : {
       "comment" : "Set PIN code screen PIN input title."
     },
     "Next" : {
@@ -11941,9 +11971,6 @@
         }
       }
     },
-    "None" : {
-      "comment" : "App lock option."
-    },
     "Not spam" : {
       "comment" : "Action title for moving a message out of `Spam` to `Inbox`\nAction title for moving message/conversation from the `Spam` to the `Inbox` folder in the action sheet.",
       "localizations" : {
@@ -12337,9 +12364,6 @@
     },
     "Ok" : {
       "comment" : "`Ok` action title."
-    },
-    "Old PIN code" : {
-      "comment" : "Verify PIN code screen PIN input title."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
@@ -12929,9 +12953,6 @@
     "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
       "comment" : "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
-    "PIN code" : {
-      "comment" : "App lock option."
-    },
     "PIN Code" : {
       "comment" : "PIN input placeholder."
     },
@@ -13520,16 +13541,13 @@
     "Problem report sent" : {
       "comment" : "Toast displayed after the report was successfully sent"
     },
-    "Protection" : {
-      "comment" : "App protection selection screen title.\nProtection setting title in app settings."
-    },
     "Provided value is not a valid PIN" : {
       "comment" : "Error message when setting up PIN"
     },
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."
     },
-    "Repeat PIN code" : {
+    "Repeat PIN" : {
       "comment" : "Repeat PIN code title."
     },
     "Reply" : {
@@ -14687,6 +14705,15 @@
         }
       }
     },
+    "Secure with Face ID" : {
+      "comment" : "App lock option."
+    },
+    "Secure with PIN" : {
+      "comment" : "App lock option."
+    },
+    "Secure with Touch ID" : {
+      "comment" : "App lock option."
+    },
     "Seems like you are all caught up for now" : {
       "comment" : "Mailbox empty state message.",
       "localizations" : {
@@ -15269,7 +15296,7 @@
         }
       }
     },
-    "Set PIN code" : {
+    "Set PIN" : {
       "comment" : "Set PIN code screen title."
     },
     "Settings" : {
@@ -17056,9 +17083,6 @@
           }
         }
       }
-    },
-    "Touch ID" : {
-      "comment" : "App lock option."
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",
