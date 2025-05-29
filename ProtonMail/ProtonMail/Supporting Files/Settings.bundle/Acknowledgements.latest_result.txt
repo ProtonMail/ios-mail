@@ -106,19 +106,19 @@ name: lottie-ios, nameSpecified: Lottie, owner: airbnb, version: 4.3.3, source: 
 
 name: OHHTTPStubs, nameSpecified: OHHTTPStubs, owner: AliSoftware, version: 9.1.0, source: https://github.com/AliSoftware/OHHTTPStubs
 
-name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 32.0.6, source: https://github.com/ProtonMail/protoncore_ios
+name: protoncore_ios, nameSpecified: ProtonCore, owner: ProtonMail, version: 32.3.1, source: https://github.com/ProtonMail/protoncore_ios
 
 name: Reachability.swift, nameSpecified: Reachability, owner: ashleymills, version: 5.2.4, source: https://github.com/ashleymills/Reachability.swift
 
 name: SDWebImage, nameSpecified: SDWebImage, owner: SDWebImage, version: 5.15.8, source: https://github.com/SDWebImage/SDWebImage
 
-name: sentry-cocoa, nameSpecified: Sentry, owner: getsentry, version: 8.48.0, source: https://github.com/getsentry/sentry-cocoa
+name: sentry-cocoa, nameSpecified: Sentry, owner: getsentry, version: 8.51.1, source: https://github.com/getsentry/sentry-cocoa
 
 name: swift-css-parser, nameSpecified: swift-css-parser, owner: stackotter, version: 0.1.2, source: https://github.com/stackotter/swift-css-parser
 
 name: swift-custom-dump, nameSpecified: swift-custom-dump, owner: pointfreeco, version: 1.3.3, source: https://github.com/pointfreeco/swift-custom-dump
 
-name: swift-snapshot-testing, nameSpecified: swift-snapshot-testing, owner: pointfreeco, version: 1.18.3, source: https://github.com/pointfreeco/swift-snapshot-testing
+name: swift-snapshot-testing, nameSpecified: swift-snapshot-testing, owner: pointfreeco, version: 1.18.4, source: https://github.com/pointfreeco/swift-snapshot-testing
 
 name: swift-syntax, nameSpecified: swift-syntax, owner: swiftlang, version: 601.0.1, source: https://github.com/swiftlang/swift-syntax
 
@@ -128,7 +128,7 @@ name: TrustKit, nameSpecified: TrustKit, owner: ProtonMail, version: 1.0.3, sour
 
 name: xctest-dynamic-overlay, nameSpecified: xctest-dynamic-overlay, owner: pointfreeco, version: 1.5.2, source: https://github.com/pointfreeco/xctest-dynamic-overlay
 
-name: Yams, nameSpecified: Yams, owner: jpsim, version: 5.3.1, source: https://github.com/jpsim/Yams
+name: Yams, nameSpecified: Yams, owner: jpsim, version: 5.4.0, source: https://github.com/jpsim/Yams
 
 add-version-numbers: false
 

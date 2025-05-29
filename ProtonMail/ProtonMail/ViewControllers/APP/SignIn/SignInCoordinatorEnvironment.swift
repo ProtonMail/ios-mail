@@ -23,20 +23,23 @@ import PromiseKit
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreDoh
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCoreUtilities
 import UIKit
 
 struct SignInCoordinatorEnvironment {
     typealias Dependencies = AuthManagerForUnauthorizedAPIService.Dependencies
+    & HasFeatureFlagsRepository
     & HasSignInManager
     & HasUnlockManager
     & HasUsersManager
 
     typealias LoginCreationClosure =
-        (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
+        (String, PasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let apiService: APIService
     let userDefaults: UserDefaults
@@ -74,6 +77,8 @@ extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
     static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
         let apiService = PMAPIService.unauthorized(dependencies: dependencies)
+        let minimumAccountTypes = minimumAccountTypes(featureFlagsRepository: dependencies.featureFlagsRepository)
+
         return .init(apiService: apiService,
                      userDefaults: dependencies.userDefaults,
                      mailboxPassword: dependencies.signInManager
@@ -84,7 +89,7 @@ extension SignInCoordinatorEnvironment {
                          .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: dependencies.unlockManager
                          .unlockIfRememberedCredentials(requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, passwordRestrictions, isCloseButtonAvailable in
+                     loginCreationClosure: { appName, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
                              separateDomainsButton: true,
                              passwordRestrictions: passwordRestrictions,
@@ -108,7 +113,7 @@ extension SignInCoordinatorEnvironment {
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,
                                                apiService: apiService,
-                                               minimumAccountType: minimumAccountType,
+                                               minimumAccountTypes: minimumAccountTypes,
                                                isCloseButtonAvailable: isCloseButtonAvailable,
                                                paymentsAvailability: payment,
                                                signupAvailability: signup)
@@ -120,5 +125,12 @@ extension SignInCoordinatorEnvironment {
             apiService.setSessionUID(uid: "")
             return dependencies.signInManager.saveLoginData(loginData: $0)
         })
+    }
+
+    private static func minimumAccountTypes(featureFlagsRepository: FeatureFlagsRepository) -> AccountTypes {
+        .init(
+            login: featureFlagsRepository.isEnabled(MailFeatureFlag.byoeLogin) ? .external : .internal,
+            signup: .internal
+        )
     }
 }
