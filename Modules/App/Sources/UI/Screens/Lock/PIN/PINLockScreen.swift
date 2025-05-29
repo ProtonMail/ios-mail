@@ -77,7 +77,6 @@ struct PINLockScreen: View {
             .onAppear {
                 isFocused = true
             }
-            .onChange(of: isFocused) { _, _ in isFocused = true }
             .onChange(of: error) { _, description in
                 if let description {
                     store.handle(action: .error(description))

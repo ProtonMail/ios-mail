@@ -524,7 +524,7 @@ extension ComposerModel {
         if let date {
             AppLogger.log(message: "scheduling message", category: .composer)
             let result = await draft.schedule(timestamp: UInt64(date.timeIntervalSince1970))
-            return (result, .scheduleSend(date: date))
+            return (result, .scheduleSend)
         } else {
             AppLogger.log(message: "sending message", category: .composer)
             let result = await draft.send()

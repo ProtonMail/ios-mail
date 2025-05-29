@@ -20,6 +20,7 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
+@MainActor
 struct DraftPresenter {
     private let draftToPresentSubject = PassthroughSubject<DraftToPresent, Never>()
     private let userSession: MailUserSession
@@ -43,19 +44,16 @@ struct DraftPresenter {
         self.undoScheduleSendProvider = undoScheduleSendProvider
     }
 
-    @MainActor
     func openNewDraft(onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open new draft", category: .composer)
         await publishDraftToPresent(createMode: .empty, onError: onError)
     }
 
-    @MainActor
     func openDraft(withId messageId: ID, lastScheduledTime: UInt64? = nil) {
         AppLogger.log(message: "open existing draft", category: .composer)
         draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
     }
 
-    @MainActor
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:
@@ -67,7 +65,6 @@ struct DraftPresenter {
         }
     }
 
-    @MainActor
     func undoSentMessageAndOpenDraft(for messageId: ID) async throws(DraftUndoSendError) {
         if let error = await undoSendProvider.undoSend(messageId) {
             throw error
@@ -75,7 +72,6 @@ struct DraftPresenter {
         openDraft(withId: messageId)
     }
 
-    @MainActor
     func cancelScheduledMessageAndOpenDraft(for messageId: ID) async throws(DraftCancelScheduleSendError) {
         let result = await undoScheduleSendProvider.undoScheduleSend(messageId)
         let lastScheduledTime = try result.get().lastScheduledTime
