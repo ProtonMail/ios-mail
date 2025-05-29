@@ -22,10 +22,12 @@ public enum CommonL10n {
     public static let cancel = LocalizedStringResource("Cancel", bundle: .module)
     public static let close = LocalizedStringResource("Close", bundle: .module)
     public static let confirm = LocalizedStringResource("Confirm", bundle: .module)
+    public static let date = LocalizedStringResource("Date", bundle: .module)
     public static let delete = LocalizedStringResource("Delete", bundle: .module)
     public static let done = LocalizedStringResource("Done", bundle: .module)
     public static let on = LocalizedStringResource("On", bundle: .module, comment: "Indicates that a feature is enabled and actively functioning.")
     public static let off = LocalizedStringResource("Off", bundle: .module, comment: "Indicates that a feature is disabled and not functioning.")
+    public static let time = LocalizedStringResource("Time", bundle: .module)
 }
 
 public extension LocalizedStringResource.BundleDescription {

@@ -37,7 +37,7 @@ struct FormSecureTextInput: View {
                 ToggleSecureField(text: $text, isSecure: $secureEntry)
                     .frame(height: 22)
                 Button(action: { secureEntry.toggle() }) {
-                    Image(systemName: secureEntry ? DS.SFSymbols.eye : DS.SFSymbols.eyeSlash)
+                    Image(symbol: secureEntry ? .eye : .eyeSlash)
                         .foregroundStyle(DS.Color.Text.hint)
                 }
             }

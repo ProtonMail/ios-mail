@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 extension ContactItem {
 
-    static func testData(id: UInt64) -> Self {
+    static func testData(id: Id) -> Self {
         .init(
             id: id,
             name: "__NOT_USED__",
@@ -35,7 +35,7 @@ extension ContactItem {
             name: "0 VIP",
             avatarInformation: .init(text: "0V", color: "#33FF57"),
             emails: [
-                .init(id: 1_001, email: "vip@proton.me"),
+                .init(id: 1_001, email: "vip@proton.me")
             ]
         )
     }
@@ -47,7 +47,7 @@ extension ContactItem {
             avatarInformation: .init(text: "AA", color: "#FF5733"),
             emails: [
                 .init(id: 1, email: "alice.adams@proton.me"),
-                .init(id: 2, email: "alice.adams@gmail.com")
+                .init(id: 2, email: "alice.adams@gmail.com"),
             ]
         )
     }
@@ -59,7 +59,7 @@ extension ContactItem {
             avatarInformation: .init(text: "AA", color: "#33FF57"),
             emails: [
                 .init(id: 8, email: "andrew.allen@protonmail.com"),
-                .init(id: 9, email: "andrew.allen@yahoo.com")
+                .init(id: 9, email: "andrew.allen@yahoo.com"),
             ]
         )
     }
@@ -71,7 +71,7 @@ extension ContactItem {
             avatarInformation: .init(text: "AA", color: "#3357FF"),
             emails: [
                 .init(id: 11, email: "amanda.archer@gmail.com"),
-                .init(id: 12, email: "amanda.archer@pm.me")
+                .init(id: 12, email: "amanda.archer@pm.me"),
             ]
         )
     }
@@ -83,7 +83,7 @@ extension ContactItem {
             avatarInformation: .init(text: "AA", color: "#FF5733"),
             emails: [
                 .init(id: 13, email: "alex.abrams@gmail.com"),
-                .init(id: 14, email: "alex.andrews@pm.me")
+                .init(id: 14, email: "alex.andrews@pm.me"),
             ]
         )
     }
@@ -115,7 +115,7 @@ extension ContactItem {
             avatarInformation: .init(text: "EE", color: "#33A1FF"),
             emails: [
                 .init(id: 21, email: "elena.erickson@example.com"),
-                .init(id: 22, email: "elena.e@yahoo.com")
+                .init(id: 22, email: "elena.e@yahoo.com"),
             ]
         )
     }
@@ -127,7 +127,7 @@ extension ContactItem {
             avatarInformation: .init(text: "EA", color: "#FF5733"),
             emails: [
                 .init(id: 11, email: "evan.andrage@outlook.com"),
-                .init(id: 12, email: "e.andrage@gmail.com")
+                .init(id: 12, email: "e.andrage@gmail.com"),
             ]
         )
     }

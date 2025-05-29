@@ -64,7 +64,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
                 onTap(.init(action: action, itemID: mailboxItemId, isItemRead: isItemRead, isItemStarred: isItemStarred))
                 triggerFeedback.toggle()
             } label: {
-                Image(action.icon(isRead: isItemRead, isStarred: isItemStarred))
+                action.icon(isRead: isItemRead, isStarred: isItemStarred)
             }
         }
         .tint(action.color)

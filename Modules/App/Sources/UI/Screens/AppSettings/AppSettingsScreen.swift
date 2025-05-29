@@ -52,14 +52,14 @@ struct AppSettingsScreen: View {
                             VStack(spacing: DS.Spacing.moderatelyLarge) {
                                 FormBigButton(
                                     title: L10n.Settings.App.notifications,
-                                    icon: DS.SFSymbols.arrowUpRightSquare,
+                                    symbol: .arrowUpRightSquare,
                                     value: store.state.areNotificationsEnabledHumanReadable.string,
                                     action: { store.handle(action: .notificationButtonTapped) }
                                 )
                                 .roundedRectangleStyle()
                                 FormBigButton(
                                     title: L10n.Settings.App.language,
-                                    icon: DS.SFSymbols.arrowUpRightSquare,
+                                    symbol: .arrowUpRightSquare,
                                     value: store.state.appLanguage,
                                     action: { store.handle(action: .languageButtonTapped) }
                                 )
@@ -67,7 +67,7 @@ struct AppSettingsScreen: View {
                                 appearanceButton
                                 FormBigButton(
                                     title: L10n.Settings.App.protection,
-                                    icon: DS.SFSymbols.chevronRight,
+                                    symbol: .chevronRight,
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }
                                 )
@@ -135,7 +135,7 @@ struct AppSettingsScreen: View {
                         HStack {
                             Text(appearance.humanReadable)
                             if appearance == store.state.storedAppSettings.appearance {
-                                Image(systemName: DS.SFSymbols.checkmark)
+                                Image(symbol: .checkmark)
                             }
                         }
                     }
@@ -144,7 +144,7 @@ struct AppSettingsScreen: View {
             label: {
                 FormBigButton(
                     title: L10n.Settings.App.appearance,
-                    icon: DS.SFSymbols.chevronUpChevronDown,
+                    symbol: .chevronUpChevronDown,
                     value: store.state.storedAppSettings.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
                 )

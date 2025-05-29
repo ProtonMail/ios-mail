@@ -34,16 +34,15 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Image(DS.Icon.icChevronTinyLeft)
+                    Button(
+                        action: {
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        label: {
+                            Image(symbol: .chevronLeft)
                                 .foregroundStyle(DS.Color.Icon.norm)
                         }
-                        .padding(10)
-                    })
+                    )
                     .square(size: 40)
                 }
 

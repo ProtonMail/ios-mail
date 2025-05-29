@@ -117,21 +117,20 @@ struct MessageDetailsView: View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
-                image: uiModel.isSingleRecipient ? DS.Icon.icReply : DS.Icon.icReplyAll
+                image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
             headerActionButton(
                 action: { onEvent(.onMoreActions) },
-                image: DS.Icon.icThreeDotsHorizontal
+                image: DS.Icon.icThreeDotsHorizontal.image
             )
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)
     }
 
-    private func headerActionButton(action: @escaping () -> Void, image: ImageResource) -> some View {
+    private func headerActionButton(action: @escaping () -> Void, image: Image) -> some View {
         Button(action: action) {
-            Image(image)
-                .resizable()
+            image
                 .square(size: 20)
         }
         .square(size: 36)
@@ -246,7 +245,7 @@ struct MessageDetailsView: View {
                 CapsuleView(
                     text: model.name,
                     color: DS.Color.Background.secondary,
-                    icon: Image(model.icon),
+                    icon: model.icon,
                     iconColor: model.iconColor,
                     style: .attachment
                 )
@@ -285,7 +284,7 @@ struct MessageDetailsView: View {
         CapsuleView(
             text: L10n.Mailbox.SystemFolder.starred,
             color: DS.Color.Background.secondary,
-            icon: Image(DS.Icon.icStarFilled),
+            icon: Image(symbol: .starFilled),
             iconColor: DS.Color.Star.selected,
             style: .attachment
         )
@@ -357,7 +356,7 @@ enum MessageDetail {
 
     struct Location: Equatable {
         let name: LocalizedStringResource
-        let icon: ImageResource
+        let icon: Image
         let iconColor: Color?
     }
 

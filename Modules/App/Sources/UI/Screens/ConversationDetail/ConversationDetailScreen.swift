@@ -79,10 +79,13 @@ struct ConversationDetailScreen: View {
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .conversationTopToolbar(title: topToolbarTitle, trailingButton: {
-                navigationTrailingButton
-                    .square(size: 40)
-            })
+            .conversationTopToolbar(
+                title: topToolbarTitle,
+                trailingButton: {
+                    navigationTrailingButton
+                        .square(size: 40)
+                }
+            )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .ignoresSafeArea(.all, edges: .bottom)
@@ -111,7 +114,7 @@ struct ConversationDetailScreen: View {
     private var attributedNumberOfMessages: AttributedString {
         var text = AttributedString(localized: L10n.messages(count: model.state.messagesCount))
         text.font = .caption
-        text.foregroundColor = DS.Color.Text.weak
+        text.foregroundColor = DS.Color.Text.hint
         return text
     }
 
@@ -128,12 +131,14 @@ struct ConversationDetailScreen: View {
     @ViewBuilder
     private var navigationTrailingButton: some View {
         if !model.areActionsDisabled {
-            Button(action: {
-                model.toggleStarState()
-            }, label: {
-                Image(model.isStarred ? DS.Icon.icStarFilled : DS.Icon.icStar)
-                    .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-            })
+            Button(
+                action: {
+                    model.toggleStarState()
+                },
+                label: {
+                    Image(symbol: model.isStarred ? .starFilled : .star)
+                        .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+                })
         } else {
             Color.clear
         }
@@ -221,10 +226,11 @@ private extension ConversationDetailModel.State {
 #Preview("From Notification") {
     NavigationView {
         ConversationDetailScreen(
-            seed: .pushNotification(.init(
-                remoteId: .init(value: ""),
-                subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
-            )),
+            seed: .pushNotification(
+                .init(
+                    remoteId: .init(value: ""),
+                    subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
+                )),
             draftPresenter: .dummy(),
             navigationPath: .constant(.init())
         )

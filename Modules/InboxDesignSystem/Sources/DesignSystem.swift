@@ -24,5 +24,4 @@ extension DS {
     public enum Spacing: Sendable {}
     public enum Radius: Sendable {}
     public enum Shadows: Sendable {}
-    public enum SFSymbols: Sendable {}
 }

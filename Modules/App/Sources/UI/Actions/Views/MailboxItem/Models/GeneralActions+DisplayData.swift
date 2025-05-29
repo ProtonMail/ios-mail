@@ -24,19 +24,19 @@ extension GeneralActions {
     var displayData: ActionDisplayData {
         switch self {
         case .viewMessageInLightMode:
-            .init(title: L10n.Action.renderInLightMode, image: DS.Icon.icSun)
+            .init(title: L10n.Action.renderInLightMode, imageResource: DS.Icon.icSun)
         case .viewMessageInDarkMode:
-            .init(title: L10n.Action.renderInDarkMode, image: DS.Icon.icMoon)
+            .init(title: L10n.Action.renderInDarkMode, imageResource: DS.Icon.icMoon)
         case .saveAsPdf:
-            .init(title: L10n.Action.saveAsPDF, image: DS.Icon.icFilePDF)
+            .init(title: L10n.Action.saveAsPDF, imageResource: DS.Icon.icFilePDF)
         case .print:
-            .init(title: L10n.Action.print, image: DS.Icon.icPrinter)
+            .init(title: L10n.Action.print, imageResource: DS.Icon.icPrinter)
         case .viewHeaders:
-            .init(title: L10n.Action.viewHeaders, image: DS.Icon.icFileLines)
+            .init(title: L10n.Action.viewHeaders, imageResource: DS.Icon.icFileLines)
         case .viewHtml:
-            .init(title: L10n.Action.viewHTML, image: DS.Icon.icCode)
+            .init(title: L10n.Action.viewHTML, imageResource: DS.Icon.icCode)
         case .reportPhishing:
-            .init(title: L10n.Action.reportPhishing, image: DS.Icon.icHook)
+            .init(title: L10n.Action.reportPhishing, imageResource: DS.Icon.icHook)
         }
     }
 

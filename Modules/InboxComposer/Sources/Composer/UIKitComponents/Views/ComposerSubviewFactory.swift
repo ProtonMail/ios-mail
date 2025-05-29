@@ -34,7 +34,7 @@ enum ComposerSubviewFactory {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        view.textColor = DS.Color.Text.hint.toDynamicUIColor
+        view.textColor = DS.Color.Text.weak.toDynamicUIColor
         return view
     }
 

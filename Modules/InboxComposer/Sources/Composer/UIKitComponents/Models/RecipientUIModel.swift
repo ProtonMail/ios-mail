@@ -72,7 +72,7 @@ struct RecipientUIModel: Equatable {
 
     var borderColor: UIColor {
         guard isValid else { return DS.Color.Notification.error.toDynamicUIColor }
-        return DS.Color.Border.norm.toDynamicUIColor
+        return DS.Color.Border.strong.toDynamicUIColor
     }
 }
 

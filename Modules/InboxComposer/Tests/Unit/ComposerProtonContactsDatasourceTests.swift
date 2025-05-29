@@ -17,7 +17,7 @@
 
 import Combine
 @testable import InboxComposer
-import InboxContacts
+@testable import InboxContacts
 import proton_app_uniffi
 import struct SwiftUI.Color
 import XCTest
@@ -126,7 +126,7 @@ private extension Array where Element == ContactSuggestion {
                 kind: .contactGroup([
                     .init(id: 12, email: "corp.team@example.com"),
                     .init(id: 13, email: "corp.team@protonmail.com"),
-                    .init(id: 14, email: "corporate@proton.me")
+                    .init(id: 14, email: "corporate@proton.me"),
                 ])
             ),
             .init(
@@ -145,14 +145,6 @@ private extension MailUserSession {
     static func empty() -> MailUserSession {
         MailUserSession(noPointer: .init())
     }
-}
-
-private extension ContactEmailItem {
-
-    init(id: UInt64, email: String) {
-        self.init(id: Id(value: id), email: email, isProton: false, lastUsedTime: 0)
-    }
-
 }
 
 private class ContactSuggestionsStub: ContactSuggestions {

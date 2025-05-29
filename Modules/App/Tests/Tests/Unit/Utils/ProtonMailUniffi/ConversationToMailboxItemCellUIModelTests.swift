@@ -35,7 +35,7 @@ final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
     func testToMailboxItemCellUIModel_whenShowLocationIsTrue_itReturnsTheLocationIcon() {
         let conversation = Conversation.testData()
         let result = conversation.toMailboxItemCellUIModel(selectedIds: [], showLocation: true)
-        XCTAssertEqual(result.locationIcon, DS.Icon.icInbox)
+        XCTAssertEqual(result.locationIcon, DS.Icon.icInbox.image)
     }
 
     func testToMailboxItemCellUIModel_whenShowLocationIsFalse_itReturnsNilForLocationIcon() {

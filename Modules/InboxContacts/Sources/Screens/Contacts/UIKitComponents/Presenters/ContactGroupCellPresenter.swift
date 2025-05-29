@@ -22,8 +22,8 @@ enum ContactGroupCellPresenter {
     static func present(item: ContactGroupItem, in cell: ContactGroupCell) {
         cell.labelsView.titleLabel.text = item.name
 
-        cell.labelsView.subtitleLabel.text = L10n.Contacts.groupSubtitle(membersCount: item.contacts.count).string
-        cell.labelsView.subtitleLabel.isHidden = item.contacts.isEmpty
+        cell.labelsView.subtitleLabel.text = L10n.Contacts.groupSubtitle(membersCount: item.contactEmails.count).string
+        cell.labelsView.subtitleLabel.isHidden = item.contactEmails.isEmpty
 
         cell.iconBackgroundView.backgroundColor = UIColor(hex: item.avatarColor)
     }

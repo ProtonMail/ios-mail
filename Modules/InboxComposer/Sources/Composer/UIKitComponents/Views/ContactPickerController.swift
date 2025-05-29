@@ -50,6 +50,7 @@ final class ContactPickerController: UIViewController {
         super.viewDidLoad()
         setUpUI()
         setUpConstraints()
+
     }
 
     private func setUpUI() {
@@ -67,12 +68,14 @@ final class ContactPickerController: UIViewController {
     private func setUpConstraints() {
         view.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
+
         NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.moderatelyLarge),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DS.Spacing.large),
             label.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
 
-            textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
-            textField.topAnchor.constraint(equalTo: view.topAnchor, constant: DS.Spacing.standard),
+            textField.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.mediumLight),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
             textField.heightAnchor.constraint(equalToConstant: 20),
 
@@ -111,12 +114,14 @@ final class ContactPickerController: UIViewController {
         guard let composerRecipients = recipientsFieldState?.recipients.map(\.composerRecipient) else { return false }
         switch contact.type {
         case .single:
-            return !composerRecipients
+            return
+                !composerRecipients
                 .allSingleRecipients()
                 .filter { $0.address == contact.singleContact?.email }
                 .isEmpty
         case .group:
-            return !composerRecipients
+            return
+                !composerRecipients
                 .allGroupRecipients()
                 .filter { $0.displayName == contact.groupContact?.name }
                 .isEmpty

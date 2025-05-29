@@ -18,6 +18,11 @@
 import SwiftUI
 
 struct MailboxActionBarActionDisplayData {
-    let icon: ImageResource
+    let icon: Image
     let name: LocalizedStringResource?
+
+    init(icon: Image, name: LocalizedStringResource?) {
+        self.icon = icon
+        self.name = name
+    }
 }

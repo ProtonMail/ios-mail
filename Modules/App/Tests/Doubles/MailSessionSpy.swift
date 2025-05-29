@@ -170,6 +170,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func newSignupFlow() async -> MailSessionNewSignupFlowResult {
+        fatalError(#function)
+    }
+
     func pauseWork() {
         fatalError(#function)
     }
@@ -222,6 +226,10 @@ final class MailSessionSpy: MailSessionProtocol {
         durationSeconds: UInt64,
         callback: any BackgroundExecutionCallback
     ) -> MailSessionStartBackgroundExecutionWithDurationResult {
+        fatalError(#function)
+    }
+
+    func toUserContext(ffiFlow: LoginFlow) async -> MailSessionToUserContextResult {
         fatalError(#function)
     }
 

@@ -105,7 +105,7 @@ struct ExpandedMessageCell: View {
                         }
                     )
                     .padding(.top, DS.Spacing.moderatelyLarge)
-                    .padding(.bottom, DS.Spacing.large)
+                    .padding(.bottom, DS.Spacing.huge)
                 }
             }
             .overlay { borderOnTheSides(show: isFirstCell) }

@@ -75,7 +75,7 @@ struct AppProtectionSelectionScreen: View {
                         FormSection {
                             FormBigButton(
                                 title: L10n.Settings.App.autoLock,
-                                icon: DS.SFSymbols.chevronRight,
+                                symbol: .chevronRight,
                                 value: state.autoLock?.humanReadable.string ?? .empty
                             ) {
                                 store.handle(action: .autoLockTapped)

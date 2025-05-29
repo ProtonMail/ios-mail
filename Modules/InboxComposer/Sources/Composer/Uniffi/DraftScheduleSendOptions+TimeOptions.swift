@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 extension DraftScheduleSendOptions {
 
-    func toScheduleSendPickerTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendPickerSheet.TimeOptions {
+    func toScheduleSendTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendTimeOptions {
         .init(
             tomorrow: tomorrowTime.date,
             nextMonday: mondayTime.date,
