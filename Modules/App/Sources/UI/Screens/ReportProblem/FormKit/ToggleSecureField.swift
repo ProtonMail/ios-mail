@@ -20,18 +20,44 @@ import SwiftUI
 import UIKit
 
 struct PINSecureInput: UIViewRepresentable {
+    struct Configuration {
+        let font: UIFont?
+        let alignment: NSTextAlignment
+        let placeholder: LocalizedStringResource?
+
+        static var `default`: Self {
+            .init(font: nil, alignment: .left, placeholder: nil)
+        }
+
+        static var pinLock: Self {
+            .init(
+                font: .preferredFont(for: .title3, weight: .semibold),
+                alignment: .center,
+                placeholder: L10n.PINLock.pinInputPlaceholder
+            )
+        }
+    }
+
+    let configuration: Configuration
     @Binding var text: String
     @Binding var isSecure: Bool
 
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField()
         textField.delegate = context.coordinator
+        textField.textAlignment = configuration.alignment
+        textField.font = configuration.font
+        textField.placeholder = configuration.placeholder?.string
         textField.isSecureTextEntry = isSecure
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         textField.borderStyle = .none
         textField.keyboardType = .numberPad
         textField.tintColor = UIColor(DS.Color.Text.accent)
+
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
         textField.addTarget(context.coordinator, action: #selector(Coordinator.textChanged), for: .editingChanged)
         return textField
     }

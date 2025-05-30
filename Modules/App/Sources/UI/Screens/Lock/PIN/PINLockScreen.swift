@@ -59,13 +59,9 @@ struct PINLockScreen: View {
 
                     subtitle
 
-                    SecureField(L10n.PINLock.pinInputPlaceholder.string, text: pinBinding)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .tint(DS.Color.Text.accent)
+                    PINSecureInput(configuration: .pinLock, text: pinBinding, isSecure: .readonly { true })
                         .focused($isFocused)
-                        .keyboardType(.numberPad)
-                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, DS.Spacing.huge)
 
                     Spacer()
