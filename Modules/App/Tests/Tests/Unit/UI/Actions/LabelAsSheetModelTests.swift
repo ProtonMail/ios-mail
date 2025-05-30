@@ -153,14 +153,6 @@ class LabelAsSheetModelTests: BaseTestCase {
         testLabelAs(itemType: .conversation) { invokedLabelConversation }
     }
 
-    func testToast_WhenLabellingFails_ItPresentsErrorToast() {
-        let sut = sut(ids: [], type: .conversation)
-
-        sut.handle(action: .doneButtonTapped)
-
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not process some labels")])
-    }
-
     // MARK: - Private
 
     private func sut(ids: [ID], type: MailboxItemType) -> LabelAsSheetModel {

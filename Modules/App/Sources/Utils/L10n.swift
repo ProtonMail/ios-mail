@@ -270,13 +270,6 @@ enum L10n {
         static let ok = LocalizedStringResource("Ok", comment: "`Ok` action title.")
     }
 
-    enum Labels {
-        static let couldNotProcessSomeLabels = LocalizedStringResource(
-            "Could not process some labels",
-            comment: "Adding or removing labels from messages has failed at least partially"
-        )
-    }
-
     enum LegacyMigration {
         static let migrationFailed = LocalizedStringResource(
             "Migration failed. Please sign in again and submit a bug report.",

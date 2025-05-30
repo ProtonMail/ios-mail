@@ -840,9 +840,6 @@
         }
       }
     },
-    "Could not process some labels" : {
-      "comment" : "Adding or removing labels from messages has failed at least partially"
-    },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
       "localizations" : {
