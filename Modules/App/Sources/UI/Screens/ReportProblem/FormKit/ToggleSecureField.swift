@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 import UIKit
 
-struct ToggleSecureField: UIViewRepresentable {
+struct PINSecureInput: UIViewRepresentable {
     @Binding var text: String
     @Binding var isSecure: Bool
 
@@ -46,14 +46,25 @@ struct ToggleSecureField: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, UITextFieldDelegate {
-        var parent: ToggleSecureField
+        var parent: PINSecureInput
 
-        init(_ parent: ToggleSecureField) {
+        init(_ parent: PINSecureInput) {
             self.parent = parent
         }
 
         @objc func textChanged(_ sender: UITextField) {
             parent.text = sender.text ?? ""
+        }
+
+        func textField(
+            _ textField: UITextField,
+            shouldChangeCharactersIn range: NSRange,
+            replacementString string: String
+        ) -> Bool {
+            guard !string.isEmpty else { return true }
+            let digits = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            return digits.isSuperset(of: characterSet)
         }
     }
 }
