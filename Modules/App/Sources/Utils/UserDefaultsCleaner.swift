@@ -16,13 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 struct UserDefaultsCleaner {
     let userDefaults: UserDefaults
 
     func cleanUp() {
-        UserDefaultsKey.allCases.forEach { key in
-            userDefaults.removeObject(forKey: key.rawValue)
-        }
+        userDefaults[.showAlphaV1Onboarding] = nil
+        userDefaults[.notificationAuthorizationRequestDates] = nil
     }
 }

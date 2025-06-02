@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import proton_app_uniffi
 import Testing
 import UserNotifications
@@ -22,26 +23,30 @@ import UserNotifications
 @testable import TestableNotificationService
 
 final class NotificationServiceTests {
-    private lazy var sut = TestableNotificationService { [unowned self] _, _ in
+    private let userDefaults = TestableUserDefaults.randomInstance()
+
+    private lazy var sut = TestableNotificationService(userDefaults: userDefaults) { [unowned self] _, _ in
         self.stubbedDecryptionResult
     }
 
-    private var stubbedDecryptionResult: DecryptPushNotificationResult!
+    private var stubbedDecryptionResult = DecryptPushNotificationResult.ok(
+        .email(
+            .init(
+                subject: "Decrypted subject",
+                sender: .init(name: "John Doe", address: "john.doe@example.com", group: ""),
+                messageId: .init(value: ""),
+                action: nil
+            )
+        )
+    )
+
+    deinit {
+        userDefaults.removePersistentDomain(forName: userDefaults.suiteName)
+    }
 
     @Test
     func whenReplacingTitleAndBodyWithDecryptedInfo_prefersSenderName() async {
         let originalContent = prepareContent()
-
-        stubbedDecryptionResult = .ok(
-            .email(
-                .init(
-                    subject: "Decrypted subject",
-                    sender: .init(name: "John Doe", address: "john.doe@example.com", group: ""),
-                    messageId: .init(value: ""),
-                    action: nil
-                )
-            )
-        )
 
         let updatedContent = await sut.transform(originalContent: originalContent)
 
@@ -92,12 +97,37 @@ final class NotificationServiceTests {
         #expect(updatedContent.body == "You received a new message!")
     }
 
+    // MARK: badge
+
+    @Test
+    func whenRecipientIsPrimaryAccount_badgeIsPreserved() async {
+        userDefaults[.primaryAccountSessionId] = "123"
+
+        let originalContent = prepareContent()
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.badge == 5)
+    }
+
+    @Test(arguments: ["456", nil])
+    func whenRecipientIsNotPrimaryAccount_badgeIsStripped(primaryAccountSessionId: String?) async {
+        userDefaults[.primaryAccountSessionId] = primaryAccountSessionId
+
+        let originalContent = prepareContent()
+
+        let updatedContent = await sut.transform(originalContent: originalContent)
+
+        #expect(updatedContent.badge == nil)
+    }
+
     private func prepareContent(
         userInfo: [AnyHashable: Any] = ["encryptedMessage": "foo", "UID": "123"]
     ) -> UNNotificationContent {
         let content = UNMutableNotificationContent()
         content.title = "original title"
         content.body = "original body"
+        content.badge = 5
         content.userInfo = userInfo
         return content
     }

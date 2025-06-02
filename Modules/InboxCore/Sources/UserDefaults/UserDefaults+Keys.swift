@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -17,13 +18,43 @@
 
 import Foundation
 
+extension UserDefaultsKey<String> {
+    public static let primaryAccountSessionId = Self(name: "primaryAccountSessionId")
+}
+
+public struct UserDefaultsKey<T>: Sendable {
+    public let name: String
+
+    public init(name: String) {
+        self.name = name
+    }
+}
+
 extension UserDefaults {
-    subscript(key: UserDefaultsKey) -> [Date] {
+    public subscript<T>(key: UserDefaultsKey<T>) -> T? {
         get {
-            array(forKey: key.rawValue) as? [Date] ?? []
+            object(forKey: key.name) as? T
         }
         set {
-            set(newValue, forKey: key.rawValue)
+            set(newValue, forKey: key.name)
+        }
+    }
+
+    public subscript<T>(key: UserDefaultsKey<[T]>) -> [T] {
+        get {
+            array(forKey: key.name) as? [T] ?? []
+        }
+        set {
+            set(newValue, forKey: key.name)
+        }
+    }
+
+    public subscript(key: UserDefaultsKey<Bool>) -> Bool {
+        get {
+            bool(forKey: key.name)
+        }
+        set {
+            set(newValue, forKey: key.name)
         }
     }
 }

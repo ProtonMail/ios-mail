@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import XCTest
 import Nimble
 
@@ -37,13 +38,13 @@ class UserDefaultsCleanerTests: XCTestCase {
     }
 
     func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
-        let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
+        let key = UserDefaultsKey.showAlphaV1Onboarding
 
-        userDefaults.setValue(true, forKey: key)
+        userDefaults[key] = true
 
         sut.cleanUp()
 
-        XCTAssertNil(userDefaults.value(forKey: key))
+        XCTAssertNil(userDefaults.object(forKey: key.name))
     }
 
 }

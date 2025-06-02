@@ -94,6 +94,9 @@ extension AppContext {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newSession in
                 guard let self else { return }
+
+                UserDefaults.appGroup[.primaryAccountSessionId] = newSession?.sessionId()
+
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
                     withAnimation { self.sessionState = .noSession }
@@ -115,7 +118,7 @@ extension AppContext {
         Task {
             do {
                 if let newUserSession = try await self.initializeUserSession(session: session) {
-                     self.animateTransition(into: .activeSession(session: newUserSession))
+                    self.animateTransition(into: .activeSession(session: newUserSession))
                 }
                 AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {

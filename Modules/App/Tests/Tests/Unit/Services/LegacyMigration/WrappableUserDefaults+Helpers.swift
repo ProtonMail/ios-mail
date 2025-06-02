@@ -15,15 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxCore
 
 @testable import ProtonMail
 
 extension TestableUserDefaults {
-    static func randomInstance(function: StaticString = #function) -> Self {
-        .init(suiteName: "\(function)_\(UUID().uuidString)")
-    }
-
     func set(_ value: Any?, forKey key: LegacyDataProvider.Key) {
         set(value, forKey: key.rawValue)
     }

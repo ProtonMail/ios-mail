@@ -15,9 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
+import InboxCore
 
-enum UserDefaultsKey: String, CaseIterable {
-    case showAlphaV1Onboarding
-    case notificationAuthorizationRequestDates
+extension UserDefaultsKey<Bool> {
+    static let showAlphaV1Onboarding = Self(name: "showAlphaV1Onboarding")
+}
+
+extension UserDefaultsKey<[Date]> {
+    static let notificationAuthorizationRequestDates = Self(name: "notificationAuthorizationRequestDates")
 }

@@ -36,7 +36,7 @@ final class TestService: ApplicationServiceSetUp {
     }
 
     private func disableOnboardingPrompts() {
-        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+        userDefaults[.showAlphaV1Onboarding] = false
         userDefaults[.notificationAuthorizationRequestDates] = [.now]
     }
 }

@@ -167,8 +167,8 @@ private struct SessionTransitionScreen: View {
 
     private let userDefaultsWithPromptsDisabled: UserDefaults = {
         let userDefaults = UserDefaults(suiteName: "transition")!
-        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
-        userDefaults[.notificationAuthorizationRequestDates] = [Date.now]
+        userDefaults[.showAlphaV1Onboarding] = false
+        userDefaults[.notificationAuthorizationRequestDates] = [.now]
         return userDefaults
     }()
 

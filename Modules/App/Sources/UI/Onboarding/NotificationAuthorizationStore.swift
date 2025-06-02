@@ -42,7 +42,7 @@ final class NotificationAuthorizationStore {
             return false
         }
 
-        let pastRequestDates: [Date] = userDefaults[.notificationAuthorizationRequestDates]
+        let pastRequestDates = userDefaults[.notificationAuthorizationRequestDates]
 
         guard let mostRecentRequestDate = pastRequestDates.last else {
             return true

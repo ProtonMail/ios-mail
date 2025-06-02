@@ -106,11 +106,11 @@ class MailboxScreenTests: BaseTestCase {
     // MARK: - Private
 
     private func arrangeStorage(showAlphaV1Onboarding: Bool) {
-        userDefaults.setValue(showAlphaV1Onboarding, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
+        userDefaults[.showAlphaV1Onboarding] = showAlphaV1Onboarding
     }
 
     private var storedShowOnboarding: Bool? {
-        userDefaults.value(forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue) as? Bool
+        userDefaults[.showAlphaV1Onboarding]
     }
 
     private func arrange(
@@ -131,7 +131,8 @@ class MailboxScreenTests: BaseTestCase {
         let toastStateStore = ToastStateStore(initialState: .initial)
 
         ViewHosting.host(
-            view: sut
+            view:
+                sut
                 .environmentObject(appUIStateStore)
                 .environmentObject(toastStateStore)
         )

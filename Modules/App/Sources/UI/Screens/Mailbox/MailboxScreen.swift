@@ -33,7 +33,7 @@ struct MailboxScreen: View {
     private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
-    private let onboardingStore: OnboardingStore
+    private let userDefaults: UserDefaults
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -52,9 +52,9 @@ struct MailboxScreen: View {
             )
         )
         self.notificationAuthorizationStore = notificationAuthorizationStore
-        self.onboardingStore = .init(userDefaults: userDefaults)
         self.userSession = userSession
         self.sendResultPresenter = sendResultPresenter
+        self.userDefaults = userDefaults
     }
 
     var didAppear: ((Self) -> Void)?
@@ -115,7 +115,7 @@ struct MailboxScreen: View {
     }
 
     private func onboardingScreenDismissed() {
-        onboardingStore.shouldShowOnboarding = false
+        userDefaults[.showAlphaV1Onboarding] = false
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -136,7 +136,7 @@ struct MailboxScreen: View {
     }
 
     private func calculateIntroductionProgress() async -> IntroductionProgress {
-        if onboardingStore.shouldShowOnboarding {
+        if userDefaults[.showAlphaV1Onboarding] {
             return .onboarding
         } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
             return .notifications

@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,18 +18,15 @@
 
 import Foundation
 
-class OnboardingStore {
-    init(userDefaults: UserDefaults) {
-        self.userDefaults = userDefaults
+public final class TestableUserDefaults: UserDefaults {
+    public let suiteName: String
+
+    public init(suiteName: String) {
+        self.suiteName = suiteName
+        super.init(suiteName: suiteName)!
     }
 
-    var shouldShowOnboarding: Bool {
-        get { userDefaults.value(forKey: key) as? Bool ?? true }
-        set { userDefaults.setValue(newValue, forKey: key) }
+    public static func randomInstance(function: StaticString = #function) -> Self {
+        .init(suiteName: "\(function)_\(UUID().uuidString)")
     }
-
-    // MARK: - Private
-
-    private let userDefaults: UserDefaults
-    private let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
 }
