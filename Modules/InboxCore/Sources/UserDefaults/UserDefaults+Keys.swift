@@ -22,7 +22,7 @@ extension UserDefaultsKey<String> {
     public static let primaryAccountSessionId = Self(name: "primaryAccountSessionId")
 }
 
-public struct UserDefaultsKey<T>: Sendable {
+public struct UserDefaultsKey<Value>: Sendable {
     public let name: String
 
     public init(name: String) {
@@ -31,18 +31,18 @@ public struct UserDefaultsKey<T>: Sendable {
 }
 
 extension UserDefaults {
-    public subscript<T>(key: UserDefaultsKey<T>) -> T? {
+    public subscript<Value>(key: UserDefaultsKey<Value>) -> Value? {
         get {
-            object(forKey: key.name) as? T
+            object(forKey: key.name) as? Value
         }
         set {
             set(newValue, forKey: key.name)
         }
     }
 
-    public subscript<T>(key: UserDefaultsKey<[T]>) -> [T] {
+    public subscript<Value>(key: UserDefaultsKey<[Value]>) -> [Value] {
         get {
-            array(forKey: key.name) as? [T] ?? []
+            array(forKey: key.name) as? [Value] ?? []
         }
         set {
             set(newValue, forKey: key.name)
