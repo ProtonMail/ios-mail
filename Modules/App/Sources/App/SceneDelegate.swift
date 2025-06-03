@@ -61,6 +61,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private var appProtection: AppProtection = .none {
         didSet {
+            guard oldValue != appProtection else { return }
             handleLockScreenVisibility(type: appProtection.lockScreenType)
         }
     }
