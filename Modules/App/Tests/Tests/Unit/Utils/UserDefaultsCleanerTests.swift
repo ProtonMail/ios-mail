@@ -17,26 +17,14 @@
 
 @testable import ProtonMail
 import InboxCore
-import XCTest
-import Nimble
+import Testing
 
-class UserDefaultsCleanerTests: XCTestCase {
+final class UserDefaultsCleanerTests {
+    private let suiteName = UUID().uuidString
+    private lazy var userDefaults = UserDefaults(suiteName: suiteName)!
+    private lazy var sut = UserDefaultsCleaner(suiteName: suiteName)
 
-    private var sut: UserDefaultsCleaner!
-    private var userDefaults: UserDefaults!
-
-    override func setUp() {
-        super.setUp()
-        userDefaults = .clearedTestInstance()
-        sut = .init(userDefaults: userDefaults)
-    }
-
-    override func tearDown() {
-        userDefaults = nil
-        sut = nil
-        super.tearDown()
-    }
-
+    @Test
     func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
         let key = UserDefaultsKey.showAlphaV1Onboarding
 
@@ -44,7 +32,6 @@ class UserDefaultsCleanerTests: XCTestCase {
 
         sut.cleanUp()
 
-        XCTAssertNil(userDefaults.object(forKey: key.name))
+        #expect(userDefaults.object(forKey: key.name) == nil)
     }
-
 }
