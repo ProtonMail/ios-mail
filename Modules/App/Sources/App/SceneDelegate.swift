@@ -126,8 +126,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 self?.appProtection = appProtection
             })
 
-        appProtectionStore.checkProtection()
-
         return window
     }
 
