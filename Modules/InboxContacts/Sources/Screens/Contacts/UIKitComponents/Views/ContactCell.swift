@@ -27,7 +27,7 @@ final class ContactCell: UITableViewCell {
         label.font = .font(textStyle: .footnote, weight: .semibold)
         label.textColor = UIColor(DS.Color.Text.inverted)
         label.textAlignment = .center
-        label.layer.cornerRadius = 20
+        label.layer.cornerRadius = DS.Radius.large
         label.layer.masksToBounds = true
         return label
     }()

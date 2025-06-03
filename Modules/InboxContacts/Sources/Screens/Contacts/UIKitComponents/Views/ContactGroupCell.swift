@@ -24,7 +24,7 @@ final class ContactGroupCell: UITableViewCell {
 
     let iconBackgroundView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = DS.Radius.large
         view.clipsToBounds = true
         return view
     }()
