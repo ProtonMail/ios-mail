@@ -35,17 +35,15 @@ struct ComposerView: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         draftLastScheduledTime: UInt64? = nil,
-        draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping (SendEvent) -> Void
+        onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self._model = StateObject(
             wrappedValue: ComposerModel(
                 draft: draft,
                 draftOrigin: draftOrigin,
-                draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
-                onSendingEvent: onSendingEvent,
+                onDismiss: onDismiss,
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
                 photosItemsHandler: .init(),
@@ -67,7 +65,7 @@ struct ComposerView: View {
                 isSendEnabled: model.state.isSendAvailable,
                 scheduleSendAction: { modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime) },
                 sendAction: { await model.sendMessage(dismissAction: dismiss) },
-                dismissAction: { model.dismissComposer(dismissAction: dismiss) }
+                dismissAction: { await model.dismissComposerManually(dismissAction: dismiss) }
             )
 
             ComposerControllerRepresentable(
@@ -120,8 +118,6 @@ struct ComposerView: View {
 
                 case .attachmentEvent(let event):
                     switch event {
-                    case .onRetryAttachmentUpload(let uiModel):
-                        model.retryUploadingAttachment(uiModel: uiModel)
                     case .onTap:
                         toastStateStore.present(toast: .comingSoon)
                     case .onRemove(let uiModel):
@@ -147,7 +143,7 @@ struct ComposerView: View {
                     case .onPickAttachmentSource:
                         modalState = .attachmentPicker
                     case .onDiscardDraft:
-                        toastStateStore.present(toast: .comingSoon)
+                        Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
                     }
                 }
             }

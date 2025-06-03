@@ -16,8 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
-public enum SendEvent: Equatable {
-    case send
-    case scheduleSend
+public enum ComposerDismissReason: Equatable {
+    case dismissedManually(savedDraftId: ID?)
+    case draftDiscarded
+    case messageScheduled(messageId: ID)
+    case messageSent(messageId: ID)
 }

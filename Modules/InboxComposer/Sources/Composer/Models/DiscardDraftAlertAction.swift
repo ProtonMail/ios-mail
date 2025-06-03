@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,18 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxComposer
+import InboxCore
+import InboxCoreUI
+import SwiftUI
 
-extension ComposerDismissReason {
+enum DiscardDraftAlertAction: AlertActionInfo, CaseIterable {
+    case cancel
+    case discard
 
-    var sendResultToastType: SendResultInfo.ToastType? {
+    // MARK: - AlertActionInfo
+
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
         switch self {
-        case .messageScheduled:
-            .scheduling
-        case .messageSent:
-            .sending
-        case .dismissedManually, .draftDiscarded:
-            nil
+        case .cancel:
+            (CommonL10n.cancel, .cancel)
+        case .discard:
+            (L10n.Composer.discard, .destructive)
         }
     }
 }

@@ -22,7 +22,7 @@ import proton_app_uniffi
 struct ComposerScreenFactory {
 
     @MainActor
-    static func makeComposer(userSession: MailUserSession, composerParams: ComposerModalParams) -> ComposerScreen {
+    static func makeComposer(userSession: MailUserSession, composerParams: ComposerParams) -> ComposerScreen {
         let contactProvider: ComposerContactProvider = .productionInstance(session: userSession)
         let dependencies = ComposerScreen.Dependencies(contactProvider: contactProvider, userSession: userSession)
         return switch composerParams.draftToPresent {
@@ -31,22 +31,20 @@ struct ComposerScreenFactory {
                 draft: draft,
                 draftOrigin: .new,
                 dependencies: dependencies,
-                onSendingEvent: { event in
-                    Task { try await composerParams.onSendingEvent(draft.messageId().get()!, event) }
-                })
+                onDismiss: composerParams.onDismiss
+            )
         case .openDraftId(let messageId, let lastScheduledTime):
             ComposerScreen(
                 messageId: messageId,
                 messageLastScheduledTime: lastScheduledTime,
                 dependencies: dependencies,
-                onSendingEvent: { event in
-                    composerParams.onSendingEvent(messageId, event)
-                })
+                onDismiss: composerParams.onDismiss
+            )
         }
     }
 }
 
-struct ComposerModalParams {
+struct ComposerParams {
     let draftToPresent: DraftToPresent
-    let onSendingEvent: (ID, SendEvent) -> Void
+    let onDismiss: (ComposerDismissReason) -> Void
 }

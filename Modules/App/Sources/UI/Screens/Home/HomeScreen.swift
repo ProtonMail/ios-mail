@@ -18,6 +18,7 @@
 import AccountLogin
 import Combine
 import InboxCoreUI
+import enum InboxComposer.ComposerDismissReason
 import proton_app_uniffi
 import SwiftUI
 
@@ -27,7 +28,7 @@ struct HomeScreen: View {
         case contacts
         case labelOrFolderCreation
         case settings
-        case draft(ComposerModalParams)
+        case draft(ComposerParams)
         case reportProblem
         case subscriptions
 
@@ -48,6 +49,7 @@ struct HomeScreen: View {
     @State private var draftPresenter: DraftPresenter
     @State private var isNotificationPromptPresented = false
     @StateObject private var sendResultCoordinator: SendResultCoordinator
+    @State private var draftSavedCoordinator: DraftSavedToastCoordinator
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @ObservedObject private var appContext: AppContext
 
@@ -79,6 +81,7 @@ struct HomeScreen: View {
             undoScheduleSendProvider: .productionInstance(userSession: userSession)
         )
         self._draftPresenter = .init(initialValue: draftPresenter)
+        self._draftSavedCoordinator = .init(wrappedValue: .init(mailUSerSession: userSession, toastStoreState: toastStateStore))
         self._sendResultCoordinator = .init(
             wrappedValue: SendResultCoordinator(userSession: userSession, draftPresenter: draftPresenter)
         )
@@ -165,14 +168,22 @@ struct HomeScreen: View {
 
     private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
         .draft(
-            ComposerModalParams(
-                draftToPresent: draftToPresent,
-                onSendingEvent: { draftId, event in
-                    sendResultCoordinator.presenter.presentResultInfo(.init(messageId: draftId, type: event.toastType))
-                    requestNotificationAuthorizationIfApplicable()
-                }
-            )
+            ComposerParams(draftToPresent: draftToPresent, onDismiss: handleComposerDismissal)
         )
+    }
+
+    private func handleComposerDismissal(_ event: ComposerDismissReason) {
+        switch event {
+        case .messageSent(let messageId), .messageScheduled(let messageId):
+            guard let toastType = event.sendResultToastType else { return }
+            sendResultCoordinator.presenter.presentResultInfo(.init(messageId: messageId, type: toastType))
+        case .dismissedManually(let savedDraftId):
+            guard let savedDraftId else { return }
+            draftSavedCoordinator.showDraftSavedToast(draftId: savedDraftId)
+        case .draftDiscarded:
+            toastStateStore.present(toast: .draftDiscarded())
+        }
+        requestNotificationAuthorizationIfApplicable()
     }
 
     private func handleSendResultToastAction(_ action: SendResultToastAction) {

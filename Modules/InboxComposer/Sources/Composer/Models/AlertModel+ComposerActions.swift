@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,18 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxComposer
+import InboxCoreUI
 
-extension ComposerDismissReason {
+extension AlertModel {
 
-    var sendResultToastType: SendResultInfo.ToastType? {
-        switch self {
-        case .messageScheduled:
-            .scheduling
-        case .messageSent:
-            .sending
-        case .dismissedManually, .draftDiscarded:
-            nil
+    static func discardDraft(action: @escaping @MainActor (DiscardDraftAlertAction) async -> Void) -> Self {
+        let actions: [AlertAction] = DiscardDraftAlertAction.allCases.map { actionType in
+                .init(details: actionType, action: { await action(actionType) })
         }
+
+        return .init(
+            title: L10n.Composer.discardConfirmationTitle,
+            message: L10n.Composer.discardConfirmationMessage,
+            actions: actions
+        )
     }
 }

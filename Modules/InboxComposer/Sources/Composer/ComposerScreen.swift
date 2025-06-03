@@ -26,18 +26,18 @@ public struct ComposerScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
     private let messageLastScheduledTime: UInt64?
-    private let onSendingEvent: (SendEvent) -> Void
+    private let onDismiss: (ComposerDismissReason) -> Void
     private let dependencies: Dependencies
 
     public init(
         messageId: ID,
         messageLastScheduledTime: UInt64? = nil,
         dependencies: Dependencies,
-        onSendingEvent: @escaping (SendEvent) -> Void
+        onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self.messageLastScheduledTime = messageLastScheduledTime
         self.dependencies = dependencies
-        self.onSendingEvent = onSendingEvent
+        self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue:
                 ComposerScreenModel(
@@ -51,11 +51,11 @@ public struct ComposerScreen: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         dependencies: Dependencies,
-        onSendingEvent: @escaping (SendEvent) -> Void
+        onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self.messageLastScheduledTime = nil
         self.dependencies = dependencies
-        self.onSendingEvent = onSendingEvent
+        self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue: ComposerScreenModel(
                 draft: draft,
@@ -81,9 +81,8 @@ public struct ComposerScreen: View {
                 draft: draft,
                 draftOrigin: draftOrigin,
                 draftLastScheduledTime: messageLastScheduledTime,
-                draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
                 contactProvider: dependencies.contactProvider,
-                onSendingEvent: onSendingEvent
+                onDismiss: onDismiss
             )
             .interactiveDismissDisabled()
         }
@@ -124,7 +123,7 @@ struct ComposerLoadingView: View {
         draft: .emptyMock,
         draftOrigin: .new,
         dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
-        onSendingEvent: { _ in }
+        onDismiss: { _ in }
     )
     .environmentObject(toastStateStore)
 }
