@@ -21,6 +21,7 @@ extension DS {
     public enum SFSymbol: String, Sendable {
         case arrowUpRightSquare = "arrow.up.right.square"
         case checkmark = "checkmark"
+        case checkmarkSquare = "checkmark.square"
         case chevronLeft = "chevron.backward"
         case chevronRight = "chevron.right"
         case chevronUpChevronDown = "chevron.up.chevron.down"
@@ -28,6 +29,7 @@ extension DS {
         case lock = "lock"
         case magnifier = "magnifyingglass"
         case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+        case square = "square"
         case star = "star"
         case starFilled = "star.fill"
         case starSlash = "star.slash"

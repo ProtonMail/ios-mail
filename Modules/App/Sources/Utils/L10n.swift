@@ -425,6 +425,14 @@ enum L10n {
             "Select all",
             comment: "Button title allowing to select all items in a mailbox."
         )
+        static let unselectAll = LocalizedStringResource(
+            "Unselect all",
+            comment: "Button title allowing to deselect all items in a mailbox."
+        )
+        static let selectionLimitReached = LocalizedStringResource(
+            "Maximum selection reached",
+            comment: "Toast when attempting to select more than the maximum number of items."
+        )
     }
 
     enum NoConnection {

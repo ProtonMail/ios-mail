@@ -120,7 +120,7 @@ final class MailboxModel: ObservableObject {
     }
 }
 
-// MARK: Private
+// MARK: Bindings
 
 extension MailboxModel {
 
@@ -176,28 +176,50 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
-        selectionMode
-            .selectionState
-            .$selectedItems
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                Task {
-                    await self?.onSelectedItemsChange()
-                }
+        observeSelectionChanges()
+        exitSelectAllModeWhenNewItemsAreFetched()
+    }
+
+    private func observeSelectionChanges() {
+        Publishers.CombineLatest(
+            selectionMode.selectionState.$selectedItems.removeDuplicates(),
+            selectionMode.selectionState.$isSelectAllEnabled.removeDuplicates()
+        )
+        .sink { [weak self] _ in
+            Task {
+                await self?.onSelectedItemsChange()
             }
-            .store(in: &cancellables)
+        }
+        .store(in: &cancellables)
     }
 
     private func onSelectedItemsChange() async {
         state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        state.filterBar.selectAll = selectAllState
         updateMailboxTitle()
         await refreshMailboxItems()
     }
 
+    private func exitSelectAllModeWhenNewItemsAreFetched() {
+        paginatedDataSource.$state
+            .map(\.currentPage)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.selectionMode.selectionModifier.exitSelectAllMode()
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Private
+
+extension MailboxModel {
+
     private func updateMailboxTitle() {
-        state.mailboxTitle = selectionMode.selectionState.hasItems
-        ? selectionMode.selectionState.title
-        : selectedMailbox.name
+        state.mailboxTitle =
+            selectionMode.selectionState.hasItems
+            ? selectionMode.selectionState.title
+            : selectedMailbox.name
     }
 
     private func updateMailboxAndScroller(resetUnreadCount: Bool = true) async {
@@ -216,9 +238,10 @@ extension MailboxModel {
 
             await paginatedDataSource.resetToInitialState()
 
-            let mailbox = selectedMailbox.isInbox
-            ? try await newInboxMailbox(ctx: userSession).get()
-            : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
+            let mailbox =
+                selectedMailbox.isInbox
+                ? try await newInboxMailbox(ctx: userSession).get()
+                : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
             self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
@@ -266,11 +289,11 @@ extension MailboxModel {
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
         let userSession = dependencies.appContext.userSession
         let labelID: ID = mailbox.labelId()
-        
+
         guard let banner = try? await getAutoDeleteBanner(session: userSession, labelId: labelID).get() else {
             return nil
         }
-        
+
         return .init(folder: .init(labelID: labelID, type: banner.folder), userState: banner.state)
     }
 
@@ -292,9 +315,10 @@ extension MailboxModel {
         }
         do {
             let result: PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult
-            result = mailbox.viewMode() == .messages
-            ? try await fetchNextPageMessages(currentPage: currentPage)
-            : try await fetchNextPageConversations(currentPage: currentPage)
+            result =
+                mailbox.viewMode() == .messages
+                ? try await fetchNextPageMessages(currentPage: currentPage)
+                : try await fetchNextPageConversations(currentPage: currentPage)
             AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
             return result
         } catch {
@@ -461,9 +485,15 @@ extension MailboxModel {
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         guard !isOutbox else { return }
-        isSelected
-        ? selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
-        : selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
+        if isSelected {
+            let success = selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
+
+            if !success {
+                toast = .error(message: L10n.Mailbox.selectionLimitReached.string)
+            }
+        } else {
+            selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
+        }
     }
 
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
@@ -541,6 +571,34 @@ extension MailboxModel {
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
+        }
+    }
+}
+
+// MARK: Select All
+
+extension MailboxModel {
+
+    private var unselectedItems: [MailboxSelectedItem] {
+        paginatedDataSource.state.items
+            .map { $0.toSelectedItem() }
+            .filter { !selectionMode.selectionState.selectedItems.contains($0) }
+    }
+
+    private var selectAllState: SelectAllState {
+        guard selectionMode.selectionState.canSelectMoreItems else {
+            return .selectionLimitReached
+        }
+
+        return unselectedItems.isEmpty ? .noMoreItemsToSelect : .canSelectMoreItems
+    }
+
+    func onSelectAllTapped() {
+        switch selectAllState {
+        case .canSelectMoreItems:
+            selectionMode.selectionModifier.enterSelectAllMode(selecting: unselectedItems)
+        case .noMoreItemsToSelect, .selectionLimitReached:
+            selectionMode.selectionModifier.deselectAll(stayingInSelectAllMode: true)
         }
     }
 }

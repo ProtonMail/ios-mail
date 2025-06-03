@@ -10228,6 +10228,9 @@
     "Mark email as legitimate" : {
       "comment" : "Title of the alert asking the user to confirm marking an email as legitimate."
     },
+    "Maximum selection reached" : {
+      "comment" : "Toast when attempting to select more than the maximum number of items."
+    },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",
       "localizations" : {
@@ -17674,6 +17677,9 @@
           }
         }
       }
+    },
+    "Unselect all" : {
+      "comment" : "Button title allowing to deselect all items in a mailbox."
     },
     "Unsnooze" : {
       "comment" : "Action to restore a snoozed email immediately."
