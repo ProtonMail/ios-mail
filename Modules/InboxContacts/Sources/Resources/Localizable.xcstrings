@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld contacts" : {
+      "comment" : "Subtitle showing the number of contacts in the group. Used under the 'Send group message' button."
+    },
     "%lld members" : {
       "comment" : "Contact group row subtitle.",
       "localizations" : {
@@ -1387,6 +1390,9 @@
           }
         }
       }
+    },
+    "Send group message" : {
+      "comment" : "Title of the button used to initiate sending a message to a contact group."
     },
     "Share" : {
       "comment" : "Contact details’ “Share” button title for sharing the given contact’s information."

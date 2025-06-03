@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import InboxSnapshotTesting
 import proton_app_uniffi
-import XCTest
+import SwiftUI
 
-final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
+struct ContactCellView: UIViewRepresentable {
+    let item: ContactEmailItem
 
-    func testContactGroupDetailsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: makeSUT())
+    func makeUIView(context: Context) -> ContactCell {
+        let cell = ContactCell(style: .default, reuseIdentifier: nil)
+        ContactItemCellPresenter.present(item: item, in: cell)
+        return cell
     }
 
-    // MARK: - Private
-
-    private func makeSUT() -> ContactGroupDetailsScreen {
-        .init(group: .advisorsGroup)
+    func updateUIView(_ uiView: ContactCell, context: Context) {
+        ContactItemCellPresenter.present(item: item, in: uiView)
     }
-
 }

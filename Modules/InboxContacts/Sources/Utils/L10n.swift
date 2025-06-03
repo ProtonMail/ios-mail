@@ -98,4 +98,20 @@ enum L10n {
             comment: "Contact details’ “Share” button title for sharing the given contact’s information."
         )
     }
+    enum ContactGroupDetails {
+        enum Button {
+            static let title = LocalizedStringResource(
+                "Send group message",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Title of the button used to initiate sending a message to a contact group."
+            )
+            static func subtitle(contactsCount: Int) -> LocalizedStringResource {
+                LocalizedStringResource(
+                    "\(contactsCount) contacts",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Subtitle showing the number of contacts in the group. Used under the 'Send group message' button."
+                )
+            }
+        }
+    }
 }

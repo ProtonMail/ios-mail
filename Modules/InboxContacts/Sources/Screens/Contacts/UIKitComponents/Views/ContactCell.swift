@@ -68,7 +68,7 @@ final class ContactCell: UITableViewCell {
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
             avatarLabel.widthAnchor.constraint(equalToConstant: 40),
-            avatarLabel.heightAnchor.constraint(equalTo: avatarLabel.widthAnchor)
+            avatarLabel.heightAnchor.constraint(equalTo: avatarLabel.widthAnchor),
         ])
     }
 }

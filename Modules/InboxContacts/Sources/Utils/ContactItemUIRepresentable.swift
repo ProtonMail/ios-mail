@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import InboxSnapshotTesting
 import proton_app_uniffi
-import XCTest
 
-final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
+protocol ContactItemUIRepresentable {
+    var name: String { get }
+    var displayEmail: String? { get }
+    var avatarInformation: AvatarInformation { get }
+}
 
-    func testContactGroupDetailsScreenLayoutsCorrectOnIphoneX() {
-        assertSnapshotsOnIPhoneX(of: makeSUT())
+extension ContactItem: ContactItemUIRepresentable {
+    var displayEmail: String? {
+        emails.first?.email
     }
+}
 
-    // MARK: - Private
-
-    private func makeSUT() -> ContactGroupDetailsScreen {
-        .init(group: .advisorsGroup)
+extension ContactEmailItem: ContactItemUIRepresentable {
+    var displayEmail: String? {
+        email
     }
-
 }

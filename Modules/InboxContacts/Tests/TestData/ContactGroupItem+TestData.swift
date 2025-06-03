@@ -36,9 +36,9 @@ extension ContactGroupItem {
             name: "Advisors Group: Comprehensive Wealth Management and Strategic Financial Solutions",
             avatarColor: "#A1FF33",
             contactEmails: [
-                .init(id: 4, email: "group.advisor@pm.me"),
-                .init(id: 5, email: "group.advisor@protonmail.com"),
-                .init(id: 6, email: "advisor.group@yahoo.com"),
+                .init(id: 4, email: "group.advisor@pm.me", name: "Group"),
+                .init(id: 5, email: "group.advisor@protonmail.com", name: "Main"),
+                .init(id: 6, email: "advisor.group@yahoo.com", name: "Private"),
             ]
         )
     }
