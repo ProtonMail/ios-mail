@@ -61,7 +61,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
 
     private var appProtection: AppProtection = .none {
         didSet {
-            guard oldValue != appProtection else { return }
             handleLockScreenVisibility(type: appProtection.lockScreenType)
         }
     }
@@ -122,6 +121,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         appProtectionCancellable = appProtectionStore
             .protection
             .receive(on: Dispatcher.mainScheduler)
+            .removeDuplicates()
             .sink(receiveValue: { [weak self] appProtection in
                 self?.appProtection = appProtection
             })
