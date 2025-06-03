@@ -25,6 +25,7 @@ struct ScheduleSendPickerSheet: View {
         case datePicker
     }
 
+    @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private var currentScreen: SheetScreen = .main
     @State private var detent: PresentationDetent = .medium
     @State private var allowedDetents: Set<PresentationDetent> = [.medium, .large]
@@ -56,6 +57,10 @@ struct ScheduleSendPickerSheet: View {
                     dateFormatter: dateFormatter,
                     onTimeSelected: onTimeSelected
                 ) {
+                    guard isCustomOptionAvailable else {
+                        toastStateStore.present(toast: .comingSoon)
+                        return
+                    }
                     withAnimation(.easeInOut) {
                         currentScreen = .datePicker
                         detent = .large

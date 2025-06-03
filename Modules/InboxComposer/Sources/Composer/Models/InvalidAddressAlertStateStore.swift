@@ -27,6 +27,10 @@ final class InvalidAddressAlertStateStore {
         self.alertBinding = alertBinding
     }
 
+    var isAlertShown: Bool {
+        alertBinding.wrappedValue != nil
+    }
+
     @discardableResult
     func validateAndShowAlertIfNeeded() -> Bool {
         let isValid = recipientAddressValidator.validateFormatAddress()

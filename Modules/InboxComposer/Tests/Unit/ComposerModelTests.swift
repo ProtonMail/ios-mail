@@ -39,6 +39,8 @@ final class ComposerModelTests: BaseTestCase {
     let dummyMessageId: Id = 12345
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
+    let dummyValidAddress = "valid_address_format@example.com"
+    let dummyInvalidAddress = "invalid_address_format@example"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
     let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
     var cancellables: Set<AnyCancellable>!
@@ -178,7 +180,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
 
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: "invalid_address@example", for: .to)
+        await prepareInput(sut: sut, input: dummyInvalidAddress, for: .to)
 
         sut.startEditingRecipients(for: .bcc)
 
@@ -189,7 +191,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
 
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: "valid_address@example.com", for: .to)
+        await prepareInput(sut: sut, input: dummyValidAddress, for: .to)
 
         sut.startEditingRecipients(for: .bcc)
 
@@ -382,7 +384,7 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: endEditingRecipients
 
     func testEndEditingRecipients_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
-        let hangingInput = "becky@example.com"
+        let hangingInput = dummyValidAddress
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
         sut.startEditingRecipients(for: .to)
 
@@ -615,6 +617,32 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+    }
+
+    func testSendMessage_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
+        let validHangingInput = dummyValidAddress
+        let dismissSpy = DismissSpy()
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: validHangingInput, for: .to)
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        let expectedRecipient = ComposerRecipient.single(.init(displayName: nil, address: validHangingInput, validState: .valid))
+        XCTAssertEqual(mockDraft.mockToRecipientList.addedRecipients, [expectedRecipient])
+    }
+
+    func testSendMessage_whenThereIsInvalidHangingRecipientInput_itShouldShowAlertAndNotSendTheMessage() async {
+        let invalidHangingInput = dummyInvalidAddress
+        let dismissSpy = DismissSpy()
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: invalidHangingInput, for: .to)
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertNotNil(sut.state.alert)
+        XCTAssertEqual(mockDraft.sendWasCalled, false)
     }
 }
 

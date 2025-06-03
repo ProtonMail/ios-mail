@@ -276,8 +276,9 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
+        addRecipientFromInput()
+        guard !invalidAddressAlertStore.isAlertShown else { return }
         guard !messageHasBeenSentOrScheduled else { return }
-        guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
         await updateBodyDebounceTask?.executeImmediately()
 
         switch await performSendOrSchedule(date: date) {
