@@ -95,7 +95,7 @@ extension AppContext {
             .sink { [weak self] newSession in
                 guard let self else { return }
 
-                UserDefaults.appGroup[.primaryAccountSessionId] = newSession?.sessionId()
+                userDefaults[.primaryAccountSessionId] = newSession?.sessionId()
 
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
