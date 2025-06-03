@@ -16,9 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxTesting
 import proton_app_uniffi
 
 extension ContactGroupItem {
+
+    static func testData(id: Id) -> Self {
+        .init(
+            id: id,
+            name: "",
+            avatarColor: "",
+            contactEmails: []
+        )
+    }
 
     static var advisorsGroup: Self {
         .init(

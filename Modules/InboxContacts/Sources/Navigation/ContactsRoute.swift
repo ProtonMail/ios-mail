@@ -21,15 +21,15 @@ import SwiftUI
 
 enum ContactsRoute: Routable {
     case contactDetails(ContactItem)
-    case contactGroupDetails(id: Id)
+    case contactGroupDetails(ContactGroupItem)
 
     @ViewBuilder
     func view() -> some View {
         switch self {
         case .contactDetails(let contact):
             ContactDetailsScreen(contact: contact, provider: .previewInstance()) // FIXME: Replace with production instance
-        case .contactGroupDetails(let id):
-            ContactGroupDetailsScreen(id: id)
+        case .contactGroupDetails(let group):
+            ContactGroupDetailsScreen(group: group)
         }
     }
 }

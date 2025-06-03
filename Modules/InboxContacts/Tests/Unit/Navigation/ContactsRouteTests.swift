@@ -34,13 +34,13 @@ final class ContactsRouteTests: XCTestCase {
     }
 
     func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() throws {
-        let id = Id(value: 2)
-        let view = try makeView(for: .contactGroupDetails(id: id))
+        let group = ContactGroupItem.advisorsGroup
+        let view = try makeView(for: .contactGroupDetails(group))
 
         let inspectableScreen = try view.find(ContactGroupDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        XCTAssertEqual(screen.id, id)
+        XCTAssertEqual(screen.group.id, group.id)
     }
 
     // MARK: - Private

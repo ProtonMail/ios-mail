@@ -76,7 +76,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -85,9 +85,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -106,7 +106,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -115,16 +115,16 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
                     .contact(.evanAndrage),
-                    .contact(.elenaErickson)
+                    .contact(.elenaErickson),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -135,7 +135,7 @@ final class ContactsStateStoreTests: BaseTestCase {
                 groupedBy: "",
                 items: [
                     .contact(.andrewAllen),
-                    .contact(.evanAndrage)
+                    .contact(.evanAndrage),
                 ]
             )
         ]
@@ -153,7 +153,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -162,16 +162,16 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
                     .contact(.evanAndrage),
-                    .contact(.elenaErickson)
+                    .contact(.elenaErickson),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -191,7 +191,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -200,9 +200,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -218,7 +218,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -226,9 +226,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     .contact(.aliceAdams),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
 
         XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems, itemToDelete: nil))
@@ -245,7 +245,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    itemToDelete,
+                    itemToDelete
                 ]
             ),
             .init(
@@ -253,9 +253,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -275,7 +275,7 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             )
         ]
@@ -292,7 +292,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    itemToDelete,
+                    itemToDelete
                 ]
             ),
             .init(
@@ -300,9 +300,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -328,7 +328,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -336,9 +336,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     itemToDelete,
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -364,7 +364,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -372,9 +372,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                 items: [
                     itemToDelete,
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -397,7 +397,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -406,9 +406,9 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
@@ -423,7 +423,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -432,16 +432,16 @@ final class ContactsStateStoreTests: BaseTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
-            )
+            ),
         ]
         stubbedContacts = groupedItems
 
         sut.handle(action: .onLoad)
         sut.handle(action: .onTapItem(.group(.advisorsGroup)))
 
-        XCTAssertEqual(sut.router.stack, [.contactGroupDetails(id: ContactGroupItem.advisorsGroup.id)])
+        XCTAssertEqual(sut.router.stack, [.contactGroupDetails(ContactGroupItem.advisorsGroup)])
     }
 
     // MARK: - `goBack` action
@@ -451,7 +451,7 @@ final class ContactsStateStoreTests: BaseTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             )
         ]

@@ -19,9 +19,9 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
-    let id: Id
+    let group: ContactGroupItem
 
     var body: some View {
-        Text(verbatim: "contact group details: \(id.value)")
+        Text(verbatim: "contact group details: \(group.id.value)")
     }
 }

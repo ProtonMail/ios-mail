@@ -29,7 +29,7 @@ final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
     // MARK: - Private
 
     private func makeSUT() -> ContactGroupDetailsScreen {
-        .init(id: .init(value: 2_928))
+        .init(group: .testData(id: .init(value: 2_928)))
     }
 
 }
