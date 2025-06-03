@@ -87,6 +87,7 @@ struct ExpandedMessageCell: View {
                     attachments: uiModel.messageDetails.attachments,
                     mailbox: mailbox,
                     attachmentIDToOpen: $attachmentIDToOpen,
+                    editScheduledMessage: { onEvent(.onEditScheduledMessage) },
                     htmlLoaded: htmlLoaded
                 )
                 if !areActionsDisabled {
@@ -104,7 +105,7 @@ struct ExpandedMessageCell: View {
                         }
                     )
                     .padding(.top, DS.Spacing.moderatelyLarge)
-                    .padding(.bottom, DS.Spacing.large)
+                    .padding(.bottom, DS.Spacing.huge)
                 }
             }
             .overlay { borderOnTheSides(show: isFirstCell) }
@@ -139,6 +140,8 @@ enum ExpandedMessageCellEvent {
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
+
+    case onEditScheduledMessage
 }
 
 #Preview {

@@ -22,12 +22,12 @@ struct ComposerTopBar: View {
     var isSendEnabled: Bool
     var scheduleSendAction: (() -> Void)?
     var sendAction: (() async -> Void)?
-    var dismissAction: (() -> Void)?
+    var dismissAction: (() async -> Void)?
 
     var body: some View {
         HStack(spacing: DS.Spacing.standard) {
-            Button(action: { dismissAction?() }) {
-                Image(systemName: DS.SFSymbols.xmark)
+            Button(action: { Task { await dismissAction?() }}) {
+                Image(symbol: .xmark)
                     .foregroundStyle(DS.Color.Icon.weak)
                     .square(size: Layout.iconSize)
             }

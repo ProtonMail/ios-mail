@@ -32,7 +32,7 @@ struct BiometricAuthenticator: Sendable {
 
     enum AuthenticationStatus {
         case success
-        case failure
+        case failure(policyUnavailable: Bool)
 
         var isSuccess: Bool {
             switch self {
@@ -55,13 +55,15 @@ struct BiometricAuthenticator: Sendable {
 
     private func authenticate(with context: LAContext) async -> AuthenticationStatus {
         if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
-            return .failure // FIXME: - Display error and not let user enter the app
+            return .failure(policyUnavailable: true)
         }
 
-        let reason = L10n.BiometricLock.biometryUnlockRationale.string
+        let reason = L10n.BiometricLock.biometricUnlockRationale.string
         return await withCheckedContinuation { continuation in
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
-                continuation.resume(with: .success(success ? AuthenticationStatus.success : .failure))
+                continuation.resume(
+                    with: .success(success ? AuthenticationStatus.success : .failure(policyUnavailable: false))
+                )
             }
         }
     }
@@ -71,8 +73,8 @@ struct BiometricAuthenticator: Sendable {
             try await block()
             return .success
         } catch {
-            AppLogger.log(error: error)
-            return .failure
+            AppLogger.log(error: error, category: .appSettings)
+            return .failure(policyUnavailable: false)
         }
     }
 }

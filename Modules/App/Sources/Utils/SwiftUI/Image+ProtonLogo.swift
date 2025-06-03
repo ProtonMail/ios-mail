@@ -15,7 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum LockScreenOutput {
-    case logOut
-    case authenticated
+import InboxDesignSystem
+import SwiftUI
+
+extension Image {
+
+    @MainActor
+    static func protonLogo(size: CGFloat) -> some View {
+        Image(DS.Images.protonMail)
+            .resizable()
+            .square(size: size)
+            .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
+            .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
+    }
+
 }

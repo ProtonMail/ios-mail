@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum PINScreenAction {
-    case pinTyped([UInt32])
+    case pinTyped(PIN)
     case trailingButtonTapped
     case leadingButtonTapped
 }

@@ -20,13 +20,13 @@ import SwiftUI
 
 @MainActor
 struct ComposerViewModalFactory {
-    private let makeScheduleSend: (DraftScheduleSendOptions) -> ScheduleSendPickerSheet
+    private let makeScheduleSend: (DraftScheduleSendOptions, UInt64?) -> ScheduleSendPickerSheet
     private let makeAttachmentPicker: () -> AttachmentSourcePickerSheet
 
     init(scheduleSendAction: @escaping (Date) async -> Void, attachmentPickerState: Binding<AttachmentPickersState>) {
-        self.makeScheduleSend = { schduleSendOptions in
+        self.makeScheduleSend = { schduleSendOptions, lastScheduledTime in
             ScheduleSendPickerSheet(
-                predefinedTimeOptions: schduleSendOptions.toScheduleSendPickerTimeOptions(lastScheduleSendTime: nil),
+                predefinedTimeOptions: schduleSendOptions.toScheduleSendTimeOptions(lastScheduleSendTime: lastScheduledTime),
                 isCustomOptionAvailable: schduleSendOptions.isCustomOptionAvailable,
                 onTimeSelected: scheduleSendAction
             )
@@ -39,8 +39,8 @@ struct ComposerViewModalFactory {
     @ViewBuilder
     func makeModal(for state: ComposerViewModalState) -> some View {
         switch state {
-        case .scheduleSend(let sendTimeOptions):
-            makeScheduleSend(sendTimeOptions)
+        case .scheduleSend(let sendTimeOptions, let lastScheduledTime):
+            makeScheduleSend(sendTimeOptions, lastScheduledTime)
         case .attachmentPicker:
             makeAttachmentPicker()
         }

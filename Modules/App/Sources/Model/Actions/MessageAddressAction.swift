@@ -18,6 +18,7 @@
 import DeveloperToolsSupport
 import Foundation
 import InboxDesignSystem
+import SwiftUI
 
 /**
  List of all actions that can take place over an email address (e.g. the sender or a recipient of a message
@@ -47,7 +48,13 @@ enum MessageAddressAction: ActionPickerListElement {
         }
     }
 
-    var icon: ImageResource {
+    var icon: Image {
+        imageResource.image
+    }
+
+    // MARK: - Private
+
+    private var imageResource: ImageResource {
         switch self {
         case .newMessage:
             DS.Icon.icPenSquare

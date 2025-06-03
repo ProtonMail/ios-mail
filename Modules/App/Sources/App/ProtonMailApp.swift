@@ -68,11 +68,12 @@ private struct RootView: View {
         emailsPrefetchingNotifier: EmailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
     ) {
         self.appContext = appContext
-        self._emailsPrefetchingTrigger = .init(wrappedValue: .init(
-            emailsPrefetchingNotifier: emailsPrefetchingNotifier,
-            sessionProvider: appContext,
-            prefetch: prefetch
-        ))
+        self._emailsPrefetchingTrigger = .init(
+            wrappedValue: .init(
+                emailsPrefetchingNotifier: emailsPrefetchingNotifier,
+                sessionProvider: appContext,
+                prefetch: prefetch
+            ))
         self.recurringBackgroundTaskScheduler = .init(
             backgroundTaskExecutorProvider: { appContext.mailSession }
         )
@@ -139,8 +140,8 @@ private struct RootView: View {
             )
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(
-                state: .init(hideLogoutButton: false, pin: []),
-                error: .constant(errorFromLatestAttempt)
+                state: .init(hideLogoutButton: false, pin: .empty),
+                error: .constant(errorFromLatestAttempt.map(PINAuthenticationError.custom))
             ) { output in
                 switch output {
                 case .pin(let pin):
@@ -196,8 +197,8 @@ private struct SessionTransitionScreen: View {
             notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
             userSession: .init(noPointer: .init()),
             userDefaults: userDefaultsWithPromptsDisabled,
-            draftPresenter: .dummy,
-            sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+            draftPresenter: .dummy(),
+            sendResultPresenter: .init(draftPresenter: .dummy())
         )
         .blur(radius: 5)
         .allowsHitTesting(false)

@@ -161,14 +161,15 @@ extension MailboxScreen {
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
         .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow
         .navigationBarTitleDisplayMode(.inline)
-        .withAccountManager(
+        .withAccountManagerSwitcher(
             isPresented: $isAccountManagerPresented,
             coordinator: mailboxModel.accountManagerCoordinator
         )
         .mainToolbar(
             title: mailboxModel.state.mailboxTitle,
             selectionMode: mailboxModel.selectionMode.selectionState,
-            onEvent: handleMainToolbarEvent
+            onEvent: handleMainToolbarEvent,
+            avatarView: { mailboxModel.accountManagerCoordinator.avatarView() }
         )
         .accessibilityElement(children: .contain)
     }
@@ -245,11 +246,11 @@ extension MailboxScreen {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy,
-        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+        draftPresenter: .dummy(),
+        sendResultPresenter: .init(draftPresenter: .dummy())
     )
-        .environmentObject(appUIStateStore)
-        .environmentObject(toastStateStore)
+    .environmentObject(appUIStateStore)
+    .environmentObject(toastStateStore)
 }
 
 private struct MailboxScreenIdentifiers {

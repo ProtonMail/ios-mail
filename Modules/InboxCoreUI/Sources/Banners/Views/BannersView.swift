@@ -27,11 +27,12 @@ public struct BannersView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DS.Spacing.standard) {
             ForEach(model, id: \.id) { banner in
                 BannerView(model: banner)
             }
         }
+        .padding(.top, DS.Spacing.standard)
     }
 }
 

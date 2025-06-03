@@ -64,6 +64,32 @@ private extension DraftUndoSendErrorReason {
     }
 }
 
+extension DraftCancelScheduleSendError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            return reason.errorMessage.string
+        case .other(let protonError):
+            return protonError.errorDescription
+        }
+    }
+}
+
+extension DraftCancelScheduleSendErrorReason {
+
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .messageDoesNotExist:
+            L10n.Action.UndoSendError.draftNotFound
+        case .messageNotScheduled:
+            L10n.Action.UndoScheduleSendError.messageWasNotScheduled
+        case .messageAlreadySent:
+            L10n.Action.UndoSendError.sendCannotBeUndone
+        }
+    }
+}
+
 extension PinSetError: LocalizedError {
     public var errorDescription: String? {
         switch self {

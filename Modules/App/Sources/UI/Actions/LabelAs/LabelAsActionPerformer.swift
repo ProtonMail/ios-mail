@@ -37,17 +37,13 @@ struct LabelAsActionPerformer {
 
     func labelAs(input: Input) async throws {
         let labelAsAction = labelAsAction(itemType: input.itemType)
-        let isTotalSuccess = try await labelAsAction(
+        _ = try await labelAsAction(
             mailbox,
             input.itemsIDs,
             input.selectedLabelsIDs,
             input.partiallySelectedLabelsIDs,
             input.archive
         ).get()
-
-        if !isTotalSuccess {
-            throw LocalError.couldNotProcessSomeLabels
-        }
     }
 
     // MARK: - Private
@@ -68,16 +64,3 @@ private protocol LabelAsResult {
 
 extension LabelMessagesAsResult: LabelAsResult {}
 extension LabelConversationsAsResult: LabelAsResult {}
-
-extension LabelAsActionPerformer {
-    enum LocalError: LocalizedError {
-        case couldNotProcessSomeLabels
-
-        var errorDescription: String? {
-            switch self {
-            case .couldNotProcessSomeLabels:
-                L10n.Labels.couldNotProcessSomeLabels.string
-            }
-        }
-    }
-}

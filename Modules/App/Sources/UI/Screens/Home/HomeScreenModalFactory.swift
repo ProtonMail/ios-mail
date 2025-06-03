@@ -25,7 +25,7 @@ import SwiftUI
 @MainActor
 struct HomeScreenModalFactory {
     private let makeContactsScreen: () -> ContactsScreen
-    private let makeComposerScreen: (ComposerModalParams) -> ComposerScreen
+    private let makeComposerScreen: (ComposerParams) -> ComposerScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView

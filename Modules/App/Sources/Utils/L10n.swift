@@ -49,6 +49,22 @@ enum L10n {
         }
 
         enum Send {
+            static let editScheduledAlertTitle = LocalizedStringResource(
+                "Edit and reschedule",
+                comment: "Alert title for editing a scheduled message."
+            )
+            static let editScheduledAlertMessage = LocalizedStringResource(
+                "This message will be moved to Drafts so you can edit it. You'll need to reschedule when it will be sent.",
+                comment: "Alert message for editing a scheduled message."
+            )
+            static let editScheduledAlertConfimationButton = LocalizedStringResource(
+                "Edit draft",
+                comment: "Alert confirmation button title for editing a scheduled message."
+            )
+            static let editScheduleNetworkIsRequired = LocalizedStringResource(
+                "You need to be online to edit scheduled messages",
+                comment: "Toast message when editing fails because there is no internet connection."
+            )
             static let forward = LocalizedStringResource(
                 "Forward",
                 comment: "Action title for forwarding given message in the action sheet."
@@ -72,6 +88,13 @@ enum L10n {
             static let draftNotFound = LocalizedStringResource(
                 "Undo operation failed because draft was not found",
                 comment: "Error in the context of undoing a sent message"
+            )
+        }
+
+        enum UndoScheduleSendError {
+            static let messageWasNotScheduled = LocalizedStringResource(
+                "Message was not scheduled",
+                comment: "Error in the context of undoing a scheduled message"
             )
         }
 
@@ -199,7 +222,7 @@ enum L10n {
     }
 
     enum BiometricLock {
-        static let biometryUnlockRationale = LocalizedStringResource(
+        static let biometricUnlockRationale = LocalizedStringResource(
             "Please authenticate to unlock your screen.",
             comment: "Displayed in the system PIN pop-up when FaceID for this app is disabled."
         )
@@ -207,6 +230,28 @@ enum L10n {
             "Unlock Proton Mail",
             comment: "Title of a button that triggers biometric authorization on the lock screen."
         )
+        enum BiometricsNotAvailableAlert {
+            static let signInAgainAction = LocalizedStringResource(
+                "Sign in again",
+                comment: "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let title = LocalizedStringResource(
+                "Enable access",
+                comment: "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let messageFaceID = LocalizedStringResource(
+                "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let messageTouchID = LocalizedStringResource(
+                "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+            static let defaultMessage = LocalizedStringResource(
+                "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app.",
+                comment: "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+            )
+        }
     }
 
     enum EventLoopError {
@@ -222,13 +267,7 @@ enum L10n {
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
         )
         static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
-    }
-
-    enum Labels {
-        static let couldNotProcessSomeLabels = LocalizedStringResource(
-            "Could not process some labels",
-            comment: "Adding or removing labels from messages has failed at least partially"
-        )
+        static let ok = LocalizedStringResource("Ok", comment: "`Ok` action title.")
     }
 
     enum LegacyMigration {
@@ -600,24 +639,28 @@ enum L10n {
             )
         }
 
-        static let enterPinTitle = LocalizedStringResource(
-            "Enter your PIN to unlock you inbox.",
-            comment: "Information displayed on the top of PIN lock screen."
+        static let subtitle = LocalizedStringResource(
+            "Confirm it's you to continue.",
+            comment: "Subtitle of PIN lock screen."
         )
-        static let screenTopTitle = LocalizedStringResource(
+        static let title = LocalizedStringResource(
             "Enter PIN",
-            comment: "Top title of the pin lock screen."
+            comment: "Title of the pin lock screen."
         )
-        static let signOutConfirmationButton = LocalizedStringResource(
-            "Sign Out",
-            comment: "Title of the sign out confirmation alert button."
+        static let pinInputPlaceholder = LocalizedStringResource(
+            "PIN Code",
+            comment: "PIN input placeholder."
+        )
+        static let signOut = LocalizedStringResource(
+            "Sign out",
+            comment: "Title of the sign out button."
         )
         static let signOutConfirmationTitle = LocalizedStringResource(
             "Are you sure you want to sign out?",
             comment: "Title of the sign out confirmation alert."
         )
         static let invalidPIN = LocalizedStringResource(
-            "Invalid PIN",
+            "Incorrect PIN. Try again.",
             comment: "Error message when the user enters an invalid PIN"
         )
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {

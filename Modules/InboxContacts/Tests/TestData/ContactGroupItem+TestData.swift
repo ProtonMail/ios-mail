@@ -25,10 +25,10 @@ extension ContactGroupItem {
             id: 3,
             name: "Advisors Group: Comprehensive Wealth Management and Strategic Financial Solutions",
             avatarColor: "#A1FF33",
-            contacts: [
+            contactEmails: [
                 .init(id: 4, email: "group.advisor@pm.me"),
                 .init(id: 5, email: "group.advisor@protonmail.com"),
-                .init(id: 6, email: "advisor.group@yahoo.com")
+                .init(id: 6, email: "advisor.group@yahoo.com"),
             ]
         )
     }
@@ -38,7 +38,7 @@ extension ContactGroupItem {
             id: 2,
             name: "Business Group",
             avatarColor: "#A1FF33",
-            contacts: [
+            contactEmails: [
                 .init(id: 21, email: "business.group@proton.me")
             ]
         )

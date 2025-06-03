@@ -17,4 +17,5 @@
 
 enum BiometricLockScreenOutput {
     case authenticated
+    case logOut
 }

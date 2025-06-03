@@ -16,9 +16,44 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxCoreUI
 
 public extension Toast {
+
+    static func draftSaved(messageId: ID, undoAction: @escaping (_ messageId: ID) async -> Void) -> Toast {
+        let discardButton = Toast.Button(
+            type: .smallTrailing(content: .title(L10n.Composer.discard.string)),
+            action: { Task { await undoAction(messageId) } }
+        )
+        return Toast(
+            title: nil,
+            message: L10n.Composer.draftSaved.string,
+            button: discardButton,
+            style: .information,
+            duration: .toastDefaultDuration
+        )
+    }
+
+    static func draftDiscarded() -> Toast {
+        return Toast(
+            title: nil,
+            message: L10n.Composer.discarded.string,
+            button: nil,
+            style: .information,
+            duration: .toastDefaultDuration
+        )
+    }
+
+    static func schedulingMessage(duration: TimeInterval) -> Toast {
+        Toast(
+            title: nil,
+            message: L10n.Composer.schedulingMessage.string,
+            button: nil,
+            style: .information,
+            duration: duration
+        )
+    }
 
     static func scheduledMessage(duration: TimeInterval, scheduledTime: String, undoAction: (() -> Void)?) -> Toast {
         var undoButton: Button?
@@ -53,6 +88,16 @@ public extension Toast {
             title: nil,
             message: L10n.Composer.messageSent.string,
             button: undoButton,
+            style: .information,
+            duration: duration
+        )
+    }
+
+    static func messageSentWithoutUndo(duration: TimeInterval) -> Toast {
+        return Toast(
+            title: nil,
+            message: L10n.Composer.messageSent.string,
+            button: nil,
             style: .information,
             duration: duration
         )

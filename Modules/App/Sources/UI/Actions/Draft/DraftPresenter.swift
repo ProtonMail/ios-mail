@@ -16,36 +16,44 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Foundation
 import InboxCore
 import proton_app_uniffi
 
+@MainActor
 struct DraftPresenter {
     private let draftToPresentSubject = PassthroughSubject<DraftToPresent, Never>()
     private let userSession: MailUserSession
     private let draftProvider: DraftProvider
+    private let undoSendProvider: UndoSendProvider
+    private let undoScheduleSendProvider: UndoScheduleSendProvider
 
     var draftToPresent: AnyPublisher<DraftToPresent, Never> {
         draftToPresentSubject.eraseToAnyPublisher()
     }
 
-    init(userSession: MailUserSession, draftProvider: DraftProvider) {
+    init(
+        userSession: MailUserSession,
+        draftProvider: DraftProvider,
+        undoSendProvider: UndoSendProvider,
+        undoScheduleSendProvider: UndoScheduleSendProvider
+    ) {
         self.userSession = userSession
         self.draftProvider = draftProvider
+        self.undoSendProvider = undoSendProvider
+        self.undoScheduleSendProvider = undoScheduleSendProvider
     }
 
-    @MainActor
     func openNewDraft(onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open new draft", category: .composer)
         await publishDraftToPresent(createMode: .empty, onError: onError)
     }
 
-    @MainActor
-    func openDraft(withId messageId: ID) {
+    func openDraft(withId messageId: ID, lastScheduledTime: UInt64? = nil) {
         AppLogger.log(message: "open existing draft", category: .composer)
-        draftToPresentSubject.send(.openDraftId(messageId: messageId))
+        draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
     }
 
-    @MainActor
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:
@@ -56,29 +64,38 @@ struct DraftPresenter {
             await openForwardDraft(for: messageId, onError: onError)
         }
     }
+
+    func undoSentMessageAndOpenDraft(for messageId: ID) async throws(DraftUndoSendError) {
+        if let error = await undoSendProvider.undoSend(messageId) {
+            throw error
+        }
+        openDraft(withId: messageId)
+    }
+
+    func cancelScheduledMessageAndOpenDraft(for messageId: ID) async throws(DraftCancelScheduleSendError) {
+        let result = await undoScheduleSendProvider.undoScheduleSend(messageId)
+        let lastScheduledTime = try result.get().lastScheduledTime
+        openDraft(withId: messageId, lastScheduledTime: lastScheduledTime)
+    }
 }
 
 extension DraftPresenter {
 
-    @MainActor
     private func openReplyDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply draft", category: .composer)
         await publishDraftToPresent(createMode: .reply(messageId), onError: onError)
     }
 
-    @MainActor
     private func openReplyAllDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply all draft", category: .composer)
         await publishDraftToPresent(createMode: .replyAll(messageId), onError: onError)
     }
 
-    @MainActor
     private func openForwardDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open forward draft", category: .composer)
         await publishDraftToPresent(createMode: .forward(messageId), onError: onError)
     }
 
-    @MainActor
     private func publishDraftToPresent(createMode: DraftCreateMode, onError: (DraftOpenError) -> Void) async {
         switch await draftProvider.makeDraft(userSession, createMode) {
         case .ok(let draft):
@@ -92,7 +109,15 @@ extension DraftPresenter {
 
 extension DraftPresenter {
 
-    static var dummy: DraftPresenter {
-        .init(userSession: .init(noPointer: .init()), draftProvider: .dummy)
+    static func dummy(
+        undoSendProvider: UndoSendProvider = .mockInstance,
+        undoScheduleSendProvider: UndoScheduleSendProvider = .mockInstance
+    ) -> DraftPresenter {
+        .init(
+            userSession: .init(noPointer: .init()),
+            draftProvider: .dummy,
+            undoSendProvider: undoSendProvider,
+            undoScheduleSendProvider: undoScheduleSendProvider
+        )
     }
 }

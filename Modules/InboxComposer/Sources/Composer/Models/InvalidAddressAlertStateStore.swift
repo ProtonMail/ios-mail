@@ -55,7 +55,7 @@ private extension AlertModel {
 private enum InvalidAddressFormatAlertAction: AlertActionInfo, CaseIterable {
     case close
 
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
         switch self {
         case .close:
             (L10n.Alert.gotIt, .cancel)

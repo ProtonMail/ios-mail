@@ -30,20 +30,20 @@ extension AssignedSwipeAction {
         }
     }
 
-    func icon(isRead: Bool, isStarred: Bool) -> ImageResource {
+    func icon(isRead: Bool, isStarred: Bool) -> Image {
         switch self {
         case .noAction:
-            DS.Icon.icCrossCircle
+            DS.Icon.icCrossCircle.image
         case .moveTo(.moveToSystemLabel(let systemLabel, _)):
             systemLabel.icon
         case .moveTo:
-            DS.Icon.icFolderArrowIn
+            DS.Icon.icFolderArrowIn.image
         case .labelAs:
-            DS.Icon.icTag
+            DS.Icon.icTag.image
         case .toggleStar:
-            isStarred ? DS.Icon.icStar : DS.Icon.icStarSlash
+            Image(symbol: isStarred ? .star : .starSlash)
         case .toggleRead:
-            isRead ? DS.Icon.icEnvelopeOpen : DS.Icon.icEnvelopeDot
+            isRead ? DS.Icon.icEnvelopeOpen.image : DS.Icon.icEnvelopeDot.image
         }
     }
 

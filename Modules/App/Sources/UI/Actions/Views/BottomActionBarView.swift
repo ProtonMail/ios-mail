@@ -36,7 +36,7 @@ struct BottomActionBarView: View {
                     Spacer()
                     ForEachEnumerated(actions, id: \.offset) { action, index in
                         Button(action: { tapAction(action) }) {
-                            Image(action.displayData.icon)
+                            action.displayData.icon
                                 .foregroundStyle(DS.Color.Icon.weak)
                         }
                         .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))

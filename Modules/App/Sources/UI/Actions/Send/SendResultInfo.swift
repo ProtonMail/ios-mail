@@ -20,9 +20,10 @@ import proton_app_uniffi
 
 struct SendResultInfo {
     enum ToastType {
-        case scheduled(date: Date)
+        case scheduling
+        case scheduled(deliveryTime: Date)
         case sending
-        case sent
+        case sent(secondsToUndo: UInt64)
         case error(DraftSendFailure)
     }
 

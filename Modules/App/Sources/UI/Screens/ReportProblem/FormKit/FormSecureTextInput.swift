@@ -34,10 +34,10 @@ struct FormSecureTextInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             HStack(spacing: DS.Spacing.mediumLight) {
-                ToggleSecureField(text: $text, isSecure: $secureEntry)
+                PINSecureInput(configuration: .default, text: $text, isSecure: $secureEntry)
                     .frame(height: 22)
                 Button(action: { secureEntry.toggle() }) {
-                    Image(systemName: secureEntry ? DS.SFSymbols.eye : DS.SFSymbols.eyeSlash)
+                    Image(symbol: secureEntry ? .eye : .eyeSlash)
                         .foregroundStyle(DS.Color.Text.hint)
                 }
             }

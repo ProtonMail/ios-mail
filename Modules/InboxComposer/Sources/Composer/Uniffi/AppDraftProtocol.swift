@@ -48,6 +48,7 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setBody(body: String) -> VoidDraftSaveResult
     func setSubject(subject: String) -> VoidDraftSaveResult
     func subject() -> String
+    func discard() async  -> VoidDraftDiscardResult
 }
 
 /**

@@ -15,24 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountManager
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MainToolbar: ViewModifier {
+struct MainToolbar<AvatarView: View>: ViewModifier {
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
+    let avatarView: () -> AvatarView
 
     private let title: LocalizedStringResource
 
-    private var state: ToolbarState {
+    private var state: MainToolbarState {
         selectionMode.hasItems ? .selection : .noSelection
     }
 
-    init(title: LocalizedStringResource, selectionMode: SelectionModeState, onEvent: @escaping (MainToolbarEvent) -> Void) {
+    init(
+        title: LocalizedStringResource,
+        selectionMode: SelectionModeState,
+        onEvent: @escaping (MainToolbarEvent) -> Void,
+        avatarView: @escaping () -> AvatarView
+    ) {
         self.title = title
         self.selectionMode = selectionMode
         self.onEvent = onEvent
+        self.avatarView = avatarView
     }
 
     func body(content: Content) -> some View {
@@ -40,24 +48,26 @@ struct MainToolbar: ViewModifier {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack(spacing: .zero) {
-                        Button(action: {
-                            switch state {
-                            case .noSelection:
-                                onEvent(.onOpenMenu)
-                            case .selection:
-                                onEvent(.onExitSelectionMode)
+                        Button(
+                            action: {
+                                switch state {
+                                case .noSelection:
+                                    onEvent(.onOpenMenu)
+                                case .selection:
+                                    onEvent(.onExitSelectionMode)
+                                }
+                            },
+                            label: {
+                                HStack {
+                                    Spacer()
+                                    state.image
+                                        .square(size: 40)
+                                        .id(state.rawValue)
+                                        .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
+                                }
+                                .padding(10)
                             }
-                        }, label: {
-                            HStack {
-                                Spacer()
-                                Image(state.icon)
-                                    .resizable()
-                                    .square(size: 24)
-                                    .id(state.rawValue)
-                                    .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
-                            }
-                            .padding(10)
-                        })
+                        )
                         .square(size: 40)
                         .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
                     }
@@ -67,23 +77,28 @@ struct MainToolbar: ViewModifier {
                         .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        onEvent(.onSearch)
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Image(DS.Icon.icMagnifier)
-                                .resizable()
-                                .square(size: 24)
+                    if !selectionMode.hasItems {
+                        HStack(spacing: DS.Spacing.standard) {
+                            searchButton()
+                            avatarView()
                         }
-                        .padding(10)
-                    })
-                    .opacity(selectionMode.hasItems ? 0 : 1)
-                    .square(size: 40)
+                    }
                 }
             }
             .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
             .tint(DS.Color.Text.norm)
+    }
+
+    private func searchButton() -> some View {
+        Button(
+            action: { onEvent(.onSearch) },
+            label: {
+                Image(symbol: .magnifier)
+                    .square(size: 24)
+                    .padding(10)
+            }
+        )
+        .square(size: 40)
     }
 }
 
@@ -92,28 +107,26 @@ extension View {
     func mainToolbar(
         title: LocalizedStringResource,
         selectionMode: SelectionModeState? = nil,
-        onEvent: @escaping (MainToolbarEvent) -> Void
+        onEvent: @escaping (MainToolbarEvent) -> Void,
+        avatarView: @escaping () -> some View
     ) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
-        return self.modifier(
-            MainToolbar(title: title, selectionMode: selectionMode, onEvent: onEvent)
+        return modifier(
+            MainToolbar(title: title, selectionMode: selectionMode, onEvent: onEvent, avatarView: avatarView)
         )
     }
 }
 
-extension MainToolbar {
+enum MainToolbarState: Int {
+    case noSelection
+    case selection
 
-    enum ToolbarState: Int {
-        case noSelection
-        case selection
-
-        var icon: ImageResource {
-            switch self {
-            case .noSelection:
-                DS.Icon.icHamburguer
-            case .selection:
-                DS.Icon.icChevronTinyLeft
-            }
+    var image: Image {
+        switch self {
+        case .noSelection:
+            Image(DS.Icon.icHamburguer)
+        case .selection:
+            Image(symbol: .xmark)
         }
     }
 }
@@ -135,18 +148,23 @@ enum MainToolbarEvent {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy,
-        sendResultPresenter: .init(undoSendProvider: .mockInstance, draftPresenter: .dummy)
+        draftPresenter: .dummy(),
+        sendResultPresenter: .init(draftPresenter: .dummy())
     )
-        .mainToolbar(title: "Inbox", selectionMode: .init(), onEvent: { _ in })
-        .environmentObject(appUIStateStore)
-        .environmentObject(toastStateStore)
+    .mainToolbar(
+        title: "Inbox",
+        selectionMode: .init(),
+        onEvent: { _ in },
+        avatarView: { EmptyView() }
+    )
+    .environmentObject(appUIStateStore)
+    .environmentObject(toastStateStore)
 }
 
 private struct MainToolbarIdentifiers {
     static let titleText = "main.toolbar.titleText"
 
-    static func navigationButton(forState state: MainToolbar.ToolbarState) -> String {
+    static func navigationButton(forState state: MainToolbarState) -> String {
         switch state {
         case .noSelection:
             "main.toolbar.hamburgerButton"

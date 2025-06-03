@@ -65,7 +65,7 @@ public struct ContactsScreen: View {
                     }
             }
             .toolbar {
-                ToolbarItemFactory.leading(Image(systemName: DS.SFSymbols.xmark)) {
+                ToolbarItemFactory.leading(Image(symbol: .xmark)) {
                     dismiss()
                 }
             }

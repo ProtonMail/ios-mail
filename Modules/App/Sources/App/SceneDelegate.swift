@@ -121,25 +121,24 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         appProtectionCancellable = appProtectionStore
             .protection
             .receive(on: Dispatcher.mainScheduler)
+            .removeDuplicates()
             .sink(receiveValue: { [weak self] appProtection in
                 self?.appProtection = appProtection
             })
-
-        appProtectionStore.checkProtection()
 
         return window
     }
 
     private func handleLockScreenVisibility(type: LockScreenState.LockScreenType?) {
         guard let type else {
-            showAppContent()
+            hideAppProtectionWindow()
             return
         }
         checkAutoLockSetting { [weak self] shouldShowLockScreen in
             if shouldShowLockScreen {
                 self?.showLockScreen(lockScreenType: type)
             } else {
-                self?.showAppContent()
+                self?.hideAppProtectionWindow()
             }
         }
     }
@@ -147,7 +146,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     @MainActor
     private func showLockScreen(lockScreenType: LockScreenState.LockScreenType) {
         appProtectionWindow?.isHidden = false
+        appProtectionWindow?.makeKey()
         appProtectionWindow?.rootViewController = lockScreenController(for: lockScreenType)
+        appProtectionWindow?.accessibilityViewIsModal = true
     }
 
     private func lockScreenController(for lockScreenType: LockScreenState.LockScreenType) -> UIViewController {
@@ -156,13 +157,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
                 LockScreen(
                     state: .init(type: lockScreenType),
                     pinVerifier: pinVerifierFactory(),
-                    output: { [weak self] output in
-                        switch output {
-                        case .logOut:
-                            break  // FIXME: - To add later
-                        case .authenticated:
-                            self?.appProtectionStore.dismissLock()
-                        }
+                    dismissLock: { [weak self] in
+                        self?.appProtectionStore.dismissLock()
                     }
                 )
         )
@@ -171,8 +167,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     @MainActor
-    private func showAppContent() {
-        guard let appProtectionWindow else { return }
+    private func hideAppProtectionWindow() {
+        guard let appProtectionWindow, !appProtectionWindow.isHidden else { return }
+        overlayWindow?.makeKey()
         transitionAnimation(
             appProtectionWindow, 0.2, .transitionCrossDissolve,
             {
@@ -197,7 +194,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     private var coverController: UIViewController {
-        let controller = UIHostingController(rootView: BlurredCoverView())
+        let controller = UIHostingController(rootView: BlurredCoverView(showLogo: true))
         controller.view.backgroundColor = .clear
         return controller
     }

@@ -32,6 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var isStarred: Bool
     @Published private(set) var bottomBarActions: [BottomBarActions] = []
     @Published var actionSheets: MailboxActionSheetsState = .initial()
+    @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var deleteConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
@@ -120,6 +121,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         onReplyAction(messageId: messageId, action: .forward, toastStateStore: toastStateStore)
     }
 
+    @MainActor
+    func onEditScheduledMessage(withId messageId: ID, goBack: @escaping () -> Void, toastStateStore: ToastStateStore) {
+        let alert: AlertModel = .editScheduleConfirmation(action: { [weak self] action in
+            await self?.handle(action: action, messageId: messageId, toastStateStore: toastStateStore, goBack: goBack)
+        })
+        editScheduledMessageConfirmationAlert = alert
+    }
+
     func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
         guard let mailbox, metadata.unread else { return }
         Task {
@@ -137,10 +146,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .labelAs:
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
-            actionSheets = actionSheets
+            actionSheets =
+                actionSheets
                 .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
-            actionSheets = actionSheets
+            actionSheets =
+                actionSheets
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
         case .star:
             starConversation()
@@ -173,10 +184,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             Task {
                 await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
                     .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-                Dispatcher.dispatchOnMain(.init(block: {
-                    toastStateStore.present(toast: .deleted())
-                    goBack()
-                }))
+                Dispatcher.dispatchOnMain(
+                    .init(block: {
+                        toastStateStore.present(toast: .deleted())
+                        goBack()
+                    }))
             }
         }
     }
@@ -218,10 +230,11 @@ extension ConversationDetailModel {
                 toast = .error(message: error.localizedDescription)
             }
 
-            Dispatcher.dispatchOnMain(.init(block: {
-                toastStateStore.present(toast: toast)
-                goBack()
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: {
+                    toastStateStore.present(toast: toast)
+                    goBack()
+                }))
         }
     }
 
@@ -420,9 +433,34 @@ extension ConversationDetailModel {
 
     private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
         Task {
-            await draftPresenter.handleReplyAction(for: messageId, action: action, onError: { error in
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
-            })
+            await draftPresenter.handleReplyAction(
+                for: messageId, action: action,
+                onError: { error in
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                })
+        }
+    }
+
+    @MainActor
+    private func handle(
+        action: EditScheduleAlertAction,
+        messageId: ID,
+        toastStateStore: ToastStateStore,
+        goBack: @escaping () -> Void
+    ) async {
+        editScheduledMessageConfirmationAlert = nil
+        if action == .edit {
+            do {
+                try await self.draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
+                goBack()
+            } catch {
+                switch error {
+                case .other(let protonError) where protonError == .network:
+                    toastStateStore.present(toast: .information(message: L10n.Action.Send.editScheduleNetworkIsRequired.string))
+                default:
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                }
+            }
         }
     }
 
@@ -431,7 +469,8 @@ extension ConversationDetailModel {
             return
         }
 
-        bottomBarActions = try! await dependencies
+        bottomBarActions =
+            try! await dependencies
             .bottomBarConversationActionsProvider(mailbox, [conversationID])
             .get()
             .visibleBottomBarActions

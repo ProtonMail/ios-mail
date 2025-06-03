@@ -148,7 +148,7 @@ private final class LabelsView: UIView {
 
     func configure(title: String, subtitle: String, isSelected: Bool) {
         self.title.text = title
-        self.title.textColor = isSelected ? DS.Color.Text.hint.toDynamicUIColor : DS.Color.Text.weak.toDynamicUIColor
+        self.title.textColor = isSelected ? DS.Color.Text.hint.toDynamicUIColor : DS.Color.Text.norm.toDynamicUIColor
         self.subtitle.text = subtitle
     }
 }
@@ -167,7 +167,7 @@ private extension LabelsView {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.font = UIFont.preferredFont(forTextStyle: .subheadline)
-            view.textColor = DS.Color.Text.hint.toDynamicUIColor
+            view.textColor = DS.Color.Text.weak.toDynamicUIColor
             return view
         }
 

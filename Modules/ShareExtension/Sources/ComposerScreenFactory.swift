@@ -37,15 +37,14 @@ enum ComposerScreenFactory {
             userSession: userSession
         )
 
-        return ComposerScreen(
-            draft: draft, draftOrigin: .new, dependencies: dependencies,
-            onSendingEvent: { _ in
-                extensionContext.complete()
-            },
-            onCancel: {
+        return ComposerScreen(draft: draft, draftOrigin: .new, dependencies: dependencies) { dismissReason in
+            switch dismissReason {
+            case .dismissedManually, .draftDiscarded:
                 extensionContext.cancel()
+            case .messageScheduled, .messageSent:
+                extensionContext.complete()
             }
-        )
+        }
     }
 }
 

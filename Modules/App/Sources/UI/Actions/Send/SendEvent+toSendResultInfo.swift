@@ -17,14 +17,16 @@
 
 import InboxComposer
 
-extension SendEvent {
+extension ComposerDismissReason {
 
-    var toastType: SendResultInfo.ToastType {
+    var sendResultToastType: SendResultInfo.ToastType? {
         switch self {
-        case .scheduleSend(let date):
-            .scheduled(date: date)
-        case .send:
+        case .messageScheduled:
+            .scheduling
+        case .messageSent:
             .sending
+        case .dismissedManually, .draftDiscarded:
+            nil
         }
     }
 }

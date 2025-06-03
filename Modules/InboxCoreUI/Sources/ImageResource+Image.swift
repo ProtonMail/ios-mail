@@ -15,4 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-typealias PIN = [UInt32]
+import SwiftUI
+
+extension ImageResource {
+
+    public var image: Image {
+        Image(self)
+    }
+
+}

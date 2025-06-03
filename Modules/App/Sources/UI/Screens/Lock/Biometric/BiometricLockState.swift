@@ -16,9 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 
 struct BiometricLockState: Equatable, Copying {
     var displayUnlockButton: Bool
+    var alert: AlertModel?
 }
 
 extension BiometricLockState {

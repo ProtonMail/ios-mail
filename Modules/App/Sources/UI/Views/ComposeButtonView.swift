@@ -26,24 +26,27 @@ struct ComposeButtonView: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap, label: {
-            HStack(spacing: DS.Spacing.standard) {
-                Image(DS.Icon.icPenSquare)
-                    .foregroundStyle(DS.Color.Brand.norm)
-                    .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
-                if isExpanded {
-                    Text(text)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(DS.Color.Brand.norm)
-                        .padding(.trailing, DS.Spacing.small)
-                        .transition(.move(edge: .trailing).combined(with: .opacity))
-                        .accessibilityIdentifier(ComposeButtonIdentifiers.text)
+        Button(
+            action: onTap,
+            label: {
+                HStack(spacing: DS.Spacing.standard) {
+                    Image(DS.Icon.icPenSquare)
+                        .foregroundStyle(DS.Color.Text.norm)
+                        .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
+                    if isExpanded {
+                        Text(text)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DS.Color.Text.norm)
+                            .padding(.trailing, DS.Spacing.small)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                            .accessibilityIdentifier(ComposeButtonIdentifiers.text)
+                    }
                 }
+                .accessibilityElement(children: .contain)
+                .animation(animation, value: isExpanded)
             }
-            .accessibilityElement(children: .contain)
-            .animation(animation, value: isExpanded)
-        })
+        )
         .buttonStyle(ComposeButtonStyle(isExpanded: isExpanded, animation: animation))
         .accessibilityIdentifier(ComposeButtonIdentifiers.rootElement)
     }

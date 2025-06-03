@@ -23,7 +23,7 @@ import enum proton_app_uniffi.DraftSendFailure
 
 /**
  This class handles all toast notifications related to sending a message, from the moment
- the user presses send. More specifically in manages the toast presentation and dismissal for each
+ the user presses send. More specifically it manages the toast presentation and dismissal for each
  message being sent.
 */
 final class SendResultPresenter {
@@ -32,11 +32,9 @@ final class SendResultPresenter {
     private let extendedDuration: TimeInterval = 3.0
     private var toasts = [MessageID: Toast]()
     private let subject = PassthroughSubject<SendResultToastAction, Never>()
-    private let undoSendProvider: UndoSendProvider
     private let draftPresenter: DraftPresenter
 
-    init(undoSendProvider: UndoSendProvider, draftPresenter: DraftPresenter) {
-        self.undoSendProvider = undoSendProvider
+    init(draftPresenter: DraftPresenter) {
         self.draftPresenter = draftPresenter
     }
 
@@ -47,19 +45,28 @@ final class SendResultPresenter {
     @MainActor
     func presentResultInfo(_ info: SendResultInfo) {
         switch info.type {
-        case .scheduled(let time):
-            let formattedTime = ScheduleSendDateFormatter().string(from: time, format: .long)
+        case .scheduling:
+            handleToast(.schedulingMessage(duration: regularDuration), for: info.messageId)
+
+        case .scheduled(let deliveryTime):
+            let formattedTime = ScheduleSendDateFormatter().string(from: deliveryTime, format: .long)
             let toast: Toast = .scheduledMessage(duration: extendedDuration, scheduledTime: formattedTime) { [weak self] in
-                self?.handleToast(.comingSoon, for: info.messageId)
+                Task { await self?.undoScheduleSendAction(for: info.messageId) }
             }
             handleToast(toast, for: info.messageId)
 
         case .sending:
             handleToast(.sendingMessage(duration: regularDuration), for: info.messageId)
 
-        case .sent:
-            let toast: Toast = .messageSent(duration: extendedDuration) { [weak self] in
-                Task { await self?.undoAction(for: info.messageId) }
+        case .sent(let secondsToUndo):
+            let duration = min(TimeInterval(secondsToUndo), extendedDuration)
+            let toast: Toast
+            if duration > 0 {
+                toast = .messageSent(duration: duration) { [weak self] in
+                    Task { await self?.undoSendAction(for: info.messageId) }
+                }
+            } else {
+                toast = .messageSentWithoutUndo(duration: regularDuration)
             }
             handleToast(toast, for: info.messageId)
 
@@ -71,9 +78,15 @@ final class SendResultPresenter {
     }
 
     @MainActor
-    func undoActionForTestingPurposes() -> (ID) async -> Void {
-        self.undoAction
+    func undoSendActionForTestingPurposes() -> (ID) async -> Void {
+        self.undoSendAction
     }
+
+    @MainActor
+    func undoScheduleSendActionForTestingPurposes() -> (ID) async -> Void {
+        self.undoScheduleSendAction
+    }
+
 }
 
 // MARK: Private methods
@@ -81,15 +94,22 @@ final class SendResultPresenter {
 @MainActor
 extension SendResultPresenter {
 
-    private func undoAction(for messageId: MessageID) async {
-        removeAndDismissToastReference(for: messageId)
-
-        let error = await undoSendProvider.undoSend(messageId)
-        guard error == nil else {
-            present(toast: .error(message: error!.localizedDescription).duration(.toastMediumDuration))
-            return
+    private func undoSendAction(for messageId: MessageID) async {
+        do {
+            removeAndDismissToastReference(for: messageId)
+            try await draftPresenter.undoSentMessageAndOpenDraft(for: messageId)
+        } catch {
+            present(toast: .error(message: error.localizedDescription).duration(.toastMediumDuration))
         }
-        draftPresenter.openDraft(withId: messageId)
+    }
+
+    private func undoScheduleSendAction(for messageId: MessageID) async {
+        do {
+            removeAndDismissToastReference(for: messageId)
+            try await draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
+        } catch {
+            present(toast: .error(message: error.localizedDescription).duration(.toastMediumDuration))
+        }
     }
 
     private func handleToast(_ toast: Toast, for messageId: MessageID) {

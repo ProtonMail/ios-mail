@@ -19,16 +19,22 @@ import SwiftUI
 import InboxDesignSystem
 
 struct BlurredCoverView: View {
+    private let showLogo: Bool
+
+    init(showLogo: Bool) {
+        self.showLogo = showLogo
+    }
+
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
                 TransparentBlur()
 
-                Image(DS.Images.protonMail)
-                    .square(size: 120)
-                    .padding(.top, geometry.size.height * 0.37)
-                    .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
-                    .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
+                if showLogo {
+                    Image
+                        .protonLogo(size: 120)
+                        .padding(.top, geometry.size.height * 0.37)
+                }
             }
         }.ignoresSafeArea()
     }

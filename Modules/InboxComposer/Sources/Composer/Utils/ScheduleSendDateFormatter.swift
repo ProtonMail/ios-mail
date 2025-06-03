@@ -23,6 +23,8 @@ public struct ScheduleSendDateFormatter {
         case short
         /** Tomorrow at 10:00 AM */
         case relativeOrShort
+        /** 27 May 2029 */
+        case medium
         /** Thursday, November 15 at 10:00 AM */
         case long
     }
@@ -42,6 +44,8 @@ public struct ScheduleSendDateFormatter {
             stringShortFormat(from: date)
         case .relativeOrShort:
             stringWithRelativeDate(from: date)
+        case .medium:
+            stringMediumFormat(from: date)
         case .long:
             stringLongFormat(from: date)
         }
@@ -63,6 +67,12 @@ public struct ScheduleSendDateFormatter {
         } else {
             return string(from: date, format: .short)
         }
+    }
+
+    private func stringMediumFormat(from date: Date) -> String {
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
     }
 
     private func stringLongFormat(from date: Date) -> String {

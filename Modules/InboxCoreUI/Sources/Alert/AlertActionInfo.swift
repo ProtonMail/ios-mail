@@ -18,5 +18,5 @@
 import SwiftUI
 
 public protocol AlertActionInfo {
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) { get }
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) { get }
 }

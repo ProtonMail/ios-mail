@@ -96,12 +96,12 @@ struct CollapsedMessageCell: View {
                 .lineLimit(1)
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.senderName)
+            Spacer()
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
-                .foregroundColor(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
+                .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.dateText)
-            Spacer()
         }
     }
 }
@@ -117,30 +117,33 @@ struct CollapsedMessageCellUIModel {
 
 #Preview {
     VStack(spacing: 0) {
-        CollapsedMessageCell(uiModel: .init(
-            sender: "Martha",
-            date: .now,
-            recipients: "john@gmail.com",
-            messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
-            isRead: true,
-            avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
-        ), isFirstCell: true, onTap: {})
-        CollapsedMessageCell(uiModel: .init(
-            sender: "john@gmail.com",
-            date: .now,
-            recipients: "martha@proton.me",
-            messagePreview: "I'm definitely on board for this adventure",
-            isRead: false,
-            avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
-        ), onTap: {})
-        CollapsedMessageCell(uiModel: .init(
-            sender: "Martha",
-            date: .now,
-            recipients: "john@gmail.com",
-            messagePreview: nil,
-            isRead: true,
-            avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
-        ), onTap: {})
+        CollapsedMessageCell(
+            uiModel: .init(
+                sender: "Martha",
+                date: .now,
+                recipients: "john@gmail.com",
+                messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
+                isRead: true,
+                avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
+            ), isFirstCell: true, onTap: {})
+        CollapsedMessageCell(
+            uiModel: .init(
+                sender: "john@gmail.com",
+                date: .now,
+                recipients: "martha@proton.me",
+                messagePreview: "I'm definitely on board for this adventure",
+                isRead: false,
+                avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
+            ), onTap: {})
+        CollapsedMessageCell(
+            uiModel: .init(
+                sender: "Martha",
+                date: .now,
+                recipients: "john@gmail.com",
+                messagePreview: nil,
+                isRead: true,
+                avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
+            ), onTap: {})
     }
 }
 

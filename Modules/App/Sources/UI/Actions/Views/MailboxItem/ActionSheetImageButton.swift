@@ -26,7 +26,7 @@ struct ActionSheetImageButton: View {
     var body: some View {
         ActionSheetButton(displayBottomSeparator: displayBottomSeparator, action: action) {
             HStack(spacing: DS.Spacing.large) {
-                Image(displayData.image)
+                displayData.image
                     .resizable()
                     .square(size: 20)
                     .foregroundStyle(DS.Color.Icon.norm)

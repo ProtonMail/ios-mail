@@ -72,9 +72,9 @@ class PINStateStore: StateStore {
         }
     }
 
-    private func confirm(pin: [UInt32]) async {
+    private func confirm(pin: PIN) async {
         do {
-            try await appProtectionConfigurator.setPinCode(pin: pin).get()
+            try await appProtectionConfigurator.setPinCode(pin: pin.digits).get()
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }
@@ -87,14 +87,14 @@ class PINStateStore: StateStore {
             router.go(to: .pin(type: .set))
         case .disablePIN:
             do {
-                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
                 dismiss()
             } catch {
                 state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
             }
         case .changeToBiometry:
             do {
-                try await appProtectionConfigurator.deletePinCode(pin: state.pin).get()
+                try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()
                 await setUpBioemtryProtection()
             } catch {
                 state = state.copy(\.pinValidation, to: .failure(error.localizedDescription))
@@ -106,7 +106,7 @@ class PINStateStore: StateStore {
         do {
             try await appProtectionConfigurator.setBiometricsAppProtection().get()
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .appSettings)
         }
         dismiss()
     }

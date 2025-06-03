@@ -55,17 +55,14 @@ struct SearchToolbarView: View {
 
     private var selectionView: some View {
         HStack {
-            Button(action: {
-                onEvent(.onExitSelection)
-            }, label: {
-                HStack {
-                    Spacer()
-                    Image(DS.Icon.icChevronTinyLeft)
-                        .resizable()
-                        .square(size: 24)
+            Button(
+                action: {
+                    onEvent(.onExitSelection)
+                },
+                label: {
+                    Image(symbol: .xmark)
                 }
-                .padding(10)
-            })
+            )
             .square(size: 40)
 
             SelectionTitleView(title: selectedState.title)
@@ -76,8 +73,7 @@ struct SearchToolbarView: View {
 
     private var searchTextField: some View {
         HStack(spacing: 0) {
-            Image(DS.Icon.icMagnifier)
-                .resizable()
+            Image(symbol: .magnifier)
                 .square(size: Layout.iconSquareSize)
                 .foregroundStyle(DS.Color.Icon.hint)
                 .padding(.leading, DS.Spacing.moderatelyLarge)

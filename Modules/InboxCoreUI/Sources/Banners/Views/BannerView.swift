@@ -34,7 +34,7 @@ struct BannerView: View {
                     .shadow(DS.Shadows.softFull, isVisible: true)
             }
             .frame(maxWidth: .infinity)
-            .padding([.horizontal, .bottom], DS.Spacing.large)
+            .padding(.horizontal, DS.Spacing.large)
     }
 
     // MARK: - Private

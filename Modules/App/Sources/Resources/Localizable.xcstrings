@@ -747,6 +747,9 @@
         }
       }
     },
+    "Confirm it's you to continue." : {
+      "comment" : "Subtitle of PIN lock screen."
+    },
     "Confirm phishing report" : {
       "comment" : "Title of alert displayed after report phishing action tap."
     },
@@ -836,9 +839,6 @@
           }
         }
       }
-    },
-    "Could not process some labels" : {
-      "comment" : "Adding or removing labels from messages has failed at least partially"
     },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
@@ -1150,6 +1150,12 @@
         }
       }
     },
+    "Edit and reschedule" : {
+      "comment" : "Alert title for editing a scheduled message."
+    },
+    "Edit draft" : {
+      "comment" : "Alert confirmation button title for editing a scheduled message."
+    },
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
@@ -1162,11 +1168,11 @@
     "Empty %@ now" : {
       "comment" : "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
     },
-    "Enter PIN" : {
-      "comment" : "Top title of the pin lock screen."
+    "Enable access" : {
+      "comment" : "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
-    "Enter your PIN to unlock you inbox." : {
-      "comment" : "Information displayed on the top of PIN lock screen."
+    "Enter PIN" : {
+      "comment" : "Title of the pin lock screen."
     },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."
@@ -1357,7 +1363,7 @@
         }
       }
     },
-    "Invalid PIN" : {
+    "Incorrect PIN. Try again." : {
       "comment" : "Error message when the user enters an invalid PIN"
     },
     "Label" : {
@@ -1661,6 +1667,9 @@
           }
         }
       }
+    },
+    "Message was not scheduled" : {
+      "comment" : "Error in the context of undoing a scheduled message"
     },
     "Messages in Trash and Spam will be automatically deleted after 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
@@ -1982,6 +1991,9 @@
         }
       }
     },
+    "Ok" : {
+      "comment" : "`Ok` action title."
+    },
     "Old PIN code" : {
       "comment" : "Verify PIN code screen PIN input title."
     },
@@ -2078,8 +2090,20 @@
         }
       }
     },
+    "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
+      "comment" : "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
     "PIN code" : {
       "comment" : "App lock option."
+    },
+    "PIN Code" : {
+      "comment" : "PIN input placeholder."
     },
     "PIN is too long" : {
       "comment" : "Error message when setting up PIN"
@@ -2503,8 +2527,11 @@
         }
       }
     },
-    "Sign Out" : {
-      "comment" : "Title of the sign out confirmation alert button."
+    "Sign in again" : {
+      "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "Sign out" : {
+      "comment" : "Title of the sign out button."
     },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
@@ -2759,6 +2786,9 @@
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted."
+    },
+    "This message will be moved to Drafts so you can edit it. You'll need to reschedule when it will be sent." : {
+      "comment" : "Alert message for editing a scheduled message."
     },
     "This message will be sent" : {
       "comment" : "Banner showing the scheduled send time for an email."
@@ -3100,6 +3130,9 @@
           }
         }
       }
+    },
+    "You need to be online to edit scheduled messages" : {
+      "comment" : "Toast message when editing fails because there is no internet connection."
     },
     "Your device is offline" : {
       "comment" : "Title of the offline mode placeholder."

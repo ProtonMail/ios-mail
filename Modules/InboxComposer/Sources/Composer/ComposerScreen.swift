@@ -25,14 +25,19 @@ public struct ComposerScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
-    private let onSendingEvent: (SendEvent) -> Void
-    private let onCancel: () -> Void
+    private let messageLastScheduledTime: UInt64?
+    private let onDismiss: (ComposerDismissReason) -> Void
     private let dependencies: Dependencies
 
-    public init(messageId: ID, dependencies: Dependencies, onSendingEvent: @escaping (SendEvent) -> Void, onCancel: @escaping () -> Void = {}) {
+    public init(
+        messageId: ID,
+        messageLastScheduledTime: UInt64? = nil,
+        dependencies: Dependencies,
+        onDismiss: @escaping (ComposerDismissReason) -> Void
+    ) {
+        self.messageLastScheduledTime = messageLastScheduledTime
         self.dependencies = dependencies
-        self.onSendingEvent = onSendingEvent
-        self.onCancel = onCancel
+        self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue:
                 ComposerScreenModel(
@@ -46,12 +51,11 @@ public struct ComposerScreen: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         dependencies: Dependencies,
-        onSendingEvent: @escaping (SendEvent) -> Void,
-        onCancel: @escaping () -> Void = {}
+        onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
+        self.messageLastScheduledTime = nil
         self.dependencies = dependencies
-        self.onSendingEvent = onSendingEvent
-        self.onCancel = onCancel
+        self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue: ComposerScreenModel(
                 draft: draft,
@@ -76,10 +80,9 @@ public struct ComposerScreen: View {
             ComposerView(
                 draft: draft,
                 draftOrigin: draftOrigin,
-                draftSavedToastCoordinator: .init(mailUSerSession: dependencies.userSession, toastStoreState: toastStateStore),
+                draftLastScheduledTime: messageLastScheduledTime,
                 contactProvider: dependencies.contactProvider,
-                onSendingEvent: onSendingEvent,
-                onCancel: onCancel
+                onDismiss: onDismiss
             )
             .interactiveDismissDisabled()
         }
@@ -120,8 +123,7 @@ struct ComposerLoadingView: View {
         draft: .emptyMock,
         draftOrigin: .new,
         dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
-        onSendingEvent: { _ in },
-        onCancel: {}
+        onDismiss: { _ in }
     )
     .environmentObject(toastStateStore)
 }

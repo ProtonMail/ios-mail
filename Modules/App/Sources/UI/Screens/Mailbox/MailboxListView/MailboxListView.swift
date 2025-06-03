@@ -125,7 +125,7 @@ extension MailboxListView {
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route,
-            draftPresenter: .dummy
+            draftPresenter: .dummy()
         ),
         mailUserSession: .dummy
     )

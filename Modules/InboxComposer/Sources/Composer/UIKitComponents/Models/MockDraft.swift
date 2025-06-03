@@ -26,6 +26,7 @@ extension SingleRecipientEntry {
 }
 
 final class MockDraft: AppDraftProtocol, @unchecked Sendable {
+    var mockDraftMessageIdResult: DraftMessageIdResult = .ok(nil)
     var mockSender: String = .empty
     var mockSubject: String = .empty
     var mockToRecipientList = MockComposerRecipientList()
@@ -58,7 +59,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         return draft
     }
 
-    func messageId() async -> DraftMessageIdResult { .ok(nil) }
+    func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
 
     func attachmentList() -> AttachmentListProtocol {
         mockAttachmentList
@@ -122,6 +123,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult {
         .error(.network)
+    }
+
+    func discard() async -> VoidDraftDiscardResult {
+        .ok
     }
 }
 

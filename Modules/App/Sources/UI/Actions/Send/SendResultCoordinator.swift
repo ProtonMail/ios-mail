@@ -41,10 +41,7 @@ final class SendResultCoordinator: ObservableObject {
     convenience init(userSession: MailUserSession, draftPresenter: DraftPresenter) {
         self.init(
             sendResultPublisher: SendResultPublisher(userSession: userSession),
-            presenter: .init(
-                undoSendProvider: .productionInstance(userSession: userSession),
-                draftPresenter: draftPresenter
-            )
+            presenter: .init(draftPresenter: draftPresenter)
         )
     }
 }

@@ -32,16 +32,16 @@ struct BiometricLockScreen: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                BlurredCoverView()
+                BlurredCoverView(showLogo: true)
                 if store.state.displayUnlockButton {
                     VStack {
                         Spacer()
                         Button(action: { store.handle(action: .unlockTapped) }) {
                             Text(L10n.BiometricLock.unlockButtonTitle)
-                                .foregroundStyle(DS.Color.Text.norm)
+                                .foregroundStyle(DS.Color.Text.inverted)
                                 .padding(.vertical, DS.Spacing.medium)
                                 .frame(maxWidth: .infinity)
-                                .background(DS.Color.InteractionWeak.norm)
+                                .background(DS.Color.InteractionBrand.norm)
                                 .clipShape(Capsule())
                         }
                         .padding(.horizontal, DS.Spacing.extraLarge)
@@ -50,6 +50,7 @@ struct BiometricLockScreen: View {
                 }
             }
         }
+        .alert(model: $store.state.alert)
         .onLoad {
             store.handle(action: .onLoad)
         }

@@ -29,23 +29,21 @@ struct ComposerView: View {
     @State var selectedPhotosItems: [PhotosPickerItem] = []
     @State var modalState: ComposerViewModalState?
     @State var attachmentPickerState: AttachmentPickersState = .init()
+    private let draftLastScheduledTime: UInt64?
 
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
-        draftSavedToastCoordinator: DraftSavedToastCoordinator,
+        draftLastScheduledTime: UInt64? = nil,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping (SendEvent) -> Void,
-        onCancel: @escaping () -> Void
+        onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self._model = StateObject(
             wrappedValue: ComposerModel(
                 draft: draft,
                 draftOrigin: draftOrigin,
-                draftSavedToastCoordinator: draftSavedToastCoordinator,
                 contactProvider: contactProvider,
-                onSendingEvent: onSendingEvent,
-                onCancel: onCancel,
+                onDismiss: onDismiss,
                 permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
                 photosItemsHandler: .init(),
@@ -53,6 +51,7 @@ struct ComposerView: View {
                 fileItemsHandler: .init()
             )
         )
+        self.draftLastScheduledTime = draftLastScheduledTime
     }
 
     var body: some View {
@@ -64,9 +63,9 @@ struct ComposerView: View {
         VStack(spacing: 0) {
             ComposerTopBar(
                 isSendEnabled: model.state.isSendAvailable,
-                scheduleSendAction: { modalState = model.scheduleSendState() },
+                scheduleSendAction: { modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime) },
                 sendAction: { await model.sendMessage(dismissAction: dismiss) },
-                dismissAction: { model.dismissComposer(dismissAction: dismiss) }
+                dismissAction: { await model.dismissComposerManually(dismissAction: dismiss) }
             )
 
             ComposerControllerRepresentable(
@@ -119,8 +118,6 @@ struct ComposerView: View {
 
                 case .attachmentEvent(let event):
                     switch event {
-                    case .onRetryAttachmentUpload(let uiModel):
-                        model.retryUploadingAttachment(uiModel: uiModel)
                     case .onTap:
                         toastStateStore.present(toast: .comingSoon)
                     case .onRemove(let uiModel):
@@ -146,7 +143,7 @@ struct ComposerView: View {
                     case .onPickAttachmentSource:
                         modalState = .attachmentPicker
                     case .onDiscardDraft:
-                        toastStateStore.present(toast: .comingSoon)
+                        Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
                     }
                 }
             }

@@ -27,7 +27,7 @@ struct PINScreenSnapshotTests {
     @Test(arguments: [
         PINScreenType.verify(reason: .changePIN),
         .verify(reason: .disablePIN),
-        .confirm(pin: []),
+        .confirm(pin: .empty),
         .set,
     ])
     func pinScreensLayoutCorrectly(type: PINScreenType) {

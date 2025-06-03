@@ -59,6 +59,18 @@ enum L10n {
             comment: "Composer toast message when dismissing the screen."
         )
 
+        static let discardConfirmationTitle = LocalizedStringResource(
+            "Discard this message?",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer discard confirmation alert title"
+        )
+
+        static let discardConfirmationMessage = LocalizedStringResource(
+            "Your draft will not be saved",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer discard confirmation alert message"
+        )
+
         static let discard = LocalizedStringResource(
             "Discard",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -83,6 +95,12 @@ enum L10n {
             "Sending message...",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Composer toast message when send is tapped."
+        )
+
+        static let schedulingMessage = LocalizedStringResource(
+            "Scheduling message...",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toast message when schedule a message is tapped."
         )
 
         static let messageSent = LocalizedStringResource(

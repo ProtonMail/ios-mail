@@ -15,17 +15,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public extension DS.SFSymbols {
-    static let arrowUpRightSquare = "arrow.up.right.square"
-    static let checkmark = "checkmark"
-    static let chevronRight = "chevron.right"
-    static let chevronUpChevronDown = "chevron.up.chevron.down"
-    static let deleteLeft = "delete.left"
-    static let lock = "lock"
-    static let rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
-    static let suitcase = "suitcase"
-    static let sunMax = "sun.max"
-    static let xmark = "xmark"
-    static let eye = "eye"
-    static let eyeSlash = "eye.slash"
+import SwiftUI
+
+extension DS {
+    public enum SFSymbol: String, Sendable {
+        case arrowUpRightSquare = "arrow.up.right.square"
+        case checkmark = "checkmark"
+        case chevronLeft = "chevron.backward"
+        case chevronRight = "chevron.right"
+        case chevronUpChevronDown = "chevron.up.chevron.down"
+        case deleteLeft = "delete.left"
+        case lock = "lock"
+        case magnifier = "magnifyingglass"
+        case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+        case star = "star"
+        case starFilled = "star.fill"
+        case starSlash = "star.slash"
+        case suitcase = "suitcase"
+        case sunMax = "sun.max"
+        case xmark = "xmark"
+        case eye = "eye"
+        case eyeSlash = "eye.slash"
+        case forward = "arrowshape.turn.up.forward"
+        case reply = "arrowshape.turn.up.backward"
+        case replyAll = "arrowshape.turn.up.backward.2"
+    }
+}
+
+extension Image {
+
+    public init(symbol: DS.SFSymbol) {
+        self.init(systemName: symbol.rawValue)
+    }
+
+}
+
+extension UIImage {
+
+    public convenience init(symbol: DS.SFSymbol) {
+        self.init(systemName: symbol.rawValue)!
+    }
+
 }

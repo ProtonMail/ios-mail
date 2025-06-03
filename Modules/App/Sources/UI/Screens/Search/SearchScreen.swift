@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxComposer
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
@@ -28,6 +29,7 @@ enum SearchScreenState {
 struct SearchScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.mainWindowSize) private var mainWindowSize
+    @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private(set) var resultsState: SearchScreenState = .initial
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
@@ -40,7 +42,12 @@ struct SearchScreen: View {
     init(userSession: MailUserSession, sendResultPresenter: SendResultPresenter) {
         self._model = StateObject(wrappedValue: .init())
         self._searchDraftPresenter = State(
-            initialValue: DraftPresenter(userSession: userSession, draftProvider: .productionInstance)
+            initialValue: DraftPresenter(
+                userSession: userSession,
+                draftProvider: .productionInstance,
+                undoSendProvider: .productionInstance(userSession: userSession),
+                undoScheduleSendProvider: .productionInstance(userSession: userSession)
+            )
         )
         self._makeModalScreen = .init(initialValue: { state in
             switch state {
@@ -100,10 +107,20 @@ struct SearchScreen: View {
 
     private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
         .draft(
-            ComposerModalParams(
+            ComposerParams(
                 draftToPresent: draftToPresent,
-                onSendingEvent: { draftId, event in
-                    sendResultPresenter.presentResultInfo(.init(messageId: draftId, type: event.toastType))
+                onDismiss: { event in
+                    switch event {
+                    case .messageSent(let messageId), .messageScheduled(let messageId):
+                        guard let toastType = event.sendResultToastType else { return }
+                        sendResultPresenter.presentResultInfo(.init(messageId: messageId, type: toastType))
+                    case .dismissedManually, .draftDiscarded:
+                        // TODO: Unify logic with HomeScreen. Also fix the unreported bug with the error:
+                        // Currently, only presenting a single sheet is supported.
+                        // The next sheet will be presented when the currently presented sheet gets dismissed.
+
+                        toastStateStore.present(toast: .comingSoon)
+                    }
                 })
         )
     }
@@ -159,7 +176,7 @@ struct SearchScreen: View {
 private extension SearchScreen {
 
     enum ModalState: Identifiable {
-        case draft(ComposerModalParams)
+        case draft(ComposerParams)
 
         var id: String {
             switch self {

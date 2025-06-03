@@ -33,37 +33,37 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
         let testCases: [TestCase] = [
             .init(
                 given: .system(.inbox),
-                expected: .init(name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox.image, iconColor: nil)
             ),
             .init(
                 given: .system(.trash),
-                expected: .init(name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash.image, iconColor: nil)
             ),
             .init(
                 given: .system(.archive),
-                expected: .init(name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox.image, iconColor: nil)
             ),
             .init(
                 given: .system(.spam),
-                expected: .init(name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire.image, iconColor: nil)
             ),
             .init(
                 given: .system(.snoozed),
-                expected: .init(name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock.image, iconColor: nil)
             ),
             .init(
                 given: .system(.scheduled),
-                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClock, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
             ),
             .init(
                 given: .system(.outbox),
-                expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox.image, iconColor: nil)
             ),
             .init(
                 given: .custom(name: "Online shopping", id: .random(), color: .init(value: "FFA500")),
                 expected: .init(
                     name: "Online shopping",
-                    icon: DS.Icon.icFolderOpenFilled,
+                    icon: DS.Icon.icFolderOpenFilled.image,
                     iconColor: Color(hex: "FFA500")
                 )
             )

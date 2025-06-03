@@ -17,20 +17,25 @@
 
 import Combine
 import InboxCore
+import InboxCoreUI
 import LocalAuthentication
+import SwiftUI
 
 class BiometricLockStore: StateStore {
     @Published var state: BiometricLockState
     private let output: (BiometricLockScreenOutput) -> Void
     private let biometricAuthenticator: BiometricAuthenticator
+    private let laContext: () -> LAContext
 
     init(
         state: BiometricLockState,
         method: BiometricAuthenticator.AuthenticationMethod,
+        laContext: @escaping () -> LAContext = { LAContext() },
         output: @escaping (BiometricLockScreenOutput) -> Void
     ) {
         self.state = state
         self.biometricAuthenticator = .init(method: method)
+        self.laContext = laContext
         self.output = output
     }
 
@@ -42,10 +47,30 @@ class BiometricLockStore: StateStore {
             switch result {
             case .success:
                 output(.authenticated)
-            case .failure:
-                state = state
+            case .failure(let policyUnavailable):
+                state =
+                    state
                     .copy(\.displayUnlockButton, to: true)
+                    .copy(\.alert, to: policyUnavailable ? policyUnavailableAlert : nil)
             }
         }
+    }
+
+    @MainActor
+    private func handle(alertAction: PolicyUnavailableAlertAction) async {
+        switch alertAction {
+        case .ok:
+            break
+        case .signInAgain:
+            output(.logOut)
+        }
+        state = state.copy(\.alert, to: nil)
+    }
+
+    private var policyUnavailableAlert: AlertModel {
+        AlertModel.policyUnavailableAlert(
+            action: { [weak self] action in await self?.handle(alertAction: action) },
+            laContext: laContext
+        )
     }
 }

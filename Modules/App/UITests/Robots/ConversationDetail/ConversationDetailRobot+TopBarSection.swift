@@ -61,7 +61,7 @@ extension ConversationDetailRobot {
 }
 
 private struct Identifiers {
-    static let backChevronButton = "ic-chevron-tiny-left"
+    static let backChevronButton = "chevron.backward"
     static let backButton = "detail.backButton"
     static let starButton = "detail.starButton"
     static let subjectText = "detail.subjectText"

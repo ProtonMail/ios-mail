@@ -36,7 +36,6 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     enum Event {
         case onTap(uiModel: DraftAttachmentUIModel)
         case onRemove(uiModel: DraftAttachmentUIModel)
-        case onRetryAttachmentUpload(uiModel: DraftAttachmentUIModel)
     }
 
     private let stack = SubviewFactory.stack
@@ -67,7 +66,7 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     }
 
     private func updateUI() {
-        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.large
+        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
         stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for uiModel in uiModels {
@@ -153,8 +152,6 @@ extension DraftAttachmentsSectionViewController {
             section.uiModels = Model.uiModels
             section.onEvent = { event in
                 switch event {
-                case .onRetryAttachmentUpload(let uiModel):
-                    print("retry \(uiModel.attachment.name)?")
                 case .onTap(let uiModel):
                     print("tap \(uiModel.attachment.name)")
                 case .onRemove(let uiModel):

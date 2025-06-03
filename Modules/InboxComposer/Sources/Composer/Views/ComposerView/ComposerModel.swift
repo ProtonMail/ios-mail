@@ -34,10 +34,8 @@ final class ComposerModel: ObservableObject {
 
     private let draft: AppDraftProtocol
     private let draftOrigin: DraftOrigin
-    private let draftSavedToastCoordinator: DraftSavedToastCoordinator
     private let contactProvider: ComposerContactProvider
-    private let onSendingEvent: (SendEvent) -> Void
-    private let onCancel: () -> Void
+    private let onDismiss: (ComposerDismissReason) -> Void
     private let permissionsHandler: ContactPermissionsHandler
     private let photosItemsHandler: PhotosPickerItemHandler
     private let cameraImageHandler: CameraImageHandler
@@ -79,10 +77,8 @@ final class ComposerModel: ObservableObject {
     init(
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
-        draftSavedToastCoordinator: DraftSavedToastCoordinator,
         contactProvider: ComposerContactProvider,
-        onSendingEvent: @escaping (SendEvent) -> Void,
-        onCancel: @escaping () -> Void,
+        onDismiss: @escaping (ComposerDismissReason) -> Void,
         permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
@@ -91,10 +87,8 @@ final class ComposerModel: ObservableObject {
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
-        self.draftSavedToastCoordinator = draftSavedToastCoordinator
         self.contactProvider = contactProvider
-        self.onSendingEvent = onSendingEvent
-        self.onCancel = onCancel
+        self.onDismiss = onDismiss
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
         self.state = .initial
         self.photosItemsHandler = photosItemsHandler
@@ -135,7 +129,7 @@ final class ComposerModel: ObservableObject {
         AppLogger.log(message: "composer did disappear", category: .composer)
         await updateBodyDebounceTask?.executeImmediately()
         if !messageHasBeenSentOrScheduled {
-            showDraftSavedToastIfNeeded()
+            onDismiss(.dismissedManually(savedDraftId: await draftMessageId()))
         }
     }
 
@@ -265,10 +259,15 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func scheduleSendState() -> ComposerViewModalState? {
+    func scheduleSendState(lastScheduledTime: UInt64?) -> ComposerViewModalState? {
         do {
             let timeOptions = try scheduleSendOptionsProvider.scheduleSendOptions().get()
-            return .scheduleSend(timeOptions)
+            let predefinedOptions = [timeOptions.tomorrowTime, timeOptions.mondayTime]
+            var previouslySet: UInt64? = nil
+            if let lastScheduledTime, !predefinedOptions.contains(lastScheduledTime) {
+                previouslySet = lastScheduledTime
+            }
+            return .scheduleSend(timeOptions, lastScheduledTime: previouslySet)
         } catch let error {
             toast = .error(message: error.localizedDescription)
             return nil
@@ -281,12 +280,10 @@ final class ComposerModel: ObservableObject {
         guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
         await updateBodyDebounceTask?.executeImmediately()
 
-        let (result, event) = await performSendOrSchedule(date: date)
-        switch result {
+        switch await performSendOrSchedule(date: date) {
         case .ok:
             messageHasBeenSentOrScheduled = true
-            onSendingEvent(event)
-            dismissComposer(dismissAction: dismissAction)
+            dismissComposer(dismissAction: dismissAction, reason: await dismissReasonAfterSend(isScheduled: date != nil))
         case .error(let draftError):
             AppLogger.log(error: draftError, category: .composer)
             if draftError.shouldBeDisplayed {
@@ -342,26 +339,38 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func retryUploadingAttachment(uiModel: DraftAttachmentUIModel) {
-        Task {
-            await draft.attachmentList().retry(attachmentId: uiModel.attachment.id)
+    @MainActor
+    func discardDraft(dismissAction: Dismissable) async {
+        guard let _ = await draftMessageId() else {
+            dismissComposer(dismissAction: dismissAction, reason: .draftDiscarded)
+            return
         }
+        state.alert = .discardDraft(action: { @MainActor [weak self] action in
+            defer { self?.state.alert = nil }
+            guard let self, action == .discard else { return }
+            switch await draft.discard() {
+            case .ok:
+                dismissComposer(dismissAction: dismissAction, reason: .draftDiscarded)
+            case .error(let error):
+                showToast(.error(message: error.localizedDescription))
+            }
+        })
     }
 
     @MainActor
-    func dismissComposer(dismissAction: Dismissable) {
-        composerWillDismiss = true
-        dismissAction()
-
-        if !messageHasBeenSentOrScheduled {
-            onCancel()
-        }
+    func dismissComposerManually(dismissAction: Dismissable) async {
+        let messageId = await draftMessageId()
+        dismissComposer(dismissAction: dismissAction, reason: .dismissedManually(savedDraftId: messageId))
     }
 }
 
 // MARK: Private
 
 extension ComposerModel {
+
+    private func draftMessageId() async -> Id? {
+        try? await draft.messageId().get()
+    }
 
     private func makeState(from draft: AppDraftProtocol) -> ComposerState {
         .init(
@@ -522,24 +531,18 @@ extension ComposerModel {
         }
     }
 
-   private func performSendOrSchedule(date: Date?) async -> (VoidDraftSendResult, SendEvent) {
+    private func performSendOrSchedule(date: Date?) async -> VoidDraftSendResult {
         if let date {
             AppLogger.log(message: "scheduling message", category: .composer)
-            let result = await draft.schedule(timestamp: UInt64(date.timeIntervalSince1970))
-            return (result, .scheduleSend(date: date))
+            return await draft.schedule(timestamp: UInt64(date.timeIntervalSince1970))
         } else {
             AppLogger.log(message: "sending message", category: .composer)
-            let result = await draft.send()
-            return (result, .send)
+            return await draft.send()
         }
     }
 
-    private func showDraftSavedToastIfNeeded() {
-        Task {
-            if let id = try await draft.messageId().get() {
-                draftSavedToastCoordinator.showDraftSavedToast(draftId: id)
-            }
-        }
+    private func dismissReasonAfterSend(isScheduled: Bool) async -> ComposerDismissReason {
+        await isScheduled ? .messageScheduled(messageId: draftMessageId()!) : .messageSent(messageId: draftMessageId()!)
     }
 
     private func debounce(_ block: @escaping () -> Void) {
@@ -552,6 +555,13 @@ extension ComposerModel {
 
     func showToast(_ toastToShow: Toast) {
         Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toast = toastToShow }))
+    }
+
+    @MainActor
+    private func dismissComposer(dismissAction: Dismissable, reason: ComposerDismissReason) {
+        composerWillDismiss = true
+        dismissAction()
+        onDismiss(reason)
     }
 }
 

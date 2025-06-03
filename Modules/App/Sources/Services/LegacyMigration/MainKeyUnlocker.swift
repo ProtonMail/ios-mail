@@ -88,7 +88,7 @@ actor MainKeyUnlocker {
         let numberOfRoundsUsedByLegacyApp: UInt64 = 32768
 
         let mainKeyEncryptionKey = try scrypt(
-            password: pin.reduce(into: []) { acc, digit in acc += [UInt8]("\(digit)".utf8) },
+            password: pin.digits.reduce(into: []) { acc, digit in acc += [UInt8]("\(digit)".utf8) },
             salt: [UInt8](salt),
             length: kCCKeySizeAES256,
             N: numberOfRoundsUsedByLegacyApp

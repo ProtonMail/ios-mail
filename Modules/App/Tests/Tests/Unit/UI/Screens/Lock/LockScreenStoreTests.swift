@@ -19,65 +19,51 @@
 import proton_app_uniffi
 import Testing
 
+@MainActor
 class LockScreenStoreTests {
 
-    var sut: LockScreenStore!
-    var lockScreenOutput: [LockScreenOutput]!
-    private var pinVerifierSpy: PINVerifierSpy!
+    lazy var sut: LockScreenStore = .init(
+        state: .init(type: .pin, pinAuthenticationError: nil),
+        pinVerifier: pinVerifierSpy,
+        mailUserSession: { .dummy },
+        signOutAllAccountsWrapper: .init(signOutAllAccounts: { [unowned self] _ in
+            signOutAllAccountsInvokeCount += 1
+            return .ok
+        }),
+        dismissLock: { [unowned self] in
+            dismissLockInvokeCount += 1
+        }
+    )
 
-    init() {
-        pinVerifierSpy = PINVerifierSpy()
-        lockScreenOutput = []
-        sut = .init(
-            state: .init(type: .pin, pinError: nil),
-            pinVerifier: pinVerifierSpy,
-            lockOutput: { output in
-                self.lockScreenOutput.append(output)
-            }
-        )
-    }
-
-    deinit {
-        pinVerifierSpy = nil
-        sut = nil
-    }
+    var signOutAllAccountsInvokeCount = 0
+    var dismissLockInvokeCount = 0
+    private let pinVerifierSpy: PINVerifierSpy = .init()
 
     @Test
     func handleBiometricAuthenticatedOutput_ItEmitsLockAuthenticatedOutput() async {
         await sut.handle(action: .biometric(.authenticated))
 
-        #expect(lockScreenOutput == [.authenticated])
+        #expect(dismissLockInvokeCount == 1)
     }
 
     @Test
     func userEntersValidPin_ItEmitsLockAuthenticatedOutput() async {
         pinVerifierSpy.verifyPinCodeStub = .ok
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
-        #expect(sut.state.pinError == nil)
-        #expect(lockScreenOutput == [.authenticated])
+        #expect(sut.state.pinAuthenticationError == nil)
+        #expect(dismissLockInvokeCount == 1)
     }
 
     @Test
     func userEntersInvalidPinForFirstTime_ItDisplaysError() async {
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
-        #expect(sut.state.pinError == nil)
-        #expect(lockScreenOutput == [])
-    }
-
-    @Test
-    func userEntersInvalidPinForFirstTime_ItDoesNotDisplayError() async {
-        pinVerifierSpy.remainingPinAttemptsStub = .ok(9)
-        pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
-
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
-
-        #expect(sut.state.pinError == nil)
-        #expect(lockScreenOutput == [])
+        #expect(sut.state.pinAuthenticationError == .custom(L10n.PINLock.invalidPIN.string))
+        #expect(dismissLockInvokeCount == 0)
     }
 
     @Test
@@ -85,10 +71,10 @@ class LockScreenStoreTests {
         pinVerifierSpy.remainingPinAttemptsStub = .ok(3)
         pinVerifierSpy.verifyPinCodeStub = .error(.reason(.incorrectPin))
 
-        await sut.handle(action: .pin(.pin([1, 2, 3, 4, 5])))
+        await sut.handle(action: .pin(.pin(.init(digits: [1, 2, 3, 4, 5]))))
 
-        #expect(sut.state.pinError == "3 attempts remaining before sign-out.")
-        #expect(lockScreenOutput == [])
+        #expect(sut.state.pinAuthenticationError == .attemptsRemaining(3))
+        #expect(dismissLockInvokeCount == 0)
     }
 
     @Test
@@ -98,7 +84,21 @@ class LockScreenStoreTests {
         await sut.handle(action: .pinScreenLoaded)
 
         #expect(pinVerifierSpy.remainingPinAttemptsCallCount == 1)
-        #expect(lockScreenOutput == [.logOut])
+        #expect(dismissLockInvokeCount == 1)
+    }
+
+    @Test
+    func signOutButtonIsTappedOnPINLockScreen_ItSignOutsFromAllAccounts() async {
+        await sut.handle(action: .pin(.logOut))
+
+        #expect(signOutAllAccountsInvokeCount == 1)
+    }
+
+    @Test
+    func signOutButtonIsTappedOnBioemtryScreen_ItSignOutsFromAllAccounts() async {
+        await sut.handle(action: .biometric(.logOut))
+
+        #expect(signOutAllAccountsInvokeCount == 1)
     }
 
 }

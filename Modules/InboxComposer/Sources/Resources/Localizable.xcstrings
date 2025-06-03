@@ -54,6 +54,9 @@
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
     },
+    "Discard this message?" : {
+      "comment" : "Composer discard confirmation alert title"
+    },
     "Discarded" : {
       "comment" : "Composer toast message confirming draft discarded"
     },
@@ -177,6 +180,9 @@
     },
     "Schedule send" : {
       "comment" : "Title of the schedule send view"
+    },
+    "Scheduling message..." : {
+      "comment" : "Composer toast message when schedule a message is tapped."
     },
     "Send" : {
       "comment" : "Message send button.",
@@ -383,6 +389,9 @@
     },
     "You're currently offline. This draft may not be up-to-date." : {
       "comment" : "Draft might not be up-to-date when loaded"
+    },
+    "Your draft will not be saved" : {
+      "comment" : "Composer discard confirmation alert message"
     }
   },
   "version" : "1.0"

@@ -25,12 +25,12 @@ enum LogOutConformationAction: AlertActionInfo, CaseIterable {
 
     // MARK: - AlertActionInfo
 
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole) {
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
         switch self {
         case .cancel:
             (CommonL10n.cancel, .cancel)
         case .signOut:
-            (L10n.PINLock.signOutConfirmationButton, .destructive)
+            (L10n.PINLock.signOut, .destructive)
         }
     }
 }

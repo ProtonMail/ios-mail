@@ -29,14 +29,14 @@ import XCTest
 @MainActor
 final class ComposerModelTests: BaseTestCase {
     private var mockDraft: MockDraft!
-    private var testDraftSavedToastCoordinator: DraftSavedToastCoordinator!
     private var testContactProvider: ComposerContactProvider!
     private var testPhotosItemsHandler: PhotosPickerItemHandler!
     private var photosPickerTestsHelper: PhotosPickerItemHandlerTestsHelper!
     private var testCameraImageHandler: CameraImageHandler!
     private var testFilesItemsHandler: FilePickerItemHandler!
     private var filePickerTestsHelper: FilePickerItemHandlerTestsHelper!
-    private var sendingEventObserver: [SendEvent]!
+    private var dismissReasonObserver: [ComposerDismissReason]!
+    let dummyMessageId: Id = 12345
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
@@ -44,7 +44,6 @@ final class ComposerModelTests: BaseTestCase {
     var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
-        self.testDraftSavedToastCoordinator = .init(mailUSerSession: .init(noPointer: .init()), toastStoreState: .init(initialState: .initial))
         self.testContactProvider = ComposerContactProvider(
             protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: [
                 .makeComposerContactSingle(name: "", email: "a@example.com"),
@@ -57,8 +56,9 @@ final class ComposerModelTests: BaseTestCase {
         self.testCameraImageHandler = .init()
         self.testFilesItemsHandler = .init()
         self.filePickerTestsHelper = try .init()
-        self.sendingEventObserver = []
+        self.dismissReasonObserver = []
         self.mockDraft = .init()
+        self.mockDraft.mockDraftMessageIdResult = .ok(dummyMessageId)
         self.mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = photosPickerTestsHelper.destinationFolder
         self.cancellables = []
         try super.setUpWithError()
@@ -71,7 +71,7 @@ final class ComposerModelTests: BaseTestCase {
         testPhotosItemsHandler = nil
         testCameraImageHandler = nil
         testFilesItemsHandler = nil
-        sendingEventObserver = nil
+        dismissReasonObserver = nil
         cancellables = nil
         try super.tearDownWithError()
     }
@@ -82,10 +82,8 @@ final class ComposerModelTests: BaseTestCase {
         let sut = ComposerModel(
             draft: .emptyMock,
             draftOrigin: .new,
-            draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: testContactProvider,
-            onSendingEvent: { _ in },
-            onCancel: {},
+            onDismiss: { _ in },
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
@@ -283,15 +281,15 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     // FIXME: When the SDK returns contact groups
-////    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
-//        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
-//        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
-//        sut.addContact(group: .to, contact: contact)
-//
-//        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
-//        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
-//        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
-//    }
+    ////    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
+    //        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
+    //        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
+    //        sut.addContact(group: .to, contact: contact)
+    //
+    //        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
+    //        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+    //        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+    //    }
 
     // MARK: matchContacts
 
@@ -319,9 +317,11 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.toRecipients.controllerState, .editing)
 
         let expectation = expectation(description: "\(#function)")
-        fulfill(expectation, in: sut, when: { composerState in
-            composerState.toRecipients.controllerState == .contactPicker
-        })
+        fulfill(
+            expectation, in: sut,
+            when: { composerState in
+                composerState.toRecipients.controllerState == .contactPicker
+            })
         sut.matchContact(group: .to, text: "Adrian")
         await fulfillment(of: [expectation], timeout: 1.0)
     }
@@ -336,10 +336,12 @@ final class ComposerModelTests: BaseTestCase {
         // Preparing test with a contact match
         let expectation1 = expectation(description: "\(#function)")
         expectation1.assertForOverFulfill = false
-        fulfill(expectation1, in: sut, when: { composerState in
-            composerState.toRecipients.input == "Adrian" 
-            && composerState.toRecipients.matchingContacts.count == 1
-        })
+        fulfill(
+            expectation1, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == "Adrian"
+                    && composerState.toRecipients.matchingContacts.count == 1
+            })
         sut.matchContact(group: .to, text: "Adrian")
         await fulfillment(of: [expectation1], timeout: 1.0)
 
@@ -357,18 +359,22 @@ final class ComposerModelTests: BaseTestCase {
         // Preparing test with a contact match
         let expectation1 = expectation(description: "\(#function)")
         expectation1.assertForOverFulfill = false
-        fulfill(expectation1, in: sut, when: { composerState in
-            composerState.toRecipients.input == "Adrian" 
-            && composerState.toRecipients.controllerState == .contactPicker
-        })
+        fulfill(
+            expectation1, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == "Adrian"
+                    && composerState.toRecipients.controllerState == .contactPicker
+            })
         sut.matchContact(group: .to, text: "Adrian")
         await fulfillment(of: [expectation1], timeout: 1.0)
 
         // Testing `controllerState` will change to `editing`
         let expectation2 = expectation(description: "\(#function)")
-        fulfill(expectation2, in: sut, when: { composerState in
-            composerState.toRecipients.input == "Mark" && composerState.toRecipients.controllerState == .editing
-        })
+        fulfill(
+            expectation2, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == "Mark" && composerState.toRecipients.controllerState == .editing
+            })
         sut.matchContact(group: .to, text: "Mark")
         await fulfillment(of: [expectation2], timeout: 1.0)
     }
@@ -397,17 +403,21 @@ final class ComposerModelTests: BaseTestCase {
         // Preparing test with a contact match
         let expectation1 = expectation(description: "\(#function)")
         expectation1.assertForOverFulfill = false
-        fulfill(expectation1, in: sut, when: { composerState in
-            composerState.toRecipients.input == "Adrian" && composerState.toRecipients.controllerState == .contactPicker
-        })
+        fulfill(
+            expectation1, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == "Adrian" && composerState.toRecipients.controllerState == .contactPicker
+            })
         sut.matchContact(group: .to, text: "Adrian")
         await fulfillment(of: [expectation1], timeout: 1.0)
 
         // Testing the `input` and `controllerState` values
         let expectation2 = expectation(description: "\(#function)")
-        fulfill(expectation2, in: sut, when: { composerState in
-            composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .collapsed
-        })
+        fulfill(
+            expectation2, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == "" && composerState.toRecipients.controllerState == .collapsed
+            })
         sut.endEditingRecipients()
         await fulfillment(of: [expectation2], timeout: 1.0)
     }
@@ -551,14 +561,14 @@ final class ComposerModelTests: BaseTestCase {
 
     // MARK: sendMessage
 
-    func testSendMessage_whenSuccess_itNotifiesTheSendEventAndDismisses() async throws {
+    func testSendMessage_whenSuccess_itDismissesWithTheCorrectDismissReason() async throws {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         let dismissSpy = DismissSpy()
 
         await sut.sendMessage(dismissAction: dismissSpy)
 
         XCTAssertTrue(mockDraft.sendWasCalled)
-        XCTAssertEqual(sendingEventObserver, [.send])
+        XCTAssertEqual(dismissReasonObserver, [.messageSent(messageId: dummyMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
     }
@@ -572,12 +582,12 @@ final class ComposerModelTests: BaseTestCase {
         await sut.sendMessage(dismissAction: dismissSpy)
 
         XCTAssertTrue(mockDraft.sendWasCalled)
-        XCTAssertEqual(sendingEventObserver, [])
+        XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
     }
 
-    func testSendMessage_atSpecificTime_whenSuccess_itNotifiesTheSendEventAndDismisses() async throws {
+    func testSendMessage_atSpecificTime_whenSuccess_itDismissesWithTheCorrectDismissReason() async throws {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         let dismissSpy = DismissSpy()
 
@@ -586,7 +596,7 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
         XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
-        XCTAssertEqual(sendingEventObserver, [.scheduleSend(date: scheduleTime.date)])
+        XCTAssertEqual(dismissReasonObserver, [.messageScheduled(messageId: dummyMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
     }
@@ -602,7 +612,7 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
         XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
-        XCTAssertEqual(sendingEventObserver, [])
+        XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
     }
@@ -611,16 +621,14 @@ final class ComposerModelTests: BaseTestCase {
 // MARK: Helpers
 
 private extension ComposerModelTests {
-    typealias MatchContactCountTestCase=(input: String, expectedMatchCount: Int)
+    typealias MatchContactCountTestCase = (input: String, expectedMatchCount: Int)
 
     private func makeSut(draft: any AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) -> ComposerModel {
         ComposerModel(
             draft: draft,
             draftOrigin: draftOrigin,
-            draftSavedToastCoordinator: testDraftSavedToastCoordinator,
             contactProvider: contactProvider,
-            onSendingEvent: { self.sendingEventObserver.append($0) },
-            onCancel: {},
+            onDismiss: { self.dismissReasonObserver.append($0) },
             permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
@@ -632,18 +640,22 @@ private extension ComposerModelTests {
     private func prepareInput(sut: ComposerModel, input: String, for group: RecipientGroupType) async {
         let expectation = expectation(description: "\(#function)")
         expectation.assertForOverFulfill = false
-        fulfill(expectation, in: sut, when: { composerState in
-            composerState.toRecipients.input == input
-        })
+        fulfill(
+            expectation, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == input
+            })
         sut.matchContact(group: group, text: input)
         await fulfillment(of: [expectation], timeout: 1.0)
     }
 
     func testMatchContact(in sut: ComposerModel, test: MatchContactCountTestCase) async {
         let expectation = expectation(description: "\(#function): input '\(test.input)' matches \(test.expectedMatchCount)")
-        fulfill(expectation, in: sut, when: { composerState in
-            composerState.toRecipients.input == test.input && composerState.toRecipients.matchingContacts.count == test.expectedMatchCount
-        })
+        fulfill(
+            expectation, in: sut,
+            when: { composerState in
+                composerState.toRecipients.input == test.input && composerState.toRecipients.matchingContacts.count == test.expectedMatchCount
+            })
 
         sut.matchContact(group: .to, text: test.input)
         await fulfillment(of: [expectation], timeout: 1.0)
