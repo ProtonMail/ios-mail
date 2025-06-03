@@ -27,9 +27,9 @@ struct ContactGroupDetailsScreen: View {
         ScrollView {
             VStack(spacing: DS.Spacing.large) {
                 avatarView
-                contactDetails
-                sendGroupMessageButton
-                groupItems
+                groupDetails
+                newMessageButton
+                items
             }
             .padding(.horizontal, DS.Spacing.large)
         }
@@ -51,7 +51,7 @@ struct ContactGroupDetailsScreen: View {
         }
     }
 
-    private var contactDetails: some View {
+    private var groupDetails: some View {
         Text(group.name)
             .font(.body)
             .fontWeight(.semibold)
@@ -59,7 +59,7 @@ struct ContactGroupDetailsScreen: View {
             .multilineTextAlignment(.center)
     }
 
-    private var sendGroupMessageButton: some View {
+    private var newMessageButton: some View {
         Button(action: {
             // FIXME: Implement send group message action (open composer with all group members)
         }) {
@@ -88,11 +88,9 @@ struct ContactGroupDetailsScreen: View {
         .roundedRectangleStyle()
     }
 
-    private var groupItems: some View {
+    private var items: some View {
         FormList(collection: group.contactEmails, separator: .invertedNoPadding) { item in
             ContactCellView(item: item).frame(height: 68)
         }
-        .listStyle(.insetGrouped)
     }
 }
-

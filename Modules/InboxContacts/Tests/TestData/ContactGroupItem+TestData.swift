@@ -21,15 +21,6 @@ import proton_app_uniffi
 
 extension ContactGroupItem {
 
-    static func testData(id: Id) -> Self {
-        .init(
-            id: id,
-            name: "",
-            avatarColor: "",
-            contactEmails: []
-        )
-    }
-
     static var advisorsGroup: Self {
         .init(
             id: 3,

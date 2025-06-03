@@ -441,7 +441,7 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onTapItem(.group(.advisorsGroup)))
 
-        XCTAssertEqual(sut.router.stack, [.contactGroupDetails(ContactGroupItem.advisorsGroup)])
+        XCTAssertEqual(sut.router.stack, [.contactGroupDetails(.advisorsGroup)])
     }
 
     // MARK: - `goBack` action
