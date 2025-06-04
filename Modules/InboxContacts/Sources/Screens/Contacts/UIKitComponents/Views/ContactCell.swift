@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -27,7 +27,7 @@ final class ContactCell: UITableViewCell {
         label.font = .font(textStyle: .footnote, weight: .semibold)
         label.textColor = UIColor(DS.Color.Text.inverted)
         label.textAlignment = .center
-        label.layer.cornerRadius = DS.Radius.large
+        label.layer.cornerRadius = ContactConstant.avatarRadius
         label.layer.masksToBounds = true
         return label
     }()

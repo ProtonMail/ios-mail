@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -24,7 +24,7 @@ final class ContactGroupCell: UITableViewCell {
 
     let iconBackgroundView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = DS.Radius.large
+        view.layer.cornerRadius = ContactConstant.avatarRadius
         view.clipsToBounds = true
         return view
     }()
@@ -47,8 +47,6 @@ final class ContactGroupCell: UITableViewCell {
         let imageView = UIImageView(image: UIImage(resource: DS.Icon.icUsers))
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = UIColor(DS.Color.Text.inverted)
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
         return imageView
     }()
 
