@@ -62,16 +62,7 @@ struct ContactDetailsScreen: View {
     }
 
     private var contactDetails: some View {
-        VStack(spacing: DS.Spacing.compact) {
-            Text(state.displayName)
-                .font(.body)
-                .fontWeight(.semibold)
-                .foregroundStyle(DS.Color.Text.norm)
-            Text(state.primaryEmail)
-                .font(.subheadline)
-                .fontWeight(.regular)
-                .foregroundStyle(DS.Color.Text.weak)
-        }
+        ContactAvatarDetails(title: state.displayName, subtitle: state.primaryEmail)
     }
 
     private var actionButtons: some View {

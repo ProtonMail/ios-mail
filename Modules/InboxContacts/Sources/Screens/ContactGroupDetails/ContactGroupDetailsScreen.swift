@@ -48,11 +48,7 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private var groupDetails: some View {
-        Text(group.name)
-            .font(.body)
-            .fontWeight(.semibold)
-            .foregroundStyle(DS.Color.Text.norm)
-            .multilineTextAlignment(.center)
+        ContactAvatarDetails(title: group.name, subtitle: .none)
     }
 
     private var newMessageButton: some View {
