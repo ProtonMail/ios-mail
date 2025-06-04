@@ -28,7 +28,7 @@ class PINStateStoreTests {
 
     @Test
     func setPIN_tooShortPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
-        let sut = makeSut(type: .set)
+        let sut = makeSut(type: .set(reason: .changePIN))
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3])))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -38,7 +38,7 @@ class PINStateStoreTests {
 
     @Test
     func setPIN_tooLongPinIsTypedAndTrailingButtonIsSelected_ItReturnsValidationError() async {
-        let sut = makeSut(type: .set)
+        let sut = makeSut(type: .set(reason: .changePIN))
         await sut.handle(action: .pinTyped(.init(digits: Array(repeating: 1, count: 22))))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -48,17 +48,17 @@ class PINStateStoreTests {
 
     @Test
     func setPIN_pinIsValid_ItNavigatesToConfirmPINScreen() async {
-        let sut = makeSut(type: .set)
+        let sut = makeSut(type: .set(reason: .changePIN))
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3, 4])))
         await sut.handle(action: .trailingButtonTapped)
 
         #expect(sut.state.pinValidation == .ok)
-        #expect(router.stack == [.pin(type: .confirm(pin: .init(digits: [1, 2, 3, 4])))])
+        #expect(router.stack == [.pin(type: .confirm(pin: .init(digits: [1, 2, 3, 4]), reason: .changePIN))])
     }
 
     @Test
     func confirmPIN_pinDoesNotMatch_ItReturnsValidationError() async {
-        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4])))
+        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4]), reason: .changePIN))
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3, 5])))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -68,7 +68,7 @@ class PINStateStoreTests {
 
     @Test
     func confirmPIN_pinMatches_ItDismissesScreen() async {
-        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4])))
+        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4]), reason: .changePIN))
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3, 4])))
         await sut.handle(action: .trailingButtonTapped)
 
@@ -111,14 +111,14 @@ class PINStateStoreTests {
         await sut.handle(action: .trailingButtonTapped)
 
         #expect(sut.state.pinValidation == .ok)
-        #expect(router.stack == [.pin(type: .set)])
+        #expect(router.stack == [.pin(type: .set(reason: .changePIN))])
         #expect(dismissCount == 0)
     }
 
     @Test
     func leadingButtonIsTappedAndStackIsEmpty_ItDismissesScreen() async {
         router.stack = []
-        let sut = makeSut(type: .set)
+        let sut = makeSut(type: .set(reason: .changePIN))
 
         await sut.handle(action: .leadingButtonTapped)
 
@@ -127,8 +127,8 @@ class PINStateStoreTests {
 
     @Test
     func leadingButtonIsTappedAndStackIsNotEmpty_ItPopsScreenFromStack() async {
-        router.stack = [.pin(type: .set)]
-        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4])))
+        router.stack = [.pin(type: .set(reason: .changePIN))]
+        let sut = makeSut(type: .confirm(pin: .init(digits: [1, 2, 3, 4]), reason: .changePIN))
         await sut.handle(action: .leadingButtonTapped)
 
         #expect(dismissCount == 0)
