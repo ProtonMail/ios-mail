@@ -49,7 +49,7 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private var groupDetails: some View {
-        ContactAvatarDetails(title: group.name, subtitle: .none)
+        ContactAvatarDetailsView(title: group.name, subtitle: .none)
     }
 
     private var newMessageButton: some View {

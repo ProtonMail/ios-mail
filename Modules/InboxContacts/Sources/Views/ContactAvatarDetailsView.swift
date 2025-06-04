@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct ContactAvatarDetails: View {
+struct ContactAvatarDetailsView: View {
     let title: String
     let subtitle: String?
 

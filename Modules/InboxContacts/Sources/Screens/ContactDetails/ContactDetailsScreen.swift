@@ -62,7 +62,7 @@ struct ContactDetailsScreen: View {
     }
 
     private var contactDetails: some View {
-        ContactAvatarDetails(title: state.displayName, subtitle: state.primaryEmail)
+        ContactAvatarDetailsView(title: state.displayName, subtitle: state.primaryEmail)
     }
 
     private var actionButtons: some View {
