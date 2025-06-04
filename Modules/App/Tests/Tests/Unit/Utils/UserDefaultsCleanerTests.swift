@@ -20,9 +20,12 @@ import InboxCore
 import Testing
 
 final class UserDefaultsCleanerTests {
-    private let suiteName = UUID().uuidString
-    private lazy var userDefaults = UserDefaults(suiteName: suiteName)!
-    private lazy var sut = UserDefaultsCleaner(suiteName: suiteName)
+    private let userDefaults = TestableUserDefaults.randomInstance()
+    private lazy var sut = UserDefaultsCleaner(userDefaults: userDefaults)
+
+    deinit {
+        userDefaults.removePersistentDomain(forName: userDefaults.suiteName)
+    }
 
     @Test
     func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {

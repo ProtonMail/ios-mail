@@ -19,13 +19,14 @@ import Foundation
 import InboxCore
 
 struct UserDefaultsCleaner {
-    private let suiteName: String
+    private let userDefaults: UserDefaults
 
-    init(suiteName: String) {
-        self.suiteName = suiteName
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
     }
 
     func cleanUp() {
-        UserDefaults(suiteName: suiteName)!.removePersistentDomain(forName: suiteName)
+        userDefaults[.showAlphaV1Onboarding] = nil
+        userDefaults[.notificationAuthorizationRequestDates] = nil
     }
 }

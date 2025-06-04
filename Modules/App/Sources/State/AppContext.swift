@@ -69,7 +69,7 @@ final class AppContext: Sendable, ObservableObject {
         let apiConfig = ApiConfig.current
 
         userDefaults = dependencies.userDefaults
-        userDefaultsCleaner = .init(suiteName: AppGroup.mail)
+        userDefaultsCleaner = .init(userDefaults: userDefaults)
 
         let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
         accountChallengeCoordinator = .init(apiConfigProvider: { apiConfig })
