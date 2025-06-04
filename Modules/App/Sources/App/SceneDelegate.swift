@@ -121,7 +121,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         appProtectionCancellable = appProtectionStore
             .protection
             .receive(on: Dispatcher.mainScheduler)
-            .removeDuplicates()
             .sink(receiveValue: { [weak self] appProtection in
                 self?.appProtection = appProtection
             })
