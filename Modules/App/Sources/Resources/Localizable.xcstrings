@@ -3704,9 +3704,6 @@
     "Are you sure you want to permanently delete all messages in the %@ folder? This action cannot be undone." : {
       "comment" : "Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm \npermanent deletion of all messages in the specified location (e.g., Spam or Trash)."
     },
-    "Are you sure you want to sign out?" : {
-      "comment" : "Title of the sign out confirmation alert."
-    },
     "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off."
     },
@@ -4094,9 +4091,6 @@
           }
         }
       }
-    },
-    "Bypass firewalls or network issues in case Proton sites are blocked." : {
-      "comment" : "Alternative routing additional info in app settings."
     },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet.",
@@ -8243,6 +8237,9 @@
         }
       }
     },
+    "If Proton sites are blocked, this lets the app try other network paths to reach them. It can help bypass firewalls or connection issues. We recommend keeping it on for better reliability." : {
+      "comment" : "Alternative routing additional info in app settings."
+    },
     "Immediately" : {
       "comment" : "Auto option."
     },
@@ -8437,8 +8434,8 @@
         }
       }
     },
-    "Incorrect PIN. Try again." : {
-      "comment" : "Error message when the user enters an invalid PIN"
+    "Incorrect PIN" : {
+      "comment" : "Error message when a user enters an invalid PIN"
     },
     "Label" : {
       "comment" : "`Label` in the message details.",
@@ -15496,6 +15493,9 @@
     "Sign out" : {
       "comment" : "Title of the sign out button."
     },
+    "Sign Out of All Accounts" : {
+      "comment" : "Title of the sign out confirmation alert."
+    },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
       "localizations" : {
@@ -17083,6 +17083,12 @@
           }
         }
       }
+    },
+    "Too many attempts too quickly" : {
+      "comment" : "Displayed when the user tries to validate their PIN too frequently."
+    },
+    "Too many incorrect attempts" : {
+      "comment" : "Error message when a user enters invalid PIN too many times."
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",
@@ -18847,6 +18853,9 @@
     },
     "You need to be online to edit scheduled messages" : {
       "comment" : "Toast message when editing fails because there is no internet connection."
+    },
+    "You're about to be signed out of all your accounts on this device. Do you want to continue?" : {
+      "comment" : "Message of the sign out confirmation alert."
     },
     "Your device is offline" : {
       "comment" : "Title of the offline mode placeholder."

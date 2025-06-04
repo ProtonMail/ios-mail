@@ -656,12 +656,24 @@ enum L10n {
             comment: "Title of the sign out button."
         )
         static let signOutConfirmationTitle = LocalizedStringResource(
-            "Are you sure you want to sign out?",
+            "Sign Out of All Accounts",
             comment: "Title of the sign out confirmation alert."
         )
+        static let signOutConfirmationMessage = LocalizedStringResource(
+            "You're about to be signed out of all your accounts on this device. Do you want to continue?",
+            comment: "Message of the sign out confirmation alert."
+        )
         static let invalidPIN = LocalizedStringResource(
-            "Incorrect PIN. Try again.",
-            comment: "Error message when the user enters an invalid PIN"
+            "Incorrect PIN",
+            comment: "Error message when a user enters an invalid PIN"
+        )
+        static let tooManyAttempts = LocalizedStringResource(
+            "Too many incorrect attempts",
+            comment: "Error message when a user enters invalid PIN too many times."
+        )
+        static let tooFrequentAttempts = LocalizedStringResource(
+            "Too many attempts too quickly",
+            comment: "Displayed when the user tries to validate their PIN too frequently."
         )
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -852,7 +864,7 @@ enum L10n {
                 comment: "Alternative routing setting title in app settings."
             )
             static let alternativeRoutingInfo = LocalizedStringResource(
-                "Bypass firewalls or network issues in case Proton sites are blocked.",
+                "If Proton sites are blocked, this lets the app try other network paths to reach them. It can help bypass firewalls or connection issues. We recommend keeping it on for better reliability.",
                 comment: "Alternative routing additional info in app settings."
             )
             static let none = LocalizedStringResource(

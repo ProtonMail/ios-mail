@@ -25,11 +25,11 @@ extension PinAuthError: LocalizedError {
         case .reason(let errorReason):
             switch errorReason {
             case .incorrectPin:
-                "Incorrect PIN".notLocalized // FIXME: - Waiting for final text
+                L10n.PINLock.invalidPIN.string
             case .tooManyAttempts:
-                "Too many attemts".notLocalized // FIXME: - Waiting for final text
+                L10n.PINLock.tooManyAttempts.string
             case .tooFrequentAttempts:
-                "Too frequent attempts".notLocalized // FIXME: - Waiting for final text
+                L10n.PINLock.tooFrequentAttempts.string
             }
         case .other(let protonError):
             protonError.localizedDescription
