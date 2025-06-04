@@ -39,11 +39,7 @@ struct ContactGroupDetailsScreen: View {
     // MARK: - Private
 
     private var avatarView: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color(hex: group.avatarColor))
-                .square(size: 100)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
+        ContactAvatarView(hexColor: group.avatarColor) {
             Image(DS.Icon.icUsers)
                 .resizable()
                 .square(size: 40)

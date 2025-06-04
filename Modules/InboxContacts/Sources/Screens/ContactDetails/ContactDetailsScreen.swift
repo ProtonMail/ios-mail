@@ -53,11 +53,7 @@ struct ContactDetailsScreen: View {
     // MARK: - Private
 
     private var avatarView: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color(hex: state.avatarInformation.color))
-                .square(size: 100)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
+        ContactAvatarView(hexColor: state.avatarInformation.color) {
             Text(state.avatarInformation.text)
                 .font(.title)
                 .fontWeight(.regular)
