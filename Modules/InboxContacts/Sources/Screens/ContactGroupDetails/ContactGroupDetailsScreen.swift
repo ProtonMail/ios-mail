@@ -22,6 +22,7 @@ import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
     let group: ContactGroupItem
+    @EnvironmentObject var toastStateStore: ToastStateStore
 
     var body: some View {
         ScrollView {
@@ -52,9 +53,7 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private var newMessageButton: some View {
-        Button(action: {
-            // FIXME: Implement send group message action (open composer with all group members)
-        }) {
+        Button(action: { toastStateStore.present(toast: .comingSoon) }) {
             HStack(alignment: .center, spacing: DS.Spacing.large) {
                 Image(DS.Icon.icPenSquare)
                     .square(size: 24)
