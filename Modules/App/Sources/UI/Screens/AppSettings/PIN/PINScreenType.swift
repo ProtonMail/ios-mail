@@ -40,7 +40,7 @@ enum PINScreenType: Hashable, Identifiable {
     struct Configuration {
         let pinInputTitle: LocalizedStringResource
         let screenTitle: LocalizedStringResource
-        let trailingButtonTitle: LocalizedStringResource
+        let bottomButtonTitle: LocalizedStringResource
     }
 
     var configuration: Configuration {
@@ -49,13 +49,13 @@ enum PINScreenType: Hashable, Identifiable {
             .init(
                 pinInputTitle: L10n.Settings.App.setPINInputTitle,
                 screenTitle: reason.screenTitle,
-                trailingButtonTitle: L10n.Common.next
+                bottomButtonTitle: L10n.Common.next
             )
         case .confirm(_, let reason):
             .init(
                 pinInputTitle: L10n.Settings.App.repeatPIN,
                 screenTitle: reason.screenTitle,
-                trailingButtonTitle: CommonL10n.confirm
+                bottomButtonTitle: CommonL10n.confirm
             )
         case .verify(let reason):
             switch reason {
@@ -86,8 +86,8 @@ private extension PINScreenType.Configuration {
     static func verify(trailingButtonTitle: LocalizedStringResource) -> Self {
         .init(
             pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
-            screenTitle: L10n.Settings.App.verifyPINScreenTitle,
-            trailingButtonTitle: trailingButtonTitle
+            screenTitle: screenTitle,
+            bottomButtonTitle: trailingButtonTitle
         )
     }
 

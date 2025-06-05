@@ -55,7 +55,7 @@ class PINStateStore: StateStore {
             } else {
                 router.goBack()
             }
-        case .trailingButtonTapped:
+        case .bottomButtonTapped:
             let pinValidationResult = await pinScreenValidator.validate(pin: state.pin)
             state = state.copy(\.pinValidation, to: pinValidationResult)
             guard pinValidationResult.isSuccess else {
