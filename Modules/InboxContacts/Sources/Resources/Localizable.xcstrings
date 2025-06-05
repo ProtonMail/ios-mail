@@ -2,7 +2,27 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%lld contacts" : {
-      "comment" : "Subtitle showing the number of contacts in the group. Used under the 'Send group message' button."
+      "comment" : "Subtitle showing the number of contacts in the group. Used under the 'Send group message' button.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld contact"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld contacts"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld members" : {
       "comment" : "Contact group row subtitle.",

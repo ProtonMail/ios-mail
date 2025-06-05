@@ -99,7 +99,7 @@ enum L10n {
         )
     }
     enum ContactGroupDetails {
-        enum Button {
+        enum NewMessageButton {
             static let title = LocalizedStringResource(
                 "Send group message",
                 bundle: .atURL(Bundle.module.bundleURL),

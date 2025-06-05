@@ -60,11 +60,11 @@ struct ContactGroupDetailsScreen: View {
                     .padding(DS.Spacing.standard)
                     .foregroundStyle(DS.Color.Icon.norm)
                 VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                    Text(L10n.ContactGroupDetails.Button.title)
+                    Text(L10n.ContactGroupDetails.NewMessageButton.title)
                         .font(.body)
                         .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.weak)
-                    Text(L10n.ContactGroupDetails.Button.subtitle(contactsCount: group.contactEmails.count))
+                    Text(L10n.ContactGroupDetails.NewMessageButton.subtitle(contactsCount: group.contactEmails.count))
                         .font(.subheadline)
                         .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.hint)
