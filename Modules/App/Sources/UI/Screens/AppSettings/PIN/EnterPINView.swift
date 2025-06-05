@@ -44,6 +44,9 @@ struct EnterPINView<Button: View>: View {
     var body: some View {
         VStack(spacing: DS.Spacing.huge) {
             Image(DS.Images.lock)
+                .resizable()
+                .square(size: 64)
+
             FormTextInput(
                 title: title,
                 placeholder: .init(stringLiteral: .empty),
