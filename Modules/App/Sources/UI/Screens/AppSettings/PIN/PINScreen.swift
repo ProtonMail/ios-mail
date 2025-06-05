@@ -55,16 +55,11 @@ struct PINScreen: View {
                     text: pin(state: state, store: store),
                     isInputFooterVisible: state.type.isCodeHintVisible,
                     validation: validation(state: state)
-                )
-                VStack {
-                    Spacer()
-
+                ) {
                     Button(
-                        action: { store.handle(action: .trailingButtonTapped) },
+                        action: { store.handle(action: .bottomButtonTapped) },
                         label: { Text(state.type.configuration.bottomButtonTitle) }
                     )
-                    .buttonStyle(BigButtonStyle())
-                    .padding([.horizontal, .bottom], DS.Spacing.extraLarge)
                 }
             }
             .toolbar {
