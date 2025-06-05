@@ -44,16 +44,18 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
-        webView.loadHTMLString(body.rawBody)
-
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-#if targetEnvironment(simulator)
-        webView.isInspectable = true
-#endif
+        #if targetEnvironment(simulator)
+            webView.isInspectable = true
+        #endif
+
+        let loadedScriptName = Coordinator.ScriptMessageName.loaded.rawValue
+        config.userContentController.add(context.coordinator, name: loadedScriptName)
+        config.userContentController.addUserScript(.postEmptyMessageOnLoad(handlerName: loadedScriptName))
 
         return webView
     }
@@ -73,16 +75,26 @@ struct MessageBodyReaderView: UIViewRepresentable {
 }
 
 extension MessageBodyReaderView {
-    class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
+    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
+        enum ScriptMessageName: String {
+            case loaded
+        }
+
         let parent: MessageBodyReaderView
 
         init(_ parent: MessageBodyReaderView) {
             self.parent = parent
         }
 
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
+            guard message.name == ScriptMessageName.loaded.rawValue, let webView = message.webView else {
+                return
+            }
+
             Task { @MainActor in
-                try await webView.evaluateJavaScript("document.readyState")
                 let scrollHeight = try await webView.evaluateJavaScript("document.documentElement.scrollHeight")
                 parent.bodyContentHeight = scrollHeight as! CGFloat
                 parent.htmlLoaded()
@@ -103,10 +115,28 @@ extension MessageBodyReaderView {
     }
 }
 
-private extension WKWebView {
+extension WKWebView {
 
-    func loadHTMLString(_ string: String) {
+    fileprivate func loadHTMLString(_ string: String) {
         loadHTMLString(string, baseURL: nil)
     }
 
+}
+
+extension WKUserScript {
+    fileprivate static func postEmptyMessageOnLoad(handlerName: String) -> Self {
+        let source = """
+            function notify() {
+                window.webkit.messageHandlers.\(handlerName).postMessage({});
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", notify);
+            } else {
+                notify();
+            }
+            """
+
+        return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+    }
 }
