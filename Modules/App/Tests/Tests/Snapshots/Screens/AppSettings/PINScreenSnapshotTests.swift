@@ -28,7 +28,9 @@ struct PINScreenSnapshotTests {
         PINScreenType.verify(reason: .changePIN),
         .verify(reason: .disablePIN),
         .confirm(pin: .empty, reason: .setNewPIN),
+        .confirm(pin: .empty, reason: .changePIN),
         .set(reason: .changePIN),
+        .set(reason: .setNewPIN),
     ])
     func pinScreensLayoutCorrectly(type: PINScreenType) {
         let sut = NavigationStack {
