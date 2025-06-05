@@ -35,6 +35,9 @@ final class BodyWebViewInterface: NSObject {
     var onEvent: ((Event) -> Void)?
 
     private let htmlDocument: BodyHtmlDocument
+    private lazy var weakScriptMessageHandler: WeakScriptMessageHandler = {
+        WeakScriptMessageHandler(target: self)
+    }()
 
     init(webView: WKWebView) {
         self.webView = webView
@@ -45,7 +48,7 @@ final class BodyWebViewInterface: NSObject {
 
     private func setUpCallbacks() {
         BodyHtmlDocument.JSEvent.allCases.forEach { eventHandler in
-            webView.configuration.userContentController.add(self, name: eventHandler.rawValue)
+            webView.configuration.userContentController.add(weakScriptMessageHandler, name: eventHandler.rawValue)
         }
     }
 
@@ -101,11 +104,8 @@ final class BodyWebViewInterface: NSObject {
             }
         }
     }
-}
 
-extension BodyWebViewInterface: WKScriptMessageHandler {
-
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    func handleScriptMessage(_ message: WKScriptMessage) {
         let userInfo = message.body as! [String: Any]
         let messageHandler = userInfo["messageHandler"] as! String
         let jsEvent = BodyHtmlDocument.JSEvent(rawValue: messageHandler)!
@@ -155,5 +155,19 @@ extension BodyWebViewInterface: WKScriptMessageHandler {
             return nil
         }
         return data
+    }
+}
+
+/// Weak wrapper to break retain cycle between BodyWebViewInterface and WKUserContentController
+private class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
+    weak var target: BodyWebViewInterface?
+
+    init(target: BodyWebViewInterface) {
+        self.target = target
+        super.init()
+    }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        target?.handleScriptMessage(message)
     }
 }
