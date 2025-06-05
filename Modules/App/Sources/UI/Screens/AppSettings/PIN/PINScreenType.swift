@@ -18,20 +18,6 @@
 import Foundation
 import InboxCore
 
-enum PINConfigurationReason {
-    case setNewPIN
-    case changePIN
-
-    var screenTitle: LocalizedStringResource {
-        switch self {
-        case .setNewPIN:
-            L10n.Settings.App.setPINScreenTitle
-        case .changePIN:
-            L10n.Settings.App.changePINcode
-        }
-    }
-}
-
 enum PINScreenType: Hashable, Identifiable {
     case set(reason: PINConfigurationReason)
     case confirm(pin: PIN, reason: PINConfigurationReason)
@@ -86,7 +72,7 @@ private extension PINScreenType.Configuration {
     static func verify(trailingButtonTitle: LocalizedStringResource) -> Self {
         .init(
             pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
-            screenTitle: screenTitle,
+            screenTitle: L10n.Settings.App.verifyPINScreenTitle,
             bottomButtonTitle: trailingButtonTitle
         )
     }
