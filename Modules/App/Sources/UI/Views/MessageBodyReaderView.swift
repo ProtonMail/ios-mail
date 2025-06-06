@@ -83,10 +83,11 @@ extension MessageBodyReaderView {
 
         func userContentController(
             _ userContentController: WKUserContentController,
-            didReceive message: WKScriptMessage
+            didReceive scriptMessage: WKScriptMessage
         ) {
             Task { @MainActor in
-                parent.bodyContentHeight = message.body as! CGFloat
+                let scriptOutput = scriptMessage.body as! CGFloat
+                parent.bodyContentHeight = scriptOutput
             }
         }
 
