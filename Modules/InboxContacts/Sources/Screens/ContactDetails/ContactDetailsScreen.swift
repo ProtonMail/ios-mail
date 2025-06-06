@@ -225,14 +225,7 @@ struct ContactDetailsScreen: View {
 private extension ContactDetails {
 
     static func initial(with contact: ContactItem) -> Self {
-        .init(
-            id: contact.id,
-            avatarInformation: contact.avatarInformation,
-            displayName: contact.name,
-            primaryEmail: contact.emails.first?.email ?? .empty,
-            primaryPhone: .none,
-            items: []
-        )
+        .init(contact: contact, details: .none)
     }
 
 }

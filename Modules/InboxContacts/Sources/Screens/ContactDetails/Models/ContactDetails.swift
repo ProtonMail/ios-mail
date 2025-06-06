@@ -24,4 +24,23 @@ struct ContactDetails {
     let primaryEmail: String
     let primaryPhone: String?
     let items: [ContactField]
+
+    init(contact: ContactItem, details: ContactDetailCard?) {
+        let primaryPhone = details?.fields
+            .compactMap { field -> String? in
+                guard case .telephones(let phones) = field else {
+                    return nil
+                }
+
+                return phones.first?.number
+            }
+            .first
+
+        self.id = contact.id
+        self.avatarInformation = contact.avatarInformation
+        self.displayName = contact.name
+        self.primaryEmail = contact.emails.first?.email ?? .empty
+        self.primaryPhone = primaryPhone
+        self.items = details?.fields ?? []
+    }
 }

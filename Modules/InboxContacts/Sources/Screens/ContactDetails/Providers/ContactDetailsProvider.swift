@@ -32,29 +32,10 @@ struct ContactDetailsProvider {
 extension ContactDetailsProvider {
 
     static func productionInstance(mailUserSession: MailUserSession) -> Self {
-        .init(
-            contactDetails: { contact in
-                let details = try? await getContactDetails(session: mailUserSession, contactId: contact.id).get()
-                let primaryPhone = details?.fields
-                    .compactMap { field -> String? in
-                        guard case .telephones(let phones) = field else {
-                            return nil
-                        }
-
-                        return phones.first?.number
-                    }
-                    .first
-
-                return .init(
-                    id: contact.id,
-                    avatarInformation: contact.avatarInformation,
-                    displayName: contact.name,
-                    primaryEmail: contact.emails.first?.email ?? .empty,
-                    primaryPhone: primaryPhone,
-                    items: details?.fields ?? []
-                )
-            }
-        )
+        .init(contactDetails: { contact in
+            let details = try? await getContactDetails(session: mailUserSession, contactId: contact.id).get()
+            return .init(contact: contact, details: details)
+        })
     }
 
     static func previewInstance() -> Self {
@@ -87,22 +68,9 @@ extension ContactDetailsProvider {
             ]),
         ]
 
-        return .init(contactDetails: { contact in .new(with: contact, items: items) })
-    }
-
-}
-
-private extension ContactDetails {
-
-    static func new(with contact: ContactItem, items: [ContactField]) -> Self {
-        .init(
-            id: contact.id,
-            avatarInformation: contact.avatarInformation,
-            displayName: contact.name,
-            primaryEmail: contact.emails.first?.email ?? .empty,
-            primaryPhone: .none,
-            items: items
-        )
+        return .init(contactDetails: { contact in
+            .init(contact: contact, details: .init(id: contact.id, fields: items))
+        })
     }
 
 }

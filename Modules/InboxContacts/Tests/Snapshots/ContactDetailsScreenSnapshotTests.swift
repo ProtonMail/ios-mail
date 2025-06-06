@@ -24,10 +24,42 @@ import Testing
 final class ContactDetailsScreenSnapshotTests {
 
     @Test
-    func testContactDetailsScreenLayoutsCorrectOnIphoneX() async {
-        let previewInstace = ContactDetailsProvider.previewInstance()
-        let details = await previewInstace.contactDetails(for: .benjaminAlexander)
-        let sut = ContactDetailsScreen(contact: .benjaminAlexander, provider: .previewInstance(), state: details)
+    func testContactDetailsScreenLayoutsCorrectOnIphoneX() {
+        let items: [ContactField] = [
+            .emails([
+                .init(name: "Work", email: "ben.ale@protonmail.com"),
+                .init(name: "Private", email: "alexander@proton.me"),
+            ]),
+            .addresses([
+                .init(
+                    street: "Lettensteg 10",
+                    city: "Zürich",
+                    region: .none,
+                    postalCode: "8037",
+                    country: .none,
+                    addrType: []
+                ),
+                .init(
+                    street: "Uetlibergstrasse 872",
+                    city: "Zürich",
+                    region: .none,
+                    postalCode: "8025",
+                    country: .none,
+                    addrType: []
+                ),
+            ]),
+            .birthday(.string("Jan 23, 2004")),
+            .notes([
+                "Met Caleb while studying abroad. Amazing memories and a strong friendship."
+            ]),
+        ]
+
+        let contact: ContactItem = .benjaminAlexander
+        let sut = ContactDetailsScreen(
+            contact: .benjaminAlexander,
+            provider: .previewInstance(),
+            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
+        )
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
