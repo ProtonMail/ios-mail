@@ -53,12 +53,12 @@ final class ScheduleSendDateFormatterTests {
 
     @Test
     func testString_withRelativeDate_today_andRelativeFormat() async {
-        #expect(sut.string(from: todayTime, format: .relativeOrShort) == "Today at 11:59 PM")
+        #expect(sut.string(from: todayTime, format: .relativeOrShort) == "today at 11:59 PM")
     }
 
     @Test
     func testString_withRelativeDate_tomorrow_andRelativeFormat() async {
-        #expect(sut.string(from: tomorrowTime, format: .relativeOrShort) == "Tomorrow at 8:00 AM")
+        #expect(sut.string(from: tomorrowTime, format: .relativeOrShort) == "tomorrow at 8:00 AM")
     }
 
     @Test

@@ -21,7 +21,7 @@ public struct ScheduleSendDateFormatter {
     public enum Format {
         /** Nov 15 at 10:00 AM */
         case short
-        /** Tomorrow at 10:00 AM */
+        /** tomorrow at 10:00 AM */
         case relativeOrShort
         /** 27 May 2029 */
         case medium
@@ -63,6 +63,7 @@ public struct ScheduleSendDateFormatter {
             dateFormatter.doesRelativeDateFormatting = true
             dateFormatter.dateStyle = .medium
             dateFormatter.timeStyle = .short
+            dateFormatter.formattingContext = .middleOfSentence
             return dateFormatter.string(from: date)
         } else {
             return string(from: date, format: .short)
