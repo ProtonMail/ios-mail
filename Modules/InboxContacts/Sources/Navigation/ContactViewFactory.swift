@@ -19,7 +19,19 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-enum ContactsRoute: Routable {
-    case contactDetails(ContactItem)
-    case contactGroupDetails(ContactGroupItem)
+struct ContactViewFactory {
+    let mailUserSession: MailUserSession
+
+    @ViewBuilder
+    func makeView(for route: ContactsRoute) -> some View {
+        switch route {
+        case .contactDetails(let contact):
+            ContactDetailsScreen(
+                contact: contact,
+                provider: .productionInstance(mailUserSession: mailUserSession)
+            )
+        case .contactGroupDetails(let group):
+            ContactGroupDetailsScreen(group: group)
+        }
+    }
 }

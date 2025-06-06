@@ -23,5 +23,5 @@ struct ContactDetails {
     let displayName: String
     let primaryEmail: String
     let primaryPhone: String?
-    let groupItems: [[ContactDetailsItem]]
+    let items: [ContactField]
 }

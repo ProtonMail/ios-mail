@@ -19,10 +19,13 @@
 import proton_app_uniffi
 import SwiftUI
 import ViewInspector
-import XCTest
+import Testing
 
 @MainActor
-final class ContactsRouteTests: XCTestCase {
+final class ContactViewFactoryTests {
+    let sut = ContactViewFactory(mailUserSession: .init(noPointer: .init()))
+
+    @Test
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id = Id(value: 1)
         let view = try makeView(for: .contactDetails(.testData(id: id)))
@@ -30,9 +33,10 @@ final class ContactsRouteTests: XCTestCase {
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        XCTAssertEqual(screen.contact.id, id)
+        #expect(screen.contact.id == id)
     }
 
+    @Test
     func testView_ForContactGroupDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let group = ContactGroupItem.advisorsGroup
         let view = try makeView(for: .contactGroupDetails(group))
@@ -40,12 +44,12 @@ final class ContactsRouteTests: XCTestCase {
         let inspectableScreen = try view.find(ContactGroupDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        XCTAssertEqual(screen.group.id, group.id)
+        #expect(screen.group.id == group.id)
     }
 
     // MARK: - Private
 
     private func makeView(for route: ContactsRoute) throws -> InspectableView<ViewType.ClassifiedView> {
-        try route.view().inspect()
+        try sut.makeView(for: route).inspect()
     }
 }

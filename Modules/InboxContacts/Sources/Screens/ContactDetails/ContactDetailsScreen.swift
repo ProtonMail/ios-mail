@@ -33,7 +33,7 @@ struct ContactDetailsScreen: View {
     ) {
         self.contact = contact
         self.provider = provider
-        _state = .init(initialValue: state ?? .details(with: contact))
+        _state = .init(initialValue: state ?? .initial(with: contact))
     }
 
     var body: some View {
@@ -94,28 +94,119 @@ struct ContactDetailsScreen: View {
         }
     }
 
+    @ViewBuilder
     private var fields: some View {
-        ForEach(state.groupItems, id: \.self) { items in
-            FormList(collection: items, separator: .invertedNoPadding) { item in
-                FormBigButton(
-                    title: item.label.stringResource,
-                    symbol: .none,
-                    value: item.value,
-                    action: {
-                        // FIXME: Implement action for specific item
-                    },
-                    hasAccentTextColor: item.isInteractive
-                )
-                .disabled(!item.isInteractive)
+        ForEach(state.items, id: \.self) { item in
+            field(for: item)
+        }
+    }
+
+    @ViewBuilder
+    private func field(for type: ContactField) -> some View {
+        switch type {
+        case .anniversary:
+            EmptyView()
+        case .birthday(let date):
+            dateField(from: date)
+        case .gender:
+            EmptyView()
+        case .addresses(let addresses):
+            FormList(collection: addresses, separator: .invertedNoPadding) { address in
+                addressField(from: address) {
+                    // FIXME: Implement action for specific item
+                }
             }
+        case .emails(let emails):
+            FormList(collection: emails, separator: .invertedNoPadding) { item in
+                button(item: .init(label: item.name, value: item.email, isInteractive: true)) {
+                    // FIXME: Implement action for specific item
+                }
+            }
+        case .languages:
+            EmptyView()
+        case .logos:
+            EmptyView()
+        case .members:
+            EmptyView()
+        case .notes(let notes):
+            FormList(collection: notes, separator: .invertedNoPadding) { note in
+                button(item: .init(label: "Note", value: note, isInteractive: false))
+            }
+        case .organizations:
+            EmptyView()
+        case .telephones:
+            EmptyView()
+        case .photos:
+            EmptyView()
+        case .roles:
+            EmptyView()
+        case .timeZones:
+            EmptyView()
+        case .titles:
+            EmptyView()
+        case .urls:
+            EmptyView()
         }
     }
 
     private func loadDetails(for contact: ContactItem) {
         Task {
-            let details = await provider.contactDetails(for: contact)
-            state = details
+            state = await provider.contactDetails(for: contact)
         }
+    }
+
+    private func button(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
+        FormBigButton(
+            title: item.label.stringResource,
+            symbol: .none,
+            value: item.value,
+            action: action,
+            hasAccentTextColor: item.isInteractive
+        )
+        .disabled(!item.isInteractive)
+    }
+
+    private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
+        FormBigButton(
+            title: item.label.stringResource,
+            symbol: .none,
+            value: item.value,
+            action: action,
+            hasAccentTextColor: item.isInteractive
+        )
+        .disabled(!item.isInteractive)
+        .background(DS.Color.BackgroundInverted.secondary)
+        .roundedRectangleStyle()
+    }
+
+    private func dateField(from date: ContactDate) -> some View {
+        let formattedDate: String
+        switch date {
+        case .string(let string):
+            formattedDate = string
+        case .date:
+            formattedDate = "N/A"
+        }
+
+        let item = ContactDetailsItem(
+            label: "Birthday",
+            value: formattedDate,
+            isInteractive: false
+        )
+
+        return singleButton(item: item)
+    }
+
+    private func addressField(from address: ContactDetailAddress, action: @escaping () -> Void) -> some View {
+        let codeAndCity: String = [address.postalCode, address.city]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        let formattedAddress: String = [address.street, codeAndCity]
+            .compactMap { $0 }
+            .joined(separator: ", ")
+        let item = ContactDetailsItem(label: "Address", value: formattedAddress, isInteractive: true)
+
+        return button(item: item, action: action)
     }
 }
 
@@ -133,14 +224,14 @@ struct ContactDetailsScreen: View {
 
 private extension ContactDetails {
 
-    static func details(with contact: ContactItem) -> Self {
+    static func initial(with contact: ContactItem) -> Self {
         .init(
             id: contact.id,
             avatarInformation: contact.avatarInformation,
             displayName: contact.name,
             primaryEmail: contact.emails.first?.email ?? .empty,
             primaryPhone: .none,
-            groupItems: []
+            items: []
         )
     }
 

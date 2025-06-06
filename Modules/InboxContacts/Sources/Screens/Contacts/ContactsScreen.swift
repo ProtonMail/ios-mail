@@ -24,6 +24,7 @@ import SwiftUI
 public struct ContactsScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @StateObject private var store: ContactsStateStore
+    private let contactViewFactory: ContactViewFactory
 
     var onLoad: ((Self) -> Void)?
 
@@ -45,6 +46,7 @@ public struct ContactsScreen: View {
                 )
             )
         )
+        self.contactViewFactory = .init(mailUserSession: mailUserSession)
     }
 
     public var body: some View {
@@ -57,8 +59,8 @@ public struct ContactsScreen: View {
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
             .navigationDestination(for: ContactsRoute.self) { route in
-                route
-                    .view()
+                contactViewFactory
+                    .makeView(for: route)
                     .navigationBarBackButtonHidden()
                     .toolbar {
                         ToolbarItemFactory.back { store.router.goBack() }

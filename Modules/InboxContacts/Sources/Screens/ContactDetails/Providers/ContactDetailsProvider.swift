@@ -31,43 +31,77 @@ struct ContactDetailsProvider {
 
 extension ContactDetailsProvider {
 
-    static func previewInstance() -> Self {
-        let groupItems: [[ContactDetailsItem]] = [
-            [
-                .init(label: "Work", value: "ben.ale@protonmail.com", isInteractive: true),
-                .init(label: "Private", value: "alexander@proton.me", isInteractive: true),
-            ],
-            [
-                .init(label: "Address", value: "Lettensteg 10, 8037 Zürich", isInteractive: true),
-                .init(label: "Address", value: "Uetlibergstrasse 872, 8025 Zürich", isInteractive: true),
-            ],
-            [
-                .init(label: "Birthday", value: "Jan 23, 2004", isInteractive: false)
-            ],
-            [
-                .init(
-                    label: "Note",
-                    value: "Met Caleb while studying abroad. Amazing memories and a strong friendship.",
-                    isInteractive: false
+    static func productionInstance(mailUserSession: MailUserSession) -> Self {
+        .init(
+            contactDetails: { contact in
+                let details = try? await getContactDetails(session: mailUserSession, contactId: contact.id).get()
+                let primaryPhone = details?.fields
+                    .compactMap { field -> String? in
+                        guard case .telephones(let phones) = field else {
+                            return nil
+                        }
+
+                        return phones.first?.number
+                    }
+                    .first
+
+                return .init(
+                    id: contact.id,
+                    avatarInformation: contact.avatarInformation,
+                    displayName: contact.name,
+                    primaryEmail: contact.emails.first?.email ?? .empty,
+                    primaryPhone: primaryPhone,
+                    items: details?.fields ?? []
                 )
-            ],
+            }
+        )
+    }
+
+    static func previewInstance() -> Self {
+        let items: [ContactField] = [
+            .emails([
+                .init(name: "Work", email: "ben.ale@protonmail.com"),
+                .init(name: "Private", email: "alexander@proton.me"),
+            ]),
+            .addresses([
+                .init(
+                    street: "Lettensteg 10",
+                    city: "Zürich",
+                    region: .none,
+                    postalCode: "8037",
+                    country: .none,
+                    addrType: []
+                ),
+                .init(
+                    street: "Uetlibergstrasse 872",
+                    city: "Zürich",
+                    region: .none,
+                    postalCode: "8025",
+                    country: .none,
+                    addrType: []
+                ),
+            ]),
+            .birthday(.string("Jan 23, 2004")),
+            .notes([
+                "Met Caleb while studying abroad. Amazing memories and a strong friendship."
+            ]),
         ]
 
-        return .init(contactDetails: { contact in .new(with: contact, groupItems: groupItems) })
+        return .init(contactDetails: { contact in .new(with: contact, items: items) })
     }
 
 }
 
 private extension ContactDetails {
 
-    static func new(with contact: ContactItem, groupItems: [[ContactDetailsItem]]) -> Self {
+    static func new(with contact: ContactItem, items: [ContactField]) -> Self {
         .init(
             id: contact.id,
             avatarInformation: contact.avatarInformation,
             displayName: contact.name,
             primaryEmail: contact.emails.first?.email ?? .empty,
             primaryPhone: .none,
-            groupItems: groupItems
+            items: items
         )
     }
 
