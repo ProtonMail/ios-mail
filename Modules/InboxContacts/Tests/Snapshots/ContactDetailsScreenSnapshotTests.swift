@@ -24,7 +24,7 @@ import Testing
 final class ContactDetailsScreenSnapshotTests {
 
     @Test
-    func testContactDetailsScreenLayoutsCorrectOnIphoneX() {
+    func testContactDetailsScreenVariant1() {
         let items: [ContactField] = [
             .emails([
                 .init(name: "Work", email: "ben.ale@protonmail.com"),
@@ -52,6 +52,74 @@ final class ContactDetailsScreenSnapshotTests {
             .notes([
                 "Met Caleb while studying abroad. Amazing memories and a strong friendship."
             ]),
+        ]
+
+        let contact: ContactItem = .benjaminAlexander
+        let sut = ContactDetailsScreen(
+            contact: .benjaminAlexander,
+            provider: .previewInstance(),
+            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
+        )
+
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
+
+    @Test
+    func testContactDetailsScreenVariant2() {
+        let items: [ContactField] = [
+            .emails([
+                .init(name: "Work", email: "ben.ale@protonmail.com")
+            ]),
+            .telephones([
+                .init(number: "+41771234567", telTypes: [.home])
+            ]),
+            .anniversary(.string("Feb 28, 2019")),
+            .gender(.male),
+            .languages(["english", "german"]),
+        ]
+
+        let contact: ContactItem = .benjaminAlexander
+        let sut = ContactDetailsScreen(
+            contact: .benjaminAlexander,
+            provider: .previewInstance(),
+            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
+        )
+
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
+
+    @Test
+    func testContactDetailsScreenVariant3() {
+        let items: [ContactField] = [
+            .emails([
+                .init(name: "Work", email: "ben.ale@protonmail.com")
+            ]),
+            .languages(["english", "german"]),
+            .timeZones(["Europe/Zürich"]),
+            .titles(["Phd"]),
+            .roles(["Professor"]),
+        ]
+
+        let contact: ContactItem = .benjaminAlexander
+        let sut = ContactDetailsScreen(
+            contact: .benjaminAlexander,
+            provider: .previewInstance(),
+            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
+        )
+
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
+
+    @Test
+    func testContactDetailsScreenVariant4() {
+        let items: [ContactField] = [
+            .emails([
+                .init(name: "Work", email: "ben.ale@protonmail.com")
+            ]),
+            .languages(["french"]),
+            .organizations(["CERN", "NASA"]),
+            .members(["N/A"]),
+            .urls([.init(url: "https://www.nasa.gov", urlType: [.work])]),
         ]
 
         let contact: ContactItem = .benjaminAlexander
