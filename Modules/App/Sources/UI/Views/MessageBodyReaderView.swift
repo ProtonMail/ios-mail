@@ -28,12 +28,12 @@ struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
     let urlOpener: URLOpenerProtocol
-    let htmlLoaded: () -> Void
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
         config.setURLSchemeHandler(
             CIDSchemeHandler(embeddedImageProvider: body.embeddedImageProvider),
             forURLScheme: CIDSchemeHandler.handlerScheme
@@ -53,9 +53,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
             webView.isInspectable = true
         #endif
 
-        let loadedScriptName = Coordinator.ScriptMessageName.loaded.rawValue
-        config.userContentController.add(context.coordinator, name: loadedScriptName)
-        config.userContentController.addUserScript(.postEmptyMessageOnLoad(handlerName: loadedScriptName))
+        config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
+        config.userContentController.addUserScript(.observeHeight)
 
         return webView
     }
@@ -76,10 +75,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
 extension MessageBodyReaderView {
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
-        enum ScriptMessageName: String {
-            case loaded
-        }
-
         let parent: MessageBodyReaderView
 
         init(_ parent: MessageBodyReaderView) {
@@ -90,14 +85,8 @@ extension MessageBodyReaderView {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            guard message.name == ScriptMessageName.loaded.rawValue, let webView = message.webView else {
-                return
-            }
-
             Task { @MainActor in
-                let scrollHeight = try await webView.evaluateJavaScript("document.documentElement.scrollHeight")
-                parent.bodyContentHeight = scrollHeight as! CGFloat
-                parent.htmlLoaded()
+                parent.bodyContentHeight = message.body as! CGFloat
             }
         }
 
@@ -124,19 +113,23 @@ extension WKWebView {
 }
 
 extension WKUserScript {
-    fileprivate static func postEmptyMessageOnLoad(handlerName: String) -> Self {
+    fileprivate static let observeHeight: WKUserScript = {
         let source = """
-            function notify() {
-                window.webkit.messageHandlers.\(handlerName).postMessage({});
-            }
+            const container = document.documentElement;
 
-            if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", notify);
-            } else {
-                notify();
+            const observer = new ResizeObserver(function() {
+                window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(container.scrollHeight);
+            });
+
+            for (const child of container.children) {
+                observer.observe(child);
             }
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-    }
+    }()
+}
+
+private enum Constants {
+    static let heightChangedHandlerName = "heightChanged"
 }

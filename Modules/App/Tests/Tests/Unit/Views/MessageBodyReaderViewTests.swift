@@ -34,8 +34,7 @@ class MessageBodyReaderViewTests {
                 options: .init(),
                 embeddedImageProvider: EmbeddedImageProviderSpy()
             ),
-            urlOpener: urlOpenerSpy,
-            htmlLoaded: {}
+            urlOpener: urlOpenerSpy
         )
     }
 

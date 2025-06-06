@@ -57,13 +57,17 @@ struct MessageBodyHTMLView: View {
             MessageBodyReaderView(
                 bodyContentHeight: $bodyContentHeight,
                 body: body,
-                urlOpener: urlOpener,
-                htmlLoaded: htmlLoaded
+                urlOpener: urlOpener
             )
             .frame(height: bodyContentHeight)
             .padding([.vertical, .horizontal], DS.Spacing.large)
             .opacity(bodyContentHeight > 0 ? 1 : 0)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
+            .onChange(of: bodyContentHeight) { oldValue, newValue in
+                if oldValue.isZero && !newValue.isZero {
+                    htmlLoaded()
+                }
+            }
         }
     }
 }
