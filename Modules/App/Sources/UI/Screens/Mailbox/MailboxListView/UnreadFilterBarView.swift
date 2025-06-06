@@ -77,11 +77,11 @@ struct UnreadFilterBarView: View {
                 Image(symbol: state.selectAll.icon)
                     .resizable()
                     .square(size: 16)
-                    .tint(DS.Color.Icon.norm)
+                    .tint(state.selectAll.iconColor)
 
                 Text(state.selectAll.string)
                     .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.norm)
+                    .foregroundStyle(state.selectAll.textColor)
             }
         }
         .disabled(state.selectAll.isDisabled)
@@ -127,6 +127,10 @@ enum SelectAllState {
         }
     }
 
+    var iconColor: Color {
+        isDisabled ? DS.Color.Icon.disabled : DS.Color.Icon.norm
+    }
+
     var string: LocalizedStringResource {
         switch self {
         case .canSelectMoreItems, .selectionLimitReached:
@@ -134,6 +138,10 @@ enum SelectAllState {
         case .noMoreItemsToSelect:
             L10n.Mailbox.unselectAll
         }
+    }
+
+    var textColor: Color {
+        isDisabled ? DS.Color.Text.disabled : DS.Color.Text.norm
     }
 
     var isDisabled: Bool {
