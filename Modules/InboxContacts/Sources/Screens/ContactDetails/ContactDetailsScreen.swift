@@ -94,7 +94,6 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    @ViewBuilder
     private var fields: some View {
         ForEach(state.items, id: \.self) { item in
             field(for: item)
@@ -109,60 +108,46 @@ struct ContactDetailsScreen: View {
         case .birthday(let date):
             dateField(label: "Birthday", from: date)
         case .gender(let gender):
-            singleButton(item: .init(label: "Gender", value: gender.humanReadable, isInteractive: false))
+            singleButton(item: ContactFormatter.Gender.formatted(from: gender))
         case .addresses(let addresses):
-            FormList(collection: addresses, separator: .invertedNoPadding) { address in
-                addressField(from: address) {
+            FormList(collection: addresses) { address in
+                button(item: ContactFormatter.Address.formatted(from: address)) {
                     // FIXME: Implement action for opening apple maps / google maps
                 }
             }
         case .emails(let emails):
-            FormList(collection: emails, separator: .invertedNoPadding) { item in
+            FormList(collection: emails) { item in
                 button(item: .init(label: item.name, value: item.email, isInteractive: true)) {
                     // FIXME: Implement copy action
                 }
             }
         case .languages(let languages):
-            FormList(collection: languages, separator: .invertedNoPadding) { language in
-                button(item: .init(label: "Language", value: language, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Language", values: languages)
         case .logos:
             EmptyView()
         case .members(let members):
-            FormList(collection: members, separator: .invertedNoPadding) { member in
-                button(item: .init(label: "Member", value: member, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Member", values: members)
         case .notes(let notes):
-            FormList(collection: notes, separator: .invertedNoPadding) { note in
-                button(item: .init(label: "Note", value: note, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Note", values: notes)
         case .organizations(let organizations):
-            FormList(collection: organizations, separator: .invertedNoPadding) { organization in
-                button(item: .init(label: "Organization", value: organization, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Organization", values: organizations)
         case .telephones(let telephones):
-            FormList(collection: telephones, separator: .invertedNoPadding) { telephone in
-                button(item: ContactFormatters.Telephone.formatted(from: telephone)) {
+            FormList(collection: telephones) { telephone in
+                button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
                     // FIXME: Implement call action
                 }
             }
         case .photos:
             EmptyView()
         case .roles(let roles):
-            FormList(collection: roles, separator: .invertedNoPadding) { role in
-                button(item: .init(label: "Role", value: role, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Role", values: roles)
         case .timeZones(let timeZones):
-            FormList(collection: timeZones, separator: .invertedNoPadding) { timeZone in
-                button(item: .init(label: "Time zone", value: timeZone, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Time zone", values: timeZones)
         case .titles(let titles):
-            FormList(collection: titles, separator: .invertedNoPadding) { title in
-                button(item: .init(label: "Title", value: title, isInteractive: false))
-            }
+            nonInteractiveGroup(label: "Title", values: titles)
         case .urls(let urls):
-            FormList(collection: urls, separator: .invertedNoPadding) { item in
-                button(item: ContactFormatters.URL.formatted(from: item)) {
+            FormList(collection: urls) { item in
+                button(item: ContactFormatter.URL.formatted(from: item)) {
                     // FIXME: Implement copy / open url action
                 }
             }
@@ -172,6 +157,12 @@ struct ContactDetailsScreen: View {
     private func loadDetails(for contact: ContactItem) {
         Task {
             state = await provider.contactDetails(for: contact)
+        }
+    }
+
+    private func nonInteractiveGroup(label: String, values: [String]) -> some View {
+        FormList(collection: values) { value in
+            button(item: .init(label: label, value: value, isInteractive: false))
         }
     }
 
@@ -186,19 +177,6 @@ struct ContactDetailsScreen: View {
         .disabled(!item.isInteractive)
     }
 
-    private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
-        FormBigButton(
-            title: item.label.stringResource,
-            symbol: .none,
-            value: item.value,
-            action: action,
-            hasAccentTextColor: item.isInteractive
-        )
-        .disabled(!item.isInteractive)
-        .background(DS.Color.BackgroundInverted.secondary)
-        .roundedRectangleStyle()
-    }
-
     private func dateField(label: String, from date: ContactDate) -> some View {
         let formattedDate: String
         switch date {
@@ -208,26 +186,30 @@ struct ContactDetailsScreen: View {
             formattedDate = "N/A"
         }
 
-        let item = ContactDetailsItem(
-            label: label,
-            value: formattedDate,
-            isInteractive: false
-        )
-
-        return singleButton(item: item)
+        return singleButton(item: .init(label: label, value: formattedDate, isInteractive: false))
     }
 
-    private func addressField(from address: ContactDetailAddress, action: @escaping () -> Void) -> some View {
-        let codeAndCity: String = [address.postalCode, address.city]
-            .compactMap { $0 }
-            .joined(separator: " ")
-        let formattedAddress: String = [address.street, codeAndCity]
-            .compactMap { $0 }
-            .joined(separator: ", ")
-        let item = ContactDetailsItem(label: "Address", value: formattedAddress, isInteractive: true)
-
-        return button(item: item, action: action)
+    private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
+        button(item: item, action: action)
+            .background(DS.Color.BackgroundInverted.secondary)
+            .roundedRectangleStyle()
     }
+}
+
+private extension ContactDetails {
+
+    static func initial(with contact: ContactItem) -> Self {
+        .init(contact: contact, details: .none)
+    }
+
+}
+
+private extension FormList {
+
+    init(collection: Collection, elementContent: @escaping (Collection.Element) -> ElementContent) {
+        self.init(collection: collection, separator: .invertedNoPadding, elementContent: elementContent)
+    }
+
 }
 
 #Preview {
@@ -240,86 +222,4 @@ struct ContactDetailsScreen: View {
         ),
         provider: .previewInstance()
     )
-}
-
-private extension ContactDetails {
-
-    static func initial(with contact: ContactItem) -> Self {
-        .init(contact: contact, details: .none)
-    }
-
-}
-
-enum ContactFormatters {
-    enum Telephone {
-        static func formatted(from details: ContactDetailsTelephones) -> ContactDetailsItem {
-            .init(
-                label: details.telTypes.first.map(\.displayType) ?? "Phone",
-                value: details.number,
-                isInteractive: true
-            )
-        }
-    }
-
-    enum URL {
-        static func formatted(from vcardURL: VCardUrl) -> ContactDetailsItem {
-            .init(
-                label: vcardURL.urlType.first.map(\.displayType) ?? "URL",
-                value: vcardURL.url,
-                isInteractive: true
-            )
-        }
-    }
-}
-
-private extension GenderKind {
-
-    var humanReadable: String {
-        switch self {
-        case .male:
-            "Male"
-        case .female:
-            "Female"
-        case .other:
-            "Other"
-        case .notApplicable:
-            "Not applicable"
-        case .unknown:
-            "Unknown"
-        case .none:
-            "None"
-        case .string(let string):
-            string
-        }
-    }
-
-}
-
-private extension VcardPropType {
-
-    var displayType: String {
-        switch self {
-        case .home:
-            "Home"
-        case .work:
-            "Work"
-        case .text:
-            "Text"
-        case .voice:
-            "Voice"
-        case .fax:
-            "Fax"
-        case .cell:
-            "Cell"
-        case .video:
-            "Video"
-        case .pager:
-            "Pager"
-        case .textPhone:
-            "Text phone"
-        case .string(let string):
-            string
-        }
-    }
-
 }
