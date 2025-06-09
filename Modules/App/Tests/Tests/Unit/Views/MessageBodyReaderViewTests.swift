@@ -21,31 +21,27 @@ import Testing
 import WebKit
 
 @MainActor
-class MessageBodyReaderViewTests {
-    var sut: MessageBodyReaderView!
-    private var urlOpenerSpy: EnvironmentURLOpenerSpy!
+final class MessageBodyReaderViewTests {
+    private let urlOpenerSpy = EnvironmentURLOpenerSpy()
 
-    init() {
-        urlOpenerSpy = .init()
-        sut = MessageBodyReaderView(
-            bodyContentHeight: .constant(.zero),
-            body: .init(
-                rawBody: "<html>dummy</html>",
-                options: .init(),
-                embeddedImageProvider: EmbeddedImageProviderSpy()
-            ),
-            urlOpener: urlOpenerSpy
+    private lazy var sut = MessageBodyReaderView(
+        bodyContentHeight: .constant(.zero),
+        body: .init(
+            rawBody: "<html>dummy</html>",
+            options: .init(),
+            embeddedImageProvider: EmbeddedImageProviderSpy()
         )
-    }
+    )
 
-    deinit {
-        urlOpenerSpy = nil
-        sut = nil
-    }
+    private lazy var coordinator: MessageBodyReaderView.Coordinator = {
+        let coordinator = sut.makeCoordinator()
+        coordinator.urlOpener = urlOpenerSpy
+        return coordinator
+    }()
 
     @Test
     func test_WhenLinkInsideWebViewIsTapped_ItOpensURL() async {
-        let result = await sut.webView(navigation: .init(navigationType: .linkActivated, url: protonURL))
+        let result = await coordinator.webView(.init(), decidePolicyFor: NavigationActionStub(navigationType: .linkActivated, url: protonURL))
 
         #expect(result == .cancel)
         #expect(urlOpenerSpy.callAsFunctionInvokedWithURL == [protonURL])
@@ -53,7 +49,7 @@ class MessageBodyReaderViewTests {
 
     @Test
     func test_WhenReloadNavigationIsTriggered_ItDoesNotOpenURL() async {
-        let result = await sut.webView(navigation: .init(navigationType: .reload, url: protonURL))
+        let result = await coordinator.webView(.init(), decidePolicyFor: NavigationActionStub(navigationType: .reload, url: protonURL))
 
         #expect(result == .allow)
         #expect(urlOpenerSpy.callAsFunctionInvokedWithURL.isEmpty == true)
@@ -77,15 +73,6 @@ class MessageBodyReaderViewTests {
 
     private var protonURL: URL {
         URL(string: "https://account.proton.me").unsafelyUnwrapped
-    }
-}
-
-private extension MessageBodyReaderView {
-    func webView(navigation: NavigationActionStub) async -> WKNavigationActionPolicy {
-        let coordinator = makeCoordinator()
-        let result = await coordinator.webView(WKWebView(), decidePolicyFor: navigation)
-
-        return result
     }
 }
 

@@ -27,7 +27,6 @@ extension EnvironmentValues {
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
-    let urlOpener: URLOpenerProtocol
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
@@ -62,6 +61,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         updateUIView(uiView)
         uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+        context.coordinator.urlOpener = context.environment.openURL
     }
 
     func updateUIView(_ view: WKWebView) {
@@ -76,6 +76,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 extension MessageBodyReaderView {
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
         let parent: MessageBodyReaderView
+        var urlOpener: URLOpenerProtocol?
 
         init(_ parent: MessageBodyReaderView) {
             self.parent = parent
@@ -99,7 +100,7 @@ extension MessageBodyReaderView {
                 return .allow
             }
 
-            parent.urlOpener(url)
+            urlOpener?(url)
             return .cancel
         }
     }
