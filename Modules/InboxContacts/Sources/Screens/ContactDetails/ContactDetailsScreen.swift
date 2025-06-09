@@ -167,14 +167,17 @@ struct ContactDetailsScreen: View {
     }
 
     private func button(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
-        FormBigButton(
+        LongPressFormBigButton(
             title: item.label.stringResource,
-            symbol: .none,
             value: item.value,
-            action: action,
-            hasAccentTextColor: item.isInteractive
+            hasAccentTextColor: item.isInteractive,
+            onTap: action,
+            longPressActions: { [copyAction(for: item.value)] }
         )
-        .disabled(!item.isInteractive)
+    }
+
+    private func copyAction(for value: String) -> UIAction {
+        UIAction(title: "Copy", handler: { _ in UIPasteboard.general.string = value })
     }
 
     private func dateField(label: String, from date: ContactDate) -> some View {

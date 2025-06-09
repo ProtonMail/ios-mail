@@ -19,49 +19,31 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct FormBigButton: View {
-    private let value: String
     private let title: LocalizedStringResource
+    private let value: String
     private let symbol: DS.SFSymbol?
     private let action: () -> Void
-    private let hasAccentTextColor: Bool
 
     public init(
         title: LocalizedStringResource,
         symbol: DS.SFSymbol?,
         value: String,
-        action: @escaping () -> Void,
-        hasAccentTextColor: Bool = false
+        action: @escaping () -> Void
     ) {
         self.title = title
         self.symbol = symbol
         self.value = value
         self.action = action
-        self.hasAccentTextColor = hasAccentTextColor
     }
 
     public var body: some View {
         Button(action: action) {
-            HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                    Text(title)
-                        .font(.subheadline)
-                        .fontWeight(.regular)
-                        .foregroundStyle(DS.Color.Text.weak)
-                    Text(value)
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
-                }
-                if let symbol {
-                    Spacer(minLength: DS.Spacing.small)
-                    Image(symbol: symbol)
-                        .font(.system(size: 20))
-                        .foregroundStyle(DS.Color.Text.hint)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(DS.Spacing.large)
-            .contentShape(Rectangle())
+            FormBigButtonContent(
+                title: title,
+                value: value,
+                hasAccentTextColor: false,
+                symbol: symbol
+            )
         }
         .background(DS.Color.BackgroundInverted.secondary)
         .buttonStyle(DefaultPressedButtonStyle())
