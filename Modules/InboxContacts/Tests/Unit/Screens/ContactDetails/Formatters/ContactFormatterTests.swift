@@ -57,12 +57,21 @@ struct ContactFormatterTests {
                         country: nil,
                         addrType: [.work]
                     ),
+                    ContactDetailAddress(
+                        street: nil,
+                        city: "Lugano",
+                        region: "Ticino",
+                        postalCode: "6250",
+                        country: "Switzerland",
+                        addrType: []
+                    ),
                 ],
                 [
-                    ContactDetailsItem(label: "Home", value: "Bahnhofstrasse 1, 8001 Zürich", isInteractive: true),
-                    ContactDetailsItem(label: "Address", value: "Rue du Rhône 8, 1204 Genève", isInteractive: true),
+                    ContactDetailsItem(label: "Home", value: "Bahnhofstrasse 1\n8001 Zürich", isInteractive: true),
+                    ContactDetailsItem(label: "Address", value: "Rue du Rhône 8\n1204 Genève", isInteractive: true),
                     ContactDetailsItem(label: "Address", value: "6900 Lugano", isInteractive: true),
                     ContactDetailsItem(label: "Work", value: "Musterstrasse 5", isInteractive: true),
+                    ContactDetailsItem(label: "Address", value: "6250 Lugano\nSwitzerland", isInteractive: true),
                 ]
             )
     )

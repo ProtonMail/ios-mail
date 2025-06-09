@@ -15,18 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Contacts
 import proton_app_uniffi
 
 enum ContactFormatter {
     enum Address {
         static func formatted(from address: ContactDetailAddress) -> ContactDetailsItem {
-            let codeAndCity: String = [address.postalCode, address.city]
-                .compactMap(\.?.nonEmpty)
-                .joined(separator: " ")
-            let formattedAddress: String = [address.street, codeAndCity]
-                .compactMap(\.?.nonEmpty)
-                .joined(separator: ", ")
+            let formatter = CNPostalAddressFormatter()
+
+            let mutableAddress = CNMutablePostalAddress()
+            if let address = address.street {
+                mutableAddress.street = address
+            }
+            if let city = address.city {
+                mutableAddress.city = city
+            }
+            if let region = address.region {
+                mutableAddress.state = region
+            }
+            if let postalCode = address.postalCode {
+                mutableAddress.postalCode = postalCode
+            }
+            if let country = address.country {
+                mutableAddress.country = country
+            }
+
             let label = address.addrType.displayType(fallback: "Address")
+            let formattedAddress = formatter.string(from: mutableAddress)
 
             return .init(label: label, value: formattedAddress, isInteractive: true)
         }
