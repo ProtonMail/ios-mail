@@ -16,14 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Contacts
+import InboxCore
 import proton_app_uniffi
 
 enum ContactFormatter {
     enum Address {
         static func formatted(from address: ContactDetailAddress) -> ContactDetailsItem {
-            let formatter = CNPostalAddressFormatter()
-
             let mutableAddress = CNMutablePostalAddress()
+
             if let address = address.street {
                 mutableAddress.street = address
             }
@@ -41,9 +41,35 @@ enum ContactFormatter {
             }
 
             let label = address.addrType.displayType(fallback: "Address")
+            let formatter = CNPostalAddressFormatter()
             let formattedAddress = formatter.string(from: mutableAddress)
 
             return .init(label: label, value: formattedAddress, isInteractive: true)
+        }
+    }
+
+    enum Date {
+        static func formatted(from date: ContactDate, with label: String) -> ContactDetailsItem {
+            let formattedDate: String
+
+            switch date {
+            case .string(let string):
+                formattedDate = string
+            case .date(let partialDate):
+                var dateComponents = DateComponents()
+                dateComponents.year = partialDate.year.map(Int.init)
+                dateComponents.month = partialDate.month.map(Int.init)
+                dateComponents.day = partialDate.day.map(Int.init)
+
+                let date = DateEnvironment.calendar.date(from: dateComponents).unsafelyUnwrapped
+                let formatter = DateFormatter()
+                formatter.dateStyle = .short
+                formatter.timeStyle = .none
+
+                formattedDate = formatter.string(from: date)
+            }
+
+            return .init(label: label, value: formattedDate, isInteractive: false)
         }
     }
 

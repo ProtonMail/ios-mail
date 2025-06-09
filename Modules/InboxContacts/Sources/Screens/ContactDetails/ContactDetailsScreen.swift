@@ -104,9 +104,9 @@ struct ContactDetailsScreen: View {
     private func field(for type: ContactField) -> some View {
         switch type {
         case .anniversary(let date):
-            dateField(label: "Anniversary", from: date)
+            singleButton(item: ContactFormatter.Date.formatted(from: date, with: "Anniversary"))
         case .birthday(let date):
-            dateField(label: "Birthday", from: date)
+            singleButton(item: ContactFormatter.Date.formatted(from: date, with: "Birthday"))
         case .gender(let gender):
             singleButton(item: ContactFormatter.Gender.formatted(from: gender))
         case .addresses(let addresses):
@@ -178,18 +178,6 @@ struct ContactDetailsScreen: View {
 
     private func copyAction(for value: String) -> UIAction {
         UIAction(title: "Copy", handler: { _ in UIPasteboard.general.string = value })
-    }
-
-    private func dateField(label: String, from date: ContactDate) -> some View {
-        let formattedDate: String
-        switch date {
-        case .string(let string):
-            formattedDate = string
-        case .date:
-            formattedDate = "N/A"
-        }
-
-        return singleButton(item: .init(label: label, value: formattedDate, isInteractive: false))
     }
 
     private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {

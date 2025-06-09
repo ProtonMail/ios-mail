@@ -110,6 +110,30 @@ struct ContactFormatterTests {
     }
 
     @Test(
+        "formats contact date",
+        arguments:
+            zip(
+                [
+                    (ContactDate.string("Feb 25, 2015"), "Birthday"),
+                    (ContactDate.date(.init(year: 2011, month: 9, day: 22)), "Anniversary"),
+                    (ContactDate.date(.init(year: 2020, month: 12, day: .none)), "Anniversary"),
+                    (ContactDate.date(.init(year: 2004, month: .none, day: .none)), "Birthday"),
+                    (ContactDate.date(.init(year: .none, month: .none, day: .none)), "Missing date"),
+                ],
+                [
+                    ContactDetailsItem(label: "Birthday", value: "Feb 25, 2015", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "22.09.2011", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "01.12.2020", isInteractive: false),
+                    ContactDetailsItem(label: "Birthday", value: "01.01.2004", isInteractive: false),
+                    ContactDetailsItem(label: "Missing date", value: "01.01.1", isInteractive: false),
+                ]
+            )
+    )
+    func testDateFormatter(input: (date: ContactDate, label: String), output: ContactDetailsItem) {
+        #expect(ContactFormatter.Date.formatted(from: input.date, with: input.label) == output)
+    }
+
+    @Test(
         "formats telephone correctly",
         arguments:
             zip(
