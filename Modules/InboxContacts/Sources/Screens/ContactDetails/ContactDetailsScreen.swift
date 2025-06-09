@@ -104,9 +104,13 @@ struct ContactDetailsScreen: View {
     private func field(for type: ContactField) -> some View {
         switch type {
         case .anniversary(let date):
-            singleButton(item: ContactFormatter.Date.formatted(from: date, with: "Anniversary"))
+            singleButton(
+                item: ContactFormatter.Date.formatted(from: date, with: L10n.ContactDetails.Label.anniversary.string)
+            )
         case .birthday(let date):
-            singleButton(item: ContactFormatter.Date.formatted(from: date, with: "Birthday"))
+            singleButton(
+                item: ContactFormatter.Date.formatted(from: date, with: L10n.ContactDetails.Label.birthday.string)
+            )
         case .gender(let gender):
             singleButton(item: ContactFormatter.Gender.formatted(from: gender))
         case .addresses(let addresses):
@@ -122,15 +126,15 @@ struct ContactDetailsScreen: View {
                 }
             }
         case .languages(let languages):
-            nonInteractiveGroup(label: "Language", values: languages)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.language.string, values: languages)
         case .logos:
             EmptyView()
         case .members(let members):
-            nonInteractiveGroup(label: "Member", values: members)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.member.string, values: members)
         case .notes(let notes):
-            nonInteractiveGroup(label: "Note", values: notes)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.note.string, values: notes)
         case .organizations(let organizations):
-            nonInteractiveGroup(label: "Organization", values: organizations)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.organization.string, values: organizations)
         case .telephones(let telephones):
             FormList(collection: telephones) { telephone in
                 button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
@@ -140,11 +144,11 @@ struct ContactDetailsScreen: View {
         case .photos:
             EmptyView()
         case .roles(let roles):
-            nonInteractiveGroup(label: "Role", values: roles)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.role.string, values: roles)
         case .timeZones(let timeZones):
-            nonInteractiveGroup(label: "Time zone", values: timeZones)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.timeZone.string, values: timeZones)
         case .titles(let titles):
-            nonInteractiveGroup(label: "Title", values: titles)
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.title.string, values: titles)
         case .urls(let urls):
             FormList(collection: urls) { item in
                 button(item: ContactFormatter.URL.formatted(from: item)) {
@@ -177,7 +181,7 @@ struct ContactDetailsScreen: View {
     }
 
     private func copyAction(for value: String) -> UIAction {
-        UIAction(title: "Copy", handler: { _ in UIPasteboard.general.string = value })
+        UIAction(title: L10n.ContactDetails.copy.string) { _ in UIPasteboard.general.string = value }
     }
 
     private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {

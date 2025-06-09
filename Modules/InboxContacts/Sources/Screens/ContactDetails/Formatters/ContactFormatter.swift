@@ -40,7 +40,7 @@ enum ContactFormatter {
                 mutableAddress.country = country
             }
 
-            let label = address.addrType.displayType(fallback: "Address")
+            let label = address.addrType.displayType(fallback: L10n.ContactDetails.Label.address.string)
             let formatter = CNPostalAddressFormatter()
             let formattedAddress = formatter.string(from: mutableAddress)
 
@@ -75,13 +75,15 @@ enum ContactFormatter {
 
     enum Gender {
         static func formatted(from gender: GenderKind) -> ContactDetailsItem {
-            .init(label: "Gender", value: gender.humanReadable, isInteractive: false)
+            let label = L10n.ContactDetails.Label.gender.string
+
+            return .init(label: label, value: gender.humanReadable.string, isInteractive: false)
         }
     }
 
     enum Telephone {
         static func formatted(from telephone: ContactDetailsTelephones) -> ContactDetailsItem {
-            let label = telephone.telTypes.displayType(fallback: "Phone")
+            let label = telephone.telTypes.displayType(fallback: L10n.ContactDetails.Label.phone.string)
 
             return .init(label: label, value: telephone.number, isInteractive: true)
         }
@@ -89,7 +91,7 @@ enum ContactFormatter {
 
     enum URL {
         static func formatted(from vcardURL: VCardUrl) -> ContactDetailsItem {
-            let label = vcardURL.urlType.displayType(fallback: "URL")
+            let label = vcardURL.urlType.displayType(fallback: L10n.ContactDetails.Label.url.string)
 
             return .init(label: label, value: vcardURL.url, isInteractive: true)
         }
@@ -99,29 +101,29 @@ enum ContactFormatter {
 private extension Array where Element == VcardPropType {
 
     func displayType(fallback: String) -> String {
-        first?.displayType ?? fallback
+        first?.displayType.string ?? fallback
     }
 
 }
 
 private extension GenderKind {
 
-    var humanReadable: String {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .male:
-            "Male"
+            L10n.ContactDetails.Gender.male
         case .female:
-            "Female"
+            L10n.ContactDetails.Gender.female
         case .other:
-            "Other"
+            L10n.ContactDetails.Gender.other
         case .notApplicable:
-            "Not applicable"
+            L10n.ContactDetails.Gender.notApplicable
         case .unknown:
-            "Unknown"
+            L10n.ContactDetails.Gender.unknown
         case .none:
-            "None"
+            L10n.ContactDetails.Gender.none
         case .string(let string):
-            string
+            string.stringResource
         }
     }
 
@@ -129,37 +131,29 @@ private extension GenderKind {
 
 private extension VcardPropType {
 
-    var displayType: String {
+    var displayType: LocalizedStringResource {
         switch self {
         case .home:
-            "Home"
+            L10n.ContactDetails.VcardType.home
         case .work:
-            "Work"
+            L10n.ContactDetails.VcardType.work
         case .text:
-            "Text"
+            L10n.ContactDetails.VcardType.text
         case .voice:
-            "Voice"
+            L10n.ContactDetails.VcardType.voice
         case .fax:
-            "Fax"
+            L10n.ContactDetails.VcardType.fax
         case .cell:
-            "Cell"
+            L10n.ContactDetails.VcardType.cell
         case .video:
-            "Video"
+            L10n.ContactDetails.VcardType.video
         case .pager:
-            "Pager"
+            L10n.ContactDetails.VcardType.pager
         case .textPhone:
-            "Text phone"
+            L10n.ContactDetails.VcardType.textPhone
         case .string(let string):
-            string
+            string.stringResource
         }
-    }
-
-}
-
-private extension String {
-
-    var nonEmpty: String? {
-        isEmpty ? nil : self
     }
 
 }

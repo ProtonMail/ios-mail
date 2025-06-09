@@ -647,8 +647,20 @@
         }
       }
     },
+    "Address" : {
+      "comment" : "Address label in contact details."
+    },
+    "Anniversary" : {
+      "comment" : "Anniversary label in contact details."
+    },
+    "Birthday" : {
+      "comment" : "Birthday label in contact details."
+    },
     "Call" : {
       "comment" : "Contact details’ “Call” button title for calling the given contact."
+    },
+    "Cell" : {
+      "comment" : "Label indicating a mobile or cellular contact number."
     },
     "Contacts" : {
       "comment" : "Title of the contacts screen that displays contacts and contact groups.",
@@ -841,6 +853,9 @@
         }
       }
     },
+    "Copy" : {
+      "comment" : "Contact details’ “Copy” button title for copying the given contact's information."
+    },
     "Delete %@" : {
       "comment" : "Title for the alert shown when deleting a contact or contact group.",
       "localizations" : {
@@ -1031,6 +1046,27 @@
           }
         }
       }
+    },
+    "Fax" : {
+      "comment" : "Label indicating that the contact method is a fax number."
+    },
+    "Female" : {
+      "comment" : "Label representing the female gender in contact details."
+    },
+    "Gender" : {
+      "comment" : "Gender label in contact details."
+    },
+    "Home" : {
+      "comment" : "Label representing a home contact detail type (e.g., phone, address)."
+    },
+    "Language" : {
+      "comment" : "Language label in contact details."
+    },
+    "Male" : {
+      "comment" : "Label representing the male gender in contact details."
+    },
+    "Member" : {
+      "comment" : "Member label in contact details."
     },
     "Message" : {
       "comment" : "Contact details’ “Message” button title for creating a new message to the given contact."
@@ -1411,11 +1447,41 @@
         }
       }
     },
+    "None" : {
+      "comment" : "Label used when no gender is specified in contact details."
+    },
+    "Not applicable" : {
+      "comment" : "Label used when gender is not applicable in contact details."
+    },
+    "Note" : {
+      "comment" : "Note label in contact details."
+    },
+    "Organization" : {
+      "comment" : "Organization label in contact details."
+    },
+    "Other" : {
+      "comment" : "Label representing a non-binary or other gender in contact details."
+    },
+    "Pager" : {
+      "comment" : "Label indicating a pager contact method."
+    },
+    "Phone" : {
+      "comment" : "Phone label in contact details."
+    },
+    "Role" : {
+      "comment" : "Role label in contact details."
+    },
     "Send group message" : {
       "comment" : "Title of the button used to initiate sending a message to a contact group."
     },
     "Share" : {
       "comment" : "Contact details’ “Share” button title for sharing the given contact’s information."
+    },
+    "Text" : {
+      "comment" : "Label indicating that the contact method supports text messaging."
+    },
+    "Text phone" : {
+      "comment" : "Label indicating a specialized phone for text communication (e.g., for the hearing impaired)."
     },
     "This contact group will be deleted from your contact list." : {
       "comment" : "Message for the alert shown when deleting a contact group.",
@@ -2168,6 +2234,27 @@
           }
         }
       }
+    },
+    "Time zone" : {
+      "comment" : "Time zone label in contact details."
+    },
+    "Title" : {
+      "comment" : "Title label in contact details."
+    },
+    "Unknown" : {
+      "comment" : "Label used when gender is unknown in contact details."
+    },
+    "URL" : {
+      "comment" : "URL label in contact details."
+    },
+    "Video" : {
+      "comment" : "Label indicating that the contact method supports video calls."
+    },
+    "Voice" : {
+      "comment" : "Label indicating that the contact method supports voice calls."
+    },
+    "Work" : {
+      "comment" : "Label representing a work contact detail type (e.g., phone, address)."
     },
     "You don't have any contacts." : {
       "comment" : "Contacts screen's empty state subtitle."
