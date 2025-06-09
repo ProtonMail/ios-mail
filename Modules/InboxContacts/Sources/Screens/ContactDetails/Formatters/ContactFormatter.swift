@@ -21,10 +21,10 @@ enum ContactFormatter {
     enum Address {
         static func formatted(from address: ContactDetailAddress) -> ContactDetailsItem {
             let codeAndCity: String = [address.postalCode, address.city]
-                .compactMap { $0 }
+                .compactMap(\.?.nonEmpty)
                 .joined(separator: " ")
             let formattedAddress: String = [address.street, codeAndCity]
-                .compactMap { $0 }
+                .compactMap(\.?.nonEmpty)
                 .joined(separator: ", ")
             let label = address.addrType.displayType(fallback: "Address")
 
@@ -40,21 +40,17 @@ enum ContactFormatter {
 
     enum Telephone {
         static func formatted(from telephone: ContactDetailsTelephones) -> ContactDetailsItem {
-            .init(
-                label: telephone.telTypes.displayType(fallback: "Phone"),
-                value: telephone.number,
-                isInteractive: true
-            )
+            let label = telephone.telTypes.displayType(fallback: "Phone")
+
+            return .init(label: label, value: telephone.number, isInteractive: true)
         }
     }
 
     enum URL {
         static func formatted(from vcardURL: VCardUrl) -> ContactDetailsItem {
-            .init(
-                label: vcardURL.urlType.displayType(fallback: "URL"),
-                value: vcardURL.url,
-                isInteractive: true
-            )
+            let label = vcardURL.urlType.displayType(fallback: "URL")
+
+            return .init(label: label, value: vcardURL.url, isInteractive: true)
         }
     }
 }
@@ -115,6 +111,14 @@ private extension VcardPropType {
         case .string(let string):
             string
         }
+    }
+
+}
+
+private extension String {
+
+    var nonEmpty: String? {
+        isEmpty ? nil : self
     }
 
 }
