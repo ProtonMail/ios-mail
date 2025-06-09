@@ -89,7 +89,6 @@ extension Message {
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             recipients: recipients.recipientsUIRepresentation,
-            messagePreview: nil,
             isRead: !unread,
             avatar: sender.senderAvatar
         )

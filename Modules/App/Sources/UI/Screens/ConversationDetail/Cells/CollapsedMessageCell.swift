@@ -79,7 +79,7 @@ struct CollapsedMessageCell: View {
     }
 
     private var previewRow: some View {
-        Text(uiModel.messagePreview ?? uiModel.recipients)
+        Text(uiModel.recipients)
             .font(.caption)
             .fontWeight(uiModel.isRead ? .regular : .bold)
             .foregroundStyle(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
@@ -110,7 +110,6 @@ struct CollapsedMessageCellUIModel {
     let sender: String
     let date: Date
     let recipients: String
-    let messagePreview: String?
     let isRead: Bool
     let avatar: AvatarUIModel
 }
@@ -122,7 +121,6 @@ struct CollapsedMessageCellUIModel {
                 sender: "Martha",
                 date: .now,
                 recipients: "john@gmail.com",
-                messagePreview: "Dear All, This sounds absolutely incredible! Patagonia has been on my bucket list for ages.",
                 isRead: true,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
             ), isFirstCell: true, onTap: {})
@@ -131,7 +129,6 @@ struct CollapsedMessageCellUIModel {
                 sender: "john@gmail.com",
                 date: .now,
                 recipients: "martha@proton.me",
-                messagePreview: "I'm definitely on board for this adventure",
                 isRead: false,
                 avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
             ), onTap: {})
@@ -140,7 +137,6 @@ struct CollapsedMessageCellUIModel {
                 sender: "Martha",
                 date: .now,
                 recipients: "john@gmail.com",
-                messagePreview: nil,
                 isRead: true,
                 avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
             ), onTap: {})
