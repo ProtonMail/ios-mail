@@ -40,8 +40,8 @@ struct ConversationDetailListView: View {
                 EmptyView()
             case .fetchingMessages:
                 ConversationDetailsSkeletonView()
-            case .messagesReady(let previous, let last):
-                messageList(previous: previous, last: last)
+            case .messagesReady(let messages):
+                messageList(messages: messages)
                     .padding(.top, DS.Spacing.compact)
             case .noConnection:
                 NoConnectionView()
@@ -70,11 +70,11 @@ struct ConversationDetailListView: View {
         .pickerViewStyle([.height(390)])
     }
 
-    private func messageList(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel) -> some View {
+    private func messageList(messages: [MessageCellUIModel]) -> some View {
         ScrollViewReader { scrollView in
             VStack(spacing: .zero) {
                 LazyVStack(spacing: .zero) {
-                    ForEachEnumerated(previous, id: \.element.id) { cellUIModel, index in
+                    ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
                         switch cellUIModel.type {
                         case .collapsed(let uiModel):
                             CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
@@ -91,10 +91,6 @@ struct ConversationDetailListView: View {
                         }
                     }
                 }
-                expandedMessageCell(uiModel: last, hasShadow: !previous.isEmpty, isFirstCell: previous.isEmpty)
-                    .id(ConversationDetailModel.lastCellId) // static value because it won't be replaced with CollapsedMessageCell
-                    .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(previous.count))
             }
             .task {
                 scrollView.scrollTo(model.scrollToMessage, anchor: .top)

@@ -180,8 +180,8 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             0
-        case .messagesReady(let previous, let last):
-            (previous + [last]).count
+        case .messagesReady(let messages):
+            messages.count
         }
     }
 

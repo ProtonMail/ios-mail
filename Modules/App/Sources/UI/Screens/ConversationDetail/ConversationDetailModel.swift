@@ -334,9 +334,7 @@ extension ConversationDetailModel {
     }
 
     private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) {
-        if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
-            updateState(.messagesReady(previous: messages.dropLast(), last: last))
-        }
+        updateState(.messagesReady(messages: messages))
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
@@ -397,11 +395,11 @@ extension ConversationDetailModel {
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
-            guard let lastMessage = messages.last else { return .init(messages: [], isStarred: isStarred) }
+            //            guard let lastMessage = messages.last else { return .init(messages: [], isStarred: isStarred) }
 
             // list of messages except the last one
             var result = [MessageCellUIModel]()
-            for i in messages.indices.dropLast() {
+            for i in messages.indices {
                 let message = messages[i]
 
                 let messageCellUIModel: MessageCellUIModelType
@@ -414,9 +412,9 @@ extension ConversationDetailModel {
                 result.append(.init(id: message.id, type: messageCellUIModel))
             }
 
-            // last message
-            let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
-            result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
+            //            // last message
+            //            let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
+            //            result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
             return .init(messages: result, isStarred: isStarred)
         } catch {
@@ -482,11 +480,11 @@ extension ConversationDetailModel {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel)
+        case messagesReady(messages: [MessageCellUIModel])
 
         var debugDescription: String {
-            if case .messagesReady(let array, _) = self {
-                return "messagesReady: \(array.count + 1) messages"
+            if case .messagesReady(let messages) = self {
+                return "messagesReady: \(messages.count) messages"
             }
             return "\(self)"
         }
