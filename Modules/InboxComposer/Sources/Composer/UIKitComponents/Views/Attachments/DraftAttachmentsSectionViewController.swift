@@ -27,7 +27,6 @@ struct DraftAttachmentUIModel: Hashable {
 }
 
 struct DraftAttachmentStatus: Hashable {
-    let modifiedAt: Int64
     let state: DraftAttachmentState
 }
 
@@ -127,11 +126,11 @@ extension DraftAttachmentsSectionViewController {
             name: String,
             cat: MimeTypeCategory,
             size: UInt64,
-            status: DraftAttachmentState, timestamp: Int64 = 1740954885
+            status: DraftAttachmentState
         ) -> DraftAttachmentUIModel {
             let mimeType = AttachmentMimeType(mime: "", category: cat)
             let attachment = AttachmentMetadata(id: .init(value: id), disposition: .attachment, mimeType: mimeType, name: name, size: size)
-            return DraftAttachmentUIModel(attachment: attachment, status: .init(modifiedAt: timestamp, state: status))
+            return DraftAttachmentUIModel(attachment: attachment, status: .init(state: status))
         }
 
         static let uiModels: [DraftAttachmentUIModel] = [

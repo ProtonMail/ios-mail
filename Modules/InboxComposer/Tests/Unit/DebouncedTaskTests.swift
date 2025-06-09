@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxComposer
-@testable import InboxTesting
 import XCTest
 
 final class DebouncedTaskTests: XCTestCase {

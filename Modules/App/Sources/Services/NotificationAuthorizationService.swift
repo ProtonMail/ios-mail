@@ -19,9 +19,6 @@ import UIKit
 
 protocol RemoteNotificationRegistrar {
     @MainActor
-    var isRegisteredForRemoteNotifications: Bool { get }
-
-    @MainActor
     func registerForRemoteNotifications()
 }
 

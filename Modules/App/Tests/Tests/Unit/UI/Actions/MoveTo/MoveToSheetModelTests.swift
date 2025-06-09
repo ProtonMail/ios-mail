@@ -26,7 +26,6 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
     var invokedNavigation: [MoveToSheetNavigation]!
-    var stubbedMoveToActions: [MoveAction]!
     var toastStateStore: ToastStateStore!
     var moveToActionsSpy: MoveToActionsSpy!
 
@@ -35,15 +34,6 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
         invokedNavigation = []
-        stubbedMoveToActions = [
-            .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
-            .customFolder(.init(
-                localId: .init(value: 2),
-                name: "Private",
-                color: nil,
-                children: []
-            ))
-        ]
         toastStateStore = .init(initialState: .initial)
         moveToActionsSpy = .init()
     }
@@ -52,7 +42,6 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         invokedAvailableActionsWithMessagesIDs = nil
         invokedAvailableActionsWithConversationIDs = nil
         invokedNavigation = nil
-        stubbedMoveToActions = nil
         toastStateStore = nil
         moveToActionsSpy = nil
 

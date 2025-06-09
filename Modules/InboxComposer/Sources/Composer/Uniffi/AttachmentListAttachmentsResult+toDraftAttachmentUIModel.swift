@@ -20,6 +20,6 @@ import proton_app_uniffi
 extension DraftAttachment {
 
     func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, status: .init(modifiedAt: stateModifiedTimestamp, state: state))
+        .init(attachment: attachment, status: .init(state: state))
     }
 }

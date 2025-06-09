@@ -79,12 +79,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         .empty
     }
 
-    func mimeType() -> MimeType {
-        .textHtml
-    }
-
-    func save() async -> VoidDraftSaveResult { .ok }
-
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
         let options = try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: false).scheduleSendOptions().get()
         return .ok(options)

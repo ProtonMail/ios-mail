@@ -19,8 +19,8 @@ import Combine
 import Foundation
 import proton_app_uniffi
 
-// periphery:ignore:all - Avoid periphery to remove sendResultPublisher since it has to be retained
 final class SendResultCoordinator: ObservableObject {
+    // periphery:ignore - do not remove sendResultPublisher since it has to be retained
     private let sendResultPublisher: SendResultPublisher
     private var anyCancellables = Set<AnyCancellable>()
 

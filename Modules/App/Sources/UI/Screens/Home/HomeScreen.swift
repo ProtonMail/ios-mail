@@ -89,7 +89,7 @@ struct HomeScreen: View {
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, toastStateStore: toastStateStore)
+        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
     }
 

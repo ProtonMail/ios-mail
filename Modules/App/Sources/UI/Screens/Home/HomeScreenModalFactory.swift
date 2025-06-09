@@ -17,7 +17,6 @@
 
 import InboxComposer
 import InboxContacts
-import InboxCoreUI
 import PaymentsUI
 import proton_app_uniffi
 import SwiftUI
@@ -30,7 +29,7 @@ struct HomeScreenModalFactory {
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView
 
-    init(mailUserSession: MailUserSession, toastStateStore: ToastStateStore) {
+    init(mailUserSession: MailUserSession) {
         self.makeContactsScreen = {
             ContactsScreen(
                 mailUserSession: mailUserSession,

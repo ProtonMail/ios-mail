@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
 import SwiftUI
 import InboxCore
 
@@ -25,7 +24,6 @@ class PINStateStore: StateStore {
     private let pinScreenValidator: PINValidator
     private let router: Router<PINRoute>
     private let appProtectionConfigurator: AppProtectionConfigurator
-    private let biometricAuthenticator: BiometricAuthenticator
     private let dismiss: () -> Void
 
     init(
@@ -33,14 +31,12 @@ class PINStateStore: StateStore {
         router: Router<PINRoute>,
         pinVerifier: PINVerifier,
         appProtectionConfigurator: AppProtectionConfigurator,
-        laContext: @Sendable @escaping () -> LAContext = { LAContext() },
         dismiss: @escaping () -> Void
     ) {
         self.state = state
         self.pinScreenValidator = .init(pinScreenType: state.type, pinVerifier: pinVerifier)
         self.router = router
         self.appProtectionConfigurator = appProtectionConfigurator
-        self.biometricAuthenticator = .init(method: .builtIn(laContext))
         self.dismiss = dismiss
     }
 

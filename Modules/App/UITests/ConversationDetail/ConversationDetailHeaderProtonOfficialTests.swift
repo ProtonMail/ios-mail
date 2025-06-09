@@ -23,15 +23,6 @@ final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCa
         UITestLoginType.Mocked.Paid.YoungBee
     }
 
-    let collapsedHeader = UITestConversationCollapsedHeaderEntry(
-        index: 0,
-        senderName: "Not Proton",
-        senderAddress: "no-reply@notify.proton.black",
-        hasOfficialBadge: true,
-        date: "May 20",
-        toRecipients: "To youngbee@proton.black"
-    )
-
     /// TestId 434550
     func testConversationDetailCollapsedHeaderFromProtonOfficial() async {
         await environment.mockServer.addRequestsWithDefaults(

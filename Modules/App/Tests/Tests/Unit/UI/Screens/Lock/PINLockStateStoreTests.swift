@@ -23,7 +23,7 @@ import Testing
 @MainActor
 class PINLockStateStoreTests {
     lazy var sut: PINLockStateStore = PINLockStateStore(
-        state: .init(hideLogoutButton: false, pin: .empty),
+        state: .init(pin: .empty),
         output: { [unowned self] in output.append($0) }
     )
     var output: [PINLockScreenOutput] = []
