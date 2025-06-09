@@ -111,6 +111,7 @@ struct CollapsedMessageCellUIModel {
     let date: Date
     let recipients: String
     let isRead: Bool
+    let isDraft: Bool
     let avatar: AvatarUIModel
 }
 
@@ -122,6 +123,7 @@ struct CollapsedMessageCellUIModel {
                 date: .now,
                 recipients: "john@gmail.com",
                 isRead: true,
+                isDraft: false,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
             ), isFirstCell: true, onTap: {})
         CollapsedMessageCell(
@@ -130,6 +132,7 @@ struct CollapsedMessageCellUIModel {
                 date: .now,
                 recipients: "martha@proton.me",
                 isRead: false,
+                isDraft: false,
                 avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
             ), onTap: {})
         CollapsedMessageCell(
@@ -138,6 +141,7 @@ struct CollapsedMessageCellUIModel {
                 date: .now,
                 recipients: "john@gmail.com",
                 isRead: true,
+                isDraft: false,
                 avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
             ), onTap: {})
     }

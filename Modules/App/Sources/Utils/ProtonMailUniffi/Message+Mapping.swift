@@ -90,6 +90,7 @@ extension Message {
             date: Date(timeIntervalSince1970: TimeInterval(time)),
             recipients: recipients.recipientsUIRepresentation,
             isRead: !unread,
+            isDraft: isDraft,
             avatar: sender.senderAvatar
         )
     }
