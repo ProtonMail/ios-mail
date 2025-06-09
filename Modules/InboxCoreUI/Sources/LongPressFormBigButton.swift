@@ -61,6 +61,7 @@ public struct LongPressFormBigButton: View {
 }
 
 private extension View {
+
     func editMenu(
         actions: @escaping () -> [UIAction],
         onPresent: (() -> Void)? = nil,
@@ -76,6 +77,7 @@ private extension View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
+
 }
 
 private struct EditMenu<Content: View>: UIViewRepresentable {

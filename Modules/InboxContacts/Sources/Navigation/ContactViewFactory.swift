@@ -26,10 +26,7 @@ struct ContactViewFactory {
     func makeView(for route: ContactsRoute) -> some View {
         switch route {
         case .contactDetails(let contact):
-            ContactDetailsScreen(
-                contact: contact,
-                provider: .productionInstance(mailUserSession: mailUserSession)
-            )
+            ContactDetailsScreen(contact: contact, provider: .productionInstance(mailUserSession: mailUserSession))
         case .contactGroupDetails(let group):
             ContactGroupDetailsScreen(group: group)
         }

@@ -18,8 +18,8 @@
 @testable import InboxContacts
 import proton_app_uniffi
 import SwiftUI
-import ViewInspector
 import Testing
+import ViewInspector
 
 @MainActor
 final class ContactViewFactoryTests {

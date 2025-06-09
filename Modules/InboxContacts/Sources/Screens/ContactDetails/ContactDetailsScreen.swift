@@ -127,8 +127,6 @@ struct ContactDetailsScreen: View {
             }
         case .languages(let languages):
             nonInteractiveGroup(label: L10n.ContactDetails.Label.language.string, values: languages)
-        case .logos:
-            EmptyView()
         case .members(let members):
             nonInteractiveGroup(label: L10n.ContactDetails.Label.member.string, values: members)
         case .notes(let notes):
@@ -141,8 +139,6 @@ struct ContactDetailsScreen: View {
                     // FIXME: Implement call action
                 }
             }
-        case .photos:
-            EmptyView()
         case .roles(let roles):
             nonInteractiveGroup(label: L10n.ContactDetails.Label.role.string, values: roles)
         case .timeZones(let timeZones):
@@ -155,6 +151,8 @@ struct ContactDetailsScreen: View {
                     // FIXME: Implement copy / open url action
                 }
             }
+        case .logos, .photos:
+            EmptyView()
         }
     }
 
