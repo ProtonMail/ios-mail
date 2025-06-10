@@ -123,7 +123,8 @@ struct CollapsedMessageCell: View {
     }
 
     private var draft: Text {
-        Text(" (\(L10n.Mailbox.SystemFolder.draft)")
+        Text(" ".notLocalized)
+            + Text(L10n.MessageDetails.draft)
             .foregroundStyle(DS.Color.Notification.error)
     }
 

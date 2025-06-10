@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "(Draft)" : {
+      "comment" : "Draft suffix displayed in covnersation view."
+    },
     "(No Recipient)" : {
       "comment" : "No recipent placeholder.",
       "localizations" : {

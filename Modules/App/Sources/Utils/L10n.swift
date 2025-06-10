@@ -591,6 +591,10 @@ enum L10n {
         static func attachments(count: Int) -> LocalizedStringResource {
             .init("\(count) attachments", comment: "The number of a message attachments.")
         }
+        static let draft = LocalizedStringResource(
+            "(Draft)",
+            comment: "Draft suffix displayed in covnersation view."
+        )
     }
 
     enum Folders {
