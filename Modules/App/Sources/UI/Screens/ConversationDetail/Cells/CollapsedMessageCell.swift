@@ -124,7 +124,7 @@ struct CollapsedMessageCell: View {
     }
 
     private var draft: Text {
-        Text(" (Draft)")
+        Text(" (\(L10n.Mailbox.SystemFolder.draft)")
             .foregroundStyle(DS.Color.Notification.error)
     }
 
