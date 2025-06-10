@@ -67,11 +67,11 @@ struct ContactFormatterTests {
                     ),
                 ],
                 [
-                    ContactDetailsItem(label: "Home", value: "Bahnhofstrasse 1\nZürich 8001", isInteractive: true),
-                    ContactDetailsItem(label: "Address", value: "Rue du Rhône 8\nGenève 1204", isInteractive: true),
-                    ContactDetailsItem(label: "Address", value: "Lugano 6900", isInteractive: true),
-                    ContactDetailsItem(label: "Work", value: "Musterstrasse 5", isInteractive: true),
-                    ContactDetailsItem(label: "Address", value: "Lugano Ticino 6250\nSwitzerland", isInteractive: true),
+                    ContactDetailsItem(label: "Home", value: "Bahnhofstrasse 1\nZürich 8001", isInteractive: false),
+                    ContactDetailsItem(label: "Address", value: "Rue du Rhône 8\nGenève 1204", isInteractive: false),
+                    ContactDetailsItem(label: "Address", value: "Lugano 6900", isInteractive: false),
+                    ContactDetailsItem(label: "Work", value: "Musterstrasse 5", isInteractive: false),
+                    ContactDetailsItem(label: "Address", value: "Lugano Ticino 6250\nSwitzerland", isInteractive: false),
                 ]
             )
     )

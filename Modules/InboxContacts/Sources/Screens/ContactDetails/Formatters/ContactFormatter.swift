@@ -44,7 +44,7 @@ enum ContactFormatter {
             let formatter = CNPostalAddressFormatter()
             let formattedAddress = formatter.string(from: mutableAddress)
 
-            return .init(label: label, value: formattedAddress, isInteractive: true)
+            return .init(label: label, value: formattedAddress, isInteractive: false)
         }
     }
 
