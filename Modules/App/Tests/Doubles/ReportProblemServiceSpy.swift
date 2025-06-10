@@ -19,10 +19,10 @@
 import proton_app_uniffi
 
 class ReportProblemServiceSpy: ReportProblemService, @unchecked Sendable {
-    var error: UserSessionError?
+    var error: UserContextError?
     private(set) var invokedSendWithReport: [IssueReport] = []
 
-    func send(report: IssueReport) async throws(UserSessionError) {
+    func send(report: IssueReport) async throws(UserContextError) {
         invokedSendWithReport.append(report)
 
         if let error {

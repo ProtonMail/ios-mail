@@ -17,10 +17,11 @@
 
 import UIKit
 
-protocol DeviceInfo {
+/// FIXME: this might turn out to be a subset of DeviceInfo provided by Rust - either reuse that or remove this comment
+protocol BasicDeviceInfo {
     var model: String { get }
     var systemName: String { get }
     var systemVersion: String { get }
 }
 
-extension UIDevice: DeviceInfo {}
+extension UIDevice: BasicDeviceInfo {}

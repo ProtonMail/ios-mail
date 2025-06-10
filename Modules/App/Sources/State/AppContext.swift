@@ -74,7 +74,13 @@ final class AppContext: Sendable, ObservableObject {
         let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
         accountChallengeCoordinator = .init(apiConfigProvider: { apiConfig })
 
-        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
+        _mailSession = try createMailSession(
+            params: params,
+            keyChain: dependencies.keychain,
+            hvNotifier: accountChallengeCoordinator,
+            deviceInfoProvider: nil
+        ).get()
+
         _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 

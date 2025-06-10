@@ -73,12 +73,12 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 
     @MainActor
     func testOpenNewDraft_whenDraftFailsToCreate_itShouldNotPublishAnything() async {
-        sut = makeSUT(stubbedNewDraftResult: .error(.other(.sessionExpired)))
+        sut = makeSUT(stubbedNewDraftResult: .error(.other(.network)))
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         await sut.openNewDraft(onError: { error in
-            XCTAssertEqual(error, .other(.sessionExpired))
+            XCTAssertEqual(error, .other(.network))
         })
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }

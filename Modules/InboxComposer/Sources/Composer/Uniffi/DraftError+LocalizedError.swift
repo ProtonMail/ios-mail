@@ -117,7 +117,7 @@ private extension DraftSaveErrorReason {
             L10n.DraftSaveError.addressDoesNotHavePrimaryKey(address: value)
         case .addressDisabled(let value):
             L10n.DraftSaveError.addressDisabled(address: value)
-        case .alreadySent, .messageAlreadySent:
+        case .messageAlreadySent:
             L10n.DraftSaveError.messageAlreadySent
         case .messageDoesNotExist:
             L10n.DraftSaveError.messageDoesNotExist
@@ -127,8 +127,6 @@ private extension DraftSaveErrorReason {
             L10n.DraftSaveError.recipientInvalidAddress(address: value)
         case .protonRecipientDoesNotExist(let value):
             L10n.DraftSaveError.protonRecipientNotFound(address: value)
-        case .unknownRecipientValidationError(let value):
-            L10n.DraftSaveError.unknownRecipientValidation(address: value)
         }
     }
 }
@@ -185,8 +183,6 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.protonRecipientNotFound(address: value)
         case .scheduleSendExpired:
             L10n.DraftSendError.scheduleSendExpired
-        case .unknownRecipientValidationError(let value):
-            L10n.DraftSendError.unknownRecipientValidation(address: value)
         }
     }
 }

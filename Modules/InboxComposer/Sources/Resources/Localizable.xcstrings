@@ -1097,9 +1097,6 @@
     "The Proton address in the recipient does not exist: %@" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "The recipient is unknown: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
     "The scheduled send date has expired" : {
       "comment" : "Error in the context of setting a schedule time for a message."
     },

@@ -28,9 +28,9 @@ struct IssueReportBuilder {
     }
 
     private let mainBundle: Bundle
-    private let deviceInfo: DeviceInfo
+    private let deviceInfo: BasicDeviceInfo
 
-    init(mainBundle: Bundle, deviceInfo: DeviceInfo) {
+    init(mainBundle: Bundle, deviceInfo: BasicDeviceInfo) {
         self.mainBundle = mainBundle
         self.deviceInfo = deviceInfo
     }

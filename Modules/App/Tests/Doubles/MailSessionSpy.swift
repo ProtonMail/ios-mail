@@ -39,6 +39,7 @@ final class MailSessionSpy: MailSessionProtocol {
     private(set) var registerDeviceCallCount = 0
     private(set) var setPinCodeInvocations: [[UInt32]] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
+    private(set) var signOutAllCallCount = 0
 
     private var stubbedAppSettings = AppSettings(
         appearance: .system,
@@ -216,6 +217,11 @@ final class MailSessionSpy: MailSessionProtocol {
 
     func shouldAutoLock() async -> MailSessionShouldAutoLockResult {
         fatalError(#function)
+    }
+
+    func signOutAll() async -> MailSessionSignOutAllResult {
+        signOutAllCallCount += 1
+        return .ok
     }
 
     func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {

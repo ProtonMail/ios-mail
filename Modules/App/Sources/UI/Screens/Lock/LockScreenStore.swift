@@ -28,16 +28,12 @@ class LockScreenStore: StateStore {
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
-        mailUserSession: @escaping @Sendable () -> MailUserSession = { AppContext.shared.userSession },
-        signOutAllAccountsWrapper: SignOutAllAccountsWrapper = .productionInstance,
+        mailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession },
         dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
-        self.signOutService = .init(
-            mailUserSession: mailUserSession,
-            signOutAllAccountsWrapper: signOutAllAccountsWrapper
-        )
+        self.signOutService = .init(mailSession: mailSession)
         self.dismissLock = dismissLock
     }
 

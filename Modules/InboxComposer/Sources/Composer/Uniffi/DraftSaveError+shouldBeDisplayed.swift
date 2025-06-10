@@ -21,7 +21,7 @@ extension DraftSaveErrorReason {
 
     public var shouldBeDisplayed: Bool {
         switch self {
-        case .messageAlreadySent, .alreadySent:
+        case .messageAlreadySent:
             false
         default:
             true

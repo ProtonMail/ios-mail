@@ -20,22 +20,18 @@ import proton_app_uniffi
 import Testing
 
 @MainActor
-class LockScreenStoreTests {
+final class LockScreenStoreTests {
+    private let mailSession = MailSessionSpy()
 
     lazy var sut: LockScreenStore = .init(
         state: .init(type: .pin, pinAuthenticationError: nil),
         pinVerifier: pinVerifierSpy,
-        mailUserSession: { .dummy },
-        signOutAllAccountsWrapper: .init(signOutAllAccounts: { [unowned self] _ in
-            signOutAllAccountsInvokeCount += 1
-            return .ok
-        }),
+        mailSession: { [unowned self] in mailSession },
         dismissLock: { [unowned self] in
             dismissLockInvokeCount += 1
         }
     )
 
-    var signOutAllAccountsInvokeCount = 0
     var dismissLockInvokeCount = 0
     private let pinVerifierSpy: PINVerifierSpy = .init()
 
@@ -91,14 +87,14 @@ class LockScreenStoreTests {
     func signOutButtonIsTappedOnPINLockScreen_ItSignOutsFromAllAccounts() async {
         await sut.handle(action: .pin(.logOut))
 
-        #expect(signOutAllAccountsInvokeCount == 1)
+        #expect(mailSession.signOutAllCallCount == 1)
     }
 
     @Test
     func signOutButtonIsTappedOnBioemtryScreen_ItSignOutsFromAllAccounts() async {
         await sut.handle(action: .biometric(.logOut))
 
-        #expect(signOutAllAccountsInvokeCount == 1)
+        #expect(mailSession.signOutAllCallCount == 1)
     }
 
 }

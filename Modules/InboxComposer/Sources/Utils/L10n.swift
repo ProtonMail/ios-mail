@@ -329,13 +329,6 @@ enum L10n {
                 comment: "Error in the context of saving a draft before being sent."
             )
         }
-
-        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "The recipient is unknown: \(address)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
     }
 
 
@@ -405,13 +398,6 @@ enum L10n {
             "The scheduled send date has expired",
             comment: "Error in the context of setting a schedule time for a message."
         )
-
-        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "The recipient is unknown: \(address)",
-                comment: "Error in the context of sending a draft before being sent."
-            )
-        }
     }
 
     enum DraftAttachmentUploadError {

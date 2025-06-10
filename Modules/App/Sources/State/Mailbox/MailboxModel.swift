@@ -272,8 +272,6 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-        } catch let error as ActionError where error == .other(.sessionExpired) {
-            AppLogger.log(error: error, category: .mailbox)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = Toast(
