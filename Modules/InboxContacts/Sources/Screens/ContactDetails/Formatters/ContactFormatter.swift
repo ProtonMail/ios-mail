@@ -40,7 +40,7 @@ enum ContactFormatter {
                 mutableAddress.country = country
             }
 
-            let label = address.addrType.displayType(fallback: L10n.ContactDetails.Label.address.string)
+            let label = address.addrType.humanReadable(fallback: L10n.ContactDetails.Label.address.string)
             let formatter = CNPostalAddressFormatter()
             let formattedAddress = formatter.string(from: mutableAddress)
 
@@ -87,7 +87,7 @@ enum ContactFormatter {
 
     enum Telephone {
         static func formatted(from telephone: ContactDetailsTelephones) -> ContactDetailsItem {
-            let label = telephone.telTypes.displayType(fallback: L10n.ContactDetails.Label.phone.string)
+            let label = telephone.telTypes.humanReadable(fallback: L10n.ContactDetails.Label.phone.string)
 
             return .init(label: label, value: telephone.number, isInteractive: true)
         }
@@ -95,7 +95,7 @@ enum ContactFormatter {
 
     enum URL {
         static func formatted(from vcardURL: VCardUrl) -> ContactDetailsItem {
-            let label = vcardURL.urlType.displayType(fallback: L10n.ContactDetails.Label.url.string)
+            let label = vcardURL.urlType.humanReadable(fallback: L10n.ContactDetails.Label.url.string)
 
             return .init(label: label, value: vcardURL.url, isInteractive: true)
         }
@@ -104,8 +104,8 @@ enum ContactFormatter {
 
 private extension Array where Element == VcardPropType {
 
-    func displayType(fallback: String) -> String {
-        first?.displayType.string ?? fallback
+    func humanReadable(fallback: String) -> String {
+        first?.humanReadable.string ?? fallback
     }
 
 }
@@ -135,7 +135,7 @@ private extension GenderKind {
 
 private extension VcardPropType {
 
-    var displayType: LocalizedStringResource {
+    var humanReadable: LocalizedStringResource {
         switch self {
         case .home:
             L10n.ContactDetails.VcardType.home
