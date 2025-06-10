@@ -68,7 +68,7 @@ struct CollapsedMessageCell: View {
 
     private var messageDataView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
-            boxView
+            avatarView
             VStack(spacing: DS.Spacing.compact) {
                 senderRow
                 recipientsRow
@@ -77,9 +77,8 @@ struct CollapsedMessageCell: View {
         .padding(.horizontal, DS.Spacing.large)
     }
 
-    // FIXME: - Change name
     @ViewBuilder
-    private var boxView: some View {
+    private var avatarView: some View {
         if uiModel.isDraft {
             Image(DS.Icon.icPenSquare)
                 .resizable()
