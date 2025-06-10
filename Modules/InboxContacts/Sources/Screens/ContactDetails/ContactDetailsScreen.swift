@@ -22,8 +22,7 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
-    let provider: ContactDetailsProvider
-    @State var state: ContactDetails
+    @StateObject private var store: ContactDetailsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
@@ -32,8 +31,13 @@ struct ContactDetailsScreen: View {
         state: ContactDetails? = nil
     ) {
         self.contact = contact
-        self.provider = provider
-        _state = .init(initialValue: state ?? .initial(with: contact))
+        _store = .init(
+            wrappedValue: .init(
+                state: state ?? .initial(with: contact),
+                item: contact,
+                provider: provider
+            )
+        )
     }
 
     var body: some View {
@@ -47,14 +51,14 @@ struct ContactDetailsScreen: View {
             .padding(.horizontal, DS.Spacing.large)
         }
         .background(DS.Color.Background.secondary)
-        .onLoad { loadDetails(for: contact) }
+        .onLoad { store.handle(action: .onLoad) }
     }
 
     // MARK: - Private
 
     private var avatarView: some View {
-        ContactAvatarView(hexColor: state.avatarInformation.color) {
-            Text(state.avatarInformation.text)
+        ContactAvatarView(hexColor: store.state.avatarInformation.color) {
+            Text(store.state.avatarInformation.text)
                 .font(.title)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.inverted)
@@ -62,7 +66,7 @@ struct ContactDetailsScreen: View {
     }
 
     private var contactDetails: some View {
-        ContactAvatarDetailsView(title: state.displayName, subtitle: state.primaryEmail)
+        ContactAvatarDetailsView(title: store.state.displayName, subtitle: store.state.primaryEmail)
     }
 
     private var actionButtons: some View {
@@ -78,7 +82,7 @@ struct ContactDetailsScreen: View {
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
                 title: L10n.ContactDetails.call,
-                disabled: state.primaryPhone == nil,
+                disabled: store.state.primaryPhone == nil,
                 action: {
                     // FIXME: Implement call action
                 }
@@ -95,7 +99,7 @@ struct ContactDetailsScreen: View {
     }
 
     private var fields: some View {
-        ForEach(state.items, id: \.self) { item in
+        ForEach(store.state.items, id: \.self) { item in
             field(for: item)
         }
     }
@@ -151,12 +155,6 @@ struct ContactDetailsScreen: View {
             }
         case .logos, .photos:
             EmptyView()
-        }
-    }
-
-    private func loadDetails(for contact: ContactItem) {
-        Task {
-            state = await provider.contactDetails(for: contact)
         }
     }
 
