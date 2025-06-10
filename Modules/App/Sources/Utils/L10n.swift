@@ -595,6 +595,10 @@ enum L10n {
             "(Draft)",
             comment: "Draft suffix displayed in covnersation view."
         )
+        static let draftNoRecipientsPlaceholder = LocalizedStringResource(
+            "To: ...",
+            comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
+        )
     }
 
     enum Folders {

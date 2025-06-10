@@ -17090,6 +17090,9 @@
         }
       }
     },
+    "To: ..." : {
+      "comment" : "Placeholder for a draft in the conversation view when the draft has no recipients."
+    },
     "Too many attempts too quickly" : {
       "comment" : "Displayed when the user tries to validate their PIN too frequently."
     },

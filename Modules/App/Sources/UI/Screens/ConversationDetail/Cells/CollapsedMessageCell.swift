@@ -107,7 +107,7 @@ struct CollapsedMessageCell: View {
 
     private var recipients: Text {
         if uiModel.isDraft {
-            let emptyPlaceholder = "\(L10n.MessageDetails.to.string): ..."
+            let emptyPlaceholder = L10n.MessageDetails.draftNoRecipientsPlaceholder.string
             return Text(
                 uiModel.recipients.isEmpty ? emptyPlaceholder : uiModel.recipients.recipientsUIRepresentation
             )
