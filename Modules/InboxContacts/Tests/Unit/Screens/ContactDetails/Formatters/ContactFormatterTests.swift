@@ -39,7 +39,7 @@ struct ContactFormatterTests {
                         region: nil,
                         postalCode: "1204",
                         country: nil,
-                        addrType: []
+                        addrType: [.string("holiday")]
                     ),
                     ContactDetailAddress(
                         street: nil,
@@ -68,7 +68,7 @@ struct ContactFormatterTests {
                 ],
                 [
                     ContactDetailsItem(label: "Home", value: "Bahnhofstrasse 1\nZürich 8001", isInteractive: false),
-                    ContactDetailsItem(label: "Address", value: "Rue du Rhône 8\nGenève 1204", isInteractive: false),
+                    ContactDetailsItem(label: "Holiday", value: "Rue du Rhône 8\nGenève 1204", isInteractive: false),
                     ContactDetailsItem(label: "Address", value: "Lugano 6900", isInteractive: false),
                     ContactDetailsItem(label: "Work", value: "Musterstrasse 5", isInteractive: false),
                     ContactDetailsItem(label: "Address", value: "Lugano Ticino 6250\nSwitzerland", isInteractive: false),
@@ -90,8 +90,8 @@ struct ContactFormatterTests {
                     GenderKind.notApplicable,
                     GenderKind.unknown,
                     GenderKind.none,
-                    GenderKind.string("Prefer not to say"),
-                    GenderKind.string("Non-binary"),
+                    GenderKind.string("prefer not to say"),
+                    GenderKind.string("non-binary"),
                 ],
                 [
                     ContactDetailsItem(label: "Gender", value: "Male", isInteractive: false),

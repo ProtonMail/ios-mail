@@ -127,7 +127,7 @@ private extension GenderKind {
         case .none:
             L10n.ContactDetails.Gender.none
         case .string(let string):
-            string.stringResource
+            string.firstUppercased.stringResource
         }
     }
 
@@ -156,8 +156,16 @@ private extension VcardPropType {
         case .textPhone:
             L10n.ContactDetails.VcardType.textPhone
         case .string(let string):
-            string.stringResource
+            string.firstUppercased.stringResource
         }
+    }
+
+}
+
+private extension String {
+
+    var firstUppercased: String {
+        prefix(1).uppercased() + dropFirst()
     }
 
 }
