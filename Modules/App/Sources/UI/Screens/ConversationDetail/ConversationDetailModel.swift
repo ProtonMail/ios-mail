@@ -403,9 +403,7 @@ extension ConversationDetailModel {
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
-            //            guard let lastMessage = messages.last else { return .init(messages: [], isStarred: isStarred) }
 
-            // list of messages except the last one
             var result = [MessageCellUIModel]()
             for i in messages.indices {
                 let message = messages[i]
@@ -419,10 +417,6 @@ extension ConversationDetailModel {
 
                 result.append(.init(id: message.id, type: messageCellUIModel))
             }
-
-            //            // last message
-            //            let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
-            //            result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
             return .init(messages: result, isStarred: isStarred)
         } catch {
