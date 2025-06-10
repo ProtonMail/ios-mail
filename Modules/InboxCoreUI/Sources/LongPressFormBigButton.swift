@@ -47,7 +47,7 @@ public struct LongPressFormBigButton: View {
         .textSelection(.enabled)
         .onLongPressGesture(perform: {}, onPressingChanged: { changed in isPressed = changed })
         .onTapGesture(perform: onTap)
-        .background(isPressed ? DS.Color.InteractionWeak.pressed : .clear)
+        .background(isPressed && hasAccentTextColor ? DS.Color.InteractionWeak.pressed : .clear)
         .background(DS.Color.BackgroundInverted.secondary)
     }
 }

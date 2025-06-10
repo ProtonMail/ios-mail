@@ -115,9 +115,7 @@ struct ContactDetailsScreen: View {
             singleButton(item: ContactFormatter.Gender.formatted(from: gender))
         case .addresses(let addresses):
             FormList(collection: addresses) { address in
-                button(item: ContactFormatter.Address.formatted(from: address)) {
-                    // FIXME: Implement action for opening apple maps / google maps
-                }
+                button(item: ContactFormatter.Address.formatted(from: address))
             }
         case .emails(let emails):
             FormList(collection: emails) { item in
