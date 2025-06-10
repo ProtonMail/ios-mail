@@ -77,9 +77,12 @@ struct ConversationDetailListView: View {
                     ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
                         switch cellUIModel.type {
                         case .collapsed(let uiModel):
-                            CollapsedMessageCell(uiModel: uiModel, isFirstCell: index == 0, onTap: {
-                                model.onMessageTap(messageId: cellUIModel.id)
-                            })
+                            CollapsedMessageCell(
+                                uiModel: uiModel, isFirstCell: index == 0,
+                                onTap: {
+                                    model.onMessageTap(messageId: cellUIModel.id, isDraft: uiModel.isDraft)
+                                }
+                            )
                             .id(cellUIModel.cellId)
                             .accessibilityElement(children: .contain)
                             .accessibilityIdentifier(ConversationDetailListViewIdentifiers.collapsedCell(index))
@@ -117,7 +120,7 @@ struct ConversationDetailListView: View {
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {
         switch event {
         case .onTap:
-            model.onMessageTap(messageId: uiModel.id)
+            model.onMessageTap(messageId: uiModel.id, isDraft: false)
         case .onReply:
             model.onReplyMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onReplyAll:

@@ -162,12 +162,16 @@ extension SearchModel {
     }
 
     @MainActor
-    func onMailboxItemTap(item: MailboxItemCellUIModel) {
+    func onMailboxItemTap(item: MailboxItemCellUIModel, draftPresenter: DraftPresenter) {
         guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
             return
         }
-        state.navigationPath.append(item)
+        if item.isDraftMessage {
+            draftPresenter.openDraft(withId: item.id)
+        } else {
+            state.navigationPath.append(item)
+        }
     }
 
     @MainActor

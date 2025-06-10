@@ -68,18 +68,36 @@ struct CollapsedMessageCell: View {
 
     private var messageDataView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
-            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
-                .square(size: 40)
+            boxView
             VStack(spacing: DS.Spacing.compact) {
                 senderRow
-                previewRow
+                recipientsRow
             }
         }
         .padding(.horizontal, DS.Spacing.large)
     }
 
-    private var previewRow: some View {
-        Text(uiModel.recipients)
+    // FIXME: - Change name
+    @ViewBuilder
+    private var boxView: some View {
+        if uiModel.isDraft {
+            Image(DS.Icon.icPenSquare)
+                .resizable()
+                .square(size: 20)
+                .foregroundStyle(DS.Color.Text.weak)
+                .square(size: 40)
+                .overlay {
+                    RoundedRectangle(cornerRadius: DS.Radius.large)
+                        .stroke(DS.Color.Border.strong)
+                }
+        } else {
+            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
+                .square(size: 40)
+        }
+    }
+
+    private var recipientsRow: some View {
+        recipients
             .font(.caption)
             .fontWeight(uiModel.isRead ? .regular : .bold)
             .foregroundStyle(uiModel.isRead ? DS.Color.Text.hint : DS.Color.Text.norm)
@@ -88,9 +106,31 @@ struct CollapsedMessageCell: View {
             .accessibilityIdentifier(CollapsedMessageCellIdentifiers.preview)
     }
 
+    private var recipients: Text {
+        if uiModel.isDraft {
+            let emptyPlaceholder = "\(L10n.MessageDetails.to.string): ..."
+            return Text(
+                uiModel.recipients.isEmpty ? emptyPlaceholder : uiModel.recipients.recipientsUIRepresentation
+            )
+        } else {
+            return Text(uiModel.recipients.recipientsUIRepresentation)
+        }
+    }
+
+    private var sender: Text {
+        let senderText = Text(uiModel.sender)
+            .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
+        return uiModel.isDraft ? senderText + draft : senderText
+    }
+
+    private var draft: Text {
+        Text(" (Draft)")
+            .foregroundStyle(DS.Color.Notification.error)
+    }
+
     private var senderRow: some View {
         HStack(spacing: DS.Spacing.small) {
-            Text(uiModel.sender)
+            sender
                 .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .lineLimit(1)
@@ -109,7 +149,7 @@ struct CollapsedMessageCell: View {
 struct CollapsedMessageCellUIModel {
     let sender: String
     let date: Date
-    let recipients: String
+    let recipients: [MessageDetail.Recipient]
     let isRead: Bool
     let isDraft: Bool
     let avatar: AvatarUIModel
@@ -121,7 +161,9 @@ struct CollapsedMessageCellUIModel {
             uiModel: .init(
                 sender: "Martha",
                 date: .now,
-                recipients: "john@gmail.com",
+                recipients: [
+                    .init(name: "john@gmail.com", address: .empty, avatarInfo: .init(initials: .empty, color: .black))
+                ],
                 isRead: true,
                 isDraft: false,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
@@ -130,7 +172,9 @@ struct CollapsedMessageCellUIModel {
             uiModel: .init(
                 sender: "john@gmail.com",
                 date: .now,
-                recipients: "martha@proton.me",
+                recipients: [
+                    .init(name: "martha@proton.me", address: .empty, avatarInfo: .init(initials: .empty, color: .black))
+                ],
                 isRead: false,
                 isDraft: false,
                 avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
@@ -139,7 +183,9 @@ struct CollapsedMessageCellUIModel {
             uiModel: .init(
                 sender: "Martha",
                 date: .now,
-                recipients: "john@gmail.com",
+                recipients: [
+                    .init(name: "john@gmail.com", address: .empty, avatarInfo: .init(initials: .empty, color: .black))
+                ],
                 isRead: true,
                 isDraft: false,
                 avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))

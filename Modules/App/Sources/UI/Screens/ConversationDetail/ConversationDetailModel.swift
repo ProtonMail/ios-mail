@@ -97,7 +97,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func onMessageTap(messageId: ID) {
+    func onMessageTap(messageId: ID, isDraft: Bool) {
+        guard !isDraft else {
+            openDraft(with: messageId)
+            return
+        }
         Task {
             if expandedMessages.contains(messageId) {
                 expandedMessages.remove(messageId)
@@ -199,6 +203,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
+
+    private func openDraft(with id: ID) {
+        draftPresenter.openDraft(withId: id)
+    }
 
     private func starConversation() {
         starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)

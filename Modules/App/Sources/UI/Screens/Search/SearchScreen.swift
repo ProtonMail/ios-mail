@@ -99,7 +99,7 @@ struct SearchScreen: View {
     private func handleResultCellEvent(event: MailboxItemCellEvent, item: MailboxItemCellUIModel) {
         switch event {
         case .onTap:
-            model.onMailboxItemTap(item: item)
+            model.onMailboxItemTap(item: item, draftPresenter: composerCoordinator.draftPresenter)
         case .onLongPress:
             model.onLongPress(mailboxItem: item)
         case .onSelectedChange(let isSelected):

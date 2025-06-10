@@ -88,7 +88,7 @@ extension Message {
         .init(
             sender: sender.uiRepresentation,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            recipients: recipients.recipientsUIRepresentation,
+            recipients: recipients,
             isRead: !unread,
             isDraft: isDraft,
             avatar: sender.senderAvatar
