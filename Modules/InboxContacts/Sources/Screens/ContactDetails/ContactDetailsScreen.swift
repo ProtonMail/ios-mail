@@ -22,6 +22,7 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
+    @Environment(\.openURL) var openURL
     @StateObject private var store: ContactDetailsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
@@ -85,6 +86,7 @@ struct ContactDetailsScreen: View {
                 disabled: store.state.primaryPhone == nil,
                 action: {
                     // FIXME: Implement call action
+                    call(to: store.state.primaryPhone!)
                 }
             )
             ContactDetailsActionButton(
@@ -139,6 +141,7 @@ struct ContactDetailsScreen: View {
             FormList(collection: telephones) { telephone in
                 button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
                     // FIXME: Implement call action
+                    call(to: telephone.number)
                 }
             }
         case .roles(let roles):
@@ -151,6 +154,7 @@ struct ContactDetailsScreen: View {
             FormList(collection: urls) { item in
                 button(item: ContactFormatter.URL.formatted(from: item)) {
                     // FIXME: Implement copy / open url action
+                    openURLString(item.url)
                 }
             }
         case .logos, .photos:
@@ -177,6 +181,18 @@ struct ContactDetailsScreen: View {
         button(item: item, action: action)
             .background(DS.Color.BackgroundInverted.secondary)
             .roundedRectangleStyle()
+    }
+
+    private func call(to phoneNumber: String) {
+        let phoneURL = "tel://" + phoneNumber
+
+        openURLString(phoneURL)
+    }
+
+    private func openURLString(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            openURL(url)
+        }
     }
 }
 
