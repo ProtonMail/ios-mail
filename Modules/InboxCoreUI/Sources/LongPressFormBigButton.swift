@@ -23,22 +23,18 @@ public struct LongPressFormBigButton: View {
     private let value: String
     private let hasAccentTextColor: Bool
     private let onTap: () -> Void
-    private let longPressActions: () -> [UIAction]
     @State private var isPressed: Bool = false
-    @State private var isEditMenuPresent: Bool = false
 
     public init(
         title: LocalizedStringResource,
         value: String,
         hasAccentTextColor: Bool,
-        onTap: @escaping () -> Void,
-        longPressActions: @escaping () -> [UIAction]
+        onTap: @escaping () -> Void
     ) {
         self.title = title
         self.value = value
         self.hasAccentTextColor = hasAccentTextColor
         self.onTap = onTap
-        self.longPressActions = longPressActions
     }
 
     public var body: some View {
@@ -48,116 +44,10 @@ public struct LongPressFormBigButton: View {
             hasAccentTextColor: hasAccentTextColor,
             symbol: .none
         )
-        .editMenu(
-            actions: longPressActions,
-            onPresent: { isEditMenuPresent = true },
-            onDismiss: { isEditMenuPresent = false }
-        )
+        .textSelection(.enabled)
         .onLongPressGesture(perform: {}, onPressingChanged: { changed in isPressed = changed })
         .onTapGesture(perform: onTap)
-        .background(isPressed || isEditMenuPresent ? DS.Color.InteractionWeak.pressed : .clear)
+        .background(isPressed ? DS.Color.InteractionWeak.pressed : .clear)
         .background(DS.Color.BackgroundInverted.secondary)
-    }
-}
-
-private extension View {
-
-    func editMenu(
-        actions: @escaping () -> [UIAction],
-        onPresent: (() -> Void)? = nil,
-        onDismiss: (() -> Void)? = nil
-    ) -> some View {
-        overlay {
-            EditMenu(
-                content: self,
-                actions: actions,
-                onPresent: onPresent,
-                onDismiss: onDismiss
-            )
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-    }
-
-}
-
-private struct EditMenu<Content: View>: UIViewRepresentable {
-    let content: Content
-    let actions: () -> [UIAction]
-    let onPresent: (() -> Void)?
-    let onDismiss: (() -> Void)?
-
-    // MARK: - UIViewRepresentable
-
-    func makeUIView(context: Context) -> UIView {
-        if let interaction = context.coordinator.interaction {
-            context.coordinator.uiView.addInteraction(interaction)
-        }
-
-        let longPress = UILongPressGestureRecognizer(
-            target: context.coordinator,
-            action: #selector(Coordinator.handleLongPress(_:))
-        )
-        context.coordinator.uiView.addGestureRecognizer(longPress)
-
-        return context.coordinator.uiView
-    }
-
-    func updateUIView(_ uiView: UIView, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        let coordinator = Coordinator(self)
-        coordinator.interaction = UIEditMenuInteraction(delegate: coordinator)
-        return coordinator
-    }
-
-    class Coordinator: NSObject, UIEditMenuInteractionDelegate {
-        let editMenu: EditMenu
-        let uiView = UIView()
-
-        var interaction: UIEditMenuInteraction?
-        private var isPresent = false
-
-        init(_ editMenu: EditMenu) {
-            self.editMenu = editMenu
-        }
-
-        @objc
-        func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-            guard isPresent == false, gestureRecognizer.state == .began else { return }
-
-            let point = CGPoint(x: uiView.bounds.midX, y: 0)
-            let configuration = UIEditMenuConfiguration(identifier: nil, sourcePoint: point)
-            interaction?.presentEditMenu(with: configuration)
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
-
-        // MARK: - UIEditMenuInteractionDelegate
-
-        func editMenuInteraction(
-            _ interaction: UIEditMenuInteraction,
-            menuFor configuration: UIEditMenuConfiguration,
-            suggestedActions: [UIMenuElement]
-        ) -> UIMenu? {
-            let customMenu = UIMenu(options: .displayInline, children: editMenu.actions())
-            return UIMenu(children: customMenu.children)
-        }
-
-        func editMenuInteraction(
-            _ interaction: UIEditMenuInteraction,
-            willPresentMenuFor configuration: UIEditMenuConfiguration,
-            animator: UIEditMenuInteractionAnimating
-        ) {
-            editMenu.onPresent?()
-            isPresent = true
-        }
-
-        func editMenuInteraction(
-            _ interaction: UIEditMenuInteraction,
-            willDismissMenuFor configuration: UIEditMenuConfiguration,
-            animator: UIEditMenuInteractionAnimating
-        ) {
-            editMenu.onDismiss?()
-            isPresent = false
-        }
     }
 }

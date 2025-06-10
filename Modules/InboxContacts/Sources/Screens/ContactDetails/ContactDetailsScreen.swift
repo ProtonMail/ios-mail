@@ -173,13 +173,8 @@ struct ContactDetailsScreen: View {
             title: item.label.stringResource,
             value: item.value,
             hasAccentTextColor: item.isInteractive,
-            onTap: action,
-            longPressActions: { [copyAction(for: item.value)] }
+            onTap: action
         )
-    }
-
-    private func copyAction(for value: String) -> UIAction {
-        UIAction(title: L10n.ContactDetails.copy.string) { _ in UIPasteboard.general.string = value }
     }
 
     private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {

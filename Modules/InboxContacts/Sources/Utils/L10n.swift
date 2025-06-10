@@ -92,11 +92,6 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Contact details’ “Call” button title for calling the given contact."
         )
-        static let copy = LocalizedStringResource(
-            "Copy",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Contact details’ “Copy” button title for copying the given contact's information."
-        )
         static let share = LocalizedStringResource(
             "Share",
             bundle: .atURL(Bundle.module.bundleURL),

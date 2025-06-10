@@ -853,9 +853,6 @@
         }
       }
     },
-    "Copy" : {
-      "comment" : "Contact details’ “Copy” button title for copying the given contact's information."
-    },
     "Delete %@" : {
       "comment" : "Title for the alert shown when deleting a contact or contact group.",
       "localizations" : {
