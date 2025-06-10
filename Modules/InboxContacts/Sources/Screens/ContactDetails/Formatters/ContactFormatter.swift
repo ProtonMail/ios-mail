@@ -62,15 +62,19 @@ enum ContactFormatter {
                 dateComponents.day = partialDate.day.map(Int.init)
 
                 let date = DateEnvironment.calendar.date(from: dateComponents).unsafelyUnwrapped
-                let formatter = DateFormatter()
-                formatter.dateStyle = .short
-                formatter.timeStyle = .none
 
                 formattedDate = formatter.string(from: date)
             }
 
             return .init(label: label, value: formattedDate, isInteractive: false)
         }
+
+        private static let formatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .none
+            return formatter
+        }()
     }
 
     enum Gender {
