@@ -148,8 +148,7 @@ enum MainToolbarEvent {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy(),
-        sendResultPresenter: .init(draftPresenter: .dummy())
+        draftPresenter: .dummy()
     )
     .mainToolbar(
         title: "Inbox",

@@ -197,8 +197,7 @@ private struct SessionTransitionScreen: View {
             notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
             userSession: .init(noPointer: .init()),
             userDefaults: userDefaultsWithPromptsDisabled,
-            draftPresenter: .dummy(),
-            sendResultPresenter: .init(draftPresenter: .dummy())
+            draftPresenter: .dummy()
         )
         .blur(radius: 5)
         .allowsHitTesting(false)

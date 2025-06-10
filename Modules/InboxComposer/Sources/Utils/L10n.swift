@@ -307,12 +307,12 @@ enum L10n {
         )
 
         static let messageDoesNotExist = LocalizedStringResource(
-            "The draft to be sent was not found",
+            "The draft was not found",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let messageIsNotADraft = LocalizedStringResource(
-            "The message to be sent is not a draft",
+            "The message is not a draft",
             comment: "Error in the context of saving a draft before being sent."
         )
 

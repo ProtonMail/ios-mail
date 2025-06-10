@@ -30,7 +30,6 @@ struct MailboxScreen: View {
     @State private var isOnboardingPresented = false
     @State private var isNotificationPromptPresented = false
     @State private var isAccountManagerPresented = false
-    private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
@@ -41,8 +40,7 @@ struct MailboxScreen: View {
         notificationAuthorizationStore: NotificationAuthorizationStore,
         userSession: MailUserSession,
         userDefaults: UserDefaults,
-        draftPresenter: DraftPresenter,
-        sendResultPresenter: SendResultPresenter
+        draftPresenter: DraftPresenter
     ) {
         self._mailboxModel = StateObject(
             wrappedValue: MailboxModel(
@@ -53,7 +51,6 @@ struct MailboxScreen: View {
         )
         self.notificationAuthorizationStore = notificationAuthorizationStore
         self.userSession = userSession
-        self.sendResultPresenter = sendResultPresenter
         self.userDefaults = userDefaults
     }
 
@@ -87,7 +84,7 @@ struct MailboxScreen: View {
                     input: $mailboxModel.state.moveToSheetPresented
                 )
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession, sendResultPresenter: sendResultPresenter)
+                    SearchScreen(userSession: userSession)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -246,8 +243,7 @@ extension MailboxScreen {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy(),
-        sendResultPresenter: .init(draftPresenter: .dummy())
+        draftPresenter: .dummy()
     )
     .environmentObject(appUIStateStore)
     .environmentObject(toastStateStore)

@@ -1080,7 +1080,10 @@
       "comment" : "Error in the context of saving a draft before being sent."
     },
     "The draft to be sent was not found" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent."
+    },
+    "The draft was not found" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "The limit of attachments has been reached" : {
       "comment" : "Error in the context of saving a draft before being sent."
@@ -1088,8 +1091,11 @@
     "The message has been already sent" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
+    "The message is not a draft" : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "The message to be sent is not a draft" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "The message was already sent" : {
       "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."

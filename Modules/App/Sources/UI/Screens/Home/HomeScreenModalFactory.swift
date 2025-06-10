@@ -24,7 +24,6 @@ import SwiftUI
 @MainActor
 struct HomeScreenModalFactory {
     private let makeContactsScreen: () -> ContactsScreen
-    private let makeComposerScreen: (ComposerParams) -> ComposerScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView
@@ -36,9 +35,6 @@ struct HomeScreenModalFactory {
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance(),
             )
-        }
-        self.makeComposerScreen = { composerParams in
-            ComposerScreenFactory.makeComposer(userSession: mailUserSession, composerParams: composerParams)
         }
         self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
@@ -52,8 +48,6 @@ struct HomeScreenModalFactory {
             makeContactsScreen()
         case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
-        case .draft(let draftToPresent):
-            makeComposerScreen(draftToPresent)
         case .settings:
             makeSettingsScreen()
         case .reportProblem:

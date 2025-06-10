@@ -342,10 +342,8 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func discardDraft(dismissAction: Dismissable) async {
-        guard let _ = await draftMessageId() else {
-            dismissComposer(dismissAction: dismissAction, reason: .draftDiscarded)
-            return
-        }
+        // execute pending saves before any discard operation
+        await updateBodyDebounceTask?.executeImmediately()
         state.alert = .discardDraft(action: { @MainActor [weak self] action in
             defer { self?.state.alert = nil }
             guard let self, action == .discard else { return }

@@ -29,33 +29,15 @@ enum SearchScreenState {
 struct SearchScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.mainWindowSize) private var mainWindowSize
+    @EnvironmentObject private var composerCoordinator: ComposerCoordinator
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private(set) var resultsState: SearchScreenState = .initial
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
-    @State private var modalState: ModalState?
-    @State private var searchDraftPresenter: DraftPresenter
-    @State private var sendResultPresenter: SendResultPresenter
-    @State private var makeModalScreen: (ModalState) -> ComposerScreen
     private let userSession: MailUserSession
 
-    init(userSession: MailUserSession, sendResultPresenter: SendResultPresenter) {
+    init(userSession: MailUserSession) {
         self._model = StateObject(wrappedValue: .init())
-        self._searchDraftPresenter = State(
-            initialValue: DraftPresenter(
-                userSession: userSession,
-                draftProvider: .productionInstance,
-                undoSendProvider: .productionInstance(userSession: userSession),
-                undoScheduleSendProvider: .productionInstance(userSession: userSession)
-            )
-        )
-        self._makeModalScreen = .init(initialValue: { state in
-            switch state {
-            case .draft(let composerParams):
-                ComposerScreenFactory.makeComposer(userSession: userSession, composerParams: composerParams)
-            }
-        })
-        self._sendResultPresenter = .init(initialValue: sendResultPresenter)
         self.userSession = userSession
     }
 
@@ -101,28 +83,7 @@ struct SearchScreen: View {
                 isTextFieldFocused = true
             }
         }
-        .onReceive(searchDraftPresenter.draftToPresent) { modalState = modalStateFor(draftToPresent: $0) }
-        .sheet(item: $modalState, content: makeModalScreen)
-    }
-
-    private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
-        .draft(
-            ComposerParams(
-                draftToPresent: draftToPresent,
-                onDismiss: { event in
-                    switch event {
-                    case .messageSent(let messageId), .messageScheduled(let messageId):
-                        guard let toastType = event.sendResultToastType else { return }
-                        sendResultPresenter.presentResultInfo(.init(messageId: messageId, type: toastType))
-                    case .dismissedManually, .draftDiscarded:
-                        // TODO: Unify logic with HomeScreen. Also fix the unreported bug with the error:
-                        // Currently, only presenting a single sheet is supported.
-                        // The next sheet will be presented when the currently presented sheet gets dismissed.
-
-                        toastStateStore.present(toast: .comingSoon)
-                    }
-                })
-        )
+        .composer(screen: .search, coordinator: composerCoordinator)
     }
 
     private var listConfiguration: MailboxItemsListViewConfiguration {
@@ -167,21 +128,8 @@ struct SearchScreen: View {
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
         ConversationDetailScreen(
             seed: .mailboxItem(item: uiModel, selectedMailbox: model.selectedMailbox),
-            draftPresenter: searchDraftPresenter,
+            draftPresenter: composerCoordinator.draftPresenter,
             navigationPath: $model.state.navigationPath
         )
-    }
-}
-
-private extension SearchScreen {
-
-    enum ModalState: Identifiable {
-        case draft(ComposerParams)
-
-        var id: String {
-            switch self {
-            case .draft: "draft"
-            }
-        }
     }
 }

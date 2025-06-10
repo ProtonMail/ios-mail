@@ -28,28 +28,22 @@ struct HomeScreen: View {
         case contacts
         case labelOrFolderCreation
         case settings
-        case draft(ComposerParams)
         case reportProblem
         case subscriptions
 
         // MARK: - Identifiable
 
         var id: String {
-            switch self {
-            case .draft: "draft"
-            default: .init(describing: self)
-            }
+            .init(describing: self)
         }
     }
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
+    @StateObject private var composerCoordinator: ComposerCoordinator
     @State private var modalState: ModalState?
-    @State private var draftPresenter: DraftPresenter
     @State private var isNotificationPromptPresented = false
-    @StateObject private var sendResultCoordinator: SendResultCoordinator
-    @State private var draftSavedCoordinator: DraftSavedToastCoordinator
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @ObservedObject private var appContext: AppContext
 
@@ -64,6 +58,7 @@ struct HomeScreen: View {
 
     init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
         _appRoute = .init(wrappedValue: .initialState)
+        _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         self.appContext = appContext
         self.userSession = userSession
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
@@ -74,17 +69,6 @@ struct HomeScreen: View {
                 selectedItem: selectedItem
             )
         }
-        let draftPresenter = DraftPresenter(
-            userSession: userSession,
-            draftProvider: .productionInstance,
-            undoSendProvider: .productionInstance(userSession: userSession),
-            undoScheduleSendProvider: .productionInstance(userSession: userSession)
-        )
-        self._draftPresenter = .init(initialValue: draftPresenter)
-        self._draftSavedCoordinator = .init(wrappedValue: .init(mailUSerSession: userSession, toastStoreState: toastStateStore))
-        self._sendResultCoordinator = .init(
-            wrappedValue: SendResultCoordinator(userSession: userSession, draftPresenter: draftPresenter)
-        )
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
@@ -105,9 +89,10 @@ struct HomeScreen: View {
                 notificationAuthorizationStore: notificationAuthorizationStore,
                 userSession: userSession,
                 userDefaults: userDefaults,
-                draftPresenter: draftPresenter,
-                sendResultPresenter: sendResultCoordinator.presenter
+                draftPresenter: composerCoordinator.draftPresenter
             )
+            .environmentObject(composerCoordinator)
+
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
                 case .system(let systemFolder):
@@ -152,8 +137,10 @@ struct HomeScreen: View {
             }
             .zIndex(appUIStateStore.sidebarState.zIndex)
         }
-        .onReceive(draftPresenter.draftToPresent) { modalState = modalStateFor(draftToPresent: $0) }
-        .onReceive(sendResultCoordinator.presenter.toastAction, perform: handleSendResultToastAction)
+        .composer(screen: .home, coordinator: composerCoordinator)
+        .onReceive(composerCoordinator.messageSent) {
+            requestNotificationAuthorizationIfApplicable()
+        }
         .sheet(item: $modalState, content: modalFactory.makeModal(for:))
         .sheet(isPresented: $isNotificationPromptPresented) {
             NotificationAuthorizationPrompt(
@@ -164,33 +151,6 @@ struct HomeScreen: View {
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
-    }
-
-    private func modalStateFor(draftToPresent: DraftToPresent) -> ModalState {
-        .draft(
-            ComposerParams(draftToPresent: draftToPresent, onDismiss: handleComposerDismissal)
-        )
-    }
-
-    private func handleComposerDismissal(_ event: ComposerDismissReason) {
-        switch event {
-        case .messageSent(let messageId), .messageScheduled(let messageId):
-            guard let toastType = event.sendResultToastType else { return }
-            sendResultCoordinator.presenter.presentResultInfo(.init(messageId: messageId, type: toastType))
-        case .dismissedManually(let savedDraftId):
-            guard let savedDraftId else { return }
-            draftSavedCoordinator.showDraftSavedToast(draftId: savedDraftId)
-        case .draftDiscarded:
-            toastStateStore.present(toast: .draftDiscarded())
-        }
-        requestNotificationAuthorizationIfApplicable()
-    }
-
-    private func handleSendResultToastAction(_ action: SendResultToastAction) {
-        switch action {
-        case .present(let toast): toastStateStore.present(toast: toast)
-        case .dismiss(let toast): toastStateStore.dismiss(toast: toast)
-        }
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
