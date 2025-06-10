@@ -22,6 +22,7 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
+    @Environment(\.openURL) var openURL
     @StateObject private var store: ContactDetailsStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
@@ -84,7 +85,11 @@ struct ContactDetailsScreen: View {
                 title: L10n.ContactDetails.call,
                 disabled: store.state.primaryPhone == nil,
                 action: {
-                    // FIXME: Implement call action
+                    let tel = "tel://"
+                    let formattedString = tel + store.state.primaryPhone!
+                    let url = URL(string: formattedString)!
+
+                    openURL(url)
                 }
             )
             ContactDetailsActionButton(
