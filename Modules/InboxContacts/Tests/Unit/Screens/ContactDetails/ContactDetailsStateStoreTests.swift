@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
 import XCTest
@@ -26,6 +27,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     private var contactItem: ContactItem!
     private var providerSpy: ContactDetailsProviderSpy!
     private var urlOpener: EnvironmentURLOpenerSpy!
+    private var toastStateStore: ToastStateStore!
 
     override func setUp() {
         super.setUp()
@@ -33,6 +35,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         initialState = .init(contact: contactItem, details: .none)
         providerSpy = .init()
         urlOpener = .init()
+        toastStateStore = .init(initialState: .initial)
 
         sut = ContactDetailsStateStore(
             state: initialState,
@@ -41,7 +44,8 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
                 providerSpy.contactDetailsCalls.append(contact)
                 return providerSpy.stubbedContactDetails[contact]!
             }),
-            urlOpener: urlOpener
+            urlOpener: urlOpener,
+            toastStateStore: toastStateStore
         )
     }
 
@@ -51,6 +55,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         contactItem = nil
         providerSpy = nil
         urlOpener = nil
+        toastStateStore = nil
         super.tearDown()
     }
 
@@ -101,6 +106,21 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .openURL(urlString: url.absoluteString))
 
         XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
+    }
+
+    func testShareContactAction_ItPresentsComingSoon() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .shareContact)
+
+        XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
+        XCTAssertEqual(toastStateStore.state.toastHeights, [:])
     }
 }
 

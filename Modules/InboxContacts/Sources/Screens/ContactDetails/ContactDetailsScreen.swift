@@ -25,7 +25,8 @@ struct ContactDetailsScreen: View {
     let contact: ContactItem
     private let initialState: ContactDetails?
     private let provider: ContactDetailsProvider
-    @Environment(\.openURL) var urlOpener
+    @Environment(\.openURL) private var urlOpener
+    @EnvironmentObject private var toastStateStore: ToastStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
@@ -44,7 +45,8 @@ struct ContactDetailsScreen: View {
                 state: initialState ?? .initial(with: contact),
                 item: contact,
                 provider: provider,
-                urlOpener: urlOpener
+                urlOpener: urlOpener,
+                toastStateStore: toastStateStore
             )
         ) { state, store in
             ScrollView {

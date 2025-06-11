@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
+import SwiftUI
 import Testing
 
 @MainActor
 final class ContactDetailsScreenSnapshotTests {
-
     @Test
     func testContactDetailsScreenVariant1() {
         let items: [ContactField] = [
@@ -54,14 +55,7 @@ final class ContactDetailsScreenSnapshotTests {
             ]),
         ]
 
-        let contact: ContactItem = .benjaminAlexander
-        let sut = ContactDetailsScreen(
-            contact: .benjaminAlexander,
-            provider: .previewInstance(),
-            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
-        )
-
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
     @Test
@@ -78,14 +72,7 @@ final class ContactDetailsScreenSnapshotTests {
             .languages(["english", "german"]),
         ]
 
-        let contact: ContactItem = .benjaminAlexander
-        let sut = ContactDetailsScreen(
-            contact: .benjaminAlexander,
-            provider: .previewInstance(),
-            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
-        )
-
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
     @Test
@@ -100,14 +87,7 @@ final class ContactDetailsScreenSnapshotTests {
             .roles(["Professor"]),
         ]
 
-        let contact: ContactItem = .benjaminAlexander
-        let sut = ContactDetailsScreen(
-            contact: .benjaminAlexander,
-            provider: .previewInstance(),
-            state: .init(contact: contact, details: .init(id: contact.id, fields: items))
-        )
-
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
     @Test
@@ -122,6 +102,10 @@ final class ContactDetailsScreenSnapshotTests {
             .urls([.init(url: "https://www.nasa.gov", urlType: [.work])]),
         ]
 
+        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
+    }
+
+    private func makeSUT(items: [ContactField]) -> some View {
         let contact: ContactItem = .benjaminAlexander
         let sut = ContactDetailsScreen(
             contact: .benjaminAlexander,
@@ -129,7 +113,6 @@ final class ContactDetailsScreenSnapshotTests {
             state: .init(contact: contact, details: .init(id: contact.id, fields: items))
         )
 
-        assertSnapshotsOnIPhoneX(of: sut)
+        return sut.environmentObject(ToastStateStore(initialState: .initial))
     }
-
 }

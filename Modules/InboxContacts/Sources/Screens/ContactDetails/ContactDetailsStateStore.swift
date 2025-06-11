@@ -26,23 +26,27 @@ final class ContactDetailsStateStore: StateStore {
         case call(phoneNumber: String)
         case onLoad
         case openURL(urlString: String)
+        case shareContact
     }
 
     @Published var state: ContactDetails
     private let item: ContactItem
     private let provider: ContactDetailsProvider
     private let urlOpener: URLOpenerProtocol
+    private let toastStateStore: ToastStateStore
 
     init(
         state: ContactDetails,
         item: ContactItem,
         provider: ContactDetailsProvider,
-        urlOpener: URLOpenerProtocol
+        urlOpener: URLOpenerProtocol,
+        toastStateStore: ToastStateStore
     ) {
         self.state = state
         self.item = item
         self.provider = provider
         self.urlOpener = urlOpener
+        self.toastStateStore = toastStateStore
     }
 
     // MARK: - StateStore
@@ -56,6 +60,8 @@ final class ContactDetailsStateStore: StateStore {
             open(urlString: "tel://\(phoneNumber)")
         case .openURL(let urlString):
             open(urlString: urlString)
+        case .shareContact:
+            toastStateStore.present(toast: .comingSoon)
         }
     }
 
