@@ -51,7 +51,7 @@ struct ContactDetailsScreen: View {
                 VStack(spacing: DS.Spacing.large) {
                     avatarView(state: state)
                     contactDetails(state: state)
-                    actionButtons(state: state)
+                    actionButtons(state: state, store: store)
                     fields(state: state, store: store)
                 }
                 .padding(.horizontal, DS.Spacing.large)
@@ -78,7 +78,8 @@ struct ContactDetailsScreen: View {
     }
 
     private func actionButtons(
-        state: ContactDetailsStateStore.State
+        state: ContactDetailsStateStore.State,
+        store: ContactDetailsStateStore
     ) -> some View {
         HStack(spacing: DS.Spacing.standard) {
             ContactDetailsActionButton(
@@ -94,7 +95,9 @@ struct ContactDetailsScreen: View {
                 title: L10n.ContactDetails.call,
                 disabled: state.primaryPhone == nil,
                 action: {
-                    // FIXME: Implement call action
+                    if let primaryPhone = state.primaryPhone {
+                        store.handle(action: .call(phoneNumber: primaryPhone))
+                    }
                 }
             )
             ContactDetailsActionButton(
@@ -148,7 +151,7 @@ struct ContactDetailsScreen: View {
         case .telephones(let telephones):
             FormList(collection: telephones) { telephone in
                 button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
-                    // FIXME: Implement call action
+                    store.handle(action: .call(phoneNumber: telephone.number))
                 }
             }
         case .roles(let roles):
