@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
         "state": {
           "branch": null,
-          "revision": "eaadc25b07df32fa6bea3acd489f38bdc1f0bd0b",
-          "version": "32.3.1"
+          "revision": "21d616a217d08bb129a91005cadde3515e2c3389",
+          "version": "32.5.0"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/getsentry/sentry-cocoa.git",
         "state": {
           "branch": null,
-          "revision": "65b3d2a7608685e8d4a37c68fa2c64f28d0b537e",
-          "version": "8.51.1"
+          "revision": "930b78a63f47549c81e6e63c9172584f7d3dfdd6",
+          "version": "8.52.1"
         }
       },
       {
