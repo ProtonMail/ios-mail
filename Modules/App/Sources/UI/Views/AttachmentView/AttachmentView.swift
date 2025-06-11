@@ -53,8 +53,10 @@ struct AttachmentView: View {
 
     private func errorView(error: Error) -> some View {
         NavigationView {
-            Text(String(describing: error))
+            Text(error.localizedDescription)
+                .multilineTextAlignment(.center)
                 .modifier(ShowDoneNavBarButton())
+                .padding()
         }
     }
 }
