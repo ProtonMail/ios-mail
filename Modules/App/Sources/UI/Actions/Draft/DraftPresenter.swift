@@ -21,7 +21,7 @@ import InboxCore
 import proton_app_uniffi
 
 @MainActor
-struct DraftPresenter {
+struct DraftPresenter: ContactsDraftPresenter {
     private let draftToPresentSubject = PassthroughSubject<DraftToPresent, Never>()
     private let userSession: MailUserSession
     private let draftProvider: DraftProvider
@@ -76,6 +76,19 @@ struct DraftPresenter {
         let result = await undoScheduleSendProvider.undoScheduleSend(messageId)
         let lastScheduledTime = try result.get().lastScheduledTime
         openDraft(withId: messageId, lastScheduledTime: lastScheduledTime)
+    }
+
+    // MARK: - ContactsDraftPresenter
+
+    func openDraft(with contacts: [ContactDetailsEmail]) async throws {
+        let draft = try await draftProvider.makeDraft(userSession, .empty).get()
+        let recipients = contacts.map { contact in SingleRecipientEntry(name: contact.name, email: contact.email) }
+
+        recipients.forEach { recipient in _ = draft.toRecipients().addSingleRecipient(recipient: recipient) }
+
+        if let messageID = try await draft.messageId().get() {
+            openDraft(withId: messageID)
+        }
     }
 }
 

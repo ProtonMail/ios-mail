@@ -83,6 +83,41 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
+    // MARK: - Open draft with contacts
+
+    @MainActor
+    func testOpenDraftWithContacts_ItCreatesEmptyDraftAddRecipientsAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let recipients: [ContactDetailsEmail] = [
+            .init(name: "John", email: "john.maxon@pm.me")
+        ]
+
+        try await sut.openDraft(with: recipients)
+
+        XCTAssertEqual(
+            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
+            [
+                .init(name: "John", email: "john.maxon@pm.me")
+            ]
+        )
+
+        let stubbedMessageID = try draftSpy.stubbedMessageID.get()!
+
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+
+        switch capturedDraftToPresent.first! {
+        case .new:
+            XCTFail("unexpected draft to present")
+        case .openDraftId(let messageId, _):
+            XCTAssertEqual(messageId, stubbedMessageID)
+        }
+    }
+
     // MARK: handleReplyAction
 
     @MainActor
@@ -185,6 +220,32 @@ extension DraftPresenterTests {
 }
 
 private extension Draft {
-
     static var dummyDraft: Draft { .init(noPointer: .init()) }
+}
+
+private class DraftSpy: Draft, @unchecked Sendable {
+    var stubbedMessageID: DraftMessageIdResult = .ok(.init(value: 9_091))
+    var toRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+
+    // MARK: - Draft
+
+    override func messageId() async -> DraftMessageIdResult {
+        stubbedMessageID
+    }
+
+    override func toRecipients() -> ComposerRecipientList {
+        toRecipientsCalls
+    }
+}
+
+private class ComposerRecipientListSpy: ComposerRecipientList, @unchecked Sendable {
+    private(set) var addSingleRecipientCalls: [SingleRecipientEntry] = []
+
+    // MARK: - ComposerRecipientList
+
+    override func addSingleRecipient(recipient: SingleRecipientEntry) -> AddSingleRecipientError {
+        addSingleRecipientCalls.append(recipient)
+
+        return .ok
+    }
 }
