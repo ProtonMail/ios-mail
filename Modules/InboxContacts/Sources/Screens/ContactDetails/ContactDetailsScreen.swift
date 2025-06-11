@@ -52,7 +52,7 @@ struct ContactDetailsScreen: View {
                     avatarView(state: state)
                     contactDetails(state: state)
                     actionButtons(state: state)
-                    fields(state: state)
+                    fields(state: state, store: store)
                 }
                 .padding(.horizontal, DS.Spacing.large)
             }
@@ -108,14 +108,14 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    private func fields(state: ContactDetailsStateStore.State) -> some View {
+    private func fields(state: ContactDetailsStateStore.State, store: ContactDetailsStateStore) -> some View {
         ForEach(state.items, id: \.self) { item in
-            field(for: item)
+            field(for: item, store: store)
         }
     }
 
     @ViewBuilder
-    private func field(for type: ContactField) -> some View {
+    private func field(for type: ContactField, store: ContactDetailsStateStore) -> some View {
         switch type {
         case .anniversary(let date):
             singleButton(
@@ -160,7 +160,9 @@ struct ContactDetailsScreen: View {
         case .urls(let urls):
             FormList(collection: urls) { item in
                 button(item: ContactFormatter.URL.formatted(from: item)) {
-                    // FIXME: Implement copy / open url action
+                    if let url = URL(string: item.url) {
+                        store.handle(action: .openURL(url))
+                    }
                 }
             }
         case .logos, .photos:
