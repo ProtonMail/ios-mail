@@ -423,24 +423,6 @@
             }
           }
         },
-        "pt-PT" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld membro"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld membros"
-                }
-              }
-            }
-          }
-        },
         "ro" : {
           "variations" : {
             "plural" : {
@@ -791,12 +773,6 @@
             "value" : "Contatos"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contactos"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -980,12 +956,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Excluir %@"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar %@"
           }
         },
         "ro" : {
@@ -1197,12 +1167,6 @@
             "value" : "Nenhum anexo com este ID de conteúdo"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nenhum anexo com este ID de conteúdo"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1380,12 +1344,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ainda não existem contatos"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ainda não existem contactos."
           }
         },
         "ro" : {
@@ -1609,12 +1567,6 @@
             "value" : "Este grupo de contatos será excluído da sua lista de contatos."
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Este grupo de contactos será eliminado da sua lista de contactos."
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1798,12 +1750,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este contato será excluído da sua lista de contatos."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Este contato será eliminado da sua lista de contactos."
           }
         },
         "ro" : {
@@ -1991,12 +1937,6 @@
             "value" : "Este marcador não existe"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta etiqueta não existe."
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2174,12 +2114,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Essa mensagem não existe"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta mensagem não existe."
           }
         },
         "ro" : {

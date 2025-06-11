@@ -133,12 +133,6 @@
             "value" : "(Nenhum destinatário)"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(sem destinatário)"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -577,24 +571,6 @@
           }
         },
         "pt-BR" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexos"
-                }
-              }
-            }
-          }
-        },
-        "pt-PT" : {
           "variations" : {
             "plural" : {
               "one" : {
@@ -1240,24 +1216,6 @@
             }
           }
         },
-        "pt-PT" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mensagem"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mensagens"
-                }
-              }
-            }
-          }
-        },
         "ro" : {
           "variations" : {
             "plural" : {
@@ -1593,12 +1551,6 @@
             "value" : "%lld Selecionado"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld selecionados"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1817,12 +1769,6 @@
             "value" : "Conta"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conta"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2009,12 +1955,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adicionar aos contatos"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adicionar aos contactos"
           }
         },
         "ro" : {
@@ -2231,12 +2171,6 @@
             "value" : "Todos os rascunhos"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todos o rascunho"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2422,12 +2356,6 @@
             "value" : "Todos os e-mails"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todo o correio"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2611,12 +2539,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todos os enviados"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todos os enviados"
@@ -2808,12 +2730,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Também arquivar?"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arquivar também?"
           }
         },
         "ro" : {
@@ -3011,12 +2927,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arquivo"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arquivo"
@@ -3480,24 +3390,6 @@
             }
           }
         },
-        "pt-PT" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tem a certeza de que deseja eliminar permanentemente esta mensagem?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tem a certeza de que deseja eliminar permanentemente estas %lld mensagens?"
-                }
-              }
-            }
-          }
-        },
         "ro" : {
           "variations" : {
             "plural" : {
@@ -3842,12 +3734,6 @@
             "value" : "Cco"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BCC"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4033,12 +3919,6 @@
             "value" : "Bloquear este contato"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear este contacto"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4219,12 +4099,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ligar"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ligar"
@@ -4413,12 +4287,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cc"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CC"
           }
         },
         "ro" : {
@@ -4610,12 +4478,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escrever"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compor"
           }
         },
         "ro" : {
@@ -4812,12 +4674,6 @@
             "value" : "Contatos"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contactos"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4998,12 +4854,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copiar endereço"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copiar endereço"
@@ -5194,12 +5044,6 @@
             "value" : "Copiar nome"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copiar nome"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5380,12 +5224,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Criar uma pasta"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criar uma pasta"
@@ -5576,12 +5414,6 @@
             "value" : "Criar um marcador"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Criar uma etiqueta"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5765,12 +5597,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criar pasta ou marcador"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Criar uma pasta ou etiqueta"
           }
         },
         "ro" : {
@@ -5959,12 +5785,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data"
@@ -6425,24 +6245,6 @@
             }
           }
         },
-        "pt-PT" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Eliminar a mensagem"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Eliminar %lld mensagens"
-                }
-              }
-            }
-          }
-        },
         "ro" : {
           "variations" : {
             "plural" : {
@@ -6778,12 +6580,6 @@
             "value" : "Excluir permanentemente"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar permanentemente"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6967,12 +6763,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exclusão concluída."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminado."
           }
         },
         "ro" : {
@@ -7182,12 +6972,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rascunho"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rascunho"
@@ -7408,12 +7192,6 @@
             "value" : "Expira em %@"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expira em %@"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7597,12 +7375,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expira em menos de 1 minuto"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expira em menos de 1 minuto."
           }
         },
         "ro" : {
@@ -7796,12 +7568,6 @@
             "value" : "Pastas e marcadores"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pastas e etiquetas"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7987,12 +7753,6 @@
             "value" : "Encaminhar"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Encaminhar"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8173,12 +7933,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "De"
@@ -8375,12 +8129,6 @@
             "value" : "Caixa de entrada"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Caixa de entrada"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8569,12 +8317,6 @@
             "value" : "Marcador"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etiqueta"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8758,12 +8500,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marcar como…"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etiquetar como…"
           }
         },
         "ro" : {
@@ -8955,12 +8691,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Localização"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Localização"
@@ -9427,24 +9157,6 @@
             }
           }
         },
-        "pt-PT" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexos"
-                }
-              }
-            }
-          }
-        },
         "ro" : {
           "variations" : {
             "plural" : {
@@ -9781,12 +9493,6 @@
             "value" : "Não lido"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não lido"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9975,12 +9681,6 @@
             "value" : "Marcar como lido"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Marcar como lido"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10161,12 +9861,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Marcar como não lido"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Marcar como não lido"
@@ -10358,12 +10052,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mensagem"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mensagem"
@@ -10566,12 +10254,6 @@
             "value" : "Mover para caixa de entrada"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para a caixa de entrada"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10752,12 +10434,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para spam"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para spam"
@@ -10948,12 +10624,6 @@
             "value" : "Mover para lixeira"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para o lixo"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11134,12 +10804,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mover para…"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mover para…"
@@ -11328,12 +10992,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Movida para %@."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Movido para %@."
           }
         },
         "ro" : {
@@ -11530,12 +11188,6 @@
             "value" : "Nenhum resultado encontrado"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sem correspondências"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11716,12 +11368,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nenhuma mensagem"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nenhuma mensagem"
@@ -11912,12 +11558,6 @@
             "value" : "Nenhuma mensagem não lida"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nenhuma mensagem por ler"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12098,12 +11738,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não é spam"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não é spam"
@@ -12303,12 +11937,6 @@
             "value" : "Oficial"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oficial"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12495,12 +12123,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outro"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Outro"
@@ -12694,12 +12316,6 @@
             "value" : "Caixa de saída"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Caixa de saída"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12880,12 +12496,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fixar"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fixar"
@@ -13097,12 +12707,6 @@
             "value" : "Preferências"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preferências"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13288,12 +12892,6 @@
             "value" : "Imprimir"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprimir"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13474,12 +13072,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacidade e segurança"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacidade e segurança"
@@ -13682,12 +13274,6 @@
             "value" : "Responder"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Responder"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13868,12 +13454,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Responder a todos"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Responder a todos"
@@ -14067,12 +13647,6 @@
             "value" : "Reportar como phishing"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reportar phishing"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14264,12 +13838,6 @@
             "value" : "Salvar como PDF"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar como PDF"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14455,12 +14023,6 @@
             "value" : "Agendado"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Agendado"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14641,12 +14203,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesquisar"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pesquisar"
@@ -14846,12 +14402,6 @@
             "value" : "Parece que você está a par de tudo agora"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Parece que já está tudo em dia por agora."
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15032,12 +14582,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selecionar tudo"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selecionar tudo"
@@ -15237,12 +14781,6 @@
             "value" : "Enviados"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviado"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15429,12 +14967,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Configurações"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Definições"
           }
         },
         "ro" : {
@@ -15631,12 +15163,6 @@
             "value" : "Adiar"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adiar"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15822,12 +15348,6 @@
             "value" : "Adiado"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adiado"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16008,12 +15528,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adiado até %@"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adiado até %@"
@@ -16210,12 +15724,6 @@
             "value" : "Spam"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spam"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16404,12 +15912,6 @@
             "value" : "Favorito"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Estrela"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16590,12 +16092,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Com estrela"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Com estrela"
@@ -16790,12 +16286,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Assinatura"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subscrição"
           }
         },
         "ro" : {
@@ -17028,12 +16518,6 @@
             "value" : "Para"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17226,12 +16710,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lixeira"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lixo"
           }
         },
         "ro" : {
@@ -17431,12 +16909,6 @@
             "value" : "Desafixar"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desafixar"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17620,12 +17092,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Não lidos"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Não lido"
           }
         },
         "ro" : {
@@ -17814,12 +17280,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remover estrela"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remover estrela"
@@ -18019,12 +17479,6 @@
             "value" : "Visualizar cabeçalhos"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ver cabeçalhos"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18205,12 +17659,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ver HTML"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver HTML"
@@ -18401,12 +17849,6 @@
             "value" : "Ver mensagem no modo escuro"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ver a mensagem no modo escuro"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18587,12 +18029,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ver mensagem no modo claro"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ver mensagem no modo claro"
@@ -18799,12 +18235,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Você pode atualizar sua consulta de pesquisa ou limpá-la."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pode actualizar a sua consulta ou limpá-la."
           }
         },
         "ro" : {

@@ -130,12 +130,6 @@
             "value" : "%lld membros"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld membros"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -361,12 +355,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De:"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "De:"
@@ -599,12 +587,6 @@
             "value" : "Destinatário duplicado removido: %@"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Destinatário duplicado eliminado: %@"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -794,12 +776,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enviar"
@@ -999,12 +975,6 @@
             "value" : "Assunto:"
           }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Assunto:"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1142,6 +1112,12 @@
             "value" : "Došlo k problému s ukládáním konceptu"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der opstod et problem med at gemme kladden"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1242,12 +1218,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ocorreu um problema ao salvar o rascunho"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ocorreu um problema ao guardar o rascunho."
           }
         },
         "ro" : {
@@ -1430,12 +1400,6 @@
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para:"
-          }
-        },
-        "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Para:"
