@@ -17,8 +17,9 @@
 
 import Combine
 import InboxCore
-import proton_app_uniffi
+import InboxCoreUI
 import LocalAuthentication
+import proton_app_uniffi
 
 class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState

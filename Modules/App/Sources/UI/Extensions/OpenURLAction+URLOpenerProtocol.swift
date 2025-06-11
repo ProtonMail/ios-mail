@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import SwiftUICore
 
 protocol URLOpenerProtocol {
     func callAsFunction(_ url: URL)

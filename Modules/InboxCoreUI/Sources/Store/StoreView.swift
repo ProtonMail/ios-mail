@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,16 +17,16 @@
 
 import SwiftUI
 
-struct StoreView<Store: StateStore, Content: View>: View {
-    @StateObject var store: Store
+public struct StoreView<Store: StateStore, Content: View>: View {
+    @StateObject public var store: Store
     private let content: (Store.State, Store) -> Content
 
-    init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
+    public init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
         self._store = .init(wrappedValue: store)
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         content(store.state, store)
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-protocol StateStore: ObservableObject where Action: Sendable {
+public protocol StateStore: ObservableObject where Action: Sendable {
     associatedtype State
     associatedtype Action
 
@@ -29,7 +29,7 @@ protocol StateStore: ObservableObject where Action: Sendable {
 
 extension StateStore {
     @MainActor
-    func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value> {
+    public func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value> {
         Binding(
             get: { self.state[keyPath: keyPath] },
             set: { self.state[keyPath: keyPath] = $0 }
@@ -37,7 +37,7 @@ extension StateStore {
     }
 
     @MainActor
-    func handle(action: Action) {
+    public func handle(action: Action) {
         Task {
             await handle(action: action)
         }

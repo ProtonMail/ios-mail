@@ -17,6 +17,7 @@
 
 import SwiftUI
 import InboxCore
+import InboxCoreUI
 
 @MainActor
 class PINStateStore: StateStore {
