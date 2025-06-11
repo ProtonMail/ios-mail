@@ -160,9 +160,7 @@ struct ContactDetailsScreen: View {
         case .urls(let urls):
             FormList(collection: urls) { item in
                 button(item: ContactFormatter.URL.formatted(from: item)) {
-                    if let url = URL(string: item.url) {
-                        store.handle(action: .openURL(url))
-                    }
+                    store.handle(action: .openURL(urlString: item.url))
                 }
             }
         case .logos, .photos:

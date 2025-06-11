@@ -82,7 +82,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         let url = URL(string: "https://www.proton.me")!
 
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .openURL(url))
+        await sut.handle(action: .openURL(urlString: url.absoluteString))
 
         XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
     }

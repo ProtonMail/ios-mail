@@ -24,7 +24,7 @@ import SwiftUI
 final class ContactDetailsStateStore: StateStore {
     enum Action {
         case onLoad
-        case openURL(URL)
+        case openURL(urlString: String)
     }
 
     @Published var state: ContactDetails
@@ -49,8 +49,8 @@ final class ContactDetailsStateStore: StateStore {
         switch action {
         case .onLoad:
             loadDetails(for: item)
-        case .openURL(let url):
-            urlOpener(url)
+        case .openURL(let urlString):
+            open(urlString: urlString)
         }
     }
 
@@ -62,6 +62,12 @@ final class ContactDetailsStateStore: StateStore {
             }
 
             Dispatcher.dispatchOnMain(updateStateWorkItem)
+        }
+    }
+
+    private func open(urlString: String) {
+        if let url = URL(string: urlString) {
+            urlOpener(url)
         }
     }
 }
