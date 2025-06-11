@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxTesting
 import SwiftUI
 import Testing
 import WebKit
@@ -73,14 +74,6 @@ final class MessageBodyReaderViewTests {
 
     private var protonURL: URL {
         URL(string: "https://account.proton.me").unsafelyUnwrapped
-    }
-}
-
-private class EnvironmentURLOpenerSpy: URLOpenerProtocol {
-    private(set) var callAsFunctionInvokedWithURL: [URL] = []
-
-    func callAsFunction(_ url: URL) {
-        callAsFunctionInvokedWithURL.append(url)
     }
 }
 

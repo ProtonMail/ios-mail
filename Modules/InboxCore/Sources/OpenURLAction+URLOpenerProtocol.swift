@@ -17,7 +17,7 @@
 
 import SwiftUICore
 
-protocol URLOpenerProtocol {
+public protocol URLOpenerProtocol {
     func callAsFunction(_ url: URL)
 }
 

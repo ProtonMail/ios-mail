@@ -21,23 +21,27 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-final class ContactDetailsStateStore: ObservableObject {
+final class ContactDetailsStateStore: StateStore {
     enum Action {
         case onLoad
+        case openURL(URL)
     }
 
     @Published var state: ContactDetails
     private let item: ContactItem
     private let provider: ContactDetailsProvider
+    private let urlOpener: URLOpenerProtocol
 
     init(
         state: ContactDetails,
         item: ContactItem,
-        provider: ContactDetailsProvider
+        provider: ContactDetailsProvider,
+        urlOpener: URLOpenerProtocol
     ) {
         self.state = state
         self.item = item
         self.provider = provider
+        self.urlOpener = urlOpener
     }
 
     @MainActor
@@ -45,6 +49,8 @@ final class ContactDetailsStateStore: ObservableObject {
         switch action {
         case .onLoad:
             loadDetails(for: item)
+        case .openURL(let url):
+            urlOpener(url)
         }
     }
 

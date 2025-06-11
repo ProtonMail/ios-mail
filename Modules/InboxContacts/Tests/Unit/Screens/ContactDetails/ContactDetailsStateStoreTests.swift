@@ -25,12 +25,14 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     private var initialState: ContactDetails!
     private var contactItem: ContactItem!
     private var providerSpy: ContactDetailsProviderSpy!
+    private var urlOpener: EnvironmentURLOpenerSpy!
 
     override func setUp() {
         super.setUp()
-        contactItem = ContactItem.elenaErickson
+        contactItem = .elenaErickson
         initialState = .init(contact: contactItem, details: .none)
         providerSpy = .init()
+        urlOpener = .init()
 
         sut = ContactDetailsStateStore(
             state: initialState,
@@ -38,7 +40,8 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
             provider: .init(contactDetails: { [unowned self] contact in
                 providerSpy.contactDetailsCalls.append(contact)
                 return providerSpy.stubbedContactDetails[contact]!
-            })
+            }),
+            urlOpener: urlOpener
         )
     }
 
@@ -47,6 +50,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         initialState = nil
         contactItem = nil
         providerSpy = nil
+        urlOpener = nil
         super.tearDown()
     }
 
@@ -55,18 +59,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testOnLoad_FetchesDetailsAndUpdatesState() async {
-        let items: [ContactField] = [
-            .emails([
-                .init(name: "Work", email: "ben.ale@protonmail.com")
-            ]),
-            .telephones([
-                .init(number: "+41771234567", telTypes: [.home])
-            ]),
-            .anniversary(.string("Feb 28, 2019")),
-            .gender(.male),
-            .languages(["english", "german"]),
-        ]
-        let details = ContactDetailCard(id: contactItem.id, fields: items)
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -77,10 +70,44 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(sut.state, .init(contact: contactItem, details: details))
     }
+
+    func testOpenURL_ItOpensURL() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        let url = URL(string: "https://www.proton.me")!
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .openURL(url))
+
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
+    }
 }
 
 private class ContactDetailsProviderSpy {
     var stubbedContactDetails: [ContactItem: ContactDetails] = [:]
 
     var contactDetailsCalls: [ContactItem] = []
+}
+
+private extension Array where Element == ContactField {
+
+    static var testItems: [ContactField] {
+        [
+            .emails([
+                .init(name: "Work", email: "elena.erickson@example.com")
+            ]),
+            .telephones([
+                .init(number: "+41771234567", telTypes: [.home])
+            ]),
+            .anniversary(.string("Feb 28, 2019")),
+            .gender(.male),
+            .languages(["english", "german"]),
+        ]
+    }
+
 }

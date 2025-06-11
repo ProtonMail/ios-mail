@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -22,7 +23,9 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
-    @StateObject private var store: ContactDetailsStateStore
+    private let initialState: ContactDetails?
+    private let provider: ContactDetailsProvider
+    @Environment(\.openURL) var urlOpener
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
@@ -31,45 +34,52 @@ struct ContactDetailsScreen: View {
         state: ContactDetails? = nil
     ) {
         self.contact = contact
-        _store = .init(
-            wrappedValue: .init(
-                state: state ?? .initial(with: contact),
-                item: contact,
-                provider: provider
-            )
-        )
+        self.initialState = state
+        self.provider = provider
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: DS.Spacing.large) {
-                avatarView
-                contactDetails
-                actionButtons
-                fields
+        StoreView(
+            store: ContactDetailsStateStore(
+                state: initialState ?? .initial(with: contact),
+                item: contact,
+                provider: provider,
+                urlOpener: urlOpener
+            )
+        ) { state, store in
+            ScrollView {
+                VStack(spacing: DS.Spacing.large) {
+                    avatarView(state: state)
+                    contactDetails(state: state)
+                    actionButtons(state: state)
+                    fields(state: state)
+                }
+                .padding(.horizontal, DS.Spacing.large)
             }
-            .padding(.horizontal, DS.Spacing.large)
+            .background(DS.Color.Background.secondary)
+            .onLoad { store.handle(action: .onLoad) }
         }
-        .background(DS.Color.Background.secondary)
-        .onLoad { store.handle(action: .onLoad) }
+
     }
 
     // MARK: - Private
 
-    private var avatarView: some View {
-        ContactAvatarView(hexColor: store.state.avatarInformation.color) {
-            Text(store.state.avatarInformation.text)
+    private func avatarView(state: ContactDetailsStateStore.State) -> some View {
+        ContactAvatarView(hexColor: state.avatarInformation.color) {
+            Text(state.avatarInformation.text)
                 .font(.title)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.inverted)
         }
     }
 
-    private var contactDetails: some View {
-        ContactAvatarDetailsView(title: store.state.displayName, subtitle: store.state.primaryEmail)
+    private func contactDetails(state: ContactDetailsStateStore.State) -> some View {
+        ContactAvatarDetailsView(title: state.displayName, subtitle: state.primaryEmail)
     }
 
-    private var actionButtons: some View {
+    private func actionButtons(
+        state: ContactDetailsStateStore.State
+    ) -> some View {
         HStack(spacing: DS.Spacing.standard) {
             ContactDetailsActionButton(
                 image: DS.Icon.icPenSquare,
@@ -82,7 +92,7 @@ struct ContactDetailsScreen: View {
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
                 title: L10n.ContactDetails.call,
-                disabled: store.state.primaryPhone == nil,
+                disabled: state.primaryPhone == nil,
                 action: {
                     // FIXME: Implement call action
                 }
@@ -98,8 +108,8 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    private var fields: some View {
-        ForEach(store.state.items, id: \.self) { item in
+    private func fields(state: ContactDetailsStateStore.State) -> some View {
+        ForEach(state.items, id: \.self) { item in
             field(for: item)
         }
     }
