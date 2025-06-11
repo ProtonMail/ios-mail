@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct ContactDetails {
+struct ContactDetails: Equatable {
     let id: Id
     let avatarInformation: AvatarInformation
     let displayName: String
