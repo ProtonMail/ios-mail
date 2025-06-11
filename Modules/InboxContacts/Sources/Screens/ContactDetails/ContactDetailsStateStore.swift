@@ -23,6 +23,7 @@ import SwiftUI
 
 final class ContactDetailsStateStore: StateStore {
     enum Action {
+        case call(phoneNumber: String)
         case onLoad
         case openURL(urlString: String)
     }
@@ -44,15 +45,21 @@ final class ContactDetailsStateStore: StateStore {
         self.urlOpener = urlOpener
     }
 
+    // MARK: - StateStore
+
     @MainActor
     func handle(action: Action) {
         switch action {
         case .onLoad:
             loadDetails(for: item)
+        case .call(let phoneNumber):
+            open(urlString: "tel://\(phoneNumber)")
         case .openURL(let urlString):
             open(urlString: urlString)
         }
     }
+
+    // MARK: - Private
 
     private func loadDetails(for contact: ContactItem) {
         Task {

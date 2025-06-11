@@ -58,7 +58,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state, initialState)
     }
 
-    func testOnLoad_FetchesDetailsAndUpdatesState() async {
+    func testOnLoadAction_ItFetchesDetailsAndUpdatesState() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -71,7 +71,23 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state, .init(contact: contactItem, details: details))
     }
 
-    func testOpenURL_ItOpensURL() async {
+    func testCallToPhoneNumberAction_ItOpensURLWithTelPrefix() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        let phone = "+41772223344"
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .call(phoneNumber: phone))
+
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phone)")])
+    }
+
+    func testOpenURLAction_ItOpensURL() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
