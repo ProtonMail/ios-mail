@@ -48,9 +48,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-        #if targetEnvironment(simulator)
-            webView.isInspectable = true
-        #endif
+        webView.isInspectable = true
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
         config.userContentController.addUserScript(.observeHeight)
@@ -119,13 +117,17 @@ extension WKUserScript {
         let source = """
             const container = document.documentElement;
 
-            const observer = new ResizeObserver(function() {
+            function notify() {
                 window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(container.scrollHeight);
-            });
+            }
+
+            const observer = new ResizeObserver(notify);
 
             for (const child of container.children) {
                 observer.observe(child);
             }
+
+            notify()
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
