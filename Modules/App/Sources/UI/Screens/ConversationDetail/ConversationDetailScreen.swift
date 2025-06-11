@@ -124,6 +124,7 @@ struct ConversationDetailScreen: View {
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.norm)
             .multilineTextAlignment(.center)
+            .textSelection(.enabled)
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
