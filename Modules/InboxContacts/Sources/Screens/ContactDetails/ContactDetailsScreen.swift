@@ -106,9 +106,7 @@ struct ContactDetailsScreen: View {
                 image: DS.Icon.icArrowUpFromSquare,
                 title: L10n.ContactDetails.share,
                 disabled: false,
-                action: {
-                    // FIXME: Implement share action
-                }
+                action: { store.handle(action: .shareContact) }
             )
         }
     }
