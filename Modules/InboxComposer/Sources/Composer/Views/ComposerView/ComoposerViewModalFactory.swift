@@ -15,15 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 struct ComposerViewModalFactory {
+    private let makeSenderAddressPicker: () -> SenderAddressPickerSheet
     private let makeScheduleSend: (DraftScheduleSendOptions, UInt64?) -> ScheduleSendPickerSheet
     private let makeAttachmentPicker: () -> AttachmentSourcePickerSheet
 
-    init(scheduleSendAction: @escaping (Date) async -> Void, attachmentPickerState: Binding<AttachmentPickersState>) {
+    init(
+        senderAddressPickerSheetModel: SenderAddressPickerSheetModel,
+        scheduleSendAction: @escaping (Date) async -> Void,
+        attachmentPickerState: Binding<AttachmentPickersState>,
+    ) {
+        self.makeSenderAddressPicker = {
+            SenderAddressPickerSheet(model: senderAddressPickerSheetModel)
+        }
         self.makeScheduleSend = { schduleSendOptions, lastScheduledTime in
             ScheduleSendPickerSheet(
                 predefinedTimeOptions: schduleSendOptions.toScheduleSendTimeOptions(lastScheduleSendTime: lastScheduledTime),
@@ -39,6 +48,8 @@ struct ComposerViewModalFactory {
     @ViewBuilder
     func makeModal(for state: ComposerViewModalState) -> some View {
         switch state {
+        case .senderPicker:
+            makeSenderAddressPicker()
         case .scheduleSend(let sendTimeOptions, let lastScheduledTime):
             makeScheduleSend(sendTimeOptions, lastScheduledTime)
         case .attachmentPicker:

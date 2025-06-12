@@ -186,3 +186,29 @@ private extension DraftSendErrorReason {
         }
     }
 }
+
+extension DraftSenderAddressChangeError: LocalizedError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+private extension DraftSenderAddressChangeErrorReason {
+
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .addressEmailNotFound:
+            L10n.DraftSenderAddressChangeError.addressEmailNotFound
+        case .addressNotSendEnabled:
+            L10n.DraftSenderAddressChangeError.addressNotSendEnabled
+        case .addressDisabled:
+            L10n.DraftSenderAddressChangeError.addressDisabled
+        }
+    }
+}

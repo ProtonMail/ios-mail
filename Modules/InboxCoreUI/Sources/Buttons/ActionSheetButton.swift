@@ -18,12 +18,18 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct ActionSheetButton<Content: View>: View {
+public struct ActionSheetButton<Content: View>: View {
     let displayBottomSeparator: Bool
     let action: () -> Void
     let content: () -> Content
 
-    var body: some View {
+    public init(displayBottomSeparator: Bool, action: @escaping () -> Void, content: @escaping () -> Content) {
+        self.displayBottomSeparator = displayBottomSeparator
+        self.action = action
+        self.content = content
+    }
+
+    public var body: some View {
         VStack(spacing: .zero) {
             Button(action: action) {
                 content()

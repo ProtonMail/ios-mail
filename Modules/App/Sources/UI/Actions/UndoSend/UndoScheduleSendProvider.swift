@@ -27,7 +27,7 @@ struct UndoScheduleSendProvider {
     static func productionInstance(userSession: MailUserSession) -> UndoScheduleSendProvider {
         .init(
             undoScheduleSend: { messageId in
-                await proton_app_uniffi.draftCancelScheduleSend(session: userSession, messageId: messageId)
+                await draftCancelScheduleSend(session: userSession, messageId: messageId)
             }
         )
     }

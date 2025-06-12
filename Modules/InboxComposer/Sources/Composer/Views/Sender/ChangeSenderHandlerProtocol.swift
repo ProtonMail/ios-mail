@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,16 +17,25 @@
 
 import proton_app_uniffi
 
-enum ComposerViewModalState: Identifiable {
-    case senderPicker
-    case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
-    case attachmentPicker
+protocol ChangeSenderHandlerProtocol {
+    func listSenderAddresses() async throws -> DraftSenderAddressList
 
-    var id: String {
-        switch self {
-        case .senderPicker: "senderPicker"
-        case .scheduleSend: "scheduleSend"
-        case .attachmentPicker: "attachmentPicker"
-        }
+    @MainActor
+    func changeSenderAddress(email: String) async throws
+}
+
+struct MockChangeSenderHandler: ChangeSenderHandlerProtocol {
+    func listSenderAddresses() async throws -> DraftSenderAddressList {
+        .init(
+            available: [
+                "norbert.e@pm.me",
+                "norbert.eric@pm.me",
+                "e.norbert@protonmail.me",
+            ],
+            active: "norbert.eric@pm.me"
+        )
     }
+
+    @MainActor
+    func changeSenderAddress(email: String) async throws {}
 }

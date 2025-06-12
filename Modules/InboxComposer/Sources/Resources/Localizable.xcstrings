@@ -192,8 +192,14 @@
     "Add attachments" : {
       "comment" : "Attachments action sheet title."
     },
+    "Address cannot be used to send messages" : {
+      "comment" : "Error in the context of changing the sender with a disabled sender address."
+    },
+    "Address is disabled" : {
+      "comment" : "Error in the context of changing the sender with a disabled sender address."
+    },
     "Address not found" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+      "comment" : "Error in the context of changing the sender with a wrong sender address.\nError in the context of opening a draft in the composer"
     },
     "Attachment limit" : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -227,6 +233,9 @@
     },
     "Error trying to reply or forward this message" : {
       "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "From" : {
+      "comment" : "Title for the sender picker action sheet."
     },
     "From your photo library" : {
       "comment" : "Attachments action sheet photo library option."

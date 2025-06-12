@@ -37,6 +37,8 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
     func messageId() async -> DraftMessageIdResult
+    func listSenderAddresses() async -> DraftListSenderAddressesResult
+    func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult
     func attachmentList() -> AttachmentListProtocol
     func body() -> String
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult

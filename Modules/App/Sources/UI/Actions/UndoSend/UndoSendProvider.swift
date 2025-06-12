@@ -27,7 +27,7 @@ struct UndoSendProvider {
     static func productionInstance(userSession: MailUserSession) -> UndoSendProvider {
         .init(
             undoSend: { messageId in
-                let result = await proton_app_uniffi.draftUndoSend(session: userSession, messageId: messageId)
+                let result = await draftUndoSend(session: userSession, messageId: messageId)
                 switch result {
                 case .ok: return nil
                 case .error(let error): return error

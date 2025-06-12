@@ -114,6 +114,12 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Undo action after message has been sent."
         )
+
+        static let senderPickerSheetTitle = LocalizedStringResource(
+            "From",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title for the sender picker action sheet."
+        )
     }
 
     enum Attachments {
@@ -434,6 +440,23 @@ enum L10n {
         static let tooManyAttachments = LocalizedStringResource(
             "The limit of attachments has been reached",
             comment: "Error in the context of saving a draft before being sent."
+        )
+    }
+
+    enum DraftSenderAddressChangeError {
+        static let addressEmailNotFound = LocalizedStringResource(
+            "Address not found",
+            comment: "Error in the context of changing the sender with a wrong sender address."
+        )
+
+        static let addressNotSendEnabled = LocalizedStringResource(
+            "Address cannot be used to send messages",
+            comment: "Error in the context of changing the sender with a disabled sender address."
+        )
+
+        static let addressDisabled = LocalizedStringResource(
+            "Address is disabled",
+            comment: "Error in the context of changing the sender with a disabled sender address."
         )
     }
 

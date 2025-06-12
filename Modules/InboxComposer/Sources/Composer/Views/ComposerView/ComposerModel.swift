@@ -363,6 +363,24 @@ final class ComposerModel: ObservableObject {
     }
 }
 
+extension ComposerModel: ChangeSenderHandlerProtocol {
+    
+    func listSenderAddresses() async throws -> DraftSenderAddressList {
+        try await draft.listSenderAddresses().get()
+    }
+
+    @MainActor
+    func changeSenderAddress(email: String) async throws(DraftSenderAddressChangeError) {
+        switch await draft.changeSenderAddress(email: email) {
+        case .ok:
+            state = makeState(from: draft)
+            bodyAction = .reloadBody(html: state.initialBody)
+        case .error(let error):
+            throw error
+        }
+    }
+}
+
 // MARK: Private
 
 extension ComposerModel {

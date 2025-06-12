@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxComposer
+import InboxCoreUI
 import InboxTesting
 import InboxSnapshotTesting
 
@@ -23,12 +24,14 @@ import InboxSnapshotTesting
 final class ComposerScreenSnapshotTests: BaseTestCase {
 
     func testComposerScreen_whenEmpty_itLayoutsCorrectOnIphoneX() throws {
+        let toastStateStore = ToastStateStore.init(initialState: .initial)
         let composerScreen = ComposerScreen(
             draft: .emptyMock,
             draftOrigin: .new,
             dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
             onDismiss: { _ in }
         )
+        .environmentObject(toastStateStore)
         assertSnapshotsOnIPhoneX(of: composerScreen)
     }
 }

@@ -433,6 +433,40 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.subject, newSubject)
     }
 
+    // MARK: listSenderAddresses
+
+    func testListSenderAddresses_whenSuccess_itReturnsTheDraftSenderAddressesAvailable() async throws {
+        mockDraft.mockSenderList = .ok(.init(available: ["1@example.com, 2@example.com"], active: "2@example.com"))
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        let result = try await sut.listSenderAddresses()
+        XCTAssertEqual(result.available, ["1@example.com, 2@example.com"])
+        XCTAssertEqual(result.active, "2@example.com")
+    }
+
+    // MARK: changeSenderAddress
+
+    func testChangeSenderAddress_whenSuccess_itSetsBodyActionToReloadBody() async throws {
+        let newAddress = "my_new_address@example.com"
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        try await sut.changeSenderAddress(email: newAddress)
+        let html = mockDraft.body()
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html))
+    }
+
+    func testChangeSenderAddress_whenFailure_itDoesNotSetBodyActionToReloadBody() async {
+        mockDraft.mockDraftChangeSenderAddressResult = .error(.reason(.addressDisabled))
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let initialSender = sut.state.senderEmail
+
+        do {
+            try await sut.changeSenderAddress(email: "my_new_address@example.com")
+            XCTFail()
+        } catch {}
+        XCTAssertEqual(sut.bodyAction, nil)
+    }
+
     // MARK: recipients callback
 
     func testComposerRecipientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {

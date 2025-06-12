@@ -64,6 +64,16 @@ public extension AttachmentListWatcherResult {
         }
     }
 }
+public extension DraftChangeSenderAddressResult {
+    func get() throws(DraftSenderAddressChangeError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension NewDraftResult {
     func get() throws(DraftOpenError) -> Draft {
         switch self {

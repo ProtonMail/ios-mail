@@ -28,6 +28,8 @@ extension SingleRecipientEntry {
 final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockDraftMessageIdResult: DraftMessageIdResult = .ok(nil)
     var mockSender: String = .empty
+    var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
+    var mockDraftChangeSenderAddressResult: DraftChangeSenderAddressResult = .ok
     var mockSubject: String = .empty
     var mockToRecipientList = MockComposerRecipientList()
     var mockCcRecipientList = MockComposerRecipientList()
@@ -58,6 +60,14 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
+
+    func listSenderAddresses() async -> DraftListSenderAddressesResult {
+        mockSenderList
+    }
+
+    func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult {
+        mockDraftChangeSenderAddressResult
+    }
 
     func attachmentList() -> AttachmentListProtocol {
         mockAttachmentList

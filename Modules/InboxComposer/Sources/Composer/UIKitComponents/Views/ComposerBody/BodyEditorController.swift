@@ -120,6 +120,8 @@ final class BodyEditorController: UIViewController {
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
+        case .reloadBody(let html):
+            updateBody(html: html)
         }
     }
 

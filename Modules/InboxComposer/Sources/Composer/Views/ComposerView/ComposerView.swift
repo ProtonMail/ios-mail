@@ -56,6 +56,12 @@ struct ComposerView: View {
 
     var body: some View {
         let modalFactory = ComposerViewModalFactory(
+            senderAddressPickerSheetModel: .init(
+                state: .init(),
+                handler: model,
+                toastStateStore: toastStateStore,
+                dismiss: { modalState = nil }
+            ),
             scheduleSendAction: { time in await model.sendMessage(at: time, dismissAction: dismiss) },
             attachmentPickerState: $attachmentPickerState
         )
@@ -105,7 +111,7 @@ struct ComposerView: View {
                 case .fromFieldEvent(let event):
                     switch event {
                     case .onFieldTap:
-                        toastStateStore.present(toast: .comingSoon)
+                        modalState = .senderPicker
                     }
 
                 case .subjectFieldEvent(let event):

@@ -74,7 +74,37 @@ final class FromFieldView: UIView {
 
     @objc
     private func onTap() {
+        highlight()
         onEvent?(.onFieldTap)
+    }
+
+    private func highlight() {
+        var originalTitleColor: UIColor?
+        var originalLabelColor: UIColor?
+        var originalChevronTintColor: UIColor?
+
+        let highlightColor = label.textColor.withAlphaComponent(0.7)
+        if originalTitleColor == nil {
+            originalTitleColor = title.textColor
+        }
+        if originalLabelColor == nil {
+            originalLabelColor = label.textColor
+        }
+        if originalChevronTintColor == nil {
+            originalChevronTintColor = chevronButton.tintColor
+        }
+
+        title.textColor = highlightColor
+        label.textColor = highlightColor
+        chevronButton.tintColor = highlightColor
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.3) {
+                self.title.textColor = originalTitleColor
+                self.label.textColor = originalLabelColor
+                self.chevronButton.tintColor = originalChevronTintColor
+            }
+        }
     }
 }
 
