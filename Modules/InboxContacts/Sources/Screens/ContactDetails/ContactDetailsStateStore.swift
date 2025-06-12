@@ -64,7 +64,7 @@ final class ContactDetailsStateStore: StateStore {
             loadDetails(for: item)
         case .newMessageTapped:
             if let primaryEmail = emails.first {
-                openNewMessage(with: primaryEmail)
+                openComposer(with: primaryEmail)
             }
         case .callTapped:
             if let phoneNumber = state.primaryPhone {
@@ -73,7 +73,7 @@ final class ContactDetailsStateStore: StateStore {
         case .shareTapped:
             toastStateStore.present(toast: .comingSoon)
         case .emailTapped(let email):
-            openNewMessage(with: email)
+            openComposer(with: email)
         case .phoneNumberTapped(let phoneNumber):
             call(phoneNumber: phoneNumber)
         case .openURL(let urlString):
@@ -104,7 +104,7 @@ final class ContactDetailsStateStore: StateStore {
         open(urlString: "tel:\(phoneNumber)")
     }
 
-    private func openNewMessage(with contact: ContactDetailsEmail) {
+    private func openComposer(with contact: ContactDetailsEmail) {
         Task {
             try await draftPresenter.openDraft(with: contact)
         }

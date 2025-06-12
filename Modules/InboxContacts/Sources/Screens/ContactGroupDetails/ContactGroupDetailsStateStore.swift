@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import SwiftUI
 import proton_app_uniffi
+import SwiftUI
 
 final class ContactGroupDetailsStateStore: ObservableObject {
     enum Action {
