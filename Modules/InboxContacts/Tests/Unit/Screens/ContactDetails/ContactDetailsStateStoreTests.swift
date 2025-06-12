@@ -144,7 +144,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toastHeights, [:])
     }
 
-    func testNewMessageTappedAction_ItPresentsDraftWithPrimaryRecipient() async {
+    func testNewMessageTappedAction_ItPresentsDraftWithPrimaryContact() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -155,8 +155,12 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .newMessageTapped)
 
-        XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftCalls, [.init(name: "Work", email: "elena.erickson@protonmail.com")])
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
+        XCTAssertEqual(
+            draftPresenterSpy.openDraftContactCalls,
+            [
+                .init(name: "Work", email: "elena.erickson@protonmail.com")
+            ])
     }
 
     func testEmailTappedAction_ItPresentsDraftWithGivenContact() async {
@@ -172,8 +176,8 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
 
-        XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftCalls, [stubbedEmail])
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls, [stubbedEmail])
     }
 }
 
@@ -181,16 +185,6 @@ private class ContactDetailsProviderSpy {
     var stubbedContactDetails: [ContactItem: ContactDetails] = [:]
 
     var contactDetailsCalls: [ContactItem] = []
-}
-
-private class ContactsDraftPresenterSpy: ContactsDraftPresenter {
-    private(set) var openDraftCalls: [ContactDetailsEmail] = []
-
-    // MARK: - ContactsDraftPresenter
-
-    func openDraft(with contact: ContactDetailsEmail) async throws {
-        openDraftCalls.append(contact)
-    }
 }
 
 private extension Array where Element == ContactField {

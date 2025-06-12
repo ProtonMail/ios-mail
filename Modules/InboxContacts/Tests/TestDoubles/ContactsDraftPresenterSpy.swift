@@ -18,7 +18,17 @@
 import InboxCore
 import proton_app_uniffi
 
-final class ContactsDraftPresenterDummy: ContactsDraftPresenter {
-    func openDraft(with contact: ContactDetailsEmail) async throws {}
-    func openDraft(with group: ContactGroupItem) async throws {}
+class ContactsDraftPresenterSpy: ContactsDraftPresenter {
+    private(set) var openDraftContactCalls: [ContactDetailsEmail] = []
+    private(set) var openDraftGroupCalls: [ContactGroupItem] = []
+
+    // MARK: - ContactsDraftPresenter
+
+    func openDraft(with contact: ContactDetailsEmail) async throws {
+        openDraftContactCalls.append(contact)
+    }
+
+    func openDraft(with group: ContactGroupItem) async throws {
+        openDraftGroupCalls.append(group)
+    }
 }
