@@ -103,6 +103,93 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
     }
 
+    @MainActor
+    func testOpenDraftWithContact_AndCreatingDraftFails_ItThrowsAnError() async {
+        sut = makeSUT(stubbedNewDraftResult: .error(.reason(.messageIsNotADraft)))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
+
+        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: contact)) { error in
+            let draftOpenError = error as? DraftOpenError
+
+            XCTAssertEqual(capturedDraftToPresent.count, 0)
+            XCTAssertEqual(draftOpenError, .reason(.messageIsNotADraft))
+        }
+    }
+
+    // MARK: - Open new draft with contact group
+
+    @MainActor
+    func testOpenDraftWithContactGroup_ItCreatesEmptyDraftAddGroupAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let group = ContactGroupItem(
+            id: 2,
+            name: "Business Group",
+            avatarColor: "#A1FF33",
+            contactEmails: [
+                .init(id: 1, email: "a@pm.me", name: "A"),
+                .init(id: 2, email: "b@pm.me", name: "B"),
+                .init(id: 3, email: "c@pm.me", name: "C"),
+                .init(id: 4, email: "d@pm.me", name: "D"),
+            ]
+        )
+
+        try await sut.openDraft(with: group)
+
+        XCTAssertEqual(
+            draftSpy.toRecipientsCalls.addGroupRecipientCalls,
+            [
+                .init(
+                    name: "Business Group",
+                    recipients: [
+                        .init(name: "A", email: "a@pm.me"),
+                        .init(name: "B", email: "b@pm.me"),
+                        .init(name: "C", email: "c@pm.me"),
+                        .init(name: "D", email: "d@pm.me"),
+                    ],
+                    totalCount: 4
+                )
+            ]
+        )
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
+    }
+
+    @MainActor
+    func testOpenDraftWithContactGroup_AndCreatingDraftFails_ItThrowsAnError() async {
+        sut = makeSUT(stubbedNewDraftResult: .error(.reason(.messageDoesNotExist)))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let group = ContactGroupItem(
+            id: 2,
+            name: "Business Group",
+            avatarColor: "#A1FF33",
+            contactEmails: [
+                .init(id: 1, email: "a@pm.me", name: "A"),
+                .init(id: 2, email: "b@pm.me", name: "B"),
+                .init(id: 3, email: "c@pm.me", name: "C"),
+                .init(id: 4, email: "d@pm.me", name: "D"),
+            ]
+        )
+
+        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: group)) { error in
+            let draftOpenError = error as? DraftOpenError
+
+            XCTAssertEqual(capturedDraftToPresent.count, 0)
+            XCTAssertEqual(draftOpenError, .reason(.messageDoesNotExist))
+        }
+    }
+
     // MARK: handleReplyAction
 
     @MainActor
@@ -185,50 +272,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
-
-    @MainActor
-    func testOpenDraftWithContactGroup_ItCreatesEmptyDraftAddGroupAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
-        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
-
-        var capturedDraftToPresent: [DraftToPresent] = []
-        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
-
-        let group = ContactGroupItem(
-            id: 2,
-            name: "Business Group",
-            avatarColor: "#A1FF33",
-            contactEmails: [
-                .init(id: 1, email: "a@pm.me", name: "A"),
-                .init(id: 2, email: "b@pm.me", name: "B"),
-                .init(id: 3, email: "c@pm.me", name: "C"),
-                .init(id: 4, email: "d@pm.me", name: "D"),
-            ]
-        )
-
-        try await sut.openDraft(with: group)
-
-        XCTAssertEqual(
-            draftSpy.toRecipientsCalls.addGroupRecipientCalls,
-            [
-                .init(
-                    name: "Business Group",
-                    recipients: [
-                        .init(name: "A", email: "a@pm.me"),
-                        .init(name: "B", email: "b@pm.me"),
-                        .init(name: "C", email: "c@pm.me"),
-                        .init(name: "D", email: "d@pm.me"),
-                    ],
-                    totalCount: 4
-                )
-            ]
-        )
-
-        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
-
-        XCTAssertEqual(capturedDraftToPresent.count, 1)
-        XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
-    }
 }
 
 extension DraftPresenterTests {
@@ -253,14 +296,9 @@ private extension Draft {
 }
 
 private class DraftSpy: Draft, @unchecked Sendable {
-    var stubbedMessageID: DraftMessageIdResult = .ok(.init(value: 9_091))
     var toRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
 
     // MARK: - Draft
-
-    override func messageId() async -> DraftMessageIdResult {
-        stubbedMessageID
-    }
 
     override func toRecipients() -> ComposerRecipientList {
         toRecipientsCalls
