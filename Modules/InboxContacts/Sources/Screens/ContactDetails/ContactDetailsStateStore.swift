@@ -25,6 +25,7 @@ final class ContactDetailsStateStore: StateStore {
     enum Action {
         case call(phoneNumber: String)
         case newMessageTapped
+        case emailTapped(ContactDetailsEmail)
         case onLoad
         case openURL(urlString: String)
         case shareContact
@@ -60,6 +61,8 @@ final class ContactDetailsStateStore: StateStore {
         switch action {
         case .onLoad:
             loadDetails(for: item)
+        case .emailTapped(let email):
+            openNewMessage(with: email)
         case .call(let phoneNumber):
             open(urlString: "tel://\(phoneNumber)")
         case .openURL(let urlString):

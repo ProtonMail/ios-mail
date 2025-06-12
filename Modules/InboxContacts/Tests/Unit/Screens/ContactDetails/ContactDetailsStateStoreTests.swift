@@ -146,6 +146,27 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
                 .init(name: "Work", email: "elena.erickson@protonmail.com")
             ])
     }
+
+    func testEmailTappedAction_ItPresentsDraftWithGivenRecipient() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        let stubbedEmail = ContactDetailsEmail(name: "Home", email: "elena.e@pm.me")
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .emailTapped(stubbedEmail))
+
+        XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
+        XCTAssertEqual(
+            draftPresenterSpy.openDraftCalls.first,
+            [
+                stubbedEmail
+            ])
+    }
 }
 
 private class ContactDetailsProviderSpy {
