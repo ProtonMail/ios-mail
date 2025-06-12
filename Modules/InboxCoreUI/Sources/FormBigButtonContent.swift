@@ -27,11 +27,11 @@ struct FormBigButtonContent: View {
     var body: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                Text(title)
+                Text(verbatim: title.string)
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.weak)
-                Text(value)
+                Text(verbatim: value)
                     .font(.body)
                     .fontWeight(.regular)
                     .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
