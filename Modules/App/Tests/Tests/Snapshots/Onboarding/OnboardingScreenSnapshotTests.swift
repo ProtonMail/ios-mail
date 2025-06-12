@@ -17,22 +17,14 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
-import InboxTesting
 import SwiftUI
-import XCTest
+import Testing
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
-
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
-    }
-
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
-    }
-
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
+@MainActor
+struct OnboardingScreenSnapshotTests {
+    @Test(arguments: [0, 1, 2])
+    func testInitialStateLayoutsCorrectly(selectedPageIndex: Int) {
+        assertSnapshots(matching: makeSUT(selectedPageIndex: selectedPageIndex), on: .allPhones, named: "page_\(selectedPageIndex)")
     }
 
     // MARK: - Private

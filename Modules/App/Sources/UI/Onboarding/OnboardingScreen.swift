@@ -25,19 +25,25 @@ struct OnboardingScreen: View {
         let pages: [OnboardingPage] = [
             .init(
                 image: DS.Images.onboardingFirstPage,
-                title: "Transformed from the ground up".notLocalized.stringResource,
-                subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability.".notLocalized.stringResource
+                title: "Welcome to the new Proton Mail app!".notLocalized.stringResource,
+                subtitle: "Transformed from the ground up".notLocalized.stringResource,
+                text: "Thank you for joining this limited group of early beta testers. Your feedback is critical for helping us build an even better Proton Mail ready for public release.".notLocalized
+                    .stringResource
             ),
             .init(
                 image: DS.Images.onboardingSecondPage,
-                title: "New inbox unboxed".notLocalized.stringResource,
-                subtitle: "We’re excited to unveil the vibrant new design and improved user experience.".notLocalized.stringResource
+                title: "Rebuilt to be better and faster".notLocalized.stringResource,
+                subtitle: "New inbox unboxed".notLocalized.stringResource,
+                text: "Completely reengineered using Rust architecture, the new Proton Mail is faster with a vibrant design and highly-requested features, like offline mode.".notLocalized
+                    .stringResource
             ),
             .init(
                 image: DS.Images.onboardingThirdPage,
-                title: "Your feedback is key".notLocalized.stringResource,
-                subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!".notLocalized.stringResource
-            )
+                title: "Thank you for your participation! ".notLocalized.stringResource,
+                subtitle: "Your feedback is key".notLocalized.stringResource,
+                text: "We'll be rolling out new features in the coming months. Please test the app and tap \"Report a problem\" to let us know how we can keep improving. Your input is invaluable!"
+                    .notLocalized.stringResource
+            ),
         ]
         var selectedPageIndex: Int
 
@@ -67,7 +73,6 @@ struct OnboardingScreen: View {
             DS.Color.Background.secondary.ignoresSafeArea()
             VStack(spacing: DS.Spacing.extraLarge) {
                 spacing(height: DS.Spacing.small)
-                header
                 pages
                 dotsIndexIndicator
                 actionButton
@@ -92,15 +97,6 @@ struct OnboardingScreen: View {
 
     // MARK: - Private
 
-    private var header: some View {
-        Text("Introducing our next-gen app!".notLocalized)
-            .font(.system(size: 22, weight: .bold))
-            .foregroundStyle(DS.Color.Text.norm)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, DS.Spacing.large)
-    }
-
     private var pages: some View {
         HeightPreservingTabView(selection: $state.selectedPageIndex) {
             ForEachEnumerated(state.pages, id: \.element) { model, index in
@@ -124,8 +120,9 @@ struct OnboardingScreen: View {
             if !state.hasNextPage {
                 dismiss()
             }
-            
-            state = state
+
+            state =
+                state
                 .copy(\.selectedPageIndex, to: min(state.selectedPageIndex + 1, state.maxPageIndex))
         }
         .buttonStyle(BigButtonStyle())
