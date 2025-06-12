@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -49,6 +50,9 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
+        if Analytics.shouldConfigureAnalytics {
+            Analytics.shared.configure()
+        }
     }
 }
 
