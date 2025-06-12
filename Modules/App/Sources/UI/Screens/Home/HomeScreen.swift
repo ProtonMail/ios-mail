@@ -57,11 +57,7 @@ struct HomeScreen: View {
 
     @State var presentSignOutDialog = false
 
-    init(
-        appContext: AppContext,
-        userSession: MailUserSession,
-        toastStateStore: ToastStateStore
-    ) {
+    init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         self.appContext = appContext

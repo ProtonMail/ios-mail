@@ -50,14 +50,9 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 
         let dummyMessageId: ID = .random()
         sut.openDraft(withId: dummyMessageId)
-        XCTAssertEqual(capturedDraftToPresent.count, 1)
 
-        switch capturedDraftToPresent.first! {
-        case .new:
-            XCTFail("unexpected draft to present")
-        case .openDraftId(let messageId, _):
-            XCTAssertEqual(messageId, dummyMessageId)
-        }
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: dummyMessageId, lastScheduledTime: .none))
     }
 
     // MARK: openNewDraft

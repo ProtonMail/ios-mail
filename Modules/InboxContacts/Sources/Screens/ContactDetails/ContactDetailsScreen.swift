@@ -23,9 +23,9 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
-    private let initialState: ContactDetails?
     private let provider: ContactDetailsProvider
     private let draftPresenter: ContactsDraftPresenter
+    private let initialState: ContactDetails?
     @Environment(\.openURL) private var urlOpener
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
@@ -184,8 +184,8 @@ struct ContactDetailsScreen: View {
         )
     }
 
-    private func singleButton(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
-        button(item: item, action: action)
+    private func singleButton(item: ContactDetailsItem) -> some View {
+        button(item: item, action: {})
             .background(DS.Color.BackgroundInverted.secondary)
             .roundedRectangleStyle()
     }
