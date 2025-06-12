@@ -64,6 +64,8 @@ struct DraftPresenter: ContactsDraftPresenter {
     }
 
     func openDraft(with group: ContactGroupItem) async throws {
+        AppLogger.log(message: "open new draft with contact group details", category: .composer)
+
         await openNewEmptyDraft { toRecipients in
             let recipients = group.contactEmails.map { contact in
                 SingleRecipientEntry(name: contact.name, email: contact.email)
