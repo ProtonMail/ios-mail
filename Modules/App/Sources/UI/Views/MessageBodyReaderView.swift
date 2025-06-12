@@ -48,7 +48,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-        webView.isInspectable = true
+        webView.isInspectable = WKWebView.inspectabilityEnabled
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
         config.userContentController.addUserScript(.observeHeight)
