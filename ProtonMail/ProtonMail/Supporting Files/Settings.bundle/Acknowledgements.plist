@@ -12,46 +12,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/Alamofire</string>
-			<key>Title</key>
-			<string>Alamofire</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/apple-fusion</string>
-			<key>Title</key>
-			<string>fusion</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/CryptoSwift</string>
-			<key>Title</key>
-			<string>CryptoSwift</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/Difference</string>
-			<key>Title</key>
-			<string>Difference</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/Factory</string>
-			<key>Title</key>
-			<string>Factory</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/Groot</string>
 			<key>Title</key>
 			<string>Groot</string>
@@ -68,22 +28,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/LifetimeTracker</string>
-			<key>Title</key>
-			<string>LifetimeTracker</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/lottie-ios</string>
-			<key>Title</key>
-			<string>Lottie</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/MBProgressHUD</string>
 			<key>Title</key>
 			<string>MBProgressHUD</string>
@@ -92,49 +36,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/OHHTTPStubs</string>
-			<key>Title</key>
-			<string>OHHTTPStubs</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/PromiseKit</string>
 			<key>Title</key>
 			<string>PromiseKit</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/protoncore_ios</string>
-			<key>Title</key>
-			<string>ProtonCore</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/Reachability.swift</string>
-			<key>Title</key>
-			<string>Reachability</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/SDWebImage</string>
-			<key>Title</key>
-			<string>SDWebImage</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/sentry-cocoa</string>
-			<key>Title</key>
-			<string>Sentry</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -156,46 +60,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/swift-css-parser</string>
-			<key>Title</key>
-			<string>swift-css-parser</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-custom-dump</string>
-			<key>Title</key>
-			<string>swift-custom-dump</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-snapshot-testing</string>
-			<key>Title</key>
-			<string>swift-snapshot-testing</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-syntax</string>
-			<key>Title</key>
-			<string>swift-syntax</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/SwiftOTP</string>
-			<key>Title</key>
-			<string>SwiftOTP</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/SwiftSoup</string>
 			<key>Title</key>
 			<string>SwiftSoup</string>
@@ -207,30 +71,6 @@
 			<string>Acknowledgements/SwipyCell</string>
 			<key>Title</key>
 			<string>SwipyCell</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/TrustKit</string>
-			<key>Title</key>
-			<string>TrustKit</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/xctest-dynamic-overlay</string>
-			<key>Title</key>
-			<string>xctest-dynamic-overlay</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/Yams</string>
-			<key>Title</key>
-			<string>Yams</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

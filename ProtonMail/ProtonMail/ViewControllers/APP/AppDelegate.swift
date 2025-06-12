@@ -394,6 +394,10 @@ extension AppDelegate {
 
         FeatureFlagsRepository.shared.setFlagOverride(CoreFeatureFlagType.dynamicPlan, true)
 
+        if Application.isTestingBuild {
+            FeatureFlagsRepository.shared.setFlagOverride(MailFeatureFlag.byoeLogin, true)
+        }
+
         // TODO: This is a wayward fetch that will complete at an arbitrary point in time during app launch,
         // possibly resulting in an inconsistent behavior.
         // Consider placing it in LaunchService once it's ready.

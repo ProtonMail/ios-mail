@@ -75,11 +75,11 @@
       },
       {
         "package": "ProtonCore",
-        "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
+        "repositoryURL": "https://gitlab.protontech.ch/apple/shared/protoncore.git",
         "state": {
-          "branch": null,
-          "revision": "21d616a217d08bb129a91005cadde3515e2c3389",
-          "version": "32.5.0"
+          "branch": "feat/P1-184-address-creation-instead-of-error",
+          "revision": "7bc46d8f0121214ce134cd5a93f5f15daa532d8b",
+          "version": null
         }
       },
       {
@@ -95,9 +95,9 @@
         "package": "ProtonInboxRSVP",
         "repositoryURL": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
         "state": {
-          "branch": null,
-          "revision": "d3e2057a5a2e69d1d32b2a87b6d72ec244ef3b13",
-          "version": "2.8.2"
+          "branch": "tmp/gitlab-core",
+          "revision": "9d2cd3ddfd9649c1f98f36d2eeef93ef80270dfb",
+          "version": null
         }
       },
       {

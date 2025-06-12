@@ -34,15 +34,15 @@
          "from": "1.0.0"
       },
       "ProtonCore": {
-         "url": "https://github.com/ProtonMail/protoncore_ios.git",
-         "from": "32.5.0"
+         "url": "https://gitlab.protontech.ch/apple/shared/protoncore.git",
+         "branch": "feat/P1-184-address-creation-instead-of-error"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
       },
       "ProtonInboxRSVP": {
          "url": "https://gitlab.protontech.ch/apple/inbox/protoninboxrsvp",
-         "from": "2.7.0"
+         "branch": "tmp/gitlab-core"
       },
       "SwiftCSSParser": {
          "url": "https://github.com/stackotter/swift-css-parser.git",

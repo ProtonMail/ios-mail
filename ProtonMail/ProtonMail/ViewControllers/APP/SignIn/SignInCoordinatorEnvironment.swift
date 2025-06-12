@@ -128,9 +128,8 @@ extension SignInCoordinatorEnvironment {
     }
 
     private static func minimumAccountTypes(featureFlagsRepository: FeatureFlagsRepository) -> AccountTypes {
-        .init(
-            login: featureFlagsRepository.isEnabled(MailFeatureFlag.byoeLogin) ? .external : .internal,
-            signup: .internal
-        )
+        let byoeLoginEnabled = featureFlagsRepository.isEnabled(MailFeatureFlag.byoeLogin)
+        SystemLogger.log(message: "BYOE login enabled: \(byoeLoginEnabled)")
+        return .init(login: byoeLoginEnabled ? .external : .internal, signup: .internal)
     }
 }
