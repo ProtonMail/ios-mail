@@ -1607,30 +1607,6 @@
         }
       }
     },
-    "%u minutes" : {
-      "comment" : "NumberAuto lock option.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u minute"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%u minutes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "1. Find an email with a large attachment (ex: video)\n2. Open the email\n3. Wait for the email to load" : {
       "comment" : "Placeholder of steps to reproduce text field."
     },
