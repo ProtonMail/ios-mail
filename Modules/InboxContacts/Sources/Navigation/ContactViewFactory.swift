@@ -33,7 +33,7 @@ struct ContactViewFactory {
                 draftPresenter: draftPresenter
             )
         case .contactGroupDetails(let group):
-            ContactGroupDetailsScreen(group: group)
+            ContactGroupDetailsScreen(group: group, draftPresenter: draftPresenter)
         }
     }
 }

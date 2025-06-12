@@ -29,7 +29,7 @@ final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
     // MARK: - Private
 
     private func makeSUT() -> ContactGroupDetailsScreen {
-        .init(group: .advisorsGroup)
+        .init(group: .advisorsGroup, draftPresenter: ContactsDraftPresenterDummy())
     }
 
 }

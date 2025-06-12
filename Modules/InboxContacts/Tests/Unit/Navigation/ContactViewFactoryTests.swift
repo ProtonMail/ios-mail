@@ -47,7 +47,7 @@ final class ContactViewFactoryTests {
         let inspectableScreen = try view.find(ContactGroupDetailsScreen.self)
         let screen = try inspectableScreen.actualView()
 
-        #expect(screen.group.id == group.id)
+        #expect(screen.store.state.id == group.id)
     }
 
     // MARK: - Private

@@ -15,14 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
-    let group: ContactGroupItem
-    @EnvironmentObject var toastStateStore: ToastStateStore
+    @StateObject var store: ContactGroupDetailsStateStore
+
+    init(group: ContactGroupItem, draftPresenter: ContactsDraftPresenter) {
+        _store = .init(wrappedValue: .init(state: group, draftPresenter: draftPresenter))
+    }
 
     var body: some View {
         ScrollView {
@@ -40,7 +44,7 @@ struct ContactGroupDetailsScreen: View {
     // MARK: - Private
 
     private var avatarView: some View {
-        ContactAvatarView(hexColor: group.avatarColor) {
+        ContactAvatarView(hexColor: store.state.avatarColor) {
             Image(DS.Icon.icUsers)
                 .resizable()
                 .square(size: 40)
@@ -49,22 +53,24 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private var groupDetails: some View {
-        ContactAvatarDetailsView(title: group.name, subtitle: .none)
+        ContactAvatarDetailsView(title: store.state.name, subtitle: .none)
     }
 
+    private typealias NewMessageButton = L10n.ContactGroupDetails.NewMessageButton
+
     private var newMessageButton: some View {
-        Button(action: { toastStateStore.present(toast: .comingSoon) }) {
+        Button(action: { store.handle(action: .sendGroupMessageTapped) }) {
             HStack(alignment: .center, spacing: DS.Spacing.large) {
                 Image(DS.Icon.icPenSquare)
                     .square(size: 24)
                     .padding(DS.Spacing.standard)
                     .foregroundStyle(DS.Color.Icon.norm)
                 VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                    Text(L10n.ContactGroupDetails.NewMessageButton.title)
+                    Text(NewMessageButton.title)
                         .font(.body)
                         .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.weak)
-                    Text(L10n.ContactGroupDetails.NewMessageButton.subtitle(contactsCount: group.contactEmails.count))
+                    Text(NewMessageButton.subtitle(contactsCount: store.state.contactEmails.count))
                         .font(.subheadline)
                         .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.hint)
@@ -80,7 +86,7 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private var items: some View {
-        FormList(collection: group.contactEmails, separator: .invertedNoPadding) { item in
+        FormList(collection: store.state.contactEmails, separator: .invertedNoPadding) { item in
             ContactCellView(item: item).frame(height: 68)
         }
     }

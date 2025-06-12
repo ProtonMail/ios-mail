@@ -36,11 +36,11 @@ final class ContactGroupDetailsStateStore: ObservableObject {
     func handle(action: Action) {
         switch action {
         case .sendGroupMessageTapped:
-            openNewMessage(with: state)
+            openComposer(with: state)
         }
     }
 
-    private func openNewMessage(with group: ContactGroupItem) {
+    private func openComposer(with group: ContactGroupItem) {
         Task {
             try await draftPresenter.openDraft(with: group)
         }
