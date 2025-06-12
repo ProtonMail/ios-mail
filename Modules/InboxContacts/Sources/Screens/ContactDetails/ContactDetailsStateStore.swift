@@ -101,7 +101,7 @@ final class ContactDetailsStateStore: StateStore {
     }
 
     private func call(phoneNumber: String) {
-        open(urlString: "tel://\(phoneNumber)")
+        open(urlString: "tel:\(phoneNumber)")
     }
 
     private func openNewMessage(with contact: ContactDetailsEmail) {

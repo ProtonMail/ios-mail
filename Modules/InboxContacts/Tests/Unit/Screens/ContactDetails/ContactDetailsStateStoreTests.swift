@@ -94,7 +94,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .callTapped)
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phoneNumber)")])
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel:\(phoneNumber)")])
     }
 
     func testPhoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
@@ -110,7 +110,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .phoneNumberTapped(phoneNumber))
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phoneNumber)")])
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel:\(phoneNumber)")])
     }
 
     func testOpenURLAction_ItOpensURL() async {
