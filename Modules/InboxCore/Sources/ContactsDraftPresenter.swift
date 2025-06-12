@@ -18,5 +18,5 @@
 import proton_app_uniffi
 
 public protocol ContactsDraftPresenter {
-    func openDraft(with contacts: [ContactDetailsEmail]) async throws
+    func openDraft(with contact: ContactDetailsEmail) async throws
 }

@@ -19,5 +19,5 @@ import InboxCore
 import proton_app_uniffi
 
 final class ContactsDraftPresenterDummy: ContactsDraftPresenter {
-    func openDraft(with contacts: [ContactDetailsEmail]) async throws {}
+    func openDraft(with contact: ContactDetailsEmail) async throws {}
 }

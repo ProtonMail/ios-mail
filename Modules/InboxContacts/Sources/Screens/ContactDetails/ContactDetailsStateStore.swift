@@ -104,9 +104,9 @@ final class ContactDetailsStateStore: StateStore {
         open(urlString: "tel://\(phoneNumber)")
     }
 
-    private func openNewMessage(with recipient: ContactDetailsEmail) {
+    private func openNewMessage(with contact: ContactDetailsEmail) {
         Task {
-            try await draftPresenter.openDraft(with: [recipient])
+            try await draftPresenter.openDraft(with: contact)
         }
     }
 

@@ -83,41 +83,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
-    // MARK: - Open draft with contacts
-
-    @MainActor
-    func testOpenDraftWithContacts_ItCreatesEmptyDraftAddRecipientsAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
-        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
-
-        var capturedDraftToPresent: [DraftToPresent] = []
-        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
-
-        let recipients: [ContactDetailsEmail] = [
-            .init(name: "John", email: "john.maxon@pm.me")
-        ]
-
-        try await sut.openDraft(with: recipients)
-
-        XCTAssertEqual(
-            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
-            [
-                .init(name: "John", email: "john.maxon@pm.me")
-            ]
-        )
-
-        let stubbedMessageID = try draftSpy.stubbedMessageID.get()!
-
-        XCTAssertEqual(capturedDraftToPresent.count, 1)
-
-        switch capturedDraftToPresent.first! {
-        case .new:
-            XCTFail("unexpected draft to present")
-        case .openDraftId(let messageId, _):
-            XCTAssertEqual(messageId, stubbedMessageID)
-        }
-    }
-
     // MARK: handleReplyAction
 
     @MainActor
@@ -200,6 +165,33 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
+
+    // MARK: - Open new draft with contact
+
+    @MainActor
+    func testOpenDraftWithContact_ItCreatesEmptyDraftAddRecipientAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
+
+        try await sut.openDraft(with: contact)
+
+        XCTAssertEqual(
+            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
+            [
+                .init(name: "John", email: "john.maxon@pm.me")
+            ]
+        )
+
+        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
+
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: messageID, lastScheduledTime: .none))
+    }
 }
 
 extension DraftPresenterTests {
@@ -248,4 +240,19 @@ private class ComposerRecipientListSpy: ComposerRecipientList, @unchecked Sendab
 
         return .ok
     }
+}
+
+extension DraftToPresent: @retroactive Equatable {
+
+    public static func == (lhs: ProtonMail.DraftToPresent, rhs: ProtonMail.DraftToPresent) -> Bool {
+        switch (lhs, rhs) {
+        case (.new(let leftDraft), .new(let rightDraft)):
+            return leftDraft === rightDraft
+        case (.openDraftId(let leftID, let leftTime), .openDraftId(let rightID, let rightTime)):
+            return leftID == rightID && leftTime == rightTime
+        case (.new, .openDraftId), (.openDraftId, .new):
+            return false
+        }
+    }
+
 }

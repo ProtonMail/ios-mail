@@ -156,14 +156,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .newMessageTapped)
 
         XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
-        XCTAssertEqual(
-            draftPresenterSpy.openDraftCalls.first,
-            [
-                .init(name: "Work", email: "elena.erickson@protonmail.com")
-            ])
+        XCTAssertEqual(draftPresenterSpy.openDraftCalls, [.init(name: "Work", email: "elena.erickson@protonmail.com")])
     }
 
-    func testEmailTappedAction_ItPresentsDraftWithGivenRecipient() async {
+    func testEmailTappedAction_ItPresentsDraftWithGivenContact() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -171,17 +167,13 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
             details: details
         )
 
-        let stubbedEmail = ContactDetailsEmail(name: "Home", email: "elena.e@pm.me")
+        let stubbedEmail = ContactDetailsEmail(name: "Home", email: "elena@pm.me")
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
 
         XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
-        XCTAssertEqual(
-            draftPresenterSpy.openDraftCalls.first,
-            [
-                stubbedEmail
-            ])
+        XCTAssertEqual(draftPresenterSpy.openDraftCalls, [stubbedEmail])
     }
 }
 
@@ -192,10 +184,12 @@ private class ContactDetailsProviderSpy {
 }
 
 private class ContactsDraftPresenterSpy: ContactsDraftPresenter {
-    private(set) var openDraftCalls: [[ContactDetailsEmail]] = []
+    private(set) var openDraftCalls: [ContactDetailsEmail] = []
 
-    func openDraft(with contacts: [ContactDetailsEmail]) async throws {
-        openDraftCalls.append(contacts)
+    // MARK: - ContactsDraftPresenter
+
+    func openDraft(with contact: ContactDetailsEmail) async throws {
+        openDraftCalls.append(contact)
     }
 }
 
@@ -205,11 +199,11 @@ private extension Array where Element == ContactField {
         [
             .emails([
                 .init(name: "Work", email: "elena.erickson@protonmail.com"),
-                .init(name: "Home", email: "elena.e@pm.me"),
+                .init(name: "Home", email: "elena@pm.me"),
             ]),
             .telephones([
                 .init(number: "+41771234567", telTypes: [.home]),
-                .init(number: "+44883334477", telTypes: [.work])
+                .init(number: "+44883334477", telTypes: [.work]),
             ]),
             .anniversary(.string("Feb 28, 2019")),
             .gender(.male),

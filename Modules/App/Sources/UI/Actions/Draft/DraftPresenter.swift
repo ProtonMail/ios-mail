@@ -80,11 +80,11 @@ struct DraftPresenter: ContactsDraftPresenter {
 
     // MARK: - ContactsDraftPresenter
 
-    func openDraft(with contacts: [ContactDetailsEmail]) async throws {
+    func openDraft(with contact: ContactDetailsEmail) async throws {
         let draft = try await draftProvider.makeDraft(userSession, .empty).get()
-        let recipients = contacts.map { contact in SingleRecipientEntry(name: contact.name, email: contact.email) }
+        let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
 
-        recipients.forEach { recipient in _ = draft.toRecipients().addSingleRecipient(recipient: recipient) }
+        _ = draft.toRecipients().addSingleRecipient(recipient: recipient)
 
         if let messageID = try await draft.messageId().get() {
             openDraft(withId: messageID)
