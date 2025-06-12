@@ -25,6 +25,7 @@ struct ContactDetailsScreen: View {
     let contact: ContactItem
     private let initialState: ContactDetails?
     private let provider: ContactDetailsProvider
+    private let draftPresenter: ContactsDraftPresenter
     @Environment(\.openURL) private var urlOpener
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
@@ -32,11 +33,13 @@ struct ContactDetailsScreen: View {
     init(
         contact: ContactItem,
         provider: ContactDetailsProvider,
+        draftPresenter: ContactsDraftPresenter,
         state: ContactDetails? = nil
     ) {
         self.contact = contact
-        self.initialState = state
         self.provider = provider
+        self.draftPresenter = draftPresenter
+        self.initialState = state
     }
 
     var body: some View {
@@ -46,6 +49,7 @@ struct ContactDetailsScreen: View {
                 item: contact,
                 provider: provider,
                 urlOpener: urlOpener,
+                draftPresenter: draftPresenter,
                 toastStateStore: toastStateStore
             )
         ) { state, store in
@@ -217,6 +221,7 @@ private extension FormList {
             avatarInformation: .init(text: "BA", color: "#3357FF"),
             emails: []
         ),
-        provider: .previewInstance()
+        provider: .previewInstance(),
+        draftPresenter: ContactsDraftPresenterDummy()
     )
 }

@@ -24,6 +24,7 @@ import SwiftUI
 final class ContactDetailsStateStore: StateStore {
     enum Action {
         case call(phoneNumber: String)
+        case newMessageTapped
         case onLoad
         case openURL(urlString: String)
         case shareContact
@@ -33,6 +34,7 @@ final class ContactDetailsStateStore: StateStore {
     private let item: ContactItem
     private let provider: ContactDetailsProvider
     private let urlOpener: URLOpenerProtocol
+    private let draftPresenter: ContactsDraftPresenter
     private let toastStateStore: ToastStateStore
 
     init(
@@ -40,12 +42,14 @@ final class ContactDetailsStateStore: StateStore {
         item: ContactItem,
         provider: ContactDetailsProvider,
         urlOpener: URLOpenerProtocol,
+        draftPresenter: ContactsDraftPresenter,
         toastStateStore: ToastStateStore
     ) {
         self.state = state
         self.item = item
         self.provider = provider
         self.urlOpener = urlOpener
+        self.draftPresenter = draftPresenter
         self.toastStateStore = toastStateStore
     }
 
@@ -60,6 +64,10 @@ final class ContactDetailsStateStore: StateStore {
             open(urlString: "tel://\(phoneNumber)")
         case .openURL(let urlString):
             open(urlString: urlString)
+        case .newMessageTapped:
+            if let primaryEmail = emails.first {
+                openNewMessage(with: primaryEmail)
+            }
         case .shareContact:
             toastStateStore.present(toast: .comingSoon)
         }
@@ -82,5 +90,24 @@ final class ContactDetailsStateStore: StateStore {
         if let url = URL(string: urlString) {
             urlOpener(url)
         }
+    }
+
+    private func openNewMessage(with recipient: ContactDetailsEmail) {
+        Task {
+            try await draftPresenter.openDraft(with: [recipient])
+        }
+    }
+
+    private var emails: [ContactDetailsEmail] {
+        state.items
+            .compactMap { item in
+                switch item {
+                case .emails(let emails):
+                    return emails
+                default:
+                    return nil
+                }
+            }
+            .flatMap { $0 }
     }
 }

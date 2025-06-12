@@ -17,6 +17,7 @@
 
 import AccountLogin
 import Combine
+import InboxCore
 import InboxCoreUI
 import enum InboxComposer.ComposerDismissReason
 import proton_app_uniffi
@@ -56,7 +57,11 @@ struct HomeScreen: View {
 
     @State var presentSignOutDialog = false
 
-    init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
+    init(
+        appContext: AppContext,
+        userSession: MailUserSession,
+        toastStateStore: ToastStateStore
+    ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         self.appContext = appContext
@@ -141,7 +146,9 @@ struct HomeScreen: View {
         .onReceive(composerCoordinator.messageSent) {
             requestNotificationAuthorizationIfApplicable()
         }
-        .sheet(item: $modalState, content: modalFactory.makeModal(for:))
+        .sheet(item: $modalState) { state in
+            modalFactory.makeModal(for: state, draftPresenter: composerCoordinator.draftPresenter)
+        }
         .sheet(isPresented: $isNotificationPromptPresented) {
             NotificationAuthorizationPrompt(
                 trigger: .messageSent,

@@ -34,6 +34,7 @@ public struct ContactsScreen: View {
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider,
         contactsWatcher: ContactsWatcher,
+        draftPresenter: ContactsDraftPresenter
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
         _store = .init(
@@ -46,7 +47,7 @@ public struct ContactsScreen: View {
                 )
             )
         )
-        self.contactViewFactory = .init(mailUserSession: mailUserSession)
+        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
     }
 
     public var body: some View {
@@ -110,5 +111,6 @@ public struct ContactsScreen: View {
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),
+        draftPresenter: ContactsDraftPresenterDummy()
     )
 }

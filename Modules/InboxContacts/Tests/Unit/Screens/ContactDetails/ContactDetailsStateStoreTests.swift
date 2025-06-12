@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
@@ -27,6 +28,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     private var contactItem: ContactItem!
     private var providerSpy: ContactDetailsProviderSpy!
     private var urlOpener: EnvironmentURLOpenerSpy!
+    private var draftPresenterSpy: ContactsDraftPresenterSpy!
     private var toastStateStore: ToastStateStore!
 
     override func setUp() {
@@ -35,6 +37,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         initialState = .init(contact: contactItem, details: .none)
         providerSpy = .init()
         urlOpener = .init()
+        draftPresenterSpy = .init()
         toastStateStore = .init(initialState: .initial)
 
         sut = ContactDetailsStateStore(
@@ -45,6 +48,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
                 return providerSpy.stubbedContactDetails[contact]!
             }),
             urlOpener: urlOpener,
+            draftPresenter: draftPresenterSpy,
             toastStateStore: toastStateStore
         )
     }
@@ -55,6 +59,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         contactItem = nil
         providerSpy = nil
         urlOpener = nil
+        draftPresenterSpy = nil
         toastStateStore = nil
         super.tearDown()
     }
@@ -122,6 +127,25 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
         XCTAssertEqual(toastStateStore.state.toastHeights, [:])
     }
+
+    func testNewMessageTappedAction_ItPresentsDraftWithPrimaryRecipient() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .newMessageTapped)
+
+        XCTAssertEqual(draftPresenterSpy.openDraftCalls.count, 1)
+        XCTAssertEqual(
+            draftPresenterSpy.openDraftCalls.first,
+            [
+                .init(name: "Work", email: "elena.erickson@protonmail.com")
+            ])
+    }
 }
 
 private class ContactDetailsProviderSpy {
@@ -130,12 +154,21 @@ private class ContactDetailsProviderSpy {
     var contactDetailsCalls: [ContactItem] = []
 }
 
+private class ContactsDraftPresenterSpy: ContactsDraftPresenter {
+    private(set) var openDraftCalls: [[ContactDetailsEmail]] = []
+
+    func openDraft(with contacts: [ContactDetailsEmail]) async throws {
+        openDraftCalls.append(contacts)
+    }
+}
+
 private extension Array where Element == ContactField {
 
     static var testItems: [ContactField] {
         [
             .emails([
-                .init(name: "Work", email: "elena.erickson@example.com")
+                .init(name: "Work", email: "elena.erickson@protonmail.com"),
+                .init(name: "Home", email: "elena.e@pm.me"),
             ]),
             .telephones([
                 .init(number: "+41771234567", telTypes: [.home])

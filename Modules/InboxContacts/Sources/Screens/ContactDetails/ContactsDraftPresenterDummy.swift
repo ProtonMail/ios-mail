@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,23 +17,7 @@
 
 import InboxCore
 import proton_app_uniffi
-import SwiftUI
 
-struct ContactViewFactory {
-    let mailUserSession: MailUserSession
-    let draftPresenter: ContactsDraftPresenter
-
-    @ViewBuilder
-    func makeView(for route: ContactsRoute) -> some View {
-        switch route {
-        case .contactDetails(let contact):
-            ContactDetailsScreen(
-                contact: contact,
-                provider: .productionInstance(mailUserSession: mailUserSession),
-                draftPresenter: draftPresenter
-            )
-        case .contactGroupDetails(let group):
-            ContactGroupDetailsScreen(group: group)
-        }
-    }
+final class ContactsDraftPresenterDummy: ContactsDraftPresenter {
+    func openDraft(with contacts: [ContactDetailsEmail]) async throws {}
 }

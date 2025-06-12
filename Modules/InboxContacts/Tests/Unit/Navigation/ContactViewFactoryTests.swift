@@ -23,7 +23,10 @@ import ViewInspector
 
 @MainActor
 final class ContactViewFactoryTests {
-    let sut = ContactViewFactory(mailUserSession: .init(noPointer: .init()))
+    let sut = ContactViewFactory(
+        mailUserSession: .init(noPointer: .init()),
+        draftPresenter: ContactsDraftPresenterDummy()
+    )
 
     @Test
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {

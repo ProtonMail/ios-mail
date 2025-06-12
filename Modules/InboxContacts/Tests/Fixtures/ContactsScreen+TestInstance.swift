@@ -29,6 +29,7 @@ extension ContactsScreen {
             mailUserSession: .testInstance(),
             contactsProvider: .previewInstance(),
             contactsWatcher: .previewInstance(),
+            draftPresenter: ContactsDraftPresenterDummy()
         )
     }
 

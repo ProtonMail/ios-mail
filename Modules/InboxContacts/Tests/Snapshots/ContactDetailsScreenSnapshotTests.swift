@@ -110,6 +110,7 @@ final class ContactDetailsScreenSnapshotTests {
         let sut = ContactDetailsScreen(
             contact: .benjaminAlexander,
             provider: .previewInstance(),
+            draftPresenter: ContactsDraftPresenterDummy(),
             state: .init(contact: contact, details: .init(id: contact.id, fields: items))
         )
 

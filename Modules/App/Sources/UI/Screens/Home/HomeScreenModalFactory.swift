@@ -17,23 +17,25 @@
 
 import InboxComposer
 import InboxContacts
+import InboxCore
 import PaymentsUI
 import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 struct HomeScreenModalFactory {
-    private let makeContactsScreen: () -> ContactsScreen
+    private let makeContactsScreen: (ContactsDraftPresenter) -> ContactsScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView
 
     init(mailUserSession: MailUserSession) {
-        self.makeContactsScreen = {
+        self.makeContactsScreen = { draftPresenter in
             ContactsScreen(
                 mailUserSession: mailUserSession,
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance(),
+                draftPresenter: draftPresenter
             )
         }
         self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
@@ -42,10 +44,10 @@ struct HomeScreenModalFactory {
     }
 
     @MainActor @ViewBuilder
-    func makeModal(for state: HomeScreen.ModalState) -> some View {
+    func makeModal(for state: HomeScreen.ModalState, draftPresenter: ContactsDraftPresenter) -> some View {
         switch state {
         case .contacts:
-            makeContactsScreen()
+            makeContactsScreen(draftPresenter)
         case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
         case .settings:
