@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
+import InboxDesignSystem
 import SwiftUI
 
 struct ProtonAuthenticatedWebView: View {
@@ -52,8 +54,9 @@ extension ProtonAuthenticatedWebView {
                     .accessibilityIdentifier(ProtonAuthenticatedWebViewIdentifiers.webView)
             }
             .accessibilityElement(children: .contain)
+            .background(DS.Color.BackgroundInverted.norm)
         case .error(let error):
-            Text(String(describing: error))
+            ErrorView(error: error)
         }
     }
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import SwiftUI
 import proton_app_uniffi
 
@@ -53,10 +54,8 @@ struct AttachmentView: View {
 
     private func errorView(error: Error) -> some View {
         NavigationView {
-            Text(error.localizedDescription)
-                .multilineTextAlignment(.center)
+            ErrorView(error: error)
                 .modifier(ShowDoneNavBarButton())
-                .padding()
         }
     }
 }

@@ -41,7 +41,7 @@ struct MessageBodyHTMLView: View {
         case .loaded(let body):
             bodyReaderView(with: body.html)
         case .error(let error):
-            Text(String(describing: error))
+            ErrorView(error: error)
         case .noConnection:
             NoConnectionView()
         }
