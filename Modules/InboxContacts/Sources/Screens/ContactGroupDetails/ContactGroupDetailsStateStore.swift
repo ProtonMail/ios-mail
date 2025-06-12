@@ -16,20 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class ContactGroupDetailsStateStore: ObservableObject {
+final class ContactGroupDetailsStateStore: StateStore {
     enum Action {
         case sendGroupMessageTapped
     }
 
-    let state: ContactGroupItem
+    @Published var state: ContactGroupItem
     private let draftPresenter: ContactsDraftPresenter
+    private let toastStateStore: ToastStateStore
 
-    init(state: ContactGroupItem, draftPresenter: ContactsDraftPresenter) {
+    init(
+        state: ContactGroupItem,
+        draftPresenter: ContactsDraftPresenter,
+        toastStateStore: ToastStateStore
+    ) {
         self.state = state
         self.draftPresenter = draftPresenter
+        self.toastStateStore = toastStateStore
     }
 
     @MainActor
@@ -42,7 +49,11 @@ final class ContactGroupDetailsStateStore: ObservableObject {
 
     private func openComposer(with group: ContactGroupItem) {
         Task {
-            try await draftPresenter.openDraft(with: group)
+            do {
+                try await draftPresenter.openDraft(with: group)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 }

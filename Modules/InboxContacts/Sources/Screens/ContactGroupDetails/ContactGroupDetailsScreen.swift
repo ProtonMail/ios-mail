@@ -22,29 +22,40 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
-    @StateObject var store: ContactGroupDetailsStateStore
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+    let group: ContactGroupItem
+    private let draftPresenter: ContactsDraftPresenter
 
     init(group: ContactGroupItem, draftPresenter: ContactsDraftPresenter) {
-        _store = .init(wrappedValue: .init(state: group, draftPresenter: draftPresenter))
+        self.group = group
+        self.draftPresenter = draftPresenter
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: DS.Spacing.large) {
-                avatarView
-                groupDetails
-                newMessageButton
-                items
+        StoreView(
+            store: ContactGroupDetailsStateStore(
+                state: group,
+                draftPresenter: draftPresenter,
+                toastStateStore: toastStateStore
+            )
+        ) { state, store in
+            ScrollView {
+                VStack(spacing: DS.Spacing.large) {
+                    avatarView(state: state)
+                    groupDetails(state: state)
+                    newMessageButton(state: state, store: store)
+                    items(state: state)
+                }
+                .padding(.horizontal, DS.Spacing.large)
             }
-            .padding(.horizontal, DS.Spacing.large)
+            .background(DS.Color.Background.secondary)
         }
-        .background(DS.Color.Background.secondary)
     }
 
     // MARK: - Private
 
-    private var avatarView: some View {
-        ContactAvatarView(hexColor: store.state.avatarColor) {
+    private func avatarView(state: ContactGroupItem) -> some View {
+        ContactAvatarView(hexColor: state.avatarColor) {
             Image(DS.Icon.icUsers)
                 .resizable()
                 .square(size: 40)
@@ -52,13 +63,16 @@ struct ContactGroupDetailsScreen: View {
         }
     }
 
-    private var groupDetails: some View {
-        ContactAvatarDetailsView(title: store.state.name, subtitle: .none)
+    private func groupDetails(state: ContactGroupItem) -> some View {
+        ContactAvatarDetailsView(title: state.name, subtitle: .none)
     }
 
     private typealias NewMessageButton = L10n.ContactGroupDetails.NewMessageButton
 
-    private var newMessageButton: some View {
+    private func newMessageButton(
+        state: ContactGroupItem,
+        store: ContactGroupDetailsStateStore
+    ) -> some View {
         Button(action: { store.handle(action: .sendGroupMessageTapped) }) {
             HStack(alignment: .center, spacing: DS.Spacing.large) {
                 Image(DS.Icon.icPenSquare)
@@ -85,8 +99,8 @@ struct ContactGroupDetailsScreen: View {
         .roundedRectangleStyle()
     }
 
-    private var items: some View {
-        FormList(collection: store.state.contactEmails, separator: .invertedNoPadding) { item in
+    private func items(state: ContactGroupItem) -> some View {
+        FormList(collection: state.contactEmails, separator: .invertedNoPadding) { item in
             ContactCellView(item: item).frame(height: 68)
         }
     }

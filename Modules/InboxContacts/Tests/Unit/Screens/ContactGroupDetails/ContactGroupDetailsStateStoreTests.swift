@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
 import XCTest
@@ -24,19 +25,26 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
     private var sut: ContactGroupDetailsStateStore!
     private var initialState: ContactGroupItem!
     private var draftPresenterSpy: ContactsDraftPresenterSpy!
+    private var toastStateStore: ToastStateStore!
 
     override func setUp() {
         super.setUp()
         initialState = .advisorsGroup
         draftPresenterSpy = .init()
+        toastStateStore = .init(initialState: .initial)
 
-        sut = ContactGroupDetailsStateStore(state: initialState, draftPresenter: draftPresenterSpy)
+        sut = ContactGroupDetailsStateStore(
+            state: initialState,
+            draftPresenter: draftPresenterSpy,
+            toastStateStore: toastStateStore
+        )
     }
 
     override func tearDown() {
         sut = nil
         initialState = nil
         draftPresenterSpy = nil
+        toastStateStore = nil
         super.tearDown()
     }
 
@@ -50,4 +58,20 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls.count, 1)
         XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls, [initialState])
     }
+
+    func testSendGroupMessageTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
+        let expectedError: TestError = .test
+
+        draftPresenterSpy.stubbedOpenDraftGroupError = expectedError
+
+        await sut.handle(action: .sendGroupMessageTapped)
+
+        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls.count, 1)
+        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls, [initialState])
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: expectedError.localizedDescription)])
+    }
+}
+
+private enum TestError: Error {
+    case test
 }

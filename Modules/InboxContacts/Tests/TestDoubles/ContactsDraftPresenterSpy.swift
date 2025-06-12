@@ -19,6 +19,9 @@ import InboxCore
 import proton_app_uniffi
 
 class ContactsDraftPresenterSpy: ContactsDraftPresenter {
+    var stubbedOpenDraftContactError: Error?
+    var stubbedOpenDraftGroupError: Error?
+
     private(set) var openDraftContactCalls: [ContactDetailsEmail] = []
     private(set) var openDraftGroupCalls: [ContactGroupItem] = []
 
@@ -26,9 +29,17 @@ class ContactsDraftPresenterSpy: ContactsDraftPresenter {
 
     func openDraft(with contact: ContactDetailsEmail) async throws {
         openDraftContactCalls.append(contact)
+
+        if let stubbedOpenDraftContactError {
+            throw stubbedOpenDraftContactError
+        }
     }
 
     func openDraft(with group: ContactGroupItem) async throws {
         openDraftGroupCalls.append(group)
+
+        if let stubbedOpenDraftGroupError {
+            throw stubbedOpenDraftGroupError
+        }
     }
 }
