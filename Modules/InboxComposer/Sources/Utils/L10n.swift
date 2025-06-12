@@ -404,6 +404,11 @@ enum L10n {
             "The scheduled send date has expired",
             comment: "Error in the context of setting a schedule time for a message."
         )
+
+        static let scheduleSendMessageLimitExceeded = LocalizedStringResource(
+            "You reached the limit of scheduled messages",
+            comment: "Error in the context of scheduling a message."
+        )
     }
 
     enum DraftAttachmentUploadError {

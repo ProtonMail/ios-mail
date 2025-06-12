@@ -183,6 +183,8 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.protonRecipientNotFound(address: value)
         case .scheduleSendExpired:
             L10n.DraftSendError.scheduleSendExpired
+        case .scheduleSendMessageLimitExceeded:
+            L10n.DraftSendError.scheduleSendMessageLimitExceeded
         }
     }
 }

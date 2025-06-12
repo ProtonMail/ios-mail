@@ -119,7 +119,9 @@ private extension Message {
             customLabels: [],
             starred: true,
             avatar: .init(text: .notUsed, color: .notUsed),
-            isDraft: false
+            isDraft: false,
+            isScheduled: false,
+            canReply: true
         )
     }
 
