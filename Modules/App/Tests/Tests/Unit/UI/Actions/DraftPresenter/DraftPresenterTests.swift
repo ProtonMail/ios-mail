@@ -99,10 +99,14 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
             ]
         )
 
-        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
-
         XCTAssertEqual(capturedDraftToPresent.count, 1)
-        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: messageID, lastScheduledTime: .none))
+
+        switch capturedDraftToPresent.first! {
+        case .new:
+            XCTAssert(true)
+        default:
+            XCTFail()
+        }
     }
 
     // MARK: handleReplyAction

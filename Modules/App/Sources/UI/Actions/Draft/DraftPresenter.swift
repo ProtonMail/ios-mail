@@ -55,14 +55,9 @@ struct DraftPresenter: ContactsDraftPresenter {
     }
 
     func openDraft(with contact: ContactDetailsEmail) async throws {
-        let draft = try await draftProvider.makeDraft(userSession, .empty).get()
+        AppLogger.log(message: "open new draft with contact details", category: .composer)
         let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
-
-        _ = draft.toRecipients().addSingleRecipient(recipient: recipient)
-
-        if let messageID = try await draft.messageId().get() {
-            openDraft(withId: messageID)
-        }
+        try await publishDraftToPresentPrefilled(with: recipient)
     }
 
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
@@ -114,6 +109,17 @@ extension DraftPresenter {
         case .error(let error):
             AppLogger.log(error: error, category: .composer)
             onError(error)
+        }
+    }
+
+    private func publishDraftToPresentPrefilled(with recipient: SingleRecipientEntry) async throws {
+        switch await draftProvider.makeDraft(userSession, .empty) {
+        case .ok(let draft):
+            _ = draft.toRecipients().addSingleRecipient(recipient: recipient)
+            draftToPresentSubject.send(.new(draft: draft))
+        case .error(let error):
+            AppLogger.log(error: error, category: .composer)
+            throw error
         }
     }
 }
