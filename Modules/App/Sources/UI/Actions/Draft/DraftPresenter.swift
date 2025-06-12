@@ -57,7 +57,7 @@ struct DraftPresenter: ContactsDraftPresenter {
     func openDraft(with contact: ContactDetailsEmail) async throws {
         AppLogger.log(message: "open new draft with contact details", category: .composer)
 
-        await openNewEmptyDraft { toRecipients in
+        try await openNewEmptyDraft { toRecipients in
             let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
             _ = toRecipients.addSingleRecipient(recipient: recipient)
         }
@@ -66,7 +66,7 @@ struct DraftPresenter: ContactsDraftPresenter {
     func openDraft(with group: ContactGroupItem) async throws {
         AppLogger.log(message: "open new draft with contact group details", category: .composer)
 
-        await openNewEmptyDraft { toRecipients in
+        try await openNewEmptyDraft { toRecipients in
             let recipients = group.contactEmails.map { contact in
                 SingleRecipientEntry(name: contact.name, email: contact.email)
             }
@@ -123,25 +123,35 @@ extension DraftPresenter {
 
     private func openNewDraft(
         createMode: DraftCreateMode,
-        updateDraft: ((Draft) -> Void)? = nil,
         onError: (DraftOpenError) -> Void
     ) async {
+        do {
+            try await openNewDraft(createMode: createMode, updateDraft: .none)
+        } catch {
+            onError(error)
+        }
+    }
+
+    private func openNewDraft(
+        createMode: DraftCreateMode,
+        updateDraft: ((Draft) -> Void)?
+    ) async throws(DraftOpenError) {
         switch await draftProvider.makeDraft(userSession, createMode) {
         case .ok(let draft):
             updateDraft?(draft)
             draftToPresentSubject.send(.new(draft: draft))
         case .error(let error):
             AppLogger.log(error: error, category: .composer)
-            onError(error)
+            throw error
         }
     }
 
-    private func openNewEmptyDraft(updateToRecipients: @escaping (ComposerRecipientList) -> Void) async {
+    private func openNewEmptyDraft(updateToRecipients: @escaping (ComposerRecipientList) -> Void) async throws {
         let updateDraft: (Draft) -> Void = { draft in
             updateToRecipients(draft.toRecipients())
         }
 
-        await openNewDraft(createMode: .empty, updateDraft: updateDraft, onError: { _ in })
+        try await openNewDraft(createMode: .empty, updateDraft: updateDraft)
     }
 
 }
