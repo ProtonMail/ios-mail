@@ -73,9 +73,7 @@ struct DraftPresenter: ContactsDraftPresenter {
             .toRecipients()
             .addGroupRecipient(groupName: group.name, recipients: recipients, totalContactsInGroup: totalCount)
 
-        if let messageID = try await draft.messageId().get() {
-            openDraft(withId: messageID)
-        }
+        draftToPresentSubject.send(.new(draft: draft))
     }
 
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
