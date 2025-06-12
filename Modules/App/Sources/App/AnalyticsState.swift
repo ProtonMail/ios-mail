@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Sentry
-
-public final class Analytics: Sendable {
-    private let sentryAnalytics: SentryAnalytics
-
-    public init(sentryAnalytics: SentryAnalytics = .production) {
-        self.sentryAnalytics = sentryAnalytics
-    }
-
-    public func configure() {
-        sentryAnalytics.start { options in
-            options.dsn = SentryConfiguration.dsn
-        }
-    }
-
-    private enum SentryConfiguration {
-        static let dsn = "https://a3be1429a241459790c784466f194565@sentry-new.protontech.ch/83"
-    }
+enum AnalyticsState {
+    @TaskLocal static var shouldConfigureAnalytics = {
+        #if DEBUG
+            false
+        #else
+            true
+        #endif
+    }()
 }

@@ -34,20 +34,20 @@ class ProtonMailAppTests {
 
     @Test(.analyticsEnabled(true))
     func appIsRunAndAnalyticsAreEnabled_ItConfiguresAnalytics() {
-        Analytics.$shared.withValue(analytics) {
-            _ = ProtonMailApp()
-            #expect(startInvokeCount == 1)
-            #expect(stubbedOptions.dsn != nil)
-        }
+        let sut = ProtonMailApp()
+        sut.configureAnalyticsIfNeeded(analytics: analytics)
+
+        #expect(startInvokeCount == 1)
+        #expect(stubbedOptions.dsn != nil)
     }
 
     @Test(.analyticsEnabled(false))
     func appIsRunAndAnalyticsAreDisabled_ItDoesNotConfigureAnalytics() {
-        Analytics.$shared.withValue(analytics) {
-            _ = ProtonMailApp()
-            #expect(startInvokeCount == 0)
-            #expect(stubbedOptions.dsn == nil)
-        }
+        let sut = ProtonMailApp()
+        sut.configureAnalyticsIfNeeded(analytics: analytics)
+
+        #expect(startInvokeCount == 0)
+        #expect(stubbedOptions.dsn == nil)
     }
 
 }
@@ -60,7 +60,7 @@ private struct AnalyticsEnabledTrait: TestTrait, TestScoping {
         testCase: Test.Case?,
         performing function: () async throws -> Void
     ) async throws {
-        try await Analytics.$shouldConfigureAnalytics.withValue(enabled, operation: function)
+        try await AnalyticsState.$shouldConfigureAnalytics.withValue(enabled, operation: function)
     }
 }
 

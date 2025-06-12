@@ -26,6 +26,7 @@ struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     // declaration of state objects
+    private let analytics = Analytics()
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
@@ -50,8 +51,12 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
-        if Analytics.shouldConfigureAnalytics {
-            Analytics.shared.configure()
+        configureAnalyticsIfNeeded(analytics: analytics)
+    }
+
+    func configureAnalyticsIfNeeded(analytics: Analytics) {
+        if AnalyticsState.shouldConfigureAnalytics {
+            analytics.configure()
         }
     }
 }
