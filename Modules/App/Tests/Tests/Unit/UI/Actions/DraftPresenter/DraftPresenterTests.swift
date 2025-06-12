@@ -78,6 +78,33 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
+    // MARK: - Open new draft with contact
+
+    @MainActor
+    func testOpenDraftWithContact_ItCreatesEmptyDraftAddRecipientAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
+
+        try await sut.openDraft(with: contact)
+
+        XCTAssertEqual(
+            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
+            [
+                .init(name: "John", email: "john.maxon@pm.me")
+            ]
+        )
+
+        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
+
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: messageID, lastScheduledTime: .none))
+    }
+
     // MARK: handleReplyAction
 
     @MainActor
@@ -159,33 +186,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
             XCTAssertEqual(error, .reason(.messageNotScheduled))
         }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
-    }
-
-    // MARK: - Open new draft with contact
-
-    @MainActor
-    func testOpenDraftWithContact_ItCreatesEmptyDraftAddRecipientAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
-        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
-
-        var capturedDraftToPresent: [DraftToPresent] = []
-        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
-
-        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
-
-        try await sut.openDraft(with: contact)
-
-        XCTAssertEqual(
-            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
-            [
-                .init(name: "John", email: "john.maxon@pm.me")
-            ]
-        )
-
-        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
-
-        XCTAssertEqual(capturedDraftToPresent.count, 1)
-        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: messageID, lastScheduledTime: .none))
     }
 }
 

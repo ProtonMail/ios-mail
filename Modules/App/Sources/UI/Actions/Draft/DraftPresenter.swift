@@ -54,6 +54,17 @@ struct DraftPresenter: ContactsDraftPresenter {
         draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
     }
 
+    func openDraft(with contact: ContactDetailsEmail) async throws {
+        let draft = try await draftProvider.makeDraft(userSession, .empty).get()
+        let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
+
+        _ = draft.toRecipients().addSingleRecipient(recipient: recipient)
+
+        if let messageID = try await draft.messageId().get() {
+            openDraft(withId: messageID)
+        }
+    }
+
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:
@@ -76,19 +87,6 @@ struct DraftPresenter: ContactsDraftPresenter {
         let result = await undoScheduleSendProvider.undoScheduleSend(messageId)
         let lastScheduledTime = try result.get().lastScheduledTime
         openDraft(withId: messageId, lastScheduledTime: lastScheduledTime)
-    }
-
-    // MARK: - ContactsDraftPresenter
-
-    func openDraft(with contact: ContactDetailsEmail) async throws {
-        let draft = try await draftProvider.makeDraft(userSession, .empty).get()
-        let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
-
-        _ = draft.toRecipients().addSingleRecipient(recipient: recipient)
-
-        if let messageID = try await draft.messageId().get() {
-            openDraft(withId: messageID)
-        }
     }
 }
 
