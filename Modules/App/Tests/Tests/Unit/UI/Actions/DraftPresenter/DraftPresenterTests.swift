@@ -98,15 +98,8 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
                 .init(name: "John", email: "john.maxon@pm.me")
             ]
         )
-
         XCTAssertEqual(capturedDraftToPresent.count, 1)
-
-        switch capturedDraftToPresent.first! {
-        case .new:
-            XCTAssert(true)
-        default:
-            XCTFail()
-        }
+        XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
     }
 
     // MARK: handleReplyAction
