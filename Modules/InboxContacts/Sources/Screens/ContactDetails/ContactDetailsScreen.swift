@@ -104,7 +104,7 @@ struct ContactDetailsScreen: View {
                 image: DS.Icon.icArrowUpFromSquare,
                 title: L10n.ContactDetails.share,
                 disabled: false,
-                action: { store.handle(action: .shareContact) }
+                action: { store.handle(action: .shareTapped) }
             )
         }
     }

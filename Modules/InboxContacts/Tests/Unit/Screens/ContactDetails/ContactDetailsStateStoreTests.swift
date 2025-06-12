@@ -129,7 +129,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
     }
 
-    func testShareContactAction_ItPresentsComingSoon() async {
+    func testShareTappedAction_ItPresentsComingSoon() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -138,7 +138,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         )
 
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .shareContact)
+        await sut.handle(action: .shareTapped)
 
         XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
         XCTAssertEqual(toastStateStore.state.toastHeights, [:])

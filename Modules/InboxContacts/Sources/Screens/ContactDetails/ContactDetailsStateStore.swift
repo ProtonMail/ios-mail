@@ -26,7 +26,7 @@ final class ContactDetailsStateStore: StateStore {
         case onLoad
         case newMessageTapped
         case callTapped
-        case shareContact
+        case shareTapped
         case phoneNumberTapped(String)
         case emailTapped(ContactDetailsEmail)
         case openURL(urlString: String)
@@ -70,7 +70,7 @@ final class ContactDetailsStateStore: StateStore {
             if let phoneNumber = state.primaryPhone {
                 call(phoneNumber: phoneNumber)
             }
-        case .shareContact:
+        case .shareTapped:
             toastStateStore.present(toast: .comingSoon)
         case .emailTapped(let email):
             openNewMessage(with: email)
