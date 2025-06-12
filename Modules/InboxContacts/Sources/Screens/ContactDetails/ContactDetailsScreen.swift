@@ -92,9 +92,7 @@ struct ContactDetailsScreen: View {
                 image: DS.Icon.icPenSquare,
                 title: L10n.ContactDetails.newMessage,
                 disabled: false,
-                action: {
-                    // FIXME: Implement new message action
-                }
+                action: { store.handle(action: .newMessageTapped) }
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
@@ -137,7 +135,7 @@ struct ContactDetailsScreen: View {
         case .emails(let emails):
             FormList(collection: emails) { item in
                 button(item: .init(label: item.name, value: item.email, isInteractive: true)) {
-                    // FIXME: Implement copy action
+                    store.handle(action: .emailTapped(item))
                 }
             }
         case .languages(let languages):
