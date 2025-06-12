@@ -100,11 +100,7 @@ struct ContactDetailsScreen: View {
                 image: DS.Icon.icPhone,
                 title: L10n.ContactDetails.call,
                 disabled: state.primaryPhone == nil,
-                action: {
-                    if let primaryPhone = state.primaryPhone {
-                        store.handle(action: .call(phoneNumber: primaryPhone))
-                    }
-                }
+                action: { store.handle(action: .callTapped) }
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icArrowUpFromSquare,
@@ -155,7 +151,7 @@ struct ContactDetailsScreen: View {
         case .telephones(let telephones):
             FormList(collection: telephones) { telephone in
                 button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
-                    store.handle(action: .call(phoneNumber: telephone.number))
+                    store.handle(action: .phoneNumberTapped(telephone.number))
                 }
             }
         case .roles(let roles):

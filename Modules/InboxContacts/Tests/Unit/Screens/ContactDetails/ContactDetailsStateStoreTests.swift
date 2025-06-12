@@ -81,7 +81,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.state, .init(contact: contactItem, details: details))
     }
 
-    func testCallToPhoneNumberAction_ItOpensURLWithTelPrefix() async {
+    func testCallTappedAction_ItOpensURLWithTelPrefix() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -89,12 +89,28 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
             details: details
         )
 
-        let phone = "+41772223344"
+        let phoneNumber = "+41771234567"
 
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .call(phoneNumber: phone))
+        await sut.handle(action: .callTapped)
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phone)")])
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phoneNumber)")])
+    }
+
+    func testPhoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        let phoneNumber = "+44883334477"
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .phoneNumberTapped(phoneNumber))
+
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel://\(phoneNumber)")])
     }
 
     func testOpenURLAction_ItOpensURL() async {
@@ -192,7 +208,8 @@ private extension Array where Element == ContactField {
                 .init(name: "Home", email: "elena.e@pm.me"),
             ]),
             .telephones([
-                .init(number: "+41771234567", telTypes: [.home])
+                .init(number: "+41771234567", telTypes: [.home]),
+                .init(number: "+44883334477", telTypes: [.work])
             ]),
             .anniversary(.string("Feb 28, 2019")),
             .gender(.male),

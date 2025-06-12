@@ -23,12 +23,13 @@ import SwiftUI
 
 final class ContactDetailsStateStore: StateStore {
     enum Action {
-        case call(phoneNumber: String)
-        case newMessageTapped
-        case emailTapped(ContactDetailsEmail)
         case onLoad
-        case openURL(urlString: String)
+        case newMessageTapped
+        case callTapped
         case shareContact
+        case phoneNumberTapped(String)
+        case emailTapped(ContactDetailsEmail)
+        case openURL(urlString: String)
     }
 
     @Published var state: ContactDetails
@@ -61,18 +62,22 @@ final class ContactDetailsStateStore: StateStore {
         switch action {
         case .onLoad:
             loadDetails(for: item)
-        case .emailTapped(let email):
-            openNewMessage(with: email)
-        case .call(let phoneNumber):
-            open(urlString: "tel://\(phoneNumber)")
-        case .openURL(let urlString):
-            open(urlString: urlString)
         case .newMessageTapped:
             if let primaryEmail = emails.first {
                 openNewMessage(with: primaryEmail)
             }
+        case .callTapped:
+            if let phoneNumber = state.primaryPhone {
+                call(phoneNumber: phoneNumber)
+            }
         case .shareContact:
             toastStateStore.present(toast: .comingSoon)
+        case .emailTapped(let email):
+            openNewMessage(with: email)
+        case .phoneNumberTapped(let phoneNumber):
+            call(phoneNumber: phoneNumber)
+        case .openURL(let urlString):
+            open(urlString: urlString)
         }
     }
 
@@ -93,6 +98,10 @@ final class ContactDetailsStateStore: StateStore {
         if let url = URL(string: urlString) {
             urlOpener(url)
         }
+    }
+
+    private func call(phoneNumber: String) {
+        open(urlString: "tel://\(phoneNumber)")
     }
 
     private func openNewMessage(with recipient: ContactDetailsEmail) {
