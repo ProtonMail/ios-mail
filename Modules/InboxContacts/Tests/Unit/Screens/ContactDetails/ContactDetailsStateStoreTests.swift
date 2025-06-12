@@ -179,6 +179,27 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
         XCTAssertEqual(draftPresenterSpy.openDraftContactCalls, [stubbedEmail])
     }
+
+    func testEmailTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
+        let expectedError: TestError = .test
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        draftPresenterSpy.stubbedOpenDraftContactError = expectedError
+
+        let stubbedEmail = ContactDetailsEmail(name: "Work", email: "elena.erickson@protonmail.com")
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .emailTapped(stubbedEmail))
+
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls, [stubbedEmail])
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: expectedError.localizedDescription)])
+    }
 }
 
 private class ContactDetailsProviderSpy {

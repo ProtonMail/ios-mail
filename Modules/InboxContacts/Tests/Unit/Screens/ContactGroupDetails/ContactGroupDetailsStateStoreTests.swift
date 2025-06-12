@@ -71,7 +71,3 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toasts, [.error(message: expectedError.localizedDescription)])
     }
 }
-
-private enum TestError: Error {
-    case test
-}

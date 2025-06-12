@@ -106,7 +106,11 @@ final class ContactDetailsStateStore: StateStore {
 
     private func openComposer(with contact: ContactDetailsEmail) {
         Task {
-            try await draftPresenter.openDraft(with: contact)
+            do {
+                try await draftPresenter.openDraft(with: contact)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 
