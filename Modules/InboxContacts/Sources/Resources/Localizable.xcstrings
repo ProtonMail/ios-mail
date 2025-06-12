@@ -635,6 +635,9 @@
     "Anniversary" : {
       "comment" : "Anniversary label in contact details."
     },
+    "Attachment not found. Refresh the page or upload it again." : {
+      "comment" : "Error message."
+    },
     "Birthday" : {
       "comment" : "Birthday label in contact details."
     },
@@ -1026,6 +1029,9 @@
     "Home" : {
       "comment" : "Label representing a home contact detail type (e.g., phone, address)."
     },
+    "Label does not exist. You can create it as a new label." : {
+      "comment" : "Error message."
+    },
     "Language" : {
       "comment" : "Language label in contact details."
     },
@@ -1038,8 +1044,12 @@
     "Message" : {
       "comment" : "Contact details’ “Message” button title for creating a new message to the given contact."
     },
+    "Message was not found" : {
+      "comment" : "Error message."
+    },
     "No attachment with this content ID" : {
       "comment" : "Error message.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1810,6 +1820,7 @@
     },
     "This label does not exist" : {
       "comment" : "Error message.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -1989,6 +2000,7 @@
     },
     "This message does not exist" : {
       "comment" : "Error message.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

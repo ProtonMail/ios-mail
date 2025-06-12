@@ -81,20 +81,28 @@ enum L10n {
 
         enum UndoSendError {
             static let sendCannotBeUndone = LocalizedStringResource(
-                "Send operation can't be undone",
+                "Too late to undo send. Message was sent.",
                 comment: "Error in the context of undoing a sent message"
             )
 
             static let draftNotFound = LocalizedStringResource(
-                "Undo operation failed because draft was not found",
+                "Cannot undo send. Message was discarded or already sent.",
                 comment: "Error in the context of undoing a sent message"
             )
         }
 
         enum UndoScheduleSendError {
-            static let messageWasNotScheduled = LocalizedStringResource(
-                "Message was not scheduled",
-                comment: "Error in the context of undoing a scheduled message"
+            static let messageDoesNotExist = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was discarded or already sent.",
+                comment: "Error in the context of undoing a scheduled message: the message no longer exists (discarded or already sent)."
+            )
+            static let messageNotScheduled = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was not scheduled.",
+                comment: "Error in the context of undoing a scheduled message: the message was never scheduled."
+            )
+            static let messageAlreadySent = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was already sent.",
+                comment: "Error in the context of undoing a scheduled message: the message has already been sent."
             )
         }
 
@@ -258,6 +266,10 @@ enum L10n {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
             comment: "Event loop failed because an unexpected error."
+        )
+        static let eventSyncingError = LocalizedStringResource(
+            "Issue syncing your content. Check your connection or sign in again.",
+            comment: "Event loop failed due to an issue syncing content."
         )
     }
 
@@ -498,7 +510,7 @@ enum L10n {
             "Download images and other remote content?",
             comment: "Banner asking if the user wants to download remote content such as images from external sources."
         )
-        static let scheduledSendTitle = LocalizedStringResource (
+        static let scheduledSendTitle = LocalizedStringResource(
             "This message will be sent",
             comment: "Banner showing the scheduled send time for an email."
         )
@@ -603,7 +615,7 @@ enum L10n {
 
     enum Folders {
         static let doesNotExist = LocalizedStringResource(
-            "Folder does not exist",
+            "Could not move to folder. Folder may have been deleted or moved.",
             comment: "Error when trying to move a message to a folder that no longer exists."
         )
     }
@@ -640,17 +652,17 @@ enum L10n {
     enum PINLock {
         enum Error {
             static let tooLong = LocalizedStringResource(
-                "PIN is too long",
+                "PIN cannot exceed 21 digits",
                 comment: "Error message when setting up PIN"
             )
 
             static let tooShort = LocalizedStringResource(
-                "PIN is too short",
+                "PIN must be at least 4 digits",
                 comment: "Error message when setting up PIN"
             )
 
             static let malformed = LocalizedStringResource(
-                "Provided value is not a valid PIN",
+                "PIN must be 4–21 digits long and consist only of numbers",
                 comment: "Error message when setting up PIN"
             )
         }
@@ -680,15 +692,15 @@ enum L10n {
             comment: "Message of the sign out confirmation alert."
         )
         static let invalidPIN = LocalizedStringResource(
-            "Incorrect PIN",
+            "Incorrect PIN. Please try agian.",
             comment: "Error message when a user enters an invalid PIN"
         )
         static let tooManyAttempts = LocalizedStringResource(
-            "Too many incorrect attempts",
+            "Too many incorrect attempts. Please wait before trying again.",
             comment: "Error message when a user enters invalid PIN too many times."
         )
         static let tooFrequentAttempts = LocalizedStringResource(
-            "Too many attempts too quickly",
+            "Too many attempts too quickly. Please wait before trying again.",
             comment: "Displayed when the user tries to validate their PIN too frequently."
         )
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {

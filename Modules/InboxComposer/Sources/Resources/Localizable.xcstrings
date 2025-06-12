@@ -199,7 +199,16 @@
       "comment" : "Error in the context of changing the sender with a disabled sender address."
     },
     "Address not found" : {
-      "comment" : "Error in the context of changing the sender with a wrong sender address.\nError in the context of opening a draft in the composer"
+      "comment" : "Error in the context of changing the sender with a wrong sender address."
+    },
+    "Address not found. Add again or reopen the draft." : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Address not recognized. Please check the address." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Attachment is missing. Please upload again." : {
+      "comment" : "Error in the context of managing attachments in a draft."
     },
     "Attachment limit" : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -207,11 +216,17 @@
     "Attachments too big" : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
     },
+    "Attachments too large. Keep attachment size under 25 MB." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Camera" : {
       "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
     },
     "Custom" : {
       "comment" : "Schedule send custom time option tile"
+    },
+    "Disabled email address. Check that the address is valid and active." : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
@@ -222,17 +237,17 @@
     "Discarded" : {
       "comment" : "Composer toast message confirming draft discarded"
     },
-    "Draft body is missing" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft not found. You may have discarded it." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
-    "Draft not found" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft not found. You may have sent it already." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "Draft saved" : {
       "comment" : "Composer toast message when dismissing the screen."
     },
-    "Error trying to reply or forward this message" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft wasn't discarded. Try discarding it agian." : {
+      "comment" : "Error shown when the draft fails to delete."
     },
     "From" : {
       "comment" : "Title for the sender picker action sheet."
@@ -431,20 +446,35 @@
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
     },
+    "Invalid email address. Check address and try again." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Invalid email address. Please check the address." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Invalid recipient" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
+    },
+    "Issue with this email address. Check the address or try again later." : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    },
+    "Message body wasn't retrieved. Close and reopen the draft." : {
+      "comment" : "Error in the context of opening a draft in the composer"
     },
     "Message does not exist" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Message does not exist on the server" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+    "Message not found. You may have sent or discarded it." : {
+      "comment" : "Error in the context of opening a draft in the composer"
     },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
-    "Message to be sent has no recipients" : {
-      "comment" : "Error in the context of sending a draft before being sent."
+    "Message was already sent" : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    },
+    "Message was not found on the server" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "Monday" : {
       "comment" : "Schedule send predefined time option"
@@ -452,17 +482,23 @@
     "Pick time and date" : {
       "comment" : "Schedule send custom time option subtitle"
     },
+    "Please add at least one recipient" : {
+      "comment" : "Error in the context of sending a draft before being sent."
+    },
     "Please enter a valid email address" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
     },
     "Previously set" : {
       "comment" : "Title of a schedule send option that shows the time when the message was last scheduled"
     },
-    "Recipient address is invalid: %@" : {
+    "Problem encrypting attachment. Please upload it again." : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Recipient primary key is missing: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    "Problem performing that action. Please try again." : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Problem sending message. Please try again." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft."
@@ -652,11 +688,14 @@
         }
       }
     },
-    "Retry failed, please remove the attachment" : {
+    "Retry not possible. Attachment is uploading or already uploaded." : {
       "comment" : "Error in the context of retrying to upload a draft."
     },
     "Schedule send" : {
       "comment" : "Title of the schedule send view"
+    },
+    "Scheduled send time is in the past. Go to Drafts to send or reschedule it." : {
+      "comment" : "Error in the context of setting a schedule time for a message."
     },
     "Scheduling message..." : {
       "comment" : "Composer toast message when schedule a message is tapped."
@@ -1046,44 +1085,14 @@
     "The address does not exist" : {
       "comment" : "Error shown when a non existing address is added as recipient."
     },
-    "The address is disabled: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
     "The attachment could not be added, please try again" : {
       "comment" : "Attachment failed because an unexpected error"
-    },
-    "The attachment is missing" : {
-      "comment" : "Error in the context of managing attachments in a draft."
-    },
-    "The attachments is too large" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The draft to be sent was not found" : {
-      "comment" : "Error in the context of sending a draft before being sent."
     },
     "The draft was not found" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "The limit of attachments has been reached" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The message has been already sent" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
     "The message is not a draft" : {
       "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The message to be sent is not a draft" : {
-      "comment" : "Error in the context of sending a draft before being sent."
-    },
-    "The message was already sent" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
-    "The Proton address in the recipient does not exist: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The scheduled send date has expired" : {
-      "comment" : "Error in the context of setting a schedule time for a message."
     },
     "The size limit for attachments is 25 MB." : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -1093,12 +1102,6 @@
     },
     "There is a 25 MB limit on attachments per email. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
-    },
-    "There was a problem discarding the draft" : {
-      "comment" : "Error shown when the draft fails to delete."
-    },
-    "There was a problem encrypting attachment" : {
-      "comment" : "Error in the context of saving a draft before being sent."
     },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",
@@ -1278,9 +1281,6 @@
           }
         }
       }
-    },
-    "There was a problem sending the message: %@" : {
-      "comment" : "Error in the context of sending a draft before being sent."
     },
     "This message will be sent on %@" : {
       "comment" : "Composer toast message when message has been scheduled."
@@ -1475,6 +1475,9 @@
     },
     "Too many attachments" : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
+    },
+    "Too many attachments. Send them in multiple emails." : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "Undo" : {
       "comment" : "Undo action after message has been sent."

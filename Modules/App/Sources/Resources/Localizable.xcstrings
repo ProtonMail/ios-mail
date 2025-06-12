@@ -4160,6 +4160,18 @@
         }
       }
     },
+    "Cannot cancel schedule send. Message was already sent." : {
+      "comment" : "Error in the context of undoing a scheduled message: the message has already been sent."
+    },
+    "Cannot cancel schedule send. Message was discarded or already sent." : {
+      "comment" : "Error in the context of undoing a scheduled message: the message no longer exists (discarded or already sent)."
+    },
+    "Cannot cancel schedule send. Message was not scheduled." : {
+      "comment" : "Error in the context of undoing a scheduled message: the message was never scheduled."
+    },
+    "Cannot undo send. Message was discarded or already sent." : {
+      "comment" : "Error in the context of undoing a sent message"
+    },
     "Cc" : {
       "comment" : "`CC` in the messsage details.",
       "localizations" : {
@@ -5099,6 +5111,9 @@
           }
         }
       }
+    },
+    "Could not move to folder. Folder may have been deleted or moved." : {
+      "comment" : "Error when trying to move a message to a folder that no longer exists."
     },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
@@ -7436,9 +7451,6 @@
     "Failed to Send" : {
       "comment" : "Title of a tag displayed for each message that failed to send."
     },
-    "Folder does not exist" : {
-      "comment" : "Error when trying to move a message to a folder that no longer exists."
-    },
     "Folders and labels" : {
       "comment" : "Title of the Folders and labels settings item.",
       "localizations" : {
@@ -8185,8 +8197,11 @@
         }
       }
     },
-    "Incorrect PIN" : {
+    "Incorrect PIN. Please try agian." : {
       "comment" : "Error message when a user enters an invalid PIN"
+    },
+    "Issue syncing your content. Check your connection or sign in again." : {
+      "comment" : "Event loop failed due to an issue syncing content."
     },
     "Label" : {
       "comment" : "`Label` in the message details.",
@@ -10112,9 +10127,6 @@
           }
         }
       }
-    },
-    "Message was not scheduled" : {
-      "comment" : "Error in the context of undoing a scheduled message"
     },
     "Messages in Trash and Spam will be automatically deleted after 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
@@ -12566,13 +12578,16 @@
     "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
       "comment" : "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
+    "PIN cannot exceed 21 digits" : {
+      "comment" : "Error message when setting up PIN"
+    },
     "PIN Code" : {
       "comment" : "PIN input placeholder."
     },
-    "PIN is too long" : {
+    "PIN must be 4–21 digits long and consist only of numbers" : {
       "comment" : "Error message when setting up PIN"
     },
-    "PIN is too short" : {
+    "PIN must be at least 4 digits" : {
       "comment" : "Error message when setting up PIN"
     },
     "Please authenticate to unlock your screen." : {
@@ -13135,9 +13150,6 @@
     },
     "Problem report sent" : {
       "comment" : "Toast displayed after the report was successfully sent"
-    },
-    "Provided value is not a valid PIN" : {
-      "comment" : "Error message when setting up PIN"
     },
     "Quickly move to the next or previous message in your inbox." : {
       "comment" : "Swipe to next email setting additional info in app settings."
@@ -14645,9 +14657,6 @@
     },
     "Send error logs" : {
       "comment" : "Title of row with toggle where a user can decide whether to send logs."
-    },
-    "Send operation can't be undone" : {
-      "comment" : "Error in the context of undoing a sent message"
     },
     "Sending.." : {
       "comment" : "Title of a tag displayed for each message that is in the outbox with sending status."
@@ -16577,10 +16586,13 @@
     "To: ..." : {
       "comment" : "Placeholder for a draft in the conversation view when the draft has no recipients."
     },
-    "Too many attempts too quickly" : {
+    "Too late to undo send. Message was sent." : {
+      "comment" : "Error in the context of undoing a sent message"
+    },
+    "Too many attempts too quickly. Please wait before trying again." : {
       "comment" : "Displayed when the user tries to validate their PIN too frequently."
     },
-    "Too many incorrect attempts" : {
+    "Too many incorrect attempts. Please wait before trying again." : {
       "comment" : "Error message when a user enters invalid PIN too many times."
     },
     "Trash" : {
@@ -16773,9 +16785,6 @@
     },
     "Unblock" : {
       "comment" : "Action to unblock the sender."
-    },
-    "Undo operation failed because draft was not found" : {
-      "comment" : "Error in the context of undoing a sent message"
     },
     "Unlock Proton Mail" : {
       "comment" : "Title of a button that triggers biometric authorization on the lock screen."

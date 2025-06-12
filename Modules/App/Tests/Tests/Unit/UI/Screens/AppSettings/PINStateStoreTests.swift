@@ -98,7 +98,7 @@ class PINStateStoreTests {
         await sut.handle(action: .pinTyped(.init(digits: [1, 2, 3, 5])))
         await sut.handle(action: .bottomButtonTapped)
 
-        #expect(sut.state.pinValidation == .failure("Incorrect PIN"))
+        #expect(sut.state.pinValidation == .failure(L10n.PINLock.invalidPIN.string))
         #expect(router.stack == [])
         #expect(dismissCount == 0)
     }

@@ -66,7 +66,7 @@ extension DraftDiscardErrorReason {
     var errorMessage: LocalizedStringResource? {
         switch self {
         case .messageDoesNotExist:
-            nil
+            L10n.DraftAttachmentUploadError.messageDoesNotExist
         case .deleteFailed:
             L10n.ComposerError.draftDiscardFailed
         }
@@ -113,8 +113,8 @@ extension DraftSaveError: LocalizedError {
 private extension DraftSaveErrorReason {
     var errorMessage: LocalizedStringResource {
         switch self {
-        case .addressDoesNotHavePrimaryKey(let value):
-            L10n.DraftSaveError.addressDoesNotHavePrimaryKey(address: value)
+        case .addressDoesNotHavePrimaryKey:
+            L10n.DraftSaveError.addressDoesNotHavePrimaryKey
         case .addressDisabled(let value):
             L10n.DraftSaveError.addressDisabled(address: value)
         case .messageAlreadySent:
@@ -123,10 +123,10 @@ private extension DraftSaveErrorReason {
             L10n.DraftSaveError.messageDoesNotExist
         case .messageIsNotADraft:
             L10n.DraftSaveError.messageIsNotADraft
-        case .recipientEmailInvalid(let value):
-            L10n.DraftSaveError.recipientInvalidAddress(address: value)
-        case .protonRecipientDoesNotExist(let value):
-            L10n.DraftSaveError.protonRecipientNotFound(address: value)
+        case .recipientEmailInvalid:
+            L10n.DraftSaveError.recipientInvalidAddress
+        case .protonRecipientDoesNotExist:
+            L10n.DraftSaveError.protonRecipientNotFound
         }
     }
 }
@@ -175,8 +175,8 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.missingAttachmentUploads
         case .noRecipients:
             L10n.DraftSendError.noRecipients
-        case .packageError(let value):
-            L10n.DraftSendError.packageError(error: value)
+        case .packageError:
+            L10n.DraftSendError.packageError
         case .recipientEmailInvalid(let value):
             L10n.DraftSendError.recipientInvalidAddress(address: value)
         case .protonRecipientDoesNotExist(let value):
