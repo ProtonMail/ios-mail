@@ -60,6 +60,24 @@ struct DraftPresenter: ContactsDraftPresenter {
         try await publishDraftToPresentPrefilled(with: recipient)
     }
 
+    func openDraft(with group: ContactGroupItem) async throws {
+        let draft = try await draftProvider.makeDraft(userSession, .empty).get()
+
+        let recipients = group.contactEmails.map { contact in
+            SingleRecipientEntry(name: contact.name, email: contact.email)
+        }
+        let totalCount = UInt64(recipients.count)
+
+        _ =
+            draft
+            .toRecipients()
+            .addGroupRecipient(groupName: group.name, recipients: recipients, totalContactsInGroup: totalCount)
+
+        if let messageID = try await draft.messageId().get() {
+            openDraft(withId: messageID)
+        }
+    }
+
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:

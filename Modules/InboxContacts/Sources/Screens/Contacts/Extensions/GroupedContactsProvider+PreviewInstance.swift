@@ -821,7 +821,7 @@ extension Id: @retroactive ExpressibleByIntegerLiteral {
 
 extension ContactEmailItem {
 
-    init(id: UInt64, email: String, name: String = "") {
+    public init(id: UInt64, email: String, name: String = "") {
         self.init(
             id: Id(value: id),
             email: email,

@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import Combine
+import InboxContacts
 import InboxTesting
 import proton_app_uniffi
 import XCTest
@@ -184,6 +185,50 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
+
+    @MainActor
+    func testOpenDraftWithContactGroup_ItCreatesEmptyDraftAddGroupAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let group = ContactGroupItem(
+            id: 2,
+            name: "Business Group",
+            avatarColor: "#A1FF33",
+            contactEmails: [
+                .init(id: 1, email: "a@pm.me", name: "A"),
+                .init(id: 2, email: "b@pm.me", name: "B"),
+                .init(id: 3, email: "c@pm.me", name: "C"),
+                .init(id: 4, email: "d@pm.me", name: "D"),
+            ]
+        )
+
+        try await sut.openDraft(with: group)
+
+        XCTAssertEqual(
+            draftSpy.toRecipientsCalls.addGroupRecipientCalls,
+            [
+                .init(
+                    name: "Business Group",
+                    recipients: [
+                        .init(name: "A", email: "a@pm.me"),
+                        .init(name: "B", email: "b@pm.me"),
+                        .init(name: "C", email: "c@pm.me"),
+                        .init(name: "D", email: "d@pm.me"),
+                    ],
+                    totalCount: 4
+                )
+            ]
+        )
+
+        let messageID = try XCTUnwrap(try draftSpy.stubbedMessageID.get())
+
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .openDraftId(messageId: messageID, lastScheduledTime: .none))
+    }
 }
 
 extension DraftPresenterTests {
@@ -223,12 +268,29 @@ private class DraftSpy: Draft, @unchecked Sendable {
 }
 
 private class ComposerRecipientListSpy: ComposerRecipientList, @unchecked Sendable {
+    struct Group: Equatable {
+        let name: String
+        let recipients: [SingleRecipientEntry]
+        let totalCount: UInt64
+    }
+
     private(set) var addSingleRecipientCalls: [SingleRecipientEntry] = []
+    private(set) var addGroupRecipientCalls: [Group] = []
 
     // MARK: - ComposerRecipientList
 
     override func addSingleRecipient(recipient: SingleRecipientEntry) -> AddSingleRecipientError {
         addSingleRecipientCalls.append(recipient)
+
+        return .ok
+    }
+
+    override func addGroupRecipient(
+        groupName: String,
+        recipients: [SingleRecipientEntry],
+        totalContactsInGroup: UInt64
+    ) -> AddGroupRecipientError {
+        addGroupRecipientCalls.append(.init(name: groupName, recipients: recipients, totalCount: totalContactsInGroup))
 
         return .ok
     }
