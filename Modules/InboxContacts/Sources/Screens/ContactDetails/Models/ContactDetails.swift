@@ -21,7 +21,7 @@ struct ContactDetails: Equatable {
     let id: Id
     let avatarInformation: AvatarInformation
     let displayName: String
-    let primaryEmail: String
+    let primaryEmail: String?
     let primaryPhone: String?
     let items: [ContactField]
 
@@ -39,7 +39,7 @@ struct ContactDetails: Equatable {
         self.id = contact.id
         self.avatarInformation = contact.avatarInformation
         self.displayName = contact.name
-        self.primaryEmail = contact.emails.first?.email ?? .empty
+        self.primaryEmail = contact.displayEmail
         self.primaryPhone = primaryPhone
         self.items = details?.fields ?? []
     }
