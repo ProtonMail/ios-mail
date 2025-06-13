@@ -404,19 +404,17 @@ extension ConversationDetailModel {
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
 
-            var result = [MessageCellUIModel]()
-            for i in messages.indices {
-                let message = messages[i]
+            let lastNonDraftMessageIndex = messages.lastIndex(where: { message in !message.isDraft })
 
-                let messageCellUIModel: MessageCellUIModelType
-                if expandedMessages.contains(message.id) {
-                    messageCellUIModel = .expanded(message.toExpandedMessageCellUIModel())
-                } else {
-                    messageCellUIModel = .collapsed(message.toCollapsedMessageCellUIModel())
+            let result: [MessageCellUIModel] = messages
+                .enumerated()
+                .map { index, message in
+                    if expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex {
+                        return .init(id: message.id, type: .expanded(message.toExpandedMessageCellUIModel()))
+                    } else {
+                        return .init(id: message.id, type: .collapsed(message.toCollapsedMessageCellUIModel()))
+                    }
                 }
-
-                result.append(.init(id: message.id, type: messageCellUIModel))
-            }
 
             return .init(messages: result, isStarred: isStarred)
         } catch {
