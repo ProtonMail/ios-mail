@@ -409,11 +409,13 @@ extension ConversationDetailModel {
             let result: [MessageCellUIModel] = messages
                 .enumerated()
                 .map { index, message in
+                    let messageCellUIModelType: MessageCellUIModelType
                     if expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex {
-                        return .init(id: message.id, type: .expanded(message.toExpandedMessageCellUIModel()))
+                        messageCellUIModelType = .expanded(message.toExpandedMessageCellUIModel())
                     } else {
-                        return .init(id: message.id, type: .collapsed(message.toCollapsedMessageCellUIModel()))
+                        messageCellUIModelType = .collapsed(message.toCollapsedMessageCellUIModel())
                     }
+                    return .init(id: message.id, type: messageCellUIModelType)
                 }
 
             return .init(messages: result, isStarred: isStarred)
