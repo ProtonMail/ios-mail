@@ -34,10 +34,9 @@ final class PaymentsServiceTests {
         let task = sut.startListeningToUserSessionChanges()
 
         let incomingSessionStates: [SessionState] = [
-            .activeSessionTransition,
+            .restoring,
             .activeSession(session: userSession1),
-            .activeSessionTransition,
-            .activeSession(session: userSession2),
+            .initializing,
             .activeSession(session: userSession2),
             .activeSession(session: userSession1),
             .noSession,

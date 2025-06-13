@@ -21,7 +21,8 @@ import proton_app_uniffi
 enum SessionState: Equatable {
     case noSession
     case activeSession(session: MailUserSession)
-    case activeSessionTransition
+    case initializing
+    case restoring
 
     var userSession: MailUserSession? {
         guard case .activeSession(let session) = self else { return nil }
@@ -32,7 +33,9 @@ enum SessionState: Equatable {
         switch (lhs, rhs) {
         case (.noSession, .noSession):
             return true
-        case (.activeSessionTransition, .activeSessionTransition):
+        case (.initializing, .initializing):
+            return true
+        case (.restoring, .restoring):
             return true
         case (.activeSession(let lhsSession), .activeSession(let rhsSession)):
             return lhsSession.sessionId() == rhsSession.sessionId()

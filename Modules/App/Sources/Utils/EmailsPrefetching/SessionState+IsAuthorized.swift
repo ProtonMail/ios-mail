@@ -22,7 +22,7 @@ extension SessionState {
         switch self {
         case .activeSession:
             true
-        case .noSession, .activeSessionTransition:
+        case .noSession, .initializing, .restoring:
             false
         }
     }

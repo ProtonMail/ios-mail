@@ -125,13 +125,17 @@ private struct RootView: View {
                     )
                     .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 
-                case .activeSessionTransition:
+                case .initializing:
                     SessionTransitionScreen()
+
+                case .restoring:
+                    // This is needed to cover the delay between app launch and SDK returning an existing session
+                    // otherwise we would be flashing the welcome screen
+                    EmptyView()
                 }
             }
             .transition(.opacity)
         }
-        .animation(.easeInOut, value: appContext.sessionState)
     }
 
     @ViewBuilder
@@ -172,8 +176,6 @@ private struct RootView: View {
 }
 
 private struct SessionTransitionScreen: View {
-    @State private var showLoadingScreen = false
-
     private let userDefaultsWithPromptsDisabled: UserDefaults = {
         let userDefaults = UserDefaults(suiteName: "transition")!
         userDefaults[.showAlphaV1Onboarding] = false
@@ -182,20 +184,10 @@ private struct SessionTransitionScreen: View {
     }()
 
     var body: some View {
-        if showLoadingScreen {
-            ZStack {
-                fakeMailboxScreen
+        ZStack {
+            fakeMailboxScreen
 
-                progressView
-            }
-        } else {
-            Color.clear
-                .onLoad {
-                    Task {
-                        try await Task.sleep(for: .seconds(1))
-                        showLoadingScreen = true
-                    }
-                }
+            progressView
         }
     }
 
