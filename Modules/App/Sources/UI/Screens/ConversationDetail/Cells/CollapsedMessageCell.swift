@@ -22,48 +22,22 @@ struct CollapsedMessageCell: View {
     private let uiModel: CollapsedMessageCellUIModel
     private let onTap: () -> Void
 
-    /**
-     Determines how the horizontal edges of the card are rendered to give visual
-     continuation to the list (only visible in landscape mode).
-     */
-    private let isFirstCell: Bool
-
     init(
         uiModel: CollapsedMessageCellUIModel,
-        isFirstCell: Bool = false,
         onTap: @escaping () -> Void
     ) {
         self.uiModel = uiModel
-        self.isFirstCell = isFirstCell
         self.onTap = onTap
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            messageCardTopView
-            messageDataView
-                .padding(.bottom, DS.Spacing.large)
-                .overlay { borderOnTheSides(show: isFirstCell) }
-                .padding(.top, DS.Spacing.large)
-        }
-        .overlay { borderOnTheSides(show: !isFirstCell) }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onTap()
-        }
-    }
-
-    private func borderOnTheSides(show: Bool) -> some View {
-        EdgeBorder(
-            width: 1,
-            edges: [.leading, .trailing]
-        )
-        .foregroundColor(DS.Color.Border.strong)
-        .removeViewIf(!show)
-    }
-
-    private var messageCardTopView: some View {
-        MessageCardTopView(cornerRadius: DS.Radius.extraLarge, hasShadow: true)
+        messageDataView
+            .padding(.bottom, DS.Spacing.large)
+            .padding(.top, DS.Spacing.large)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onTap()
+            }
     }
 
     private var messageDataView: some View {
@@ -167,7 +141,7 @@ struct CollapsedMessageCellUIModel {
                 isRead: true,
                 isDraft: false,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
-            ), isFirstCell: true, onTap: {})
+            ), onTap: {})
         CollapsedMessageCell(
             uiModel: .init(
                 sender: "john@gmail.com",
