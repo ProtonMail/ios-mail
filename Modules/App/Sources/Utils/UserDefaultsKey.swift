@@ -19,7 +19,7 @@ import Foundation
 import InboxCore
 
 extension UserDefaultsKey<Bool> {
-    static let showAlphaV1Onboarding = Self(name: "showAlphaV1Onboarding")
+    static let hasSeenAlphaOnboarding = Self(name: "hasSeenAlphaOnboarding")
 }
 
 extension UserDefaultsKey<[Date]> {

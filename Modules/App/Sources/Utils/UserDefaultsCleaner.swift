@@ -26,7 +26,6 @@ struct UserDefaultsCleaner {
     }
 
     func cleanUp() {
-        userDefaults[.showAlphaV1Onboarding] = nil
         userDefaults[.notificationAuthorizationRequestDates] = nil
     }
 }

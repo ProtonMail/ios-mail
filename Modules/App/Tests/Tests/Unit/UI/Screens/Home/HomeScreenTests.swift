@@ -80,7 +80,7 @@ class HomeScreenTests: BaseTestCase {
 
     // MARK: - Private
 
-    private let key = UserDefaultsKey.showAlphaV1Onboarding
+    private let key = UserDefaultsKey.hasSeenAlphaOnboarding
 
     private func store(value: Bool) {
         userDefaults[key] = value

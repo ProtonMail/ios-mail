@@ -178,7 +178,7 @@ private struct RootView: View {
 private struct SessionTransitionScreen: View {
     private let userDefaultsWithPromptsDisabled: UserDefaults = {
         let userDefaults = UserDefaults(suiteName: "transition")!
-        userDefaults[.showAlphaV1Onboarding] = false
+        userDefaults[.hasSeenAlphaOnboarding] = true
         userDefaults[.notificationAuthorizationRequestDates] = [.now]
         return userDefaults
     }()
