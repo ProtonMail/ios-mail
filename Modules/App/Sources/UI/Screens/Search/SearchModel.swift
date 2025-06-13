@@ -110,19 +110,43 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func fetchNextPage(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
         let searchScroller = searchScroller.unsafelyUnwrapped
+        do {
+            return try await fetchMore(searchScroller: searchScroller, currentPage: currentPage)
+        } catch {
+            AppLogger.log(error: error, category: .search)
+            if error is MailScrollerError {
+                return await handleMailScrollerError(searchScroller: searchScroller, currentPage: currentPage)
+            }
+            return nextPageAfterNonRecoverableError(error: error)
+        }
+    }
+
+    private func fetchMore(searchScroller: SearchScroller, currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
         switch await searchScroller.fetchMore() {
         case .ok(let messages):
-            let items = mailboxItems(messages: messages)
             let result = PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult(
-                newItems: items,
+                newItems: mailboxItems(messages: messages),
                 isLastPage: !searchScroller.hasMore()
             )
             AppLogger.log(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .search)
             return result
         case .error(let error):
-            AppLogger.log(error: error, category: .search)
-            return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
+            throw error
         }
+    }
+
+    private func handleMailScrollerError(searchScroller: SearchScroller, currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        do {
+            await refreshMailboxItems()
+            return try await fetchMore(searchScroller: searchScroller, currentPage: currentPage)
+        } catch {
+            return nextPageAfterNonRecoverableError(error: error)
+        }
+    }
+
+    private func nextPageAfterNonRecoverableError(error: Error) -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        AppLogger.log(error: error, category: .search)
+        return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
     }
 
     private func mailboxItems(messages: [Message]) -> [MailboxItemCellUIModel] {

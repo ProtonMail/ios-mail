@@ -154,26 +154,6 @@ public extension ConversationResult {
         }
     }
 }
-public extension ConversationScrollerAllItemsResult {
-    func get() throws(UserContextError) -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension ConversationScrollerFetchMoreResult {
-    func get() throws(UserContextError) -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension ConversationsForLabelResult {
     func get() throws(ActionError) -> [Conversation] {
         switch self {
@@ -324,6 +304,16 @@ public extension LoadConversationResult {
         }
     }
 }
+public extension LoginFlowDelinquentStateResult {
+    func get() throws(LoginError) -> DelinquentState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowLoginResult {
     func get() throws(LoginError) {
         switch self {
@@ -339,6 +329,16 @@ public extension LoginFlowMigrateResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension LoginFlowPasswordChangeRequiredResult {
+    func get() throws(LoginError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }
@@ -894,26 +894,6 @@ public extension MessageResult {
         }
     }
 }
-public extension MessageScrollerAllItemsResult {
-    func get() throws(UserContextError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MessageScrollerFetchMoreResult {
-    func get() throws(UserContextError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MessagesForConversationResult {
     func get() throws(ActionError) -> [Message] {
         switch self {
@@ -1036,26 +1016,6 @@ public extension SearchForConversationsResult {
 }
 public extension SearchForMessagesResult {
     func get() throws(ActionError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SearchScrollerAllItemsResult {
-    func get() throws(UserContextError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SearchScrollerFetchMoreResult {
-    func get() throws(UserContextError) -> [Message] {
         switch self {
         case .ok(let value):
             value

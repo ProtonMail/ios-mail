@@ -307,22 +307,42 @@ extension MailboxModel {
     }
 
     private func fetchNextPageItems(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let mailbox else {
-            AppLogger.log(message: "no mailbox found when requesting a page", isError: true)
+        guard let viewMode = mailbox?.viewMode() else {
+            AppLogger.log(message: "no mailbox found when requesting a page", category: .mailbox, isError: true)
             return .init(newItems: [], isLastPage: true)
         }
         do {
-            let result: PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult
-            result =
-                mailbox.viewMode() == .messages
-                ? try await fetchNextPageMessages(currentPage: currentPage)
-                : try await fetchNextPageConversations(currentPage: currentPage)
-            AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
-            return result
+            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
+            if error is MailScrollerError {
+                return await handleMailScrollerError(viewMode: viewMode, currentPage: currentPage)
+            }
+            return nextPageAfterNonRecoverableError(error: error)
         }
+    }
+
+    private func fetchNextPage(viewMode: ViewMode, currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        let result =
+            viewMode == .messages
+            ? try await fetchNextPageMessages(currentPage: currentPage)
+            : try await fetchNextPageConversations(currentPage: currentPage)
+        AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
+        return result
+    }
+
+    private func handleMailScrollerError(viewMode: ViewMode, currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        do {
+            await refreshMailboxItems()
+            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
+        } catch {
+            return nextPageAfterNonRecoverableError(error: error)
+        }
+    }
+
+    private func nextPageAfterNonRecoverableError(error: Error) -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        AppLogger.log(error: error, category: .mailbox)
+        return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
     }
 
     private func fetchNextPageMessages(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
