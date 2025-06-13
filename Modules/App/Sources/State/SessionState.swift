@@ -31,16 +31,12 @@ enum SessionState: Equatable {
 
     static func == (lhs: SessionState, rhs: SessionState) -> Bool {
         switch (lhs, rhs) {
-        case (.noSession, .noSession):
-            return true
-        case (.initializing, .initializing):
-            return true
-        case (.restoring, .restoring):
-            return true
+        case (.noSession, .noSession), (.initializing, .initializing), (.restoring, .restoring):
+            true
         case (.activeSession(let lhsSession), .activeSession(let rhsSession)):
-            return lhsSession.sessionId() == rhsSession.sessionId()
+            lhsSession.sessionId() == rhsSession.sessionId()
         default:
-            return false
+            false
         }
     }
 }
