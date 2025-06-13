@@ -32,8 +32,7 @@ struct CollapsedMessageCell: View {
 
     var body: some View {
         messageDataView
-            .padding(.bottom, DS.Spacing.large)
-            .padding(.top, DS.Spacing.large)
+            .padding(.vertical, DS.Spacing.large)
             .contentShape(Rectangle())
             .onTapGesture {
                 onTap()
