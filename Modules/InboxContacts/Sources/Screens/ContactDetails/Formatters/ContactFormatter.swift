@@ -100,6 +100,14 @@ enum ContactFormatter {
             return .init(label: label, value: vcardURL.url, isInteractive: true)
         }
     }
+
+    enum Email {
+        static func formatted(from email: ContactDetailsEmail) -> ContactDetailsItem {
+            let label = email.emailType.humanReadable(fallback: L10n.ContactDetails.Label.phone.string)
+
+            return .init(label: label, value: email.email, isInteractive: true)
+        }
+    }
 }
 
 private extension Array where Element == VcardPropType {
