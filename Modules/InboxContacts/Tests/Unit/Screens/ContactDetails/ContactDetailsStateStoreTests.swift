@@ -129,6 +129,22 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
     }
 
+    func testOpenURLActionWithURLMissingScheme_ItNormalizesAndOpensURL() async {
+        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        let url = URL(string: "proton.me")!
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .openURL(urlString: url.absoluteString))
+
+        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "https://proton.me")!])
+    }
+
     func testShareTappedAction_ItPresentsComingSoon() async {
         let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
 

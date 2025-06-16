@@ -77,7 +77,9 @@ final class ContactDetailsStateStore: StateStore {
         case .phoneNumberTapped(let phoneNumber):
             call(phoneNumber: phoneNumber)
         case .openURL(let urlString):
-            open(urlString: urlString)
+            if let urlString = normalizedURLString(from: urlString) {
+                open(urlString: urlString)
+            }
         }
     }
 
@@ -102,6 +104,23 @@ final class ContactDetailsStateStore: StateStore {
 
     private func call(phoneNumber: String) {
         open(urlString: "tel:\(phoneNumber)")
+    }
+
+    private func normalizedURLString(from rawString: String) -> String? {
+        let url = URL(string: rawString)!
+        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
+
+        if urlComponents?.scheme == nil {
+            urlComponents?.scheme = "https"
+        }
+
+        if urlComponents?.host == nil, urlComponents?.path.isEmpty == false {
+            let path = urlComponents?.path
+            urlComponents?.host = path
+            urlComponents?.path = ""
+        }
+
+        return urlComponents?.string
     }
 
     private func openComposer(with contact: ContactDetailsEmail) {
