@@ -34,7 +34,7 @@ struct OnboardingScreen: View {
                 image: DS.Images.onboardingSecondPage,
                 title: "Rebuilt to be better and faster".notLocalized.stringResource,
                 subtitle: "New inbox unboxed".notLocalized.stringResource,
-                text: "Completely reengineered using Rust architecture, the new Proton Mail is faster with a vibrant design and highly-requested features, like offline mode.".notLocalized
+                text: "The new Proton Mail is faster with a vibrant design and highly-requested features, like offline mode.".notLocalized
                     .stringResource
             ),
             .init(
