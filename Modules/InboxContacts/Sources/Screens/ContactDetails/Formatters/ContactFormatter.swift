@@ -103,7 +103,7 @@ enum ContactFormatter {
 
     enum Email {
         static func formatted(from email: ContactDetailsEmail) -> ContactDetailsItem {
-            let label = email.emailType.humanReadable(fallback: L10n.ContactDetails.Label.phone.string)
+            let label = email.emailType.humanReadable(fallback: L10n.ContactDetails.Label.email.string)
 
             return .init(label: label, value: email.email, isInteractive: true)
         }

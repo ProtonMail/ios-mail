@@ -1017,6 +1017,9 @@
         }
       }
     },
+    "Email" : {
+      "comment" : "Email label in contact details."
+    },
     "Fax" : {
       "comment" : "Label indicating that the contact method is a fax number."
     },

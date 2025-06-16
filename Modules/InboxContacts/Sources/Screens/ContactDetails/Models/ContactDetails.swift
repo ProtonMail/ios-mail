@@ -41,6 +41,14 @@ struct ContactDetails: Equatable {
         self.displayName = contact.name
         self.primaryEmail = contact.displayEmail
         self.primaryPhone = primaryPhone
-        self.items = details?.fields ?? []
+        self.items = Self.temporaryItems(from: contact) + (details?.fields ?? [])
+    }
+
+    // FIXME: Needs to be removed when Rust fix the issue otherwise we will display duplicated emails
+    static func temporaryItems(from contact: ContactItem) -> [ContactField] {
+        let emails = contact.emails.map { item in
+            ContactDetailsEmail(emailType: [], email: item.email)
+        }
+        return [.emails(emails)]
     }
 }

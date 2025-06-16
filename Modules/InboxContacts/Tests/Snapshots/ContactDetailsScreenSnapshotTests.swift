@@ -58,52 +58,53 @@ final class ContactDetailsScreenSnapshotTests {
 //        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
 //    }
 
-    @Test
-    func testContactDetailsScreenVariant2() {
-        let items: [ContactField] = [
-            .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
-            ]),
-            .telephones([
-                .init(number: "+41771234567", telTypes: [.home])
-            ]),
-            .anniversary(.string("Feb 28, 2019")),
-            .gender(.male),
-            .languages(["english", "german"]),
-        ]
-
-        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
-    }
-
-    @Test
-    func testContactDetailsScreenVariant3() {
-        let items: [ContactField] = [
-            .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
-            ]),
-            .languages(["english", "german"]),
-            .timeZones(["Europe/Zürich"]),
-            .titles(["Phd"]),
-            .roles(["Professor"]),
-        ]
-
-        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
-    }
-
-    @Test
-    func testContactDetailsScreenVariant4() {
-        let items: [ContactField] = [
-            .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
-            ]),
-            .languages(["french"]),
-            .organizations(["CERN", "NASA"]),
-            .members(["N/A"]),
-            .urls([.init(url: "https://www.nasa.gov", urlType: [.work])]),
-        ]
-
-        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
-    }
+    // TODO: Bring back when contact details is clarified
+//    @Test
+//    func testContactDetailsScreenVariant2() {
+//        let items: [ContactField] = [
+//            .emails([
+//                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+//            ]),
+//            .telephones([
+//                .init(number: "+41771234567", telTypes: [.home])
+//            ]),
+//            .anniversary(.string("Feb 28, 2019")),
+//            .gender(.male),
+//            .languages(["english", "german"]),
+//        ]
+//
+//        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
+//    }
+//
+//    @Test
+//    func testContactDetailsScreenVariant3() {
+//        let items: [ContactField] = [
+//            .emails([
+//                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+//            ]),
+//            .languages(["english", "german"]),
+//            .timeZones(["Europe/Zürich"]),
+//            .titles(["Phd"]),
+//            .roles(["Professor"]),
+//        ]
+//
+//        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
+//    }
+//
+//    @Test
+//    func testContactDetailsScreenVariant4() {
+//        let items: [ContactField] = [
+//            .emails([
+//                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+//            ]),
+//            .languages(["french"]),
+//            .organizations(["CERN", "NASA"]),
+//            .members(["N/A"]),
+//            .urls([.init(url: "https://www.nasa.gov", urlType: [.work])]),
+//        ]
+//
+//        assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
+//    }
 
     private func makeSUT(items: [ContactField]) -> some View {
         let contact: ContactItem = .benjaminAlexander

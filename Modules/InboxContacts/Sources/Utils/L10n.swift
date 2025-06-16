@@ -120,6 +120,11 @@ enum L10n {
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Birthday label in contact details."
             )
+            static let email = LocalizedStringResource(
+                "Email",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Email label in contact details."
+            )
             static let gender = LocalizedStringResource(
                 "Gender",
                 bundle: .atURL(Bundle.module.bundleURL),
