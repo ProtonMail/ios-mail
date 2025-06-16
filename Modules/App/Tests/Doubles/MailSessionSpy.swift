@@ -53,6 +53,10 @@ final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
+    func biometricsCheckPassed() {
+        fatalError(#function)
+    }
+
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
         fatalError(#function)
     }

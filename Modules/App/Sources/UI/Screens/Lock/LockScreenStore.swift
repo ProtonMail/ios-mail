@@ -23,6 +23,7 @@ import proton_app_uniffi
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
+    private let biometricAuthorizationNotifier: () -> BiometricAuthorizationNotifier
     private let signOutService: SignOutService
     private let dismissLock: () -> Void
 
@@ -30,11 +31,13 @@ class LockScreenStore: StateStore {
         state: LockScreenState,
         pinVerifier: PINVerifier,
         mailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession },
+        biometricAuthorizationNotifier: @escaping @Sendable () -> BiometricAuthorizationNotifier = { AppContext.shared.mailSession },
         dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
         self.signOutService = .init(mailSession: mailSession)
+        self.biometricAuthorizationNotifier = biometricAuthorizationNotifier
         self.dismissLock = dismissLock
     }
 
@@ -44,6 +47,7 @@ class LockScreenStore: StateStore {
         case .biometric(let output):
             switch output {
             case .authenticated:
+                biometricAuthorizationNotifier().biometricsCheckPassed()
                 dismissLock()
             case .logOut:
                 await signOutAllAccounts()

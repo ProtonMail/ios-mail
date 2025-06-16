@@ -22,24 +22,26 @@ import Testing
 @MainActor
 final class LockScreenStoreTests {
     private let mailSession = MailSessionSpy()
+    private let biometricAuthorizationNotifierSpy = BiometricAuthorizationNotifierSpy()
+    private let pinVerifierSpy: PINVerifierSpy = .init()
+    private var dismissLockInvokeCount = 0
 
     lazy var sut: LockScreenStore = .init(
         state: .init(type: .pin, pinAuthenticationError: nil),
         pinVerifier: pinVerifierSpy,
         mailSession: { [unowned self] in mailSession },
+        biometricAuthorizationNotifier: { [unowned self] in biometricAuthorizationNotifierSpy },
         dismissLock: { [unowned self] in
             dismissLockInvokeCount += 1
         }
     )
-
-    var dismissLockInvokeCount = 0
-    private let pinVerifierSpy: PINVerifierSpy = .init()
 
     @Test
     func handleBiometricAuthenticatedOutput_ItEmitsLockAuthenticatedOutput() async {
         await sut.handle(action: .biometric(.authenticated))
 
         #expect(dismissLockInvokeCount == 1)
+        #expect(biometricAuthorizationNotifierSpy.biometricsCheckPassedInvokeCount == 1)
     }
 
     @Test
@@ -97,4 +99,14 @@ final class LockScreenStoreTests {
         #expect(mailSession.signOutAllCallCount == 1)
     }
 
+}
+
+private class BiometricAuthorizationNotifierSpy: BiometricAuthorizationNotifier, @unchecked Sendable {
+    private(set) var biometricsCheckPassedInvokeCount = 0
+
+    // MARK: - BiometricAuthorizationNotifier
+
+    func biometricsCheckPassed() {
+        biometricsCheckPassedInvokeCount += 1
+    }
 }
