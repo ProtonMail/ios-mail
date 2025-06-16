@@ -22,8 +22,6 @@ import proton_app_uniffi
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
-    static let lastCellId = "last"
-
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
@@ -346,12 +344,12 @@ extension ConversationDetailModel {
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
-        let messageIDToScrollTo = await messageIDToScrollTo()
-        if messages.last?.id == messageIDToScrollTo {
-            scrollToMessage = Self.lastCellId
-        } else {
-            let cell = messages.first(where: { $0.id == messageIDToScrollTo })
-            scrollToMessage = cell?.cellId ?? Self.lastCellId
+        if let messageIDToScrollTo = await messageIDToScrollTo(),
+            let messageToScroll = messages.first(where: { $0.id == messageIDToScrollTo })
+        {
+            self.scrollToMessage = messageToScroll.cellId
+        } else if let lastNonDraftMessage = messages.last(where: { !$0.isDraft }) {
+            self.scrollToMessage = lastNonDraftMessage.cellId
         }
     }
 
@@ -406,7 +404,8 @@ extension ConversationDetailModel {
 
             let lastNonDraftMessageIndex = messages.lastIndex(where: { message in !message.isDraft })
 
-            let result: [MessageCellUIModel] = messages
+            let result: [MessageCellUIModel] =
+                messages
                 .enumerated()
                 .map { index, message in
                     let messageCellUIModelType: MessageCellUIModelType
@@ -545,4 +544,17 @@ private extension MailboxActionSheetsState {
     static func initial() -> Self {
         .init(mailbox: nil, labelAs: nil, moveTo: nil)
     }
+}
+
+private extension MessageCellUIModel {
+
+    var isDraft: Bool {
+        switch type {
+        case .collapsed(let model):
+            model.isDraft
+        case .expanded:
+            false
+        }
+    }
+
 }
