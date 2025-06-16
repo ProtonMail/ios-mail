@@ -112,7 +112,7 @@ struct MailboxScreen: View {
     }
 
     private func onboardingScreenDismissed() {
-        userDefaults[.showAlphaV1Onboarding] = false
+        userDefaults[.hasSeenAlphaOnboarding] = true
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -133,7 +133,7 @@ struct MailboxScreen: View {
     }
 
     private func calculateIntroductionProgress() async -> IntroductionProgress {
-        if userDefaults[.showAlphaV1Onboarding] {
+        if !userDefaults[.hasSeenAlphaOnboarding] {
             return .onboarding
         } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
             return .notifications

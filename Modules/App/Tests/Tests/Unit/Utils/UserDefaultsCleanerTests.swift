@@ -29,9 +29,9 @@ final class UserDefaultsCleanerTests {
 
     @Test
     func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
-        let key = UserDefaultsKey.showAlphaV1Onboarding
+        let key = UserDefaultsKey.notificationAuthorizationRequestDates
 
-        userDefaults[key] = true
+        userDefaults[key] = [.now]
 
         sut.cleanUp()
 

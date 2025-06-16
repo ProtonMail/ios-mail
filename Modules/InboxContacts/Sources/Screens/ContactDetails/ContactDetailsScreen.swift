@@ -133,9 +133,9 @@ struct ContactDetailsScreen: View {
                 button(item: ContactFormatter.Address.formatted(from: address))
             }
         case .emails(let emails):
-            FormList(collection: emails) { item in
-                button(item: .init(label: item.name, value: item.email, isInteractive: true)) {
-                    store.handle(action: .emailTapped(item))
+            FormList(collection: emails) { email in
+                button(item: ContactFormatter.Email.formatted(from: email)) {
+                    store.handle(action: .emailTapped(email))
                 }
             }
         case .languages(let languages):

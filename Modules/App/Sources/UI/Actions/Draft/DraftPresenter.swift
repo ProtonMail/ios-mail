@@ -58,7 +58,7 @@ struct DraftPresenter: ContactsDraftPresenter {
         AppLogger.log(message: "open new draft with contact details", category: .composer)
 
         try await openNewEmptyDraft { toRecipients in
-            let recipient = SingleRecipientEntry(name: contact.name, email: contact.email)
+            let recipient = SingleRecipientEntry(name: .empty, email: contact.email)
             _ = toRecipients.addSingleRecipient(recipient: recipient)
         }
     }

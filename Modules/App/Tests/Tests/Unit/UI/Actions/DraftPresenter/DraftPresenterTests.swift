@@ -89,14 +89,14 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
+        let contact = ContactDetailsEmail(emailType: [.work], email: "john.maxon@pm.me")
 
         try await sut.openDraft(with: contact)
 
         XCTAssertEqual(
             draftSpy.toRecipientsCalls.addSingleRecipientCalls,
             [
-                .init(name: "John", email: "john.maxon@pm.me")
+                .init(name: .empty, email: "john.maxon@pm.me")
             ]
         )
         XCTAssertEqual(capturedDraftToPresent.count, 1)
@@ -110,7 +110,7 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        let contact = ContactDetailsEmail(name: "John", email: "john.maxon@pm.me")
+        let contact = ContactDetailsEmail(emailType: [.work], email: "john.maxon@pm.me")
 
         await XCTAssertAsyncThrowsError(try await sut.openDraft(with: contact)) { error in
             let draftOpenError = error as? DraftOpenError

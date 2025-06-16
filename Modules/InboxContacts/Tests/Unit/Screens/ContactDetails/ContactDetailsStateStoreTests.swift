@@ -159,7 +159,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(
             draftPresenterSpy.openDraftContactCalls,
             [
-                .init(name: "Work", email: "elena.erickson@protonmail.com")
+                .init(emailType: [.work], email: "elena.erickson@protonmail.com")
             ])
     }
 
@@ -171,7 +171,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
             details: details
         )
 
-        let stubbedEmail = ContactDetailsEmail(name: "Home", email: "elena@pm.me")
+        let stubbedEmail = ContactDetailsEmail(emailType: [.home], email: "elena@pm.me")
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
@@ -191,7 +191,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 
         draftPresenterSpy.stubbedOpenDraftContactError = expectedError
 
-        let stubbedEmail = ContactDetailsEmail(name: "Work", email: "elena.erickson@protonmail.com")
+        let stubbedEmail = ContactDetailsEmail(emailType: [.work], email: "elena.erickson@protonmail.com")
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
@@ -213,8 +213,8 @@ private extension Array where Element == ContactField {
     static var testItems: [ContactField] {
         [
             .emails([
-                .init(name: "Work", email: "elena.erickson@protonmail.com"),
-                .init(name: "Home", email: "elena@pm.me"),
+                .init(emailType: [.work], email: "elena.erickson@protonmail.com"),
+                .init(emailType: [.home], email: "elena@pm.me"),
             ]),
             .telephones([
                 .init(number: "+41771234567", telTypes: [.home]),

@@ -25,22 +25,12 @@ struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
-    @Binding var attachmentIDToOpen: ID?
-
-    private let hasShadow: Bool
     private let areActionsDisabled: Bool
-
-    // Determines how the horizontal edges of the card are rendered to give visual
-    // continuation to the list (only visible in landscape mode).
-    private let isFirstCell: Bool
-
-    private let cardCornerRadius = DS.Radius.extraLarge
+    @Binding var attachmentIDToOpen: ID?
 
     init(
         mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
-        hasShadow: Bool = true,
-        isFirstCell: Bool = false,
         areActionsDisabled: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
@@ -48,8 +38,6 @@ struct ExpandedMessageCell: View {
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
-        self.hasShadow = hasShadow
-        self.isFirstCell = isFirstCell
         self.areActionsDisabled = areActionsDisabled
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
@@ -57,70 +45,54 @@ struct ExpandedMessageCell: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            MessageCardTopView(cornerRadius: cardCornerRadius, hasShadow: hasShadow)
-
-            VStack(spacing: .zero) {
-                MessageDetailsView(
-                    uiModel: uiModel.messageDetails,
-                    areActionsDisabled: areActionsDisabled,
+        VStack(spacing: .zero) {
+            MessageDetailsView(
+                uiModel: uiModel.messageDetails,
+                areActionsDisabled: areActionsDisabled,
+                onEvent: { event in
+                    switch event {
+                    case .onTap:
+                        onEvent(.onTap)
+                    case .onReply:
+                        onEvent(.onReply)
+                    case .onReplyAll:
+                        onEvent(.onReplyAll)
+                    case .onMoreActions:
+                        onEvent(.onMoreActions)
+                    case .onSenderTap:
+                        onEvent(.onSenderTap)
+                    case .onRecipientTap(let recipient):
+                        onEvent(.onRecipientTap(recipient))
+                    }
+                }
+            )
+            MessageBodyView(
+                messageID: uiModel.id,
+                emailAddress: uiModel.messageDetails.sender.address,
+                attachments: uiModel.messageDetails.attachments,
+                mailbox: mailbox,
+                attachmentIDToOpen: $attachmentIDToOpen,
+                editScheduledMessage: { onEvent(.onEditScheduledMessage) },
+                htmlLoaded: htmlLoaded
+            )
+            if !areActionsDisabled {
+                MessageActionButtonsView(
+                    isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
                     onEvent: { event in
                         switch event {
-                        case .onTap:
-                            onEvent(.onTap)
-                        case .onReply:
+                        case .reply:
                             onEvent(.onReply)
-                        case .onReplyAll:
+                        case .replyAll:
                             onEvent(.onReplyAll)
-                        case .onMoreActions:
-                            onEvent(.onMoreActions)
-                        case .onSenderTap:
-                            onEvent(.onSenderTap)
-                        case .onRecipientTap(let recipient):
-                            onEvent(.onRecipientTap(recipient))
+                        case .forward:
+                            onEvent(.onForward)
                         }
                     }
                 )
-                MessageBodyView(
-                    messageID: uiModel.id,
-                    emailAddress: uiModel.messageDetails.sender.address,
-                    attachments: uiModel.messageDetails.attachments,
-                    mailbox: mailbox,
-                    attachmentIDToOpen: $attachmentIDToOpen,
-                    editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                    htmlLoaded: htmlLoaded
-                )
-                if !areActionsDisabled {
-                    MessageActionButtonsView(
-                        isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
-                        onEvent: { event in
-                            switch event {
-                            case .reply:
-                                onEvent(.onReply)
-                            case .replyAll:
-                                onEvent(.onReplyAll)
-                            case .forward:
-                                onEvent(.onForward)
-                            }
-                        }
-                    )
-                    .padding(.top, DS.Spacing.moderatelyLarge)
-                    .padding(.bottom, DS.Spacing.huge)
-                }
+                .padding(.top, DS.Spacing.moderatelyLarge)
+                .padding(.bottom, DS.Spacing.huge)
             }
-            .overlay { borderOnTheSides(show: isFirstCell) }
-            .padding(.top, cardCornerRadius)
-        }
-        .overlay { borderOnTheSides(show: !isFirstCell) }
-    }
-
-    private func borderOnTheSides(show: Bool) -> some View {
-        EdgeBorder(
-            width: 1,
-            edges: [.leading, .trailing]
-        )
-        .foregroundColor(DS.Color.Border.strong)
-        .removeViewIf(!show)
+        }.padding(.top, DS.Spacing.large)
     }
 }
 
@@ -160,8 +132,6 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
-            hasShadow: false,
-            isFirstCell: true,
             areActionsDisabled: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -174,8 +144,6 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
-            hasShadow: true,
-            isFirstCell: false,
             areActionsDisabled: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },

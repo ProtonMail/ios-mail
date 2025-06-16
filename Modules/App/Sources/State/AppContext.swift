@@ -88,6 +88,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
+            sessionState = .restoring
             setupActiveUserSession(session: currentSession)
         }
     }
@@ -119,12 +120,17 @@ extension AppContext {
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
-        animateTransition(into: .activeSessionTransition)
-
         Task {
             do {
+                if let existingSession = try await mailSession.initializedUserContextFromSession(session: session).get() {
+                    animateTransition(into: .activeSession(session: existingSession))
+                    return
+                }
+
+                sessionState = .initializing
+
                 if let newUserSession = try await self.initializeUserSession(session: session) {
-                    self.animateTransition(into: .activeSession(session: newUserSession))
+                    animateTransition(into: .activeSession(session: newUserSession))
                 }
                 AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {
@@ -160,7 +166,7 @@ extension AppContext {
 
     @MainActor
     private func animateTransition(into newSessionState: SessionState) {
-        withAnimation { sessionState = newSessionState }
+        withAnimation(.easeInOut) { sessionState = newSessionState }
     }
 }
 

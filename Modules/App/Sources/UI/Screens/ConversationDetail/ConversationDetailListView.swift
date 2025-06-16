@@ -72,27 +72,18 @@ struct ConversationDetailListView: View {
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {
         ScrollViewReader { scrollView in
-            VStack(spacing: .zero) {
-                LazyVStack(spacing: .zero) {
-                    ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
-                        switch cellUIModel.type {
-                        case .collapsed(let uiModel):
-                            CollapsedMessageCell(
-                                uiModel: uiModel, isFirstCell: index == 0,
-                                onTap: {
-                                    model.onMessageTap(messageId: cellUIModel.id, isDraft: uiModel.isDraft)
-                                }
-                            )
-                            .id(cellUIModel.cellId)
-                            .accessibilityElement(children: .contain)
-                            .accessibilityIdentifier(ConversationDetailListViewIdentifiers.collapsedCell(index))
-                        case .expanded(let uiModel):
-                            expandedMessageCell(uiModel: uiModel, isFirstCell: index == 0)
-                                .id(cellUIModel.cellId)
-                                .accessibilityElement(children: .contain)
-                                .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(index))
-                        }
-                    }
+            LazyVStack(spacing: -DS.Spacing.extraLarge) {
+                ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
+                    cell(for: cellUIModel, index: index)
+                        .padding(.bottom, messages.count - 1 == index ? 0 : DS.Spacing.extraLarge)
+                        .background(DS.Color.Background.norm)
+                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge))
+                        .shadow(DS.Shadows.raisedTop, isVisible: true)
+                        .overlay(
+                            UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
+                                .stroke(DS.Color.Border.norm, lineWidth: 1)
+                                .padding(.horizontal, -DS.Spacing.tiny)
+                        )
                 }
             }
             .task {
@@ -103,12 +94,31 @@ struct ConversationDetailListView: View {
         }
     }
 
-    private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel, hasShadow: Bool = true, isFirstCell: Bool) -> some View {
+    @ViewBuilder
+    private func cell(for cellUIModel: MessageCellUIModel, index: Int) -> some View {
+        switch cellUIModel.type {
+        case .collapsed(let uiModel):
+            CollapsedMessageCell(
+                uiModel: uiModel,
+                onTap: {
+                    model.onMessageTap(messageId: cellUIModel.id, isDraft: uiModel.isDraft)
+                }
+            )
+            .id(cellUIModel.cellId)
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(ConversationDetailListViewIdentifiers.collapsedCell(index))
+        case .expanded(let uiModel):
+            expandedMessageCell(uiModel: uiModel)
+                .id(cellUIModel.cellId)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier(ConversationDetailListViewIdentifiers.expandedCell(index))
+        }
+    }
+
+    private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel) -> some View {
         ExpandedMessageCell(
             mailbox: model.mailbox.unsafelyUnwrapped,
             uiModel: uiModel,
-            hasShadow: hasShadow,
-            isFirstCell: isFirstCell,
             areActionsDisabled: model.areActionsDisabled,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },

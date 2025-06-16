@@ -53,7 +53,7 @@ final class MoveToActionPerformerTests: BaseTestCase {
         }
     }
 
-    func testPropagatesBackendError() async {
+    func testOverridesErrorMessageIfOperationTimedOut() async {
         stubbedResult = .error(
             .other(.serverError(.unprocessableEntity(#"{"Code": 2503, "Error": "Operation timed out"}"#)))
         )

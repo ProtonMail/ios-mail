@@ -53,63 +53,41 @@ class MailboxScreenTests: BaseTestCase {
 
     // MARK: - Onboarding sheet
 
-    func testOnboarding_WhenNoDataInUserDefaults_ItPresentsSheet() throws {
-        arrange { inspectSUT in
-            _ = try inspectSUT.onboardingScreen()
-            XCTAssertEqual(self.storedShowOnboarding, nil)
-        }
-    }
-
-    func testOnboarding_WhenNoDataInUserDefaultsAndDismiss_ItDismissesAndUpdatesStorages() throws {
-        arrange { inspectSUT in
-            let sheet = try inspectSUT.onboardingSheet()
-            try sheet.dismiss()
-
-            XCTAssertNil(try? inspectSUT.onboardingScreen())
-            XCTAssertEqual(self.storedShowOnboarding, false)
-        }
-    }
-
     func testOnboarding_WhenShouldShowAlphaV1Onboarding_ItPresentsSheet() throws {
-        arrangeStorage(showAlphaV1Onboarding: true)
-
         arrange { inspectSUT in
             _ = try inspectSUT.onboardingScreen()
-            XCTAssertEqual(self.storedShowOnboarding, true)
+            XCTAssertEqual(self.storedHasSeenOnboarding, false)
         }
     }
 
     func testOnboarding_WhenShouldShowAlphaV1OnboardingAndDismiss_ItDismissesAndUpdatesStorages() throws {
-        arrangeStorage(showAlphaV1Onboarding: true)
-
         arrange { inspectSUT in
             let sheet = try inspectSUT.onboardingSheet()
             try sheet.dismiss()
 
             XCTAssertNil(try? inspectSUT.onboardingScreen())
-            XCTAssertEqual(self.storedShowOnboarding, false)
+            XCTAssertEqual(self.storedHasSeenOnboarding, true)
         }
     }
 
     func testOnboarding_WhenShouldNotShowAlphaV1Onboarding_ItDoesNotPresentSheet() throws {
-        arrangeStorage(showAlphaV1Onboarding: false)
+        arrangeStorage(hasSeenAlphaOnboarding: true)
 
         arrange { inspectSUT in
             let onboarding = try? inspectSUT.onboardingScreen()
 
             XCTAssertNil(onboarding)
-            XCTAssertEqual(self.storedShowOnboarding, false)
         }
     }
 
     // MARK: - Private
 
-    private func arrangeStorage(showAlphaV1Onboarding: Bool) {
-        userDefaults[.showAlphaV1Onboarding] = showAlphaV1Onboarding
+    private func arrangeStorage(hasSeenAlphaOnboarding: Bool) {
+        userDefaults[.hasSeenAlphaOnboarding] = hasSeenAlphaOnboarding
     }
 
-    private var storedShowOnboarding: Bool? {
-        userDefaults[.showAlphaV1Onboarding]
+    private var storedHasSeenOnboarding: Bool {
+        userDefaults[.hasSeenAlphaOnboarding]
     }
 
     private func arrange(
