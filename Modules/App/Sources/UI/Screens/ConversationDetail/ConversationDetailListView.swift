@@ -72,18 +72,20 @@ struct ConversationDetailListView: View {
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {
         ScrollViewReader { scrollView in
-            LazyVStack(spacing: -DS.Spacing.extraLarge) {
-                ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
-                    cell(for: cellUIModel, index: index)
-                        .padding(.bottom, messages.count - 1 == index ? 0 : DS.Spacing.extraLarge)
-                        .background(DS.Color.Background.norm)
-                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge))
-                        .shadow(DS.Shadows.raisedTop, isVisible: true)
-                        .overlay(
-                            UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
-                                .stroke(DS.Color.Border.norm, lineWidth: 1)
-                                .padding(.horizontal, -DS.Spacing.tiny)
-                        )
+            VStack(spacing: .zero) {
+                LazyVStack(spacing: -DS.Spacing.extraLarge) {
+                    ForEachEnumerated(messages, id: \.element.id) { cellUIModel, index in
+                        cell(for: cellUIModel, index: index)
+                            .padding(.bottom, messages.count - 1 == index ? 0 : DS.Spacing.extraLarge)
+                            .background(DS.Color.Background.norm)
+                            .clipShape(UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge))
+                            .shadow(DS.Shadows.raisedTop, isVisible: true)
+                            .overlay(
+                                UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
+                                    .stroke(DS.Color.Border.norm, lineWidth: 1)
+                                    .padding(.horizontal, -DS.Spacing.tiny)
+                            )
+                    }
                 }
             }
             .task {
