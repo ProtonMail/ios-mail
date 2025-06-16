@@ -63,7 +63,27 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: WKWebView) {
-        view.loadHTMLString(body.rawBody)
+        // FIXME: insert this code on the Rust side and remove this
+        let style = """
+            <style>
+                body {
+                    height: auto !important;
+                }
+
+                table {
+                    height: auto !important;
+                    min-height: auto !important;
+                }
+
+                @supports (height: fit-content) {
+                    html {
+                        height: fit-content;
+                    }
+                }
+            </style>
+            """
+        let fixedBody = body.rawBody.replacingOccurrences(of: "<head>", with: "<head>\(style)")
+        view.loadHTMLString(fixedBody)
     }
 
     func makeCoordinator() -> Coordinator {
@@ -115,17 +135,12 @@ extension WKWebView {
 extension WKUserScript {
     fileprivate static let observeHeight: WKUserScript = {
         let source = """
-            const container = document.documentElement;
-
             function notify() {
-                window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(container.scrollHeight);
+                window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
             }
 
             const observer = new ResizeObserver(notify);
-
-            for (const child of container.children) {
-                observer.observe(child);
-            }
+            observer.observe(document.body);
 
             notify()
             """
