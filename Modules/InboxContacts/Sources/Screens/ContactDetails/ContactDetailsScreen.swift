@@ -91,7 +91,7 @@ struct ContactDetailsScreen: View {
             ContactDetailsActionButton(
                 image: DS.Icon.icPenSquare,
                 title: L10n.ContactDetails.newMessage,
-                disabled: false,
+                disabled: state.primaryEmail == nil,
                 action: { store.handle(action: .newMessageTapped) }
             )
             ContactDetailsActionButton(
