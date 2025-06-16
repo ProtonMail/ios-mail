@@ -93,6 +93,7 @@ def build_release_app(scheme)
             "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
         }
     },
+    xcargs: "-skipPackagePluginValidation",
   )
 end
 
