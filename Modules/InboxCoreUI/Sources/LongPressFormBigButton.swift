@@ -45,9 +45,31 @@ public struct LongPressFormBigButton: View {
             symbol: .none
         )
         .textSelection(.enabled)
-        .onLongPressGesture(perform: {}, onPressingChanged: { changed in isPressed = changed })
+        .conditionalLongPress(onPressingChanged: { changed in isPressed = changed })
         .onTapGesture(perform: onTap)
         .background(isPressed && hasAccentTextColor ? DS.Color.InteractionWeak.pressed : .clear)
         .background(DS.Color.BackgroundInverted.secondary)
     }
+}
+
+private extension View {
+
+    func conditionalLongPress(onPressingChanged: ((Bool) -> Void)?) -> some View {
+        modifier(ConditionalLongPress(onPressingChanged: onPressingChanged))
+    }
+
+}
+
+private struct ConditionalLongPress: ViewModifier {
+    let onPressingChanged: ((Bool) -> Void)?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18, *) {
+            content
+                .onLongPressGesture(perform: {}, onPressingChanged: onPressingChanged)
+        } else {
+            content
+        }
+    }
+
 }
