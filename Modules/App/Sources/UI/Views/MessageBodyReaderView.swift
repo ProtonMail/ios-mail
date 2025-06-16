@@ -57,7 +57,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        updateUIView(uiView)
+        if context.coordinator.receivedBodyDifferentFromBefore(latest: body) {
+            updateUIView(uiView)
+        }
+
         uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
         context.coordinator.urlOpener = context.environment.openURL
     }
@@ -77,12 +80,12 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
                 @supports (height: fit-content) {
                     html {
-                        height: fit-content;
+                        height: fit-content !important;
                     }
                 }
             </style>
             """
-        let fixedBody = body.rawBody.replacingOccurrences(of: "<head>", with: "<head>\(style)")
+        let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
         view.loadHTMLString(fixedBody)
     }
 
@@ -95,6 +98,7 @@ extension MessageBodyReaderView {
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?
+        private var previouslyReceivedBody: MessageBody.HTML?
 
         init(_ parent: MessageBodyReaderView) {
             self.parent = parent
@@ -120,6 +124,15 @@ extension MessageBodyReaderView {
 
             urlOpener?(url)
             return .cancel
+        }
+
+        func receivedBodyDifferentFromBefore(latest body: MessageBody.HTML) -> Bool {
+            if previouslyReceivedBody?.rawBody == body.rawBody && previouslyReceivedBody?.options == body.options {
+                return false
+            } else {
+                previouslyReceivedBody = body
+                return true
+            }
         }
     }
 }
