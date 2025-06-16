@@ -60,7 +60,7 @@ struct ContactDetailsScreen: View {
                     actionButtons(state: state, store: store)
                     fields(state: state, store: store)
                 }
-                .padding(.horizontal, DS.Spacing.large)
+                .padding([.horizontal, .bottom], DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
             .onLoad { store.handle(action: .onLoad) }
