@@ -26,12 +26,12 @@ struct LabelAsActionsProvider {
         self.availableLabelAsActions = availableLabelAsActions
     }
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> [LabelAsAction] {
+    func actions(for type: MailboxItemType, ids: [ID]) async throws -> [LabelAsAction] {
         switch type {
         case .conversation:
-            try! await availableLabelAsActions.conversation(mailbox, ids).get()
+            try await availableLabelAsActions.conversation(mailbox, ids).get()
         case .message:
-            try! await availableLabelAsActions.message(mailbox, ids).get()
+            try await availableLabelAsActions.message(mailbox, ids).get()
         }
     }
 }
