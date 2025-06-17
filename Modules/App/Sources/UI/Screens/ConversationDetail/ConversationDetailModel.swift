@@ -142,7 +142,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
-    func handleConversation(action: BottomBarAction, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
+    func handleConversation(action: BottomBarActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
@@ -215,7 +215,7 @@ extension ConversationDetailModel {
     }
 
     private func moveConversation(
-        destination: MoveToSystemFolderLocation,
+        destination: MovableSystemFolderAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
     ) {
@@ -393,8 +393,8 @@ extension ConversationDetailModel {
 
     private func readLiveQueryValues() async -> LiveQueryValues {
         do {
-            guard let conversationID, let mailbox, let messagesLiveQuery else {
-                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))), conversationID (\(String(describing: conversationID)) or message live query"
+            guard let conversationID, let mailbox else {
+                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationID (\(String(describing: conversationID))"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return .init(messages: [], isStarred: false)
             }
