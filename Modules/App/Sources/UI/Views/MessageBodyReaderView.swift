@@ -149,15 +149,18 @@ extension WKUserScript {
     fileprivate static let observeHeight: WKUserScript = {
         let source = """
             function notify() {
-                window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
+                // Wait for next frame to ensure content is laid out
+                requestAnimationFrame(() => {
+                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
+                });
             }
 
             const observer = new ResizeObserver(notify);
             observer.observe(document.body);
 
-            notify()
+            notify();
             """
-
+        
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
     }()
 }
