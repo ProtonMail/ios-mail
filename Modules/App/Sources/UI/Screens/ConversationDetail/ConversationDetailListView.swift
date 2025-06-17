@@ -84,7 +84,7 @@ struct ConversationDetailListView: View {
                                 .stroke(DS.Color.Border.norm, lineWidth: 1)
                                 .padding(.horizontal, -DS.Spacing.tiny)
                         )
-                        .padding(.bottom, -DS.Spacing.extraLarge)
+                        .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
                 }
             }
             .task {
