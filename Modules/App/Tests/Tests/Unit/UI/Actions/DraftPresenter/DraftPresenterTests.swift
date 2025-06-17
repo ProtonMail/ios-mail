@@ -18,7 +18,6 @@
 @testable import ProtonMail
 import Combine
 import InboxContacts
-import InboxCore
 import InboxTesting
 import proton_app_uniffi
 import XCTest
@@ -90,16 +89,11 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        let contact = ComposerContactEmail(displayName: "John Maxon", email: "john.maxon@pm.me")
+        let recipient = SingleRecipientEntry(name: "John Maxon", email: "john.maxon@pm.me")
 
-        try await sut.openDraft(with: contact)
+        try await sut.openDraft(with: recipient)
 
-        XCTAssertEqual(
-            draftSpy.toRecipientsCalls.addSingleRecipientCalls,
-            [
-                .init(name: "John Maxon", email: "john.maxon@pm.me")
-            ]
-        )
+        XCTAssertEqual(draftSpy.toRecipientsCalls.addSingleRecipientCalls, [recipient])
         XCTAssertEqual(capturedDraftToPresent.count, 1)
         XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
     }
@@ -111,9 +105,9 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        let contact = ComposerContactEmail(displayName: "John Maxon", email: "john.maxon@pm.me")
+        let recipient = SingleRecipientEntry(name: "John Maxon", email: "john.maxon@pm.me")
 
-        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: contact)) { error in
+        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: recipient)) { error in
             let draftOpenError = error as? DraftOpenError
 
             XCTAssertEqual(capturedDraftToPresent.count, 0)
