@@ -22,12 +22,12 @@ class ContactsDraftPresenterSpy: ContactsDraftPresenter {
     var stubbedOpenDraftContactError: Error?
     var stubbedOpenDraftGroupError: Error?
 
-    private(set) var openDraftContactCalls: [ContactDetailsEmail] = []
+    private(set) var openDraftContactCalls: [ComposerContactEmail] = []
     private(set) var openDraftGroupCalls: [ContactGroupItem] = []
 
     // MARK: - ContactsDraftPresenter
 
-    func openDraft(with contact: ContactDetailsEmail) async throws {
+    func openDraft(with contact: ComposerContactEmail) async throws {
         openDraftContactCalls.append(contact)
 
         if let stubbedOpenDraftContactError {

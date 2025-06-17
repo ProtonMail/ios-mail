@@ -54,11 +54,11 @@ struct DraftPresenter: ContactsDraftPresenter {
         draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
     }
 
-    func openDraft(with contact: ContactDetailsEmail) async throws {
+    func openDraft(with contact: ComposerContactEmail) async throws {
         AppLogger.log(message: "open new draft with contact details", category: .composer)
 
         try await openNewEmptyDraft { toRecipients in
-            let recipient = SingleRecipientEntry(name: .empty, email: contact.email)
+            let recipient = SingleRecipientEntry(name: contact.displayName, email: contact.email)
             _ = toRecipients.addSingleRecipient(recipient: recipient)
         }
     }

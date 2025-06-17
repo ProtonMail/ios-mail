@@ -15,10 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import proton_app_uniffi
+public struct ComposerContactEmail: Equatable {
+    public let displayName: String
+    public let email: String
 
-final class ContactsDraftPresenterDummy: ContactsDraftPresenter {
-    func openDraft(with contact: ComposerContactEmail) async throws {}
-    func openDraft(with group: ContactGroupItem) async throws {}
+    public init(displayName: String, email: String) {
+        self.displayName = displayName
+        self.email = email
+    }
 }

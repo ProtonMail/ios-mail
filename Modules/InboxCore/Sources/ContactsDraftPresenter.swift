@@ -18,6 +18,6 @@
 import proton_app_uniffi
 
 public protocol ContactsDraftPresenter {
-    func openDraft(with contact: ContactDetailsEmail) async throws
+    func openDraft(with contact: ComposerContactEmail) async throws
     func openDraft(with group: ContactGroupItem) async throws
 }
