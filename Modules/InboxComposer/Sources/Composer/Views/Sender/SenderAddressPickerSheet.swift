@@ -29,20 +29,27 @@ struct SenderAddressPickerSheet: View {
 
     var body: some View {
         ClosableScreen {
-            ScrollView {
-                VStack(spacing: .zero) {
-                    ForEach(model.state.addresses, id: \.self) { address in
-                        addressButton(for: address)
+            VStack(spacing: DS.Spacing.medium) {
+                Text(L10n.Composer.senderPickerSheetTitle)
+                    .lineLimit(1)
+                    .foregroundStyle(DS.Color.Text.norm)
+                    .font(.body)
+                    .fontWeight(.semibold)
+
+                ScrollView {
+                    VStack(spacing: .zero) {
+                        ForEach(model.state.addresses, id: \.self) { address in
+                            addressButton(for: address)
+                        }
                     }
+                    .background(DS.Color.BackgroundInverted.secondary)
+                    .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
+                    .padding(.all, DS.Spacing.large)
                 }
-                .background(DS.Color.BackgroundInverted.secondary)
-                .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
-                .padding(.all, DS.Spacing.large)
             }
+            .frame(maxWidth: .infinity)
             .onAppear { Task { await model.handleAction(.viewAppear) } }
             .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle(L10n.Composer.senderPickerSheetTitle.string)
-            .navigationBarTitleDisplayMode(.inline)
             .presentationDetents([.fraction(0.4), .large])
         }
     }
@@ -60,6 +67,7 @@ struct SenderAddressPickerSheet: View {
                         Text(CommonL10n.default.string)
                             .font(.caption)
                             .foregroundStyle(DS.Color.Text.weak)
+                            .padding(.bottom, DS.Spacing.tiny)
                     }
                     Text(address)
                         .font(.callout)

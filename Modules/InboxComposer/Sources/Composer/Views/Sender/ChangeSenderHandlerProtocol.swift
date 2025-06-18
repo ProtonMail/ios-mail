@@ -25,8 +25,10 @@ protocol ChangeSenderHandlerProtocol {
 }
 
 struct MockChangeSenderHandler: ChangeSenderHandlerProtocol {
-    func listSenderAddresses() async throws -> DraftSenderAddressList {
-        .init(
+    let stubbedAddresses: DraftSenderAddressList
+
+    init(
+        stubAddresses: DraftSenderAddressList = .init(
             available: [
                 "norbert.e@pm.me",
                 "norbert.eric@pm.me",
@@ -34,6 +36,12 @@ struct MockChangeSenderHandler: ChangeSenderHandlerProtocol {
             ],
             active: "norbert.eric@pm.me"
         )
+    ) {
+        self.stubbedAddresses = stubAddresses
+    }
+
+    func listSenderAddresses() async throws -> DraftSenderAddressList {
+        stubbedAddresses
     }
 
     @MainActor
