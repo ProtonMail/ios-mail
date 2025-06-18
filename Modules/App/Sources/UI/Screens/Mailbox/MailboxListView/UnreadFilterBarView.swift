@@ -75,10 +75,8 @@ struct UnreadFilterBarView: View {
         } label: {
             HStack(spacing: DS.Spacing.compact) {
                 Image(symbol: state.selectAll.icon)
-                    .resizable()
-                    .square(size: 16)
+                    .font(.footnote)
                     .tint(state.selectAll.iconColor)
-
                 Text(state.selectAll.string)
                     .font(.footnote)
                     .foregroundStyle(state.selectAll.textColor)
