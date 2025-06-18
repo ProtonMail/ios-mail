@@ -74,15 +74,14 @@ struct UnreadFilterBarView: View {
             onSelectAllTapped()
         } label: {
             HStack(spacing: DS.Spacing.compact) {
-                Image(symbol: state.selectAll.icon)
+                Image(symbol: state.selectAll.button.icon)
                     .font(.footnote)
-                    .tint(state.selectAll.iconColor)
-                Text(state.selectAll.string)
+                    .tint(state.selectAll.button.iconColor)
+                Text(state.selectAll.button.text)
                     .font(.footnote)
-                    .foregroundStyle(state.selectAll.textColor)
+                    .foregroundStyle(state.selectAll.button.textColor)
             }
         }
-        .disabled(state.selectAll.isDisabled)
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.medium * scale)
         .overlay {
@@ -112,43 +111,31 @@ enum UnreadCounterState {
 }
 
 enum SelectAllState {
+    struct ButtonStyle {
+        let icon: DS.SFSymbol
+        let iconColor: Color
+        let text: LocalizedStringResource
+        let textColor: Color
+    }
+
     case canSelectMoreItems
     case noMoreItemsToSelect
     case selectionLimitReached
 
-    var icon: DS.SFSymbol {
+    var button: ButtonStyle {
+        let symbol: DS.SFSymbol
+        let text: LocalizedStringResource
+
         switch self {
         case .canSelectMoreItems:
-            .square
+            symbol = .square
+            text = L10n.Mailbox.selectAll
         case .noMoreItemsToSelect, .selectionLimitReached:
-            .checkmarkSquare
+            symbol = .checkmarkSquare
+            text = L10n.Mailbox.unselectAll
         }
-    }
 
-    var iconColor: Color {
-        isDisabled ? DS.Color.Icon.disabled : DS.Color.Icon.norm
-    }
-
-    var string: LocalizedStringResource {
-        switch self {
-        case .canSelectMoreItems, .selectionLimitReached:
-            L10n.Mailbox.selectAll
-        case .noMoreItemsToSelect:
-            L10n.Mailbox.unselectAll
-        }
-    }
-
-    var textColor: Color {
-        isDisabled ? DS.Color.Text.disabled : DS.Color.Text.norm
-    }
-
-    var isDisabled: Bool {
-        switch self {
-        case .canSelectMoreItems, .noMoreItemsToSelect:
-            false
-        case .selectionLimitReached:
-            true
-        }
+        return .init(icon: symbol, iconColor: DS.Color.Icon.norm, text: text, textColor: DS.Color.Text.norm)
     }
 }
 
