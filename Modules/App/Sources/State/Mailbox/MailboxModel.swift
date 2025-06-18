@@ -507,7 +507,7 @@ extension MailboxModel {
             let success = selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
 
             if !success {
-                toast = .error(message: L10n.Mailbox.selectionLimitReached.string)
+                toast = .information(message: L10n.Mailbox.selectionLimitReached.string)
             }
         } else {
             selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
