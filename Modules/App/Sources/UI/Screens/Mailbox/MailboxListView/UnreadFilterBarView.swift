@@ -118,9 +118,9 @@ enum SelectAllState {
 
     var icon: DS.SFSymbol {
         switch self {
-        case .canSelectMoreItems, .selectionLimitReached:
+        case .canSelectMoreItems:
             .square
-        case .noMoreItemsToSelect:
+        case .noMoreItemsToSelect, .selectionLimitReached:
             .checkmarkSquare
         }
     }
