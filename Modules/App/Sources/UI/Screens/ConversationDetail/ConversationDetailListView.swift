@@ -87,9 +87,14 @@ struct ConversationDetailListView: View {
                         .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
                 }
             }
-            .task {
-                scrollView.scrollTo(model.scrollToMessage, anchor: .top)
-            }
+            .onChange(
+                of: model.scrollToMessage,
+                { _, newValue in
+                    if let newValue {
+                        scrollView.scrollTo(newValue, anchor: .top)
+                    }
+                }
+            )
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier(ConversationDetailListViewIdentifiers.messageList)
         }
