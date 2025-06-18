@@ -124,6 +124,12 @@
             "value" : "%lld członków"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membros"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -378,6 +384,12 @@
             "value" : "Od:"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -626,6 +638,12 @@
             "value" : "Zduplikowany odbiorca %@ został usunięty"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatário duplicado eliminado: %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -823,6 +841,12 @@
             "value" : "Wyślij"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1015,6 +1039,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temat:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assunto:"
           }
         },
         "pt-BR" : {
@@ -1226,6 +1256,12 @@
             "value" : "Wystąpił problem podczas zapisywania szkicu"
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um problema ao guardar o rascunho."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1406,6 +1442,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para:"
           }
         },
         "pt-BR" : {
