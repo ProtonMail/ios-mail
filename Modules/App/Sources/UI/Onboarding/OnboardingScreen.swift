@@ -156,8 +156,8 @@ private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>:
         }
         .frame(minHeight: minHeight)
         .frame(height: height)
-        .onPreferenceChange(TabViewHeightPreference.self) { height in
-            self.height = height
+        .onPreferenceChange(TabViewHeightPreference.self) { newHeight in
+            self.height = max(height, newHeight)
         }
     }
 }
