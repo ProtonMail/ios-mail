@@ -78,7 +78,7 @@ final class AppContext: Sendable, ObservableObject {
             params: params,
             keyChain: dependencies.keychain,
             hvNotifier: accountChallengeCoordinator,
-            deviceInfoProvider: nil
+            deviceInfoProvider: ChallengePayloadProvider()
         ).get()
 
         _mailSession.pauseWork()
