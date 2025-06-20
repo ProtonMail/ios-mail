@@ -57,6 +57,7 @@ struct OnboardingScreen: View {
     }
 
     @Environment(\.dismissTestable) var dismiss: Dismissable
+    @Environment(\.mainWindowSize) var size
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
@@ -98,13 +99,34 @@ struct OnboardingScreen: View {
     // MARK: - Private
 
     private var pages: some View {
-        HeightPreservingTabView(selection: $state.selectedPageIndex) {
-            ForEachEnumerated(state.pages, id: \.element) { model, index in
-                OnboardingPageView(model: model).tag(index)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                HStack(spacing: .zero) {
+                    ForEachEnumerated(state.pages, id: \.element) { model, index in
+                        OnboardingPageView(model: model).tag(index)
+                            .id(index)
+                            .frame(width: size.width)
+                    }
+                }
+                .scrollTargetLayout()
             }
+            .scrollIndicators(.hidden)
+            .scrollTargetBehavior(.paging)
+            .scrollPosition(id: selectedPageIndex)
+            .animation(.easeIn, value: state.selectedPageIndex)
+            .onLoad { proxy.scrollTo(state.selectedPageIndex) }
         }
-        .animation(.easeIn, value: state.selectedPageIndex)
-        .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+
+    private var selectedPageIndex: Binding<Int?> {
+        .init(
+            get: { state.selectedPageIndex },
+            set: { newPageIndex in
+                if let pageIndex = newPageIndex {
+                    state.selectedPageIndex = pageIndex
+                }
+            }
+        )
     }
 
     private var dotsIndexIndicator: some View {
@@ -132,41 +154,6 @@ struct OnboardingScreen: View {
 
     private func spacing(height: CGFloat) -> some View {
         Spacer().frame(height: height)
-    }
-}
-
-/// A variant of `TabView` that sets an appropriate `height` on its frame based on content.
-private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>: View {
-    let selection: Binding<SelectionValue>?
-    @ViewBuilder let content: () -> Content
-
-    @State private var height: CGFloat = .zero
-    /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
-    private let minHeight: CGFloat = 1
-
-    var body: some View {
-        TabView(selection: selection) {
-            content()
-                .background {
-                    GeometryReader { reader in
-                        Color.clear
-                            .preference(key: TabViewHeightPreference.self, value: reader.frame(in: .local).height)
-                    }
-                }
-        }
-        .frame(minHeight: minHeight)
-        .frame(height: height)
-        .onPreferenceChange(TabViewHeightPreference.self) { newHeight in
-            self.height = max(height, newHeight)
-        }
-    }
-}
-
-private struct TabViewHeightPreference: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 

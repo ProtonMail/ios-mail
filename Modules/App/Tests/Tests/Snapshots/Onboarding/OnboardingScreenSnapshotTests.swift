@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
+import SnapshotTesting
 import SwiftUI
 import Testing
 
@@ -24,14 +25,22 @@ import Testing
 struct OnboardingScreenSnapshotTests {
     @Test(arguments: [0, 1, 2])
     func testInitialStateLayoutsCorrectly(selectedPageIndex: Int) {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: selectedPageIndex), on: .allPhones, named: "page_\(selectedPageIndex)")
+        let allPhones: [(String, ViewImageConfig)] = .allPhones
+
+        allPhones.forEach { name, config in
+            assertSnapshots(
+                matching: makeSUT(selectedPageIndex: selectedPageIndex, size: config.size!),
+                on: [(name, config)],
+                named: "page_\(selectedPageIndex)"
+            )
+        }
     }
 
     // MARK: - Private
 
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
+    private func makeSUT(selectedPageIndex: Int, size: CGSize) -> UIHostingController<some View> {
         let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
+            .environment(\.mainWindowSize, size)
         return UIHostingController(rootView: sut)
     }
-
 }
