@@ -53,20 +53,19 @@ struct MessageBodyReaderView: UIViewRepresentable {
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
         config.userContentController.addUserScript(.observeHeight)
 
+        context.coordinator.setupRecovery(for: webView)
         return webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
+    func updateUIView(_ webView: WKWebView, context: Context) {
         if context.coordinator.receivedBodyDifferentFromBefore(latest: body) {
-            updateUIView(uiView)
+            loadHTML(in: webView)
         }
-
-        uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+        webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
         context.coordinator.urlOpener = context.environment.openURL
     }
 
-    func updateUIView(_ view: WKWebView) {
-        // FIXME: insert this code on the Rust side and remove this
+    func loadHTML(in webView: WKWebView) {
         let style = """
             <style>
                 body {
@@ -86,22 +85,37 @@ struct MessageBodyReaderView: UIViewRepresentable {
             </style>
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
-        view.loadHTMLString(fixedBody)
+        webView.loadHTMLString(fixedBody, baseURL: nil)
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(parent: self)
     }
 }
 
 extension MessageBodyReaderView {
+
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?
         private var previouslyReceivedBody: MessageBody.HTML?
+        private var webView: WKWebView?
+        private var memoryPressureHandler: WebViewMemoryPressureProtocol
 
-        init(_ parent: MessageBodyReaderView) {
+        init(
+            parent: MessageBodyReaderView,
+            memoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .conversationDetail)
+        ) {
             self.parent = parent
+            self.memoryPressureHandler = memoryPressureHandler
+        }
+
+        func setupRecovery(for webView: WKWebView) {
+            self.webView = webView
+            memoryPressureHandler.contentReload { [weak self] in
+                guard let self, let webView = self.webView else { return }
+                parent.loadHTML(in: webView)
+            }
         }
 
         func userContentController(
@@ -124,6 +138,10 @@ extension MessageBodyReaderView {
 
             urlOpener?(url)
             return .cancel
+        }
+
+        func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            memoryPressureHandler.markWebContentProcessTerminated()
         }
 
         func receivedBodyDifferentFromBefore(latest body: MessageBody.HTML) -> Bool {
@@ -160,7 +178,7 @@ extension WKUserScript {
 
             notify();
             """
-        
+
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
     }()
 }

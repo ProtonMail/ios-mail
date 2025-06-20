@@ -259,6 +259,13 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
+    func reloadBodyAfterMemoryPressure() async {
+        guard !messageHasBeenSentOrScheduled else { return }
+        await updateBodyDebounceTask?.executeImmediately()
+        bodyAction = .reloadBody(html: draft.body())
+    }
+
     func scheduleSendState(lastScheduledTime: UInt64?) -> ComposerViewModalState? {
         do {
             let timeOptions = try scheduleSendOptionsProvider.scheduleSendOptions().get()

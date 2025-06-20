@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxCore
 import InboxTesting
 import SwiftUI
 import Testing
@@ -57,12 +58,12 @@ final class MessageBodyReaderViewTests {
     }
 
     @Test
-    func test_WhenUpdateUIViewIsCalledByTheSystem_ItReloadsWebView() throws {
+    func test_WhenLoadHTMLIsCalledByTheSystem_ItReloadsWebView() throws {
         let webViewSpy = WKWebViewSpy()
 
         #expect(webViewSpy.loadHTMLStringCalls.count == 0)
 
-        sut.updateUIView(webViewSpy)
+        sut.loadHTML(in: webViewSpy)
 
         #expect(webViewSpy.loadHTMLStringCalls.count == 1)
 
@@ -72,8 +73,55 @@ final class MessageBodyReaderViewTests {
         #expect(arguments.baseURL == nil)
     }
 
+    @Test
+    func testWebViewWebContentProcessDidTerminate_itMarksProcessAsTerminated() {
+        let spy = MemoryPressureHandlerSpy()
+        let sut = MessageBodyReaderView.Coordinator(
+            parent: sut,
+            memoryPressureHandler: spy
+        )
+
+        sut.webViewWebContentProcessDidTerminate(WKWebView())
+
+        #expect(spy.markWebContentProcessTerminatedCalled == true)
+    }
+
+    @Test
+    func testWebViewWebContentProcessDidTerminate_whenAppComesForeground_itTriggersContentReload() {
+        let notificationCenter = NotificationCenter()
+        let webViewSpy = WKWebViewSpy()
+        let coordinator = makeMessageBodyReaderViewCoordinator(
+            notificationCenter: notificationCenter,
+            webViewSpy: webViewSpy
+        )
+
+        // Simulate web process termination
+        coordinator.webViewWebContentProcessDidTerminate(webViewSpy)
+        #expect(webViewSpy.loadHTMLStringCalls.count == 0)
+
+        notificationCenter.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+
+        #expect(webViewSpy.loadHTMLStringCalls.count == 1)
+    }
+
     private var protonURL: URL {
         URL(string: "https://account.proton.me").unsafelyUnwrapped
+    }
+}
+
+extension MessageBodyReaderViewTests {
+
+    private func makeMessageBodyReaderViewCoordinator(
+        notificationCenter: NotificationCenter,
+        webViewSpy: WKWebViewSpy
+    ) -> MessageBodyReaderView.Coordinator {
+        let memoryHandler = WebViewMemoryPressureHandler(
+            loggerCategory: .conversationDetail,
+            notificationCenter: notificationCenter
+        )
+        let coordinator = MessageBodyReaderView.Coordinator(parent: sut, memoryPressureHandler: memoryHandler)
+        coordinator.setupRecovery(for: webViewSpy)
+        return coordinator
     }
 }
 
@@ -105,4 +153,12 @@ private class WKWebViewSpy: WKWebView {
         return nil
     }
 
+}
+
+private class MemoryPressureHandlerSpy: WebViewMemoryPressureProtocol {
+    private(set) var markWebContentProcessTerminatedCalled = false
+    func contentReload(_ contentReload: @escaping () -> Void) {}
+    func markWebContentProcessTerminated() {
+        markWebContentProcessTerminatedCalled = true
+    }
 }

@@ -26,6 +26,7 @@ extension SingleRecipientEntry {
 }
 
 final class MockDraft: AppDraftProtocol, @unchecked Sendable {
+    var mockBody: String = .empty
     var mockDraftMessageIdResult: DraftMessageIdResult = .ok(nil)
     var mockSender: String = .empty
     var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
@@ -86,7 +87,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func body() -> String {
-        .empty
+        mockBody
     }
 
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult {

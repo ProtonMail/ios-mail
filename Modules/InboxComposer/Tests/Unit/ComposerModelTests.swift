@@ -595,6 +595,15 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNil(sut.bodyAction)
     }
 
+    // MARK: reloadBodyAfterMemoryPressure
+
+    func testReloadBodyAfterMemoryPressure_itShouldSetBodyAction() async {
+        mockDraft.mockBody = "<html>test body</html>"
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        await sut.reloadBodyAfterMemoryPressure()
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>"))
+    }
+
     // MARK: sendMessage
 
     func testSendMessage_whenSuccess_itDismissesWithTheCorrectDismissReason() async throws {
