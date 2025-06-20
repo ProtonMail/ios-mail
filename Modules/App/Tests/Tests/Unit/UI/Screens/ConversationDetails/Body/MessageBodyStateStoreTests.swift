@@ -28,12 +28,12 @@ final class MessageBodyStateStoreTests {
         mailbox: .dummy,
         wrapper: wrapperSpy.testingInstance,
         toastStateStore: toastStateStore,
-        backOnlineActionExecutor: .init(mailUserSession: { self.mailUserSessionStub })
+        backOnlineActionExecutor: backOnlineActionExecutorSpy
     )
-    let mailUserSessionStub = MailUserSessionStub(id: .notUsed)
     let stubbedMessageID = ID(value: 42)
     let toastStateStore = ToastStateStore(initialState: .initial)
     private let wrapperSpy = RustWrappersSpy()
+    private let backOnlineActionExecutorSpy = BackOnlineActionExecutorSpy()
 
     // MARK: - `onLoad` action
 
@@ -74,8 +74,8 @@ final class MessageBodyStateStoreTests {
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: TransformOpts())
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
-        #expect(mailUserSessionStub.executeWhenOnlineCalled.count == 1)
-        mailUserSessionStub.executeWhenOnlineCalled.first?.onUpdate()
+        #expect(backOnlineActionExecutorSpy.executeCalled.count == 1)
+        await backOnlineActionExecutorSpy.executeCalled.first?()
 
         #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 1)
         #expect(
@@ -476,6 +476,16 @@ private extension MessageBodyStateStore.State {
                 )),
             alert: .none
         )
+    }
+
+}
+
+private class BackOnlineActionExecutorSpy: BackOnlineActionExecuting {
+
+    private(set) var executeCalled: [() async -> Void] = []
+
+    func execute(action: @escaping @MainActor @Sendable () async -> Void) {
+        executeCalled.append(action)
     }
 
 }

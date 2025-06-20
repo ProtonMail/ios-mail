@@ -48,14 +48,14 @@ final class MessageBodyStateStore: StateStore {
     private let legitMessageMarker: LegitMessageMarker
     private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
-    private let backOnlineActionExecutor: BackOnlineActionExecutor
+    private let backOnlineActionExecutor: BackOnlineActionExecuting
 
     init(
         messageID: ID,
         mailbox: Mailbox,
         wrapper: RustMessageBodyWrapper,
         toastStateStore: ToastStateStore,
-        backOnlineActionExecutor: BackOnlineActionExecutor
+        backOnlineActionExecutor: BackOnlineActionExecuting
     ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
