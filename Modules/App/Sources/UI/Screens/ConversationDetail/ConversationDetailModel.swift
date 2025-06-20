@@ -55,6 +55,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
+    private lazy var reloadContentCallback = LiveQueryCallbackWrapper { [weak self] in
+        Task {
+            await self?.fetchInitialData()
+        }
+    }
+
     private lazy var starActionPerformer: StarActionPerformer = {
         .init(mailUserSession: dependencies.appContext.userSession)
     }()
@@ -89,6 +95,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch ActionError.other(.network) {
             updateState(.noConnection)
+            reloadContentWhenBackOnline()
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
@@ -201,6 +208,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
+
+    private func reloadContentWhenBackOnline() {
+        userSession.executeWhenOnline(callback: reloadContentCallback)
+    }
 
     private func openDraft(with id: ID) {
         draftPresenter.openDraft(withId: id)
