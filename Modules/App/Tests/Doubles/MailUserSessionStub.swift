@@ -19,6 +19,7 @@ import proton_app_uniffi
 
 final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
     private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
+    private(set) var executeWhenOnlineCalled: [LiveQueryCallback] = []
 
     private let id: String
 
@@ -44,5 +45,9 @@ final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
     override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
         executeNotificationQuickActionInvocations.append(action)
         return .ok
+    }
+
+    override func executeWhenOnline(callback: LiveQueryCallback) {
+        executeWhenOnlineCalled.append(callback)
     }
 }

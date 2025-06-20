@@ -44,6 +44,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var expandedMessages: Set<ID>
     private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
+    private let backOnlineActionExecutor: BackOnlineActionExecutor
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
@@ -55,12 +56,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    private lazy var reloadContentCallback = LiveQueryCallbackWrapper { [weak self] in
-        Task {
-            await self?.fetchInitialData()
-        }
-    }
-
     private lazy var starActionPerformer: StarActionPerformer = {
         .init(mailUserSession: dependencies.appContext.userSession)
     }()
@@ -69,14 +64,21 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         dependencies.appContext.userSession
     }
 
-    init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, dependencies: Dependencies = .init()) {
+    init(
+        seed: ConversationDetailSeed,
+        draftPresenter: DraftPresenter,
+        dependencies: Dependencies = .init(),
+        backOnlineActionExecutor: BackOnlineActionExecutor
+    ) {
         self.seed = seed
         self.isStarred = seed.isStarred
         self.expandedMessages = .init()
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
+        self.backOnlineActionExecutor = backOnlineActionExecutor
     }
 
+    @MainActor
     func fetchInitialData() async {
         updateState(.fetchingMessages)
         do {
@@ -210,7 +212,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 extension ConversationDetailModel {
 
     private func reloadContentWhenBackOnline() {
-        userSession.executeWhenOnline(callback: reloadContentCallback)
+        backOnlineActionExecutor.execute { [weak self] in
+            await self?.fetchInitialData()
+        }
     }
 
     private func openDraft(with id: ID) {

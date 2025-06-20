@@ -48,21 +48,21 @@ final class MessageBodyStateStore: StateStore {
     private let legitMessageMarker: LegitMessageMarker
     private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
-    private let mailUserSession: () -> MailUserSession
+    private let backOnlineActionExecutor: BackOnlineActionExecutor
 
     init(
         messageID: ID,
         mailbox: Mailbox,
         wrapper: RustMessageBodyWrapper,
         toastStateStore: ToastStateStore,
-        mailUserSession: @escaping () -> MailUserSession,
+        backOnlineActionExecutor: BackOnlineActionExecutor
     ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
         self.legitMessageMarker = .init(mailbox: mailbox, wrapper: wrapper)
         self.senderUnblocker = .init(mailbox: mailbox, wrapper: wrapper)
         self.toastStateStore = toastStateStore
-        self.mailUserSession = mailUserSession
+        self.backOnlineActionExecutor = backOnlineActionExecutor
     }
 
     @MainActor
@@ -117,15 +117,13 @@ final class MessageBodyStateStore: StateStore {
         }
     }
 
+    @MainActor
     private func reloadContentWhenBackOnline(options: TransformOpts) {
-        let callback = LiveQueryCallbackWrapper { [weak self] in
-            Task { @MainActor in
-                guard let self else { return }
-                self.state = self.state.copy(\.body, to: .fetching)
-                await self.loadMessageBody(with: options)
-            }
+        backOnlineActionExecutor.execute { [weak self] in
+            guard let self else { return }
+            self.state = self.state.copy(\.body, to: .fetching)
+            await self.loadMessageBody(with: options)
         }
-        mailUserSession().executeWhenOnline(callback: callback)
     }
 
     @MainActor

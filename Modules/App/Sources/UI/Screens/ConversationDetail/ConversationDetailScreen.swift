@@ -29,7 +29,11 @@ struct ConversationDetailScreen: View {
     private let draftPresenter: DraftPresenter
 
     init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
-        self._model = StateObject(wrappedValue: .init(seed: seed, draftPresenter: draftPresenter))
+        self._model = StateObject(wrappedValue: .init(
+            seed: seed,
+            draftPresenter: draftPresenter,
+            backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
+        ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
     }

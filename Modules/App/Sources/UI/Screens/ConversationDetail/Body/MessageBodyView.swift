@@ -55,7 +55,8 @@ struct MessageBodyView: View {
                 messageID: messageID,
                 mailbox: mailbox,
                 wrapper: .productionInstance(),
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
             )
         ) { state, store in
             VStack(spacing: .zero) {
