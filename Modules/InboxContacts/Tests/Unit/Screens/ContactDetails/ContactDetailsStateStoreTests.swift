@@ -69,7 +69,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testOnLoadAction_ItFetchesDetailsAndUpdatesState() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -82,7 +82,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testCallTappedAction_ItOpensURLWithTelPrefix() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -98,7 +98,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testPhoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -114,7 +114,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testOpenURLAction_ItOpensURL() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -130,7 +130,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testOpenURLActionWithURLMissingScheme_ItNormalizesAndOpensURL() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -146,7 +146,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     }
 
     func testShareTappedAction_ItPresentsComingSoon() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -160,28 +160,27 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         XCTAssertEqual(toastStateStore.state.toastHeights, [:])
     }
 
-    // TODO: Bring back when contact details is clarified
-//    func testNewMessageTappedAction_ItPresentsDraftWithPrimaryContact() async {
-//        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
-//
-//        providerSpy.stubbedContactDetails[contactItem] = .init(
-//            contact: contactItem,
-//            details: details
-//        )
-//
-//        await sut.handle(action: .onLoad)
-//        await sut.handle(action: .newMessageTapped)
-//
-//        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
-//        XCTAssertEqual(
-//            draftPresenterSpy.openDraftContactCalls,
-//            [
-//                .init(emailType: [.work], email: "elena.erickson@protonmail.com")
-//            ])
-//    }
+    func testNewMessageTappedAction_ItPresentsDraftWithPrimaryContact() async {
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .newMessageTapped)
+
+        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
+        XCTAssertEqual(
+            draftPresenterSpy.openDraftContactCalls,
+            [
+                .init(name: "🌟 Elena Erickson", email: "elena.erickson@protonmail.com")
+            ])
+    }
 
     func testEmailTappedAction_ItPresentsDraftWithGivenContact() async {
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,
@@ -199,7 +198,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 
     func testEmailTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
         let expectedError: TestError = .test
-        let details = ContactDetailCard(id: contactItem.id, fields: .testItems)
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
             contact: contactItem,

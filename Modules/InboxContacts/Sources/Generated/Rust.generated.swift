@@ -255,7 +255,7 @@ public extension GetAutoDeleteBannerResult {
     }
 }
 public extension GetContactDetailsResult {
-    func get() throws(UserContextError) -> ContactDetailCard? {
+    func get() throws(UserContextError) -> ContactDetailCard {
         switch self {
         case .ok(let value):
             value

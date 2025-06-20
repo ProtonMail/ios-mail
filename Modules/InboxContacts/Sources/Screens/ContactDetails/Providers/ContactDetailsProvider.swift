@@ -69,7 +69,15 @@ extension ContactDetailsProvider {
         ]
 
         return .init(contactDetails: { contact in
-            .init(contact: contact, details: .init(id: contact.id, fields: items))
+            .init(
+                contact: contact,
+                details: .init(
+                    id: contact.id,
+                    avatarInformation: contact.avatarInformation,
+                    extendedName: .init(last: .none, first: .none),
+                    fields: items
+                )
+            )
         })
     }
 
