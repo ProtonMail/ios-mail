@@ -19,6 +19,7 @@ import Combine
 import InboxCore
 import proton_app_uniffi
 
+@MainActor
 protocol MailSettingLiveQuerying {
     /// Emits an event only when the user's view mode setting changes
     var viewModeHasChanged: AnyPublisher<Void, Never> { get }
@@ -26,7 +27,7 @@ protocol MailSettingLiveQuerying {
     func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never>
 }
 
-final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying {
+final class MailSettingsLiveQuery: MailSettingLiveQuerying {
 
     private let userSession: MailUserSession
     private var watchHandle: WatchHandle?
@@ -75,8 +76,8 @@ final class MailSettingsLiveQuery: @unchecked Sendable, MailSettingLiveQuerying 
         }
     }
 
-    private func onSettingsUpdate() {
-        Task {
+    nonisolated private func onSettingsUpdate() {
+        Task { @MainActor in
             settingsSubject.value = try await mailSettings(ctx: userSession).get()
         }
     }
