@@ -378,6 +378,8 @@ extension ComposerModel: ChangeSenderHandlerProtocol {
 
     @MainActor
     func changeSenderAddress(email: String) async throws(DraftSenderAddressChangeError) {
+        guard !messageHasBeenSentOrScheduled else { return }
+        await updateBodyDebounceTask?.executeImmediately()
         switch await draft.changeSenderAddress(email: email) {
         case .ok:
             state = makeState(from: draft)
