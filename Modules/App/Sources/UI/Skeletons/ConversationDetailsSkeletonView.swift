@@ -26,12 +26,11 @@ struct ConversationDetailsSkeletonView: View {
     // MARK: - View
 
     var body: some View {
-        List {
+        SkeletonContainer {
             MailboxSkeletonRowView(colorScheme: colorScheme)
             MailboxSkeletonRowView(colorScheme: colorScheme)
             skeletonBody(for: colorScheme)
         }
-        .styledSkeleton()
     }
 
     // MARK: - Private
@@ -55,4 +54,19 @@ struct ConversationDetailsSkeletonView: View {
 
 #Preview {
     ConversationDetailsSkeletonView()
+}
+
+struct SkeletonContainer<Content: View>: View {
+    private let content: Content
+
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(spacing: DS.Spacing.huge) {
+            content
+        }
+        .padding(.top, DS.Spacing.extraLarge)
+    }
 }
