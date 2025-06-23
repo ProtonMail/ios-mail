@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,16 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-extension View {
+struct SkeletonContainer<Content: View>: View {
+    private let content: Content
 
-    func styledSkeletonRow() -> some View {
-        listRowBackground(Color.clear)
-            .listRowInsets(.init(vertical: .zero, horizontal: DS.Spacing.large))
-            .listRowSeparator(.hidden)
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
     }
 
+    var body: some View {
+        ScrollView {
+            VStack(spacing: DS.Spacing.huge) {
+                content
+            }
+        }
+        .scrollDisabled(true)
+        .padding(.top, DS.Spacing.large)
+    }
 }

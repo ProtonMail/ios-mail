@@ -24,10 +24,11 @@ struct MailboxSkeletonView: View {
     // MARK: - View
 
     var body: some View {
-        List(0..<25) { _ in
-            MailboxSkeletonRowView(colorScheme: colorScheme)
+        SkeletonContainer {
+            ForEach(0..<25, id: \.self) { _ in
+                MailboxSkeletonRowView(colorScheme: colorScheme)
+            }
         }
-        .styledSkeleton()
     }
 }
 

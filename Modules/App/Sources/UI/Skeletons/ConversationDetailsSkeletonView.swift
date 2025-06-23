@@ -41,7 +41,6 @@ struct ConversationDetailsSkeletonView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 180)
             .padding(.top, DS.Spacing.standard)
-            .styledSkeletonRow()
     }
 
     private func animation(for colorScheme: ColorScheme) -> LottieAnimation {
@@ -54,19 +53,4 @@ struct ConversationDetailsSkeletonView: View {
 
 #Preview {
     ConversationDetailsSkeletonView()
-}
-
-struct SkeletonContainer<Content: View>: View {
-    private let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        VStack(spacing: DS.Spacing.huge) {
-            content
-        }
-        .padding(.top, DS.Spacing.extraLarge)
-    }
 }
