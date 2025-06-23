@@ -51,7 +51,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
-        config.userContentController.addUserScript(.observeHeight)
+        config.userContentController.addUserScript(.observeHeight(screenWidth: context.environment.mainWindowSize.width))
 
         context.coordinator.setupRecovery(for: webView)
         return webView
@@ -164,23 +164,35 @@ extension WKWebView {
 }
 
 extension WKUserScript {
-    fileprivate static let observeHeight: WKUserScript = {
+    fileprivate static func observeHeight(screenWidth: CGFloat) -> WKUserScript {
         let source = """
             function notify() {
-                // Wait for next frame to ensure content is laid out
-                requestAnimationFrame(() => {
+                measureHeightOnceContentIsLaidOut();
+            }
+
+            function measureHeightOnceContentIsLaidOut(retryCount = 0) {
+                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
+                const maxRetries = 180;
+            
+                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
+                const contentIsLaidOut = document.body.scrollWidth > \(screenWidth / 2)
+
+                if (!contentIsLaidOut && retryCount < maxRetries) {
+                    // try again next frame
+                    requestAnimationFrame(() => {
+                        measureHeightOnceContentIsLaidOut(retryCount + 1);
+                    });
+                } else {
                     window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
-                });
+                }
             }
 
             const observer = new ResizeObserver(notify);
             observer.observe(document.body);
-
-            notify();
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-    }()
+    }
 }
 
 private enum Constants {
