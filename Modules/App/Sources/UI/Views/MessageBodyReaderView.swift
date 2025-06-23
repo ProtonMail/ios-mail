@@ -99,7 +99,7 @@ extension MessageBodyReaderView {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?
         private var previouslyReceivedBody: MessageBody.HTML?
-        private var webView: WKWebView?
+        private weak var webView: WKWebView?
         private var memoryPressureHandler: WebViewMemoryPressureProtocol
 
         init(
