@@ -21,7 +21,6 @@ enum MailFeatureFlag: String, FeatureFlagTypeProtocol {
     case alwaysShowUpsellButton = "MailiosAlwaysShowUpsellButton"
     case answerInvitation = "MailiosAnswerInvitation"
     case autoImportContacts = "MailiosAutoImportContacts"
-    case byoeLogin = "InboxBringYourOwnEmail"
     case calendarMiniLandingPage = "MailiosCalendarMiniLandingPage"
     case dynamicFontSizeInMessageBody = "MailiosDynamicFontSizeInMessageBody"
     case headerUpsellExperiment1 = "MailiosHeaderUpsellExperiment1"
