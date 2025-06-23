@@ -43,6 +43,7 @@ final class DebouncedTask {
     func executeImmediately() async {
         cancel()
         await executionBlock()
+        onBlockCompletion()
     }
 
     func cancel() {
