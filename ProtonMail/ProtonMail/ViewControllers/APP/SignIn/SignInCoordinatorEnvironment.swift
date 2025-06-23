@@ -23,7 +23,6 @@ import PromiseKit
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreDoh
-import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
@@ -33,7 +32,6 @@ import UIKit
 
 struct SignInCoordinatorEnvironment {
     typealias Dependencies = AuthManagerForUnauthorizedAPIService.Dependencies
-    & HasFeatureFlagsRepository
     & HasSignInManager
     & HasUnlockManager
     & HasUsersManager
@@ -77,8 +75,6 @@ extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
     static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
         let apiService = PMAPIService.unauthorized(dependencies: dependencies)
-        let minimumAccountTypes = minimumAccountTypes(featureFlagsRepository: dependencies.featureFlagsRepository)
-
         return .init(apiService: apiService,
                      userDefaults: dependencies.userDefaults,
                      mailboxPassword: dependencies.signInManager
@@ -113,7 +109,7 @@ extension SignInCoordinatorEnvironment {
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,
                                                apiService: apiService,
-                                               minimumAccountTypes: minimumAccountTypes,
+                                               minimumAccountTypes: .init(login: .external, signup: .internal),
                                                isCloseButtonAvailable: isCloseButtonAvailable,
                                                paymentsAvailability: payment,
                                                signupAvailability: signup)
@@ -125,12 +121,5 @@ extension SignInCoordinatorEnvironment {
             apiService.setSessionUID(uid: "")
             return dependencies.signInManager.saveLoginData(loginData: $0)
         })
-    }
-
-    private static func minimumAccountTypes(featureFlagsRepository: FeatureFlagsRepository) -> AccountTypes {
-        .init(
-            login: featureFlagsRepository.isEnabled(MailFeatureFlag.byoeLogin) ? .external : .internal,
-            signup: .internal
-        )
     }
 }
