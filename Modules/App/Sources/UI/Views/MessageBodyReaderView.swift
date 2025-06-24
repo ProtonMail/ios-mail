@@ -52,14 +52,20 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
-        config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
+        for handlerName in HandlerName.allCases {
+            config.userContentController.add(context.coordinator, name: handlerName.rawValue)
+        }
 
-        let userScripts: [WKUserScript] = [
+        let userScripts: [AppScript] = [
             .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
             .handleEmptyBody,
+            .redirectConsoleLogToAppLogger,
         ]
 
-        userScripts.forEach(config.userContentController.addUserScript(_:))
+        userScripts
+            .filter(\.isEnabled)
+            .map { $0.toUserScript() }
+            .forEach(config.userContentController.addUserScript)
 
         context.coordinator.setupRecovery(for: webView)
         context.environment.webViewPrintingRegistrar.register(webView: webView)
@@ -137,9 +143,16 @@ extension MessageBodyReaderView {
             _ userContentController: WKUserContentController,
             didReceive scriptMessage: WKScriptMessage
         ) {
-            Task { @MainActor in
-                let scriptOutput = scriptMessage.body as! CGFloat
-                parent.bodyContentHeight = scriptOutput
+            switch HandlerName(rawValue: scriptMessage.name) {
+            case .consoleLog:
+                AppLogger.log(message: "\(scriptMessage.body)", category: .webView)
+            case .heightChanged:
+                Task { @MainActor in
+                    let scriptOutput = scriptMessage.body as! CGFloat
+                    parent.bodyContentHeight = scriptOutput
+                }
+            case .none:
+                fatalError()
             }
         }
 
@@ -170,8 +183,23 @@ extension MessageBodyReaderView {
     }
 }
 
-extension WKUserScript {
-    fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
+@MainActor
+private struct AppScript {
+    let source: String
+    let isEnabled: Bool
+
+    init(source: String, isEnabled: Bool = true) {
+        self.source = source
+        self.isEnabled = isEnabled
+    }
+
+    func toUserScript() -> WKUserScript {
+        WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+    }
+}
+
+extension AppScript {
+    fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> Self {
         let source = """
             function executeOnceContentIsLaidOut(callback) {
                 // This is a good enough heuristic without hard coding magic numbers
@@ -195,7 +223,7 @@ extension WKUserScript {
             function startSendingHeightToSwiftUI(ratio) {
                 const observer = new ResizeObserver(() => {
                     var height = document.documentElement.scrollHeight * ratio;
-                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
+                    window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
                 });
 
                 observer.observe(document.body);
@@ -208,22 +236,32 @@ extension WKUserScript {
             });
             """
 
-        return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        return .init(source: source)
     }
 
     /// A message can theoretically have an empty <body>. In such case the observed body height will be 0, and the loading spinner would be shown indefinitely.
-    fileprivate static let handleEmptyBody = WKUserScript(
+    fileprivate static let handleEmptyBody = Self(
         source: """
             if (document.body.childNodes.length == 0) {
                 var spacer = document.createElement('br');
                 document.body.appendChild(spacer);
             }
+            """
+    )
+
+    fileprivate static let redirectConsoleLogToAppLogger = Self(
+        source: """
+            var console = {};
+
+            console.log = function(message) {
+                window.webkit.messageHandlers.\(HandlerName.consoleLog.rawValue).postMessage(message)
+            };
             """,
-        injectionTime: .atDocumentEnd,
-        forMainFrameOnly: true
+        isEnabled: WKWebView.inspectabilityEnabled
     )
 }
 
-private enum Constants {
-    static let heightChangedHandlerName = "heightChanged"
+private enum HandlerName: String, CaseIterable {
+    case consoleLog
+    case heightChanged
 }

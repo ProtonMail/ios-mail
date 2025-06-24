@@ -142,9 +142,11 @@ extension AppLogger {
         case send
         case thirtySecondsBackgroundTask
         case userSessions
+        case webView
 
         var rawValue: String {
-            String(describing: self).capitalized
+            let string = String(describing: self)
+            return string.prefix(1).uppercased() + string.dropFirst()
         }
     }
 }

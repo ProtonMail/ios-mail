@@ -18,7 +18,7 @@
 import WebKit
 
 extension WKWebView {
-    static var inspectabilityEnabled: Bool {
+    nonisolated static var inspectabilityEnabled: Bool {
         #if DEBUG || QA
             true
         #else
