@@ -110,7 +110,7 @@ extension MailSettings {
             nextMessageOnMove: nil,
             numMessagePerPage: .max,
             pgpScheme: .inline,
-            pmSignature: .enabled,
+            pmSignature: .init(value: 1),
             pmSignatureReferralLink: false,
             promptPin: false,
             receiveMimeType: .applicationJson,
