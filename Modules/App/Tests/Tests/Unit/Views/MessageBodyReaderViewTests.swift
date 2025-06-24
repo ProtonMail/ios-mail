@@ -32,7 +32,8 @@ final class MessageBodyReaderViewTests {
             rawBody: "<html>dummy</html>",
             options: .init(),
             embeddedImageProvider: EmbeddedImageProviderSpy()
-        )
+        ),
+        viewWidth: .zero
     )
 
     private lazy var coordinator: MessageBodyReaderView.Coordinator = {

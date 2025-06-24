@@ -52,10 +52,15 @@ struct MessageBodyHTMLView: View {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
                 .removeViewIf(bodyContentHeight > 0)
-            MessageBodyReaderView(
-                bodyContentHeight: $bodyContentHeight,
-                body: body
-            )
+            GeometryReader { geometry in
+                if geometry.size.width > 0 {
+                    MessageBodyReaderView(
+                        bodyContentHeight: $bodyContentHeight,
+                        body: body,
+                        viewWidth: geometry.size.width
+                    )
+                }
+            }
             .frame(height: bodyContentHeight)
             .padding([.vertical, .horizontal], DS.Spacing.large)
             .opacity(bodyContentHeight > 0 ? 1 : 0)

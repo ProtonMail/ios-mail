@@ -27,6 +27,7 @@ extension EnvironmentValues {
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
+    let viewWidth: CGFloat
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
@@ -51,7 +52,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
-        config.userContentController.addUserScript(.observeHeight(screenWidth: context.environment.mainWindowSize.width))
+        config.userContentController.addUserScript(.observeHeight(viewWidth: viewWidth))
 
         context.coordinator.setupRecovery(for: webView)
         return webView
@@ -155,16 +156,8 @@ extension MessageBodyReaderView {
     }
 }
 
-extension WKWebView {
-
-    fileprivate func loadHTMLString(_ string: String) {
-        loadHTMLString(string, baseURL: nil)
-    }
-
-}
-
 extension WKUserScript {
-    fileprivate static func observeHeight(screenWidth: CGFloat) -> WKUserScript {
+    fileprivate static func observeHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
             function notify() {
                 measureHeightOnceContentIsLaidOut();
@@ -173,9 +166,9 @@ extension WKUserScript {
             function measureHeightOnceContentIsLaidOut(retryCount = 0) {
                 // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
                 const maxRetries = 180;
-            
+
                 // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
-                const contentIsLaidOut = document.body.scrollWidth > \(screenWidth / 2)
+                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
 
                 if (!contentIsLaidOut && retryCount < maxRetries) {
                     // try again next frame
