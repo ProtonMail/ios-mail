@@ -87,6 +87,10 @@ final class MailSessionSpy: MailSessionProtocol {
         return .ok
     }
 
+    func startAutoLockCountdown() {
+        fatalError(#function)
+    }
+
     func deleteAccount(userId: String) async -> VoidSessionResult {
         fatalError(#function)
     }
