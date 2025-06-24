@@ -76,7 +76,6 @@ extension AppLifeCycle {
         let testService = TestService()
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
-        let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
         let legacyMigrationService = LegacyMigrationService.shared
         let recurringBackgroundTaskService = RecurringBackgroundTaskService()
         let notificationAuthorizationService = NotificationAuthorizationService(
@@ -111,7 +110,6 @@ extension AppLifeCycle {
             willEnterForegroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
-                emailsPrefetchingNotifier,
             ],
             willResignActiveServices: [
                 appIconBadgeService

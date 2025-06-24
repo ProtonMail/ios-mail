@@ -68,21 +68,13 @@ private struct RootView: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
-    @StateObject private var emailsPrefetchingTrigger: EmailsPrefetchingTrigger
 
     private let recurringBackgroundTaskScheduler: RecurringBackgroundTaskScheduler
 
     init(
-        appContext: AppContext,
-        emailsPrefetchingNotifier: EmailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+        appContext: AppContext
     ) {
         self.appContext = appContext
-        self._emailsPrefetchingTrigger = .init(
-            wrappedValue: .init(
-                emailsPrefetchingNotifier: emailsPrefetchingNotifier,
-                sessionProvider: appContext,
-                prefetch: prefetch
-            ))
         self.recurringBackgroundTaskScheduler = .init(
             backgroundTaskExecutorProvider: { appContext.mailSession }
         )
@@ -95,15 +87,11 @@ private struct RootView: View {
             }
             .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {
-                    EmailsPrefetchingNotifier.shared.notify()
                     submitBackgroundTask()
                 }
                 if new == .noSession {
                     recurringBackgroundTaskScheduler.cancel()
                 }
-            }
-            .onLoad {
-                emailsPrefetchingTrigger.setUpSubscription()
             }
     }
 
