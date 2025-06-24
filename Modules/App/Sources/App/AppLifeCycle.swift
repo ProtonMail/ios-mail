@@ -97,6 +97,8 @@ extension AppLifeCycle {
             urlOpener: UIApplication.shared
         )
 
+        let startAutoLockCountdownService = StartAutoLockCountdownService(mailSession: { appContext.mailSession })
+
         applicationServices = .init(
             setUpServices: [
                 testService,
@@ -117,6 +119,7 @@ extension AppLifeCycle {
             didEnterBackgroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
+                startAutoLockCountdownService,
             ],
             terminateServices: []
         )
