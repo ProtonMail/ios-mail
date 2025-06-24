@@ -46,8 +46,13 @@ final class AppContext: Sendable, ObservableObject {
         return mailContext
     }
 
+    var errors: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
     private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
+    private let errorSubject = PassthroughSubject<Error, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     private(set) var userDefaults: UserDefaults!
@@ -135,6 +140,7 @@ extension AppContext {
                 AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {
                 AppLogger.log(error: error, category: .userSessions)
+                errorSubject.send(error)
             }
         }
     }
@@ -157,6 +163,7 @@ extension AppContext {
                 let earliestNextAttemptTime = start + minimumTimeBetweenRetries
                 try await Task.sleep(until: earliestNextAttemptTime)
             case .error(let error):
+                try await mailSession.deleteAccount(userId: session.userId()).get()
                 throw error
             }
         }

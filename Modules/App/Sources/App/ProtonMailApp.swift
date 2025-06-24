@@ -84,6 +84,7 @@ private struct RootView: View {
         mainView()
             .onAppear {
                 sceneDelegate.toastStateStore = toastStateStore
+                startDisplayingAppContextErrors()
             }
             .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {
@@ -153,6 +154,14 @@ private struct RootView: View {
             }
         case .willNotMigrate:
             appContext.accountAuthCoordinator.accountView()
+        }
+    }
+
+    private func startDisplayingAppContextErrors() {
+        Task { @MainActor in
+            for await error in AppContext.shared.errors.values {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 
