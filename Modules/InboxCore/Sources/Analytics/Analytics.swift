@@ -34,6 +34,6 @@ public final class Analytics: Sendable {
     }
 
     private enum SentryConfiguration {
-        static let dsn = "https://a3be1429a241459790c784466f194565@sentry-new.protontech.ch/83"
+        static let dsn = "https://a3be1429a241459790c784466f194565@api.protonmail.ch/core/v4/reports/sentry/83"
     }
 }
