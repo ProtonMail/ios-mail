@@ -65,25 +65,26 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     }
 
     private func updateUI() {
-        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
-        stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        UIView.performWithoutAnimation {
+            topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
+            stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        for uiModel in uiModels {
-            let view = DraftAttachmentView(onEvent: { [weak self] event, uiModel in
-                switch event {
-                case .onViewTap:
-                    // FIXME: when we work on inline attachments
-//                    self?.onEvent?(.onTap(uiModel: uiModel))
-                    break
-                case .onButtonTap:
-                    self?.showRemoveConfirmation(uiModel: uiModel)
-                }
-            })
-            stack.addArrangedSubview(view)
-            view.configure(uiModel: uiModel)
+            for uiModel in uiModels {
+                let view = DraftAttachmentView(onEvent: { [weak self] event, uiModel in
+                    switch event {
+                    case .onViewTap:
+                        // FIXME: when we work on inline attachments
+                        // self?.onEvent?(.onTap(uiModel: uiModel))
+                        break
+                    case .onButtonTap:
+                        self?.showRemoveConfirmation(uiModel: uiModel)
+                    }
+                })
+                stack.addArrangedSubview(view)
+                view.configure(uiModel: uiModel)
+            }
+            stack.layoutIfNeeded()
         }
-        // avoid undesired animations caused by re-adding subviews with `addArrangedSubview`
-        stack.layoutIfNeeded()
     }
 
     private func showRemoveConfirmation(uiModel: DraftAttachmentUIModel) {
