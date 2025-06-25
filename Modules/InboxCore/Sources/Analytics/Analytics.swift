@@ -27,6 +27,9 @@ public final class Analytics: Sendable {
     public func configure() {
         sentryAnalytics.start { options in
             options.dsn = SentryConfiguration.dsn
+            options.enableAutoPerformanceTracing = false
+            options.enableAppHangTracking = false
+            options.enableCaptureFailedRequests = false
         }
     }
 
