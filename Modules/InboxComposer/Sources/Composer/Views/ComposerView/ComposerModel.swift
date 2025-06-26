@@ -371,18 +371,19 @@ final class ComposerModel: ObservableObject {
 }
 
 extension ComposerModel: ChangeSenderHandlerProtocol {
-    
+
     func listSenderAddresses() async throws -> DraftSenderAddressList {
         try await draft.listSenderAddresses().get()
     }
 
     @MainActor
-    func changeSenderAddress(email: String) async throws(DraftSenderAddressChangeError) {
+    func changeSenderAddress(email: String) async throws {
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
         switch await draft.changeSenderAddress(email: email) {
         case .ok:
-            state = makeState(from: draft)
+            let attachments = try await draft.attachmentList().attachments().get().toDraftAttachmentUIModels()
+            state = makeState(from: draft, attachments: attachments)
             bodyAction = .reloadBody(html: state.initialBody)
         case .error(let error):
             throw error
@@ -398,14 +399,14 @@ extension ComposerModel {
         try? await draft.messageId().get()
     }
 
-    private func makeState(from draft: AppDraftProtocol) -> ComposerState {
+    private func makeState(from draft: AppDraftProtocol, attachments: [DraftAttachmentUIModel] = []) -> ComposerState {
         .init(
             toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
             ccRecipients: .initialState(group: .cc, recipients: recipientUIModels(from: draft, for: .cc)),
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
             senderEmail: draft.sender(),
             subject: draft.subject(),
-            attachments: [],  // FIXME: Because the async nature of the SDK to read attachments, we read them separetely
+            attachments: attachments,
             initialBody: draft.body(),
             isInitialFocusInBody: false
         )
@@ -465,8 +466,7 @@ extension ComposerModel {
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().get()
-            state.attachments = draftAttachments.filter { $0.attachment.disposition == .attachment }
-                .map { $0.toDraftAttachmentUIModel() }
+            state.attachments = draftAttachments.toDraftAttachmentUIModels()
             attachmentAlertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {
             AppLogger.log(error: error, category: .composer)
