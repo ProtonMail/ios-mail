@@ -32,9 +32,11 @@ struct MessageDetailsView: View {
     var body: some View {
         VStack(spacing: DS.Spacing.large) {
             headerView
-            extendedDetailsView
-                .removeViewIf(isHeaderCollapsed)
+            if !isHeaderCollapsed {
+                extendedDetailsView
+            }
         }
+        .animation(.easeInOut, value: isHeaderCollapsed)
         .padding([.horizontal, .bottom], DS.Spacing.large)
     }
 
@@ -57,6 +59,7 @@ struct MessageDetailsView: View {
                     }
                 }
             }
+            .zIndex(-1)
             .padding(.leading, DS.Spacing.large)
         }
         .contentShape(Rectangle())
@@ -65,14 +68,31 @@ struct MessageDetailsView: View {
         }
     }
 
-    private var senderNameView: some View {
-        HStack(spacing: DS.Spacing.compact) {
+    var senderNameText: some View {
+        HStack(spacing: .zero) {
+            if !isHeaderCollapsed {
+                (Text("From:") + Text(" "))
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
+                    .foregroundColor(DS.Color.Text.norm)
+                    .transition(
+                        .move(edge: .leading)
+                        .combined(with: .opacity)
+                    )
+            }
             Text(uiModel.sender.name)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
+        }
+    }
+
+    private var senderNameView: some View {
+        HStack(spacing: DS.Spacing.compact) {
+            senderNameText
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
