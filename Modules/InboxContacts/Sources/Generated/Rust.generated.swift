@@ -1074,6 +1074,16 @@ public extension SidebarWatchLabelsResult {
         }
     }
 }
+public extension TestStubMessageBodyResult {
+    func get() throws(ActionError) -> DecryptedMessage {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension VoidActionResult {
     func get() throws(ActionError) {
         switch self {
