@@ -19,6 +19,7 @@ import Collections
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+import InboxCoreUI
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
@@ -149,5 +150,5 @@ enum ExpandedMessageCellEvent {
             onEvent: { _ in },
             htmlLoaded: {}
         )
-    }
+    }.environmentObject(ToastStateStore(initialState: .initial))
 }
