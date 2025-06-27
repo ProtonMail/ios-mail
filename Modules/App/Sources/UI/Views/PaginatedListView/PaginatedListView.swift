@@ -19,7 +19,7 @@ import InboxCoreUI
 import SwiftUI
 
 struct PaginatedListView<
-    Item: Identifiable & Sendable,
+    Item: Equatable & Identifiable & Sendable,
     HeaderView: View,
     EmptyListView: View,
     CellView: View
@@ -88,10 +88,13 @@ struct PaginatedListView<
                 .listRowBackground(Color.clear)
             }
         }
+        .animation(.default, value: dataSource.state.items)
         .environment(\.defaultMinListRowHeight, 0)
-        .readLayoutData(coordinateSpace: .global, onChange: { data in
-            listRealTopOffset = data.frameInCoordinateSpace.minY
-        })
+        .readLayoutData(
+            coordinateSpace: .global,
+            onChange: { data in
+                listRealTopOffset = data.frameInCoordinateSpace.minY
+            })
     }
 }
 
@@ -118,7 +121,7 @@ enum PaginatedListViewState: Equatable {
 
 #Preview {
 
-    struct PreviewListItem: Identifiable {
+    struct PreviewListItem: Identifiable, Equatable {
         var id: Int
     }
 

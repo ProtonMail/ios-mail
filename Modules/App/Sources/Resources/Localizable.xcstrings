@@ -9499,6 +9499,9 @@
     "Issue syncing your content. Check your connection or sign in again." : {
       "comment" : "Event loop failed due to an issue syncing content."
     },
+    "Issue updating your account. Please sign in again." : {
+      "comment" : "Error toast of the welcome screen."
+    },
     "Label" : {
       "comment" : "`Label` in the message details.",
       "localizations" : {
@@ -11486,9 +11489,6 @@
     },
     "Messages in Trash and Spam will be automatically deleted after 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on."
-    },
-    "Migration failed. Please sign in again and submit a bug report." : {
-      "comment" : "Error toast of the welcome screen."
     },
     "Min 4 characters and max 21 characters" : {
       "comment" : "Information displayed under the PIN input."

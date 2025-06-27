@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-final class PaginatedListDataSource<Item: Sendable>: ObservableObject, @unchecked Sendable {
+final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObject, @unchecked Sendable {
     typealias FetchPage = (_ currentPage: Int, _ pageSize: Int) async -> NextPageResult
 
     @Published private(set) var state: State
