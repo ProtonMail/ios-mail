@@ -16,29 +16,33 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxCoreUI
-import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
+import SwiftUI
 import XCTest
 
 final class CyclingProgressBarSnapshotTests: XCTestCase {
-    func testProgressBar_atDifferentPhases() {
-        let phases: [String: CGFloat] = [
-            "0_percent": 0,
-            "10_percent": 0.10,
-            "20_percent": 0.20,
-            "30_percent": 0.30,
-            "40_percent": 0.40,
-            "50_percent": 0.50,
-            "60_percent": 0.60,
-            "70_percent": 0.70,
-            "80_percent": 0.80,
-            "90_percent": 0.90,
-            "100_percent": 1.00,
-        ]
+    func testAllAnimationPhases() {
+        assertSnapshotsOnIPhoneX(of: CyclingProgressBarAllPhases(), record: true)
+    }
+}
 
-        for (name, phase) in phases {
-            assertSnapshotsOnIPhoneX(of: CyclingProgressBar(animationPhase: phase), named: name)
+private struct CyclingProgressBarAllPhases: View {
+    private let phases: [CGFloat] = stride(from: 0.0, through: 1.0, by: 0.05).map { $0 }
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 10) {
+            ForEach(phases, id: \.self) { phase in
+                VStack(alignment: .leading) {
+                    Text("\(Int(phase * 100))% of animation")
+                        .font(.caption2)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 5)
+
+                    CyclingProgressBar(animationPhase: phase)
+                }
+            }
         }
     }
 }
