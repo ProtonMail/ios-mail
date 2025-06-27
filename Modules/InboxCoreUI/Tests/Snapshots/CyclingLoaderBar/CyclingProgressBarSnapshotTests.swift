@@ -23,7 +23,7 @@ import XCTest
 
 final class CyclingProgressBarSnapshotTests: XCTestCase {
     func testAllAnimationPhases() {
-        assertSnapshotsOnIPhoneX(of: CyclingProgressBarAllPhases(), record: true)
+        assertSnapshotsOnIPhoneX(of: CyclingProgressBarAllPhases())
     }
 }
 
