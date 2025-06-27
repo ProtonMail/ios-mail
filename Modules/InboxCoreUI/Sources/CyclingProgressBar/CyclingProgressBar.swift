@@ -43,7 +43,7 @@ public struct CyclingProgressBar: View {
         isAnimationEnabled = false
     }
 
-    // MARK: - Body
+    // MARK: - View
 
     public var body: some View {
         GeometryReader { geometry in
@@ -75,7 +75,7 @@ public struct CyclingProgressBar: View {
     }
 }
 
-struct CyclingProgressBar_Preview: View {
+private struct CyclingProgressBar_Preview: View {
     @State private var visible: Bool = false
 
     var body: some View {
@@ -88,7 +88,7 @@ struct CyclingProgressBar_Preview: View {
             }
 
             Spacer()
-            Button(role: .none) {
+            Button {
                 visible.toggle()
             } label: {
                 Text(visible ? "Hide" : "Show")
