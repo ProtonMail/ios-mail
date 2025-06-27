@@ -32,9 +32,6 @@ struct MessageDetailsView: View {
     var body: some View {
         VStack(spacing: DS.Spacing.large) {
             headerView
-            if !isHeaderCollapsed {
-                extendedDetailsView
-            }
         }
         .animation(.easeInOut, value: isHeaderCollapsed)
         .padding([.horizontal, .bottom], DS.Spacing.large)
@@ -46,21 +43,46 @@ struct MessageDetailsView: View {
         HStack(alignment: .top, spacing: 0) {
             AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
                 .square(size: 40)
-            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                senderNameView
-                HStack(spacing: .zero) {
+
+            VStack(alignment: .leading, spacing: .zero) {
+                HStack(alignment: .top, spacing: 0) {
                     VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                        senderAddressView
-                        recipientsView
+                        Button(action: {}) {
+                            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                                senderNameView
+                                senderAddressView
+                            }
+                        }
+                        .disabled(!isHeaderCollapsed)
+                        if !isHeaderCollapsed {
+                            recipientsView
+                                .transition(.opacity)
+                        } else if let firstRecipient = uiModel.recipientsTo.first {
+                            recipientButton(
+                                recipient: firstRecipient,
+                                group: .to,
+                                prefixed: true,
+                                index: 0
+                            )
+                        }
                     }
+                    .zIndex(-1)
+                    .padding(.leading, DS.Spacing.large)
+
                     Spacer(minLength: DS.Spacing.moderatelyLarge)
-                    if !areActionsDisabled {
-                        headerActionsView
+                    VStack(alignment: .trailing, spacing: DS.Spacing.compact) {
+                        Text(uiModel.date.mailboxFormat())
+                            .font(.caption)
+                            .foregroundColor(DS.Color.Text.weak)
+                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
+                        if !areActionsDisabled {
+                            headerActionsView
+                        }
                     }
                 }
+
+                // here goes the content
             }
-            .zIndex(-1)
-            .padding(.leading, DS.Spacing.large)
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -70,7 +92,7 @@ struct MessageDetailsView: View {
 
     var senderNameText: some View {
         HStack(spacing: .zero) {
-            if !isHeaderCollapsed {
+            if isHeaderCollapsed {
                 (Text("From:") + Text(" "))
                     .font(.subheadline)
                     .fontWeight(.semibold)
@@ -78,7 +100,7 @@ struct MessageDetailsView: View {
                     .foregroundColor(DS.Color.Text.norm)
                     .transition(
                         .move(edge: .leading)
-                        .combined(with: .opacity)
+                            .combined(with: .opacity)
                     )
             }
             Text(uiModel.sender.name)
@@ -97,10 +119,6 @@ struct MessageDetailsView: View {
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
             Spacer()
-            Text(uiModel.date.mailboxFormat())
-                .font(.caption)
-                .foregroundColor(DS.Color.Text.weak)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
         }
     }
 
@@ -108,27 +126,27 @@ struct MessageDetailsView: View {
         Text(uiModel.sender.address)
             .font(.caption)
             .lineLimit(1)
-            .foregroundColor(DS.Color.Text.weak)
+            .foregroundColor(isHeaderCollapsed ? DS.Color.Text.accent : DS.Color.Text.weak)
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
     }
 
     private var recipientsView: some View {
         Button {
-            withAnimation(.linear(duration: 0.0)) {
-                isHeaderCollapsed.toggle()
-            }
+            isHeaderCollapsed.toggle()
         } label: {
             HStack(spacing: DS.Spacing.small) {
                 Text(uiModel.recipients.recipientsUIRepresentation)
+                    .foregroundColor(DS.Color.Text.weak)
                     .font(.caption)
                     .lineLimit(1)
-                    .foregroundColor(DS.Color.Text.weak)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                Image(isHeaderCollapsed ? DS.Icon.icChevronDownFilled : DS.Icon.icChevronUpFilled)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .square(size: 16)
-                    .foregroundColor(DS.Color.Icon.weak)
+                if !isHeaderCollapsed {
+                    Image(DS.Icon.icChevronDownFilled)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .square(size: 16)
+                        .foregroundColor(DS.Color.Icon.weak)
+                }
             }
         }
     }
@@ -217,25 +235,56 @@ struct MessageDetailsView: View {
                 .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                ForEach(recipients.indices, id: \.self) { index in
-                    let recipient = recipients[index]
-                    Button {
-                        onEvent(.onRecipientTap(recipient))
-                    } label: {
-                        VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                            Text(recipient.name)
-                                .font(.caption)
-                                .foregroundStyle(DS.Color.Text.norm)
-                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
-                            Text(recipient.address)
-                                .font(.caption)
-                                .foregroundStyle(DS.Color.Text.accent)
-                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
-                        }
-                    }
+                ForEachEnumerated(recipients, id: \.element) { recipient, index in
+                    recipientButton(
+                        recipient: recipient,
+                        group: group,
+                        prefixed: group != .to && index == 0,
+                        index: index
+                    )
                 }
             }
             Spacer()
+        }
+    }
+
+    private func recipientButton(
+        recipient: MessageDetail.Recipient,
+        group: RecipientGroup,
+        prefixed: Bool,
+        index: Int
+    ) -> some View {
+        Button {
+            onEvent(.onRecipientTap(recipient))
+        } label: {
+            VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+                recipientName(recipient: recipient, group: group, prefixed: prefixed)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
+                Text(recipient.address)
+                    .font(.caption)
+                    .foregroundStyle(DS.Color.Text.accent)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+            }
+        }
+    }
+
+    private func recipientName(
+        recipient: MessageDetail.Recipient,
+        group: RecipientGroup,
+        prefixed: Bool,
+    ) -> some View {
+        let name: Text = Text(recipient.name)
+            .font(.caption)
+            .foregroundStyle(DS.Color.Text.weak)
+
+        if prefixed {
+            let prefix = Text("\(group.humanReadable): ")
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.norm)
+            return prefix + name
+        } else {
+            return name
         }
     }
 
@@ -367,7 +416,7 @@ enum MessageDetail {
         let encryptionInfo: String
     }
 
-    struct Recipient: Identifiable {
+    struct Recipient: Identifiable, Hashable {
         var id: String { address }  // Identifiable needed to present the action sheet
         let name: String
         let address: String
@@ -409,10 +458,13 @@ extension Array where Element == MessageDetail.Recipient {
         labels: [
             .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue),
             .init(labelId: .init(value: 2), text: "Work", color: .green),
-            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink)
+            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ])
 
-    return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, areActionsDisabled: false, onEvent: { _ in })
+    return VStack {
+        MessageDetailsView(isHeaderCollapsed: false, uiModel: model, areActionsDisabled: false, onEvent: { _ in })
+        Spacer()
+    }
 }
 
 enum MessageDetailsPreviewProvider {
@@ -441,7 +493,7 @@ enum MessageDetailsPreviewProvider {
                 .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
             ],
             recipientsBcc: [
-                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red)),
+                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red))
             ],
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
