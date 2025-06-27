@@ -284,7 +284,7 @@ enum L10n {
 
     enum LegacyMigration {
         static let migrationFailed = LocalizedStringResource(
-            "Migration failed. Please sign in again and submit a bug report.",
+            "Issue updating your account. Please sign in again.",
             comment: "Error toast of the welcome screen."
         )
     }
