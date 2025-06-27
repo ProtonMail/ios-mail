@@ -25,10 +25,8 @@ public struct CyclingProgressBar: View {
 
     private let animationDurationInSeconds: TimeInterval = 1.2
     private let barHeight: CGFloat = 2
-
-    // FIXME: Extract colors: primary (Avatar/Green/3) edge (no-name)
-    private let primaryColor = Color(hex: "#52CD96")
-    private let edgeColor = Color(hex: "#99D1C5").opacity(0)
+    private let primaryColor = DS.Color.Loader.success
+    private let edgeColor = DS.Color.Loader.success.opacity(0)
 
     // MARK: - Body
 
