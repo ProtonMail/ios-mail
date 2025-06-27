@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -19,9 +19,18 @@ import UIKit
 
 extension UIFont {
 
-    static func font(textStyle: UIFont.TextStyle, weight: UIFont.Weight) -> UIFont {
+    public static func font(textStyle: TextStyle, weight: Weight) -> Self {
         let preferredFont = UIFont.preferredFont(forTextStyle: textStyle)
-        return .systemFont(ofSize: preferredFont.pointSize, weight: weight)
+
+        let traits: [UIFontDescriptor.TraitKey: Any] = [
+            .weight: weight
+        ]
+
+        let updatedDescriptor = preferredFont.fontDescriptor.addingAttributes([
+            .traits: traits
+        ])
+
+        return .init(descriptor: updatedDescriptor, size: .zero)
     }
 
 }

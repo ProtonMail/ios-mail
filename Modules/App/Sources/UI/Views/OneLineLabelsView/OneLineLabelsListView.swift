@@ -25,7 +25,7 @@ struct OneLineLabelsListView: View {
     private let horizontalPadding: CGFloat = DS.Spacing.compact
     private let minimalLabelWidth: CGFloat = DS.Spacing.extraLarge
     private let height: CGFloat = 20
-    private let font = UIFont.caption2Semibold()
+    private let font = UIFont.font(textStyle: .caption2, weight: .semibold)
 
     var body: some View {
         GeometryReader { geometry in
@@ -34,7 +34,8 @@ struct OneLineLabelsListView: View {
                     switch label {
                     case .regular(let viewModel):
                         Text(viewModel.text)
-                            .font(.from(uiFont: .caption2Semibold()))
+                            .font(.caption2)
+                            .fontWeight(.semibold)
                             .foregroundColor(DS.Color.Global.white)
                             .lineLimit(1)
                             .frame(height: height)
@@ -91,26 +92,6 @@ struct OneLineLabelsListView: View {
         label.numberOfLines = 1
         label.sizeToFit()
         return max(label.frame.width, minimalLabelWidth)
-    }
-}
-
-private extension UIFont {
-    static func caption2Semibold() -> UIFont {
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption2)
-
-        let semiboldDescriptor = descriptor.addingAttributes([
-            UIFontDescriptor.AttributeName.traits: [
-                UIFontDescriptor.TraitKey.weight: UIFont.Weight.semibold
-            ]
-        ])
-
-        return UIFont(descriptor: semiboldDescriptor, size: .zero)
-    }
-}
-
-private extension Font {
-    static func from(uiFont: UIFont) -> Font {
-        return Font(uiFont as CTFont)
     }
 }
 
